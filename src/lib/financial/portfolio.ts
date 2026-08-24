@@ -1,0 +1,10 @@
+import type { FinancialDefinition } from "./types";
+import { money, pct } from "./types";
+const f=(key:string,label:string,defaultValue:number,unit="")=>({key,label,defaultValue,unit});
+export const PORTFOLIO_TOOLS:FinancialDefinition[]=[
+{slug:"optimizacion-de-cartera",fields:[f("value","Valor de cartera",10000,"$"),f("current","Peso actual del activo",70,"%"),f("target","Peso objetivo",50,"%")],calculate:v=>{const delta=v.value*(v.target-v.current)/100;return[{label:"Valor objetivo",value:money(v.value*v.target/100)},{label:"Ajuste necesario",value:money(delta)},{label:"Acción",value:delta>0?"Comprar":"Reducir"}]}},
+{slug:"rebalanceo-multiple",fields:[f("value","Valor total",50000,"$"),f("a","Activo A objetivo",50,"%"),f("b","Activo B objetivo",30,"%"),f("c","Activo C objetivo",20,"%")],calculate:v=>[{label:"Activo A",value:money(v.value*v.a/100)},{label:"Activo B",value:money(v.value*v.b/100)},{label:"Activo C",value:money(v.value*v.c/100)},{label:"Total",value:pct(v.a+v.b+v.c)}]},
+{slug:"calculadora-de-drawdown-recuperacion",fields:[f("peak","Máximo",100,"$"),f("current","Valor actual",70,"$")],calculate:v=>{const d=(v.current/v.peak-1)*100;return[{label:"Drawdown",value:pct(d)},{label:"Subida necesaria para recuperar",value:pct((v.peak/v.current-1)*100)}]}},
+{slug:"concentracion-de-cartera",fields:[f("position","Posición principal",35,"%"),f("top3","Tres mayores posiciones",65,"%"),f("threshold","Umbral de concentración",25,"%")],calculate:v=>[{label:"Mayor posición",value:pct(v.position)},{label:"Top 3",value:pct(v.top3)},{label:"Advertencia",value:v.position>v.threshold?"Concentración elevada":"Por debajo del umbral indicado"}]},
+{slug:"calculadora-de-comisiones",fields:[f("capital","Capital",10000,"$"),f("buy","Comisión compra",0.2,"%"),f("sell","Comisión venta",0.2,"%"),f("other","Otros costes",20,"$")],calculate:v=>{const fees=v.capital*(v.buy+v.sell)/100+v.other;return[{label:"Costes totales",value:money(fees)},{label:"Coste sobre capital",value:pct(fees/v.capital*100)},{label:"Capital neto",value:money(v.capital-fees)}]}},
+];
