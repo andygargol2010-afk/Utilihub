@@ -1,0 +1,10 @@
+import type { FinancialDefinition } from "./types";
+import { money, pct } from "./types";
+const f=(key:string,label:string,defaultValue:number,unit="")=>({key,label,defaultValue,unit});
+export const SAVINGS_TOOLS:FinancialDefinition[]=[
+{slug:"ahorro-periodico",fields:[f("current","Ahorro actual",1000,"$"),f("monthly","Aporte mensual",300,"$"),f("rate","Rentabilidad anual",4,"%"),f("years","Años",5)],calculate:v=>{const m=v.rate/100/12,n=v.years*12,future=v.current*Math.pow(1+m,n)+v.monthly*((Math.pow(1+m,n)-1)/(m||1));return[{label:"Capital futuro",value:money(future)},{label:"Total aportado",value:money(v.current+v.monthly*n)},{label:"Crecimiento",value:money(future-v.current-v.monthly*n)}]}},
+{slug:"ahorro-para-una-compra",fields:[f("target","Objetivo",20000,"$"),f("current","Ahorro actual",5000,"$"),f("months","Meses disponibles",18)],calculate:v=>[{label:"Aporte mensual necesario",value:money(Math.max(0,v.target-v.current)/Math.max(1,v.months))},{label:"Falta ahorrar",value:money(Math.max(0,v.target-v.current))}]},
+{slug:"fondo-de-emergencia",fields:[f("expenses","Gastos mensuales",1500,"$"),f("months","Meses de cobertura",6),f("current","Ahorros actuales",4000,"$")],calculate:v=>{const target=v.expenses*v.months;return[{label:"Fondo objetivo",value:money(target)},{label:"Ahorro actual",value:money(v.current)},{label:"Faltante",value:money(Math.max(0,target-v.current))}]}},
+{slug:"tasa-de-ahorro",fields:[f("income","Ingresos mensuales",3000,"$"),f("saving","Ahorro mensual",900,"$")],calculate:v=>[{label:"Tasa de ahorro",value:pct(v.income?v.saving/v.income*100:0)},{label:"Gasto mensual",value:money(v.income-v.saving)}]},
+{slug:"meta-de-ahorro-con-rendimiento",fields:[f("target","Objetivo",50000,"$"),f("current","Capital actual",5000,"$"),f("rate","Rentabilidad anual",5,"%"),f("months","Plazo",36)],calculate:v=>{const r=v.rate/100/12,n=v.months,f=Math.pow(1+r,n);const monthly=r?(v.target-v.current*f)*r/(f-1):(v.target-v.current)/n;return[{label:"Aporte mensual necesario",value:money(Math.max(0,monthly))},{label:"Aporte total",value:money(Math.max(0,monthly)*n)}]}},
+];

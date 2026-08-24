@@ -1,16 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ToolSearch } from "@/components/ToolSearch";
-import { TOOLS } from "@/lib/tools";
-
-export const Route = createFileRoute("/herramientas/")({
-  head: () => ({
-    meta: [{ title: "Todas las herramientas online gratis | UtiliHub" }, { name: "description", content: "Catálogo de herramientas gratuitas de UtiliHub: calculadoras, conversores, texto, fechas y seguridad." }],
-    links: [{ rel: "canonical", href: "/herramientas" }],
-  }),
-  component: ToolsIndex,
-});
-
-function ToolsIndex() {
-  return <div className="container-page py-10"><Breadcrumbs items={[{ label: "Inicio", to: "/" }, { label: "Herramientas" }]} /><h1 className="mt-4 text-3xl font-bold sm:text-4xl">Todas las herramientas</h1><p className="mt-3 max-w-2xl text-muted-foreground">{TOOLS.length} utilidades gratuitas que funcionan en el navegador, sin registro ni instalación.</p><div className="mt-8"><ToolSearch /></div></div>;
-}
+import{createFileRoute}from"@tanstack/react-router";import{Breadcrumbs}from"@/components/Breadcrumbs";import{ToolSearch}from"@/components/ToolSearch";import{TOOLS}from"@/lib/tools";import{FINANCIAL_TOOLS}from"@/lib/financial-tools";
+export const Route=createFileRoute("/herramientas/")({head:()=>({meta:[{title:"Todas las herramientas online gratis | UtiliHub"},{name:"description",content:"Catálogo de herramientas gratuitas de UtiliHub: calculadoras, finanzas, conversores, texto, fechas y seguridad."}],links:[{rel:"canonical",href:"/herramientas"}]}),component:ToolsIndex});
+function ToolsIndex(){const count=TOOLS.length+FINANCIAL_TOOLS.length;return <div className="container-page py-10"><Breadcrumbs items={[{label:"Inicio",to:"/"},{label:"Herramientas"}]}/><h1 className="mt-4 text-3xl font-bold sm:text-4xl">Todas las herramientas</h1><p className="mt-3 max-w-2xl text-muted-foreground">{count} utilidades gratuitas que funcionan en el navegador, sin registro ni instalación.</p><div className="mt-8"><ToolSearch/></div></div>}
