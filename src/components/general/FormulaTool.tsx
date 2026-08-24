@@ -1,0 +1,21 @@
+import {useState} from "react";
+import type {GeneralTool} from "@/lib/general/types";
+
+type Field={label:string;unit?:string;placeholder:string;optional?:boolean};
+const defs:Record<string,Field[]>= {
+ porcentaje:[{label:"Valor base",placeholder:"Ej.: 200",unit:"unidad"},{label:"Porcentaje",placeholder:"Ej.: 15",unit:"%"}],
+ "regla-de-tres":[{label:"Valor A",placeholder:"Ej.: 5",unit:"unidad"},{label:"Valor B",placeholder:"Ej.: 10",unit:"unidad"}],
+ probabilidad:[{label:"Casos favorables",placeholder:"Ej.: 3",unit:"casos"},{label:"Casos posibles",placeholder:"Ej.: 10",unit:"casos"}],
+ combinaciones:[{label:"Total de elementos (n)",placeholder:"Ej.: 10",unit:"elementos"},{label:"Elementos elegidos (r)",placeholder:"Ej.: 3",unit:"elementos"}],
+ permutaciones:[{label:"Total de elementos (n)",placeholder:"Ej.: 10",unit:"elementos"},{label:"Elementos elegidos (r)",placeholder:"Ej.: 3",unit:"elementos"}],
+ factorial:[{label:"Número",placeholder:"Ej.: 5",unit:"entero"}],
+ "potencias-y-raices":[{label:"Base",placeholder:"Ej.: 2",unit:"unidad"},{label:"Exponente",placeholder:"Ej.: 3",unit:"unidad"}],
+ logaritmos:[{label:"Número",placeholder:"Ej.: 100",unit:"unidad"},{label:"Base",placeholder:"Ej.: 10",unit:"base"}],
+ "notacion-cientifica":[{label:"Número",placeholder:"Ej.: 123000",unit:"unidad"}],
+ "mcd-mcm":[{label:"Primer entero",placeholder:"Ej.: 12",unit:"entero"},{label:"Segundo entero",placeholder:"Ej.: 18",unit:"entero"}],
+ secuencias:[{label:"Primer término",placeholder:"Ej.: 2",unit:"valor"},{label:"Diferencia / razón",placeholder:"Ej.: 3",unit:"valor"}],
+ "bases-numericas":[{label:"Número",placeholder:"Ej.: 1010",unit:"valor"},{label:"Base de origen",placeholder:"Ej.: 2",unit:"base"}]
+};
+const n=(s:string)=>Number(s.replace(",","."));
+const fact=(x:number)=>{let r=1;for(let i=2;i<=x;i++)r*=i;return r};
+export function FormulaTool({tool}:{tool:GeneralTool}){const fs=defs[tool.slug]||[{label:"Entrada",placeholder:"Introduce un valor",unit:"unidad"},{label:"Segundo dato",placeholder:"Introduce un valor",unit:"unidad"}];const[a,setA]=useState(""),[b,setB]=useState(""),[out,setOut]=useState("");const calculate=()=>{const A=n(a),B=n(b);if(!Number.isFinite(A)||(!fs[1]?.optional&&fs.length>1&&!Number.isFinite(B))){setOut("Introduce los valores requeridos.");return}let r="";switch(tool.slug){case"porcentaje":r=`Resultado: ${(A*B/100).toFixed(4)}`;break;case"regla-de-tres":r=`Proporción: ${(A*B).toFixed(4)}`;break;case"probabilidad":r=`Probabilidad: ${(A/B).toFixed(4)} · ${(A/B*100).toFixed(2)} %`;break;case"combinaciones":r=`Combinaciones: ${(fact(A)/(fact(B)*fact(A-B))).toFixed(0)}`;break;case"permutaciones":r=`Permutaciones: ${(fact(A)/fact(A-B)).toFixed(0)}`;break;case"factorial":r=`Factorial: ${fact(A)}`;break;case"potencias-y-raices":r=`Potencia: ${(A**B).toFixed(6)} · Raíz cuadrada: ${Math.sqrt(A).toFixed(6)}`;break;case"logaritmos":r=`Log base ${B}: ${(Math.log(A)/Math.log(B)).toFixed(6)}`;break;case"notacion-cientifica":r=`Notación científica: ${A.toExponential(6)}`;break;case"mcd-mcm":{let x=Math.abs(Math.trunc(A)),y=Math.abs(Math.trunc(B));while(y){const t=x%y;x=y;y=t}r=`MCD: ${x} · MCM: ${Math.abs(Math.trunc(A)*Math.trunc(B))/(x||1)}`;break}case"secuencias":r=`Siguiente término: ${A+B}`;break;case"bases-numericas":{const v=parseInt(a,Math.trunc(B));if(!Number.isFinite(v)||B<2||B>36){r="Número o base de origen inválidos."}else r=`Decimal: ${v}`;break}default:r="Introduce los valores y calcula."}setOut(r)};return <div className="space-y-4"><div className="grid gap-4 sm:grid-cols-2">{fs.map((f,i)=><label key={f.label} className="space-y-1"><span className="text-sm font-medium">{f.label}</span><div className="flex"><input type="number" value={i===0?a:b} onChange={e=>i===0?setA(e.target.value):setB(e.target.value)} placeholder={f.placeholder} className="h-11 min-w-0 flex-1 rounded-l-xl border bg-background px-3"/><span className="flex h-11 items-center rounded-r-xl border border-l-0 bg-muted px-3 text-xs font-medium">{f.unit}</span></div></label>)}</div><button onClick={calculate} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Calcular</button>{out&&<output className="block rounded-xl border bg-muted/30 p-4">{out}</output>}</div>}
