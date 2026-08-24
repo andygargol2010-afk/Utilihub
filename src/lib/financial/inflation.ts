@@ -1,0 +1,10 @@
+import type { FinancialDefinition } from "./types";
+import { money, pct } from "./types";
+const f=(key:string,label:string,defaultValue:number,unit="")=>({key,label,defaultValue,unit});
+export const INFLATION_TOOLS:FinancialDefinition[]=[
+{slug:"inflacion-acumulada",fields:[f("i1","Inflación año 1",10,"%"),f("i2","Inflación año 2",8,"%"),f("i3","Inflación año 3",6,"%")],calculate:v=>{const factor=(1+v.i1/100)*(1+v.i2/100)*(1+v.i3/100);return[{label:"Inflación acumulada",value:pct((factor-1)*100)},{label:"Multiplicador de precios",value:factor.toFixed(4)}]}},
+{slug:"inflacion-inversa",fields:[f("past","Precio histórico",100,"$"),f("inflation","Inflación anual media",4,"%"),f("years","Años",10)],calculate:v=>{const future=v.past*Math.pow(1+v.inflation/100,v.years);return[{label:"Precio equivalente hoy",value:money(future)},{label:"Aumento acumulado",value:pct((future/v.past-1)*100)}]}},
+{slug:"poder-adquisitivo",fields:[f("amount","Cantidad actual",100000,"$"),f("inflation","Inflación anual",4,"%"),f("years","Años",10)],calculate:v=>[{label:"Valor nominal futuro equivalente",value:money(v.amount*Math.pow(1+v.inflation/100,v.years))},{label:"Poder adquisitivo restante",value:pct(100/Math.pow(1+v.inflation/100,v.years))}]},
+{slug:"salario-real",fields:[f("salary","Salario actual",100000,"$"),f("inflation","Inflación acumulada",30,"%"),f("raise","Aumento salarial",20,"%")],calculate:v=>{const real=v.salary*(1+v.raise/100)/(1+v.inflation/100);return[{label:"Salario nominal",value:money(v.salary*(1+v.raise/100))},{label:"Salario en poder adquisitivo actual",value:money(real)},{label:"Variación real",value:pct((real/v.salary-1)*100)}]}},
+{slug:"rentabilidad-vs-inflacion",fields:[f("return","Rentabilidad anual",10,"%"),f("inflation","Inflación anual",5,"%"),f("years","Años",10)],calculate:v=>{const nominal=Math.pow(1+v.return/100,v.years)-1;const real=Math.pow((1+v.return/100)/(1+v.inflation/100),v.years)-1;return[{label:"Crecimiento nominal",value:pct(nominal*100)},{label:"Crecimiento real",value:pct(real*100)}]}},
+];
