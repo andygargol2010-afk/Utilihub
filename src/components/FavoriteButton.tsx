@@ -1,0 +1,2 @@
+import{Star}from"lucide-react";import{Button}from"@/components/ui/button";import{useFavorites}from"@/hooks/use-favorites";
+export function FavoriteButton({slug,name}:{slug:string;name:string}){const{favorites,toggle,ready}=useFavorites();const active=ready&&favorites.includes(slug);return <Button type="button" variant="outline" onClick={()=>toggle(slug)} aria-pressed={active} aria-label={active?`Quitar ${name} de favoritos`:`Guardar ${name} en favoritos`}><Star className="size-4" fill={active?"currentColor":"none"}/>{active?"En favoritos":"Guardar"}</Button>}
