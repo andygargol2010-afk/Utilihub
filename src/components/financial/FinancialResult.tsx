@@ -1,0 +1,1 @@
+export function FinancialResult({label,value,detail}:{label:string;value:string;detail?:string}){return <div className="rounded-2xl bg-surface p-5"><p className="text-sm font-semibold text-muted-foreground">{label}</p><p aria-live="polite" className="mt-1 text-3xl font-black tracking-tight">{value}</p>{detail&&<p className="mt-2 text-sm text-muted-foreground">{detail}</p>}</div>}
