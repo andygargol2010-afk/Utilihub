@@ -1,0 +1,3 @@
+import * as React from "react";import{cn}from"@/lib/utils";
+export interface SliderProps{value?:number[];defaultValue?:number[];min?:number;max?:number;step?:number;onValueChange?:(value:number[])=>void;id?:string;className?:string}
+export function Slider({value,defaultValue,min=0,max=100,step=1,onValueChange,id,className}:SliderProps){const current=value?.[0]??defaultValue?.[0]??min;return <input id={id} type="range" min={min} max={max} step={step} value={current} onChange={e=>onValueChange?.([Number(e.target.value)])} className={cn("w-full accent-[var(--color-primary)]",className)}/>;}
