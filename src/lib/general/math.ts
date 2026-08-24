@@ -1,0 +1,27 @@
+import {makeTool} from "./types";
+const m=(s:string,n:string,k:string,summary:string,c:string={})=>makeTool(s,n,"matematicas",k,summary,n.toLowerCase().split(/\s+/),c);
+export const MATH_TOOLS=[
+ m("porcentaje","Porcentaje","number","Calcula porcentajes, aumentos, descuentos y proporciones."),
+ m("regla-de-tres","Regla de tres","number","Resuelve proporciones directas e inversas."),
+ m("promedio","Promedio","stats","Calcula la media aritmética de una lista de números."),
+ m("mediana","Mediana","stats","Obtén la mediana de un conjunto de datos."),
+ m("moda","Moda","stats","Encuentra el valor o valores más frecuentes."),
+ m("rango","Rango estadístico","stats","Calcula la diferencia entre máximo y mínimo."),
+ m("varianza","Varianza","stats","Calcula la varianza de una muestra o población."),
+ m("desviacion-estandar","Desviación estándar","stats","Calcula la desviación estándar de datos numéricos."),
+ m("percentil","Percentil","stats","Calcula percentiles de un conjunto ordenado de datos."),
+ m("cuartiles","Cuartiles","stats","Obtén Q1, mediana y Q3 de una serie."),
+ m("z-score","Z-score","stats","Calcula la puntuación z de un valor."),
+ m("correlacion","Correlación","stats","Calcula el coeficiente de correlación de dos series."),
+ m("covarianza","Covarianza","stats","Calcula la covarianza entre dos variables."),
+ m("probabilidad","Probabilidad","number","Calcula probabilidades básicas entre 0 y 1."),
+ m("combinaciones","Combinaciones","number","Calcula combinaciones sin repetición."),
+ m("permutaciones","Permutaciones","number","Calcula permutaciones sin repetición."),
+ m("factorial","Factorial","number","Calcula el factorial de un entero no negativo."),
+ m("potencias-y-raices","Potencias y raíces","number","Calcula potencias y raíces cuadradas."),
+ m("logaritmos","Logaritmos","number","Calcula logaritmos en base 10 o natural."),
+ m("notacion-cientifica","Notación científica","number","Convierte números a notación científica."),
+ m("mcd-mcm","MCD y MCM","number","Calcula máximo común divisor y mínimo común múltiplo."),
+ m("secuencias","Secuencias numéricas","number","Genera términos de secuencias aritméticas y geométricas."),
+ m("bases-numericas","Bases numéricas","number","Convierte números entre bases comunes."),
+];
