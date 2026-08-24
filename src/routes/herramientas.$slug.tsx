@@ -1,13 +1,14 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { TOOL_UI } from "@/components/tools/registry";
+import { GENERAL_TOOL_UI } from "@/components/general/registry";
 import { ToolCard } from "@/components/ToolCard";
-import { CATEGORIES, toolBySlug, toolsByCategory } from "@/lib/tools";
+import { ALL_CATEGORIES, allToolBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { FavoriteButton } from "@/components/FavoriteButton";
 
 export const Route = createFileRoute("/herramientas/$slug")({
   loader: ({ params }) => {
-    const tool = toolBySlug(params.slug);
+    const tool = allToolBySlug(params.slug);
     if (!tool) throw notFound();
     return { tool };
   },
@@ -22,7 +23,7 @@ export const Route = createFileRoute("/herramientas/$slug")({
     }
 
     const { tool } = loaderData;
-    const category = CATEGORIES.find((c) => c.slug === tool.category);
+    const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
 
     if (!category) {
       return {
@@ -102,9 +103,9 @@ export const Route = createFileRoute("/herramientas/$slug")({
 
 function ToolPage() {
   const { tool } = Route.useLoaderData();
-  const category = CATEGORIES.find((c) => c.slug === tool.category);
-  const related = toolsByCategory(tool.category).filter((t) => t.slug !== tool.slug);
-  const ui = TOOL_UI[tool.slug];
+  const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
+  const related = allToolsByCategory(tool.category).filter((t) => t.slug !== tool.slug);
+  const ui = TOOL_UI[tool.slug] ?? GENERAL_TOOL_UI[tool.slug];
 
   if (!category) {
     return <p className="container-page py-10">Herramienta no disponible.</p>;
