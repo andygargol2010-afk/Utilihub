@@ -32,11 +32,26 @@ const financialCards: CatalogTool[] = FINANCIAL_TOOLS.map((tool) => ({
   ],
 }));
 
-const generalCards: CatalogTool[] = GENERAL_TOOLS.map((tool) => ({
-  ...tool,
-}));
+const generalCards: CatalogTool[] = GENERAL_TOOLS.map((tool) => ({ ...tool }));
 
-export const ALL_TOOLS: CatalogTool[] = [...TOOLS, ...financialCards, ...generalCards];
+// General tools take precedence over legacy entries with the same slug.
+// This keeps each tool unique in search/category listings and lets the newer
+// mathematical catalog own entries such as "regla-de-tres".
+const uniqueBySlug = (tools: CatalogTool[]) => {
+  const seen = new Set<string>();
+  return tools.filter((tool) => {
+    if (seen.has(tool.slug)) return false;
+    seen.add(tool.slug);
+    return true;
+  });
+};
+
+export const ALL_TOOLS: CatalogTool[] = uniqueBySlug([
+  ...generalCards,
+  ...financialCards,
+  ...TOOLS,
+]);
+
 export const allToolBySlug = (slug: string) => ALL_TOOLS.find((tool) => tool.slug === slug);
 export const allToolsByCategory = (slug: string) => ALL_TOOLS.filter((tool) => tool.category === slug);
 export const allCategoryBySlug = (slug: string) => ALL_CATEGORIES.find((category) => category.slug === slug);
