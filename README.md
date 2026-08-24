@@ -21,3 +21,7 @@ npm install
 npm run dev
 npm run build
 ```
+
+## QA
+
+This branch is used for functional QA of the Vercel preview deployment. It does not change the production branch.
