@@ -4,5 +4,6 @@ import {GeneralTool} from "./GeneralTool";
 import {MathTool} from "./MathTool";
 import {DesignTool} from "./DesignTool";
 import {SecurityTool} from "./SecurityTool";
+import {TimeTool} from "./TimeTool";
 const STATS=new Set(["promedio","mediana","rango","varianza","desviacion-estandar"]);
-export const GENERAL_TOOL_UI:Record<string,()=>ReactNode>=Object.fromEntries(GENERAL_TOOLS.map(tool=>[tool.slug,()=>tool.category==="diseno"?<DesignTool tool={tool}/>:tool.category==="seguridad"?<SecurityTool tool={tool}/>:STATS.has(tool.slug)?<MathTool tool={tool}/>:<GeneralTool tool={tool}/>]));
+export const GENERAL_TOOL_UI:Record<string,()=>ReactNode>=Object.fromEntries(GENERAL_TOOLS.map(tool=>[tool.slug,()=>tool.category==="diseno"?<DesignTool tool={tool}/>:tool.category==="seguridad"?<SecurityTool tool={tool}/>:tool.category==="fechas"?<TimeTool tool={tool}/>:STATS.has(tool.slug)?<MathTool tool={tool}/>:<GeneralTool tool={tool}/>]));
