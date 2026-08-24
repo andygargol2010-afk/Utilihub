@@ -1,0 +1,4 @@
+import { useCallback,useEffect,useState } from "react";
+const KEY="utilihub:favorites";
+function read():string[]{try{const raw=localStorage.getItem(KEY);const parsed=raw?JSON.parse(raw):[];return Array.isArray(parsed)?parsed.filter((v):v is string=>typeof v==="string"):[]}catch{return[];}}
+export function useFavorites(){const[favorites,setFavorites]=useState<string[]>([]);const[ready,setReady]=useState(false);useEffect(()=>{setFavorites(read());setReady(true);const onStorage=(e:StorageEvent)=>{if(e.key===KEY)setFavorites(read())};window.addEventListener("storage",onStorage);return()=>window.removeEventListener("storage",onStorage)},[]);const toggle=useCallback((slug:string)=>{setFavorites(prev=>{const next=prev.includes(slug)?prev.filter(s=>s!==slug):[...prev,slug];try{localStorage.setItem(KEY,JSON.stringify(next))}catch{}return next})},[]);return{favorites,toggle,ready};}
