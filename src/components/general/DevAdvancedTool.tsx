@@ -1,30 +1,7 @@
 import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import {
-  base64Decode,
-  csvToJson,
-  diffJson,
-  escapeXml,
-  formatXml,
-  generateHtmlTable,
-  jsonPathGet,
-  parseHeaders,
-  parseJson,
-  pretty,
-  queryBuild,
-  queryParse,
-  regexMatches,
-  regexReplace,
-  regexSplit,
-  sortJsonKeys,
-  unicodeInfo,
-  validateCsv,
-  urlInfo,
-  jwtParts,
-  jwtTimestamps,
-  type CsvSeparator,
-  type XmlEscapeContext,
-} from "@/lib/general/dev-extra-engines";
+import { base64Decode, csvToJson, diffJson, escapeXml, formatXml, jsonPathGet, parseHeaders, parseJson, pretty, queryBuild, queryParse, regexMatches, regexReplace, regexSplit, sortJsonKeys, unicodeInfo, validateCsv, urlInfo, jwtParts, jwtTimestamps, type CsvSeparator, type XmlEscapeContext } from "@/lib/general/dev-extra-engines";
+import { generateHtmlTableWithOptions } from "@/lib/general/dev-extra-table-engine";
 
 const inputClass = "h-11 w-full rounded-xl border bg-background px-3 font-mono text-sm";
 const textareaClass = "min-h-48 w-full rounded-xl border bg-background p-4 font-mono text-sm";
@@ -51,7 +28,6 @@ export function DevAdvancedTool({ tool }: { tool: GeneralTool }) {
   const [error, setError] = useState("");
   const [jwtTimes, setJwtTimes] = useState<ReturnType<typeof jwtTimestamps>>([]);
   const [jwtHeader, setJwtHeader] = useState<{ alg?: string; typ?: string }>({});
-
   const slug = tool.slug;
   const isRegex = slug === "regex-replace" || slug === "regex-split" || slug === "regex-match-extractor";
   const isCsv = slug === "csv-to-json" || slug === "csv-validator" || slug === "html-table-generator";
@@ -79,7 +55,7 @@ export function DevAdvancedTool({ tool }: { tool: GeneralTool }) {
       else if (slug === "regex-replace") result = regexReplace(input, second, flags, replacement);
       else if (slug === "regex-split") result = pretty(regexSplit(input, second, flags));
       else if (slug === "unicode-inspector") result = unicodeInfo(input);
-      else if (slug === "html-table-generator") result = generateHtmlTable(input, separator, firstRowIsHeader);
+      else if (slug === "html-table-generator") result = generateHtmlTableWithOptions(input, separator, firstRowIsHeader);
       else if (slug === "base64-decoder") result = base64Decode(input);
       else throw new Error("Herramienta no implementada.");
       setOutput(result);
