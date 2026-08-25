@@ -32,9 +32,7 @@ const hexToRgb = (value: string): { r: number; g: number; b: number } | null => 
 
 const parseRgb = (value: string): [number, number, number] => {
   const parts = value.split(/[,;\s]+/).filter(Boolean).map(Number);
-  if (parts.length !== 3 || parts.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) {
-    throw new Error("Introduce R, G y B como tres enteros entre 0 y 255.");
-  }
+  if (parts.length !== 3 || parts.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) throw new Error("Introduce R, G y B como tres enteros entre 0 y 255.");
   return [parts[0], parts[1], parts[2]];
 };
 
@@ -65,7 +63,6 @@ export function ConverterTool({ tool }: { tool: GeneralTool }) {
     try {
       const raw = value.trim();
       if (!raw) throw new Error("Introduce un valor para convertir.");
-
       if (tool.slug === "hexadecimal-decimal") {
         if (!/^(?:0x)?[0-9a-f]+$/i.test(raw)) throw new Error("Introduce un número hexadecimal válido.");
         setOut(String(parseInt(raw.replace(/^0x/i, ""), 16)));
@@ -91,38 +88,28 @@ export function ConverterTool({ tool }: { tool: GeneralTool }) {
         setOut(String(parseInt(raw.replace(/^0b/i, ""), 2)));
         return;
       }
-      if (tool.slug === "decimal-binario") {
+      if (tool.slug === "decimal-binario" || tool.slug === "decimal-hexadecimal") {
         const number = Number(raw);
         if (!Number.isSafeInteger(number) || number < 0) throw new Error("Introduce un entero decimal no negativo dentro del rango seguro de JavaScript.");
-        setOut(number.toString(2));
-        return;
-      }
-      if (tool.slug === "decimal-hexadecimal") {
-        const number = Number(raw);
-        if (!Number.isSafeInteger(number) || number < 0) throw new Error("Introduce un entero decimal no negativo dentro del rango seguro de JavaScript.");
-        setOut(number.toString(16).toUpperCase());
+        setOut(tool.slug === "decimal-binario" ? number.toString(2) : number.toString(16).toUpperCase());
         return;
       }
       if (tool.slug === "grados-radianes" || tool.slug === "conversor-angulos") {
         const number = Number(raw);
         if (!Number.isFinite(number)) throw new Error("Introduce un ángulo numérico válido.");
-        if (tool.slug === "grados-radianes" || angleDirection === "degrees-to-radians") {
-          setOut(`${number}° = ${(number * Math.PI / 180).toFixed(10)} rad`);
-        } else {
-          setOut(`${number} rad = ${(number * 180 / Math.PI).toFixed(10)}°`);
-        }
+        if (tool.slug === "grados-radianes" || angleDirection === "degrees-to-radians") setOut(`${number}° = ${(number * Math.PI / 180).toFixed(10)} rad`);
+        else setOut(`${number} rad = ${(number * 180 / Math.PI).toFixed(10)}°`);
         return;
       }
-
       const number = Number(raw.replace(",", "."));
       if (!Number.isFinite(number)) throw new Error("Introduce un número válido.");
       if (kind) {
         const source = from || options[0];
         const target = to || options[1] || options[0];
-        if (!source || !target || units[kind]?.[source] === undefined || units[kind]?.[target] === undefined) {
-          throw new Error("Selecciona unidades de origen y destino válidas.");
-        }
-        setOut(`${number} ${source} = ${(number * units[kind][source] / units[kind][target]).toPrecision(10)} ${target}`);
+        const sourceFactor = source === undefined ? undefined : units[kind]?.[source];
+        const targetFactor = target === undefined ? undefined : units[kind]?.[target];
+        if (!source || !target || sourceFactor === undefined || targetFactor === undefined) throw new Error("Selecciona unidades de origen y destino válidas.");
+        setOut(`${number} ${source} = ${(number * sourceFactor / targetFactor).toPrecision(10)} ${target}`);
         return;
       }
       throw new Error(`Conversor sin implementación específica: ${tool.slug}`);
