@@ -59,6 +59,8 @@ export function useShareableParams() {
       const name = paramName(target);
       if (!name) return;
 
+      // URL synchronization is deliberately side-effect-only: it must never
+      // update React state or cause controlled financial inputs to rerender.
       const next = new URL(window.location.href);
       if (target.value === "") next.searchParams.delete(name);
       else next.searchParams.set(name, target.value);
