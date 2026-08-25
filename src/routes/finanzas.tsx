@@ -1,7 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Calculator, ChartNoAxesCombined, PiggyBank, ReceiptText, WalletCards } from "lucide-react";
 import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
-import { financialToolHref } from "@/lib/financial-route";
 
 const ICONS = [ChartNoAxesCombined, ReceiptText, WalletCards, PiggyBank, Calculator];
 
@@ -27,12 +26,17 @@ function FinancialHub() {
         {FINANCIAL_TOOLS.map((tool, i) => {
           const Icon = ICONS[i % ICONS.length];
           return (
-            <a key={tool.slug} href={financialToolHref(tool.slug)} className="surface-card group p-6 transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lift">
+            <Link
+              key={tool.slug}
+              to="/finanzas/$slug"
+              params={{ slug: tool.slug }}
+              className="surface-card group p-6 transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lift"
+            >
               <span className="grid size-11 place-items-center rounded-xl bg-accent text-primary"><Icon className="size-5" /></span>
               <h2 className="mt-5 text-xl font-bold group-hover:text-primary">{tool.name}</h2>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{tool.summary}</p>
               <span className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-primary">Calcular <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></span>
-            </a>
+            </Link>
           );
         })}
       </div>
