@@ -1,24 +1,26 @@
 import {useMemo,useState} from "react";
 import type {GeneralTool} from "@/lib/general/types";
+import {generateEducationTest,type EducationDifficulty,type EducationLevel} from "@/lib/general/education-engine";
 
-type Question={text:string;answer:string};
-const shuffle=<T,>(items:T[])=>{const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 export function EducationTool({tool}:{tool:GeneralTool}){
- const [level,setLevel]=useState("secundaria"),[difficulty,setDifficulty]=useState("media"),[count,setCount]=useState("10"),[question,setQuestion]=useState(""),[answer,setAnswer]=useState(""),[questions,setQuestions]=useState<Question[]>([]),[generated,setGenerated]=useState<Question[]>([]);
- const add=()=>{if(!question.trim()||!answer.trim())return;setQuestions(q=>[...q,{text:question.trim(),answer:answer.trim()}]);setQuestion("");setAnswer("")};
- const create=()=>setGenerated(shuffle(questions).slice(0,Math.max(1,Math.min(50,Number(count)||10))));
- const subject=String(tool.config?.subject??""),topic=String(tool.config?.topic??"").replaceAll("-"," ");
+ const [level,setLevel]=useState<EducationLevel>("secundaria");
+ const [difficulty,setDifficulty]=useState<EducationDifficulty>("media");
+ const [count,setCount]=useState("10");
+ const [generated,setGenerated]=useState<ReturnType<typeof generateEducationTest>>([]);
+ const [submitted,setSubmitted]=useState<Record<number,number>>({});
+ const subject=String(tool.config?.subject??"");
+ const topic=String(tool.config?.topic??"").replaceAll("-"," ");
  const title=useMemo(()=>`${subject} · ${topic}`,[subject,topic]);
+ const generate=()=>{setGenerated(generateEducationTest(String(tool.config?.topic??""),level,difficulty,Number(count)));setSubmitted({});window.scrollTo({top:0,behavior:"smooth"})};
+ const score=generated.reduce((n,q,i)=>n+(submitted[i]===q.answer?1:0),0);
  return <div className="space-y-5">
-  <div className="rounded-xl border bg-muted/30 p-4"><p className="font-semibold">{title}</p><p className="text-sm text-muted-foreground">Creador especializado para primaria, secundaria y universidad. Agrega tus preguntas y UtiliHub las ordena aleatoriamente para formar el test.</p></div>
+  <div className="rounded-xl border bg-muted/30 p-4"><p className="font-semibold">{title}</p><p className="text-sm text-muted-foreground">Configura el nivel, dificultad y cantidad. UtiliHub genera automáticamente el test; no tienes que escribir las preguntas.</p></div>
   <div className="grid gap-4 sm:grid-cols-3">
-   <label className="space-y-1"><span className="text-sm font-medium">Nivel</span><select value={level} onChange={e=>setLevel(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="primaria">Primaria</option><option value="secundaria">Secundaria</option><option value="universidad">Universidad</option></select></label>
-   <label className="space-y-1"><span className="text-sm font-medium">Dificultad</span><select value={difficulty} onChange={e=>setDifficulty(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="facil">Fácil</option><option value="media">Media</option><option value="dificil">Difícil</option></select></label>
-   <label className="space-y-1"><span className="text-sm font-medium">Preguntas</span><input type="number" min="1" max="50" value={count} onChange={e=>setCount(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"/></label>
+   <label className="space-y-1"><span className="text-sm font-medium">Nivel educativo</span><select value={level} onChange={e=>setLevel(e.target.value as EducationLevel)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="primaria">Primaria</option><option value="secundaria">Secundaria</option><option value="universidad">Universidad</option></select></label>
+   <label className="space-y-1"><span className="text-sm font-medium">Dificultad</span><select value={difficulty} onChange={e=>setDifficulty(e.target.value as EducationDifficulty)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="facil">Fácil</option><option value="media">Media</option><option value="dificil">Difícil</option></select></label>
+   <label className="space-y-1"><span className="text-sm font-medium">Cantidad de preguntas</span><input type="number" min="1" max="50" value={count} onChange={e=>setCount(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3"/></label>
   </div>
-  <div className="grid gap-4 md:grid-cols-2"><label className="space-y-1"><span className="text-sm font-medium">Pregunta</span><textarea value={question} onChange={e=>setQuestion(e.target.value)} className="min-h-24 w-full rounded-xl border bg-background p-3" placeholder="Escribe una pregunta…"/></label><label className="space-y-1"><span className="text-sm font-medium">Respuesta correcta</span><textarea value={answer} onChange={e=>setAnswer(e.target.value)} className="min-h-24 w-full rounded-xl border bg-background p-3" placeholder="Escribe la respuesta…"/></label></div>
-  <div className="flex flex-wrap gap-2"><button onClick={add} className="rounded-xl border px-4 py-2 font-semibold">Añadir pregunta</button><button onClick={create} disabled={!questions.length} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground disabled:opacity-50">Crear test</button></div>
-  <p className="text-sm text-muted-foreground">Banco actual: {questions.length} preguntas · {level} · dificultad {difficulty}.</p>
-  {generated.length>0&&<div className="space-y-3 rounded-xl border p-4"><h3 className="font-bold">Test generado</h3>{generated.map((q,i)=><div key={`${q.text}-${i}`} className="rounded-lg bg-muted/30 p-3"><p><strong>{i+1}.</strong> {q.text}</p><details className="mt-2"><summary className="cursor-pointer text-sm font-medium">Ver respuesta</summary><p className="mt-1 text-sm">{q.answer}</p></details></div>)}</div>}
+  <button onClick={generate} className="w-full rounded-xl bg-primary px-4 py-3 font-bold text-primary-foreground">Generar test</button>
+  {generated.length>0&&<div className="space-y-4 rounded-xl border p-4"><div className="flex items-center justify-between gap-3"><h3 className="font-bold">Test generado</h3><span className="text-sm text-muted-foreground">{score}/{generated.length} correctas</span></div>{generated.map((q,i)=><fieldset key={`${q.text}-${i}`} className="rounded-xl border p-4"><legend className="px-1 text-sm font-bold">Pregunta {i+1}</legend><p className="mb-3">{q.text}</p><div className="space-y-2">{q.options.map((option,j)=><label key={option} className="flex cursor-pointer items-center gap-2 rounded-lg border p-3"><input type="radio" name={`question-${i}`} checked={submitted[i]===j} onChange={()=>setSubmitted(s=>({...s,[i]:j}))}/><span>{option}</span></label>)}</div>{submitted[i]!==undefined&&<p className={submitted[i]===q.answer?"mt-3 text-sm font-semibold":"mt-3 text-sm font-semibold"}>{submitted[i]===q.answer?"✓ Correcta":"✗ Incorrecta"}</p>}</fieldset>)}</div>}
  </div>
 }
