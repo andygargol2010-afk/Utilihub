@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search } from "lucide-react";
-import { ALL_TOOLS } from "@/lib/all-tools";
+import { ALL_TOOLS, toolHref } from "@/lib/all-tools";
 
 type Tool = (typeof ALL_TOOLS)[number];
 
@@ -26,10 +26,6 @@ function score(query: string, tool: Tool) {
     }
   }
   return total;
-}
-
-function toolHref(tool: Tool) {
-  return tool.category === "finanzas" ? `/finanzas/${tool.slug}` : `/herramientas/${tool.slug}`;
 }
 
 export function CommandPalette() {
