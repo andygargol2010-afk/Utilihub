@@ -9,9 +9,10 @@ const toKebab = (value: string): string => toWords(value).join("-");
 const toSnake = (value: string): string => toWords(value).join("_");
 const toCamel = (value: string): string => {
   const parts = toWords(value);
-  return parts.length ? parts[0] + parts.slice(1).map((part) => part[0].toUpperCase() + part.slice(1)).join("") : "";
+  const first = parts[0];
+  return first ? first + parts.slice(1).map((part) => part[0]?.toUpperCase() + part.slice(1)).join("") : "";
 };
-const toPascal = (value: string): string => toWords(value).map((part) => part[0].toUpperCase() + part.slice(1)).join("");
+const toPascal = (value: string): string => toWords(value).map((part) => part[0]?.toUpperCase() + part.slice(1)).join("");
 const escapeHtml = (value: string): string => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;");
 
 const extractUrls = (text: string): string[] => {
@@ -45,10 +46,11 @@ const processText = (slug: string, text: string): string => {
     case "lista-a-texto": return text.split(",").map((item) => item.trim()).filter(Boolean).join("\n");
     case "markdown-tabla": {
       const rows = text.split(/\r\n|\r|\n/).filter((row) => row.length > 0).map((row) => row.split("\t"));
-      if (!rows.length) throw new Error("Introduce al menos una fila separada por tabulaciones.");
-      const width = rows[0].length;
+      const header = rows[0];
+      if (!header) throw new Error("Introduce al menos una fila separada por tabulaciones.");
+      const width = header.length;
       if (width === 0 || rows.some((row) => row.length !== width)) throw new Error("La tabla Markdown contiene filas con distinta cantidad de columnas.");
-      return `| ${rows[0].join(" | ")} |\n| ${rows[0].map(() => "---").join(" | ")} |\n${rows.slice(1).map((row) => `| ${row.join(" | ")} |`).join("\n")}`;
+      return `| ${header.join(" | ")} |\n| ${header.map(() => "---").join(" | ")} |\n${rows.slice(1).map((row) => `| ${row.join(" | ")} |`).join("\n")}`;
     }
     case "markdown-a-html": return escapeHtml(text).replace(/^### (.+)$/gm, "<h3>$1</h3>").replace(/^## (.+)$/gm, "<h2>$1</h2>").replace(/^# (.+)$/gm, "<h1>$1</h1>").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>").replace(/\n/g, "<br>");
     case "html-a-texto": {
