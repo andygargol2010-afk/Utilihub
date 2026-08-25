@@ -5,7 +5,6 @@ import {
   escapeXml,
   generateHtmlTable,
   jsonPathGet,
-  parseCsvRows,
   parseHeaders,
   regexFlags,
   regexReplace,
