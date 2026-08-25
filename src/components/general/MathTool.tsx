@@ -1,11 +1,19 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 
-const parseNumbers = (value: string): number[] =>
-  value.split(/[\n,;]+/).map((item) => Number(item.trim().replace(",", "."))).filter(Number.isFinite);
+const parseNumbers = (value: string): number[] => {
+  const trimmed = value.trim();
+  if (!trimmed) return [];
+  const tokens = trimmed.split(/[\n,;]+/).map((item) => item.trim()).filter(Boolean);
+  const values = tokens.map((token) => Number(token));
+  if (values.some((value) => !Number.isFinite(value))) {
+    throw new Error("Todos los datos deben ser números válidos. Usa punto para los decimales y coma, punto y coma o saltos de línea para separar valores.");
+  }
+  return values;
+};
 
-const requireValues = (values: number[]): void => {
-  if (values.length === 0) throw new Error("Introduce uno o varios números válidos.");
+const requireValues = (values: number[], minimum = 1): void => {
+  if (values.length < minimum) throw new Error(`Introduce al menos ${minimum} valor${minimum === 1 ? "" : "es"} numérico${minimum === 1 ? "" : "s"}.`);
 };
 
 const percentile = (values: number[], p: number): number => {
@@ -18,7 +26,11 @@ const percentile = (values: number[], p: number): number => {
 };
 
 const mean = (values: number[]): number => values.reduce((sum, value) => sum + value, 0) / values.length;
-const populationVariance = (values: number[], average: number): number => values.reduce((sum, value) => sum + (value - average) ** 2, 0) / values.length;
+const variance = (values: number[], average: number, sample: boolean): number => {
+  const denominator = sample ? values.length - 1 : values.length;
+  if (denominator <= 0) throw new Error("La varianza muestral requiere al menos 2 valores.");
+  return values.reduce((sum, value) => sum + (value - average) ** 2, 0) / denominator;
+};
 
 const pairedSeries = (first: number[], second: number[]): [number[], number[]] => {
   if (first.length < 2 || second.length < 2 || first.length !== second.length) {
@@ -27,9 +39,17 @@ const pairedSeries = (first: number[], second: number[]): [number[], number[]] =
   return [first, second];
 };
 
-const calculate = (slug: string, values: number[], percentileValue: number, targetValue: number, secondValues: number[]): string => {
+const calculate = (
+  slug: string,
+  values: number[],
+  percentileValue: number,
+  targetValue: number,
+  secondValues: number[],
+  sample: boolean,
+): string => {
   requireValues(values);
   const average = mean(values);
+
   switch (slug) {
     case "promedio": return `Promedio: ${average}`;
     case "mediana": {
@@ -41,34 +61,47 @@ const calculate = (slug: string, values: number[], percentileValue: number, targ
       const counts = new Map<number, number>();
       values.forEach((value) => counts.set(value, (counts.get(value) ?? 0) + 1));
       const max = Math.max(...counts.values());
-      return max === 1 ? "Moda: no existe una moda única." : `Moda: ${[...counts.entries()].filter(([, count]) => count === max).map(([value]) => value).join(", ")}`;
+      if (max === 1) return "Moda: no hay valores repetidos; el conjunto es amodal.";
+      return `Moda: ${[...counts.entries()].filter(([, count]) => count === max).map(([value]) => value).join(", ")}`;
     }
     case "rango": {
       const sorted = [...values].sort((a, b) => a - b);
       return `Rango: ${sorted[sorted.length - 1] - sorted[0]}`;
     }
-    case "varianza": return `Varianza poblacional: ${populationVariance(values, average)}`;
-    case "desviacion-estandar": return `Desviación estándar poblacional: ${Math.sqrt(populationVariance(values, average))}`;
+    case "varianza": return `Varianza ${sample ? "muestral" : "poblacional"}: ${variance(values, average, sample)}`;
+    case "desviacion-estandar": return `Desviación estándar ${sample ? "muestral" : "poblacional"}: ${Math.sqrt(variance(values, average, sample))}`;
     case "percentil": return `Percentil ${percentileValue}: ${percentile(values, percentileValue)}`;
-    case "cuartiles": return `Q1: ${percentile(values, 25)} · Mediana: ${percentile(values, 50)} · Q3: ${percentile(values, 75)} · RIC: ${percentile(values, 75) - percentile(values, 25)}`;
+    case "cuartiles": {
+      const q1 = percentile(values, 25);
+      const median = percentile(values, 50);
+      const q3 = percentile(values, 75);
+      return `Q1: ${q1} · Mediana: ${median} · Q3: ${q3} · RIC: ${q3 - q1}`;
+    }
     case "z-score": {
-      if (values.length < 2 || !Number.isFinite(targetValue)) throw new Error("Introduce al menos dos valores y un valor objetivo válido.");
-      const standardDeviation = Math.sqrt(populationVariance(values, average));
+      requireValues(values, 2);
+      if (!Number.isFinite(targetValue)) throw new Error("Introduce un valor objetivo válido para el Z-score.");
+      const standardDeviation = Math.sqrt(variance(values, average, false));
       if (standardDeviation === 0) throw new Error("No se puede calcular Z-score con desviación estándar cero.");
       return `Z-score de ${targetValue}: ${(targetValue - average) / standardDeviation}`;
     }
     case "correlacion": {
       const [first, second] = pairedSeries(values, secondValues);
-      const firstMean = mean(first), secondMean = mean(second);
+      const firstMean = mean(first);
+      const secondMean = mean(second);
       const numerator = first.reduce((sum, value, index) => sum + (value - firstMean) * (second[index] - secondMean), 0);
-      const denominator = Math.sqrt(first.reduce((sum, value) => sum + (value - firstMean) ** 2, 0) * second.reduce((sum, value) => sum + (value - secondMean) ** 2, 0));
+      const denominator = Math.sqrt(
+        first.reduce((sum, value) => sum + (value - firstMean) ** 2, 0) *
+        second.reduce((sum, value) => sum + (value - secondMean) ** 2, 0),
+      );
       if (denominator === 0) throw new Error("No se puede calcular correlación con una serie constante.");
       return `Correlación de Pearson: ${numerator / denominator}`;
     }
     case "covarianza": {
       const [first, second] = pairedSeries(values, secondValues);
-      const firstMean = mean(first), secondMean = mean(second);
-      return `Covarianza poblacional: ${first.reduce((sum, value, index) => sum + (value - firstMean) * (second[index] - secondMean), 0) / first.length}`;
+      const firstMean = mean(first);
+      const secondMean = mean(second);
+      const denominator = sample ? first.length - 1 : first.length;
+      return `Covarianza ${sample ? "muestral" : "poblacional"}: ${first.reduce((sum, value, index) => sum + (value - firstMean) * (second[index] - secondMean), 0) / denominator}`;
     }
     default: throw new Error(`Herramienta matemática sin implementación específica: ${slug}`);
   }
@@ -79,18 +112,24 @@ export function MathTool({ tool }: { tool: GeneralTool }) {
   const [secondRaw, setSecondRaw] = useState("");
   const [percentileInput, setPercentileInput] = useState("50");
   const [targetInput, setTargetInput] = useState("");
+  const [sample, setSample] = useState(false);
   const [out, setOut] = useState("");
-  const values = useMemo(() => parseNumbers(raw), [raw]);
-  const secondValues = useMemo(() => parseNumbers(secondRaw), [secondRaw]);
+  const values = useMemo(() => {
+    try { return parseNumbers(raw); } catch { return []; }
+  }, [raw]);
+  const secondValues = useMemo(() => {
+    try { return parseNumbers(secondRaw); } catch { return []; }
+  }, [secondRaw]);
   const paired = tool.slug === "correlacion" || tool.slug === "covarianza";
   const needsPercentile = tool.slug === "percentil";
   const needsTarget = tool.slug === "z-score";
+  const needsSample = tool.slug === "varianza" || tool.slug === "desviacion-estandar" || tool.slug === "covarianza";
 
   const run = () => {
     try {
-      const p = Number(percentileInput);
-      const target = Number(targetInput);
-      setOut(calculate(tool.slug, values, p, target, secondValues));
+      const parsedValues = parseNumbers(raw);
+      const parsedSecondValues = parseNumbers(secondRaw);
+      setOut(calculate(tool.slug, parsedValues, Number(percentileInput), Number(targetInput), parsedSecondValues, sample));
     } catch (error) {
       setOut(error instanceof Error ? error.message : "No se pudo calcular el resultado.");
     }
@@ -105,7 +144,13 @@ export function MathTool({ tool }: { tool: GeneralTool }) {
       {paired && <label className="block text-sm font-semibold">Serie B<textarea value={secondRaw} onChange={(event) => setSecondRaw(event.target.value)} placeholder="Ejemplo: 3, 7, 11, 15" className="mt-2 min-h-28 w-full rounded-xl border border-border bg-background p-4" /></label>}
       {needsPercentile && <label className="block text-sm font-semibold">Percentil (0–100)<input type="number" min="0" max="100" value={percentileInput} onChange={(event) => setPercentileInput(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-border bg-background px-3" /></label>}
       {needsTarget && <label className="block text-sm font-semibold">Valor objetivo para el Z-score<input type="number" value={targetInput} onChange={(event) => setTargetInput(event.target.value)} placeholder="Ejemplo: 18" className="mt-2 h-11 w-full rounded-xl border border-border bg-background px-3" /></label>}
-      <p className="text-xs text-muted-foreground">{paired ? "Las series deben tener la misma cantidad de datos. La correlación usa Pearson y la covarianza se calcula como poblacional." : "Se aceptan valores separados por coma, punto y coma o saltos de línea. Los datos se interpretan como números reales."}</p>
+      {needsSample && (
+        <label className="flex items-center gap-3 text-sm font-medium">
+          <input type="checkbox" checked={sample} onChange={(event) => setSample(event.target.checked)} />
+          Usar fórmula muestral (n−1)
+        </label>
+      )}
+      <p className="text-xs text-muted-foreground">Usa punto para decimales. Se aceptan coma, punto y coma o saltos de línea como separadores; así los datos inválidos no se descartan silenciosamente.</p>
       <button onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Calcular</button>
       {out && <output aria-live="polite" className="block whitespace-pre-wrap rounded-xl border bg-muted/30 p-4 font-medium">{out}</output>}
     </div>
