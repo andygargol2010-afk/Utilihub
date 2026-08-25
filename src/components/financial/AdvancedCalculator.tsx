@@ -11,7 +11,7 @@ export function AdvancedCalculator({ definition }: { definition: FinancialDefini
     <div className="grid gap-4 sm:grid-cols-2">
       {definition.fields.map((field) => <label key={field.key} className="space-y-2">
         <span className="text-sm font-semibold">{field.label}{field.unit ? ` (${field.unit})` : ""}</span>
-        <input type="number" data-export-field={field.label} inputMode="decimal" min={field.min} step={field.step ?? "any"} value={values[field.key]}
+        <input type="number" name={field.key} data-share-param={field.key} data-export-field={field.label} inputMode="decimal" min={field.min} step={field.step ?? "any"} value={values[field.key]}
           onChange={(e) => setValues((v) => ({ ...v, [field.key]: Number(e.target.value) }))}
           className="h-11 w-full rounded-xl border border-border bg-background px-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/15" />
       </label>)}
