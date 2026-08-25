@@ -13,6 +13,7 @@ import {EducationTool} from "./EducationTool";
 import {DevAdvancedTool} from "./DevAdvancedTool";
 import {TextTool} from "./TextTool";
 import {MaintenanceTool} from "./MaintenanceTool";
+import {MultimediaAdvancedTool} from "./MultimediaAdvancedTool";
 import type {GeneralTool as CatalogTool} from "@/lib/general/types";
 
 type ToolComponent=ComponentType<{tool:CatalogTool}>;
@@ -29,6 +30,8 @@ const UI_RULES:readonly UiRule[]=[
   {category:"matematicas",kind:"stats",component:MathTool},
   {category:"matematicas",kind:"number",component:FormulaTool},
   {category:"fechas",component:TimeTool},
+  {category:"generadores",kind:"image",component:MultimediaAdvancedTool},
+  {category:"generadores",kind:"pdf",component:MultimediaAdvancedTool},
   {kind:"timer",component:TimeTool},
   {kind:"generator",component:GeneratorTool},
   {kind:"text",component:GeneralTool},
