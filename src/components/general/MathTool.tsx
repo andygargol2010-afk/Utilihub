@@ -6,9 +6,7 @@ const parseNumbers = (value: string): number[] => {
   if (!trimmed) return [];
   const tokens = trimmed.split(/[\n,;]+/).map((item) => item.trim()).filter(Boolean);
   const values = tokens.map((token) => Number(token));
-  if (values.some((value) => !Number.isFinite(value))) {
-    throw new Error("Todos los datos deben ser números válidos. Usa punto para los decimales y coma, punto y coma o saltos de línea para separar valores.");
-  }
+  if (values.some((item) => !Number.isFinite(item))) throw new Error("Todos los datos deben ser números válidos. Usa punto para los decimales y coma, punto y coma o saltos de línea para separar valores.");
   return values;
 };
 
@@ -22,7 +20,10 @@ const percentile = (values: number[], p: number): number => {
   const position = (p / 100) * (sorted.length - 1);
   const lower = Math.floor(position);
   const upper = Math.ceil(position);
-  return sorted[lower] + (sorted[upper] - sorted[lower]) * (position - lower);
+  const lowerValue = sorted[lower];
+  const upperValue = sorted[upper];
+  if (lowerValue === undefined || upperValue === undefined) throw new Error("No hay datos suficientes para calcular el percentil.");
+  return lowerValue + (upperValue - lowerValue) * (position - lower);
 };
 
 const mean = (values: number[]): number => values.reduce((sum, value) => sum + value, 0) / values.length;
@@ -33,29 +34,24 @@ const variance = (values: number[], average: number, sample: boolean): number =>
 };
 
 const pairedSeries = (first: number[], second: number[]): [number[], number[]] => {
-  if (first.length < 2 || second.length < 2 || first.length !== second.length) {
-    throw new Error("Las dos series deben contener al menos 2 valores y tener la misma cantidad de elementos.");
-  }
+  if (first.length < 2 || second.length < 2 || first.length !== second.length) throw new Error("Las dos series deben contener al menos 2 valores y tener la misma cantidad de elementos.");
   return [first, second];
 };
 
-const calculate = (
-  slug: string,
-  values: number[],
-  percentileValue: number,
-  targetValue: number,
-  secondValues: number[],
-  sample: boolean,
-): string => {
+const calculate = (slug: string, values: number[], percentileValue: number, targetValue: number, secondValues: number[], sample: boolean): string => {
   requireValues(values);
   const average = mean(values);
-
   switch (slug) {
     case "promedio": return `Promedio: ${average}`;
     case "mediana": {
       const sorted = [...values].sort((a, b) => a - b);
       const middle = Math.floor(sorted.length / 2);
-      return `Mediana: ${sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2}`;
+      const middleValue = sorted[middle];
+      if (middleValue === undefined) throw new Error("No hay datos suficientes para calcular la mediana.");
+      if (sorted.length % 2) return `Mediana: ${middleValue}`;
+      const previous = sorted[middle - 1];
+      if (previous === undefined) throw new Error("No hay datos suficientes para calcular la mediana.");
+      return `Mediana: ${(previous + middleValue) / 2}`;
     }
     case "moda": {
       const counts = new Map<number, number>();
@@ -66,7 +62,10 @@ const calculate = (
     }
     case "rango": {
       const sorted = [...values].sort((a, b) => a - b);
-      return `Rango: ${sorted[sorted.length - 1] - sorted[0]}`;
+      const first = sorted[0];
+      const last = sorted[sorted.length - 1];
+      if (first === undefined || last === undefined) throw new Error("No hay datos suficientes para calcular el rango.");
+      return `Rango: ${last - first}`;
     }
     case "varianza": return `Varianza ${sample ? "muestral" : "poblacional"}: ${variance(values, average, sample)}`;
     case "desviacion-estandar": return `Desviación estándar ${sample ? "muestral" : "poblacional"}: ${Math.sqrt(variance(values, average, sample))}`;
@@ -88,11 +87,11 @@ const calculate = (
       const [first, second] = pairedSeries(values, secondValues);
       const firstMean = mean(first);
       const secondMean = mean(second);
-      const numerator = first.reduce((sum, value, index) => sum + (value - firstMean) * (second[index] - secondMean), 0);
-      const denominator = Math.sqrt(
-        first.reduce((sum, value) => sum + (value - firstMean) ** 2, 0) *
-        second.reduce((sum, value) => sum + (value - secondMean) ** 2, 0),
-      );
+      const numerator = first.reduce((sum, value, index) => {
+        const paired = second[index];
+        return paired === undefined ? sum : sum + (value - firstMean) * (paired - secondMean);
+      }, 0);
+      const denominator = Math.sqrt(first.reduce((sum, value) => sum + (value - firstMean) ** 2, 0) * second.reduce((sum, value) => sum + (value - secondMean) ** 2, 0));
       if (denominator === 0) throw new Error("No se puede calcular correlación con una serie constante.");
       return `Correlación de Pearson: ${numerator / denominator}`;
     }
@@ -101,7 +100,11 @@ const calculate = (
       const firstMean = mean(first);
       const secondMean = mean(second);
       const denominator = sample ? first.length - 1 : first.length;
-      return `Covarianza ${sample ? "muestral" : "poblacional"}: ${first.reduce((sum, value, index) => sum + (value - firstMean) * (second[index] - secondMean), 0) / denominator}`;
+      const sum = first.reduce((total, value, index) => {
+        const paired = second[index];
+        return paired === undefined ? total : total + (value - firstMean) * (paired - secondMean);
+      }, 0);
+      return `Covarianza ${sample ? "muestral" : "poblacional"}: ${sum / denominator}`;
     }
     default: throw new Error(`Herramienta matemática sin implementación específica: ${slug}`);
   }
@@ -137,20 +140,12 @@ export function MathTool({ tool }: { tool: GeneralTool }) {
 
   return (
     <div className="space-y-4">
-      <label className="block text-sm font-semibold">
-        {paired ? "Serie A" : "Lista de datos"}
-        <textarea value={raw} onChange={(event) => setRaw(event.target.value)} placeholder="Ejemplo: 5, 10, 15, 20" className="mt-2 min-h-28 w-full rounded-xl border border-border bg-background p-4" />
-      </label>
+      <label className="block text-sm font-semibold">{paired ? "Serie A" : "Lista de datos"}<textarea value={raw} onChange={(event) => setRaw(event.target.value)} placeholder="Ejemplo: 5, 10, 15, 20" className="mt-2 min-h-28 w-full rounded-xl border border-border bg-background p-4" /></label>
       {paired && <label className="block text-sm font-semibold">Serie B<textarea value={secondRaw} onChange={(event) => setSecondRaw(event.target.value)} placeholder="Ejemplo: 3, 7, 11, 15" className="mt-2 min-h-28 w-full rounded-xl border border-border bg-background p-4" /></label>}
       {needsPercentile && <label className="block text-sm font-semibold">Percentil (0–100)<input type="number" min="0" max="100" value={percentileInput} onChange={(event) => setPercentileInput(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-border bg-background px-3" /></label>}
       {needsTarget && <label className="block text-sm font-semibold">Valor objetivo para el Z-score<input type="number" value={targetInput} onChange={(event) => setTargetInput(event.target.value)} placeholder="Ejemplo: 18" className="mt-2 h-11 w-full rounded-xl border border-border bg-background px-3" /></label>}
-      {needsSample && (
-        <label className="flex items-center gap-3 text-sm font-medium">
-          <input type="checkbox" checked={sample} onChange={(event) => setSample(event.target.checked)} />
-          Usar fórmula muestral (n−1)
-        </label>
-      )}
-      <p className="text-xs text-muted-foreground">Usa punto para decimales. Se aceptan coma, punto y coma o saltos de línea como separadores; así los datos inválidos no se descartan silenciosamente.</p>
+      {needsSample && <label className="flex items-center gap-3 text-sm font-medium"><input type="checkbox" checked={sample} onChange={(event) => setSample(event.target.checked)} />Usar fórmula muestral (n−1)</label>}
+      <p className="text-xs text-muted-foreground">Usa punto para decimales. Se aceptan coma, punto y coma o saltos de línea como separadores; los datos inválidos se rechazan y no se descartan silenciosamente.</p>
       <button onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Calcular</button>
       {out && <output aria-live="polite" className="block whitespace-pre-wrap rounded-xl border bg-muted/30 p-4 font-medium">{out}</output>}
     </div>
