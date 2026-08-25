@@ -18,6 +18,7 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
   const [timedOut, setTimedOut] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const startedAtRef = useRef<number | null>(null);
+  const deadlineRef = useRef<number | null>(null);
   const { streak, recordActivity } = useDailyStreak();
   const subject = String(tool.config?.subject ?? "");
   const topic = String(tool.config?.topic ?? "").replaceAll("-", " ");
@@ -25,6 +26,7 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
 
   const generate = () => {
     const next = generateEducationTest(String(tool.config?.topic ?? ""), level, difficulty, Number(count));
+    const limit = Math.max(5, Math.min(3600, Number(seconds) || 60));
     setGenerated(next);
     setSubmitted({});
     setCurrent(0);
@@ -32,7 +34,8 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
     setTimedOut(false);
     setElapsedSeconds(0);
     startedAtRef.current = Date.now();
-    setRemaining(challenge ? Number(seconds) : 0);
+    deadlineRef.current = challenge ? Date.now() + limit * 1000 : null;
+    setRemaining(challenge ? limit : 0);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -43,33 +46,28 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
     setElapsedSeconds(elapsed);
     setTimedOut(timeout);
     setCompleted(true);
+    deadlineRef.current = null;
     recordActivity();
   };
 
+  // One interval per active challenge. The deadline is stable while the test runs.
   useEffect(() => {
-    if (!challenge || !generated.length || completed) return;
+    if (!challenge || !generated.length || completed || !deadlineRef.current) return;
     const interval = window.setInterval(() => {
-      setRemaining((value) => {
-        if (value <= 1) {
-          window.clearInterval(interval);
-          return 0;
-        }
-        return value - 1;
-      });
-    }, 1000);
+      const deadline = deadlineRef.current;
+      if (!deadline) return;
+      const next = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+      setRemaining(next);
+      if (next === 0) finish(true);
+    }, 250);
     return () => window.clearInterval(interval);
-  }, [challenge, generated.length, completed, mode, current]);
+  }, [challenge, generated.length, completed]);
 
   useEffect(() => {
-    if (remaining !== 0 || !challenge || !generated.length || completed) return;
-    if (mode === "question") {
-      setSubmitted((state) => ({ ...state, [current]: -1 }));
-    }
-    finish(true);
-  }, [remaining, challenge, generated.length, completed, mode, current]);
-
-  useEffect(() => {
-    if (challenge && mode === "question" && generated.length && !completed) setRemaining(Number(seconds));
+    if (!challenge || mode !== "question" || !generated.length || completed || !deadlineRef.current) return;
+    const limit = Math.max(5, Math.min(3600, Number(seconds) || 60));
+    deadlineRef.current = Date.now() + limit * 1000;
+    setRemaining(limit);
   }, [current, mode, challenge, generated.length, completed, seconds]);
 
   const score = generated.reduce((n, q, i) => n + (submitted[i] === q.answer ? 1 : 0), 0);
@@ -81,11 +79,11 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
   return <div className="space-y-5">
     <div className="rounded-xl border bg-muted/30 p-4"><p className="font-semibold">{title}</p><p className="text-sm text-muted-foreground">Configura el nivel, dificultad y cantidad. UtiliHub genera automáticamente el test.</p></div>
     <div className="grid gap-4 sm:grid-cols-3">
-      <label className="space-y-1"><span className="text-sm font-medium">Nivel educativo</span><select name="nivel" value={level} onChange={e => setLevel(e.target.value as EducationLevel)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="primaria">Primaria</option><option value="secundaria">Secundaria</option><option value="universidad">Universidad</option></select></label>
-      <label className="space-y-1"><span className="text-sm font-medium">Dificultad</span><select name="dificultad" value={difficulty} onChange={e => setDifficulty(e.target.value as EducationDifficulty)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="facil">Fácil</option><option value="media">Media</option><option value="dificil">Difícil</option></select></label>
-      <label className="space-y-1"><span className="text-sm font-medium">Cantidad de preguntas</span><input name="cantidad" type="number" min="1" max="50" value={count} onChange={e => setCount(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3" /></label>
+      <label className="space-y-1"><span className="text-sm font-medium">Nivel educativo</span><select name="nivel" data-share-param="nivel" value={level} onChange={e => setLevel(e.target.value as EducationLevel)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="primaria">Primaria</option><option value="secundaria">Secundaria</option><option value="universidad">Universidad</option></select></label>
+      <label className="space-y-1"><span className="text-sm font-medium">Dificultad</span><select name="dificultad" data-share-param="dificultad" value={difficulty} onChange={e => setDifficulty(e.target.value as EducationDifficulty)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="facil">Fácil</option><option value="media">Media</option><option value="dificil">Difícil</option></select></label>
+      <label className="space-y-1"><span className="text-sm font-medium">Cantidad de preguntas</span><input name="cantidad" data-share-param="cantidad" type="number" min="1" max="50" value={count} onChange={e => setCount(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3" /></label>
     </div>
-    <div className="rounded-xl border p-4 space-y-4"><label className="flex items-center gap-3"><input type="checkbox" checked={challenge} onChange={e => setChallenge(e.target.checked)} /><span className="font-semibold">Modo desafío contrarreloj</span></label>{challenge && <div className="grid gap-4 sm:grid-cols-2"><label className="space-y-1"><span className="text-sm font-medium">Tiempo</span><select name="modo-tiempo" value={mode} onChange={e => setMode(e.target.value as "global" | "question")} className="h-11 w-full rounded-xl border bg-background px-3"><option value="global">Por test</option><option value="question">Por pregunta</option></select></label><label className="space-y-1"><span className="text-sm font-medium">Segundos</span><input name="segundos" type="number" min="5" max="3600" value={seconds} onChange={e => setSeconds(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3" /></label></div>}</div>
+    <div className="rounded-xl border p-4 space-y-4"><label className="flex items-center gap-3"><input type="checkbox" checked={challenge} onChange={e => setChallenge(e.target.checked)} /><span className="font-semibold">Modo desafío contrarreloj</span></label>{challenge && <div className="grid gap-4 sm:grid-cols-2"><label className="space-y-1"><span className="text-sm font-medium">Tiempo</span><select name="modo-tiempo" data-share-param="modo-tiempo" value={mode} onChange={e => setMode(e.target.value as "global" | "question")} className="h-11 w-full rounded-xl border bg-background px-3"><option value="global">Por test</option><option value="question">Por pregunta</option></select></label><label className="space-y-1"><span className="text-sm font-medium">Segundos</span><input name="segundos" data-share-param="segundos" type="number" min="5" max="3600" value={seconds} onChange={e => setSeconds(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3" /></label></div>}</div>
     <button onClick={generate} className="w-full rounded-xl bg-primary px-4 py-3 font-bold text-primary-foreground">Generar test</button>
     {generated.length > 0 && <div className="space-y-4 rounded-xl border p-4">
       <div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="font-bold">Test generado</h3><p className="text-sm text-muted-foreground">Pregunta {Math.min(current + 1, generated.length)} de {generated.length} · {answered} respondidas</p></div><div className="text-right"><span className="text-sm font-semibold">{progress}%</span>{challenge && !completed && <p className="text-xs font-bold text-primary">⏱ {remaining}s</p>}<p className="text-xs text-muted-foreground">🔥 {streak} días de racha</p></div></div>
