@@ -7,7 +7,7 @@ import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as HerramientasIndexRouteImport } from './routes/herramientas.index'
 import { Route as HerramientasSlugRouteImport } from './routes/herramientas.$slug'
 import { Route as FinanzasRouteImport } from './routes/finanzas'
-import { Route as FinanzasSlugRouteImport } from './routes/finanzas.$slug'
+import { Route as FinanzasSlugRouteImport } from './routes/finanzas/$slug'
 
 const IndexRoute=IndexRouteImport.update({id:'/',path:'/',getParentRoute:()=>rootRouteImport} as any)
 const SitemapDotxmlRoute=SitemapDotxmlRouteImport.update({id:'/sitemap.xml',path:'/sitemap.xml',getParentRoute:()=>rootRouteImport} as any)
