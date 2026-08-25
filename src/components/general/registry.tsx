@@ -1,9 +1,11 @@
-import type {ReactNode}from"react";
+import type{ReactNode}from"react";
 import {GENERAL_TOOLS}from"@/lib/general";
 import {GeneralTool}from"./GeneralTool";
 import {MathTool}from"./MathTool";
 import {MathFormulaTool}from"./MathFormulaTool";
 import {GeneratorTool}from"./GeneratorTool";
+import {TextTool}from"./TextTool";
+import {DevelopmentTool}from"./DevelopmentTool";
 import {DesignTool}from"./DesignTool";
 import {SecurityTool}from"./SecurityTool";
 import {TimeTool}from"./TimeTool";
@@ -15,4 +17,4 @@ const STATS=new Set(["promedio","mediana","moda","rango","varianza","desviacion-
 const MATH_FORMULAS=new Set(["porcentaje","regla-de-tres","probabilidad","combinaciones","permutaciones","factorial","potencias-y-raices","logaritmos","notacion-cientifica","mcd-mcm","secuencias","bases-numericas"]);
 const FORMULAS=new Set(["porciones-receta","hidratacion-masa","coste-comida","propina-viaje","consumo-combustible","coste-km","divisor-gastos","propina","distancia-viaje","combustible-viaje","escalador-recetas","cafe","horno"]);
 const TIMERS=new Set(["cronometro","cuenta-regresiva","pomodoro","temporizador","temporizador-cocina"]);
-export const GENERAL_TOOL_UI:Record<string,()=>ReactNode>=Object.fromEntries(GENERAL_TOOLS.map(tool=>[tool.slug,()=>tool.category==="educacion"?<EducationTool tool={tool}/>:tool.category==="diseno"?<DesignTool tool={tool}/>:tool.category==="seguridad"?<SecurityTool tool={tool}/>:tool.category==="ciencia"?<ScienceTool tool={tool}/>:tool.category==="conversiones"?<ConverterTool tool={tool}/>:tool.category==="generadores"?<GeneratorTool tool={tool}/>:tool.category==="fechas"||TIMERS.has(tool.slug)?<TimeTool tool={tool}/>:STATS.has(tool.slug)?<MathTool tool={tool}/>:MATH_FORMULAS.has(tool.slug)?<MathFormulaTool tool={tool}/>:FORMULAS.has(tool.slug)?<FormulaTool tool={tool}/>:<GeneralTool tool={tool}/>]));
+export const GENERAL_TOOL_UI:Record<string,()=>ReactNode>=Object.fromEntries(GENERAL_TOOLS.map(tool=>[tool.slug,()=>tool.category==="educacion"?<EducationTool tool={tool}/>:tool.category==="diseno"?<DesignTool tool={tool}/>:tool.category==="seguridad"?<SecurityTool tool={tool}/>:tool.category==="ciencia"?<ScienceTool tool={tool}/>:tool.category==="conversiones"?<ConverterTool tool={tool}/>:tool.category==="generadores"?<GeneratorTool tool={tool}/>:tool.category==="texto"?<TextTool tool={tool}/>:tool.category==="desarrollo"?<DevelopmentTool tool={tool}/>:tool.category==="fechas"||TIMERS.has(tool.slug)?<TimeTool tool={tool}/>:STATS.has(tool.slug)?<MathTool tool={tool}/>:MATH_FORMULAS.has(tool.slug)?<MathFormulaTool tool={tool}/>:FORMULAS.has(tool.slug)?<FormulaTool tool={tool}/>:<GeneralTool tool={tool}/>]));
