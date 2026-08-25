@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useLocation } from "@tanstack/react-router";
 
 type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
@@ -41,12 +41,10 @@ function restoreParams(params: Record<string, string>) {
 
 export function useShareableParams() {
   const { pathname } = useLocation();
-  const [params, setParams] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (typeof window === "undefined" || !isToolPath(pathname)) return;
     const initial = readParams();
-    setParams(initial);
     const frame = window.requestAnimationFrame(() => restoreParams(initial));
     return () => window.cancelAnimationFrame(frame);
   }, [pathname]);
@@ -65,7 +63,6 @@ export function useShareableParams() {
       if (target.value === "") next.searchParams.delete(name);
       else next.searchParams.set(name, target.value);
       window.history.replaceState(window.history.state, "", next);
-      setParams(Object.fromEntries(next.searchParams.entries()));
     };
 
     document.addEventListener("input", update, true);
@@ -86,5 +83,5 @@ export function useShareableParams() {
     }
   }, []);
 
-  return { params, share };
+  return { share };
 }
