@@ -49,16 +49,20 @@ if(duplicateSlugs.length>0){
   throw new Error(`GENERAL_TOOLS contiene slugs duplicados: ${duplicateSlugs.join(", ")}`);
 }
 
-const resolveToolUi=(tool:CatalogTool):ToolComponent=>{
-  const exactRule=UI_RULES.find(rule=>rule.category===tool.category&&rule.kind===tool.kind);
-  const categoryRule=UI_RULES.find(rule=>rule.category===tool.category&&rule.kind===undefined);
-  const kindRule=UI_RULES.find(rule=>rule.kind===tool.kind&&rule.category===undefined);
-  const Component=exactRule?.component??categoryRule?.component??kindRule?.component;
+const matchingRules=(tool:CatalogTool):UiRule[]=>UI_RULES.filter(rule=>
+  (rule.category===undefined||rule.category===tool.category)&&
+  (rule.kind===undefined||rule.kind===tool.kind),
+);
 
-  if(!Component){
+const resolveToolUi=(tool:CatalogTool):ToolComponent=>{
+  const matches=matchingRules(tool);
+  if(matches.length===0){
     throw new Error(`GENERAL_TOOL_UI sin implementación explícita para slug "${tool.slug}" (category="${tool.category}", kind="${tool.kind}")`);
   }
-  return Component;
+  if(matches.length>1){
+    throw new Error(`GENERAL_TOOL_UI ambiguo para slug "${tool.slug}": ${matches.length} reglas coinciden`);
+  }
+  return matches[0].component;
 };
 
 const resolvedComponents=new Map<string,ToolComponent>();
