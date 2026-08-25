@@ -1,0 +1,54 @@
+import { useState } from "react";
+import type { GeneralTool } from "@/lib/general/types";
+
+const words = (text: string) => text.trim() ? text.trim().split(/\s+/).length : 0;
+const lines = (text: string) => text ? text.split(/\r?\n/).length : 0;
+const sentences = (text: string) => text.match(/[^.!?]+[.!?]+/g)?.length ?? (text.trim() ? 1 : 0);
+const paragraphs = (text: string) => text.split(/\r?\n\s*\r?\n/).map((x) => x.trim()).filter(Boolean).length;
+const wordsToCase = (text: string) => text.trim().split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+
+function process(slug: string, text: string, second: string): string {
+  switch (slug) {
+    case "contador-de-caracteres": return `Con espacios: ${text.length}\nSin espacios: ${text.replace(/\s/g, "").length}`;
+    case "contador-de-lineas": return `Líneas: ${lines(text)}`;
+    case "contador-de-frases": return `Frases: ${sentences(text)}`;
+    case "contador-de-parrafos": return `Párrafos: ${paragraphs(text)}`;
+    case "mayusculas": return text.toUpperCase();
+    case "minusculas": return text.toLowerCase();
+    case "capitalizar": return text.toLowerCase().replace(/(^|[.!?]\s+|\n\s*)\p{L}/gu, (m) => m.toUpperCase());
+    case "camel-case": { const p = wordsToCase(text); return p.map((x, i) => i ? x[0].toUpperCase() + x.slice(1).toLowerCase() : x.toLowerCase()).join(""); }
+    case "pascal-case": return wordsToCase(text).map((x) => x[0].toUpperCase() + x.slice(1).toLowerCase()).join("");
+    case "snake-case": return wordsToCase(text).map((x) => x.toLowerCase()).join("_");
+    case "kebab-case": return wordsToCase(text).map((x) => x.toLowerCase()).join("-");
+    case "quitar-espacios": return text.replace(/\s+/g, " ").trim();
+    case "lineas-unicas": return [...new Set(text.split(/\r?\n/))].join("\n");
+    case "ordenar-lineas": return text.split(/\r?\n/).sort((a, b) => a.localeCompare(b)).join("\n");
+    case "invertir-texto": return [...text].reverse().join("");
+    case "buscar-reemplazar": return text.split(second).join("");
+    case "extraer-numeros": return text.match(/[-+]?\d+(?:[.,]\d+)?/g)?.join("\n") ?? "No se encontraron números.";
+    case "extraer-emails": return [...new Set(text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) ?? [])].join("\n") || "No se encontraron emails.";
+    case "extraer-urls": return [...new Set(text.match(/https?:\/\/[^\s<]+/gi) ?? [])].join("\n") || "No se encontraron URLs.";
+    case "limpiar-texto": return text.replace(/[“”]/g, '"').replace(/[‘’]/g, "'").replace(/\s+/g, " ").trim();
+    case "texto-a-lista": return text.split(/\r?\n/).map((x) => x.trim()).filter(Boolean).join(", ");
+    case "lista-a-texto": return text.split(",").map((x) => x.trim()).filter(Boolean).join("\n");
+    case "diferencia-textos": return `Texto A (${text.length} caracteres)\nTexto B (${second.length} caracteres)\nDiferencia de longitud: ${Math.abs(text.length - second.length)} caracteres.`;
+    case "markdown-tabla": { const rows = text.split(/\r?\n/).map((r) => r.split("\t")); if (!rows.length || rows.some((r) => r.length !== rows[0].length)) throw new Error("Todas las filas deben tener la misma cantidad de columnas."); return `| ${rows[0].join(" | ")} |\n| ${rows[0].map(() => "---").join(" | ")} |\n${rows.slice(1).map((r) => `| ${r.join(" | ")} |`).join("\n")}`; }
+    case "markdown-a-html": return text.replace(/^### (.+)$/gm, "<h3>$1</h3>").replace(/^## (.+)$/gm, "<h2>$1</h2>").replace(/^# (.+)$/gm, "<h1>$1</h1>").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>").replace(/\n/g, "<br>\n");
+    case "html-a-texto": { const doc = new DOMParser().parseFromString(text, "text/html"); return doc.body.textContent ?? ""; }
+    default: throw new Error(`Herramienta de texto no implementada: ${slug}`);
+  }
+}
+
+export function TextTool({ tool }: { tool: GeneralTool }) {
+  const [text, setText] = useState(""); const [second, setSecond] = useState(""); const [out, setOut] = useState(""); const [error, setError] = useState("");
+  const needsSecond = ["buscar-reemplazar", "diferencia-textos"].includes(tool.slug);
+  const run = () => { try { setError(""); setOut(process(tool.slug, text, second)); } catch (e) { setOut(""); setError(e instanceof Error ? e.message : "No se pudo procesar el texto."); } };
+  return <div className="space-y-4">
+    <div><label className="mb-2 block text-sm font-semibold">Texto de entrada</label><textarea value={text} onChange={(e) => setText(e.target.value)} className="min-h-40 w-full rounded-xl border bg-background p-4" placeholder="Escribe o pega aquí…"/></div>
+    {needsSecond && <div><label className="mb-2 block text-sm font-semibold">{tool.slug === "buscar-reemplazar" ? "Texto a eliminar/reemplazar" : "Segundo texto"}</label><textarea value={second} onChange={(e) => setSecond(e.target.value)} className="min-h-24 w-full rounded-xl border bg-background p-4"/></div>}
+    <p className="text-xs text-muted-foreground">{words(text)} palabras · {text.length} caracteres · {lines(text)} líneas</p>
+    <button onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Procesar</button>
+    {error && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">{error}</p>}
+    {out && <output className="block whitespace-pre-wrap break-words rounded-xl border bg-muted/30 p-4">{out}</output>}
+  </div>;
+}
