@@ -6,8 +6,14 @@ import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { financialToolBySlug } from "@/lib/financial-tools";
 
 export const Route = createFileRoute("/finanzas/$slug")({
-  loader: ({ params }) => { const tool = financialToolBySlug(params.slug); if (!tool) throw notFound(); return { tool }; },
-  head: ({ loaderData }) => loaderData ? { meta: [{ title: `${loaderData.tool.name} | UtiliHub` }, { name: "description", content: loaderData.tool.description }, { name: "keywords", content: loaderData.tool.keywords.join(", ") }], links: [{ rel: "canonical", href: `/finanzas/${loaderData.tool.slug}` }] } : { meta: [{ title: "Calculadora financiera no encontrada | UtiliHub" }, { name: "robots", content: "noindex" }] },
+  loader: ({ params }) => {
+    const tool = financialToolBySlug(decodeURIComponent(params.slug));
+    if (!tool) throw notFound();
+    return { tool };
+  },
+  head: ({ loaderData }) => loaderData
+    ? { meta: [{ title: `${loaderData.tool.name} | UtiliHub` }, { name: "description", content: loaderData.tool.description }, { name: "keywords", content: loaderData.tool.keywords.join(", ") }], links: [{ rel: "canonical", href: `/finanzas/${encodeURIComponent(loaderData.tool.slug)}` }] }
+    : { meta: [{ title: "Calculadora financiera no encontrada | UtiliHub" }, { name: "robots", content: "noindex" }] },
   component: FinancialPage,
 });
 
