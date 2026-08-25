@@ -63,8 +63,8 @@ const processText = (slug: string, text: string): string => {
 };
 
 const diffLines = (first: string, second: string): string => {
-  const a = first.split(/\r\n|\r|\n");
-  const b = second.split(/\r\n|\r|\n");
+  const a = first.split(/\r\n|\r|\n/);
+  const b = second.split(/\r\n|\r|\n/);
   const max = Math.max(a.length, b.length);
   return Array.from({ length: max }, (_, index) => a[index] === b[index] ? `  ${a[index] ?? ""}` : `- ${a[index] ?? ""}\n+ ${b[index] ?? ""}`).join("\n");
 };
