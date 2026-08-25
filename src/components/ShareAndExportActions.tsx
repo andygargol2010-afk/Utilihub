@@ -4,16 +4,21 @@ import { useShareableParams } from "@/hooks/use-shareable-params";
 
 type ExportRow = Record<string, string>;
 
+/** Only controls explicitly marked for export are included. */
 function collectRows(container: HTMLElement): ExportRow[] {
-  return Array.from(container.querySelectorAll("input, select, textarea")).map((field) => {
-    const el = field as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-    const label = el.getAttribute("aria-label") || el.name || el.previousElementSibling?.textContent?.trim() || "Valor";
-    return { Campo: label, Valor: el.value };
-  }).filter((row) => row.Valor !== "");
+  return Array.from(container.querySelectorAll("[data-export-field]"))
+    .map((field) => {
+      const el = field as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+      return {
+        Campo: el.getAttribute("data-export-field") || el.getAttribute("aria-label") || el.name || "Valor",
+        Valor: el.value,
+      };
+    })
+    .filter((row) => row.Valor !== "");
 }
 
 function collectTable(container: HTMLElement): ExportRow[] {
-  const table = container.querySelector<HTMLTableElement>("[data-export-table], table");
+  const table = container.querySelector<HTMLTableElement>("[data-export-table]");
   if (!table) return [];
   const headers = Array.from(table.querySelectorAll("thead th")).map((cell) => cell.textContent?.trim() || "Columna");
   const rows = Array.from(table.querySelectorAll("tbody tr"));
@@ -25,8 +30,7 @@ function collectTable(container: HTMLElement): ExportRow[] {
 }
 
 function collectResult(container: HTMLElement): string {
-  const result = container.querySelector("[data-export-result]");
-  return (result?.textContent || container.querySelector("output")?.textContent || "").trim();
+  return (container.querySelector("[data-export-result]")?.textContent || "").trim();
 }
 
 function filename(title: string, extension: string) {
@@ -54,6 +58,7 @@ export function ShareAndExportActions({ title }: { title: string }) {
       const rows = collectRows(surface);
       const table = collectTable(surface);
       const result = collectResult(surface);
+      if (!rows.length && !table.length && !result) return showStatus("Esta herramienta no tiene datos exportables");
       let y = 20;
       doc.setFontSize(18);
       doc.text(title, 15, y);
@@ -66,8 +71,7 @@ export function ShareAndExportActions({ title }: { title: string }) {
       }
       for (const row of table) {
         const line = Object.entries(row).map(([key, value]) => `${key}: ${value}`).join(" | ");
-        const lines = doc.splitTextToSize(line, 180) as string[];
-        for (const text of lines) {
+        for (const text of doc.splitTextToSize(line, 180) as string[]) {
           if (y > 275) { doc.addPage(); y = 20; }
           doc.text(text, 15, y);
           y += 6;
@@ -101,7 +105,7 @@ export function ShareAndExportActions({ title }: { title: string }) {
       const rows = table.length ? table : collectRows(surface);
       const result = collectResult(surface);
       const data = result && !table.length ? [...rows, { Campo: "Resultado", Valor: result }] : rows;
-      if (!data.length) return showStatus("No hay datos para exportar");
+      if (!data.length) return showStatus("Esta herramienta no tiene datos exportables");
       const sheet = utils.json_to_sheet(data);
       const book = utils.book_new();
       utils.book_append_sheet(book, sheet, "UtiliHub");
