@@ -9,10 +9,7 @@ function collectRows(container: HTMLElement): ExportRow[] {
   return Array.from(container.querySelectorAll("[data-export-field]"))
     .map((field) => {
       const el = field as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-      return {
-        Campo: el.getAttribute("data-export-field") || el.getAttribute("aria-label") || el.name || "Valor",
-        Valor: el.value,
-      };
+      return { Campo: el.getAttribute("data-export-field") || el.getAttribute("aria-label") || el.name || "Valor", Valor: el.value };
     })
     .filter((row) => row.Valor !== "");
 }
@@ -30,7 +27,10 @@ function collectTable(container: HTMLElement): ExportRow[] {
 }
 
 function collectResult(container: HTMLElement): string {
-  return (container.querySelector("[data-export-result]")?.textContent || "").trim();
+  return Array.from(container.querySelectorAll("[data-export-result]"))
+    .map((element) => element.textContent?.trim() || "")
+    .filter(Boolean)
+    .join("\n");
 }
 
 function filename(title: string, extension: string) {
@@ -41,12 +41,7 @@ function filename(title: string, extension: string) {
 export function ShareAndExportActions({ title }: { title: string }) {
   const { share } = useShareableParams();
   const [status, setStatus] = useState("");
-
-  const showStatus = (message: string) => {
-    setStatus(message);
-    window.setTimeout(() => setStatus(""), 1800);
-  };
-
+  const showStatus = (message: string) => { setStatus(message); window.setTimeout(() => setStatus(""), 1800); };
   const runShare = async () => showStatus(await share() ? "Enlace copiado" : "No se pudo copiar el enlace");
 
   const exportPdf = async () => {
@@ -55,45 +50,15 @@ export function ShareAndExportActions({ title }: { title: string }) {
     try {
       const { jsPDF } = await import("jspdf");
       const doc = new jsPDF({ format: "a4", unit: "mm" });
-      const rows = collectRows(surface);
-      const table = collectTable(surface);
-      const result = collectResult(surface);
+      const rows = collectRows(surface), table = collectTable(surface), result = collectResult(surface);
       if (!rows.length && !table.length && !result) return showStatus("Esta herramienta no tiene datos exportables");
       let y = 20;
-      doc.setFontSize(18);
-      doc.text(title, 15, y);
-      y += 12;
-      doc.setFontSize(11);
-      for (const row of rows) {
-        if (y > 275) { doc.addPage(); y = 20; }
-        doc.text(`${row.Campo}: ${row.Valor}`, 15, y);
-        y += 7;
-      }
-      for (const row of table) {
-        const line = Object.entries(row).map(([key, value]) => `${key}: ${value}`).join(" | ");
-        for (const text of doc.splitTextToSize(line, 180) as string[]) {
-          if (y > 275) { doc.addPage(); y = 20; }
-          doc.text(text, 15, y);
-          y += 6;
-        }
-      }
-      if (result) {
-        y += 5;
-        doc.setFontSize(13);
-        doc.text("Resultado", 15, y);
-        y += 8;
-        doc.setFontSize(11);
-        for (const line of doc.splitTextToSize(result, 180) as string[]) {
-          if (y > 275) { doc.addPage(); y = 20; }
-          doc.text(line, 15, y);
-          y += 6;
-        }
-      }
-      doc.save(filename(title, "pdf"));
-      showStatus("PDF exportado");
-    } catch {
-      showStatus("No se pudo exportar el PDF");
-    }
+      doc.setFontSize(18); doc.text(title, 15, y); y += 12; doc.setFontSize(11);
+      for (const row of rows) { if (y > 275) { doc.addPage(); y = 20; } doc.text(`${row.Campo}: ${row.Valor}`, 15, y); y += 7; }
+      for (const row of table) for (const text of doc.splitTextToSize(Object.entries(row).map(([key, value]) => `${key}: ${value}`).join(" | "), 180) as string[]) { if (y > 275) { doc.addPage(); y = 20; } doc.text(text, 15, y); y += 6; }
+      if (result) { y += 5; doc.setFontSize(13); doc.text("Resultado", 15, y); y += 8; doc.setFontSize(11); for (const line of doc.splitTextToSize(result, 180) as string[]) { if (y > 275) { doc.addPage(); y = 20; } doc.text(line, 15, y); y += 6; } }
+      doc.save(filename(title, "pdf")); showStatus("PDF exportado");
+    } catch { showStatus("No se pudo exportar el PDF"); }
   };
 
   const exportCsv = async () => {
@@ -101,19 +66,12 @@ export function ShareAndExportActions({ title }: { title: string }) {
     if (!surface) return showStatus("No hay datos para exportar");
     try {
       const { utils, writeFile } = await import("xlsx");
-      const table = collectTable(surface);
-      const rows = table.length ? table : collectRows(surface);
-      const result = collectResult(surface);
+      const table = collectTable(surface), rows = table.length ? table : collectRows(surface), result = collectResult(surface);
       const data = result && !table.length ? [...rows, { Campo: "Resultado", Valor: result }] : rows;
       if (!data.length) return showStatus("Esta herramienta no tiene datos exportables");
-      const sheet = utils.json_to_sheet(data);
-      const book = utils.book_new();
-      utils.book_append_sheet(book, sheet, "UtiliHub");
-      writeFile(book, filename(title, "csv"), { bookType: "csv" });
-      showStatus("CSV descargado");
-    } catch {
-      showStatus("No se pudo exportar el CSV");
-    }
+      const sheet = utils.json_to_sheet(data), book = utils.book_new();
+      utils.book_append_sheet(book, sheet, "UtiliHub"); writeFile(book, filename(title, "csv"), { bookType: "csv" }); showStatus("CSV descargado");
+    } catch { showStatus("No se pudo exportar el CSV"); }
   };
 
   return <div className="mt-4 flex flex-wrap items-center gap-2 border-t pt-4" aria-label="Compartir y exportar">
