@@ -4,7 +4,7 @@ const factorial=(n:number)=>{if(!Number.isInteger(n)||n<0||n>170)return null;let
 const gcd=(a:number,b:number)=>{let x=Math.abs(Math.trunc(a)),y=Math.abs(Math.trunc(b));while(y){const t=x%y;x=y;y=t}return x};
 const format=(value:number)=>finite(value)?String(Number(value.toFixed(10))):"No definido";
 
-export function calculateMath(slug:string,values:number[],options:{mode?:"aritmetica"|"geometrica";targetBase?:number}={}):MathResult[]{
+export function calculateMath(slug:string,values:number[],options:{mode?:"aritmetica"|"geometrica";targetBase?:number;rawValue?:string}={}):MathResult[]{
  const [a,b,c]=values;
  if(!values.every(finite))return[{label:"Error",value:"Introduce valores numéricos válidos."}];
  switch(slug){
@@ -19,7 +19,7 @@ export function calculateMath(slug:string,values:number[],options:{mode?:"aritme
   case"notacion-cientifica":return[{label:"Notación científica",value:a.toExponential(10)}];
   case"mcd-mcm":{if(!Number.isInteger(a)||!Number.isInteger(b))return[{label:"Error",value:"Introduce dos enteros."}];if(a===0&&b===0)return[{label:"Error",value:"MCD y MCM no están definidos para dos ceros."}];const d=gcd(a,b),l=d?Math.abs(a*b)/d:0;return[{label:"MCD",value:String(d)},{label:"MCM",value:String(l)}]}
   case"secuencias":{if(!Number.isInteger(c)||c<1||c>10000)return[{label:"Error",value:"El número de término debe ser un entero entre 1 y 10000."}];if(options.mode==="geometrica")return[{label:`Término ${c}`,value:format(a*Math.pow(b,c-1))},{label:"Tipo",value:"Geométrica"}];return[{label:`Término ${c}`,value:format(a+(c-1)*b)},{label:"Tipo",value:"Aritmética"}]}
-  case"bases-numericas":{const source=Math.trunc(b),target=Math.trunc(options.targetBase??10);if(source<2||source>36||target<2||target>36)return[{label:"Error",value:"Las bases deben estar entre 2 y 36."}];const raw=String(a);const digits="0123456789abcdefghijklmnopqrstuvwxyz".slice(0,source);if(!/^[0-9a-z]+$/i.test(raw)||[...raw.toLowerCase()].some(char=>!digits.includes(char)))return[{label:"Error",value:"El número contiene dígitos inválidos para la base de origen."}];const decimal=parseInt(raw,source);if(Number.isNaN(decimal))return[{label:"Error",value:"Número no válido."}];return[{label:`Base ${target}`,value:decimal.toString(target).toUpperCase()},{label:"Decimal",value:String(decimal)}]}
+  case"bases-numericas":{const source=Math.trunc(b),target=Math.trunc(options.targetBase??10);if(source<2||source>36||target<2||target>36)return[{label:"Error",value:"Las bases deben estar entre 2 y 36."}];const raw=(options.rawValue??String(a)).trim().toLowerCase();const digits="0123456789abcdefghijklmnopqrstuvwxyz".slice(0,source);if(!raw||[...raw].some(char=>!digits.includes(char)))return[{label:"Error",value:"El número contiene dígitos inválidos para la base de origen."}];const decimal=parseInt(raw,source);if(Number.isNaN(decimal))return[{label:"Error",value:"Número no válido."}];return[{label:`Base ${target}`,value:decimal.toString(target).toUpperCase()},{label:"Decimal",value:String(decimal)}]}
   default:return[{label:"Error",value:"Herramienta matemática no implementada."}];
  }
 }
