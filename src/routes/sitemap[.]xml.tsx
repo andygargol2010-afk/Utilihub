@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ALL_CATEGORIES, ALL_TOOLS } from "@/lib/all-tools";
+import { EDUCATION_SUBJECTS } from "@/lib/general/education";
 import { SITE_URL } from "@/lib/seo";
 
 const escapeXml = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/sitemap.xml")({
       { path: "/", priority: "1.0" },
       { path: "/herramientas", priority: "0.9" },
       ...ALL_CATEGORIES.map((category) => ({ path: `/categoria/${category.slug}`, priority: category.slug === "educacion" ? "0.9" : "0.8" })),
+      ...EDUCATION_SUBJECTS.map(([slug]) => ({ path: `/educacion/${slug}`, priority: "0.8" })),
       ...ALL_TOOLS.map((tool) => ({ path: `/herramientas/${tool.slug}`, priority: "0.7" })),
     ];
     const today = new Date().toISOString().slice(0, 10);
