@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Outlet, Link, createRootRouteWithContext, HeadContent, Scripts, useRouter } from "@tanstack/react-router";
+import { Outlet, Link, createRootRouteWithContext, HeadContent, Scripts, useRouter, useLocation } from "@tanstack/react-router";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useEffect, type ReactNode } from "react";
@@ -10,6 +10,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { CommandPalette } from "@/components/CommandPalette";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
 import { useShareableParams } from "@/hooks/use-shareable-params";
+import { useDailyStreak } from "@/hooks/use-daily-streak";
 
 function NotFound() { return <div className="flex min-h-screen items-center justify-center bg-background px-4"><div className="max-w-md text-center"><p className="text-sm font-semibold text-primary">UTILIHUB</p><h1 className="mt-2 text-6xl font-bold">404</h1><p className="mt-4 text-muted-foreground">La página que buscas no existe o fue movida.</p><Link to="/" className="mt-6 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90">Volver al inicio</Link></div></div>; }
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) { const router = useRouter(); useEffect(() => console.error(error), [error]); return <div className="flex min-h-screen items-center justify-center bg-background px-4"><div className="max-w-md text-center"><h1 className="text-xl font-semibold">No pudimos cargar esta página</h1><p className="mt-2 text-sm text-muted-foreground">Ha ocurrido un error. Puedes reintentar o volver al inicio.</p><div className="mt-6 flex justify-center gap-2"><button className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground" onClick={() => { router.invalidate(); reset(); }}>Reintentar</button><a href="/" className="rounded-lg border border-input px-4 py-2 text-sm font-semibold">Inicio</a></div></div></div>; }
@@ -23,4 +24,4 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) { return <html lang="es"><head><HeadContent /></head><body>{children}<Scripts /></body></html>; }
-function RootComponent() { const { queryClient } = Route.useRouteContext(); useShareableParams(); return <QueryClientProvider client={queryClient}><SiteHeader /><CommandPalette /><main><Outlet /></main><SiteFooter /><Analytics /><SpeedInsights /></QueryClientProvider>; }
+function RootComponent() { const { queryClient } = Route.useRouteContext(); const { pathname } = useLocation(); useShareableParams(); const { recordActivity } = useDailyStreak(); useEffect(() => { recordActivity(); }, [pathname, recordActivity]); return <QueryClientProvider client={queryClient}><SiteHeader /><CommandPalette /><main><Outlet /></main><SiteFooter /><Analytics /><SpeedInsights /></QueryClientProvider>; }
