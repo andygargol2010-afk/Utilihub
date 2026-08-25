@@ -12,15 +12,14 @@ function readParams() {
   return Object.fromEntries(new URLSearchParams(window.location.search).entries());
 }
 
-function getFields(): Field[] {
+/** Only explicitly marked controls participate in shareable URLs. */
+function getShareableFields(): Field[] {
   if (typeof document === "undefined") return [];
-  return Array.from(document.querySelectorAll<Field>("main input, main select, main textarea"));
+  return Array.from(document.querySelectorAll<Field>("main [data-share-param]"));
 }
 
-function ensureFieldNames(fields: Field[]) {
-  fields.forEach((field, index) => {
-    if (!field.name) field.name = field.id || `param${index + 1}`;
-  });
+function paramName(field: Field) {
+  return field.getAttribute("data-share-param") || field.name || field.id || "";
 }
 
 function setNativeValue(field: Field, value: string) {
@@ -31,12 +30,10 @@ function setNativeValue(field: Field, value: string) {
 }
 
 function restoreParams(params: Record<string, string>) {
-  const fields = getFields();
-  ensureFieldNames(fields);
-  for (const [name, value] of Object.entries(params)) {
-    const field = fields.find((candidate) => candidate.name === name);
-    if (!field) continue;
-    setNativeValue(field, value);
+  for (const field of getShareableFields()) {
+    const name = paramName(field);
+    if (!name || !(name in params)) continue;
+    setNativeValue(field, params[name]);
     field.dispatchEvent(new Event("input", { bubbles: true }));
     field.dispatchEvent(new Event("change", { bubbles: true }));
   }
@@ -60,13 +57,13 @@ export function useShareableParams() {
     const update = (event: Event) => {
       const target = event.target as Field | null;
       if (!target || !target.matches("input, select, textarea")) return;
-      const fields = getFields();
-      ensureFieldNames(fields);
-      if (!target.name) return;
+      if (!target.hasAttribute("data-share-param")) return;
+      const name = paramName(target);
+      if (!name) return;
 
       const next = new URL(window.location.href);
-      if (target.value === "") next.searchParams.delete(target.name);
-      else next.searchParams.set(target.name, target.value);
+      if (target.value === "") next.searchParams.delete(name);
+      else next.searchParams.set(name, target.value);
       window.history.replaceState(window.history.state, "", next);
       setParams(Object.fromEntries(next.searchParams.entries()));
     };
