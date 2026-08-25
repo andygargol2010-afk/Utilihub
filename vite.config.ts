@@ -11,8 +11,9 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
     tailwindcss(),
-    nitro({
-      preset: process.env.VERCEL ? "vercel" : undefined,
-    }),
+    // UtiliHub is deployed with Nitro on Vercel. Keep the target explicit
+    // so dynamic SSR routes are emitted as Vercel server routes regardless
+    // of whether the VERCEL environment variable is available during build.
+    nitro({ preset: "vercel" }),
   ],
 });
