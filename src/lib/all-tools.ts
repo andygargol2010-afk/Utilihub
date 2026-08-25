@@ -18,3 +18,7 @@ export const allToolBySlug=(slug:string)=>ALL_TOOLS.find(tool=>tool.slug===slug)
 export const allToolsByCategory=(slug:string)=>ALL_TOOLS.filter(tool=>tool.category===slug);
 export const allCategoryBySlug=(slug:string)=>{const canonical=LEGACY_CATEGORY_REDIRECTS[slug]??slug;return ALL_CATEGORIES.find(category=>category.slug===canonical)};
 export const legacyCategoryBySlug=(slug:string)=>CATEGORIES.find(category=>category.slug===slug);
+
+/** Canonical client route for a catalog tool. Keep routing in one place. */
+export const toolHref=(tool:Pick<CatalogTool,"slug"|"category">) =>
+  tool.category === "finanzas" ? `/finanzas/${tool.slug}` : `/herramientas/${tool.slug}`;
