@@ -1,21 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ALL_CATEGORIES, ALL_TOOLS } from "@/lib/all-tools";
+import { SITE_URL } from "@/lib/seo";
 
-const BASE_URL = "https://utilihub.vercel.app";
+const escapeXml = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 
 export const Route = createFileRoute("/sitemap.xml")({
-  server: {
-    handlers: {
-      GET: () => {
-        const paths = [
-          "/",
-          "/herramientas",
-          ...ALL_CATEGORIES.map((category) => `/categoria/${category.slug}`),
-          ...ALL_TOOLS.map((tool) => `/herramientas/${tool.slug}`),
-        ];
-        const xml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths.map((path) => `<url><loc>${BASE_URL}${path}</loc></url>`).join("")}</urlset>`;
-        return new Response(xml, { headers: { "Content-Type": "application/xml; charset=utf-8" } });
-      },
-    },
-  },
+  server: { handlers: { GET: () => {
+    const paths = [
+      { path: "/", priority: "1.0" },
+      { path: "/herramientas", priority: "0.9" },
+      ...ALL_CATEGORIES.map((category) => ({ path: `/categoria/${category.slug}`, priority: category.slug === "educacion" ? "0.9" : "0.8" })),
+      ...ALL_TOOLS.map((tool) => ({ path: `/herramientas/${tool.slug}`, priority: "0.7" })),
+    ];
+    const today = new Date().toISOString().slice(0, 10);
+    const xml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths.map(({ path, priority }) => `<url><loc>${escapeXml(`${SITE_URL}${path}`)}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${priority}</priority></url>`).join("")}</urlset>`;
+    return new Response(xml, { headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600, s-maxage=86400" } });
+  } } },
 });
