@@ -1,7 +1,33 @@
-import {makeTool} from "./types";
-const t=(s:string,n:string,k:string,summary:string)=>makeTool(s,n,"texto",k,summary);
-export const TEXT_TOOLS=[
- t("contador-de-caracteres","Contador de caracteres","text","Cuenta caracteres con y sin espacios."),t("contador-de-lineas","Contador de líneas","text","Cuenta líneas de un texto."),t("contador-de-frases","Contador de frases","text","Cuenta frases y oraciones."),t("contador-de-parrafos","Contador de párrafos","text","Cuenta párrafos de un texto."),
- t("mayusculas","Mayúsculas","text","Convierte texto a mayúsculas."),t("minusculas","Minúsculas","text","Convierte texto a minúsculas."),t("capitalizar","Capitalizar texto","text","Capitaliza palabras y frases."),t("camel-case","Convertir a camelCase","text","Convierte texto a camelCase."),t("pascal-case","Convertir a PascalCase","text","Convierte texto a PascalCase."),t("snake-case","Convertir a snake_case","text","Convierte texto a snake_case."),t("kebab-case","Convertir a kebab-case","text","Convierte texto a kebab-case."),
- t("quitar-espacios","Quitar espacios duplicados","text","Limpia espacios y saltos redundantes."),t("lineas-unicas","Eliminar líneas duplicadas","text","Conserva una sola aparición de cada línea."),t("ordenar-lineas","Ordenar líneas","text","Ordena líneas alfabéticamente."),t("invertir-texto","Invertir texto","text","Invierte el contenido carácter por carácter."),t("buscar-reemplazar","Buscar y reemplazar","text","Reemplaza texto de forma local."),t("extraer-numeros","Extraer números","text","Extrae todos los números encontrados."),t("extraer-emails","Extraer emails","text","Extrae direcciones de correo mediante expresión regular."),t("extraer-urls","Extraer URLs","text","Extrae URLs encontradas en el texto."),t("limpiar-texto","Limpiar texto","text","Normaliza espacios, comillas y saltos de línea."),t("texto-a-lista","Texto a lista","text","Convierte líneas de texto en una lista separada por comas."),t("lista-a-texto","Lista a texto","text","Convierte una lista separada por comas en líneas."),t("lorem-ipsum","Lorem Ipsum","generator","Genera texto de relleno."),t("diferencia-textos","Diferencia entre textos","text","Compara dos textos y marca cambios básicos."),t("markdown-tabla","Generador de tabla Markdown","text","Convierte filas separadas por tabulaciones en una tabla Markdown."),t("markdown-a-html","Markdown a HTML","text","Convierte Markdown sencillo a HTML seguro."),t("html-a-texto","HTML a texto","text","Extrae texto visible de HTML."),
+import { makeTool } from "./types";
+
+const t = (s: string, n: string, k: string, summary: string) => makeTool(s, n, "texto", k, summary);
+
+export const TEXT_TOOLS = [
+  t("contador-de-caracteres", "Contador de caracteres", "text", "Cuenta caracteres Unicode, unidades UTF-16 y caracteres sin espacios."),
+  t("contador-de-lineas", "Contador de líneas", "text", "Cuenta líneas respetando saltos de línea LF, CRLF y CR."),
+  t("contador-de-frases", "Contador de frases", "text", "Cuenta frases separadas por signos de puntuación habituales."),
+  t("contador-de-parrafos", "Contador de párrafos", "text", "Cuenta bloques de texto separados por líneas vacías."),
+  t("mayusculas", "Mayúsculas", "text", "Convierte texto a mayúsculas."),
+  t("minusculas", "Minúsculas", "text", "Convierte texto a minúsculas."),
+  t("capitalizar", "Capitalizar texto", "text", "Capitaliza la primera letra del texto y de las frases posteriores."),
+  t("camel-case", "Convertir a camelCase", "text", "Convierte palabras en identificadores camelCase."),
+  t("pascal-case", "Convertir a PascalCase", "text", "Convierte palabras en identificadores PascalCase."),
+  t("snake-case", "Convertir a snake_case", "text", "Convierte palabras en identificadores snake_case."),
+  t("kebab-case", "Convertir a kebab-case", "text", "Convierte palabras en identificadores kebab-case."),
+  t("quitar-espacios", "Quitar espacios duplicados", "text", "Normaliza espacios consecutivos y recorta los extremos."),
+  t("lineas-unicas", "Eliminar líneas duplicadas", "text", "Conserva la primera aparición exacta de cada línea."),
+  t("ordenar-lineas", "Ordenar líneas", "text", "Ordena líneas alfabéticamente de forma local."),
+  t("invertir-texto", "Invertir texto", "text", "Invierte el texto respetando caracteres Unicode completos."),
+  t("buscar-reemplazar", "Buscar y reemplazar", "text", "Reemplaza todas las apariciones exactas de un texto por otro."),
+  t("extraer-numeros", "Extraer números", "text", "Extrae números enteros y decimales encontrados en el texto."),
+  t("extraer-emails", "Extraer emails", "text", "Extrae direcciones de correo mediante expresión regular."),
+  t("extraer-urls", "Extraer URLs", "text", "Extrae URLs HTTP/HTTPS y elimina puntuación terminal habitual."),
+  t("limpiar-texto", "Limpiar texto", "text", "Normaliza espacios, comillas y saltos de línea."),
+  t("texto-a-lista", "Texto a lista", "text", "Convierte líneas de texto en una lista separada por comas."),
+  t("lista-a-texto", "Lista a texto", "text", "Convierte una lista separada por comas en líneas."),
+  t("lorem-ipsum", "Lorem Ipsum", "generator", "Genera texto de relleno local."),
+  t("diferencia-textos", "Diferencia entre textos", "text", "Compara dos textos línea por línea y marca cambios básicos."),
+  t("markdown-tabla", "Generador de tabla Markdown", "text", "Convierte filas separadas por tabulaciones en una tabla Markdown y valida columnas."),
+  t("markdown-a-html", "Markdown a HTML", "text", "Convierte un subconjunto de Markdown a HTML escapando el contenido de entrada."),
+  t("html-a-texto", "HTML a texto", "text", "Extrae el texto visible de un fragmento HTML procesado localmente."),
 ];
