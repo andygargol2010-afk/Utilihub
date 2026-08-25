@@ -10,4 +10,5 @@ export const GENERAL_CATEGORIES:GeneralCategory[]=[
 {slug:"seguridad",name:"Seguridad",title:"Herramientas de seguridad | UtiliHub",description:"Codificación, hashes y utilidades de seguridad locales.",intro:"Herramientas que priorizan procesamiento local y no requieren registro."},
 {slug:"ciencia",name:"Ciencia",title:"Calculadoras científicas | UtiliHub",description:"Física, electricidad, densidad, energía y conversiones científicas.",intro:"Fórmulas científicas comunes con resultados inmediatos."},
 {slug:"productividad",name:"Productividad",title:"Herramientas de productividad | UtiliHub",description:"Temporizadores, horas, prioridades y organización.",intro:"Utilidades sencillas para organizar tareas y tiempo."},
+{slug:"educacion",name:"Educación",title:"Creadores de tests educativos | UtiliHub",description:"Creadores de tests para primaria, secundaria y universidad en 12 materias.",intro:"Crea cuestionarios por materia y tema, selecciona nivel y dificultad, y genera una evaluación lista para resolver."},
 ];
