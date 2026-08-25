@@ -1,6 +1,6 @@
-import {makeTool} from "./types";
+import { makeTool } from "./types";
 
-const subjects=[
+export const EDUCATION_SUBJECTS = [
  ["matematicas","Matemáticas",["aritmetica","algebra","geometria","calculo","estadistica"]],
  ["lengua","Lengua y literatura",["gramatica","ortografia","comprension","literatura","redaccion"]],
  ["fisica","Física",["mecanica","energia","electricidad","ondas","fisica-moderna"]],
@@ -14,6 +14,8 @@ const subjects=[
  ["filosofia","Filosofía",["logica","etica","epistemologia","filosofia-politica","historia-filosofia"]],
  ["ciencias-naturales","Ciencias naturales",["materia","energia","tierra","ambiente","metodo-cientifico"]],
 ] as const;
+
 const title=(s:string)=>s.replaceAll("-"," ").replace(/(^| )\w/g,c=>c.toUpperCase());
-export const EDUCATION_TOOLS=subjects.flatMap(([subject,name,topics])=>topics.map(topic=>makeTool(`test-${subject}-${topic}`,`Creador de tests: ${name} — ${title(topic)}`,"educacion","education-test",`Crea tests personalizados de ${name} sobre ${title(topic)} para primaria, secundaria o universidad.`,["test","examen","educacion",subject,topic,"primaria","secundaria","universidad"],{subject,topic,levels:["primaria","secundaria","universidad"],difficulty:["facil","media","dificil"]})));
+export const educationTopicTitle = title;
+export const EDUCATION_TOOLS=EDUCATION_SUBJECTS.flatMap(([subject,name,topics])=>topics.map(topic=>makeTool(`test-${subject}-${topic}`,`Creador de tests: ${name} — ${title(topic)}`,"educacion","education-test",`Crea tests personalizados de ${name} sobre ${title(topic)} para primaria, secundaria o universidad.`,["test","examen","educacion",subject,topic,"primaria","secundaria","universidad"],{subject,topic,levels:["primaria","secundaria","universidad"],difficulty:["facil","media","dificil"]})));
 export const EDUCATION_CATEGORIES=[{slug:"educacion",name:"Educación",title:"Creadores de tests educativos | UtiliHub",description:"Creadores de tests para primaria, secundaria y universidad en 12 materias.",intro:"Crea cuestionarios por materia y tema, selecciona nivel y dificultad, y genera una evaluación lista para resolver."}];
