@@ -24,4 +24,8 @@ export const MATH_TOOLS=[
  m("mcd-mcm","MCD y MCM","number","Calcula máximo común divisor y mínimo común múltiplo."),
  m("secuencias","Secuencias numéricas","number","Genera términos de secuencias aritméticas y geométricas."),
  m("bases-numericas","Bases numéricas","number","Convierte números entre bases comunes."),
+ m("ecuacion-cuadratica","Ecuación cuadrática","number","Resuelve ax² + bx + c = 0 y distingue raíces reales, dobles o complejas."),
+ m("interes-simple","Interés simple","number","Calcula interés simple y monto final a partir de capital, tasa y tiempo."),
+ m("porcentaje-cambio","Porcentaje de cambio","number","Calcula el cambio porcentual entre un valor inicial y uno final."),
+ m("descuento-inverso","Precio antes del descuento","number","Calcula el precio original a partir del precio final y el porcentaje de descuento."),
 ];
