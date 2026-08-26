@@ -19,14 +19,17 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const startedAtRef = useRef<number | null>(null);
   const deadlineRef = useRef<number | null>(null);
+  const questionDeadlinesRef = useRef<Record<number, number>>({});
   const { streak, recordActivity } = useDailyStreak();
   const subject = String(tool.config?.subject ?? "");
   const topic = String(tool.config?.topic ?? "").replaceAll("-", " ");
   const title = useMemo(() => `${subject} · ${topic}`, [subject, topic]);
 
+  const getLimit = () => Math.max(5, Math.min(3600, Number(seconds) || 60));
+
   const generate = () => {
     const next = generateEducationTest(String(tool.config?.topic ?? ""), level, difficulty, Number(count));
-    const limit = Math.max(5, Math.min(3600, Number(seconds) || 60));
+    const limit = getLimit();
     setGenerated(next);
     setSubmitted({});
     setCurrent(0);
@@ -34,7 +37,11 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
     setTimedOut(false);
     setElapsedSeconds(0);
     startedAtRef.current = Date.now();
-    deadlineRef.current = challenge ? Date.now() + limit * 1000 : null;
+    questionDeadlinesRef.current = {};
+    deadlineRef.current = challenge && mode === "global" ? Date.now() + limit * 1000 : null;
+    if (challenge && mode === "question" && next.length > 0) {
+      questionDeadlinesRef.current[0] = Date.now() + limit * 1000;
+    }
     setRemaining(challenge ? limit : 0);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -47,32 +54,37 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
     setTimedOut(timeout);
     setCompleted(true);
     deadlineRef.current = null;
+    questionDeadlinesRef.current = {};
     recordActivity();
   };
 
-  // One interval per active challenge. The deadline is stable while the test runs.
   useEffect(() => {
-    if (!challenge || !generated.length || completed || !deadlineRef.current) return;
+    if (!challenge || !generated.length || completed) return;
     const interval = window.setInterval(() => {
-      const deadline = deadlineRef.current;
-      if (!deadline) return;
+      if (mode === "global") {
+        const deadline = deadlineRef.current;
+        if (!deadline) return;
+        const next = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+        setRemaining(next);
+        if (next === 0) finish(true);
+        return;
+      }
+
+      let deadline = questionDeadlinesRef.current[current];
+      if (!deadline) {
+        deadline = Date.now() + getLimit() * 1000;
+        questionDeadlinesRef.current[current] = deadline;
+      }
       const next = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
       setRemaining(next);
       if (next === 0) finish(true);
     }, 250);
     return () => window.clearInterval(interval);
-  }, [challenge, generated.length, completed]);
-
-  useEffect(() => {
-    if (!challenge || mode !== "question" || !generated.length || completed || !deadlineRef.current) return;
-    const limit = Math.max(5, Math.min(3600, Number(seconds) || 60));
-    deadlineRef.current = Date.now() + limit * 1000;
-    setRemaining(limit);
-  }, [current, mode, challenge, generated.length, completed, seconds]);
+  }, [challenge, generated.length, completed, mode, current]);
 
   const score = generated.reduce((n, q, i) => n + (submitted[i] === q.answer ? 1 : 0), 0);
   const answered = Object.keys(submitted).filter((key) => submitted[Number(key)] >= 0).length;
-  const progress = generated.length ? Math.round((completed ? 100 : ((current + (submitted[current] !== undefined ? 1 : 0)) / generated.length) * 100)) : 0;
+  const progress = generated.length ? Math.round((completed ? 100 : (answered / generated.length) * 100)) : 0;
   const question = generated[current];
   const speed = elapsedSeconds > 0 ? Math.round((answered / elapsedSeconds) * 60) : 0;
 
