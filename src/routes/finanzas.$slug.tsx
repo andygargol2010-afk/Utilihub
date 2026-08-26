@@ -4,10 +4,38 @@ import { FINANCIAL_UI } from "@/components/financial/registry";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { financialToolBySlug } from "@/lib/financial-tools";
+import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME, webApplicationSchema } from "@/lib/seo";
 
 export const Route = createFileRoute("/finanzas/$slug")({
   loader: ({ params }) => { const tool = financialToolBySlug(params.slug); if (!tool) throw notFound(); return { tool }; },
-  head: ({ loaderData }) => loaderData ? { meta: [{ title: `${loaderData.tool.name} | UtiliHub` }, { name: "description", content: loaderData.tool.description }, { name: "keywords", content: loaderData.tool.keywords.join(", ") }], links: [{ rel: "canonical", href: `/finanzas/${loaderData.tool.slug}` }] } : { meta: [{ title: "Calculadora financiera no encontrada | UtiliHub" }, { name: "robots", content: "noindex" }] },
+  head: ({ loaderData }) => {
+    if (!loaderData) return { meta: [{ title: "Calculadora financiera no encontrada | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
+    const { tool } = loaderData;
+    const title = `${tool.name} | UtiliHub`;
+    const description = cleanDescription(tool.description || tool.summary);
+    const url = absoluteUrl(`/finanzas/${tool.slug}`);
+    const schemaTool = { name: tool.name, description, slug: tool.slug };
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { name: "keywords", content: tool.keywords.join(", ") },
+        { name: "robots", content: "index, follow, max-image-preview:large" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
+        { property: "og:site_name", content: SITE_NAME },
+        { property: "og:image", content: ogImage() },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { name: "twitter:image", content: ogImage() },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@graph": [webApplicationSchema(schemaTool), breadcrumbSchema([{ name: "Inicio", path: "/" }, { name: "Finanzas", path: "/finanzas" }, { name: tool.name }])] }) }],
+    };
+  },
   component: FinancialPage,
 });
 
