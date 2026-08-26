@@ -4,8 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { formatNumber, parseNumber } from "@/lib/units";
 
-type Mode = "of" | "share" | "change" | "discount" | "increase" | "vat";
-const MODES: [Mode, string][] = [["of", "% de una cantidad"], ["share", "Qué % representa"], ["change", "Variación %"], ["discount", "Descuento"], ["increase", "Aumento"], ["vat", "IVA" ]];
+type Mode = "of" | "share" | "change" | "discount" | "increase" | "vat" | "vatReverse";
+const MODES: [Mode, string][] = [["of", "% de una cantidad"], ["share", "Qué % representa"], ["change", "Variación %"], ["discount", "Descuento"], ["increase", "Aumento"], ["vat", "Añadir IVA"], ["vatReverse", "Quitar IVA"]];
 
 export default function PercentageCalculator() {
   const [mode, setMode] = useState<Mode>("of");
@@ -18,16 +18,19 @@ export default function PercentageCalculator() {
     switch (mode) {
       case "of": return { result: x * y / 100, label: "Resultado", formula: `${formatNumber(x)} % × ${formatNumber(y)} ÷ 100` };
       case "share": return y === 0 ? null : { result: x / y * 100, label: "Porcentaje", formula: `${formatNumber(x)} ÷ ${formatNumber(y)} × 100` };
-      case "change": return x === 0 ? null : { result: (y - x) / Math.abs(x) * 100, label: "Variación", formula: `(${formatNumber(y)} − ${formatNumber(x)}) ÷ ${formatNumber(Math.abs(x))} × 100` };
-      case "discount": return { result: y * (1 - x / 100), label: "Precio con descuento", formula: `${formatNumber(y)} × (1 − ${formatNumber(x)} ÷ 100)` , extra: y * x / 100 };
+      case "change": return x === 0 ? null : { result: (y - x) / x * 100, label: "Variación", formula: `(${formatNumber(y)} − ${formatNumber(x)}) ÷ ${formatNumber(x)} × 100` };
+      case "discount": return { result: y * (1 - x / 100), label: "Precio con descuento", formula: `${formatNumber(y)} × (1 − ${formatNumber(x)} ÷ 100)`, extra: y * x / 100 };
       case "increase": return { result: y * (1 + x / 100), label: "Precio con aumento", formula: `${formatNumber(y)} × (1 + ${formatNumber(x)} ÷ 100)`, extra: y * x / 100 };
       case "vat": return { result: y * (1 + x / 100), label: "Precio con IVA", formula: `${formatNumber(y)} × (1 + ${formatNumber(x)} ÷ 100)`, extra: y * x / 100 };
+      case "vatReverse":
+        if (x <= -100) return null;
+        return { result: y / (1 + x / 100), label: "Precio sin IVA", formula: `${formatNumber(y)} ÷ (1 + ${formatNumber(x)} ÷ 100)`, extra: y - y / (1 + x / 100) };
     }
   }, [a, b, mode]);
 
   const labels: Record<Mode, [string, string]> = {
     of: ["Porcentaje (%)", "Cantidad total"], share: ["Parte", "Total"], change: ["Valor inicial", "Valor final"],
-    discount: ["Descuento (%)", "Precio original"], increase: ["Aumento (%)", "Precio original"], vat: ["IVA (%)", "Precio sin IVA"]
+    discount: ["Descuento (%)", "Precio original"], increase: ["Aumento (%)", "Precio original"], vat: ["IVA (%)", "Precio sin IVA"], vatReverse: ["IVA (%)", "Precio final con IVA"]
   };
 
   return <div className="space-y-6">
@@ -43,7 +46,7 @@ export default function PercentageCalculator() {
     </div>
     <div className="rounded-xl border border-border/70 p-4 text-sm text-muted-foreground">
       <p className="font-semibold text-foreground">Cómo interpretar el resultado</p>
-      <p className="mt-1">Los cálculos de descuento, aumento e IVA parten del precio indicado como base. Para quitar un IVA ya incluido, utiliza la relación precio final ÷ (1 + IVA/100).</p>
+      <p className="mt-1">En una variación porcentual, el denominador es siempre el valor inicial. Los cálculos de descuento y aumento parten del precio original. Para quitar un IVA ya incluido, divide el precio final entre 1 + IVA/100.</p>
     </div>
   </div>;
 }
