@@ -1,4 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { TOOL_UI } from "@/components/tools/registry";
 import { GENERAL_TOOL_UI } from "@/components/general/registry";
@@ -7,6 +8,7 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ALL_CATEGORIES, allToolBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
+import { useRecentTools } from "@/hooks/use-recent-tools";
 
 export const Route = createFileRoute("/herramientas/$slug")({
   loader: ({ params }) => { const tool = allToolBySlug(params.slug); if (!tool) throw notFound(); return { tool }; },
@@ -21,7 +23,12 @@ export const Route = createFileRoute("/herramientas/$slug")({
 });
 
 function ToolPage() {
-  const { tool } = Route.useLoaderData(); const category = ALL_CATEGORIES.find((c) => c.slug === tool.category); const related = allToolsByCategory(tool.category).filter((t) => t.slug !== tool.slug).slice(0, 8); const ui = TOOL_UI[tool.slug] ?? GENERAL_TOOL_UI[tool.slug];
+  const { tool } = Route.useLoaderData();
+  const { addRecent } = useRecentTools();
+  const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
+  const related = allToolsByCategory(tool.category).filter((t) => t.slug !== tool.slug).slice(0, 8);
+  const ui = TOOL_UI[tool.slug] ?? GENERAL_TOOL_UI[tool.slug];
+  useEffect(() => { addRecent(tool.slug); }, [addRecent, tool.slug]);
   if (!category) return <p className="container-page py-10">Herramienta no disponible.</p>;
   return <div className="container-page py-10"><Breadcrumbs items={[{ label: "Inicio", to: "/" }, { label: "Herramientas", to: "/herramientas" }, { label: category.name, to: "/categoria/$slug", params: { slug: category.slug } }, { label: tool.name }]} />
     <div className="mt-4 flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold sm:text-4xl">{tool.name}</h1><p className="mt-3 max-w-2xl text-muted-foreground">{tool.summary}</p></div><FavoriteButton slug={tool.slug} name={tool.name} /></div>
