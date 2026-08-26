@@ -3,6 +3,7 @@ import { GENERAL_TOOLS } from "@/lib/general";
 import { GeneralTool } from "./GeneralTool";
 import { ConfiguredTool } from "./ConfiguredTool";
 import { AdvancedCalculatorTool } from "./AdvancedCalculatorTool";
+import { AdvancedDateTool } from "./AdvancedDateTool";
 import { MathTool } from "./MathTool";
 import { DesignTool } from "./DesignTool";
 import { SecurityTool } from "./SecurityTool";
@@ -18,6 +19,7 @@ import { MediaTool } from "./MediaTool";
 
 export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntries(
   GENERAL_TOOLS.map((tool) => [tool.slug, () => {
+    if (tool.config?.mode === "date") return <AdvancedDateTool tool={tool} />;
     if (tool.config?.mode === "advanced" && tool.config?.operation) return <AdvancedCalculatorTool tool={tool} />;
     if (tool.config?.operation) return <ConfiguredTool tool={tool} />;
     if (tool.category === "desarrollo") return <DevTool tool={tool} />;
