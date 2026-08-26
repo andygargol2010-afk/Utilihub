@@ -11,4 +11,7 @@ export const GENERAL_CATEGORIES:GeneralCategory[]=[
 {slug:"ciencia",name:"Ciencia",title:"Calculadoras científicas | UtiliHub",description:"Física, electricidad, densidad, energía y conversiones científicas.",intro:"Fórmulas científicas comunes con resultados inmediatos."},
 {slug:"productividad",name:"Productividad",title:"Herramientas de productividad | UtiliHub",description:"Temporizadores, horas, prioridades y organización.",intro:"Utilidades sencillas para organizar tareas y tiempo."},
 {slug:"educacion",name:"Educación",title:"Creadores de tests educativos | UtiliHub",description:"Creadores de tests para primaria, secundaria y universidad en 12 materias.",intro:"Crea cuestionarios por materia y tema, selecciona nivel y dificultad, y genera una evaluación lista para resolver."},
+{slug:"cocina",name:"Cocina",title:"Herramientas de cocina online | UtiliHub",description:"Calculadoras y conversores prácticos para recetas, ingredientes y cocina doméstica.",intro:"Ajusta recetas, convierte medidas y calcula proporciones y costes de cocina."},
+{slug:"viajes",name:"Viajes",title:"Herramientas para viajes | UtiliHub",description:"Calculadoras para trayectos, combustible, presupuestos y conversiones de viaje.",intro:"Planifica trayectos y presupuestos con cálculos rápidos para tus viajes."},
+{slug:"hogar",name:"Hogar",title:"Herramientas para el hogar | UtiliHub",description:"Calculadoras prácticas para gastos, consumo y organización doméstica.",intro:"Calcula consumos, costes, presupuestos y cantidades para tareas del hogar."},
 ];
