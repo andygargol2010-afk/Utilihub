@@ -2,12 +2,12 @@ import {makeTool} from "./types";
 const c=(s:string,n:string,k:string,summary:string,config:Record<string,unknown>={})=>makeTool(s,n,"cocina",k,summary,[],config);
 export const COCINA_TOOLS=[
  c("escalador-recetas","Escalador de recetas","number","Ajusta automáticamente las cantidades de una receta según las porciones.",{operation:"scale-recipe",fields:["Cantidad original","Porciones originales","Porciones nuevas"]}),
- c("conversion-gramos-tazas","Gramos a tazas","number","Convierte cantidades aproximadas de ingredientes habituales entre gramos y tazas.",{operation:"grams-cups",fields:["Gramos","Factor g/taza"]}),
+ c("conversion-gramos-tazas","Gramos a tazas","number","Convierte cantidades aproximadas de ingredientes habituales entre gramos y tazas.",{operation:"divide",fields:["Gramos","Factor g/taza"]}),
  c("conversion-ml-tazas","Mililitros a tazas","number","Convierte mililitros a tazas usando una equivalencia configurable.",{operation:"divide",fields:["Mililitros","Factor ml/taza"]}),
  c("conversion-cucharadas-ml","Cucharadas a mililitros","number","Convierte cucharadas a mililitros con la equivalencia estándar de cocina.",{operation:"multiply",fields:["Cucharadas","ml por cucharada"]}),
  c("conversion-cucharaditas-ml","Cucharaditas a mililitros","number","Convierte cucharaditas a mililitros.",{operation:"multiply",fields:["Cucharaditas","ml por cucharadita"]}),
  c("porcion-por-persona","Cantidad por persona","number","Calcula la cantidad de ingrediente necesaria por persona.",{operation:"divide",fields:["Cantidad total","Personas"]}),
- c("coste-receta","Coste total de receta","number","Suma un coste base por ingrediente a partir de cantidad y precio unitario.",{operation:"multiply",fields:["Cantidad","Precio por unidad"]}),
+ c("coste-receta","Coste total de receta","number","Calcula el coste de una receta a partir de cantidad y precio unitario.",{operation:"multiply",fields:["Cantidad","Precio por unidad"]}),
  c("coste-por-porcion-cocina","Coste por porción","number","Calcula el coste de una porción de una receta.",{operation:"divide",fields:["Coste total","Porciones"]}),
  c("hidratacion-pan","Hidratación del pan","number","Calcula el porcentaje de agua respecto a la harina.",{operation:"percent-of",fields:["Agua","Harina"]}),
  c("sal-pan","Sal respecto a harina","number","Calcula el porcentaje de sal respecto al peso de la harina.",{operation:"percent-of",fields:["Sal","Harina"]}),
