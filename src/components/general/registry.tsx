@@ -11,13 +11,16 @@ import { FormulaTool } from "./FormulaTool";
 import { EducationTool } from "./EducationTool";
 import { GeneratorTool } from "./GeneratorTool";
 import { TextTool } from "./TextTool";
+import { LocalUtilityTool } from "./LocalUtilityTool";
 
 const STATS = new Set(["promedio", "mediana", "moda", "rango", "varianza", "desviacion-estandar", "percentil", "cuartiles", "z-score", "correlacion", "covarianza"]);
 const FORMULAS = new Set(["porcentaje", "regla-de-tres", "probabilidad", "combinaciones", "permutaciones", "factorial", "potencias-y-raices", "logaritmos", "notacion-cientifica", "mcd-mcm", "secuencias", "bases-numericas", "porciones-receta", "hidratacion-masa", "coste-comida", "propina-viaje", "consumo-combustible", "coste-km", "divisor-gastos", "propina", "distancia-viaje", "combustible-viaje", "escalador-recetas", "cafe", "horno"]);
 const TIMERS = new Set(["cronometro", "cuenta-regresiva", "pomodoro", "temporizador", "temporizador-cocina"]);
+const LOCAL_CATEGORIES = new Set(["archivos-documentos", "redes-internet", "imagenes", "audio-video", "geografia-mapas"]);
 
 export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntries(
   GENERAL_TOOLS.map((tool) => [tool.slug, () => {
+    if (LOCAL_CATEGORIES.has(tool.category)) return <LocalUtilityTool tool={tool} />;
     if (tool.kind === "generator") return <GeneratorTool tool={tool} />;
     if (tool.kind === "text") return <TextTool tool={tool} />;
     if (tool.category === "educacion") return <EducationTool tool={tool} />;
