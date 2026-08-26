@@ -20,5 +20,4 @@ export const GEOMETRY_ADVANCED_TOOLS=[
  t("altura-triangulo","Altura de triángulo","Calcula la altura de un triángulo a partir de área y base.",["Área","Base"],"triangle-height"),
  t("teorema-coseno","Teorema del coseno","Calcula el lado opuesto a un ángulo mediante el teorema del coseno.",["Lado a","Lado b","Ángulo C (°)"],"law-of-cosines"),
  t("teorema-seno","Teorema del seno","Calcula un lado usando la ley de senos.",["Lado conocido a","Ángulo conocido A (°)","Ángulo buscado B (°)"],"law-of-sines"),
- t("grados-radianes","Grados ↔ radianes","Convierte un ángulo entre grados y radianes. Usa 1 para grados→radianes y 2 para radianes→grados.",["Ángulo","Dirección (1=°→rad, 2=rad→°)"],"degrees-radians"),
 ];
