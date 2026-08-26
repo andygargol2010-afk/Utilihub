@@ -6,8 +6,32 @@ const nums = (s: string) => s.split(/[;,\s]+/).map(Number).filter(Number.isFinit
 const one = (s: string) => nums(s);
 const mean = (a: number[]) => a.reduce((x, y) => x + y, 0) / a.length;
 const sdPop = (a: number[]) => { const m = mean(a); return Math.sqrt(mean(a.map(x => (x - m) ** 2))); };
+
+const ATOMIC_MASS: Record<string, number> = {
+  H:1.008, He:4.0026, Li:6.94, Be:9.0122, B:10.81, C:12.011, N:14.007, O:15.999, F:18.998, Ne:20.180,
+  Na:22.990, Mg:24.305, Al:26.982, Si:28.085, P:30.974, S:32.06, Cl:35.45, Ar:39.948, K:39.098, Ca:40.078,
+  Fe:55.845, Co:58.933, Ni:58.693, Cu:63.546, Zn:65.38, Br:79.904, Ag:107.868, I:126.904, Ba:137.327, Pt:195.084, Au:196.967, Hg:200.592, Pb:207.2
+};
+function molecularMass(formula: string): number {
+  const s = formula.replace(/\s+/g, ""); let i = 0;
+  const parseGroup = (): number => {
+    let total = 0;
+    while (i < s.length && s[i] !== ")") {
+      if (s[i] === "(") { i++; const inner = parseGroup(); if (s[i] !== ")") throw Error("Fórmula química no válida."); i++; const m = readNumber(); total += inner * m; continue; }
+      const match = s.slice(i).match(/^([A-Z][a-z]?)/); if (!match) throw Error("Fórmula química no válida.");
+      const symbol = match[1]; i += symbol.length; const mass = ATOMIC_MASS[symbol]; if (!mass) throw Error(`Elemento no reconocido: ${symbol}.`);
+      total += mass * readNumber();
+    }
+    return total;
+  };
+  const readNumber = () => { const m = s.slice(i).match(/^\d+(?:\.\d+)?/); if (!m) return 1; i += m[0].length; return Number(m[0]); };
+  if (!s) throw Error("Introduce una fórmula química, por ejemplo H2O o Ca(OH)2.");
+  const result = parseGroup(); if (i !== s.length) throw Error("Fórmula química no válida."); return result;
+}
+
 function calculate(op: string, v: number[][]): string {
-  const a=v[0]??[],b=v[1]??[],c=v[2]??[],d=v[3]??[]; const A=a[0],B=b[0],C=c[0],D=d[0]; const fixed=6.02214076e23;
+  const a=v[0]??[],b=v[1]??[],c=v[2]??[],d=v[3]??[],e=v[4]??[];
+  const A=a[0],B=b[0],C=c[0],D=d[0],E=e[0]; const fixed=6.02214076e23;
   switch(op){
     case "mad":{if(!a.length)throw Error("Introduce al menos un dato.");const m=mean(a);return `${mean(a.map(x=>Math.abs(x-m)))}`}
     case "cv":{if(!a.length)throw Error("Introduce al menos un dato.");const m=mean(a);if(!m)throw Error("La media no puede ser 0.");return `${sdPop(a)/Math.abs(m)*100}%`}
@@ -22,13 +46,13 @@ function calculate(op: string, v: number[][]): string {
     case "binomial":{const n=Math.trunc(A),k=Math.trunc(B),p=C;if(n<0||k<0||k>n||p<0||p>1)throw Error("Revisa n, k y p.");let comb=1;for(let i=1;i<=k;i++)comb*=(n-k+i)/i;return `${comb*p**k*(1-p)**(n-k)}`}
     case "normal":if(C<=0)throw Error("La desviación estándar debe ser mayor que 0.");return `${0.5*(1+erf((A-B)/C/Math.SQRT2))}`;
     case "poisson":{if(A<0||C<=0)throw Error("k debe ser ≥ 0 y λ > 0.");let fact=1;for(let i=2;i<=Math.trunc(A);i++)fact*=i;return `${Math.exp(-C)*C**Math.trunc(A)/fact}`}
-    case "t-score":if(C<=0)throw Error("La desviación estándar debe ser mayor que 0.");return `${(A-B)/C}`;
+    case "t-score":if(C<=0)throw Error("La desviación estándar debe ser mayor que 0.");return `${50+10*(A-B)/C}`;
     case "confidence":if(C<=0||D<=0)throw Error("Usa n y z mayores que 0.");return `${B-D*A/Math.sqrt(C)} a ${B+D*A/Math.sqrt(C)}`;
-    case "sample-size":if(B<=0||C<=0||A<=0||C>1)throw Error("Usa z, margen y proporción válidos.");return `${Math.ceil(A*A*C*(1-C)/(B*B))}`;
+    case "sample-size":if(A<=0||B<=0||C<0||C>1)throw Error("Usa z, margen y proporción válidos.");return `${Math.ceil(A*A*C*(1-C)/(B*B))}`;
     case "relative-frequency":if(!B)throw Error("El total no puede ser 0.");return `${A/B}`;
     case "cumulative-frequency":{if(!a.length)throw Error("Introduce frecuencias.");let s=0;return a.map(x=>(s+=x)).join(", ")}
-    case "class-width":if(C<=0)throw Error("El número de clases debe ser mayor que 0.");return `${(B-A)/C}`;
-    case "linear-interpolation":if(B===C)throw Error("x1 y x2 deben ser diferentes.");return `${D+(A-B)*(C-D)/(C-B)}`;
+    case "class-width":if(C<=0||B<A)throw Error("El máximo debe ser mayor o igual al mínimo y el número de clases mayor que 0.");return `${(B-A)/C}`;
+    case "linear-interpolation":if(B===C)throw Error("x1 y x2 deben ser diferentes.");return `${D+(A-B)*(E-D)/(C-B)}`;
     case "momentum":return `${A*B} kg·m/s`;case "impulse":return `${A*B} N·s`;case "mechanical-energy":return `${0.5*A*B*B+A*C*D} J`;case "mechanical-power":if(B===0)throw Error("El tiempo no puede ser 0.");return `${A/B} W`;case "torque":return `${A*B} N·m`;case "friction-coefficient":if(B===0)throw Error("La fuerza normal no puede ser 0.");return `${A/B}`;case "centripetal-force":if(C<=0)throw Error("El radio debe ser mayor que 0.");return `${A*B*B/C} N`;case "centripetal-acceleration":if(B<=0)throw Error("El radio debe ser mayor que 0.");return `${A*A/B} m/s²`;case "free-fall":if(A<0||B<=0)throw Error("Altura ≥ 0 y gravedad > 0.");return `${Math.sqrt(2*A/B)} s`;case "vertical-throw":if(B<=0)throw Error("La gravedad debe ser mayor que 0.");return `${A*A/(2*B)} m`;case "projectile-range":if(C<=0)throw Error("La gravedad debe ser mayor que 0.");return `${A*A*Math.sin(2*B*Math.PI/180)/C} m`;case "pendulum":if(A<=0||B<=0)throw Error("Longitud y gravedad deben ser mayores que 0.");return `${2*Math.PI*Math.sqrt(A/B)} s`;case "spring-period":if(A<=0||B<=0)throw Error("Masa y constante elástica deben ser mayores que 0.");return `${2*Math.PI*Math.sqrt(A/B)} s`;case "spring-energy":return `${0.5*A*B*B} J`;case "hydrostatic-pressure":return `${A*B*C} Pa`;case "buoyancy":return `${A*B*C} N`;case "sensible-heat":return `${A*B*C} J`;case "latent-heat":return `${A*B} J`;case "thermal-expansion":return `${A*B*C} m`;case "efficiency":if(B===0)throw Error("La energía de entrada no puede ser 0.");return `${A/B*100}%`;
     case "molarity":if(B<=0)throw Error("El volumen debe ser mayor que 0.");return `${A/B} mol/L`;case "molality":if(B<=0)throw Error("La masa de solvente debe ser mayor que 0.");return `${A/B} mol/kg`;case "normality":if(B<=0)throw Error("El volumen debe ser mayor que 0.");return `${A/B} eq/L`;case "mole-fraction":if(B<=0)throw Error("Los moles totales deben ser mayores que 0.");return `${A/B}`;case "mass-percent":if(B===0)throw Error("La masa de solución no puede ser 0.");return `${A/B*100}%`;case "volume-percent":if(B===0)throw Error("El volumen de solución no puede ser 0.");return `${A/B*100}%`;case "moles":if(B<=0)throw Error("La masa molar debe ser mayor que 0.");return `${A/B} mol`;case "molecules":return `${A*fixed} moléculas`;case "atoms":return `${A*fixed*B} átomos`;case "stoichiometry":return `${A*B} mol de producto; ${A*B*C} g si la masa molar del producto es C`;
     case "limiting-reagent":{if(B<=0||D<=0)throw Error("Los coeficientes deben ser mayores que 0.");const ra=A/B,rb=C/D;return ra<rb?`Reactivo limitante: A; proporción disponible ${ra}`:rb<ra?`Reactivo limitante: B; proporción disponible ${rb}`:`Ninguno: ambos reactivos están en proporción estequiométrica`}
@@ -38,7 +62,7 @@ function calculate(op: string, v: number[][]): string {
     case "poh":if(A<=0)throw Error("[OH⁻] debe ser mayor que 0.");return `${-Math.log10(A)}`;
     case "pka-pkb":if(A<=0)throw Error("Ka o Kb debe ser mayor que 0.");return `${-Math.log10(A)}`;
     case "henderson-hasselbalch":if(C<=0||B<=0)throw Error("Las concentraciones deben ser mayores que 0.");return `${A+Math.log10(B/C)}`;
-    case "molecular-mass":if(B<=0)throw Error("Los moles deben ser mayores que 0.");return `${A/B} g/mol`;
+    case "molecular-formula":return `${molecularMass(String((v as unknown as string[][])[0]?.[0]??""))} g/mol`;
     case "ideal-gas":if(C<=0)throw Error("El volumen debe ser mayor que 0.");return `${A*8.314462618*B/C} kPa`;
     case "partial-pressure":return `${A*B}`;
     case "trapezoid-area":return `${(A+B)*C/2}`;case "rhombus-area":return `${A*B/2}`;case "parallelogram-area":return `${A*B}`;case "sector-area":return `${Math.PI*A*A*B/360}`;case "annulus-area":if(A<B)throw Error("El radio exterior debe ser mayor o igual al interior.");return `${Math.PI*(A*A-B*B)}`;case "arc-length":return `${2*Math.PI*A*B/360}`;case "sphere-volume":return `${4*Math.PI*A**3/3}`;case "cylinder-volume":return `${Math.PI*A*A*B}`;case "cone-volume":return `${Math.PI*A*A*B/3}`;case "pyramid-volume":return `${A*B/3}`;case "sphere-area":return `${4*Math.PI*A*A}`;case "cylinder-lateral-area":return `${2*Math.PI*A*B}`;case "cylinder-total-area":return `${2*Math.PI*A*(A+B)}`;case "cone-lateral-area":return `${Math.PI*A*B}`;case "rectangle-diagonal":return `${Math.hypot(A,B)}`;case "square-diagonal":return `${A*Math.SQRT2}`;case "triangle-height":if(B===0)throw Error("La base no puede ser 0.");return `${2*A/B}`;case "law-of-cosines":return `${Math.sqrt(A*A+B*B-2*A*B*Math.cos(C*Math.PI/180))}`;case "law-of-sines":if(Math.sin(B*Math.PI/180)===0)throw Error("El ángulo buscado no puede tener seno 0.");return `${A*Math.sin(C*Math.PI/180)/Math.sin(B*Math.PI/180)}`;case "degrees-radians":if(B===1)return `${A*Math.PI/180} rad`;if(B===2)return `${A*180/Math.PI}°`;throw Error("La dirección debe ser 1 o 2.");
@@ -47,4 +71,4 @@ function calculate(op: string, v: number[][]): string {
   }
 }
 function erf(x:number){const s=x<0?-1:1;x=Math.abs(x);const t=1/(1+0.3275911*x);const y=1-((((1.061405429*t-1.453152027)*t+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return s*y;}
-export function AdvancedCalculatorTool({tool}:{tool:GeneralTool}){const cfg=(tool.config??{}) as Partial<Cfg>;const fields=Array.isArray(cfg.fields)?cfg.fields:[];const[values,setValues]=useState<string[]>(fields.map(()=>""));const[out,setOut]=useState("");const run=()=>{try{const parsed=values.map(one);if(parsed.some(x=>!x.length))throw Error("Completa todos los campos.");setOut(calculate(String(cfg.operation),parsed));}catch(e){setOut(e instanceof Error?e.message:"Entrada inválida.")}};return <div className="space-y-4"><p className="text-sm text-muted-foreground">Puedes separar listas con comas o espacios.</p><div className="grid gap-4 sm:grid-cols-2">{fields.map((label,i)=><label key={`${label}-${i}`} className="space-y-1"><span className="text-sm font-medium">{label}</span><input type="text" inputMode="decimal" value={values[i]??""} onChange={e=>setValues(v=>v.map((x,j)=>j===i?e.target.value:x))} className="h-11 w-full rounded-xl border bg-background px-3" placeholder="Introduce un valor" /></label>)}</div><button onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Calcular</button>{out&&<output className="block rounded-xl border bg-muted/30 p-4">{out}</output>}</div>}
+export function AdvancedCalculatorTool({tool}:{tool:GeneralTool}){const cfg=(tool.config??{}) as Partial<Cfg>;const fields=Array.isArray(cfg.fields)?cfg.fields:[];const[values,setValues]=useState<string[]>(fields.map(()=>""));const[out,setOut]=useState("");const run=()=>{try{if(String(cfg.operation)==="molecular-formula"){setOut(calculate(String(cfg.operation),values.map(x=>[x]) as number[][]));return;}const parsed=values.map(one);if(parsed.some(x=>!x.length))throw Error("Completa todos los campos.");setOut(calculate(String(cfg.operation),parsed));}catch(e){setOut(e instanceof Error?e.message:"Entrada inválida.")}};return <div className="space-y-4"><p className="text-sm text-muted-foreground">Puedes separar listas con comas o espacios.</p><div className="grid gap-4 sm:grid-cols-2">{fields.map((label,i)=><label key={`${label}-${i}`} className="space-y-1"><span className="text-sm font-medium">{label}</span><input type={String(cfg.operation)==="molecular-formula"?"text":"text"} inputMode={String(cfg.operation)==="molecular-formula"?"text":"decimal"} value={values[i]??""} onChange={e=>setValues(v=>v.map((x,j)=>j===i?e.target.value:x))} className="h-11 w-full rounded-xl border bg-background px-3" placeholder={String(cfg.operation)==="molecular-formula"?"Ej.: H2O, Ca(OH)2":"Introduce un valor"} /></label>)}</div><button onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Calcular</button>{out&&<output className="block rounded-xl border bg-muted/30 p-4">{out}</output>}</div>}
