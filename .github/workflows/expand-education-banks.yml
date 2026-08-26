@@ -8,6 +8,8 @@ on:
       - 'src/lib/general/education-bank-a.ts'
       - 'src/lib/general/education-bank-b.ts'
       - 'src/lib/general/education-bank-expanded.ts'
+      - 'scripts/generate-education-banks.mjs'
+      - 'scripts/validate-education-banks.mjs'
       - '.github/workflows/expand-education-banks.yml'
 
 permissions:
