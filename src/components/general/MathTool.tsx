@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 
 const values = (s: string) => s.split(/[\n,;]+/).map((x) => Number(x.trim().replace(",", "."))).filter(Number.isFinite);
@@ -24,15 +24,24 @@ function calculate(slug: string, raw: string, rawB: string): string {
   }
 }
 
+function MiniChart({ data }: { data: number[] }) {
+  if (data.length < 2) return null;
+  const visible = data.slice(0, 24);
+  const min = Math.min(...visible); const max = Math.max(...visible); const span = max - min || 1;
+  return <section className="rounded-xl border border-border bg-background p-4" aria-label="Gráfico de los datos"><div className="mb-3 flex items-center justify-between"><h3 className="text-sm font-semibold">Vista de datos</h3><span className="text-xs text-muted-foreground">{data.length} valores{data.length > 24 ? " · primeros 24" : ""}</span></div><div className="flex h-32 items-end gap-1 overflow-hidden" role="img" aria-label="Gráfico de barras de los valores introducidos">{visible.map((value, i) => <div key={`${i}-${value}`} className="min-w-1 flex-1 rounded-t-sm bg-primary/70" style={{ height: `${Math.max(4, ((value - min) / span) * 100)}%` }} title={`${value}`} />)}</div><div className="mt-2 flex justify-between text-[11px] text-muted-foreground"><span>{min}</span><span>{max}</span></div></section>;
+}
+
 export function MathTool({ tool }: { tool: GeneralTool }) {
   const [raw, setRaw] = useState(""); const [rawB, setRawB] = useState(""); const [out, setOut] = useState(""); const [error, setError] = useState("");
   const needsSecond = ["percentil", "z-score", "correlacion", "covarianza"].includes(tool.slug);
+  const chartData = useMemo(() => values(raw), [raw]);
   const calculateClick = () => { try { setError(""); setOut(calculate(tool.slug, raw, rawB)); } catch (e) { setOut(""); setError(e instanceof Error ? e.message : "No se pudo calcular el resultado."); } };
   return <div className="space-y-4">
-    <div><label className="mb-2 block text-sm font-semibold">{needsSecond && ["correlacion", "covarianza"].includes(tool.slug) ? "Primera serie de datos" : "Lista de números"}</label><textarea value={raw} onChange={(e) => setRaw(e.target.value)} placeholder="Ej.: 5, 10, 15, 20" className="min-h-28 w-full rounded-xl border border-border bg-background p-4"/><p className="mt-2 text-xs text-muted-foreground">Separa los valores con comas, punto y coma o saltos de línea.</p></div>
-    {needsSecond && <div><label className="mb-2 block text-sm font-semibold">{["correlacion", "covarianza"].includes(tool.slug) ? "Segunda serie de datos" : tool.slug === "percentil" ? "Percentil (0–100)" : "Valor a estandarizar"}</label><textarea value={rawB} onChange={(e) => setRawB(e.target.value)} placeholder={["correlacion", "covarianza"].includes(tool.slug) ? "Ej.: 2, 4, 6, 8" : tool.slug === "percentil" ? "Ej.: 75" : "Ej.: 12"} className="min-h-20 w-full rounded-xl border border-border bg-background p-4"/></div>}
-    <button onClick={calculateClick} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Calcular</button>
+    <div><label htmlFor={`stats-input-${tool.slug}`} className="mb-2 block text-sm font-semibold">{needsSecond && ["correlacion", "covarianza"].includes(tool.slug) ? "Primera serie de datos" : "Lista de números"}</label><textarea id={`stats-input-${tool.slug}`} value={raw} onChange={(e) => setRaw(e.target.value)} placeholder="Ej.: 5, 10, 15, 20" className="min-h-28 w-full rounded-xl border border-border bg-background p-4"/><p className="mt-2 text-xs text-muted-foreground">Separa los valores con comas, punto y coma o saltos de línea.</p></div>
+    {needsSecond && <div><label htmlFor={`stats-second-${tool.slug}`} className="mb-2 block text-sm font-semibold">{["correlacion", "covarianza"].includes(tool.slug) ? "Segunda serie de datos" : tool.slug === "percentil" ? "Percentil (0–100)" : "Valor a estandarizar"}</label><textarea id={`stats-second-${tool.slug}`} value={rawB} onChange={(e) => setRawB(e.target.value)} placeholder={["correlacion", "covarianza"].includes(tool.slug) ? "Ej.: 2, 4, 6, 8" : tool.slug === "percentil" ? "Ej.: 75" : "Ej.: 12"} className="min-h-20 w-full rounded-xl border border-border bg-background p-4"/></div>}
+    {chartData.length > 1 && <MiniChart data={chartData} />}
+    <button type="button" onClick={calculateClick} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Calcular</button>
     {error && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">{error}</p>}
-    {out && <output className="block whitespace-pre-wrap rounded-xl border bg-muted/30 p-4 font-medium">{out}</output>}
+    {out && <output aria-live="polite" className="block whitespace-pre-wrap rounded-xl border bg-muted/30 p-4 font-medium">{out}</output>}
   </div>;
 }
