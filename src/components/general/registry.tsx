@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import { GeneralTool } from "./GeneralTool";
+import { ConfiguredTool } from "./ConfiguredTool";
 import { MathTool } from "./MathTool";
 import { DesignTool } from "./DesignTool";
 import { SecurityTool } from "./SecurityTool";
@@ -16,6 +17,7 @@ import { MediaTool } from "./MediaTool";
 
 export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntries(
   GENERAL_TOOLS.map((tool) => [tool.slug, () => {
+    if (tool.config?.operation) return <ConfiguredTool tool={tool} />;
     if (tool.category === "desarrollo") return <DevTool tool={tool} />;
     if (tool.kind === "image" || tool.kind === "pdf") return <MediaTool tool={tool} />;
     if (tool.kind === "generator") return <GeneratorTool tool={tool} />;
