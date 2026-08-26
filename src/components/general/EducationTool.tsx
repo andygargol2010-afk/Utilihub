@@ -36,6 +36,7 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
     const requestedSeconds = clamp(Number.parseInt(seconds, 10) || 60, 5, 3600);
     const base = generateEducationTest(String(tool.config?.topic ?? ""), level, difficulty, requested);
     const next = randomize ? [...base].sort(() => Math.random() - 0.5) : base;
+    const now = Date.now();
 
     setCount(String(requested));
     setSeconds(String(requestedSeconds));
@@ -45,8 +46,8 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
     setCompleted(false);
     setTimedOut(false);
     setElapsedSeconds(0);
-    startedAtRef.current = Date.now();
-    deadlineRef.current = challenge ? Date.now() + requestedSeconds * 1000 : null;
+    startedAtRef.current = now;
+    deadlineRef.current = challenge ? now + requestedSeconds * 1000 : null;
     setRemaining(challenge ? requestedSeconds : 0);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -59,27 +60,32 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
     setTimedOut(timeout);
     setCompleted(true);
     deadlineRef.current = null;
+    setRemaining(0);
     recordActivity();
   };
 
   useEffect(() => {
-    if (!challenge || !generated.length || completed || !deadlineRef.current) return;
+    if (!challenge || !generated.length || completed) return;
+
+    const limit = clamp(Number.parseInt(seconds, 10) || 60, 5, 3600);
+    if (timeMode === "question") {
+      deadlineRef.current = Date.now() + limit * 1000;
+      setRemaining(limit);
+    } else if (!deadlineRef.current) {
+      deadlineRef.current = Date.now() + limit * 1000;
+      setRemaining(limit);
+    }
+
     const interval = window.setInterval(() => {
       const deadline = deadlineRef.current;
-      if (!deadline) return;
+      if (!deadline || completed) return;
       const next = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
       setRemaining(next);
       if (next === 0) finish(true);
     }, 250);
-    return () => window.clearInterval(interval);
-  }, [challenge, generated.length, completed]);
 
-  useEffect(() => {
-    if (!challenge || timeMode !== "question" || !generated.length || completed || !deadlineRef.current) return;
-    const limit = clamp(Number.parseInt(seconds, 10) || 60, 5, 3600);
-    deadlineRef.current = Date.now() + limit * 1000;
-    setRemaining(limit);
-  }, [current, timeMode, challenge, generated.length, completed, seconds]);
+    return () => window.clearInterval(interval);
+  }, [challenge, timeMode, current, generated.length, completed, seconds]);
 
   const score = generated.reduce((total, question, index) => total + (submitted[index] === question.answer ? 1 : 0), 0);
   const answered = Object.keys(submitted).filter((key) => submitted[Number(key)] >= 0).length;
