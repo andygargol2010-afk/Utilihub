@@ -20,10 +20,10 @@ const TIMERS = new Set(["cronometro", "cuenta-regresiva", "pomodoro", "temporiza
 
 export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntries(
   GENERAL_TOOLS.map((tool) => [tool.slug, () => {
+    if (tool.category === "desarrollo") return <DevTool tool={tool} />;
+    if (tool.kind === "image" || tool.kind === "pdf") return <MediaTool tool={tool} />;
     if (tool.kind === "generator") return <GeneratorTool tool={tool} />;
     if (tool.kind === "text") return <TextTool tool={tool} />;
-    if (tool.kind === "image" || tool.kind === "pdf") return <MediaTool tool={tool} />;
-    if (tool.category === "desarrollo") return <DevTool tool={tool} />;
     if (tool.kind === "time") return <TimeTool tool={tool} />;
     if (tool.category === "educacion") return <EducationTool tool={tool} />;
     if (tool.category === "diseno") return <DesignTool tool={tool} />;
