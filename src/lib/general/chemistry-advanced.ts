@@ -18,7 +18,7 @@ export const CHEMISTRY_ADVANCED_TOOLS=[
  t("poh","pOH","Calcula el pOH a partir de la concentración de iones hidróxido.",["[OH⁻] (mol/L)"],"poh"),
  t("pka-pkb","pKa / pKb","Calcula pKa o pKb a partir de la constante de disociación.",["Ka o Kb"],"pka-pkb"),
  t("henderson-hasselbalch","Henderson-Hasselbalch","Calcula el pH de un tampón a partir de pKa y la relación base/ácido.",["pKa","Base conjugada","Ácido"],"henderson-hasselbalch"),
- t("masa-molecular","Masa molecular","Calcula la masa molar de un compuesto a partir de masa y cantidad de sustancia.",["Masa (g)","Moles"],"molecular-mass"),
+ t("masa-molecular","Masa molecular","Calcula la masa molar de un compuesto a partir de su fórmula química.",["Fórmula química"],"molecular-formula"),
  t("gases-ideales","Ley de gases ideales","Calcula la presión usando PV=nRT.",["Moles","Temperatura (K)","Volumen (L)"],"ideal-gas"),
  t("presion-parcial","Presión parcial","Calcula la presión parcial de un gas usando su fracción molar y la presión total.",["Fracción molar","Presión total"],"partial-pressure"),
 ];
