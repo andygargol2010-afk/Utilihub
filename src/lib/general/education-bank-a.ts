@@ -1,3 +1,4 @@
+// Education bank source; GitHub Actions expands each topic to 20 unique questions after validation.
 import type { EducationDifficulty, EducationLevel } from "./education-engine";
 
 type Q={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
