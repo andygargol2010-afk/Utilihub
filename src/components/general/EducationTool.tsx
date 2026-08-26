@@ -3,14 +3,31 @@ import type { GeneralTool } from "@/lib/general/types";
 import { generateEducationTest, type EducationDifficulty, type EducationLevel } from "@/lib/general/education-engine";
 import { useDailyStreak } from "@/hooks/use-daily-streak";
 
+type Generated = ReturnType<typeof generateEducationTest>;
+
+const shuffle = <T,>(items: T[]) => {
+  const next = [...items];
+  for (let i = next.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [next[i], next[j]] = [next[j], next[i]];
+  }
+  return next;
+};
+
 export function EducationTool({ tool }: { tool: GeneralTool }) {
+  const config = tool.config ?? {};
+  const seriesTopics = Array.isArray(config.topics) ? config.topics.filter((value): value is string => typeof value === "string" && value.length > 0) : [];
+  const isSeries = seriesTopics.length > 0;
+  const subjectName = String(config.subjectName ?? config.subject ?? "");
+  const topic = String(config.topic ?? "").replaceAll("-", " ");
+  const seriesTitle = String(config.seriesTitle ?? "");
   const [level, setLevel] = useState<EducationLevel>("secundaria");
   const [difficulty, setDifficulty] = useState<EducationDifficulty>("media");
-  const [count, setCount] = useState("10");
+  const [count, setCount] = useState(() => String(Math.min(isSeries ? 10 : 50, Math.max(1, Number(config.count) || 10))));
   const [challenge, setChallenge] = useState(false);
   const [mode, setMode] = useState<"global" | "question">("global");
   const [seconds, setSeconds] = useState("60");
-  const [generated, setGenerated] = useState<ReturnType<typeof generateEducationTest>>([]);
+  const [generated, setGenerated] = useState<Generated>([]);
   const [submitted, setSubmitted] = useState<Record<number, number>>({});
   const [current, setCurrent] = useState(0);
   const [remaining, setRemaining] = useState(0);
@@ -20,12 +37,21 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
   const startedAtRef = useRef<number | null>(null);
   const deadlineRef = useRef<number | null>(null);
   const { streak, recordActivity } = useDailyStreak();
-  const subject = String(tool.config?.subject ?? "");
-  const topic = String(tool.config?.topic ?? "").replaceAll("-", " ");
-  const title = useMemo(() => `${subject} · ${topic}`, [subject, topic]);
+  const title = useMemo(() => isSeries ? `${subjectName} · ${seriesTitle}` : `${subjectName} · ${topic}`, [isSeries, subjectName, seriesTitle, topic]);
 
   const generate = () => {
-    const next = generateEducationTest(String(tool.config?.topic ?? ""), level, difficulty, Number(count));
+    const requested = Math.min(isSeries ? 10 : 50, Math.max(1, Number(count) || 10));
+    let next: Generated;
+
+    if (isSeries) {
+      const perTopic = Math.max(1, Math.ceil(requested / seriesTopics.length));
+      const pool = seriesTopics.flatMap((seriesTopic) => generateEducationTest(seriesTopic, level, difficulty, perTopic));
+      const unique = Array.from(new Map(pool.map((question) => [question.text, question])).values());
+      next = shuffle(unique).slice(0, requested);
+    } else {
+      next = generateEducationTest(String(config.topic ?? ""), level, difficulty, requested);
+    }
+
     const limit = Math.max(5, Math.min(3600, Number(seconds) || 60));
     setGenerated(next);
     setSubmitted({});
@@ -50,7 +76,6 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
     recordActivity();
   };
 
-  // One interval per active challenge. The deadline is stable while the test runs.
   useEffect(() => {
     if (!challenge || !generated.length || completed || !deadlineRef.current) return;
     const interval = window.setInterval(() => {
@@ -77,11 +102,17 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
   const speed = elapsedSeconds > 0 ? Math.round((answered / elapsedSeconds) * 60) : 0;
 
   return <div className="space-y-5">
-    <div className="rounded-xl border bg-muted/30 p-4"><p className="font-semibold">{title}</p><p className="text-sm text-muted-foreground">Configura el nivel, dificultad y cantidad. UtiliHub genera automáticamente el test.</p></div>
+    <div className="rounded-xl border bg-muted/30 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="font-semibold">{title}</p>
+        {isSeries && <span className="rounded-full border px-2.5 py-1 text-xs font-semibold">Serie de 10 preguntas</span>}
+      </div>
+      <p className="text-sm text-muted-foreground">{isSeries ? `Repaso mixto de ${subjectName}: ${seriesTopics.map((item) => item.replaceAll("-", " ")).join(", ")}.` : "Configura el nivel, dificultad y cantidad. UtiliHub genera automáticamente el test."}</p>
+    </div>
     <div className="grid gap-4 sm:grid-cols-3">
       <label className="space-y-1"><span className="text-sm font-medium">Nivel educativo</span><select name="nivel" data-share-param="nivel" value={level} onChange={e => setLevel(e.target.value as EducationLevel)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="primaria">Primaria</option><option value="secundaria">Secundaria</option><option value="universidad">Universidad</option></select></label>
       <label className="space-y-1"><span className="text-sm font-medium">Dificultad</span><select name="dificultad" data-share-param="dificultad" value={difficulty} onChange={e => setDifficulty(e.target.value as EducationDifficulty)} className="h-11 w-full rounded-xl border bg-background px-3"><option value="facil">Fácil</option><option value="media">Media</option><option value="dificil">Difícil</option></select></label>
-      <label className="space-y-1"><span className="text-sm font-medium">Cantidad de preguntas</span><input name="cantidad" data-share-param="cantidad" type="number" min="1" max="50" value={count} onChange={e => setCount(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3" /></label>
+      <label className="space-y-1"><span className="text-sm font-medium">Cantidad de preguntas</span><input name="cantidad" data-share-param="cantidad" type="number" min="1" max={isSeries ? 10 : 50} value={count} onChange={e => setCount(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3" /></label>
     </div>
     <div className="rounded-xl border p-4 space-y-4"><label className="flex items-center gap-3"><input type="checkbox" checked={challenge} onChange={e => setChallenge(e.target.checked)} /><span className="font-semibold">Modo desafío contrarreloj</span></label>{challenge && <div className="grid gap-4 sm:grid-cols-2"><label className="space-y-1"><span className="text-sm font-medium">Tiempo</span><select name="modo-tiempo" data-share-param="modo-tiempo" value={mode} onChange={e => setMode(e.target.value as "global" | "question")} className="h-11 w-full rounded-xl border bg-background px-3"><option value="global">Por test</option><option value="question">Por pregunta</option></select></label><label className="space-y-1"><span className="text-sm font-medium">Segundos</span><input name="segundos" data-share-param="segundos" type="number" min="5" max="3600" value={seconds} onChange={e => setSeconds(e.target.value)} className="h-11 w-full rounded-xl border bg-background px-3" /></label></div>}</div>
     <button onClick={generate} className="w-full rounded-xl bg-primary px-4 py-3 font-bold text-primary-foreground">Generar test</button>
