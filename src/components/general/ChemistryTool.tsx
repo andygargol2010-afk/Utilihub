@@ -39,33 +39,36 @@ export function ChemistryTool({tool}:{tool:GeneralTool}){
  const [out,setOut]=useState("");
  const calculate=()=>{
   const v=values.map(n);
-  if(v.some((x)=>!Number.isFinite(x))){setOut("Introduce todos los valores requeridos.");return;}
+  const x=v[0]??NaN;
+  const y=v[1]??NaN;
+  const z=v[2]??NaN;
+  if(v.some((value)=>!Number.isFinite(value))){setOut("Introduce todos los valores requeridos.");return;}
   let result="";
   switch(tool.slug){
-   case "molaridad": if(!positive(v[1])){setOut("El volumen debe ser mayor que cero.");return;} result=`Molaridad: ${format(v[0]/v[1])} mol/L`;break;
-   case "molalidad": if(!positive(v[1])){setOut("La masa del disolvente debe ser mayor que cero.");return;} result=`Molalidad: ${format(v[0]/v[1])} mol/kg`;break;
-   case "moles-desde-masa": if(!positive(v[1])){setOut("La masa molar debe ser mayor que cero.");return;} result=`Cantidad de sustancia: ${format(v[0]/v[1])} mol`;break;
-   case "masa-desde-moles": result=`Masa: ${format(v[0]*v[1])} g`;break;
-   case "particulas-desde-moles": result=`Partículas: ${v[0]*A}`;break;
-   case "moles-desde-particulas": result=`Cantidad de sustancia: ${format(v[0]/A)} mol`;break;
-   case "porcentaje-masa": if(!positive(v[1])){setOut("La masa total debe ser mayor que cero.");return;} result=`Porcentaje en masa: ${format(v[0]/v[1]*100)} %`;break;
-   case "porcentaje-volumen": if(!positive(v[1])){setOut("El volumen total debe ser mayor que cero.");return;} result=`Porcentaje en volumen: ${format(v[0]/v[1]*100)} %`;break;
-   case "ppm-quimica": if(!positive(v[1])){setOut("El volumen debe ser mayor que cero.");return;} result=`Concentración: ${format(v[0]/v[1])} ppm`;break;
-   case "ph-quimica": if(!positive(v[0])){setOut("La concentración de H+ debe ser mayor que cero.");return;} result=`pH: ${format(-Math.log10(v[0]))}`;break;
-   case "poh-quimica": if(!positive(v[0])){setOut("La concentración de OH− debe ser mayor que cero.");return;} result=`pOH: ${format(-Math.log10(v[0]))}`;break;
-   case "concentracion-h-desde-ph": result=`[H+]: ${v[0]===0?"1":format(10**(-v[0]))} mol/L`;break;
-   case "concentracion-oh-desde-poh": result=`[OH−]: ${format(10**(-v[0]))} mol/L`;break;
-   case "pka-desde-ka": if(!positive(v[0])){setOut("Ka debe ser mayor que cero.");return;} result=`pKa: ${format(-Math.log10(v[0]))}`;break;
-   case "ka-desde-pka": result=`Ka: ${format(10**(-v[0]))}`;break;
-   case "gas-ideal-presion": if(!positive(v[1])||!positive(v[2])){setOut("Temperatura y volumen deben ser mayores que cero.");return;} result=`Presión: ${format(v[0]*R*v[1]/v[2])} Pa`;break;
-   case "gas-ideal-volumen": if(!positive(v[1])||!positive(v[2])){setOut("Temperatura y presión deben ser mayores que cero.");return;} result=`Volumen: ${format(v[0]*R*v[1]/v[2])} m³`;break;
-   case "gas-ideal-moles": if(!positive(v[0])||!positive(v[1])||!positive(v[2])){setOut("Presión, volumen y temperatura deben ser mayores que cero.");return;} result=`Cantidad de sustancia: ${format(v[0]*v[1]/(R*v[2]))} mol`;break;
-   case "densidad-quimica": if(!positive(v[1])){setOut("El volumen debe ser mayor que cero.");return;} result=`Densidad: ${format(v[0]/v[1])} g/mL`;break;
-   case "fraccion-molar": if(!positive(v[1])){setOut("Los moles totales deben ser mayores que cero.");return;} result=`Fracción molar: ${format(v[0]/v[1])}`;break;
-   case "dilucion": if(!positive(v[2])){setOut("La concentración final debe ser mayor que cero.");return;} result=`Volumen final V2: ${format(v[0]*v[1]/v[2])} L`;break;
+   case "molaridad": if(!positive(y)){setOut("El volumen debe ser mayor que cero.");return;} result=`Molaridad: ${format(x/y)} mol/L`;break;
+   case "molalidad": if(!positive(y)){setOut("La masa del disolvente debe ser mayor que cero.");return;} result=`Molalidad: ${format(x/y)} mol/kg`;break;
+   case "moles-desde-masa": if(!positive(y)){setOut("La masa molar debe ser mayor que cero.");return;} result=`Cantidad de sustancia: ${format(x/y)} mol`;break;
+   case "masa-desde-moles": result=`Masa: ${format(x*y)} g`;break;
+   case "particulas-desde-moles": result=`Partículas: ${format(x*A)}`;break;
+   case "moles-desde-particulas": result=`Cantidad de sustancia: ${format(x/A)} mol`;break;
+   case "porcentaje-masa": if(!positive(y)){setOut("La masa total debe ser mayor que cero.");return;} result=`Porcentaje en masa: ${format(x/y*100)} %`;break;
+   case "porcentaje-volumen": if(!positive(y)){setOut("El volumen total debe ser mayor que cero.");return;} result=`Porcentaje en volumen: ${format(x/y*100)} %`;break;
+   case "ppm-quimica": if(!positive(y)){setOut("El volumen debe ser mayor que cero.");return;} result=`Concentración: ${format(x/y)} ppm`;break;
+   case "ph-quimica": if(!positive(x)){setOut("La concentración de H+ debe ser mayor que cero.");return;} result=`pH: ${format(-Math.log10(x))}`;break;
+   case "poh-quimica": if(!positive(x)){setOut("La concentración de OH− debe ser mayor que cero.");return;} result=`pOH: ${format(-Math.log10(x))}`;break;
+   case "concentracion-h-desde-ph": result=`[H+]: ${format(10**(-x))} mol/L`;break;
+   case "concentracion-oh-desde-poh": result=`[OH−]: ${format(10**(-x))} mol/L`;break;
+   case "pka-desde-ka": if(!positive(x)){setOut("Ka debe ser mayor que cero.");return;} result=`pKa: ${format(-Math.log10(x))}`;break;
+   case "ka-desde-pka": result=`Ka: ${format(10**(-x))}`;break;
+   case "gas-ideal-presion": if(!positive(y)||!positive(z)){setOut("Temperatura y volumen deben ser mayores que cero.");return;} result=`Presión: ${format(x*R*y/z)} Pa`;break;
+   case "gas-ideal-volumen": if(!positive(y)||!positive(z)){setOut("Temperatura y presión deben ser mayores que cero.");return;} result=`Volumen: ${format(x*R*y/z)} m³`;break;
+   case "gas-ideal-moles": if(!positive(x)||!positive(y)||!positive(z)){setOut("Presión, volumen y temperatura deben ser mayores que cero.");return;} result=`Cantidad de sustancia: ${format(x*y/(R*z))} mol`;break;
+   case "densidad-quimica": if(!positive(y)){setOut("El volumen debe ser mayor que cero.");return;} result=`Densidad: ${format(x/y)} g/mL`;break;
+   case "fraccion-molar": if(!positive(y)){setOut("Los moles totales deben ser mayores que cero.");return;} result=`Fracción molar: ${format(x/y)}`;break;
+   case "dilucion": if(!positive(z)){setOut("La concentración final debe ser mayor que cero.");return;} result=`Volumen final V2: ${format(x*y/z)} L`;break;
    default: result="Herramienta de química sin fórmula configurada.";
   }
   setOut(result);
  };
- return <div className="space-y-4"><div className={`grid gap-4 ${fs.length>2?"sm:grid-cols-3":"sm:grid-cols-2"}`}>{fs.map((f,i)=><label key={f.label} className="space-y-1"><span className="text-sm font-medium">{f.label}</span><div className="flex"><input value={values[i]||""} onChange={e=>setValues(current=>current.map((x,j)=>j===i?e.target.value:x))} placeholder={f.placeholder} type="number" inputMode="decimal" className="h-11 min-w-0 flex-1 rounded-l-xl border bg-background px-3"/><span className="flex h-11 items-center rounded-r-xl border border-l-0 bg-muted px-3 text-xs font-medium">{f.unit}</span></div></label>)}</div><button className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground" onClick={calculate}>Calcular</button>{out&&<output className="block whitespace-pre-wrap rounded-xl border bg-muted/30 p-4">{out}</output>}</div>;
+ return <div className="space-y-4"><div className={`grid gap-4 ${fs.length>2?"sm:grid-cols-3":"sm:grid-cols-2"}`}>{fs.map((f,i)=><label key={f.label} className="space-y-1"><span className="text-sm font-medium">{f.label}</span><div className="flex"><input value={values[i]||""} onChange={e=>setValues(current=>current.map((value,j)=>j===i?e.target.value:value))} placeholder={f.placeholder} type="number" inputMode="decimal" className="h-11 min-w-0 flex-1 rounded-l-xl border bg-background px-3"/><span className="flex h-11 items-center rounded-r-xl border border-l-0 bg-muted px-3 text-xs font-medium">{f.unit}</span></div></label>)}</div><button className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground" onClick={calculate}>Calcular</button>{out&&<output className="block whitespace-pre-wrap rounded-xl border bg-muted/30 p-4">{out}</output>}</div>;
 }
