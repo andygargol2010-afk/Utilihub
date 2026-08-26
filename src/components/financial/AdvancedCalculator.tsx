@@ -1,22 +1,44 @@
 import { useState } from "react";
-import type { FinancialDefinition } from "@/lib/financial/types";
+import type { FinancialDefinition, FinancialResult } from "@/lib/financial/types";
 
 export function AdvancedCalculator({ definition }: { definition: FinancialDefinition }) {
   const initial = Object.fromEntries(definition.fields.map((f) => [f.key, f.defaultValue]));
   const [values, setValues] = useState<Record<string, number>>(initial);
-  const [ran, setRan] = useState(false);
-  const results = ran ? definition.calculate(values) : [];
+  const [results, setResults] = useState<FinancialResult[]>([]);
+  const [error, setError] = useState("");
+
+  const run = () => {
+    try {
+      for (const field of definition.fields) {
+        const value = values[field.key];
+        if (!Number.isFinite(value)) throw new Error(`Introduce un valor válido para «${field.label}».`);
+        if (field.min !== undefined && value < field.min) {
+          throw new Error(`«${field.label}» debe ser como mínimo ${field.min}.`);
+        }
+      }
+      const next = definition.calculate(values);
+      if (next.some((r) => !r.value || r.value.includes("NaN") || r.value.includes("Infinity"))) {
+        throw new Error("No se pudo obtener un resultado válido con esos valores.");
+      }
+      setResults(next);
+      setError("");
+    } catch (e) {
+      setResults([]);
+      setError(e instanceof Error ? e.message : "No se pudo calcular el resultado.");
+    }
+  };
 
   return <div className="space-y-6">
     <div className="grid gap-4 sm:grid-cols-2">
       {definition.fields.map((field) => <label key={field.key} className="space-y-2">
         <span className="text-sm font-semibold">{field.label}{field.unit ? ` (${field.unit})` : ""}</span>
-        <input type="number" name={field.key} data-share-param={field.key} data-export-field={field.label} inputMode="decimal" min={field.min} step={field.step ?? "any"} value={values[field.key]}
-          onChange={(e) => setValues((v) => ({ ...v, [field.key]: Number(e.target.value) }))}
+        <input type="number" name={field.key} data-share-param={field.key} data-export-field={field.label} inputMode="decimal" min={field.min} step={field.step ?? "any"} value={Number.isNaN(values[field.key]) ? "" : values[field.key]}
+          onChange={(e) => setValues((v) => ({ ...v, [field.key]: e.target.value === "" ? Number.NaN : Number(e.target.value) }))}
           className="h-11 w-full rounded-xl border border-border bg-background px-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/15" />
       </label>)}
     </div>
-    <button type="button" onClick={() => setRan(true)} className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Calcular</button>
+    <button type="button" onClick={run} className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Calcular</button>
+    {error && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">{error}</p>}
     {results.length > 0 && <div data-export-result className="grid gap-3 sm:grid-cols-2">
       {results.map((r) => <div key={r.label} className="rounded-xl border border-border bg-muted/30 p-4"><p className="text-xs font-semibold text-muted-foreground">{r.label}</p><p className="mt-1 text-xl font-black">{r.value}</p></div>)}
     </div>}
