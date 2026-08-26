@@ -3,7 +3,7 @@ export type EducationDifficulty="facil"|"media"|"dificil";
 export type GeneratedQuestion={text:string;options:string[];answer:number};
 
 type Q={text:string;options:string[];answer:string};
-const BANK:Record<string,Q[]>= {
+const BANK:Record<string,Q[]>={
  aritmetica:[q("¿Cuál es el resultado de 24 + 18?",["42","40","44","46"],"42"),q("¿Cuál es el resultado de 7 × 8?",["56","48","54","64"],"56")],
  algebra:[q("Si 3x = 21, ¿cuánto vale x?",["7","6","8","9"],"7"),q("¿Cuál es el resultado de x + 5 = 12?",["7","5","17","-7"],"7")],
  geometria:[q("¿Cuál es el área de un rectángulo de 8 cm × 5 cm?",["40 cm²","26 cm²","13 cm²","80 cm²"],"40 cm²"),q("¿Cuántos grados suman los ángulos interiores de un triángulo?",["180°","90°","270°","360°"],"180°")],
