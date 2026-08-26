@@ -16,6 +16,7 @@ export type FinancialDefinition = {
   note?: string;
 };
 
-export const money = (n: number) => new Intl.NumberFormat("es-AR", { maximumFractionDigits: 2 }).format(Number.isFinite(n) ? n : 0);
-export const pct = (n: number) => `${money(n)} %`;
+const format = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 2 });
+export const money = (n: number) => Number.isFinite(n) ? format.format(n) : "Resultado no válido";
+export const pct = (n: number) => Number.isFinite(n) ? `${format.format(n)} %` : "Resultado no válido";
 export const num = (n: number) => money(n);
