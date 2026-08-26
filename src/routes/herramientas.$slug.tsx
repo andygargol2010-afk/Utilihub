@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { TOOL_UI } from "@/components/tools/registry";
@@ -27,6 +28,7 @@ function ToolPage() {
   const category = ALL_CATEGORIES.find((item) => item.slug === tool.category);
   const related = allToolsByCategory(tool.category).filter((item) => item.slug !== tool.slug).slice(0, 8);
   const ui = TOOL_UI[tool.slug] ?? GENERAL_TOOL_UI[tool.slug];
+  useEffect(() => { record(tool); }, [record, tool]);
   if (!category) return <p className="container-page py-10">Herramienta no disponible.</p>;
 
   return <div className="container-page py-10">
@@ -34,11 +36,5 @@ function ToolPage() {
     <div className="mt-4 flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold sm:text-4xl">{tool.name}</h1><p className="mt-3 max-w-2xl text-muted-foreground">{tool.summary}</p></div><FavoriteButton slug={tool.slug} name={tool.name} /></div>
     <section data-tool-surface aria-label={`Herramienta: ${tool.name}`} className="surface-card mt-8 p-5 sm:p-7">{ui ? ui() : <div role="alert" className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-muted-foreground">Esta herramienta no está disponible en este momento.</div>}<ShareAndExportActions title={tool.name} /></section>
     <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]"><div className="space-y-10"><section><h2 className="text-2xl font-semibold">Cómo funciona</h2>{tool.about.map((paragraph, index) => <p key={index} className="mt-3 leading-relaxed text-muted-foreground">{paragraph}</p>)}</section><section><h2 className="text-2xl font-semibold">Cómo usar {tool.name.toLowerCase()}</h2><ol className="mt-4 space-y-3">{tool.steps.map((step, index) => <li key={index} className="flex gap-3"><span className="grid size-6 shrink-0 place-items-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">{index + 1}</span><span className="text-muted-foreground">{step}</span></li>)}</ol></section>{tool.faq?.length ? <section><h2 className="text-2xl font-semibold">Preguntas frecuentes</h2><dl className="mt-4 divide-y divide-border">{tool.faq.map((faq) => <div key={faq.q} className="py-4"><dt className="font-medium">{faq.q}</dt><dd className="mt-1 text-muted-foreground">{faq.a}</dd></div>)}</dl></section> : null}</div><aside className="space-y-4"><h2 className="text-lg font-semibold">Herramientas relacionadas</h2>{related.map((item) => <ToolCard key={item.slug} tool={item} />)}<a href={`/categoria/${category.slug}`} className="inline-block text-sm font-medium text-primary hover:underline">Ver toda la categoría {category.name} →</a></aside></div>
-    <RecentMarker record={record} tool={tool} />
   </div>;
-}
-
-function RecentMarker({ record, tool }: { record: (tool: { slug: string; name: string }) => void; tool: { slug: string; name: string } }) {
-  useEffect(() => { record(tool); }, [record, tool]);
-  return null;
 }
