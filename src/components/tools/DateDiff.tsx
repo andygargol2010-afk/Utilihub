@@ -6,12 +6,28 @@ const DAY = 86_400_000;
 const iso = (date: Date) => date.toISOString().slice(0, 10);
 const utcDate = (value: string) => new Date(`${value}T00:00:00Z`);
 
+/** Adds calendar months while clamping the day to the last valid day. */
+function addMonths(date: Date, months: number) {
+  const result = new Date(date);
+  const targetMonth = result.getUTCMonth() + months;
+  result.setUTCDate(1);
+  result.setUTCMonth(targetMonth);
+  const lastDay = new Date(Date.UTC(result.getUTCFullYear(), result.getUTCMonth() + 1, 0)).getUTCDate();
+  result.setUTCDate(Math.min(date.getUTCDate(), lastDay));
+  return result;
+}
+
 function ymd(from: Date, to: Date) {
-  let years = to.getUTCFullYear() - from.getUTCFullYear();
-  let months = to.getUTCMonth() - from.getUTCMonth();
-  let days = to.getUTCDate() - from.getUTCDate();
-  if (days < 0) { months--; days += new Date(Date.UTC(to.getUTCFullYear(), to.getUTCMonth(), 0)).getUTCDate(); }
-  if (months < 0) { years--; months += 12; }
+  const totalMonths = (to.getUTCFullYear() - from.getUTCFullYear()) * 12 + (to.getUTCMonth() - from.getUTCMonth());
+  let months = totalMonths;
+  let anchor = addMonths(from, months);
+  if (anchor > to) {
+    months -= 1;
+    anchor = addMonths(from, months);
+  }
+  const years = Math.floor(months / 12);
+  months %= 12;
+  const days = Math.round((to.getTime() - anchor.getTime()) / DAY);
   return { years, months, days };
 }
 
