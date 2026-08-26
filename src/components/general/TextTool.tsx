@@ -14,13 +14,9 @@ const toCamel = (value: string): string => {
 };
 const toPascal = (value: string): string => toWords(value).map((part) => part[0]?.toUpperCase() + part.slice(1)).join("");
 const escapeHtml = (value: string): string => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;");
+const extractUrls = (text: string): string[] => [...new Set((text.match(/https?:\/\/[^\s<>"']+/gi) ?? []).map((url) => url.replace(/[),.;!?]+$/g, "")))];
 
-const extractUrls = (text: string): string[] => {
-  const matches = text.match(/https?:\/\/[^\s<>"']+/gi) ?? [];
-  return [...new Set(matches.map((url) => url.replace(/[),.;!?]+$/g, "")))];
-};
-
-const processText = (slug: string, text: string): string => {
+const processText = (slug: string, text: string, readingWpm = 200): string => {
   if (!slug.trim()) throw new Error("No se puede procesar texto sin un slug de herramienta.");
   switch (slug) {
     case "contador-de-caracteres": return `Caracteres Unicode: ${[...text].length} · Unidades UTF-16: ${text.length} · Sin espacios: ${[...text].filter((character) => !/\s/u.test(character)).length}`;
@@ -44,6 +40,33 @@ const processText = (slug: string, text: string): string => {
     case "limpiar-texto": return text.replace(/[“”]/g, '"').replace(/[‘’]/g, "'").replace(/\r\n|\r/g, "\n").replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim();
     case "texto-a-lista": return text.split(/\r\n|\r|\n/).map((item) => item.trim()).filter(Boolean).join(", ");
     case "lista-a-texto": return text.split(",").map((item) => item.trim()).filter(Boolean).join("\n");
+    case "frecuencia-palabras": {
+      const counts = new Map<string, number>();
+      for (const word of toWords(text)) counts.set(word, (counts.get(word) ?? 0) + 1);
+      if (!counts.size) return "No se encontraron palabras.";
+      return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([word, count]) => `${word}: ${count}`).join("\n");
+    }
+    case "palabras-duplicadas": {
+      const normalized = toWords(text);
+      const counts = new Map<string, number>();
+      for (const word of normalized) counts.set(word, (counts.get(word) ?? 0) + 1);
+      const repeated = [...counts.entries()].filter(([, count]) => count > 1).sort((a, b) => b[1] - a[1]);
+      return repeated.length ? repeated.map(([word, count]) => `${word}: ${count}`).join("\n") : "No hay palabras repetidas.";
+    }
+    case "tiempo-lectura": {
+      if (!Number.isFinite(readingWpm) || readingWpm <= 0) throw new Error("La velocidad de lectura debe ser mayor que cero.");
+      const count = words(text).length;
+      const minutes = count / readingWpm;
+      return `Palabras: ${count} · Velocidad: ${readingWpm} palabras/min · Tiempo estimado: ${minutes < 1 ? `${Math.max(1, Math.ceil(minutes * 60))} s` : `${minutes.toFixed(1)} min`}`;
+    }
+    case "estadisticas-texto": {
+      const tokenList = words(text);
+      const chars = [...text].length;
+      const lineCount = text ? text.split(/\r\n|\r|\n/).length : 0;
+      const sentenceCount = text.trim() ? text.trim().split(/[.!?]+(?:\s+|$)/).filter(Boolean).length : 0;
+      const avg = tokenList.length ? tokenList.reduce((sum, word) => sum + [...word].length, 0) / tokenList.length : 0;
+      return `Palabras: ${tokenList.length}\nCaracteres Unicode: ${chars}\nLíneas: ${lineCount}\nFrases: ${sentenceCount}\nLongitud media de palabra: ${avg.toFixed(2)} caracteres`;
+    }
     case "markdown-tabla": {
       const rows = text.split(/\r\n|\r|\n/).filter((row) => row.length > 0).map((row) => row.split("\t"));
       const header = rows[0];
@@ -53,62 +76,29 @@ const processText = (slug: string, text: string): string => {
       return `| ${header.join(" | ")} |\n| ${header.map(() => "---").join(" | ")} |\n${rows.slice(1).map((row) => `| ${row.join(" | ")} |`).join("\n")}`;
     }
     case "markdown-a-html": return escapeHtml(text).replace(/^### (.+)$/gm, "<h3>$1</h3>").replace(/^## (.+)$/gm, "<h2>$1</h2>").replace(/^# (.+)$/gm, "<h1>$1</h1>").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>").replace(/\n/g, "<br>");
-    case "html-a-texto": {
-      const document = new DOMParser().parseFromString(text, "text/html");
-      return document.body.textContent ?? "";
-    }
+    case "html-a-texto": return new DOMParser().parseFromString(text, "text/html").body.textContent ?? "";
     case "checklist": return text.split(/\r\n|\r|\n/).filter((item) => item.trim()).map((item) => `- [ ] ${item}`).join("\n");
     default: throw new Error(`Herramienta de texto sin implementación específica: ${slug}`);
   }
 };
 
 const diffLines = (first: string, second: string): string => {
-  const a = first.split(/\r\n|\r|\n/);
-  const b = second.split(/\r\n|\r|\n/);
-  const max = Math.max(a.length, b.length);
+  const a = first.split(/\r\n|\r|\n/); const b = second.split(/\r\n|\r|\n/); const max = Math.max(a.length, b.length);
   return Array.from({ length: max }, (_, index) => a[index] === b[index] ? `  ${a[index] ?? ""}` : `- ${a[index] ?? ""}\n+ ${b[index] ?? ""}`).join("\n");
 };
 
 export function TextTool({ tool }: { tool: GeneralTool }) {
-  const [text, setText] = useState("");
-  const [secondary, setSecondary] = useState("");
-  const [replacement, setReplacement] = useState("");
-  const [out, setOut] = useState("");
-  const [copied, setCopied] = useState(false);
+  const [text, setText] = useState(""); const [secondary, setSecondary] = useState(""); const [replacement, setReplacement] = useState(""); const [readingWpm, setReadingWpm] = useState("200"); const [out, setOut] = useState(""); const [copied, setCopied] = useState(false);
   const count = useMemo(() => ({ words: words(text).length, chars: [...text].length, lines: text ? text.split(/\r\n|\r|\n/).length : 0 }), [text]);
-
-  const run = () => {
-    try {
-      if (tool.slug === "lorem-ipsum") setOut(generateBySlug(tool.slug));
-      else if (tool.slug === "buscar-reemplazar") {
-        if (!secondary) throw new Error("Introduce el texto que deseas buscar.");
-        setOut(text.split(secondary).join(replacement));
-      } else if (tool.slug === "diferencia-textos") setOut(diffLines(text, secondary));
-      else setOut(processText(tool.slug, text));
-    } catch (error) {
-      setOut(error instanceof Error ? error.message : "No se pudo procesar el texto.");
-    }
-  };
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(out);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1000);
-    } catch {
-      setOut("No se pudo copiar el resultado en este navegador.");
-    }
-  };
-
-  return (
-    <div className="space-y-4">
-      <label className="block text-sm font-semibold">Texto de entrada<textarea value={text} onChange={(event) => setText(event.target.value)} className="mt-2 min-h-48 w-full rounded-xl border border-border bg-background p-4" placeholder="Escribe o pega aquí…" /></label>
-      {tool.slug === "buscar-reemplazar" && <label className="block text-sm font-semibold">Texto a buscar<input value={secondary} onChange={(event) => setSecondary(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-border bg-background px-3" /></label>}
-      {tool.slug === "buscar-reemplazar" && <label className="block text-sm font-semibold">Texto de reemplazo<input value={replacement} onChange={(event) => setReplacement(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-border bg-background px-3" /></label>}
-      {tool.slug === "diferencia-textos" && <label className="block text-sm font-semibold">Segundo texto<textarea value={secondary} onChange={(event) => setSecondary(event.target.value)} className="mt-2 min-h-32 w-full rounded-xl border border-border bg-background p-4" /></label>}
-      <div className="flex flex-wrap gap-2"><button onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Procesar</button>{out && <button onClick={copy} className="rounded-xl border px-4 py-2">{copied ? "Copiado" : "Copiar"}</button>}</div>
-      <p className="text-xs text-muted-foreground">{count.words} palabras · {count.chars} caracteres Unicode · {count.lines} líneas</p>
-      {out && <output aria-live="polite" className="block whitespace-pre-wrap break-words rounded-xl border bg-muted/30 p-4">{out}</output>}
-    </div>
-  );
+  const run = () => { try { if (tool.slug === "lorem-ipsum") setOut(generateBySlug(tool.slug)); else if (tool.slug === "buscar-reemplazar") { if (!secondary) throw new Error("Introduce el texto que deseas buscar."); setOut(text.split(secondary).join(replacement)); } else if (tool.slug === "diferencia-textos") setOut(diffLines(text, secondary)); else setOut(processText(tool.slug, text, Number(readingWpm))); } catch (error) { setOut(error instanceof Error ? error.message : "No se pudo procesar el texto."); } };
+  const copy = async () => { try { await navigator.clipboard.writeText(out); setCopied(true); window.setTimeout(() => setCopied(false), 1000); } catch { setOut("No se pudo copiar el resultado en este navegador."); } };
+  return <div className="space-y-4">
+    <label className="block text-sm font-semibold">Texto de entrada<textarea value={text} onChange={(event) => setText(event.target.value)} className="mt-2 min-h-48 w-full rounded-xl border border-border bg-background p-4" placeholder="Escribe o pega aquí…" /></label>
+    {tool.slug === "buscar-reemplazar" && <><label className="block text-sm font-semibold">Texto a buscar<input value={secondary} onChange={(event) => setSecondary(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-border bg-background px-3" /></label><label className="block text-sm font-semibold">Texto de reemplazo<input value={replacement} onChange={(event) => setReplacement(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-border bg-background px-3" /></label></>}
+    {tool.slug === "diferencia-textos" && <label className="block text-sm font-semibold">Segundo texto<textarea value={secondary} onChange={(event) => setSecondary(event.target.value)} className="mt-2 min-h-32 w-full rounded-xl border border-border bg-background p-4" /></label>}
+    {tool.slug === "tiempo-lectura" && <label className="block text-sm font-semibold">Velocidad de lectura (palabras/min)<input type="number" min="1" value={readingWpm} onChange={(event) => setReadingWpm(event.target.value)} className="mt-2 h-11 w-full rounded-xl border border-border bg-background px-3" /></label>}
+    <div className="flex flex-wrap gap-2"><button onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">Procesar</button>{out && <button onClick={copy} className="rounded-xl border px-4 py-2">{copied ? "Copiado" : "Copiar"}</button>}</div>
+    <p className="text-xs text-muted-foreground">{count.words} palabras · {count.chars} caracteres Unicode · {count.lines} líneas</p>
+    {out && <output aria-live="polite" className="block whitespace-pre-wrap break-words rounded-xl border bg-muted/30 p-4">{out}</output>}
+  </div>;
 }
