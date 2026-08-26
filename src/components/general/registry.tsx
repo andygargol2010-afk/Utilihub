@@ -21,6 +21,7 @@ type UiRule = { category?: string; kind?: string; priority?: number; component: 
 
 const UI_RULES: readonly UiRule[] = [
   { category: "educacion", priority: 2, component: EducationTool },
+  { category: "desarrollo", priority: 0, component: GeneralTool },
   { category: "desarrollo", kind: "dev-advanced", priority: 2, component: DevAdvancedTool },
   { category: "diseno", priority: 2, component: DesignTool },
   { category: "seguridad", priority: 2, component: SecurityTool },
@@ -30,6 +31,7 @@ const UI_RULES: readonly UiRule[] = [
   { category: "matematicas", kind: "stats", priority: 2, component: MathTool },
   { category: "matematicas", kind: "number", priority: 2, component: FormulaTool },
   { category: "fechas", priority: 2, component: TimeTool },
+  { category: "productividad", priority: 0, component: GeneralTool },
   { category: "generadores", kind: "image", priority: 2, component: MultimediaAdvancedTool },
   { category: "generadores", kind: "pdf", priority: 2, component: MultimediaAdvancedTool },
   { kind: "timer", priority: 1, component: TimeTool },
