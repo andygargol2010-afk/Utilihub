@@ -1,9 +1,10 @@
+import { memo } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Star } from "lucide-react";
 import { ALL_CATEGORIES, type CatalogTool } from "@/lib/all-tools";
 import { useFavorites } from "@/hooks/use-favorites";
 
-export function ToolCard({ tool, isFavorite: controlledFavorite, onToggleFavorite }: { tool: CatalogTool; isFavorite?: boolean; onToggleFavorite?: (slug: string) => void }) {
+export const ToolCard = memo(function ToolCard({ tool, isFavorite: controlledFavorite, onToggleFavorite }: { tool: CatalogTool; isFavorite?: boolean; onToggleFavorite?: (slug: string) => void }) {
   const { favorites, toggle, ready } = useFavorites();
   const internalFavorite = ready && favorites.includes(tool.slug);
   const isFavorite = onToggleFavorite ? !!controlledFavorite : internalFavorite;
@@ -15,4 +16,4 @@ export function ToolCard({ tool, isFavorite: controlledFavorite, onToggleFavorit
     <h3 className="mt-5 pr-5 text-lg font-bold"><Link to={href as any} params={tool.category === "finanzas" ? undefined : { slug: tool.slug }} className="after:absolute after:inset-0 after:content-[''] group-hover:text-primary">{tool.name}</Link></h3>
     <p className="mt-1.5 line-clamp-2 text-sm leading-5 text-muted-foreground">{tool.summary}</p><span className="mt-auto flex items-center gap-1 pt-5 text-xs font-bold text-primary">Abrir herramienta <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
   </article>;
-}
+});
