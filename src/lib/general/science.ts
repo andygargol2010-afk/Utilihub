@@ -1,7 +1,5 @@
 import { makeTool } from "./types";
-
 const s = (slug: string, name: string, summary: string) => makeTool(slug, name, "ciencia", "science", summary);
-
 export const SCIENCE_TOOLS = [
   s("densidad", "Densidad", "Calcula densidad como masa dividida por volumen."),
   s("velocidad-fisica", "Velocidad física", "Calcula velocidad media como distancia dividida por tiempo."),
@@ -19,4 +17,8 @@ export const SCIENCE_TOOLS = [
   s("ph", "pH", "Calcula pH aproximado a partir de la concentración de iones H⁺."),
   s("temperatura-cientifica", "Temperatura absoluta", "Convierte una temperatura Celsius a Celsius, Kelvin y Fahrenheit."),
   s("gravedad", "Peso y gravedad", "Calcula peso mediante masa por aceleración gravitatoria local."),
+  s("trabajo-mecanico", "Trabajo mecánico", "Calcula trabajo como fuerza aplicada por desplazamiento en la misma dirección."),
+  s("potencia-mecanica", "Potencia mecánica", "Calcula potencia media como trabajo realizado dividido por tiempo."),
+  s("molaridad", "Molaridad", "Calcula concentración molar como cantidad de sustancia dividida por volumen de solución."),
+  s("ley-gases-ideales", "Ley de gases ideales", "Calcula presión, volumen o temperatura de un gas ideal usando PV=nRT."),
 ];
