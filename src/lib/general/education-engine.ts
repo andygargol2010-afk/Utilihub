@@ -3,7 +3,7 @@ export type EducationDifficulty="facil"|"media"|"dificil";
 export type GeneratedQuestion={text:string;options:string[];answer:number};
 
 type Q={text:string;options:string[];answer:string};
-const BANK:Record<string,Q[]>= {
+const BANK:Record<string,Q[]> = {
  aritmetica:[q("¿Cuál es el resultado de 24 + 18?",["42","40","44","46"],"42"),q("¿Cuál es el resultado de 7 × 8?",["56","48","54","64"],"56")],
  algebra:[q("Si 3x = 21, ¿cuánto vale x?",["7","6","8","9"],"7"),q("¿Cuál es el resultado de x + 5 = 12?",["7","5","17","-7"],"7")],
  geometria:[q("¿Cuál es el área de un rectángulo de 8 cm × 5 cm?",["40 cm²","26 cm²","13 cm²","80 cm²"],"40 cm²"),q("¿Cuántos grados suman los ángulos interiores de un triángulo?",["180°","90°","270°","360°"],"180°")],
@@ -60,7 +60,6 @@ const BANK:Record<string,Q[]>= {
  "filosofia-politica":[q("¿Qué analiza la filosofía política?",["Poder, Estado, justicia y organización social","Solo arte","Solo química","Solo gramática"],"Poder, Estado, justicia y organización social"),q("¿Qué concepto se relaciona con la legitimidad del poder?",["Autoridad","Fotosíntesis","Densidad","Morfología"],"Autoridad")],
  "historia-filosofia":[q("¿Qué periodo incluye a Sócrates, Platón y Aristóteles?",["Filosofía antigua","Filosofía medieval","Filosofía contemporánea","Filosofía posmoderna"],"Filosofía antigua"),q("¿Quién escribió 'La República'?",["Platón","Aristóteles","Descartes","Kant"],"Platón")],
  materia:[q("¿Cuál es un estado de la materia?",["Sólido","Gravedad","Velocidad","Energía"],"Sólido"),q("¿Qué cambio pasa de sólido a líquido?",["Fusión","Evaporación","Condensación","Sublimación"],"Fusión")],
- energia:[q("¿Qué unidad corresponde a energía?",["joule (J)","newton (N)","pascal (Pa)","ampere (A)"],"joule (J)"),q("¿Qué fuente es renovable?",["Solar","Carbón","Petróleo","Gas natural"],"Solar")],
  tierra:[q("¿Qué capa sólida externa de la Tierra se llama corteza?",["Corteza","Núcleo interno","Núcleo externo","Manto"],"Corteza"),q("¿Qué movimiento produce el día y la noche?",["Rotación","Traslación","Precesión","Nutación"],"Rotación")],
  ambiente:[q("¿Qué acción ayuda a reducir residuos?",["Reducir y reutilizar","Aumentar descartables","Quemar residuos sin control","Mezclar todo"],"Reducir y reutilizar"),q("¿Qué gas es un importante gas de efecto invernadero?",["CO₂","O₂","N₂","He"],"CO₂")],
  "metodo-cientifico":[q("¿Qué suele hacerse después de formular una hipótesis?",["Ponerla a prueba mediante observación o experimento","Convertirla en ley inmediatamente","Eliminar los datos","Evitar controles"],"Ponerla a prueba mediante observación o experimento"),q("¿Para qué sirve un grupo de control?",["Comparar y evaluar el efecto de una variable","Aumentar siempre la muestra","Eliminar la hipótesis","Cambiar el resultado"],"Comparar y evaluar el efecto de una variable")]
