@@ -2,23 +2,31 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolSearch } from "@/components/ToolSearch";
 import { ALL_TOOLS } from "@/lib/all-tools";
-import { absoluteUrl, ogImage } from "@/lib/seo";
+import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
+
+const title = "Todas las herramientas online gratis | UtiliHub";
+const description = "Explora todas las herramientas gratuitas de UtiliHub: matemáticas, finanzas, conversores, texto, fechas, desarrollo, ciencia, educación y más.";
 
 export const Route = createFileRoute("/herramientas/")({
   head: () => ({
     meta: [
-      { title: "Todas las herramientas online gratis | UtiliHub" },
-      { name: "description", content: "Explora todas las herramientas gratuitas de UtiliHub: matemáticas, finanzas, conversores, texto, fechas, desarrollo, ciencia, educación y más." },
+      { title },
+      { name: "description", content: description },
+      { name: "keywords", content: "herramientas online, utilidades gratis, calculadoras, conversores, herramientas web, UtiliHub" },
       { name: "robots", content: "index, follow, max-image-preview:large" },
-      { property: "og:title", content: "Todas las herramientas online gratis | UtiliHub" },
-      { property: "og:description", content: "Explora calculadoras, conversores y utilidades gratuitas que funcionan directamente en el navegador." },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
       { property: "og:type", content: "website" },
       { property: "og:url", content: absoluteUrl("/herramientas") },
+      { property: "og:site_name", content: SITE_NAME },
       { property: "og:image", content: ogImage() },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+      { name: "twitter:image", content: ogImage() },
     ],
     links: [{ rel: "canonical", href: absoluteUrl("/herramientas") }],
-    scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "Todas las herramientas online gratis", url: absoluteUrl("/herramientas"), numberOfItems: ALL_TOOLS.length, isPartOf: { "@type": "WebSite", name: "UtiliHub", url: absoluteUrl("/") } }) }],
+    scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: title, description, url: absoluteUrl("/herramientas"), numberOfItems: ALL_TOOLS.length, isPartOf: { "@type": "WebSite", name: SITE_NAME, url: absoluteUrl("/") } }) }],
   }),
   component: ToolsIndex,
 });
