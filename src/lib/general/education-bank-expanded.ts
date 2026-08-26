@@ -1,8 +1,17 @@
-import type { EducationDifficulty, EducationLevel } from "./education-engine";
 import { EDUCATION_BANK_A } from "./education-bank-a";
 import { EDUCATION_BANK_B } from "./education-bank-b";
+import type { EducationDifficulty, EducationLevel } from "./education-engine";
 
 type Q = {
+  id: string;
+  text: string;
+  options: string[];
+  answer: string;
+  levels: EducationLevel[];
+  difficulty: EducationDifficulty;
+};
+
+type BaseQ = {
   text: string;
   options: string[];
   answer: string;
@@ -10,57 +19,71 @@ type Q = {
   difficulty?: EducationDifficulty;
 };
 
-const BASE_BANK: Record<string, Q[]> = { ...EDUCATION_BANK_A, ...EDUCATION_BANK_B };
+const BASE_BANK: Record<string, BaseQ[]> = { ...EDUCATION_BANK_A, ...EDUCATION_BANK_B };
+
 const LEVELS: EducationLevel[] = ["primaria", "secundaria", "universidad"];
 const DIFFICULTIES: EducationDifficulty[] = ["facil", "media", "dificil"];
 
-const templates = [
-  (q: Q) => `Selecciona la respuesta correcta: ${q.text}`,
-  (q: Q) => `¿Cuál opción responde correctamente a esta pregunta? ${q.text}`,
-  (q: Q) => `En una evaluación, ¿qué respuesta elegirías? ${q.text}`,
-  (q: Q) => `Identifica la opción verdadera: ${q.text}`,
-  (q: Q) => `Resuelve la siguiente cuestión: ${q.text}`,
-  (q: Q) => `Comprueba tu conocimiento: ${q.text}`,
-  (q: Q) => `Elige la afirmación correcta: ${q.text}`,
-  (q: Q) => `Marca la alternativa adecuada: ${q.text}`,
-  (q: Q) => `Contesta según los conceptos estudiados: ${q.text}`,
-  (q: Q) => `¿Qué respuesta es válida? ${q.text}`,
-];
-
-function makeVariant(base: Q, index: number): Q {
-  const template = templates[index % templates.length];
-  const level = LEVELS[Math.floor(index / 2) % LEVELS.length];
-  const difficulty = DIFFICULTIES[Math.floor(index / 3) % DIFFICULTIES.length];
-  return {
-    text: template(base),
-    options: [...base.options],
-    answer: base.answer,
-    levels: [level],
-    difficulty,
-  };
+function normalize(text: string) {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\d+(?:[.,]\d+)?/g, "#")
+    .replace(/[^a-z0-9#]+/g, " ")
+    .trim();
 }
 
-function expand(topic: string, base: Q[]): Q[] {
-  if (!base.length) return [];
+function uniqueOptions(options: string[], answer: string) {
+  return [...new Set(options)].filter(Boolean).includes(answer)
+    ? [...new Set(options)]
+    : [...new Set([...options, answer])];
+}
+
+function metadata(topic: string, index: number, base: BaseQ): Pick<Q, "levels" | "difficulty"> {
+  if (base.levels?.length && base.difficulty) {
+    return { levels: base.levels, difficulty: base.difficulty };
+  }
+  const level = LEVELS[index % LEVELS.length];
+  const difficulty = DIFFICULTIES[(index + topic.length) % DIFFICULTIES.length];
+  return { levels: [level], difficulty };
+}
+
+/*
+ * The old implementation made "20 questions" by adding prefixes such as
+ * "Selecciona la respuesta correcta:" to the same question. That is not a
+ * real question bank and makes a test look broken.
+ *
+ * This module therefore keeps only genuinely different source questions. It
+ * never manufactures a new question by cosmetically changing the wording.
+ * The engine is responsible for enforcing the unique-question limit.
+ */
+function buildBank(topic: string, base: BaseQ[]): Q[] {
   const result: Q[] = [];
   const seen = new Set<string>();
-  let index = 0;
-  while (result.length < 20) {
-    const source = base[index % base.length];
-    const candidate = makeVariant(source, index);
-    if (!seen.has(candidate.text)) {
-      seen.add(candidate.text);
-      result.push(candidate);
-    }
-    index += 1;
-    if (index > 100) break;
+
+  for (let i = 0; i < base.length; i++) {
+    const question = base[i];
+    const options = uniqueOptions(question.options, question.answer);
+    const key = `${normalize(question.text)}|${options.map(normalize).join("|")}|${normalize(question.answer)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push({
+      id: `${topic}-${i + 1}`,
+      text: question.text,
+      options,
+      answer: question.answer,
+      ...metadata(topic, i, question),
+    });
   }
-  if (result.length < 20) {
-    throw new Error(`No se pudo ampliar el banco educativo de ${topic} a 20 preguntas.`);
-  }
+
   return result;
 }
 
 export const EDUCATION_BANK_EXPANDED: Record<string, Q[]> = Object.fromEntries(
-  Object.entries(BASE_BANK).map(([topic, bank]) => [topic, expand(topic, bank)])
+  Object.entries(BASE_BANK).map(([topic, bank]) => [topic, buildBank(topic, bank)])
 );
+
+export function educationBankSize(topic: string) {
+  return EDUCATION_BANK_EXPANDED[topic]?.length ?? 0;
+}
