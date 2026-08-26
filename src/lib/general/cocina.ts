@@ -19,6 +19,6 @@ export const COCINA_TOOLS=[
  c("rendimiento-receta","Rendimiento por ingrediente","number","Calcula cuántas unidades produce una receta según cantidad total y por unidad.",{operation:"divide",fields:["Cantidad total","Cantidad por unidad"]}),
  c("porcentaje-merma-cocina","Porcentaje de merma","number","Calcula qué porcentaje de un ingrediente se pierde durante la preparación.",{operation:"percent-of",fields:["Merma","Cantidad inicial"]}),
  c("cantidad-aprovechable","Cantidad aprovechable","number","Calcula la cantidad útil después de aplicar un porcentaje de merma.",{operation:"remaining-percent",fields:["Cantidad inicial","Merma %"]}),
- c("conversion-kg-gramos-cocina","Kilogramos a gramos","number","Convierte kilogramos a gramos para recetas.",{operation:"multiply",fields:["Kilogramos","1000"]}),
- c("conversion-litros-ml-cocina","Litros a mililitros","number","Convierte litros a mililitros para recetas y bebidas.",{operation:"multiply",fields:["Litros","1000"]}),
+ c("conversion-kg-gramos-cocina","Kilogramos a gramos (cocina)","number","Convierte kilogramos a gramos para recetas.",{operation:"multiply",fields:["Kilogramos","1000"]}),
+ c("conversion-litros-ml-cocina","Litros a mililitros (cocina)","number","Convierte litros a mililitros para recetas y bebidas.",{operation:"multiply",fields:["Litros","1000"]}),
 ];
