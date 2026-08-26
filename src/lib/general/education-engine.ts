@@ -5,30 +5,20 @@ export type GeneratedQuestion={text:string;options:string[];answer:number};
 type Q={text:string;options:string[];answer:string;levels:EducationLevel[];difficulty:EducationDifficulty};
 import { EDUCATION_BANK_EXPANDED } from "./education-bank-expanded";
 const BANK:Record<string,Q[]> = EDUCATION_BANK_EXPANDED;
+const MAX_QUESTIONS=20;
 
 function shuffle<T>(items:T[]){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function profileScore(item:Q,level:EducationLevel,difficulty:EducationDifficulty){return (item.levels.includes(level)?2:0)+(item.difficulty===difficulty?2:0)}
+function uniqueQuestions(items:Q[]):Q[]{const seen=new Set<string>();const out:Q[]=[];for(const item of items){const key=item.text.trim().toLocaleLowerCase();if(seen.has(key))continue;seen.add(key);out.push(item)}return out}
 
 export function generateEducationTest(topic:string,level:EducationLevel,difficulty:EducationDifficulty,count:number):GeneratedQuestion[]{
-  const bank=BANK[topic]??[];
+  const bank=uniqueQuestions(BANK[topic]??[]);
   if(!bank.length)return[];
-  const total=Math.max(1,Math.min(50,Math.trunc(Number(count))||10));
+  const requested=Math.trunc(Number(count));
+  const total=Math.max(1,Math.min(MAX_QUESTIONS,Number.isFinite(requested)&&requested>0?requested:10));
   const ranked=shuffle(bank).sort((a,b)=>profileScore(b,level,difficulty)-profileScore(a,level,difficulty));
-  const selected:Q[]=[];
-  for(const question of ranked){
-    if(selected.length>=total)break;
-    selected.push(question);
-  }
-  if(selected.length<total){
-    const remaining=shuffle(bank.filter(question=>!selected.includes(question)));
-    for(const question of remaining){
-      if(selected.length>=total)break;
-      selected.push(question);
-    }
-  }
-  const result=selected.slice(0,total);
-  return result.map(source=>{
-    const options=shuffle(source.options);
-    return {text:source.text,options,answer:options.indexOf(source.answer)};
-  });
+  const selected=ranked.slice(0,Math.min(total,ranked.length));
+  return selected.map(source=>{const options=shuffle(source.options);return{text:source.text,options,answer:options.indexOf(source.answer)}});
 }
+
+export const EDUCATION_MAX_QUESTIONS=MAX_QUESTIONS;
