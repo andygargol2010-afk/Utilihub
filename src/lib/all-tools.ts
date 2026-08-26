@@ -33,19 +33,7 @@ const financialCards: CatalogTool[] = FINANCIAL_TOOLS.map((tool) => ({
   ],
 }));
 
-// `cronometro` exists in both Fecha y tiempo and Productividad. Keep the
-// first (canonical Fecha y tiempo) implementation and remove only later copies.
-const GENERAL_DUPLICATE_SLUGS = new Set(["cronometro"]);
-const seenGeneralSlugs = new Set<string>();
-const generalCards: CatalogTool[] = GENERAL_TOOLS
-  .map((tool) => ({ ...tool }))
-  .filter((tool) => {
-    if (!GENERAL_DUPLICATE_SLUGS.has(tool.slug)) return true;
-    if (seenGeneralSlugs.has(tool.slug)) return false;
-    seenGeneralSlugs.add(tool.slug);
-    return true;
-  });
-
+const generalCards: CatalogTool[] = GENERAL_TOOLS.map((tool) => ({ ...tool }));
 const canonicalSlugs = new Set([...generalCards, ...financialCards].map((tool) => tool.slug));
 const legacyCards: CatalogTool[] = TOOLS
   .map((tool) => ({ ...tool, category: LEGACY_CATEGORY_REDIRECTS[tool.category] ?? tool.category }))
@@ -59,15 +47,11 @@ const duplicateSlugs = Array.from(
 
 export const CATALOG_DUPLICATE_SLUGS = duplicateSlugs;
 
-// Never let a catalog collision take the whole SSR deployment down. Keep the
-// first canonical entry and expose the duplicate slugs for diagnostics.
-const seenSlugs = new Set<string>();
-export const ALL_TOOLS: CatalogTool[] = catalogSources.filter((tool) => {
-  if (seenSlugs.has(tool.slug)) return false;
-  seenSlugs.add(tool.slug);
-  return true;
-});
+if (duplicateSlugs.length) {
+  throw new Error(`UtiliHub catalog integrity error: duplicate tool slugs: ${duplicateSlugs.join(", ")}`);
+}
 
+export const ALL_TOOLS: CatalogTool[] = catalogSources;
 export const allToolBySlug = (slug: string) => ALL_TOOLS.find((tool) => tool.slug === slug);
 export const allToolsByCategory = (slug: string) => ALL_TOOLS.filter((tool) => tool.category === slug);
 export const allCategoryBySlug = (slug: string) => {
