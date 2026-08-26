@@ -30,4 +30,8 @@ export const TEXT_TOOLS = [
   t("markdown-tabla", "Generador de tabla Markdown", "text", "Convierte filas separadas por tabulaciones en una tabla Markdown y valida columnas."),
   t("markdown-a-html", "Markdown a HTML", "text", "Convierte un subconjunto de Markdown a HTML escapando el contenido de entrada."),
   t("html-a-texto", "HTML a texto", "text", "Extrae el texto visible de un fragmento HTML procesado localmente."),
+  t("frecuencia-palabras", "Frecuencia de palabras", "text", "Cuenta palabras normalizadas y las ordena por frecuencia."),
+  t("palabras-duplicadas", "Palabras duplicadas", "text", "Detecta palabras repetidas consecutivamente o dentro del texto."),
+  t("tiempo-lectura", "Tiempo de lectura", "text", "Estima el tiempo de lectura según el número de palabras y una velocidad configurable."),
+  t("estadisticas-texto", "Estadísticas de texto", "text", "Resume palabras, caracteres, líneas, frases y longitud media de palabra."),
 ];
