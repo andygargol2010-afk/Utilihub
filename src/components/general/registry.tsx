@@ -16,9 +16,13 @@ import { GeneratorTool } from "./GeneratorTool";
 import { TextTool } from "./TextTool";
 import { DevTool } from "./DevTool";
 import { MediaTool } from "./MediaTool";
+import { SequenceTool } from "./SequenceTool";
+import { PowerRootTool } from "./PowerRootTool";
 
 export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntries(
   GENERAL_TOOLS.map((tool) => [tool.slug, () => {
+    if (tool.slug === "secuencias") return <SequenceTool tool={tool} />;
+    if (tool.slug === "potencias-y-raices") return <PowerRootTool tool={tool} />;
     if (tool.config?.mode === "date") return <AdvancedDateTool tool={tool} />;
     if (tool.config?.mode === "advanced" && tool.config?.operation) return <AdvancedCalculatorTool tool={tool} />;
     if (tool.config?.operation) return <ConfiguredTool tool={tool} />;
