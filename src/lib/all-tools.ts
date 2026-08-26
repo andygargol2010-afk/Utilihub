@@ -53,11 +53,15 @@ const duplicateSlugs = Array.from(
 
 export const CATALOG_DUPLICATE_SLUGS = duplicateSlugs;
 
-if (duplicateSlugs.length) {
-  throw new Error(`UtiliHub catalog integrity error: duplicate tool slugs: ${duplicateSlugs.join(", ")}`);
-}
+// Never let a catalog collision take the whole SSR deployment down. Keep the
+// first canonical entry and expose the duplicate slugs for diagnostics.
+const seenSlugs = new Set<string>();
+export const ALL_TOOLS: CatalogTool[] = catalogSources.filter((tool) => {
+  if (seenSlugs.has(tool.slug)) return false;
+  seenSlugs.add(tool.slug);
+  return true;
+});
 
-export const ALL_TOOLS: CatalogTool[] = catalogSources;
 export const allToolBySlug = (slug: string) => ALL_TOOLS.find((tool) => tool.slug === slug);
 export const allToolsByCategory = (slug: string) => ALL_TOOLS.filter((tool) => tool.category === slug);
 export const allCategoryBySlug = (slug: string) => {
