@@ -34,11 +34,17 @@ const financialCards: CatalogTool[] = FINANCIAL_TOOLS.map((tool) => ({
 }));
 
 // `cronometro` exists in both Fecha y tiempo and Productividad. Keep the
-// canonical Fecha y tiempo implementation; do not count the duplicate page.
+// first (canonical Fecha y tiempo) implementation and remove only later copies.
 const GENERAL_DUPLICATE_SLUGS = new Set(["cronometro"]);
+const seenGeneralSlugs = new Set<string>();
 const generalCards: CatalogTool[] = GENERAL_TOOLS
   .map((tool) => ({ ...tool }))
-  .filter((tool) => !GENERAL_DUPLICATE_SLUGS.has(tool.slug));
+  .filter((tool) => {
+    if (!GENERAL_DUPLICATE_SLUGS.has(tool.slug)) return true;
+    if (seenGeneralSlugs.has(tool.slug)) return false;
+    seenGeneralSlugs.add(tool.slug);
+    return true;
+  });
 
 const canonicalSlugs = new Set([...generalCards, ...financialCards].map((tool) => tool.slug));
 const legacyCards: CatalogTool[] = TOOLS
