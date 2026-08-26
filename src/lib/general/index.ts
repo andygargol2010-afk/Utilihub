@@ -12,6 +12,7 @@ import { MISC_TOOLS } from "./misc";
 import { SCIENCE_TOOLS } from "./science";
 import { PHYSICS_ADVANCED_TOOLS } from "./physics-advanced";
 import { CHEMISTRY_ADVANCED_TOOLS } from "./chemistry-advanced";
+import { SCIENCE_EXTRA_TOOLS } from "./science-extra";
 import { PRODUCTIVITY_TOOLS } from "./productivity";
 import { PRODUCTIVITY_EXTRA_TOOLS } from "./productivity-extra";
 import { MEDIA_TOOLS } from "./media";
@@ -39,6 +40,7 @@ export const GENERAL_TOOLS = [
   ...SCIENCE_TOOLS,
   ...PHYSICS_ADVANCED_TOOLS,
   ...CHEMISTRY_ADVANCED_TOOLS,
+  ...SCIENCE_EXTRA_TOOLS,
   ...PRODUCTIVITY_TOOLS,
   ...PRODUCTIVITY_EXTRA_TOOLS,
   ...MEDIA_TOOLS,
