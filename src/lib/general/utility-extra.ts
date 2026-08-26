@@ -4,8 +4,6 @@ const tool=(slug:string,name:string,summary:string,fields:string[],operation:str
 
 export const UTILITY_EXTRA_TOOLS=[
   tool("porcentaje-de-cambio","Porcentaje de cambio","Calcula el porcentaje de cambio entre un valor inicial y uno final.",["Valor inicial","Valor final"],"percent-change"),
-  tool("precio-con-descuento","Precio con descuento","Calcula el precio final después de aplicar un descuento porcentual.",["Precio original","Descuento (%)"],"discount"),
-  tool("precio-con-aumento","Precio con aumento","Calcula el precio final después de aplicar un aumento porcentual.",["Precio original","Aumento (%)"],"markup"),
   tool("impuesto-sobre-precio","Precio con impuesto","Calcula el precio final después de aplicar un impuesto porcentual.",["Precio base","Impuesto (%)"],"tax"),
   tool("comision-de-venta","Comisión de venta","Calcula el importe de una comisión sobre una venta.",["Importe de venta","Comisión (%)"],"percentage-amount"),
   tool("consumo-por-distancia","Consumo por distancia","Calcula el consumo de combustible por cada 100 km.",["Combustible usado (L)","Distancia (km)"],"fuel-rate"),
