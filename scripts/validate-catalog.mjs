@@ -16,11 +16,21 @@ const sources = files.map((file) => ({ file, text: fs.readFileSync(file, "utf8")
 const errors = [];
 const warnings = [];
 
-// Detect duplicate tool slugs in source definitions. References in routes are ignored.
+const libSources = sources.filter(({ file }) => file.includes(`${path.sep}lib${path.sep}`));
+
+// Detect duplicate slugs only for tool-like object definitions. Category metadata
+// also uses a `slug` property, so a global `slug:` regex would create false positives.
 const slugMap = new Map();
-for (const { file, text } of sources.filter(({ file }) => file.includes(`${path.sep}lib${path.sep}`))) {
-  for (const match of text.matchAll(/slug\s*:\s*["']([^"']+)["']/g)) {
-    const slug = match[1];
+for (const { file, text } of libSources) {
+  const objectBlocks = text.split(/\{(?=\s*slug\s*:)/g);
+  for (const block of objectBlocks.slice(1)) {
+    const end = block.search(/\n\s*\},?\s*(?:\{|\]|$)/);
+    const objectText = end >= 0 ? block.slice(0, end) : block;
+    const slugMatch = objectText.match(/^\s*slug\s*:\s*["']([^"']+)["']/);
+    if (!slugMatch) continue;
+    const isToolLike = /(fields\s*:|calculate\s*:|operation\s*:|kind\s*:|component\s*:|keywords\s*:|faq\s*:|steps\s*:|about\s*:)/.test(objectText);
+    if (!isToolLike) continue;
+    const slug = slugMatch[1];
     const list = slugMap.get(slug) ?? [];
     list.push(file);
     slugMap.set(slug, list);
@@ -29,7 +39,7 @@ for (const { file, text } of sources.filter(({ file }) => file.includes(`${path.
 for (const [slug, locations] of slugMap) {
   const unique = [...new Set(locations)];
   if (unique.length > 1) {
-    warnings.push(`slug duplicado en definiciones: ${slug} (${unique.map((p) => path.relative(process.cwd(), p)).join(", ")})`);
+    errors.push(`slug duplicado en definiciones de herramientas: ${slug} (${unique.map((p) => path.relative(process.cwd(), p)).join(", ")})`);
   }
 }
 
@@ -47,11 +57,20 @@ for (const op of configuredOps) {
   if (!implementedOps.has(op)) errors.push(`operation sin implementación detectada: ${op}`);
 }
 
-// Basic catalog contract checks for tool-like objects.
-for (const { file, text } of sources.filter(({ file }) => file.includes(`${path.sep}lib${path.sep}`))) {
+// Support both catalog families used by UtiliHub: general tools with a name and
+// financial definitions that expose fields + calculate instead of name.
+for (const { file, text } of libSources) {
   if (!text.includes("slug:")) continue;
-  if (/slug\s*:\s*["'][^"']+["']/.test(text) && !/name\s*:\s*["'][^"']+["']/.test(text)) {
-    errors.push(`archivo de catálogo sin nombres detectables: ${path.relative(process.cwd(), file)}`);
+  const hasSlug = /slug\s*:\s*["'][^"']+["']/.test(text);
+  if (!hasSlug) continue;
+  const hasToolContract = /name\s*:\s*["'][^"']+["']/.test(text)
+    || (/fields\s*:/.test(text) && /calculate\s*:/.test(text));
+  if (!hasToolContract) {
+    // Files containing only category metadata are intentionally ignored.
+    const hasCategoryMetadata = /intro\s*:/.test(text) && /description\s*:/.test(text);
+    if (!hasCategoryMetadata) {
+      warnings.push(`archivo con slugs sin contrato de herramienta reconocible: ${path.relative(process.cwd(), file)}`);
+    }
   }
 }
 
