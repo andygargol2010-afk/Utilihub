@@ -17,27 +17,27 @@ import { MultimediaAdvancedTool } from "./MultimediaAdvancedTool";
 import type { GeneralTool as CatalogTool } from "@/lib/general/types";
 
 type ToolComponent = ComponentType<{ tool: CatalogTool }>;
-type UiRule = { category?: string; kind?: string; component: ToolComponent };
+type UiRule = { category?: string; kind?: string; priority?: number; component: ToolComponent };
 
 const UI_RULES: readonly UiRule[] = [
-  { category: "educacion", component: EducationTool },
-  { category: "desarrollo", kind: "dev-advanced", component: DevAdvancedTool },
-  { category: "diseno", component: DesignTool },
-  { category: "seguridad", component: SecurityTool },
-  { category: "ciencia", component: ScienceTool },
-  { category: "conversiones", component: ConverterTool },
-  { category: "texto", component: TextTool },
-  { category: "matematicas", kind: "stats", component: MathTool },
-  { category: "matematicas", kind: "number", component: FormulaTool },
-  { category: "fechas", component: TimeTool },
-  { category: "generadores", kind: "image", component: MultimediaAdvancedTool },
-  { category: "generadores", kind: "pdf", component: MultimediaAdvancedTool },
-  { kind: "timer", component: TimeTool },
-  { kind: "generator", component: GeneratorTool },
-  { kind: "text", component: GeneralTool },
-  { kind: "code", component: GeneralTool },
-  { kind: "encode", component: GeneralTool },
-  { kind: "maintenance", component: MaintenanceTool },
+  { category: "educacion", priority: 2, component: EducationTool },
+  { category: "desarrollo", kind: "dev-advanced", priority: 2, component: DevAdvancedTool },
+  { category: "diseno", priority: 2, component: DesignTool },
+  { category: "seguridad", priority: 2, component: SecurityTool },
+  { category: "ciencia", priority: 2, component: ScienceTool },
+  { category: "conversiones", priority: 2, component: ConverterTool },
+  { category: "texto", priority: 2, component: TextTool },
+  { category: "matematicas", kind: "stats", priority: 2, component: MathTool },
+  { category: "matematicas", kind: "number", priority: 2, component: FormulaTool },
+  { category: "fechas", priority: 2, component: TimeTool },
+  { category: "generadores", kind: "image", priority: 2, component: MultimediaAdvancedTool },
+  { category: "generadores", kind: "pdf", priority: 2, component: MultimediaAdvancedTool },
+  { kind: "timer", priority: 1, component: TimeTool },
+  { kind: "generator", priority: 1, component: GeneratorTool },
+  { kind: "text", priority: 1, component: GeneralTool },
+  { kind: "code", priority: 1, component: GeneralTool },
+  { kind: "encode", priority: 1, component: GeneralTool },
+  { kind: "maintenance", priority: 1, component: MaintenanceTool },
 ];
 
 const duplicateSlugs = GENERAL_TOOLS.reduce<string[]>((duplicates, tool, index, tools) => {
@@ -64,16 +64,16 @@ const resolveToolUi = (tool: CatalogTool): ToolComponent => {
     throw new Error(`GENERAL_TOOL_UI sin implementación explícita para slug "${tool.slug}" (category="${tool.category}", kind="${tool.kind}")`);
   }
 
-  const specificity = (rule: UiRule) =>
-    Number(rule.category !== undefined) + Number(rule.kind !== undefined);
-  const maxSpecificity = Math.max(...matches.map(specificity));
-  const mostSpecific = matches.filter((rule) => specificity(rule) === maxSpecificity);
+  const specificityScore = (rule: UiRule) =>
+    (Number(rule.category !== undefined) + Number(rule.kind !== undefined)) * 10 + (rule.priority ?? 0);
+  const maxScore = Math.max(...matches.map(specificityScore));
+  const bestMatches = matches.filter((rule) => specificityScore(rule) === maxScore);
 
-  if (mostSpecific.length !== 1) {
-    throw new Error(`GENERAL_TOOL_UI ambiguo para slug "${tool.slug}": ${mostSpecific.length} reglas con igual especificidad`);
+  if (bestMatches.length !== 1) {
+    throw new Error(`GENERAL_TOOL_UI ambiguo para slug "${tool.slug}": ${bestMatches.length} reglas con igual prioridad estructural`);
   }
 
-  return mostSpecific[0].component;
+  return bestMatches[0].component;
 };
 
 const resolvedComponents = new Map<string, ToolComponent>();
