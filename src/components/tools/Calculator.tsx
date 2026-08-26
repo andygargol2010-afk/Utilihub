@@ -23,6 +23,7 @@ export default function Calculator() {
     setDisplay((current) => {
       if (fresh) return d === "," ? "0," : d;
       if (d === "," && current.includes(",")) return current;
+      if (current === "-0") return d === "," ? "-0," : `-${d}`;
       return current === "0" && d !== "," ? d : current + d;
     });
     setFresh(false);
@@ -46,8 +47,11 @@ export default function Calculator() {
   };
 
   const toggleSign = () => {
-    if (display === "0") return;
-    setDisplay((current) => current.startsWith("-") ? current.slice(1) : `-${current}`);
+    setDisplay((current) => {
+      if (current === "0") return "-0";
+      return current.startsWith("-") ? current.slice(1) : `-${current}`;
+    });
+    setFresh(false);
   };
 
   const equals = () => {
