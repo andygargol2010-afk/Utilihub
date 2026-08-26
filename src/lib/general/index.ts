@@ -23,6 +23,7 @@ import { VIAJES_TOOLS } from "./viajes";
 import { HOGAR_TOOLS } from "./home";
 import { GEOMETRY_ADVANCED_TOOLS } from "./geometry-advanced";
 import { PRACTICAL_ADVANCED_TOOLS } from "./practical-advanced";
+import { UTILITY_EXTRA_TOOLS } from "./utility-extra";
 
 export { GENERAL_CATEGORIES };
 
@@ -51,4 +52,5 @@ export const GENERAL_TOOLS = [
   ...HOGAR_TOOLS,
   ...GEOMETRY_ADVANCED_TOOLS,
   ...PRACTICAL_ADVANCED_TOOLS,
+  ...UTILITY_EXTRA_TOOLS,
 ];
