@@ -14,4 +14,20 @@ const PRIMARY_TOPICS=new Set(["aritmetica","geometria","gramatica","ortografia",
 function defaultLevel(topic:string,index:number):EducationLevel[]{if(UNIVERSITY_TOPICS.has(topic))return index%3===0?["universidad"]:["secundaria","universidad"];if(PRIMARY_TOPICS.has(topic))return index%3===0?["primaria"]:["primaria","secundaria"];return index%3===0?["secundaria"]:["primaria","secundaria","universidad"]}
 function defaultDifficulty(index:number,level:EducationLevel):EducationDifficulty{if(level==="universidad")return index%3===0?"media":"dificil";if(level==="primaria")return index%3===0?"facil":"media";return index%2===0?"media":"dificil"}
 function decorateBank(topic:string,bank:Q[]):Q[]{return bank.map((item,index)=>{const levels=item.levels??defaultLevel(topic,index);return{...item,levels,difficulty:item.difficulty??defaultDifficulty(index,levels[0])}})}
-export function generateEducationTest(topic:string,level:EducationLevel,difficulty:EducationDifficulty,count:number):GeneratedQuestion[]{const bank=decorateBank(topic,BANK[topic]??[]);if(!bank.length)return[];const total=Math.max(1,Math.min(50,Math.trunc(Number(count))||10));const exact=bank.filter(item=>item.levels?.includes(level)&&item.difficulty===difficulty);const sameLevel=bank.filter(item=>item.levels?.includes(level));const sameDifficulty=bank.filter(item=>item.difficulty===difficulty);const pool=exact.length?exact:sameLevel.length?sameLevel:sameDifficulty.length?sameDifficulty:bank;const shuffled=shuffle(pool);const selected=shuffled.length>=total?shuffled.slice(0,total):Array.from({length:total},(_,i)=>shuffled[i%shuffled.length]);return selected.map(source=>{const options=shuffle(source.options);return{text:source.text,options,answer:options.indexOf(source.answer)}})}
+function profileScore(item:Q,level:EducationLevel,difficulty:EducationDifficulty){return (item.levels?.includes(level)?2:0)+(item.difficulty===difficulty?2:0)}
+
+export function generateEducationTest(topic:string,level:EducationLevel,difficulty:EducationDifficulty,count:number):GeneratedQuestion[]{
+  const bank=decorateBank(topic,BANK[topic]??[]);
+  if(!bank.length)return[];
+  const total=Math.max(1,Math.min(50,Math.trunc(Number(count))||10));
+  const ranked=shuffle(bank).sort((a,b)=>profileScore(b,level,difficulty)-profileScore(a,level,difficulty));
+  const exact=ranked.filter(item=>profileScore(item,level,difficulty)===4);
+  const compatible=ranked.filter(item=>item.levels?.includes(level)||item.difficulty===difficulty);
+  const pool=exact.length?exact:compatible.length?compatible:ranked;
+  const selected:Array<Q>=[];
+  for(let i=0;i<total;i++) selected.push(pool[i%pool.length]);
+  return selected.map((source,index)=>{
+    const options=shuffle(source.options);
+    return {text:source.text,options,answer:options.indexOf(source.answer)};
+  });
+}
