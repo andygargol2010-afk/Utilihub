@@ -3,6 +3,7 @@ import type {GeneralTool} from "@/lib/general/types";
 
 async function digest(algorithm:string,text:string){const data=new TextEncoder().encode(text);const hash=await crypto.subtle.digest(algorithm,data);return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,"0")).join("")}
 const entropy=(text:string)=>{let pool=0;if(/[a-z]/.test(text))pool+=26;if(/[A-Z]/.test(text))pool+=26;if(/[0-9]/.test(text))pool+=10;if(/[^A-Za-z0-9]/.test(text))pool+=33;return pool?text.length*Math.log2(pool):0};
+const secureRandomInt=(max:number)=>{if(!Number.isInteger(max)||max<=0)throw new Error("Rango aleatorio inválido.");const range=max;const limit=Math.floor(0x100000000/range)*range;const buf=new Uint32Array(1);do{crypto.getRandomValues(buf)}while(buf[0]>=limit);return buf[0]%range};
 
 export function SecurityTool({tool}:{tool:GeneralTool}){
  const [text,setText]=useState(""),[secret,setSecret]=useState(""),[expected,setExpected]=useState(""),[out,setOut]=useState("");
@@ -12,7 +13,7 @@ export function SecurityTool({tool}:{tool:GeneralTool}){
   }
   if(tool.slug==="checksum"){setOut(await digest("SHA-256",text));return}
   if(tool.slug==="password-strength"){const bits=entropy(text);const level=bits<40?"Débil":bits<60?"Moderada":bits<80?"Fuerte":"Muy fuerte";setOut(`${level} · entropía aproximada: ${bits.toFixed(1)} bits`);return}
-  if(tool.slug==="passphrase"){const words=["luna","rio","nube","cobre","bosque","pixel","mate","brisa","roble","sol","viento","delta"];setOut(Array.from({length:4},()=>words[Math.floor(Math.random()*words.length)]).join("-"));return}
+  if(tool.slug==="passphrase"){const words=["luna","rio","nube","cobre","bosque","pixel","mate","brisa","roble","sol","viento","delta"];setOut(Array.from({length:4},()=>words[secureRandomInt(words.length)]).join("-"));return}
   if(tool.slug==="hmac-sha256"){if(!secret){setOut("Introduce una clave secreta.");return}const key=await crypto.subtle.importKey("raw",new TextEncoder().encode(secret),{name:"HMAC",hash:"SHA-256"},false,["sign"]);const sig=await crypto.subtle.sign("HMAC",key,new TextEncoder().encode(text));setOut([...new Uint8Array(sig)].map(x=>x.toString(16).padStart(2,"0")).join(""));return}
   if(tool.slug==="token-seguro"){const bytes=new Uint8Array(32);crypto.getRandomValues(bytes);setOut([...bytes].map(x=>x.toString(16).padStart(2,"0")).join(""));return}
   if(tool.slug==="comparador-hashes"){if(!expected.trim()){setOut("Introduce el hash esperado.");return}const actual=await digest("SHA-256",text);setOut(actual.toLowerCase()===expected.trim().toLowerCase()?"Coincide con SHA-256.":"No coincide con SHA-256.");return}
