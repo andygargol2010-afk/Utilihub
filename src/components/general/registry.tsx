@@ -7,6 +7,7 @@ import { SecurityTool } from "./SecurityTool";
 import { TimeTool } from "./TimeTool";
 import { ConverterTool } from "./ConverterTool";
 import { ScienceTool } from "./ScienceTool";
+import { ChemistryTool } from "./ChemistryTool";
 import { FormulaTool } from "./FormulaTool";
 import { EducationTool } from "./EducationTool";
 import { GeneratorTool } from "./GeneratorTool";
@@ -27,6 +28,7 @@ export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntri
     if (tool.category === "diseno") return <DesignTool tool={tool} />;
     if (tool.category === "seguridad") return <SecurityTool tool={tool} />;
     if (tool.category === "ciencia") return <ScienceTool tool={tool} />;
+    if (tool.category === "quimica") return <ChemistryTool tool={tool} />;
     if (tool.category === "conversiones") return <ConverterTool tool={tool} />;
     if (tool.category === "fechas" || TIMERS.has(tool.slug)) return <TimeTool tool={tool} />;
     if (STATS.has(tool.slug)) return <MathTool tool={tool} />;
