@@ -21,12 +21,14 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
   const deadlineRef = useRef<number | null>(null);
   const { streak, recordActivity } = useDailyStreak();
   const subject = String(tool.config?.subject ?? "");
-  const topic = String(tool.config?.topic ?? "").replaceAll("-", " ");
+  const rawTopic = String(tool.config?.topic ?? "");
+  const topic = rawTopic.replaceAll("-", " ");
+  const bankTopic = subject === "Ciencias naturales" && rawTopic === "energia" ? "energia-naturales" : rawTopic;
   const title = useMemo(() => `${subject} · ${topic}`, [subject, topic]);
 
   const generate = () => {
     const requested = Math.max(1, Math.min(50, Number(count) || 10));
-    const next = generateEducationTest(String(tool.config?.topic ?? ""), level, difficulty, requested);
+    const next = generateEducationTest(bankTopic, level, difficulty, requested);
     const limit = Math.max(5, Math.min(3600, Number(seconds) || 60));
     setGenerated(next);
     setSubmitted({});
@@ -80,7 +82,7 @@ export function EducationTool({ tool }: { tool: GeneralTool }) {
 
   const score = generated.reduce((n, q, i) => n + (submitted[i] === q.answer ? 1 : 0), 0);
   const answered = Object.keys(submitted).filter((key) => submitted[Number(key)] >= 0).length;
-  const progress = generated.length ? Math.round((completed ? 100 : ((current + (submitted[current] !== undefined ? 1 : 0)) / generated.length) * 100)) : 0;
+  const progress = generated.length ? Math.round((answered / generated.length) * 100) : 0;
   const question = generated[current];
   const speed = elapsedSeconds > 0 ? Math.round((answered / elapsedSeconds) * 60) : 0;
 
