@@ -2,7 +2,7 @@ export type EducationLevel="primaria"|"secundaria"|"universidad";
 export type EducationDifficulty="facil"|"media"|"dificil";
 export type GeneratedQuestion={text:string;options:string[];answer:number};
 
-type Q={text:string;options:string[];answer:string};
+type Q={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
 const BANK:Record<string,Q[]>= {
  aritmetica:[q("¿Cuál es el resultado de 24 + 18?",["42","40","44","46"],"42"),q("¿Cuál es el resultado de 7 × 8?",["56","48","54","64"],"56")],
  algebra:[q("Si 3x = 21, ¿cuánto vale x?",["7","6","8","9"],"7"),q("¿Cuál es el resultado de x + 5 = 12?",["7","5","17","-7"],"7")],
@@ -65,6 +65,11 @@ const BANK:Record<string,Q[]>= {
  ambiente:[q("¿Qué acción ayuda a reducir residuos?",["Reducir y reutilizar","Aumentar descartables","Quemar residuos sin control","Mezclar todo"],"Reducir y reutilizar"),q("¿Qué gas es un importante gas de efecto invernadero?",["CO₂","O₂","N₂","He"],"CO₂")],
  "metodo-cientifico":[q("¿Qué suele hacerse después de formular una hipótesis?",["Ponerla a prueba mediante observación o experimento","Convertirla en ley inmediatamente","Eliminar los datos","Evitar controles"],"Ponerla a prueba mediante observación o experimento"),q("¿Para qué sirve un grupo de control?",["Comparar y evaluar el efecto de una variable","Aumentar siempre la muestra","Eliminar la hipótesis","Cambiar el resultado"],"Comparar y evaluar el efecto de una variable")]
 };
-function q(text:string,options:string[],answer:string):Q{return{text,options,answer}}
+function q(text:string,options:string[],answer:string,levels?:EducationLevel[],difficulty?:EducationDifficulty):Q{return{text,options,answer,levels,difficulty}}
 function shuffle<T>(items:T[]){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-export function generateEducationTest(topic:string,_level:EducationLevel,_difficulty:EducationDifficulty,count:number):GeneratedQuestion[]{const bank=BANK[topic]??[];if(!bank.length)return[];const total=Math.max(1,Math.min(50,count||10));return Array.from({length:total},(_,i)=>{const source=bank[i%bank.length];const options=shuffle(source.options);return{text:source.text,options,answer:options.indexOf(source.answer)}})}
+const UNIVERSITY_TOPICS=new Set(["calculo","epistemologia","filosofia-politica","historia-filosofia","logica","microeconomia","macroeconomia","mercados","finanzas-basicas","economia-internacional","algoritmos","programacion","bases-datos","redes","seguridad-digital","fisica-moderna","equilibrio","organica","estequiometria"]);
+const PRIMARY_TOPICS=new Set(["aritmetica","geometria","gramatica","ortografia","comprension","antiguedad","mapas","relieve","clima","poblacion","materia","ambiente","metodo-cientifico"]);
+function defaultLevel(topic:string,index:number):EducationLevel[]{if(UNIVERSITY_TOPICS.has(topic))return index%3===0?["universidad"]:["secundaria","universidad"];if(PRIMARY_TOPICS.has(topic))return index%3===0?["primaria"]:["primaria","secundaria"];return index%3===0?["secundaria"]:["primaria","secundaria","universidad"]}
+function defaultDifficulty(index:number,level:EducationLevel):EducationDifficulty{if(level==="universidad")return index%3===0?"media":"dificil";if(level==="primaria")return index%3===0?"facil":"media";return index%2===0?"media":"dificil"}
+function decorateBank(topic:string,bank:Q[]):Q[]{return bank.map((item,index)=>{const levels=item.levels??defaultLevel(topic,index);return{...item,levels,difficulty:item.difficulty??defaultDifficulty(index,levels[0])}})}
+export function generateEducationTest(topic:string,level:EducationLevel,difficulty:EducationDifficulty,count:number):GeneratedQuestion[]{const bank=decorateBank(topic,BANK[topic]??[]);if(!bank.length)return[];const total=Math.max(1,Math.min(50,Math.trunc(Number(count))||10));const exact=bank.filter(item=>item.levels?.includes(level)&&item.difficulty===difficulty);const sameLevel=bank.filter(item=>item.levels?.includes(level));const sameDifficulty=bank.filter(item=>item.difficulty===difficulty);const pool=exact.length?exact:sameLevel.length?sameLevel:sameDifficulty.length?sameDifficulty:bank;const shuffled=shuffle(pool);const selected=shuffled.length>=total?shuffled.slice(0,total):Array.from({length:total},(_,i)=>shuffled[i%shuffled.length]);return selected.map(source=>{const options=shuffle(source.options);return{text:source.text,options,answer:options.indexOf(source.answer)}})}
