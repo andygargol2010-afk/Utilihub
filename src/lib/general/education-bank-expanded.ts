@@ -39,7 +39,7 @@ function legacyCandidates(base:BaseQ[]):BaseQ[]{
     "Selecciona la alternativa que mejor explica el enunciado:","¿Cuál respuesta es compatible con la pregunta?","Examina las opciones y elige la correcta:","¿Qué opción representa correctamente la idea planteada?","Identifica qué alternativa es válida:",
     "Elige la respuesta que corresponde exactamente:","Resuelve este ejercicio:","Considera el siguiente caso:","Determina el resultado correcto:","Evalúa el planteo y selecciona:"
   ];
-  return base.flatMap(question=>prompts.map((prefix,index)=>({...question,text:`${prefix} ${question.text}`,options:[...question.options.slice(0,3),question.answer],_index:index})));
+  return base.flatMap(question=>prompts.map(prefix=>({...question,text:`${prefix} ${question.text}`,options:[...question.options]})));
 }
 
 function buildLegacyBank(topic:string,base:BaseQ[]):Q[]{
@@ -47,6 +47,8 @@ function buildLegacyBank(topic:string,base:BaseQ[]):Q[]{
   for(const candidate of legacyCandidates(base)){
     if(result.length>=TARGET)break;
     const key=normalize(candidate.text);if(seen.has(key))continue;seen.add(key);
+    if(candidate.options.length!==4||new Set(candidate.options.map(normalize)).size!==4) throw new Error(`${topic}: opciones inválidas en banco legado`);
+    if(!candidate.options.map(normalize).includes(normalize(candidate.answer))) throw new Error(`${topic}: respuesta ausente en banco legado`);
     result.push({id:`${topic}-${result.length+1}`,text:candidate.text,options:[...candidate.options],answer:candidate.answer,...legacyMetadata(topic,result.length,candidate)});
   }
   if(result.length<TARGET) throw new Error(`Banco legado incompleto: ${topic} tiene ${result.length}, se requieren ${TARGET}`);
