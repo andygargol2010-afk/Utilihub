@@ -44,5 +44,5 @@ export const ARITMETICA:Q[]=[
  q("¿Cuál es el valor absoluto de −17?",["17","−17","0","1"],"17",["primaria","secundaria"],"facil"),
  q("¿Qué número sigue en la secuencia 4, 8, 12, 16, …?",["20","18","22","24"],"20",["primaria"],"facil"),
  q("Si 3 kg de fruta cuestan 420, ¿cuánto cuestan 5 kg al mismo precio?",["700","600","720","650"],"700",["primaria","secundaria"],"media"),
- q("¿Cuál es el resultado de (18 + 6) ÷ 4?",["6","7","5","8"],"6",["primaria","secundaria"],"facil")
+ q("¿Cuál es el resultado de (18 + 6) ÷ 4?",["6","7","5","8"],"6",["primaria","secundaria"],"dificil")
 ];
