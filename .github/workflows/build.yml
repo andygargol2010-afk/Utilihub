@@ -26,24 +26,24 @@ jobs:
       - run: npm install --no-audit --no-fund
 
       - name: Expand education banks
-        if: github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'feat(education): expand every test bank')
+        if: ${{ github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'feat(education): expand every test bank') }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/generate-education-banks.mjs
 
       - name: Validate education banks
-        if: github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'feat(education): expand every test bank')
+        if: ${{ github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'feat(education): expand every test bank') }}
         run: node scripts/validate-education-banks.mjs
 
       - name: Validate education runtime
-        if: github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'feat(education): expand every test bank')
+        if: ${{ github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'feat(education): expand every test bank') }}
         run: node scripts/test-education-engine.mjs
 
       - run: npm run validate:catalog
       - run: npm run build
 
       - name: Commit verified education banks
-        if: github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'feat(education): expand every test bank')
+        if: ${{ github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'feat(education): expand every test bank') }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
