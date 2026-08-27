@@ -14,7 +14,7 @@ try {
   const topics = Object.keys(banks);
   if (!topics.length) throw new Error("No se encontraron temas educativos");
   for (const [topic, questions] of Object.entries(banks)) {
-    if (!Array.isArray(questions) || questions.length !== 20) throw new Error(`${topic}: se esperaban exactamente 20 preguntas y hay ${questions?.length ?? 0}`);
+    if (!Array.isArray(questions) || questions.length !== 40) throw new Error(`${topic}: se esperaban exactamente 40 preguntas y hay ${questions?.length ?? 0}`);
     const seen = new Set();
     for (const [index,q] of questions.entries()) {
       if (!q || typeof q.text !== "string" || !q.text.trim()) throw new Error(`${topic} #${index+1}: texto inválido`);
@@ -26,6 +26,14 @@ try {
       if(!Array.isArray(q.levels)||q.levels.length!==1||!levels.has(q.levels[0])) throw new Error(`${topic} #${index+1}: nivel inválido`);
       if(!difficulties.has(q.difficulty)) throw new Error(`${topic} #${index+1}: dificultad inválida`);
     }
+    const difficultyCounts = new Map();
+    const levelCounts = new Map();
+    for (const q of questions) {
+      difficultyCounts.set(q.difficulty,(difficultyCounts.get(q.difficulty)??0)+1);
+      levelCounts.set(q.levels[0],(levelCounts.get(q.levels[0])??0)+1);
+    }
+    for (const difficulty of difficulties) if ((difficultyCounts.get(difficulty)??0) < 20) throw new Error(`${topic}: la dificultad ${difficulty} tiene menos de 20 preguntas (${difficultyCounts.get(difficulty)??0})`);
+    for (const level of levels) if ((levelCounts.get(level)??0) < 20) throw new Error(`${topic}: el nivel ${level} tiene menos de 20 preguntas (${levelCounts.get(level)??0})`);
   }
-  console.log(`Education bank validator OK: ${topics.length} temas, ${topics.length*20} preguntas únicas.`);
+  console.log(`Education bank validator OK: ${topics.length} temas, ${topics.length*40} preguntas únicas; cada nivel y dificultad tiene al menos 20.`);
 } finally { await fs.rm(outfile,{force:true}); }
