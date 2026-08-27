@@ -7,14 +7,13 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
-  models: read
+  contents: read
 
 jobs:
   build:
     if: github.actor != 'github-actions[bot]' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -30,34 +29,8 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Generate 20-question education banks
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: node scripts/generate-education-banks.mjs
-
-      - name: Validate education banks
-        run: node scripts/validate-education-banks.mjs
-
-      - name: Validate education runtime contract
-        if: github.ref == 'refs/heads/main'
-        run: node scripts/test-education-engine.mjs
-
       - name: Validate catalog
         run: npm run validate:catalog
 
       - name: Build
         run: npm run build
-
-      - name: Commit verified education banks
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.actor != 'github-actions[bot]'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/lib/general/education-bank-a.ts src/lib/general/education-bank-b.ts
-          if git diff --cached --quiet; then
-            echo "No education bank changes to commit."
-            exit 0
-          fi
-          git commit -m "feat(education): expand every test bank to 20 unique questions"
-          git push origin HEAD:main
