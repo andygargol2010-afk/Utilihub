@@ -1,4 +1,4 @@
-name: Expand education banks
+name: Verify education banks
 
 on:
   workflow_dispatch:
@@ -6,24 +6,21 @@ on:
     branches: [main]
     paths:
       - 'src/lib/general/**'
-      - 'scripts/generate-education-banks.mjs'
       - 'scripts/validate-education-banks.mjs'
       - 'scripts/test-education-engine.mjs'
       - '.github/workflows/expand-education-banks.yml'
 
 permissions:
-  contents: write
-  models: read
+  contents: read
 
 concurrency:
-  group: education-bank-expansion
-  cancel-in-progress: false
+  group: education-bank-verification
+  cancel-in-progress: true
 
 jobs:
-  expand-and-verify:
-    if: github.actor != 'github-actions[bot]'
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 20
     steps:
       - name: Checkout main
         uses: actions/checkout@v6
@@ -39,12 +36,7 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Generate 20 real questions per topic
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: node scripts/generate-education-banks.mjs
-
-      - name: Validate generated banks
+      - name: Validate 20-question banks
         run: node scripts/validate-education-banks.mjs
 
       - name: Validate education selection contract
@@ -55,15 +47,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Commit verified banks to main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/lib/general/education-bank-a.ts src/lib/general/education-bank-b.ts
-          if git diff --cached --quiet; then
-            echo "No bank changes to commit."
-            exit 0
-          fi
-          git commit -m "feat(education): expand every test bank to 20 unique questions"
-          git push origin HEAD:main
