@@ -1,13 +1,14 @@
 import { EDUCATION_BANK_A } from "./education-bank-a";
 import { EDUCATION_BANK_B } from "./education-bank-b";
 import { EDUCATION_BANK_A_REAL } from "./education-bank-a/index";
+import { MAPAS } from "./education-bank-b-real";
 import type { EducationDifficulty, EducationLevel } from "./education-engine";
 
 type Q={id:string;text:string;options:string[];answer:string;levels:EducationLevel[];difficulty:EducationDifficulty};
 type BaseQ={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
 
 const LEGACY_BANK:Record<string,BaseQ[]>={...EDUCATION_BANK_A,...EDUCATION_BANK_B};
-const REAL_BANK:Record<string,BaseQ[]>=EDUCATION_BANK_A_REAL;
+const REAL_BANK:Record<string,BaseQ[]>={...EDUCATION_BANK_A_REAL,mapas:MAPAS};
 const LEVELS:EducationLevel[]=["primaria","secundaria","universidad"];
 const DIFFICULTIES:EducationDifficulty[]=["facil","media","dificil"];
 const TARGET=40;
