@@ -5,12 +5,10 @@ on:
   push:
     branches: [main]
     paths:
-      - 'src/lib/general/education-bank-a.ts'
-      - 'src/lib/general/education-bank-b.ts'
-      - 'src/lib/general/education-bank-expanded.ts'
-      - 'src/lib/general/education-engine.ts'
+      - 'src/lib/general/**'
       - 'scripts/generate-education-banks.mjs'
       - 'scripts/validate-education-banks.mjs'
+      - 'scripts/test-education-engine.mjs'
       - '.github/workflows/expand-education-banks.yml'
 
 permissions:
@@ -48,6 +46,9 @@ jobs:
 
       - name: Validate generated banks
         run: node scripts/validate-education-banks.mjs
+
+      - name: Validate education selection contract
+        run: node scripts/test-education-engine.mjs
 
       - name: Validate catalog
         run: npm run validate:catalog
