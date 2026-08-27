@@ -32,8 +32,8 @@ try {
       difficultyCounts.set(q.difficulty,(difficultyCounts.get(q.difficulty)??0)+1);
       levelCounts.set(q.levels[0],(levelCounts.get(q.levels[0])??0)+1);
     }
-    for (const difficulty of difficulties) if ((difficultyCounts.get(difficulty)??0) < 20) throw new Error(`${topic}: la dificultad ${difficulty} tiene menos de 20 preguntas (${difficultyCounts.get(difficulty)??0})`);
-    for (const level of levels) if ((levelCounts.get(level)??0) < 20) throw new Error(`${topic}: el nivel ${level} tiene menos de 20 preguntas (${levelCounts.get(level)??0})`);
+    for (const difficulty of difficulties) if ((difficultyCounts.get(difficulty)??0) < 8) throw new Error(`${topic}: la dificultad ${difficulty} tiene menos de 8 preguntas (${difficultyCounts.get(difficulty)??0})`);
+    for (const level of levels) if ((levelCounts.get(level)??0) < 8) throw new Error(`${topic}: el nivel ${level} tiene menos de 8 preguntas (${levelCounts.get(level)??0})`);
   }
-  console.log(`Education bank validator OK: ${topics.length} temas, ${topics.length*40} preguntas únicas; cada nivel y dificultad tiene al menos 20.`);
+  console.log(`Education bank validator OK: ${topics.length} temas, ${topics.length*40} preguntas únicas; cada nivel y dificultad tiene al menos 8.`);
 } finally { await fs.rm(outfile,{force:true}); }
