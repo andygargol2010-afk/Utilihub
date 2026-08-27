@@ -1,0 +1,48 @@
+import type { EducationDifficulty, EducationLevel } from "../education-engine";
+
+type Q={text:string;options:string[];answer:string;levels:EducationLevel[];difficulty:EducationDifficulty};
+const q=(text:string,options:string[],answer:string,levels:EducationLevel[],difficulty:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+
+export const GRAMATICA:Q[]=[
+q("¿Cuál es el sustantivo en «La casa grande tiene ventanas»?",["casa","grande","tiene","ventanas"],"casa",["primaria"],"facil"),
+q("¿Cuál palabra funciona como adjetivo en «El perro negro corre»?",["perro","negro","corre","el"],"negro",["primaria"],"facil"),
+q("¿Cuál es el verbo en «María estudia matemáticas»?",["María","estudia","matemáticas","la"],"estudia",["primaria"],"facil"),
+q("¿Cuál es el sujeto en «Los alumnos resolvieron el ejercicio»?",["Los alumnos","resolvieron","el ejercicio","ejercicio"],"Los alumnos",["primaria"],"facil"),
+q("¿Cuál es el predicado en «El tren llegó temprano»?",["El tren","llegó temprano","tren","temprano"],"llegó temprano",["primaria"],"facil"),
+q("¿Qué palabra es un pronombre personal?",["nosotros","mesa","rápido","azul"],"nosotros",["primaria"],"facil"),
+q("¿Qué palabra es un adverbio de lugar?",["aquí","ayer","mucho","rápidamente"],"aquí",["primaria"],"facil"),
+q("¿Qué palabra es una conjunción?",["pero","casa","verde","correr"],"pero",["primaria"],"facil"),
+q("¿Cuál oración está en plural?",["Los pájaros vuelan","El pájaro vuela","La niña lee","Mi hermano estudia"],"Los pájaros vuelan",["primaria"],"facil"),
+q("¿Cuál es el núcleo del sujeto en «La pequeña bicicleta roja se rompió»?",["bicicleta","pequeña","roja","rompió"],"bicicleta",["primaria"],"media"),
+q("¿Cuál es el núcleo del predicado en «El profesor explicó la lección»?",["profesor","explicó","lección","la"],"explicó",["primaria"],"media"),
+q("¿Qué función cumple «muy» en «Es muy alto»?",["Modificar la intensidad del adjetivo","Nombrar al sujeto","Indicar el tiempo verbal","Unir dos oraciones"],"Modificar la intensidad del adjetivo",["secundaria"],"media"),
+q("¿Cuál oración contiene un complemento directo?",["Ana compró un libro","Ana llegó temprano","Ana está cansada","Ana parece feliz"],"Ana compró un libro",["secundaria"],"media"),
+q("En «Pedro entregó el trabajo a Laura», ¿qué función cumple «a Laura»?",["Complemento indirecto","Sujeto","Atributo","Complemento circunstancial de lugar"],"Complemento indirecto",["secundaria"],"media"),
+q("¿Cuál oración contiene un atributo?",["El cielo está despejado","El cielo cubre la ciudad","El cielo cambió de color","El cielo apareció temprano"],"El cielo está despejado",["secundaria"],"media"),
+q("¿Cuál oración es compuesta?",["Juan estudia y María trabaja","Juan estudia","María trabaja","El libro nuevo"],"Juan estudia y María trabaja",["secundaria"],"media"),
+q("¿Qué relación expresa «porque» en una oración?",["Causa","Oposición","Condición","Finalidad"],"Causa",["secundaria"],"media"),
+q("¿Qué relación expresa «aunque»?",["Concesión","Causa","Finalidad","Tiempo"],"Concesión",["secundaria"],"media"),
+q("¿Cuál es una oración subordinada adjetiva?",["El libro que compré es interesante","Estudio porque tengo examen","Cuando llegues, avísame","Quiero que vengas"],"El libro que compré es interesante",["secundaria"],"dificil"),
+q("¿Cuál es una oración subordinada sustantiva?",["Espero que vengas mañana","La casa que compré es grande","Saldré cuando termine","Estudio porque debo aprobar"],"Espero que vengas mañana",["secundaria"],"dificil"),
+q("¿Cuál es una oración subordinada adverbial temporal?",["Te llamaré cuando llegue","Quiero que vengas","El alumno que estudia aprueba","Sé que vendrá"],"Te llamaré cuando llegue",["secundaria"],"dificil"),
+q("En «Si estudias, aprobarás», ¿qué relación expresa «si estudias»?",["Condición","Causa","Concesión","Consecuencia"],"Condición",["secundaria"],"media"),
+q("¿Qué tipo de palabra es «lentamente»?",["Adverbio","Adjetivo","Sustantivo","Conjunción"],"Adverbio",["secundaria"],"facil"),
+q("¿Qué tipo de palabra es «aquellos» en «Aquellos libros son míos»?",["Determinante demostrativo","Adverbio","Verbo","Conjunción"],"Determinante demostrativo",["secundaria"],"media"),
+q("¿Cuál oración contiene un verbo copulativo?",["La tarde es tranquila","La tarde terminó pronto","La tarde cubrió el valle","La tarde comenzó ayer"],"La tarde es tranquila",["secundaria"],"media"),
+q("¿Cuál es el sujeto omitido en «Llegamos temprano»?",["Nosotros","Ellos","Ella","Tú"],"Nosotros",["secundaria"],"media"),
+q("¿Cuál oración tiene un complemento circunstancial de tiempo?",["Mañana viajaremos a Córdoba","Compré un libro","El niño está enfermo","Laura escribió una carta"],"Mañana viajaremos a Córdoba",["secundaria"],"facil"),
+q("¿Qué tipo de coordinación aparece en «Estudia o trabaja»?",["Disyuntiva","Copulativa","Adversativa","Explicativa"],"Disyuntiva",["secundaria"],"media"),
+q("¿Qué tipo de coordinación aparece en «Llegó, pero no entró»?",["Adversativa","Disyuntiva","Copulativa","Distributiva"],"Adversativa",["secundaria"],"media"),
+q("¿Qué tipo de coordinación aparece en «Lee y escribe»?",["Copulativa","Adversativa","Disyuntiva","Explicativa"],"Copulativa",["secundaria"],"facil"),
+q("En «Se venden casas», ¿qué tipo de construcción aparece?",["Pasiva refleja","Impersonal con se","Pasiva perifrástica","Activa"],"Pasiva refleja",["universidad"],"dificil"),
+q("¿Cuál oración es impersonal?",["Hay muchas personas afuera","Los alumnos llegaron temprano","María preparó la cena","El perro duerme"],"Hay muchas personas afuera",["universidad"],"media"),
+q("En «El informe fue revisado por el equipo», ¿qué voz verbal aparece?",["Pasiva perifrástica","Activa","Pasiva refleja","Impersonal"],"Pasiva perifrástica",["universidad"],"media"),
+q("¿Qué función cumple «por el equipo» en «El informe fue revisado por el equipo»?",["Complemento agente","Complemento directo","Atributo","Complemento indirecto"],"Complemento agente",["universidad"],"dificil"),
+q("¿Cuál oración contiene un gerundio usado correctamente?",["Salió corriendo hacia la estación","Salió corrido hacia la estación","Salió correr hacia la estación","Salió corrió hacia la estación"],"Salió corriendo hacia la estación",["universidad"],"media"),
+q("¿Cuál forma verbal es un infinitivo?",["resolver","resuelto","resolviendo","resolvió"],"resolver",["primaria"],"facil"),
+q("¿Cuál forma verbal es un participio?",["escrito","escribir","escribiendo","escribe"],"escrito",["primaria"],"facil"),
+q("En «Hubiera llegado antes», ¿qué modo verbal expresa una situación hipotética?",["Subjuntivo","Indicativo","Imperativo","Infinitivo"],"Subjuntivo",["universidad"],"dificil"),
+q("¿Cuál oración usa correctamente el subjuntivo?",["Espero que vengas mañana","Espero que vienes mañana","Espero que vendrás mañana","Espero que ven mañana"],"Espero que vengas mañana",["secundaria"],"media"),
+q("¿Qué propiedad permite que un pronombre sustituya a un sustantivo ya mencionado?",["Referencia anafórica","Concordancia temporal","Derivación","Flexión verbal"],"Referencia anafórica",["universidad"],"dificil"),
+q("En «María le dio el libro a Pedro», ¿qué elemento es el complemento directo?",["el libro","María","le","a Pedro"],"el libro",["universidad"],"dificil")
+];
