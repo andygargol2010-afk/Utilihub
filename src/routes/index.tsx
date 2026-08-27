@@ -19,7 +19,7 @@ function Home() {
   return <main className="container-page pb-12 pt-3 sm:pt-5">
     <section aria-labelledby="home-title" className="py-3 sm:py-6">
       <div className="flex items-center justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">UtiliHub</p><h1 id="home-title" className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">¿Qué necesitas resolver?</h1></div><span className="hidden text-xs font-semibold text-muted-foreground sm:inline">{ALL_TOOLS.length} herramientas</span></div>
-      <div className="mt-4"><ToolSearch /></div>
+      <div className="mt-4"><ToolSearch compactHome /></div>
       <nav className="mt-3 flex gap-2 overflow-x-auto whitespace-nowrap pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Categorías principales">{featuredCategories.map((c) => <Link key={c.slug} to="/categoria/$slug" params={{ slug: c.slug }} className="min-h-11 shrink-0 rounded-full border border-border bg-card px-4 py-2.5 text-sm font-semibold hover:border-primary/40 hover:bg-accent">{c.name}</Link>)}</nav>
     </section>
     <FavoriteToolsSection />
