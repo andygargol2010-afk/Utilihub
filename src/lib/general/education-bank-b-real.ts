@@ -1,0 +1,47 @@
+import type { EducationDifficulty, EducationLevel } from "./education-engine";
+
+type Q={text:string;options:string[];answer:string;levels:EducationLevel[];difficulty:EducationDifficulty};
+const q=(text:string,options:string[],answer:string,levels:EducationLevel[],difficulty:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+
+export const MAPAS:Q[]=[
+ q("¿Qué representa una escala cartográfica?",["La relación entre una distancia del mapa y la distancia real","La altitud máxima","La temperatura media","La edad del mapa"],"La relación entre una distancia del mapa y la distancia real",["secundaria"],"facil"),
+ q("¿Qué línea divide la Tierra en hemisferios norte y sur?",["Ecuador","Greenwich","Trópico de Cáncer","Círculo Polar Ártico"],"Ecuador",["primaria"],"facil"),
+ q("¿Qué elemento de un mapa explica el significado de los símbolos?",["Leyenda","Escala","Título","Coordenadas"],"Leyenda",["primaria"],"facil"),
+ q("¿Qué indican las curvas de nivel en un mapa topográfico?",["Puntos de igual altitud","Puntos de igual población","Fronteras políticas","Direcciones del viento"],"Puntos de igual altitud",["secundaria"],"media"),
+ q("¿Qué coordenada geográfica mide la distancia angular al norte o sur del ecuador?",["Latitud","Longitud","Altitud","Escala"],"Latitud",["secundaria"],"facil"),
+ q("¿Qué coordenada mide la posición al este u oeste de un meridiano de referencia?",["Longitud","Latitud","Altitud","Pendiente"],"Longitud",["secundaria"],"facil"),
+ q("¿Qué proyección intenta representar toda la superficie terrestre en un plano?",["Proyección cartográfica","Perfil topográfico","Escala numérica","Fotografía aérea"],"Proyección cartográfica",["secundaria"],"facil"),
+ q("¿Qué sucede al aumentar el denominador de una escala 1:n?",["Se representa una superficie mayor con menos detalle","Aumenta el detalle automáticamente","Desaparecen las coordenadas","La escala deja de ser numérica"],"Se representa una superficie mayor con menos detalle",["secundaria","universidad"],"media"),
+ q("Si 1 cm en un mapa representa 5 km, ¿cuántos km representan 4 cm?",["20 km","9 km","25 km","1,25 km"],"20 km",["primaria","secundaria"],"facil"),
+ q("¿Qué tipo de mapa destaca fronteras y divisiones administrativas?",["Mapa político","Mapa climático","Mapa geológico","Mapa de relieve"],"Mapa político",["primaria"],"facil"),
+ q("¿Qué mapa muestra la distribución espacial de temperaturas o precipitaciones?",["Mapa climático","Mapa político","Mapa vial","Mapa catastral"],"Mapa climático",["secundaria"],"facil"),
+ q("¿Qué instrumento permite obtener orientación mediante puntos cardinales?",["Brújula","Barómetro","Termómetro","Pluviómetro"],"Brújula",["primaria"],"facil"),
+ q("¿Qué dirección corresponde aproximadamente a 90° desde el norte en sentido horario?",["Este","Oeste","Sur","Noreste"],"Este",["secundaria"],"facil"),
+ q("¿Qué representan normalmente los símbolos convencionales de un mapa?",["Elementos o fenómenos mediante signos gráficos","Solo montañas","Solo fronteras","Solo carreteras"],"Elementos o fenómenos mediante signos gráficos",["primaria","secundaria"],"media"),
+ q("¿Qué escala permite comparar directamente distancia gráfica y distancia real mediante una barra?",["Escala gráfica","Escala verbal","Escala temporal","Escala térmica"],"Escala gráfica",["primaria"],"facil"),
+ q("¿Qué es un meridiano?",["Una línea imaginaria que une los polos","Una línea paralela al ecuador","Una frontera política","Una curva de nivel"],"Una línea imaginaria que une los polos",["primaria","secundaria"],"facil"),
+ q("¿Qué es un paralelo?",["Una línea imaginaria paralela al ecuador","Una línea que une los polos","Una carretera internacional","Una curva de nivel"],"Una línea imaginaria paralela al ecuador",["primaria"],"facil"),
+ q("¿Qué función cumple el título de un mapa?",["Indicar el tema principal representado","Mostrar la escala exacta","Marcar todas las coordenadas","Indicar la altitud"],"Indicar el tema principal representado",["primaria"],"facil"),
+ q("¿Qué diferencia básica existe entre un mapa físico y uno político?",["El físico representa rasgos naturales y el político divisiones administrativas","El físico solo muestra ciudades","El político solo muestra ríos","No existe diferencia"],"El físico representa rasgos naturales y el político divisiones administrativas",["primaria","secundaria"],"media"),
+ q("¿Qué representa el meridiano de Greenwich?",["El meridiano de longitud 0°","El ecuador","El trópico de Capricornio","El polo norte"],"El meridiano de longitud 0°",["secundaria"],"facil"),
+ q("¿Qué coordenadas permiten localizar un punto sobre la superficie terrestre?",["Latitud y longitud","Altitud y escala","Temperatura y presión","Distancia y población"],"Latitud y longitud",["secundaria"],"facil"),
+ q("¿Qué significa que dos lugares tengan la misma latitud?",["Están sobre el mismo paralelo","Están sobre el mismo meridiano","Tienen la misma altitud","Están a igual distancia del polo más cercano"],"Están sobre el mismo paralelo",["secundaria"],"media"),
+ q("¿Qué significa que dos lugares tengan la misma longitud?",["Están sobre el mismo meridiano","Están sobre el mismo paralelo","Tienen el mismo clima","Tienen la misma altitud"],"Están sobre el mismo meridiano",["secundaria"],"media"),
+ q("¿Qué tipo de representación muestra la superficie terrestre vista desde arriba mediante fotografías?",["Imagen aérea","Mapa político","Perfil topográfico","Globo climático"],"Imagen aérea",["primaria"],"facil"),
+ q("¿Qué ventaja tiene un globo terráqueo frente a un mapa plano?",["Reduce ciertas deformaciones de la forma global de la Tierra","Siempre muestra más detalle","No necesita escala","Elimina las coordenadas"],"Reduce ciertas deformaciones de la forma global de la Tierra",["secundaria"],"media"),
+ q("¿Qué problema aparece al representar una esfera sobre una superficie plana?",["Deformaciones","Aumento de la gravedad","Pérdida de la atmósfera","Cambio de estaciones"],"Deformaciones",["secundaria"],"media"),
+ q("¿Qué elemento indica la relación entre las direcciones del mapa y los puntos cardinales?",["Rosa de los vientos","Leyenda","Escala","Título"],"Rosa de los vientos",["primaria"],"facil"),
+ q("¿Qué mapa sería más adecuado para estudiar una ruta de transporte entre ciudades?",["Mapa vial","Mapa geológico","Mapa climático","Mapa de vegetación"],"Mapa vial",["primaria","secundaria"],"facil"),
+ q("¿Qué mapa sería más adecuado para analizar la distribución de tipos de suelo?",["Mapa edafológico","Mapa político","Mapa vial","Mapa horario"],"Mapa edafológico",["secundaria","universidad"],"media"),
+ q("¿Qué mapa representa la estructura y tipos de rocas de una región?",["Mapa geológico","Mapa político","Mapa vial","Mapa demográfico"],"Mapa geológico",["secundaria"],"media"),
+ q("¿Qué significa una escala 1:100000?",["1 unidad en el mapa equivale a 100000 unidades reales","100000 unidades del mapa equivalen a 1 real","1 km equivale siempre a 100000 km","El mapa no tiene escala"],"1 unidad en el mapa equivale a 100000 unidades reales",["secundaria","universidad"],"media"),
+ q("En una escala 1:50000, ¿qué distancia real representa 2 cm?",["1 km","100 km","250 m","2,5 km"],"1 km",["secundaria"],"media"),
+ q("¿Qué sistema usa una cuadrícula para expresar posiciones mediante coordenadas planas?",["Sistema de coordenadas","Leyenda","Escala verbal","Perfil climático"],"Sistema de coordenadas",["secundaria"],"media"),
+ q("¿Qué representa la altitud de un punto?",["Su altura respecto de un nivel de referencia","Su distancia al ecuador","Su longitud geográfica","Su población"],"Su altura respecto de un nivel de referencia",["primaria","secundaria"],"facil"),
+ q("¿Qué orientación corresponde aproximadamente a 180° desde el norte?",["Sur","Este","Oeste","Noroeste"],"Sur",["primaria"],"facil"),
+ q("¿Qué orientación corresponde aproximadamente a 270° desde el norte en sentido horario?",["Oeste","Este","Sur","Noreste"],"Oeste",["primaria"],"facil"),
+ q("¿Qué propiedad de un mapa depende de la proyección utilizada?",["La forma o tamaño relativo de algunas regiones","La composición química del suelo","La temperatura real","La edad de las ciudades"],"La forma o tamaño relativo de algunas regiones",["universidad"],"dificil"),
+ q("¿Qué tipo de mapa se centra en la distribución de población?",["Mapa demográfico","Mapa geológico","Mapa vial","Mapa topográfico"],"Mapa demográfico",["secundaria"],"facil"),
+ q("¿Qué mapa muestra alturas y formas del terreno con especial detalle?",["Mapa topográfico","Mapa político","Mapa demográfico","Mapa comercial"],"Mapa topográfico",["secundaria"],"facil"),
+ q("¿Qué relación existe entre escala y nivel de detalle en términos generales?",["Las escalas grandes suelen permitir mayor detalle de áreas pequeñas","Las escalas pequeñas siempre muestran más detalle","La escala no afecta la representación","Solo la leyenda determina el detalle"],"Las escalas grandes suelen permitir mayor detalle de áreas pequeñas",["universidad"],"dificil")
+];
