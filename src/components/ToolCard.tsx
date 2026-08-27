@@ -1,19 +1,6 @@
-import { memo } from "react";
-import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Star } from "lucide-react";
-import { ALL_CATEGORIES, type CatalogTool } from "@/lib/all-tools";
-import { useFavorites } from "@/hooks/use-favorites";
+import { CompactToolRow } from "@/components/CompactToolRow";
+import type { CatalogTool } from "@/lib/all-tools";
 
-export const ToolCard = memo(function ToolCard({ tool, isFavorite: controlledFavorite, onToggleFavorite }: { tool: CatalogTool; isFavorite?: boolean; onToggleFavorite?: (slug: string) => void }) {
-  const { favorites, toggle, ready } = useFavorites();
-  const internalFavorite = ready && favorites.includes(tool.slug);
-  const isFavorite = onToggleFavorite ? !!controlledFavorite : internalFavorite;
-  const toggleFavorite = () => onToggleFavorite ? onToggleFavorite(tool.slug) : toggle(tool.slug);
-  const category = ALL_CATEGORIES.find((c) => c.slug === tool.category)?.name;
-  const href = tool.category === "finanzas" ? `/finanzas/${tool.slug}` : "/herramientas/$slug";
-  return <article className="surface-card group relative flex min-h-44 flex-col p-5 transition-all duration-200 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lift">
-    <div className="flex items-start justify-between gap-3"><span className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-bold text-accent-foreground">{category}</span><button type="button" onClick={toggleFavorite} aria-pressed={isFavorite} aria-label={isFavorite ? `Quitar ${tool.name} de favoritos` : `Añadir ${tool.name} a favoritos`} className="relative z-10 grid size-10 shrink-0 place-items-center rounded-lg border border-transparent text-muted-foreground hover:border-border hover:bg-accent hover:text-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"><Star className="size-4" fill={isFavorite ? "currentColor" : "none"} /></button></div>
-    <h3 className="mt-5 pr-5 text-lg font-bold"><Link to={href as any} params={tool.category === "finanzas" ? undefined : { slug: tool.slug }} className="after:absolute after:inset-0 focus-visible:relative focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 group-hover:text-primary">{tool.name}</Link></h3>
-    <p className="mt-1.5 line-clamp-2 text-sm leading-5 text-muted-foreground">{tool.summary}</p><span className="mt-auto flex items-center gap-1 pt-5 text-xs font-bold text-primary">Abrir herramienta <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></span>
-  </article>;
-});
+export const ToolCard = ({ tool, isFavorite, onToggleFavorite }: { tool: CatalogTool; isFavorite?: boolean; onToggleFavorite?: (slug: string) => void }) => (
+  <CompactToolRow tool={tool} isFavorite={isFavorite} onToggleFavorite={onToggleFavorite} />
+);
