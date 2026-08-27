@@ -8,18 +8,24 @@ type BaseQ={text:string;options:string[];answer:string;levels?:EducationLevel[];
 const BASE_BANK:Record<string,BaseQ[]>={...EDUCATION_BANK_A,...EDUCATION_BANK_B};
 const LEVELS:EducationLevel[]=["primaria","secundaria","universidad"];
 const DIFFICULTIES:EducationDifficulty[]=["facil","media","dificil"];
-const TARGET=20;
+const TARGET=40;
 
 function normalize(text:string){return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim()}
 function uniqueOptions(options:string[],answer:string){const out=[...new Set(options.filter(Boolean))];if(!out.some(x=>normalize(x)===normalize(answer)))out.push(answer);return out.slice(0,4)}
 function metadata(topic:string,index:number,base:BaseQ){return {levels:base.levels?.length?base.levels:[LEVELS[index%3]],difficulty:base.difficulty??DIFFICULTIES[(index+topic.length)%3]}}
 
-/* Local fallback: tests never depend on an external AI service. */
+/* Local deterministic expansion: tests never depend on an external AI service. */
 function vary(base:BaseQ,index:number):BaseQ[]{
   const numeric=/\d/.test(base.text);
   const prompts=numeric
-    ? ["Resuelve el siguiente caso:","Calcula y selecciona la opción correcta:","Considera este ejercicio:","Aplica el procedimiento al caso:","Determina el resultado:","Comprueba el cálculo:","En este problema:","Selecciona el resultado correcto:","Analiza el ejercicio:","¿Qué resultado se obtiene?"]
-    : ["Selecciona la respuesta correcta:","¿Cuál opción responde mejor al enunciado?","Identifica la respuesta correcta:","¿Qué afirmación corresponde al enunciado?","En una evaluación, ¿qué opción elegirías?","¿Cuál de estas opciones es la adecuada?","Relaciona el enunciado con su respuesta:","¿Qué opción completa correctamente la pregunta?","Elige la alternativa correcta:","¿Cuál es la respuesta más precisa?"];
+    ? [
+      "Resuelve el siguiente caso:","Calcula y selecciona la opción correcta:","Considera este ejercicio:","Aplica el procedimiento al caso:","Determina el resultado:","Comprueba el cálculo:","En este problema:","Selecciona el resultado correcto:","Analiza el ejercicio:","¿Qué resultado se obtiene?",
+      "Encuentra la solución de este ejercicio:","Evalúa el planteo y elige la respuesta:","Resuelve paso a paso y selecciona:","¿Cuál es el valor que corresponde?","Calcula correctamente:","Examina los datos del problema:","A partir de los datos, determina:","¿Qué opción representa el resultado?","Usa los datos dados para resolver:","Verifica cuál es la solución correcta:"
+    ]
+    : [
+      "Selecciona la respuesta correcta:","¿Cuál opción responde mejor al enunciado?","Identifica la respuesta correcta:","¿Qué afirmación corresponde al enunciado?","En una evaluación, ¿qué opción elegirías?","¿Cuál de estas opciones es la adecuada?","Relaciona el enunciado con su respuesta:","¿Qué opción completa correctamente la pregunta?","Elige la alternativa correcta:","¿Cuál es la respuesta más precisa?",
+      "Determina cuál afirmación es correcta:","Analiza el enunciado y selecciona:","¿Qué alternativa coincide con lo planteado?","Reconoce la opción que corresponde:","Selecciona la alternativa que mejor explica el enunciado:","¿Cuál respuesta es compatible con la pregunta?","Examina las opciones y elige la correcta:","¿Qué opción representa correctamente la idea planteada?","Identifica qué alternativa es válida:","Elige la respuesta que corresponde exactamente:"
+    ];
   return prompts.map((prefix,i)=>({...base,text:`${prefix} ${base.text}`,options:[...base.options].sort(()=>((index+i)%3)-1)}));
 }
 
