@@ -20,11 +20,7 @@ function vary(base:BaseQ,index:number):BaseQ[]{
   const prompts=numeric
     ? ["Resuelve el siguiente caso:","Calcula y selecciona la opción correcta:","Considera este ejercicio:","Aplica el procedimiento al caso:","Determina el resultado:","Comprueba el cálculo:","En este problema:","Selecciona el resultado correcto:","Analiza el ejercicio:","¿Qué resultado se obtiene?"]
     : ["Selecciona la respuesta correcta:","¿Cuál opción responde mejor al enunciado?","Identifica la respuesta correcta:","¿Qué afirmación corresponde al enunciado?","En una evaluación, ¿qué opción elegirías?","¿Cuál de estas opciones es la adecuada?","Relaciona el enunciado con su respuesta:","¿Qué opción completa correctamente la pregunta?","Elige la alternativa correcta:","¿Cuál es la respuesta más precisa?"];
-  return prompts.map((prefix,i)=>{
-    let text=`${prefix} ${base.text}`;
-    if(numeric){const shift=(index+1)*(i+1);text=text.replace(/\b(\d+(?:[.,]\d+)?)\b/g,m=>String(Number(m.replace(",","."))+shift));}
-    return {...base,text,options:[...base.options].sort(()=>((index+i)%3)-1)};
-  });
+  return prompts.map((prefix,i)=>({...base,text:`${prefix} ${base.text}`,options:[...base.options].sort(()=>((index+i)%3)-1)}));
 }
 
 function buildBank(topic:string,base:BaseQ[]):Q[]{
