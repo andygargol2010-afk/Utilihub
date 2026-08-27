@@ -3,6 +3,7 @@ import type { EducationDifficulty, EducationLevel } from "../education-engine";
 type Q={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
 const q=(text:string,options:string[],answer:string,levels?:EducationLevel[],difficulty?:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
 
+// Banco canónico: exactamente 40 preguntas independientes.
 export const ARITMETICA:Q[]=[
  q("¿Cuánto es 37 + 48?",["85","75","95","86"],"85",["primaria","secundaria"],"facil"),
  q("¿Cuánto es 96 − 27?",["69","63","79","73"],"69",["primaria","secundaria"],"facil"),
