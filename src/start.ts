@@ -3,9 +3,9 @@ import { createStart, createCsrfMiddleware, createMiddleware } from "@tanstack/r
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {
     return await next();
-  } catch (err) {
-    console.error(err);
-    throw err;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 });
 
