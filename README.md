@@ -1,27 +1,19 @@
-# UtiliHub
-
-UtiliHub is a free web hub for practical calculators, converters, text utilities, date tools and browser-local security utilities.
-
-## Architecture
-
-- GitHub is the source of truth.
-- Lovable is only the original prototype/source of the initial UI.
-- Vercel is the intended production host.
-- Most tools run entirely in the browser and require no backend.
-- Vercel Analytics and Speed Insights are included in the application shell.
-
-## SEO
-
-Each tool has its own clean URL, metadata, canonical URL, internal links, breadcrumbs and structured data where appropriate. The project also exposes `robots.txt` and a production sitemap.
-
-## Development
-
-```bash
-npm install
-npm run dev
-npm run build
-```
-
-## QA
-
-This branch is used for functional QA of the Vercel preview deployment. It does not change the production branch.
+IyBVdGlsaUh1YgoKVXRpbGlIdWIgaXMgYSBmcmVlIHdlYiBodWIgZm9yIHBy
+YWN0aWNhbCBjYWxjdWxhdG9ycywgY29udmVydGVycywgdGV4dCB1dGlsaXRp
+ZXMsIGRhdGUgdG9vbHMgYW5kIGJyb3dzZXItbG9jYWwgc2VjdXJpdHkgdXRp
+bGl0aWVzLgoKIyMgQXJjaGl0ZWN0dXJlCgotIEdpdEh1YiBpcyB0aGUgc291
+cmNlIG9mIHRydXRoLgotIExvdmFibGUgaXMgb25seSB0aGUgb3JpZ2luYWwg
+cHJvdG90eXBlL3NvdXJjZSBvZiB0aGUgaW5pdGlhbCBVSS4KLSBWZXJjZWwg
+aXMgdGhlIGludGVuZGVkIHByb2R1Y3Rpb24gaG9zdC4KLSBNb3N0IHRvb2xz
+IHJ1biBlbnRpcmVseSBpbiB0aGUgYnJvd3NlciBhbmQgcmVxdWlyZSBubyBi
+YWNrZW5kLgotIFZlcmNlbCBBbmFseXRpY3MgYW5kIFNwZWVkIEluc2lnaHRz
+IGFyZSBpbmNsdWRlZCBpbiB0aGUgYXBwbGljYXRpb24gc2hlbGwuCgojIyBT
+RU8KCkVhY2ggdG9vbCBoYXMgaXRzIG93biBjbGVhbiBVUkwsIG1ldGFkYXRh
+LCBjYW5vbmljYWwgVVJMLCBpbnRlcm5hbCBsaW5rcywgYnJlYWRjcnVtYnMg
+YW5kIHN0cnVjdHVyZWQgZGF0YSB3aGVyZSBhcHByb3ByaWF0ZS4gVGhlIHBy
+b2plY3QgYWxzbyBleHBvc2VzIGByb2JvdHMudHh0YCBhbmQgYSBwcm9kdWN0
+aW9uIHNpdGVtYXAuCgojIyBEZXZlbG9wbWVudAoKYGBgYmFzaApucG0gaW5z
+dGFsbApucG0gcnVuIGRldgpucG0gcnVuIGJ1aWxkCmBgYAoKIyMgUUEKClRo
+aXMgYnJhbmNoIGlzIHVzZWQgZm9yIGZ1bmN0aW9uYWwgUUEgb2YgdGhlIFZl
+cmNlbCBwcmV2aWV3IGRlcGxveW1lbnQuIEl0IGRvZXMgbm90IGNoYW5nZSB0
+aGUgcHJvZHVjdGlvbiBicmFuY2guCg==
