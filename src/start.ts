@@ -9,8 +9,6 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
   }
 });
 
-const csrfMiddleware = createCsrfMiddleware({ filter: ctx => ctx.handlerType === 'serverFn' });
+const csrfMiddleware = createCsrfMiddleware({ filter: (ctx) => ctx.handlerType === "serverFn" });
 
-export const startInstance = createStart(() => ({
-  requestMiddleware: [errorMiddleware, csrfMiddleware]
-}));
+export const startInstance = createStart(() => ({ requestMiddleware: [errorMiddleware, csrfMiddleware] }));
