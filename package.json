@@ -1,60 +1,42 @@
-{
-  "name": "utilihub",
-  "private": true,
-  "sideEffects": false,
-  "type": "module",
-  "scripts": {
-    "dev": "vite dev",
-    "build": "npm run validate:catalog && vite build",
-    "build:dev": "vite build --mode development",
-    "preview": "vite preview",
-    "lint": "eslint .",
-    "validate:catalog": "node scripts/validate-catalog.mjs",
-    "test:catalog": "node scripts/validate-catalog.mjs"
-  },
-  "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
-    "@radix-ui/react-checkbox": "^1.3.3",
-    "@radix-ui/react-label": "^2.1.8",
-    "@radix-ui/react-slider": "^1.3.6",
-    "@radix-ui/react-slot": "^1.2.4",
-    "@tanstack/react-query": "^5.101.1",
-    "@tanstack/react-router": "1.170.32",
-    "@tanstack/react-start": "1.168.49",
-    "@tanstack/router-plugin": "1.168.35",
-    "@vercel/analytics": "^1.5.0",
-    "@vercel/speed-insights": "^1.2.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "jspdf": "^4.2.1",
-    "lucide-react": "^1.34.0",
-    "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "^5.4.54",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "tailwind-merge": "^3.5.0",
-    "tailwindcss": "^4.2.1",
-    "tw-animate-css": "^1.3.4",
-    "vite": "7.2.6",
-    "vite-tsconfig-paths": "^6.0.2",
-    "xlsx": "^0.18.5"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.32.0",
-    "@lovable.dev/vite-tanstack-config": "^2.15.0",
-    "@tailwindcss/vite": "^4.2.1",
-    "@types/node": "^22.16.5",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "@vitejs/plugin-react": "^5.2.0",
-    "eslint": "^9.32.0",
-    "eslint-config-prettier": "^10.1.1",
-    "eslint-plugin-prettier": "^5.2.6",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "globals": "^15.15.0",
-    "nitro": "3.0.260603-beta",
-    "prettier": "^3.7.3",
-    "typescript": "^5.8.3"
-  }
-}
+ewogICJuYW1lIjogInV0aWxpaHViIiwKICAicHJpdmF0ZSI6IHRydWUsCiAg
+InNpZGVFZmZlY3RzIjogZmFsc2UsCiAgInR5cGUiOiAibW9kdWxlIiwKICAi
+c2NyaXB0cyI6IHsKICAgICJkZXYiOiAidml0ZSBkZXYiLAogICAgImJ1aWxk
+IjogIm5wbSggbm9uLWRlYnVnICkgcnVuIHZpbHRhdGU6Y2F0YWxvZyAmJiB2
+aXRlIGJ1aWxkIiwKICAgICJidWlsZDpkZXYiOiAidml0ZSBidWlsZCAtLW1v
+ZGUgZGV2ZWxvcG1lbnQiLAogICAgInByZXZpZXciOiAidml0ZSBwcmV2aWV3
+IiwKICAgICJsaW50IjogImVzbGludCAuIiwKICAgICJ2YWxpZGF0ZTpjYXRh
+bG9nIjogIm5vZGUgc2NyaXB0cy92YWxpZGF0ZS1jYXRhbG9nLm1qcyIsCiAg
+ICAidGVzdDpjYXRhbG9nIjogIm5vZGUgc2NyaXB0cy92YWxpZGF0ZS1jYXRh
+bG9nLm1qcyIKICB9LAogICJkZXBlbmRlbmNpZXMiOiB7CiAgICAiQGhvb2tmb3JtL3Jlc29sdmVy
+cyI6ICJeNS4yLjIiLAogICAgIkByYWRpeC11aS9yZWFjdC1jaGVja2JveCI6
+ICJeMS4zLjMiLAogICAgIkByYWRpeC11aS9yZWFjdC1sYWJlbCI6ICJeMi4x
+LjgiLAogICAgIkByYWRpeC11aS9yZWFjdC1zbGlkZXIiOiAiXjEuMy42IiwK
+ICAgICJAcmFkaXgtdWkvcmVhY3Qtc2xvdCI6ICJeMS4yLjQiLAogICAgIkB0
+YW5zdGFjay9yZWFjdC1xdWVyeSI6ICJeNS4xMDEuMSIsCiAgICAiQHRhbnN0
+YWNrL3JlYWN0LXJvdXRlciI6ICIxLjE3MC4zMiIsCiAgICAiQHRhbnN0YWNr
+L3JlYWN0LXN0YXJ0IjogIjEuMTY4LjQ5IiwKICAgICJAdGFuc3RhY2svcm91
+dGVyLXBsdWdpbiI6ICIxLjE2OC4zNSIsCiAgICAiQHZlcmNlbC9hbmFseXRp
+Y3MiOiAiXjEuNS4wIiwKICAgICJAdmVyY2VsL3NwZWVkLWluc2lnaHRzIjog
+Il4xLjIuMCIsCiAgICAiY2xhc3MtdmFyaWFuY2UtYXV0aG9yaXR5IjogIl4w
+LjcuMSIsCiAgICAiY2xzeCI6ICJeMi4xLjEiLAogICAgImpzcGRmIjogIl40
+LjIuMSIsCiAgICAibHVjaWRlLXJlYWN0IjogIl4xLjM0LjAiLAogICAgInBk
+Zi1saWIiOiAiXjEuMTcuMSIsCiAgICAicGRmanMtZGlzdCI6ICJeNS40LjU0
+IiwKICAgICJyZWFjdCI6ICJeMTkuMi4wIiwKICAgICJyZWFjdC1kb20iOiAi
+XjE5LjIuMCIsCiAgICAidGFpbHdpbmQtbWVyZ2UiOiAiXjMuNS4wIiwKICAg
+ICJ0YWlsd2luZGNzcyI6ICJeNC4yLjEiLAogICAgInR3LWFuaW1hdGUtY3Nz
+IjogIl4xLjMuNCIsCiAgICAidml0ZSI6ICI3LjIuNiIsCiAgICAidml0ZS10
+c2NvbmZpZy1wYXRocyI6ICJeNi4wLjIiLAogICAgInhsc3giOiAiXjAuMTgu
+NSIKICB9LAogICJkZXZEZXBlbmRlbmNpZXMiOiB7CiAgICAiQGVzbGludC9q
+cyI6ICJeOS4zMi4wIiwKICAgICJAbG9v
+ZGFibGUuZGV2L3ZpdGUtdGFuc3RhY2stdm9sdW1lLWNvbmZpZyI6ICJeMi4x
+NS4wIiwKICAgICJAdHlwZXMvbm9kZSI6ICJeMjIuMTYuNSIsCiAgICAiQHR5
+ZXMvcmVhY3QiOiAiXjE5LjIuMCIsCiAgICAiQHR5cGVzL3JlYWN0LWRvbSI6
+ICJeMTkuMi4wIiwKICAgICJAdml0ZWpzL3BsdWdpbi1yZWFjdC1ob29rcyI6
+ICJeNS4yLjAiLAogICAgImVzbGludCI6ICJeOS4zMi4wIiwKICAgICJlc2xp
+bnQtY29uZi1wcmV0dGllciI6ICJeMTAuMS4xIiwKICAgICJlc2xpbnQtcGx1
+Z2luLXByZXR0aWVyIjogIl41LjIuNiIsCiAgICAiZXNsaW50LXBsdWdpbi1y
+ZWFjdC1ob29rcyI6ICJeNS4yLjAiLAogICAgImVzbGludC1wbHVnaW4tcmVh
+Y3QtcmVmcmVzaCI6ICJeMC40LjIwIiwKICAgICJnbG9iYWxzIjogIl4xNS4x
+NS4wIiwKICAgICJuaXRybyI6ICIzLjAuMjYwNjAzLWJldGEiLAogICAgInBy
+ZXR0aWVyIjogIl4zLjcuMyIsCiAgICAidHlwZXNjcmlwdCI6ICJeNS44LjMi
+CiAgfQp9Cg==
