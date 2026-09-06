@@ -20,7 +20,9 @@ on:
       - "src/**"
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
+  actions: read
 
 concurrency:
   group: utilihub-autonomous-audit-${{ github.workflow }}-${{ github.ref }}
@@ -52,6 +54,12 @@ jobs:
       - name: Inspect agent state
         run: npm run agent:status
 
+      - name: Restore previous audit history
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_WORKFLOW_FILE: autonomous-audit.yml
+        run: node scripts/restore-audit-history.mjs
+
       - name: Run diagnostic worker cycle
         run: npm run agent:run
 
@@ -78,11 +86,21 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Create low-risk proposal PR
+        if: ${{ success() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/create-low-risk-pr.mjs
+
       - name: Upload audit reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: utilihub-audit-${{ github.run_id }}
-          path: .agent/reports/
+          path: |
+            .agent/reports/
+            .agent/proposals/
           if-no-files-found: warn
           retention-days: 14

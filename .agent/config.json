@@ -21,7 +21,9 @@
     "scheduler_configured": false,
     "requires_persistent_host": true,
     "production_promotion": false,
-    "automatic_merge": false
+    "automatic_merge": false,
+    "automatic_pr_creation": "low_risk_only",
+    "historical_artifacts": "previous_successful_audit"
   },
   "integrations": {
     "github": "cli_or_action_required",

@@ -16,6 +16,7 @@ export default [
         setTimeout: "readonly",
         URL: "readonly",
         fetch: "readonly",
+        Buffer: "readonly",
       },
     },
   },
