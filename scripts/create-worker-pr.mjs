@@ -57,7 +57,8 @@ if (existing) { console.log(JSON.stringify({ status: "exists", url: existing, br
 try { run("git", ["switch", "-c", branch]); } catch { run("git", ["switch", branch]); }
 run("git", ["config", "user.name", "utilihub-worker[bot]"]);
 run("git", ["config", "user.email", "utilihub-worker[bot]@users.noreply.github.com"]);
-run("git", ["add", path.relative(root, packet), ...changedFiles]);
+run("git", ["add", "-f", path.relative(root, packet)]);
+run("git", ["add", ...changedFiles]);
 run("git", ["commit", "-m", title]);
 run("git", ["push", "--set-upstream", "origin", branch]);
 const url = run("gh", ["pr", "create", "--repo", repository, "--base", "main", "--head", branch, "--title", title, "--body", body]);
