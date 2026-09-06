@@ -17,7 +17,8 @@ on:
     - cron: "57 * * * *"
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
   actions: read
 
 concurrency:
@@ -39,6 +40,12 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm run agent:run -- technical
       - run: npm run lint
+      - name: Create worker PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/create-worker-pr.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -58,6 +65,12 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm run agent:run -- innovator
       - run: npm run validate:catalog
+      - name: Create worker PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/create-worker-pr.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -77,6 +90,12 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm run agent:run -- retention
       - run: npm run build
+      - name: Create worker PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/create-worker-pr.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -96,6 +115,12 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm run agent:run -- curator
       - run: node scripts/validate-education-banks.mjs
+      - name: Create worker PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/create-worker-pr.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -118,6 +143,12 @@ jobs:
       - run: npm run lint
       - run: npm run validate:catalog
       - run: npm run build
+      - name: Create worker PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/create-worker-pr.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
