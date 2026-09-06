@@ -9,12 +9,6 @@ on:
         default: manager
         type: choice
         options: [technical, innovator, retention, curator, manager]
-  schedule:
-    - cron: "7,47 * * * *"
-    - cron: "17 * * * *"
-    - cron: "27 */2 * * *"
-    - cron: "37 */2 * * *"
-    - cron: "57 * * * *"
 
 permissions:
   contents: write
@@ -30,7 +24,7 @@ env:
 
 jobs:
   technical:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'technical' || github.event_name == 'schedule' && github.event.schedule == '7,47 * * * *' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'technical' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -55,7 +49,7 @@ jobs:
           retention-days: 14
 
   innovator:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'innovator' || github.event_name == 'schedule' && github.event.schedule == '17 * * * *' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'innovator' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -81,7 +75,7 @@ jobs:
           retention-days: 14
 
   retention:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'retention' || github.event_name == 'schedule' && github.event.schedule == '27 */2 * * *' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'retention' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -106,7 +100,7 @@ jobs:
           retention-days: 14
 
   curator:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'curator' || github.event_name == 'schedule' && github.event.schedule == '37 */2 * * *' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'curator' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -131,7 +125,7 @@ jobs:
           retention-days: 14
 
   manager:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'manager' || github.event_name == 'schedule' && github.event.schedule == '57 * * * *' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'manager' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
