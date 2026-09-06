@@ -65,6 +65,7 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm run agent:run -- innovator
       - run: npm run validate:catalog
+      - run: npm run build
       - name: Create worker PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -62,8 +62,12 @@ async function runWorker(worker, cycleId) {
     report.risks.push("Technical worker is audit-first; it does not mutate shared main.");
   } else if (worker === "innovator") {
     report.task_type = "seo_and_product_expansion";
-    const catalog = command("npm", ["run", "validate:catalog"]); report.validations.catalog = catalog.ok ? "passed" : "failed";
-    report.risks.push("Innovator requires a dedicated implementation cycle before changing product or SEO files.");
+    const cycle = command("node", ["scripts/innovator-cycle.mjs"]);
+    report.validations.catalog = cycle.ok ? "pending" : "failed";
+    if (!cycle.ok) report.errors.push(cycle.error || cycle.output);
+    report.files_changed = cycle.ok ? ["src/lib/general/innovator-tools.ts", "src/lib/general/index.ts"] : [];
+    report.next_action = cycle.ok ? "Validate the generated tool, create the worker PR, and wait for green Preview checks." : "Preserve the repository and retry the Innovator cycle after fixing the generator.";
+    report.risks.push("Innovator uses a deterministic local backlog when no external credentials are configured; generated changes remain isolated in worker PRs.");
   } else if (worker === "retention") {
     report.task_type = "retention_sequence";
     const markers = ["retention-history.done", "retention-tabs.done", "retention-streaks.done"];
