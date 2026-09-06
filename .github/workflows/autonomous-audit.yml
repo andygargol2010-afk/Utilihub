@@ -55,6 +55,9 @@ jobs:
       - name: Run diagnostic worker cycle
         run: npm run agent:run
 
+      - name: Generate self-improvement proposals
+        run: npm run agent:self-improve
+
       - name: Lint
         run: npm run lint
 

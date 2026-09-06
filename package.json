@@ -12,7 +12,8 @@
     "validate:catalog": "node scripts/validate-catalog.mjs",
     "test:catalog": "node scripts/validate-catalog.mjs",
     "agent:status": "node scripts/agent-system.mjs status",
-    "agent:run": "node scripts/agent-system.mjs run"
+    "agent:run": "node scripts/agent-system.mjs run",
+    "agent:self-improve": "node scripts/self-improvement.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
