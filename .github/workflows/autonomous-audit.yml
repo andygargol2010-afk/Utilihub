@@ -2,9 +2,6 @@ name: UtiliHub autonomous audit
 
 on:
   workflow_dispatch:
-  schedule:
-    # GitHub schedules are approximate; this runs hourly without mutating the repository.
-    - cron: "17 * * * *"
   pull_request:
     branches: [main]
   push:
