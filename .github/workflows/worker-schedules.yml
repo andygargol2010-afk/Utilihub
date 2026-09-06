@@ -1,0 +1,127 @@
+name: UtiliHub worker schedules
+
+on:
+  workflow_dispatch:
+    inputs:
+      worker:
+        description: Worker to run
+        required: true
+        default: manager
+        type: choice
+        options: [technical, innovator, retention, curator, manager]
+  schedule:
+    - cron: "7,47 * * * *"
+    - cron: "17 * * * *"
+    - cron: "27 */2 * * *"
+    - cron: "37 */2 * * *"
+    - cron: "57 * * * *"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: utilihub-worker-${{ github.event.schedule || inputs.worker || 'manual' }}
+  cancel-in-progress: false
+
+env:
+  CI: true
+
+jobs:
+  technical:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'technical' || github.event_name == 'schedule' && github.event.schedule == '7,47 * * * *' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci --no-audit --no-fund
+      - run: npm run agent:run -- technical
+      - run: npm run lint
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: utilihub-technical-${{ github.run_id }}
+          path: .agent/reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+  innovator:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'innovator' || github.event_name == 'schedule' && github.event.schedule == '17 * * * *' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci --no-audit --no-fund
+      - run: npm run agent:run -- innovator
+      - run: npm run validate:catalog
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: utilihub-innovator-${{ github.run_id }}
+          path: .agent/reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+  retention:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'retention' || github.event_name == 'schedule' && github.event.schedule == '27 */2 * * *' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci --no-audit --no-fund
+      - run: npm run agent:run -- retention
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: utilihub-retention-${{ github.run_id }}
+          path: .agent/reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+  curator:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'curator' || github.event_name == 'schedule' && github.event.schedule == '37 */2 * * *' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci --no-audit --no-fund
+      - run: npm run agent:run -- curator
+      - run: node scripts/validate-education-banks.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: utilihub-curator-${{ github.run_id }}
+          path: .agent/reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+  manager:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.worker == 'manager' || github.event_name == 'schedule' && github.event.schedule == '57 * * * *' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci --no-audit --no-fund
+      - run: npm run agent:run
+      - run: npm run agent:self-improve
+      - run: npm run lint
+      - run: npm run validate:catalog
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: utilihub-manager-${{ github.run_id }}
+          path: .agent/reports/
+          if-no-files-found: warn
+          retention-days: 14

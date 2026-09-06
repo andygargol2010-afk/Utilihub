@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repository": "andygargol2010-afk/Utilihub",
   "base_branch": "main",
-  "mode": "foundation_diagnostic",
+  "mode": "autonomous_supervised",
   "max_attempts_per_task": 3,
   "lock_ttl_minutes": 30,
   "daily_quota": {
@@ -18,8 +18,8 @@
     "manager": 60
   },
   "automation": {
-    "scheduler_configured": false,
-    "requires_persistent_host": true,
+    "scheduler_configured": true,
+    "requires_persistent_host": false,
     "production_promotion": false,
     "automatic_merge": false,
     "automatic_pr_creation": "low_risk_only",
