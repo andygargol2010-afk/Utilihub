@@ -13,6 +13,7 @@
     "test:catalog": "node scripts/validate-catalog.mjs",
     "agent:status": "node scripts/agent-system.mjs status",
     "agent:run": "node scripts/agent-system.mjs run",
+    "agent:innovator": "node scripts/innovator-cycle.mjs",
     "agent:self-improve": "node scripts/self-improvement.mjs"
   },
   "dependencies": {

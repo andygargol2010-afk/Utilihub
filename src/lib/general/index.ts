@@ -1,3 +1,4 @@
+import { INNOVATOR_TOOLS } from "./innovator-tools";
 import { GENERAL_CATEGORIES } from "./catalog";
 import { MATH_TOOLS } from "./math";
 import { MATH_EXTRA_TOOLS } from "./math-extra";
@@ -28,6 +29,7 @@ import { UTILITY_EXTRA_TOOLS } from "./utility-extra";
 export { GENERAL_CATEGORIES };
 
 export const GENERAL_TOOLS = [
+  ...INNOVATOR_TOOLS,
   ...MATH_TOOLS,
   ...MATH_EXTRA_TOOLS,
   ...MATH_ADVANCED_TOOLS,
