@@ -36,13 +36,12 @@ q("¿Qué tipo de coordinación aparece en «Llegó, pero no entró»?",["Advers
 q("¿Qué tipo de coordinación aparece en «Lee y escribe»?",["Copulativa","Adversativa","Disyuntiva","Explicativa"],"Copulativa",["secundaria"],"facil"),
 q("En «Se venden casas», ¿qué tipo de construcción aparece?",["Pasiva refleja","Impersonal con se","Pasiva perifrástica","Activa"],"Pasiva refleja",["universidad"],"dificil"),
 q("¿Cuál oración es impersonal?",["Hay muchas personas afuera","Los alumnos llegaron temprano","María preparó la cena","El perro duerme"],"Hay muchas personas afuera",["universidad"],"media"),
-q("En «El informe fue revisado por el equipo», ¿qué voz verbal aparece?",["Pasiva perifrástica","Activa","Pasiva refleja","Impersonal"],"Pasiva perifrástica",["universidad"],"media"),
+q("En «El informe fue revisado por el equipo», ¿qué voz verbal aparece?",["Pasiva perifrástica","Activa","Pasiva refleja","Impersonal"],"Pasiva perifrástica",["universidad"],"dificil"),
 q("¿Qué función cumple «por el equipo» en «El informe fue revisado por el equipo»?",["Complemento agente","Complemento directo","Atributo","Complemento indirecto"],"Complemento agente",["universidad"],"dificil"),
 q("¿Cuál oración contiene un gerundio usado correctamente?",["Salió corriendo hacia la estación","Salió corrido hacia la estación","Salió correr hacia la estación","Salió corrió hacia la estación"],"Salió corriendo hacia la estación",["universidad"],"media"),
 q("¿Cuál forma verbal es un infinitivo?",["resolver","resuelto","resolviendo","resolvió"],"resolver",["primaria"],"facil"),
 q("¿Cuál forma verbal es un participio?",["escrito","escribir","escribiendo","escribe"],"escrito",["primaria"],"facil"),
 q("En «Hubiera llegado antes», ¿qué modo verbal expresa una situación hipotética?",["Subjuntivo","Indicativo","Imperativo","Infinitivo"],"Subjuntivo",["universidad"],"dificil"),
-q("¿Cuál oración usa correctamente el subjuntivo?",["Espero que vengas mañana","Espero que vienes mañana","Espero que vendrás mañana","Espero que ven mañana"],"Espero que vengas mañana",["secundaria"],"media"),
+q("¿Cuál oración usa correctamente el subjuntivo?",["Espero que vengas mañana","Espero que vienes mañana","Espero que vendrás mañana","Espero que ven mañana"],"Espero que vengas mañana",["universidad"],"media"),
 q("¿Qué propiedad permite que un pronombre sustituya a un sustantivo ya mencionado?",["Referencia anafórica","Concordancia temporal","Derivación","Flexión verbal"],"Referencia anafórica",["universidad"],"dificil"),
-q("En «María le dio el libro a Pedro», ¿qué elemento es el complemento directo?",["el libro","María","le","a Pedro"],"el libro",["universidad"],"dificil")
 ];
