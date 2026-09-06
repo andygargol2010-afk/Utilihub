@@ -55,6 +55,8 @@ let existing = "";
 try { existing = run("gh", ["pr", "list", "--repo", repository, "--head", branch, "--state", "open", "--json", "url", "--jq", ".[0].url"]); } catch { /* continue */ }
 if (existing) { console.log(JSON.stringify({ status: "exists", url: existing, branch })); process.exit(0); }
 try { run("git", ["switch", "-c", branch]); } catch { run("git", ["switch", branch]); }
+run("git", ["config", "user.name", "utilihub-worker[bot]"]);
+run("git", ["config", "user.email", "utilihub-worker[bot]@users.noreply.github.com"]);
 run("git", ["add", path.relative(root, packet), ...changedFiles]);
 run("git", ["commit", "-m", title]);
 run("git", ["push", "--set-upstream", "origin", branch]);
