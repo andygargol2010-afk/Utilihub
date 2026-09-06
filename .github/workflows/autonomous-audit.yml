@@ -1,0 +1,106 @@
+name: UtiliHub autonomous audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub schedules are approximate; this runs hourly without mutating the repository.
+    - cron: "17 * * * *"
+  pull_request:
+    branches: [main]
+  push:
+    branches:
+      - "manus/**"
+    paths:
+      - ".agent/**"
+      - ".github/workflows/autonomous-audit.yml"
+      - "eslint.config.js"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/**"
+      - "src/**"
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+concurrency:
+  group: utilihub-autonomous-audit-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  audit:
+    name: Audit and validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout triggering ref
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Inspect agent state
+        run: npm run agent:status
+
+      - name: Restore previous audit history
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_WORKFLOW_FILE: autonomous-audit.yml
+        run: node scripts/restore-audit-history.mjs
+
+      - name: Run diagnostic worker cycle
+        run: npm run agent:run
+
+      - name: Generate self-improvement proposals
+        run: npm run agent:self-improve
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Validate catalog
+        run: npm run validate:catalog
+
+      - name: Test catalog
+        run: npm run test:catalog
+
+      - name: Validate education banks
+        if: ${{ hashFiles('scripts/validate-education-banks.mjs') != '' }}
+        run: node scripts/validate-education-banks.mjs
+
+      - name: Test education engine
+        if: ${{ hashFiles('scripts/test-education-engine.mjs') != '' }}
+        run: node scripts/test-education-engine.mjs
+
+      - name: Build
+        run: npm run build
+
+      - name: Create low-risk proposal PR
+        if: ${{ success() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/create-low-risk-pr.mjs
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: utilihub-audit-${{ github.run_id }}
+          path: |
+            .agent/reports/
+            .agent/proposals/
+          if-no-files-found: warn
+          retention-days: 14
