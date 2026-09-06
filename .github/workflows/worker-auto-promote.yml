@@ -1,0 +1,36 @@
+name: Promote worker changes
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: worker-promotion-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  promote:
+    if: >-
+      startsWith(github.event.pull_request.head.ref, 'agent/worker/') &&
+      contains(github.event.pull_request.body, '<!-- WORKER_GENERATED_PR -->')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Wait for every PR check and Preview
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+        run: timeout 1800 gh pr checks "$PR_NUMBER" --repo "$REPOSITORY" --watch --fail-fast
+
+      - name: Merge worker PR into production branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+        run: gh pr merge "$PR_NUMBER" --repo "$REPOSITORY" --squash --delete-branch
