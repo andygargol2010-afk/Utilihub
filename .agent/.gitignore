@@ -1,0 +1,11 @@
+state/*.json
+state/*.done
+locks/*
+reports/*.json
+logs/*
+quarantine/*
+!state/.gitkeep
+!locks/.gitkeep
+!reports/.gitkeep
+!logs/.gitkeep
+!quarantine/.gitkeep
