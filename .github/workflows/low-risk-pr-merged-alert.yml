@@ -1,0 +1,29 @@
+name: Notify low-risk proposal merge
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  notify:
+    name: Notify maintainer
+    if: >-
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'agent/proposal/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment merge notification
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          gh pr comment "$PR_NUMBER" \
+            --repo "$REPOSITORY" \
+            --body "@andygargol2010-afk Se fusionó un Pull Request automático de bajo riesgo.\n\n- PR: #$PR_NUMBER\n- Commit: \`$MERGE_SHA\`\n- Rama: \`${{ github.event.pull_request.head.ref }}\`\n\nEsta alerta fue generada automáticamente por UtiliHub."
