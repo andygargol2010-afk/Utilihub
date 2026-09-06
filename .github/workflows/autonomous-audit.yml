@@ -2,7 +2,7 @@ name: UtiliHub autonomous audit
 
 on:
   workflow_dispatch:
-  pull_request:
+  pull_request_target:
     branches: [main]
   push:
     branches:
@@ -37,6 +37,7 @@ jobs:
       - name: Checkout triggering ref
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
           fetch-depth: 1
 
       - name: Setup Node 24
