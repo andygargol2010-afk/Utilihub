@@ -2,7 +2,7 @@ import js from "@eslint/js";
 
 export default [
   {
-    ignores: ["**/node_modules/**", "dist/**", "**/*.ts", "**/*.tsx"],
+    ignores: ["**/node_modules/**", "dist/**", ".output/**", ".agent/**", ".vercel/**", "**/*.ts", "**/*.tsx"],
   },
   {
     ...js.configs.recommended,
