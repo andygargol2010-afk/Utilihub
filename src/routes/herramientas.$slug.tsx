@@ -6,6 +6,7 @@ import { GENERAL_TOOL_UI } from "@/components/general/registry";
 import { ToolCard } from "@/components/ToolCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
+import { ToolSeoContent } from "@/components/ToolSeoContent";
 import { ALL_CATEGORIES, allToolBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
 import { useRecentTools } from "@/hooks/use-recent-tools";
@@ -35,5 +36,6 @@ function ToolPage() {
     <div className="mt-3 flex items-center justify-between gap-3"><div className="min-w-0"><h1 className="truncate text-2xl font-bold sm:text-3xl">{tool.name}</h1><p className="mt-1 max-w-2xl truncate text-sm text-muted-foreground">{tool.summary}</p></div><FavoriteButton slug={tool.slug} name={tool.name} /></div>
     <section data-tool-surface aria-label={`Herramienta: ${tool.name}`} className="surface-card mt-5 p-4 sm:p-5">{ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}<div className="mt-4"><ShareAndExportActions title={tool.name} /></div></section>
     {related.length > 0 && <section className="mt-8" aria-labelledby="relacionadas"><div className="mb-2 flex items-center justify-between"><h2 id="relacionadas" className="text-base font-bold">Herramientas relacionadas</h2><span className="text-xs text-muted-foreground">{related.length}</span></div><div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">{related.map((t) => <ToolCard key={t.slug} tool={t} />)}</div></section>}
+    <ToolSeoContent tool={tool} />
   </main>;
 }
