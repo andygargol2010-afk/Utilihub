@@ -23,7 +23,7 @@
     "production_promotion": "worker_pr_after_green_checks",
     "automatic_merge": false,
     "automatic_pr_creation": "all_worker_changes",
-    "automatic_worker_merge": true,
+    "automatic_worker_merge": false,
     "historical_artifacts": "previous_successful_audit"
   },
   "integrations": {

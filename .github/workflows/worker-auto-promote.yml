@@ -28,9 +28,10 @@ jobs:
           REPOSITORY: ${{ github.repository }}
         run: timeout 1800 gh pr checks "$PR_NUMBER" --repo "$REPOSITORY" --watch --fail-fast
 
-      - name: Merge worker PR into production branch
+      - name: Report worker PR ready for supervised review
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           REPOSITORY: ${{ github.repository }}
-        run: gh pr merge "$PR_NUMBER" --repo "$REPOSITORY" --squash --delete-branch
+        run: |
+          gh pr comment "$PR_NUMBER" --repo "$REPOSITORY" --body "Todas las comprobaciones y el Preview han terminado correctamente. El PR queda listo para revisión y merge supervisados; no se promociona automáticamente a main."
