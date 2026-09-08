@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { TOOL_UI } from "@/components/tools/registry";
@@ -10,6 +10,7 @@ import { ToolSeoContent } from "@/components/ToolSeoContent";
 import { ALL_CATEGORIES, allToolBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, toolPath, webApplicationSchema } from "@/lib/seo";
 import { useRecentTools } from "@/hooks/use-recent-tools";
+import { toolStepIndex, workflowForTool } from "@/lib/workflows";
 
 export const Route = createFileRoute("/herramientas/$slug")({
   loader: ({ params }) => { const tool = allToolBySlug(params.slug); if (!tool) throw notFound(); return { tool }; },
@@ -28,6 +29,9 @@ function ToolPage() {
   const { addRecent } = useRecentTools();
   const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
   const related = allToolsByCategory(tool.category).filter((t) => t.slug !== tool.slug).slice(0, 8);
+  const workflow = workflowForTool(tool.slug);
+  const nextSlug = workflow ? workflow.steps[toolStepIndex(workflow, tool.slug) + 1] : undefined;
+  const nextTool = nextSlug ? allToolBySlug(nextSlug) : undefined;
   const ui = TOOL_UI[tool.slug] ?? GENERAL_TOOL_UI[tool.slug];
   useEffect(() => { addRecent(tool.slug); }, [addRecent, tool.slug]);
   if (!category) return <p className="container-page py-10">Herramienta no disponible.</p>;
@@ -35,6 +39,7 @@ function ToolPage() {
     <Breadcrumbs items={[{ label: "Inicio", to: "/" }, { label: "Herramientas", to: "/herramientas" }, { label: category.name, to: "/categoria/$slug", params: { slug: category.slug } }, { label: tool.name }]} />
     <div className="mt-3 flex items-center justify-between gap-3"><div className="min-w-0"><h1 className="truncate text-2xl font-bold sm:text-3xl">{tool.name}</h1><p className="mt-1 max-w-2xl truncate text-sm text-muted-foreground">{tool.summary}</p></div><FavoriteButton slug={tool.slug} name={tool.name} /></div>
     <section data-tool-surface aria-label={`Herramienta: ${tool.name}`} className="surface-card mt-5 p-4 sm:p-5">{ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}<div className="mt-4"><ShareAndExportActions title={tool.name} /></div></section>
+    {workflow && nextTool && <section className="mt-5 rounded-2xl border border-primary/20 bg-primary/[.045] p-4 sm:p-5" aria-labelledby="siguiente-paso"><div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Siguiente paso · {workflow.title}</p><h2 id="siguiente-paso" className="mt-1 text-lg font-black">Continúa con {nextTool.name}</h2><p className="mt-1 text-sm text-muted-foreground">Ya terminaste este paso. Sigue el flujo sin volver a buscar en el catálogo.</p></div><Link to="/herramientas/$slug" params={{ slug: nextTool.slug }} className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Abrir siguiente herramienta <span aria-hidden="true" className="ml-2">→</span></Link></div></section>}
     {related.length > 0 && <section className="mt-8" aria-labelledby="relacionadas"><div className="mb-2 flex items-center justify-between"><h2 id="relacionadas" className="text-base font-bold">Herramientas relacionadas</h2><span className="text-xs text-muted-foreground">{related.length}</span></div><div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">{related.map((t) => <ToolCard key={t.slug} tool={t} />)}</div></section>}
     <ToolSeoContent tool={tool} />
   </main>;
