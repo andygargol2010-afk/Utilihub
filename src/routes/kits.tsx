@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { ArrowRight, BriefcaseBusiness, CheckCircle2, GraduationCap, FileText, Search } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
@@ -29,6 +29,8 @@ export const Route = createFileRoute("/kits")({
 });
 
 function KitsPage() {
+  const pathname = useLocation({ select: (location) => location.pathname });
+  if (pathname !== "/kits") return <Outlet />;
   return <main className="container-page py-6 sm:py-8">
     <Breadcrumbs items={[{ label: "Inicio", to: "/" }, { label: "Kits de trabajo" }]} />
     <header className="hero-gradient mt-4 rounded-2xl border border-border/70 p-6 sm:p-9">
