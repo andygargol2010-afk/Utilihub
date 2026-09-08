@@ -1,4 +1,4 @@
-import type { EducationDifficulty, EducationLevel } from "./education-engine";
+import type { EducationDifficulty, EducationLevel } from "../general/education-engine";
 
 export type EducationBankQuestion = {
   text: string;
