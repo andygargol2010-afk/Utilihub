@@ -10,7 +10,7 @@ export function AdvancedCalculator({ definition }: { definition: FinancialDefini
   const run = () => {
     try {
       for (const field of definition.fields) {
-        const value = values[field.key];
+        const value = values[field.key] ?? Number.NaN;
         if (!Number.isFinite(value)) throw new Error(`Introduce un valor válido para «${field.label}».`);
         if (field.min !== undefined && value < field.min) {
           throw new Error(`«${field.label}» debe ser como mínimo ${field.min}.`);

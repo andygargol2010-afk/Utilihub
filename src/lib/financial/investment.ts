@@ -1,5 +1,5 @@
 import type { FinancialDefinition } from "./types";
-import { money, num, pct } from "./types";
+import { money, num, pct, financialValue } from "./types";
 
 const f = (key: string, label: string, defaultValue: number, unit = "") => ({
   key,
@@ -30,13 +30,13 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("years", "Años", 5),
     ],
     calculate: (v) => {
-      if (v.start <= 0 || v.end <= 0 || v.years <= 0) {
+      if (financialValue(v, "start") <= 0 || financialValue(v, "end") <= 0 || financialValue(v, "years") <= 0) {
         throw Error("Capitales y años deben ser mayores que 0.");
       }
-      const r = Math.pow(v.end / v.start, 1 / v.years) - 1;
+      const r = Math.pow(financialValue(v, "end") / financialValue(v, "start"), 1 / financialValue(v, "years")) - 1;
       return [
         { label: "CAGR", value: pct(r * 100) },
-        { label: "Ganancia", value: money(v.end - v.start) },
+        { label: "Ganancia", value: money(financialValue(v, "end") - financialValue(v, "start")) },
       ];
     },
   },
@@ -48,11 +48,11 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("fees", "Costes adicionales", 0, "$"),
     ],
     calculate: (v) => {
-      if (v.cost <= 0) throw Error("El coste inicial debe ser mayor que 0.");
-      const roi = ((v.end - v.cost - v.fees) / v.cost) * 100;
+      if (financialValue(v, "cost") <= 0) throw Error("El coste inicial debe ser mayor que 0.");
+      const roi = ((financialValue(v, "end") - financialValue(v, "cost") - financialValue(v, "fees")) / financialValue(v, "cost")) * 100;
       return [
         { label: "ROI", value: pct(roi) },
-        { label: "Beneficio neto", value: money(v.end - v.cost - v.fees) },
+        { label: "Beneficio neto", value: money(financialValue(v, "end") - financialValue(v, "cost") - financialValue(v, "fees")) },
       ];
     },
   },
@@ -64,10 +64,10 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("days", "Días invertidos", 365),
     ],
     calculate: (v) => {
-      if (v.start <= 0 || v.end <= 0 || v.days <= 0) {
+      if (financialValue(v, "start") <= 0 || financialValue(v, "end") <= 0 || financialValue(v, "days") <= 0) {
         throw Error("Capitales y días deben ser mayores que 0.");
       }
-      const r = (Math.pow(v.end / v.start, 365 / v.days) - 1) * 100;
+      const r = (Math.pow(financialValue(v, "end") / financialValue(v, "start"), 365 / financialValue(v, "days")) - 1) * 100;
       return [{ label: "Rentabilidad anualizada", value: pct(r) }];
     },
   },
@@ -80,14 +80,14 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("units", "Unidades", 200),
     ],
     calculate: (v) => {
-      if (v.units <= 0 || v.price <= 0) {
+      if (financialValue(v, "units") <= 0 || financialValue(v, "price") <= 0) {
         throw Error("Precio y unidades deben ser mayores que 0.");
       }
-      const target = v.cost + v.fees;
-      const current = v.price * v.units;
+      const target = financialValue(v, "cost") + financialValue(v, "fees");
+      const current = financialValue(v, "price") * financialValue(v, "units");
       return [
         { label: "Valor necesario para recuperar costes", value: money(target) },
-        { label: "Precio de equilibrio por unidad", value: money(target / v.units) },
+        { label: "Precio de equilibrio por unidad", value: money(target / financialValue(v, "units")) },
         { label: "Subida necesaria", value: pct((target / current - 1) * 100) },
       ];
     },
@@ -99,12 +99,12 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("trough", "Mínimo posterior", 80, "$"),
     ],
     calculate: (v) => {
-      if (v.peak <= 0 || v.trough < 0) {
+      if (financialValue(v, "peak") <= 0 || financialValue(v, "trough") < 0) {
         throw Error("El máximo debe ser mayor que 0 y el mínimo no puede ser negativo.");
       }
       return [
-        { label: "Drawdown", value: pct((v.trough / v.peak - 1) * 100) },
-        { label: "Pérdida", value: money(v.peak - v.trough) },
+        { label: "Drawdown", value: pct((financialValue(v, "trough") / financialValue(v, "peak") - 1) * 100) },
+        { label: "Pérdida", value: money(financialValue(v, "peak") - financialValue(v, "trough")) },
       ];
     },
   },
@@ -119,9 +119,9 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("p3", "Precio compra 3", 15, "$"),
     ],
     calculate: (v) => {
-      const q = v.q1 + v.q2 + v.q3;
+      const q = financialValue(v, "q1") + financialValue(v, "q2") + financialValue(v, "q3");
       if (q <= 0) throw Error("La cantidad total debe ser mayor que 0.");
-      const total = v.q1 * v.p1 + v.q2 * v.p2 + v.q3 * v.p3;
+      const total = financialValue(v, "q1") * financialValue(v, "p1") + financialValue(v, "q2") * financialValue(v, "p2") + financialValue(v, "q3") * financialValue(v, "p3");
       return [
         { label: "Cantidad total", value: num(q) },
         { label: "Coste total", value: money(total) },
@@ -138,10 +138,10 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("years", "Años", 10),
     ],
     calculate: (v) => {
-      if (v.years < 0) throw Error("Los años no pueden ser negativos.");
-      const n = Math.floor(v.years * 12);
-      const fv = futureDca(v.initial, v.monthly, v.rate, n);
-      const contributed = v.initial + v.monthly * n;
+      if (financialValue(v, "years") < 0) throw Error("Los años no pueden ser negativos.");
+      const n = Math.floor(financialValue(v, "years") * 12);
+      const fv = futureDca(financialValue(v, "initial"), financialValue(v, "monthly"), financialValue(v, "rate"), n);
+      const contributed = financialValue(v, "initial") + financialValue(v, "monthly") * n;
       return [
         { label: "Capital proyectado", value: money(fv) },
         { label: "Total aportado", value: money(contributed) },
@@ -157,8 +157,8 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("target", "Objetivo", 115, "$"),
     ],
     calculate: (v) => {
-      const risk = v.entry - v.stop;
-      const reward = v.target - v.entry;
+      const risk = financialValue(v, "entry") - financialValue(v, "stop");
+      const reward = financialValue(v, "target") - financialValue(v, "entry");
       if (risk <= 0) throw Error("El stop debe estar por debajo de la entrada para una posición larga.");
       if (reward < 0) throw Error("El objetivo debe estar por encima de la entrada.");
       return [
@@ -177,11 +177,11 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("stop", "Stop", 47, "$"),
     ],
     calculate: (v) => {
-      if (v.capital <= 0 || v.risk <= 0 || v.entry <= v.stop || v.stop < 0) {
+      if (financialValue(v, "capital") <= 0 || financialValue(v, "risk") <= 0 || financialValue(v, "entry") <= financialValue(v, "stop") || financialValue(v, "stop") < 0) {
         throw Error("Capital y riesgo deben ser positivos; la entrada debe ser mayor que el stop.");
       }
-      const risk = v.capital * v.risk / 100;
-      const per = v.entry - v.stop;
+      const risk = financialValue(v, "capital") * financialValue(v, "risk") / 100;
+      const per = financialValue(v, "entry") - financialValue(v, "stop");
       return [
         { label: "Riesgo máximo", value: money(risk) },
         { label: "Riesgo por unidad", value: money(per) },
@@ -197,11 +197,11 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("target", "Peso objetivo", 60, "%"),
     ],
     calculate: (v) => {
-      if (v.portfolio < 0 || v.current < 0 || v.target < 0 || v.current > 100 || v.target > 100) {
+      if (financialValue(v, "portfolio") < 0 || financialValue(v, "current") < 0 || financialValue(v, "target") < 0 || financialValue(v, "current") > 100 || financialValue(v, "target") > 100) {
         throw Error("Cartera y pesos deben ser válidos.");
       }
-      const current = v.portfolio * v.current / 100;
-      const target = v.portfolio * v.target / 100;
+      const current = financialValue(v, "portfolio") * financialValue(v, "current") / 100;
+      const target = financialValue(v, "portfolio") * financialValue(v, "target") / 100;
       return [
         { label: "Valor actual", value: money(current) },
         { label: "Valor objetivo", value: money(target) },
@@ -217,7 +217,7 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("cash", "Efectivo", 10, "%"),
     ],
     calculate: (v) => {
-      const total = v.stocks + v.bonds + v.cash;
+      const total = financialValue(v, "stocks") + financialValue(v, "bonds") + financialValue(v, "cash");
       return [
         { label: "Asignación total", value: pct(total) },
         { label: "Estado", value: Math.abs(total - 100) < 0.01 ? "Correcta" : "Debe sumar 100 %" },
@@ -231,8 +231,8 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("inflation", "Inflación", 4, "%"),
     ],
     calculate: (v) => {
-      if (v.inflation <= -100) throw Error("La inflación debe ser mayor que -100 %.");
-      const r = ((1 + v.nominal / 100) / (1 + v.inflation / 100) - 1) * 100;
+      if (financialValue(v, "inflation") <= -100) throw Error("La inflación debe ser mayor que -100 %.");
+      const r = ((1 + financialValue(v, "nominal") / 100) / (1 + financialValue(v, "inflation") / 100) - 1) * 100;
       return [{ label: "Rentabilidad real", value: pct(r) }];
     },
   },
@@ -244,11 +244,11 @@ export const INVESTMENT_TOOLS: FinancialDefinition[] = [
       f("initial", "Capital inicial común", 10000, "$"),
     ],
     calculate: (v) => {
-      if (v.initial <= 0) throw Error("El capital inicial debe ser mayor que 0.");
+      if (financialValue(v, "initial") <= 0) throw Error("El capital inicial debe ser mayor que 0.");
       return [
-        { label: "Rendimiento A", value: pct((v.a / v.initial - 1) * 100) },
-        { label: "Rendimiento B", value: pct((v.b / v.initial - 1) * 100) },
-        { label: "Mejor resultado", value: v.a > v.b ? "Inversión A" : v.a < v.b ? "Inversión B" : "Empate" },
+        { label: "Rendimiento A", value: pct((financialValue(v, "a") / financialValue(v, "initial") - 1) * 100) },
+        { label: "Rendimiento B", value: pct((financialValue(v, "b") / financialValue(v, "initial") - 1) * 100) },
+        { label: "Mejor resultado", value: financialValue(v, "a") > financialValue(v, "b") ? "Inversión A" : financialValue(v, "a") < financialValue(v, "b") ? "Inversión B" : "Empate" },
       ];
     },
   },
