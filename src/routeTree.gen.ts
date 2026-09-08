@@ -22,6 +22,7 @@ import { Route as EducacionSubjectRouteImport } from './routes/educacion.$subjec
 import { Route as FinanzasSlugRouteImport } from './routes/finanzas.$slug'
 import { Route as HerramientasIndexRouteImport } from './routes/herramientas.index'
 import { Route as HerramientasSlugRouteImport } from './routes/herramientas.$slug'
+import { Route as HubsDocumentosYArchivosRouteImport } from './routes/hubs.documentos-y-archivos'
 import { Route as KitsSlugRouteImport } from './routes/kits.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -89,6 +90,11 @@ const HerramientasSlugRoute = HerramientasSlugRouteImport.update({
   path: '/herramientas/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HubsDocumentosYArchivosRoute = HubsDocumentosYArchivosRouteImport.update({
+  id: '/hubs/documentos-y-archivos',
+  path: '/hubs/documentos-y-archivos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KitsSlugRoute = KitsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
+  '/hubs/documentos-y-archivos': typeof HubsDocumentosYArchivosRoute
   '/kits/$slug': typeof KitsSlugRoute
   '/herramientas/': typeof HerramientasIndexRoute
 }
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
+  '/hubs/documentos-y-archivos': typeof HubsDocumentosYArchivosRoute
   '/kits/$slug': typeof KitsSlugRoute
   '/herramientas': typeof HerramientasIndexRoute
 }
@@ -141,6 +149,7 @@ export interface FileRoutesById {
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
+  '/hubs/documentos-y-archivos': typeof HubsDocumentosYArchivosRoute
   '/kits/$slug': typeof KitsSlugRoute
   '/herramientas/': typeof HerramientasIndexRoute
 }
@@ -159,6 +168,7 @@ export interface FileRouteTypes {
     | '/educacion/$subject'
     | '/finanzas/$slug'
     | '/herramientas/$slug'
+    | '/hubs/documentos-y-archivos'
     | '/kits/$slug'
     | '/herramientas/'
   fileRoutesByTo: FileRoutesByTo
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/educacion/$subject'
     | '/finanzas/$slug'
     | '/herramientas/$slug'
+    | '/hubs/documentos-y-archivos'
     | '/kits/$slug'
     | '/herramientas'
   id:
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
     | '/educacion/$subject'
     | '/finanzas/$slug'
     | '/herramientas/$slug'
+    | '/hubs/documentos-y-archivos'
     | '/kits/$slug'
     | '/herramientas/'
   fileRoutesById: FileRoutesById
@@ -207,6 +219,7 @@ export interface RootRouteChildren {
   CategoriaSlugRoute: typeof CategoriaSlugRoute
   EducacionSubjectRoute: typeof EducacionSubjectRoute
   HerramientasSlugRoute: typeof HerramientasSlugRoute
+  HubsDocumentosYArchivosRoute: typeof HubsDocumentosYArchivosRoute
   HerramientasIndexRoute: typeof HerramientasIndexRoute
 }
 
@@ -303,6 +316,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HerramientasSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hubs/documentos-y-archivos': {
+      id: '/hubs/documentos-y-archivos'
+      path: '/hubs/documentos-y-archivos'
+      fullPath: '/hubs/documentos-y-archivos'
+      preLoaderRoute: typeof HubsDocumentosYArchivosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/kits/$slug': {
       id: '/kits/$slug'
       path: '/$slug'
@@ -347,6 +367,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriaSlugRoute: CategoriaSlugRoute,
   EducacionSubjectRoute: EducacionSubjectRoute,
   HerramientasSlugRoute: HerramientasSlugRoute,
+  HubsDocumentosYArchivosRoute: HubsDocumentosYArchivosRoute,
   HerramientasIndexRoute: HerramientasIndexRoute,
 }
 export const routeTree = rootRouteImport
