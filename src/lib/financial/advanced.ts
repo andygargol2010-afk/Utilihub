@@ -147,4 +147,59 @@ export const ADVANCED_FINANCIAL_TOOLS: FinancialDefinition[] = [
     },
     note: "Los ratios de apalancamiento son indicadores orientativos y deben compararse con empresas similares y con los convenios financieros aplicables.",
   },
+  {
+    slug: "calculadora-roic",
+    fields: [f("nopat", "Beneficio operativo después de impuestos", 150000, "$"), f("capital", "Capital invertido", 1000000, "$"), f("wacc", "WACC de referencia", 10, "%")],
+    calculate: (v) => {
+      const nopat = financialValue(v, "nopat"); const capital = financialValue(v, "capital"); const wacc = financialValue(v, "wacc");
+      if (nopat < 0 || capital <= 0 || wacc < 0) throw Error("El capital debe ser mayor que 0 y los valores no pueden ser negativos.");
+      const roic = nopat / capital * 100;
+      return [{ label: "ROIC", value: pct(roic) }, { label: "WACC", value: pct(wacc) }, { label: "Spread de creación de valor", value: pct(roic - wacc) }, { label: "Beneficio operativo", value: money(nopat) }];
+    },
+    note: "El ROIC compara el beneficio operativo después de impuestos con el capital invertido. Un spread positivo frente al WACC sugiere creación de valor bajo estos supuestos.",
+  },
+  {
+    slug: "runway-y-burn-rate",
+    fields: [f("cash", "Caja disponible", 250000, "$"), f("revenue", "Ingresos mensuales", 50000, "$"), f("expenses", "Gastos mensuales", 80000, "$"), f("growth", "Crecimiento mensual de ingresos", 3, "%")],
+    calculate: (v) => {
+      const cash = financialValue(v, "cash"); const revenue = financialValue(v, "revenue"); const expenses = financialValue(v, "expenses"); const growth = financialValue(v, "growth") / 100;
+      if (cash < 0 || revenue < 0 || expenses <= 0 || growth < -1) throw Error("La caja e ingresos no pueden ser negativos y los gastos deben ser mayores que 0.");
+      const burn = Math.max(0, expenses - revenue); const runway = burn === 0 ? Infinity : cash / burn;
+      let balance = cash; let month = 0; let monthlyRevenue = revenue;
+      while (balance > 0 && month < 240) { balance += monthlyRevenue - expenses; monthlyRevenue *= 1 + growth; month++; }
+      return [{ label: "Burn neto mensual", value: money(burn) }, { label: "Runway inicial", value: Number.isFinite(runway) ? `${num(runway)} meses` : "Sin consumo neto" }, { label: "Mes estimado de caja agotada", value: balance > 0 ? "Más de 20 años" : `${month} meses` }, { label: "Caja final del horizonte", value: money(Math.max(0, balance)) }];
+    },
+    note: "Estimación de runway con ingresos que crecen a una tasa mensual constante y gastos mensuales constantes. No modela deuda, impuestos ni estacionalidad.",
+  },
+  {
+    slug: "apalancamiento-operativo",
+    fields: [f("price", "Precio por unidad", 100, "$"), f("variable", "Coste variable por unidad", 40, "$"), f("fixed", "Costes fijos del período", 30000, "$"), f("units", "Unidades vendidas", 1000)],
+    calculate: (v) => {
+      const price = financialValue(v, "price"); const variable = financialValue(v, "variable"); const fixed = financialValue(v, "fixed"); const units = financialValue(v, "units");
+      if (price <= variable || fixed < 0 || units <= 0) throw Error("El precio debe superar el coste variable, y las unidades deben ser mayores que 0.");
+      const contribution = (price - variable) * units; const ebit = contribution - fixed; const dol = ebit === 0 ? Infinity : contribution / ebit; const breakEven = fixed / (price - variable);
+      return [{ label: "Margen de contribución", value: money(contribution) }, { label: "Resultado operativo", value: money(ebit) }, { label: "Apalancamiento operativo", value: Number.isFinite(dol) ? `${num(dol)}x` : "No definido" }, { label: "Punto de equilibrio", value: `${num(breakEven)} unidades` }];
+    },
+    note: "El apalancamiento operativo muestra cuánto puede cambiar el resultado operativo ante cambios en ventas, debido al peso de los costes fijos.",
+  },
+  {
+    slug: "modelo-de-crecimiento-de-dividendos",
+    fields: [f("dividend", "Dividendo anual por acción", 2, "$"), f("growth", "Crecimiento esperado", 3, "%"), f("cost", "Rentabilidad exigida", 9, "%")],
+    calculate: (v) => {
+      const dividend = financialValue(v, "dividend"); const growth = financialValue(v, "growth") / 100; const cost = financialValue(v, "cost") / 100;
+      if (dividend <= 0 || cost <= growth || cost <= 0) throw Error("El dividendo debe ser positivo y la rentabilidad exigida debe superar el crecimiento esperado.");
+      const nextDividend = dividend * (1 + growth); const value = nextDividend / (cost - growth); return [{ label: "Dividendo esperado próximo", value: money(nextDividend) }, { label: "Valor teórico por acción", value: money(value) }, { label: "Margen de crecimiento", value: pct((cost - growth) * 100) }];
+    },
+    note: "Modelo de crecimiento de Gordon con crecimiento constante. Es muy sensible a la diferencia entre rentabilidad exigida y crecimiento.",
+  },
+  {
+    slug: "margen-de-seguridad",
+    fields: [f("sales", "Ventas actuales", 250000, "$"), f("breakEven", "Ventas de equilibrio", 180000, "$"), f("target", "Ventas objetivo", 300000, "$"), f("margin", "Margen neto esperado", 12, "%")],
+    calculate: (v) => {
+      const sales = financialValue(v, "sales"); const breakEven = financialValue(v, "breakEven"); const target = financialValue(v, "target"); const margin = financialValue(v, "margin") / 100;
+      if (sales <= 0 || breakEven < 0 || target <= 0 || margin < 0 || margin > 1) throw Error("Las ventas deben ser positivas y el margen debe estar entre 0 % y 100 %.");
+      const safety = (sales - breakEven) / sales * 100; const targetProfit = target * margin; return [{ label: "Margen de seguridad actual", value: pct(safety) }, { label: "Ventas por encima del equilibrio", value: money(sales - breakEven) }, { label: "Beneficio en ventas objetivo", value: money(targetProfit) }, { label: "Crecimiento hasta objetivo", value: pct((target / sales - 1) * 100) }];
+    },
+    note: "El margen de seguridad estima cuánto pueden caer las ventas antes de alcanzar el punto de equilibrio.",
+  },
 ];
