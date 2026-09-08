@@ -91,6 +91,10 @@ async function status() {
 async function main() {
   await ensureRuntime(); const commandName = process.argv[2] || "status"; if (commandName === "status") return status();
   if (commandName !== "run") throw new Error("Uso: node scripts/agent-system.mjs status|run [worker]");
+  const activeBranch = git("branch", "--show-current").output;
+  if (!activeBranch || activeBranch === "main" || activeBranch === "master") {
+    throw new Error("Bloqueado: los ciclos mutables requieren una rama aislada con nombre; main/master/detached solo admiten auditoría de estado.");
+  }
   const requested = process.argv[3] || "manager"; const cycleId = `cycle-${new Date().toISOString().replaceAll(/[-:.TZ]/g, "").slice(0, 14)}-${randomUUID().slice(0, 8)}`;
   const lock = await acquireLock(cycleId, requested); if (!lock.acquired) { console.log(JSON.stringify({ cycle_id: cycleId, status: "blocked", blocked_reason: "repository lock is active", owner: lock.existing }, null, 2)); process.exitCode = 2; return; }
   try {
