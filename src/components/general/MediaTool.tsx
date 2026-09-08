@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import { PDFDocument, degrees } from "pdf-lib";
-import { jsPDF } from "jspdf";
 
 const download = (blob: Blob, name: string) => {
   const url = URL.createObjectURL(blob);
@@ -190,6 +188,7 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
       }
 
       if (imagePdf) {
+        const { jsPDF } = await import("jspdf");
         const pdf = new jsPDF({ unit: "pt", format: "a4" });
         for (let i = 0; i < files.length; i++) {
           if (i) pdf.addPage();
@@ -213,6 +212,7 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
       }
 
       const bytes = await readBytes(files[0]);
+      const { PDFDocument, degrees } = await import("pdf-lib");
       const pdf = await PDFDocument.load(bytes);
 
       if (tool.slug === "unir-pdf") {
