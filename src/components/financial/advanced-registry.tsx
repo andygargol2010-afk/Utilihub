@@ -9,6 +9,7 @@ import { PORTFOLIO_TOOLS } from "@/lib/financial/portfolio";
 import { RETIREMENT_TOOLS } from "@/lib/financial/retirement";
 import { FIXED_INCOME_TOOLS } from "@/lib/financial/fixed-income";
 import { TAX_TOOLS } from "@/lib/financial/tax";
+import { ADVANCED_FINANCIAL_TOOLS } from "@/lib/financial/advanced";
 
-const definitions=[...INVESTMENT_TOOLS,...LOAN_TOOLS,...SAVINGS_TOOLS,...INFLATION_TOOLS,...MARKET_TOOLS,...PORTFOLIO_TOOLS,...RETIREMENT_TOOLS,...FIXED_INCOME_TOOLS,...TAX_TOOLS];
+const definitions=[...INVESTMENT_TOOLS,...LOAN_TOOLS,...SAVINGS_TOOLS,...INFLATION_TOOLS,...MARKET_TOOLS,...PORTFOLIO_TOOLS,...RETIREMENT_TOOLS,...FIXED_INCOME_TOOLS,...TAX_TOOLS,...ADVANCED_FINANCIAL_TOOLS];
 export const ADVANCED_FINANCIAL_UI:Record<string,()=>ReactNode>=Object.fromEntries(definitions.map((definition)=>[definition.slug,()=> <AdvancedCalculator definition={definition}/>]));
