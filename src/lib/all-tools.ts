@@ -1,7 +1,7 @@
 import { CATEGORIES, TOOLS, type Tool } from "./tools";
 import { FINANCIAL_TOOLS } from "./financial-tools";
 import { GENERAL_CATEGORIES, GENERAL_TOOLS } from "./general";
-import { LEGACY_CATEGORY_REDIRECTS } from "./category-catalog";
+import { LEGACY_CATEGORY_REDIRECTS, SECONDARY_CATEGORY_MAP } from "./category-catalog";
 
 export type CatalogTool = Omit<Tool, "category"> & { category: string };
 
@@ -52,8 +52,12 @@ if (duplicateSlugs.length) {
 }
 
 export const ALL_TOOLS: CatalogTool[] = catalogSources;
+const unknownSecondaryTools = Object.keys(SECONDARY_CATEGORY_MAP).filter((slug) => !ALL_TOOLS.some((tool) => tool.slug === slug));
+if (unknownSecondaryTools.length) {
+  throw new Error(`UtiliHub catalog integrity error: unknown secondary category tools: ${unknownSecondaryTools.join(", ")}`);
+}
 export const allToolBySlug = (slug: string) => ALL_TOOLS.find((tool) => tool.slug === slug);
-export const allToolsByCategory = (slug: string) => ALL_TOOLS.filter((tool) => tool.category === slug);
+export const allToolsByCategory = (slug: string) => ALL_TOOLS.filter((tool) => tool.category === slug || SECONDARY_CATEGORY_MAP[tool.slug]?.includes(slug));
 export const allCategoryBySlug = (slug: string) => {
   const canonical = LEGACY_CATEGORY_REDIRECTS[slug] ?? slug;
   return ALL_CATEGORIES.find((category) => category.slug === canonical);
