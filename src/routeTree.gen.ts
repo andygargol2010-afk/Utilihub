@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as FinanzasRouteImport } from './routes/finanzas'
+import { Route as KitsRouteImport } from './routes/kits'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -21,6 +22,7 @@ import { Route as EducacionSubjectRouteImport } from './routes/educacion.$subjec
 import { Route as FinanzasSlugRouteImport } from './routes/finanzas.$slug'
 import { Route as HerramientasIndexRouteImport } from './routes/herramientas.index'
 import { Route as HerramientasSlugRouteImport } from './routes/herramientas.$slug'
+import { Route as KitsSlugRouteImport } from './routes/kits.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +42,11 @@ const ContactoRoute = ContactoRouteImport.update({
 const FinanzasRoute = FinanzasRouteImport.update({
   id: '/finanzas',
   path: '/finanzas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KitsRoute = KitsRouteImport.update({
+  id: '/kits',
+  path: '/kits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacidadRoute = PrivacidadRouteImport.update({
@@ -82,12 +89,18 @@ const HerramientasSlugRoute = HerramientasSlugRouteImport.update({
   path: '/herramientas/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KitsSlugRoute = KitsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => KitsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/kits': typeof KitsRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -95,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
+  '/kits/$slug': typeof KitsSlugRoute
   '/herramientas/': typeof HerramientasIndexRoute
 }
 export interface FileRoutesByTo {
@@ -102,6 +116,7 @@ export interface FileRoutesByTo {
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/kits': typeof KitsRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -109,6 +124,7 @@ export interface FileRoutesByTo {
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
+  '/kits/$slug': typeof KitsSlugRoute
   '/herramientas': typeof HerramientasIndexRoute
 }
 export interface FileRoutesById {
@@ -117,6 +133,7 @@ export interface FileRoutesById {
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/kits': typeof KitsRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -124,6 +141,7 @@ export interface FileRoutesById {
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
+  '/kits/$slug': typeof KitsSlugRoute
   '/herramientas/': typeof HerramientasIndexRoute
 }
 export interface FileRouteTypes {
@@ -133,6 +151,7 @@ export interface FileRouteTypes {
     | '/aviso-legal'
     | '/contacto'
     | '/finanzas'
+    | '/kits'
     | '/privacidad'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -140,6 +159,7 @@ export interface FileRouteTypes {
     | '/educacion/$subject'
     | '/finanzas/$slug'
     | '/herramientas/$slug'
+    | '/kits/$slug'
     | '/herramientas/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -147,6 +167,7 @@ export interface FileRouteTypes {
     | '/aviso-legal'
     | '/contacto'
     | '/finanzas'
+    | '/kits'
     | '/privacidad'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -154,6 +175,7 @@ export interface FileRouteTypes {
     | '/educacion/$subject'
     | '/finanzas/$slug'
     | '/herramientas/$slug'
+    | '/kits/$slug'
     | '/herramientas'
   id:
     | '__root__'
@@ -161,6 +183,7 @@ export interface FileRouteTypes {
     | '/aviso-legal'
     | '/contacto'
     | '/finanzas'
+    | '/kits'
     | '/privacidad'
     | '/robots.txt'
     | '/sitemap.xml'
@@ -168,6 +191,7 @@ export interface FileRouteTypes {
     | '/educacion/$subject'
     | '/finanzas/$slug'
     | '/herramientas/$slug'
+    | '/kits/$slug'
     | '/herramientas/'
   fileRoutesById: FileRoutesById
 }
@@ -176,6 +200,7 @@ export interface RootRouteChildren {
   AvisoLegalRoute: typeof AvisoLegalRoute
   ContactoRoute: typeof ContactoRoute
   FinanzasRoute: typeof FinanzasRouteWithChildren
+  KitsRoute: typeof KitsRouteWithChildren
   PrivacidadRoute: typeof PrivacidadRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -213,6 +238,13 @@ declare module '@tanstack/react-router' {
       path: '/finanzas'
       fullPath: '/finanzas'
       preLoaderRoute: typeof FinanzasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kits': {
+      id: '/kits'
+      path: '/kits'
+      fullPath: '/kits'
+      preLoaderRoute: typeof KitsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacidad': {
@@ -271,6 +303,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HerramientasSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kits/$slug': {
+      id: '/kits/$slug'
+      path: '/$slug'
+      fullPath: '/kits/$slug'
+      preLoaderRoute: typeof KitsSlugRouteImport
+      parentRoute: typeof KitsRoute
+    }
   }
 }
 
@@ -286,11 +325,22 @@ const FinanzasRouteWithChildren = FinanzasRoute._addFileChildren(
   FinanzasRouteChildren,
 )
 
+interface KitsRouteChildren {
+  KitsSlugRoute: typeof KitsSlugRoute
+}
+
+const KitsRouteChildren: KitsRouteChildren = {
+  KitsSlugRoute: KitsSlugRoute,
+}
+
+const KitsRouteWithChildren = KitsRoute._addFileChildren(KitsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AvisoLegalRoute: AvisoLegalRoute,
   ContactoRoute: ContactoRoute,
   FinanzasRoute: FinanzasRouteWithChildren,
+  KitsRoute: KitsRouteWithChildren,
   PrivacidadRoute: PrivacidadRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
