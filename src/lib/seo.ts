@@ -1,4 +1,4 @@
-export const SITE_URL = "https://utilihub-ten.vercel.app";
+export const SITE_URL = (import.meta.env.VITE_SITE_URL || "https://utilihub-ten.vercel.app").replace(/\/$/, "");
 export const SITE_NAME = "UtiliHub";
 export const DEFAULT_DESCRIPTION = "Más de 500 herramientas online gratuitas: calculadoras, conversores y utilidades para matemáticas, finanzas, educación, ciencia y tareas cotidianas. Sin registro.";
 export const absoluteUrl = (path:string) => `${SITE_URL}${path.startsWith("/")?path:`/${path}`}`;

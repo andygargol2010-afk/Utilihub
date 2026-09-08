@@ -8,7 +8,7 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolSeoContent } from "@/components/ToolSeoContent";
 import { ALL_CATEGORIES, allToolBySlug, allToolsByCategory } from "@/lib/all-tools";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
+import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, toolPath, webApplicationSchema } from "@/lib/seo";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 
 export const Route = createFileRoute("/herramientas/$slug")({
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/herramientas/$slug")({
     if (!loaderData) return { meta: [{ title: "Herramienta no encontrada | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
     const { tool } = loaderData; const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
     if (!category) return { meta: [{ title: tool.title }, { name: "description", content: cleanDescription(tool.description) }, { name: "robots", content: "noindex" }] };
-    const description = cleanDescription(tool.description); const url = absoluteUrl(`/herramientas/${tool.slug}`);
+    const description = cleanDescription(tool.description); const url = absoluteUrl(toolPath(tool));
     return { meta: [{ title: tool.title }, { name: "description", content: description }, { name: "keywords", content: toolKeywords(tool).join(", ") }, { name: "robots", content: "index, follow, max-image-preview:large" }, { property: "og:title", content: tool.title }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { property: "og:url", content: url }, { property: "og:site_name", content: "UtiliHub" }, { property: "og:image", content: ogImage() }, { name: "twitter:card", content: "summary_large_image" }, { name: "twitter:title", content: tool.title }, { name: "twitter:description", content: description }, { name: "twitter:image", content: ogImage() }], links: [{ rel: "canonical", href: url }], scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@graph": [webApplicationSchema(tool), ...(tool.faq?.length ? [faqSchema(tool.faq)] : []), breadcrumbSchema([{ name: "Inicio", path: "/" }, { name: "Herramientas", path: "/herramientas" }, { name: category.name, path: `/categoria/${category.slug}` }, { name: tool.name }])] }) }] };
   },
   component: ToolPage,
