@@ -21,6 +21,7 @@ import { PowerRootTool } from "./PowerRootTool";
 import { NormalDistributionTool } from "./NormalDistributionTool";
 import { PoissonTool } from "./PoissonTool";
 import { DocumentTool } from "./DocumentTool";
+import { UtilityAdvancedTool } from "./UtilityAdvancedTool";
 
 export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntries(
   GENERAL_TOOLS.map((tool) => [tool.slug, () => {
@@ -29,6 +30,7 @@ export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntri
     if (tool.slug === "distribucion-normal") return <NormalDistributionTool tool={tool} />;
     if (tool.slug === "distribucion-poisson") return <PoissonTool tool={tool} />;
     if (tool.config?.mode === "document") return <DocumentTool tool={tool} />;
+    if (tool.category === "utilidades" && tool.kind === "formula") return <UtilityAdvancedTool tool={tool} />;
     if (tool.config?.mode === "date") return <AdvancedDateTool tool={tool} />;
     if (tool.config?.mode === "advanced" && tool.config?.operation) return <AdvancedCalculatorTool tool={tool} />;
     if (tool.config?.operation) return <ConfiguredTool tool={tool} />;

@@ -17,6 +17,9 @@ export function SecurityTool({tool}:{tool:GeneralTool}){
   if(tool.slug==="hmac-sha256"){if(!secret){setOut("Introduce una clave secreta.");return}const key=await crypto.subtle.importKey("raw",new TextEncoder().encode(secret),{name:"HMAC",hash:"SHA-256"},false,["sign"]);const sig=await crypto.subtle.sign("HMAC",key,new TextEncoder().encode(text));setOut([...new Uint8Array(sig)].map(x=>x.toString(16).padStart(2,"0")).join(""));return}
   if(tool.slug==="token-seguro"){const bytes=new Uint8Array(32);crypto.getRandomValues(bytes);setOut([...bytes].map(x=>x.toString(16).padStart(2,"0")).join(""));return}
   if(tool.slug==="comparador-hashes"){if(!expected.trim()){setOut("Introduce el hash esperado.");return}const actual=await digest("SHA-256",text);setOut(actual.toLowerCase()===expected.trim().toLowerCase()?"Coincide con SHA-256.":"No coincide con SHA-256.");return}
+  if(tool.slug==="generador-claves-api"){const bytes=new Uint8Array(24);crypto.getRandomValues(bytes);setOut(`uh_live_${[...bytes].map(x=>x.toString(16).padStart(2,"0")).join("")}`);return}
+  if(tool.slug==="analizador-entropia"){const bits=entropy(text);setOut(`Entropía aproximada: ${bits.toFixed(1)} bits\nLongitud: ${text.length} caracteres\nRecomendación: ${bits<60?"Usa más longitud y variedad.":"La contraseña tiene una entropía razonable; evita reutilizarla."}`);return}
+  if(tool.slug==="verificador-hash-multi"){const [sha256,sha512]=await Promise.all([digest("SHA-256",text),digest("SHA-512",text)]);setOut(`SHA-256:\n${sha256}\n\nSHA-512:\n${sha512}`);return}
   setOut("Introduce los datos y procesa la herramienta.");
  };
  return <div className="space-y-4">
