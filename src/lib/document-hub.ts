@@ -30,7 +30,7 @@ export const DOCUMENT_HUB = {
     { slug: "inspector-metadatos-pdf", title: "Inspeccionar metadatos PDF", description: "Consulta páginas, título, autor y tamaño antes de compartir un PDF." },
     { slug: "comparador-de-textos", title: "Comparar versiones", description: "Detecta cambios entre dos versiones de un documento línea por línea." },
     { slug: "inspector-csv", title: "Revisar un CSV", description: "Detecta cabeceras duplicadas, filas incompletas y dimensiones del archivo." },
-    { slug: "markdown-a-html", title: "Convertir Markdown a HTML", description: "Transforma Markdown básico en HTML seguro para copiar y publicar." },
+    { slug: "markdown-a-html-avanzado", title: "Convertir Markdown a HTML avanzado", description: "Transforma Markdown básico en HTML seguro para copiar y publicar." },
     { slug: "nombres-de-archivos-en-lote", title: "Normalizar nombres en lote", description: "Genera nombres consistentes para listas de archivos o entregables." },
   ] satisfies DocumentHubStep[],
 };

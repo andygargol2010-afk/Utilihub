@@ -6,6 +6,6 @@ export const MEDIA_TOOLS = [
   makeTool("inspector-metadatos-pdf", "Inspector de metadatos PDF", "conversiones", "document", "Lee páginas, título, autor, asunto y tamaño de un PDF local.", ["pdf", "metadatos", "documentos"], { mode: "document", operation: "pdf-metadata" }),
   makeTool("comparador-de-textos", "Comparador de textos", "texto", "document", "Compara dos versiones línea por línea y muestra diferencias.", ["comparar textos", "diff", "documentos"], { mode: "document", operation: "text-diff" }),
   makeTool("inspector-csv", "Inspector de CSV", "conversiones", "document", "Detecta filas, columnas, cabeceras duplicadas y registros incompletos.", ["csv", "datos", "archivos"], { mode: "document", operation: "csv-inspector" }),
-  makeTool("markdown-a-html", "Markdown a HTML", "conversiones", "document", "Convierte Markdown básico a HTML escapado y listo para copiar.", ["markdown", "html", "documentos"], { mode: "document", operation: "markdown-html" }),
+  makeTool("markdown-a-html-avanzado", "Markdown a HTML avanzado", "conversiones", "document", "Convierte Markdown básico a HTML escapado y listo para copiar.", ["markdown", "html", "documentos"], { mode: "document", operation: "markdown-html" }),
   makeTool("nombres-de-archivos-en-lote", "Nombres de archivos en lote", "texto", "document", "Normaliza una lista de títulos y genera nombres numerados consistentes.", ["archivos", "nombres", "organización"], { mode: "document", operation: "file-name-batch" }),
 ];
