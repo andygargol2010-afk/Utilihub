@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 const HTTP_STATUS: Record<string,string>={"200":"OK","201":"Created","204":"No Content","301":"Moved Permanently","302":"Found","304":"Not Modified","400":"Bad Request","401":"Unauthorized","403":"Forbidden","404":"Not Found","405":"Method Not Allowed","409":"Conflict","422":"Unprocessable Content","429":"Too Many Requests","500":"Internal Server Error","502":"Bad Gateway","503":"Service Unavailable","504":"Gateway Timeout"};
 const MIME: Record<string,string>={json:"application/json",html:"text/html",css:"text/css",js:"text/javascript",txt:"text/plain",csv:"text/csv",xml:"application/xml",pdf:"application/pdf",png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",webp:"image/webp",svg:"image/svg+xml",zip:"application/zip"};
-const escapeHtml=(s:string)=>s.replace(/&/g,"&").replace(/</g,"<").replace(/>/g,">").replace(/"/g,""").replace(/'/g,"&#39;");
+const escapeHtml=(s:string)=>s.replace(/&/g,"&"+"amp;").replace(/</g,"&"+"lt;").replace(/>/g,"&"+"gt;").replace(/"/g,"&"+"quot;").replace(/'/g,"&"+"#39;");
 const decodeHtml=(s:string)=>{const el=document.createElement("textarea");el.innerHTML=s;return el.value};
 const minifyHtml=(s:string)=>s.replace(/<!--[\s\S]*?-->/g,"").replace(/>\s+</g,"><").replace(/\s{2,}/g," ").trim();
 const minifyCss=(s:string)=>s.replace(/\/\*[\s\S]*?\*\//g,"").replace(/\s+/g," ").replace(/\s*([{}:;,>])\s*/g,"$1").trim();
