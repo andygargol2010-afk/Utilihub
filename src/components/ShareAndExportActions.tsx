@@ -9,15 +9,15 @@ function collectRows(container: HTMLElement): ExportRow[] {
   return Array.from(container.querySelectorAll("[data-export-field]"))
     .map((field) => {
       const el = field as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-      return { Campo: el.getAttribute("data-export-field") || el.getAttribute("aria-label") || el.name || "Valor", Valor: el.value };
+      return { Field: el.getAttribute("data-export-field") || el.getAttribute("aria-label") || el.name || "Value", Value: el.value };
     })
-    .filter((row) => row.Valor !== "");
+    .filter((row) => row.Value !== "");
 }
 
 function collectTable(container: HTMLElement): ExportRow[] {
   const table = container.querySelector<HTMLTableElement>("[data-export-table]");
   if (!table) return [];
-  const headers = Array.from(table.querySelectorAll("thead th")).map((cell) => cell.textContent?.trim() || "Columna");
+  const headers = Array.from(table.querySelectorAll("thead th")).map((cell) => cell.textContent?.trim() || "Column");
   const rows = Array.from(table.querySelectorAll("tbody tr"));
   if (!headers.length || !rows.length) return [];
   return rows.map((row) => {
@@ -42,42 +42,42 @@ export function ShareAndExportActions({ title }: { title: string }) {
   const { share } = useShareableParams();
   const [status, setStatus] = useState("");
   const showStatus = (message: string) => { setStatus(message); window.setTimeout(() => setStatus(""), 1800); };
-  const runShare = async () => showStatus(await share() ? "Enlace copiado" : "No se pudo copiar el enlace");
+  const runShare = async () => showStatus(await share() ? "Link copied" : "Could not copy the link");
 
   const exportPdf = async () => {
     const surface = document.querySelector<HTMLElement>("[data-tool-surface]");
-    if (!surface) return showStatus("No hay datos para exportar");
+    if (!surface) return showStatus("No data to export");
     try {
       const { jsPDF } = await import("jspdf");
       const doc = new jsPDF({ format: "a4", unit: "mm" });
       const rows = collectRows(surface), table = collectTable(surface), result = collectResult(surface);
-      if (!rows.length && !table.length && !result) return showStatus("Esta herramienta no tiene datos exportables");
+      if (!rows.length && !table.length && !result) return showStatus("This tool has no exportable data");
       let y = 20;
       doc.setFontSize(18); doc.text(title, 15, y); y += 12; doc.setFontSize(11);
-      for (const row of rows) { if (y > 275) { doc.addPage(); y = 20; } doc.text(`${row.Campo}: ${row.Valor}`, 15, y); y += 7; }
+      for (const row of rows) { if (y > 275) { doc.addPage(); y = 20; } doc.text(`${row.Field}: ${row.Value}`, 15, y); y += 7; }
       for (const row of table) for (const text of doc.splitTextToSize(Object.entries(row).map(([key, value]) => `${key}: ${value}`).join(" | "), 180) as string[]) { if (y > 275) { doc.addPage(); y = 20; } doc.text(text, 15, y); y += 6; }
-      if (result) { y += 5; doc.setFontSize(13); doc.text("Resultado", 15, y); y += 8; doc.setFontSize(11); for (const line of doc.splitTextToSize(result, 180) as string[]) { if (y > 275) { doc.addPage(); y = 20; } doc.text(line, 15, y); y += 6; } }
-      doc.save(filename(title, "pdf")); showStatus("PDF exportado");
-    } catch { showStatus("No se pudo exportar el PDF"); }
+      if (result) { y += 5; doc.setFontSize(13); doc.text("Result", 15, y); y += 8; doc.setFontSize(11); for (const line of doc.splitTextToSize(result, 180) as string[]) { if (y > 275) { doc.addPage(); y = 20; } doc.text(line, 15, y); y += 6; } }
+      doc.save(filename(title, "pdf")); showStatus("PDF exported");
+    } catch { showStatus("Could not export PDF"); }
   };
 
   const exportCsv = async () => {
     const surface = document.querySelector<HTMLElement>("[data-tool-surface]");
-    if (!surface) return showStatus("No hay datos para exportar");
+    if (!surface) return showStatus("No data to export");
     try {
       const { utils, writeFile } = await import("xlsx");
       const table = collectTable(surface), rows = table.length ? table : collectRows(surface), result = collectResult(surface);
-      const data = result && !table.length ? [...rows, { Campo: "Resultado", Valor: result }] : rows;
-      if (!data.length) return showStatus("Esta herramienta no tiene datos exportables");
+      const data = result && !table.length ? [...rows, { Field: "Result", Value: result }] : rows;
+      if (!data.length) return showStatus("This tool has no exportable data");
       const sheet = utils.json_to_sheet(data), book = utils.book_new();
-      utils.book_append_sheet(book, sheet, "UtiliHub"); writeFile(book, filename(title, "csv"), { bookType: "csv" }); showStatus("CSV descargado");
-    } catch { showStatus("No se pudo exportar el CSV"); }
+      utils.book_append_sheet(book, sheet, "UtiliHub"); writeFile(book, filename(title, "csv"), { bookType: "csv" }); showStatus("CSV downloaded");
+    } catch { showStatus("Could not export CSV"); }
   };
 
-  return <div className="mt-4 flex flex-wrap items-center gap-2 border-t pt-4" aria-label="Compartir y exportar">
-    <button type="button" onClick={runShare} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><Link2 className="size-4"/> Compartir configuración</button>
-    <button type="button" onClick={exportPdf} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><FileDown className="size-4"/> Exportar a PDF</button>
-    <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><Download className="size-4"/> Descargar CSV</button>
+  return <div className="mt-4 flex flex-wrap items-center gap-2 border-t pt-4" aria-label="Share and export">
+    <button type="button" onClick={runShare} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><Link2 className="size-4"/> Share configuration</button>
+    <button type="button" onClick={exportPdf} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><FileDown className="size-4"/> Export to PDF</button>
+    <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><Download className="size-4"/> Download CSV</button>
     {status && <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary"><Check className="size-3.5"/>{status}</span>}
   </div>;
 }
