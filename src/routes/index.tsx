@@ -3,6 +3,7 @@ import { ArrowRight, Check, Compass, Sparkles } from "lucide-react";
 import { ToolSearch } from "@/components/ToolSearch";
 import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
 import { RecentToolsSection } from "@/components/RecentToolsSection";
+import { AdBanner } from "@/components/AdBanner";
 import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
 
@@ -31,6 +32,7 @@ function Home() {
         <div className="surface-card bg-card/80 p-3 shadow-lift sm:p-4"><div className="rounded-xl border border-border/70 bg-background p-4 sm:p-5"><div className="flex items-center justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Acceso directo</p><h2 className="mt-1 text-xl font-black">¿Qué quieres resolver?</h2></div><span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">{ALL_TOOLS.length} herramientas</span></div><div className="mt-4"><ToolSearch compactHome /></div><div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">{featuredCategories.slice(0, 6).map((category) => <Link key={category.slug} to="/categoria/$slug" params={{ slug: category.slug }} className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">{category.name}</Link>)}</div></div></div>
       </div>
     </section>
+    <AdBanner />
     <div className="container-page">
       <section className="py-10 sm:py-12" aria-labelledby="atajos-title"><div className="flex items-end justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Empieza aquí</p><h2 id="atajos-title" className="mt-1 text-2xl font-black sm:text-3xl">Accesos rápidos</h2><p className="mt-2 text-sm text-muted-foreground">Las herramientas más prácticas para empezar sin navegar por todo el catálogo.</p></div><Link to="/herramientas" className="hidden min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent sm:inline-flex">Ver catálogo <ArrowRight className="size-4" /></Link></div><div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{quickTools.map((tool) => <Link key={tool.slug} to="/herramientas/$slug" params={{ slug: tool.slug }} className="group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-lift"><span className="text-xs font-bold uppercase tracking-wide text-primary">{tool.category}</span><h3 className="mt-2 font-bold group-hover:text-primary">{tool.name}</h3><p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{tool.summary}</p></Link>)}</div></section>
       <FavoriteToolsSection />
