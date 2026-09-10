@@ -7,8 +7,8 @@ const CONFIG: Record<AdSize, { key: string; width: number; height: number; src: 
   mobile: { key: "d69308706000e4e2ad37dd09b4ef2be6", width: 320, height: 50, src: "https://www.highrevenueformat.com/d69308706000e4e2ad37dd09b4ef2be6/invoke.js" },
 };
 
-/** Banner no intrusivo: carga una sola variante, reserva espacio y no toca los controles de la herramienta. */
-export function AdsterraBanner({ label = "Publicidad" }: { label?: string }) {
+/** Non-intrusive banner: loads a single variant, reserves space, and does not touch tool controls. */
+export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) {
   const slotRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<AdSize | null>(null);
 
