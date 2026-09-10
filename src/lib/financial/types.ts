@@ -16,12 +16,12 @@ export type FinancialDefinition = {
   note?: string;
 };
 
-const format = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 2 });
-export const money = (n: number) => Number.isFinite(n) ? format.format(n) : "Resultado no válido";
-export const pct = (n: number) => Number.isFinite(n) ? `${format.format(n)} %` : "Resultado no válido";
+const format = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
+export const money = (n: number) => Number.isFinite(n) ? format.format(n) : "Invalid result";
+export const pct = (n: number) => Number.isFinite(n) ? `${format.format(n)} %` : "Invalid result";
 export const num = (n: number) => money(n);
 export const financialValue = (values: Record<string, number>, key: string): number => {
   const value = values[key] ?? Number.NaN;
-  if (!Number.isFinite(value)) throw Error(`El valor «${key}» no es válido.`);
+  if (!Number.isFinite(value)) throw Error(`The value «${key}» is not valid.`);
   return value;
 };

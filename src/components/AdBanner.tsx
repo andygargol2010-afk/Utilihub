@@ -34,7 +34,7 @@ export function AdBanner() {
     <div
       id="utilihub-ad-banner"
       className="mx-auto flex min-h-[50px] w-full max-w-[728px] items-center justify-center overflow-hidden py-2 sm:min-h-[90px]"
-      aria-label="Publicidad"
+      aria-label="Advertisement"
     />
   );
 }
