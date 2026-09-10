@@ -3,26 +3,26 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/privacidad")({
-  head: () => ({ meta: [{ title: `Política de privacidad | ${SITE_NAME}` }, { name: "description", content: `Política de privacidad y tratamiento de datos de ${SITE_NAME}.` }], links: [{ rel: "canonical", href: `${SITE_URL}/privacidad` }] }),
+  head: () => ({ meta: [{ title: `Privacy policy | ${SITE_NAME}` }, { name: "description", content: `Privacy policy and data handling for ${SITE_NAME}.` }], links: [{ rel: "canonical", href: `${SITE_URL}/privacidad` }] }),
   component: PrivacyPage,
 });
 
 function PrivacyPage() {
-  return <main className="container-page py-8 sm:py-12"><Breadcrumbs items={[{ label: "Inicio", to: "/" }, { label: "Privacidad" }]} /><article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
-    <h1>Política de privacidad</h1>
-    <p>Esta política informa sobre la forma en que <strong>{SITE_NAME}</strong> gestiona la información que puede recopilarse al navegar o utilizar el sitio. {SITE_NAME} está dirigido a un público internacional y su responsable reside en Argentina.</p>
-    <h2>Información que podemos tratar</h2>
-    <p>Podemos tratar datos técnicos básicos de navegación, como el tipo de navegador, sistema operativo, idioma, páginas visitadas, duración de la sesión, dirección IP y datos de seguridad del sitio, con fines estadísticos, de mantenimiento técnico y de protección frente a errores o abusos.</p>
-    <p>Las calculadoras, conversores y utilidades compatibles procesan los valores introducidos localmente en el navegador. No solicitamos cuentas, contraseñas ni información financiera personal para utilizar las herramientas.</p>
-    <h2>Preferencias locales</h2>
-    <p>Algunas funciones, como favoritos, herramientas recientes o preferencias de uso, pueden guardarse en el almacenamiento local de tu navegador para mejorar la experiencia. Puedes eliminarlos desde la configuración del navegador.</p>
-    <h2>Analítica y rendimiento</h2>
-    <p>UtiliHub puede utilizar <strong>Vercel Analytics</strong> y <strong>Vercel Speed Insights</strong> para conocer métricas agregadas de uso y rendimiento, detectar problemas técnicos y mejorar la estabilidad. Estos proveedores pueden tratar información técnica de la visita conforme a sus propias políticas.</p>
-    <h2>Uso de la información</h2>
-    <p>La información se utiliza para mejorar la experiencia, mantener la seguridad, analizar el comportamiento general del sitio y optimizar la entrega de contenido. No vendemos datos personales ni los compartimos en condiciones contrarias a la normativa aplicable, salvo que exista un requerimiento legal, una obligación contractual o el consentimiento expreso cuando corresponda.</p>
-    <h2>Derechos y consultas</h2>
-    <p>Para consultar, corregir o solicitar información sobre el tratamiento de datos, puedes escribir a <a href="mailto:andygargol2010@gmail.com">andygargol2010@gmail.com</a> o comunicarte al <a href="tel:+5491162517976">+54 9 11 6251-7976</a>.</p>
-    <h2>Actualizaciones</h2>
-    <p>Esta política puede actualizarse cuando cambien las funciones del sitio, los servicios utilizados o la normativa aplicable.</p>
+  return <main className="container-page py-8 sm:py-12"><Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Privacy" }]} /><article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
+    <h1>Privacy policy</h1>
+    <p>This policy explains how <strong>{SITE_NAME}</strong> handles information that may be collected when you browse or use the site. {SITE_NAME} is aimed at an international audience and its operator is based in Argentina.</p>
+    <h2>Information we may process</h2>
+    <p>We may process basic technical browsing data, such as browser type, operating system, language, pages visited, session duration, IP address, and site security data, for statistics, technical maintenance, and protection against errors or abuse.</p>
+    <p>Compatible calculators, converters, and utilities process the values you enter locally in the browser. We do not require accounts, passwords, or personal financial information to use the tools.</p>
+    <h2>Local preferences</h2>
+    <p>Some features, such as favorites, recent tools, or usage preferences, may be stored in your browser's local storage to improve the experience. You can remove them from your browser settings.</p>
+    <h2>Analytics and performance</h2>
+    <p>UtiliHub may use <strong>Vercel Analytics</strong> and <strong>Vercel Speed Insights</strong> to understand aggregated usage and performance metrics, detect technical issues, and improve stability. These providers may process technical visit information under their own policies.</p>
+    <h2>Use of information</h2>
+    <p>Information is used to improve the experience, maintain security, analyze general site behavior, and optimize content delivery. We do not sell personal data or share it in ways contrary to applicable law, except where there is a legal requirement, a contractual obligation, or express consent when applicable.</p>
+    <h2>Rights and inquiries</h2>
+    <p>To consult, correct, or request information about data processing, you can write to <a href="mailto:andygargol2010@gmail.com">andygargol2010@gmail.com</a> or call <a href="tel:+5491162517976">+54 9 11 6251-7976</a>.</p>
+    <h2>Updates</h2>
+    <p>This policy may be updated when site features, the services used, or applicable regulations change.</p>
   </article></main>;
 }

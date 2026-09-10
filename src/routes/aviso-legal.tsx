@@ -3,24 +3,24 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/aviso-legal")({
-  head: () => ({ meta: [{ title: `Aviso legal | ${SITE_NAME}` }, { name: "description", content: `Aviso legal, responsable y condiciones de uso de ${SITE_NAME}.` }], links: [{ rel: "canonical", href: `${SITE_URL}/aviso-legal` }] }),
+  head: () => ({ meta: [{ title: `Legal notice | ${SITE_NAME}` }, { name: "description", content: `Legal notice, operator, and terms of use for ${SITE_NAME}.` }], links: [{ rel: "canonical", href: `${SITE_URL}/aviso-legal` }] }),
   component: LegalNoticePage,
 });
 
 function LegalNoticePage() {
-  return <main className="container-page py-8 sm:py-12"><Breadcrumbs items={[{ label: "Inicio", to: "/" }, { label: "Aviso legal" }]} /><article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
-    <h1>Aviso legal</h1>
-    <p><strong>{SITE_NAME}</strong> ofrece herramientas y contenidos con carácter informativo y educativo para un público internacional. La información no sustituye la asesoría profesional ni la toma de decisiones bajo criterio individual.</p>
-    <h2>Responsable del sitio</h2>
-    <p>El responsable de {SITE_NAME} es <strong>Andrés García</strong>, con residencia en Argentina. Para consultas relacionadas con el sitio puedes escribir a <a href="mailto:andygargol2010@gmail.com">andygargol2010@gmail.com</a> o comunicarte al <a href="tel:+5491162517976">+54 9 11 6251-7976</a>.</p>
-    <p>El sitio está dirigido a usuarios de distintos países. No se publica una dirección residencial; las comunicaciones se reciben a través de los canales indicados.</p>
-    <h2>Objeto y finalidad</h2>
-    <p>{SITE_NAME} ofrece calculadoras, conversores, utilidades educativas y recursos prácticos para facilitar tareas cotidianas y la comprensión de distintos conceptos.</p>
-    <p>Los resultados se basan en los parámetros introducidos por el usuario y en supuestos de simulación. No constituyen recomendación de inversión, asesoramiento financiero, médico, legal ni profesional personalizado.</p>
-    <h2>Uso y responsabilidad</h2>
-    <p>El usuario utiliza las herramientas bajo su propia responsabilidad y debe evaluar la idoneidad de los resultados antes de tomar decisiones económicas, patrimoniales o de cualquier otra naturaleza relevante.</p>
-    <p>En la medida permitida por la normativa aplicable, el responsable no será responsable por daños directos, indirectos, incidentales o consecuentes derivados del uso de las herramientas o de la interpretación de sus resultados.</p>
-    <h2>Disponibilidad y terceros</h2>
-    <p>No se garantiza que todas las herramientas estén libres de errores, disponibles en todo momento o adaptadas a la legislación de cada país. El sitio puede incluir dependencias y recursos técnicos de terceros, cuyos proveedores mantienen sus propios términos y políticas.</p>
+  return <main className="container-page py-8 sm:py-12"><Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Legal notice" }]} /><article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
+    <h1>Legal notice</h1>
+    <p><strong>{SITE_NAME}</strong> provides tools and content for informational and educational purposes to an international audience. The information does not replace professional advice or decisions made under individual judgment.</p>
+    <h2>Site operator</h2>
+    <p>The operator of {SITE_NAME} is <strong>Andrés García</strong>, based in Argentina. For site-related inquiries you can write to <a href="mailto:andygargol2010@gmail.com">andygargol2010@gmail.com</a> or call <a href="tel:+5491162517976">+54 9 11 6251-7976</a>.</p>
+    <p>The site is aimed at users in different countries. A residential address is not published; communications are received through the channels indicated.</p>
+    <h2>Purpose</h2>
+    <p>{SITE_NAME} offers calculators, converters, educational utilities, and practical resources to make everyday tasks easier and to support understanding of various concepts.</p>
+    <p>Results are based on the parameters entered by the user and on simulation assumptions. They do not constitute investment recommendations, financial, medical, legal, or personalized professional advice.</p>
+    <h2>Use and liability</h2>
+    <p>The user uses the tools under their own responsibility and must assess the suitability of the results before making economic, financial, or any other significant decisions.</p>
+    <p>To the extent permitted by applicable law, the operator shall not be liable for direct, indirect, incidental, or consequential damages arising from the use of the tools or the interpretation of their results.</p>
+    <h2>Availability and third parties</h2>
+    <p>There is no guarantee that all tools are free of errors, available at all times, or adapted to the laws of every country. The site may include third-party technical dependencies and resources, whose providers maintain their own terms and policies.</p>
   </article></main>;
 }
