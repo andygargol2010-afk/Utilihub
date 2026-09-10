@@ -4,7 +4,7 @@ import type { GeneralTool } from "@/lib/general/types";
 type Operation = "pdf-metadata" | "text-diff" | "csv-inspector" | "markdown-html" | "file-name-batch";
 const documentOperationMarkers: Record<Operation, () => true> = { "pdf-metadata": () => true, "text-diff": () => true, "csv-inspector": () => true, "markdown-html": () => true, "file-name-batch": () => true };
 
-const escapeHtml = (value: string) => value.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/\"/g, """);
+const escapeHtml = (value: string) => value.replace(/&/g, "&"+"amp;").replace(/</g, "&"+"lt;").replace(/>/g, "&"+"gt;").replace(/"/g, "&"+"quot;");
 const normalizeFileName = (value: string) => value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 export function DocumentTool({ tool }: { tool: GeneralTool }) {
