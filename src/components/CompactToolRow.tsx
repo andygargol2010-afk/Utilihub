@@ -23,7 +23,7 @@ export const CompactToolRow = memo(function CompactToolRow({ tool, isFavorite: c
   return <article className="group flex min-h-14 items-center gap-3 border-b border-border/70 px-1 py-2 last:border-b-0 sm:min-h-16">
     <span aria-hidden="true" className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-black text-primary">{category?.name.slice(0, 1) ?? "U"}</span>
     {toolLink}
-    <button type="button" onClick={toggleFavorite} aria-pressed={isFavorite} aria-label={isFavorite ? `Quitar ${tool.name} de favoritos` : `Añadir ${tool.name} a favoritos`} className="grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+    <button type="button" onClick={toggleFavorite} aria-pressed={isFavorite} aria-label={isFavorite ? `Remove ${tool.name} from favorites` : `Add ${tool.name} to favorites`} className="grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground hover:bg-accent hover:text-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
       <Star className="size-4" fill={isFavorite ? "currentColor" : "none"} />
     </button>
   </article>;
