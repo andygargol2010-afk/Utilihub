@@ -1,6 +1,6 @@
 import { makeTool } from "./types";
 
 export const INNOVATOR_TOOLS = [
-  makeTool("generador-nombres-archivos", "Generador de nombres de archivos", "productividad", "text", "Normaliza títulos y crea nombres de archivos consistentes para proyectos digitales.", ["nombres","archivos","slug","organizacion"]),
-  makeTool("calculadora-propina-compartida", "Calculadora de propina compartida", "productividad", "text", "Calcula propina, total y reparto equitativo de una cuenta entre varias personas.", ["propina","cuenta","repartir","restaurante"]),
+  makeTool("generador-nombres-archivos", "File name generator", "productividad", "text", "Normalize titles and create consistent file names for digital projects.", ["names","files","slug","organization"]),
+  makeTool("calculadora-propina-compartida", "Shared tip calculator", "productividad", "text", "Calculate tip, total, and equal bill split among several people.", ["tip","bill","split","restaurant"]),
 ];
