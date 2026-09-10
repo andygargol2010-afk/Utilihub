@@ -8,11 +8,11 @@ import { ToolCard } from "@/components/ToolCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolSeoContent } from "@/components/ToolSeoContent";
-import { AdBanner } from "@/components/AdBanner";
 import { ALL_CATEGORIES, allToolBySlug, toolHref } from "@/lib/all-tools";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, toolPath, webApplicationSchema } from "@/lib/seo";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { journeyLabel, journeyTools } from "@/lib/discovery";
+import { AdsterraBanner } from "@/components/AdsterraBanner";
 
 export const Route = createFileRoute("/herramientas/$slug")({
   loader: ({ params }) => { const tool = allToolBySlug(params.slug); if (!tool) throw notFound(); return { tool }; },
@@ -39,7 +39,7 @@ function ToolPage() {
     <Breadcrumbs items={[{ label: "Inicio", to: "/" }, { label: "Herramientas", to: "/herramientas" }, { label: category.name, to: "/categoria/$slug", params: { slug: category.slug } }, { label: tool.name }]} />
     <div className="mt-3 flex items-center justify-between gap-3"><div className="min-w-0"><h1 className="truncate text-2xl font-bold sm:text-3xl">{tool.name}</h1><p className="mt-1 max-w-2xl truncate text-sm text-muted-foreground">{tool.summary}</p></div><FavoriteButton slug={tool.slug} name={tool.name} /></div>
     <section data-tool-surface aria-label={`Herramienta: ${tool.name}`} className="surface-card mt-5 p-4 sm:p-5">{ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}<div className="mt-4"><ShareAndExportActions title={tool.name} /></div></section>
-    <AdBanner />
+    <AdsterraBanner />
     {nextStep && <section className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5" aria-labelledby="siguiente-paso"><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Siguiente paso recomendado</p><div className="mt-2 flex flex-wrap items-center justify-between gap-3"><div><h2 id="siguiente-paso" className="text-base font-black">{journeyLabel(tool)}</h2><p className="mt-1 text-sm text-muted-foreground">Después de usar {tool.name}, continúa con {nextStep.name}.</p></div><Link to={toolHref(nextStep) as "/herramientas/$slug"} params={{ slug: nextStep.slug }} className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Abrir siguiente <ArrowRight className="size-4" /></Link></div></section>}
     {related.length > 0 && <section className="mt-8" aria-labelledby="relacionadas"><div className="mb-2 flex items-center justify-between"><div><h2 id="relacionadas" className="text-base font-bold">Sigue este recorrido</h2><p className="mt-1 text-xs text-muted-foreground">Herramientas seleccionadas para completar la misma tarea.</p></div><span className="text-xs text-muted-foreground">{related.length} pasos</span></div><div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">{related.map((t) => <ToolCard key={t.slug} tool={t} />)}</div></section>}
     <ToolSeoContent tool={tool} />
