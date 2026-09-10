@@ -7,10 +7,10 @@ export type CatalogTool = Omit<Tool, "category"> & { category: string };
 
 const FINANCIAL_CATEGORY = {
   slug: "finanzas",
-  name: "Finanzas",
-  title: "Calculadoras financieras online | UtiliHub",
-  description: "Calculadoras y herramientas financieras gratuitas para inversión, ahorro, préstamos, inflación y carteras.",
-  intro: "Herramientas financieras que ejecutan sus cálculos en el navegador. Incluyen inversión, préstamos, ahorro, inflación, carteras, jubilación y renta fija.",
+  name: "Finance",
+  title: "Online financial calculators | UtiliHub",
+  description: "Free financial calculators and tools for investing, savings, loans, inflation, and portfolios.",
+  intro: "Financial tools that run their calculations in the browser. Includes investing, loans, savings, inflation, portfolios, retirement, and fixed income.",
 };
 
 export const ALL_CATEGORIES = [FINANCIAL_CATEGORY, ...GENERAL_CATEGORIES];
@@ -21,14 +21,14 @@ const financialCards: CatalogTool[] = FINANCIAL_TOOLS.map((tool) => ({
   category: "finanzas",
   about: [tool.description],
   steps: [
-    "Introduce los valores que quieras analizar.",
-    "Pulsa «Calcular» para ejecutar la fórmula.",
-    "Revisa los resultados y sus unidades.",
+    "Enter the values you want to analyze.",
+    "Click «Calculate» to run the formula.",
+    "Review the results and their units.",
   ],
   faq: [
     {
-      q: "¿Estos resultados son asesoramiento financiero?",
-      a: "No. Son cálculos matemáticos orientativos y no sustituyen asesoramiento profesional.",
+      q: "Are these results financial advice?",
+      a: "No. They are indicative mathematical calculations and do not replace professional advice.",
     },
   ],
 }));
