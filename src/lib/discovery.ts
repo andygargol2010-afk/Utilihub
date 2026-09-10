@@ -1,6 +1,6 @@
 import { ALL_TOOLS, type CatalogTool } from "./all-tools";
 
-/** Recorridos seleccionados por intención; el fallback sigue usando la categoría. */
+/** Journeys selected by intent; fallback still uses the category. */
 export const TOOL_JOURNEYS: Record<string, string[]> = {
   "contador-de-palabras": ["contador-de-caracteres", "contador-de-lineas", "limpiar-texto", "diferencia-textos"],
   "diferencia-textos": ["contador-de-palabras", "limpiar-texto", "markdown-a-html"],
@@ -27,10 +27,10 @@ export function journeyTools(current: Pick<CatalogTool, "slug" | "category">): C
 }
 
 export function journeyLabel(current: Pick<CatalogTool, "slug" | "category">): string {
-  if (current.category === "seguridad") return "Protege y verifica tus datos";
-  if (current.category === "diseno") return "Diseña y valida tu interfaz";
-  if (current.category === "utilidades") return "Completa tu cálculo";
-  if (current.category === "finanzas") return "Analiza el siguiente escenario";
-  if (current.category === "texto") return "Continúa trabajando tu contenido";
-  return "Continúa con herramientas relacionadas";
+  if (current.category === "seguridad") return "Protect and verify your data";
+  if (current.category === "diseno") return "Design and validate your interface";
+  if (current.category === "utilidades") return "Complete your calculation";
+  if (current.category === "finanzas") return "Analyze the next scenario";
+  if (current.category === "texto") return "Keep working on your content";
+  return "Continue with related tools";
 }
