@@ -19,14 +19,14 @@ const t = (
   );
 
 export const SCIENCE_EXTRA_TOOLS = [
-  t("frecuencia-periodo", "Frecuencia a período", "Convierte una frecuencia en su período usando T = 1/f.", ["Frecuencia (Hz)"], "divide-fixed", 1),
-  t("energia-foton-frecuencia", "Energía de fotón por frecuencia", "Calcula la energía de un fotón mediante E = hf.", ["Frecuencia (Hz)"], "multiply-fixed", 6.62607015e-34),
-  t("energia-masa-relativista", "Energía masa-relativista", "Calcula la energía equivalente de una masa mediante E = mc².", ["Masa (kg)"], "multiply-fixed", 299792458 ** 2),
-  t("fuerza-presion-area", "Fuerza por presión y área", "Calcula la fuerza ejercida sobre una superficie mediante F = P·A.", ["Presión (Pa)", "Área (m²)"], "multiply"),
-  t("trabajo-fuerza-distancia", "Trabajo por fuerza y distancia", "Calcula el trabajo de una fuerza constante paralela al desplazamiento mediante W = F·d.", ["Fuerza (N)", "Distancia (m)"], "multiply"),
-  t("densidad-lineal", "Densidad lineal", "Calcula la masa por unidad de longitud mediante λ = m/L.", ["Masa (kg)", "Longitud (m)"], "divide"),
-  t("caudal-volumetrico", "Caudal volumétrico", "Calcula el volumen que atraviesa una sección por unidad de tiempo mediante Q = V/t.", ["Volumen (m³)", "Tiempo (s)"], "divide"),
-  t("concentracion-masa-volumen", "Concentración masa-volumen", "Calcula la concentración de una sustancia como masa dividida por volumen.", ["Masa de soluto (g)", "Volumen de solución (L)"], "divide"),
-  t("relacion-de-aspecto", "Relación de aspecto", "Calcula la relación entre ancho y alto de una superficie o pantalla.", ["Ancho", "Alto"], "divide"),
-  t("velocidad-angular-frecuencia", "Velocidad angular desde frecuencia", "Calcula la velocidad angular mediante ω = 2πf.", ["Frecuencia (Hz)"], "multiply-fixed", 2 * Math.PI),
+  t("frecuencia-periodo", "Frequency to period", "Convert a frequency into its period using T = 1/f.", ["Frequency (Hz)"], "divide-fixed", 1),
+  t("energia-foton-frecuencia", "Photon energy from frequency", "Calculate photon energy using E = hf.", ["Frequency (Hz)"], "multiply-fixed", 6.62607015e-34),
+  t("energia-masa-relativista", "Mass-energy equivalence", "Calculate the energy equivalent of a mass using E = mc².", ["Mass (kg)"], "multiply-fixed", 299792458 ** 2),
+  t("fuerza-presion-area", "Force from pressure and area", "Calculate the force on a surface using F = P·A.", ["Pressure (Pa)", "Area (m²)"], "multiply"),
+  t("trabajo-fuerza-distancia", "Work from force and distance", "Calculate the work of a constant force parallel to displacement using W = F·d.", ["Force (N)", "Distance (m)"], "multiply"),
+  t("densidad-lineal", "Linear density", "Calculate mass per unit length using λ = m/L.", ["Mass (kg)", "Length (m)"], "divide"),
+  t("caudal-volumetrico", "Volumetric flow rate", "Calculate volume through a section per unit time using Q = V/t.", ["Volume (m³)", "Time (s)"], "divide"),
+  t("concentracion-masa-volumen", "Mass-volume concentration", "Calculate concentration as mass divided by volume.", ["Solute mass (g)", "Solution volume (L)"], "divide"),
+  t("relacion-de-aspecto", "Aspect ratio", "Calculate the ratio of width to height of a surface or screen.", ["Width", "Height"], "divide"),
+  t("velocidad-angular-frecuencia", "Angular velocity from frequency", "Calculate angular velocity using ω = 2πf.", ["Frequency (Hz)"], "multiply-fixed", 2 * Math.PI),
 ];
