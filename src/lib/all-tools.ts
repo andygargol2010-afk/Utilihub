@@ -2,6 +2,7 @@ import { CATEGORIES, TOOLS, type Tool } from "./tools";
 import { FINANCIAL_TOOLS } from "./financial-tools";
 import { GENERAL_CATEGORIES, GENERAL_TOOLS } from "./general";
 import { LEGACY_CATEGORY_REDIRECTS, SECONDARY_CATEGORY_MAP } from "./category-catalog";
+import { englishToolPath } from "./route-slugs";
 
 export type CatalogTool = Omit<Tool, "category"> & { category: string };
 
@@ -63,5 +64,4 @@ export const allCategoryBySlug = (slug: string) => {
   return ALL_CATEGORIES.find((category) => category.slug === canonical);
 };
 export const legacyCategoryBySlug = (slug: string) => CATEGORIES.find((category) => category.slug === slug);
-export const toolHref = (tool: Pick<CatalogTool, "slug" | "category">) =>
-  tool.category === "finanzas" ? `/finanzas/${tool.slug}` : `/herramientas/${tool.slug}`;
+export const toolHref = (tool: Pick<CatalogTool, "name" | "category">) => englishToolPath(tool);
