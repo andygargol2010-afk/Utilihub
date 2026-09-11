@@ -3,6 +3,7 @@ import { FINANCIAL_UI_ES } from "@/components/financial/registry";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { financialToolBySlug } from "@/lib/financial-tools";
+import { englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, ogImage } from "@/lib/seo";
 import { spanishToolName } from "@/lib/i18n/es";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
@@ -11,7 +12,7 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
   loader: ({ params }) => { const tool = financialToolBySlug(params.slug); if (!tool) throw notFound(); return { tool }; },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Calculadora financiera no encontrada | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
-    const { tool } = loaderData; const name = spanishToolName({ slug: tool.slug, name: tool.name }); const url = absoluteUrl(`/es/finanzas/${tool.slug}`); const englishUrl = absoluteUrl(`/finanzas/${tool.slug}`);
+    const { tool } = loaderData; const name = spanishToolName({ slug: tool.slug, name: tool.name }); const url = absoluteUrl(`/es/finanzas/${tool.slug}`); const englishUrl = absoluteUrl(englishToolPath({ ...tool, category: "finanzas" }));
     return { meta: [{ title: `${name} | UtiliHub` }, { name: "description", content: `Calculadora financiera gratuita para analizar escenarios de ${name.toLowerCase()}.` }, { name: "robots", content: "index, follow, max-image-preview:large" }, { property: "og:title", content: name }, { property: "og:description", content: `Calculadora financiera gratuita para analizar escenarios de ${name.toLowerCase()}.` }, { property: "og:type", content: "website" }, { property: "og:locale", content: "es_ES" }, { property: "og:url", content: url }, { property: "og:image", content: ogImage() }], links: [{ rel: "canonical", href: url }, { rel: "alternate", hrefLang: "es", href: url }, { rel: "alternate", hrefLang: "en", href: englishUrl }, { rel: "alternate", hrefLang: "x-default", href: englishUrl }] };
   },
   component: SpanishFinanceTool,
