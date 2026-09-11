@@ -12,7 +12,7 @@ function LegalNoticePage() {
     <h1>Legal notice</h1>
     <p><strong>{SITE_NAME}</strong> provides tools and content for informational and educational purposes to an international audience. The information does not replace professional advice or decisions made under individual judgment.</p>
     <h2>Site operator</h2>
-    <p>The operator of {SITE_NAME} is <strong>Andrés García</strong>, based in Argentina. For site-related inquiries you can write to <a href="mailto:andygargol2010@gmail.com">andygargol2010@gmail.com</a> or call <a href="tel:+5491162517976">+54 9 11 6251-7976</a>.</p>
+    <p>Our team operates {SITE_NAME} and is based in Argentina. For site-related inquiries you can write to <a href="mailto:andygargol2010@gmail.com">andygargol2010@gmail.com</a> or call <a href="tel:+5491162517976">+54 9 11 6251-7976</a>.</p>
     <p>The site is aimed at users in different countries. A residential address is not published; communications are received through the channels indicated.</p>
     <h2>Purpose</h2>
     <p>{SITE_NAME} offers calculators, converters, educational utilities, and practical resources to make everyday tasks easier and to support understanding of various concepts.</p>
