@@ -6,6 +6,7 @@ import { GENERAL_TOOL_UI_ES } from "@/components/general/registry";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { allToolBySlug, ALL_CATEGORIES } from "@/lib/all-tools";
+import { englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, ogImage } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { useRecentTools } from "@/hooks/use-recent-tools";
@@ -20,7 +21,8 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
     const name = spanishToolName(tool);
     const category = spanishCategoryName(tool.category);
     const description = `Herramienta gratuita de ${category.toLowerCase()} para usar directamente en el navegador.`;
-    return { meta: [{ title: `${name} | UtiliHub` }, { name: "description", content: description }, { name: "robots", content: "index, follow, max-image-preview:large" }, { property: "og:title", content: name }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { property: "og:locale", content: "es_ES" }, { property: "og:url", content: url }, { property: "og:image", content: ogImage() }], links: [{ rel: "canonical", href: url }, { rel: "alternate", hrefLang: "es", href: url }, { rel: "alternate", hrefLang: "en", href: absoluteUrl(`/herramientas/${tool.slug}`) }, { rel: "alternate", hrefLang: "x-default", href: absoluteUrl(`/herramientas/${tool.slug}`) }] };
+    const englishUrl = absoluteUrl(englishToolPath(tool));
+    return { meta: [{ title: `${name} | UtiliHub` }, { name: "description", content: description }, { name: "robots", content: "index, follow, max-image-preview:large" }, { property: "og:title", content: name }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { property: "og:locale", content: "es_ES" }, { property: "og:url", content: url }, { property: "og:image", content: ogImage() }], links: [{ rel: "canonical", href: url }, { rel: "alternate", hrefLang: "es", href: url }, { rel: "alternate", hrefLang: "en", href: englishUrl }, { rel: "alternate", hrefLang: "x-default", href: englishUrl }] };
   },
   component: SpanishToolPage,
 });
