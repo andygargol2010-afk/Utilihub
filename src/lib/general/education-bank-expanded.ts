@@ -17,17 +17,17 @@ const TARGET=40;
 function normalize(text:string){return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim()}
 
 function normalizeRealBank(topic:string,base:BaseQ[]):Q[]{
-  if(base.length!==TARGET) throw new Error(`Banco real incompleto: ${topic} tiene ${base.length}, se requieren ${TARGET}`);
+  if(base.length!==TARGET) throw new Error(`Real bank incomplete: ${topic} has ${base.length}, required ${TARGET}`);
   const seen=new Set<string>();
   return base.map((question,index)=>{
-    if(!question.text?.trim()) throw new Error(`${topic} #${index+1}: texto inválido`);
+    if(!question.text?.trim()) throw new Error(`${topic} #${index+1}: invalid text`);
     const key=normalize(question.text);
-    if(seen.has(key)) throw new Error(`${topic}: pregunta duplicada: ${question.text}`);
+    if(seen.has(key)) throw new Error(`${topic}: duplicate question: ${question.text}`);
     seen.add(key);
-    if(question.options.length!==4||new Set(question.options.map(normalize)).size!==4) throw new Error(`${topic} #${index+1}: opciones inválidas`);
-    if(!question.options.map(normalize).includes(normalize(question.answer))) throw new Error(`${topic} #${index+1}: respuesta ausente en opciones`);
-    if(!question.levels?.length||question.levels.length!==1||!LEVELS.includes(question.levels[0])) throw new Error(`${topic} #${index+1}: nivel inválido`);
-    if(!question.difficulty||!DIFFICULTIES.includes(question.difficulty)) throw new Error(`${topic} #${index+1}: dificultad inválida`);
+    if(question.options.length!==4||new Set(question.options.map(normalize)).size!==4) throw new Error(`${topic} #${index+1}: invalid options`);
+    if(!question.options.map(normalize).includes(normalize(question.answer))) throw new Error(`${topic} #${index+1}: answer missing from options`);
+    if(!question.levels?.length||question.levels.length!==1||!LEVELS.includes(question.levels[0])) throw new Error(`${topic} #${index+1}: invalid level`);
+    if(!question.difficulty||!DIFFICULTIES.includes(question.difficulty)) throw new Error(`${topic} #${index+1}: invalid difficulty`);
     return {id:`${topic}-${index+1}`,text:question.text,options:[...question.options],answer:question.answer,levels:question.levels,difficulty:question.difficulty};
   });
 }
@@ -36,10 +36,10 @@ function legacyMetadata(topic:string,index:number,base:BaseQ){return {levels:bas
 
 function legacyCandidates(base:BaseQ[]):BaseQ[]{
   const prompts=[
-    "Selecciona la respuesta correcta:","¿Cuál opción responde mejor al enunciado?","Identifica la respuesta correcta:","¿Qué afirmación corresponde al enunciado?","Elige la alternativa correcta:",
-    "¿Cuál es la respuesta más precisa?","Determina cuál afirmación es correcta:","Analiza el enunciado y selecciona:","¿Qué alternativa coincide con lo planteado?","Reconoce la opción que corresponde:",
-    "Selecciona la alternativa que mejor explica el enunciado:","¿Cuál respuesta es compatible con la pregunta?","Examina las opciones y elige la correcta:","¿Qué opción representa correctamente la idea planteada?","Identifica qué alternativa es válida:",
-    "Elige la respuesta que corresponde exactamente:","Resuelve este ejercicio:","Considera el siguiente caso:","Determina el resultado correcto:","Evalúa el planteo y selecciona:"
+    "Select the correct answer:","Which option best answers the statement?","Identify the correct answer:","Which statement matches the prompt?","Choose the correct alternative:",
+    "Which is the most precise answer?","Determine which statement is correct:","Analyze the prompt and select:","Which alternative matches what is asked?","Recognize the matching option:",
+    "Select the alternative that best explains the prompt:","Which answer is compatible with the question?","Examine the options and choose the correct one:","Which option correctly represents the idea stated?","Identify which alternative is valid:",
+    "Choose the answer that matches exactly:","Solve this exercise:","Consider the following case:","Determine the correct result:","Evaluate the setup and select:"
   ];
   return base.flatMap(question=>prompts.map(prefix=>({...question,text:`${prefix} ${question.text}`,options:[...question.options]})));
 }
@@ -49,11 +49,11 @@ function buildLegacyBank(topic:string,base:BaseQ[]):Q[]{
   for(const candidate of legacyCandidates(base)){
     if(result.length>=TARGET)break;
     const key=normalize(candidate.text);if(seen.has(key))continue;seen.add(key);
-    if(candidate.options.length!==4||new Set(candidate.options.map(normalize)).size!==4) throw new Error(`${topic}: opciones inválidas en banco legado`);
-    if(!candidate.options.map(normalize).includes(normalize(candidate.answer))) throw new Error(`${topic}: respuesta ausente en banco legado`);
+    if(candidate.options.length!==4||new Set(candidate.options.map(normalize)).size!==4) throw new Error(`${topic}: invalid options in legacy bank`);
+    if(!candidate.options.map(normalize).includes(normalize(candidate.answer))) throw new Error(`${topic}: answer missing in legacy bank`);
     result.push({id:`${topic}-${result.length+1}`,text:candidate.text,options:[...candidate.options],answer:candidate.answer,...legacyMetadata(topic,result.length,candidate)});
   }
-  if(result.length<TARGET) throw new Error(`Banco legado incompleto: ${topic} tiene ${result.length}, se requieren ${TARGET}`);
+  if(result.length<TARGET) throw new Error(`Legacy bank incomplete: ${topic} has ${result.length}, required ${TARGET}`);
   return result;
 }
 
