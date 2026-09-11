@@ -12,7 +12,7 @@ export const FINANCIAL_UI: Record<string,()=>ReactNode> = {
 };
 
 export const FINANCIAL_UI_ES: Record<string,()=>ReactNode> = {
-  "interes-compuesto":()=> <CompoundInterest/>, "cuota-de-prestamo":()=> <LoanPayment/>, "rentabilidad-de-inversion":()=> <InvestmentReturn/>, "objetivo-de-ahorro":()=> <SavingsGoal/>, "inflacion-y-poder-adquisitivo":()=> <Inflation/>, ...ADVANCED_FINANCIAL_UI_ES,
+  "interes-compuesto":()=> <CompoundInterest locale="es"/>, "cuota-de-prestamo":()=> <LoanPayment locale="es"/>, "rentabilidad-de-inversion":()=> <InvestmentReturn locale="es"/>, "objetivo-de-ahorro":()=> <SavingsGoal locale="es"/>, "inflacion-y-poder-adquisitivo":()=> <Inflation locale="es"/>, ...ADVANCED_FINANCIAL_UI_ES,
 };
 
 const missingFinancialUi = FINANCIAL_TOOLS.filter((tool) => !FINANCIAL_UI[tool.slug]).map((tool) => tool.slug);
