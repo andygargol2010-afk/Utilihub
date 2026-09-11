@@ -1,9 +1,9 @@
 export const LEGACY_CATEGORY_REDIRECTS:Record<string,string>={calculadoras:"matematicas",conversores:"conversiones",texto:"texto",fechas:"fechas",seguridad:"seguridad"};
 
 /**
- * Curación de navegación: una herramienta conserva una única URL y categoría
- * principal, pero puede aparecer en categorías adicionales cuando resuelve una
- * intención distinta y legítima. No se usa para crear URLs duplicadas.
+ * Navigation curation: a tool keeps a single primary URL and category,
+ * but may appear in additional categories when it serves a distinct
+ * legitimate intent. Not used to create duplicate URLs.
  */
 export const SECONDARY_CATEGORY_MAP:Record<string,string[]>={
   "generador-de-contrasenas":["texto","generadores"],
