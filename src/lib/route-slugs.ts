@@ -16,6 +16,29 @@ function slugify(value: string) {
 const englishEntries = new Map<string, CatalogTool>();
 const englishCollisions = new Map<string, string[]>();
 
+export const ENGLISH_CATEGORY_SLUGS: Record<string, string> = {
+  finanzas: "finance",
+  matematicas: "math",
+  texto: "text",
+  desarrollo: "developer",
+  conversiones: "converters",
+  fechas: "date-time",
+  generadores: "generators",
+  diseno: "design-color",
+  seguridad: "security",
+  ciencia: "science",
+  productividad: "productivity",
+  educacion: "education",
+  cocina: "cooking",
+  viajes: "travel",
+  hogar: "home",
+  utilidades: "utilities",
+};
+
+const INTERNAL_CATEGORY_BY_ENGLISH_SLUG = new Map(
+  Object.entries(ENGLISH_CATEGORY_SLUGS).map(([internal, english]) => [english, internal]),
+);
+
 export function englishToolSlug(tool: Pick<CatalogTool, "name">) {
   return slugify(tool.name);
 }
@@ -35,6 +58,18 @@ export function spanishToolPath(tool: Pick<CatalogTool, "slug" | "category">) {
 
 export function publicToolPath(tool: CatalogTool, locale: PublicLocale = "en") {
   return locale === "es" ? spanishToolPath(tool) : englishToolPath(tool);
+}
+
+export function englishCategorySlug(internalCategorySlug: string) {
+  return ENGLISH_CATEGORY_SLUGS[internalCategorySlug] ?? internalCategorySlug;
+}
+
+export function internalCategorySlugFromEnglish(publicCategorySlug: string) {
+  return INTERNAL_CATEGORY_BY_ENGLISH_SLUG.get(publicCategorySlug) ?? publicCategorySlug;
+}
+
+export function englishCategoryPath(internalCategorySlug: string) {
+  return `/category/${englishCategorySlug(internalCategorySlug)}`;
 }
 
 export function buildEnglishToolIndex(tools: readonly CatalogTool[]) {
@@ -67,8 +102,4 @@ export function allEnglishRouteSlugs(tools: readonly CatalogTool[]) {
 
 export function toolByEnglishSlug(tools: readonly CatalogTool[], slug: string) {
   return buildEnglishToolIndex(tools).get(slug);
-}
-
-export function englishCategoryPath(categorySlug: string) {
-  return `/category/${categorySlug}`;
 }
