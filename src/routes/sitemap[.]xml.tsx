@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ALL_CATEGORIES, ALL_TOOLS, toolHref } from "@/lib/all-tools";
 import { EDUCATION_SUBJECTS } from "@/lib/general/education";
+import { englishCategoryPath } from "@/lib/route-slugs";
 import { SITE_URL } from "@/lib/seo";
 import { WORK_KITS } from "@/lib/work-kits";
 
@@ -20,7 +21,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/privacy", priority: "0.3" },
           { path: "/contact", priority: "0.3" },
           ...WORK_KITS.map((kit) => ({ path: `/kits/${kit.slug}`, priority: "0.8" })),
-          ...ALL_CATEGORIES.map((category) => ({ path: `/category/${category.slug}`, priority: category.slug === "educacion" ? "0.9" : "0.8" })),
+          ...ALL_CATEGORIES.map((category) => ({ path: englishCategoryPath(category.slug), priority: category.slug === "educacion" ? "0.9" : "0.8" })),
           ...EDUCATION_SUBJECTS.map(([slug]) => ({ path: `/education/${slug}`, priority: "0.8" })),
           ...ALL_TOOLS.map((tool) => ({ path: toolHref(tool), priority: "0.7" })),
         ];
