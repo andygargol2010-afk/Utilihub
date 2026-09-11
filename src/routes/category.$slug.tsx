@@ -3,6 +3,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
 import { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
+import { englishToolSlug } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
 
 export const Route = createFileRoute("/category/$slug")({
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/category/$slug")({
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Category not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
     const { category } = loaderData; const description = cleanDescription(category.description); const url = absoluteUrl(`/category/${category.slug}`);
-    const itemList = loaderData.tools.slice(0, 50).map((tool, index) => ({ "@type": "ListItem", position: index + 1, name: tool.name, url: absoluteUrl(tool.category === "finanzas" ? `/finance/${tool.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}` : `/tools/${tool.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`) }));
+    const itemList = loaderData.tools.slice(0, 50).map((tool, index) => ({ "@type": "ListItem", position: index + 1, name: tool.name, url: absoluteUrl(tool.category === "finanzas" ? `/finance/${englishToolSlug(tool)}` : `/tools/${englishToolSlug(tool)}`) }));
     return { meta: [{ title: category.title }, { name: "description", content: description }, { name: "robots", content: "index, follow, max-image-preview:large" }, { property: "og:title", content: category.title }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { property: "og:url", content: url }, { property: "og:site_name", content: "UtiliHub" }, { property: "og:image", content: ogImage() }, { name: "twitter:card", content: "summary_large_image" }], links: [{ rel: "canonical", href: url }], scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "CollectionPage", name: category.name, description, url, isPartOf: { "@type": "WebSite", name: "UtiliHub", url: absoluteUrl("/") } }, { "@type": "ItemList", name: `${category.name} on UtiliHub`, itemListElement: itemList }, breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Tools", path: "/tools" }, { name: category.name }])] }) }] };
   },
   component: CategoryPage,
