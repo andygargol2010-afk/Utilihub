@@ -21,7 +21,7 @@ export const Route = createFileRoute("/educacion/$subject")({
     const url = absoluteUrl(`/educacion/${slug}`);
     return { meta: [
       { title }, { name: "description", content: description }, { name: "robots", content: "index, follow, max-image-preview:large" },
-      { property: "og:title", content: title }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { property: "og:url", content: url }, { property: "og:image", content: ogImage() }, { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: title }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { property: "og:url", content: url }, { property: "og:image", content: ogImage() }, { name: "twitter:card", content: "summary_large_image" }, { name: "twitter:title", content: title }, { name: "twitter:description", content: description }, { name: "twitter:image", content: ogImage() },
     ], links: [{ rel: "canonical", href: url }], scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@graph": [
       { "@type": "CollectionPage", name: title, description, url },
       breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Education", path: "/categoria/educacion" }, { name: name }]),

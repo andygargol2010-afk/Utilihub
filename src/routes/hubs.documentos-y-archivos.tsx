@@ -24,6 +24,10 @@ export const Route = createFileRoute("/hubs/documentos-y-archivos")({
       { property: "og:url", content: absoluteUrl("/hubs/documentos-y-archivos") },
       { property: "og:site_name", content: SITE_NAME },
       { property: "og:image", content: ogImage() },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+      { name: "twitter:image", content: ogImage() },
     ],
     links: [{ rel: "canonical", href: absoluteUrl("/hubs/documentos-y-archivos") }],
     scripts: [{

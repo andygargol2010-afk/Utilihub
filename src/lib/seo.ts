@@ -1,4 +1,6 @@
-export const SITE_URL = (import.meta.env.VITE_SITE_URL || "https://utilihub.net").replace(/\/$/, "");
+// Vercel serves www.utilihub.net as the primary host. Keep every generated
+// canonical, sitemap, Open Graph and JSON-LD URL aligned with that redirect.
+export const SITE_URL = "https://www.utilihub.net";
 export const SITE_NAME = "UtiliHub";
 export const DEFAULT_DESCRIPTION = "500+ free online tools: calculators, converters, and utilities for math, finance, education, science, and everyday tasks. No signup.";
 export const absoluteUrl = (path:string) => `${SITE_URL}${path.startsWith("/")?path:`/${path}`}`;
