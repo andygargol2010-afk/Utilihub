@@ -11,20 +11,20 @@ export function AdvancedCalculator({ definition }: { definition: FinancialDefini
     try {
       for (const field of definition.fields) {
         const value = values[field.key] ?? Number.NaN;
-        if (!Number.isFinite(value)) throw new Error(`Introduce un valor válido para «${field.label}».`);
+        if (!Number.isFinite(value)) throw new Error(`Enter a valid value for "${field.label}".`);
         if (field.min !== undefined && value < field.min) {
-          throw new Error(`«${field.label}» debe ser como mínimo ${field.min}.`);
+          throw new Error(`"${field.label}" must be at least ${field.min}.`);
         }
       }
       const next = definition.calculate(values);
       if (next.some((r) => !r.value || r.value.includes("NaN") || r.value.includes("Infinity"))) {
-        throw new Error("No se pudo obtener un resultado válido con esos valores.");
+        throw new Error("Could not get a valid result with those values.");
       }
       setResults(next);
       setError("");
     } catch (e) {
       setResults([]);
-      setError(e instanceof Error ? e.message : "No se pudo calcular el resultado.");
+      setError(e instanceof Error ? e.message : "Could not calculate the result.");
     }
   };
 
@@ -37,7 +37,7 @@ export function AdvancedCalculator({ definition }: { definition: FinancialDefini
           className="h-11 w-full rounded-xl border border-border bg-background px-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/15" />
       </label>)}
     </div>
-    <button type="button" onClick={run} className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Calcular</button>
+    <button type="button" onClick={run} className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Calculate</button>
     {error && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">{error}</p>}
     {results.length > 0 && <div data-export-result className="grid gap-3 sm:grid-cols-2">
       {results.map((r) => <div key={r.label} className="rounded-xl border border-border bg-muted/30 p-4"><p className="text-xs font-semibold text-muted-foreground">{r.label}</p><p className="mt-1 text-xl font-black">{r.value}</p></div>)}
