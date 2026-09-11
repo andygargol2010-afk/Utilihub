@@ -7,7 +7,8 @@ import { useEffect, type ReactNode } from "react";
 import "../styles.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { CommandPalette } from "@/components/CommandPalette";
+import { SpanishSiteHeader } from "@/components/SpanishSiteHeader";
+import { SpanishSiteFooter } from "@/components/SpanishSiteFooter";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage, websiteSchema } from "@/lib/seo";
 import { useShareableParams } from "@/hooks/use-shareable-params";
 import { useDailyStreak } from "@/hooks/use-daily-streak";
@@ -23,6 +24,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: ReactNode }) { return <html lang="en"><head><HeadContent /></head><body>{children}<Scripts /></body></html>; }
-function RootComponent() { const { queryClient } = Route.useRouteContext(); const { pathname } = useLocation(); useShareableParams(); const { recordActivity } = useDailyStreak(); useEffect(() => { recordActivity(); }, [pathname, recordActivity]); return <QueryClientProvider client={queryClient}><a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-3 focus:text-sm font-bold focus:text-primary-foreground">Skip to content</a><SiteHeader /><main id="main-content"><Outlet /></main><SiteFooter /><Analytics /><SpeedInsights /></QueryClientProvider>; }
+function RootShell({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation();
+  return <html lang={pathname === "/es" || pathname.startsWith("/es/") ? "es" : "en"}><head><HeadContent /></head><body>{children}<Scripts /></body></html>;
+}
 
+function RootComponent() {
+  const { queryClient } = Route.useRouteContext();
+  const { pathname } = useLocation();
+  const isSpanish = pathname === "/es" || pathname.startsWith("/es/");
+  useShareableParams();
+  const { recordActivity } = useDailyStreak();
+  useEffect(() => { recordActivity(); }, [pathname, recordActivity]);
+  return <QueryClientProvider client={queryClient}><a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-3 focus:text-sm font-bold focus:text-primary-foreground">{isSpanish ? "Saltar al contenido" : "Skip to content"}</a>{isSpanish ? <SpanishSiteHeader /> : <SiteHeader />}<main id="main-content"><Outlet /></main>{isSpanish ? <SpanishSiteFooter /> : <SiteFooter />}<Analytics /><SpeedInsights /></QueryClientProvider>;
+}
