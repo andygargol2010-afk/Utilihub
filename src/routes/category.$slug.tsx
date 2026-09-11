@@ -1,0 +1,19 @@
+import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { ToolCard } from "@/components/ToolCard";
+import { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } from "@/lib/all-tools";
+import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
+import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
+
+export const Route = createFileRoute("/category/$slug")({
+  loader: ({ params }) => { const canonical = LEGACY_CATEGORY_REDIRECTS[params.slug]; if (canonical && canonical !== params.slug) throw redirect({ to: "/category/$slug", params: { slug: canonical }, statusCode: 301 }); const category = allCategoryBySlug(params.slug); if (!category) throw notFound(); return { category, tools: allToolsByCategory(category.slug) }; },
+  head: ({ loaderData }) => {
+    if (!loaderData) return { meta: [{ title: "Category not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
+    const { category } = loaderData; const description = cleanDescription(category.description); const url = absoluteUrl(`/category/${category.slug}`);
+    const itemList = loaderData.tools.slice(0, 50).map((tool, index) => ({ "@type": "ListItem", position: index + 1, name: tool.name, url: absoluteUrl(tool.category === "finanzas" ? `/finance/${tool.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}` : `/tools/${tool.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`) }));
+    return { meta: [{ title: category.title }, { name: "description", content: description }, { name: "robots", content: "index, follow, max-image-preview:large" }, { property: "og:title", content: category.title }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { property: "og:url", content: url }, { property: "og:site_name", content: "UtiliHub" }, { property: "og:image", content: ogImage() }, { name: "twitter:card", content: "summary_large_image" }], links: [{ rel: "canonical", href: url }], scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "CollectionPage", name: category.name, description, url, isPartOf: { "@type": "WebSite", name: "UtiliHub", url: absoluteUrl("/") } }, { "@type": "ItemList", name: `${category.name} on UtiliHub`, itemListElement: itemList }, breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Tools", path: "/tools" }, { name: category.name }])] }) }] };
+  },
+  component: CategoryPage,
+});
+
+function CategoryPage() { const { category, tools } = Route.useLoaderData(); const neighboring = ALL_CATEGORIES.filter((item) => item.slug !== category.slug).slice(0, 4); return <div className="container-page py-6 sm:py-8"><Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Tools", to: "/tools" }, { label: category.name }]} /><div className="mt-4 flex items-end justify-between gap-3"><div><h1 className="text-2xl font-bold sm:text-3xl">{category.name}</h1><p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">{category.intro}</p></div><span className="shrink-0 text-xs font-semibold text-muted-foreground">{tools.length} tools</span></div><div className="mt-5 divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">{tools.map(t => <ToolCard key={t.slug} tool={t} />)}</div><section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories"><h2 id="other-categories" className="text-base font-bold">You can also explore</h2><div className="mt-3 flex flex-wrap gap-2">{neighboring.map((item) => <Link key={item.slug} to="/category/$slug" params={{ slug: item.slug }} className="rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold hover:border-primary/40 hover:bg-accent">{item.name}</Link>)}</div></section></div>; }
