@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://utilihub-ten.vercel.app/sitemap.xml
+Sitemap: https://www.utilihub.net/sitemap.xml
