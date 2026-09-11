@@ -21,17 +21,8 @@ const financialCards: CatalogTool[] = FINANCIAL_TOOLS.map((tool) => ({
   title: `${tool.name} | UtiliHub`,
   category: "finanzas",
   about: [tool.description],
-  steps: [
-    "Enter the values you want to analyze.",
-    "Click «Calculate» to run the formula.",
-    "Review the results and their units.",
-  ],
-  faq: [
-    {
-      q: "Are these results financial advice?",
-      a: "No. They are indicative mathematical calculations and do not replace professional advice.",
-    },
-  ],
+  steps: ["Enter the values you want to analyze.", "Click «Calculate» to run the formula.", "Review the results and their units."],
+  faq: [{ q: "Are these results financial advice?", a: "No. They are indicative mathematical calculations and do not replace professional advice." }],
 }));
 
 const generalCards: CatalogTool[] = GENERAL_TOOLS.map((tool) => ({ ...tool }));
@@ -41,22 +32,13 @@ const legacyCards: CatalogTool[] = TOOLS
   .filter((tool) => !canonicalSlugs.has(tool.slug));
 
 const catalogSources = [...generalCards, ...financialCards, ...legacyCards];
-const duplicateSlugs = Array.from(
-  catalogSources.reduce((map, tool) => map.set(tool.slug, (map.get(tool.slug) ?? 0) + 1), new Map<string, number>())
-    .entries()
-).filter(([, count]) => count > 1).map(([slug]) => slug);
-
+const duplicateSlugs = Array.from(catalogSources.reduce((map, tool) => map.set(tool.slug, (map.get(tool.slug) ?? 0) + 1), new Map<string, number>()).entries()).filter(([, count]) => count > 1).map(([slug]) => slug);
 export const CATALOG_DUPLICATE_SLUGS = duplicateSlugs;
-
-if (duplicateSlugs.length) {
-  throw new Error(`UtiliHub catalog integrity error: duplicate tool slugs: ${duplicateSlugs.join(", ")}`);
-}
+if (duplicateSlugs.length) throw new Error(`UtiliHub catalog integrity error: duplicate tool slugs: ${duplicateSlugs.join(", ")}`);
 
 export const ALL_TOOLS: CatalogTool[] = catalogSources;
 const unknownSecondaryTools = Object.keys(SECONDARY_CATEGORY_MAP).filter((slug) => !ALL_TOOLS.some((tool) => tool.slug === slug));
-if (unknownSecondaryTools.length) {
-  throw new Error(`UtiliHub catalog integrity error: unknown secondary category tools: ${unknownSecondaryTools.join(", ")}`);
-}
+if (unknownSecondaryTools.length) throw new Error(`UtiliHub catalog integrity error: unknown secondary category tools: ${unknownSecondaryTools.join(", ")}`);
 export const allToolBySlug = (slug: string) => ALL_TOOLS.find((tool) => tool.slug === slug);
 export const allToolsByCategory = (slug: string) => ALL_TOOLS.filter((tool) => tool.category === slug || SECONDARY_CATEGORY_MAP[tool.slug]?.includes(slug));
 export const allCategoryBySlug = (slug: string) => {
@@ -64,4 +46,8 @@ export const allCategoryBySlug = (slug: string) => {
   return ALL_CATEGORIES.find((category) => category.slug === canonical);
 };
 export const legacyCategoryBySlug = (slug: string) => CATEGORIES.find((category) => category.slug === slug);
-export const toolHref = (tool: Pick<CatalogTool, "name" | "category">) => englishToolPath(tool);
+export const toolHref = (tool: Pick<CatalogTool, "category"> & Partial<Pick<CatalogTool, "name" | "slug">>) => {
+  if (tool.name) return englishToolPath(tool as Pick<CatalogTool, "name" | "category">);
+  if (tool.slug) return tool.category === "finanzas" ? `/finance/${tool.slug}` : `/tools/${tool.slug}`;
+  throw new Error("toolHref requires a tool name or slug");
+};
