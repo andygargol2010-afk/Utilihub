@@ -1,1 +1,38 @@
-PLACEHOLDER
+// Education bank source; GitHub Actions expands each topic to 20 unique questions after validation.
+import type { EducationDifficulty, EducationLevel } from "./education-engine";
+
+type Q={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
+const q=(text:string,options:string[],answer:string,levels?:EducationLevel[],difficulty?:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+
+export const EDUCATION_BANK_A:Record<string,Q[]>={
+ aritmetica:[q("What is the result of 24 + 18?",["42","40","44","46"],"42"),q("What is the result of 7 × 8?",["56","48","54","64"],"56")],
+ algebra:[q("If 3x = 21, what is the value of x?",["7","6","8","9"],"7"),q("What is the result of x + 5 = 12?",["7","5","17","-7"],"7")],
+ geometria:[q("What is the area of a rectangle 8 cm × 5 cm?",["40 cm²","26 cm²","13 cm²","80 cm²"],"40 cm²"),q("How many degrees do the interior angles of a triangle sum to?",["180°","90°","270°","360°"],"180°")],
+ calculo:[q("What is the derivative of x²?",["2x","x","x²","2"],"2x"),q("What is an antiderivative of 2x?",["x²","2x²","x","2"],"x²")],
+ estadistica:[q("What is the average of 4, 6 and 8?",["6","5","7","18"],"6"),q("Which measure represents the central value of an ordered set?",["Median","Variance","Range","Frequency"],"Median")],
+ gramatica:[q("Which of these words is a noun?",["mountain","quickly","to run","blue"],"mountain"),q("What function does a verb normally serve?",["Express an action or state","Name objects","Connect paragraphs","Indicate only places"],"Express an action or state")],
+ ortografia:[q("Which is spelled correctly?",["exception","exepction","ecception","exseption"],"exception"),q("Which word has a stress mark (Spanish example)?",["camión","mesa","casa","pared"],"camión")],
+ comprension:[q("What best identifies the main idea of a text?",["The central message","The longest fact","The last word","The number of paragraphs"],"The central message"),q("What does an inference allow?",["Deduce information from clues in the text","Copy a sentence","Change the title","Remove evidence"],"Deduce information from clues in the text")],
+ literatura:[q("What is a metaphor?",["An implicit comparison","A biography","A list of dates","A spelling rule"],"An implicit comparison"),q("What is the narrator?",["The voice that tells the story","Always the author","The reader","The title"],"The voice that tells the story")],
+ redaccion:[q("What improves clarity in an argumentative text?",["A clear thesis and ordered arguments","Repeat ideas","Remove connectors","Use disconnected sentences"],"A clear thesis and ordered arguments"),q("What is the function of connectors?",["Link ideas","Remove paragraphs","Change the topic","Count characters"],"Link ideas")],
+ mecanica:[q("With 5 kg and 4 m/s², what force results?",["20 N","9 N","1,25 N","25 N"],"20 N"),q("What is the SI unit of force?",["newton (N)","joule (J)","watt (W)","pascal (Pa)"],"newton (N)")],
+ "energia-fisica":[q("What is the SI unit of energy?",["joule (J)","newton (N)","pascal (Pa)","watt (W)"],"joule (J)"),q("Which expression matches classical kinetic energy?",["½mv²","mgh","F/a","V/R"],"½mv²")],
+ electricidad:[q("What unit measures electric current?",["ampere (A)","volt (V)","ohm (Ω)","watt (W)"],"ampere (A)"),q("According to Ohm's law, V equals…",["I·R","I/R","R/I","I+R"],"I·R")],
+ ondas:[q("What quantity is measured in hertz (Hz)?",["Frequency","Energy","Mass","Pressure"],"Frequency"),q("What basic relation exists among speed, frequency, and wavelength?",["v=fλ","v=f/λ","v=λ/f","v=f+λ"],"v=fλ")],
+ "fisica-moderna":[q("What relation does E = mc² express?",["Equivalence between mass and energy","Ohm's law","Hooke's law","Charge conservation"],"Equivalence between mass and energy"),q("Which particle has a negative charge?",["Electron","Proton","Neutron","Photon"],"Electron")],
+ atomos:[q("Which particle has a negative charge?",["Electron","Proton","Neutron","Nucleus"],"Electron"),q("Where are protons and neutrons found?",["In the nucleus","In the electron cloud","In photons","In orbitals only"],"In the nucleus")],
+ estequiometria:[q("What does one mole approximately represent?",["6.022×10²³ entities","1 gram","1 liter","100 entities"],"6.022×10²³ entities"),q("Which law relates amounts of reactants and products through balanced equations?",["Stoichiometry","Hooke's law","Ohm's law","Snell's law"],"Stoichiometry")],
+ organica:[q("Which element is central in organic chemistry?",["Carbon","Helium","Sodium","Iron"],"Carbon"),q("Which functional group characterizes an alcohol?",["-OH","-COOH","-NH₂","-CHO"],"-OH")],
+ equilibrio:[q("In chemical equilibrium, the forward and reverse rates are…",["Equal","Both always zero","One always zero","Infinite"],"Equal"),q("Which principle predicts equilibrium shifts under a disturbance?",["Le Châtelier","Archimedes","Pascal","Bernoulli"],"Le Châtelier")],
+ "quimica-general":[q("What does pH measure?",["Acidity or basicity","Atomic mass","Density","Temperature"],"Acidity or basicity"),q("What is approximately the pH of a neutral solution at 25 °C?",["7","0","14","1"],"7")],
+ celula:[q("Which structure contains genetic material in a eukaryotic cell?",["Nucleus","Ribosome","Membrane","Vacuole"],"Nucleus"),q("Which organelle produces most of the cell's ATP?",["Mitochondrion","Ribosome","Lysosome","Golgi"],"Mitochondrion")],
+ genetica:[q("Which molecule stores genetic information?",["DNA","ATP","Glucose","Lipid"],"DNA"),q("What is an allele?",["A variant of a gene","A cell","A tissue","An organelle"],"A variant of a gene")],
+ evolucion:[q("Which mechanism can produce population adaptation?",["Natural selection","Osmosis","Photosynthesis","Fermentation"],"Natural selection"),q("Which process changes frequencies of genetic variants over generations?",["Evolution","Digestion","Respiration","Transcription"],"Evolution")],
+ ecologia:[q("Which level includes organisms and their physical environment?",["Ecosystem","Cell","Organ","Individual"],"Ecosystem"),q("Which feeding relationship transfers matter and energy between organisms?",["Food chain","Mitosis","Osmosis","Meiosis"],"Food chain")],
+ anatomia:[q("Which organ pumps blood?",["Heart","Lung","Liver","Kidney"],"Heart"),q("Which system coordinates responses via nerve impulses?",["Nervous system","Digestive system","Skeletal system","Endocrine system only"],"Nervous system")],
+ antiguedad:[q("Which civilization developed Athenian democracy?",["Ancient Greece","Medieval Rome","Modern Egypt","Imperial China"],"Ancient Greece"),q("Which river was fundamental to ancient Egypt's development?",["Nile","Amazon","Danube","Thames"],"Nile")],
+ "edad-media":[q("Which social system characterized much of medieval Europe?",["Feudalism","Fordism","Socialism","Industrialism"],"Feudalism"),q("Which institution had great influence in medieval Europe?",["Christian Church","Modern stock exchange","UN","Internet"],"Christian Church")],
+ "edad-moderna":[q("Which event is conventionally associated with 1492?",["European arrival in the Americas","French Revolution","World War I","Fall of Rome"],"European arrival in the Americas"),q("Which process transformed Europe with new production methods from the 18th–19th centuries?",["Industrial Revolution","Renaissance","Crusades","Neolithic"],"Industrial Revolution")],
+ "edad-contemporanea":[q("In what year did the French Revolution begin?",["1789","1492","1810","1914"],"1789"),q("In what year did World War I begin?",["1914","1939","1905","1945"],"1914")],
+ "historia-argentina":[q("In what year did the May Revolution begin?",["1810","1816","1853","1880"],"1810"),q("In what year was Argentine independence declared?",["1816","1810","1820","1853"],"1816")],
+};
