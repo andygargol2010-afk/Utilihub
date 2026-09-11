@@ -15,13 +15,13 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/tools", priority: "0.9" },
           { path: "/finance", priority: "0.9" },
           { path: "/kits", priority: "0.9" },
-          { path: "/hubs/documentos-y-archivos", priority: "0.9" },
-          { path: "/aviso-legal", priority: "0.3" },
-          { path: "/privacidad", priority: "0.3" },
-          { path: "/contacto", priority: "0.3" },
+          { path: "/hubs/documents-and-files", priority: "0.9" },
+          { path: "/legal", priority: "0.3" },
+          { path: "/privacy", priority: "0.3" },
+          { path: "/contact", priority: "0.3" },
           ...WORK_KITS.map((kit) => ({ path: `/kits/${kit.slug}`, priority: "0.8" })),
           ...ALL_CATEGORIES.map((category) => ({ path: `/category/${category.slug}`, priority: category.slug === "educacion" ? "0.9" : "0.8" })),
-          ...EDUCATION_SUBJECTS.map(([slug]) => ({ path: `/educacion/${slug}`, priority: "0.8" })),
+          ...EDUCATION_SUBJECTS.map(([slug]) => ({ path: `/education/${slug}`, priority: "0.8" })),
           ...ALL_TOOLS.map((tool) => ({ path: toolHref(tool), priority: "0.7" })),
         ];
 
