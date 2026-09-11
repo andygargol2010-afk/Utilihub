@@ -17,13 +17,13 @@ const loadImage = (file: File) =>
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
-    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("No se pudo leer la imagen.")); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Could not read the image.")); };
     img.src = url;
   });
 
 const canvasBlob = (canvas: HTMLCanvasElement, type: string, quality = 0.9) =>
   new Promise<Blob>((resolve, reject) =>
-    canvas.toBlob((b) => b ? resolve(b) : reject(new Error("No se pudo generar la imagen.")), type, quality)
+    canvas.toBlob((b) => b ? resolve(b) : reject(new Error("Could not generate the image.")), type, quality)
   );
 
 const rotatedBounds = (width: number, height: number, angle: number) => {
@@ -72,31 +72,31 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
   }, [files]);
 
   const actionLabel = useMemo(() => ({
-    "redimensionar-imagen": "Redimensionar",
-    "comprimir-imagen": "Comprimir",
-    "png-a-jpg": "Convertir a JPG",
-    "jpg-a-png": "Convertir a PNG",
-    "webp-a-jpg": "Convertir a JPG",
-    "jpg-a-webp": "Convertir a WebP",
-    favicon: "Generar favicon",
-    "recortar-imagen": "Recortar",
-    "rotar-imagen": "Rotar",
-    "escala-grises": "Convertir a escala de grises",
-    "color-dominante": "Analizar color",
-    "unir-pdf": "Unir PDFs",
-    "dividir-pdf": "Extraer página",
-    "imagenes-a-pdf": "Crear PDF",
-    "pdf-a-imagenes": "Convertir a imágenes",
-    "rotar-pdf": "Rotar PDF",
-    "reordenar-pdf": "Reordenar páginas",
-    "extraer-texto-pdf": "Extraer texto",
-  } as Record<string, string>)[tool.slug] ?? "Procesar", [tool.slug]);
+    "redimensionar-imagen": "Resize",
+    "comprimir-imagen": "Compress",
+    "png-a-jpg": "Convert to JPG",
+    "jpg-a-png": "Convert to PNG",
+    "webp-a-jpg": "Convert to JPG",
+    "jpg-a-webp": "Convert to WebP",
+    favicon: "Generate favicon",
+    "recortar-imagen": "Crop",
+    "rotar-imagen": "Rotate",
+    "escala-grises": "Convert to grayscale",
+    "color-dominante": "Analyze color",
+    "unir-pdf": "Merge PDFs",
+    "dividir-pdf": "Extract page",
+    "imagenes-a-pdf": "Create PDF",
+    "pdf-a-imagenes": "Convert to images",
+    "rotar-pdf": "Rotate PDF",
+    "reordenar-pdf": "Reorder pages",
+    "extraer-texto-pdf": "Extract text",
+  } as Record<string, string>)[tool.slug] ?? "Process", [tool.slug]);
 
   const process = async () => {
     setError("");
     setOut("");
     try {
-      if (!files.length) throw new Error("Selecciona al menos un archivo.");
+      if (!files.length) throw new Error("Select at least one file.");
 
       if (image) {
         const file = files[0];
@@ -107,7 +107,7 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
         if (tool.slug === "redimensionar-imagen") {
           w = Math.max(1, Math.round(Number(width)));
           h = Math.max(1, Math.round(Number(height)));
-          if (!Number.isFinite(w) || !Number.isFinite(h)) throw new Error("Introduce ancho y alto válidos.");
+          if (!Number.isFinite(w) || !Number.isFinite(h)) throw new Error("Enter valid width and height.");
         }
         if (tool.slug === "recortar-imagen") {
           w = Math.min(img.width, Math.max(1, Math.round(Number(width) || img.width)));
@@ -117,7 +117,7 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
         let rotation = 0;
         if (tool.slug === "rotar-imagen") {
           rotation = Number(angle);
-          if (!Number.isFinite(rotation)) throw new Error("Introduce un ángulo válido.");
+          if (!Number.isFinite(rotation)) throw new Error("Enter a valid angle.");
           const bounds = rotatedBounds(img.width, img.height, rotation);
           w = bounds.width;
           h = bounds.height;
@@ -127,7 +127,7 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
         canvas.width = w;
         canvas.height = h;
         const ctx = canvas.getContext("2d");
-        if (!ctx) throw new Error("Canvas no disponible.");
+        if (!ctx) throw new Error("Canvas not available.");
 
         if (tool.slug === "rotar-imagen") {
           ctx.translate(w / 2, h / 2);
@@ -157,7 +157,7 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
             r += data[i]; g += data[i + 1]; b += data[i + 2]; n++;
           }
           const hex = `#${[r / n, g / n, b / n].map(v => Math.round(v).toString(16).padStart(2, "0")).join("").toUpperCase()}`;
-          setOut(`Color dominante aproximado: ${hex}`);
+          setOut(`Approximate dominant color: ${hex}`);
           return;
         }
 
@@ -166,7 +166,7 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
           c.width = c.height = 64;
           c.getContext("2d")!.drawImage(img, 0, 0, 64, 64);
           download(await canvasBlob(c, "image/png"), "favicon.png");
-          setOut("Favicon creado correctamente.");
+          setOut("Favicon created successfully.");
           return;
         }
 
@@ -183,7 +183,7 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
         const q = Math.min(1, Math.max(0.1, Number(quality) || 0.8));
         const blob = await canvasBlob(canvas, type, q);
         download(blob, `${file.name.replace(/\.[^.]+$/, "")}.${type.split("/")[1]}`);
-        setOut(`Procesado correctamente: ${(blob.size / 1024).toFixed(1)} KB`);
+        setOut(`Processed successfully: ${(blob.size / 1024).toFixed(1)} KB`);
         return;
       }
 
@@ -206,8 +206,8 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
           const data = c.toDataURL("image/jpeg", 0.92);
           pdf.addImage(data, "JPEG", (pdf.internal.pageSize.getWidth() - w) / 2, (pdf.internal.pageSize.getHeight() - h) / 2, w, h);
         }
-        download(pdf.output("blob"), "imagenes.pdf");
-        setOut("PDF creado correctamente.");
+        download(pdf.output("blob"), "images.pdf");
+        setOut("PDF created successfully.");
         return;
       }
 
@@ -216,49 +216,49 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
       const pdf = await PDFDocument.load(bytes);
 
       if (tool.slug === "unir-pdf") {
-        if (files.length < 2) throw new Error("Selecciona al menos dos PDFs.");
+        if (files.length < 2) throw new Error("Select at least two PDFs.");
         const merged = await PDFDocument.create();
         for (const f of files) {
           const src = await PDFDocument.load(await readBytes(f));
           const pages = await merged.copyPages(src, src.getPageIndices());
           pages.forEach(p => merged.addPage(p));
         }
-        download(new Blob([await merged.save()], { type: "application/pdf" }), "utilihub-unido.pdf");
-        setOut("PDFs unidos correctamente.");
+        download(new Blob([await merged.save()], { type: "application/pdf" }), "utilihub-merged.pdf");
+        setOut("PDFs merged successfully.");
         return;
       }
 
       if (tool.slug === "dividir-pdf") {
         const index = Math.trunc(Number(page)) - 1;
-        if (!Number.isInteger(index) || index < 0 || index >= pdf.getPageCount()) throw new Error(`La página debe estar entre 1 y ${pdf.getPageCount()}.`);
+        if (!Number.isInteger(index) || index < 0 || index >= pdf.getPageCount()) throw new Error(`Page must be between 1 and ${pdf.getPageCount()}.`);
         const outPdf = await PDFDocument.create();
         const [p] = await outPdf.copyPages(pdf, [index]);
         outPdf.addPage(p);
-        download(new Blob([await outPdf.save()], { type: "application/pdf" }), `pagina-${index + 1}.pdf`);
-        setOut("Página extraída correctamente.");
+        download(new Blob([await outPdf.save()], { type: "application/pdf" }), `page-${index + 1}.pdf`);
+        setOut("Page extracted successfully.");
         return;
       }
 
       if (tool.slug === "rotar-pdf") {
         const index = Math.trunc(Number(page)) - 1;
-        if (index < 0 || index >= pdf.getPageCount()) throw new Error("Página inválida.");
+        if (index < 0 || index >= pdf.getPageCount()) throw new Error("Invalid page.");
         const pdfPage = pdf.getPage(index);
         pdfPage.setRotation(degrees(pdfPage.getRotation().angle + Number(angle)));
-        download(new Blob([await pdf.save()], { type: "application/pdf" }), "pdf-rotado.pdf");
-        setOut("PDF rotado correctamente.");
+        download(new Blob([await pdf.save()], { type: "application/pdf" }), "pdf-rotated.pdf");
+        setOut("PDF rotated successfully.");
         return;
       }
 
       if (tool.slug === "reordenar-pdf") {
         const indexes = order.split(/[,;\s]+/).filter(Boolean).map(x => Number(x) - 1);
         if (indexes.length !== pdf.getPageCount() || indexes.some(i => !Number.isInteger(i) || i < 0 || i >= pdf.getPageCount()) || new Set(indexes).size !== indexes.length) {
-          throw new Error(`Introduce exactamente ${pdf.getPageCount()} números de página, sin repetir.`);
+          throw new Error(`Enter exactly ${pdf.getPageCount()} page numbers, without repeats.`);
         }
         const reordered = await PDFDocument.create();
         const pages = await reordered.copyPages(pdf, indexes);
         pages.forEach(p => reordered.addPage(p));
-        download(new Blob([await reordered.save()], { type: "application/pdf" }), "pdf-reordenado.pdf");
-        setOut("Páginas reordenadas correctamente.");
+        download(new Blob([await reordered.save()], { type: "application/pdf" }), "pdf-reordered.pdf");
+        setOut("Pages reordered successfully.");
         return;
       }
 
@@ -270,9 +270,9 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
           for (let i = 1; i <= doc.numPages; i++) {
             const p = await doc.getPage(i);
             const content = await p.getTextContent();
-            text += `\n--- Página ${i} ---\n${content.items.map((x: any) => x.str).join(" ")}\n`;
+            text += `\n--- Page ${i} ---\n${content.items.map((x: any) => x.str).join(" ")}\n`;
           }
-          setOut(text.trim() || "No se encontró texto seleccionable en el PDF.");
+          setOut(text.trim() || "No selectable text found in the PDF.");
           return;
         }
         for (let i = 1; i <= doc.numPages; i++) {
@@ -282,15 +282,15 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
           canvas.width = viewport.width;
           canvas.height = viewport.height;
           await p.render({ canvasContext: canvas.getContext("2d")!, viewport }).promise;
-          download(await canvasBlob(canvas, "image/png"), `pagina-${i}.png`);
+          download(await canvasBlob(canvas, "image/png"), `page-${i}.png`);
         }
-        setOut(`${doc.numPages} página(s) convertida(s) a PNG.`);
+        setOut(`${doc.numPages} page(s) converted to PNG.`);
         return;
       }
 
-      throw new Error("Operación PDF no reconocida.");
+      throw new Error("Unrecognized PDF operation.");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "No se pudo procesar el archivo.");
+      setError(e instanceof Error ? e.message : "Could not process the file.");
     }
   };
 
@@ -298,42 +298,42 @@ export function MediaTool({ tool }: { tool: GeneralTool }) {
     <div className="space-y-4">
       <label className="block rounded-xl border-2 border-dashed border-border p-8 text-center cursor-pointer hover:border-primary/50">
         <input type="file" accept={accept} multiple={multiple} className="sr-only" onChange={e => setFiles(Array.from(e.target.files ?? []))} />
-        <span className="font-semibold">Seleccionar {multiple ? "archivos" : "archivo"}</span>
-        <span className="mt-1 block text-sm text-muted-foreground">Todo el procesamiento compatible se realiza localmente en tu navegador.</span>
+        <span className="font-semibold">Select {multiple ? "files" : "file"}</span>
+        <span className="mt-1 block text-sm text-muted-foreground">All compatible processing runs locally in your browser.</span>
       </label>
 
       {files.length > 0 && (
         <div className="rounded-xl border bg-muted/30 p-4 space-y-2">
-          <p className="font-semibold">{files.length} archivo(s) seleccionado(s)</p>
+          <p className="font-semibold">{files.length} file(s) selected</p>
           <p className="text-sm text-muted-foreground">{files[0].name} · {info}</p>
-          {(image || imagePdf) && url && <img src={url} alt="Vista previa" className="max-h-64 max-w-full rounded-lg object-contain" />}
+          {(image || imagePdf) && url && <img src={url} alt="Preview" className="max-h-64 max-w-full rounded-lg object-contain" />}
         </div>
       )}
 
       {image && (tool.slug === "redimensionar-imagen" || tool.slug === "recortar-imagen") && (
         <div className="grid gap-4 sm:grid-cols-2">
-          <input type="number" min="1" value={width} onChange={e => setWidth(e.target.value)} placeholder="Ancho (px)" className="h-11 rounded-xl border bg-background px-3" />
-          <input type="number" min="1" value={height} onChange={e => setHeight(e.target.value)} placeholder="Alto (px)" className="h-11 rounded-xl border bg-background px-3" />
+          <input type="number" min="1" value={width} onChange={e => setWidth(e.target.value)} placeholder="Width (px)" className="h-11 rounded-xl border bg-background px-3" />
+          <input type="number" min="1" value={height} onChange={e => setHeight(e.target.value)} placeholder="Height (px)" className="h-11 rounded-xl border bg-background px-3" />
         </div>
       )}
 
       {image && tool.slug === "comprimir-imagen" && (
         <label className="block text-sm">
-          Calidad:
+          Quality:
           <input type="number" min="0.1" max="1" step="0.05" value={quality} onChange={e => setQuality(e.target.value)} className="ml-2 h-10 w-24 rounded-lg border px-2" />
         </label>
       )}
 
       {(tool.slug === "rotar-imagen" || tool.slug === "rotar-pdf") && (
-        <input type="number" value={angle} onChange={e => setAngle(e.target.value)} placeholder="Grados" className="h-11 w-full rounded-xl border bg-background px-3" />
+        <input type="number" value={angle} onChange={e => setAngle(e.target.value)} placeholder="Degrees" className="h-11 w-full rounded-xl border bg-background px-3" />
       )}
 
       {(tool.slug === "dividir-pdf" || tool.slug === "rotar-pdf") && (
-        <input type="number" min="1" value={page} onChange={e => setPage(e.target.value)} placeholder="Número de página" className="h-11 w-full rounded-xl border bg-background px-3" />
+        <input type="number" min="1" value={page} onChange={e => setPage(e.target.value)} placeholder="Page number" className="h-11 w-full rounded-xl border bg-background px-3" />
       )}
 
       {tool.slug === "reordenar-pdf" && (
-        <input value={order} onChange={e => setOrder(e.target.value)} placeholder="Orden, por ejemplo: 3,1,2" className="h-11 w-full rounded-xl border bg-background px-3" />
+        <input value={order} onChange={e => setOrder(e.target.value)} placeholder="Order, e.g. 3,1,2" className="h-11 w-full rounded-xl border bg-background px-3" />
       )}
 
       <button disabled={!files.length} onClick={process} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground disabled:opacity-50">{actionLabel}</button>
