@@ -23,7 +23,7 @@ import { PoissonTool } from "./PoissonTool";
 import { DocumentTool } from "./DocumentTool";
 import { UtilityAdvancedTool } from "./UtilityAdvancedTool";
 
-export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntries(
+const buildRegistry = (locale: "en" | "es"): Record<string, () => ReactNode> => Object.fromEntries(
   GENERAL_TOOLS.map((tool) => [tool.slug, () => {
     if (tool.slug === "secuencias") return <SequenceTool tool={tool} />;
     if (tool.slug === "potencias-y-raices") return <PowerRootTool tool={tool} />;
@@ -47,6 +47,9 @@ export const GENERAL_TOOL_UI: Record<string, () => ReactNode> = Object.fromEntri
     if (tool.kind === "stats") return <MathTool tool={tool} />;
     if (tool.kind === "number") return <FormulaTool tool={tool} />;
     if (tool.category === "fechas") return <TimeTool tool={tool} />;
-    return <GeneralTool tool={tool} />;
+    return <GeneralTool tool={tool} locale={locale} />;
   }])
 );
+
+export const GENERAL_TOOL_UI = buildRegistry("en");
+export const GENERAL_TOOL_UI_ES = buildRegistry("es");
