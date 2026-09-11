@@ -1,7 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { TOOL_UI } from "@/components/tools/registry";
+import { TOOL_UI_ES } from "@/components/tools/registry";
 import { GENERAL_TOOL_UI_ES } from "@/components/general/registry";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
@@ -29,7 +29,7 @@ function SpanishToolPage() {
   const { tool } = Route.useLoaderData();
   const { addRecent } = useRecentTools();
   const category = ALL_CATEGORIES.find((item) => item.slug === tool.category);
-  const ui = TOOL_UI[tool.slug] ?? GENERAL_TOOL_UI_ES[tool.slug];
+  const ui = TOOL_UI_ES[tool.slug] ?? GENERAL_TOOL_UI_ES[tool.slug];
   useEffect(() => { addRecent(tool.slug); }, [addRecent, tool.slug]);
   return <main className="container-page py-6 sm:py-8">
     <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Herramientas", to: "/es/herramientas" }, { label: category ? spanishCategoryName(category.slug) : "Categoría" }, { label: spanishToolName(tool) }]} />
