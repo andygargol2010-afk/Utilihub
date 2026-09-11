@@ -1,1 +1,47 @@
-FILE_CONTENT_FROM_DISK
+import type { EducationDifficulty, EducationLevel } from "./education-engine";
+
+type Q={text:string;options:string[];answer:string;levels:EducationLevel[];difficulty:EducationDifficulty};
+const q=(text:string,options:string[],answer:string,levels:EducationLevel[],difficulty:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+
+export const MAPAS:Q[]=[
+ q("What does a map scale represent?",["The ratio between a map distance and the real distance","Maximum altitude","Average temperature","Age of the map"],"The ratio between a map distance and the real distance",["universidad"],"dificil"),
+ q("Which line divides Earth into northern and southern hemispheres?",["Equator","Greenwich","Tropic of Cancer","Arctic Circle"],"Equator",["primaria"],"facil"),
+ q("Which map element explains the meaning of symbols?",["Legend","Scale","Title","Coordinates"],"Legend",["primaria"],"facil"),
+ q("What do contour lines show on a topographic map?",["Points of equal altitude","Points of equal population","Political borders","Wind directions"],"Points of equal altitude",["universidad"],"media"),
+ q("Which geographic coordinate measures angular distance north or south of the equator?",["Latitude","Longitude","Altitude","Scale"],"Latitude",["universidad"],"facil"),
+ q("Which coordinate measures position east or west of a reference meridian?",["Longitude","Latitude","Altitude","Slope"],"Longitude",["secundaria"],"facil"),
+ q("Which projection attempts to represent the whole Earth's surface on a plane?",["Map projection","Topographic profile","Numeric scale","Aerial photograph"],"Map projection",["secundaria"],"facil"),
+ q("What happens when the denominator of a 1:n scale increases?",["A larger area is shown with less detail","Detail increases automatically","Coordinates disappear","The scale stops being numeric"],"A larger area is shown with less detail",["universidad"],"dificil"),
+ q("If 1 cm on a map represents 5 km, how many km do 4 cm represent?",["20 km","9 km","25 km","1.25 km"],"20 km",["primaria"],"facil"),
+ q("Which map type highlights borders and administrative divisions?",["Political map","Climate map","Geological map","Relief map"],"Political map",["primaria"],"facil"),
+ q("Which map shows the spatial distribution of temperatures or precipitation?",["Climate map","Political map","Road map","Cadastral map"],"Climate map",["secundaria"],"facil"),
+ q("Which instrument provides orientation using cardinal points?",["Compass","Barometer","Thermometer","Rain gauge"],"Compass",["primaria"],"facil"),
+ q("Which direction corresponds approximately to 90° clockwise from north?",["East","West","South","Northeast"],"East",["secundaria"],"facil"),
+ q("What do conventional map symbols normally represent?",["Features or phenomena through graphic signs","Only mountains","Only borders","Only roads"],"Features or phenomena through graphic signs",["primaria"],"media"),
+ q("Which scale allows direct comparison of graphic and real distance via a bar?",["Graphic scale","Verbal scale","Temporal scale","Thermal scale"],"Graphic scale",["primaria"],"facil"),
+ q("What is a meridian?",["An imaginary line connecting the poles","A line parallel to the equator","A political border","A contour line"],"An imaginary line connecting the poles",["primaria"],"facil"),
+ q("What is a parallel?",["An imaginary line parallel to the equator","A line connecting the poles","An international highway","A contour line"],"An imaginary line parallel to the equator",["primaria"],"facil"),
+ q("What is the function of a map title?",["Indicate the main topic shown","Show the exact scale","Mark all coordinates","Indicate altitude"],"Indicate the main topic shown",["primaria"],"facil"),
+ q("What is the basic difference between a physical and a political map?",["Physical shows natural features; political shows administrative divisions","Physical only shows cities","Political only shows rivers","There is no difference"],"Physical shows natural features; political shows administrative divisions",["primaria"],"media"),
+ q("What does the Greenwich meridian represent?",["The meridian of longitude 0°","The equator","The Tropic of Capricorn","The North Pole"],"The meridian of longitude 0°",["secundaria"],"facil"),
+ q("Which coordinates allow locating a point on Earth's surface?",["Latitude and longitude","Altitude and scale","Temperature and pressure","Distance and population"],"Latitude and longitude",["secundaria"],"facil"),
+ q("What does it mean that two places have the same latitude?",["They lie on the same parallel","They lie on the same meridian","They have the same altitude","They are equally distant from the nearest pole"],"They lie on the same parallel",["secundaria"],"media"),
+ q("What does it mean that two places have the same longitude?",["They lie on the same meridian","They lie on the same parallel","They have the same climate","They have the same altitude"],"They lie on the same meridian",["secundaria"],"media"),
+ q("What type of representation shows Earth's surface from above using photographs?",["Aerial image","Political map","Topographic profile","Climate globe"],"Aerial image",["primaria"],"facil"),
+ q("What advantage does a globe have over a flat map?",["It reduces certain deformations of Earth's global shape","It always shows more detail","It does not need a scale","It removes coordinates"],"It reduces certain deformations of Earth's global shape",["secundaria"],"dificil"),
+ q("What problem appears when representing a sphere on a flat surface?",["Distortions","Increased gravity","Loss of the atmosphere","Season changes"],"Distortions",["secundaria"],"dificil"),
+ q("Which element shows the relationship between map directions and the cardinal points?",["Compass rose","Legend","Scale","Title"],"Compass rose",["primaria"],"facil"),
+ q("Which map would be most suitable for studying a transport route between cities?",["Road map","Geological map","Climate map","Vegetation map"],"Road map",["primaria"],"facil"),
+ q("Which map would be most suitable for analyzing soil type distribution?",["Soil map","Political map","Road map","Time zone map"],"Soil map",["universidad"],"media"),
+ q("Which map represents the structure and rock types of a region?",["Geological map","Political map","Road map","Demographic map"],"Geological map",["secundaria"],"media"),
+ q("What does a scale of 1:100000 mean?",["1 unit on the map equals 100000 real units","100000 map units equal 1 real unit","1 km always equals 100000 km","The map has no scale"],"1 unit on the map equals 100000 real units",["universidad"],"dificil"),
+ q("On a 1:50000 scale, what real distance do 2 cm represent?",["1 km","100 km","250 m","2.5 km"],"1 km",["secundaria"],"dificil"),
+ q("Which system uses a grid to express positions with planar coordinates?",["Coordinate system","Legend","Verbal scale","Climate profile"],"Coordinate system",["secundaria"],"media"),
+ q("What does the altitude of a point represent?",["Its height relative to a reference level","Its distance from the equator","Its geographic longitude","Its population"],"Its height relative to a reference level",["primaria"],"facil"),
+ q("Which direction corresponds approximately to 180° from north?",["South","East","West","Northwest"],"South",["primaria"],"facil"),
+ q("Which direction corresponds approximately to 270° clockwise from north?",["West","East","South","Northeast"],"West",["primaria"],"facil"),
+ q("Which map property depends on the projection used?",["Relative shape or size of some regions","Chemical composition of the soil","Real temperature","Age of cities"],"Relative shape or size of some regions",["universidad"],"dificil"),
+ q("Which map type focuses on population distribution?",["Demographic map","Geological map","Road map","Topographic map"],"Demographic map",["secundaria"],"facil"),
+ q("Which map shows elevations and landforms in special detail?",["Topographic map","Political map","Demographic map","Commercial map"],"Topographic map",["secundaria"],"facil"),
+ q("What is the general relationship between scale and level of detail?",["Large scales usually allow more detail for small areas","Small scales always show more detail","Scale does not affect representation","Only the legend determines detail"],"Large scales usually allow more detail for small areas",["universidad"],"dificil")
+];
