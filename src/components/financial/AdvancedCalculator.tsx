@@ -1,47 +1,32 @@
 import { useState } from "react";
 import type { FinancialDefinition, FinancialResult } from "@/lib/financial/types";
+import { spanishFinancialText } from "@/lib/i18n/es";
 
-export function AdvancedCalculator({ definition }: { definition: FinancialDefinition }) {
+export function AdvancedCalculator({ definition, locale = "en" }: { definition: FinancialDefinition; locale?: "en" | "es" }) {
   const initial = Object.fromEntries(definition.fields.map((f) => [f.key, f.defaultValue]));
   const [values, setValues] = useState<Record<string, number>>(initial);
   const [results, setResults] = useState<FinancialResult[]>([]);
   const [error, setError] = useState("");
-
+  const text = (value: string) => locale === "es" ? spanishFinancialText(value) : value;
   const run = () => {
     try {
       for (const field of definition.fields) {
         const value = values[field.key] ?? Number.NaN;
-        if (!Number.isFinite(value)) throw new Error(`Enter a valid value for "${field.label}".`);
-        if (field.min !== undefined && value < field.min) {
-          throw new Error(`"${field.label}" must be at least ${field.min}.`);
-        }
+        if (!Number.isFinite(value)) throw new Error(locale === "es" ? `Introduce un valor válido para «${text(field.label)}».` : `Enter a valid value for "${field.label}".`);
+        if (field.min !== undefined && value < field.min) throw new Error(locale === "es" ? `«${text(field.label)}» debe ser como mínimo ${field.min}.` : `"${field.label}" must be at least ${field.min}.`);
       }
       const next = definition.calculate(values);
-      if (next.some((r) => !r.value || r.value.includes("NaN") || r.value.includes("Infinity"))) {
-        throw new Error("Could not get a valid result with those values.");
-      }
-      setResults(next);
-      setError("");
-    } catch (e) {
-      setResults([]);
-      setError(e instanceof Error ? e.message : "Could not calculate the result.");
-    }
+      if (next.some((r) => !r.value || r.value.includes("NaN") || r.value.includes("Infinity"))) throw new Error(text("Could not get a valid result with those values."));
+      setResults(next); setError("");
+    } catch (e) { setResults([]); setError(e instanceof Error ? e.message : text("Could not calculate the result.")); }
   };
-
   return <div className="space-y-6">
     <div className="grid gap-4 sm:grid-cols-2">
-      {definition.fields.map((field) => <label key={field.key} className="space-y-2">
-        <span className="text-sm font-semibold">{field.label}{field.unit ? ` (${field.unit})` : ""}</span>
-        <input type="number" name={field.key} data-share-param={field.key} data-export-field={field.label} inputMode="decimal" min={field.min} step={field.step ?? "any"} value={Number.isNaN(values[field.key]) ? "" : values[field.key]}
-          onChange={(e) => setValues((v) => ({ ...v, [field.key]: e.target.value === "" ? Number.NaN : Number(e.target.value) }))}
-          className="h-11 w-full rounded-xl border border-border bg-background px-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/15" />
-      </label>)}
+      {definition.fields.map((field) => <label key={field.key} className="space-y-2"><span className="text-sm font-semibold">{text(field.label)}{field.unit ? ` (${field.unit})` : ""}</span><input type="number" name={field.key} data-share-param={field.key} data-export-field={field.label} inputMode="decimal" min={field.min} step={field.step ?? "any"} value={Number.isNaN(values[field.key]) ? "" : values[field.key]} onChange={(e) => setValues((v) => ({ ...v, [field.key]: e.target.value === "" ? Number.NaN : Number(e.target.value) }))} className="h-11 w-full rounded-xl border border-border bg-background px-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/15" /></label>)}
     </div>
-    <button type="button" onClick={run} className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Calculate</button>
+    <button type="button" onClick={run} className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">{locale === "es" ? "Calcular" : "Calculate"}</button>
     {error && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">{error}</p>}
-    {results.length > 0 && <div data-export-result className="grid gap-3 sm:grid-cols-2">
-      {results.map((r) => <div key={r.label} className="rounded-xl border border-border bg-muted/30 p-4"><p className="text-xs font-semibold text-muted-foreground">{r.label}</p><p className="mt-1 text-xl font-black">{r.value}</p></div>)}
-    </div>}
-    {definition.note && <p className="text-xs leading-5 text-muted-foreground">{definition.note}</p>}
+    {results.length > 0 && <div data-export-result className="grid gap-3 sm:grid-cols-2">{results.map((r) => <div key={r.label} className="rounded-xl border border-border bg-muted/30 p-4"><p className="text-xs font-semibold text-muted-foreground">{text(r.label)}</p><p className="mt-1 text-xl font-black">{r.value}</p></div>)}</div>}
+    {definition.note && <p className="text-xs leading-5 text-muted-foreground">{text(definition.note)}</p>}
   </div>;
 }
