@@ -38,7 +38,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/es/herramientas", priority: "0.9" },
           { path: "/es/finanzas", priority: "0.9" },
           ...ALL_TOOLS.map((tool) => ({
-            path: tool.isFinancial ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`,
+            path: tool.category === "finanzas" ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`,
             priority: "0.7",
           })),
         ];
