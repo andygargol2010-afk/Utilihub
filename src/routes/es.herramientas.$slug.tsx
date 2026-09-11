@@ -35,7 +35,7 @@ function SpanishToolPage() {
   useEffect(() => { addRecent(tool.slug); }, [addRecent, tool.slug]);
   return <main className="container-page py-6 sm:py-8">
     <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Herramientas", to: "/es/herramientas" }, { label: category ? spanishCategoryName(category.slug) : "Categoría" }, { label: spanishToolName(tool) }]} />
-    <div className="mt-3 flex items-center justify-between gap-3"><div className="min-w-0"><h1 className="text-2xl font-bold sm:text-3xl">{spanishToolName(tool)}</h1><p className="mt-1 max-w-2xl text-sm text-muted-foreground">Herramienta de {spanishCategoryName(tool.category).toLowerCase()}.</p></div><FavoriteButton slug={tool.slug} name={spanishToolName(tool)} /></div>
+    <div className="mt-3 flex items-center justify-between gap-3"><div className="min-w-0"><h1 className="text-2xl font-bold sm:text-3xl">{spanishToolName(tool)}</h1><p className="mt-1 max-w-2xl text-sm text-muted-foreground">Herramienta de {spanishCategoryName(tool.category).toLowerCase()}.</p></div><FavoriteButton slug={tool.slug} name={spanishToolName(tool)} locale="es" /></div>
     <section data-tool-surface aria-label={`Herramienta: ${spanishToolName(tool)}`} className="surface-card mt-5 p-4 sm:p-5">{ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}<div className="mt-4"><ShareAndExportActions title={spanishToolName(tool)} locale="es" /></div></section>
     <AdsterraBanner />
   </main>;
