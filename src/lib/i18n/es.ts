@@ -9,7 +9,11 @@ const WORDS: Record<string, string> = {
 };
 
 const EXACT_NAMES: Record<string, string> = {
-  calculadora: "Calculadora", "calculadora-de-porcentajes": "Calculadora de porcentajes", "regla-de-tres": "Regla de tres", "calculadora-de-fechas": "Diferencia entre fechas", "contador-de-palabras": "Contador de palabras", "generador-de-contrasenas": "Generador de contraseñas", "conversor-de-temperatura": "Conversor de temperatura", "conversor-de-longitud": "Conversor de longitud", "conversor-de-peso": "Conversor de peso", "conversor-de-unidades": "Conversor de unidades",
+  calculadora: "Calculadora", "calculadora-de-porcentajes": "Calculadora de porcentajes", "regla-de-tres": "Regla de tres", "calculadora-de-fechas": "Diferencia entre fechas", "contador-de-palabras": "Contador de palabras", "generador-de-contrasenas": "Generador de contraseñas", "conversor-de-temperatura": "Conversor de temperatura", "conversor-de-longitud": "Conversor de longitud", "conversor-de-peso": "Conversor de peso", "conversor-de-unidades": "Conversor de unidades", "interes-compuesto": "Interés compuesto", "inflacion-y-poder-adquisitivo": "Inflación y poder adquisitivo", "rentabilidad-de-inversion": "Rentabilidad de inversión", "objetivo-de-ahorro": "Objetivo de ahorro", "cuota-de-prestamo": "Cuota de préstamo",
+};
+
+const ACCENTED_TERMS: Record<string, string> = {
+  desviacion: "desviación", estandar: "estándar", correlacion: "correlación", covarianza: "covarianza", notacion: "notación", cientifica: "científica", raiz: "raíz", esima: "ésima", area: "área", triangulo: "triángulo", rectangulo: "rectángulo", circunferencia: "circunferencia", proporcion: "proporción", variacion: "variación", porcentual: "porcentual", armonica: "armónica", geometrica: "geométrica", puntuacion: "puntuación", intervalo: "intervalo", tamano: "tamaño", distribucion: "distribución", binomial: "binomial", normal: "normal", poisson: "Poisson", frecuencia: "frecuencia", amplitud: "amplitud", interpolacion: "interpolación", mayusculas: "mayúsculas", minusculas: "minúsculas", parrafos: "párrafos", lineas: "líneas", frases: "frases", numeros: "números", volumen: "volumen", calculo: "cálculo", mcd: "MCD", mcm: "mcm", interes: "interés", prestamo: "préstamo", inversion: "inversión", inflacion: "inflación", ahorro: "ahorro",
 };
 
 const FINANCIAL_WORDS: Record<string, string> = {
@@ -17,7 +21,7 @@ const FINANCIAL_WORDS: Record<string, string> = {
 };
 
 export function spanishCategoryName(slug: string) { return ES_CATEGORY_NAMES[slug] ?? slug; }
-export function spanishToolName(tool: Pick<CatalogTool, "slug" | "name">) { if (EXACT_NAMES[tool.slug]) return EXACT_NAMES[tool.slug]; const translated = tool.slug.split("-").map((part) => WORDS[part] ?? part).join(" "); return translated.charAt(0).toUpperCase() + translated.slice(1); }
+export function spanishToolName(tool: Pick<CatalogTool, "slug" | "name">) { if (EXACT_NAMES[tool.slug]) return EXACT_NAMES[tool.slug]; const translated = tool.slug.split("-").map((part) => WORDS[part] ?? ACCENTED_TERMS[part] ?? part).join(" "); return translated.charAt(0).toUpperCase() + translated.slice(1); }
 export function spanishToolPath(tool: Pick<CatalogTool, "slug" | "category">) { return tool.category === "finanzas" ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`; }
 export function spanishFinancialText(text: string) {
   const exact: Record<string, string> = { "Calculate": "Calcular", "Could not get a valid result with those values.": FINANCIAL_WORDS.calculate_error, "Could not calculate the result.": "No se pudo calcular el resultado.", "Continue your analysis": "Continúa tu análisis", "Related calculators to explore more financial scenarios.": "Calculadoras relacionadas para explorar más escenarios financieros.", "About this calculator": "Acerca de esta calculadora", "How to use it": "Cómo usarla", "Enter the values for the scenario you want to analyze.": "Introduce los valores del escenario que quieres analizar.", "Run the calculation and review each result.": "Ejecuta el cálculo y revisa cada resultado.", "Compare scenarios and verify real conditions before deciding.": "Compara escenarios y verifica las condiciones reales antes de decidir." };
