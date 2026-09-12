@@ -44,7 +44,7 @@ function SpanishToolPage() {
     ) : (
       <div className="mt-3 flex items-center justify-between gap-3"><div className="min-w-0"><h1 className="text-2xl font-bold sm:text-3xl">{name}</h1><p className="mt-1 max-w-2xl text-sm text-muted-foreground">Herramienta de {spanishCategoryName(tool.category).toLowerCase()}.</p></div><FavoriteButton slug={tool.slug} name={name} locale="es" /></div>
     )}
-    <section data-tool-surface aria-label={`Herramienta: ${name}`} className={`surface-card mt-5 p-4 sm:p-5 ${showcase ? "border-border/80 shadow-lift" : ""}`}>{ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}<div className="mt-4"><ShareAndExportActions title={name} locale="es" /></div></section>
+    <section data-tool-surface aria-label={`Herramienta: ${name}`} className={`surface-card mt-4 p-4 sm:p-6 ${showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""}`}>{ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}{!showcase && (<div className="mt-4"><ShareAndExportActions title={name} locale="es" /></div>)}</section>
     <AdsterraBanner />
   </main>;
 }
