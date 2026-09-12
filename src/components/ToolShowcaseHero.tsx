@@ -1,110 +1,66 @@
 import { FavoriteButton } from "@/components/FavoriteButton";
 import type { ToolShowcase } from "@/lib/tool-showcase";
 
-/** Hero palette inspired by high-conversion converter landing pages */
-const THEMES: Record<
-  ToolShowcase["accent"],
-  { badge: string; glow: string; chip: string; arrow: string; highlight: string }
-> = {
-  blue: {
-    badge: "bg-cyan-400 text-slate-950",
-    glow: "from-[#0b1d4a] via-[#123a7a] to-[#0ea5e9]",
-    chip: "from-sky-400 to-blue-600",
-    arrow: "from-cyan-300 to-sky-500",
-    highlight: "text-cyan-300",
-  },
-  violet: {
-    badge: "bg-cyan-400 text-slate-950",
-    glow: "from-[#1a0b4a] via-[#3b1d7a] to-[#7c3aed]",
-    chip: "from-violet-400 to-purple-600",
-    arrow: "from-fuchsia-300 to-violet-500",
-    highlight: "text-fuchsia-300",
-  },
-  emerald: {
-    badge: "bg-emerald-400 text-slate-950",
-    glow: "from-[#042f2e] via-[#0f766e] to-[#10b981]",
-    chip: "from-emerald-400 to-teal-600",
-    arrow: "from-lime-300 to-emerald-500",
-    highlight: "text-lime-300",
-  },
-  amber: {
-    badge: "bg-amber-400 text-slate-950",
-    glow: "from-[#422006] via-[#b45309] to-[#f59e0b]",
-    chip: "from-amber-400 to-orange-600",
-    arrow: "from-yellow-300 to-amber-500",
-    highlight: "text-amber-200",
-  },
-  rose: {
-    badge: "bg-rose-400 text-slate-950",
-    glow: "from-[#4c0519] via-[#9f1239] to-[#fb7185]",
-    chip: "from-rose-400 to-pink-600",
-    arrow: "from-pink-300 to-rose-500",
-    highlight: "text-rose-200",
-  },
-  cyan: {
-    badge: "bg-cyan-400 text-slate-950",
-    glow: "from-[#083344] via-[#0e7490] to-[#22d3ee]",
-    chip: "from-cyan-400 to-sky-600",
-    arrow: "from-sky-300 to-cyan-500",
-    highlight: "text-cyan-200",
-  },
-};
+/** Product-style hero for high-traffic converters (landing energy, not generic shell). */
 
-function FormatIllustration({
+function FileArt({
   label,
-  tone,
-  chip,
+  kind,
 }: {
   label: string;
-  tone: "from" | "to";
-  chip: string;
+  kind: "transparent" | "photo" | "generic";
 }) {
-  const isPhoto = /jpg|jpeg|webp|img|ico|b&w|new|crop|90/i.test(label);
   return (
-    <div className="relative">
-      <div
-        className={`relative flex h-[4.75rem] w-[4.25rem] flex-col overflow-hidden rounded-2xl border-2 border-white/40 shadow-2xl sm:h-[5.5rem] sm:w-[5rem] ${
-          tone === "from" ? "bg-white/95" : "bg-white"
-        }`}
-      >
-        <div className={`h-2.5 bg-gradient-to-r ${chip}`} />
-        <div className="relative flex flex-1 items-center justify-center bg-slate-50">
-          {isPhoto ? (
-            <svg viewBox="0 0 48 40" className="h-9 w-10 text-sky-500 sm:h-10 sm:w-11" aria-hidden>
-              <rect x="4" y="6" width="40" height="28" rx="4" fill="currentColor" opacity="0.15" />
-              <path d="M8 28 L18 16 L26 24 L32 18 L40 28 Z" fill="currentColor" opacity="0.55" />
-              <circle cx="16" cy="14" r="3" fill="currentColor" opacity="0.7" />
-            </svg>
-          ) : (
+    <div className="relative w-[4.5rem] sm:w-[5.25rem]">
+      <div className="absolute inset-x-1 top-2 h-full rounded-xl bg-black/25 blur-md" />
+      <div className="relative overflow-hidden rounded-xl border border-white/50 bg-white shadow-2xl">
+        <div className="absolute right-0 top-0 size-5 bg-gradient-to-bl from-slate-200 to-slate-100">
+          <div className="absolute left-0 top-0 size-5 origin-top-left -rotate-90 bg-white/80" />
+        </div>
+        <div className="flex h-11 items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 sm:h-12">
+          {kind === "transparent" && (
             <div
-              className="h-9 w-9 rounded-md border border-slate-200 sm:h-10 sm:w-10"
+              className="size-7 rounded-sm border border-slate-200 sm:size-8"
               style={{
                 backgroundImage:
-                  "linear-gradient(45deg,#e2e8f0 25%,transparent 25%),linear-gradient(-45deg,#e2e8f0 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e2e8f0 75%),linear-gradient(-45deg,transparent 75%,#e2e8f0 75%)",
-                backgroundSize: "10px 10px",
-                backgroundPosition: "0 0,0 5px,5px -5px,-5px 0",
+                  "linear-gradient(45deg,#cbd5e1 25%,transparent 25%),linear-gradient(-45deg,#cbd5e1 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#cbd5e1 75%),linear-gradient(-45deg,transparent 75%,#cbd5e1 75%)",
+                backgroundSize: "8px 8px",
+                backgroundPosition: "0 0,0 4px,4px -4px,-4px 0",
               }}
             />
           )}
+          {kind === "photo" && (
+            <svg viewBox="0 0 40 32" className="h-7 w-9 text-sky-500 sm:h-8 sm:w-10" aria-hidden>
+              <rect x="2" y="2" width="36" height="28" rx="3" fill="currentColor" opacity="0.12" />
+              <path d="M4 26 L14 12 L22 20 L28 14 L36 26 Z" fill="currentColor" opacity="0.55" />
+              <circle cx="12" cy="10" r="2.5" fill="currentColor" opacity="0.75" />
+            </svg>
+          )}
+          {kind === "generic" && (
+            <div className="grid size-7 place-items-center rounded-md bg-primary/15 text-[10px] font-black text-primary sm:size-8">
+              {label.slice(0, 3)}
+            </div>
+          )}
         </div>
-        <div className="border-t border-slate-100 bg-white px-1 py-1 text-center text-[10px] font-black tracking-wide text-slate-700 sm:text-[11px]">
+        <div className="border-t border-slate-100 px-1.5 py-1.5 text-center text-[10px] font-black tracking-wide text-slate-700 sm:text-[11px]">
           {label}
         </div>
       </div>
-      {tone === "to" && (
-        <span className="pointer-events-none absolute -right-1 -top-1 size-3 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]" />
-      )}
     </div>
   );
+}
+
+function kindFor(label: string): "transparent" | "photo" | "generic" {
+  if (/png|webp|svg|ico|crop|full/i.test(label)) return "transparent";
+  if (/jpg|jpeg|img|b&w|new|zip|90/i.test(label)) return "photo";
+  return "generic";
 }
 
 function splitTitle(name: string): { lead: string; accent: string } {
   const m = name.match(/^(.*?)\s+(to|a|→)\s+(.+)$/i);
   if (m) return { lead: `${m[1]} ${m[2]} `, accent: m[3] };
-  const parts = name.split(" ");
-  if (parts.length >= 2) {
-    return { lead: parts.slice(0, -1).join(" ") + " ", accent: parts[parts.length - 1] };
-  }
+  const parts = name.trim().split(/\s+/);
+  if (parts.length >= 2) return { lead: parts.slice(0, -1).join(" ") + " ", accent: parts[parts.length - 1]! };
   return { lead: name, accent: "" };
 }
 
@@ -120,63 +76,67 @@ export function ToolShowcaseHero({
   locale?: "en" | "es";
 }) {
   const es = locale === "es";
-  const theme = THEMES[showcase.accent];
   const tagline = es ? showcase.taglineEs : showcase.tagline;
   const badge = es ? showcase.badgeEs : showcase.badge;
   const { lead, accent } = splitTitle(name);
 
   return (
     <section
-      className={`relative mt-3 overflow-hidden rounded-[1.35rem] text-white shadow-[0_20px_50px_-20px_rgba(15,23,42,0.55)]`}
+      className="relative mt-3 overflow-hidden rounded-[1.5rem] text-white"
       aria-labelledby="showcase-title"
+      style={{
+        background:
+          "radial-gradient(1200px 400px at 90% -10%, rgba(56,189,248,0.35), transparent 55%), radial-gradient(900px 360px at 10% 110%, rgba(99,102,241,0.35), transparent 50%), linear-gradient(135deg, #0b1b3a 0%, #123a7a 45%, #1d4ed8 100%)",
+      }}
     >
-      <div className={`absolute inset-0 bg-gradient-to-br ${theme.glow}`} />
-      <div className="pointer-events-none absolute -right-10 -top-16 size-56 rounded-full bg-cyan-300/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 left-0 size-64 rounded-full bg-blue-400/15 blur-3xl" />
-      <div className="pointer-events-none absolute right-8 top-4 h-32 w-32 rotate-12 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.25)_0%,transparent_65%)] opacity-70" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+      <div
+        className="pointer-events-none absolute -right-8 top-0 h-full w-1/2 opacity-40"
+        style={{
+          background:
+            "repeating-linear-gradient(115deg, transparent 0 18px, rgba(255,255,255,0.06) 18px 20px)",
+        }}
+      />
+      <div className="pointer-events-none absolute -left-10 -top-16 size-48 rounded-full bg-cyan-400/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-20 right-10 size-56 rounded-full bg-indigo-400/25 blur-3xl" />
 
-      <div className="relative grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,1.15fr)_auto] lg:items-center lg:gap-10 lg:p-8">
+      <div className="relative grid gap-8 p-5 sm:p-7 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-6 lg:p-8">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span
-              className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-[0.16em] shadow-sm ${theme.badge}`}
-            >
+            <span className="inline-flex items-center rounded-full bg-cyan-400 px-3 py-1 text-[11px] font-black uppercase tracking-[0.16em] text-slate-950 shadow-sm">
               {badge}
             </span>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-white/70">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/65">
               {es ? "100% local · privado" : "100% local · private"}
             </span>
           </div>
 
-          <div className="mt-3 flex items-start justify-between gap-3">
+          <div className="mt-4 flex items-start justify-between gap-3">
             <h1
               id="showcase-title"
-              className="text-[2rem] font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-[2.75rem]"
+              className="text-[2.05rem] font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-[2.85rem]"
             >
               {lead}
-              {accent ? <span className={theme.highlight}>{accent}</span> : null}
+              {accent ? <span className="text-cyan-300">{accent}</span> : null}
             </h1>
-            <div className="shrink-0 pt-1">
-              <FavoriteButton slug={slug} name={name} />
+            <div className="shrink-0 [&_button]:border-white/30 [&_button]:bg-white/10 [&_button]:text-white [&_button]:hover:bg-white/20">
+              <FavoriteButton slug={slug} name={name} locale={locale} />
             </div>
           </div>
 
-          <p className="mt-3 max-w-lg text-sm leading-6 text-white/85 sm:text-[15px]">{tagline}</p>
+          <p className="mt-3 max-w-md text-[15px] leading-6 text-white/85">{tagline}</p>
         </div>
 
         {(showcase.fromLabel || showcase.toLabel) && (
-          <div className="flex items-center justify-center gap-3 sm:gap-4 lg:justify-end" aria-hidden>
+          <div className="flex items-center justify-center gap-3 sm:gap-5" aria-hidden>
             {showcase.fromLabel && (
-              <FormatIllustration label={showcase.fromLabel} tone="from" chip={theme.chip} />
+              <FileArt label={showcase.fromLabel} kind={kindFor(showcase.fromLabel)} />
             )}
-            <div
-              className={`grid size-11 place-items-center rounded-full bg-gradient-to-br ${theme.arrow} text-lg font-black text-slate-950 shadow-lg ring-4 ring-white/15`}
-            >
+            <div className="relative grid size-12 place-items-center rounded-full bg-gradient-to-br from-cyan-300 to-sky-500 text-xl font-black text-slate-950 shadow-[0_10px_30px_-8px_rgba(34,211,238,0.7)] ring-4 ring-white/20">
               →
+              <span className="pointer-events-none absolute -inset-2 animate-ping rounded-full bg-cyan-300/30" />
             </div>
             {showcase.toLabel && (
-              <FormatIllustration label={showcase.toLabel} tone="to" chip={theme.chip} />
+              <FileArt label={showcase.toLabel} kind={kindFor(showcase.toLabel)} />
             )}
           </div>
         )}
