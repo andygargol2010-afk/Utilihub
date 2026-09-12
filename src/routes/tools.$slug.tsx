@@ -112,9 +112,11 @@ function ToolPage() {
           <FavoriteButton slug={tool.slug} name={tool.name} />
         </div>
       )}
-      <section data-tool-surface aria-label={`Tool: ${tool.name}`} className={`surface-card mt-5 p-4 sm:p-5 ${showcase ? "border-border/80 shadow-lift" : ""}`}>
+      <section data-tool-surface aria-label={`Tool: ${tool.name}`} className={`surface-card mt-4 p-4 sm:p-6 ${showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""}`}>
         {ui ? ui() : <p role="alert" className="text-muted-foreground">Tool not available.</p>}
-        <div className="mt-4"><ShareAndExportActions title={tool.name} /></div>
+        {!showcase && (
+          <div className="mt-4"><ShareAndExportActions title={tool.name} /></div>
+        )}
       </section>
       <AdsterraBanner />
       {nextStep && <section className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5" aria-labelledby="next-step"><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p><div className="mt-2 flex flex-wrap items-center justify-between gap-3"><div><h2 id="next-step" className="text-base font-black">{journeyLabel(tool)}</h2><p className="mt-1 text-sm text-muted-foreground">After using {tool.name}, continue with {nextStep.name}.</p></div><Link to={englishToolPath(nextStep) as "/tools/$slug"} params={{ slug: englishToolSlug(nextStep) }} className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Open next <ArrowRight className="size-4" /></Link></div></section>}
