@@ -11,6 +11,8 @@ import { absoluteUrl, ogImage } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
+import { getToolShowcase } from "@/lib/tool-showcase";
 
 export const Route = createFileRoute("/es/herramientas/$slug")({
   loader: ({ params }) => { const tool = allToolBySlug(params.slug); if (!tool || tool.category === "finanzas") throw notFound(); return { tool }; },
@@ -32,11 +34,17 @@ function SpanishToolPage() {
   const { addRecent } = useRecentTools();
   const category = ALL_CATEGORIES.find((item) => item.slug === tool.category);
   const ui = TOOL_UI_ES[tool.slug] ?? GENERAL_TOOL_UI_ES[tool.slug];
+  const showcase = getToolShowcase(tool.slug);
+  const name = spanishToolName(tool);
   useEffect(() => { addRecent(tool.slug); }, [addRecent, tool.slug]);
   return <main className="container-page py-6 sm:py-8">
-    <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Herramientas", to: "/es/herramientas" }, { label: category ? spanishCategoryName(category.slug) : "Categoría" }, { label: spanishToolName(tool) }]} />
-    <div className="mt-3 flex items-center justify-between gap-3"><div className="min-w-0"><h1 className="text-2xl font-bold sm:text-3xl">{spanishToolName(tool)}</h1><p className="mt-1 max-w-2xl text-sm text-muted-foreground">Herramienta de {spanishCategoryName(tool.category).toLowerCase()}.</p></div><FavoriteButton slug={tool.slug} name={spanishToolName(tool)} locale="es" /></div>
-    <section data-tool-surface aria-label={`Herramienta: ${spanishToolName(tool)}`} className="surface-card mt-5 p-4 sm:p-5">{ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}<div className="mt-4"><ShareAndExportActions title={spanishToolName(tool)} locale="es" /></div></section>
+    <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Herramientas", to: "/es/herramientas" }, { label: category ? spanishCategoryName(category.slug) : "Categoría" }, { label: name }]} />
+    {showcase ? (
+      <ToolShowcaseHero name={name} slug={tool.slug} showcase={showcase} locale="es" />
+    ) : (
+      <div className="mt-3 flex items-center justify-between gap-3"><div className="min-w-0"><h1 className="text-2xl font-bold sm:text-3xl">{name}</h1><p className="mt-1 max-w-2xl text-sm text-muted-foreground">Herramienta de {spanishCategoryName(tool.category).toLowerCase()}.</p></div><FavoriteButton slug={tool.slug} name={name} locale="es" /></div>
+    )}
+    <section data-tool-surface aria-label={`Herramienta: ${name}`} className={`surface-card mt-4 p-4 sm:p-6 ${showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""}`}>{ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}{!showcase && (<div className="mt-4"><ShareAndExportActions title={name} locale="es" /></div>)}</section>
     <AdsterraBanner />
   </main>;
 }
