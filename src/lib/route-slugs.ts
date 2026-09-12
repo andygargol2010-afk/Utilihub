@@ -15,6 +15,7 @@ function slugify(value: string) {
 
 const englishEntries = new Map<string, CatalogTool>();
 const englishCollisions = new Map<string, string[]>();
+let indexedToolsRef: readonly CatalogTool[] | null = null;
 
 export const ENGLISH_CATEGORY_SLUGS: Record<string, string> = {
   finanzas: "finance",
@@ -73,6 +74,11 @@ export function englishCategoryPath(internalCategorySlug: string) {
 }
 
 export function buildEnglishToolIndex(tools: readonly CatalogTool[]) {
+  // Rebuild only when the tools array identity changes.
+  if (indexedToolsRef === tools && englishEntries.size) {
+    return new Map(englishEntries);
+  }
+
   englishEntries.clear();
   englishCollisions.clear();
 
@@ -83,16 +89,22 @@ export function buildEnglishToolIndex(tools: readonly CatalogTool[]) {
       const names = englishCollisions.get(slug) ?? [previous.name];
       names.push(tool.name);
       englishCollisions.set(slug, names);
+      // Keep the first tool; do not throw — collisions must not break production routes.
       continue;
     }
     englishEntries.set(slug, tool);
+    // Also index by internal Spanish slug so legacy links still resolve.
+    if (!englishEntries.has(tool.slug)) {
+      englishEntries.set(tool.slug, tool);
+    }
   }
 
-  if (englishCollisions.size) {
+  if (englishCollisions.size && typeof console !== "undefined") {
     const details = [...englishCollisions.entries()].map(([slug, names]) => `${slug}: ${names.join(" | ")}`);
-    throw new Error(`UtiliHub route slug collision: ${details.join("; ")}`);
+    console.warn(`UtiliHub route slug collision (kept first): ${details.join("; ")}`);
   }
 
+  indexedToolsRef = tools;
   return new Map(englishEntries);
 }
 
@@ -101,5 +113,8 @@ export function allEnglishRouteSlugs(tools: readonly CatalogTool[]) {
 }
 
 export function toolByEnglishSlug(tools: readonly CatalogTool[], slug: string) {
-  return buildEnglishToolIndex(tools).get(slug);
+  const byEnglish = buildEnglishToolIndex(tools).get(slug);
+  if (byEnglish) return byEnglish;
+  // Fallback: match internal catalog slug (Spanish) if URL still uses it.
+  return tools.find((tool) => tool.slug === slug);
 }
