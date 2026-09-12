@@ -1,4 +1,6 @@
-/** Premium presentation config for high-traffic tools (Day 1: image suite). */
+/** Premium presentation config for high-traffic tools (Day 1: image suite).
+ *  Redeploy trigger: ensure hero + MediaTool premium UI are on production.
+ */
 
 export type ToolShowcase = {
   badge: string;
