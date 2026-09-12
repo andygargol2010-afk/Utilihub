@@ -12,4 +12,6 @@ import { TAX_TOOLS } from "@/lib/financial/tax";
 import { ADVANCED_FINANCIAL_TOOLS } from "@/lib/financial/advanced";
 
 const definitions=[...INVESTMENT_TOOLS,...LOAN_TOOLS,...SAVINGS_TOOLS,...INFLATION_TOOLS,...MARKET_TOOLS,...PORTFOLIO_TOOLS,...RETIREMENT_TOOLS,...FIXED_INCOME_TOOLS,...TAX_TOOLS,...ADVANCED_FINANCIAL_TOOLS];
-export const ADVANCED_FINANCIAL_UI:Record<string,()=>ReactNode>=Object.fromEntries(definitions.map((definition)=>[definition.slug,()=> <AdvancedCalculator definition={definition}/>]));
+const buildAdvancedFinancialUi=(locale: "en" | "es"): Record<string,()=>ReactNode> => Object.fromEntries(definitions.map((definition)=>[definition.slug,()=> <AdvancedCalculator definition={definition} locale={locale}/>]));
+export const ADVANCED_FINANCIAL_UI=buildAdvancedFinancialUi("en");
+export const ADVANCED_FINANCIAL_UI_ES=buildAdvancedFinancialUi("es");
