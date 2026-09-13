@@ -1,4 +1,4 @@
-/** Premium presentation config for high-traffic tools (Day 1: image suite). */
+/** Premium presentation config for high-traffic tools (Day 1: image · Day 2: PDF & docs). */
 
 export type ToolShowcase = {
   badge: string;
@@ -11,6 +11,7 @@ export type ToolShowcase = {
 };
 
 export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
+  // —— Day 1: Image suite ——
   "png-a-jpg": {
     badge: "Converter",
     badgeEs: "Conversor",
@@ -99,6 +100,98 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     taglineEs: "Creá un favicon desde tu logo o imagen, listo para cualquier sitio.",
     fromLabel: "IMG",
     toLabel: "ICO",
+    accent: "emerald",
+  },
+
+  // —— Day 2: PDF & documents ——
+  "unir-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Merge multiple PDF files into one ordered document — fully local in your browser.",
+    taglineEs: "Uní varios PDF en un solo documento ordenado. Todo ocurre en tu navegador.",
+    fromLabel: "PDFs",
+    toLabel: "ONE",
+    accent: "rose",
+  },
+  "dividir-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Extract a specific page from a PDF without uploading the file.",
+    taglineEs: "Extraé una página concreta de un PDF sin subir el archivo.",
+    fromLabel: "PDF",
+    toLabel: "PAGE",
+    accent: "amber",
+  },
+  "imagenes-a-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Combine images into a clean PDF ready to share or print.",
+    taglineEs: "Combiná imágenes en un PDF limpio, listo para compartir o imprimir.",
+    fromLabel: "IMG",
+    toLabel: "PDF",
+    accent: "blue",
+  },
+  "pdf-a-imagenes": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Turn each PDF page into a high-quality image for previews or publishing.",
+    taglineEs: "Convertí cada página del PDF en una imagen de alta calidad.",
+    fromLabel: "PDF",
+    toLabel: "PNG",
+    accent: "violet",
+  },
+  "rotar-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Rotate selected pages in a PDF when a scan lands the wrong way up.",
+    taglineEs: "Rotá páginas de un PDF cuando el escaneo quedó al revés.",
+    fromLabel: "PDF",
+    toLabel: "90°",
+    accent: "cyan",
+  },
+  "reordenar-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Reorder PDF pages with a simple list — no desktop software needed.",
+    taglineEs: "Reordená las páginas de un PDF con una lista simple. Sin software de escritorio.",
+    fromLabel: "1-2-3",
+    toLabel: "3-1-2",
+    accent: "emerald",
+  },
+  "extraer-texto-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Pull selectable text out of a PDF to reuse or review it locally.",
+    taglineEs: "Extraé el texto seleccionable de un PDF para reutilizarlo o revisarlo.",
+    fromLabel: "PDF",
+    toLabel: "TXT",
+    accent: "amber",
+  },
+  "inspector-metadatos-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Inspect pages, title, author and size before you share a PDF.",
+    taglineEs: "Revisá páginas, título, autor y tamaño antes de compartir un PDF.",
+    fromLabel: "PDF",
+    toLabel: "INFO",
+    accent: "violet",
+  },
+  "limpiar-texto": {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Normalize spaces, quotes and line breaks before pasting into a document.",
+    taglineEs: "Normalizá espacios, comillas y saltos de línea antes de pegar en un documento.",
+    fromLabel: "RAW",
+    toLabel: "CLEAN",
+    accent: "blue",
+  },
+  "contador-de-palabras": {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Count words, characters, sentences and reading time as you type.",
+    taglineEs: "Contá palabras, caracteres, oraciones y tiempo de lectura mientras escribís.",
+    fromLabel: "TEXT",
+    toLabel: "STATS",
     accent: "emerald",
   },
 };
