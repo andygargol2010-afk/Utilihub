@@ -73,7 +73,7 @@ function SpanishDocumentHubPage() {
             return (
               <div key={step.slug} className="surface-card p-4">
                 <ToolCard tool={step.tool} locale="es" />
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{step.description}</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{step.descriptionEs}</p>
                 <Link to={href as never} className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-primary">
                   Abrir herramienta <ArrowRight className="size-4" />
                 </Link>
@@ -92,7 +92,7 @@ function SpanishDocumentHubPage() {
             return (
               <div key={step.slug} className="surface-card p-4">
                 <ToolCard tool={step.tool} locale="es" />
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{step.description}</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{step.descriptionEs}</p>
                 <Link to={href as never} className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-primary">
                   Abrir herramienta <ArrowRight className="size-4" />
                 </Link>
