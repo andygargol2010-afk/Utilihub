@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { ALL_CATEGORIES, type CatalogTool } from "@/lib/all-tools";
 import { englishToolSlug } from "@/lib/route-slugs";
-import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
+import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { useFavorites } from "@/hooks/use-favorites";
 
 export const CompactToolRow = memo(function CompactToolRow({ tool, isFavorite: controlledFavorite, onToggleFavorite, locale = "en" }: { tool: CatalogTool; isFavorite?: boolean; onToggleFavorite?: (slug: string) => void; locale?: "en" | "es" }) {
@@ -14,7 +14,7 @@ export const CompactToolRow = memo(function CompactToolRow({ tool, isFavorite: c
   const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
   const isSpanish = locale === "es";
   const displayName = isSpanish ? spanishToolName(tool) : tool.name;
-  const displaySummary = isSpanish ? `Herramienta gratuita de ${spanishCategoryName(tool.category).toLowerCase()}.` : tool.summary;
+  const displaySummary = tool.summary;
   const route = isSpanish ? (tool.category === "finanzas" ? "/es/finanzas/$slug" : "/es/herramientas/$slug") : (tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug");
   const slug = isSpanish ? tool.slug : englishToolSlug(tool);
   const toolLink = <Link to={route} params={{ slug }} className="min-w-0 flex-1 rounded-md py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
