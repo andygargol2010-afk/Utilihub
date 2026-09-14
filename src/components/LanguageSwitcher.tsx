@@ -4,7 +4,6 @@ import { englishToolPath, toolByEnglishSlug, englishCategorySlug, internalCatego
 import { spanishToolPath } from "@/lib/i18n/es";
 
 function equivalentPath(pathname: string, targetLocale: "en" | "es") {
-  // EN → ES
   if (targetLocale === "es") {
     if (pathname === "/") return "/es";
     if (pathname === "/tools" || pathname === "/herramientas") return "/es/herramientas";
@@ -27,13 +26,12 @@ function equivalentPath(pathname: string, targetLocale: "en" | "es") {
       const tool = toolByEnglishSlug(ALL_TOOLS, pathname.slice("/finance/".length));
       return tool ? spanishToolPath(tool) : "/es/finanzas";
     }
-    if (pathname === "/legal" || pathname === "/aviso-legal") return "/aviso-legal";
-    if (pathname === "/privacy" || pathname === "/privacidad") return "/privacidad";
-    if (pathname === "/contact" || pathname === "/contacto") return "/contacto";
+    if (pathname === "/legal" || pathname === "/aviso-legal") return "/es/aviso-legal";
+    if (pathname === "/privacy" || pathname === "/privacidad") return "/es/privacidad";
+    if (pathname === "/contact" || pathname === "/contacto") return "/es/contacto";
     return "/es";
   }
 
-  // ES → EN
   if (pathname === "/es") return "/";
   if (pathname === "/es/herramientas") return "/tools";
   if (pathname === "/es/finanzas") return "/finance";
@@ -52,9 +50,9 @@ function equivalentPath(pathname: string, targetLocale: "en" | "es") {
     const tool = ALL_TOOLS.find((item) => item.slug === pathname.slice("/es/finanzas/".length));
     return tool ? englishToolPath(tool) : "/finance";
   }
-  if (pathname === "/aviso-legal") return "/legal";
-  if (pathname === "/privacidad") return "/privacy";
-  if (pathname === "/contacto") return "/contact";
+  if (pathname === "/es/aviso-legal" || pathname === "/aviso-legal") return "/legal";
+  if (pathname === "/es/privacidad" || pathname === "/privacidad") return "/privacy";
+  if (pathname === "/es/contacto" || pathname === "/contacto") return "/contact";
   return "/";
 }
 

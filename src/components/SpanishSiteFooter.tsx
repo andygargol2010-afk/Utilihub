@@ -31,9 +31,9 @@ export function SpanishSiteFooter() {
             <Link to="/es/herramientas" className="w-fit text-sm font-semibold hover:text-primary">Todas las herramientas</Link>
             <Link to="/es/kits" className="w-fit text-sm font-semibold hover:text-primary">Kits por objetivo</Link>
             <Link to="/es/hubs/documentos-y-archivos" className="w-fit text-sm font-semibold hover:text-primary">Documentos y archivos</Link>
-            <Link to="/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">Aviso legal</Link>
-            <Link to="/privacidad" className="w-fit text-sm font-semibold hover:text-primary">Privacidad</Link>
-            <Link to="/contacto" className="w-fit text-sm font-semibold hover:text-primary">Contacto</Link>
+            <Link to="/es/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">Aviso legal</Link>
+            <Link to="/es/privacidad" className="w-fit text-sm font-semibold hover:text-primary">Privacidad</Link>
+            <Link to="/es/contacto" className="w-fit text-sm font-semibold hover:text-primary">Contacto</Link>
             <Link to="/" className="w-fit text-sm font-semibold hover:text-primary">Versión en inglés</Link>
           </nav>
         </div>
