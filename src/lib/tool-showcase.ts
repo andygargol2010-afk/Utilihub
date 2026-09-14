@@ -1,0 +1,201 @@
+/** Premium presentation config for high-traffic tools (Day 1: image · Day 2: PDF & docs). */
+
+export type ToolShowcase = {
+  badge: string;
+  badgeEs: string;
+  tagline: string;
+  taglineEs: string;
+  fromLabel?: string;
+  toLabel?: string;
+  accent: "blue" | "violet" | "emerald" | "amber" | "rose" | "cyan";
+};
+
+export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
+  // —— Day 1: Image suite ——
+  "png-a-jpg": {
+    badge: "Converter",
+    badgeEs: "Conversor",
+    tagline: "Convert PNG images to JPG locally. Fast, easy and free — no installation required.",
+    taglineEs: "Convierte imágenes PNG a JPG en tu navegador. Rápido, fácil y gratis.",
+    fromLabel: "PNG",
+    toLabel: "JPG",
+    accent: "blue",
+  },
+  "jpg-a-png": {
+    badge: "Converter",
+    badgeEs: "Conversor",
+    tagline: "Convert JPG images to PNG locally with transparency support.",
+    taglineEs: "Convierte imágenes JPG a PNG en local, con soporte de transparencia.",
+    fromLabel: "JPG",
+    toLabel: "PNG",
+    accent: "violet",
+  },
+  "jpg-a-webp": {
+    badge: "Converter",
+    badgeEs: "Conversor",
+    tagline: "Convert JPG to modern WebP for smaller files and the same quality.",
+    taglineEs: "Convierte JPG a WebP moderno: menos peso, misma calidad.",
+    fromLabel: "JPG",
+    toLabel: "WebP",
+    accent: "emerald",
+  },
+  "webp-a-jpg": {
+    badge: "Converter",
+    badgeEs: "Conversor",
+    tagline: "Convert WebP images back to JPG for maximum compatibility.",
+    taglineEs: "Convierte WebP a JPG para máxima compatibilidad.",
+    fromLabel: "WebP",
+    toLabel: "JPG",
+    accent: "cyan",
+  },
+  "comprimir-imagen": {
+    badge: "Optimizer",
+    badgeEs: "Optimizador",
+    tagline: "Compress images in your browser. Control quality and download instantly.",
+    taglineEs: "Comprime imágenes en el navegador. Controlá la calidad y descargá al instante.",
+    fromLabel: "IMG",
+    toLabel: "ZIP",
+    accent: "amber",
+  },
+  "redimensionar-imagen": {
+    badge: "Editor",
+    badgeEs: "Editor",
+    tagline: "Resize images to exact pixel dimensions without uploading them.",
+    taglineEs: "Redimensioná imágenes a píxeles exactos sin subirlas a un servidor.",
+    fromLabel: "W×H",
+    toLabel: "NEW",
+    accent: "blue",
+  },
+  "recortar-imagen": {
+    badge: "Editor",
+    badgeEs: "Editor",
+    tagline: "Crop images to the size you need, fully local and private.",
+    taglineEs: "Recortá imágenes al tamaño que necesitás, 100% local y privado.",
+    fromLabel: "FULL",
+    toLabel: "CROP",
+    accent: "rose",
+  },
+  "rotar-imagen": {
+    badge: "Editor",
+    badgeEs: "Editor",
+    tagline: "Rotate photos by any angle without uploading them — everything stays on your device.",
+    taglineEs: "Rotá fotos en cualquier ángulo. Todo ocurre en tu dispositivo.",
+    fromLabel: "0°",
+    toLabel: "90°",
+    accent: "violet",
+  },
+  "escala-grises": {
+    badge: "Filter",
+    badgeEs: "Filtro",
+    tagline: "Convert any image to clean grayscale in one click.",
+    taglineEs: "Convertí cualquier imagen a escala de grises en un clic.",
+    fromLabel: "COLOR",
+    toLabel: "B&W",
+    accent: "cyan",
+  },
+  favicon: {
+    badge: "Generator",
+    badgeEs: "Generador",
+    tagline: "Create a favicon from your logo or image — ready for any site.",
+    taglineEs: "Creá un favicon desde tu logo o imagen, listo para cualquier sitio.",
+    fromLabel: "IMG",
+    toLabel: "ICO",
+    accent: "emerald",
+  },
+
+  // —— Day 2: PDF & documents ——
+  "unir-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Merge multiple PDF files into one ordered document — fully local in your browser.",
+    taglineEs: "Uní varios PDF en un solo documento ordenado. Todo ocurre en tu navegador.",
+    fromLabel: "PDFs",
+    toLabel: "ONE",
+    accent: "rose",
+  },
+  "dividir-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Extract a specific page from a PDF without uploading the file.",
+    taglineEs: "Extraé una página concreta de un PDF sin subir el archivo.",
+    fromLabel: "PDF",
+    toLabel: "PAGE",
+    accent: "amber",
+  },
+  "imagenes-a-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Combine images into a clean PDF ready to share or print.",
+    taglineEs: "Combiná imágenes en un PDF limpio, listo para compartir o imprimir.",
+    fromLabel: "IMG",
+    toLabel: "PDF",
+    accent: "blue",
+  },
+  "pdf-a-imagenes": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Turn each PDF page into a high-quality image for previews or publishing.",
+    taglineEs: "Convertí cada página del PDF en una imagen de alta calidad.",
+    fromLabel: "PDF",
+    toLabel: "PNG",
+    accent: "violet",
+  },
+  "rotar-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Rotate selected pages in a PDF when a scan lands the wrong way up.",
+    taglineEs: "Rotá páginas de un PDF cuando el escaneo quedó al revés.",
+    fromLabel: "PDF",
+    toLabel: "90°",
+    accent: "cyan",
+  },
+  "reordenar-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Reorder PDF pages with a simple list — no desktop software needed.",
+    taglineEs: "Reordená las páginas de un PDF con una lista simple. Sin software de escritorio.",
+    fromLabel: "1-2-3",
+    toLabel: "3-1-2",
+    accent: "emerald",
+  },
+  "extraer-texto-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Pull selectable text out of a PDF to reuse or review it locally.",
+    taglineEs: "Extraé el texto seleccionable de un PDF para reutilizarlo o revisarlo.",
+    fromLabel: "PDF",
+    toLabel: "TXT",
+    accent: "amber",
+  },
+  "inspector-metadatos-pdf": {
+    badge: "PDF",
+    badgeEs: "PDF",
+    tagline: "Inspect pages, title, author and size before you share a PDF.",
+    taglineEs: "Revisá páginas, título, autor y tamaño antes de compartir un PDF.",
+    fromLabel: "PDF",
+    toLabel: "INFO",
+    accent: "violet",
+  },
+  "limpiar-texto": {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Normalize spaces, quotes and line breaks before pasting into a document.",
+    taglineEs: "Normalizá espacios, comillas y saltos de línea antes de pegar en un documento.",
+    fromLabel: "RAW",
+    toLabel: "CLEAN",
+    accent: "blue",
+  },
+  "contador-de-palabras": {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Count words, characters, sentences and reading time as you type.",
+    taglineEs: "Contá palabras, caracteres, oraciones y tiempo de lectura mientras escribís.",
+    fromLabel: "TEXT",
+    toLabel: "STATS",
+    accent: "emerald",
+  },
+};
+
+export function getToolShowcase(slug: string): ToolShowcase | undefined {
+  return TOOL_SHOWCASE[slug];
+}

@@ -14,6 +14,8 @@ import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, to
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { journeyLabel, journeyTools } from "@/lib/discovery";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
+import { getToolShowcase } from "@/lib/tool-showcase";
 
 export const Route = createFileRoute("/tools/$slug")({
   loader: ({ params }) => {
@@ -89,6 +91,7 @@ function ToolPage() {
   if (!category) return <p className="container-page py-10">Tool not available.</p>;
 
   const categoryPublicSlug = englishCategorySlug(category.slug);
+  const showcase = getToolShowcase(tool.slug);
 
   return (
     <main className="container-page py-6 sm:py-8">
@@ -98,16 +101,22 @@ function ToolPage() {
         { label: category.name, to: "/category/$slug", params: { slug: categoryPublicSlug } },
         { label: tool.name },
       ]} />
-      <div className="mt-3 flex items-center justify-between gap-3">
-        <div className="min-w-0">
-          <h1 className="truncate text-2xl font-bold sm:text-3xl">{tool.name}</h1>
-          <p className="mt-1 max-w-2xl truncate text-sm text-muted-foreground">{tool.summary}</p>
+      {showcase ? (
+        <ToolShowcaseHero name={tool.name} slug={tool.slug} showcase={showcase} locale="en" />
+      ) : (
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="truncate text-2xl font-bold sm:text-3xl">{tool.name}</h1>
+            <p className="mt-1 max-w-2xl truncate text-sm text-muted-foreground">{tool.summary}</p>
+          </div>
+          <FavoriteButton slug={tool.slug} name={tool.name} />
         </div>
-        <FavoriteButton slug={tool.slug} name={tool.name} />
-      </div>
-      <section data-tool-surface aria-label={`Tool: ${tool.name}`} className="surface-card mt-5 p-4 sm:p-5">
+      )}
+      <section data-tool-surface aria-label={`Tool: ${tool.name}`} className={`surface-card mt-4 p-4 sm:p-6 ${showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""}`}>
         {ui ? ui() : <p role="alert" className="text-muted-foreground">Tool not available.</p>}
-        <div className="mt-4"><ShareAndExportActions title={tool.name} /></div>
+        {!showcase && (
+          <div className="mt-4"><ShareAndExportActions title={tool.name} /></div>
+        )}
       </section>
       <AdsterraBanner />
       {nextStep && <section className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5" aria-labelledby="next-step"><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p><div className="mt-2 flex flex-wrap items-center justify-between gap-3"><div><h2 id="next-step" className="text-base font-black">{journeyLabel(tool)}</h2><p className="mt-1 text-sm text-muted-foreground">After using {tool.name}, continue with {nextStep.name}.</p></div><Link to={englishToolPath(nextStep) as "/tools/$slug"} params={{ slug: englishToolSlug(nextStep) }} className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Open next <ArrowRight className="size-4" /></Link></div></section>}
