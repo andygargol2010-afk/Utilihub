@@ -12,53 +12,29 @@ export function SpanishSiteFooter() {
           <p className="mt-3 max-w-sm text-sm leading-6 text-muted-foreground">
             Herramientas online gratuitas para calcular, convertir y resolver tareas sin complicaciones.
           </p>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-[.16em] text-primary">
-            Sin registro · Privacidad local
-          </p>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-[.16em] text-primary">Sin registro · Privacidad local</p>
         </div>
 
         <div>
           <p className="text-xs font-bold uppercase tracking-[.16em] text-muted-foreground">Explorar</p>
           <nav aria-label="Explorar" className="mt-3 grid gap-2">
-            <Link to="/es/finanzas" className="w-fit text-sm font-semibold hover:text-primary">
-              Finanzas
-            </Link>
-            <Link to="/category/$slug" params={{ slug: "texto" }} className="w-fit text-sm font-semibold hover:text-primary">
-              Texto
-            </Link>
-            <Link to="/category/$slug" params={{ slug: "diseno" }} className="w-fit text-sm font-semibold hover:text-primary">
-              Diseño y color
-            </Link>
-            <Link to="/category/$slug" params={{ slug: "seguridad" }} className="w-fit text-sm font-semibold hover:text-primary">
-              Seguridad
-            </Link>
+            <Link to="/es/finanzas" className="w-fit text-sm font-semibold hover:text-primary">Finanzas</Link>
+            <Link to="/es/categoria/$slug" params={{ slug: "texto" }} className="w-fit text-sm font-semibold hover:text-primary">Texto</Link>
+            <Link to="/es/categoria/$slug" params={{ slug: "diseno" }} className="w-fit text-sm font-semibold hover:text-primary">Diseño y color</Link>
+            <Link to="/es/categoria/$slug" params={{ slug: "seguridad" }} className="w-fit text-sm font-semibold hover:text-primary">Seguridad</Link>
           </nav>
         </div>
 
         <div>
           <p className="text-xs font-bold uppercase tracking-[.16em] text-muted-foreground">UtiliHub</p>
           <nav aria-label="Información" className="mt-3 grid gap-2">
-            <Link to="/es/herramientas" className="w-fit text-sm font-semibold hover:text-primary">
-              Todas las herramientas
-            </Link>
-            <Link to="/kits" className="w-fit text-sm font-semibold hover:text-primary">
-              Kits por objetivo
-            </Link>
-            <Link to="/hubs/documentos-y-archivos" className="w-fit text-sm font-semibold hover:text-primary">
-              Documentos y archivos
-            </Link>
-            <Link to="/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">
-              Aviso legal
-            </Link>
-            <Link to="/privacidad" className="w-fit text-sm font-semibold hover:text-primary">
-              Privacidad
-            </Link>
-            <Link to="/contacto" className="w-fit text-sm font-semibold hover:text-primary">
-              Contacto
-            </Link>
-            <Link to="/" className="w-fit text-sm font-semibold hover:text-primary">
-              Versión en inglés
-            </Link>
+            <Link to="/es/herramientas" className="w-fit text-sm font-semibold hover:text-primary">Todas las herramientas</Link>
+            <Link to="/es/kits" className="w-fit text-sm font-semibold hover:text-primary">Kits por objetivo</Link>
+            <Link to="/es/hubs/documentos-y-archivos" className="w-fit text-sm font-semibold hover:text-primary">Documentos y archivos</Link>
+            <Link to="/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">Aviso legal</Link>
+            <Link to="/privacidad" className="w-fit text-sm font-semibold hover:text-primary">Privacidad</Link>
+            <Link to="/contacto" className="w-fit text-sm font-semibold hover:text-primary">Contacto</Link>
+            <Link to="/" className="w-fit text-sm font-semibold hover:text-primary">Versión en inglés</Link>
           </nav>
         </div>
       </div>
