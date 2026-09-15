@@ -1,4 +1,4 @@
-/** Premium presentation config for high-traffic tools (Day 1: image · Day 2: PDF & docs · Day 3: text / generators / dev). */
+/** Premium presentation config (Day 1: image · Day 2: PDF · Day 3: text/dev · Day 4: math/units/dates). */
 
 export type ToolShowcase = {
   badge: string;
@@ -195,7 +195,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     accent: "emerald",
   },
 
-  // —— Day 3: Text transforms · generators · developer utilities ——
+  // —— Day 3: Text · generators · developer ——
   mayusculas: {
     badge: "Text",
     badgeEs: "Texto",
@@ -285,6 +285,98 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     fromLabel: "RGB",
     toLabel: "HEX",
     accent: "amber",
+  },
+
+  // —— Day 4: Math · units · dates · more converters ——
+  porcentaje: {
+    badge: "Math",
+    badgeEs: "Mate",
+    tagline: "Calculate percentages, discounts and increases without a spreadsheet.",
+    taglineEs: "Calculá porcentajes, descuentos y aumentos sin una planilla.",
+    fromLabel: "100",
+    toLabel: "%",
+    accent: "blue",
+  },
+  "regla-de-tres": {
+    badge: "Math",
+    badgeEs: "Mate",
+    tagline: "Solve direct proportions in seconds — classic rule of three, fully local.",
+    taglineEs: "Resolvé proporciones directas en segundos. Regla de tres clásica, 100% local.",
+    fromLabel: "A",
+    toLabel: "X",
+    accent: "violet",
+  },
+  "calculadora-de-porcentajes": {
+    badge: "Math",
+    badgeEs: "Mate",
+    tagline: "Find % of an amount, what share it represents, or percent change.",
+    taglineEs: "Calculá el % de una cantidad, qué proporción representa o el cambio porcentual.",
+    fromLabel: "%",
+    toLabel: "RESULT",
+    accent: "emerald",
+  },
+  "conversor-de-temperatura": {
+    badge: "Units",
+    badgeEs: "Unidades",
+    tagline: "Convert °C, °F and Kelvin instantly for cooking, weather or science.",
+    taglineEs: "Convertí °C, °F y Kelvin al instante para cocina, clima o ciencia.",
+    fromLabel: "°C",
+    toLabel: "°F",
+    accent: "rose",
+  },
+  "conversor-de-longitud": {
+    badge: "Units",
+    badgeEs: "Unidades",
+    tagline: "Switch between meters, feet, inches, km and miles without leaving the browser.",
+    taglineEs: "Pasá de metros a pies, pulgadas, km o millas sin salir del navegador.",
+    fromLabel: "m",
+    toLabel: "ft",
+    accent: "cyan",
+  },
+  "conversor-de-peso": {
+    badge: "Units",
+    badgeEs: "Unidades",
+    tagline: "Convert kg, lb, oz and grams for recipes, shipping or the gym.",
+    taglineEs: "Convertí kg, lb, oz y gramos para recetas, envíos o el gym.",
+    fromLabel: "kg",
+    toLabel: "lb",
+    accent: "amber",
+  },
+  promedio: {
+    badge: "Stats",
+    badgeEs: "Estad.",
+    tagline: "Get the arithmetic mean of any list of numbers — paste and calculate.",
+    taglineEs: "Obtené el promedio de cualquier lista de números. Pegá y calculá.",
+    fromLabel: "LIST",
+    toLabel: "AVG",
+    accent: "blue",
+  },
+  "edad-exacta": {
+    badge: "Dates",
+    badgeEs: "Fechas",
+    tagline: "Calculate exact age in years, months and days from a birth date.",
+    taglineEs: "Calculá la edad exacta en años, meses y días desde la fecha de nacimiento.",
+    fromLabel: "BORN",
+    toLabel: "AGE",
+    accent: "violet",
+  },
+  "hex-rgb": {
+    badge: "Color",
+    badgeEs: "Color",
+    tagline: "Convert HEX colors to RGB values ready for design systems and CSS.",
+    taglineEs: "Convertí colores HEX a RGB listos para sistemas de diseño y CSS.",
+    fromLabel: "HEX",
+    toLabel: "RGB",
+    accent: "emerald",
+  },
+  "base64-decode": {
+    badge: "Encode",
+    badgeEs: "Codificar",
+    tagline: "Decode Base64 back to plain text for tokens, payloads and data URLs.",
+    taglineEs: "Decodificá Base64 a texto plano para tokens, payloads y data URLs.",
+    fromLabel: "B64",
+    toLabel: "TEXT",
+    accent: "cyan",
   },
 };
 
