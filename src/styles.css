@@ -68,6 +68,10 @@ body {
   background: color-mix(in oklab, var(--color-background) 91%, transparent);
   backdrop-filter: blur(18px);
   box-shadow: 0 12px 30px -26px rgba(31, 41, 88, .55);
+  /* Keep header above floating Social Bar overlays */
+  z-index: 60;
+  position: sticky;
+  top: 0;
 }
 .brand-lockup { transition: transform .18s ease; }
 .brand-lockup:hover { transform: translateY(-1px); }
@@ -79,6 +83,24 @@ h2 { line-height: 1.12; }
 a { transition: color .15s ease, background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
 :focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
 ::selection { background: color-mix(in oklab, var(--color-primary) 22%, transparent); }
+
+/* Social Bar / floating ad safety: never cover the sticky navbar on mobile */
+@media (max-width: 767px) {
+  /* Common selectors used by profitableratecpm / Adsterra social-bar injects */
+  [id*="social"],
+  [class*="social-bar"],
+  [class*="SocialBar"],
+  [id*="push"],
+  iframe[src*="profitableratecpmnetwork"],
+  iframe[src*="highrevenueformat"] {
+    max-height: min(40vh, 280px) !important;
+  }
+  /* Force any fixed top overlays below the header band (~64px) */
+  body > div[style*="position: fixed"][style*="top: 0"],
+  body > div[style*="position:fixed"][style*="top:0"] {
+    top: 72px !important;
+  }
+}
 
 @utility container-page {
   width: 100%;
