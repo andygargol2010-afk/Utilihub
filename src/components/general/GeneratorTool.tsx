@@ -1,9 +1,150 @@
 import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
+import { getToolShowcase } from "@/lib/tool-showcase";
 
-const randomInt=(min:number,max:number)=>{if(!Number.isInteger(min)||!Number.isInteger(max)||min>max)throw new Error("Invalid random range.");const range=max-min+1;if(range>0xffffffff)throw new Error("Range too large.");const limit=Math.floor(0x100000000/range)*range;const buf=new Uint32Array(1);do{crypto.getRandomValues(buf)}while(buf[0]>=limit);return min+(buf[0]%range)};
-const randomChars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
-const makeCode=(length:number)=>Array.from({length},()=>randomChars[randomInt(0,randomChars.length-1)]).join("");
-const shuffle=<T,>(items:T[])=>{const out=[...items];for(let i=out.length-1;i>0;i--){const j=randomInt(0,i);[out[i],out[j]]=[out[j],out[i]]}return out};
-function generate(slug:string,input:string):string{switch(slug){case"generador-numeros":{const[min,max]=input.split(/[,;\s]+/).map(Number);if(!Number.isFinite(min)||!Number.isFinite(max)||min>max)throw new Error("Enter a valid minimum and maximum.");return String(randomInt(Math.ceil(min),Math.floor(max)))}case"generador-dados":{const[sidesRaw,countRaw]=input.split(/[,;\s]+/).map(Number);const sides=Number.isFinite(sidesRaw)?Math.trunc(sidesRaw):6;const count=Number.isFinite(countRaw)?Math.trunc(countRaw):1;if(sides<2||sides>10000||count<1||count>100)throw new Error("Use between 2 and 10,000 sides and between 1 and 100 dice.");return Array.from({length:count},()=>randomInt(1,sides)).join(" · ")}case"generador-pin":{const length=input.trim()?Math.trunc(Number(input)):6;if(!Number.isInteger(length)||length<1||length>32)throw new Error("Length must be between 1 and 32.");return Array.from({length},()=>String(randomInt(0,9))).join("")}case"generador-codigos":{const length=input.trim()?Math.trunc(Number(input)):12;if(!Number.isInteger(length)||length<1||length>128)throw new Error("Length must be between 1 and 128.");return makeCode(length)}case"sorteo":{const items=input.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(!items.length)throw new Error("Enter at least one item, one per line.");return items[randomInt(0,items.length-1)]}case"lista-aleatoria":{const items=input.split(/\r?\n/).filter(x=>x.length>0);if(!items.length)throw new Error("Enter at least one item, one per line.");return shuffle(items).join("\n")}case"generador-nombres":{const first=["Alex","Andrea","Bruno","Clara","Diego","Elena","Lucas","Mia","Nora","Sofia"],last=["Rivera","Torres","Vega","Silva","Molina","Rojas","Navarro","Paz"];return `${first[randomInt(0,first.length-1)]} ${last[randomInt(0,last.length-1)]}`}case"generador-usuarios":{const words=["pixel","nova","orbit","code","matrix","luna","byte","zen"];return `${words[randomInt(0,words.length-1)]}${randomInt(10,9999)}`}case"datos-prueba":return JSON.stringify({id:randomInt(1000,999999),name:"Test user",email:`test${randomInt(100,9999)}@example.com`},null,2);case"lorem-ipsum":return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat, nisl at tincidunt consequat, sapien justo commodo urna, vitae posuere neque libero vitae erat.";default:throw new Error(`Generator not implemented: ${slug}`)}}
-export function GeneratorTool({tool,locale="en"}:{tool:GeneralTool;locale?:"en"|"es"}){const[input,setInput]=useState(""),[output,setOutput]=useState(""),[error,setError]=useState("");const es=locale==="es";const run=()=>{try{setError("");setOutput(generate(tool.slug,input))}catch(e){setOutput("");setError(e instanceof Error?(es?({"Enter a valid minimum and maximum.":"Introduce un mínimo y un máximo válidos.","Use between 2 and 10,000 sides and between 1 and 100 dice.":"Usa entre 2 y 10.000 caras y entre 1 y 100 dados.","Length must be between 1 and 32.":"La longitud debe estar entre 1 y 32.","Length must be between 1 and 128.":"La longitud debe estar entre 1 y 128.","Enter at least one item, one per line.":"Introduce al menos un elemento, uno por línea."}[e.message]??e.message):e.message):es?"No se pudo generar el resultado.":"Could not generate the result.")}};const placeholder=tool.slug==="generador-dados"?(es?"Caras, cantidad · ej. 6, 2":"Sides, count · e.g. 6, 2"):tool.slug==="generador-numeros"?(es?"Mínimo, máximo · ej. 1, 100":"Minimum, maximum · e.g. 1, 100"):(es?"Configuración opcional":"Optional configuration");return <div className="space-y-4"><label className="block text-sm font-semibold">{es?"Configuración":"Settings"}</label><input value={input} onChange={e=>setInput(e.target.value)} placeholder={placeholder} className="h-11 w-full rounded-xl border bg-background px-3"/><p className="text-xs text-muted-foreground">{es?"La generación se ejecuta localmente en tu navegador. Para sorteos y listas, usa un elemento por línea.":"Generation runs locally in your browser. For draws and lists, use one item per line."}</p><button onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">{es?"Generar":"Generate"}</button>{error&&<p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">{error}</p>}{output&&<output className="block whitespace-pre-wrap break-words rounded-xl border bg-muted/30 p-4 font-medium">{output}</output>}</div>}
+const randomInt = (min: number, max: number) => {
+  if (!Number.isInteger(min) || !Number.isInteger(max) || min > max) throw new Error("Invalid random range.");
+  const range = max - min + 1;
+  if (range > 0xffffffff) throw new Error("Range too large.");
+  const limit = Math.floor(0x100000000 / range) * range;
+  const buf = new Uint32Array(1);
+  do {
+    crypto.getRandomValues(buf);
+  } while (buf[0] >= limit);
+  return min + (buf[0] % range);
+};
+const randomChars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+const makeCode = (length: number) => Array.from({ length }, () => randomChars[randomInt(0, randomChars.length - 1)]).join("");
+const shuffle = <T,>(items: T[]) => {
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = randomInt(0, i);
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+};
+
+function generate(slug: string, input: string): string {
+  switch (slug) {
+    case "generador-numeros": {
+      const [min, max] = input.split(/[,;\s]+/).map(Number);
+      if (!Number.isFinite(min) || !Number.isFinite(max) || min > max) throw new Error("Enter a valid minimum and maximum.");
+      return String(randomInt(Math.ceil(min), Math.floor(max)));
+    }
+    case "generador-dados": {
+      const [sidesRaw, countRaw] = input.split(/[,;\s]+/).map(Number);
+      const sides = Number.isFinite(sidesRaw) ? Math.trunc(sidesRaw) : 6;
+      const count = Number.isFinite(countRaw) ? Math.trunc(countRaw) : 1;
+      if (sides < 2 || sides > 10000 || count < 1 || count > 100) throw new Error("Use between 2 and 10,000 sides and between 1 and 100 dice.");
+      return Array.from({ length: count }, () => randomInt(1, sides)).join(" · ");
+    }
+    case "generador-pin": {
+      const length = input.trim() ? Math.trunc(Number(input)) : 6;
+      if (!Number.isInteger(length) || length < 1 || length > 32) throw new Error("Length must be between 1 and 32.");
+      return Array.from({ length }, () => String(randomInt(0, 9))).join("");
+    }
+    case "generador-codigos": {
+      const length = input.trim() ? Math.trunc(Number(input)) : 12;
+      if (!Number.isInteger(length) || length < 1 || length > 128) throw new Error("Length must be between 1 and 128.");
+      return makeCode(length);
+    }
+    case "sorteo": {
+      const items = input.split(/\r?\n/).map((x) => x.trim()).filter(Boolean);
+      if (!items.length) throw new Error("Enter at least one item, one per line.");
+      return items[randomInt(0, items.length - 1)];
+    }
+    case "lista-aleatoria": {
+      const items = input.split(/\r?\n/).filter((x) => x.length > 0);
+      if (!items.length) throw new Error("Enter at least one item, one per line.");
+      return shuffle(items).join("\n");
+    }
+    case "generador-nombres": {
+      const first = ["Alex", "Andrea", "Bruno", "Clara", "Diego", "Elena", "Lucas", "Mia", "Nora", "Sofia"];
+      const last = ["Rivera", "Torres", "Vega", "Silva", "Molina", "Rojas", "Navarro", "Paz"];
+      return `${first[randomInt(0, first.length - 1)]} ${last[randomInt(0, last.length - 1)]}`;
+    }
+    case "generador-usuarios": {
+      const words = ["pixel", "nova", "orbit", "code", "matrix", "luna", "byte", "zen"];
+      return `${words[randomInt(0, words.length - 1)]}${randomInt(10, 9999)}`;
+    }
+    case "datos-prueba":
+      return JSON.stringify({ id: randomInt(1000, 999999), name: "Test user", email: `test${randomInt(100, 9999)}@example.com` }, null, 2);
+    case "lorem-ipsum":
+      return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer feugiat, nisl at tincidunt consequat, sapien justo commodo urna, vitae posuere neque libero vitae erat. Sed euismod, justo at tincidunt pharetra, nisl nisl aliquam nisl, eu aliquam nisl nisl eu nisl.";
+    default:
+      throw new Error(`Generator not implemented: ${slug}`);
+  }
+}
+
+export function GeneratorTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState("");
+  const es = locale === "es";
+  const premium = Boolean(getToolShowcase(tool.slug));
+
+  const run = () => {
+    try {
+      setError("");
+      setOutput(generate(tool.slug, input));
+    } catch (e) {
+      setOutput("");
+      setError(
+        e instanceof Error
+          ? es
+            ? ({
+                "Enter a valid minimum and maximum.": "Introduce un mínimo y un máximo válidos.",
+                "Use between 2 and 10,000 sides and between 1 and 100 dice.": "Usa entre 2 y 10.000 caras y entre 1 y 100 dados.",
+                "Length must be between 1 and 32.": "La longitud debe estar entre 1 y 32.",
+                "Length must be between 1 and 128.": "La longitud debe estar entre 1 y 128.",
+                "Enter at least one item, one per line.": "Introduce al menos un elemento, uno por línea.",
+              }[e.message] ?? e.message)
+            : e.message
+          : es
+            ? "No se pudo generar el resultado."
+            : "Could not generate the result.",
+      );
+    }
+  };
+
+  const placeholder =
+    tool.slug === "generador-dados"
+      ? es
+        ? "Caras, cantidad · ej. 6, 2"
+        : "Sides, count · e.g. 6, 2"
+      : tool.slug === "generador-numeros"
+        ? es
+          ? "Mínimo, máximo · ej. 1, 100"
+          : "Minimum, maximum · e.g. 1, 100"
+        : es
+          ? "Configuración opcional"
+          : "Optional configuration";
+
+  const inputClass = premium
+    ? "h-12 w-full rounded-2xl border-2 border-sky-200/80 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_60%)] px-4 shadow-inner transition focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-100"
+    : "h-11 w-full rounded-xl border bg-background px-3";
+  const btnClass = premium
+    ? "inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-8 py-3.5 text-sm font-bold text-white shadow-[0_12px_28px_-10px_rgba(37,99,235,0.55)] transition hover:brightness-105"
+    : "rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground";
+
+  return (
+    <div className="space-y-4">
+      <label className="block text-sm font-semibold">{es ? "Configuración" : "Settings"}</label>
+      <input value={input} onChange={(e) => setInput(e.target.value)} placeholder={placeholder} className={inputClass} />
+      <p className="text-xs text-muted-foreground">
+        {es
+          ? "La generación se ejecuta localmente en tu navegador. Para sorteos y listas, usa un elemento por línea."
+          : "Generation runs locally in your browser. For draws and lists, use one item per line."}
+      </p>
+      <button type="button" onClick={run} className={btnClass}>
+        {es ? "Generar" : "Generate"}
+      </button>
+      {error && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">{error}</p>}
+      {output && (
+        <output className={`block whitespace-pre-wrap break-words rounded-2xl border p-4 font-medium ${premium ? "border-sky-100 bg-sky-50/50 text-[15px]" : "bg-muted/30"}`}>
+          {output}
+        </output>
+      )}
+    </div>
+  );
+}
