@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { EDUCATION_SUBJECTS, educationTopicTitle } from "@/lib/general/education";
-import { generateEducationTest, type EducationDifficulty, type EducationLevel } from "@/lib/general/education-engine";
+import {
+  generateEducationTest,
+  type EducationDifficulty,
+  type EducationLevel,
+  type GeneratedQuestion,
+} from "@/lib/general/education-engine";
 import { useDailyStreak } from "@/hooks/use-daily-streak";
 
 const LEVELS: Array<[EducationLevel, string]> = [
@@ -27,7 +32,6 @@ function resolveBankTopic(subjectSlug: string, topicSlug: string): string {
 function subjectDisplayName(subjectSlug: string, locale: "en" | "es"): string {
   const row = EDUCATION_SUBJECTS.find(([slug]) => slug === subjectSlug);
   if (!row) return educationTopicTitle(subjectSlug);
-  // EDUCATION_SUBJECTS stores English display names; for ES keep them readable or use title-cased slug
   if (locale === "es") {
     const esNames: Record<string, string> = {
       matematicas: "Matemáticas",
@@ -56,7 +60,8 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
   const [challenge, setChallenge] = useState(false);
   const [mode, setMode] = useState<"global" | "question">("global");
   const [seconds, setSeconds] = useState("60");
-  const [generated, setGenerated] = useState<ReturnType<typeof generateEducationTest>>([]);
+  const [generated, setGenerated] = useState<GeneratedQuestion[]>([]);
+  const [shortfallNote, setShortfallNote] = useState("");
   const [submitted, setSubmitted] = useState<Record<number, number>>({});
   const [current, setCurrent] = useState(0);
   const [remaining, setRemaining] = useState(0);
@@ -91,18 +96,27 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
     const n = Math.max(1, Math.min(20, Number.parseInt(count, 10) || 10));
     setCount(String(n));
     setGenError("");
-    const next = generateEducationTest(bankTopic, level, difficulty, n);
-    if (!next.length) {
+    setShortfallNote("");
+
+    const result = generateEducationTest(bankTopic, level, difficulty, n);
+    const { questions, requested, available } = result;
+
+    if (!questions.length) {
       setGenerated([]);
       setGenError(
-        es
-          ? "No hay preguntas disponibles para este tema todavía. Probá otro tema o nivel."
-          : "No questions are available for this topic yet. Try another topic or level.",
+        available === 0
+          ? es
+            ? `No hay preguntas de ${levelLabelFor(level, es)} · ${difficultyLabelFor(difficulty, es)} para este tema. Probá otra combinación de nivel o dificultad.`
+            : `No questions match ${levelLabelFor(level, es)} · ${difficultyLabelFor(difficulty, es)} for this topic. Try another level or difficulty.`
+          : es
+            ? "No se pudieron generar preguntas. Probá de nuevo."
+            : "Could not generate questions. Try again.",
       );
       return;
     }
+
     completedRef.current = false;
-    setGenerated(next);
+    setGenerated(questions);
     setSubmitted({});
     setCurrent(0);
     setCompleted(false);
@@ -112,6 +126,14 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
     const limit = Math.max(5, Math.min(3600, Number(seconds) || 60));
     deadline.current = challenge ? Date.now() + limit * 1000 : null;
     setRemaining(challenge ? limit : 0);
+
+    if (questions.length < requested) {
+      setShortfallNote(
+        es
+          ? `Solo hay ${available} pregunta${available === 1 ? "" : "s"} con nivel ${levelLabelFor(level, es)} y dificultad ${difficultyLabelFor(difficulty, es)}. Se generaron ${questions.length} de ${requested} pedidas (sin mezclar otras combinaciones).`
+          : `Only ${available} question${available === 1 ? "" : "s"} match ${levelLabelFor(level, es)} · ${difficultyLabelFor(difficulty, es)}. Generated ${questions.length} of ${requested} requested (no mismatched fillers).`,
+      );
+    }
   };
 
   useEffect(() => {
@@ -124,7 +146,6 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
       if (n === 0) finish(true);
     }, 250);
     return () => clearInterval(id);
-    // finish is stable enough via completedRef
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [challenge, mode, generated.length, completed]);
 
@@ -149,10 +170,8 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
   const progress = generated.length ? Math.round((answered / generated.length) * 100) : 0;
   const question = generated[current];
   const speed = elapsed ? Math.round((answered / elapsed) * 60) : 0;
-  const levelLabel = ES_LEVELS[LEVELS.find((x) => x[0] === level)?.[1] ?? ""] ?? LEVELS.find((x) => x[0] === level)?.[1];
-  const difficultyLabel =
-    ES_DIFFICULTIES[DIFFICULTIES.find((x) => x[0] === difficulty)?.[1] ?? ""] ??
-    DIFFICULTIES.find((x) => x[0] === difficulty)?.[1];
+  const levelLabel = levelLabelFor(level, es);
+  const difficultyLabel = difficultyLabelFor(difficulty, es);
 
   return (
     <div className="space-y-5">
@@ -160,8 +179,8 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
         <p className="font-semibold">{title}</p>
         <p className="text-sm text-muted-foreground">
           {es
-            ? "Elige nivel, dificultad y cantidad. Puedes crear cuestionarios de hasta 20 preguntas diferentes."
-            : "Choose level, difficulty, and count. You can create quizzes of up to 20 different questions."}
+            ? "Elige nivel, dificultad y cantidad. Solo se usan preguntas que coincidan exactamente con tu configuración."
+            : "Choose level, difficulty, and count. Only questions that match your settings exactly are used."}
         </p>
       </div>
 
@@ -215,7 +234,7 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
             className="h-11 w-full rounded-xl border bg-background px-3"
           />
           <span className="text-xs text-muted-foreground">
-            {es ? "Hasta 20 preguntas por cuestionario." : "Up to 20 questions per quiz."}
+            {es ? "Hasta 20, solo si el banco tiene suficientes del mismo nivel y dificultad." : "Up to 20, only if the bank has enough at that level and difficulty."}
           </span>
         </label>
       </div>
@@ -268,6 +287,12 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
         </p>
       )}
 
+      {shortfallNote && (
+        <p role="status" className="rounded-xl border border-amber-300/60 bg-amber-50 p-3 text-sm text-amber-950 dark:border-amber-500/40 dark:bg-amber-950/30 dark:text-amber-100">
+          {shortfallNote}
+        </p>
+      )}
+
       {generated.length > 0 && (
         <div className="space-y-4 rounded-xl border p-4">
           <div className="flex justify-between gap-3">
@@ -275,8 +300,8 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
               <h3 className="font-bold">{es ? "Cuestionario generado" : "Generated quiz"}</h3>
               <p className="text-sm text-muted-foreground">
                 {es
-                  ? `Pregunta ${current + 1} de ${generated.length} · ${answered} respondidas`
-                  : `Question ${current + 1} of ${generated.length} · ${answered} answered`}
+                  ? `Pregunta ${current + 1} de ${generated.length} · ${answered} respondidas · ${levelLabel} · ${difficultyLabel}`
+                  : `Question ${current + 1} of ${generated.length} · ${answered} answered · ${levelLabel} · ${difficultyLabel}`}
               </p>
             </div>
             <div className="text-right">
@@ -353,4 +378,14 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
       )}
     </div>
   );
+}
+
+function levelLabelFor(level: EducationLevel, es: boolean) {
+  const en = LEVELS.find((x) => x[0] === level)?.[1] ?? level;
+  return es ? ES_LEVELS[en] ?? en : en;
+}
+
+function difficultyLabelFor(difficulty: EducationDifficulty, es: boolean) {
+  const en = DIFFICULTIES.find((x) => x[0] === difficulty)?.[1] ?? difficulty;
+  return es ? ES_DIFFICULTIES[en] ?? en : en;
 }
