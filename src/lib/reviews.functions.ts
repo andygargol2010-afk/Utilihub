@@ -7,15 +7,17 @@ import {
   type Review,
   type SubmitReviewInput,
 } from "./reviews";
-import { appendReview, checkAndBumpRate, hashClient, listStoredReviews } from "./reviews-store.server";
 
 function newId() {
   return `r_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
+async function getStore() {
+  return import("./reviews-store.server");
+}
+
 async function clientFingerprint(): Promise<string> {
   try {
-    // TanStack Start / Nitro request headers when available
     const mod = await import("@tanstack/react-start/server");
     const getRequest = (mod as { getRequest?: () => Request }).getRequest;
     if (typeof getRequest === "function") {
@@ -25,15 +27,18 @@ async function clientFingerprint(): Promise<string> {
         req.headers.get("x-real-ip") ||
         "unknown";
       const ua = req.headers.get("user-agent") || "";
+      const { hashClient } = await getStore();
       return hashClient(ip, ua);
     }
   } catch {
     // ignore
   }
+  const { hashClient } = await getStore();
   return hashClient("unknown", "unknown");
 }
 
 export const listPublicReviews = createServerFn({ method: "GET" }).handler(async (): Promise<PublicReview[]> => {
+  const { listStoredReviews } = await getStore();
   const stored = await listStoredReviews();
   const approved = stored.filter((r) => r.status === "approved").map(toPublic);
   const byId = new Map<string, PublicReview>();
@@ -51,6 +56,7 @@ export const submitReview = createServerFn({ method: "POST" })
       return { ok: false, error: validated.error };
     }
 
+    const { appendReview, checkAndBumpRate } = await getStore();
     const fp = await clientFingerprint();
     const allowed = await checkAndBumpRate(fp, 3);
     if (!allowed) {
@@ -61,7 +67,6 @@ export const submitReview = createServerFn({ method: "POST" })
       id: newId(),
       ...validated.data,
       createdAt: Date.now(),
-      // Auto-approve clean anonymous reviews for the fast path
       status: "approved",
     };
 
