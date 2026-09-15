@@ -1,14 +1,253 @@
 import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-const HTTP_STATUS: Record<string,string>={"200":"OK","201":"Created","204":"No Content","301":"Moved Permanently","302":"Found","304":"Not Modified","400":"Bad Request","401":"Unauthorized","403":"Forbidden","404":"Not Found","405":"Method Not Allowed","409":"Conflict","422":"Unprocessable Content","429":"Too Many Requests","500":"Internal Server Error","502":"Bad Gateway","503":"Service Unavailable","504":"Gateway Timeout"};
-const MIME: Record<string,string>={json:"application/json",html:"text/html",css:"text/css",js:"text/javascript",txt:"text/plain",csv:"text/csv",xml:"application/xml",pdf:"application/pdf",png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",webp:"image/webp",svg:"image/svg+xml",zip:"application/zip"};
-const escapeHtml=(s:string)=>s.replace(/&/g,"&"+"amp;").replace(/</g,"&"+"lt;").replace(/>/g,"&"+"gt;").replace(/"/g,"&"+"quot;").replace(/'/g,"&"+"#39;");
-const decodeHtml=(s:string)=>{const el=document.createElement("textarea");el.innerHTML=s;return el.value};
-const minifyHtml=(s:string)=>s.replace(/<!--[\s\S]*?-->/g,"").replace(/>\s+</g,"><").replace(/\s{2,}/g," ").trim();
-const minifyCss=(s:string)=>s.replace(/\/\*[\s\S]*?\*\//g,"").replace(/\s+/g," ").replace(/\s*([{}:;,>])\s*/g,"$1").trim();
-const minifyJs=(s:string)=>s.replace(/\/\*[\s\S]*?\*\//g,"").replace(/(^|\s)\/\/.*$/gm,"$1").replace(/\s+/g," ").trim();
-const jsonToYaml=(value:unknown,indent=0):string=>{const pad=" ".repeat(indent);if(Array.isArray(value))return value.map(v=>`${pad}- ${typeof v==="object"&&v!==null?`\n${jsonToYaml(v,indent+2)}`:String(v)}`).join("\n");if(value&&typeof value==="object")return Object.entries(value).map(([k,v])=>`${pad}${k}: ${typeof v==="object"&&v!==null?`\n${jsonToYaml(v,indent+2)}`:JSON.stringify(v)}`).join("\n");return JSON.stringify(value)};
-const jsonToCsv=(value:unknown)=>{if(!Array.isArray(value)||!value.every(v=>v&&typeof v==="object"&&!Array.isArray(v)))throw new Error("JSON must be an array of objects.");const rows=value as Record<string,unknown>[];const keys=[...new Set(rows.flatMap(r=>Object.keys(r)))];const q=(v:unknown)=>`"${String(v??"").replace(/"/g,'""')}"`;return [keys.map(q).join(","),...rows.map(r=>keys.map(k=>q(r[k])).join(","))].join("\n")};
-const csvDownload=(text:string)=>URL.createObjectURL(new Blob([text],{type:"text/csv;charset=utf-8"}));
-const randomId=()=>{const bytes=new Uint8Array(10);crypto.getRandomValues(bytes);return Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("")};
-export function DevTool({tool,locale="en"}:{tool:GeneralTool;locale?:"en"|"es"}){const es=locale==="es";const[input,setInput]=useState(""),[out,setOut]=useState(""),[error,setError]=useState("");const run=()=>{setError("");try{let result="";switch(tool.slug){case"json-formatter":result=JSON.stringify(JSON.parse(input),null,2);break;case"json-validator":JSON.parse(input);result=es?"JSON válido.":"Valid JSON.";break;case"json-minifier":result=JSON.stringify(JSON.parse(input));break;case"json-a-csv":result=jsonToCsv(JSON.parse(input));break;case"json-a-yaml":result=jsonToYaml(JSON.parse(input));break;case"base64-encode":result=btoa(unescape(encodeURIComponent(input)));break;case"base64-decode":result=decodeURIComponent(escape(atob(input.trim())));break;case"url-encode":result=encodeURIComponent(input);break;case"url-decode":result=decodeURIComponent(input);break;case"html-encode":result=escapeHtml(input);break;case"html-decode":result=decodeHtml(input);break;case"uuid-generator":result=crypto.randomUUID();break;case"random-id-generator":result=randomId();break;case"regex-tester":{const [pattern,...rest]=input.split(/\n/);if(!pattern)throw new Error(es?"Introduce la expresión en la primera línea.":"Enter the expression on the first line.");const re=new RegExp(pattern,"g");const matches=[...rest.join("\n").matchAll(re)].map(m=>m[0]);result=matches.length?`${es?"Coincidencias":"Matches"} (${matches.length}):\n${matches.join("\n")}`:(es?"Sin coincidencias.":"No matches.");break}case"regex-escape":result=input.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");break;case"slug-generator":result=input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");break;case"html-minifier":result=minifyHtml(input);break;case"css-minifier":result=minifyCss(input);break;case"javascript-minifier":result=minifyJs(input);break;case"timestamp-generator":{const d=new Date(input||Date.now());if(Number.isNaN(d.getTime()))throw new Error(es?"Fecha no válida.":"Invalid date.");result=String(d.getTime());break}case"timestamp-to-date":{const n=Number(input.trim());if(!Number.isFinite(n))throw new Error(es?"Marca de tiempo no válida.":"Invalid timestamp.");const d=new Date(Math.abs(n)<1e12?n*1000:n);if(Number.isNaN(d.getTime()))throw new Error(es?"Marca de tiempo fuera de rango.":"Timestamp out of range.");result=d.toISOString();break}case"http-status":result=HTTP_STATUS[input.trim()]?`${input.trim()}: ${HTTP_STATUS[input.trim()]}`:(es?"Código HTTP no encontrado en la tabla.":"HTTP code not found in the table.");break;case"mime-types":{const ext=input.trim().toLowerCase().replace(/^.*\./,"");result=MIME[ext]??(es?"Tipo MIME no encontrado.":"MIME type not found.");break}default:throw new Error(es?"Herramienta de desarrollo no implementada.":"Developer tool not implemented.")}setOut(result)}catch(e){setOut("");setError(e instanceof Error?e.message:(es?"Entrada no válida.":"Invalid input."))}};return <div className="space-y-4"><label className="block text-sm font-medium">{es?"Entrada":"Input"}</label><textarea value={input} onChange={e=>setInput(e.target.value)} className="min-h-48 w-full rounded-xl border bg-background p-4 font-mono text-sm" placeholder={tool.slug.startsWith("json-")?(es?"Pega el JSON aquí…":"Paste JSON here…"):(es?"Escribe o pega los datos…":"Type or paste data…")}/><div className="flex flex-wrap gap-2"><button onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">{es?"Procesar":"Process"}</button><button onClick={()=>{setInput("");setOut("");setError("")}} className="rounded-xl border px-4 py-2">{es?"Limpiar":"Clear"}</button></div>{error&&<p className="rounded-xl border border-destructive/50 bg-destructive/10 p-3 text-sm">{error}</p>}{out&&<div className="space-y-2"><pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words rounded-xl border bg-muted/30 p-4 text-sm">{out}</pre>{tool.slug==="json-a-csv"&&<a href={csvDownload(out)} download="data.csv" className="inline-block rounded-xl bg-primary px-4 py-2 text-sm font-bold text-primary-foreground">{es?"Descargar CSV":"Download CSV"}</a>}</div>}</div>}
+import { getToolShowcase } from "@/lib/tool-showcase";
+
+const HTTP_STATUS: Record<string, string> = {
+  "200": "OK",
+  "201": "Created",
+  "204": "No Content",
+  "301": "Moved Permanently",
+  "302": "Found",
+  "304": "Not Modified",
+  "400": "Bad Request",
+  "401": "Unauthorized",
+  "403": "Forbidden",
+  "404": "Not Found",
+  "405": "Method Not Allowed",
+  "409": "Conflict",
+  "422": "Unprocessable Content",
+  "429": "Too Many Requests",
+  "500": "Internal Server Error",
+  "502": "Bad Gateway",
+  "503": "Service Unavailable",
+  "504": "Gateway Timeout",
+};
+const MIME: Record<string, string> = {
+  json: "application/json",
+  html: "text/html",
+  css: "text/css",
+  js: "text/javascript",
+  txt: "text/plain",
+  csv: "text/csv",
+  xml: "application/xml",
+  pdf: "application/pdf",
+  png: "image/png",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  webp: "image/webp",
+  svg: "image/svg+xml",
+  zip: "application/zip",
+};
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, "&" + "amp;").replace(/</g, "&" + "lt;").replace(/>/g, "&" + "gt;").replace(/"/g, "&" + "quot;").replace(/'/g, "&" + "#39;");
+const decodeHtml = (s: string) => {
+  const el = document.createElement("textarea");
+  el.innerHTML = s;
+  return el.value;
+};
+const minifyHtml = (s: string) => s.replace(/<!--[\s\S]*?-->/g, "").replace(/>\s+</g, "><").replace(/\s{2,}/g, " ").trim();
+const minifyCss = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\s+/g, " ").replace(/\s*([{}:;,>])\s*/g, "$1").trim();
+const minifyJs = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|\s)\/\/.*$/gm, "$1").replace(/\s+/g, " ").trim();
+const jsonToYaml = (value: unknown, indent = 0): string => {
+  const pad = " ".repeat(indent);
+  if (Array.isArray(value))
+    return value
+      .map((v) => `${pad}- ${typeof v === "object" && v !== null ? `\n${jsonToYaml(v, indent + 2)}` : String(v)}`)
+      .join("\n");
+  if (value && typeof value === "object")
+    return Object.entries(value)
+      .map(([k, v]) => `${pad}${k}: ${typeof v === "object" && v !== null ? `\n${jsonToYaml(v, indent + 2)}` : JSON.stringify(v)}`)
+      .join("\n");
+  return JSON.stringify(value);
+};
+const jsonToCsv = (value: unknown) => {
+  if (!Array.isArray(value) || !value.every((v) => v && typeof v === "object" && !Array.isArray(v)))
+    throw new Error("JSON must be an array of objects.");
+  const rows = value as Record<string, unknown>[];
+  const keys = [...new Set(rows.flatMap((r) => Object.keys(r)))];
+  const q = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+  return [keys.map(q).join(","), ...rows.map((r) => keys.map((k) => q(r[k])).join(","))].join("\n");
+};
+const csvDownload = (text: string) => URL.createObjectURL(new Blob([text], { type: "text/csv;charset=utf-8" }));
+const randomId = () => {
+  const bytes = new Uint8Array(10);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+};
+
+export function DevTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
+  const es = locale === "es";
+  const premium = Boolean(getToolShowcase(tool.slug));
+  const [input, setInput] = useState("");
+  const [out, setOut] = useState("");
+  const [error, setError] = useState("");
+
+  const run = () => {
+    setError("");
+    try {
+      let result = "";
+      switch (tool.slug) {
+        case "json-formatter":
+          result = JSON.stringify(JSON.parse(input), null, 2);
+          break;
+        case "json-validator":
+          JSON.parse(input);
+          result = es ? "JSON válido." : "Valid JSON.";
+          break;
+        case "json-minifier":
+          result = JSON.stringify(JSON.parse(input));
+          break;
+        case "json-a-csv":
+          result = jsonToCsv(JSON.parse(input));
+          break;
+        case "json-a-yaml":
+          result = jsonToYaml(JSON.parse(input));
+          break;
+        case "base64-encode":
+          result = btoa(unescape(encodeURIComponent(input)));
+          break;
+        case "base64-decode":
+          result = decodeURIComponent(escape(atob(input.trim())));
+          break;
+        case "url-encode":
+          result = encodeURIComponent(input);
+          break;
+        case "url-decode":
+          result = decodeURIComponent(input);
+          break;
+        case "html-encode":
+          result = escapeHtml(input);
+          break;
+        case "html-decode":
+          result = decodeHtml(input);
+          break;
+        case "uuid-generator":
+          result = crypto.randomUUID();
+          break;
+        case "random-id-generator":
+          result = randomId();
+          break;
+        case "regex-tester": {
+          const [pattern, ...rest] = input.split(/\n/);
+          if (!pattern) throw new Error(es ? "Introduce la expresión en la primera línea." : "Enter the expression on the first line.");
+          const re = new RegExp(pattern, "g");
+          const matches = [...rest.join("\n").matchAll(re)].map((m) => m[0]);
+          result = matches.length
+            ? `${es ? "Coincidencias" : "Matches"} (${matches.length}):\n${matches.join("\n")}`
+            : es
+              ? "Sin coincidencias."
+              : "No matches.";
+          break;
+        }
+        case "regex-escape":
+          result = input.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          break;
+        case "slug-generator":
+          result = input
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
+          break;
+        case "html-minifier":
+          result = minifyHtml(input);
+          break;
+        case "css-minifier":
+          result = minifyCss(input);
+          break;
+        case "javascript-minifier":
+          result = minifyJs(input);
+          break;
+        case "timestamp-generator": {
+          const d = new Date(input || Date.now());
+          if (Number.isNaN(d.getTime())) throw new Error(es ? "Fecha no válida." : "Invalid date.");
+          result = String(d.getTime());
+          break;
+        }
+        case "timestamp-to-date": {
+          const n = Number(input.trim());
+          if (!Number.isFinite(n)) throw new Error(es ? "Marca de tiempo no válida." : "Invalid timestamp.");
+          const d = new Date(Math.abs(n) < 1e12 ? n * 1000 : n);
+          if (Number.isNaN(d.getTime())) throw new Error(es ? "Marca de tiempo fuera de rango." : "Timestamp out of range.");
+          result = d.toISOString();
+          break;
+        }
+        case "http-status":
+          result = HTTP_STATUS[input.trim()]
+            ? `${input.trim()}: ${HTTP_STATUS[input.trim()]}`
+            : es
+              ? "Código HTTP no encontrado en la tabla."
+              : "HTTP code not found in the table.";
+          break;
+        case "mime-types": {
+          const ext = input.trim().toLowerCase().replace(/^.*\./, "");
+          result = MIME[ext] ?? (es ? "Tipo MIME no encontrado." : "MIME type not found.");
+          break;
+        }
+        default:
+          throw new Error(es ? "Herramienta de desarrollo no implementada." : "Developer tool not implemented.");
+      }
+      setOut(result);
+    } catch (e) {
+      setOut("");
+      setError(e instanceof Error ? e.message : es ? "Entrada no válida." : "Invalid input.");
+    }
+  };
+
+  const fieldClass = premium
+    ? "min-h-52 w-full rounded-2xl border-2 border-sky-200/80 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_60%)] p-4 font-mono text-sm shadow-inner transition focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-100"
+    : "min-h-48 w-full rounded-xl border bg-background p-4 font-mono text-sm";
+  const btnClass = premium
+    ? "inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-8 py-3.5 text-sm font-bold text-white shadow-[0_12px_28px_-10px_rgba(37,99,235,0.55)] transition hover:brightness-105"
+    : "rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground";
+
+  return (
+    <div className="space-y-4">
+      <label className="block text-sm font-medium">{es ? "Entrada" : "Input"}</label>
+      <textarea
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        className={fieldClass}
+        placeholder={
+          tool.slug.startsWith("json-")
+            ? es
+              ? "Pega el JSON aquí…"
+              : "Paste JSON here…"
+            : es
+              ? "Escribe o pega los datos…"
+              : "Type or paste data…"
+        }
+      />
+      <div className="flex flex-wrap gap-2">
+        <button type="button" onClick={run} className={btnClass}>
+          {es ? "Procesar" : "Process"}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setInput("");
+            setOut("");
+            setError("");
+          }}
+          className="rounded-xl border px-4 py-2"
+        >
+          {es ? "Limpiar" : "Clear"}
+        </button>
+      </div>
+      {error && <p className="rounded-xl border border-destructive/50 bg-destructive/10 p-3 text-sm">{error}</p>}
+      {out && (
+        <div className="space-y-2">
+          <pre className={`max-h-96 overflow-auto whitespace-pre-wrap break-words rounded-2xl border p-4 text-sm ${premium ? "border-sky-100 bg-sky-50/50" : "bg-muted/30"}`}>
+            {out}
+          </pre>
+          {tool.slug === "json-a-csv" && (
+            <a href={csvDownload(out)} download="data.csv" className="inline-block rounded-xl bg-primary px-4 py-2 text-sm font-bold text-primary-foreground">
+              {es ? "Descargar CSV" : "Download CSV"}
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
