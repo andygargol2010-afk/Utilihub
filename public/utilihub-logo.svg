@@ -1,9 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title">
   <title id="title">UtiliHub</title>
-  <desc id="desc">Símbolo U formado por nodos conectados</desc>
-  <rect width="128" height="128" rx="30" fill="#071a4a"/>
-  <path d="M38 38v27c0 16 10 25 26 25s26-9 26-25V38" fill="none" stroke="#43e6ad" stroke-width="14" stroke-linecap="round"/>
-  <circle cx="38" cy="38" r="10" fill="#2d63ff"/>
-  <circle cx="90" cy="38" r="10" fill="#2d63ff"/>
-  <circle cx="64" cy="90" r="10" fill="#43e6ad"/>
+  <defs>
+    <linearGradient id="gL" x1="18%" y1="0%" x2="40%" y2="100%">
+      <stop offset="0%" stop-color="#8CFFB8"/>
+      <stop offset="40%" stop-color="#2EE6A6"/>
+      <stop offset="100%" stop-color="#00B89A"/>
+    </linearGradient>
+    <linearGradient id="gR" x1="60%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#5BC0FF"/>
+      <stop offset="45%" stop-color="#2F7BFF"/>
+      <stop offset="100%" stop-color="#1A4DFF"/>
+    </linearGradient>
+    <linearGradient id="gRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3DB8FF"/>
+      <stop offset="100%" stop-color="#1E5BFF"/>
+    </linearGradient>
+  </defs>
+  <!-- Left arm of U -->
+  <path fill="url(#gL)" d="M52 40c22-2 42 12 44 36v70c0 14-8 24-20 28-16 6-36 4-50-6-10-8-14-20-14-34V76c0-20 16-36 40-36z"/>
+  <circle cx="78" cy="88" r="28" fill="#0A2848" opacity=".18"/>
+  <circle cx="78" cy="88" r="24" fill="#F7FFFC"/>
+  <!-- wrench -->
+  <g fill="#1A4DFF">
+    <path d="M68 78c3-5 9-7 14-5l4 2-3 5c-2.5-.5-5 1-6 3.5l10 10 4-4 5 5-4 4 7 7-5 5-7-7-4 4-5-5 4-4-10-10c-2.5 1.5-4 4-3.5 6.5l-5-2.5c-1.5-5 1-11 5.5-14.5z"/>
+  </g>
+  <!-- Right arm of U -->
+  <path fill="url(#gR)" d="M204 40c-22-2-42 12-44 36v70c0 14 8 24 20 28 16 6 36 4 50-6 10-8 14-20 14-34V76c0-20-16-36-40-36z"/>
+  <circle cx="178" cy="88" r="28" fill="#061428" opacity=".16"/>
+  <circle cx="178" cy="88" r="24" fill="#F3F8FF"/>
+  <!-- share network -->
+  <g fill="#1A4DFF" stroke="#1A4DFF" stroke-width="3.2" stroke-linecap="round">
+    <circle cx="168" cy="80" r="5.5" stroke="none"/>
+    <circle cx="190" cy="76" r="5.5" stroke="none"/>
+    <circle cx="186" cy="100" r="5.5" stroke="none"/>
+    <path fill="none" d="M173 82l12-4M173 84l11 13"/>
+  </g>
+  <!-- bottom connector node -->
+  <circle cx="128" cy="198" r="40" fill="url(#gRing)"/>
+  <circle cx="128" cy="198" r="28" fill="#F7FBFF"/>
+  <circle cx="128" cy="198" r="17" fill="#2EE6A6"/>
+  <!-- soft join under arms -->
+  <path fill="url(#gL)" opacity=".9" d="M56 150c12 36 36 54 72 54 10 0 18-1 26-4-24 4-46-6-62-26-10-12-18-28-24-44-4 6-8 12-12 20z"/>
+  <path fill="url(#gR)" opacity=".9" d="M200 150c-12 36-36 54-72 54-8 0-16-1-22-3 22 2 42-8 56-24 10-12 18-28 24-44 5 6 10 12 14 17z"/>
 </svg>
