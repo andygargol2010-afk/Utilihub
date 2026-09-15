@@ -37,39 +37,52 @@ async function clientFingerprint(): Promise<string> {
   return hashClient("unknown", "unknown");
 }
 
-export const listPublicReviews = createServerFn({ method: "GET" }).handler(async (): Promise<PublicReview[]> => {
-  const { listStoredReviews } = await getStore();
-  const stored = await listStoredReviews();
-  const approved = stored.filter((r) => r.status === "approved").map(toPublic);
-  const byId = new Map<string, PublicReview>();
-  for (const r of [...approved, ...SEED_REVIEWS]) {
-    if (!byId.has(r.id)) byId.set(r.id, r);
-  }
-  return [...byId.values()].sort((a, b) => b.createdAt - a.createdAt).slice(0, 24);
-});
+function isDurable() {
+  return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+}
+
+export const listPublicReviews = createServerFn({ method: "GET" }).handler(
+  async (): Promise<{ reviews: PublicReview[]; durable: boolean }> => {
+    const { listStoredReviews } = await getStore();
+    const stored = await listStoredReviews();
+    const approved = stored.filter((r) => r.status === "approved").map(toPublic);
+    const byId = new Map<string, PublicReview>();
+    for (const r of [...approved, ...SEED_REVIEWS]) {
+      if (!byId.has(r.id)) byId.set(r.id, r);
+    }
+    return {
+      reviews: [...byId.values()].sort((a, b) => b.createdAt - a.createdAt).slice(0, 24),
+      durable: isDurable(),
+    };
+  },
+);
 
 export const submitReview = createServerFn({ method: "POST" })
   .inputValidator((data: SubmitReviewInput) => data)
-  .handler(async ({ data }): Promise<{ ok: true } | { ok: false; error: string }> => {
-    const validated = validateReview(data);
-    if (!validated.ok) {
-      return { ok: false, error: validated.error };
-    }
+  .handler(
+    async ({
+      data,
+    }): Promise<{ ok: true; review: PublicReview; durable: boolean } | { ok: false; error: string }> => {
+      const validated = validateReview(data);
+      if (!validated.ok) {
+        return { ok: false, error: validated.error };
+      }
 
-    const { appendReview, checkAndBumpRate } = await getStore();
-    const fp = await clientFingerprint();
-    const allowed = await checkAndBumpRate(fp, 3);
-    if (!allowed) {
-      return { ok: false, error: "rate" };
-    }
+      const { appendReview, checkAndBumpRate } = await getStore();
+      const fp = await clientFingerprint();
+      const allowed = await checkAndBumpRate(fp, 3);
+      if (!allowed) {
+        return { ok: false, error: "rate" };
+      }
 
-    const review: Review = {
-      id: newId(),
-      ...validated.data,
-      createdAt: Date.now(),
-      status: "approved",
-    };
+      const review: Review = {
+        id: newId(),
+        ...validated.data,
+        createdAt: Date.now(),
+        status: "approved",
+      };
 
-    await appendReview(review);
-    return { ok: true };
-  });
+      await appendReview(review);
+      return { ok: true, review: toPublic(review), durable: isDurable() };
+    },
+  );
