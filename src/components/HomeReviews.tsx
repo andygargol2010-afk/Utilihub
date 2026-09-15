@@ -4,6 +4,37 @@ import { listPublicReviews, submitReview } from "@/lib/reviews.functions";
 import type { PublicReview } from "@/lib/reviews";
 import { SEED_REVIEWS } from "@/lib/reviews";
 
+const LS_KEY = "utilihub:local-reviews";
+
+function readLocalReviews(): PublicReview[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as PublicReview[];
+    return Array.isArray(parsed) ? parsed.filter((r) => r && r.id && r.text) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalReview(review: PublicReview) {
+  if (typeof window === "undefined") return;
+  const list = readLocalReviews().filter((r) => r.id !== review.id);
+  list.unshift(review);
+  localStorage.setItem(LS_KEY, JSON.stringify(list.slice(0, 30)));
+}
+
+function mergeReviews(...groups: PublicReview[][]) {
+  const byId = new Map<string, PublicReview>();
+  for (const group of groups) {
+    for (const r of group) {
+      if (r?.id && !byId.has(r.id)) byId.set(r.id, r);
+    }
+  }
+  return [...byId.values()].sort((a, b) => b.createdAt - a.createdAt);
+}
+
 function Stars({ value, onChange, interactive }: { value: number; onChange?: (n: number) => void; interactive?: boolean }) {
   return (
     <div className="flex gap-1" role={interactive ? "radiogroup" : "img"} aria-label={`${value} / 5`}>
@@ -18,9 +49,7 @@ function Stars({ value, onChange, interactive }: { value: number; onChange?: (n:
           aria-checked={interactive ? value === n : undefined}
           role={interactive ? "radio" : undefined}
         >
-          <Star
-            className={`size-5 ${n <= value ? "fill-amber-400 text-amber-400" : "text-muted-foreground/40"}`}
-          />
+          <Star className={`size-5 ${n <= value ? "fill-amber-400 text-amber-400" : "text-muted-foreground/40"}`} />
         </button>
       ))}
     </div>
@@ -41,20 +70,24 @@ function formatDate(ts: number, locale: "en" | "es") {
 
 export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
   const es = locale === "es";
-  const [reviews, setReviews] = useState<PublicReview[]>(SEED_REVIEWS);
+  const [reviews, setReviews] = useState<PublicReview[]>(() => mergeReviews(SEED_REVIEWS));
+  const [durable, setDurable] = useState(true);
   const [name, setName] = useState("");
   const [rating, setRating] = useState(5);
   const [text, setText] = useState("");
-  const [website, setWebsite] = useState(""); // honeypot
+  const [website, setWebsite] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<{ type: "ok" | "err"; text: string } | null>(null);
 
   const load = useCallback(async () => {
+    const local = readLocalReviews();
     try {
-      const list = await listPublicReviews();
-      if (list?.length) setReviews(list);
+      const result = await listPublicReviews();
+      const serverList = result?.reviews ?? [];
+      setDurable(Boolean(result?.durable));
+      setReviews(mergeReviews(local, serverList, SEED_REVIEWS));
     } catch {
-      // keep seeds
+      setReviews(mergeReviews(local, SEED_REVIEWS));
     }
   }, []);
 
@@ -89,14 +122,25 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
         setMessage({ type: "err", text: errors[result.error] ?? (es ? "No se pudo enviar." : "Could not submit.") });
         return;
       }
+
+      // Always keep a copy on this device so reload does not erase it
+      saveLocalReview(result.review);
+      setDurable(result.durable);
+      setReviews((prev) => mergeReviews([result.review], prev, SEED_REVIEWS));
+
       setMessage({
         type: "ok",
-        text: es ? "¡Gracias! Tu reseña ya está publicada." : "Thanks! Your review is live.",
+        text: result.durable
+          ? es
+            ? "¡Gracias! Tu reseña ya está publicada."
+            : "Thanks! Your review is live."
+          : es
+            ? "¡Gracias! Guardamos tu reseña en este dispositivo. Para que la vean todos los visitantes hay que activar Upstash (Redis) en Vercel."
+            : "Thanks! Saved on this device. Enable Upstash (Redis) on Vercel so every visitor can see new reviews.",
       });
       setName("");
       setText("");
       setRating(5);
-      await load();
     } catch {
       setMessage({ type: "err", text: es ? "Error de red. Intentá de nuevo." : "Network error. Try again." });
     } finally {
@@ -104,15 +148,13 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
     }
   };
 
-  const visible = reviews.filter((r) => (es ? true : true)).slice(0, 12);
+  const visible = reviews.slice(0, 12);
 
   return (
     <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="reviews-title">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">
-            {es ? "Comunidad" : "Community"}
-          </p>
+          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{es ? "Comunidad" : "Community"}</p>
           <h2 id="reviews-title" className="mt-1 text-2xl font-black sm:text-3xl">
             {es ? "Qué dicen de UtiliHub" : "What people say about UtiliHub"}
           </h2>
@@ -124,13 +166,18 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
         </div>
       </div>
 
+      {!durable && (
+        <p className="mt-4 rounded-xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-500/40 dark:bg-amber-950/30 dark:text-amber-100">
+          {es
+            ? "Las reseñas nuevas se guardan en tu navegador hasta activar Upstash Redis en Vercel (así quedan visibles para todo el mundo)."
+            : "New reviews are kept in your browser until Upstash Redis is enabled on Vercel (so everyone can see them)."}
+        </p>
+      )}
+
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="grid gap-3 sm:grid-cols-2">
           {visible.map((review) => (
-            <article
-              key={review.id}
-              className="rounded-xl border border-border/70 bg-card p-4 shadow-sm"
-            >
+            <article key={review.id} className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <p className="font-bold">{review.name}</p>
@@ -143,25 +190,15 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
           ))}
         </div>
 
-        <form
-          onSubmit={onSubmit}
-          className="rounded-2xl border border-primary/20 bg-accent/40 p-5 sm:p-6"
-          noValidate
-        >
+        <form onSubmit={onSubmit} className="rounded-2xl border border-primary/20 bg-accent/40 p-5 sm:p-6" noValidate>
           <h3 className="text-lg font-black">{es ? "Escribí tu reseña" : "Write a review"}</h3>
           <p className="mt-1 text-xs text-muted-foreground">
             {es ? "Sin registro. Máximo unas pocas por día." : "No signup. A few per day max."}
           </p>
 
-          {/* Honeypot — hidden from humans */}
           <label className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
             Website
-            <input
-              tabIndex={-1}
-              autoComplete="off"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-            />
+            <input tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
           </label>
 
           <label className="mt-4 block space-y-1.5">
