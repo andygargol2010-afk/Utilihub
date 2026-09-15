@@ -1,4 +1,4 @@
-/** Premium presentation config for high-traffic tools (Day 1: image · Day 2: PDF & docs). */
+/** Premium presentation config for high-traffic tools (Day 1: image · Day 2: PDF & docs · Day 3: text / generators / dev). */
 
 export type ToolShowcase = {
   badge: string;
@@ -193,6 +193,98 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     fromLabel: "TEXT",
     toLabel: "STATS",
     accent: "emerald",
+  },
+
+  // —— Day 3: Text transforms · generators · developer utilities ——
+  mayusculas: {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Convert any text to UPPERCASE instantly — perfect for titles and shout-outs.",
+    taglineEs: "Convertí cualquier texto a MAYÚSCULAS al instante. Ideal para títulos y énfasis.",
+    fromLabel: "abc",
+    toLabel: "ABC",
+    accent: "blue",
+  },
+  minusculas: {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Turn mixed or shouty text into clean lowercase in one click.",
+    taglineEs: "Pasá texto mixto o en mayúsculas a minúsculas limpias en un clic.",
+    fromLabel: "ABC",
+    toLabel: "abc",
+    accent: "violet",
+  },
+  capitalizar: {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Capitalize sentences properly so your copy looks polished and readable.",
+    taglineEs: "Capitalizá oraciones para que tu texto se vea profesional y legible.",
+    fromLabel: "raw",
+    toLabel: "Title",
+    accent: "emerald",
+  },
+  "buscar-reemplazar": {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Find and replace text locally — bulk edits without uploading anything.",
+    taglineEs: "Buscá y reemplazá texto en local. Ediciones masivas sin subir nada.",
+    fromLabel: "FIND",
+    toLabel: "SWAP",
+    accent: "amber",
+  },
+  "lorem-ipsum": {
+    badge: "Generator",
+    badgeEs: "Generador",
+    tagline: "Generate classic Lorem Ipsum placeholder text for layouts and mockups.",
+    taglineEs: "Generá texto Lorem Ipsum clásico para maquetas y mockups.",
+    fromLabel: "—",
+    toLabel: "IPSUM",
+    accent: "cyan",
+  },
+  "generador-de-contrasenas": {
+    badge: "Security",
+    badgeEs: "Seguridad",
+    tagline: "Create strong random passwords with length, symbols and entropy you control.",
+    taglineEs: "Creá contraseñas fuertes al azar, con longitud, símbolos y entropía a tu medida.",
+    fromLabel: "WEAK",
+    toLabel: "STRONG",
+    accent: "rose",
+  },
+  "uuid-generator": {
+    badge: "Dev",
+    badgeEs: "Dev",
+    tagline: "Generate cryptographically random UUID v4 identifiers for APIs and databases.",
+    taglineEs: "Generá identificadores UUID v4 con aleatoriedad criptográfica para APIs y bases de datos.",
+    fromLabel: "—",
+    toLabel: "UUID",
+    accent: "violet",
+  },
+  "base64-encode": {
+    badge: "Encode",
+    badgeEs: "Codificar",
+    tagline: "Encode text to Base64 for tokens, data URLs and safe transport.",
+    taglineEs: "Codificá texto a Base64 para tokens, data URLs y transporte seguro.",
+    fromLabel: "TEXT",
+    toLabel: "B64",
+    accent: "blue",
+  },
+  "json-formatter": {
+    badge: "Dev",
+    badgeEs: "Dev",
+    tagline: "Pretty-print messy JSON so you can read and debug it in seconds.",
+    taglineEs: "Formateá JSON desordenado para leerlo y depurarlo en segundos.",
+    fromLabel: "{…}",
+    toLabel: "PRETTY",
+    accent: "emerald",
+  },
+  "rgb-hex": {
+    badge: "Color",
+    badgeEs: "Color",
+    tagline: "Convert RGB values to HEX for CSS, design tools and brand kits.",
+    taglineEs: "Convertí valores RGB a HEX para CSS, herramientas de diseño y kits de marca.",
+    fromLabel: "RGB",
+    toLabel: "HEX",
+    accent: "amber",
   },
 };
 
