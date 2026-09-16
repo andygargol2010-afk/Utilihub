@@ -15,6 +15,7 @@ const TimeTool = lazy(() => import("./TimeTool").then((m) => ({ default: m.TimeT
 const ConverterTool = lazy(() => import("./ConverterTool").then((m) => ({ default: m.ConverterTool })));
 const ScienceTool = lazy(() => import("./ScienceTool").then((m) => ({ default: m.ScienceTool })));
 const FormulaTool = lazy(() => import("./FormulaTool").then((m) => ({ default: m.FormulaTool })));
+const FinanceTool = lazy(() => import("./FinanceTool").then((m) => ({ default: m.FinanceTool })));
 const EducationTool = lazy(() => import("./EducationTool").then((m) => ({ default: m.EducationTool })));
 const GeneratorTool = lazy(() => import("./GeneratorTool").then((m) => ({ default: m.GeneratorTool })));
 const TextTool = lazy(() => import("./TextTool").then((m) => ({ default: m.TextTool })));
@@ -40,6 +41,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "distribucion-poisson") return PoissonTool as ToolComp;
   if (tool.config?.mode === "document") return DocumentTool as ToolComp;
   if (tool.category === "utilidades" && tool.kind === "formula") return UtilityAdvancedTool as ToolComp;
+  if (tool.config?.mode === "finance") return FinanceTool as ToolComp;
   if (tool.config?.mode === "date") return AdvancedDateTool as ToolComp;
   if (tool.config?.mode === "advanced" && tool.config?.operation) return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.operation) return ConfiguredTool as ToolComp;
