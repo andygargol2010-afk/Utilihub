@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Search, SlidersHorizontal, Star, Tag } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
@@ -16,9 +16,15 @@ const categoryButtonClass = "min-h-11 shrink-0 rounded-full px-3 text-xs font-se
 
 export function SpanishToolSearch({ initialCategory, compactHome = false }: { initialCategory?: string; compactHome?: boolean }) {
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [category, setCategory] = useState<string>(initialCategory ?? "all");
   const [keyword, setKeyword] = useState("all");
   const { favorites, toggle, ready } = useFavorites();
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setDebouncedQuery(query), 160);
+    return () => window.clearTimeout(id);
+  }, [query]);
 
   const index = useMemo(
     () =>
@@ -47,7 +53,7 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
   }, [index]);
 
   const results = useMemo(() => {
-    const tokens = normalize(query).split(/\s+/).filter((token) => token.length > 1 && !STOP.has(token));
+    const tokens = normalize(debouncedQuery).split(/\s+/).filter((token) => token.length > 1 && !STOP.has(token));
     return index
       .filter(({ tool, keywords }) => (category === "all" || tool.category === category) && (keyword === "all" || keywords.includes(keyword)))
       .map((item) => {
@@ -66,7 +72,7 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
       .filter(({ score }) => !tokens.length || score > 0)
       .sort((a, b) => b.score - a.score || a.tool.name.localeCompare(b.tool.name))
       .map(({ tool }) => tool);
-  }, [category, index, keyword, query]);
+  }, [category, index, keyword, debouncedQuery]);
 
   const favTools = useMemo(() => ALL_TOOLS.filter((t) => favorites.includes(t.slug)), [favorites]);
   const compactResults = results.slice(0, 6);
@@ -88,7 +94,7 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
             aria-label="Buscar herramientas por nombre o palabra clave"
             className="h-12 rounded-xl border-border/70 bg-card pl-11 text-base shadow-sm"
           />
-          {query && compactResults.length > 0 && (
+          {debouncedQuery && compactResults.length > 0 && (
             <div className="absolute inset-x-0 top-[calc(100%+0.5rem)] z-30 overflow-hidden rounded-xl border border-border bg-card shadow-lift">
               {compactResults.map((tool) => (
                 <Link
@@ -102,7 +108,7 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
               ))}
             </div>
           )}
-          {query && compactResults.length === 0 && (
+          {debouncedQuery && compactResults.length === 0 && (
             <div className="absolute inset-x-0 top-[calc(100%+0.5rem)] z-30 rounded-xl border border-border bg-card p-4 text-center text-sm text-muted-foreground shadow-lift" role="status">
               No se encontraron herramientas para «{query}».
             </div>
