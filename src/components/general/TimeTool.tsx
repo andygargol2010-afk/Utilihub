@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { getToolShowcase } from "@/lib/tool-showcase";
+import { showcaseUi } from "@/lib/showcase-ui";
 
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 const parseDate = (s: string) => {
@@ -19,7 +20,9 @@ const TIMER_SLUGS = new Set(["cronometro", "temporizador", "temporizador-cocina"
 
 export function TimeTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
   const es = locale === "es";
-  const premium = Boolean(getToolShowcase(tool.slug));
+  const showcase = getToolShowcase(tool.slug);
+  const ui = showcaseUi(showcase?.accent);
+  const premium = Boolean(showcase);
   const [date, setDate] = useState(iso(new Date()));
   const [date2, setDate2] = useState(iso(new Date(Date.now() + 86400000)));
   const [hours, setHours] = useState("00:00");
@@ -33,21 +36,11 @@ export function TimeTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: 
   const [seconds, setSeconds] = useState(tool.slug === "pomodoro" ? 1500 : 60);
   const [out, setOut] = useState("");
 
-  const inputClass = premium
-    ? "h-12 w-full rounded-2xl border-2 border-sky-200/80 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_60%)] px-4 shadow-inner transition focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-100"
-    : "h-11 w-full rounded-xl border bg-background px-3";
-  const displayClass = premium
-    ? "rounded-2xl border-2 border-sky-100 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_70%)] p-6 text-center text-5xl font-mono font-bold tabular-nums text-slate-800 shadow-inner"
-    : "rounded-xl border p-6 text-center text-5xl font-mono font-bold tabular-nums";
-  const primaryBtn = premium
-    ? "inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-6 py-3 text-sm font-bold text-white shadow-[0_12px_28px_-10px_rgba(37,99,235,0.55)] transition hover:brightness-105"
-    : "rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground";
-  const secondaryBtn = premium
-    ? "inline-flex min-h-12 items-center justify-center rounded-full border-2 border-sky-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:bg-sky-50"
-    : "rounded-xl border px-4 py-2";
-  const outClass = premium
-    ? "block rounded-2xl border border-sky-100 bg-sky-50/50 p-4 font-medium"
-    : "block rounded-xl border bg-muted/30 p-4";
+  const inputClass = ui?.field ?? "h-11 w-full rounded-xl border bg-background px-3";
+  const displayClass = ui?.display ?? "rounded-xl border bg-muted/30 p-4 text-center font-mono text-2xl";
+  const primaryBtn = ui?.btn ?? "rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground";
+  const secondaryBtn = ui?.btnSecondary ?? "rounded-xl border px-4 py-2";
+  const outClass = ui?.out ?? "block rounded-xl border bg-muted/30 p-4";
 
   useEffect(() => {
     if (tool.slug !== "cuenta-regresiva" || !running) return;
@@ -57,145 +50,99 @@ export function TimeTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: 
       if (ms === 0) setRunning(false);
     }, 100);
     return () => window.clearInterval(id);
-  }, [running, target, tool.slug]);
+  }, [tool.slug, running, target]);
 
   useEffect(() => {
-    if (tool.slug !== "cronometro" || !running) return;
-    const id = window.setInterval(() => setElapsed(Date.now() - startedAt), 50);
+    if (!TIMER_SLUGS.has(tool.slug) || !running) return;
+    const id = window.setInterval(() => {
+      if (tool.slug === "cronometro") {
+        setElapsed(Date.now() - startedAt);
+      } else {
+        setSeconds((s) => {
+          if (s <= 1) {
+            setRunning(false);
+            return 0;
+          }
+          return s - 1;
+        });
+      }
+    }, 100);
     return () => window.clearInterval(id);
-  }, [running, startedAt, tool.slug]);
+  }, [tool.slug, running, startedAt]);
 
-  useEffect(() => {
-    if (!TIMER_SLUGS.has(tool.slug) || tool.slug === "cronometro" || !running) return;
-    const id = window.setInterval(
-      () =>
-        setRemaining((v) => {
-          const next = Math.max(0, v - 100);
-          if (next === 0) setRunning(false);
-          return next;
-        }),
-      100,
-    );
-    return () => window.clearInterval(id);
-  }, [running, tool.slug]);
-
-  const calculate = () => {
-    const a = parseDate(date);
-    const b = parseDate(date2);
-    if (TIMER_SLUGS.has(tool.slug) || tool.slug === "cuenta-regresiva") return;
-    if (tool.slug === "duracion-horas") {
-      const [h1, m1] = hours.split(":").map(Number);
-      const [h2, m2] = hours2.split(":").map(Number);
-      if ([h1, m1, h2, m2].some(Number.isNaN)) {
-        setOut(es ? "Introduce horas válidas." : "Enter valid hours.");
+  const run = () => {
+    setOut("");
+    const d1 = parseDate(date);
+    const d2 = parseDate(date2);
+    if (tool.slug === "edad-exacta") {
+      if (!d1) {
+        setOut(es ? "Fecha no válida." : "Invalid date.");
         return;
       }
-      let mins = h2 * 60 + m2 - (h1 * 60 + m1);
-      if (mins < 0) mins += 1440;
-      setOut(es ? `Duración: ${Math.floor(mins / 60)} h ${mins % 60} min` : `Duration: ${Math.floor(mins / 60)} h ${mins % 60} min`);
+      const now = new Date();
+      let y = now.getFullYear() - d1.getFullYear();
+      let m = now.getMonth() - d1.getMonth();
+      let day = now.getDate() - d1.getDate();
+      if (day < 0) {
+        m -= 1;
+        day += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      }
+      if (m < 0) {
+        y -= 1;
+        m += 12;
+      }
+      setOut(es ? `${y} años, ${m} meses, ${day} días` : `${y} years, ${m} months, ${day} days`);
       return;
     }
-    if (tool.slug === "sumar-dias" || tool.slug === "restar-dias") {
-      if (!a) {
-        setOut(es ? "Selecciona una fecha válida." : "Select a valid date.");
+    if (tool.slug === "dias-entre-fechas" || tool.slug === "dias-laborables") {
+      if (!d1 || !d2) {
+        setOut(es ? "Fechas no válidas." : "Invalid dates.");
+        return;
+      }
+      const a = d1 < d2 ? d1 : d2;
+      const b = d1 < d2 ? d2 : d1;
+      let count = 0;
+      const cur = new Date(a);
+      while (cur <= b) {
+        const wd = cur.getDay();
+        if (tool.slug === "dias-entre-fechas" || (wd !== 0 && wd !== 6)) count += 1;
+        cur.setDate(cur.getDate() + 1);
+      }
+      if (tool.slug === "dias-entre-fechas") count = Math.round((b.getTime() - a.getTime()) / 86400000);
+      setOut(`${count} ${es ? (tool.slug === "dias-laborables" ? "días laborables" : "días") : tool.slug === "dias-laborables" ? "weekdays" : "days"}`);
+      return;
+    }
+    if (tool.slug === "sumar-dias") {
+      if (!d1) {
+        setOut(es ? "Fecha no válida." : "Invalid date.");
         return;
       }
       const n = Number(days);
       if (!Number.isFinite(n)) {
-        setOut(es ? "Introduce una cantidad válida de días." : "Enter a valid number of days.");
+        setOut(es ? "Número de días no válido." : "Invalid number of days.");
         return;
       }
-      const r = new Date(a);
-      r.setDate(r.getDate() + (tool.slug === "sumar-dias" ? n : -n));
-      setOut(es ? `Resultado: ${r.toLocaleDateString("es-ES")}` : `Result: ${r.toLocaleDateString("en-US")}`);
+      const r = new Date(d1);
+      r.setDate(r.getDate() + Math.trunc(n));
+      setOut(iso(r));
       return;
     }
-    if (!a) {
-      setOut(es ? "Selecciona una fecha válida." : "Select a valid date.");
-      return;
-    }
-    if (tool.slug === "edad-exacta") {
-      const now = new Date();
-      let y = now.getFullYear() - a.getFullYear();
-      let m = now.getMonth() - a.getMonth();
-      let d = now.getDate() - a.getDate();
-      if (d < 0) {
-        m--;
-        d += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    if (tool.slug === "diferencia-horas") {
+      const [h1, m1] = hours.split(":").map(Number);
+      const [h2, m2] = hours2.split(":").map(Number);
+      if ([h1, m1, h2, m2].some((x) => !Number.isFinite(x))) {
+        setOut(es ? "Horas no válidas." : "Invalid times.");
+        return;
       }
-      if (m < 0) {
-        y--;
-        m += 12;
-      }
-      setOut(
-        es
-          ? `Edad exacta: ${y} años, ${m} meses y ${d} días`
-          : `Exact age: ${y} years, ${m} months and ${d} days`,
-      );
+      let mins = h2 * 60 + m2 - (h1 * 60 + m1);
+      if (mins < 0) mins += 24 * 60;
+      setOut(`${Math.floor(mins / 60)}h ${mins % 60}m`);
       return;
     }
-    if (tool.slug === "numero-semana") {
-      const x = new Date(Date.UTC(a.getFullYear(), a.getMonth(), a.getDate()));
-      const day = x.getUTCDay() || 7;
-      x.setUTCDate(x.getUTCDate() + 4 - day);
-      const start = new Date(Date.UTC(x.getUTCFullYear(), 0, 1));
-      setOut(`${es ? "Semana ISO" : "ISO week"}: ${Math.ceil((((x.getTime() - start.getTime()) / 86400000) + 1) / 7)}`);
-      return;
-    }
-    if (tool.slug === "dia-semana") {
-      setOut(`${es ? "Día" : "Day"}: ${a.toLocaleDateString(es ? "es-ES" : "en-US", { weekday: "long" })}`);
-      return;
-    }
-    if (tool.slug === "trimestre") {
-      const q = Math.floor(a.getMonth() / 3) + 1;
-      setOut(es ? `Trimestre: ${q} · Semestre: ${q <= 2 ? 1 : 2}` : `Quarter: ${q} · Semester: ${q <= 2 ? 1 : 2}`);
-      return;
-    }
-    if (tool.slug === "ano-bisiesto") {
-      const y = a.getFullYear();
-      setOut(
-        `${y} ${y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0) ? (es ? "es" : "is") : es ? "no es" : "is not"} ${es ? "un año bisiesto" : "a leap year"}.`,
-      );
-      return;
-    }
-    if (tool.slug === "dias-del-ano") {
-      const start = new Date(a.getFullYear(), 0, 0);
-      setOut(`${es ? "Día del año" : "Day of year"}: ${Math.floor((a.getTime() - start.getTime()) / 86400000)}`);
-      return;
-    }
-    if (!b) {
-      setOut(es ? "Selecciona la segunda fecha." : "Select the second date.");
-      return;
-    }
-    const diff = Math.abs(b.getTime() - a.getTime());
-    if (tool.slug === "horas-entre-fechas") {
-      const mins = Math.floor(diff / 60000);
-      setOut(es ? `Diferencia: ${Math.floor(mins / 60)} h ${mins % 60} min` : `Difference: ${Math.floor(mins / 60)} h ${mins % 60} min`);
-      return;
-    }
-    if (tool.slug === "semanas-entre-fechas") {
-      setOut(es ? `Diferencia: ${(diff / 604800000).toFixed(2)} semanas` : `Difference: ${(diff / 604800000).toFixed(2)} weeks`);
-      return;
-    }
-    if (tool.slug === "dias-laborables") {
-      let count = 0;
-      const start = new Date(Math.min(a.getTime(), b.getTime()));
-      const end = new Date(Math.max(a.getTime(), b.getTime()));
-      for (const d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        const day = d.getDay();
-        if (day !== 0 && day !== 6) count++;
-      }
-      setOut(`${es ? "Días laborables" : "Business days"}: ${count}`);
-      return;
-    }
-    setOut(
-      es
-        ? `Entre las fechas hay ${Math.round(diff / 86400000)} días.`
-        : `Between the dates there are ${Math.round(diff / 86400000)} days.`,
-    );
+    setOut(es ? "Introduce los datos." : "Enter the data.");
   };
 
-  if (tool.slug === "cronometro")
+  if (tool.slug === "cronometro") {
     return (
       <div className="space-y-4">
         <div className={displayClass}>{formatMs(elapsed)}</div>
@@ -213,7 +160,7 @@ export function TimeTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: 
             {es ? "Iniciar" : "Start"}
           </button>
           <button type="button" className={secondaryBtn} onClick={() => setRunning(false)}>
-            {es ? "Pausar" : "Pause"}
+            {es ? "Pausa" : "Pause"}
           </button>
           <button
             type="button"
@@ -229,41 +176,33 @@ export function TimeTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: 
         </div>
       </div>
     );
+  }
 
-  if (TIMER_SLUGS.has(tool.slug))
+  if (TIMER_SLUGS.has(tool.slug)) {
     return (
       <div className="space-y-4">
-        <label className="block space-y-1">
-          <span className="text-sm font-medium">{es ? "Duración (segundos)" : "Duration (seconds)"}</span>
-          <input
-            type="number"
-            min="1"
-            value={seconds}
-            onChange={(e) => setSeconds(Math.max(1, Number(e.target.value) || 1))}
-            className={inputClass}
-          />
-        </label>
-        <div className={displayClass}>{formatMs(remaining)}</div>
+        <div className={displayClass}>{formatMs(seconds * 1000)}</div>
+        <input
+          type="number"
+          min={1}
+          value={seconds}
+          onChange={(e) => setSeconds(Math.max(1, Number(e.target.value) || 1))}
+          className={inputClass}
+          disabled={running}
+        />
         <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            className={primaryBtn}
-            onClick={() => {
-              setRemaining(seconds * 1000);
-              setRunning(true);
-            }}
-          >
+          <button type="button" className={primaryBtn} onClick={() => setRunning(true)} disabled={running || seconds <= 0}>
             {es ? "Iniciar" : "Start"}
           </button>
           <button type="button" className={secondaryBtn} onClick={() => setRunning(false)}>
-            {es ? "Pausar" : "Pause"}
+            {es ? "Pausa" : "Pause"}
           </button>
           <button
             type="button"
             className={secondaryBtn}
             onClick={() => {
               setRunning(false);
-              setRemaining(0);
+              setSeconds(tool.slug === "pomodoro" ? 1500 : 60);
             }}
           >
             {es ? "Reiniciar" : "Reset"}
@@ -271,79 +210,63 @@ export function TimeTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: 
         </div>
       </div>
     );
+  }
 
-  if (tool.slug === "cuenta-regresiva")
+  if (tool.slug === "cuenta-regresiva") {
     return (
       <div className="space-y-4">
-        <label className="block space-y-1">
-          <span className="text-sm font-medium">{es ? "Fecha y hora objetivo" : "Target date and time"}</span>
-          <input
-            type="datetime-local"
-            value={target}
-            onChange={(e) => {
-              setTarget(e.target.value);
-              setRunning(false);
+        <input
+          type="datetime-local"
+          value={target}
+          onChange={(e) => setTarget(e.target.value)}
+          className={inputClass}
+        />
+        <div className={displayClass}>{formatMs(remaining)}</div>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            className={primaryBtn}
+            onClick={() => {
+              if (!target) return;
+              setRemaining(Math.max(0, new Date(target).getTime() - Date.now()));
+              setRunning(true);
             }}
-            className={inputClass}
-          />
-        </label>
-        <div className={`${displayClass} text-4xl`}>{formatMs(remaining)}</div>
-        <button
-          type="button"
-          className={`${primaryBtn} disabled:opacity-50`}
-          disabled={!target}
-          onClick={() => {
-            const ms = Math.max(0, new Date(target).getTime() - Date.now());
-            setRemaining(ms);
-            setRunning(ms > 0);
-          }}
-        >
-          {running ? (es ? "En ejecución" : "Running") : es ? "Iniciar cuenta regresiva" : "Start countdown"}
-        </button>
+          >
+            {es ? "Iniciar" : "Start"}
+          </button>
+          <button type="button" className={secondaryBtn} onClick={() => setRunning(false)}>
+            {es ? "Pausa" : "Pause"}
+          </button>
+        </div>
       </div>
     );
+  }
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="space-y-1">
-          <span className="text-sm font-medium">{es ? "Fecha" : "Date"}</span>
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputClass} />
-        </label>
-        <label className="space-y-1">
+      <label className="block space-y-1">
+        <span className="text-sm font-medium">{es ? "Fecha" : "Date"}</span>
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputClass} />
+      </label>
+      {(tool.slug === "dias-entre-fechas" || tool.slug === "dias-laborables") && (
+        <label className="block space-y-1">
           <span className="text-sm font-medium">{es ? "Segunda fecha" : "Second date"}</span>
           <input type="date" value={date2} onChange={(e) => setDate2(e.target.value)} className={inputClass} />
         </label>
-      </div>
-      {tool.slug === "duracion-horas" && (
+      )}
+      {tool.slug === "sumar-dias" && (
+        <label className="block space-y-1">
+          <span className="text-sm font-medium">{es ? "Días a sumar" : "Days to add"}</span>
+          <input type="number" value={days} onChange={(e) => setDays(e.target.value)} className={inputClass} />
+        </label>
+      )}
+      {tool.slug === "diferencia-horas" && (
         <div className="grid gap-4 sm:grid-cols-2">
-          <input
-            type="time"
-            aria-label={es ? "Hora inicial" : "Start time"}
-            value={hours}
-            onChange={(e) => setHours(e.target.value)}
-            className={inputClass}
-          />
-          <input
-            type="time"
-            aria-label={es ? "Hora final" : "End time"}
-            value={hours2}
-            onChange={(e) => setHours2(e.target.value)}
-            className={inputClass}
-          />
+          <input type="time" value={hours} onChange={(e) => setHours(e.target.value)} className={inputClass} />
+          <input type="time" value={hours2} onChange={(e) => setHours2(e.target.value)} className={inputClass} />
         </div>
       )}
-      {(tool.slug === "sumar-dias" || tool.slug === "restar-dias") && (
-        <input
-          type="number"
-          min="0"
-          value={days}
-          onChange={(e) => setDays(e.target.value)}
-          placeholder={es ? "Cantidad de días" : "Number of days"}
-          className={inputClass}
-        />
-      )}
-      <button type="button" className={primaryBtn} onClick={calculate}>
+      <button type="button" className={primaryBtn} onClick={run}>
         {es ? "Calcular" : "Calculate"}
       </button>
       {out && <output className={outClass}>{out}</output>}
