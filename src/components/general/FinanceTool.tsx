@@ -47,14 +47,12 @@ function runOp(op: string, values: string[], es: boolean): string {
         : `Fixed payment: ${money(pay, false)}\nPayments: ${months}\nTotal paid: ${money(total, false)}\nTotal interest: ${money(total - P, false)}\nPrincipal: ${money(P, false)}`;
     }
     case "compound-interest": {
-      const [P, rate, months] = v as never;
-      void months;
-      const [P2, rate2, years, nComp] = v;
+      const [P, rate, years, nComp] = v;
       if (years < 0 || nComp <= 0) throw new Error("Years must be ≥ 0 and compounds per year > 0.");
-      const A = P2 * Math.pow(1 + rate2 / 100 / nComp, nComp * years);
+      const A = P * Math.pow(1 + rate / 100 / nComp, nComp * years);
       return es
-        ? `Valor futuro: ${money(A, true)}\nInterés ganado: ${money(A - P2, true)}\nMúltiplo: ${(A / P2).toLocaleString("es-ES", { maximumFractionDigits: 4 })}×`
-        : `Future value: ${money(A, false)}\nInterest earned: ${money(A - P2, false)}\nMultiple: ${(A / P2).toLocaleString("en-US", { maximumFractionDigits: 4 })}×`;
+        ? `Valor futuro: ${money(A, true)}\nInterés ganado: ${money(A - P, true)}\nMúltiplo: ${(A / P).toLocaleString("es-ES", { maximumFractionDigits: 4 })}×`
+        : `Future value: ${money(A, false)}\nInterest earned: ${money(A - P, false)}\nMultiple: ${(A / P).toLocaleString("en-US", { maximumFractionDigits: 4 })}×`;
     }
     case "early-repayment": {
       const [P, rate, months, paid] = v;
