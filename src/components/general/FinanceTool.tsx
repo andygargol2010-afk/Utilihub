@@ -47,12 +47,14 @@ function runOp(op: string, values: string[], es: boolean): string {
         : `Fixed payment: ${money(pay, false)}\nPayments: ${months}\nTotal paid: ${money(total, false)}\nTotal interest: ${money(total - P, false)}\nPrincipal: ${money(P, false)}`;
     }
     case "compound-interest": {
-      const [P, rate, years, nComp] = v;
+      const [P, rate, months] = v as never;
+      void months;
+      const [P2, rate2, years, nComp] = v;
       if (years < 0 || nComp <= 0) throw new Error("Years must be ≥ 0 and compounds per year > 0.");
-      const A = P * Math.pow(1 + rate / 100 / nComp, nComp * years);
+      const A = P2 * Math.pow(1 + rate2 / 100 / nComp, nComp * years);
       return es
-        ? `Valor futuro: ${money(A, true)}\nInterés ganado: ${money(A - P, true)}\nMúltiplo: ${(A / P).toLocaleString("es-ES", { maximumFractionDigits: 4 })}×`
-        : `Future value: ${money(A, false)}\nInterest earned: ${money(A - P, false)}\nMultiple: ${(A / P).toLocaleString("en-US", { maximumFractionDigits: 4 })}×`;
+        ? `Valor futuro: ${money(A, true)}\nInterés ganado: ${money(A - P2, true)}\nMúltiplo: ${(A / P2).toLocaleString("es-ES", { maximumFractionDigits: 4 })}×`
+        : `Future value: ${money(A, false)}\nInterest earned: ${money(A - P2, false)}\nMultiple: ${(A / P2).toLocaleString("en-US", { maximumFractionDigits: 4 })}×`;
     }
     case "early-repayment": {
       const [P, rate, months, paid] = v;
@@ -121,6 +123,30 @@ function runOp(op: string, values: string[], es: boolean): string {
         ? `WACC: ${pct(wacc, true)}\nPeso equity: ${pct((E / V) * 100, true)}\nPeso deuda: ${pct((D / V) * 100, true)}`
         : `WACC: ${pct(wacc, false)}\nEquity weight: ${pct((E / V) * 100, false)}\nDebt weight: ${pct((D / V) * 100, false)}`;
     }
+    case "hourly-rate": {
+      const [pay, hours] = v;
+      if (hours <= 0) throw new Error("Hours worked must be positive.");
+      const rate = pay / hours;
+      return es
+        ? `Tarifa por hora: ${money(rate, true)}\nPago total: ${money(pay, true)} en ${hours} h`
+        : `Hourly rate: ${money(rate, false)}\nTotal pay: ${money(pay, false)} over ${hours} h`;
+    }
+    case "basic-calc": {
+      const [a, b, opCode] = v;
+      const op = Math.round(opCode);
+      let r: number;
+      if (op === 1) r = a + b;
+      else if (op === 2) r = a - b;
+      else if (op === 3) r = a * b;
+      else if (op === 4) {
+        if (b === 0) throw new Error("Cannot divide by zero.");
+        r = a / b;
+      } else throw new Error("Operation must be 1 (add), 2 (sub), 3 (mul), or 4 (div).");
+      const labels: Record<number, string> = es
+        ? { 1: "Suma", 2: "Resta", 3: "Multiplicación", 4: "División" }
+        : { 1: "Add", 2: "Subtract", 3: "Multiply", 4: "Divide" };
+      return es ? `${labels[op]}: ${a} y ${b} = ${r}` : `${labels[op]}: ${a} and ${b} = ${r}`;
+    }
     default:
       throw new Error("Finance operation not available.");
   }
@@ -151,6 +177,11 @@ const ES_FIELD: Record<string, string> = {
   "Cost of equity %": "Costo equity %",
   "Cost of debt %": "Costo deuda %",
   "Tax rate %": "Tasa impositiva %",
+  "Total pay": "Pago total",
+  "Hours worked": "Horas trabajadas",
+  "Value A": "Valor A",
+  "Value B": "Valor B",
+  "Operation (1=add 2=sub 3=mul 4=div)": "Operación (1=suma 2=resta 3=mul 4=div)",
 };
 
 export function FinanceTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
@@ -182,6 +213,9 @@ export function FinanceTool({ tool, locale = "en" }: { tool: GeneralTool; locale
         "Equity + debt must be positive.": "Equity + deuda debe ser positivo.",
         "Term and payments made must be whole numbers.": "Plazo y pagos realizados deben ser enteros.",
         "Finance operation not available.": "Operación financiera no disponible.",
+        "Hours worked must be positive.": "Las horas trabajadas deben ser positivas.",
+        "Cannot divide by zero.": "No se puede dividir por cero.",
+        "Operation must be 1 (add), 2 (sub), 3 (mul), or 4 (div).": "La operación debe ser 1 (suma), 2 (resta), 3 (mul) o 4 (div).",
         "Invalid input.": "Entrada no válida.",
       };
       setOut(es ? map[msg] ?? msg : msg);
