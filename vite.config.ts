@@ -15,4 +15,18 @@ export default defineConfig({
       preset: process.env.VERCEL ? "vercel" : undefined,
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("pdfjs-dist") || id.includes("pdf-lib")) return "pdf";
+            if (id.includes("jspdf") || id.includes("html2canvas") || id.includes("xlsx")) return "export";
+            if (id.includes("@tanstack")) return "tanstack";
+            if (id.includes("lucide-react")) return "icons";
+          }
+        },
+      },
+    },
+  },
 });
