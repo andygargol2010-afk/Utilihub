@@ -2,11 +2,16 @@ import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { financialToolBySlug } from "@/lib/financial-tools";
 import { englishToolPath, englishToolSlug } from "@/lib/route-slugs";
 
+/** Legacy /finanzas/$slug without /es prefix → English finance calculator (301). */
 export const Route = createFileRoute("/finanzas/$slug")({
   loader: ({ params }) => {
     const tool = financialToolBySlug(params.slug);
     if (!tool) throw notFound();
-    throw redirect({ to: englishToolPath({ ...tool, category: "finanzas" }) as "/finance/$slug", params: { slug: englishToolSlug({ ...tool, name: tool.name }) } });
+    throw redirect({
+      to: englishToolPath({ ...tool, category: "finanzas" }) as "/finance/$slug",
+      params: { slug: englishToolSlug({ ...tool, name: tool.name }) },
+      statusCode: 301,
+    });
   },
   component: () => null,
 });
