@@ -1,4 +1,4 @@
-/** Premium presentation config (Day 1: image · Day 2: PDF · Day 3: text/dev · Day 4: math/units/dates). */
+/** Premium presentation config (Day 1: image · Day 2: PDF · Day 3: text/dev · Day 4: math/units · Day 5: case/URL/data). */
 
 export type ToolShowcase = {
   badge: string;
@@ -129,7 +129,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     taglineEs: "Combiná imágenes en un PDF limpio, listo para compartir o imprimir.",
     fromLabel: "IMG",
     toLabel: "PDF",
-    accent: "blue",
+    accent: "violet",
   },
   "pdf-a-imagenes": {
     badge: "PDF",
@@ -377,6 +377,98 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     fromLabel: "B64",
     toLabel: "TEXT",
     accent: "cyan",
+  },
+
+  // —— Day 5: Case styles · URL / slug · data size ——
+  "camel-case": {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Turn any phrase into camelCase for variables, props and API fields.",
+    taglineEs: "Convertí cualquier frase a camelCase para variables, props y campos de API.",
+    fromLabel: "my text",
+    toLabel: "myText",
+    accent: "blue",
+  },
+  "snake-case": {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Convert titles and phrases to snake_case for databases and Python style.",
+    taglineEs: "Pasá títulos y frases a snake_case para bases de datos y estilo Python.",
+    fromLabel: "my text",
+    toLabel: "my_text",
+    accent: "violet",
+  },
+  "kebab-case": {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Build kebab-case strings for CSS classes, URLs and file names.",
+    taglineEs: "Generá kebab-case para clases CSS, URLs y nombres de archivo.",
+    fromLabel: "my text",
+    toLabel: "my-text",
+    accent: "emerald",
+  },
+  "quitar-espacios": {
+    badge: "Text",
+    badgeEs: "Texto",
+    tagline: "Strip extra spaces and messy line breaks so paste stays clean.",
+    taglineEs: "Eliminá espacios de más y saltos de línea sucios para pegar texto limpio.",
+    fromLabel: "A  B",
+    toLabel: "A B",
+    accent: "amber",
+  },
+  "url-encode": {
+    badge: "Encode",
+    badgeEs: "Codificar",
+    tagline: "Percent-encode text for query strings, redirects and safe URLs.",
+    taglineEs: "Codificá texto para query strings, redirects y URLs seguras.",
+    fromLabel: "a b",
+    toLabel: "a%20b",
+    accent: "cyan",
+  },
+  "url-decode": {
+    badge: "Encode",
+    badgeEs: "Codificar",
+    tagline: "Decode percent-encoded URLs back to readable text.",
+    taglineEs: "Decodificá URLs con %20 y similares de vuelta a texto legible.",
+    fromLabel: "a%20b",
+    toLabel: "a b",
+    accent: "rose",
+  },
+  "slug-generator": {
+    badge: "SEO",
+    badgeEs: "SEO",
+    tagline: "Turn a title into a clean URL slug for posts, products and docs.",
+    taglineEs: "Convertí un título en un slug limpio para posts, productos y docs.",
+    fromLabel: "Title",
+    toLabel: "slug",
+    accent: "blue",
+  },
+  "json-validator": {
+    badge: "Dev",
+    badgeEs: "Dev",
+    tagline: "Validate JSON syntax and surface parse errors before they hit production.",
+    taglineEs: "Validá la sintaxis JSON y detectá errores de parseo antes de producción.",
+    fromLabel: "{…}",
+    toLabel: "OK",
+    accent: "violet",
+  },
+  "conversor-datos": {
+    badge: "Units",
+    badgeEs: "Unidades",
+    tagline: "Convert bits, bytes, KB, MB, GB and TB for storage and bandwidth.",
+    taglineEs: "Convertí bits, bytes, KB, MB, GB y TB para almacenamiento y ancho de banda.",
+    fromLabel: "MB",
+    toLabel: "GB",
+    accent: "emerald",
+  },
+  "html-encode": {
+    badge: "Encode",
+    badgeEs: "Codificar",
+    tagline: "Escape special characters so HTML displays text instead of executing markup.",
+    taglineEs: "Escapá caracteres especiales para que el HTML muestre texto y no markup.",
+    fromLabel: "<tag>",
+    toLabel: "<",
+    accent: "amber",
   },
 };
 
