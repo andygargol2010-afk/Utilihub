@@ -1,4 +1,4 @@
-/** Premium presentation config (Day 1: image · Day 2: PDF · Day 3: text/dev · Day 4: math/units · Day 5: case/URL/data). */
+/** Premium presentation config (Day 1–6: image · PDF · text/dev · math/units · case/URL · dates/stats/productivity). */
 
 export type ToolShowcase = {
   badge: string;
@@ -129,7 +129,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     taglineEs: "Combiná imágenes en un PDF limpio, listo para compartir o imprimir.",
     fromLabel: "IMG",
     toLabel: "PDF",
-    accent: "violet",
+    accent: "blue",
   },
   "pdf-a-imagenes": {
     badge: "PDF",
@@ -469,6 +469,98 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     fromLabel: "<tag>",
     toLabel: "<",
     accent: "amber",
+  },
+
+  // —— Day 6: Dates · stats · productivity ——
+  cronometro: {
+    badge: "Timer",
+    badgeEs: "Timer",
+    tagline: "Precise stopwatch with start, pause and reset — fully local in your browser.",
+    taglineEs: "Cronómetro preciso con inicio, pausa y reinicio. Todo en tu navegador.",
+    fromLabel: "0:00",
+    toLabel: "RUN",
+    accent: "blue",
+  },
+  "dias-laborables": {
+    badge: "Dates",
+    badgeEs: "Fechas",
+    tagline: "Count weekdays between two dates — skip weekends for real workdays.",
+    taglineEs: "Contá días hábiles entre dos fechas, sin contar fines de semana.",
+    fromLabel: "FROM",
+    toLabel: "DAYS",
+    accent: "violet",
+  },
+  "cuenta-regresiva": {
+    badge: "Timer",
+    badgeEs: "Timer",
+    tagline: "Count down to a target date for launches, exams or events.",
+    taglineEs: "Cuenta regresiva hasta una fecha: lanzamientos, exámenes o eventos.",
+    fromLabel: "NOW",
+    toLabel: "ZERO",
+    accent: "rose",
+  },
+  "sumar-dias": {
+    badge: "Dates",
+    badgeEs: "Fechas",
+    tagline: "Add any number of days to a date and see the resulting calendar day.",
+    taglineEs: "Sumá días a una fecha y mirá el día de calendario resultante.",
+    fromLabel: "DATE",
+    toLabel: "+N",
+    accent: "emerald",
+  },
+  mediana: {
+    badge: "Stats",
+    badgeEs: "Estad.",
+    tagline: "Find the median of a data set — the middle value that splits the list in half.",
+    taglineEs: "Obtené la mediana de un conjunto de datos: el valor central de la lista.",
+    fromLabel: "LIST",
+    toLabel: "MED",
+    accent: "cyan",
+  },
+  "desviacion-estandar": {
+    badge: "Stats",
+    badgeEs: "Estad.",
+    tagline: "Calculate standard deviation to measure how spread out your numbers are.",
+    taglineEs: "Calculá la desviación estándar para medir la dispersión de tus datos.",
+    fromLabel: "σ",
+    toLabel: "SD",
+    accent: "amber",
+  },
+  factorial: {
+    badge: "Math",
+    badgeEs: "Mate",
+    tagline: "Compute n! for combinations, permutations and growth problems.",
+    taglineEs: "Calculá n! para combinaciones, permutaciones y problemas de crecimiento.",
+    fromLabel: "n",
+    toLabel: "n!",
+    accent: "blue",
+  },
+  "mcd-mcm": {
+    badge: "Math",
+    badgeEs: "Mate",
+    tagline: "Greatest common divisor and least common multiple in one step.",
+    taglineEs: "Máximo común divisor y mínimo común múltiplo en un solo paso.",
+    fromLabel: "A,B",
+    toLabel: "GCD",
+    accent: "violet",
+  },
+  propina: {
+    badge: "Money",
+    badgeEs: "Dinero",
+    tagline: "Split the tip and total bill fairly — optional tip percent and party size.",
+    taglineEs: "Dividí propina y total de la cuenta. Porcentaje y cantidad de personas.",
+    fromLabel: "BILL",
+    toLabel: "TIP",
+    accent: "emerald",
+  },
+  pomodoro: {
+    badge: "Focus",
+    badgeEs: "Foco",
+    tagline: "Classic Pomodoro work/break timer to protect deep focus sessions.",
+    taglineEs: "Timer Pomodoro clásico: trabajo y pausas para proteger el foco profundo.",
+    fromLabel: "25m",
+    toLabel: "5m",
+    accent: "rose",
   },
 };
 
