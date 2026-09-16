@@ -13,7 +13,7 @@ const f = (
     fields,
   });
 
-/** Day 3 — Finance (high EN traffic) */
+/** Day 3 — Finance (high EN traffic) + Day 4 core extras */
 export const FINANCE_TOOLS = [
   f(
     "pago-prestamo",
@@ -84,5 +84,19 @@ export const FINANCE_TOOLS = [
     "Estimate weighted average cost of capital from equity, debt, costs, and tax rate.",
     "wacc",
     ["Equity value", "Debt value", "Cost of equity %", "Cost of debt %", "Tax rate %"],
+  ),
+  f(
+    "tarifa-hora",
+    "Hourly rate",
+    "Convert a salary or total pay into an equivalent hourly rate from hours worked.",
+    "hourly-rate",
+    ["Total pay", "Hours worked"],
+  ),
+  f(
+    "calculadora-basica",
+    "Calculator",
+    "Quick four-operation calculator for add, subtract, multiply, and divide.",
+    "basic-calc",
+    ["Value A", "Value B", "Operation (1=add 2=sub 3=mul 4=div)"],
   ),
 ];
