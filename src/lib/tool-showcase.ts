@@ -1,4 +1,4 @@
-/** Premium presentation config (Day 1–9: image · PDF · text/dev · math · design · time/productivity). */
+/** Premium presentation config (Day 1–9 + plan Day 3 finance: image · PDF · text/dev · math · design · time/productivity). */
 
 export type ToolShowcase = {
   badge: string;
@@ -35,7 +35,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "limpiar-texto": { badge: "Text", badgeEs: "Texto", tagline: "Normalize spaces, quotes and line breaks before pasting into a document.", taglineEs: "Normalizá espacios, comillas y saltos de línea antes de pegar en un documento.", fromLabel: "RAW", toLabel: "CLEAN", accent: "blue" },
   "contador-de-palabras": { badge: "Text", badgeEs: "Texto", tagline: "Count words, characters, sentences and reading time as you type.", taglineEs: "Contá palabras, caracteres, oraciones y tiempo de lectura mientras escribís.", fromLabel: "TEXT", toLabel: "STATS", accent: "emerald" },
 
-  // —— Day 3: Text · generators · developer ——
+  // —— Legacy batch: Text · generators · developer ——
   mayusculas: { badge: "Text", badgeEs: "Texto", tagline: "Convert any text to UPPERCASE instantly — perfect for titles and shout-outs.", taglineEs: "Convertí cualquier texto a MAYÚSCULAS al instante. Ideal para títulos y énfasis.", fromLabel: "abc", toLabel: "ABC", accent: "blue" },
   minusculas: { badge: "Text", badgeEs: "Texto", tagline: "Turn mixed or shouty text into clean lowercase in one click.", taglineEs: "Pasá texto mixto o en mayúsculas a minúsculas limpias en un clic.", fromLabel: "ABC", toLabel: "abc", accent: "violet" },
   capitalizar: { badge: "Text", badgeEs: "Texto", tagline: "Capitalize sentences properly so your copy looks polished and readable.", taglineEs: "Capitalizá oraciones para que tu texto se vea profesional y legible.", fromLabel: "raw", toLabel: "Title", accent: "emerald" },
@@ -47,7 +47,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "json-formatter": { badge: "Dev", badgeEs: "Dev", tagline: "Pretty-print messy JSON so you can read and debug it in seconds.", taglineEs: "Formateá JSON desordenado para leerlo y depurarlo en segundos.", fromLabel: "{…}", toLabel: "PRETTY", accent: "emerald" },
   "rgb-hex": { badge: "Color", badgeEs: "Color", tagline: "Convert RGB values to HEX for CSS, design tools and brand kits.", taglineEs: "Convertí valores RGB a HEX para CSS, herramientas de diseño y kits de marca.", fromLabel: "RGB", toLabel: "HEX", accent: "amber" },
 
-  // —— Day 4: Math · units · dates · more converters ——
+  // —— Math · units · dates · converters ——
   porcentaje: { badge: "Math", badgeEs: "Mate", tagline: "Calculate percentages, discounts and increases without a spreadsheet.", taglineEs: "Calculá porcentajes, descuentos y aumentos sin una planilla.", fromLabel: "100", toLabel: "%", accent: "blue" },
   "regla-de-tres": { badge: "Math", badgeEs: "Mate", tagline: "Solve direct proportions in seconds — classic rule of three, fully local.", taglineEs: "Resolvé proporciones directas en segundos. Regla de tres clásica, 100% local.", fromLabel: "A", toLabel: "X", accent: "violet" },
   "calculadora-de-porcentajes": { badge: "Math", badgeEs: "Mate", tagline: "Find % of an amount, what share it represents, or percent change.", taglineEs: "Calculá el % de una cantidad, qué proporción representa o el cambio porcentual.", fromLabel: "%", toLabel: "RESULT", accent: "emerald" },
@@ -59,7 +59,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "hex-rgb": { badge: "Color", badgeEs: "Color", tagline: "Convert HEX colors to RGB values ready for design systems and CSS.", taglineEs: "Convertí colores HEX a RGB listos para sistemas de diseño y CSS.", fromLabel: "HEX", toLabel: "RGB", accent: "emerald" },
   "base64-decode": { badge: "Encode", badgeEs: "Codificar", tagline: "Decode Base64 back to plain text for tokens, payloads and data URLs.", taglineEs: "Decodificá Base64 a texto plano para tokens, payloads y data URLs.", fromLabel: "B64", toLabel: "TEXT", accent: "cyan" },
 
-  // —— Day 5: Case styles · URL / slug · data size ——
+  // —— Case · URL · data ——
   "camel-case": { badge: "Text", badgeEs: "Texto", tagline: "Turn any phrase into camelCase for variables, props and API fields.", taglineEs: "Convertí cualquier frase a camelCase para variables, props y campos de API.", fromLabel: "my text", toLabel: "myText", accent: "blue" },
   "snake-case": { badge: "Text", badgeEs: "Texto", tagline: "Convert titles and phrases to snake_case for databases and Python style.", taglineEs: "Pasá títulos y frases a snake_case para bases de datos y estilo Python.", fromLabel: "my text", toLabel: "my_text", accent: "violet" },
   "kebab-case": { badge: "Text", badgeEs: "Texto", tagline: "Build kebab-case strings for CSS classes, URLs and file names.", taglineEs: "Generá kebab-case para clases CSS, URLs y nombres de archivo.", fromLabel: "my text", toLabel: "my-text", accent: "emerald" },
@@ -69,9 +69,9 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "slug-generator": { badge: "SEO", badgeEs: "SEO", tagline: "Turn a title into a clean URL slug for posts, products and docs.", taglineEs: "Convertí un título en un slug limpio para posts, productos y docs.", fromLabel: "Title", toLabel: "slug", accent: "blue" },
   "json-validator": { badge: "Dev", badgeEs: "Dev", tagline: "Validate JSON syntax and surface parse errors before they hit production.", taglineEs: "Validá la sintaxis JSON y detectá errores de parseo antes de producción.", fromLabel: "{…}", toLabel: "OK", accent: "violet" },
   "conversor-datos": { badge: "Units", badgeEs: "Unidades", tagline: "Convert bits, bytes, KB, MB, GB and TB for storage and bandwidth.", taglineEs: "Convertí bits, bytes, KB, MB, GB y TB para almacenamiento y ancho de banda.", fromLabel: "MB", toLabel: "GB", accent: "emerald" },
-  "html-encode": { badge: "Encode", badgeEs: "Codificar", tagline: "Escape special characters so HTML displays text instead of executing markup.", taglineEs: "Escapá caracteres especiales para que el HTML muestre texto y no markup.", fromLabel: "<tag>", toLabel: "<", accent: "amber" },
+  "html-encode": { badge: "Encode", badgeEs: "Codificar", tagline: "Escape special characters so HTML displays text instead of executing markup.", taglineEs: "Escapá caracteres especiales para que el HTML muestre texto y no markup.", fromLabel: "<tag>", toLabel: "&lt;", accent: "amber" },
 
-  // —— Day 6: Dates · stats · productivity ——
+  // —— Dates · stats · productivity ——
   cronometro: { badge: "Timer", badgeEs: "Timer", tagline: "Precise stopwatch with start, pause and reset — fully local in your browser.", taglineEs: "Cronómetro preciso con inicio, pausa y reinicio. Todo en tu navegador.", fromLabel: "0:00", toLabel: "RUN", accent: "blue" },
   "dias-laborables": { badge: "Dates", badgeEs: "Fechas", tagline: "Count weekdays between two dates — skip weekends for real workdays.", taglineEs: "Contá días hábiles entre dos fechas, sin contar fines de semana.", fromLabel: "FROM", toLabel: "DAYS", accent: "violet" },
   "cuenta-regresiva": { badge: "Timer", badgeEs: "Timer", tagline: "Count down to a target date for launches, exams or events.", taglineEs: "Cuenta regresiva hasta una fecha: lanzamientos, exámenes o eventos.", fromLabel: "NOW", toLabel: "ZERO", accent: "rose" },
@@ -83,7 +83,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   propina: { badge: "Money", badgeEs: "Dinero", tagline: "Split the tip and total bill fairly — optional tip percent and party size.", taglineEs: "Dividí propina y total de la cuenta. Porcentaje y cantidad de personas.", fromLabel: "BILL", toLabel: "TIP", accent: "emerald" },
   pomodoro: { badge: "Focus", badgeEs: "Foco", tagline: "Classic Pomodoro work/break timer to protect deep focus sessions.", taglineEs: "Timer Pomodoro clásico: trabajo y pausas para proteger el foco profundo.", fromLabel: "25m", toLabel: "5m", accent: "rose" },
 
-  // —— Day 8: Design & color ——
+  // —— Design & color ——
   "hex-a-hsl-avanzado": { badge: "Color", badgeEs: "Color", tagline: "Convert any HEX color into precise HSL and RGB values for design systems.", taglineEs: "Convertí cualquier color HEX a HSL y RGB precisos para sistemas de diseño.", fromLabel: "HEX", toLabel: "HSL", accent: "violet" },
   "paleta-complementaria": { badge: "Palette", badgeEs: "Paleta", tagline: "Generate the complementary color and a split complementary pair from any HEX.", taglineEs: "Generá el color complementario y un par split desde cualquier HEX.", fromLabel: "BASE", toLabel: "COMP", accent: "rose" },
   "paleta-monocromatica": { badge: "Palette", badgeEs: "Paleta", tagline: "Build light and dark monochrome shades from a single base color.", taglineEs: "Creá tonos monocromáticos claros y oscuros desde un solo color base.", fromLabel: "BASE", toLabel: "SHADES", accent: "cyan" },
@@ -95,7 +95,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "generador-sombra-css": { badge: "CSS", badgeEs: "CSS", tagline: "Generate box-shadow CSS for cards, buttons, and elevation levels.", taglineEs: "Generá box-shadow CSS para cards, botones y niveles de elevación.", fromLabel: "DEPTH", toLabel: "CSS", accent: "cyan" },
   horno: { badge: "Units", badgeEs: "Unidades", tagline: "Convert oven temperatures between °C and °F for recipes and baking.", taglineEs: "Convertí temperaturas de horno entre °C y °F para recetas y cocina.", fromLabel: "°C", toLabel: "°F", accent: "amber" },
 
-  // —— Day 9: Time & productivity ——
+  // —— Time & productivity ——
   "dias-entre-fechas": { badge: "Dates", badgeEs: "Fechas", tagline: "Count the exact number of days between any two calendar dates.", taglineEs: "Contá la cantidad exacta de días entre dos fechas de calendario.", fromLabel: "FROM", toLabel: "DAYS", accent: "blue" },
   "diferencia-fechas": { badge: "Dates", badgeEs: "Fechas", tagline: "Get the full difference between two dates in years, months, and days.", taglineEs: "Obtené la diferencia completa entre dos fechas en años, meses y días.", fromLabel: "START", toLabel: "DIFF", accent: "violet" },
   "zona-horaria": { badge: "Time", badgeEs: "Tiempo", tagline: "Compare time zones with offsets so meetings and flights stay aligned.", taglineEs: "Compará zonas horarias con offsets para alinear reuniones y vuelos.", fromLabel: "TZ1", toLabel: "TZ2", accent: "cyan" },
@@ -108,6 +108,18 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "duracion-horas": { badge: "Time", badgeEs: "Tiempo", tagline: "Calculate the duration between two times of day.", taglineEs: "Calculá la duración entre dos horas del día.", fromLabel: "START", toLabel: "END", accent: "amber" },
   "fecha-dias-laborables": { badge: "Dates", badgeEs: "Fechas", tagline: "Find the calendar date after N business days, skipping weekends.", taglineEs: "Encontrá la fecha tras N días hábiles, sin contar fines de semana.", fromLabel: "START", toLabel: "+BD", accent: "emerald" },
   "cuenta-regresiva-fecha": { badge: "Timer", badgeEs: "Timer", tagline: "See how many days remain until a target date from today or a reference day.", taglineEs: "Mirá cuántos días faltan hasta una fecha objetivo desde hoy o una referencia.", fromLabel: "NOW", toLabel: "TARGET", accent: "rose" },
+
+  // —— Plan Day 3: Finance ——
+  "pago-prestamo": { badge: "Finance", badgeEs: "Finanzas", tagline: "Calculate the fixed monthly payment for any loan from principal, rate, and term.", taglineEs: "Calculá la cuota mensual fija de un préstamo con capital, tasa y plazo.", fromLabel: "LOAN", toLabel: "PMT", accent: "emerald" },
+  "amortizacion-prestamo": { badge: "Finance", badgeEs: "Finanzas", tagline: "See total interest and payments over the full amortization schedule summary.", taglineEs: "Mirá el interés total y los pagos en el resumen de amortización.", fromLabel: "LOAN", toLabel: "TABLE", accent: "blue" },
+  "interes-compuesto": { badge: "Finance", badgeEs: "Finanzas", tagline: "Project future value with compound interest at any compounding frequency.", taglineEs: "Proyectá el valor futuro con interés compuesto y la frecuencia que elijas.", fromLabel: "P", toLabel: "FV", accent: "violet" },
+  "pago-anticipado-prestamo": { badge: "Finance", badgeEs: "Finanzas", tagline: "Estimate remaining balance after you have already made a number of payments.", taglineEs: "Estimá el saldo restante después de haber pagado cierta cantidad de cuotas.", fromLabel: "PAID", toLabel: "LEFT", accent: "amber" },
+  roi: { badge: "Finance", badgeEs: "Finanzas", tagline: "Measure return on investment from cost and final value in one step.", taglineEs: "Medí el retorno de inversión desde el costo y el valor final en un paso.", fromLabel: "COST", toLabel: "ROI", accent: "rose" },
+  cagr: { badge: "Finance", badgeEs: "Finanzas", tagline: "Compute compound annual growth rate between a start and end value over years.", taglineEs: "Calculá la tasa de crecimiento anual compuesto entre dos valores en el tiempo.", fromLabel: "START", toLabel: "CAGR", accent: "cyan" },
+  "meta-ahorro": { badge: "Finance", badgeEs: "Finanzas", tagline: "Find the monthly deposit needed to hit a savings goal at a given rate.", taglineEs: "Encontrá el depósito mensual para alcanzar una meta de ahorro a una tasa dada.", fromLabel: "GOAL", toLabel: "SAVE", accent: "emerald" },
+  "inflacion-poder-compra": { badge: "Finance", badgeEs: "Finanzas", tagline: "See how inflation erodes purchasing power over a number of years.", taglineEs: "Mirá cómo la inflación reduce el poder de compra a lo largo de los años.", fromLabel: "NOW", toLabel: "REAL", accent: "amber" },
+  "asignacion-portafolio": { badge: "Finance", badgeEs: "Finanzas", tagline: "Split total capital across three portfolio weights and get dollar amounts.", taglineEs: "Dividí el capital total en tres pesos de portafolio y obtené montos.", fromLabel: "TOTAL", toLabel: "SPLIT", accent: "violet" },
+  wacc: { badge: "Finance", badgeEs: "Finanzas", tagline: "Estimate weighted average cost of capital from equity, debt, and tax rate.", taglineEs: "Estimá el costo promedio ponderado de capital con equity, deuda e impuestos.", fromLabel: "E+D", toLabel: "WACC", accent: "blue" },
 };
 
 export function getToolShowcase(slug: string): ToolShowcase | undefined {
