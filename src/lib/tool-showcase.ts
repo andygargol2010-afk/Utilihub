@@ -1,4 +1,4 @@
-/** Premium presentation config (Day 1–9 + plan Day 3 finance + Day 4 calc). */
+/** Premium presentation config (plan days 1–5 + 8–9). */
 
 export type ToolShowcase = {
   badge: string;
@@ -11,7 +11,7 @@ export type ToolShowcase = {
 };
 
 export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
-  // —— Day 1: Image suite ——
+  // —— Day 1: Image ——
   "png-a-jpg": { badge: "Converter", badgeEs: "Conversor", tagline: "Convert PNG images to JPG locally. Fast, easy and free — no installation required.", taglineEs: "Convierte imágenes PNG a JPG en tu navegador. Rápido, fácil y gratis.", fromLabel: "PNG", toLabel: "JPG", accent: "blue" },
   "jpg-a-png": { badge: "Converter", badgeEs: "Conversor", tagline: "Convert JPG images to PNG locally with transparency support.", taglineEs: "Convierte imágenes JPG a PNG en local, con soporte de transparencia.", fromLabel: "JPG", toLabel: "PNG", accent: "violet" },
   "jpg-a-webp": { badge: "Converter", badgeEs: "Conversor", tagline: "Convert JPG to modern WebP for smaller files and the same quality.", taglineEs: "Convierte JPG a WebP moderno: menos peso, misma calidad.", fromLabel: "JPG", toLabel: "WebP", accent: "emerald" },
@@ -130,6 +130,16 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "propina-y-cuenta-compartida": { badge: "Money", badgeEs: "Dinero", tagline: "Calculate tip, total bill, and equal split per person in one step.", taglineEs: "Calculá propina, total y cuánto paga cada uno en un solo paso.", fromLabel: "BILL", toLabel: "EACH", accent: "rose" },
   "propina-dividida": { badge: "Money", badgeEs: "Dinero", tagline: "Split the tip and the bill fairly among any number of people.", taglineEs: "Dividí la propina y la cuenta de forma justa entre varias personas.", fromLabel: "BILL", toLabel: "SPLIT", accent: "violet" },
   "tarifa-hora": { badge: "Money", badgeEs: "Dinero", tagline: "Turn total pay and hours worked into a clear hourly rate.", taglineEs: "Convertí el pago total y las horas trabajadas en una tarifa por hora clara.", fromLabel: "PAY", toLabel: "/H", accent: "emerald" },
+
+  // —— Plan Day 5: Text tools ——
+  "pascal-case": { badge: "Text", badgeEs: "Texto", tagline: "Convert any phrase into PascalCase for types, components, and class names.", taglineEs: "Convertí cualquier frase a PascalCase para tipos, componentes y clases.", fromLabel: "my text", toLabel: "MyText", accent: "rose" },
+  "lineas-unicas": { badge: "Text", badgeEs: "Texto", tagline: "Remove duplicate lines and keep a clean unique list.", taglineEs: "Eliminá líneas duplicadas y quedate con una lista única y limpia.", fromLabel: "DUP", toLabel: "UNIQUE", accent: "cyan" },
+  "diferencia-textos": { badge: "Text", badgeEs: "Texto", tagline: "Compare two texts and highlight what changed between them.", taglineEs: "Compará dos textos y mirá qué cambió entre uno y otro.", fromLabel: "A", toLabel: "B", accent: "amber" },
+  "markdown-a-html": { badge: "Text", badgeEs: "Texto", tagline: "Convert Markdown to HTML for previews, CMS paste, and docs.", taglineEs: "Convertí Markdown a HTML para previews, CMS y documentación.", fromLabel: "MD", toLabel: "HTML", accent: "violet" },
+  "html-a-texto": { badge: "Text", badgeEs: "Texto", tagline: "Strip HTML tags and recover readable plain text.", taglineEs: "Quitá etiquetas HTML y recuperá texto plano legible.", fromLabel: "HTML", toLabel: "TEXT", accent: "blue" },
+  "ordenar-lineas": { badge: "Text", badgeEs: "Texto", tagline: "Sort lines alphabetically for lists, logs, and clean exports.", taglineEs: "Ordená líneas alfabéticamente para listas, logs y exportaciones.", fromLabel: "LINES", toLabel: "A→Z", accent: "emerald" },
+  "invertir-texto": { badge: "Text", badgeEs: "Texto", tagline: "Reverse any string character by character in one click.", taglineEs: "Invertí cualquier texto carácter por carácter en un clic.", fromLabel: "ABC", toLabel: "CBA", accent: "rose" },
+  "contador-de-lineas": { badge: "Text", badgeEs: "Texto", tagline: "Count lines in pasted text for scripts, logs, and documents.", taglineEs: "Contá líneas de un texto pegado: scripts, logs y documentos.", fromLabel: "TEXT", toLabel: "LINES", accent: "cyan" },
 };
 
 export function getToolShowcase(slug: string): ToolShowcase | undefined {
