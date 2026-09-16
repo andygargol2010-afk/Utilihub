@@ -1,4 +1,4 @@
-/** Premium presentation config (Day 1–6: image · PDF · text/dev · math/units · case/URL · dates/stats/productivity). */
+/** Premium presentation config (Day 1–8: image · PDF · text/dev · math/units · case/URL · dates/stats · design/color). */
 
 export type ToolShowcase = {
   badge: string;
@@ -254,9 +254,9 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     badge: "Dev",
     badgeEs: "Dev",
     tagline: "Generate cryptographically random UUID v4 identifiers for APIs and databases.",
-    taglineEs: "Generá identificadores UUID v4 con aleatoriedad criptográfica para APIs y bases de datos.",
     fromLabel: "—",
     toLabel: "UUID",
+    taglineEs: "Generá identificadores UUID v4 con aleatoriedad criptográfica para APIs y bases de datos.",
     accent: "violet",
   },
   "base64-encode": {
@@ -561,6 +561,98 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     fromLabel: "25m",
     toLabel: "5m",
     accent: "rose",
+  },
+
+  // —— Day 8: Design & color ——
+  "hex-a-hsl-avanzado": {
+    badge: "Color",
+    badgeEs: "Color",
+    tagline: "Convert any HEX color into precise HSL and RGB values for design systems.",
+    taglineEs: "Convertí cualquier color HEX a HSL y RGB precisos para sistemas de diseño.",
+    fromLabel: "HEX",
+    toLabel: "HSL",
+    accent: "violet",
+  },
+  "paleta-complementaria": {
+    badge: "Palette",
+    badgeEs: "Paleta",
+    tagline: "Generate the complementary color and a split complementary pair from any HEX.",
+    taglineEs: "Generá el color complementario y un par split desde cualquier HEX.",
+    fromLabel: "BASE",
+    toLabel: "COMP",
+    accent: "rose",
+  },
+  "paleta-monocromatica": {
+    badge: "Palette",
+    badgeEs: "Paleta",
+    tagline: "Build light and dark monochrome shades from a single base color.",
+    taglineEs: "Creá tonos monocromáticos claros y oscuros desde un solo color base.",
+    fromLabel: "BASE",
+    toLabel: "SHADES",
+    accent: "cyan",
+  },
+  "generador-paleta": {
+    badge: "Palette",
+    badgeEs: "Paleta",
+    tagline: "Generate a ready-to-use color palette from one base HEX color.",
+    taglineEs: "Generá una paleta lista para usar a partir de un color HEX base.",
+    fromLabel: "HEX",
+    toLabel: "PALETTE",
+    accent: "emerald",
+  },
+  "mezclador-de-colores": {
+    badge: "Color",
+    badgeEs: "Color",
+    tagline: "Mix two HEX colors and get the intermediate blend for UI and branding.",
+    taglineEs: "Mezclá dos colores HEX y obtené el tono intermedio para UI y marca.",
+    fromLabel: "A+B",
+    toLabel: "MIX",
+    accent: "amber",
+  },
+  "generador-gradiente": {
+    badge: "CSS",
+    badgeEs: "CSS",
+    tagline: "Create linear CSS gradients with live-ready code for backgrounds and buttons.",
+    taglineEs: "Creá gradientes CSS lineales con código listo para fondos y botones.",
+    fromLabel: "FROM",
+    toLabel: "TO",
+    accent: "blue",
+  },
+  "contraste-wcag": {
+    badge: "A11y",
+    badgeEs: "A11y",
+    tagline: "Check WCAG contrast ratios between two colors for accessible text and UI.",
+    taglineEs: "Revisá el contraste WCAG entre dos colores para texto e UI accesibles.",
+    fromLabel: "FG",
+    toLabel: "BG",
+    accent: "violet",
+  },
+  "selector-color": {
+    badge: "Color",
+    badgeEs: "Color",
+    tagline: "Explore any color and read HEX, RGB, and related values in one place.",
+    taglineEs: "Explorá cualquier color y leé HEX, RGB y valores relacionados en un solo lugar.",
+    fromLabel: "PICK",
+    toLabel: "HEX",
+    accent: "rose",
+  },
+  "generador-sombra-css": {
+    badge: "CSS",
+    badgeEs: "CSS",
+    tagline: "Generate box-shadow CSS for cards, buttons, and elevation levels.",
+    taglineEs: "Generá box-shadow CSS para cards, botones y niveles de elevación.",
+    fromLabel: "DEPTH",
+    toLabel: "CSS",
+    accent: "cyan",
+  },
+  horno: {
+    badge: "Units",
+    badgeEs: "Unidades",
+    tagline: "Convert oven temperatures between °C and °F for recipes and baking.",
+    taglineEs: "Convertí temperaturas de horno entre °C y °F para recetas y cocina.",
+    fromLabel: "°C",
+    toLabel: "°F",
+    accent: "amber",
   },
 };
 
