@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { getToolShowcase } from "@/lib/tool-showcase";
+import { showcaseUi } from "@/lib/showcase-ui";
 
 const randomInt = (min: number, max: number) => {
   if (!Number.isInteger(min) || !Number.isInteger(max) || min > max) throw new Error("Invalid random range.");
@@ -81,7 +82,9 @@ export function GeneratorTool({ tool, locale = "en" }: { tool: GeneralTool; loca
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const es = locale === "es";
-  const premium = Boolean(getToolShowcase(tool.slug));
+  const showcase = getToolShowcase(tool.slug);
+  const ui = showcaseUi(showcase?.accent);
+  const premium = Boolean(showcase);
 
   const run = () => {
     try {
@@ -120,12 +123,8 @@ export function GeneratorTool({ tool, locale = "en" }: { tool: GeneralTool; loca
           ? "Configuración opcional"
           : "Optional configuration";
 
-  const inputClass = premium
-    ? "h-12 w-full rounded-2xl border-2 border-sky-200/80 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_60%)] px-4 shadow-inner transition focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-100"
-    : "h-11 w-full rounded-xl border bg-background px-3";
-  const btnClass = premium
-    ? "inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-8 py-3.5 text-sm font-bold text-white shadow-[0_12px_28px_-10px_rgba(37,99,235,0.55)] transition hover:brightness-105"
-    : "rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground";
+  const inputClass = ui?.field ?? "h-11 w-full rounded-xl border bg-background px-3";
+  const btnClass = ui?.btn ?? "rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground";
 
   return (
     <div className="space-y-4">
@@ -141,7 +140,7 @@ export function GeneratorTool({ tool, locale = "en" }: { tool: GeneralTool; loca
       </button>
       {error && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">{error}</p>}
       {output && (
-        <output className={`block whitespace-pre-wrap break-words rounded-2xl border p-4 font-medium ${premium ? "border-sky-100 bg-sky-50/50 text-[15px]" : "bg-muted/30"}`}>
+        <output className={`block whitespace-pre-wrap break-words rounded-2xl border p-4 font-medium ${ui ? `${ui.out} text-[15px]` : "bg-muted/30"}`}>
           {output}
         </output>
       )}
