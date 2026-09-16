@@ -1,10 +1,11 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { TOOL_UI_ES } from "@/components/tools/registry";
 import { GENERAL_TOOL_UI_ES } from "@/components/general/registry";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
+import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { allToolBySlug, ALL_CATEGORIES } from "@/lib/all-tools";
 import { englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, ogImage } from "@/lib/seo";
@@ -44,7 +45,12 @@ function SpanishToolPage() {
     ) : (
       <div className="mt-3 flex items-center justify-between gap-3"><div className="min-w-0"><h1 className="text-2xl font-bold sm:text-3xl">{name}</h1><p className="mt-1 max-w-2xl text-sm text-muted-foreground">Herramienta de {spanishCategoryName(tool.category).toLowerCase()}.</p></div><FavoriteButton slug={tool.slug} name={name} locale="es" /></div>
     )}
-    <section data-tool-surface aria-label={`Herramienta: ${name}`} className={`surface-card mt-4 p-4 sm:p-6 ${showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""}`}>{ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}{!showcase && (<div className="mt-4"><ShareAndExportActions title={name} locale="es" /></div>)}</section>
+    <section data-tool-surface aria-label={`Herramienta: ${name}`} className={`surface-card mt-4 p-4 sm:p-6 ${showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""}`}>
+      <Suspense fallback={<ToolUiFallback locale="es" />}>
+        {ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}
+      </Suspense>
+      {!showcase && (<div className="mt-4"><ShareAndExportActions title={name} locale="es" /></div>)}
+    </section>
     <AdsterraBanner />
   </main>;
 }
