@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { TOOL_UI } from "@/components/tools/registry";
@@ -8,6 +8,7 @@ import { ToolCard } from "@/components/ToolCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolSeoContent } from "@/components/ToolSeoContent";
+import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
 import { toolByEnglishSlug, englishToolPath, englishToolSlug, englishCategorySlug, englishCategoryPath } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
@@ -113,7 +114,9 @@ function ToolPage() {
         </div>
       )}
       <section data-tool-surface aria-label={`Tool: ${tool.name}`} className={`surface-card mt-4 p-4 sm:p-6 ${showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""}`}>
-        {ui ? ui() : <p role="alert" className="text-muted-foreground">Tool not available.</p>}
+        <Suspense fallback={<ToolUiFallback locale="en" />}>
+          {ui ? ui() : <p role="alert" className="text-muted-foreground">Tool not available.</p>}
+        </Suspense>
         {!showcase && (
           <div className="mt-4"><ShareAndExportActions title={tool.name} /></div>
         )}
