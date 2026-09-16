@@ -1,5 +1,6 @@
 import { lazy, type ComponentType, type ReactNode } from "react";
-import { GENERAL_TOOLS, type GeneralTool } from "@/lib/general";
+import { GENERAL_TOOLS } from "@/lib/general";
+import type { GeneralTool } from "@/lib/general/types";
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
