@@ -49,7 +49,7 @@ function SpanishToolPage() {
       <Suspense fallback={<ToolUiFallback locale="es" />}>
         {ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}
       </Suspense>
-      {!showcase && (<div className="mt-4"><ShareAndExportActions title={name} locale="es" /></div>)}
+      <div className="mt-4"><ShareAndExportActions title={name} locale="es" /></div>
     </section>
     <AdsterraBanner />
   </main>;
