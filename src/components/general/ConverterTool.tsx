@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { getToolShowcase } from "@/lib/tool-showcase";
+import { showcaseUi } from "@/lib/showcase-ui";
 
 const units: Record<string, Record<string, number>> = {
   area: { "m²": 1, "km²": 1e6, "ft²": 0.092903, acres: 4046.8564224, ha: 10000 },
@@ -59,7 +60,9 @@ export function ConverterTool({ tool, locale = "en" }: { tool: GeneralTool; loca
   const [to, setTo] = useState("");
   const [out, setOut] = useState("");
   const es = locale === "es";
-  const premium = Boolean(getToolShowcase(tool.slug));
+  const showcase = getToolShowcase(tool.slug);
+  const ui = showcaseUi(showcase?.accent);
+  const premium = Boolean(showcase);
   const base = tool.slug.replace("conversor-", "");
   const kind =
     base === "datos"
@@ -178,15 +181,9 @@ export function ConverterTool({ tool, locale = "en" }: { tool: GeneralTool; loca
   };
 
   const angleOptions = ["degrees", "radians"];
-  const inputClass = premium
-    ? "h-12 w-full rounded-2xl border-2 border-sky-200/80 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_60%)] px-4 shadow-inner transition focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-100"
-    : "h-11 w-full rounded-xl border bg-background px-3";
-  const selectClass = premium
-    ? "h-12 rounded-2xl border-2 border-sky-200/80 bg-white px-3 shadow-sm"
-    : "h-11 rounded-xl border bg-background px-3";
-  const btnClass = premium
-    ? "inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-sky-500 to-blue-600 px-8 py-3.5 text-sm font-bold text-white shadow-[0_12px_28px_-10px_rgba(37,99,235,0.55)] transition hover:brightness-105"
-    : "rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground";
+  const inputClass = ui?.field ?? "h-11 w-full rounded-xl border bg-background px-3";
+  const selectClass = ui?.select ?? "h-11 rounded-xl border bg-background px-3";
+  const btnClass = ui?.btn ?? "rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground";
 
   return (
     <div className="space-y-4">
@@ -227,7 +224,7 @@ export function ConverterTool({ tool, locale = "en" }: { tool: GeneralTool; loca
         {msg("Convert", "Convertir")}
       </button>
       {out && (
-        <output className={`block break-all rounded-2xl border p-4 ${premium ? "border-sky-100 bg-sky-50/50 font-medium" : "bg-muted/30"}`}>
+        <output className={`block break-all rounded-2xl border p-4 ${ui ? `${ui.out} font-medium` : "bg-muted/30"}`}>
           {out}
         </output>
       )}
