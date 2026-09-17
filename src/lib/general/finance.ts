@@ -13,7 +13,11 @@ const f = (
     fields,
   });
 
-/** Day 3 — Finance (high EN traffic) + Day 4 core extras */
+/**
+ * Extra finance / calc tools that are NOT already in FINANCIAL_CATALOG.
+ * Do not re-add interes-compuesto, roi, or cagr — they live in src/lib/financial/catalog.ts
+ * and ALL_TOOLS throws on duplicate slugs (500 on every request).
+ */
 export const FINANCE_TOOLS = [
   f(
     "pago-prestamo",
@@ -30,32 +34,11 @@ export const FINANCE_TOOLS = [
     ["Principal", "Annual rate %", "Term (months)"],
   ),
   f(
-    "interes-compuesto",
-    "Compound interest",
-    "Project future value with compound interest by compounding frequency.",
-    "compound-interest",
-    ["Principal", "Annual rate %", "Years", "Compounds per year"],
-  ),
-  f(
     "pago-anticipado-prestamo",
     "Early loan repayment",
     "Estimate remaining balance after a number of payments have already been made.",
     "early-repayment",
     ["Principal", "Annual rate %", "Term (months)", "Payments made"],
-  ),
-  f(
-    "roi",
-    "ROI calculator",
-    "Calculate return on investment from cost and final value or net gain.",
-    "roi",
-    ["Cost", "Final value"],
-  ),
-  f(
-    "cagr",
-    "CAGR calculator",
-    "Compute compound annual growth rate between a start and end value over years.",
-    "cagr",
-    ["Start value", "End value", "Years"],
   ),
   f(
     "meta-ahorro",
