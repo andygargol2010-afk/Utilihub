@@ -10,20 +10,55 @@ import { useFavorites } from "@/hooks/use-favorites";
 function normalize(s: string) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
 }
-const STOP = new Set(["de", "la", "el", "los", "las", "para", "por", "un", "una", "y", "o", "en", "the", "a", "an", "and", "or", "for", "to", "of", "in"]);
+const STOP = new Set([
+  "de",
+  "la",
+  "el",
+  "los",
+  "las",
+  "para",
+  "por",
+  "un",
+  "una",
+  "y",
+  "o",
+  "en",
+  "the",
+  "a",
+  "an",
+  "and",
+  "or",
+  "for",
+  "to",
+  "of",
+  "in",
+]);
 
-export function ToolSearch({ initialCategory, compactHome = false }: { initialCategory?: string; compactHome?: boolean }) {
+const PAGE_SIZE = 30;
+
+export function ToolSearch({
+  initialCategory,
+  compactHome = false,
+}: {
+  initialCategory?: string;
+  compactHome?: boolean;
+}) {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [category, setCategory] = useState<string>(initialCategory ?? "all");
   const [keyword, setKeyword] = useState("all");
+  const [visible, setVisible] = useState(PAGE_SIZE);
   const { favorites, toggle, ready } = useFavorites();
 
   useEffect(() => {
     const id = window.setTimeout(() => setDebouncedQuery(query), 160);
     return () => window.clearTimeout(id);
   }, [query]);
+
+  useEffect(() => {
+    setVisible(PAGE_SIZE);
+  }, [category, keyword, debouncedQuery]);
 
   const index = useMemo(
     () =>
@@ -57,7 +92,8 @@ export function ToolSearch({ initialCategory, compactHome = false }: { initialCa
     return index
       .filter(
         ({ tool, keywords }) =>
-          (category === "all" || tool.category === category) && (keyword === "all" || keywords.includes(keyword)),
+          (category === "all" || tool.category === category) &&
+          (keyword === "all" || keywords.includes(keyword)),
       )
       .map((item) => {
         if (!tokens.length) return { tool: item.tool, score: 0 };
@@ -78,6 +114,8 @@ export function ToolSearch({ initialCategory, compactHome = false }: { initialCa
   }, [category, index, keyword, debouncedQuery]);
 
   const compactResults = debouncedQuery.trim() ? results.slice(0, 6) : [];
+  const shown = results.slice(0, visible);
+  const remaining = Math.max(0, results.length - shown.length);
 
   const submitCompactSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -101,7 +139,7 @@ export function ToolSearch({ initialCategory, compactHome = false }: { initialCa
 
   return (
     <div className="space-y-5">
-      <div className="rounded-xl border border-border/70 bg-surface/45 p-2.5 sm:p-3">
+      <div className="sticky top-16 z-20 rounded-xl border border-border/70 bg-background/95 p-2.5 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/85 sm:p-3">
         <form className="relative" onSubmit={compactHome ? submitCompactSearch : undefined}>
           <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -200,8 +238,15 @@ export function ToolSearch({ initialCategory, compactHome = false }: { initialCa
             ))}
           </div>
         )}
+        {!compactHome && (
+          <p className="mt-2 text-xs font-semibold text-muted-foreground" aria-live="polite">
+            {results.length} tool{results.length === 1 ? "" : "s"}
+            {category !== "all" ? ` · ${category}` : ""}
+            {keyword !== "all" ? ` · ${keyword}` : ""}
+          </p>
+        )}
       </div>
-      {!compactHome && favTools.length > 0 && !query && keyword === "all" && (
+      {!compactHome && favTools.length > 0 && !query && keyword === "all" && category === "all" && (
         <section aria-labelledby="favorites">
           <div className="mb-2 flex items-center gap-2">
             <Star className="size-4 fill-highlight text-highlight" />
@@ -223,11 +268,29 @@ export function ToolSearch({ initialCategory, compactHome = false }: { initialCa
               No tools match «{query || keyword}».
             </p>
           ) : (
-            <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-              {results.map((t) => (
-                <ToolCard key={t.slug} tool={t} isFavorite={favorites.includes(t.slug)} onToggleFavorite={toggle} />
-              ))}
-            </div>
+            <>
+              <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+                {shown.map((t) => (
+                  <ToolCard
+                    key={t.slug}
+                    tool={t}
+                    isFavorite={favorites.includes(t.slug)}
+                    onToggleFavorite={toggle}
+                  />
+                ))}
+              </div>
+              {remaining > 0 && (
+                <div className="mt-3 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                    className="inline-flex min-h-11 items-center rounded-xl border border-border bg-card px-5 text-sm font-bold hover:border-primary/40 hover:bg-accent"
+                  >
+                    Show {Math.min(PAGE_SIZE, remaining)} more ({remaining} left)
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       )}

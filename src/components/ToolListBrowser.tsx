@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Search } from "lucide-react";
 
 export type BrowseableTool = {
@@ -35,7 +35,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
 }: {
   tools: T[];
   locale?: "en" | "es";
-  renderItem: (tool: T) => React.ReactNode;
+  renderItem: (tool: T) => ReactNode;
   pageSize?: number;
   searchPlaceholder?: string;
 }) {

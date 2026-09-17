@@ -1,4 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
+import { ToolListBrowser } from "@/components/ToolListBrowser";
 import { ALL_TOOLS } from "@/lib/all-tools";
 import { absoluteUrl } from "@/lib/seo";
 import { spanishToolName, spanishToolPath } from "@/lib/i18n/es";
@@ -29,24 +31,46 @@ export const Route = createFileRoute("/es/finanzas/")({
 
 function SpanishFinanceIndex() {
   const tools = ALL_TOOLS.filter((tool) => tool.category === "finanzas");
+  const browseItems = tools.map((tool) => ({
+    id: tool.slug,
+    name: spanishToolName(tool),
+    searchText: `${tool.summary} ${tool.description ?? ""} ${(tool.keywords ?? []).join(" ")}`,
+    tool,
+  }));
+
   return (
-    <main className="container-page py-10">
+    <main className="container-page py-6 sm:py-8">
       <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Finanzas</p>
-      <h1 className="mt-2 text-3xl font-black sm:text-4xl">Calculadoras financieras</h1>
-      <p className="mt-3 max-w-2xl text-muted-foreground">
-        Analiza inversiones, ahorro, préstamos, inflación y otros escenarios financieros con cálculos en el navegador.
+      <h1 className="mt-2 text-2xl font-black sm:text-3xl">Calculadoras financieras</h1>
+      <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+        Analizá inversiones, ahorro, préstamos, inflación y otros escenarios con cálculos en el navegador.
       </p>
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {tools.map((tool) => (
-          <Link
-            key={tool.slug}
-            to={spanishToolPath(tool) as "/es/finanzas/$slug"}
-            className="rounded-xl border border-border/70 bg-card p-4 hover:border-primary/45"
-          >
-            <h2 className="font-bold">{spanishToolName(tool)}</h2>
-            <p className="mt-1 text-xs text-muted-foreground">Calculadora financiera gratuita.</p>
-          </Link>
-        ))}
+
+      <div className="mt-5">
+        <ToolListBrowser
+          tools={browseItems}
+          locale="es"
+          searchPlaceholder="Buscar calculadoras financieras…"
+          renderItem={(item) => (
+            <Link
+              to={spanishToolPath(item.tool) as "/es/finanzas/$slug"}
+              className="flex min-h-14 items-center gap-3 py-2"
+            >
+              <span
+                aria-hidden="true"
+                className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-black text-primary"
+              >
+                F
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-sm font-bold">{item.name}</span>
+                <span className="mt-0.5 block truncate text-xs text-muted-foreground">
+                  Calculadora financiera gratuita
+                </span>
+              </span>
+            </Link>
+          )}
+        />
       </div>
     </main>
   );
