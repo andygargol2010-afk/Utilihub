@@ -1,4 +1,4 @@
-/** Premium presentation config (plan days 1–9). */
+/** Premium presentation config (plan days 1–10). */
 
 export type ToolShowcase = {
   badge: string;
@@ -124,7 +124,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   // —— Plan Day 4: Core calculators ——
   "calculadora-basica": { badge: "Calc", badgeEs: "Calc", tagline: "Quick four-operation calculator — add, subtract, multiply, and divide in the browser.", taglineEs: "Calculadora rápida de cuatro operaciones: sumar, restar, multiplicar y dividir.", fromLabel: "A", toLabel: "B", accent: "blue" },
   "cambio-porcentual": { badge: "Math", badgeEs: "Mate", tagline: "Calculate the percentage change between an initial and a final value.", taglineEs: "Calculá el cambio porcentual entre un valor inicial y uno final.", fromLabel: "FROM", toLabel: "%Δ", accent: "violet" },
-  "precio-con-descuento": { badge: "Money", badgeEs: "Dinero", tagline: "Apply a discount percentage and see the final price instantly.", taglineEs: "Aplicá un porcentaje de descuento y mirá el precio final al instante.", fromLabel: "PRICE", toLabel: "SALE", accent: "emerald" },
+  "precio-con-descuento": { badge: "Money", badgeEs: "Dinero", tagline: "Apply a discount percentage and see the final amount to pay.", taglineEs: "Aplicá un porcentaje de descuento y mirá el precio final al instante.", fromLabel: "PRICE", toLabel: "SALE", accent: "emerald" },
   "reparto-proporcional": { badge: "Money", badgeEs: "Dinero", tagline: "Split a total by proportion — expense sharing without a spreadsheet.", taglineEs: "Dividí un total en proporción. Reparto de gastos sin planilla.", fromLabel: "TOTAL", toLabel: "SHARE", accent: "amber" },
   "regla-50-30-20": { badge: "Budget", badgeEs: "Presup.", tagline: "Split income with the 50/30/20 rule across needs, wants, and savings.", taglineEs: "Dividí ingresos con la regla 50/30/20: necesidades, deseos y ahorro.", fromLabel: "INCOME", toLabel: "SPLIT", accent: "cyan" },
   "propina-y-cuenta-compartida": { badge: "Money", badgeEs: "Dinero", tagline: "Calculate tip, total bill, and equal split per person in one step.", taglineEs: "Calculá propina, total y cuánto paga cada uno en un solo paso.", fromLabel: "BILL", toLabel: "EACH", accent: "rose" },
@@ -171,6 +171,24 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "token-seguro": { badge: "Security", badgeEs: "Seguridad", tagline: "Create a cryptographically random token for sessions and secrets.", taglineEs: "Creá un token criptográficamente aleatorio para sesiones y secretos.", fromLabel: "—", toLabel: "TOKEN", accent: "rose" },
   "passphrase": { badge: "Security", badgeEs: "Seguridad", tagline: "Build a memorable multi-word passphrase with local randomness.", taglineEs: "Armá una passphrase memorable de varias palabras con aleatoriedad local.", fromLabel: "WORDS", toLabel: "PHRASE", accent: "emerald" },
   "checksum": { badge: "Security", badgeEs: "Seguridad", tagline: "Quick SHA-256 checksum of any string for integrity checks.", taglineEs: "Checksum SHA-256 rápido de cualquier texto para integridad.", fromLabel: "DATA", toLabel: "CHECK", accent: "blue" },
+
+  // —— Plan Day 10: Units, travel, home ——
+  "millas-kilometros-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Convert miles to kilometers and back for road trips and maps.", taglineEs: "Convertí millas a kilómetros y viceversa para viajes y mapas.", fromLabel: "mi", toLabel: "km", accent: "cyan" },
+  "tiempo-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Estimate travel time from distance and average speed.", taglineEs: "Estimá el tiempo de viaje a partir de la distancia y la velocidad media.", fromLabel: "DIST", toLabel: "TIME", accent: "blue" },
+  "distancia-viaje-calculadora": { badge: "Travel", badgeEs: "Viajes", tagline: "Calculate distance from speed and duration for trip planning.", taglineEs: "Calculá la distancia a partir de velocidad y duración para planificar viajes.", fromLabel: "SPEED", toLabel: "DIST", accent: "violet" },
+  "consumo-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Estimate fuel used on a trip from distance and consumption rate.", taglineEs: "Estimá el combustible de un viaje según distancia y consumo.", fromLabel: "KM", toLabel: "FUEL", accent: "amber" },
+  "combustible-necesario": { badge: "Travel", badgeEs: "Viajes", tagline: "How much fuel you need for a given distance and tank efficiency.", taglineEs: "Cuánto combustible necesitás para una distancia y eficiencia dadas.", fromLabel: "TRIP", toLabel: "LITERS", accent: "emerald" },
+  "coste-combustible-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Trip fuel cost from distance, consumption, and price per liter/gallon.", taglineEs: "Coste de combustible del viaje: distancia, consumo y precio por litro.", fromLabel: "FUEL", toLabel: "$", accent: "rose" },
+  "coste-km-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Cost per kilometer for budgeting road trips and deliveries.", taglineEs: "Coste por kilómetro para presupuestos de viajes y entregas.", fromLabel: "TOTAL", toLabel: "/KM", accent: "cyan" },
+  "division-gastos-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Split shared travel expenses fairly among the group.", taglineEs: "Dividí gastos compartidos del viaje de forma justa entre el grupo.", fromLabel: "TOTAL", toLabel: "EACH", accent: "blue" },
+  "coste-electricidad": { badge: "Home", badgeEs: "Hogar", tagline: "Estimate electricity cost from kWh usage and your local rate.", taglineEs: "Estimá el coste de electricidad según kWh y tu tarifa local.", fromLabel: "kWh", toLabel: "$", accent: "amber" },
+  "division-alquiler": { badge: "Home", badgeEs: "Hogar", tagline: "Split rent and shared housing costs by roommates or share percent.", taglineEs: "Dividí alquiler y gastos de vivienda entre roommates o por porcentaje.", fromLabel: "RENT", toLabel: "SHARE", accent: "violet" },
+  "descuento-compra": { badge: "Home", badgeEs: "Hogar", tagline: "Apply a purchase discount and see the final amount to pay.", taglineEs: "Aplicá un descuento de compra y mirá el importe final a pagar.", fromLabel: "PRICE", toLabel: "SALE", accent: "emerald" },
+  "escalador-recetas": { badge: "Kitchen", badgeEs: "Cocina", tagline: "Scale any recipe up or down by servings without breaking ratios.", taglineEs: "Escalá cualquier receta por porciones sin romper las proporciones.", fromLabel: "1×", toLabel: "N×", accent: "rose" },
+  "consumo-combustible": { badge: "Travel", badgeEs: "Viajes", tagline: "Calculate fuel consumption rate from distance driven and liters used.", taglineEs: "Calculá el consumo de combustible a partir de kilómetros y litros usados.", fromLabel: "KM", toLabel: "L/100", accent: "amber" },
+  "coste-km": { badge: "Travel", badgeEs: "Viajes", tagline: "Work out cost per kilometer from total trip cost and distance.", taglineEs: "Obtené el coste por kilómetro a partir del total del viaje y la distancia.", fromLabel: "$", toLabel: "/KM", accent: "cyan" },
+  "distancia-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Plan trip distance from average speed and expected travel time.", taglineEs: "Planificá la distancia del viaje con velocidad media y tiempo estimado.", fromLabel: "SPEED", toLabel: "KM", accent: "blue" },
+  "combustible-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Fuel cost estimate for a trip with distance, MPG/L/100km, and price.", taglineEs: "Estimación de combustible del viaje: distancia, consumo y precio.", fromLabel: "TRIP", toLabel: "COST", accent: "violet" },
 };
 
 export function getToolShowcase(slug: string): ToolShowcase | undefined {
