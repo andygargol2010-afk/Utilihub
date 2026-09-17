@@ -35,7 +35,15 @@ function mergeReviews(...groups: PublicReview[][]) {
   return [...byId.values()].sort((a, b) => b.createdAt - a.createdAt);
 }
 
-function Stars({ value, onChange, interactive }: { value: number; onChange?: (n: number) => void; interactive?: boolean }) {
+function Stars({
+  value,
+  onChange,
+  interactive,
+}: {
+  value: number;
+  onChange?: (n: number) => void;
+  interactive?: boolean;
+}) {
   return (
     <div className="flex gap-1" role={interactive ? "radiogroup" : "img"} aria-label={`${value} / 5`}>
       {[1, 2, 3, 4, 5].map((n) => (
@@ -66,6 +74,22 @@ function formatDate(ts: number, locale: "en" | "es") {
   } catch {
     return "";
   }
+}
+
+function AdminReply({ reply, locale }: { reply: NonNullable<PublicReview["reply"]>; locale: "en" | "es" }) {
+  const es = locale === "es";
+  return (
+    <div className="mt-3 rounded-lg border border-primary/25 bg-primary/5 px-3 py-2.5">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs font-bold text-foreground">UtiliHub</span>
+        <span className="inline-flex items-center rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
+          {es ? "Admin" : "Admin"}
+        </span>
+        <span className="text-[11px] text-muted-foreground">{formatDate(reply.createdAt, locale)}</span>
+      </div>
+      <p className="mt-1.5 text-sm leading-6 text-foreground/90">{reply.text}</p>
+    </div>
+  );
 }
 
 export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
@@ -122,27 +146,17 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
         setMessage({ type: "err", text: errors[result.error] ?? (es ? "No se pudo enviar." : "Could not submit.") });
         return;
       }
-
-      // Always keep a copy on this device so reload does not erase it
       saveLocalReview(result.review);
-      setDurable(result.durable);
-      setReviews((prev) => mergeReviews([result.review], prev, SEED_REVIEWS));
-
-      setMessage({
-        type: "ok",
-        text: result.durable
-          ? es
-            ? "¡Gracias! Tu reseña ya está publicada."
-            : "Thanks! Your review is live."
-          : es
-            ? "¡Gracias! Guardamos tu reseña en este dispositivo. Para que la vean todos los visitantes hay que activar Upstash (Redis) en Vercel."
-            : "Thanks! Saved on this device. Enable Upstash (Redis) on Vercel so every visitor can see new reviews.",
-      });
       setName("");
       setText("");
       setRating(5);
+      setMessage({
+        type: "ok",
+        text: es ? "¡Gracias! Tu reseña ya está visible." : "Thanks! Your review is now visible.",
+      });
+      await load();
     } catch {
-      setMessage({ type: "err", text: es ? "Error de red. Intentá de nuevo." : "Network error. Try again." });
+      setMessage({ type: "err", text: es ? "Error de red. Probá de nuevo." : "Network error. Try again." });
     } finally {
       setBusy(false);
     }
@@ -152,7 +166,7 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
 
   return (
     <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="reviews-title">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex items-end justify-between gap-3">
         <div>
           <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{es ? "Comunidad" : "Community"}</p>
           <h2 id="reviews-title" className="mt-1 text-2xl font-black sm:text-3xl">
@@ -186,6 +200,7 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
                 <Stars value={review.rating} />
               </div>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">{review.text}</p>
+              {review.reply?.text ? <AdminReply reply={review.reply} locale={locale} /> : null}
             </article>
           ))}
         </div>
