@@ -52,38 +52,35 @@ function AdminReviewsPage() {
     }
   }, []);
 
-  const load = useCallback(
-    async (tok: string) => {
-      setBusy(true);
-      setError(null);
-      try {
-        const result = await listAdminReviews({ data: { token: tok } });
-        if (!result.ok) {
-          setUnlocked(false);
-          setReviews([]);
-          setError(
-            result.error === "not_configured"
-              ? "REVIEWS_ADMIN_TOKEN is not set on the server (Vercel env)."
-              : "Invalid token.",
-          );
-          return;
-        }
-        setUnlocked(true);
-        setReviews(result.reviews);
-        setDurable(result.durable);
-        try {
-          sessionStorage.setItem(TOKEN_KEY, tok);
-        } catch {
-          // ignore
-        }
-      } catch {
-        setError("Network error loading reviews.");
-      } finally {
-        setBusy(false);
+  const load = useCallback(async (tok: string) => {
+    setBusy(true);
+    setError(null);
+    try {
+      const result = await listAdminReviews({ data: { token: tok } });
+      if (!result.ok) {
+        setUnlocked(false);
+        setReviews([]);
+        setError(
+          result.error === "not_configured"
+            ? "REVIEWS_ADMIN_TOKEN is not set on the server (Vercel env)."
+            : "Invalid token.",
+        );
+        return;
       }
-    },
-    [],
-  );
+      setUnlocked(true);
+      setReviews(result.reviews);
+      setDurable(result.durable);
+      try {
+        sessionStorage.setItem(TOKEN_KEY, tok);
+      } catch {
+        // ignore
+      }
+    } catch {
+      setError("Network error loading reviews.");
+    } finally {
+      setBusy(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (unlocked && token) void load(token);
