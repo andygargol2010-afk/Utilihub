@@ -1,3 +1,8 @@
+export type ReviewReply = {
+  text: string;
+  createdAt: number;
+};
+
 export type Review = {
   id: string;
   name: string;
@@ -6,9 +11,14 @@ export type Review = {
   locale: "en" | "es";
   createdAt: number;
   status: "approved" | "pending" | "rejected";
+  /** Optional public reply from the site owner (admin only). */
+  reply?: ReviewReply;
 };
 
-export type PublicReview = Pick<Review, "id" | "name" | "rating" | "text" | "locale" | "createdAt">;
+export type PublicReview = Pick<
+  Review,
+  "id" | "name" | "rating" | "text" | "locale" | "createdAt" | "reply"
+>;
 
 export type SubmitReviewInput = {
   name: string;
@@ -17,6 +27,13 @@ export type SubmitReviewInput = {
   locale: "en" | "es";
   /** Honeypot — must stay empty */
   website?: string;
+};
+
+export type ReplyToReviewInput = {
+  reviewId: string;
+  text: string;
+  /** Must match REVIEWS_ADMIN_TOKEN on the server */
+  token: string;
 };
 
 const BLOCKED = [
@@ -36,7 +53,13 @@ export function sanitizeText(text: string) {
   return text.replace(/\s+/g, " ").trim().slice(0, 400);
 }
 
-export function validateReview(input: SubmitReviewInput): { ok: true; data: Omit<Review, "id" | "createdAt" | "status"> } | { ok: false; error: string } {
+export function sanitizeReply(text: string) {
+  return text.replace(/\s+/g, " ").trim().slice(0, 600);
+}
+
+export function validateReview(
+  input: SubmitReviewInput,
+): { ok: true; data: Omit<Review, "id" | "createdAt" | "status" | "reply"> } | { ok: false; error: string } {
   if (input.website && input.website.trim()) {
     return { ok: false, error: "spam" };
   }
@@ -57,7 +80,7 @@ export function validateReview(input: SubmitReviewInput): { ok: true; data: Omit
 }
 
 export function toPublic(review: Review): PublicReview {
-  return {
+  const out: PublicReview = {
     id: review.id,
     name: review.name,
     rating: review.rating,
@@ -65,6 +88,13 @@ export function toPublic(review: Review): PublicReview {
     locale: review.locale,
     createdAt: review.createdAt,
   };
+  if (review.reply?.text) {
+    out.reply = {
+      text: review.reply.text,
+      createdAt: review.reply.createdAt,
+    };
+  }
+  return out;
 }
 
 /** Always-visible seed reviews so the section never looks empty. */
@@ -89,16 +119,16 @@ export const SEED_REVIEWS: PublicReview[] = [
     id: "seed-3",
     name: "Valentina",
     rating: 4,
-    text: "Los generadores de tests para estudiar me salvaron en varias materias. Muy útil.",
+    text: "Los generadores de tests para estudiar me sirvieron mucho. Ojalá agreguen más temas.",
     locale: "es",
-    createdAt: Date.UTC(2026, 7, 1),
+    createdAt: Date.UTC(2026, 6, 20),
   },
   {
     id: "seed-4",
     name: "James",
     rating: 5,
-    text: "Exactly what I needed: free unit converters without accounts or watermarks.",
+    text: "Exactly what I needed — no account wall, no tracking spam. The finance calculators are solid.",
     locale: "en",
-    createdAt: Date.UTC(2026, 7, 18),
+    createdAt: Date.UTC(2026, 7, 1),
   },
 ];

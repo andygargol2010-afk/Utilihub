@@ -1,9 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import {
   SEED_REVIEWS,
+  sanitizeReply,
   toPublic,
   validateReview,
   type PublicReview,
+  type ReplyToReviewInput,
   type Review,
   type SubmitReviewInput,
 } from "./reviews";
@@ -39,6 +41,22 @@ async function clientFingerprint(): Promise<string> {
 
 function isDurable() {
   return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+}
+
+function adminTokenConfigured() {
+  return Boolean(process.env.REVIEWS_ADMIN_TOKEN?.trim());
+}
+
+function verifyAdminToken(token: string | undefined): boolean {
+  const expected = process.env.REVIEWS_ADMIN_TOKEN?.trim();
+  if (!expected || !token) return false;
+  // Constant-time-ish compare for typical secret lengths
+  if (expected.length !== token.length) return false;
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) {
+    diff |= expected.charCodeAt(i) ^ token.charCodeAt(i);
+  }
+  return diff === 0;
 }
 
 export const listPublicReviews = createServerFn({ method: "GET" }).handler(
@@ -84,5 +102,63 @@ export const submitReview = createServerFn({ method: "POST" })
 
       await appendReview(review);
       return { ok: true, review: toPublic(review), durable: isDurable() };
+    },
+  );
+
+/** Admin-only: list stored reviews (requires REVIEWS_ADMIN_TOKEN). */
+export const listAdminReviews = createServerFn({ method: "POST" })
+  .inputValidator((data: { token: string }) => data)
+  .handler(
+    async ({
+      data,
+    }): Promise<
+      | { ok: true; reviews: Review[]; durable: boolean }
+      | { ok: false; error: "unauthorized" | "not_configured" }
+    > => {
+      if (!adminTokenConfigured()) {
+        return { ok: false, error: "not_configured" };
+      }
+      if (!verifyAdminToken(data.token)) {
+        return { ok: false, error: "unauthorized" };
+      }
+      const { listStoredReviews } = await getStore();
+      const stored = await listStoredReviews();
+      return {
+        ok: true,
+        reviews: stored.sort((a, b) => b.createdAt - a.createdAt),
+        durable: isDurable(),
+      };
+    },
+  );
+
+/** Admin-only: publish a public reply on a stored review. */
+export const replyToReview = createServerFn({ method: "POST" })
+  .inputValidator((data: ReplyToReviewInput) => data)
+  .handler(
+    async ({
+      data,
+    }): Promise<
+      | { ok: true; review: PublicReview }
+      | { ok: false; error: "unauthorized" | "not_configured" | "not_found" | "short" }
+    > => {
+      if (!adminTokenConfigured()) {
+        return { ok: false, error: "not_configured" };
+      }
+      if (!verifyAdminToken(data.token)) {
+        return { ok: false, error: "unauthorized" };
+      }
+      const text = sanitizeReply(data.text || "");
+      if (text.length < 2) {
+        return { ok: false, error: "short" };
+      }
+      const { setReviewReply } = await getStore();
+      const updated = await setReviewReply(data.reviewId, {
+        text,
+        createdAt: Date.now(),
+      });
+      if (!updated) {
+        return { ok: false, error: "not_found" };
+      }
+      return { ok: true, review: toPublic(updated) };
     },
   );

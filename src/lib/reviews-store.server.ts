@@ -1,4 +1,4 @@
-import type { Review } from "./reviews";
+import type { Review, ReviewReply } from "./reviews";
 
 const LIST_KEY = "utilihub:reviews";
 const RATE_PREFIX = "utilihub:review-rate:";
@@ -69,6 +69,36 @@ export async function appendReview(review: Review): Promise<void> {
   if (memoryReviews.length > 200) memoryReviews.length = 200;
 }
 
+/** Attach or replace an admin reply on an existing stored review. */
+export async function setReviewReply(reviewId: string, reply: ReviewReply): Promise<Review | null> {
+  if (upstashConfigured()) {
+    try {
+      const raw = (await upstash(["LRANGE", LIST_KEY, 0, 499])) as string[] | null;
+      if (!raw?.length) return null;
+      for (let i = 0; i < raw.length; i++) {
+        try {
+          const parsed = JSON.parse(raw[i]!) as Review;
+          if (parsed.id !== reviewId) continue;
+          const updated: Review = { ...parsed, reply };
+          await upstash(["LSET", LIST_KEY, i, JSON.stringify(updated)]);
+          return updated;
+        } catch {
+          // skip bad row
+        }
+      }
+      return null;
+    } catch {
+      // fall through to memory
+    }
+  }
+
+  const idx = memoryReviews.findIndex((r) => r.id === reviewId);
+  if (idx < 0) return null;
+  const updated: Review = { ...memoryReviews[idx]!, reply };
+  memoryReviews[idx] = updated;
+  return updated;
+}
+
 /** Returns true if the client is still under the daily limit. */
 export async function checkAndBumpRate(clientKey: string, limit = 3): Promise<boolean> {
   const today = dayKey();
@@ -78,18 +108,16 @@ export async function checkAndBumpRate(clientKey: string, limit = 3): Promise<bo
     try {
       const raw = (await upstash(["GET", key])) as string | null;
       let count = 0;
-      let day = today;
       if (raw) {
         try {
           const parsed = JSON.parse(raw) as { count: number; day: string };
           count = parsed.day === today ? parsed.count : 0;
-          day = today;
         } catch {
           count = 0;
         }
       }
       if (count >= limit) return false;
-      await upstash(["SET", key, JSON.stringify({ count: count + 1, day })]);
+      await upstash(["SET", key, JSON.stringify({ count: count + 1, day: today })]);
       await upstash(["EXPIRE", key, 60 * 60 * 36]);
       return true;
     } catch {
