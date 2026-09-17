@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
+import { ToolListBrowser } from "@/components/ToolListBrowser";
 import { ALL_CATEGORIES, ALL_TOOLS, allCategoryBySlug } from "@/lib/all-tools";
 import { spanishCategoryName } from "@/lib/i18n/es";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
@@ -16,7 +17,9 @@ export const Route = createFileRoute("/es/categoria/$slug")({
     if (!loaderData) return { meta: [{ title: "Categoría no encontrada | UtiliHub" }, { name: "robots", content: "noindex" }] };
     const { category, tools } = loaderData;
     const name = spanishCategoryName(category.slug);
-    const description = cleanDescription(`Herramientas gratuitas de ${name.toLowerCase()} para usar en el navegador. ${tools.length} utilidades sin registro.`);
+    const description = cleanDescription(
+      `Herramientas gratuitas de ${name.toLowerCase()} para usar en el navegador. ${tools.length} utilidades sin registro.`,
+    );
     const url = absoluteUrl(`/es/categoria/${category.slug}`);
     return {
       meta: [
@@ -33,16 +36,22 @@ export const Route = createFileRoute("/es/categoria/$slug")({
         { rel: "canonical", href: url },
         { rel: "alternate", hrefLang: "es", href: url },
       ],
-      scripts: [{
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@graph": [
-            { "@type": "CollectionPage", name, description, url },
-            breadcrumbSchema([{ name: "Inicio", path: "/es" }, { name: "Herramientas", path: "/es/herramientas" }, { name }]),
-          ],
-        }),
-      }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              { "@type": "CollectionPage", name, description, url },
+              breadcrumbSchema([
+                { name: "Inicio", path: "/es" },
+                { name: "Herramientas", path: "/es/herramientas" },
+                { name },
+              ]),
+            ],
+          }),
+        },
+      ],
     };
   },
   component: SpanishCategoryPage,
@@ -52,6 +61,12 @@ function SpanishCategoryPage() {
   const { category, tools } = Route.useLoaderData();
   const name = spanishCategoryName(category.slug);
   const neighboring = ALL_CATEGORIES.filter((item) => item.slug !== category.slug).slice(0, 4);
+  const browseItems = tools.map((t) => ({
+    ...t,
+    id: t.slug,
+    searchText: `${t.summary} ${t.description ?? ""} ${(t.keywords ?? []).join(" ")}`,
+  }));
+
   return (
     <div className="container-page py-6 sm:py-8">
       <Breadcrumbs
@@ -69,15 +84,24 @@ function SpanishCategoryPage() {
             Herramientas de {name.toLowerCase()} para usar directamente en el navegador.
           </p>
         </div>
-        <span className="shrink-0 text-xs font-semibold text-muted-foreground">{tools.length} herramientas</span>
+        <span className="shrink-0 text-xs font-semibold text-muted-foreground">
+          {tools.length} herramientas
+        </span>
       </div>
-      <div className="mt-5 divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-        {tools.map((t) => (
-          <ToolCard key={t.slug} tool={t} locale="es" />
-        ))}
+
+      <div className="mt-5">
+        <ToolListBrowser
+          tools={browseItems}
+          locale="es"
+          searchPlaceholder={`Buscar en ${name}…`}
+          renderItem={(tool) => <ToolCard tool={tool} locale="es" />}
+        />
       </div>
+
       <section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories">
-        <h2 id="other-categories" className="text-base font-bold">También podés explorar</h2>
+        <h2 id="other-categories" className="text-base font-bold">
+          También podés explorar
+        </h2>
         <div className="mt-3 flex flex-wrap gap-2">
           {neighboring.map((item) => (
             <Link

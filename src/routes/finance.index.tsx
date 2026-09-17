@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FinancialToolCard } from "@/components/FinancialToolCard";
+import { ToolListBrowser } from "@/components/ToolListBrowser";
 import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
 import { absoluteUrl, ogImage } from "@/lib/seo";
 
@@ -30,6 +31,12 @@ export const Route = createFileRoute("/finance/")({
 });
 
 function FinancialHub() {
+  const browseItems = FINANCIAL_TOOLS.map((tool) => ({
+    ...tool,
+    id: tool.slug,
+    searchText: `${tool.summary} ${tool.description ?? ""}`,
+  }));
+
   return (
     <main className="container-page py-6 sm:py-8">
       <div className="flex items-end justify-between gap-3">
@@ -40,12 +47,18 @@ function FinancialHub() {
             Free financial calculators for investing, savings, loans, inflation, and portfolios.
           </p>
         </div>
-        <span className="shrink-0 text-xs font-semibold text-muted-foreground">{FINANCIAL_TOOLS.length} tools</span>
+        <span className="shrink-0 text-xs font-semibold text-muted-foreground">
+          {FINANCIAL_TOOLS.length} tools
+        </span>
       </div>
-      <div className="mt-5 divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-        {FINANCIAL_TOOLS.map((tool) => (
-          <FinancialToolCard key={tool.slug} tool={tool} />
-        ))}
+
+      <div className="mt-5">
+        <ToolListBrowser
+          tools={browseItems}
+          locale="en"
+          searchPlaceholder="Search financial tools…"
+          renderItem={(tool) => <FinancialToolCard tool={tool} />}
+        />
       </div>
     </main>
   );
