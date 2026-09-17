@@ -1,4 +1,4 @@
-/** Premium presentation config (plan days 1–5 + 8–9). */
+/** Premium presentation config (plan days 1–9). */
 
 export type ToolShowcase = {
   badge: string;
@@ -69,7 +69,7 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "slug-generator": { badge: "SEO", badgeEs: "SEO", tagline: "Turn a title into a clean URL slug for posts, products and docs.", taglineEs: "Convertí un título en un slug limpio para posts, productos y docs.", fromLabel: "Title", toLabel: "slug", accent: "blue" },
   "json-validator": { badge: "Dev", badgeEs: "Dev", tagline: "Validate JSON syntax and surface parse errors before they hit production.", taglineEs: "Validá la sintaxis JSON y detectá errores de parseo antes de producción.", fromLabel: "{…}", toLabel: "OK", accent: "violet" },
   "conversor-datos": { badge: "Units", badgeEs: "Unidades", tagline: "Convert bits, bytes, KB, MB, GB and TB for storage and bandwidth.", taglineEs: "Convertí bits, bytes, KB, MB, GB y TB para almacenamiento y ancho de banda.", fromLabel: "MB", toLabel: "GB", accent: "emerald" },
-  "html-encode": { badge: "Encode", badgeEs: "Codificar", tagline: "Escape special characters so HTML displays text instead of executing markup.", taglineEs: "Escapá caracteres especiales para que el HTML muestre texto y no markup.", fromLabel: "<tag>", toLabel: "&lt;", accent: "amber" },
+  "html-encode": { badge: "Encode", badgeEs: "Codificar", tagline: "Escape special characters so HTML displays text instead of executing markup.", taglineEs: "Escapá caracteres especiales para que el HTML muestre texto y no markup.", fromLabel: "<tag>", toLabel: "<", accent: "amber" },
 
   // —— Dates · stats · productivity ——
   cronometro: { badge: "Timer", badgeEs: "Timer", tagline: "Precise stopwatch with start, pause and reset — fully local in your browser.", taglineEs: "Cronómetro preciso con inicio, pausa y reinicio. Todo en tu navegador.", fromLabel: "0:00", toLabel: "RUN", accent: "blue" },
@@ -140,6 +140,37 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "ordenar-lineas": { badge: "Text", badgeEs: "Texto", tagline: "Sort lines alphabetically for lists, logs, and clean exports.", taglineEs: "Ordená líneas alfabéticamente para listas, logs y exportaciones.", fromLabel: "LINES", toLabel: "A→Z", accent: "emerald" },
   "invertir-texto": { badge: "Text", badgeEs: "Texto", tagline: "Reverse any string character by character in one click.", taglineEs: "Invertí cualquier texto carácter por carácter en un clic.", fromLabel: "ABC", toLabel: "CBA", accent: "rose" },
   "contador-de-lineas": { badge: "Text", badgeEs: "Texto", tagline: "Count lines in pasted text for scripts, logs, and documents.", taglineEs: "Contá líneas de un texto pegado: scripts, logs y documentos.", fromLabel: "TEXT", toLabel: "LINES", accent: "cyan" },
+
+  // —— Plan Day 6: Developer ——
+  "json-minifier": { badge: "Dev", badgeEs: "Dev", tagline: "Strip whitespace and minify JSON for compact payloads and APIs.", taglineEs: "Minificá JSON quitando espacios para payloads y APIs más livianos.", fromLabel: "PRETTY", toLabel: "MIN", accent: "violet" },
+  "json-a-csv": { badge: "Dev", badgeEs: "Dev", tagline: "Turn a JSON array of objects into CSV ready for spreadsheets.", taglineEs: "Convertí un array JSON de objetos a CSV listo para planillas.", fromLabel: "JSON", toLabel: "CSV", accent: "emerald" },
+  "json-a-yaml": { badge: "Dev", badgeEs: "Dev", tagline: "Convert JSON structures into readable YAML for configs and docs.", taglineEs: "Pasá estructuras JSON a YAML legible para configs y documentación.", fromLabel: "JSON", toLabel: "YAML", accent: "cyan" },
+  "html-decode": { badge: "Encode", badgeEs: "Codificar", tagline: "Decode HTML entities back to plain characters for clean text.", taglineEs: "Decodificá entidades HTML a caracteres normales para texto limpio.", fromLabel: "<", toLabel: "<", accent: "blue" },
+  "random-id-generator": { badge: "Dev", badgeEs: "Dev", tagline: "Generate short random IDs in the browser for tests and prototypes.", taglineEs: "Generá IDs cortos al azar en el navegador para tests y prototipos.", fromLabel: "—", toLabel: "ID", accent: "amber" },
+  "timestamp-generator": { badge: "Dev", badgeEs: "Dev", tagline: "Convert any date and time into a Unix timestamp in seconds.", taglineEs: "Convertí fecha y hora a un timestamp Unix en segundos.", fromLabel: "DATE", toLabel: "UNIX", accent: "rose" },
+  "timestamp-to-date": { badge: "Dev", badgeEs: "Dev", tagline: "Turn a Unix timestamp into a human-readable date and time.", taglineEs: "Pasá un timestamp Unix a una fecha y hora legibles.", fromLabel: "UNIX", toLabel: "DATE", accent: "violet" },
+  "regex-tester": { badge: "Dev", badgeEs: "Dev", tagline: "Test regular expressions against sample text fully offline.", taglineEs: "Probá expresiones regulares contra un texto, 100% offline.", fromLabel: "REGEX", toLabel: "MATCH", accent: "emerald" },
+  "regex-escape": { badge: "Dev", badgeEs: "Dev", tagline: "Escape special regex characters so literal strings match safely.", taglineEs: "Escapá caracteres especiales de regex para buscar texto literal.", fromLabel: "a.b", toLabel: "a\\.b", accent: "cyan" },
+  "http-status": { badge: "Dev", badgeEs: "Dev", tagline: "Look up what any HTTP status code means in plain language.", taglineEs: "Consultá qué significa cualquier código de estado HTTP.", fromLabel: "404", toLabel: "MEANING", accent: "amber" },
+  "mime-types": { badge: "Dev", badgeEs: "Dev", tagline: "Look up common MIME types for files, APIs, and Content-Type headers.", taglineEs: "Consultá tipos MIME comunes para archivos, APIs y headers Content-Type.", fromLabel: ".png", toLabel: "MIME", accent: "blue" },
+  "html-minifier": { badge: "Dev", badgeEs: "Dev", tagline: "Minify simple HTML by removing extra whitespace locally.", taglineEs: "Minificá HTML simple quitando espacios de más, en local.", fromLabel: "HTML", toLabel: "MIN", accent: "rose" },
+  "css-minifier": { badge: "Dev", badgeEs: "Dev", tagline: "Minify basic CSS in the browser before shipping stylesheets.", taglineEs: "Minificá CSS básico en el navegador antes de publicar estilos.", fromLabel: "CSS", toLabel: "MIN", accent: "violet" },
+  "javascript-minifier": { badge: "Dev", badgeEs: "Dev", tagline: "Reduce spaces and simple comments in JavaScript snippets locally.", taglineEs: "Reducí espacios y comentarios simples en snippets de JavaScript.", fromLabel: "JS", toLabel: "MIN", accent: "emerald" },
+
+  // —— Plan Day 7: Security ——
+  "hash-sha256": { badge: "Security", badgeEs: "Seguridad", tagline: "Compute a SHA-256 hash of any text locally with Web Crypto.", taglineEs: "Calculá el hash SHA-256 de cualquier texto en local con Web Crypto.", fromLabel: "TEXT", toLabel: "SHA256", accent: "rose" },
+  "hash-sha512": { badge: "Security", badgeEs: "Seguridad", tagline: "Generate a SHA-512 digest for integrity checks and fingerprints.", taglineEs: "Generá un digest SHA-512 para integridad y huellas digitales.", fromLabel: "TEXT", toLabel: "SHA512", accent: "violet" },
+  "hash-sha384": { badge: "Security", badgeEs: "Seguridad", tagline: "Compute SHA-384 hashes for high-strength integrity verification.", taglineEs: "Calculá hashes SHA-384 para verificación de integridad fuerte.", fromLabel: "TEXT", toLabel: "SHA384", accent: "cyan" },
+  "hash-sha1": { badge: "Security", badgeEs: "Seguridad", tagline: "SHA-1 hash for legacy compatibility checks (not for new security).", taglineEs: "Hash SHA-1 para compatibilidad legada (no usar en seguridad nueva).", fromLabel: "TEXT", toLabel: "SHA1", accent: "amber" },
+  "hmac-sha256": { badge: "Security", badgeEs: "Seguridad", tagline: "Sign data with HMAC-SHA-256 using a secret key — fully local.", taglineEs: "Firmá datos con HMAC-SHA-256 y una clave secreta. Todo en local.", fromLabel: "DATA", toLabel: "HMAC", accent: "rose" },
+  "password-strength": { badge: "Security", badgeEs: "Seguridad", tagline: "Estimate password strength and approximate entropy in bits.", taglineEs: "Estimá la fuerza de una contraseña y su entropía aproximada en bits.", fromLabel: "PASS", toLabel: "SCORE", accent: "emerald" },
+  "analizador-entropia": { badge: "Security", badgeEs: "Seguridad", tagline: "Measure string entropy to judge randomness and password quality.", taglineEs: "Medí la entropía de un texto para juzgar aleatoriedad y calidad.", fromLabel: "INPUT", toLabel: "BITS", accent: "blue" },
+  "comparador-hashes": { badge: "Security", badgeEs: "Seguridad", tagline: "Compare text against an expected SHA-256 hash without uploading files.", taglineEs: "Compará texto contra un hash SHA-256 esperado sin subir archivos.", fromLabel: "TEXT", toLabel: "MATCH?", accent: "violet" },
+  "verificador-hash-multi": { badge: "Security", badgeEs: "Seguridad", tagline: "Compute SHA-256 and SHA-512 of the same input in one step.", taglineEs: "Calculá SHA-256 y SHA-512 del mismo input en un solo paso.", fromLabel: "TEXT", toLabel: "HASHES", accent: "cyan" },
+  "generador-claves-api": { badge: "Security", badgeEs: "Seguridad", tagline: "Generate high-entropy API keys with a clear prefix for apps and backends.", taglineEs: "Generá API keys de alta entropía con prefijo claro para apps y backends.", fromLabel: "—", toLabel: "KEY", accent: "amber" },
+  "token-seguro": { badge: "Security", badgeEs: "Seguridad", tagline: "Create a cryptographically random token for sessions and secrets.", taglineEs: "Creá un token criptográficamente aleatorio para sesiones y secretos.", fromLabel: "—", toLabel: "TOKEN", accent: "rose" },
+  "passphrase": { badge: "Security", badgeEs: "Seguridad", tagline: "Build a memorable multi-word passphrase with local randomness.", taglineEs: "Armá una passphrase memorable de varias palabras con aleatoriedad local.", fromLabel: "WORDS", toLabel: "PHRASE", accent: "emerald" },
+  "checksum": { badge: "Security", badgeEs: "Seguridad", tagline: "Quick SHA-256 checksum of any string for integrity checks.", taglineEs: "Checksum SHA-256 rápido de cualquier texto para integridad.", fromLabel: "DATA", toLabel: "CHECK", accent: "blue" },
 };
 
 export function getToolShowcase(slug: string): ToolShowcase | undefined {
