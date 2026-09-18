@@ -32,10 +32,12 @@ const UtilityAdvancedTool = lazy(() =>
   import("./UtilityAdvancedTool").then((m) => ({ default: m.UtilityAdvancedTool })),
 );
 const SeoGrowthTool = lazy(() => import("./SeoGrowthTool").then((m) => ({ default: m.SeoGrowthTool })));
+const GpaCalculator = lazy(() => import("./GpaCalculator").then((m) => ({ default: m.GpaCalculator })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
 function pickComponent(tool: GeneralTool): ToolComp {
+  if (tool.slug === "gpa") return GpaCalculator as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.slug === "secuencias") return SequenceTool as ToolComp;
   if (tool.slug === "potencias-y-raices") return PowerRootTool as ToolComp;
