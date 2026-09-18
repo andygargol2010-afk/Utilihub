@@ -1,9 +1,17 @@
 import type { CatalogTool } from "@/lib/all-tools";
+import { spanishToolName } from "@/lib/i18n/es";
 import { resolvedToolSeo, toolSeoOverride } from "@/lib/tool-seo-overrides";
 
-export function ToolSeoContent({ tool, locale = "en" }: { tool: CatalogTool; locale?: "en" | "es" }) {
+export function ToolSeoContent({
+  tool,
+  locale = "en",
+}: {
+  tool: CatalogTool;
+  locale?: "en" | "es";
+}) {
   const override = toolSeoOverride(tool.slug);
   const resolved = resolvedToolSeo(tool);
+  const displayName = locale === "es" ? spanishToolName(tool) : tool.name;
 
   const about =
     locale === "es" && override?.aboutEs?.length ? override.aboutEs : resolved.about;
@@ -17,12 +25,12 @@ export function ToolSeoContent({ tool, locale = "en" }: { tool: CatalogTool; loc
 
   const guideLabel = locale === "es" ? "Guía de la herramienta" : "Tool guide";
   const howTitle =
-    locale === "es" ? `${tool.name}: cómo funciona` : `${tool.name}: how it works`;
+    locale === "es" ? `${displayName}: cómo funciona` : `${displayName}: how it works`;
   const howLead =
     locale === "es"
       ? "Información práctica para entender el resultado y usar bien esta herramienta."
       : "Practical information to understand the result and use this tool correctly.";
-  const aboutTitle = locale === "es" ? `Sobre ${tool.name}` : `About ${tool.name}`;
+  const aboutTitle = locale === "es" ? `Sobre ${displayName}` : `About ${displayName}`;
   const stepsTitle = locale === "es" ? "Cómo usarla" : "How to use it";
   const faqTitle = locale === "es" ? "Preguntas frecuentes" : "Frequently asked questions";
 
