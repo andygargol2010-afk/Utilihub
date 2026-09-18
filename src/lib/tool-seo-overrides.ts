@@ -1,6 +1,7 @@
 /** Unique SEO copy overrides for high-priority general tools (by internal slug). */
 
 import { TOOL_SEO_OVERRIDES_BASE_A } from "./tool-seo-overrides-base-a";
+import { TOOL_SEO_OVERRIDES_BASE_A2 } from "./tool-seo-overrides-base-a2";
 import { TOOL_SEO_OVERRIDES_BASE_B } from "./tool-seo-overrides-base-b";
 import { TOOL_SEO_OVERRIDES_BLOCK3 } from "./tool-seo-overrides-block3";
 
@@ -19,6 +20,7 @@ export type ToolSeoOverride = {
 
 export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...(TOOL_SEO_OVERRIDES_BASE_A as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_BASE_A2 as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_BASE_B as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_BLOCK3 as Record<string, ToolSeoOverride>),
 };
