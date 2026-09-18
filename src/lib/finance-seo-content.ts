@@ -1,4 +1,7 @@
 import { FINANCE_SEO_BLOCK4 } from "./finance-seo-block4";
+import { FINANCE_SEO_TOP_REST_A } from "./finance-seo-top-rest-a";
+import { FINANCE_SEO_ROI } from "./finance-seo-roi";
+import { FINANCE_SEO_SAVINGS_INFLATION } from "./finance-seo-savings-inflation";
 
 /** Unique on-page SEO copy for high-priority finance tools. */
 
@@ -18,7 +21,9 @@ export type FinanceSeoBlock = {
 };
 
 export const FINANCE_SEO: Record<string, FinanceSeoBlock> = {
-  // Content kept in this file for top 5; block 4 lives in finance-seo-block4.ts
+  ...(FINANCE_SEO_TOP_REST_A as Record<string, FinanceSeoBlock>),
+  ...(FINANCE_SEO_ROI as Record<string, FinanceSeoBlock>),
+  ...(FINANCE_SEO_SAVINGS_INFLATION as Record<string, FinanceSeoBlock>),
   "interes-compuesto": {
     metaTitle: "Compound Interest Calculator — Free Online | UtiliHub",
     metaTitleEs: "Calculadora de interés compuesto gratis | UtiliHub",
@@ -84,5 +89,8 @@ export const FINANCE_SEO: Record<string, FinanceSeoBlock> = {
 };
 
 export function financeSeo(slug: string): FinanceSeoBlock | undefined {
-  return FINANCE_SEO[slug] ?? (FINANCE_SEO_BLOCK4[slug] as FinanceSeoBlock | undefined);
+  return (
+    FINANCE_SEO[slug] ??
+    (FINANCE_SEO_BLOCK4[slug] as FinanceSeoBlock | undefined)
+  );
 }
