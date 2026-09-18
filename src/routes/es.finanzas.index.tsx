@@ -1,5 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ToolListBrowser } from "@/components/ToolListBrowser";
 import { ALL_TOOLS } from "@/lib/all-tools";
 import { absoluteUrl } from "@/lib/seo";
@@ -34,6 +33,9 @@ function SpanishFinanceIndex() {
   const browseItems = tools.map((tool) => ({
     id: tool.slug,
     name: spanishToolName(tool),
+    slug: tool.slug,
+    keywords: tool.keywords,
+    summary: tool.summary,
     searchText: `${tool.summary} ${tool.description ?? ""} ${(tool.keywords ?? []).join(" ")}`,
     tool,
   }));
@@ -50,6 +52,7 @@ function SpanishFinanceIndex() {
         <ToolListBrowser
           tools={browseItems}
           locale="es"
+          categorySlug="finanzas"
           searchPlaceholder="Buscar calculadoras financieras…"
           renderItem={(item) => (
             <Link

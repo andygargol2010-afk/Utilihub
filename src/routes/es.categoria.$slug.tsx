@@ -93,6 +93,7 @@ function SpanishCategoryPage() {
         <ToolListBrowser
           tools={browseItems}
           locale="es"
+          categorySlug={category.slug}
           searchPlaceholder={`Buscar en ${name}…`}
           renderItem={(tool) => <ToolCard tool={tool} locale="es" />}
         />

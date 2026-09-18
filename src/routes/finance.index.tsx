@@ -34,7 +34,7 @@ function FinancialHub() {
   const browseItems = FINANCIAL_TOOLS.map((tool) => ({
     ...tool,
     id: tool.slug,
-    searchText: `${tool.summary} ${tool.description ?? ""}`,
+    searchText: `${tool.summary} ${tool.description ?? ""} ${(tool.keywords ?? []).join(" ")}`,
   }));
 
   return (
@@ -56,6 +56,7 @@ function FinancialHub() {
         <ToolListBrowser
           tools={browseItems}
           locale="en"
+          categorySlug="finanzas"
           searchPlaceholder="Search financial tools…"
           renderItem={(tool) => <FinancialToolCard tool={tool} />}
         />

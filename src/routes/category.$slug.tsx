@@ -103,6 +103,7 @@ function CategoryPage() {
         <ToolListBrowser
           tools={browseItems}
           locale="en"
+          categorySlug={category.slug}
           searchPlaceholder={`Search in ${category.name}…`}
           renderItem={(tool) => <ToolCard tool={tool} />}
         />

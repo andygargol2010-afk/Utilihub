@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ALL_CATEGORIES, ALL_TOOLS, toolHref } from "@/lib/all-tools";
 import { ToolCard } from "@/components/ToolCard";
 import { useFavorites } from "@/hooks/use-favorites";
+import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
 
 function normalize(s: string) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -47,7 +48,7 @@ export function ToolSearch({
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [category, setCategory] = useState<string>(initialCategory ?? "all");
-  const [keyword, setKeyword] = useState("all");
+  const [tag, setTag] = useState<string>("all");
   const [visible, setVisible] = useState(PAGE_SIZE);
   const { favorites, toggle, ready } = useFavorites();
 
@@ -58,7 +59,12 @@ export function ToolSearch({
 
   useEffect(() => {
     setVisible(PAGE_SIZE);
-  }, [category, keyword, debouncedQuery]);
+    setTag("all");
+  }, [category]);
+
+  useEffect(() => {
+    setVisible(PAGE_SIZE);
+  }, [tag, debouncedQuery]);
 
   const index = useMemo(
     () =>
@@ -66,35 +72,27 @@ export function ToolSearch({
         tool,
         name: normalize(tool.name),
         text: normalize(`${tool.name} ${tool.summary} ${tool.description} ${tool.keywords.join(" ")}`),
-        keywords: tool.keywords.map(normalize),
       })),
     [],
   );
 
-  const popularKeywords = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const item of index) {
-      for (const raw of item.keywords) {
-        const key = raw.trim();
-        if (key && key.length > 3 && !STOP.has(key)) counts.set(key, (counts.get(key) ?? 0) + 1);
-      }
-    }
-    return [...counts.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
-      .map(([value]) => value);
-  }, [index]);
+  const categoryTools = useMemo(() => {
+    if (category === "all") return ALL_TOOLS;
+    return ALL_TOOLS.filter((t) => t.category === category);
+  }, [category]);
+
+  const facets = useMemo(
+    () => facetsWithCounts(categoryTools, category, "en"),
+    [categoryTools, category],
+  );
 
   const results = useMemo(() => {
     const tokens = normalize(debouncedQuery)
       .split(/\s+/)
       .filter((token) => token.length > 1 && !STOP.has(token));
     return index
-      .filter(
-        ({ tool, keywords }) =>
-          (category === "all" || tool.category === category) &&
-          (keyword === "all" || keywords.includes(keyword)),
-      )
+      .filter(({ tool }) => category === "all" || tool.category === category)
+      .filter(({ tool }) => tag === "all" || toolMatchesTag(tool, tag))
       .map((item) => {
         if (!tokens.length) return { tool: item.tool, score: 0 };
         let score = 0;
@@ -102,8 +100,8 @@ export function ToolSearch({
           if (item.name === token) score += 100;
           else if (item.name.startsWith(token)) score += 40;
           else if (item.name.includes(token)) score += 25;
-          else if (item.keywords.some((k) => k === token)) score += 30;
-          else if (item.keywords.some((k) => k.includes(token))) score += 15;
+          else if (item.tool.keywords.some((k) => normalize(k) === token)) score += 30;
+          else if (item.tool.keywords.some((k) => normalize(k).includes(token))) score += 15;
           else if (item.text.includes(token)) score += 5;
         }
         return { tool: item.tool, score: score === tokens.length * 5 ? 0 : score };
@@ -111,7 +109,7 @@ export function ToolSearch({
       .filter(({ score }) => !tokens.length || score > 0)
       .sort((a, b) => b.score - a.score || a.tool.name.localeCompare(b.tool.name))
       .map(({ tool }) => tool);
-  }, [category, index, keyword, debouncedQuery]);
+  }, [category, index, tag, debouncedQuery]);
 
   const compactResults = debouncedQuery.trim() ? results.slice(0, 6) : [];
   const shown = results.slice(0, visible);
@@ -209,31 +207,32 @@ export function ToolSearch({
             ))}
           </div>
         )}
-        {!compactHome && popularKeywords.length > 0 && (
+        {!compactHome && facets.length > 0 && (
           <div
             className="mt-1.5 flex items-center gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            aria-label="Filter by keyword"
+            aria-label="Filter by topic"
           >
             <Tag className="size-4 shrink-0 text-muted-foreground" />
             <Button
               type="button"
               size="sm"
-              variant={keyword === "all" ? "default" : "outline"}
-              onClick={() => setKeyword("all")}
+              variant={tag === "all" ? "default" : "outline"}
+              onClick={() => setTag("all")}
               className={categoryButtonClass}
             >
-              Tags
+              Topics
             </Button>
-            {popularKeywords.map((tag) => (
+            {facets.map((f) => (
               <Button
-                key={tag}
+                key={f.id}
                 type="button"
                 size="sm"
-                variant={keyword === tag ? "default" : "outline"}
-                onClick={() => setKeyword(tag)}
+                variant={tag === f.id ? "default" : "outline"}
+                onClick={() => setTag((prev) => (prev === f.id ? "all" : f.id))}
                 className={categoryButtonClass}
               >
-                {tag}
+                {f.label}
+                <span className="ml-1 opacity-70">{f.count}</span>
               </Button>
             ))}
           </div>
@@ -241,12 +240,12 @@ export function ToolSearch({
         {!compactHome && (
           <p className="mt-2 text-xs font-semibold text-muted-foreground" aria-live="polite">
             {results.length} tool{results.length === 1 ? "" : "s"}
-            {category !== "all" ? ` · ${category}` : ""}
-            {keyword !== "all" ? ` · ${keyword}` : ""}
+            {category !== "all" ? ` · ${ALL_CATEGORIES.find((c) => c.slug === category)?.name ?? category}` : ""}
+            {tag !== "all" ? ` · ${facets.find((f) => f.id === tag)?.label ?? tag}` : ""}
           </p>
         )}
       </div>
-      {!compactHome && favTools.length > 0 && !query && keyword === "all" && category === "all" && (
+      {!compactHome && favTools.length > 0 && !query && tag === "all" && category === "all" && (
         <section aria-labelledby="favorites">
           <div className="mb-2 flex items-center gap-2">
             <Star className="size-4 fill-highlight text-highlight" />
@@ -265,7 +264,7 @@ export function ToolSearch({
         <div aria-live="polite">
           {results.length === 0 ? (
             <p className="rounded-xl border border-dashed border-border bg-surface p-8 text-center text-sm text-muted-foreground">
-              No tools match «{query || keyword}».
+              No tools match «{query || tag}».
             </p>
           ) : (
             <>
