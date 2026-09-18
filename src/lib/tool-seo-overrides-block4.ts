@@ -113,7 +113,7 @@ export const TOOL_SEO_OVERRIDES_BLOCK4: Record<string, ToolSeoOverrideBlock4> = 
   },
 
   "slug-generator": {
-    metaTitle: "Slug Generator — URLSlug from Title | UtiliHub",
+    metaTitle: "Slug Generator — URL Slug from Title | UtiliHub",
     metaTitleEs: "Generador de slug para URLs | UtiliHub",
     metaDescription:
       "Turn a title into a clean URL slug: lowercase, hyphens, no special characters. Free slug generator.",
