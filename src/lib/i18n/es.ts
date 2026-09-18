@@ -160,6 +160,27 @@ const EXACT_NAMES: Record<string, string> = {
   "jpg-a-png": "JPG a PNG",
   "unir-pdf": "Unir PDF",
   "dividir-pdf": "Dividir PDF",
+  // SEO growth tools
+  imc: "Calculadora de IMC",
+  "bmr-tdee": "Calculadora BMR y TDEE",
+  gpa: "Calculadora de GPA",
+  "generador-qr": "Generador de código QR",
+  "jwt-decoder": "Decodificador JWT",
+  "numeros-romanos": "Números romanos",
+  fracciones: "Calculadora de fracciones",
+  "relacion-aspecto": "Relación de aspecto",
+  "peso-ideal": "Peso ideal",
+  "fecha-parto": "Fecha de parto",
+  "ciclos-sueno": "Ciclos de sueño",
+  "pago-tarjeta-credito": "Pago de tarjeta de crédito",
+  "cron-generator": "Generador de expresiones cron",
+  "calculadora-subnet": "Calculadora de subred",
+  "tiempo-lectura": "Tiempo de lectura",
+  "validador-luhn": "Validador Luhn",
+  "punto-equilibrio-unidades": "Punto de equilibrio (unidades)",
+  "mpg-a-litros": "MPG a L/100 km",
+  "ppi-pantalla": "PPI de pantalla",
+  "crecimiento-periodico": "Crecimiento periódico",
 };
 
 const ACCENTED_TERMS: Record<string, string> = {
