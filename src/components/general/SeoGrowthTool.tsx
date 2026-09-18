@@ -63,7 +63,14 @@ function fromRoman(s: string): number {
 function b64urlToJson(part: string): unknown {
   const pad = part.length % 4 === 0 ? "" : "=".repeat(4 - (part.length % 4));
   const b64 = (part + pad).replace(/-/g, "+").replace(/_/g, "/");
-  return JSON.parse(atob(b64));
+  const binary = atob(b64);
+  try {
+    const bytes = Uint8Array.from(binary, (ch) => ch.charCodeAt(0));
+    const text = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+    return JSON.parse(text);
+  } catch {
+    return JSON.parse(binary);
+  }
 }
 
 function luhnOk(digits: string): boolean {
@@ -91,6 +98,13 @@ function ipToInt(ip: string): number {
 
 function intToIp(n0: number): string {
   return [(n0 >>> 24) & 255, (n0 >>> 16) & 255, (n0 >>> 8) & 255, n0 & 255].join(".");
+}
+
+function formatLocalYmd(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 const esErr = (m: string, es: boolean) => {
@@ -290,8 +304,11 @@ export function SeoGrowthTool({ tool, locale = "en" }: { tool: GeneralTool; loca
         case "generador-qr": {
           const payload = (text || a).trim();
           if (!payload) throw new Error("Enter the required values.");
+          // External image API (no npm dep). Payload is sent to api.qrserver.com.
           setQrUrl(`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(payload)}`);
-          result = es ? "Código QR generado abajo." : "QR code generated below.";
+          result = es
+            ? "Código QR generado abajo. (La imagen se solicita a un servicio externo.)"
+            : "QR code generated below. (Image is requested from an external service.)";
           break;
         }
         case "jwt-decoder": {
@@ -306,7 +323,11 @@ export function SeoGrowthTool({ tool, locale = "en" }: { tool: GeneralTool; loca
         case "numeros-romanos": {
           const mode = n(b || "1");
           if (mode === 2) result = `${es ? "Árabe" : "Arabic"}: ${fromRoman(a)}`;
-          else result = `${es ? "Romano" : "Roman"}: ${toRoman(Math.round(n(a)))}`;
+          else {
+            const num = Math.round(n(a));
+            if (!Number.isFinite(num)) throw new Error("Enter the required values.");
+            result = `${es ? "Romano" : "Roman"}: ${toRoman(num)}`;
+          }
           break;
         }
         case "fracciones": {
@@ -357,23 +378,26 @@ export function SeoGrowthTool({ tool, locale = "en" }: { tool: GeneralTool; loca
           const inches = hCm / 2.54;
           const idealKg = (sex === 2 ? 45.5 : 50) + 0.91 * (hCm - 152.4);
           const hamwi = (sex === 2 ? 45.5 : 48) + 2.3 * Math.max(0, inches - 60) * 0.453592;
-          result = `${es ? "Devine (kg)" : "Devine (kg)"}: ${idealKg.toFixed(1)}\nHamwi ≈ ${hamwi.toFixed(1)} kg`;
+          result = `Devine: ${idealKg.toFixed(1)} kg\nHamwi ≈ ${hamwi.toFixed(1)} kg`;
           break;
         }
         case "fecha-parto": {
           const raw = (a || text).trim();
-          const dt = new Date(raw + "T12:00:00");
+          const m = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+          if (!m) throw new Error("Enter the required values.");
+          const dt = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 12, 0, 0);
           if (Number.isNaN(dt.getTime())) throw new Error("Enter the required values.");
           const due = new Date(dt);
           due.setDate(due.getDate() + 280);
-          result = `${es ? "FPP estimada" : "Estimated due date"}: ${due.toISOString().slice(0, 10)}`;
+          result = `${es ? "FPP estimada" : "Estimated due date"}: ${formatLocalYmd(due)}`;
           break;
         }
         case "ciclos-sueno": {
           const m = (a || text).trim().match(/^(\d{1,2}):(\d{2})$/);
           if (!m) throw new Error("Enter the required values.");
-          let h = Number(m[1]),
-            min = Number(m[2]);
+          const h = Number(m[1]);
+          const min = Number(m[2]);
+          if (h > 23 || min > 59) throw new Error("Enter the required values.");
           const times: string[] = [];
           for (let cycles = 6; cycles >= 3; cycles--) {
             let total = h * 60 + min - cycles * 90 - 15;
@@ -397,11 +421,14 @@ export function SeoGrowthTool({ tool, locale = "en" }: { tool: GeneralTool; loca
           let b0 = bal,
             months = 0,
             interest = 0;
-          while (b0 > 0.01 && months < 600) {
+          while (b0 > 0.005 && months < 600) {
             const i = r > 0 ? b0 * r : 0;
             interest += i;
-            b0 = b0 + i - pay;
+            const due = b0 + i;
+            const applied = Math.min(pay, due);
+            b0 = due - applied;
             months++;
+            if (applied < pay && b0 <= 0.005) break;
           }
           result = `${es ? "Meses" : "Months"}: ${months}\n${es ? "Interés total" : "Total interest"}: ${interest.toFixed(2)}`;
           break;
@@ -431,6 +458,7 @@ export function SeoGrowthTool({ tool, locale = "en" }: { tool: GeneralTool; loca
         }
         case "tiempo-lectura": {
           const raw = (text || a).trim();
+          if (!raw) throw new Error("Enter the required values.");
           const wpm = n(b || "200") || 200;
           const words = /^\d+$/.test(raw) ? n(raw) : raw.split(/\s+/).filter(Boolean).length;
           const mins = words / wpm;
@@ -489,9 +517,11 @@ export function SeoGrowthTool({ tool, locale = "en" }: { tool: GeneralTool; loca
   };
 
   const fieldCount = labels.fields.length;
-  const textOnly = ["generador-qr", "jwt-decoder", "tiempo-lectura", "fecha-parto", "ciclos-sueno", "validador-luhn"].includes(
+  /** Single textarea tools (no secondary numeric field in the same row). */
+  const textOnly = ["generador-qr", "jwt-decoder", "fecha-parto", "ciclos-sueno", "validador-luhn"].includes(
     tool.slug,
   );
+  const readingTime = tool.slug === "tiempo-lectura";
 
   return (
     <div className="space-y-4">
@@ -508,6 +538,29 @@ export function SeoGrowthTool({ tool, locale = "en" }: { tool: GeneralTool; loca
             }}
           />
         </label>
+      ) : readingTime ? (
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="space-y-1 sm:col-span-2">
+            <span className="text-sm font-medium">{labels.fields[0]}</span>
+            <textarea
+              className="min-h-[88px] w-full rounded-xl border bg-background px-3 py-2 text-sm"
+              value={text || a}
+              onChange={(e) => {
+                setText(e.target.value);
+                setA(e.target.value);
+              }}
+            />
+          </label>
+          <label className="space-y-1">
+            <span className="text-sm font-medium">{labels.fields[1]}</span>
+            <input
+              className="h-11 w-full rounded-xl border bg-background px-3"
+              value={b}
+              onChange={(e) => setB(e.target.value)}
+              placeholder="200"
+            />
+          </label>
+        </div>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
           {labels.fields.slice(0, 4).map((label, idx) => {
@@ -532,8 +585,6 @@ export function SeoGrowthTool({ tool, locale = "en" }: { tool: GeneralTool; loca
           )}
         </div>
       )}
-      {!textOnly && tool.slug === "tiempo-lectura" ? null : null}
-      {(tool.slug === "tiempo-lectura" || tool.slug === "ciclos-sueno") && textOnly === false ? null : null}
       <button type="button" onClick={run} className="rounded-xl bg-primary px-4 py-2 font-bold text-primary-foreground">
         {labels.btn}
       </button>
