@@ -38,11 +38,10 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
     const name = spanishToolName(tool);
     const category = spanishCategoryName(tool.category);
     const title = override?.metaTitleEs ?? `${name} gratis online | UtiliHub`;
+    // Prefer ES override; never fall back to English catalog description on /es/*
     const description = cleanDescription(
       override?.metaDescriptionEs ??
-        (tool.description?.trim()
-          ? tool.description
-          : `Herramienta gratuita de ${category.toLowerCase()} para usar directamente en el navegador: ${name}. Sin registro.`),
+        `Herramienta gratuita de ${category.toLowerCase()} para usar directamente en el navegador: ${name}. Sin registro.`,
     );
     const englishUrl = absoluteUrl(englishToolPath(tool));
     const faqEs = override?.faqEs ?? [];
@@ -104,7 +103,7 @@ function SpanishToolPage() {
           <div className="min-w-0">
             <h1 className="text-2xl font-bold sm:text-3xl">{name}</h1>
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-              {tool.summary || `Herramienta de ${spanishCategoryName(tool.category).toLowerCase()}.`}
+              {`Herramienta de ${spanishCategoryName(tool.category).toLowerCase()}.`}
             </p>
           </div>
           <FavoriteButton slug={tool.slug} name={name} locale="es" />
