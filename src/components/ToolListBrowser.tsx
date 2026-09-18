@@ -1,11 +1,17 @@
 import { useMemo, useState, type ReactNode } from "react";
-import { Search } from "lucide-react";
+import { Search, Tag } from "lucide-react";
+import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
 
 export type BrowseableTool = {
   id: string;
   name: string;
   /** Extra text used only for filtering (summary, keywords…). */
   searchText?: string;
+  slug?: string;
+  keywords?: string[];
+  kind?: string;
+  summary?: string;
+  category?: string;
 };
 
 function normalize(s: string) {
@@ -24,7 +30,7 @@ function letterOf(name: string) {
 const PAGE_SIZE = 20;
 
 /**
- * Mobile-friendly tool list: local search, A–Z jump chips, progressive reveal.
+ * Mobile-friendly tool list: local search, intent tags, A–Z jump, progressive reveal.
  */
 export function ToolListBrowser<T extends BrowseableTool>({
   tools,
@@ -32,17 +38,26 @@ export function ToolListBrowser<T extends BrowseableTool>({
   renderItem,
   pageSize = PAGE_SIZE,
   searchPlaceholder,
+  categorySlug,
 }: {
   tools: T[];
   locale?: "en" | "es";
   renderItem: (tool: T) => ReactNode;
   pageSize?: number;
   searchPlaceholder?: string;
+  /** Internal category slug for curated facet chips (e.g. finanzas, matematicas). */
+  categorySlug?: string;
 }) {
   const es = locale === "es";
   const [query, setQuery] = useState("");
   const [visible, setVisible] = useState(pageSize);
   const [activeLetter, setActiveLetter] = useState<string | "all">("all");
+  const [activeTag, setActiveTag] = useState<string | "all">("all");
+
+  const facets = useMemo(
+    () => facetsWithCounts(tools, categorySlug ?? "all", locale),
+    [tools, categorySlug, locale],
+  );
 
   const filtered = useMemo(() => {
     const tokens = normalize(query)
@@ -55,11 +70,25 @@ export function ToolListBrowser<T extends BrowseableTool>({
         return tokens.every((token) => hay.includes(token));
       });
     }
+    if (activeTag !== "all") {
+      list = list.filter((tool) =>
+        toolMatchesTag(
+          {
+            slug: tool.slug ?? tool.id,
+            name: tool.name,
+            keywords: tool.keywords,
+            kind: tool.kind,
+            summary: tool.summary ?? tool.searchText,
+          },
+          activeTag,
+        ),
+      );
+    }
     if (activeLetter !== "all") {
       list = list.filter((tool) => letterOf(tool.name) === activeLetter);
     }
     return [...list].sort((a, b) => a.name.localeCompare(b.name, es ? "es" : "en"));
-  }, [tools, query, activeLetter, es]);
+  }, [tools, query, activeLetter, activeTag, es]);
 
   const letters = useMemo(() => {
     const set = new Set<string>();
@@ -75,6 +104,8 @@ export function ToolListBrowser<T extends BrowseableTool>({
   const placeholder =
     searchPlaceholder ?? (es ? "Buscar en esta lista…" : "Search in this list…");
 
+  const resetPage = () => setVisible(pageSize);
+
   return (
     <div className="space-y-3">
       <div className="sticky top-16 z-20 -mx-1 space-y-2 bg-background/95 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -85,13 +116,55 @@ export function ToolListBrowser<T extends BrowseableTool>({
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
-              setVisible(pageSize);
+              resetPage();
             }}
             placeholder={placeholder}
             aria-label={placeholder}
             className="h-12 w-full rounded-xl border border-border/70 bg-card pl-11 pr-3 text-base shadow-sm focus-visible:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           />
         </label>
+
+        {facets.length > 0 && (
+          <div
+            className="flex items-center gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            role="toolbar"
+            aria-label={es ? "Filtrar por tema" : "Filter by topic"}
+          >
+            <Tag className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTag("all");
+                resetPage();
+              }}
+              className={`min-h-9 shrink-0 rounded-full px-3 text-xs font-bold ${
+                activeTag === "all"
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-border bg-card text-muted-foreground hover:bg-accent"
+              }`}
+            >
+              {es ? "Temas" : "Topics"}
+            </button>
+            {facets.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => {
+                  setActiveTag((prev) => (prev === f.id ? "all" : f.id));
+                  resetPage();
+                }}
+                className={`min-h-9 shrink-0 rounded-full px-3 text-xs font-semibold ${
+                  activeTag === f.id
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-border bg-card text-foreground hover:bg-accent"
+                }`}
+              >
+                {f.label}
+                <span className="ml-1 opacity-70">{f.count}</span>
+              </button>
+            ))}
+          </div>
+        )}
 
         {letters.length > 4 && (
           <div
@@ -103,7 +176,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
               type="button"
               onClick={() => {
                 setActiveLetter("all");
-                setVisible(pageSize);
+                resetPage();
               }}
               className={`min-h-9 shrink-0 rounded-full px-3 text-xs font-bold ${
                 activeLetter === "all"
@@ -119,7 +192,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
                 type="button"
                 onClick={() => {
                   setActiveLetter(L);
-                  setVisible(pageSize);
+                  resetPage();
                 }}
                 className={`grid size-9 shrink-0 place-items-center rounded-full text-xs font-bold ${
                   activeLetter === L
@@ -137,6 +210,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
           {es
             ? `${filtered.length} de ${tools.length} herramientas`
             : `${filtered.length} of ${tools.length} tools`}
+          {activeTag !== "all" ? ` · ${facets.find((f) => f.id === activeTag)?.label ?? activeTag}` : ""}
           {activeLetter !== "all" ? ` · ${activeLetter}` : ""}
           {query.trim() ? ` · “${query.trim()}”` : ""}
         </p>
@@ -144,7 +218,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
 
       {filtered.length === 0 ? (
         <p className="rounded-xl border border-dashed border-border bg-surface p-8 text-center text-sm text-muted-foreground">
-          {es ? `No hay coincidencias para «${query}».` : `No matches for «${query}».`}
+          {es ? `No hay coincidencias.` : `No matches.`}
         </p>
       ) : (
         <>
