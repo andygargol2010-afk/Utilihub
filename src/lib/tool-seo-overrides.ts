@@ -4,6 +4,7 @@ import { TOOL_SEO_OVERRIDES_BASE_A } from "./tool-seo-overrides-base-a";
 import { TOOL_SEO_OVERRIDES_BASE_A2 } from "./tool-seo-overrides-base-a2";
 import { TOOL_SEO_OVERRIDES_BASE_B } from "./tool-seo-overrides-base-b";
 import { TOOL_SEO_OVERRIDES_BLOCK3 } from "./tool-seo-overrides-block3";
+import { TOOL_SEO_OVERRIDES_BLOCK4 } from "./tool-seo-overrides-block4";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -23,6 +24,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...(TOOL_SEO_OVERRIDES_BASE_A2 as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_BASE_B as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_BLOCK3 as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_BLOCK4 as Record<string, ToolSeoOverride>),
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
