@@ -12,6 +12,7 @@ import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
 import { toolByEnglishSlug, englishToolPath, englishToolSlug, englishCategorySlug, englishCategoryPath } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
+import { resolvedToolSeo } from "@/lib/tool-seo-overrides";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { journeyLabel, journeyTools } from "@/lib/discovery";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
@@ -29,24 +30,27 @@ export const Route = createFileRoute("/tools/$slug")({
     const { tool } = loaderData;
     const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
     if (!category) return { meta: [{ title: tool.title }, { name: "description", content: cleanDescription(tool.description) }, { name: "robots", content: "noindex" }] };
-    const description = cleanDescription(tool.description);
+    const seo = resolvedToolSeo(tool);
+    const title = seo.title ?? tool.title;
+    const description = cleanDescription(seo.description ?? tool.description);
     const url = absoluteUrl(englishToolPath(tool));
     const esUrl = absoluteUrl(tool.category === "finanzas" ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`);
     const categoryPath = englishCategoryPath(category.slug);
+    const faq = seo.faq;
     return {
       meta: [
-        { title: tool.title },
+        { title },
         { name: "description", content: description },
         { name: "keywords", content: toolKeywords(tool).join(", ") },
         { name: "robots", content: "index, follow, max-image-preview:large" },
-        { property: "og:title", content: tool.title },
+        { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
         { property: "og:url", content: url },
         { property: "og:site_name", content: "UtiliHub" },
         { property: "og:image", content: ogImage() },
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: tool.title },
+        { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
         { name: "twitter:image", content: ogImage() },
       ],
@@ -61,8 +65,8 @@ export const Route = createFileRoute("/tools/$slug")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@graph": [
-            webApplicationSchema(tool),
-            ...(tool.faq?.length ? [faqSchema(tool.faq)] : []),
+            webApplicationSchema({ ...tool, description, title }),
+            ...(faq.length ? [faqSchema(faq)] : []),
             breadcrumbSchema([
               { name: "Home", path: "/" },
               { name: "Tools", path: "/tools" },
@@ -122,7 +126,7 @@ function ToolPage() {
       <AdsterraBanner />
       {nextStep && <section className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5" aria-labelledby="next-step"><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p><div className="mt-2 flex flex-wrap items-center justify-between gap-3"><div><h2 id="next-step" className="text-base font-black">{journeyLabel(tool)}</h2><p className="mt-1 text-sm text-muted-foreground">After using {tool.name}, continue with {nextStep.name}.</p></div><Link to={englishToolPath(nextStep) as "/tools/$slug"} params={{ slug: englishToolSlug(nextStep) }} className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Open next <ArrowRight className="size-4" /></Link></div></section>}
       {related.length > 0 && <section className="mt-8" aria-labelledby="related"><div className="mb-2 flex items-center justify-between"><div><h2 id="related" className="text-base font-bold">Continue this path</h2><p className="mt-1 text-xs text-muted-foreground">Tools selected to complete the same task.</p></div><span className="text-xs text-muted-foreground">{related.length} steps</span></div><div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">{related.map((t) => <ToolCard key={t.slug} tool={t} />)}</div></section>}
-      <ToolSeoContent tool={tool} />
+      <ToolSeoContent tool={tool} locale="en" />
     </main>
   );
 }
