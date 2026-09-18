@@ -9,8 +9,9 @@ import { ToolSeoContent } from "@/components/ToolSeoContent";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { allToolBySlug, ALL_CATEGORIES } from "@/lib/all-tools";
 import { englishToolPath } from "@/lib/route-slugs";
-import { absoluteUrl, cleanDescription, ogImage } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, faqSchema, ogImage } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
+import { toolSeoOverride } from "@/lib/tool-seo-overrides";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
@@ -32,28 +33,32 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
       };
     }
     const { tool } = loaderData;
+    const override = toolSeoOverride(tool.slug);
     const url = absoluteUrl(`/es/herramientas/${tool.slug}`);
     const name = spanishToolName(tool);
     const category = spanishCategoryName(tool.category);
+    const title = override?.metaTitleEs ?? `${name} gratis online | UtiliHub`;
     const description = cleanDescription(
-      tool.description?.trim()
-        ? tool.description
-        : `Herramienta gratuita de ${category.toLowerCase()} para usar directamente en el navegador: ${name}. Sin registro.`,
+      override?.metaDescriptionEs ??
+        (tool.description?.trim()
+          ? tool.description
+          : `Herramienta gratuita de ${category.toLowerCase()} para usar directamente en el navegador: ${name}. Sin registro.`),
     );
     const englishUrl = absoluteUrl(englishToolPath(tool));
+    const faqEs = override?.faqEs ?? [];
     return {
       meta: [
-        { title: `${name} gratis online | UtiliHub` },
+        { title },
         { name: "description", content: description },
         { name: "robots", content: "index, follow, max-image-preview:large" },
-        { property: "og:title", content: `${name} | UtiliHub` },
+        { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
         { property: "og:locale", content: "es_ES" },
         { property: "og:url", content: url },
         { property: "og:image", content: ogImage() },
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: `${name} | UtiliHub` },
+        { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
       ],
       links: [
@@ -62,6 +67,10 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
         { rel: "alternate", hrefLang: "en", href: englishUrl },
         { rel: "alternate", hrefLang: "x-default", href: englishUrl },
       ],
+      scripts:
+        faqEs.length > 0
+          ? [{ type: "application/ld+json", children: JSON.stringify(faqSchema(faqEs)) }]
+          : undefined,
     };
   },
   component: SpanishToolPage,
@@ -116,8 +125,7 @@ function SpanishToolPage() {
         </div>
       </section>
       <AdsterraBanner />
-      {/* Reuse structured about/steps/FAQ so ES pages are not thin for Google */}
-      <ToolSeoContent tool={tool} />
+      <ToolSeoContent tool={tool} locale="es" />
     </main>
   );
 }
