@@ -3,14 +3,15 @@ import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
 
-const COLS = 15;
+const COLS = 17;
 const ROWS = 15;
-const CELL = 24;
-const PAD = 12;
-const BAR = 40;
+const CELL = 22;
+const PAD = 8;
+const BAR = 36;
 const W = COLS * CELL + PAD * 2;
 const H = ROWS * CELL + PAD * 2 + BAR;
-const STEP_MS = 140;
+const STEP_MS = 130;
+const BODY_R = CELL * 0.42;
 
 type Pt = { x: number; y: number };
 type Dir = "U" | "D" | "L" | "R";
@@ -27,7 +28,7 @@ function opposite(a: Dir, b: Dir) {
 }
 
 function randomFood(snake: Pt[]): Pt {
-  for (let n = 0; n < 400; n++) {
+  for (let n = 0; n < 500; n++) {
     const p = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
     if (!snake.some((s) => s.x === p.x && s.y === p.y)) return p;
   }
@@ -35,212 +36,280 @@ function randomFood(snake: Pt[]): Pt {
 }
 
 function initialSnake(): Pt[] {
+  const midY = Math.floor(ROWS / 2);
+  const midX = Math.floor(COLS / 2) - 1;
   return [
-    { x: 5, y: 7 },
-    { x: 4, y: 7 },
-    { x: 3, y: 7 },
+    { x: midX, y: midY },
+    { x: midX - 1, y: midY },
+    { x: midX - 2, y: midY },
   ];
 }
 
-function gridToPx(p: Pt) {
+function cellPx(p: Pt) {
   return {
     x: PAD + p.x * CELL + CELL / 2,
     y: BAR + PAD + p.y * CELL + CELL / 2,
   };
 }
 
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t;
+}
+
 function lerpPt(a: Pt, b: Pt, t: number): Pt {
-  return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+  return { x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t) };
+}
+
+function visualPath(snake: Pt[], prev: Pt[] | null, t: number): { x: number; y: number }[] {
+  const out: { x: number; y: number }[] = [];
+  for (let i = 0; i < snake.length; i++) {
+    const cur = snake[i]!;
+    let from = cur;
+    if (prev) {
+      if (i === 0 && prev[0]) from = prev[0];
+      else if (i < prev.length) from = prev[i]!;
+      else from = prev[prev.length - 1]!;
+    }
+    out.push(cellPx(lerpPt(from, cur, t)));
+  }
+  return out;
+}
+
+function drawChecker(ctx: CanvasRenderingContext2D) {
+  const light = "#a2d149";
+  const dark = "#aad751";
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      ctx.fillStyle = (r + c) % 2 === 0 ? light : dark;
+      ctx.fillRect(PAD + c * CELL, BAR + PAD + r * CELL, CELL, CELL);
+    }
+  }
 }
 
 function drawApple(ctx: CanvasRenderingContext2D, x: number, y: number, r: number) {
-  const g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, r * 0.15, x, y, r);
-  g.addColorStop(0, "#ff8a9a");
-  g.addColorStop(0.5, "#ef4444");
-  g.addColorStop(1, "#b91c1c");
   ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI * 2);
-  ctx.fillStyle = g;
+  ctx.arc(x, y + r * 0.05, r, 0, Math.PI * 2);
+  ctx.fillStyle = "#e74c3c";
   ctx.fill();
   ctx.beginPath();
-  ctx.ellipse(x + r * 0.3, y - r * 0.9, r * 0.38, r * 0.2, -0.5, 0, Math.PI * 2);
-  ctx.fillStyle = "#4ade80";
+  ctx.arc(x - r * 0.3, y - r * 0.15, r * 0.22, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(255,255,255,0.45)";
   ctx.fill();
-  ctx.strokeStyle = "#7c2d12";
+  ctx.beginPath();
+  ctx.ellipse(x + r * 0.25, y - r * 0.85, r * 0.32, r * 0.16, -0.5, 0, Math.PI * 2);
+  ctx.fillStyle = "#57a639";
+  ctx.fill();
+  ctx.strokeStyle = "#5d4037";
   ctx.lineWidth = 2;
+  ctx.lineCap = "round";
   ctx.beginPath();
-  ctx.moveTo(x, y - r * 0.5);
-  ctx.quadraticCurveTo(x + r * 0.15, y - r, x + r * 0.05, y - r * 1.15);
+  ctx.moveTo(x, y - r * 0.55);
+  ctx.lineTo(x + r * 0.05, y - r * 0.95);
   ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(x - r * 0.3, y - r * 0.25, r * 0.2, 0, Math.PI * 2);
-  ctx.fillStyle = "rgba(255,255,255,0.55)";
-  ctx.fill();
 }
 
-function drawSnakeBody(
-  ctx: CanvasRenderingContext2D,
-  points: { x: number; y: number }[],
-  dir: Dir,
-) {
-  if (points.length === 0) return;
-  const radius = CELL * 0.38;
+function drawSnake(ctx: CanvasRenderingContext2D, pts: { x: number; y: number }[], dir: Dir) {
+  if (pts.length === 0) return;
 
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
-  ctx.lineWidth = radius * 2;
-
-  ctx.strokeStyle = "#0284c7";
+  ctx.lineWidth = BODY_R * 2;
+  ctx.strokeStyle = "#4a86f0";
   ctx.beginPath();
-  ctx.moveTo(points[0]!.x, points[0]!.y);
-  for (let i = 1; i < points.length; i++) {
-    ctx.lineTo(points[i]!.x, points[i]!.y);
+  ctx.moveTo(pts[0]!.x, pts[0]!.y);
+  for (let i = 1; i < pts.length; i++) {
+    ctx.lineTo(pts[i]!.x, pts[i]!.y);
   }
   ctx.stroke();
 
-  ctx.lineWidth = radius * 1.35;
-  ctx.strokeStyle = "#38bdf8";
+  ctx.lineWidth = BODY_R * 1.15;
+  ctx.strokeStyle = "#5b9af5";
   ctx.beginPath();
-  ctx.moveTo(points[0]!.x, points[0]!.y);
-  for (let i = 1; i < points.length; i++) {
-    ctx.lineTo(points[i]!.x, points[i]!.y);
+  ctx.moveTo(pts[0]!.x, pts[0]!.y);
+  for (let i = 1; i < pts.length; i++) {
+    ctx.lineTo(pts[i]!.x, pts[i]!.y);
   }
   ctx.stroke();
 
-  const head = points[0]!;
-  const hg = ctx.createRadialGradient(head.x - radius * 0.3, head.y - radius * 0.3, 2, head.x, head.y, radius);
-  hg.addColorStop(0, "#7dd3fc");
-  hg.addColorStop(1, "#0ea5e9");
+  const h = pts[0]!;
   ctx.beginPath();
-  ctx.arc(head.x, head.y, radius * 1.05, 0, Math.PI * 2);
-  ctx.fillStyle = hg;
+  ctx.arc(h.x, h.y, BODY_R * 1.02, 0, Math.PI * 2);
+  ctx.fillStyle = "#4a86f0";
   ctx.fill();
-  ctx.strokeStyle = "rgba(255,255,255,0.45)";
-  ctx.lineWidth = 2;
-  ctx.stroke();
 
-  const eyeOff = radius * 0.38;
-  const eyeR = radius * 0.28;
-  let e1 = { x: head.x - eyeOff, y: head.y - eyeOff };
-  let e2 = { x: head.x + eyeOff, y: head.y - eyeOff };
-  if (dir === "L") {
-    e1 = { x: head.x - eyeOff, y: head.y - eyeOff };
-    e2 = { x: head.x - eyeOff, y: head.y + eyeOff };
-  } else if (dir === "R") {
-    e1 = { x: head.x + eyeOff, y: head.y - eyeOff };
-    e2 = { x: head.x + eyeOff, y: head.y + eyeOff };
-  } else if (dir === "D") {
-    e1 = { x: head.x - eyeOff, y: head.y + eyeOff };
-    e2 = { x: head.x + eyeOff, y: head.y + eyeOff };
+  const eyeDist = BODY_R * 0.4;
+  const eyeR = BODY_R * 0.32;
+  let e1: Pt;
+  let e2: Pt;
+  if (dir === "R") {
+    e1 = { x: h.x + eyeDist * 0.6, y: h.y - eyeDist };
+    e2 = { x: h.x + eyeDist * 0.6, y: h.y + eyeDist };
+  } else if (dir === "L") {
+    e1 = { x: h.x - eyeDist * 0.6, y: h.y - eyeDist };
+    e2 = { x: h.x - eyeDist * 0.6, y: h.y + eyeDist };
+  } else if (dir === "U") {
+    e1 = { x: h.x - eyeDist, y: h.y - eyeDist * 0.6 };
+    e2 = { x: h.x + eyeDist, y: h.y - eyeDist * 0.6 };
+  } else {
+    e1 = { x: h.x - eyeDist, y: h.y + eyeDist * 0.6 };
+    e2 = { x: h.x + eyeDist, y: h.y + eyeDist * 0.6 };
   }
+
   for (const e of [e1, e2]) {
     ctx.beginPath();
     ctx.arc(e.x, e.y, eyeR, 0, Math.PI * 2);
     ctx.fillStyle = "#fff";
     ctx.fill();
+    let px = e.x;
+    let py = e.y;
+    if (dir === "R") px += eyeR * 0.25;
+    if (dir === "L") px -= eyeR * 0.25;
+    if (dir === "U") py -= eyeR * 0.25;
+    if (dir === "D") py += eyeR * 0.25;
     ctx.beginPath();
-    ctx.arc(e.x + eyeR * 0.2, e.y + eyeR * 0.15, eyeR * 0.5, 0, Math.PI * 2);
-    ctx.fillStyle = "#0f172a";
+    ctx.arc(px, py, eyeR * 0.48, 0, Math.PI * 2);
+    ctx.fillStyle = "#1a237e";
     ctx.fill();
   }
+}
+
+function drawDpadHint(ctx: CanvasRenderingContext2D, es: boolean) {
+  const cx = W / 2;
+  const cy = BAR + (H - BAR) / 2 - 10;
+  roundRect(ctx, cx - 48, cy - 48, 96, 96, 16);
+  ctx.fillStyle = "rgba(30, 50, 40, 0.85)";
+  ctx.fill();
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 14px system-ui";
+  ctx.textAlign = "center";
+  ctx.fillText("▲", cx, cy - 22);
+  ctx.fillText("◀", cx - 24, cy + 4);
+  ctx.fillText("▼", cx, cy + 28);
+  ctx.fillText("▶", cx + 24, cy + 4);
+  ctx.font = "22px system-ui";
+  ctx.fillText("👆", cx + 28, cy + 36);
+  ctx.font = "12px system-ui";
+  ctx.fillStyle = "rgba(255,255,255,0.9)";
+  ctx.fillText(es ? "Usá las flechas" : "Use arrow keys", cx, cy + 58);
+  ctx.textAlign = "left";
+}
+
+function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
 }
 
 function paint(
   ctx: CanvasRenderingContext2D,
   snake: Pt[],
-  prevSnake: Pt[] | null,
+  prev: Pt[] | null,
   food: Pt,
   dir: Dir,
   score: number,
-  progress: number,
-  started: boolean,
-  alive: boolean,
+  t: number,
+  phase: "menu" | "hint" | "play" | "dead",
+  best: number,
   es: boolean,
 ) {
-  const grad = ctx.createLinearGradient(0, BAR, 0, H);
-  grad.addColorStop(0, "#d4ef6a");
-  grad.addColorStop(1, "#a8d03a");
-  ctx.fillStyle = grad;
+  ctx.fillStyle = "#4a752c";
   ctx.fillRect(0, 0, W, H);
 
-  ctx.fillStyle = "rgba(255,255,255,0.18)";
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      if ((r + c) % 2 === 0) {
-        ctx.beginPath();
-        ctx.arc(PAD + c * CELL + CELL / 2, BAR + PAD + r * CELL + CELL / 2, 2.2, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-  }
-
-  ctx.fillStyle = "#2e7d32";
+  ctx.fillStyle = "#578a34";
   ctx.fillRect(0, 0, W, BAR);
-  drawApple(ctx, 22, BAR / 2, 12);
+  drawApple(ctx, 20, BAR / 2, 11);
   ctx.fillStyle = "#fff";
-  ctx.font = "bold 18px system-ui,Segoe UI,sans-serif";
+  ctx.font = "bold 16px system-ui,Segoe UI,sans-serif";
   ctx.textBaseline = "middle";
-  ctx.fillText(String(score), 40, BAR / 2 + 1);
+  ctx.fillText(String(score), 36, BAR / 2 + 1);
 
-  const fc = gridToPx(food);
-  const pulse = 1 + Math.sin(progress * Math.PI) * 0.06;
-  drawApple(ctx, fc.x, fc.y, CELL * 0.36 * pulse);
+  drawChecker(ctx);
 
-  const visual: { x: number; y: number }[] = [];
-  for (let i = 0; i < snake.length; i++) {
-    const cur = snake[i]!;
-    const prev = prevSnake && prevSnake[i] ? prevSnake[i]! : cur;
-    const lerped = lerpPt(prev, cur, progress);
-    visual.push(gridToPx(lerped));
-  }
-  if (prevSnake && prevSnake.length && snake.length) {
-    const oldHead = prevSnake[0]!;
-    const newHead = snake[0]!;
-    visual[0] = gridToPx(lerpPt(oldHead, newHead, progress));
-  }
+  const fp = cellPx(food);
+  drawApple(ctx, fp.x, fp.y, CELL * 0.38);
 
-  drawSnakeBody(ctx, visual, dir);
+  const path = visualPath(snake, prev, phase === "play" || phase === "hint" ? t : 1);
+  drawSnake(ctx, path, dir);
 
-  if (!started && alive) {
-    ctx.fillStyle = "rgba(15, 23, 42, 0.35)";
-    ctx.fillRect(0, BAR, W, H - BAR);
+  if (phase === "menu" || phase === "dead") {
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+    ctx.fillRect(PAD, BAR + PAD, COLS * CELL, ROWS * CELL);
+
+    const cw = 200;
+    const ch = phase === "dead" ? 200 : 180;
+    const cx = (W - cw) / 2;
+    const cy = BAR + (H - BAR - ch) / 2;
+    roundRect(ctx, cx, cy, cw, ch, 16);
+    ctx.fillStyle = "#5dade2";
+    ctx.fill();
+
+    drawApple(ctx, cx + 55, cy + 40, 16);
     ctx.fillStyle = "#fff";
-    ctx.font = "bold 16px system-ui,sans-serif";
+    ctx.font = "bold 20px system-ui";
     ctx.textAlign = "center";
-    ctx.fillText(es ? "Presioná una flecha o ▶ para jugar" : "Press an arrow or ▶ to play", W / 2, BAR + (H - BAR) / 2);
+    ctx.fillText(String(score), cx + 55, cy + 70);
+
+    ctx.font = "28px system-ui";
+    ctx.fillText("🏆", cx + 145, cy + 48);
+    ctx.font = "bold 20px system-ui";
+    ctx.fillText(String(Math.max(best, score)), cx + 145, cy + 70);
+
+    ctx.fillStyle = "#4a86f0";
+    roundRect(ctx, cx + 50, cy + 95, 100, 28, 14);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx + 140, cy + 109, 16, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(cx + 134, cy + 104, 5, 0, Math.PI * 2);
+    ctx.arc(cx + 146, cy + 104, 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#1a237e";
+    ctx.beginPath();
+    ctx.arc(cx + 135, cy + 104, 2.5, 0, Math.PI * 2);
+    ctx.arc(cx + 147, cy + 104, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 14px system-ui";
+    ctx.fillText(phase === "dead" ? (es ? "¡Otra vez!" : "Play again") : es ? "Listo" : "Ready", cx + cw / 2, cy + ch - 18);
     ctx.textAlign = "left";
   }
 
-  if (!alive) {
-    ctx.fillStyle = "rgba(15, 23, 42, 0.4)";
-    ctx.fillRect(0, BAR, W, H - BAR);
+  if (phase === "hint") {
+    drawDpadHint(ctx, es);
   }
 }
 
 export function SnakeGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const [snake, setSnake] = useState<Pt[]>(initialSnake);
-  const [prevSnake, setPrevSnake] = useState<Pt[] | null>(null);
+  const [prev, setPrev] = useState<Pt[] | null>(null);
   const [food, setFood] = useState<Pt>(() => randomFood(initialSnake()));
   const [dir, setDir] = useState<Dir>("R");
   const [score, setScore] = useState(0);
   const [best, setBest] = useState(0);
-  const [alive, setAlive] = useState(true);
-  const [started, setStarted] = useState(false);
-  const [paused, setPaused] = useState(false);
+  const [phase, setPhase] = useState<"menu" | "hint" | "play" | "dead">("menu");
   const [progress, setProgress] = useState(1);
+  const [paused, setPaused] = useState(false);
 
   const dirRef = useRef<Dir>("R");
   const pendingRef = useRef<Dir>("R");
   const snakeRef = useRef(snake);
   const foodRef = useRef(food);
-  const scoreRef = useRef(score);
-  const aliveRef = useRef(alive);
-  const startedRef = useRef(started);
-  const pausedRef = useRef(paused);
-  const touchRef = useRef<{ x: number; y: number } | null>(null);
+  const scoreRef = useRef(0);
+  const phaseRef = useRef(phase);
+  const pausedRef = useRef(false);
   const stepAtRef = useRef(0);
+  const touchRef = useRef<{ x: number; y: number } | null>(null);
+  const hintUntilRef = useRef(0);
 
   useEffect(() => {
     setBest(readBestScore("snake"));
@@ -259,93 +328,111 @@ export function SnakeGame({ locale = "en" }: { locale?: GameLocale }) {
     scoreRef.current = score;
   }, [score]);
   useEffect(() => {
-    aliveRef.current = alive;
-  }, [alive]);
-  useEffect(() => {
-    startedRef.current = started;
-  }, [started]);
+    phaseRef.current = phase;
+  }, [phase]);
   useEffect(() => {
     pausedRef.current = paused;
   }, [paused]);
 
-  const reset = useCallback(() => {
+  const hardReset = useCallback(() => {
     const s = initialSnake();
     setSnake(s);
-    setPrevSnake(null);
     snakeRef.current = s;
+    setPrev(null);
     const f = randomFood(s);
     setFood(f);
     foodRef.current = f;
     setDir("R");
-    pendingRef.current = "R";
     dirRef.current = "R";
+    pendingRef.current = "R";
     setScore(0);
     scoreRef.current = 0;
-    setAlive(true);
-    aliveRef.current = true;
-    setStarted(false);
-    startedRef.current = false;
+    setPhase("menu");
+    phaseRef.current = "menu";
     setPaused(false);
     pausedRef.current = false;
     setProgress(1);
     stepAtRef.current = 0;
   }, []);
 
-  const nudge = useCallback((next: Dir) => {
-    if (!startedRef.current && aliveRef.current) {
-      setStarted(true);
-      startedRef.current = true;
-      setPaused(false);
-      pausedRef.current = false;
-      stepAtRef.current = performance.now();
-    }
-    if (opposite(dirRef.current, next)) return;
-    pendingRef.current = next;
+  const beginPlay = useCallback(() => {
+    setPhase("hint");
+    phaseRef.current = "hint";
+    hintUntilRef.current = performance.now() + 1200;
+    stepAtRef.current = performance.now() + 1200;
+    setPaused(false);
+    pausedRef.current = false;
   }, []);
+
+  const nudge = useCallback(
+    (next: Dir) => {
+      if (phaseRef.current === "menu" || phaseRef.current === "dead") {
+        beginPlay();
+        if (!opposite("R", next)) pendingRef.current = next;
+        return;
+      }
+      if (opposite(dirRef.current, next)) return;
+      pendingRef.current = next;
+      if (phaseRef.current === "hint") {
+        setPhase("play");
+        phaseRef.current = "play";
+        stepAtRef.current = performance.now();
+      }
+    },
+    [beginPlay],
+  );
 
   useEffect(() => {
     let raf = 0;
     const loop = (now: number) => {
-      if (startedRef.current && aliveRef.current && !pausedRef.current) {
-        if (!stepAtRef.current) stepAtRef.current = now;
-        const elapsed = now - stepAtRef.current;
-        if (elapsed >= STEP_MS) {
-          const steps = Math.floor(elapsed / STEP_MS);
-          stepAtRef.current += steps * STEP_MS;
-          const nextDir = pendingRef.current;
-          dirRef.current = nextDir;
-          setDir(nextDir);
+      const ph = phaseRef.current;
+      if ((ph === "play" || ph === "hint") && !pausedRef.current) {
+        if (ph === "hint" && now >= hintUntilRef.current) {
+          setPhase("play");
+          phaseRef.current = "play";
+          stepAtRef.current = now;
+        }
+        if (ph === "play" || (ph === "hint" && now >= hintUntilRef.current)) {
+          if (!stepAtRef.current) stepAtRef.current = now;
+          const elapsed = now - stepAtRef.current;
+          if (elapsed >= STEP_MS) {
+            stepAtRef.current += Math.floor(elapsed / STEP_MS) * STEP_MS;
+            const nextDir = pendingRef.current;
+            dirRef.current = nextDir;
+            setDir(nextDir);
 
-          const cur = snakeRef.current;
-          const d = DELTA[nextDir];
-          const head = cur[0]!;
-          const nx = head.x + d.x;
-          const ny = head.y + d.y;
-          if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS || cur.some((p) => p.x === nx && p.y === ny)) {
-            setAlive(false);
-            aliveRef.current = false;
-            setBest((b) => writeBestScore("snake", Math.max(b, scoreRef.current)));
-            setProgress(1);
-          } else {
-            const nextHead = { x: nx, y: ny };
-            const ate = nx === foodRef.current.x && ny === foodRef.current.y;
-            const body = ate ? cur : cur.slice(0, -1);
-            const nextSnake = [nextHead, ...body];
-            setPrevSnake(cur);
-            setSnake(nextSnake);
-            snakeRef.current = nextSnake;
-            if (ate) {
-              const ns = scoreRef.current + 1;
-              scoreRef.current = ns;
-              setScore(ns);
-              const f = randomFood(nextSnake);
-              foodRef.current = f;
-              setFood(f);
+            const cur = snakeRef.current;
+            const d = DELTA[nextDir];
+            const head = cur[0]!;
+            const nx = head.x + d.x;
+            const ny = head.y + d.y;
+
+            if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS || cur.some((p) => p.x === nx && p.y === ny)) {
+              setPhase("dead");
+              phaseRef.current = "dead";
+              setBest((b) => writeBestScore("snake", Math.max(b, scoreRef.current)));
+              setProgress(1);
+            } else {
+              const nextHead = { x: nx, y: ny };
+              const ate = nx === foodRef.current.x && ny === foodRef.current.y;
+              const body = ate ? cur : cur.slice(0, -1);
+              const nextSnake = [nextHead, ...body];
+              setPrev(cur);
+              setSnake(nextSnake);
+              snakeRef.current = nextSnake;
+              if (ate) {
+                const ns = scoreRef.current + 1;
+                scoreRef.current = ns;
+                setScore(ns);
+                const f = randomFood(nextSnake);
+                foodRef.current = f;
+                setFood(f);
+              }
             }
           }
+          const p = Math.min(1, Math.max(0, (now - stepAtRef.current) / STEP_MS));
+          setProgress(p);
         }
-        const p = Math.min(1, (now - stepAtRef.current) / STEP_MS);
-        setProgress(p);
       }
       raf = requestAnimationFrame(loop);
     };
@@ -356,8 +443,8 @@ export function SnakeGame({ locale = "en" }: { locale?: GameLocale }) {
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
-    paint(ctx, snake, prevSnake, food, dir, score, progress, started, alive, es);
-  }, [snake, prevSnake, food, dir, score, progress, started, alive, es]);
+    paint(ctx, snake, prev, food, dir, score, progress, phase, best, es);
+  }, [snake, prev, food, dir, score, progress, phase, best, es]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -380,11 +467,10 @@ export function SnakeGame({ locale = "en" }: { locale?: GameLocale }) {
         e.preventDefault();
         nudge(next);
       }
-      if (e.key === " " || e.key === "p" || e.key === "P") {
+      if (e.key === " " || e.key === "Enter") {
         e.preventDefault();
-        if (!startedRef.current) {
-          nudge(dirRef.current);
-        } else if (aliveRef.current) {
+        if (phaseRef.current === "menu" || phaseRef.current === "dead") beginPlay();
+        else if (phaseRef.current === "play") {
           setPaused((p) => {
             pausedRef.current = !p;
             if (!p) stepAtRef.current = performance.now();
@@ -395,7 +481,7 @@ export function SnakeGame({ locale = "en" }: { locale?: GameLocale }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [nudge]);
+  }, [nudge, beginPlay]);
 
   const onTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0];
@@ -407,8 +493,8 @@ export function SnakeGame({ locale = "en" }: { locale?: GameLocale }) {
     if (!start || !t) return;
     const dx = t.clientX - start.x;
     const dy = t.clientY - start.y;
-    if (Math.abs(dx) < 20 && Math.abs(dy) < 20) {
-      if (!started) nudge("R");
+    if (Math.abs(dx) < 18 && Math.abs(dy) < 18) {
+      if (phase === "menu" || phase === "dead") beginPlay();
       return;
     }
     const next: Dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "R" : "L") : dy > 0 ? "D" : "U";
@@ -422,77 +508,61 @@ export function SnakeGame({ locale = "en" }: { locale?: GameLocale }) {
           {es ? "Mejor" : "Best"}: <span className="tabular-nums text-amber-300">{best}</span>
         </span>
         <div className="flex gap-2">
-          {!started && alive ? (
-            <GamePrimaryButton
-              onClick={() => {
-                nudge("R");
-              }}
-            >
-              {es ? "Jugar" : "Play"}
-            </GamePrimaryButton>
-          ) : (
+          {(phase === "menu" || phase === "dead") && (
+            <GamePrimaryButton onClick={beginPlay}>{es ? "Jugar" : "Play"}</GamePrimaryButton>
+          )}
+          {(phase === "play" || phase === "hint") && (
             <GameSecondaryButton
+              active={paused}
               onClick={() => {
-                if (!alive) return;
                 setPaused((p) => {
                   pausedRef.current = !p;
                   if (!p) stepAtRef.current = performance.now();
                   return !p;
                 });
               }}
-              active={paused}
             >
               {paused ? (es ? "Seguir" : "Resume") : es ? "Pausa" : "Pause"}
             </GameSecondaryButton>
           )}
-          <GamePrimaryButton onClick={reset}>{es ? "Nuevo" : "New"}</GamePrimaryButton>
+          <GamePrimaryButton onClick={hardReset}>{es ? "Menú" : "Menu"}</GamePrimaryButton>
         </div>
       </div>
 
-      {!alive && (
-        <p className="text-sm font-bold text-rose-300">
-          {es ? `Game over · ${score} puntos` : `Game over · ${score} pts`}
-        </p>
-      )}
-      {paused && started && alive && (
+      {paused && phase === "play" && (
         <p className="text-sm font-bold text-amber-200">{es ? "Pausa" : "Paused"}</p>
       )}
 
       <div
-        className="touch-none overflow-hidden rounded-2xl shadow-xl ring-1 ring-black/10"
+        className="touch-none overflow-hidden rounded-xl shadow-xl ring-1 ring-black/15"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
+        onClick={() => {
+          if (phase === "menu" || phase === "dead") beginPlay();
+        }}
       >
-        <canvas
-          ref={canvasRef}
-          width={W}
-          height={H}
-          className="block max-w-full"
-          style={{ width: "100%", height: "auto" }}
-        />
+        <canvas ref={canvasRef} width={W} height={H} className="block max-w-full" style={{ width: "100%", height: "auto" }} />
       </div>
 
       <div className="grid grid-cols-3 gap-1.5 sm:hidden">
         <span />
-        <button type="button" onClick={() => nudge("U")} className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-lg font-bold text-white active:bg-white/30" aria-label="Up">
+        <button type="button" onClick={() => nudge("U")} className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-lg font-bold text-white active:bg-white/30">
           ▲
         </button>
         <span />
-        <button type="button" onClick={() => nudge("L")} className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-lg font-bold text-white active:bg-white/30" aria-label="Left">
+        <button type="button" onClick={() => nudge("L")} className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-lg font-bold text-white active:bg-white/30">
           ◀
         </button>
-        <button type="button" onClick={() => nudge("D")} className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-lg font-bold text-white active:bg-white/30" aria-label="Down">
+        <button type="button" onClick={() => nudge("D")} className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-lg font-bold text-white active:bg-white/30">
           ▼
         </button>
-        <button type="button" onClick={() => nudge("R")} className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-lg font-bold text-white active:bg-white/30" aria-label="Right">
+        <button type="button" onClick={() => nudge("R")} className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-lg font-bold text-white active:bg-white/30">
           ▶
         </button>
       </div>
 
       <p className="text-center text-[11px] text-white/50">
-        {es
-          ? "No arranca hasta que toques una flecha · espacio = pausa"
-          : "Won't start until you press a key · space = pause"}
+        {es ? "Jugar → hint de controles → partida · espacio = pausa" : "Play → control hint → game · space = pause"}
       </p>
     </div>
   );
