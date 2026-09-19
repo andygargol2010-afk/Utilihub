@@ -238,16 +238,16 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
     <div className="mx-auto flex max-w-sm flex-col items-center gap-3">
       <style>{`
         @keyframes uh2048-pop {
-          0% { transform: scale(0.6); }
-          70% { transform: scale(1.12); }
+          0% { transform: scale(0.55); opacity: 0.5; }
+          70% { transform: scale(1.12); opacity: 1; }
           100% { transform: scale(1); }
         }
         @keyframes uh2048-merge {
           0% { transform: scale(1); }
-          40% { transform: scale(1.18); }
+          45% { transform: scale(1.2); }
           100% { transform: scale(1); }
         }
-        .uh2048-born { animation: uh2048-pop 0.2s ease-out; }
+        .uh2048-born { animation: uh2048-pop 0.22s ease-out; }
         .uh2048-merged { animation: uh2048-merge 0.2s ease-out; }
       `}</style>
 
@@ -318,24 +318,29 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
           return (
             <div
               key={t.id}
-              className={`absolute flex items-center justify-center rounded-md font-black ${
-                t.born ? "uh2048-born" : t.merged ? "uh2048-merged" : ""
-              }`}
+              className="absolute"
               style={{
-                left: 0,
-                top: 0,
+                left: x,
+                top: y,
                 width: CELL,
                 height: CELL,
-                background: st.bg,
-                color: st.color,
-                fontSize: st.size,
-                transform: `translate(${x}px, ${y}px)`,
-                transition: animOn ? "transform 120ms ease-in-out" : "none",
-                boxShadow: "0 2px 0 rgba(0,0,0,0.12)",
+                transition: animOn ? "left 120ms ease-in-out, top 120ms ease-in-out" : "none",
                 zIndex: t.merged ? 2 : 1,
               }}
             >
-              {t.value}
+              <div
+                className={`flex h-full w-full items-center justify-center rounded-md font-black ${
+                  t.born ? "uh2048-born" : t.merged ? "uh2048-merged" : ""
+                }`}
+                style={{
+                  background: st.bg,
+                  color: st.color,
+                  fontSize: st.size,
+                  boxShadow: "0 2px 0 rgba(0,0,0,0.12)",
+                }}
+              >
+                {t.value}
+              </div>
             </div>
           );
         })}
