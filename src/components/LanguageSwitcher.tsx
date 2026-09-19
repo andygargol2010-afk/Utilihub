@@ -2,9 +2,9 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { ALL_TOOLS } from "@/lib/all-tools";
 import { englishToolPath, toolByEnglishSlug, englishCategorySlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
 import { spanishToolPath } from "@/lib/i18n/es";
+import { gameBySlug } from "@/lib/games/catalog";
 
 function equivalentPath(pathname: string, targetLocale: "en" | "es") {
-  // EN → ES
   if (targetLocale === "es") {
     if (pathname === "/") return "/es";
     if (pathname === "/tools" || pathname === "/herramientas") return "/es/herramientas";
@@ -30,10 +30,14 @@ function equivalentPath(pathname: string, targetLocale: "en" | "es") {
     if (pathname === "/legal" || pathname === "/aviso-legal") return "/es/aviso-legal";
     if (pathname === "/privacy" || pathname === "/privacidad") return "/es/privacidad";
     if (pathname === "/contact" || pathname === "/contacto") return "/es/contacto";
+    if (pathname === "/games") return "/es/juegos";
+    if (pathname.startsWith("/games/")) {
+      const game = gameBySlug(pathname.slice("/games/".length), "en");
+      return game ? `/es/juegos/${game.slugEs}` : "/es/juegos";
+    }
     return "/es";
   }
 
-  // ES → EN
   if (pathname === "/es") return "/";
   if (pathname === "/es/herramientas") return "/tools";
   if (pathname === "/es/finanzas") return "/finance";
@@ -55,6 +59,11 @@ function equivalentPath(pathname: string, targetLocale: "en" | "es") {
   if (pathname === "/es/aviso-legal" || pathname === "/aviso-legal") return "/legal";
   if (pathname === "/es/privacidad" || pathname === "/privacidad") return "/privacy";
   if (pathname === "/es/contacto" || pathname === "/contacto") return "/contact";
+  if (pathname === "/es/juegos") return "/games";
+  if (pathname.startsWith("/es/juegos/")) {
+    const game = gameBySlug(pathname.slice("/es/juegos/".length), "es");
+    return game ? `/games/${game.slug}` : "/games";
+  }
   return "/";
 }
 
