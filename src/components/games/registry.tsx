@@ -5,12 +5,10 @@ const TicTacToeGame = lazy(() => import("./TicTacToeGame").then((m) => ({ defaul
 const MemoryGame = lazy(() => import("./MemoryGame").then((m) => ({ default: m.MemoryGame })));
 const SnakeGame = lazy(() => import("./SnakeGame").then((m) => ({ default: m.SnakeGame })));
 const Game2048 = lazy(() => import("./Game2048").then((m) => ({ default: m.Game2048 })));
-
-const ComingSoon = ({ locale }: { locale: GameLocale }) => (
-  <p className="py-16 text-center text-sm font-semibold text-emerald-200/80">
-    {locale === "es" ? "Próximamente en esta versión." : "Coming in the next drop."}
-  </p>
-);
+const ConnectFourGame = lazy(() => import("./ConnectFourGame").then((m) => ({ default: m.ConnectFourGame })));
+const MinesweeperGame = lazy(() => import("./MinesweeperGame").then((m) => ({ default: m.MinesweeperGame })));
+const PongGame = lazy(() => import("./PongGame").then((m) => ({ default: m.PongGame })));
+const SudokuGame = lazy(() => import("./SudokuGame").then((m) => ({ default: m.SudokuGame })));
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -19,11 +17,23 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   memoria: MemoryGame,
   snake: SnakeGame,
   "2048": Game2048,
+  "connect-four": ConnectFourGame,
+  "conecta-4": ConnectFourGame,
+  minesweeper: MinesweeperGame,
+  buscaminas: MinesweeperGame,
+  pong: PongGame,
+  sudoku: SudokuGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {
   const Comp = MAP[game.slug] ?? MAP[game.slugEs];
-  if (!Comp) return <ComingSoon locale={locale} />;
+  if (!Comp) {
+    return (
+      <p className="py-16 text-center text-sm font-semibold text-emerald-200/80">
+        {locale === "es" ? "Juego no disponible." : "Game not available."}
+      </p>
+    );
+  }
   return (
     <Suspense
       fallback={
