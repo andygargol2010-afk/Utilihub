@@ -68,10 +68,12 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
       const ca = nextCards[a!];
       const cb = nextCards[b!];
       if (ca && cb && ca.icon === cb.icon) {
-        setCards((cur) =>
-          cur.map((c, i) => (i === a || i === b ? { ...c, matched: true, flipped: true } : c)),
-        );
-        setOpen([]);
+        window.setTimeout(() => {
+          setCards((cur) =>
+            cur.map((c, i) => (i === a || i === b ? { ...c, matched: true, flipped: true } : c)),
+          );
+          setOpen([]);
+        }, 280);
       } else {
         setLocked(true);
         window.setTimeout(() => {
@@ -80,13 +82,45 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
           );
           setOpen([]);
           setLocked(false);
-        }, 700);
+        }, 850);
       }
     }
   };
 
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-4">
+      <style>{`
+        .mem-scene {
+          perspective: 800px;
+        }
+        .mem-card {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform-style: preserve-3d;
+          transition: transform 0.45s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+        .mem-card.is-flipped {
+          transform: rotateY(180deg);
+        }
+        .mem-face {
+          position: absolute;
+          inset: 0;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 0.75rem;
+        }
+        .mem-back {
+          transform: rotateY(180deg);
+        }
+        .mem-matched .mem-back {
+          box-shadow: 0 0 0 2px rgba(251,191,36,0.7), 0 6px 16px rgba(0,0,0,0.3);
+        }
+      `}</style>
+
       <div className="flex w-full flex-wrap items-center justify-between gap-2 text-sm font-semibold text-emerald-100/90">
         <span>
           {es ? "Movimientos" : "Moves"}: <span className="tabular-nums text-white">{moves}</span>
@@ -117,39 +151,39 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
       >
         {cards.map((card, i) => {
           const show = card.flipped || card.matched;
-          const matched = card.matched;
           return (
             <button
               key={card.id}
               type="button"
               disabled={show || locked || done}
               onClick={() => flip(i)}
-              className="relative flex h-[4.5rem] w-[4.5rem] items-center justify-center overflow-hidden rounded-xl text-3xl transition-transform active:scale-95 sm:h-20 sm:w-20"
-              style={
-                matched
-                  ? {
-                      background: "linear-gradient(145deg, #fde68a, #fbbf24)",
-                      boxShadow: "0 0 0 2px rgba(251,191,36,0.6), 0 4px 12px rgba(0,0,0,0.25)",
-                    }
-                  : show
-                    ? {
-                        background: "linear-gradient(145deg, #ecfdf5, #a7f3d0)",
-                        boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
-                      }
-                    : {
-                        background: "linear-gradient(145deg, #34d399, #059669)",
-                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 8px rgba(0,0,0,0.3)",
-                      }
-              }
+              className={`mem-scene h-[4.5rem] w-[4.5rem] sm:h-20 sm:w-20 ${card.matched ? "mem-matched" : ""}`}
               aria-label={show ? card.icon : es ? "Carta boca abajo" : "Face-down card"}
             >
-              {show ? (
-                <span className="drop-shadow-sm">{card.icon}</span>
-              ) : (
-                <span className="text-2xl font-black text-white/90" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}>
-                  ?
-                </span>
-              )}
+              <div className={`mem-card ${show ? "is-flipped" : ""}`}>
+                <div
+                  className="mem-face"
+                  style={{
+                    background: "linear-gradient(145deg, #34d399, #059669)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 8px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  <span className="text-2xl font-black text-white/90" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}>
+                    ?
+                  </span>
+                </div>
+                <div
+                  className="mem-face mem-back text-3xl"
+                  style={{
+                    background: card.matched
+                      ? "linear-gradient(145deg, #fde68a, #fbbf24)"
+                      : "linear-gradient(145deg, #ecfdf5, #a7f3d0)",
+                    boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <span className="drop-shadow-sm">{card.icon}</span>
+                </div>
+              </div>
             </button>
           );
         })}
