@@ -1,7 +1,4 @@
-/**
- * Adsterra Social Bar — DISABLED (permanent for now).
- * Third-party script force-redirected mobile users.
- */
+/** DISABLED — Social Bar force-redirected mobile traffic. */
 export function AdsterraSocialBar() {
   return null;
 }
