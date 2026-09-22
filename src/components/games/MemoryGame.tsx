@@ -90,32 +90,20 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-4">
       <style>{`
-        .mem-scene {
-          perspective: 800px;
-        }
+        .mem-scene { perspective: 800px; }
         .mem-card {
-          position: relative;
-          width: 100%;
-          height: 100%;
+          position: relative; width: 100%; height: 100%;
           transform-style: preserve-3d;
           transition: transform 0.45s cubic-bezier(0.4, 0.2, 0.2, 1);
         }
-        .mem-card.is-flipped {
-          transform: rotateY(180deg);
-        }
+        .mem-card.is-flipped { transform: rotateY(180deg); }
         .mem-face {
-          position: absolute;
-          inset: 0;
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          position: absolute; inset: 0;
+          backface-visibility: hidden; -webkit-backface-visibility: hidden;
+          display: flex; align-items: center; justify-content: center;
           border-radius: 0.75rem;
         }
-        .mem-back {
-          transform: rotateY(180deg);
-        }
+        .mem-back { transform: rotateY(180deg); }
         .mem-matched .mem-back {
           box-shadow: 0 0 0 2px rgba(251,191,36,0.7), 0 6px 16px rgba(0,0,0,0.3);
           animation: mem-matched-pulse 0.7s ease-in-out 2;
@@ -129,6 +117,9 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
           50% { transform: scale(1.04); }
         }
         .mem-win { animation: mem-win 0.8s ease-in-out infinite; }
+        .mem-board-frame {
+          box-shadow: 0 12px 40px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(52,211,153,0.15);
+        }
       `}</style>
 
       <div className="flex w-full flex-wrap items-center justify-between gap-2 text-sm font-semibold text-emerald-100/90">
@@ -156,8 +147,8 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
       )}
 
       <div
-        className="grid grid-cols-4 gap-2.5 rounded-2xl p-3 sm:gap-3"
-        style={{ background: "rgba(15,23,42,0.5)", width: "100%", maxWidth: 360 }}
+        className="mem-board-frame grid grid-cols-4 gap-2.5 rounded-2xl p-3 sm:gap-3"
+        style={{ background: "linear-gradient(145deg, #1a3a2a 0%, #0f2418 100%)" }}
       >
         {cards.map((card, i) => {
           const show = card.flipped || card.matched;
@@ -165,14 +156,34 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
             <button
               key={card.id}
               type="button"
-              disabled={locked || done || card.matched}
+              disabled={show || locked || done}
               onClick={() => flip(i)}
-              className={`mem-scene aspect-square w-full ${card.matched ? "mem-matched" : ""}`}
-              aria-label={show ? card.icon : es ? "Carta" : "Card"}
+              className={`mem-scene h-[4.5rem] w-[4.5rem] sm:h-20 sm:w-20 ${card.matched ? "mem-matched" : ""}`}
+              aria-label={show ? card.icon : es ? "Carta boca abajo" : "Face-down card"}
             >
               <div className={`mem-card ${show ? "is-flipped" : ""}`}>
-                <div className="mem-face bg-emerald-700/80 text-2xl shadow-md">❓</div>
-                <div className="mem-face mem-back bg-slate-800 text-3xl shadow-md">{card.icon}</div>
+                <div
+                  className="mem-face"
+                  style={{
+                    background: "linear-gradient(145deg, #34d399, #059669)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 8px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  <span className="text-2xl font-black text-white/90" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}>
+                    ?
+                  </span>
+                </div>
+                <div
+                  className="mem-face mem-back text-3xl"
+                  style={{
+                    background: card.matched
+                      ? "linear-gradient(145deg, #fde68a, #fbbf24)"
+                      : "linear-gradient(145deg, #ecfdf5, #a7f3d0)",
+                    boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <span className="drop-shadow-sm">{card.icon}</span>
+                </div>
               </div>
             </button>
           );
