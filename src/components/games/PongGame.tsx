@@ -57,6 +57,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
     let vy = (Math.random() * 2 - 1) * d.ball * 0.65;
     if (Math.abs(vy) < 0.9) vy = (vy >= 0 ? 1 : -1) * 0.9;
     s.bvy = vy;
+    // New random aim bias when the point starts
     s.aimOffset = (Math.random() * 2 - 1) * d.error;
     s.aimUntil = performance.now() + 400 + Math.random() * 600;
   };
@@ -126,7 +127,6 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         s.bx += s.bvx;
         s.by += s.bvy;
 
-        // Top/bottom walls: clamp + bounce so the ball never tunnels or sticks
         const MIN_VY = 0.85;
         if (s.by <= 0) {
           s.by = 0;
@@ -186,21 +186,59 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
       const ctx = canvasRef.current?.getContext("2d");
       if (ctx) {
         const s = state.current;
-        ctx.fillStyle = "#0b1220";
+        const bg = ctx.createLinearGradient(0, 0, 0, H);
+        bg.addColorStop(0, "#0f172a");
+        bg.addColorStop(1, "#020617");
+        ctx.fillStyle = bg;
         ctx.fillRect(0, 0, W, H);
-        ctx.strokeStyle = "rgba(52,211,153,0.25)";
-        ctx.setLineDash([6, 8]);
+        ctx.strokeStyle = "rgba(52,211,153,0.35)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(1, 1, W - 2, H - 2);
+        ctx.strokeStyle = "rgba(52,211,153,0.3)";
+        ctx.setLineDash([5, 10]);
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(W / 2, 0);
-        ctx.lineTo(W / 2, H);
+        ctx.moveTo(W / 2, 8);
+        ctx.lineTo(W / 2, H - 8);
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = "#38bdf8";
-        ctx.fillRect(12, s.py, PADDLE_W, PADDLE_H);
-        ctx.fillStyle = "#fbbf24";
-        ctx.fillRect(W - 12 - PADDLE_W, s.cy, PADDLE_W, PADDLE_H);
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(s.bx, s.by, BALL, BALL);
+        ctx.shadowColor = "#38bdf8";
+        ctx.shadowBlur = 12;
+        const pg = ctx.createLinearGradient(12, s.py, 12 + PADDLE_W, s.py);
+        pg.addColorStop(0, "#7dd3fc");
+        pg.addColorStop(1, "#0284c7");
+        ctx.fillStyle = pg;
+        if (typeof (ctx as any).roundRect === "function") {
+          ctx.beginPath();
+          (ctx as any).roundRect(12, s.py, PADDLE_W, PADDLE_H, 4);
+          ctx.fill();
+        } else {
+          ctx.fillRect(12, s.py, PADDLE_W, PADDLE_H);
+        }
+        ctx.shadowColor = "#fbbf24";
+        const cg = ctx.createLinearGradient(W - 12 - PADDLE_W, s.cy, W - 12, s.cy);
+        cg.addColorStop(0, "#fcd34d");
+        cg.addColorStop(1, "#d97706");
+        ctx.fillStyle = cg;
+        if (typeof (ctx as any).roundRect === "function") {
+          ctx.beginPath();
+          (ctx as any).roundRect(W - 12 - PADDLE_W, s.cy, PADDLE_W, PADDLE_H, 4);
+          ctx.fill();
+        } else {
+          ctx.fillRect(W - 12 - PADDLE_W, s.cy, PADDLE_W, PADDLE_H);
+        }
+        ctx.shadowColor = "#fff";
+        ctx.shadowBlur = 10;
+        const bx = s.bx + BALL / 2;
+        const by = s.by + BALL / 2;
+        const ballG = ctx.createRadialGradient(bx - 1, by - 1, 1, bx, by, BALL / 2 + 1);
+        ballG.addColorStop(0, "#ffffff");
+        ballG.addColorStop(1, "#cbd5e1");
+        ctx.fillStyle = ballG;
+        ctx.beginPath();
+        ctx.arc(bx, by, BALL / 2 + 0.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
       }
       raf = requestAnimationFrame(tick);
     };
