@@ -53,7 +53,10 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
     s.bx = W / 2;
     s.by = H / 2;
     s.bvx = (toPlayer ? -1 : 1) * d.ball;
-    s.bvy = (Math.random() * 2 - 1) * d.ball * 0.65;
+    // Always give a clear vertical component so it never crawls the top/bottom edge
+    let vy = (Math.random() * 2 - 1) * d.ball * 0.65;
+    if (Math.abs(vy) < 0.9) vy = (vy >= 0 ? 1 : -1) * 0.9;
+    s.bvy = vy;
     s.aimOffset = (Math.random() * 2 - 1) * d.error;
     s.aimUntil = performance.now() + 400 + Math.random() * 600;
   };
@@ -122,7 +125,23 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
 
         s.bx += s.bvx;
         s.by += s.bvy;
-        if (s.by <= 0 || s.by >= H - BALL) s.bvy *= -1;
+
+        // Top/bottom walls: clamp + bounce so the ball never tunnels or sticks
+        const MIN_VY = 0.85;
+        if (s.by <= 0) {
+          s.by = 0;
+          s.bvy = Math.abs(s.bvy) < MIN_VY ? MIN_VY : Math.abs(s.bvy);
+        } else if (s.by >= H - BALL) {
+          s.by = H - BALL;
+          s.bvy = Math.abs(s.bvy) < MIN_VY ? -MIN_VY : -Math.abs(s.bvy);
+        }
+
+        const spinFrom = (paddleY: number) => {
+          const rel = (s.by + BALL / 2 - (paddleY + PADDLE_H / 2)) / (PADDLE_H / 2);
+          let vy = rel * 3.2;
+          if (Math.abs(vy) < MIN_VY) vy = (vy >= 0 ? 1 : -1) * MIN_VY;
+          return vy;
+        };
 
         if (
           s.bx <= 12 + PADDLE_W &&
@@ -132,7 +151,8 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         ) {
           const next = Math.min(d.maxBall, Math.abs(s.bvx) * 1.04);
           s.bvx = next;
-          s.bvy = ((s.by + BALL / 2 - (s.py + PADDLE_H / 2)) / (PADDLE_H / 2)) * 3.2;
+          s.bx = 12 + PADDLE_W;
+          s.bvy = spinFrom(s.py);
         }
         if (
           s.bx + BALL >= W - 12 - PADDLE_W &&
@@ -142,7 +162,8 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         ) {
           const next = Math.min(d.maxBall, Math.abs(s.bvx) * 1.04);
           s.bvx = -next;
-          s.bvy = ((s.by + BALL / 2 - (s.cy + PADDLE_H / 2)) / (PADDLE_H / 2)) * 3.2;
+          s.bx = W - 12 - PADDLE_W - BALL;
+          s.bvy = spinFrom(s.cy);
         }
 
         if (s.bx < 0) {
