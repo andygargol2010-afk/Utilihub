@@ -55,8 +55,10 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
           </div>
         )}
 
-        <div className="relative overflow-hidden rounded-3xl border border-emerald-950/10 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 p-3 shadow-[0_20px_50px_-24px_rgba(6,78,59,0.55)] sm:p-5">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(52,211,153,0.12),_transparent_55%)]" />
+        <div className="relative overflow-hidden rounded-3xl border border-emerald-400/10 bg-gradient-to-b from-slate-900 via-slate-950 to-black p-3 shadow-[0_24px_60px_-20px_rgba(6,78,59,0.65),0_0_0_1px_rgba(52,211,153,0.08)] sm:p-5">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(52,211,153,0.14),_transparent_50%)]" />
+          <div className="pointer-events-none absolute -left-20 top-0 h-40 w-40 rounded-full bg-emerald-500/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-16 bottom-0 h-36 w-36 rounded-full bg-cyan-500/10 blur-3xl" />
           <div className="relative">{children}</div>
         </div>
 
@@ -84,7 +86,7 @@ export function GamePrimaryButton({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="inline-flex min-h-10 items-center justify-center rounded-full bg-emerald-500 px-4 text-sm font-bold text-emerald-950 shadow-sm transition hover:bg-emerald-400 disabled:opacity-50"
+      className="inline-flex min-h-10 items-center justify-center rounded-full bg-gradient-to-b from-emerald-400 to-emerald-600 px-4 text-sm font-bold text-emerald-950 shadow-[0_4px_14px_rgba(16,185,129,0.35)] transition hover:from-emerald-300 hover:to-emerald-500 disabled:opacity-50"
     >
       {children}
     </button>
@@ -106,8 +108,8 @@ export function GameSecondaryButton({
       onClick={onClick}
       className={
         active
-          ? "inline-flex min-h-10 items-center justify-center rounded-full bg-slate-900 px-3 text-sm font-semibold text-white"
-          : "inline-flex min-h-10 items-center justify-center rounded-full border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          ? "inline-flex min-h-10 items-center justify-center rounded-full bg-gradient-to-b from-slate-800 to-slate-950 px-3 text-sm font-semibold text-white ring-2 ring-emerald-400/50 shadow-md"
+          : "inline-flex min-h-10 items-center justify-center rounded-full border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
       }
     >
       {children}
