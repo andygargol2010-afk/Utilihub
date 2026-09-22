@@ -4,7 +4,7 @@ import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
 
 type Cell = "X" | "O" | null;
 type Mode = "cpu" | "pvp";
-type CpuLevel = "easy" | "hard";
+type CpuLevel = "easy" | "medium" | "hard";
 
 const WINS = [
   [0, 1, 2],
@@ -27,7 +27,6 @@ function winnerOf(board: Cell[]): Cell | "draw" | null {
   return null;
 }
 
-/** Indices of the winning trio, or null. */
 function winningLine(board: Cell[]): WinLine | null {
   for (const line of WINS) {
     const [a, b, c] = line;
@@ -68,6 +67,9 @@ function bestCpuMove(board: Cell[], level: CpuLevel): number {
   const moves = emptyIndices(board);
   if (!moves.length) return -1;
   if (level === "easy") return moves[Math.floor(Math.random() * moves.length)]!;
+  if (level === "medium" && Math.random() < 0.3) {
+    return moves[Math.floor(Math.random() * moves.length)]!;
+  }
   let bestScore = -Infinity;
   let best = moves[0]!;
   for (const i of moves) {
@@ -82,10 +84,9 @@ function bestCpuMove(board: Cell[], level: CpuLevel): number {
   return best;
 }
 
-/** Map win line → SVG endpoints. Cell=100, gap=10 matches CSS grid gap. */
 const CELL_U = 100;
 const GAP_U = 10;
-const BOARD_U = 3 * CELL_U + 2 * GAP_U; // 320
+const BOARD_U = 3 * CELL_U + 2 * GAP_U;
 
 function cellCenter(i: number) {
   const col = i % 3;
@@ -200,7 +201,7 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
             reset();
           }}
         >
-          {es ? "Vs CPU" : "Vs CPU"}
+          Vs CPU
         </GameSecondaryButton>
         <GameSecondaryButton
           active={mode === "pvp"}
@@ -215,6 +216,9 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
           <>
             <GameSecondaryButton active={level === "easy"} onClick={() => setLevel("easy")}>
               {es ? "Fácil" : "Easy"}
+            </GameSecondaryButton>
+            <GameSecondaryButton active={level === "medium"} onClick={() => setLevel("medium")}>
+              {es ? "Medio" : "Med"}
             </GameSecondaryButton>
             <GameSecondaryButton active={level === "hard"} onClick={() => setLevel("hard")}>
               {es ? "Difícil" : "Hard"}
