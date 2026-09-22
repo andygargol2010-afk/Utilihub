@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestLow, writeBestLow } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
@@ -63,6 +63,25 @@ function generate(diff: Diff): { puzzle: Board; solution: Board } {
   return { puzzle, solution };
 }
 
+function hasConflict(board: Board, r: number, c: number): boolean {
+  const n = board[r]![c]!;
+  if (!n) return false;
+  for (let i = 0; i < 9; i++) {
+    if (i !== c && board[r]![i] === n) return true;
+    if (i !== r && board[i]![c] === n) return true;
+  }
+  const br = Math.floor(r / 3) * 3;
+  const bc = Math.floor(c / 3) * 3;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      const rr = br + i;
+      const cc = bc + j;
+      if ((rr !== r || cc !== c) && board[rr]![cc] === n) return true;
+    }
+  }
+  return false;
+}
+
 export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
   const [diff, setDiff] = useState<Diff>("easy");
@@ -82,6 +101,18 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
     const id = window.setInterval(() => setSeconds((s) => s + 1), 1000);
     return () => window.clearInterval(id);
   }, [running, won]);
+
+  const selectedVal = selected ? grid[selected[0]]![selected[1]]! : 0;
+
+  const conflictMap = useMemo(() => {
+    const m = new Set<string>();
+    for (let r = 0; r < 9; r++) {
+      for (let c = 0; c < 9; c++) {
+        if (hasConflict(grid, r, c)) m.add(`${r}-${c}`);
+      }
+    }
+    return m;
+  }, [grid]);
 
   const newGame = useCallback((d: Diff) => {
     const g = generate(d);
@@ -162,7 +193,7 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
         }
         .sudoku-num { display: inline-block; animation: sudoku-pop 0.18s ease-out; }
       `}</style>
-      <div className="flex flex-wrap justify-center gap-2 text-sm font-semibold text-emerald-100/90">
+      <div className="flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-emerald-100/90">
         <GameSecondaryButton active={diff === "easy"} onClick={() => newGame("easy")}>
           {es ? "Fácil" : "Easy"}
         </GameSecondaryButton>
@@ -184,26 +215,47 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
         <GameSecondaryButton onClick={check}>{es ? "Comprobar" : "Check"}</GameSecondaryButton>
         <GameSecondaryButton onClick={hint}>{es ? "Pista" : "Hint"}</GameSecondaryButton>
       </div>
-      {msg && <p className="text-sm font-bold text-emerald-300">{msg}</p>}
+      {msg && (
+        <p className={`text-sm font-bold ${won ? "text-amber-300" : "text-emerald-300"}`}>{msg}</p>
+      )}
       <div className="grid grid-cols-9 gap-0.5 rounded-xl bg-emerald-950/50 p-1.5" key={tick}>
         {grid.map((row, r) =>
           row.map((v, c) => {
             const isFixed = fixed[r]![c];
             const sel = selected?.[0] === r && selected?.[1] === c;
+            const inLine =
+              selected &&
+              (selected[0] === r ||
+                selected[1] === c ||
+                (Math.floor(selected[0] / 3) === Math.floor(r / 3) &&
+                  Math.floor(selected[1] / 3) === Math.floor(c / 3)));
+            const sameNum = selectedVal > 0 && v === selectedVal;
+            const conflict = conflictMap.has(`${r}-${c}`);
             const box = Math.floor(r / 3) * 3 + Math.floor(c / 3);
             const border =
               (c % 3 === 2 && c !== 8 ? "border-r-2 border-r-emerald-500/40 " : "") +
               (r % 3 === 2 && r !== 8 ? "border-b-2 border-b-emerald-500/40 " : "");
+            let bg = box % 2 === 0 ? "bg-white/10" : "bg-white/5";
+            if (inLine) bg = "bg-emerald-500/15";
+            if (sameNum) bg = "bg-sky-500/25";
+            if (sel) bg = "bg-emerald-500/45";
+            if (conflict) bg = "bg-rose-500/35";
             return (
               <button
                 key={`${r}-${c}`}
                 type="button"
                 onClick={() => setSelected([r, c])}
-                className={`flex h-8 w-8 items-center justify-center text-sm font-bold sm:h-9 sm:w-9 ${border} ${
-                  sel ? "bg-emerald-500/40 text-white" : box % 2 === 0 ? "bg-white/10 text-white" : "bg-white/5 text-white"
-                } ${isFixed ? "text-emerald-200" : "text-amber-200"}`}
+                className={`flex h-8 w-8 items-center justify-center text-sm font-bold sm:h-9 sm:w-9 ${border} ${bg} ${
+                  conflict ? "text-rose-200" : isFixed ? "text-emerald-200" : "text-amber-200"
+                }`}
               >
-                {v ? <span className="sudoku-num" key={v}>{v}</span> : ""}
+                {v ? (
+                  <span className="sudoku-num" key={`${r}-${c}-${v}`}>
+                    {v}
+                  </span>
+                ) : (
+                  ""
+                )}
               </button>
             );
           }),
@@ -215,7 +267,9 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
             key={n}
             type="button"
             onClick={() => put(n)}
-            className="flex h-10 min-w-10 items-center justify-center rounded-xl bg-white/10 px-1 text-sm font-bold text-white hover:bg-white/20"
+            className={`flex h-10 min-w-10 items-center justify-center rounded-xl px-1 text-sm font-bold text-white hover:bg-white/20 ${
+              selectedVal === n && n !== 0 ? "bg-emerald-500/40 ring-1 ring-emerald-300/50" : "bg-white/10"
+            }`}
           >
             {n === 0 ? (es ? "Borrar" : "Clear") : n}
           </button>
