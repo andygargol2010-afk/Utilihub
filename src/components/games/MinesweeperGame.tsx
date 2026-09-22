@@ -213,10 +213,23 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
     <div className="mx-auto flex max-w-lg flex-col items-center gap-3">
       <style>{`
         @keyframes mines-open {
-          from { transform: scale(0.85); opacity: 0.5; }
+          from { transform: scale(0.7); opacity: 0.3; }
           to { transform: scale(1); opacity: 1; }
         }
-        .mines-open { animation: mines-open 0.15s ease-out; }
+        .mines-open { animation: mines-open 0.18s cubic-bezier(0.34,1.4,0.64,1); }
+        .mines-raised {
+          background: linear-gradient(145deg, #64748b, #475569);
+          box-shadow: inset 1px 1px 0 rgba(255,255,255,0.25), inset -1px -1px 0 rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .mines-raised:hover { filter: brightness(1.12); }
+        .mines-flag {
+          background: linear-gradient(145deg, #64748b, #334155);
+          box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2);
+        }
+        .mines-board {
+          background: linear-gradient(160deg, #1e293b, #0f172a);
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 8px 24px rgba(0,0,0,0.35);
+        }
       `}</style>
       <div className="flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-emerald-100/90">
         <GameSecondaryButton active={diff === "easy"} onClick={() => reset("easy")}>
@@ -243,28 +256,28 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
         </p>
       )}
       <div
-        className="grid gap-0.5 rounded-xl bg-black/30 p-2 select-none touch-manipulation"
+        className="mines-board grid gap-0.5 rounded-xl p-2.5 select-none touch-manipulation"
         style={{ gridTemplateColumns: `repeat(${cfg.cols}, minmax(0, 1fr))` }}
       >
         {board.map((row, r) =>
           row.map((cell, c) => {
             const show = cell.open;
             let label = "";
-            let cls = "bg-slate-600 text-transparent hover:bg-slate-500";
+            let cls = "mines-raised text-transparent";
             if (show) {
               if (cell.mine) {
                 label = "💣";
-                cls = "bg-rose-700 text-white";
+                cls = "bg-gradient-to-br from-rose-500 to-rose-800 text-white shadow-lg";
               } else if (cell.n) {
                 label = String(cell.n);
                 const colors = ["", "text-sky-300", "text-emerald-300", "text-rose-300", "text-violet-300", "text-amber-300", "text-cyan-300", "text-pink-300", "text-white"];
-                cls = `bg-slate-800 ${colors[cell.n]}`;
+                cls = `bg-slate-900/90 ${colors[cell.n]} shadow-inner`;
               } else {
-                cls = "bg-slate-800 text-transparent";
+                cls = "bg-slate-900/80 text-transparent shadow-inner";
               }
             } else if (cell.flag) {
               label = "🚩";
-              cls = "bg-slate-600";
+              cls = "mines-flag";
             }
             return (
               <button
