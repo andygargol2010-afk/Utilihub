@@ -14,6 +14,7 @@ import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { toolSeoOverride } from "@/lib/tool-seo-overrides";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { ToolGamesBreak } from "@/components/ToolGamesBreak";
 import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
 import { getToolShowcase } from "@/lib/tool-showcase";
 
@@ -124,6 +125,7 @@ function SpanishToolPage() {
         </div>
       </section>
       <AdsterraBanner />
+      <ToolGamesBreak locale="es" />
       <ToolSeoContent tool={tool} locale="es" />
     </main>
   );
