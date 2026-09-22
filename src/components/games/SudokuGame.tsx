@@ -192,6 +192,18 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
           100% { transform: scale(1); opacity: 1; }
         }
         .sudoku-num { display: inline-block; animation: sudoku-pop 0.18s ease-out; }
+        .sudoku-frame {
+          background: linear-gradient(160deg, #064e3b, #022c22);
+          box-shadow: 0 12px 36px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(52,211,153,0.2);
+          padding: 8px;
+        }
+        .sudoku-pad-btn {
+          background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+          box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+          transition: transform 0.12s ease, filter 0.12s ease;
+        }
+        .sudoku-pad-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+        .sudoku-pad-btn:active { transform: scale(0.96); }
       `}</style>
       <div className="flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-emerald-100/90">
         <GameSecondaryButton active={diff === "easy"} onClick={() => newGame("easy")}>
@@ -218,7 +230,7 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
       {msg && (
         <p className={`text-sm font-bold ${won ? "text-amber-300" : "text-emerald-300"}`}>{msg}</p>
       )}
-      <div className="grid grid-cols-9 gap-0.5 rounded-xl bg-emerald-950/50 p-1.5" key={tick}>
+      <div className="sudoku-frame grid grid-cols-9 gap-0.5 rounded-xl" key={tick}>
         {grid.map((row, r) =>
           row.map((v, c) => {
             const isFixed = fixed[r]![c];
@@ -267,7 +279,7 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
             key={n}
             type="button"
             onClick={() => put(n)}
-            className={`flex h-10 min-w-10 items-center justify-center rounded-xl px-1 text-sm font-bold text-white hover:bg-white/20 ${
+            className={`sudoku-pad-btn flex h-10 min-w-10 items-center justify-center rounded-xl px-1 text-sm font-bold text-white ${
               selectedVal === n && n !== 0 ? "bg-emerald-500/40 ring-1 ring-emerald-300/50" : "bg-white/10"
             }`}
           >
