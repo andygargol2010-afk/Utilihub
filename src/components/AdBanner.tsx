@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 
-/** Home banner — desktop only. Mobile skips script entirely (Adsterra was force-redirecting). */
+/**
+ * Home banner — desktop + mobile (preview: banner-only monetization on mobile).
+ * Social bar remains desktop-only in AdsterraSocialBar.
+ */
 export function AdBanner() {
   useEffect(() => {
-    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-    if (!isDesktop) return;
-
     const config = {
       key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
       width: 728,
@@ -30,9 +30,8 @@ export function AdBanner() {
   return (
     <div
       id="utilihub-ad-banner"
-      className="mx-auto hidden min-h-[90px] w-full max-w-[728px] items-center justify-center overflow-hidden py-2 md:flex"
+      className="mx-auto flex min-h-[50px] w-full max-w-[728px] items-center justify-center overflow-x-auto overflow-y-hidden py-2 sm:min-h-[90px]"
       aria-label="Advertisement"
-      aria-hidden={typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches ? true : undefined}
     />
   );
 }
