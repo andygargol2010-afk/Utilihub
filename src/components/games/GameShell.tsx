@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import type { GameDef, GameLocale } from "@/lib/games/catalog";
-import { gameName, gamePath, gameSummary, tagLabel } from "@/lib/games/catalog";
+import { GAMES, gameName, gamePath, gameSummary, tagLabel } from "@/lib/games/catalog";
 
 type Props = {
   game: GameDef;
@@ -16,6 +16,10 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
   const es = locale === "es";
   const hub = es ? "/es/juegos" : "/games";
   const title = gameName(game, locale);
+  const related = [
+    ...GAMES.filter((g) => g.slug !== game.slug && g.tag === game.tag),
+    ...GAMES.filter((g) => g.slug !== game.slug && g.tag !== game.tag),
+  ].slice(0, 3);
 
   return (
     <div className="games-skin min-h-[70vh]">
@@ -67,6 +71,43 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
             ? "Todo corre en tu navegador. No hace falta cuenta."
             : "Runs entirely in your browser. No account needed."}
         </p>
+
+        <section className="mt-8" aria-labelledby="more-games-title">
+          <div className="mb-3 flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">
+                {es ? "Seguí jugando" : "Keep playing"}
+              </p>
+              <h2 id="more-games-title" className="mt-1 text-lg font-bold text-slate-900">
+                {es ? "Probar también" : "Try also"}
+              </h2>
+            </div>
+            <Link to={hub} className="text-sm font-bold text-emerald-700 hover:underline">
+              {es ? "Todos →" : "All →"}
+            </Link>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {related.map((g) => (
+              <a
+                key={g.slug}
+                href={gamePath(g, locale)}
+                className="group flex items-start gap-3 rounded-2xl border border-emerald-900/10 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-md"
+              >
+                <span className="text-2xl" aria-hidden>
+                  {g.emoji}
+                </span>
+                <span>
+                  <span className="block font-bold text-slate-900 group-hover:text-emerald-800">
+                    {gameName(g, locale)}
+                  </span>
+                  <span className="mt-0.5 block text-xs text-slate-600 line-clamp-2">
+                    {gameSummary(g, locale)}
+                  </span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
