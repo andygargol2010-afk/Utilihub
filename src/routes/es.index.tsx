@@ -4,6 +4,7 @@ import { ALL_CATEGORIES, ALL_TOOLS } from "@/lib/all-tools";
 import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 import { HomeReviews } from "@/components/HomeReviews";
+import { HomeGamesSection } from "@/components/HomeGamesSection";
 import { AdBanner } from "@/components/AdBanner";
 
 export const Route = createFileRoute("/es/")({
@@ -116,6 +117,7 @@ function SpanishHome() {
             Buscar herramientas <ArrowRight className="size-4" />
           </Link>
         </section>
+        <HomeGamesSection locale="es" />
         <HomeReviews locale="es" />
       </div>
     </main>
