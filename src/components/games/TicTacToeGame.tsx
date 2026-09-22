@@ -27,6 +27,7 @@ function winnerOf(board: Cell[]): Cell | "draw" | null {
   return null;
 }
 
+/** Indices of the winning trio, or null. */
 function winningLine(board: Cell[]): WinLine | null {
   for (const line of WINS) {
     const [a, b, c] = line;
@@ -67,6 +68,7 @@ function bestCpuMove(board: Cell[], level: CpuLevel): number {
   const moves = emptyIndices(board);
   if (!moves.length) return -1;
   if (level === "easy") return moves[Math.floor(Math.random() * moves.length)]!;
+  // Medium: mostly smart, 30% random so it is beatable
   if (level === "medium" && Math.random() < 0.3) {
     return moves[Math.floor(Math.random() * moves.length)]!;
   }
@@ -84,9 +86,10 @@ function bestCpuMove(board: Cell[], level: CpuLevel): number {
   return best;
 }
 
+/** Map win line → SVG endpoints. Cell=100, gap=10 matches CSS grid gap. */
 const CELL_U = 100;
 const GAP_U = 10;
-const BOARD_U = 3 * CELL_U + 2 * GAP_U;
+const BOARD_U = 3 * CELL_U + 2 * GAP_U; // 320
 
 function cellCenter(i: number) {
   const col = i % 3;
@@ -191,6 +194,19 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
           animation: ttt-draw 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards,
                      ttt-glow 1.2s ease-in-out 0.6s infinite;
         }
+        .ttt-board-frame {
+          padding: 10px;
+          border-radius: 1.25rem;
+          background: linear-gradient(160deg, #1e293b, #0f172a);
+          box-shadow: 0 12px 32px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.06);
+        }
+        .ttt-cell {
+          background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+        .ttt-cell:hover:not(:disabled) {
+          background: linear-gradient(145deg, rgba(52,211,153,0.15), rgba(255,255,255,0.06));
+        }
       `}</style>
 
       <div className="flex flex-wrap items-center justify-center gap-2">
@@ -201,7 +217,7 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
             reset();
           }}
         >
-          Vs CPU
+          {es ? "Vs CPU" : "Vs CPU"}
         </GameSecondaryButton>
         <GameSecondaryButton
           active={mode === "pvp"}
@@ -230,7 +246,7 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
 
       <p className="text-sm font-bold text-emerald-300/90">{statusText}</p>
 
-      <div className="relative inline-block">
+      <div className="ttt-board-frame relative inline-block">
         <div className="grid grid-cols-3 gap-2" role="grid" aria-label={es ? "Tres en raya" : "Tic-tac-toe"}>
           {board.map((cell, i) => {
             const isWin = winLine?.includes(i) ?? false;
@@ -242,7 +258,7 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
                 aria-label={cell ? cell : es ? `Casilla ${i + 1}` : `Cell ${i + 1}`}
                 disabled={Boolean(result || cell || (mode === "cpu" && !xIsNext))}
                 onClick={() => playAt(i)}
-                className={`flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-4xl font-black text-white transition duration-200 hover:bg-white/10 active:scale-95 disabled:cursor-default sm:h-24 sm:w-24 ${
+                className={`ttt-cell flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 text-4xl font-black text-white transition duration-200 active:scale-95 disabled:cursor-default sm:h-24 sm:w-24 ${
                   isWin ? "ttt-win-cell" : ""
                 }`}
               >
