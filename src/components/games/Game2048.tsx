@@ -271,7 +271,13 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
 
       {(won || over) && (
         <p className="text-sm font-bold text-emerald-300">
-          {over ? (es ? "Sin movimientos" : "No moves left") : es ? "¡2048!" : "You reached 2048!"}
+          {over
+            ? es
+              ? "Sin movimientos"
+              : "No moves left"
+            : es
+              ? "¡2048! Podés seguir jugando"
+              : "2048! Keep going"}
         </p>
       )}
 
