@@ -249,6 +249,11 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
         }
         .uh2048-born { animation: uh2048-pop 0.22s ease-out; }
         .uh2048-merged { animation: uh2048-merge 0.2s ease-out; }
+        @keyframes uh2048-banner {
+          0% { transform: scale(0.85); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .uh2048-banner { animation: uh2048-banner 0.28s cubic-bezier(0.34, 1.4, 0.64, 1) both; }
       `}</style>
 
       <div className="flex w-full items-center justify-between gap-2">
@@ -269,16 +274,18 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
         <GamePrimaryButton onClick={reset}>{es ? "Nuevo" : "New"}</GamePrimaryButton>
       </div>
 
-      {(won || over) && (
-        <p className="text-sm font-bold text-emerald-300">
-          {over
-            ? es
-              ? "Sin movimientos"
-              : "No moves left"
-            : es
-              ? "¡2048! Podés seguir jugando"
-              : "2048! Keep going"}
-        </p>
+      {won && !over && (
+        <div
+          className="uh2048-banner w-full rounded-xl px-4 py-3 text-center shadow-lg"
+          style={{ background: "linear-gradient(135deg, #edc22e, #f2b179)" }}
+        >
+          <p className="text-base font-black text-[#776e65] sm:text-lg">
+            {es ? "¡Llegaste a 2048!" : "You reached 2048!"}
+          </p>
+          <p className="mt-0.5 text-xs font-semibold text-[#776e65]/80">
+            {es ? "Podés seguir jugando" : "You can keep going"}
+          </p>
+        </div>
       )}
 
       <div
@@ -291,10 +298,12 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
           boxShadow: "0 12px 28px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.25)",
         }}
         onTouchStart={(e) => {
+          if (over) return;
           const t = e.touches[0];
           if (t) touchRef.current = { x: t.clientX, y: t.clientY };
         }}
         onTouchEnd={(e) => {
+          if (over) return;
           const start = touchRef.current;
           const t = e.changedTouches[0];
           if (!start || !t) return;
@@ -356,6 +365,32 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
             </div>
           );
         })}
+
+        {over && (
+          <div
+            className="uh2048-banner absolute inset-0 z-20 flex flex-col items-center justify-center rounded-xl px-4"
+            style={{ background: "rgba(238, 228, 218, 0.92)" }}
+          >
+            <p
+              className="text-center text-2xl font-black tracking-tight sm:text-3xl"
+              style={{ color: "#776e65" }}
+            >
+              {es ? "¡Sin movimientos!" : "No moves left!"}
+            </p>
+            <p className="mt-2 text-center text-sm font-semibold" style={{ color: "#8f7a66" }}>
+              {es ? `Puntos: ${score}` : `Score: ${score}`}
+              {best > 0 ? (es ? ` · Mejor: ${best}` : ` · Best: ${best}`) : ""}
+            </p>
+            <button
+              type="button"
+              onClick={reset}
+              className="mt-5 rounded-full px-6 py-3 text-sm font-black text-white shadow-md transition hover:brightness-110 active:scale-95"
+              style={{ background: "linear-gradient(180deg, #f2b179, #f59563)" }}
+            >
+              {es ? "Jugar de nuevo" : "Play again"}
+            </button>
+          </div>
+        )}
       </div>
 
       <p className="text-center text-[11px] text-white/50">
