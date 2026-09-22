@@ -2,6 +2,34 @@ import type { CatalogTool } from "@/lib/all-tools";
 import { spanishToolName } from "@/lib/i18n/es";
 import { resolvedToolSeo, toolSeoOverride } from "@/lib/tool-seo-overrides";
 
+/** Spanish guide when a tool has EN catalog copy but no aboutEs/stepsEs/faqEs override. */
+function spanishGuideFallback(displayName: string): {
+  about: string[];
+  steps: string[];
+  faq: { q: string; a: string }[];
+} {
+  return {
+    about: [
+      `${displayName} es una herramienta gratuita de UtiliHub. Funciona en tu navegador, sin registro ni instalación.`,
+    ],
+    steps: [
+      "Completá los campos con los valores o el texto que quieras procesar.",
+      "El resultado se actualiza al instante en la misma pantalla.",
+      "Copiá, compartí o exportá el resultado si la herramienta lo permite.",
+    ],
+    faq: [
+      {
+        q: "¿Los resultados son vinculantes o reemplazan asesoramiento profesional?",
+        a: "No. Son orientativos y se calculan en tu dispositivo. No sustituyen el criterio de un profesional.",
+      },
+      {
+        q: "¿Necesito crear una cuenta?",
+        a: "No. Podés usar la herramienta de inmediato, sin registro.",
+      },
+    ],
+  };
+}
+
 export function ToolSeoContent({
   tool,
   locale = "en",
@@ -12,13 +40,33 @@ export function ToolSeoContent({
   const override = toolSeoOverride(tool.slug);
   const resolved = resolvedToolSeo(tool);
   const displayName = locale === "es" ? spanishToolName(tool) : tool.name;
+  const fallbackEs = locale === "es" ? spanishGuideFallback(displayName) : null;
 
+  // Never surface English catalog SEO copy on /es/* pages.
   const about =
-    locale === "es" && override?.aboutEs?.length ? override.aboutEs : resolved.about;
+    locale === "es"
+      ? override?.aboutEs?.length
+        ? override.aboutEs
+        : resolved.about.length
+          ? fallbackEs!.about
+          : []
+      : resolved.about;
   const steps =
-    locale === "es" && override?.stepsEs?.length ? override.stepsEs : resolved.steps;
+    locale === "es"
+      ? override?.stepsEs?.length
+        ? override.stepsEs
+        : resolved.steps.length
+          ? fallbackEs!.steps
+          : []
+      : resolved.steps;
   const faq =
-    locale === "es" && override?.faqEs?.length ? override.faqEs : resolved.faq;
+    locale === "es"
+      ? override?.faqEs?.length
+        ? override.faqEs
+        : resolved.faq.length
+          ? fallbackEs!.faq
+          : []
+      : resolved.faq;
 
   const hasDetails = about.length > 0 || steps.length > 0 || faq.length > 0;
   if (!hasDetails) return null;
