@@ -113,10 +113,9 @@ const randomId = () => {
 };
 
 export function DevTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
-  const es = locale === "en" ? false : locale === "es";
+  const es = locale === "es";
   const showcase = getToolShowcase(tool.slug);
   const ui = showcaseUi(showcase?.accent);
-  const premium = Boolean(showcase);
   const [input, setInput] = useState("");
   const [out, setOut] = useState("");
   const [error, setError] = useState("");
