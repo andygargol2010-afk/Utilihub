@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ALL_CATEGORIES } from "@/lib/all-tools";
 import { GAMES, gameName, gamePath } from "@/lib/games/catalog";
+import { englishCategorySlug } from "@/lib/route-slugs";
 
 export function SiteFooter() {
   const featured = ALL_CATEGORIES.filter((category) =>
@@ -25,8 +26,8 @@ export function SiteFooter() {
             {featured.map((category) => (
               <Link
                 key={category.slug}
-                to="/categoria/$slug"
-                params={{ slug: category.slug }}
+                to="/category/$slug"
+                params={{ slug: englishCategorySlug(category.slug) }}
                 className="w-fit text-sm font-semibold hover:text-primary"
               >
                 {category.name}
@@ -50,13 +51,13 @@ export function SiteFooter() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[.16em] text-muted-foreground">UtiliHub</p>
           <nav aria-label="Information" className="mt-3 grid gap-2">
-            <Link to="/herramientas" className="w-fit text-sm font-semibold hover:text-primary">
+            <Link to="/tools" className="w-fit text-sm font-semibold hover:text-primary">
               All tools
             </Link>
             <Link to="/kits" className="w-fit text-sm font-semibold hover:text-primary">
               Goal-based kits
             </Link>
-            <Link to="/hubs/documentos-y-archivos" className="w-fit text-sm font-semibold hover:text-primary">
+            <Link to="/hubs/documents-and-files" className="w-fit text-sm font-semibold hover:text-primary">
               Documents & files
             </Link>
             <Link to="/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">
