@@ -60,13 +60,13 @@ export function SiteFooter() {
             <Link to="/hubs/documents-and-files" className="w-fit text-sm font-semibold hover:text-primary">
               Documents & files
             </Link>
-            <Link to="/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">
+            <Link to="/legal" className="w-fit text-sm font-semibold hover:text-primary">
               Legal notice
             </Link>
-            <Link to="/privacidad" className="w-fit text-sm font-semibold hover:text-primary">
+            <Link to="/privacy" className="w-fit text-sm font-semibold hover:text-primary">
               Privacy
             </Link>
-            <Link to="/contacto" className="w-fit text-sm font-semibold hover:text-primary">
+            <Link to="/contact" className="w-fit text-sm font-semibold hover:text-primary">
               Contact
             </Link>
           </nav>
