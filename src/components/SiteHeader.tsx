@@ -24,6 +24,7 @@ export function SiteHeader() {
           <Link to="/hubs/documents-and-files" className="rounded-full px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent" activeProps={{ className: "bg-accent text-primary ring-1 ring-primary/70" }}>Documents</Link>
           <Link to="/finance" className="rounded-full px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent" activeProps={{ className: "bg-accent text-primary ring-1 ring-primary/70" }}>Finance</Link>
           <Link to="/games" className="rounded-full px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent" activeProps={{ className: "bg-accent text-primary ring-1 ring-primary/70" }}>Games</Link>
+          <Link to="/simulators" className="rounded-full px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent" activeProps={{ className: "bg-accent text-primary ring-1 ring-primary/70" }}>Simulators</Link>
           {ALL_CATEGORIES.filter((c) => c.slug !== "finanzas").slice(0, 4).map((c) => (
             <Link key={c.slug} to="/category/$slug" params={{ slug: englishCategorySlug(c.slug) }} className="rounded-full px-3.5 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground" activeProps={{ className: "bg-accent text-primary ring-1 ring-primary/70" }}>{c.name}</Link>
           ))}
@@ -51,6 +52,7 @@ export function SiteHeader() {
             <Link to="/kits" onClick={() => setOpen(false)} className="min-h-11 rounded-lg px-3 py-2.5 text-sm font-bold hover:bg-accent" activeProps={{ className: "bg-accent text-primary" }}>Goal-based kits</Link>
             <Link to="/hubs/documents-and-files" onClick={() => setOpen(false)} className="min-h-11 rounded-lg px-3 py-2.5 text-sm font-bold hover:bg-accent" activeProps={{ className: "bg-accent text-primary" }}>Documents & files</Link>
             <Link to="/games" onClick={() => setOpen(false)} className="min-h-11 rounded-lg px-3 py-2.5 text-sm font-bold hover:bg-accent" activeProps={{ className: "bg-accent text-primary" }}>Games</Link>
+            <Link to="/simulators" onClick={() => setOpen(false)} className="min-h-11 rounded-lg px-3 py-2.5 text-sm font-bold hover:bg-accent" activeProps={{ className: "bg-accent text-primary" }}>Simulators</Link>
             {ALL_CATEGORIES.map((c) => (
               <Link key={c.slug} to="/category/$slug" params={{ slug: englishCategorySlug(c.slug) }} onClick={() => setOpen(false)} className="min-h-11 rounded-lg px-3 py-2.5 text-sm font-semibold hover:bg-accent" activeProps={{ className: "bg-accent text-primary" }}>{c.name}</Link>
             ))}
