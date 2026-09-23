@@ -46,6 +46,18 @@ const THEME: Record<
       "bg-gradient-to-b from-violet-300 to-violet-600 text-violet-950 shadow-[0_4px_16px_rgba(139,92,246,0.4)] hover:from-violet-200 hover:to-violet-500",
     btnActive: "ring-2 ring-violet-400/60 bg-gradient-to-b from-violet-900 to-slate-950 text-violet-50",
   },
+  clockwork: {
+    page: "from-amber-50/90 via-orange-50/30 to-background",
+    accent: "text-amber-800",
+    frame:
+      "border-amber-500/30 bg-gradient-to-b from-[#1a1208] via-[#120c06] to-[#080502] shadow-[0_28px_70px_-24px_rgba(245,158,11,0.45),0_0_0_1px_rgba(251,191,36,0.14)]",
+    glowA: "bg-amber-500/15",
+    glowB: "bg-orange-600/10",
+    wash: "bg-[radial-gradient(ellipse_at_top,_rgba(245,158,11,0.14),_transparent_55%)]",
+    btnPrimary:
+      "bg-gradient-to-b from-amber-300 to-amber-600 text-amber-950 shadow-[0_4px_16px_rgba(245,158,11,0.4)] hover:from-amber-200 hover:to-amber-500",
+    btnActive: "ring-2 ring-amber-400/60 bg-gradient-to-b from-amber-900 to-stone-950 text-amber-50",
+  },
 };
 
 /** Chrome for graphic simulators. Ads must never sit inside children (canvas surface). */
