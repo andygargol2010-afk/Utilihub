@@ -182,7 +182,7 @@ export function GravitySandbox({ locale = "en" }: { locale?: SimLocale }) {
         ctx.fillRect(sx, sy, 1.2, 1.2);
       }
 
-      ctx.strokeStyle = "rgba(125,211,252,0.28)";
+      ctx.strokeStyle = "rgba(167,139,250,0.3)";
       ctx.lineWidth = 1.5;
       ctx.strokeRect(1, 1, W - 2, H - 2);
 
@@ -247,30 +247,54 @@ export function GravitySandbox({ locale = "en" }: { locale?: SimLocale }) {
   };
 
   return (
-    <div className="mx-auto flex max-w-lg flex-col items-center gap-3">
-      <div className="flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-sky-100/90">
-        <SimSecondaryButton active={preset === "orbit"} onClick={() => applyPreset("orbit")}>
-          {es ? "Órbita" : "Orbit"}
-        </SimSecondaryButton>
-        <SimSecondaryButton active={preset === "binary"} onClick={() => applyPreset("binary")}>
-          {es ? "Binario" : "Binary"}
-        </SimSecondaryButton>
-        <SimSecondaryButton active={preset === "cluster"} onClick={() => applyPreset("cluster")}>
-          {es ? "Cúmulo" : "Cluster"}
-        </SimSecondaryButton>
-        <SimPrimaryButton onClick={() => setRunning((r) => !r)}>
+    <div className="mx-auto flex max-w-lg flex-col items-center gap-4">
+      <div className="w-full rounded-2xl border border-violet-400/20 bg-violet-950/35 p-3 backdrop-blur-sm">
+        <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-violet-300/80">
+          {es ? "Escenario" : "Scenario"}
+        </p>
+        <div className="grid grid-cols-3 gap-2">
+          {(
+            [
+              { id: "orbit" as const, en: "Orbit", es: "Órbita", tip: "🪐" },
+              { id: "binary" as const, en: "Binary", es: "Binario", tip: "⭐" },
+              { id: "cluster" as const, en: "Cluster", es: "Cúmulo", tip: "✨" },
+            ] as const
+          ).map((opt) => (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => applyPreset(opt.id)}
+              className={
+                preset === opt.id
+                  ? "flex flex-col items-center gap-0.5 rounded-xl bg-gradient-to-b from-violet-400 to-violet-700 py-2.5 text-xs font-bold text-violet-950 shadow-[0_0_22px_rgba(139,92,246,0.4)] ring-2 ring-violet-200/40"
+                  : "flex flex-col items-center gap-0.5 rounded-xl border border-violet-500/20 bg-black/30 py-2.5 text-xs font-semibold text-violet-100/80 hover:border-violet-400/40 hover:bg-violet-900/30"
+              }
+            >
+              <span className="text-base leading-none" aria-hidden>
+                {opt.tip}
+              </span>
+              {es ? opt.es : opt.en}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <SimPrimaryButton theme="cosmos" onClick={() => setRunning((r) => !r)}>
           {running ? (es ? "Pausa" : "Pause") : es ? "Seguir" : "Resume"}
         </SimPrimaryButton>
-        <SimSecondaryButton onClick={reset}>{es ? "Reiniciar" : "Reset"}</SimSecondaryButton>
-        <SimSecondaryButton active={trails} onClick={() => setTrails((t) => !t)}>
+        <SimSecondaryButton theme="cosmos" onClick={reset}>
+          {es ? "Reiniciar" : "Reset"}
+        </SimSecondaryButton>
+        <SimSecondaryButton theme="cosmos" active={trails} onClick={() => setTrails((t) => !t)}>
           {es ? (trails ? "Estelas ✓" : "Estelas") : trails ? "Trails ✓" : "Trails"}
         </SimSecondaryButton>
       </div>
 
-      <label className="flex w-full max-w-sm flex-col gap-1 text-xs text-sky-100/80">
-        <span className="flex justify-between font-semibold">
-          <span>{es ? "Fuerza de gravedad (G)" : "Gravity strength (G)"}</span>
-          <span className="tabular-nums">{Math.round(gStrength * 100)}%</span>
+      <label className="flex w-full max-w-sm flex-col gap-1.5 text-xs text-violet-100/85">
+        <span className="flex justify-between font-semibold tracking-wide">
+          <span>{es ? "Constante G" : "Constant G"}</span>
+          <span className="tabular-nums text-violet-300">{Math.round(gStrength * 100)}%</span>
         </span>
         <input
           type="range"
@@ -278,35 +302,41 @@ export function GravitySandbox({ locale = "en" }: { locale?: SimLocale }) {
           max={100}
           value={Math.round(gStrength * 100)}
           onChange={(e) => setGStrength(Number(e.target.value) / 100)}
-          className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-700 accent-sky-400"
+          className="h-2.5 w-full cursor-pointer appearance-none rounded-full bg-gradient-to-r from-indigo-950 via-violet-600 to-fuchsia-400 accent-violet-300"
         />
       </label>
 
-      <p className="text-center text-[12px] text-sky-200/70">
+      <p className="text-center text-[12px] leading-relaxed text-violet-200/75">
         {es
-          ? `Tocá el canvas para añadir masas · ${count}/${MAX_BODIES} cuerpos`
-          : `Tap the canvas to add masses · ${count}/${MAX_BODIES} bodies`}
+          ? `Tocá el cielo para sembrar masas · ${count}/${MAX_BODIES}`
+          : `Tap the sky to seed masses · ${count}/${MAX_BODIES}`}
       </p>
 
-      <canvas
-        ref={canvasRef}
-        width={W}
-        height={H}
-        onPointerDown={onPointerDown}
-        role="img"
-        aria-label={
-          es
-            ? "Simulador de gravedad: cuerpos que se atraen mutuamente"
-            : "Gravity sandbox: bodies attracting each other"
-        }
-        className="w-full cursor-crosshair touch-none rounded-xl border border-white/10 bg-slate-950"
-        style={{ maxWidth: W, height: "auto" }}
-      />
+      <div className="relative w-full max-w-[440px]">
+        <div
+          className="pointer-events-none absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-violet-400/35 via-transparent to-fuchsia-500/25 opacity-80"
+          aria-hidden
+        />
+        <canvas
+          ref={canvasRef}
+          width={W}
+          height={H}
+          onPointerDown={onPointerDown}
+          role="img"
+          aria-label={
+            es
+              ? "Simulador de gravedad: cuerpos que se atraen mutuamente"
+              : "Gravity sandbox: bodies attracting each other"
+          }
+          className="relative w-full cursor-crosshair touch-none rounded-2xl border border-violet-400/25 bg-[#030208] shadow-[inset_0_0_50px_rgba(91,33,182,0.2)]"
+          style={{ maxWidth: W, height: "auto" }}
+        />
+      </div>
 
-      <p className="text-center text-[11px] text-white/45">
+      <p className="text-center text-[11px] text-violet-200/40">
         {es
-          ? "Modelo didáctico con suavizado — no es gravedad newtoniana exacta a escala real."
-          : "Teaching model with softening — not exact real-scale Newtonian gravity."}
+          ? "Observatorio N-cuerpos · suavizado didáctico (no escala real)."
+          : "N-body observatory · teaching softening (not real scale)."}
       </p>
     </div>
   );
