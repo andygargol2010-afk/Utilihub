@@ -9,6 +9,7 @@ import { toolByEnglishSlug, englishToolPath, englishToolSlug } from "@/lib/route
 import { journeyLabel, journeyTools } from "@/lib/discovery";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, webApplicationSchema } from "@/lib/seo";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { ToolGamesBreak } from "@/components/ToolGamesBreak";
 
 export const Route = createFileRoute("/finance/$slug")({
   loader: ({ params }) => {
@@ -125,6 +126,7 @@ function FinancialPage() {
       </section>
 
       <AdsterraBanner />
+      <ToolGamesBreak locale="en" />
 
       {next && (
         <section className="mt-6 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5">
