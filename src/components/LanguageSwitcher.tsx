@@ -3,6 +3,7 @@ import { ALL_TOOLS } from "@/lib/all-tools";
 import { englishToolPath, toolByEnglishSlug, englishCategorySlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
 import { spanishToolPath } from "@/lib/i18n/es";
 import { gameBySlug } from "@/lib/games/catalog";
+import { simBySlug } from "@/lib/simulators/catalog";
 
 function equivalentPath(pathname: string, targetLocale: "en" | "es") {
   if (targetLocale === "es") {
@@ -35,6 +36,11 @@ function equivalentPath(pathname: string, targetLocale: "en" | "es") {
       const game = gameBySlug(pathname.slice("/games/".length), "en");
       return game ? `/es/juegos/${game.slugEs}` : "/es/juegos";
     }
+    if (pathname === "/simulators") return "/es/simuladores";
+    if (pathname.startsWith("/simulators/")) {
+      const sim = simBySlug(pathname.slice("/simulators/".length), "en");
+      return sim ? `/es/simuladores/${sim.slugEs}` : "/es/simuladores";
+    }
     return "/es";
   }
 
@@ -63,6 +69,11 @@ function equivalentPath(pathname: string, targetLocale: "en" | "es") {
   if (pathname.startsWith("/es/juegos/")) {
     const game = gameBySlug(pathname.slice("/es/juegos/".length), "es");
     return game ? `/games/${game.slug}` : "/games";
+  }
+  if (pathname === "/es/simuladores") return "/simulators";
+  if (pathname.startsWith("/es/simuladores/")) {
+    const sim = simBySlug(pathname.slice("/es/simuladores/".length), "es");
+    return sim ? `/simulators/${sim.slug}` : "/simulators";
   }
   return "/";
 }
