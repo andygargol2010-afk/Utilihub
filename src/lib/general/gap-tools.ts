@@ -1,0 +1,97 @@
+import { makeTool } from "./types";
+
+/** High-value tools that were missing from the catalog. Local browser only. */
+const t = (
+  slug: string,
+  name: string,
+  category: string,
+  kind: string,
+  summary: string,
+  keywords: string[] = [],
+  config: Record<string, unknown> = {},
+) => makeTool(slug, name, category, kind, summary, keywords, config);
+
+export const GAP_TOOLS = [
+  t(
+    "codigo-morse",
+    "Morse code translator",
+    "texto",
+    "text",
+    "Convert text to Morse code and Morse code back to text in the browser.",
+    ["morse code", "morse translator", "código morse", "traductor morse"],
+  ),
+  t(
+    "csv-a-json",
+    "CSV to JSON converter",
+    "desarrollo",
+    "code",
+    "Convert CSV tables into JSON arrays of objects with local parsing.",
+    ["csv to json", "csv json converter", "csv a json"],
+  ),
+  t(
+    "texto-binario",
+    "Text to binary converter",
+    "texto",
+    "text",
+    "Encode text as binary (UTF-8) or decode binary back to readable text.",
+    ["text to binary", "binary to text", "texto a binario", "binario a texto"],
+  ),
+  t(
+    "frecuencia-palabras",
+    "Word frequency counter",
+    "texto",
+    "text",
+    "Count how often each word appears and rank by frequency.",
+    ["word frequency", "word count frequency", "frecuencia de palabras"],
+  ),
+  t(
+    "nivel-lectura",
+    "Reading level calculator",
+    "texto",
+    "text",
+    "Estimate reading ease with Flesch (English) or Fernández-Huerta (Spanish).",
+    ["flesch reading ease", "reading level", "nivel de lectura", "legibilidad"],
+  ),
+  t(
+    "anagramas",
+    "Anagram checker",
+    "texto",
+    "text",
+    "Check whether two phrases use the same letters (anagrams), ignoring spaces and punctuation.",
+    ["anagram checker", "anagramas", "son anagramas"],
+  ),
+  t(
+    "palindromo",
+    "Palindrome checker",
+    "texto",
+    "text",
+    "Detect whether a word or phrase reads the same forwards and backwards.",
+    ["palindrome checker", "palíndromo", "es palindromo"],
+  ),
+  t(
+    "qr-wifi",
+    "WiFi QR code generator",
+    "generadores",
+    "generator",
+    "Generate a QR code that connects devices to a WiFi network (SSID, password, security).",
+    ["wifi qr", "qr wifi", "wifi qr code", "código qr wifi"],
+    { mode: "seo-growth" },
+  ),
+  t(
+    "validador-cuit",
+    "CUIT / CUIL validator",
+    "utilidades",
+    "formula",
+    "Validate Argentine CUIT or CUIL numbers and check the verification digit.",
+    ["cuit", "cuil", "validador cuit", "cuit argentina"],
+    { mode: "seo-growth" },
+  ),
+  t(
+    "numeros-a-palabras",
+    "Number to words converter",
+    "texto",
+    "text",
+    "Spell out integers in English or Spanish (up to nine digits).",
+    ["number to words", "números a letras", "numeros a palabras", "spell number"],
+  ),
+];

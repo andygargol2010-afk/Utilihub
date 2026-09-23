@@ -27,6 +27,7 @@ import { PRACTICAL_ADVANCED_TOOLS } from "./practical-advanced";
 import { UTILITY_EXTRA_TOOLS } from "./utility-extra";
 import { FINANCE_TOOLS } from "./finance";
 import { SEO_GROWTH_TOOLS } from "./seo-growth";
+import { GAP_TOOLS } from "./gap-tools";
 
 export { GENERAL_CATEGORIES };
 
@@ -59,4 +60,5 @@ export const GENERAL_TOOLS = [
   ...UTILITY_EXTRA_TOOLS,
   ...FINANCE_TOOLS,
   ...SEO_GROWTH_TOOLS,
+  ...GAP_TOOLS,
 ];
