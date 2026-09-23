@@ -33,6 +33,7 @@ export function SpanishSiteHeader() {
           <Link to="/es/hubs/documentos-y-archivos" className={navLink} activeProps={activeNav}>Documentos</Link>
           <Link to="/es/finanzas" className={navLink} activeProps={activeNav}>Finanzas</Link>
           <Link to="/es/juegos" className={navLink} activeProps={activeNav}>Juegos</Link>
+          <Link to="/es/simuladores" className={navLink} activeProps={activeNav}>Simuladores</Link>
           {categoryShortcuts.map((c) => (
             <Link key={c.slug} to="/es/categoria/$slug" params={{ slug: c.slug }} className={navLinkMuted} activeProps={activeNav}>
               {spanishCategoryName(c.slug)}
@@ -58,6 +59,7 @@ export function SpanishSiteHeader() {
             <Link to="/es/hubs/documentos-y-archivos" onClick={() => setOpen(false)} className={mobileLink}>Documentos y archivos</Link>
             <Link to="/es/finanzas" onClick={() => setOpen(false)} className={mobileLink}>Finanzas</Link>
             <Link to="/es/juegos" onClick={() => setOpen(false)} className={mobileLink}>Juegos</Link>
+            <Link to="/es/simuladores" onClick={() => setOpen(false)} className={mobileLink}>Simuladores</Link>
             {ALL_CATEGORIES.filter((c) => c.slug !== "finanzas").map((c) => (
               <Link key={c.slug} to="/es/categoria/$slug" params={{ slug: c.slug }} onClick={() => setOpen(false)} className={mobileLinkMuted}>
                 {spanishCategoryName(c.slug)}
