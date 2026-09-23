@@ -180,6 +180,17 @@ const EXACT_NAMES: Record<string, string> = {
   "mpg-a-litros": "MPG a L/100 km",
   "ppi-pantalla": "PPI de pantalla",
   "crecimiento-periodico": "Crecimiento periódico",
+  // Gap tools
+  "codigo-morse": "Traductor de código Morse",
+  "texto-binario": "Texto a binario",
+  "frecuencia-palabras": "Frecuencia de palabras",
+  "nivel-lectura": "Nivel de lectura",
+  anagramas: "Verificador de anagramas",
+  palindromo: "Verificador de palíndromos",
+  "numeros-a-palabras": "Números a palabras",
+  "csv-a-json": "CSV a JSON",
+  "qr-wifi": "Generador de QR WiFi",
+  "validador-cuit": "Validador CUIT/CUIL",
 };
 
 const ACCENTED_TERMS: Record<string, string> = {
