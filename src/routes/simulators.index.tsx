@@ -1,11 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { SIMULATORS, simSummary, simTagLabel } from "@/lib/simulators/catalog";
+import { SIMULATORS, simBadge, simSummary, simTagLabel, type SimTheme } from "@/lib/simulators/catalog";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Free graphic simulators | UtiliHub";
 const description = cleanDescription(
-  "Interactive physics and chemistry simulators in your browser. Molecular motion and states of matter — no signup.",
+  "Interactive physics and chemistry simulators in your browser. Molecular motion, gravity sandbox — no signup.",
 );
+
+const CARD: Record<SimTheme, string> = {
+  lab: "border-teal-900/15 bg-gradient-to-br from-teal-50 via-white to-cyan-50/80 hover:border-teal-500/50 hover:shadow-teal-900/10",
+  cosmos:
+    "border-violet-900/15 bg-gradient-to-br from-violet-50 via-white to-indigo-50/80 hover:border-violet-500/50 hover:shadow-violet-900/10",
+};
+
+const BADGE: Record<SimTheme, string> = {
+  lab: "bg-teal-100 text-teal-800",
+  cosmos: "bg-violet-100 text-violet-800",
+};
+
+const CTA: Record<SimTheme, string> = {
+  lab: "text-teal-700",
+  cosmos: "text-violet-700",
+};
 
 export const Route = createFileRoute("/simulators/")({
   head: () => ({
@@ -35,31 +51,37 @@ export const Route = createFileRoute("/simulators/")({
 
 function SimulatorsHubEn() {
   return (
-    <div className="sim-skin min-h-[70vh] bg-gradient-to-b from-sky-50/80 via-background to-background">
+    <div className="sim-skin min-h-[70vh] bg-gradient-to-b from-slate-50 via-background to-background">
       <div className="container-page py-8 sm:py-12">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">Physics · Chemistry</p>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Lab · Cosmos</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Simulators</h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          Interactive graphic simulations that run in your browser. Explore systems, change parameters, and see results live.
+          Each simulation has its own visual language — not a one-size dark canvas. Explore systems, change
+          parameters, watch results live.
         </p>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
           {SIMULATORS.map((sim) => (
             <Link
               key={sim.slug}
               to="/simulators/$slug"
               params={{ slug: sim.slug }}
-              className="group flex flex-col rounded-3xl border border-sky-900/10 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-500/40 hover:shadow-md"
+              className={`group flex flex-col rounded-3xl border p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${CARD[sim.theme]}`}
             >
-              <span className="text-3xl" aria-hidden>
-                {sim.emoji}
-              </span>
-              <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-sky-700/80">
+              <div className="flex items-start justify-between gap-3">
+                <span className="text-4xl" aria-hidden>
+                  {sim.emoji}
+                </span>
+                <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${BADGE[sim.theme]}`}>
+                  {simBadge(sim, "en")}
+                </span>
+              </div>
+              <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 {simTagLabel(sim.tag, "en")}
               </span>
-              <span className="mt-1 text-lg font-bold text-slate-900 group-hover:text-sky-800">{sim.nameEn}</span>
-              <span className="mt-2 flex-1 text-sm text-slate-600">{simSummary(sim, "en")}</span>
-              <span className="mt-4 text-sm font-bold text-sky-700">Open →</span>
+              <span className="mt-1 text-xl font-bold text-slate-900">{sim.nameEn}</span>
+              <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{simSummary(sim, "en")}</span>
+              <span className={`mt-5 text-sm font-bold ${CTA[sim.theme]}`}>Open simulator →</span>
             </Link>
           ))}
         </div>
