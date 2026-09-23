@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { getToolShowcase } from "@/lib/tool-showcase";
 import { showcaseUi } from "@/lib/showcase-ui";
+import { processGapText, GAP_TEXT_SLUGS } from "@/lib/general/gap-text-ops";
 
 const words = (text: string) => (text.trim() ? text.trim().split(/\s+/).length : 0);
 const lines = (text: string) => (text ? text.split(/\r?\n/).length : 0);
@@ -11,7 +12,7 @@ const wordsToCase = (text: string) => text.trim().split(/[^\p{L}\p{N}]+/u).filte
 
 function process(slug: string, text: string, second: string, replacement: string) {
   switch (slug) {
-    case "contador-de-characters":
+    case "contador-de-caracteres":
       return `With spaces: ${text.length}\nWithout spaces: ${text.replace(/\s/g, "").length}`;
     case "contador-de-lineas":
       return `Lines: ${lines(text)}`;
@@ -49,36 +50,15 @@ function process(slug: string, text: string, second: string, replacement: string
     case "extraer-numeros":
       return text.match(/[-+]?\d+(?:[.,]\d+)?/g)?.join("\n") ?? "No numbers found.";
     case "extraer-emails":
-      return [...new Set(text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) ?? [])].join("\n") || "No emails found.";
+      return text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi)?.join("\n") ?? "No emails found.";
     case "extraer-urls":
-      return [...new Set(text.match(/https?:\/\/[^\s<]+/gi) ?? [])].join("\n") || "No URLs found.";
-    case "limpiar-texto":
-      return text.replace(/[“”]/g, '"').replace(/[‘’]/g, "'").replace(/\s+/g, " ").trim();
-    case "texto-a-lista":
-      return text.split(/\r?\n/).map((x) => x.trim()).filter(Boolean).join(", ");
-    case "lista-a-texto":
-      return text.split(",").map((x) => x.trim()).filter(Boolean).join("\n");
-    case "diferencia-textos": {
-      if (text === second) return "The texts are identical line by line.";
-      return `Text A (${text.length} characters)\nText B (${second.length} characters)\nLength difference: ${Math.abs(text.length - second.length)} characters.`;
-    }
-    case "csv-a-markdown": {
-      const rows = text.trim().split(/\r?\n/).map((line) => line.split(",").map((c) => c.trim()));
-      if (!rows.length || !rows[0].length) throw new Error("Enter CSV content.");
-      if (rows.some((r) => r.length !== rows[0].length)) throw new Error("All rows must have the same number of columns.");
-      return `| ${rows[0].join(" | ")} |\n| ${rows[0].map(() => "---").join(" | ")} |\n${rows.slice(1).map((r) => `| ${r.join(" | ")} |`).join("\n")}`;
-    }
-    case "markdown-a-html":
-      return text
-        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
-        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-        .replace(/\n/g, "<br>\n");
-    case "html-a-texto": {
-      const doc = new DOMParser().parseFromString(text, "text/html");
-      return doc.body.textContent ?? "";
+      return text.match(/https?:\/\/[^\s]+/gi)?.join("\n") ?? "No URLs found.";
+    case "texto-a-csv": {
+      const rows = text.split(/\r?\n/).map((l) => l.split(/\t|,/));
+      if (!rows.length) return "";
+      const cols = Math.max(...rows.map((r) => r.length));
+      if (rows.some((r) => r.length !== cols)) throw new Error("All rows must have the same number of columns.");
+      return rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n");
     }
     default:
       throw new Error(`Text tool not implemented: ${slug}`);
@@ -86,21 +66,24 @@ function process(slug: string, text: string, second: string, replacement: string
 }
 
 export function TextTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
+  const es = locale === "es";
+  const showcase = getToolShowcase(tool.slug);
+  const ui = showcaseUi(showcase?.accent);
+  const needsSecond = ["buscar-reemplazar", "diferencia-textos", "anagramas"].includes(tool.slug);
   const [text, setText] = useState("");
   const [second, setSecond] = useState("");
   const [replacement, setReplacement] = useState("");
   const [out, setOut] = useState("");
   const [error, setError] = useState("");
-  const es = locale === "es";
-  const showcase = getToolShowcase(tool.slug);
-  const ui = showcaseUi(showcase?.accent);
-  const premium = Boolean(showcase);
-  const needsSecond = ["buscar-reemplazar", "diferencia-textos"].includes(tool.slug);
 
   const run = () => {
     try {
       setError("");
-      setOut(process(tool.slug, text, second, replacement));
+      if (GAP_TEXT_SLUGS.has(tool.slug)) {
+        setOut(processGapText(tool.slug, text, second, locale));
+      } else {
+        setOut(process(tool.slug, text, second, replacement));
+      }
     } catch (e) {
       setOut("");
       const message = e instanceof Error ? e.message : "Could not process the text.";
@@ -112,6 +95,14 @@ export function TextTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: 
           "No URLs found.": "No se encontraron URL.",
           "Enter CSV content.": "Introduce el contenido CSV.",
           "All rows must have the same number of columns.": "Todas las filas deben tener el mismo número de columnas.",
+          "Enter text or Morse code.": "Introduce texto o código Morse.",
+          "Enter text or binary.": "Introduce texto o binario.",
+          "Enter some text with words.": "Introduce un texto con palabras.",
+          "Enter a longer text (a few sentences).": "Introduce un texto más largo (varias oraciones).",
+          "Enter two words or phrases.": "Introduce dos palabras o frases.",
+          "Enter some text.": "Introduce un texto.",
+          "Enter digits only.": "Ingresá solo dígitos.",
+          "Binary must be groups of 0/1 with length multiple of 8.": "El binario debe ser grupos de 0/1 con longitud múltiplo de 8.",
         }[message] ?? message;
       setError(es ? translated : message);
     }
