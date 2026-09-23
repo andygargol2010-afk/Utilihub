@@ -3,7 +3,7 @@ export type SimLocale = "en" | "es";
 export type SimTag = "physics" | "chemistry" | "math";
 
 /** Visual theme drives shell + hub card — not a generic dark box. */
-export type SimTheme = "lab" | "cosmos";
+export type SimTheme = "lab" | "cosmos" | "clockwork";
 
 export type SimDef = {
   /** Canonical EN slug used in /simulators/$slug */
@@ -52,6 +52,21 @@ export const SIMULATORS: readonly SimDef[] = [
       "N-body gravity playground. Try orbit, binary, or cluster presets, tweak G, and tap to add masses with trails.",
     summaryEs:
       "Patio de gravedad de N cuerpos. Probá órbita, binario o cúmulo, ajustá G y tocá para añadir masas con estelas.",
+  },
+  {
+    slug: "pendulum",
+    slugEs: "pendulo",
+    nameEn: "Pendulum",
+    nameEs: "Péndulo",
+    tag: "physics",
+    theme: "clockwork",
+    emoji: "🕰️",
+    badgeEn: "Simple harmonic",
+    badgeEs: "Movimiento armónico",
+    summaryEn:
+      "Swing a pendulum, change length and damping, drag to set the angle. See period and energy in a brass clockwork lab.",
+    summaryEs:
+      "Hacé oscilar un péndulo, cambiá longitud y amortiguación, arrastrá para fijar el ángulo. Periodo y energía en un laboratorio de relojería.",
   },
 ] as const;
 
