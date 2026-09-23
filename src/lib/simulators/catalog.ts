@@ -28,6 +28,18 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Mirá cómo las partículas vibran, fluyen o vuelan al pasar de sólido a líquido y gas. Estados de la materia interactivos en el navegador.",
   },
+  {
+    slug: "gravity-sandbox",
+    slugEs: "sandbox-gravedad",
+    nameEn: "Gravity sandbox",
+    nameEs: "Sandbox de gravedad",
+    tag: "physics",
+    emoji: "🌌",
+    summaryEn:
+      "N-body gravity playground. Try orbit, binary, or cluster presets, tweak G, and tap to add masses with trails.",
+    summaryEs:
+      "Patio de gravedad de N cuerpos. Probá órbita, binario o cúmulo, ajustá G y tocá para añadir masas con estelas.",
+  },
 ] as const;
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {

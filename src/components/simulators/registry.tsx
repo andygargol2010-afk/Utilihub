@@ -2,10 +2,13 @@ import { lazy, Suspense, type ComponentType } from "react";
 import type { SimDef, SimLocale } from "@/lib/simulators/catalog";
 
 const MoleculesSim = lazy(() => import("./MoleculesSim").then((m) => ({ default: m.MoleculesSim })));
+const GravitySandbox = lazy(() => import("./GravitySandbox").then((m) => ({ default: m.GravitySandbox })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
   "movimiento-molecular": MoleculesSim,
+  "gravity-sandbox": GravitySandbox,
+  "sandbox-gravedad": GravitySandbox,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
