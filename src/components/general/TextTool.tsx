@@ -50,15 +50,36 @@ function process(slug: string, text: string, second: string, replacement: string
     case "extraer-numeros":
       return text.match(/[-+]?\d+(?:[.,]\d+)?/g)?.join("\n") ?? "No numbers found.";
     case "extraer-emails":
-      return text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi)?.join("\n") ?? "No emails found.";
+      return [...new Set(text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) ?? [])].join("\n") || "No emails found.";
     case "extraer-urls":
-      return text.match(/https?:\/\/[^\s]+/gi)?.join("\n") ?? "No URLs found.";
-    case "texto-a-csv": {
-      const rows = text.split(/\r?\n/).map((l) => l.split(/\t|,/));
-      if (!rows.length) return "";
-      const cols = Math.max(...rows.map((r) => r.length));
-      if (rows.some((r) => r.length !== cols)) throw new Error("All rows must have the same number of columns.");
-      return rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n");
+      return [...new Set(text.match(/https?:\/\/[^\s<]+/gi) ?? [])].join("\n") || "No URLs found.";
+    case "limpiar-texto":
+      return text.replace(/[“”]/g, '"').replace(/[‘’]/g, "'").replace(/\s+/g, " ").trim();
+    case "texto-a-lista":
+      return text.split(/\r?\n/).map((x) => x.trim()).filter(Boolean).join(", ");
+    case "lista-a-texto":
+      return text.split(",").map((x) => x.trim()).filter(Boolean).join("\n");
+    case "diferencia-textos": {
+      if (text === second) return "The texts are identical line by line.";
+      return `Text A (${text.length} characters)\nText B (${second.length} characters)\nLength difference: ${Math.abs(text.length - second.length)} characters.`;
+    }
+    case "csv-a-markdown": {
+      const rows = text.trim().split(/\r?\n/).map((line) => line.split(",").map((c) => c.trim()));
+      if (!rows.length || !rows[0].length) throw new Error("Enter CSV content.");
+      if (rows.some((r) => r.length !== rows[0].length)) throw new Error("All rows must have the same number of columns.");
+      return `| ${rows[0].join(" | ")} |\n| ${rows[0].map(() => "---").join(" | ")} |\n${rows.slice(1).map((r) => `| ${r.join(" | ")} |`).join("\n")}`;
+    }
+    case "markdown-a-html":
+      return text
+        .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+        .replace(/^## (.+)$/gm, "<h2>$1</h2>")
+        .replace(/^# (.+)$/gm, "<h1>$1</h1>")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+        .replace(/\n/g, "<br>\n");
+    case "html-a-texto": {
+      const doc = new DOMParser().parseFromString(text, "text/html");
+      return doc.body.textContent ?? "";
     }
     default:
       throw new Error(`Text tool not implemented: ${slug}`);
@@ -66,15 +87,15 @@ function process(slug: string, text: string, second: string, replacement: string
 }
 
 export function TextTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
-  const es = locale === "es";
-  const showcase = getToolShowcase(tool.slug);
-  const ui = showcaseUi(showcase?.accent);
-  const needsSecond = ["buscar-reemplazar", "diferencia-textos", "anagramas"].includes(tool.slug);
   const [text, setText] = useState("");
   const [second, setSecond] = useState("");
   const [replacement, setReplacement] = useState("");
   const [out, setOut] = useState("");
   const [error, setError] = useState("");
+  const es = locale === "es";
+  const showcase = getToolShowcase(tool.slug);
+  const ui = showcaseUi(showcase?.accent);
+  const needsSecond = ["buscar-reemplazar", "diferencia-textos", "anagramas"].includes(tool.slug);
 
   const run = () => {
     try {
