@@ -86,15 +86,29 @@ export function MoleculesSim({ locale = "en" }: { locale?: SimLocale }) {
   tempRef.current = temp;
   runningRef.current = running;
 
+  const energyFromTemp = (t: number) => 0.55 + t * 1.1;
+
   const applyPhase = useCallback((next: Phase) => {
     phaseRef.current = next;
     setPhase(next);
     particles.current = makeParticles(next);
-    const scale = 0.55 + tempRef.current * 1.1;
+    const scale = energyFromTemp(tempRef.current);
     for (const p of particles.current) {
       p.vx *= scale;
       p.vy *= scale;
     }
+  }, []);
+
+  const setThermal = useCallback((next: number) => {
+    const prevE = energyFromTemp(tempRef.current);
+    const nextE = energyFromTemp(next);
+    const ratio = prevE > 0.01 ? nextE / prevE : 1;
+    for (const p of particles.current) {
+      p.vx *= ratio;
+      p.vy *= ratio;
+    }
+    tempRef.current = next;
+    setTemp(next);
   }, []);
 
   useEffect(() => {
@@ -105,84 +119,87 @@ export function MoleculesSim({ locale = "en" }: { locale?: SimLocale }) {
       if (ctx) {
         const list = particles.current;
         const ph = phaseRef.current;
-        const energy = 0.55 + tempRef.current * 1.1;
+        const energy = energyFromTemp(tempRef.current);
 
-        if (runningRef.current) for (let i = 0; i < list.length; i++) {
-          const p = list[i]!;
+        if (runningRef.current)
+          for (let i = 0; i < list.length; i++) {
+            const p = list[i]!;
 
-          if (ph === "solid") {
-            const k = 0.08 * energy;
-            p.vx += (p.hx - p.x) * k;
-            p.vy += (p.hy - p.y) * k;
-            p.vx *= 0.92;
-            p.vy *= 0.92;
-            p.vx += (Math.random() - 0.5) * 0.08 * energy;
-            p.vy += (Math.random() - 0.5) * 0.08 * energy;
-          } else if (ph === "liquid") {
-            let cx = 0;
-            let cy = 0;
-            let n = 0;
-            for (let j = 0; j < list.length; j++) {
-              if (j === i) continue;
-              const q = list[j]!;
-              const dx = q.x - p.x;
-              const dy = q.y - p.y;
-              const d2 = dx * dx + dy * dy;
-              if (d2 < 55 * 55 && d2 > 1) {
-                cx += dx;
-                cy += dy;
-                n++;
-                if (d2 < (p.r + q.r) * (p.r + q.r) * 1.8) {
-                  const d = Math.sqrt(d2) || 1;
-                  p.vx -= (dx / d) * 0.12;
-                  p.vy -= (dy / d) * 0.12;
+            if (ph === "solid") {
+              const k = 0.08 * energy;
+              p.vx += (p.hx - p.x) * k;
+              p.vy += (p.hy - p.y) * k;
+              p.vx *= 0.92;
+              p.vy *= 0.92;
+              p.vx += (Math.random() - 0.5) * 0.08 * energy;
+              p.vy += (Math.random() - 0.5) * 0.08 * energy;
+            } else if (ph === "liquid") {
+              let cx = 0;
+              let cy = 0;
+              let n = 0;
+              for (let j = 0; j < list.length; j++) {
+                if (j === i) continue;
+                const q = list[j]!;
+                const dx = q.x - p.x;
+                const dy = q.y - p.y;
+                const d2 = dx * dx + dy * dy;
+                if (d2 < 48 * 48 && d2 > 1) {
+                  const d = Math.sqrt(d2);
+                  if (d < (p.r + q.r) * 1.35) {
+                    p.vx -= (dx / d) * 0.18;
+                    p.vy -= (dy / d) * 0.18;
+                  } else {
+                    cx += dx;
+                    cy += dy;
+                    n++;
+                  }
                 }
               }
+              if (n > 0) {
+                p.vx += (cx / n) * 0.0014 * energy;
+                p.vy += (cy / n) * 0.0014 * energy;
+              }
+              p.vy += 0.012 * energy;
+              p.vx += (Math.random() - 0.5) * 0.05 * energy;
+              p.vy += (Math.random() - 0.5) * 0.05 * energy;
+              p.vx *= 0.992;
+              p.vy *= 0.992;
+              const maxS = 1.5 * energy;
+              const sp = Math.hypot(p.vx, p.vy);
+              if (sp > maxS) {
+                p.vx = (p.vx / sp) * maxS;
+                p.vy = (p.vy / sp) * maxS;
+              }
+            } else {
+              p.vx += (Math.random() - 0.5) * 0.02;
+              p.vy += (Math.random() - 0.5) * 0.02;
+              const maxS = 4.2 * energy;
+              const sp = Math.hypot(p.vx, p.vy);
+              if (sp > maxS) {
+                p.vx = (p.vx / sp) * maxS;
+                p.vy = (p.vy / sp) * maxS;
+              }
             }
-            if (n > 0) {
-              p.vx += (cx / n) * 0.0025 * energy;
-              p.vy += (cy / n) * 0.0025 * energy;
-            }
-            p.vx += (Math.random() - 0.5) * 0.04 * energy;
-            p.vy += (Math.random() - 0.5) * 0.04 * energy;
-            p.vx *= 0.995;
-            p.vy *= 0.995;
-            const maxS = 1.6 * energy;
-            const sp = Math.hypot(p.vx, p.vy);
-            if (sp > maxS) {
-              p.vx = (p.vx / sp) * maxS;
-              p.vy = (p.vy / sp) * maxS;
-            }
-          } else {
-            p.vx += (Math.random() - 0.5) * 0.02;
-            p.vy += (Math.random() - 0.5) * 0.02;
-            const maxS = 4.2 * energy;
-            const sp = Math.hypot(p.vx, p.vy);
-            if (sp > maxS) {
-              p.vx = (p.vx / sp) * maxS;
-              p.vy = (p.vy / sp) * maxS;
-            }
-          }
 
-          p.x += p.vx;
-          p.y += p.vy;
+            p.x += p.vx;
+            p.y += p.vy;
 
-          const m = p.r + 2;
-          if (p.x < m) {
-            p.x = m;
-            p.vx = Math.abs(p.vx) * (ph === "solid" ? 0.3 : 0.95);
-          } else if (p.x > W - m) {
-            p.x = W - m;
-            p.vx = -Math.abs(p.vx) * (ph === "solid" ? 0.3 : 0.95);
+            const m = p.r + 2;
+            if (p.x < m) {
+              p.x = m;
+              p.vx = Math.abs(p.vx) * (ph === "solid" ? 0.3 : 0.95);
+            } else if (p.x > W - m) {
+              p.x = W - m;
+              p.vx = -Math.abs(p.vx) * (ph === "solid" ? 0.3 : 0.95);
+            }
+            if (p.y < m) {
+              p.y = m;
+              p.vy = Math.abs(p.vy) * (ph === "solid" ? 0.3 : 0.95);
+            } else if (p.y > H - m) {
+              p.y = H - m;
+              p.vy = -Math.abs(p.vy) * (ph === "solid" ? 0.3 : 0.95);
+            }
           }
-          if (p.y < m) {
-            p.y = m;
-            p.vy = Math.abs(p.vy) * (ph === "solid" ? 0.3 : 0.95);
-          } else if (p.y > H - m) {
-            p.y = H - m;
-            p.vy = -Math.abs(p.vy) * (ph === "solid" ? 0.3 : 0.95);
-          }
-        }
 
         if (runningRef.current && ph !== "solid") {
           for (let i = 0; i < list.length; i++) {
@@ -295,7 +312,7 @@ export function MoleculesSim({ locale = "en" }: { locale?: SimLocale }) {
         <SimSecondaryButton
           onClick={() => {
             particles.current = makeParticles(phaseRef.current);
-            const scale = 0.55 + tempRef.current * 1.1;
+            const scale = energyFromTemp(tempRef.current);
             for (const p of particles.current) {
               p.vx *= scale;
               p.vy *= scale;
@@ -316,7 +333,7 @@ export function MoleculesSim({ locale = "en" }: { locale?: SimLocale }) {
           min={0}
           max={100}
           value={Math.round(temp * 100)}
-          onChange={(e) => setTemp(Number(e.target.value) / 100)}
+          onChange={(e) => setThermal(Number(e.target.value) / 100)}
           className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-700 accent-sky-400"
         />
       </label>
@@ -327,6 +344,12 @@ export function MoleculesSim({ locale = "en" }: { locale?: SimLocale }) {
         ref={canvasRef}
         width={W}
         height={H}
+        role="img"
+        aria-label={
+          es
+            ? `Simulación de movimiento molecular en estado ${phaseLabel(phase, true)}`
+            : `Molecular motion simulation in ${phaseLabel(phase, false)} state`
+        }
         className="w-full rounded-xl border border-white/10 bg-slate-950"
         style={{ maxWidth: W, height: "auto" }}
       />
