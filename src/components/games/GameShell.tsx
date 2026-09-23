@@ -16,10 +16,15 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
   const es = locale === "es";
   const hub = es ? "/es/juegos" : "/games";
   const title = gameName(game, locale);
-  const related = [
-    ...GAMES.filter((g) => g.slug !== game.slug && g.tag === game.tag),
-    ...GAMES.filter((g) => g.slug !== game.slug && g.tag !== game.tag),
-  ].slice(0, 3);
+  // Same tag first, then others — unique by slug
+  const related = GAMES.filter((g) => g.slug !== game.slug)
+    .slice()
+    .sort((a, b) => {
+      const aSame = a.tag === game.tag ? 0 : 1;
+      const bSame = b.tag === game.tag ? 0 : 1;
+      return aSame - bSame;
+    })
+    .slice(0, 3);
 
   return (
     <div className="games-skin min-h-[70vh]">
@@ -29,9 +34,9 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
             {es ? "Inicio" : "Home"}
           </Link>
           <span aria-hidden>/</span>
-          <Link to={hub} className="hover:text-foreground">
+          <a href={hub} className="hover:text-foreground">
             {es ? "Juegos" : "Games"}
-          </Link>
+          </a>
           <span aria-hidden>/</span>
           <span className="text-foreground">{title}</span>
         </nav>
@@ -44,12 +49,12 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
             <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{title}</h1>
             <p className="mt-2 max-w-xl text-sm text-slate-600">{gameSummary(game, locale)}</p>
           </div>
-          <Link
-            to={hub}
+          <a
+            href={hub}
             className="inline-flex min-h-10 items-center justify-center rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
           >
             {es ? "Todos los juegos" : "All games"}
-          </Link>
+          </a>
         </header>
 
         {(toolbar || status) && (
@@ -82,9 +87,9 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
                 {es ? "Probar también" : "Try also"}
               </h2>
             </div>
-            <Link to={hub} className="text-sm font-bold text-emerald-700 hover:underline">
+            <a href={hub} className="text-sm font-bold text-emerald-700 hover:underline">
               {es ? "Todos →" : "All →"}
-            </Link>
+            </a>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             {related.map((g) => (
