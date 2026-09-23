@@ -29,6 +29,8 @@ export function SpanishSiteFooter() {
           <p className="text-xs font-bold uppercase tracking-[.16em] text-muted-foreground">UtiliHub</p>
           <nav aria-label="Información" className="mt-3 grid gap-2">
             <Link to="/es/herramientas" className="w-fit text-sm font-semibold hover:text-primary">Todas las herramientas</Link>
+            <Link to="/es/juegos" className="w-fit text-sm font-semibold hover:text-primary">Juegos</Link>
+            <Link to="/es/simuladores" className="w-fit text-sm font-semibold hover:text-primary">Simuladores</Link>
             <Link to="/es/kits" className="w-fit text-sm font-semibold hover:text-primary">Kits por objetivo</Link>
             <Link to="/es/hubs/documentos-y-archivos" className="w-fit text-sm font-semibold hover:text-primary">Documentos y archivos</Link>
             <Link to="/es/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">Aviso legal</Link>
