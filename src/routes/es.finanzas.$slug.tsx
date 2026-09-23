@@ -9,6 +9,7 @@ import { englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, cleanDescription, ogImage } from "@/lib/seo";
 import { spanishToolName } from "@/lib/i18n/es";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { ToolGamesBreak } from "@/components/ToolGamesBreak";
 
 export const Route = createFileRoute("/es/finanzas/$slug")({
   loader: ({ params }) => {
@@ -138,6 +139,7 @@ function SpanishFinancialToolPage() {
         <ShareAndExportActions title={name} locale="es" />
       </section>
       <AdsterraBanner />
+      <ToolGamesBreak locale="es" />
       <section className="mt-8 grid gap-8 border-t border-border/70 pt-8 lg:grid-cols-2">
         <div>
           <h2 className="text-xl font-black">Sobre esta calculadora</h2>
