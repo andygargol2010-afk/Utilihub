@@ -18,6 +18,7 @@ const DIFF = {
   hard: { ball: 3.5, cpuSpeed: 3.1, error: 5, reactFrom: 0.52, maxBall: 5.2 },
 } as const;
 
+
 type Ctx2D = CanvasRenderingContext2D & {
   roundRect?(x: number, y: number, w: number, h: number, radii?: number | number[]): void;
 };
@@ -42,6 +43,8 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
   const [best, setBest] = useState(0);
   const [diff, setDiff] = useState<Diff>("medium");
   const [message, setMessage] = useState("");
+  /** When true, ball speed is not capped by DIFF.maxBall (helps Hard stay fair at high speeds). */
+  const [noSpeedCap, setNoSpeedCap] = useState(false);
   const state = useRef({
     py: H / 2 - PADDLE_H / 2,
     cy: H / 2 - PADDLE_H / 2,
@@ -50,11 +53,14 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
     bvx: 2.85,
     bvy: 1.8,
     keys: { up: false, down: false },
+    /** Sticky aim offset so CPU doesn't jitter every frame */
     aimOffset: 0,
     aimUntil: 0,
   });
   const diffRef = useRef(diff);
   diffRef.current = diff;
+  const noSpeedCapRef = useRef(noSpeedCap);
+  noSpeedCapRef.current = noSpeedCap;
 
   useEffect(() => {
     setBest(readBestScore("pong"));
@@ -66,9 +72,11 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
     s.bx = W / 2;
     s.by = H / 2;
     s.bvx = (toPlayer ? -1 : 1) * d.ball;
+    // Always give a clear vertical component so it never crawls the top/bottom edge
     let vy = (Math.random() * 2 - 1) * d.ball * 0.65;
     if (Math.abs(vy) < 0.9) vy = (vy >= 0 ? 1 : -1) * 0.9;
     s.bvy = vy;
+    // New random aim bias when the point starts
     s.aimOffset = (Math.random() * 2 - 1) * d.error;
     s.aimUntil = performance.now() + 400 + Math.random() * 600;
   };
@@ -119,6 +127,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         if (s.keys.up) s.py = Math.max(0, s.py - 4.5);
         if (s.keys.down) s.py = Math.min(H - PADDLE_H, s.py + 4.5);
 
+        // CPU: only track aggressively when the ball is coming toward it and past react line
         const ballComingToCpu = s.bvx > 0;
         const pastReactLine = s.bx > W * d.reactFrom;
         if (ballComingToCpu && pastReactLine) {
@@ -130,6 +139,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
           if (s.cy < target - 3) s.cy = Math.min(H - PADDLE_H, s.cy + d.cpuSpeed);
           else if (s.cy > target + 3) s.cy = Math.max(0, s.cy - d.cpuSpeed);
         } else if (!ballComingToCpu) {
+          // Drift toward center when ball is going away — softer on Easy
           const mid = H / 2 - PADDLE_H / 2;
           if (s.cy < mid - 2) s.cy = Math.min(mid, s.cy + d.cpuSpeed * 0.35);
           else if (s.cy > mid + 2) s.cy = Math.max(mid, s.cy - d.cpuSpeed * 0.35);
@@ -138,6 +148,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         s.bx += s.bvx;
         s.by += s.bvy;
 
+        // Walls: bounce with a minimum vertical speed so the ball never slides along the edge
         const MIN_VY = 0.85;
         if (s.by <= 0) {
           s.by = 0;
@@ -160,7 +171,8 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
           s.by <= s.py + PADDLE_H &&
           s.bvx < 0
         ) {
-          const next = Math.min(d.maxBall, Math.abs(s.bvx) * 1.04);
+          const boosted = Math.abs(s.bvx) * 1.04;
+          const next = noSpeedCapRef.current ? boosted : Math.min(d.maxBall, boosted);
           s.bvx = next;
           s.bx = 12 + PADDLE_W;
           s.bvy = spinFrom(s.py);
@@ -171,7 +183,8 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
           s.by <= s.cy + PADDLE_H &&
           s.bvx > 0
         ) {
-          const next = Math.min(d.maxBall, Math.abs(s.bvx) * 1.04);
+          const boosted = Math.abs(s.bvx) * 1.04;
+          const next = noSpeedCapRef.current ? boosted : Math.min(d.maxBall, boosted);
           s.bvx = -next;
           s.bx = W - 12 - PADDLE_W - BALL;
           s.bvy = spinFrom(s.cy);
@@ -287,6 +300,17 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         >
           {es ? "Difícil" : "Hard"}
         </GameSecondaryButton>
+        <GameSecondaryButton
+          active={noSpeedCap}
+          onClick={() => setNoSpeedCap((v) => !v)}
+          title={
+            es
+              ? "Sin tope de velocidad: la pelota sigue acelerando en cada rebote"
+              : "No speed cap: the ball keeps accelerating on every bounce"
+          }
+        >
+          {es ? (noSpeedCap ? "Sin límite ✓" : "Sin límite") : noSpeedCap ? "No cap ✓" : "No cap"}
+        </GameSecondaryButton>
         {!running ? (
           <GamePrimaryButton onClick={hardReset}>{es ? "Jugar" : "Play"}</GamePrimaryButton>
         ) : (
@@ -299,6 +323,13 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         )}
       </div>
       {message && <p className="text-sm font-bold text-emerald-300">{message}</p>}
+      {noSpeedCap && (
+        <p className="text-center text-[11px] font-medium text-amber-300/90">
+          {es
+            ? "Velocidad sin tope — la pelota acelera en cada paleta"
+            : "Uncapped speed — ball accelerates on every paddle hit"}
+        </p>
+      )}
       <canvas
         ref={canvasRef}
         width={W}
