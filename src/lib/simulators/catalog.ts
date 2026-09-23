@@ -2,6 +2,9 @@ export type SimLocale = "en" | "es";
 
 export type SimTag = "physics" | "chemistry" | "math";
 
+/** Visual theme drives shell + hub card — not a generic dark box. */
+export type SimTheme = "lab" | "cosmos";
+
 export type SimDef = {
   /** Canonical EN slug used in /simulators/$slug */
   slug: string;
@@ -10,9 +13,13 @@ export type SimDef = {
   nameEn: string;
   nameEs: string;
   tag: SimTag;
+  theme: SimTheme;
   emoji: string;
   summaryEn: string;
   summaryEs: string;
+  /** Short badge on hub cards */
+  badgeEn: string;
+  badgeEs: string;
 };
 
 export const SIMULATORS: readonly SimDef[] = [
@@ -22,7 +29,10 @@ export const SIMULATORS: readonly SimDef[] = [
     nameEn: "Molecular motion",
     nameEs: "Movimiento molecular",
     tag: "chemistry",
+    theme: "lab",
     emoji: "⚛️",
+    badgeEn: "States of matter",
+    badgeEs: "Estados de la materia",
     summaryEn:
       "Watch particles vibrate, flow, or fly free as you switch solid, liquid, and gas. Interactive states of matter in your browser.",
     summaryEs:
@@ -34,7 +44,10 @@ export const SIMULATORS: readonly SimDef[] = [
     nameEn: "Gravity sandbox",
     nameEs: "Sandbox de gravedad",
     tag: "physics",
+    theme: "cosmos",
     emoji: "🌌",
+    badgeEn: "N-body gravity",
+    badgeEs: "Gravedad N-cuerpos",
     summaryEn:
       "N-body gravity playground. Try orbit, binary, or cluster presets, tweak G, and tap to add masses with trails.",
     summaryEs:
@@ -66,4 +79,8 @@ export function simTagLabel(tag: SimTag, locale: SimLocale = "en") {
     return tag === "physics" ? "Física" : tag === "chemistry" ? "Química" : "Matemática";
   }
   return tag === "physics" ? "Physics" : tag === "chemistry" ? "Chemistry" : "Math";
+}
+
+export function simBadge(sim: SimDef, locale: SimLocale = "en") {
+  return locale === "es" ? sim.badgeEs : sim.badgeEn;
 }
