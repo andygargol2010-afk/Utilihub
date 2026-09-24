@@ -21,60 +21,46 @@ const FILTERS: { id: Filter; en: string; es: string }[] = [
 
 const NEW_SLUGS = new Set(["tetris", "pacman"]);
 
-/** Classic-inspired card thumbnails — readable, balanced, no noisy animation */
+/**
+ * Clean, flat card art — recognizable silhouette of each classic game,
+ * modern app-icon style. No Win95 chrome, no muddy texture recreations.
+ */
 function GamePreview({ game }: { game: GameDef }) {
   const shell =
     "relative flex h-32 w-full items-center justify-center overflow-hidden rounded-2xl";
   const slug = game.slug;
 
+  /* Pac-Man — yellow wedge + dots on deep blue (logo silhouette) */
   if (slug === "pacman") {
     return (
-      <div className={`${shell} bg-[#0a0a2e]`}>
-        <svg viewBox="0 0 120 80" className="h-20 w-[7.5rem]" aria-hidden>
-          {/* dots */}
-          <circle cx="72" cy="40" r="3.5" fill="#FFB8AE" />
-          <circle cx="88" cy="40" r="3.5" fill="#FFB8AE" />
-          <circle cx="104" cy="40" r="3.5" fill="#FFB8AE" />
-          {/* Pac-Man body (wedge) */}
-          <path
-            d="M40 40 L62 18 A28 28 0 1 0 62 62 Z"
-            fill="#FFCC00"
-          />
-          {/* eye */}
-          <circle cx="38" cy="28" r="3.2" fill="#0a0a2e" />
+      <div className={`${shell} bg-[#0b1026]`}>
+        <svg viewBox="0 0 120 72" className="h-[72px] w-[120px]" aria-hidden>
+          <circle cx="70" cy="36" r="4" fill="#FFB8AE" />
+          <circle cx="88" cy="36" r="4" fill="#FFB8AE" />
+          <circle cx="106" cy="36" r="4" fill="#FFB8AE" />
+          <path d="M42 36 L64 14 A28 28 0 1 0 64 58 Z" fill="#FFCC00" />
+          <circle cx="40" cy="24" r="3.5" fill="#0b1026" />
         </svg>
       </div>
     );
   }
 
+  /* Tetris — flat tetromino colors, no fake 3D */
   if (slug === "tetris") {
-    const C = [
-      "#00f0f0",
-      "#a000f0",
-      "#f0f000",
-      "#00f000",
-      "#f0a000",
-      "#f00000",
-      "#0000f0",
-    ];
-    // 4x4 mini stack
-    const grid = [
-      null, 1, null, null,
-      0, 1, 2, null,
-      0, 3, 4, 5,
-      0, 3, 4, 5,
+    const cells = [
+      null, "#a855f7", null, null,
+      "#22d3ee", "#a855f7", "#eab308", null,
+      "#22d3ee", "#22c55e", "#f97316", "#ef4444",
+      "#22d3ee", "#22c55e", "#f97316", "#ef4444",
     ];
     return (
-      <div className={`${shell} bg-[#0d1117]`}>
-        <div className="grid grid-cols-4 gap-[3px]">
-          {grid.map((c, i) => (
+      <div className={`${shell} bg-[#0f172a]`}>
+        <div className="grid grid-cols-4 gap-1">
+          {cells.map((c, i) => (
             <span
               key={i}
-              className="size-[18px] rounded-[2px]"
-              style={{
-                background: c === null ? "transparent" : C[c],
-                boxShadow: c === null ? undefined : "inset 0 1px 0 rgba(255,255,255,.35)",
-              }}
+              className="size-5 rounded-md"
+              style={{ background: c ?? "transparent" }}
             />
           ))}
         </div>
@@ -82,112 +68,77 @@ function GamePreview({ game }: { game: GameDef }) {
     );
   }
 
+  /* Snake — simple green chain + apple */
   if (slug === "snake") {
     return (
-      <div className={`${shell} bg-[#0f3d1f]`}>
-        <div className="flex items-center gap-[3px]">
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <span
-              key={i}
-              className={
-                i === 0
-                  ? "size-4 rounded-full bg-[#7CFC00] ring-2 ring-[#b8ff6a]"
-                  : "size-3.5 rounded-sm bg-[#4ade80]"
-              }
-            />
-          ))}
-          <span className="ml-2 size-3.5 rounded-full bg-[#ff4d4d] shadow-[0_0_8px_#ff4d4d]" />
+      <div className={`${shell} bg-[#052e16]`}>
+        <div className="flex items-center gap-1">
+          <span className="size-4 rounded-full bg-[#4ade80]" />
+          <span className="size-3.5 rounded-full bg-[#4ade80]" />
+          <span className="size-3.5 rounded-full bg-[#4ade80]" />
+          <span className="size-3.5 rounded-full bg-[#4ade80]" />
+          <span className="size-3.5 rounded-full bg-[#4ade80]" />
+          <span className="ml-2 size-3.5 rounded-full bg-[#f87171]" />
         </div>
       </div>
     );
   }
 
+  /* Pong — minimal white on black */
   if (slug === "pong") {
     return (
       <div className={`${shell} bg-black`}>
-        <div className="relative h-[72px] w-[140px]">
-          <span className="absolute left-0 top-[18px] h-9 w-[5px] rounded-sm bg-white" />
-          <span className="absolute right-0 top-[28px] h-9 w-[5px] rounded-sm bg-white" />
+        <div className="relative h-16 w-36">
+          <span className="absolute left-0 top-3 h-10 w-1.5 rounded-full bg-white" />
+          <span className="absolute right-0 top-6 h-10 w-1.5 rounded-full bg-white" />
           <span className="absolute left-1/2 top-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
-          <span className="absolute left-1/2 top-1 h-[calc(100%-8px)] w-px -translate-x-1/2 border-l border-dashed border-white/35" />
         </div>
       </div>
     );
   }
 
+  /* 2048 — soft rounded tiles, classic palette, no beige mud field */
   if (slug === "2048") {
-    const tiles = [
-      { n: "2", bg: "#eee4da", fg: "#776e65" },
-      { n: "4", bg: "#ede0c8", fg: "#776e65" },
-      { n: "8", bg: "#f2b179", fg: "#f9f6f2" },
-      { n: "16", bg: "#f59563", fg: "#f9f6f2" },
-    ];
     return (
-      <div className={`${shell} bg-[#bbada0]`}>
-        <div className="grid grid-cols-2 gap-1.5 p-1">
-          {tiles.map((t) => (
-            <span
-              key={t.n}
-              className="grid size-12 place-items-center rounded-md text-[15px] font-black shadow-sm"
-              style={{ background: t.bg, color: t.fg }}
-            >
-              {t.n}
-            </span>
-          ))}
+      <div className={`${shell} bg-[#faf8ef]`}>
+        <div className="grid grid-cols-2 gap-2">
+          <span className="grid size-11 place-items-center rounded-xl bg-[#eee4da] text-sm font-black text-[#776e65]">2</span>
+          <span className="grid size-11 place-items-center rounded-xl bg-[#ede0c8] text-sm font-black text-[#776e65]">4</span>
+          <span className="grid size-11 place-items-center rounded-xl bg-[#f2b179] text-sm font-black text-white">8</span>
+          <span className="grid size-11 place-items-center rounded-xl bg-[#f59563] text-sm font-black text-white">16</span>
         </div>
       </div>
     );
   }
 
+  /* Minesweeper — flat modern: soft slate + flag + numbers, no Win95 borders */
   if (slug === "minesweeper") {
-    const cells: (string | number | null)[] = [1, null, null, null, "mine", 2, null, 1, null];
     return (
-      <div className={`${shell} bg-[#9e9e9e]`}>
-        <div
-          className="grid grid-cols-3 gap-0 border-2 p-0.5"
-          style={{ borderColor: "#fff #808080 #808080 #fff" }}
-        >
-          {cells.map((c, i) => {
-            const raised = c === null;
-            return (
-              <span
-                key={i}
-                className="grid size-8 place-items-center text-sm font-bold"
-                style={{
-                  background: "#c0c0c0",
-                  border: raised
-                    ? "2px solid"
-                    : "1px solid #808080",
-                  borderColor: raised
-                    ? "#fff #808080 #808080 #fff"
-                    : "#808080",
-                  color: c === 1 ? "#0000ff" : c === 2 ? "#008000" : undefined,
-                }}
-              >
-                {c === "mine" ? (
-                  <span className="text-base leading-none">●</span>
-                ) : c === null ? (
-                  ""
-                ) : (
-                  c
-                )}
-              </span>
-            );
-          })}
+      <div className={`${shell} bg-slate-200`}>
+        <div className="grid grid-cols-3 gap-1.5">
+          <span className="grid size-8 place-items-center rounded-lg bg-white text-sm font-bold text-blue-600 shadow-sm">1</span>
+          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
+          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
+          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
+          <span className="grid size-8 place-items-center rounded-lg bg-white text-base shadow-sm">🚩</span>
+          <span className="grid size-8 place-items-center rounded-lg bg-white text-sm font-bold text-green-600 shadow-sm">2</span>
+          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
+          <span className="grid size-8 place-items-center rounded-lg bg-white text-sm font-bold text-blue-600 shadow-sm">1</span>
+          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
         </div>
       </div>
     );
   }
 
+  /* Tic-Tac-Toe — clean grid */
   if (slug === "tic-tac-toe") {
-    const board = ["X", "O", "", "O", "X", "", "", "", "X"];
     return (
-      <div className={`${shell} bg-[#f1f5f9]`}>
-        <div className="grid grid-cols-3 gap-0 rounded-md border-2 border-slate-500 bg-white shadow-sm">
-          {board.map((v, i) => (
+      <div className={`${shell} bg-slate-50`}>
+        <div className="grid grid-cols-3 gap-0 rounded-xl border-2 border-slate-300 bg-white p-0.5 shadow-sm">
+          {(["X", "O", "", "O", "X", "", "", "", "X"] as const).map((v, i) => (
             <span
               key={i}
-              className="grid size-9 place-items-center border border-slate-300 text-lg font-black"
+              className="grid size-9 place-items-center border border-slate-200 text-lg font-black"
             >
               {v === "X" && <span className="text-slate-800">✕</span>}
               {v === "O" && <span className="text-rose-500">○</span>}
@@ -198,37 +149,45 @@ function GamePreview({ game }: { game: GameDef }) {
     );
   }
 
+  /* Connect Four — blue frame, flat discs */
   if (slug === "connect-four") {
-    // 3 rows x 5 cols simplified board
-    const row = (colors: (string | null)[]) =>
-      colors.map((c, i) => (
-        <span
-          key={i}
-          className="size-[18px] rounded-full"
-          style={{ background: c ?? "#0c1a4a" }}
-        />
-      ));
+    const disc = (c: string | null) => (
+      <span
+        className="size-5 rounded-full"
+        style={{ background: c ?? "rgba(15,23,42,0.35)" }}
+      />
+    );
     return (
-      <div className={`${shell} bg-[#1d4ed8]`}>
-        <div className="rounded-lg bg-[#1e3a8a] p-2 shadow-inner">
-          <div className="grid grid-cols-5 gap-1">
-            {row([null, null, null, null, null])}
-            {row([null, "#ef4444", "#ef4444", "#facc15", null])}
-            {row(["#ef4444", "#facc15", "#ef4444", "#facc15", "#ef4444"])}
+      <div className={`${shell} bg-[#2563eb]`}>
+        <div className="rounded-2xl bg-[#1d4ed8] p-2.5">
+          <div className="grid grid-cols-4 gap-1.5">
+            {disc(null)}
+            {disc(null)}
+            {disc(null)}
+            {disc(null)}
+            {disc("#ef4444")}
+            {disc("#ef4444")}
+            {disc("#facc15")}
+            {disc(null)}
+            {disc("#facc15")}
+            {disc("#ef4444")}
+            {disc("#facc15")}
+            {disc("#ef4444")}
           </div>
         </div>
       </div>
     );
   }
 
+  /* Memory — two soft cards */
   if (slug === "memory") {
     return (
-      <div className={`${shell} bg-gradient-to-br from-violet-100 to-fuchsia-50`}>
+      <div className={`${shell} bg-gradient-to-br from-violet-50 to-fuchsia-50`}>
         <div className="flex gap-3">
-          <span className="grid h-16 w-12 place-items-center rounded-xl bg-violet-600 text-2xl font-black text-white shadow-lg ring-2 ring-violet-300/50">
+          <span className="grid h-14 w-11 place-items-center rounded-2xl bg-violet-600 text-xl font-black text-white shadow-md">
             ?
           </span>
-          <span className="grid h-16 w-12 place-items-center rounded-xl bg-fuchsia-500 text-2xl shadow-lg ring-2 ring-fuchsia-300/50">
+          <span className="grid h-14 w-11 place-items-center rounded-2xl bg-fuchsia-500 text-xl text-white shadow-md">
             ♠
           </span>
         </div>
@@ -236,17 +195,18 @@ function GamePreview({ game }: { game: GameDef }) {
     );
   }
 
+  /* Sudoku — clean white grid */
   if (slug === "sudoku") {
-    const nums = ["5", "", "3", "", "7", "", "", "", "1", "6", "", "", "1", "9", "5", "", "", ""];
+    const n = ["5", "", "3", "", "7", "", "", "", "1"];
     return (
-      <div className={`${shell} bg-slate-100`}>
-        <div className="grid grid-cols-3 gap-px border-2 border-slate-800 bg-slate-800 shadow-sm">
-          {nums.slice(0, 9).map((n, i) => (
+      <div className={`${shell} bg-white`}>
+        <div className="grid grid-cols-3 gap-px rounded-lg border-2 border-slate-800 bg-slate-800">
+          {n.map((v, i) => (
             <span
               key={i}
               className="grid size-7 place-items-center bg-white text-xs font-bold text-slate-800"
             >
-              {n}
+              {v}
             </span>
           ))}
         </div>
@@ -255,7 +215,7 @@ function GamePreview({ game }: { game: GameDef }) {
   }
 
   return (
-    <div className={`${shell} bg-gradient-to-br from-emerald-100 to-teal-50`}>
+    <div className={`${shell} bg-gradient-to-br from-emerald-50 to-teal-50`}>
       <span className="text-5xl">{game.emoji}</span>
     </div>
   );
@@ -276,7 +236,9 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
           {es ? "Arcade · Puzzle · Tablero" : "Arcade · Puzzle · Board"}
         </p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{es ? "Juegos" : "Games"}</h1>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+          {es ? "Juegos" : "Games"}
+        </h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
           {es
             ? `${GAMES.length} juegos que corren en tu navegador. Sin instalaciones ni cuentas: solo jugar.`
