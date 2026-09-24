@@ -13,13 +13,13 @@ const MIN_DELAY_MS = 15_000;
 const IDLE_TIMEOUT_MS = 20_000;
 const MIN_SCROLL_PX = 120;
 
+/** Only hide social-bar / push overlays — never the in-page banner iframes. */
 const HIDE_CSS = `
-  [id*="social"],
-  [class*="social-bar"],
+  [id*="social" i],
+  [class*="social-bar" i],
   [class*="SocialBar"],
-  [id*="push"],
+  [id*="push" i],
   iframe[src*="profitableratecpmnetwork"],
-  iframe[src*="highrevenueformat"],
   body > div[style*="position: fixed"][style*="z-index"],
   body > div[style*="position:fixed"][style*="z-index"] {
     display: none !important;
