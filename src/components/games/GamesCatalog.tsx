@@ -21,113 +21,115 @@ const FILTERS: { id: Filter; en: string; es: string }[] = [
 
 const NEW_SLUGS = new Set(["tetris", "pacman"]);
 
-/**
- * Card art inspired by each game’s traditional look (not random emoji invents).
- * Pure CSS/SVG — no trademark bitmaps, just the familiar silhouettes.
- */
+/** Classic-inspired card thumbnails — readable, balanced, no noisy animation */
 function GamePreview({ game }: { game: GameDef }) {
-  const base =
+  const shell =
     "relative flex h-32 w-full items-center justify-center overflow-hidden rounded-2xl";
   const slug = game.slug;
 
-  /* Pac-Man — classic yellow wedge + dots on navy maze feel */
   if (slug === "pacman") {
     return (
-      <div className={`${base} bg-[#0b0b2e]`}>
-        <div className="flex items-center gap-3">
-          <div
-            className="size-14 rounded-full bg-[#FFCC00]"
-            style={{
-              /* open mouth facing right */
-              clipPath: "polygon(100% 50%, 100% 0, 0 0, 0 100%, 100% 100%, 100% 55%, 58% 50%)",
-            }}
+      <div className={`${shell} bg-[#0a0a2e]`}>
+        <svg viewBox="0 0 120 80" className="h-20 w-[7.5rem]" aria-hidden>
+          {/* dots */}
+          <circle cx="72" cy="40" r="3.5" fill="#FFB8AE" />
+          <circle cx="88" cy="40" r="3.5" fill="#FFB8AE" />
+          <circle cx="104" cy="40" r="3.5" fill="#FFB8AE" />
+          {/* Pac-Man body (wedge) */}
+          <path
+            d="M40 40 L62 18 A28 28 0 1 0 62 62 Z"
+            fill="#FFCC00"
           />
-          <div className="flex gap-2">
-            {[0, 1, 2].map((i) => (
-              <span key={i} className="size-2 rounded-full bg-[#FFB8AE]" />
-            ))}
-          </div>
-        </div>
+          {/* eye */}
+          <circle cx="38" cy="28" r="3.2" fill="#0a0a2e" />
+        </svg>
       </div>
     );
   }
 
-  /* Tetris — cyan / yellow / magenta / green / orange tetromino tiles on dark */
   if (slug === "tetris") {
-    const cell = "size-5 rounded-[3px] shadow-sm";
+    const C = [
+      "#00f0f0",
+      "#a000f0",
+      "#f0f000",
+      "#00f000",
+      "#f0a000",
+      "#f00000",
+      "#0000f0",
+    ];
+    // 4x4 mini stack
+    const grid = [
+      null, 1, null, null,
+      0, 1, 2, null,
+      0, 3, 4, 5,
+      0, 3, 4, 5,
+    ];
     return (
-      <div className={`${base} bg-[#0f172a]`}>
-        <div className="grid grid-cols-4 gap-0.5">
-          {/* T-ish / colorful stack silhouette */}
-          <span className={`${cell} bg-transparent`} />
-          <span className={`${cell} bg-[#a855f7]`} />
-          <span className={`${cell} bg-transparent`} />
-          <span className={`${cell} bg-transparent`} />
-          <span className={`${cell} bg-[#22d3ee]`} />
-          <span className={`${cell} bg-[#a855f7]`} />
-          <span className={`${cell} bg-[#facc15]`} />
-          <span className={`${cell} bg-transparent`} />
-          <span className={`${cell} bg-[#22d3ee]`} />
-          <span className={`${cell} bg-[#22c55e]`} />
-          <span className={`${cell} bg-[#f97316]`} />
-          <span className={`${cell} bg-[#ef4444]`} />
-          <span className={`${cell} bg-[#22d3ee]`} />
-          <span className={`${cell} bg-[#22c55e]`} />
-          <span className={`${cell} bg-[#f97316]`} />
-          <span className={`${cell} bg-[#ef4444]`} />
-        </div>
-      </div>
-    );
-  }
-
-  /* Snake — green segments + red apple, classic phone/arcade feel */
-  if (slug === "snake") {
-    return (
-      <div className={`${base} bg-[#14532d]`}>
-        <div className="flex items-center gap-1">
-          {[0, 1, 2, 3, 4].map((i) => (
+      <div className={`${shell} bg-[#0d1117]`}>
+        <div className="grid grid-cols-4 gap-[3px]">
+          {grid.map((c, i) => (
             <span
               key={i}
-              className={`rounded-sm bg-[#4ade80] ${
-                i === 0 ? "size-4 rounded-full ring-2 ring-lime-200" : "size-3.5"
-              }`}
+              className="size-[18px] rounded-[2px]"
+              style={{
+                background: c === null ? "transparent" : C[c],
+                boxShadow: c === null ? undefined : "inset 0 1px 0 rgba(255,255,255,.35)",
+              }}
             />
           ))}
-          <span className="ml-2 size-3 rounded-full bg-[#f87171] shadow" />
         </div>
       </div>
     );
   }
 
-  /* Pong — black field, white paddles, white ball */
+  if (slug === "snake") {
+    return (
+      <div className={`${shell} bg-[#0f3d1f]`}>
+        <div className="flex items-center gap-[3px]">
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <span
+              key={i}
+              className={
+                i === 0
+                  ? "size-4 rounded-full bg-[#7CFC00] ring-2 ring-[#b8ff6a]"
+                  : "size-3.5 rounded-sm bg-[#4ade80]"
+              }
+            />
+          ))}
+          <span className="ml-2 size-3.5 rounded-full bg-[#ff4d4d] shadow-[0_0_8px_#ff4d4d]" />
+        </div>
+      </div>
+    );
+  }
+
   if (slug === "pong") {
     return (
-      <div className={`${base} bg-black`}>
-        <div className="relative h-20 w-36">
-          <span className="absolute left-0 top-1/2 h-10 w-1.5 -translate-y-1/2 rounded-sm bg-white" />
-          <span className="absolute right-0 top-1/3 h-10 w-1.5 rounded-sm bg-white" />
+      <div className={`${shell} bg-black`}>
+        <div className="relative h-[72px] w-[140px]">
+          <span className="absolute left-0 top-[18px] h-9 w-[5px] rounded-sm bg-white" />
+          <span className="absolute right-0 top-[28px] h-9 w-[5px] rounded-sm bg-white" />
           <span className="absolute left-1/2 top-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
-          {/* dashed mid line */}
-          <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 border-l border-dashed border-white/40" />
+          <span className="absolute left-1/2 top-1 h-[calc(100%-8px)] w-px -translate-x-1/2 border-l border-dashed border-white/35" />
         </div>
       </div>
     );
   }
 
-  /* 2048 — official-ish amber tiles 2/4/8/16 */
   if (slug === "2048") {
+    const tiles = [
+      { n: "2", bg: "#eee4da", fg: "#776e65" },
+      { n: "4", bg: "#ede0c8", fg: "#776e65" },
+      { n: "8", bg: "#f2b179", fg: "#f9f6f2" },
+      { n: "16", bg: "#f59563", fg: "#f9f6f2" },
+    ];
     return (
-      <div className={`${base} bg-[#bbada0]`}>
-        <div className="grid grid-cols-2 gap-1.5">
-          {[
-            { n: "2", c: "bg-[#eee4da] text-[#776e65]" },
-            { n: "4", c: "bg-[#ede0c8] text-[#776e65]" },
-            { n: "8", c: "bg-[#f2b179] text-white" },
-            { n: "16", c: "bg-[#f59563] text-white" },
-          ].map((t) => (
+      <div className={`${shell} bg-[#bbada0]`}>
+        <div className="grid grid-cols-2 gap-1.5 p-1">
+          {tiles.map((t) => (
             <span
               key={t.n}
-              className={`grid size-11 place-items-center rounded-md text-sm font-black shadow-sm ${t.c}`}
+              className="grid size-12 place-items-center rounded-md text-[15px] font-black shadow-sm"
+              style={{ background: t.bg, color: t.fg }}
             >
               {t.n}
             </span>
@@ -137,39 +139,58 @@ function GamePreview({ game }: { game: GameDef }) {
     );
   }
 
-  /* Minesweeper — Win95-ish gray cells + red mine */
   if (slug === "minesweeper") {
+    const cells: (string | number | null)[] = [1, null, null, null, "mine", 2, null, 1, null];
     return (
-      <div className={`${base} bg-[#c0c0c0]`}>
-        <div className="grid grid-cols-3 gap-0.5 border-2 border-b-white border-r-white border-l-[#808080] border-t-[#808080] p-1">
-          {Array.from({ length: 9 }).map((_, i) => (
-            <span
-              key={i}
-              className={`grid size-7 place-items-center text-[11px] font-bold ${
-                i === 4
-                  ? "bg-[#c0c0c0] text-black"
-                  : "border border-b-[#808080] border-r-[#808080] border-l-white border-t-white bg-[#c0c0c0]"
-              }`}
-            >
-              {i === 4 ? "💣" : i === 1 ? <span className="text-blue-700">1</span> : i === 6 ? <span className="text-green-700">2</span> : ""}
-            </span>
-          ))}
+      <div className={`${shell} bg-[#9e9e9e]`}>
+        <div
+          className="grid grid-cols-3 gap-0 border-2 p-0.5"
+          style={{ borderColor: "#fff #808080 #808080 #fff" }}
+        >
+          {cells.map((c, i) => {
+            const raised = c === null;
+            return (
+              <span
+                key={i}
+                className="grid size-8 place-items-center text-sm font-bold"
+                style={{
+                  background: "#c0c0c0",
+                  border: raised
+                    ? "2px solid"
+                    : "1px solid #808080",
+                  borderColor: raised
+                    ? "#fff #808080 #808080 #fff"
+                    : "#808080",
+                  color: c === 1 ? "#0000ff" : c === 2 ? "#008000" : undefined,
+                }}
+              >
+                {c === "mine" ? (
+                  <span className="text-base leading-none">●</span>
+                ) : c === null ? (
+                  ""
+                ) : (
+                  c
+                )}
+              </span>
+            );
+          })}
         </div>
       </div>
     );
   }
 
-  /* Tic-tac-toe — X and O on grid */
   if (slug === "tic-tac-toe") {
+    const board = ["X", "O", "", "O", "X", "", "", "", "X"];
     return (
-      <div className={`${base} bg-slate-100`}>
-        <div className="grid grid-cols-3 gap-0 border-2 border-slate-400">
-          {["X", "O", "", "O", "X", "", "", "", "X"].map((v, i) => (
+      <div className={`${shell} bg-[#f1f5f9]`}>
+        <div className="grid grid-cols-3 gap-0 rounded-md border-2 border-slate-500 bg-white shadow-sm">
+          {board.map((v, i) => (
             <span
               key={i}
-              className="grid size-8 place-items-center border border-slate-300 text-lg font-black text-slate-700"
+              className="grid size-9 place-items-center border border-slate-300 text-lg font-black"
             >
-              {v === "X" ? <span className="text-slate-800">X</span> : v === "O" ? <span className="text-rose-500">O</span> : ""}
+              {v === "X" && <span className="text-slate-800">✕</span>}
+              {v === "O" && <span className="text-rose-500">○</span>}
             </span>
           ))}
         </div>
@@ -177,53 +198,53 @@ function GamePreview({ game }: { game: GameDef }) {
     );
   }
 
-  /* Connect Four — blue board + red/yellow discs */
   if (slug === "connect-four") {
+    // 3 rows x 5 cols simplified board
+    const row = (colors: (string | null)[]) =>
+      colors.map((c, i) => (
+        <span
+          key={i}
+          className="size-[18px] rounded-full"
+          style={{ background: c ?? "#0c1a4a" }}
+        />
+      ));
     return (
-      <div className={`${base} bg-[#1d4ed8]`}>
-        <div className="grid grid-cols-4 gap-1 rounded-lg bg-[#1e40af] p-2">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span
-              key={i}
-              className={`size-5 rounded-full ${
-                i === 5 || i === 6
-                  ? "bg-[#ef4444]"
-                  : i === 7
-                    ? "bg-[#facc15]"
-                    : "bg-[#0f172a]/40"
-              }`}
-            />
-          ))}
+      <div className={`${shell} bg-[#1d4ed8]`}>
+        <div className="rounded-lg bg-[#1e3a8a] p-2 shadow-inner">
+          <div className="grid grid-cols-5 gap-1">
+            {row([null, null, null, null, null])}
+            {row([null, "#ef4444", "#ef4444", "#facc15", null])}
+            {row(["#ef4444", "#facc15", "#ef4444", "#facc15", "#ef4444"])}
+          </div>
         </div>
       </div>
     );
   }
 
-  /* Memory — two face-down cards */
   if (slug === "memory") {
     return (
-      <div className={`${base} bg-gradient-to-br from-violet-100 to-fuchsia-100`}>
+      <div className={`${shell} bg-gradient-to-br from-violet-100 to-fuchsia-50`}>
         <div className="flex gap-3">
-          <span className="grid size-14 place-items-center rounded-xl bg-violet-600 text-2xl font-black text-white shadow-md">
+          <span className="grid h-16 w-12 place-items-center rounded-xl bg-violet-600 text-2xl font-black text-white shadow-lg ring-2 ring-violet-300/50">
             ?
           </span>
-          <span className="grid size-14 place-items-center rounded-xl bg-fuchsia-500 text-2xl shadow-md">
-            🃏
+          <span className="grid h-16 w-12 place-items-center rounded-xl bg-fuchsia-500 text-2xl shadow-lg ring-2 ring-fuchsia-300/50">
+            ♠
           </span>
         </div>
       </div>
     );
   }
 
-  /* Sudoku — classic grid with a few digits */
   if (slug === "sudoku") {
+    const nums = ["5", "", "3", "", "7", "", "", "", "1", "6", "", "", "1", "9", "5", "", "", ""];
     return (
-      <div className={`${base} bg-white`}>
-        <div className="grid grid-cols-3 gap-px border-2 border-slate-800 bg-slate-800">
-          {["5", "", "3", "", "7", "", "", "", "1"].map((n, i) => (
+      <div className={`${shell} bg-slate-100`}>
+        <div className="grid grid-cols-3 gap-px border-2 border-slate-800 bg-slate-800 shadow-sm">
+          {nums.slice(0, 9).map((n, i) => (
             <span
               key={i}
-              className="grid size-6 place-items-center bg-white text-[11px] font-bold text-slate-800"
+              className="grid size-7 place-items-center bg-white text-xs font-bold text-slate-800"
             >
               {n}
             </span>
@@ -233,10 +254,9 @@ function GamePreview({ game }: { game: GameDef }) {
     );
   }
 
-  /* Fallback */
   return (
-    <div className={`${base} bg-gradient-to-br from-emerald-100 to-teal-100`}>
-      <span className="text-5xl transition group-hover:scale-110">{game.emoji}</span>
+    <div className={`${shell} bg-gradient-to-br from-emerald-100 to-teal-50`}>
+      <span className="text-5xl">{game.emoji}</span>
     </div>
   );
 }
@@ -263,7 +283,11 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
             : `${GAMES.length} games that run in your browser. No installs, no accounts — just play.`}
         </p>
 
-        <div className="mt-6 flex flex-wrap gap-2" role="tablist" aria-label={es ? "Filtrar por tipo" : "Filter by type"}>
+        <div
+          className="mt-6 flex flex-wrap gap-2"
+          role="tablist"
+          aria-label={es ? "Filtrar por tipo" : "Filter by type"}
+        >
           {FILTERS.map((f) => {
             const active = filter === f.id;
             return (
@@ -311,8 +335,12 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
                   <span className="mt-1 text-lg font-bold text-slate-900 group-hover:text-emerald-800">
                     {gameName(game, locale)}
                   </span>
-                  <span className="mt-2 flex-1 text-sm text-slate-600">{gameSummary(game, locale)}</span>
-                  <span className="mt-4 text-sm font-bold text-emerald-700">{es ? "Jugar →" : "Play →"}</span>
+                  <span className="mt-2 flex-1 text-sm text-slate-600">
+                    {gameSummary(game, locale)}
+                  </span>
+                  <span className="mt-4 text-sm font-bold text-emerald-700">
+                    {es ? "Jugar →" : "Play →"}
+                  </span>
                 </div>
               </Link>
             );
