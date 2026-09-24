@@ -106,6 +106,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Completá la grilla sin repetir en fila, columna o bloque.",
     hasScore: true,
   },
+  {
+    slug: "pacman",
+    slugEs: "pacman",
+    nameEn: "Pac-Man",
+    nameEs: "Pac-Man",
+    tag: "arcade",
+    emoji: "🟡",
+    summaryEn: "Classic maze chase: eat every pellet, dodge ghosts, grab power pellets.",
+    summaryEs: "Laberinto clásico: comé todos los puntos, evitá fantasmas y agarrá power pellets.",
+    hasScore: true,
+  },
 ] as const;
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
