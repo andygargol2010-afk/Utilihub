@@ -58,7 +58,7 @@ function HomePage() {
                 <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">{ALL_TOOLS.length} tools</span>
               </div>
               <div className="mt-4">
-                <ToolSearch />
+                <ToolSearch compactHome />
               </div>
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
                 <Link to="/category/math" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">Math</Link>
