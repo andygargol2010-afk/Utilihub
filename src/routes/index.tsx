@@ -6,7 +6,7 @@ import { RecentToolsSection } from "@/components/RecentToolsSection";
 import { HomeReviews } from "@/components/HomeReviews";
 import { AdBanner } from "@/components/AdBanner";
 import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
-import { englishToolSlug } from "@/lib/route-slugs";
+import { englishToolSlug, englishCategorySlug } from "@/lib/route-slugs";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
 
 const title = "UtiliHub · Free online tools to solve it fast";
@@ -114,7 +114,10 @@ function HomePage() {
           <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => {
               const count = allToolsByCategory(category.slug).length;
-              const href = category.slug === "finanzas" ? "/finance" : `/category/${category.slug === "matematicas" ? "math" : category.slug === "texto" ? "text" : category.slug === "desarrollo" ? "developer" : category.slug === "conversiones" ? "converters" : category.slug}`;
+              const href =
+                category.slug === "finanzas"
+                  ? "/finance"
+                  : `/category/${englishCategorySlug(category.slug)}`;
               return (
                 <a
                   key={category.slug}
