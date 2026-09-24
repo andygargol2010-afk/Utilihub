@@ -21,7 +21,6 @@ const FILTERS: { id: Filter; en: string; es: string }[] = [
 
 const NEW_SLUGS = new Set(["tetris", "pacman"]);
 
-/** CSS “GIF” previews — animated thumbnails, no binary assets */
 function GamePreview({ game }: { game: GameDef }) {
   const base =
     "relative flex h-28 w-full items-center justify-center overflow-hidden rounded-2xl";
@@ -210,7 +209,7 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
                 key={game.slug}
                 to={es ? "/es/juegos/$slug" : "/games/$slug"}
                 params={{ slug: hrefSlug }}
-                className="group flex flex-col overflow-hidden rounded-3xl border border-emerald-900/10 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-md"
+                className="card-hover group flex flex-col overflow-hidden rounded-3xl border border-emerald-900/10 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-md"
               >
                 <div className="relative p-3 pb-0">
                   <GamePreview game={game} />
