@@ -61,6 +61,10 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
   diffRef.current = diff;
   const noSpeedCapRef = useRef(noSpeedCap);
   noSpeedCapRef.current = noSpeedCap;
+  const messageRef = useRef(message);
+  messageRef.current = message;
+  const runningRef = useRef(running);
+  runningRef.current = running;
 
   useEffect(() => {
     setBest(readBestScore("pong"));
@@ -104,6 +108,16 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
       }
       if ((e.key === " " || e.key === "p" || e.key === "P") && e.type === "keydown") {
         e.preventDefault();
+        // After a match ends (message set), Space starts a new game
+        if (messageRef.current) {
+          hardReset();
+          return;
+        }
+        // Before first play, Space also starts
+        if (!runningRef.current) {
+          hardReset();
+          return;
+        }
         setPaused((p) => !p);
       }
     };
@@ -113,7 +127,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("keyup", onKey);
     };
-  }, []);
+  }, [hardReset]);
 
   useEffect(() => {
     if (!running) return;
@@ -322,7 +336,14 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
           </>
         )}
       </div>
-      {message && <p className="text-sm font-bold text-emerald-300">{message}</p>}
+      {message && (
+        <p className="text-sm font-bold text-emerald-300">
+          {message}
+          <span className="ml-2 font-medium text-emerald-200/80">
+            {es ? "· Espacio = otra partida" : "· Space = play again"}
+          </span>
+        </p>
+      )}
       {noSpeedCap && (
         <p className="text-center text-[11px] font-medium text-amber-300/90">
           {es
@@ -340,8 +361,8 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
       />
       <p className="text-center text-[11px] text-white/50">
         {es
-          ? `↑↓ / WASD o arrastrá · espacio = pausa · a ${WIN}`
-          : `↑↓ / WASD or drag · space = pause · first to ${WIN}`}
+          ? `↑↓ / WASD o arrastrá · espacio = pausa / nueva partida · a ${WIN}`
+          : `↑↓ / WASD or drag · space = pause / play again · first to ${WIN}`}
       </p>
     </div>
   );
