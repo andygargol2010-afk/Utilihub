@@ -1,4 +1,5 @@
 import { lazy, Suspense, type ComponentType } from "react";
+import { CardGridSkeleton } from "@/components/ListSkeleton";
 import type { GameDef, GameLocale } from "@/lib/games/catalog";
 
 const TicTacToeGame = lazy(() => import("./TicTacToeGame").then((m) => ({ default: m.TicTacToeGame })));
@@ -41,9 +42,12 @@ export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: Ga
   return (
     <Suspense
       fallback={
-        <p className="py-12 text-center text-sm text-white/60">
-          {locale === "es" ? "Cargando juego…" : "Loading game…"}
-        </p>
+        <div className="mx-auto max-w-md py-8">
+          <div className="skeleton mx-auto h-48 w-full max-w-sm rounded-2xl" />
+          <p className="mt-4 text-center text-xs text-white/50">
+            {locale === "es" ? "Cargando…" : "Loading…"}
+          </p>
+        </div>
       }
     >
       <Comp locale={locale} />
