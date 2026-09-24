@@ -27,16 +27,11 @@ function NotFound() {
         <p className="text-sm font-semibold text-primary">UTILIHUB</p>
         <h1 className="mt-2 text-6xl font-bold">404</h1>
         <p className="mt-4 text-muted-foreground">
-          {isSpanish
-            ? "La página que buscas no existe o fue movida."
-            : "The page you are looking for does not exist or was moved."}
+          {isSpanish ? "No encontramos esta página." : "We could not find this page."}
         </p>
-        <Link
-          to={isSpanish ? "/es" : "/"}
-          className="mt-6 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
-        >
-          {isSpanish ? "Volver al inicio" : "Back to home"}
-        </Link>
+        <a href={isSpanish ? "/es" : "/"} className="mt-6 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
+          {isSpanish ? "Ir al inicio" : "Go home"}
+        </a>
       </div>
     </div>
   );
@@ -85,6 +80,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: DEFAULT_DESCRIPTION },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "theme-color", content: "#4338ca" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "apple-mobile-web-app-title", content: "UtiliHub" },
       { property: "og:title", content: `${SITE_NAME} · Free online tools` },
       { property: "og:description", content: DEFAULT_DESCRIPTION },
       { property: "og:type", content: "website" },
@@ -99,8 +98,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: ogImage() },
     ],
     links: [
-      { rel: "icon", href: "/utilihub-logo.svg", type: "image/svg+xml" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap",
+      },
+      { rel: "icon", href: "/utilihub-logo.svg", type: "image/svg+xml", sizes: "any" },
       { rel: "apple-touch-icon", href: "/utilihub-logo.svg" },
+      { rel: "manifest", href: "/site.webmanifest" },
     ],
     scripts: [{ type: "application/ld+json", children: JSON.stringify(websiteSchema()) }],
   }),
@@ -127,21 +133,12 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const { pathname } = useLocation();
-  const isSpanish = pathname === "/es" || pathname.startsWith("/es/");
+  const isSpanish = useIsSpanish();
   useShareableParams();
-  const { recordActivity } = useDailyStreak();
-  useEffect(() => {
-    recordActivity();
-  }, [pathname, recordActivity]);
+  useDailyStreak();
+
   return (
     <QueryClientProvider client={queryClient}>
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-3 focus:text-sm font-bold focus:text-primary-foreground"
-      >
-        {isSpanish ? "Saltar al contenido" : "Skip to content"}
-      </a>
       {isSpanish ? <SpanishSiteHeader /> : <SiteHeader />}
       <main id="main-content">
         <Outlet />
