@@ -198,52 +198,45 @@ function drawMaze(ctx: CanvasRenderingContext2D, grid: CellKind[][]) {
   }
 }
 
-function drawPac(ctx: CanvasRenderingContext2D, x: number, y: number, dir: Dir, mouth: number) {
+/**
+ * Classic chomp: mouth opens/closes smoothly.
+ * `mouthPhase` is continuous radians (time-based); we map sin → half-angle.
+ * Drawn facing +X then rotated so all directions share the same mouth shape.
+ */
+function drawPac(ctx: CanvasRenderingContext2D, x: number, y: number, dir: Dir, mouthPhase: number, moving: boolean) {
   const cx = x * CELL + CELL / 2;
   const cy = y * CELL + CELL / 2;
-  const r = CELL * 0.42;
-  const open = 0.25 + mouth * 0.35;
-  let start = open;
-  let end = Math.PI * 2 - open;
-  if (dir === "R") {
-    start = open;
-    end = Math.PI * 2 - open;
-  } else if (dir === "L") {
-    start = Math.PI + open;
-    end = Math.PI - open;
-  } else if (dir === "U") {
-    start = -Math.PI / 2 + open;
-    end = -Math.PI / 2 - open + Math.PI * 2;
-  } else {
-    start = Math.PI / 2 + open;
-    end = Math.PI / 2 - open + Math.PI * 2;
-  }
+  const r = CELL * 0.45;
+  // 0 = nearly closed, 1 = fully open (~70°)
+  const chomp = moving ? (Math.sin(mouthPhase) + 1) / 2 : 0.35;
+  const half = 0.12 + chomp * 0.55; // radians each side of forward axis
+  const rot: Record<Dir, number> = { R: 0, D: Math.PI / 2, L: Math.PI, U: -Math.PI / 2 };
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(rot[dir]);
+
+  // Body + mouth wedge
   ctx.beginPath();
-  ctx.moveTo(cx, cy);
-  ctx.arc(cx, cy, r, start, end, false);
+  ctx.moveTo(0, 0);
+  ctx.arc(0, 0, r, half, Math.PI * 2 - half, false);
   ctx.closePath();
   ctx.fillStyle = "#facc15";
   ctx.fill();
-  const eyeOff = CELL * 0.12;
-  let ex = cx;
-  let ey = cy - eyeOff;
-  if (dir === "L") {
-    ex = cx - eyeOff * 0.3;
-    ey = cy - eyeOff;
-  } else if (dir === "R") {
-    ex = cx + eyeOff * 0.3;
-    ey = cy - eyeOff;
-  } else if (dir === "U") {
-    ex = cx - eyeOff;
-    ey = cy - eyeOff * 0.5;
-  } else {
-    ex = cx - eyeOff;
-    ey = cy + eyeOff * 0.2;
-  }
+
+  // Soft highlight
   ctx.beginPath();
-  ctx.arc(ex, ey, 1.6, 0, Math.PI * 2);
+  ctx.arc(-r * 0.15, -r * 0.25, r * 0.28, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(255,255,255,0.22)";
+  ctx.fill();
+
+  // Eye (above the mouth axis so it stays readable while chomping)
+  ctx.beginPath();
+  ctx.arc(r * 0.12, -r * 0.42, r * 0.16, 0, Math.PI * 2);
   ctx.fillStyle = "#0f172a";
   ctx.fill();
+
+  ctx.restore();
 }
 
 function drawGhost(
@@ -303,7 +296,7 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
 
   const gridRef = useRef<CellKind[][]>([]);
   const pelletsLeftRef = useRef(0);
-  const pacRef = useRef({ x: 13, y: 19, dir: "L" as Dir, next: "L" as Dir });
+  const pacRef = useRef({ x: 13, y: 20, dir: "L" as Dir, next: "L" as Dir });
   const ghostsRef = useRef<Ghost[]>(initialGhosts());
   const scoreRef = useRef(0);
   const bestRef = useRef(0);
@@ -314,7 +307,8 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
   const ghostChainRef = useRef(0);
   const stepAtRef = useRef(0);
   const ghostAtRef = useRef(0);
-  const mouthRef = useRef(0);
+  const mouthPhaseRef = useRef(0);
+  const movingRef = useRef(false);
   const readyUntilRef = useRef(0);
   const touchRef = useRef<{ x: number; y: number } | null>(null);
   const esRef = useRef(es);
@@ -337,7 +331,7 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
     const { grid, pellets } = parseMaze();
     gridRef.current = grid.map((row) => [...row]);
     pelletsLeftRef.current = pellets;
-    pacRef.current = { x: 13, y: 19, dir: "L", next: "L" };
+    pacRef.current = { x: 13, y: 20, dir: "L", next: "L" };
     ghostsRef.current = initialGhosts();
     frightUntilRef.current = 0;
     ghostChainRef.current = 0;
@@ -356,6 +350,8 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
     readyUntilRef.current = performance.now() + 1500;
     stepAtRef.current = performance.now() + 1500;
     ghostAtRef.current = performance.now() + 1500;
+    movingRef.current = true;
+    mouthPhaseRef.current = 0;
     setPaused(false);
     pausedRef.current = false;
   }, [resetLevel]);
@@ -369,7 +365,7 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
       setBest(nb);
       return;
     }
-    pacRef.current = { x: 13, y: 19, dir: "L", next: "L" };
+    pacRef.current = { x: 13, y: 20, dir: "L", next: "L" };
     ghostsRef.current = initialGhosts();
     frightUntilRef.current = 0;
     setPhase("ready");
@@ -428,6 +424,9 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
             const w = wrap(nx, ny);
             pac.x = w.x;
             pac.y = w.y;
+            movingRef.current = true;
+          } else {
+            movingRef.current = false;
           }
           const cell = grid[pac.y]![pac.x]!;
           if (cell === "pellet") {
@@ -450,7 +449,6 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
             bestRef.current = nb;
             setBest(nb);
           }
-          mouthRef.current = (mouthRef.current + 1) % 4;
         }
 
         if (now - ghostAtRef.current >= GHOST_STEP) {
@@ -519,9 +517,23 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
         const grid = gridRef.current;
         drawMaze(ctx, grid);
         const pac = pacRef.current;
-        const mouth = (Math.sin(mouthRef.current * 0.9) + 1) / 2;
+        // Continuous chomp ~4 cycles/sec while moving; freeze mid-open when blocked
+        if (
+          (phaseRef.current === "play" || phaseRef.current === "ready") &&
+          !pausedRef.current &&
+          movingRef.current
+        ) {
+          mouthPhaseRef.current = now * 0.014;
+        }
         if (phaseRef.current !== "dead" || livesRef.current > 0) {
-          drawPac(ctx, pac.x, pac.y, pac.dir, mouth);
+          drawPac(
+            ctx,
+            pac.x,
+            pac.y,
+            pac.dir,
+            mouthPhaseRef.current,
+            movingRef.current && phaseRef.current === "play" && !pausedRef.current,
+          );
         }
         const frightened = now < frightUntilRef.current;
         const flash = frightened && frightUntilRef.current - now < 2000 && Math.floor(now / 150) % 2 === 0;
