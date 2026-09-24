@@ -10,6 +10,7 @@ const MinesweeperGame = lazy(() => import("./MinesweeperGame").then((m) => ({ de
 const PongGame = lazy(() => import("./PongGame").then((m) => ({ default: m.PongGame })));
 const SudokuGame = lazy(() => import("./SudokuGame").then((m) => ({ default: m.SudokuGame })));
 const PacManGame = lazy(() => import("./PacManGame").then((m) => ({ default: m.PacManGame })));
+const TetrisGame = lazy(() => import("./TetrisGame").then((m) => ({ default: m.TetrisGame })));
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -25,6 +26,7 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   pong: PongGame,
   sudoku: SudokuGame,
   pacman: PacManGame,
+  tetris: TetrisGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {

@@ -117,6 +117,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Laberinto clásico: comé todos los puntos, evitá fantasmas y agarrá power pellets.",
     hasScore: true,
   },
+  {
+    slug: "tetris",
+    slugEs: "tetris",
+    nameEn: "Tetris",
+    nameEs: "Tetris",
+    tag: "arcade",
+    emoji: "🧱",
+    summaryEn: "Stack tetrominoes, clear lines, chase a high score.",
+    summaryEs: "Apilá tetrominós, limpiá líneas y buscá el high score.",
+    hasScore: true,
+  },
 ] as const;
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
