@@ -7,53 +7,71 @@ const DESKTOP = {
   src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
 };
 
+/** Mobile banner unit — same placement key, 320×50 size for small screens. */
+const MOBILE = {
+  key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
+  width: 320,
+  height: 50,
+  src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
+};
+
 /**
- * Tool/game/finance banner — desktop only.
- * On mobile we render nothing and never inject highrevenueformat (redirects).
+ * Tool/game/finance banner.
+ * Desktop: 728×90 · Mobile: 320×50 banner only (no Social Bar on mobile).
  */
 export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) {
   const slotRef = useRef<HTMLDivElement>(null);
-  const [desktop, setDesktop] = useState(false);
+  const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
 
   useEffect(() => {
     const media = window.matchMedia("(min-width: 768px)");
-    const update = () => setDesktop(media.matches);
+    const update = () => setViewport(media.matches ? "desktop" : "mobile");
     update();
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
-    if (!desktop || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
+    if (!viewport || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
     const slot = slotRef.current;
     slot.dataset.loaded = "true";
+    const config = viewport === "desktop" ? DESKTOP : MOBILE;
     const previous = (window as Window & { atOptions?: Record<string, unknown> }).atOptions;
     (window as Window & { atOptions?: Record<string, unknown> }).atOptions = {
-      key: DESKTOP.key,
+      key: config.key,
       format: "iframe",
-      height: DESKTOP.height,
-      width: DESKTOP.width,
+      height: config.height,
+      width: config.width,
       params: {},
     };
     const script = document.createElement("script");
     script.async = true;
-    script.src = DESKTOP.src;
-    script.dataset.utilihubAd = "desktop";
+    script.src = config.src;
+    script.dataset.utilihubAd = viewport;
     slot.appendChild(script);
     return () => {
       if (previous) (window as Window & { atOptions?: Record<string, unknown> }).atOptions = previous;
       script.remove();
+      // Allow re-inject if viewport flips (resize / rotate)
+      if (slot.dataset.loaded) delete slot.dataset.loaded;
+      slot.replaceChildren();
     };
-  }, [desktop]);
+  }, [viewport]);
 
-  if (!desktop) return null;
+  if (!viewport) return null;
+
+  const minH = viewport === "desktop" ? 90 : 50;
 
   return (
     <aside className="ad-slot my-6 overflow-hidden rounded-xl border border-border/60 bg-surface/35" aria-label={label}>
       <div className="flex min-h-7 items-center justify-center px-2 pt-1 text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
         {label}
       </div>
-      <div ref={slotRef} className="flex min-h-[90px] items-center justify-center overflow-hidden px-0 pb-1" />
+      <div
+        ref={slotRef}
+        className="flex items-center justify-center overflow-hidden px-0 pb-1"
+        style={{ minHeight: minH }}
+      />
     </aside>
   );
 }
