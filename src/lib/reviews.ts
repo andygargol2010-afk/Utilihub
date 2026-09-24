@@ -97,38 +97,5 @@ export function toPublic(review: Review): PublicReview {
   return out;
 }
 
-/** Always-visible seed reviews so the section never looks empty. */
-export const SEED_REVIEWS: PublicReview[] = [
-  {
-    id: "seed-1",
-    name: "Sofía",
-    rating: 5,
-    text: "Uso las calculadoras y los conversores casi todos los días. Rápido y sin registrarse.",
-    locale: "es",
-    createdAt: Date.UTC(2026, 5, 12),
-  },
-  {
-    id: "seed-2",
-    name: "Marcus",
-    rating: 5,
-    text: "Clean UI and the PDF tools actually work offline in the browser. Bookmark-worthy.",
-    locale: "en",
-    createdAt: Date.UTC(2026, 6, 3),
-  },
-  {
-    id: "seed-3",
-    name: "Valentina",
-    rating: 4,
-    text: "Los generadores de tests para estudiar me sirvieron mucho. Ojalá agreguen más temas.",
-    locale: "es",
-    createdAt: Date.UTC(2026, 6, 20),
-  },
-  {
-    id: "seed-4",
-    name: "James",
-    rating: 5,
-    text: "Exactly what I needed — no account wall, no tracking spam. The finance calculators are solid.",
-    locale: "en",
-    createdAt: Date.UTC(2026, 7, 1),
-  },
-];
+/** No fabricated reviews — only real user/server reviews are shown. */
+export const SEED_REVIEWS: PublicReview[] = [];

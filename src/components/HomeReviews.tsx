@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import { listPublicReviews, submitReview } from "@/lib/reviews.functions";
 import type { PublicReview } from "@/lib/reviews";
-import { SEED_REVIEWS } from "@/lib/reviews";
 
 const LS_KEY = "utilihub:local-reviews";
 
@@ -94,7 +93,7 @@ function AdminReply({ reply, locale }: { reply: NonNullable<PublicReview["reply"
 
 export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
   const es = locale === "es";
-  const [reviews, setReviews] = useState<PublicReview[]>(() => mergeReviews(SEED_REVIEWS));
+  const [reviews, setReviews] = useState<PublicReview[]>([]);
   const [durable, setDurable] = useState(true);
   const [name, setName] = useState("");
   const [rating, setRating] = useState(5);
@@ -109,9 +108,9 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
       const result = await listPublicReviews();
       const serverList = result?.reviews ?? [];
       setDurable(Boolean(result?.durable));
-      setReviews(mergeReviews(local, serverList, SEED_REVIEWS));
+      setReviews(mergeReviews(local, serverList));
     } catch {
-      setReviews(mergeReviews(local, SEED_REVIEWS));
+      setReviews(mergeReviews(local));
     }
   }, []);
 
@@ -190,19 +189,27 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="grid gap-3 sm:grid-cols-2">
-          {visible.map((review) => (
-            <article key={review.id} className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <p className="font-bold">{review.name}</p>
-                  <p className="text-xs text-muted-foreground">{formatDate(review.createdAt, locale)}</p>
+          {visible.length === 0 ? (
+            <p className="col-span-full rounded-xl border border-dashed border-border/80 bg-muted/30 px-4 py-8 text-center text-sm text-muted-foreground">
+              {es
+                ? "Todavía no hay reseñas. Sé el primero en dejar tu opinión."
+                : "No reviews yet. Be the first to leave feedback."}
+            </p>
+          ) : (
+            visible.map((review) => (
+              <article key={review.id} className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="font-bold">{review.name}</p>
+                    <p className="text-xs text-muted-foreground">{formatDate(review.createdAt, locale)}</p>
+                  </div>
+                  <Stars value={review.rating} />
                 </div>
-                <Stars value={review.rating} />
-              </div>
-              <p className="mt-3 text-sm leading-6 text-muted-foreground">{review.text}</p>
-              {review.reply?.text ? <AdminReply reply={review.reply} locale={locale} /> : null}
-            </article>
-          ))}
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">{review.text}</p>
+                {review.reply?.text ? <AdminReply reply={review.reply} locale={locale} /> : null}
+              </article>
+            ))
+          )}
         </div>
 
         <form onSubmit={onSubmit} className="rounded-2xl border border-primary/20 bg-accent/40 p-5 sm:p-6" noValidate>
