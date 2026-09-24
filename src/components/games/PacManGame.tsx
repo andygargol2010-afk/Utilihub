@@ -6,6 +6,7 @@ import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
 /**
  * Classic Pac-Man–style maze (28×26 tiles).
  * # wall · . pellet · o power · - ghost door · space empty path
+ * Side borders sealed except tunnel row 12.
  */
 const MAZE_RAW = [
   "############################",
@@ -16,15 +17,15 @@ const MAZE_RAW = [
   "#.####.##.########.##.####.#",
   "#......##....##....##......#",
   "######.##### ## #####.######",
-  "     #.##### ## #####.#     ",
-  "     #.##          ##.#     ",
-  "     #.## ###--### ##.#     ",
+  "######.##### ## #####.######",
+  "######.##          ##.######",
+  "######.## ###--### ##.######",
   "######.## #      # ##.######",
   "      .   #      #   .      ",
   "######.## #      # ##.######",
-  "     #.## ######## ##.#     ",
-  "     #.##          ##.#     ",
-  "     #.## ######## ##.#     ",
+  "######.## ######## ##.######",
+  "######.##          ##.######",
+  "######.## ######## ##.######",
   "######.## ######## ##.######",
   "#............##............#",
   "#.####.#####.##.#####.####.#",
@@ -86,16 +87,24 @@ function parseMaze(): { grid: CellKind[][]; pellets: number } {
   return { grid, pellets };
 }
 
+/** Horizontal tunnel only on this row (classic side passages). */
+const TUNNEL_ROW = 12;
+
 function wrap(x: number, y: number): Pt {
   let nx = x;
-  if (nx < 0) nx = COLS - 1;
-  if (nx >= COLS) nx = 0;
+  if (y === TUNNEL_ROW) {
+    if (nx < 0) nx = COLS - 1;
+    if (nx >= COLS) nx = 0;
+  }
   return { x: nx, y };
 }
 
 function walkable(grid: CellKind[][], x: number, y: number, allowDoor = false): boolean {
   if (y < 0 || y >= ROWS) return false;
+  // Off the sides only legal via tunnel wrap
+  if ((x < 0 || x >= COLS) && y !== TUNNEL_ROW) return false;
   const p = wrap(x, y);
+  if (p.x < 0 || p.x >= COLS) return false;
   const cell = grid[p.y]![p.x]!;
   if (cell === "wall") return false;
   if (cell === "door") return allowDoor;
@@ -398,15 +407,14 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
   useEffect(() => {
     let raf = 0;
     const loop = (now: number) => {
-      const ph = phaseRef.current;
-      if (ph === "ready" && now >= readyUntilRef.current) {
+      if (phaseRef.current === "ready" && now >= readyUntilRef.current) {
         setPhase("play");
         phaseRef.current = "play";
         stepAtRef.current = now;
         ghostAtRef.current = now;
       }
 
-      if (ph === "play" && !pausedRef.current) {
+      if (phaseRef.current === "play" && !pausedRef.current) {
         if (now - stepAtRef.current >= STEP_MS) {
           stepAtRef.current += STEP_MS;
           if (now - stepAtRef.current > STEP_MS * 2) stepAtRef.current = now;
@@ -451,10 +459,12 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
           }
         }
 
-        if (now - ghostAtRef.current >= GHOST_STEP) {
-          ghostAtRef.current += GHOST_STEP;
-          if (now - ghostAtRef.current > GHOST_STEP * 2) ghostAtRef.current = now;
-          const frightened = now < frightUntilRef.current;
+        const frightenedNow = now < frightUntilRef.current;
+        const ghostInterval = frightenedNow ? GHOST_STEP * 1.85 : GHOST_STEP;
+        if (now - ghostAtRef.current >= ghostInterval) {
+          ghostAtRef.current += ghostInterval;
+          if (now - ghostAtRef.current > ghostInterval * 2) ghostAtRef.current = now;
+          const frightened = frightenedNow;
           const pac = pacRef.current;
           const grid = gridRef.current;
           for (const g of ghostsRef.current) {
@@ -688,6 +698,12 @@ export function PacManGame({ locale = "en" }: { locale?: GameLocale }) {
         ref={canvasRef}
         width={W}
         height={H}
+        role="img"
+        aria-label={
+          es
+            ? "Pac-Man: laberinto con puntos y fantasmas. Usa flechas o deslizá para mover."
+            : "Pac-Man: maze with pellets and ghosts. Use arrow keys or swipe to move."
+        }
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         className="touch-none rounded-xl border border-blue-500/30 bg-slate-950 shadow-[0_0_40px_rgba(37,99,235,0.25)]"
