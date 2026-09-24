@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, sans-serif;
   --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --radius-sm: calc(var(--radius) - 4px);
@@ -68,25 +68,16 @@ body {
   background: color-mix(in oklab, var(--color-background) 91%, transparent);
   backdrop-filter: blur(18px);
   box-shadow: 0 12px 30px -26px rgba(31, 41, 88, .55);
-  /* Keep header above floating Social Bar overlays */
-  z-index: 60;
-  position: sticky;
-  top: 0;
+  z-index: 2147483000;
 }
-.brand-lockup { transition: transform .18s ease; }
-.brand-lockup:hover { transform: translateY(-1px); }
-.brand-mark { filter: drop-shadow(0 5px 9px rgba(31, 41, 88, .16)); }
-.site-nav { padding: .3rem; border: 1px solid color-mix(in oklab, var(--color-border) 84%, transparent); border-radius: 999px; background: color-mix(in oklab, var(--color-card) 82%, transparent); box-shadow: 0 8px 24px -22px rgba(31, 41, 88, .55); }
-h1,h2,h3,h4 { font-family: var(--font-display); letter-spacing: -.035em; }
-h1 { line-height: 1.03; }
+h1 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.04em; line-height: 1.03; }
+h2,h3,h4 { font-family: var(--font-sans); letter-spacing: -0.02em; }
 h2 { line-height: 1.12; }
 a { transition: color .15s ease, background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
 :focus-visible { outline: 2px solid var(--color-ring); outline-offset: 3px; }
 ::selection { background: color-mix(in oklab, var(--color-primary) 22%, transparent); }
 
-/* Social Bar / floating ad safety: never cover the sticky navbar on mobile */
 @media (max-width: 767px) {
-  /* Common selectors used by profitableratecpm / Adsterra social-bar injects */
   [id*="social"],
   [class*="social-bar"],
   [class*="SocialBar"],
@@ -95,7 +86,6 @@ a { transition: color .15s ease, background-color .15s ease, border-color .15s e
   iframe[src*="highrevenueformat"] {
     max-height: min(40vh, 280px) !important;
   }
-  /* Force any fixed top overlays below the header band (~64px) */
   body > div[style*="position: fixed"][style*="top: 0"],
   body > div[style*="position:fixed"][style*="top:0"] {
     top: 72px !important;
@@ -127,4 +117,22 @@ a { transition: color .15s ease, background-color .15s ease, border-color .15s e
 @media (max-width: 640px) {
   .container-page { padding-inline: 1rem; }
   .surface-card { border-radius: 1rem; }
+}
+
+@utility card-hover {
+  transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.card-hover:hover {
+  border-color: color-mix(in oklab, var(--color-primary) 22%, transparent);
+  box-shadow: 0 12px 28px -18px rgba(67, 56, 202, .28);
+}
+@utility skeleton {
+  background: linear-gradient(90deg, color-mix(in oklab, var(--color-muted-foreground) 8%, transparent) 0%, color-mix(in oklab, var(--color-muted-foreground) 14%, transparent) 50%, color-mix(in oklab, var(--color-muted-foreground) 8%, transparent) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.2s ease-in-out infinite;
+  border-radius: 0.75rem;
+}
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
