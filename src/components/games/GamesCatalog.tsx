@@ -21,202 +21,35 @@ const FILTERS: { id: Filter; en: string; es: string }[] = [
 
 const NEW_SLUGS = new Set(["tetris", "pacman"]);
 
-/**
- * Clean, flat card art — recognizable silhouette of each classic game,
- * modern app-icon style. No Win95 chrome, no muddy texture recreations.
- */
+/** Soft background per game — large centered emoji only */
+const PREVIEW_BG: Record<string, string> = {
+  "2048": "from-amber-50 to-orange-100",
+  "tic-tac-toe": "from-slate-50 to-slate-100",
+  "connect-four": "from-blue-50 to-blue-100",
+  minesweeper: "from-zinc-100 to-slate-200",
+  snake: "from-emerald-50 to-green-100",
+  pong: "from-slate-800 to-slate-950",
+  memory: "from-violet-50 to-fuchsia-100",
+  sudoku: "from-teal-50 to-cyan-100",
+  pacman: "from-indigo-950 to-blue-950",
+  tetris: "from-slate-900 to-cyan-950",
+};
+
 function GamePreview({ game }: { game: GameDef }) {
-  const shell =
-    "relative flex h-32 w-full items-center justify-center overflow-hidden rounded-2xl";
-  const slug = game.slug;
-
-  /* Pac-Man — yellow wedge + dots on deep blue (logo silhouette) */
-  if (slug === "pacman") {
-    return (
-      <div className={`${shell} bg-[#0b1026]`}>
-        <svg viewBox="0 0 120 72" className="h-[72px] w-[120px]" aria-hidden>
-          <circle cx="70" cy="36" r="4" fill="#FFB8AE" />
-          <circle cx="88" cy="36" r="4" fill="#FFB8AE" />
-          <circle cx="106" cy="36" r="4" fill="#FFB8AE" />
-          <path d="M42 36 L64 14 A28 28 0 1 0 64 58 Z" fill="#FFCC00" />
-          <circle cx="40" cy="24" r="3.5" fill="#0b1026" />
-        </svg>
-      </div>
-    );
-  }
-
-  /* Tetris — flat tetromino colors, no fake 3D */
-  if (slug === "tetris") {
-    const cells = [
-      null, "#a855f7", null, null,
-      "#22d3ee", "#a855f7", "#eab308", null,
-      "#22d3ee", "#22c55e", "#f97316", "#ef4444",
-      "#22d3ee", "#22c55e", "#f97316", "#ef4444",
-    ];
-    return (
-      <div className={`${shell} bg-[#0f172a]`}>
-        <div className="grid grid-cols-4 gap-1">
-          {cells.map((c, i) => (
-            <span
-              key={i}
-              className="size-5 rounded-md"
-              style={{ background: c ?? "transparent" }}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  /* Snake — simple green chain + apple */
-  if (slug === "snake") {
-    return (
-      <div className={`${shell} bg-[#052e16]`}>
-        <div className="flex items-center gap-1">
-          <span className="size-4 rounded-full bg-[#4ade80]" />
-          <span className="size-3.5 rounded-full bg-[#4ade80]" />
-          <span className="size-3.5 rounded-full bg-[#4ade80]" />
-          <span className="size-3.5 rounded-full bg-[#4ade80]" />
-          <span className="size-3.5 rounded-full bg-[#4ade80]" />
-          <span className="ml-2 size-3.5 rounded-full bg-[#f87171]" />
-        </div>
-      </div>
-    );
-  }
-
-  /* Pong — minimal white on black */
-  if (slug === "pong") {
-    return (
-      <div className={`${shell} bg-black`}>
-        <div className="relative h-16 w-36">
-          <span className="absolute left-0 top-3 h-10 w-1.5 rounded-full bg-white" />
-          <span className="absolute right-0 top-6 h-10 w-1.5 rounded-full bg-white" />
-          <span className="absolute left-1/2 top-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
-        </div>
-      </div>
-    );
-  }
-
-  /* 2048 — soft rounded tiles, classic palette, no beige mud field */
-  if (slug === "2048") {
-    return (
-      <div className={`${shell} bg-[#faf8ef]`}>
-        <div className="grid grid-cols-2 gap-2">
-          <span className="grid size-11 place-items-center rounded-xl bg-[#eee4da] text-sm font-black text-[#776e65]">2</span>
-          <span className="grid size-11 place-items-center rounded-xl bg-[#ede0c8] text-sm font-black text-[#776e65]">4</span>
-          <span className="grid size-11 place-items-center rounded-xl bg-[#f2b179] text-sm font-black text-white">8</span>
-          <span className="grid size-11 place-items-center rounded-xl bg-[#f59563] text-sm font-black text-white">16</span>
-        </div>
-      </div>
-    );
-  }
-
-  /* Minesweeper — flat modern: soft slate + flag + numbers, no Win95 borders */
-  if (slug === "minesweeper") {
-    return (
-      <div className={`${shell} bg-slate-200`}>
-        <div className="grid grid-cols-3 gap-1.5">
-          <span className="grid size-8 place-items-center rounded-lg bg-white text-sm font-bold text-blue-600 shadow-sm">1</span>
-          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
-          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
-          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
-          <span className="grid size-8 place-items-center rounded-lg bg-white text-base shadow-sm">🚩</span>
-          <span className="grid size-8 place-items-center rounded-lg bg-white text-sm font-bold text-green-600 shadow-sm">2</span>
-          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
-          <span className="grid size-8 place-items-center rounded-lg bg-white text-sm font-bold text-blue-600 shadow-sm">1</span>
-          <span className="grid size-8 place-items-center rounded-lg bg-slate-300 shadow-sm" />
-        </div>
-      </div>
-    );
-  }
-
-  /* Tic-Tac-Toe — clean grid */
-  if (slug === "tic-tac-toe") {
-    return (
-      <div className={`${shell} bg-slate-50`}>
-        <div className="grid grid-cols-3 gap-0 rounded-xl border-2 border-slate-300 bg-white p-0.5 shadow-sm">
-          {(["X", "O", "", "O", "X", "", "", "", "X"] as const).map((v, i) => (
-            <span
-              key={i}
-              className="grid size-9 place-items-center border border-slate-200 text-lg font-black"
-            >
-              {v === "X" && <span className="text-slate-800">✕</span>}
-              {v === "O" && <span className="text-rose-500">○</span>}
-            </span>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  /* Connect Four — blue frame, flat discs */
-  if (slug === "connect-four") {
-    const disc = (c: string | null) => (
-      <span
-        className="size-5 rounded-full"
-        style={{ background: c ?? "rgba(15,23,42,0.35)" }}
-      />
-    );
-    return (
-      <div className={`${shell} bg-[#2563eb]`}>
-        <div className="rounded-2xl bg-[#1d4ed8] p-2.5">
-          <div className="grid grid-cols-4 gap-1.5">
-            {disc(null)}
-            {disc(null)}
-            {disc(null)}
-            {disc(null)}
-            {disc("#ef4444")}
-            {disc("#ef4444")}
-            {disc("#facc15")}
-            {disc(null)}
-            {disc("#facc15")}
-            {disc("#ef4444")}
-            {disc("#facc15")}
-            {disc("#ef4444")}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  /* Memory — two soft cards */
-  if (slug === "memory") {
-    return (
-      <div className={`${shell} bg-gradient-to-br from-violet-50 to-fuchsia-50`}>
-        <div className="flex gap-3">
-          <span className="grid h-14 w-11 place-items-center rounded-2xl bg-violet-600 text-xl font-black text-white shadow-md">
-            ?
-          </span>
-          <span className="grid h-14 w-11 place-items-center rounded-2xl bg-fuchsia-500 text-xl text-white shadow-md">
-            ♠
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  /* Sudoku — clean white grid */
-  if (slug === "sudoku") {
-    const n = ["5", "", "3", "", "7", "", "", "", "1"];
-    return (
-      <div className={`${shell} bg-white`}>
-        <div className="grid grid-cols-3 gap-px rounded-lg border-2 border-slate-800 bg-slate-800">
-          {n.map((v, i) => (
-            <span
-              key={i}
-              className="grid size-7 place-items-center bg-white text-xs font-bold text-slate-800"
-            >
-              {v}
-            </span>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
+  const bg = PREVIEW_BG[game.slug] ?? "from-emerald-50 to-teal-100";
+  const dark = ["pong", "pacman", "tetris"].includes(game.slug);
   return (
-    <div className={`${shell} bg-gradient-to-br from-emerald-50 to-teal-50`}>
-      <span className="text-5xl">{game.emoji}</span>
+    <div
+      className={`relative flex h-32 w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${bg}`}
+      aria-hidden
+    >
+      <span
+        className={`select-none text-6xl leading-none drop-shadow-sm transition duration-200 group-hover:scale-110 ${
+          dark ? "opacity-95" : ""
+        }`}
+      >
+        {game.emoji}
+      </span>
     </div>
   );
 }
