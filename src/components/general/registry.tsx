@@ -10,6 +10,7 @@ const AdvancedCalculatorTool = lazy(() =>
 const AdvancedDateTool = lazy(() => import("./AdvancedDateTool").then((m) => ({ default: m.AdvancedDateTool })));
 const MathTool = lazy(() => import("./MathTool").then((m) => ({ default: m.MathTool })));
 const DesignTool = lazy(() => import("./DesignTool").then((m) => ({ default: m.DesignTool })));
+const Modeler3D = lazy(() => import("./Modeler3D").then((m) => ({ default: m.Modeler3D })));
 const SecurityTool = lazy(() => import("./SecurityTool").then((m) => ({ default: m.SecurityTool })));
 const TimeTool = lazy(() => import("./TimeTool").then((m) => ({ default: m.TimeTool })));
 const ConverterTool = lazy(() => import("./ConverterTool").then((m) => ({ default: m.ConverterTool })));
@@ -38,6 +39,7 @@ type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
 function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "gpa") return GpaCalculator as ToolComp;
+  if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.slug === "secuencias") return SequenceTool as ToolComp;
   if (tool.slug === "potencias-y-raices") return PowerRootTool as ToolComp;
