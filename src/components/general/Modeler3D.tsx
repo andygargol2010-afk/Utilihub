@@ -36,10 +36,6 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     transform: any;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    raycaster: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    pointer: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     meshes: Map<string, any>;
     anim: number;
   } | null>(null);
@@ -63,21 +59,18 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     t.transform.setMode(modeRef.current);
   }, []);
 
-  const selectMesh = useCallback(
-    (id: string | null) => {
-      const t = threeRef.current;
-      setSelectedId(id);
-      selectedIdRef.current = id;
-      if (!t) return;
-      if (id && t.meshes.has(id)) {
-        t.transform.attach(t.meshes.get(id));
-        t.transform.setMode(modeRef.current);
-      } else {
-        t.transform.detach();
-      }
-    },
-    [],
-  );
+  const selectMesh = useCallback((id: string | null) => {
+    const t = threeRef.current;
+    setSelectedId(id);
+    selectedIdRef.current = id;
+    if (!t) return;
+    if (id && t.meshes.has(id)) {
+      t.transform.attach(t.meshes.get(id));
+      t.transform.setMode(modeRef.current);
+    } else {
+      t.transform.detach();
+    }
+  }, []);
 
   const addShape = useCallback(
     (kind: ShapeKind) => {
@@ -95,7 +88,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
       const count = objects.filter((o) => o.kind === kind).length + 1;
       const name = `${es ? names[kind][1] : names[kind][0]} ${count}`;
       const mat = new THREE.MeshStandardMaterial({
-        color: color,
+        color,
         metalness: 0.12,
         roughness: 0.45,
       });
@@ -159,20 +152,17 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     selectMesh(null);
   }, [selectMesh]);
 
-  const applyColor = useCallback(
-    (hex: string) => {
-      setColor(hex);
-      const t = threeRef.current;
-      const id = selectedIdRef.current;
-      if (!t || !id) return;
-      const mesh = t.meshes.get(id);
-      if (mesh?.material) {
-        mesh.material.color.set(hex);
-        setObjects((prev) => prev.map((o) => (o.id === id ? { ...o, color: hex } : o)));
-      }
-    },
-    [],
-  );
+  const applyColor = useCallback((hex: string) => {
+    setColor(hex);
+    const t = threeRef.current;
+    const id = selectedIdRef.current;
+    if (!t || !id) return;
+    const mesh = t.meshes.get(id);
+    if (mesh?.material) {
+      mesh.material.color.set(hex);
+      setObjects((prev) => prev.map((o) => (o.id === id ? { ...o, color: hex } : o)));
+    }
+  }, []);
 
   const exportJson = useCallback(() => {
     const t = threeRef.current;
@@ -226,8 +216,15 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     (async () => {
       try {
         const THREE = await import("three");
-        const { OrbitControls } = await import("three/examples/jsm/controls/OrbitControls.js");
-        const { TransformControls } = await import("three/examples/jsm/controls/TransformControls.js");
+        let OrbitControls: any;
+        let TransformControls: any;
+        try {
+          ({ OrbitControls } = await import("three/addons/controls/OrbitControls.js"));
+          ({ TransformControls } = await import("three/addons/controls/TransformControls.js"));
+        } catch {
+          ({ OrbitControls } = await import("three/examples/jsm/controls/OrbitControls.js"));
+          ({ TransformControls } = await import("three/examples/jsm/controls/TransformControls.js"));
+        }
         if (cancelled || !mountRef.current) return;
 
         const width = mount.clientWidth || 640;
@@ -251,8 +248,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
         renderer.domElement.style.borderRadius = "0.75rem";
         renderer.domElement.style.touchAction = "none";
 
-        const amb = new THREE.AmbientLight(0xffffff, 0.55);
-        scene.add(amb);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.55));
         const key = new THREE.DirectionalLight(0xffe4f0, 1.15);
         key.position.set(4, 8, 3);
         key.castShadow = true;
@@ -263,7 +259,6 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
         scene.add(fill);
 
         const grid = new THREE.GridHelper(10, 20, 0xf43f5e, 0x3b1d2e);
-        grid.position.y = 0;
         scene.add(grid);
 
         const ground = new THREE.Mesh(
@@ -291,7 +286,12 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
         transform.addEventListener("dragging-changed", (event: { value: boolean }) => {
           controls.enabled = !event.value;
         });
-        scene.add(transform.getHelper());
+        // r160+: getHelper(); older: transform itself is the Object3D
+        if (typeof transform.getHelper === "function") {
+          scene.add(transform.getHelper());
+        } else {
+          scene.add(transform);
+        }
 
         const raycaster = new THREE.Raycaster();
         const pointer = new THREE.Vector2();
@@ -341,24 +341,10 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
           renderer,
           controls,
           transform,
-          raycaster,
-          pointer,
           meshes,
           anim,
         };
         setReady(true);
-
-        return () => {
-          cancelAnimationFrame(anim);
-          ro.disconnect();
-          renderer.domElement.removeEventListener("pointerdown", onPointer);
-          transform.dispose();
-          controls.dispose();
-          renderer.dispose();
-          if (renderer.domElement.parentElement) {
-            renderer.domElement.parentElement.removeChild(renderer.domElement);
-          }
-        };
       } catch (e) {
         console.error(e);
         if (!cancelled) setError(es ? "No se pudo cargar el motor 3D." : "Could not load the 3D engine.");
@@ -424,7 +410,6 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
       ref={studioRef}
       className={`-mx-1 overflow-hidden rounded-[1.5rem] border border-rose-400/25 bg-gradient-to-b from-[#1a0f18] via-[#120a12] to-[#0a060c] text-rose-50 shadow-[0_28px_70px_-24px_rgba(244,63,94,0.45),0_0_0_1px_rgba(244,63,94,0.12)] ${fullscreen ? "fixed inset-0 z-50 m-0 rounded-none border-0" : ""}`}
     >
-      {/* Studio header */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-rose-500/20 bg-black/30 px-3 py-2.5 sm:px-4">
         <div className="flex items-center gap-2">
           <span className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-rose-400 to-fuchsia-600 text-sm font-black text-white shadow-md">
@@ -465,7 +450,6 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
       </div>
 
       <div className={`flex flex-col gap-0 lg:flex-row ${fullscreen ? "h-[calc(100vh-48px)]" : ""}`}>
-        {/* Left rail */}
         <aside className="flex shrink-0 flex-row gap-2 overflow-x-auto border-b border-rose-500/15 bg-black/20 p-2.5 lg:w-36 lg:flex-col lg:overflow-y-auto lg:border-b-0 lg:border-r">
           <p className="hidden text-[10px] font-bold uppercase tracking-wider text-rose-300/70 lg:block">
             {es ? "Formas" : "Shapes"}
@@ -509,7 +493,6 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
           </div>
         </aside>
 
-        {/* Viewport — same scale family as simulators */}
         <div className="relative min-w-0 flex-1 p-2.5 sm:p-3">
           <div
             ref={mountRef}
@@ -527,7 +510,6 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
             )}
           </div>
 
-          {/* Transform toolbar */}
           <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap gap-1.5">
               {modes.map((m) => (
@@ -554,12 +536,13 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
               </button>
             </div>
             <p className="text-[10px] text-rose-300/50">
-              {es ? "V mover · R rotar · S escalar · F pantalla completa · Supr borrar" : "V move · R rotate · S scale · F fullscreen · Del delete"}
+              {es
+                ? "V mover · R rotar · S escalar · F pantalla completa · Supr borrar"
+                : "V move · R rotate · S scale · F fullscreen · Del delete"}
             </p>
           </div>
         </div>
 
-        {/* Object list */}
         <aside className="max-h-40 shrink-0 overflow-y-auto border-t border-rose-500/15 bg-black/25 p-2.5 lg:max-h-none lg:w-40 lg:border-l lg:border-t-0">
           <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-rose-300/70">
             {es ? "Objetos" : "Objects"} ({objects.length})
