@@ -68,6 +68,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Hacé oscilar un péndulo, cambiá longitud y amortiguación, arrastrá para fijar el ángulo. Periodo y energía en un laboratorio de relojería.",
   },
+  {
+    slug: "projectile-motion",
+    slugEs: "movimiento-proyectil",
+    nameEn: "Projectile motion",
+    nameEs: "Movimiento de proyectil",
+    tag: "physics",
+    theme: "clockwork",
+    emoji: "🚀",
+    badgeEn: "Ballistics lab",
+    badgeEs: "Lab de balística",
+    summaryEn:
+      "Launch a projectile: set angle and speed, toggle air drag, and compare the ideal parabola with the real path. Range, height, and flight time live.",
+    summaryEs:
+      "Lanzá un proyectil: ángulo y velocidad, arrastre del aire opcional, y compará la parábola ideal con la trayectoria real. Alcance, altura y tiempo de vuelo en vivo.",
+  },
 ] as const;
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {

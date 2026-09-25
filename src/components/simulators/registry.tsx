@@ -4,6 +4,7 @@ import type { SimDef, SimLocale } from "@/lib/simulators/catalog";
 const MoleculesSim = lazy(() => import("./MoleculesSim").then((m) => ({ default: m.MoleculesSim })));
 const GravitySandbox = lazy(() => import("./GravitySandbox").then((m) => ({ default: m.GravitySandbox })));
 const PendulumSim = lazy(() => import("./PendulumSim").then((m) => ({ default: m.PendulumSim })));
+const ProjectileSim = lazy(() => import("./ProjectileSim").then((m) => ({ default: m.ProjectileSim })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -12,6 +13,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "sandbox-gravedad": GravitySandbox,
   pendulum: PendulumSim,
   pendulo: PendulumSim,
+  "projectile-motion": ProjectileSim,
+  "movimiento-proyectil": ProjectileSim,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
