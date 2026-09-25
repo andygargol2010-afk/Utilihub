@@ -4,7 +4,7 @@ import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Free graphic simulators | UtiliHub";
 const description = cleanDescription(
-  "Interactive physics and chemistry simulators in your browser. Molecular motion, gravity, pendulum — no signup.",
+  "Interactive physics and chemistry simulators in your browser. Molecular motion, gravity, pendulum, projectile motion — no signup.",
 );
 
 const CARD: Record<SimTheme, string> = {
