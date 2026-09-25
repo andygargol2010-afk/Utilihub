@@ -11,6 +11,7 @@ const mobileMuted =
 
 /** Atajos de categoría en el desplegable Explorar */
 const BROWSE = [
+  { href: "/es/categoria/herramientas-avanzadas", label: "Herramientas avanzadas" },
   { href: "/es/categoria/matematicas", label: "Matemáticas" },
   { href: "/es/categoria/texto", label: "Texto" },
   { href: "/es/categoria/desarrollo", label: "Desarrollo" },
@@ -57,6 +58,9 @@ export function SpanishSiteHeader() {
           <Link to="/es/herramientas" className={navLink} activeProps={activeNav}>
             Herramientas
           </Link>
+          <a href="/es/categoria/herramientas-avanzadas" className={navLink}>
+            Avanzadas
+          </a>
           <Link to="/es/kits" className={navLink} activeProps={activeNav}>
             Kits
           </Link>
@@ -81,7 +85,7 @@ export function SpanishSiteHeader() {
             {browseOpen && (
               <div
                 role="menu"
-                className="absolute left-0 top-full z-50 mt-1.5 min-w-[11rem] overflow-hidden rounded-xl border border-border bg-card py-1 shadow-lg"
+                className="absolute left-0 top-full z-50 mt-1.5 min-w-[13rem] overflow-hidden rounded-xl border border-border bg-card py-1 shadow-lg"
               >
                 {BROWSE.map((item) => (
                   <a
@@ -133,6 +137,9 @@ export function SpanishSiteHeader() {
             <Link to="/es/herramientas" onClick={() => setOpen(false)} className={mobileLink}>
               Herramientas
             </Link>
+            <a href="/es/categoria/herramientas-avanzadas" onClick={() => setOpen(false)} className={mobileLink}>
+              Herramientas avanzadas
+            </a>
             <Link to="/es/kits" onClick={() => setOpen(false)} className={mobileLink}>
               Kits
             </Link>
