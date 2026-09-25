@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
 const SOCIAL_BAR_SRC =
   "https://pl31267070.profitableratecpmnetwork.com/f1/17/ce/f117cedd42d7966755f026d95f77eb99.js";
@@ -79,15 +80,22 @@ function injectScript() {
 }
 
 /**
- * Social bar — desktop only (min-width 768px).
- * Mobile never loads this script (was force-redirecting).
- * Soft delay + scroll/idle gate + 24h close cooldown.
+ * Social bar — desktop only, after marketing consent.
  */
 export function AdsterraSocialBar() {
+  const [allowed, setAllowed] = useState(false);
+
   useEffect(() => {
+    setAllowed(hasMarketingConsent());
+    const onConsent = () => setAllowed(hasMarketingConsent());
+    window.addEventListener(CONSENT_EVENT, onConsent);
+    return () => window.removeEventListener(CONSENT_EVENT, onConsent);
+  }, []);
+
+  useEffect(() => {
+    if (!allowed) return;
     if (typeof document === "undefined") return;
 
-    // Mobile: do not inject anything
     if (!window.matchMedia("(min-width: 768px)").matches) return;
 
     if (shouldSkipAdsPath(window.location.pathname)) return;
@@ -108,7 +116,6 @@ export function AdsterraSocialBar() {
 
     const tryInject = () => {
       if (cancelled || injected) return;
-      // Re-check viewport in case user resized to mobile
       if (!window.matchMedia("(min-width: 768px)").matches) return;
       injected = true;
       injectScript();
@@ -171,7 +178,7 @@ export function AdsterraSocialBar() {
       cleanupInteract();
       document.removeEventListener("click", onClick, true);
     };
-  }, []);
+  }, [allowed]);
 
   return null;
 }

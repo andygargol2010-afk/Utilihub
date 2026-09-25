@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
@@ -14,9 +15,17 @@ const MOBILE = {
   src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
 };
 
-/** Home banner — desktop 728×90, mobile 320×50. Social Bar stays desktop-only. */
+/** Home banner — only after marketing cookie consent. */
 export function AdBanner() {
   const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    setAllowed(hasMarketingConsent());
+    const onConsent = () => setAllowed(hasMarketingConsent());
+    window.addEventListener(CONSENT_EVENT, onConsent);
+    return () => window.removeEventListener(CONSENT_EVENT, onConsent);
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia("(min-width: 768px)");
@@ -27,11 +36,10 @@ export function AdBanner() {
   }, []);
 
   useEffect(() => {
-    if (!viewport) return;
+    if (!allowed || !viewport) return;
     const container = document.getElementById("utilihub-ad-banner");
     if (!container) return;
 
-    // Reset when switching breakpoints so the right unit can load
     container.replaceChildren();
     delete container.dataset.loaded;
 
@@ -46,9 +54,9 @@ export function AdBanner() {
     script.dataset.utilihubAd = viewport;
     container.appendChild(script);
     container.dataset.loaded = "true";
-  }, [viewport]);
+  }, [allowed, viewport]);
 
-  if (!viewport) return null;
+  if (!allowed || !viewport) return null;
 
   const minH = viewport === "desktop" ? 90 : 50;
 

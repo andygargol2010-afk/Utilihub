@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
@@ -18,10 +19,19 @@ const MOBILE = {
 /**
  * Tool/game/finance banner.
  * Desktop: 728×90 · Mobile: 320×50 banner only (no Social Bar on mobile).
+ * Only loads after marketing cookie consent.
  */
 export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) {
   const slotRef = useRef<HTMLDivElement>(null);
   const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    setAllowed(hasMarketingConsent());
+    const onConsent = () => setAllowed(hasMarketingConsent());
+    window.addEventListener(CONSENT_EVENT, onConsent);
+    return () => window.removeEventListener(CONSENT_EVENT, onConsent);
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia("(min-width: 768px)");
@@ -32,7 +42,7 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
   }, []);
 
   useEffect(() => {
-    if (!viewport || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
+    if (!allowed || !viewport || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
     const slot = slotRef.current;
     slot.dataset.loaded = "true";
     const config = viewport === "desktop" ? DESKTOP : MOBILE;
@@ -52,13 +62,12 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
     return () => {
       if (previous) (window as Window & { atOptions?: Record<string, unknown> }).atOptions = previous;
       script.remove();
-      // Allow re-inject if viewport flips (resize / rotate)
       if (slot.dataset.loaded) delete slot.dataset.loaded;
       slot.replaceChildren();
     };
-  }, [viewport]);
+  }, [allowed, viewport]);
 
-  if (!viewport) return null;
+  if (!allowed || !viewport) return null;
 
   const minH = viewport === "desktop" ? 90 : 50;
 
