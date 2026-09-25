@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
 import { ToolListBrowser } from "@/components/ToolListBrowser";
-import { ALL_CATEGORIES, ALL_TOOLS, allCategoryBySlug } from "@/lib/all-tools";
+import { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { spanishCategoryName } from "@/lib/i18n/es";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
 
@@ -10,7 +10,8 @@ export const Route = createFileRoute("/es/categoria/$slug")({
   loader: ({ params }) => {
     const category = allCategoryBySlug(params.slug);
     if (!category) throw notFound();
-    const tools = ALL_TOOLS.filter((t) => t.category === category.slug);
+    // Include secondary-category tools (same as EN /category/$slug)
+    const tools = allToolsByCategory(category.slug);
     return { category, tools };
   },
   head: ({ loaderData }) => {

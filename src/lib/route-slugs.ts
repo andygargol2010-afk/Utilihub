@@ -26,6 +26,7 @@ export const ENGLISH_CATEGORY_SLUGS: Record<string, string> = {
   fechas: "date-time",
   generadores: "generators",
   diseno: "design-color",
+  "herramientas-avanzadas": "advanced-tools",
   seguridad: "security",
   ciencia: "science",
   productividad: "productivity",

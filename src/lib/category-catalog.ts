@@ -25,4 +25,6 @@ export const SECONDARY_CATEGORY_MAP:Record<string,string[]>={
   "timestamp-generator":["fechas"],
   "timestamp-to-date":["fechas"],
   "conversor-datos":["desarrollo"],
+  /** Primary: Design & color; also listed under Advanced tools */
+  "modelador-3d":["herramientas-avanzadas"],
 };

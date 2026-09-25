@@ -7,6 +7,7 @@ export const GENERAL_CATEGORIES:GeneralCategory[]=[
 {slug:"fechas",name:"Date & time",title:"Date and time tools | UtiliHub",description:"Calculate intervals, deadlines, ages, and times.",intro:"Utilities for calendars, dates, hours, and time zones."},
 {slug:"generadores",name:"Generators",title:"Online generators | UtiliHub",description:"Random generators and free creative utilities.",intro:"Generate UUIDs, numbers, colors, names, slugs, and test data."},
 {slug:"diseno",name:"Design & color",title:"Design and color tools | UtiliHub",description:"Color, contrast, gradients, and CSS.",intro:"Small tools for designers and frontend developers."},
+{slug:"herramientas-avanzadas",name:"Advanced tools",title:"Advanced tools | UtiliHub",description:"Power tools with richer interfaces — 3D, studios, and multi-step workflows.",intro:"Tools that go beyond a single form: interactive studios, advanced editors, and deeper workflows in the browser."},
 {slug:"seguridad",name:"Security",title:"Security tools | UtiliHub",description:"Encoding, hashes, and local security utilities.",intro:"Tools that prioritize local processing and require no signup."},
 {slug:"ciencia",name:"Science",title:"Science calculators | UtiliHub",description:"Physics, electricity, density, energy, and scientific conversions.",intro:"Common scientific formulas with instant results."},
 {slug:"productividad",name:"Productivity",title:"Productivity tools | UtiliHub",description:"Timers, hours, priorities, and organization.",intro:"Simple utilities to organize tasks and time."},
