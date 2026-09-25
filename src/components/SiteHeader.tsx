@@ -14,6 +14,7 @@ const mobileMuted =
 
 /** Primary category shortcuts in the Browse dropdown */
 const BROWSE = [
+  { href: "/category/advanced-tools", label: "Advanced tools" },
   { href: "/category/math", label: "Math" },
   { href: "/category/text", label: "Text" },
   { href: "/category/developer", label: "Developer" },
@@ -60,6 +61,9 @@ export function SiteHeader() {
           <Link to="/tools" className={linkClass} activeProps={activeClass}>
             Tools
           </Link>
+          <a href="/category/advanced-tools" className={linkClass}>
+            Advanced
+          </a>
           <Link to="/kits" className={linkClass} activeProps={activeClass}>
             Kits
           </Link>
@@ -84,7 +88,7 @@ export function SiteHeader() {
             {browseOpen && (
               <div
                 role="menu"
-                className="absolute left-0 top-full z-50 mt-1.5 min-w-[11rem] overflow-hidden rounded-xl border border-border bg-card py-1 shadow-lg"
+                className="absolute left-0 top-full z-50 mt-1.5 min-w-[12rem] overflow-hidden rounded-xl border border-border bg-card py-1 shadow-lg"
               >
                 {BROWSE.map((item) => (
                   <a
@@ -136,6 +140,9 @@ export function SiteHeader() {
             <Link to="/tools" onClick={() => setOpen(false)} className={mobileLink}>
               Tools
             </Link>
+            <a href="/category/advanced-tools" onClick={() => setOpen(false)} className={mobileLink}>
+              Advanced tools
+            </a>
             <Link to="/kits" onClick={() => setOpen(false)} className={mobileLink}>
               Kits
             </Link>
