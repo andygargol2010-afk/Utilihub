@@ -11,11 +11,65 @@ type SceneObj = {
   color: string;
 };
 
-const COLORS = ["#f43f5e", "#8b5cf6", "#06b6d4", "#22c55e", "#f59e0b", "#e2e8f0"];
+type MeshSnapshot = {
+  id: string;
+  name: string;
+  kind: ShapeKind;
+  color: string;
+  position: [number, number, number];
+  rotation: [number, number, number];
+  scale: [number, number, number];
+};
+
+type ClipboardItem = {
+  kind: ShapeKind;
+  color: string;
+  name: string;
+  position: [number, number, number];
+  rotation: [number, number, number];
+  scale: [number, number, number];
+};
+
+const COLORS = ["#f43f5e", "#a78bfa", "#22d3ee", "#4ade80", "#fbbf24", "#f8fafc"];
+const HISTORY_MAX = 40;
+
+const NAME_PAIR: Record<ShapeKind, [string, string]> = {
+  box: ["Cube", "Cubo"],
+  sphere: ["Sphere", "Esfera"],
+  cylinder: ["Cylinder", "Cilindro"],
+  cone: ["Cone", "Cono"],
+  plane: ["Plane", "Plano"],
+};
 
 let idSeq = 1;
 function nextId() {
   return `obj-${idSeq++}`;
+}
+
+function makeGeometry(THREE: any, kind: ShapeKind) {
+  switch (kind) {
+    case "sphere":
+      return new THREE.SphereGeometry(0.55, 48, 32);
+    case "cylinder":
+      return new THREE.CylinderGeometry(0.45, 0.45, 1.1, 40);
+    case "cone":
+      return new THREE.ConeGeometry(0.5, 1.1, 40);
+    case "plane":
+      return new THREE.BoxGeometry(1.4, 0.06, 1.4);
+    default:
+      return new THREE.BoxGeometry(1, 1, 1);
+  }
+}
+
+function makeMaterial(THREE: any, color: string) {
+  return new THREE.MeshPhysicalMaterial({
+    color,
+    metalness: 0.18,
+    roughness: 0.32,
+    clearcoat: 0.35,
+    clearcoatRoughness: 0.25,
+    reflectivity: 0.4,
+  });
 }
 
 export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
@@ -23,19 +77,12 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
   const mountRef = useRef<HTMLDivElement>(null);
   const studioRef = useRef<HTMLDivElement>(null);
   const threeRef = useRef<{
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     THREE: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     scene: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     camera: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     renderer: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     controls: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     transform: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     meshes: Map<string, any>;
     anim: number;
   } | null>(null);
@@ -43,21 +90,102 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
   const [objects, setObjects] = useState<SceneObj[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mode, setMode] = useState<Mode>("translate");
-  const [color, setColor] = useState("#8b5cf6");
+  const [color, setColor] = useState("#a78bfa");
   const [fullscreen, setFullscreen] = useState(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [canUndo, setCanUndo] = useState(false);
 
   const selectedIdRef = useRef<string | null>(null);
   const modeRef = useRef<Mode>("translate");
+  const objectsRef = useRef<SceneObj[]>([]);
+  const historyRef = useRef<MeshSnapshot[][]>([]);
+  const clipboardRef = useRef<ClipboardItem | null>(null);
+  const skipHistoryRef = useRef(false);
+
   selectedIdRef.current = selectedId;
   modeRef.current = mode;
+  objectsRef.current = objects;
 
-  const syncTransformMode = useCallback(() => {
+  const captureSnapshot = useCallback((): MeshSnapshot[] => {
     const t = threeRef.current;
-    if (!t?.transform) return;
-    t.transform.setMode(modeRef.current);
+    if (!t) return [];
+    return objectsRef.current.map((o) => {
+      const mesh = t.meshes.get(o.id);
+      if (!mesh) {
+        return {
+          id: o.id,
+          name: o.name,
+          kind: o.kind,
+          color: o.color,
+          position: [0, 0.5, 0] as [number, number, number],
+          rotation: [0, 0, 0] as [number, number, number],
+          scale: [1, 1, 1] as [number, number, number],
+        };
+      }
+      return {
+        id: o.id,
+        name: o.name,
+        kind: o.kind,
+        color: `#${mesh.material.color.getHexString()}`,
+        position: mesh.position.toArray() as [number, number, number],
+        rotation: [mesh.rotation.x, mesh.rotation.y, mesh.rotation.z] as [number, number, number],
+        scale: mesh.scale.toArray() as [number, number, number],
+      };
+    });
   }, []);
+
+  const pushHistory = useCallback(() => {
+    if (skipHistoryRef.current) return;
+    const snap = captureSnapshot();
+    historyRef.current.push(snap);
+    if (historyRef.current.length > HISTORY_MAX) historyRef.current.shift();
+    setCanUndo(historyRef.current.length > 0);
+  }, [captureSnapshot]);
+
+  const rebuildFromSnapshot = useCallback(
+    (snap: MeshSnapshot[], selectId: string | null = null) => {
+      const t = threeRef.current;
+      if (!t) return;
+      const { THREE } = t;
+      t.transform.detach();
+      for (const [, mesh] of t.meshes) {
+        t.scene.remove(mesh);
+        mesh.geometry?.dispose();
+        mesh.material?.dispose();
+      }
+      t.meshes.clear();
+
+      const nextObjs: SceneObj[] = [];
+      for (const item of snap) {
+        const mat = makeMaterial(THREE, item.color);
+        const geo = makeGeometry(THREE, item.kind);
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.position.fromArray(item.position);
+        mesh.rotation.set(item.rotation[0], item.rotation[1], item.rotation[2]);
+        mesh.scale.fromArray(item.scale);
+        mesh.userData = { id: item.id, kind: item.kind };
+        t.scene.add(mesh);
+        t.meshes.set(item.id, mesh);
+        nextObjs.push({ id: item.id, name: item.name, kind: item.kind, color: item.color });
+      }
+      setObjects(nextObjs);
+      objectsRef.current = nextObjs;
+
+      if (selectId && t.meshes.has(selectId)) {
+        setSelectedId(selectId);
+        selectedIdRef.current = selectId;
+        t.transform.attach(t.meshes.get(selectId));
+        t.transform.setMode(modeRef.current);
+      } else {
+        setSelectedId(null);
+        selectedIdRef.current = null;
+      }
+    },
+    [],
+  );
 
   const selectMesh = useCallback((id: string | null) => {
     const t = threeRef.current;
@@ -72,60 +200,69 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     }
   }, []);
 
-  const addShape = useCallback(
-    (kind: ShapeKind) => {
+  const createMesh = useCallback(
+    (
+      kind: ShapeKind,
+      opts: {
+        color: string;
+        name?: string;
+        position?: [number, number, number];
+        rotation?: [number, number, number];
+        scale?: [number, number, number];
+        recordHistory?: boolean;
+      },
+    ) => {
       const t = threeRef.current;
-      if (!t) return;
+      if (!t) return null;
       const { THREE } = t;
+      if (opts.recordHistory !== false) pushHistory();
+
       const id = nextId();
-      const names: Record<ShapeKind, [string, string]> = {
-        box: ["Cube", "Cubo"],
-        sphere: ["Sphere", "Esfera"],
-        cylinder: ["Cylinder", "Cilindro"],
-        cone: ["Cone", "Cono"],
-        plane: ["Plane", "Plano"],
-      };
-      const count = objects.filter((o) => o.kind === kind).length + 1;
-      const name = `${es ? names[kind][1] : names[kind][0]} ${count}`;
-      const mat = new THREE.MeshStandardMaterial({
-        color,
-        metalness: 0.12,
-        roughness: 0.45,
-      });
-      let geo;
-      switch (kind) {
-        case "sphere":
-          geo = new THREE.SphereGeometry(0.55, 32, 24);
-          break;
-        case "cylinder":
-          geo = new THREE.CylinderGeometry(0.45, 0.45, 1.1, 28);
-          break;
-        case "cone":
-          geo = new THREE.ConeGeometry(0.5, 1.1, 28);
-          break;
-        case "plane":
-          geo = new THREE.BoxGeometry(1.4, 0.06, 1.4);
-          break;
-        default:
-          geo = new THREE.BoxGeometry(1, 1, 1);
-      }
+      const base = es ? NAME_PAIR[kind][1] : NAME_PAIR[kind][0];
+      const count = objectsRef.current.filter((o) => o.kind === kind).length + 1;
+      const name = opts.name ?? `${base} ${count}`;
+      const mat = makeMaterial(THREE, opts.color);
+      const geo = makeGeometry(THREE, kind);
       const mesh = new THREE.Mesh(geo, mat);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
-      mesh.position.set((Math.random() - 0.5) * 1.2, kind === "plane" ? 0.03 : 0.55, (Math.random() - 0.5) * 1.2);
+      if (opts.position) mesh.position.fromArray(opts.position);
+      else
+        mesh.position.set(
+          (Math.random() - 0.5) * 1.2,
+          kind === "plane" ? 0.03 : 0.55,
+          (Math.random() - 0.5) * 1.2,
+        );
+      if (opts.rotation) mesh.rotation.set(opts.rotation[0], opts.rotation[1], opts.rotation[2]);
+      if (opts.scale) mesh.scale.fromArray(opts.scale);
       mesh.userData = { id, kind };
       t.scene.add(mesh);
       t.meshes.set(id, mesh);
-      setObjects((prev) => [...prev, { id, name, kind, color }]);
+
+      const entry: SceneObj = { id, name, kind, color: opts.color };
+      setObjects((prev) => {
+        const next = [...prev, entry];
+        objectsRef.current = next;
+        return next;
+      });
       selectMesh(id);
+      return id;
     },
-    [color, es, objects, selectMesh],
+    [es, pushHistory, selectMesh],
+  );
+
+  const addShape = useCallback(
+    (kind: ShapeKind) => {
+      createMesh(kind, { color });
+    },
+    [color, createMesh],
   );
 
   const deleteSelected = useCallback(() => {
     const t = threeRef.current;
     const id = selectedIdRef.current;
     if (!t || !id) return;
+    pushHistory();
     const mesh = t.meshes.get(id);
     if (mesh) {
       t.transform.detach();
@@ -134,13 +271,18 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
       mesh.material?.dispose();
       t.meshes.delete(id);
     }
-    setObjects((prev) => prev.filter((o) => o.id !== id));
+    setObjects((prev) => {
+      const next = prev.filter((o) => o.id !== id);
+      objectsRef.current = next;
+      return next;
+    });
     selectMesh(null);
-  }, [selectMesh]);
+  }, [pushHistory, selectMesh]);
 
   const clearScene = useCallback(() => {
     const t = threeRef.current;
-    if (!t) return;
+    if (!t || objectsRef.current.length === 0) return;
+    pushHistory();
     t.transform.detach();
     for (const [, mesh] of t.meshes) {
       t.scene.remove(mesh);
@@ -149,42 +291,76 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     }
     t.meshes.clear();
     setObjects([]);
+    objectsRef.current = [];
     selectMesh(null);
-  }, [selectMesh]);
+  }, [pushHistory, selectMesh]);
 
-  const applyColor = useCallback((hex: string) => {
-    setColor(hex);
+  const applyColor = useCallback(
+    (hex: string) => {
+      setColor(hex);
+      const t = threeRef.current;
+      const id = selectedIdRef.current;
+      if (!t || !id) return;
+      const mesh = t.meshes.get(id);
+      if (!mesh?.material) return;
+      pushHistory();
+      mesh.material.color.set(hex);
+      setObjects((prev) => {
+        const next = prev.map((o) => (o.id === id ? { ...o, color: hex } : o));
+        objectsRef.current = next;
+        return next;
+      });
+    },
+    [pushHistory],
+  );
+
+  const copySelected = useCallback(() => {
     const t = threeRef.current;
     const id = selectedIdRef.current;
     if (!t || !id) return;
     const mesh = t.meshes.get(id);
-    if (mesh?.material) {
-      mesh.material.color.set(hex);
-      setObjects((prev) => prev.map((o) => (o.id === id ? { ...o, color: hex } : o)));
-    }
+    const meta = objectsRef.current.find((o) => o.id === id);
+    if (!mesh || !meta) return;
+    clipboardRef.current = {
+      kind: meta.kind,
+      color: `#${mesh.material.color.getHexString()}`,
+      name: meta.name,
+      position: mesh.position.toArray() as [number, number, number],
+      rotation: [mesh.rotation.x, mesh.rotation.y, mesh.rotation.z],
+      scale: mesh.scale.toArray() as [number, number, number],
+    };
   }, []);
 
+  const pasteClipboard = useCallback(() => {
+    const clip = clipboardRef.current;
+    if (!clip) return;
+    createMesh(clip.kind, {
+      color: clip.color,
+      name: `${clip.name} ${es ? "copia" : "copy"}`,
+      position: [clip.position[0] + 0.45, clip.position[1], clip.position[2] + 0.45],
+      rotation: clip.rotation,
+      scale: clip.scale,
+    });
+  }, [createMesh, es]);
+
+  const undo = useCallback(() => {
+    if (historyRef.current.length === 0) return;
+    const prev = historyRef.current.pop()!;
+    setCanUndo(historyRef.current.length > 0);
+    skipHistoryRef.current = true;
+    rebuildFromSnapshot(prev);
+    skipHistoryRef.current = false;
+  }, [rebuildFromSnapshot]);
+
   const exportJson = useCallback(() => {
-    const t = threeRef.current;
-    if (!t) return;
-    const payload = {
-      version: 1,
-      objects: [...t.meshes.entries()].map(([id, mesh]) => ({
-        id,
-        kind: mesh.userData.kind,
-        color: `#${mesh.material.color.getHexString()}`,
-        position: mesh.position.toArray(),
-        rotation: [mesh.rotation.x, mesh.rotation.y, mesh.rotation.z],
-        scale: mesh.scale.toArray(),
-      })),
-    };
+    const payload = { version: 1, objects: captureSnapshot() };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "utilihub-3d-scene.json";
     a.click();
     URL.revokeObjectURL(a.href);
-  }, []);
+  }, [captureSnapshot]);
 
   const toggleFullscreen = useCallback(async () => {
     const el = studioRef.current;
@@ -198,7 +374,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
         setFullscreen(false);
       }
     } catch {
-      /* ignore */
+      /* */
     }
   }, []);
 
@@ -231,62 +407,114 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
         const height = mount.clientHeight || 400;
 
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0f0a14);
-        scene.fog = new THREE.Fog(0x0f0a14, 12, 28);
+        scene.background = new THREE.Color(0x0c0810);
+        scene.fog = new THREE.FogExp2(0x0c0810, 0.035);
 
-        const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 80);
-        camera.position.set(3.2, 2.6, 4.2);
+        const camera = new THREE.PerspectiveCamera(48, width / height, 0.1, 100);
+        camera.position.set(3.6, 2.8, 4.6);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        const renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: false,
+          powerPreference: "high-performance",
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
         renderer.setSize(width, height);
         renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        if ("outputColorSpace" in renderer) {
+          renderer.outputColorSpace = THREE.SRGBColorSpace;
+        }
+        if ("toneMapping" in renderer) {
+          renderer.toneMapping = THREE.ACESFilmicToneMapping;
+          renderer.toneMappingExposure = 1.15;
+        }
         mount.appendChild(renderer.domElement);
-        renderer.domElement.style.width = "100%";
-        renderer.domElement.style.height = "100%";
-        renderer.domElement.style.display = "block";
-        renderer.domElement.style.borderRadius = "0.75rem";
-        renderer.domElement.style.touchAction = "none";
+        Object.assign(renderer.domElement.style, {
+          width: "100%",
+          height: "100%",
+          display: "block",
+          borderRadius: "0.75rem",
+          touchAction: "none",
+        });
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-        const key = new THREE.DirectionalLight(0xffe4f0, 1.15);
-        key.position.set(4, 8, 3);
+        // Lighting rig — soft studio look
+        scene.add(new THREE.HemisphereLight(0xffe4ec, 0x1a1020, 0.55));
+        scene.add(new THREE.AmbientLight(0xffffff, 0.28));
+
+        const key = new THREE.DirectionalLight(0xfff0f5, 1.35);
+        key.position.set(5, 9, 4);
         key.castShadow = true;
-        key.shadow.mapSize.set(1024, 1024);
+        key.shadow.mapSize.set(2048, 2048);
+        key.shadow.camera.near = 0.5;
+        key.shadow.camera.far = 30;
+        key.shadow.camera.left = -8;
+        key.shadow.camera.right = 8;
+        key.shadow.camera.top = 8;
+        key.shadow.camera.bottom = -8;
+        key.shadow.bias = -0.0002;
+        key.shadow.normalBias = 0.04;
         scene.add(key);
-        const fill = new THREE.DirectionalLight(0xa78bfa, 0.35);
-        fill.position.set(-3, 2, -2);
-        scene.add(fill);
 
-        const grid = new THREE.GridHelper(10, 20, 0xf43f5e, 0x3b1d2e);
+        const rim = new THREE.DirectionalLight(0xc4b5fd, 0.55);
+        rim.position.set(-5, 3, -4);
+        scene.add(rim);
+
+        const accent = new THREE.PointLight(0xf43f5e, 0.55, 14, 2);
+        accent.position.set(-1.5, 2.2, 2.5);
+        scene.add(accent);
+
+        // Floor plate
+        const floorMat = new THREE.MeshStandardMaterial({
+          color: 0x1a1220,
+          metalness: 0.4,
+          roughness: 0.65,
+        });
+        const floor = new THREE.Mesh(new THREE.CircleGeometry(6, 64), floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -0.001;
+        floor.receiveShadow = true;
+        scene.add(floor);
+
+        const shadowCatcher = new THREE.Mesh(
+          new THREE.PlaneGeometry(12, 12),
+          new THREE.ShadowMaterial({ opacity: 0.45 }),
+        );
+        shadowCatcher.rotation.x = -Math.PI / 2;
+        shadowCatcher.position.y = 0.002;
+        shadowCatcher.receiveShadow = true;
+        scene.add(shadowCatcher);
+
+        const grid = new THREE.GridHelper(10, 20, 0xf43f5e, 0x3f1d2e);
+        if (Array.isArray(grid.material)) {
+          grid.material.forEach((m: any) => {
+            m.transparent = true;
+            m.opacity = 0.55;
+          });
+        } else {
+          grid.material.transparent = true;
+          grid.material.opacity = 0.55;
+        }
         scene.add(grid);
 
-        const ground = new THREE.Mesh(
-          new THREE.PlaneGeometry(10, 10),
-          new THREE.ShadowMaterial({ opacity: 0.35 }),
-        );
-        ground.rotation.x = -Math.PI / 2;
-        ground.receiveShadow = true;
-        scene.add(ground);
-
-        const axes = new THREE.AxesHelper(1.2);
+        const axes = new THREE.AxesHelper(1.35);
         axes.position.y = 0.01;
         scene.add(axes);
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
-        controls.dampingFactor = 0.08;
+        controls.dampingFactor = 0.07;
         controls.maxPolarAngle = Math.PI * 0.49;
-        controls.minDistance = 1.5;
-        controls.maxDistance = 18;
-        controls.target.set(0, 0.5, 0);
+        controls.minDistance = 1.4;
+        controls.maxDistance = 20;
+        controls.target.set(0, 0.55, 0);
 
         const transform = new TransformControls(camera, renderer.domElement);
-        transform.setSize(0.85);
+        transform.setSize(0.9);
         transform.addEventListener("dragging-changed", (event: { value: boolean }) => {
           controls.enabled = !event.value;
+          if (event.value) pushHistory();
         });
-        // r160+: getHelper(); older: transform itself is the Object3D
         if (typeof transform.getHelper === "function") {
           scene.add(transform.getHelper());
         } else {
@@ -369,15 +597,38 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
         threeRef.current = null;
       }
     };
+    // pushHistory is stable enough; avoid re-init
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [es]);
 
   useEffect(() => {
-    syncTransformMode();
-  }, [mode, syncTransformMode]);
+    const t = threeRef.current;
+    if (t?.transform) t.transform.setMode(mode);
+  }, [mode]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      const mod = e.ctrlKey || e.metaKey;
+
+      if (mod && (e.key === "z" || e.key === "Z")) {
+        e.preventDefault();
+        undo();
+        return;
+      }
+      if (mod && (e.key === "c" || e.key === "C")) {
+        e.preventDefault();
+        copySelected();
+        return;
+      }
+      if (mod && (e.key === "v" || e.key === "V")) {
+        e.preventDefault();
+        pasteClipboard();
+        return;
+      }
+
+      if (mod) return;
+
       if (e.key === "v" || e.key === "V") setMode("translate");
       if (e.key === "r" || e.key === "R") setMode("rotate");
       if (e.key === "s" || e.key === "S") setMode("scale");
@@ -389,7 +640,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [deleteSelected, toggleFullscreen]);
+  }, [copySelected, deleteSelected, pasteClipboard, toggleFullscreen, undo]);
 
   const shapes: { kind: ShapeKind; label: string; icon: string }[] = [
     { kind: "box", label: es ? "Cubo" : "Cube", icon: "■" },
@@ -423,6 +674,15 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
+          <button
+            type="button"
+            onClick={undo}
+            disabled={!canUndo}
+            className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-rose-100/90 hover:bg-white/10 disabled:opacity-40"
+            title="Ctrl+Z"
+          >
+            {es ? "Deshacer" : "Undo"}
+          </button>
           <button
             type="button"
             onClick={exportJson}
@@ -479,7 +739,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
                 type="button"
                 title={c}
                 onClick={() => applyColor(c)}
-                className={`size-6 rounded-full border-2 transition ${color === c ? "border-white scale-110" : "border-transparent"}`}
+                className={`size-6 rounded-full border-2 transition ${color === c ? "scale-110 border-white" : "border-transparent"}`}
                 style={{ backgroundColor: c }}
               />
             ))}
@@ -496,7 +756,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
         <div className="relative min-w-0 flex-1 p-2.5 sm:p-3">
           <div
             ref={mountRef}
-            className={`relative w-full overflow-hidden rounded-xl border border-rose-500/20 bg-[#0f0a14] ${fullscreen ? "h-full min-h-[280px]" : "aspect-[5/3.4] min-h-[280px] max-h-[520px] sm:min-h-[340px]"}`}
+            className={`relative w-full overflow-hidden rounded-xl border border-rose-500/20 bg-[#0c0810] ${fullscreen ? "h-full min-h-[280px]" : "aspect-[5/3.4] min-h-[280px] max-h-[520px] sm:min-h-[340px]"}`}
           >
             {!ready && !error && (
               <p className="absolute inset-0 flex items-center justify-center text-sm text-rose-200/60">
@@ -537,8 +797,8 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
             </div>
             <p className="text-[10px] text-rose-300/50">
               {es
-                ? "V mover · R rotar · S escalar · F pantalla completa · Supr borrar"
-                : "V move · R rotate · S scale · F fullscreen · Del delete"}
+                ? "Ctrl+C copiar · Ctrl+V pegar · Ctrl+Z deshacer · V/R/S modos · F pantalla completa"
+                : "Ctrl+C copy · Ctrl+V paste · Ctrl+Z undo · V/R/S modes · F fullscreen"}
             </p>
           </div>
         </div>
