@@ -9,6 +9,7 @@ export const ES_CATEGORY_NAMES: Record<string, string> = {
   fechas: "Fechas y tiempo",
   generadores: "Generadores",
   diseno: "Diseño y color",
+  "herramientas-avanzadas": "Herramientas avanzadas",
   seguridad: "Seguridad",
   ciencia: "Ciencia",
   productividad: "Productividad",
@@ -191,6 +192,7 @@ const EXACT_NAMES: Record<string, string> = {
   "csv-a-json": "CSV a JSON",
   "qr-wifi": "Generador de QR WiFi",
   "validador-cuit": "Validador CUIT/CUIL",
+  "modelador-3d": "Modelador 3D",
 };
 
 const ACCENTED_TERMS: Record<string, string> = {
