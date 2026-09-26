@@ -1,36 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
+import {
+  ALL_KINDS, BASE_SIZE, COLORS, HISTORY_MAX, NAME_PAIR, STORAGE_KEY,
+  clampPos, clampSize, degToRad, makeGeometry, makeMaterial, radToDeg, shapeList, snapVal,
+  type ShapeKind,
+} from "./modeler3d-helpers";
 
 type Mode = "translate" | "rotate" | "scale";
-type ShapeKind = "box" | "sphere" | "cylinder" | "cone" | "plane";
-
 type SceneObj = { id: string; name: string; kind: ShapeKind; color: string };
 type MeshSnapshot = { id: string; name: string; kind: ShapeKind; color: string; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
 type ClipboardItem = { kind: ShapeKind; color: string; name: string; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
 
-const COLORS = ["#f43f5e", "#a78bfa", "#22d3ee", "#4ade80", "#fbbf24", "#f8fafc"];
-const HISTORY_MAX = 40;
-const NAME_PAIR: Record<ShapeKind, [string, string]> = { box: ["Cube", "Cubo"], sphere: ["Sphere", "Esfera"], cylinder: ["Cylinder", "Cilindro"], cone: ["Cone", "Cono"], plane: ["Plane", "Plano"] };
-const BASE_SIZE: Record<ShapeKind, [number, number, number]> = { box: [1, 1, 1], sphere: [1.1, 1.1, 1.1], cylinder: [0.9, 1.1, 0.9], cone: [1, 1.1, 1], plane: [1.4, 0.06, 1.4] };
-const clampSize = (n: number) => (!Number.isFinite(n) || n <= 0 ? 0.05 : Math.min(Math.max(n, 0.05), 50));
-const clampPos = (n: number) => (!Number.isFinite(n) ? 0 : Math.min(Math.max(n, -50), 50));
-const radToDeg = (r: number) => (r * 180) / Math.PI;
-const degToRad = (d: number) => (d * Math.PI) / 180;
-function snapVal(n: number, step: number) { if (!step || step <= 0) return n; return Math.round(n / step) * step; }
 let idSeq = 1;
 function nextId() { return `obj-${idSeq++}`; }
-function makeGeometry(THREE: any, kind: ShapeKind) {
-  switch (kind) {
-    case "sphere": return new THREE.SphereGeometry(0.55, 48, 32);
-    case "cylinder": return new THREE.CylinderGeometry(0.45, 0.45, 1.1, 40);
-    case "cone": return new THREE.ConeGeometry(0.5, 1.1, 40);
-    case "plane": return new THREE.BoxGeometry(1.4, 0.06, 1.4);
-    default: return new THREE.BoxGeometry(1, 1, 1);
-  }
-}
-function makeMaterial(THREE: any, color: string) {
-  return new THREE.MeshPhysicalMaterial({ color, metalness: 0.18, roughness: 0.32, clearcoat: 0.35, clearcoatRoughness: 0.25, reflectivity: 0.4 });
-}
 
 export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
   const es = locale === "es";
@@ -55,6 +37,8 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
   const [snap, setSnap] = useState(0.25);
   const [editingNameId, setEditingNameId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState("");
+  const [metalness, setMetalness] = useState(0.18);
+  const [roughness, setRoughness] = useState(0.32);
   const sizeHistPushedRef = useRef(false);
   const transformHistPushedRef = useRef(false);
   const snapRef = useRef(0.25);
@@ -129,6 +113,10 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     setSize([clampSize(b[0] * mesh.scale.x), clampSize(b[1] * mesh.scale.y), clampSize(b[2] * mesh.scale.z)]);
     setPos([Math.round(mesh.position.x * 1000) / 1000, Math.round(mesh.position.y * 1000) / 1000, Math.round(mesh.position.z * 1000) / 1000]);
     setRotDeg([Math.round(radToDeg(mesh.rotation.x) * 10) / 10, Math.round(radToDeg(mesh.rotation.y) * 10) / 10, Math.round(radToDeg(mesh.rotation.z) * 10) / 10]);
+    if (mesh.material) {
+      setMetalness(typeof mesh.material.metalness === "number" ? mesh.material.metalness : 0.18);
+      setRoughness(typeof mesh.material.roughness === "number" ? mesh.material.roughness : 0.32);
+    }
   }, []);
 
   const selectMesh = useCallback((id: string | null) => {
@@ -200,7 +188,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     const base = es ? NAME_PAIR[kind][1] : NAME_PAIR[kind][0];
     const count = objectsRef.current.filter((o) => o.kind === kind).length + 1;
     const name = opts.name ?? `${base} ${count}`;
-    const mat = makeMaterial(THREE, opts.color);
+    const mat = makeMaterial(THREE, opts.color, metalness, roughness);
     const geo = makeGeometry(THREE, kind);
     const mesh = new THREE.Mesh(geo, mat);
     mesh.castShadow = true; mesh.receiveShadow = true;
@@ -214,7 +202,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     setObjects((prev) => { const next = [...prev, entry]; objectsRef.current = next; return next; });
     selectMesh(id);
     return id;
-  }, [es, pushHistory, selectMesh]);
+  }, [es, metalness, pushHistory, roughness, selectMesh]);
 
   const addShape = useCallback((kind: ShapeKind) => { createMesh(kind, { color }); }, [color, createMesh]);
 
@@ -274,6 +262,56 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     setEditingNameId(null);
   }, [es]);
 
+  const applyMetalness = useCallback((v: number) => {
+    const val = Math.min(1, Math.max(0, v)); setMetalness(val);
+    const t = threeRef.current; const id = selectedIdRef.current;
+    if (!t || !id) return;
+    const mesh = t.meshes.get(id); if (!mesh?.material) return;
+    pushHistory(); mesh.material.metalness = val;
+  }, [pushHistory]);
+
+  const applyRoughness = useCallback((v: number) => {
+    const val = Math.min(1, Math.max(0, v)); setRoughness(val);
+    const t = threeRef.current; const id = selectedIdRef.current;
+    if (!t || !id) return;
+    const mesh = t.meshes.get(id); if (!mesh?.material) return;
+    pushHistory(); mesh.material.roughness = val;
+  }, [pushHistory]);
+
+  const setCameraPreset = useCallback((preset: "iso" | "front" | "top" | "side") => {
+    const t = threeRef.current; if (!t) return;
+    if (preset === "iso") t.camera.position.set(3.6, 2.8, 4.6);
+    else if (preset === "front") t.camera.position.set(0, 1.2, 6);
+    else if (preset === "top") t.camera.position.set(0, 8, 0.01);
+    else t.camera.position.set(6, 1.2, 0);
+    t.controls.target.set(0, 0.55, 0); t.controls.update();
+  }, []);
+
+  const saveLocal = useCallback(() => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, objects: captureSnapshot() })); } catch { /* */ }
+  }, [captureSnapshot]);
+
+  const loadLocal = useCallback(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY); if (!raw) return false;
+      const data = JSON.parse(raw);
+      const list = Array.isArray(data) ? data : data.objects;
+      if (!Array.isArray(list) || list.length === 0) return false;
+      pushHistory();
+      const snap: MeshSnapshot[] = list.map((item: any, i: number) => ({
+        id: typeof item.id === "string" ? item.id : `local-${i}`,
+        name: item.name || `Object ${i + 1}`,
+        kind: (ALL_KINDS.includes(item.kind) ? item.kind : "box") as ShapeKind,
+        color: item.color || "#a78bfa",
+        position: (item.position || [0, 0.5, 0]) as [number, number, number],
+        rotation: (item.rotation || [0, 0, 0]) as [number, number, number],
+        scale: (item.scale || [1, 1, 1]) as [number, number, number],
+      }));
+      skipHistoryRef.current = true; rebuildFromSnapshot(snap); skipHistoryRef.current = false;
+      return true;
+    } catch { return false; }
+  }, [pushHistory, rebuildFromSnapshot]);
+
   const undo = useCallback(() => {
     if (historyRef.current.length === 0) return;
     const current = captureSnapshot(); const prev = historyRef.current.pop()!;
@@ -307,7 +345,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
         const snap: MeshSnapshot[] = list.map((item: any, i: number) => ({
           id: typeof item.id === "string" ? item.id : `import-${i}-${Date.now()}`,
           name: item.name || `Object ${i + 1}`,
-          kind: (["box", "sphere", "cylinder", "cone", "plane"].includes(item.kind) ? item.kind : "box") as ShapeKind,
+          kind: (ALL_KINDS.includes(item.kind) ? item.kind : "box") as ShapeKind,
           color: item.color || "#a78bfa",
           position: (item.position || [0, 0.5, 0]) as [number, number, number],
           rotation: (item.rotation || [0, 0, 0]) as [number, number, number],
@@ -499,6 +537,16 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
   }, [es]);
 
   useEffect(() => { const t = threeRef.current; if (t?.transform) t.transform.setMode(mode); }, [mode]);
+  useEffect(() => {
+    if (!ready || objectsRef.current.length > 0) return;
+    try { if (localStorage.getItem(STORAGE_KEY)) loadLocal(); } catch { /* */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
+  useEffect(() => {
+    if (!ready) return;
+    const id = window.setTimeout(() => saveLocal(), 600);
+    return () => window.clearTimeout(id);
+  }, [objects, ready, saveLocal]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -521,13 +569,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     return () => window.removeEventListener("keydown", onKey);
   }, [copySelected, deleteSelected, duplicateSelected, pasteClipboard, redo, toggleFullscreen, undo]);
 
-  const shapes: { kind: ShapeKind; label: string; icon: string }[] = [
-    { kind: "box", label: es ? "Cubo" : "Cube", icon: "■" },
-    { kind: "sphere", label: es ? "Esfera" : "Sphere", icon: "●" },
-    { kind: "cylinder", label: es ? "Cilindro" : "Cylinder", icon: "▮" },
-    { kind: "cone", label: es ? "Cono" : "Cone", icon: "▲" },
-    { kind: "plane", label: es ? "Plano" : "Plane", icon: "▬" },
-  ];
+  const shapes = shapeList(es);
   const modes: { id: Mode; label: string }[] = [
     { id: "translate", label: es ? "Mover" : "Move" },
     { id: "rotate", label: es ? "Rotar" : "Rotate" },
@@ -552,6 +594,14 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
           <button type="button" onClick={exportStl} disabled={!ready || objects.length === 0} className="rounded-full border border-rose-400/30 bg-rose-500/15 px-3 py-1.5 text-xs font-semibold text-rose-100 hover:bg-rose-500/25 disabled:opacity-40">STL</button>
           <button type="button" onClick={() => setShowGrid((v) => !v)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${showGrid ? "border-rose-400/40 bg-rose-500/20 text-rose-100" : "border-white/10 bg-white/5 text-rose-100/50"}`}>{es ? "Grilla" : "Grid"}</button>
           <button type="button" onClick={() => setShowAxes((v) => !v)} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${showAxes ? "border-rose-400/40 bg-rose-500/20 text-rose-100" : "border-white/10 bg-white/5 text-rose-100/50"}`}>{es ? "Ejes" : "Axes"}</button>
+          <div className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-1.5 py-0.5">
+            {(["iso", "front", "top", "side"] as const).map((p) => (
+              <button key={p} type="button" onClick={() => setCameraPreset(p)} className="rounded-full px-2 py-1 text-[10px] font-bold uppercase text-rose-100/80 hover:bg-white/10">
+                {p === "iso" ? "Iso" : p === "front" ? (es ? "Frente" : "Front") : p === "top" ? (es ? "Arriba" : "Top") : (es ? "Lado" : "Side")}
+              </button>
+            ))}
+          </div>
+          <button type="button" onClick={saveLocal} disabled={!ready} className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-rose-100/90 hover:bg-white/10 disabled:opacity-40">{es ? "Guardar" : "Save"}</button>
           <button type="button" onClick={clearScene} disabled={!ready || objects.length === 0} className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-rose-100/90 hover:bg-white/10 disabled:opacity-40">{es ? "Limpiar" : "Clear"}</button>
           <button type="button" onClick={() => void toggleFullscreen()} className="rounded-full bg-gradient-to-b from-rose-300 to-rose-600 px-3 py-1.5 text-xs font-bold text-rose-950 shadow-md hover:from-rose-200 hover:to-rose-500">{fullscreen ? (es ? "Salir" : "Exit") : es ? "Pantalla completa" : "Fullscreen"}</button>
         </div>
@@ -623,6 +673,19 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
                   const labels = ["X", "Y", "Z"]; const cols = ["#f87171", "#4ade80", "#60a5fa"];
                   return (<div key={`rot-${axis}`} className="flex items-center justify-between gap-1"><span className="w-4 text-[10px] font-bold" style={{ color: cols[axis] }}>{labels[axis]}</span><input type="number" step={15} value={Number(rotDeg[axis].toFixed(1))} onChange={(e) => setRotAxis(axis, parseFloat(e.target.value) || 0)} onBlur={endTransformEdit} className="w-20 rounded border border-white/10 bg-black/40 px-1.5 py-1 text-center text-xs font-semibold text-rose-50 outline-none focus:border-rose-400/50" /></div>);
                 })}
+              </div>
+              <div className="space-y-1.5 border-t border-rose-500/10 pt-2">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-rose-300/70">{es ? "Material" : "Material"}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[10px] text-rose-200/70">{es ? "Metal" : "Metal"}</span>
+                  <input type="range" min={0} max={1} step={0.05} value={metalness} onChange={(e) => applyMetalness(parseFloat(e.target.value))} className="h-1.5 w-24 cursor-pointer appearance-none rounded-full bg-rose-950 accent-rose-400" />
+                  <span className="w-8 text-right text-[10px] font-semibold tabular-nums">{metalness.toFixed(2)}</span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[10px] text-rose-200/70">{es ? "Rugosidad" : "Rough"}</span>
+                  <input type="range" min={0} max={1} step={0.05} value={roughness} onChange={(e) => applyRoughness(parseFloat(e.target.value))} className="h-1.5 w-24 cursor-pointer appearance-none rounded-full bg-rose-950 accent-rose-400" />
+                  <span className="w-8 text-right text-[10px] font-semibold tabular-nums">{roughness.toFixed(2)}</span>
+                </div>
               </div>
               <div className="space-y-2 border-t border-rose-500/10 pt-2">
                 <div className="flex items-center justify-between">
