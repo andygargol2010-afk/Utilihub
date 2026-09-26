@@ -39,6 +39,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
   const [editingName, setEditingName] = useState("");
   const [metalness, setMetalness] = useState(0.18);
   const [roughness, setRoughness] = useState(0.32);
+  const [wireframe, setWireframe] = useState(false);
   const sizeHistPushedRef = useRef(false);
   const transformHistPushedRef = useRef(false);
   const snapRef = useRef(0.25);
@@ -192,6 +193,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     const geo = makeGeometry(THREE, kind);
     const mesh = new THREE.Mesh(geo, mat);
     mesh.castShadow = true; mesh.receiveShadow = true;
+    if (mesh.material) mesh.material.wireframe = wireframe;
     if (opts.position) mesh.position.fromArray(opts.position);
     else mesh.position.set((Math.random() - 0.5) * 1.2, kind === "plane" ? 0.03 : 0.55, (Math.random() - 0.5) * 1.2);
     if (opts.rotation) mesh.rotation.set(opts.rotation[0], opts.rotation[1], opts.rotation[2]);
@@ -202,7 +204,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     setObjects((prev) => { const next = [...prev, entry]; objectsRef.current = next; return next; });
     selectMesh(id);
     return id;
-  }, [es, metalness, pushHistory, roughness, selectMesh]);
+  }, [es, metalness, pushHistory, roughness, selectMesh, wireframe]);
 
   const addShape = useCallback((kind: ShapeKind) => { createMesh(kind, { color }); }, [color, createMesh]);
 
@@ -285,6 +287,40 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
     else if (preset === "top") t.camera.position.set(0, 8, 0.01);
     else t.camera.position.set(6, 1.2, 0);
     t.controls.target.set(0, 0.55, 0); t.controls.update();
+  }, []);
+
+  const frameSelected = useCallback(() => {
+    const t = threeRef.current;
+    if (!t) return;
+    const id = selectedIdRef.current;
+    const mesh = id ? t.meshes.get(id) : null;
+    if (mesh) {
+      const box = new t.THREE.Box3().setFromObject(mesh);
+      const center = box.getCenter(new t.THREE.Vector3());
+      const size = box.getSize(new t.THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z, 0.5);
+      const dist = maxDim * 2.8;
+      t.controls.target.copy(center);
+      t.camera.position.set(center.x + dist * 0.7, center.y + dist * 0.55, center.z + dist * 0.7);
+      t.controls.update();
+    } else {
+      t.controls.target.set(0, 0.55, 0);
+      t.camera.position.set(3.6, 2.8, 4.6);
+      t.controls.update();
+    }
+  }, []);
+
+  const toggleWireframe = useCallback(() => {
+    setWireframe((prev) => {
+      const next = !prev;
+      const t = threeRef.current;
+      if (t) {
+        for (const [, mesh] of t.meshes) {
+          if (mesh.material) mesh.material.wireframe = next;
+        }
+      }
+      return next;
+    });
   }, []);
 
   const saveLocal = useCallback(() => {
@@ -564,10 +600,12 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
       if (e.key === "s" || e.key === "S") setMode("scale");
       if (e.key === "Delete" || e.key === "Backspace") { e.preventDefault(); deleteSelected(); }
       if (e.key === "f" || e.key === "F") void toggleFullscreen();
+      if (e.key === "h" || e.key === "H") { e.preventDefault(); frameSelected(); }
+      if (e.key === "w" || e.key === "W") { e.preventDefault(); toggleWireframe(); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [copySelected, deleteSelected, duplicateSelected, pasteClipboard, redo, toggleFullscreen, undo]);
+  }, [copySelected, deleteSelected, duplicateSelected, frameSelected, pasteClipboard, redo, toggleFullscreen, toggleWireframe, undo]);
 
   const shapes = shapeList(es);
   const modes: { id: Mode; label: string }[] = [
@@ -601,6 +639,8 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
               </button>
             ))}
           </div>
+          <button type="button" onClick={toggleWireframe} disabled={!ready} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${wireframe ? "border-rose-400/40 bg-rose-500/20 text-rose-100" : "border-white/10 bg-white/5 text-rose-100/90"}`} title="W">{es ? "Alambre" : "Wire"}</button>
+          <button type="button" onClick={frameSelected} disabled={!ready} className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-rose-100/90 hover:bg-white/10 disabled:opacity-40" title="H">{es ? "Enfocar" : "Frame"}</button>
           <button type="button" onClick={saveLocal} disabled={!ready} className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-rose-100/90 hover:bg-white/10 disabled:opacity-40">{es ? "Guardar" : "Save"}</button>
           <button type="button" onClick={clearScene} disabled={!ready || objects.length === 0} className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-rose-100/90 hover:bg-white/10 disabled:opacity-40">{es ? "Limpiar" : "Clear"}</button>
           <button type="button" onClick={() => void toggleFullscreen()} className="rounded-full bg-gradient-to-b from-rose-300 to-rose-600 px-3 py-1.5 text-xs font-bold text-rose-950 shadow-md hover:from-rose-200 hover:to-rose-500">{fullscreen ? (es ? "Salir" : "Exit") : es ? "Pantalla completa" : "Fullscreen"}</button>
@@ -637,7 +677,7 @@ export function Modeler3D({ locale = "en" }: { tool: GeneralTool; locale?: "en" 
                   </select>
                 </label>
               </div>
-              <p className="pointer-events-none hidden text-[10px] text-rose-200/60 sm:block">{es ? "Ctrl+C/V/D · Ctrl+Z/Y · V/R/S · F" : "Ctrl+C/V/D · Ctrl+Z/Y · V/R/S · F"}</p>
+              <p className="pointer-events-none hidden text-[10px] text-rose-200/60 sm:block">{es ? "Ctrl+C/V/D · Ctrl+Z/Y · V/R/S · H · W · F" : "Ctrl+C/V/D · Ctrl+Z/Y · V/R/S · H · W · F"}</p>
             </div>
           </div>
         </div>
