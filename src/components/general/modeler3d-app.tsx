@@ -10,7 +10,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
     color, fullscreen, ready, setReady, error, setError,
     canUndo, canRedo, size, pos, rotDeg, snap, setSnap, mountRef, studioRef, threeRef,
     sizeHistPushedRef, selectedIdRef, selectedIdsRef, groupsRef, marqueeRef,
-    modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, setSizeAxis,
+    modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, nudgeSelected, setSizeAxis,
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
     copySelected, cutSelected, pasteClipboard,
@@ -276,11 +276,24 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
       if (e.key === "r" || e.key === "R") setMode("rotate");
       if (e.key === "s" || e.key === "S") setMode("scale");
       if (e.key === "Delete" || e.key === "Backspace") { e.preventDefault(); deleteSelected(); }
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "PageUp" || e.key === "PageDown") {
+        e.preventDefault();
+        const step = (snap > 0 ? snap : 0.1) * (e.shiftKey ? 5 : 1);
+        let dx = 0, dy = 0, dz = 0;
+        if (e.key === "ArrowLeft") dx = -step;
+        else if (e.key === "ArrowRight") dx = step;
+        else if (e.key === "ArrowUp") { if (e.altKey) dy = step; else dz = -step; }
+        else if (e.key === "ArrowDown") { if (e.altKey) dy = -step; else dz = step; }
+        else if (e.key === "PageUp") dy = step;
+        else if (e.key === "PageDown") dy = -step;
+        nudgeSelected(dx, dy, dz);
+        return;
+      }
       if (e.key === "f" || e.key === "F") void toggleFullscreen();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [copySelected, cutSelected, deleteSelected, groupSelected, pasteClipboard, redo, setMode, toggleFullscreen, undo, ungroupSelected]);
+  }, [copySelected, cutSelected, deleteSelected, groupSelected, nudgeSelected, pasteClipboard, redo, setMode, snap, toggleFullscreen, undo, ungroupSelected]);
 
   return (
     <div ref={studioRef} className={`relative ${fullscreen ? "fixed inset-0 z-50 bg-black" : ""}`}>
