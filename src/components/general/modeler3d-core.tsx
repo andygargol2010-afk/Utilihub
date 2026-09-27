@@ -10,6 +10,7 @@ type SceneObj = { id: string; name: string; kind: ShapeKind; color: string };
 type MeshSnapshot = { id: string; name: string; kind: ShapeKind; color: string; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
 type GroupSnapshot = { id: string; name: string; childIds: string[]; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
 type FullSnapshot = { objects: MeshSnapshot[]; groups: GroupSnapshot[] };
+type ClipItem = { kind: ShapeKind; color: string; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
 
 let idSeq = 0;
 const nextId = () => `m${++idSeq}`;
@@ -48,6 +49,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  const sizeHistPushedRef = useRef(false);
  const transformHistPushedRef = useRef(false);
  const marqueeRef = useRef<{ on: boolean; x0: number; y0: number; el: HTMLDivElement | null }>({ on: false, x0: 0, y0: 0, el: null });
+ const clipboardRef = useRef<ClipItem[]>([]);
 
  useEffect(() => { modeRef.current = mode; if (threeRef.current?.transform) threeRef.current.transform.setMode(mode); }, [mode]);
  useEffect(() => { objectsRef.current = objects; }, [objects]);
@@ -351,6 +353,58 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  selectMesh(null);
  }, [pushHistory, selectMesh]);
 
+ const copySelected = useCallback(() => {
+ const t = threeRef.current;
+ if (!t) return;
+ const items: ClipItem[] = [];
+ for (const id of selectedIdsRef.current) {
+ if (groupsRef.current.has(id)) continue;
+ const mesh = t.meshes.get(id);
+ const meta = objectsRef.current.find((o) => o.id === id);
+ if (!mesh || !meta || !mesh.isMesh) continue;
+ items.push({
+ kind: meta.kind,
+ color: meta.color,
+ position: [mesh.position.x, mesh.position.y, mesh.position.z],
+ rotation: [mesh.rotation.x, mesh.rotation.y, mesh.rotation.z],
+ scale: [mesh.scale.x, mesh.scale.y, mesh.scale.z],
+ });
+ }
+ if (items.length) clipboardRef.current = items;
+ }, []);
+
+ const cutSelected = useCallback(() => {
+ copySelected();
+ if (clipboardRef.current.length) deleteSelected();
+ }, [copySelected, deleteSelected]);
+
+ const pasteClipboard = useCallback(() => {
+ const t = threeRef.current;
+ const items = clipboardRef.current;
+ if (!t || !items.length) return;
+ pushHistory();
+ const newIds: string[] = [];
+ for (const item of items) {
+ const id = createMesh(item.kind, {
+ color: item.color,
+ position: [item.position[0] + 0.35, item.position[1], item.position[2] + 0.35],
+ rotation: item.rotation,
+ scale: item.scale,
+ recordHistory: false,
+ });
+ if (id) newIds.push(id);
+ }
+ if (newIds.length) {
+ selectedIdsRef.current = newIds;
+ setSelectedIds(newIds);
+ const primary = newIds[newIds.length - 1]!;
+ selectedIdRef.current = primary;
+ setSelectedId(primary);
+ const m = t.meshes.get(primary);
+ if (m) { t.transform.attach(m); t.transform.setMode(modeRef.current); readTransform(primary); }
+ }
+ }, [createMesh, pushHistory, readTransform]);
+
  const applyColor = useCallback((hex: string) => {
  setColor(hex);
  const t = threeRef.current;
@@ -496,5 +550,6 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, setSizeAxis,
  addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
  setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
+ copySelected, cutSelected, pasteClipboard,
  };
 }
