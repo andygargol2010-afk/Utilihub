@@ -32,6 +32,13 @@ export const clampSize = (n: number) => (!Number.isFinite(n) || n <= 0 ? 0.05 : 
 export const clampPos = (n: number) => (!Number.isFinite(n) ? 0 : Math.min(Math.max(n, -50), 50));
 export const radToDeg = (r: number) => (r * 180) / Math.PI;
 export const degToRad = (d: number) => (d * Math.PI) / 180;
+/** Normalize degrees to (-180, 180] so UI never shows 899 / 999 etc. */
+export function normDeg(d: number) {
+  if (!Number.isFinite(d)) return 0;
+  let x = ((d % 360) + 360) % 360;
+  if (x > 180) x -= 360;
+  return Math.round(x * 10) / 10;
+}
 export function snapVal(n: number, step: number) {
   if (!step || step <= 0) return n;
   return Math.round(n / step) * step;
