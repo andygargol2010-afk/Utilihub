@@ -12,7 +12,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
     sizeHistPushedRef, selectedIdRef, selectedIdsRef, groupsRef, marqueeRef,
     modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, setSizeAxis,
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
-    setSelectedId, setSelectedIds, readTransform,
+    setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
   } = core;
 
   type DraftKey = string;
@@ -23,6 +23,12 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
   const clearDraft = (key: DraftKey) => setDrafts((d) => { const n = { ...d }; delete n[key]; return n; });
 
   useEffect(() => { setDrafts({}); }, [selectedId]);
+
+  useEffect(() => {
+    const onUnload = () => { try { saveScene(); } catch { /* */ } };
+    window.addEventListener("beforeunload", onUnload);
+    return () => window.removeEventListener("beforeunload", onUnload);
+  }, [saveScene]);
 
   useEffect(() => {
     let cancelled = false;
@@ -105,6 +111,19 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
               const s = multiStart.scl.get(id)!;
               const rx = ss.x ? pm.scale.x / ss.x : 1, ry = ss.y ? pm.scale.y / ss.y : 1, rz = ss.z ? pm.scale.z / ss.z : 1;
               m.scale.set(s.x * rx, s.y * ry, s.z * rz);
+            }
+          }
+          if (modeNow === "scale") {
+            for (const id of selectedIdsRef.current) {
+              if (groupsRef.current.has(id)) continue;
+              const m = meshes.get(id);
+              const startS = multiStart.scl.get(id);
+              if (!m || !startS || !startS.y) continue;
+              m.geometry?.computeBoundingBox?.();
+              const bb = m.geometry?.boundingBox;
+              const half0 = bb ? (bb.max.y - bb.min.y) / 2 : 0.5;
+              const startP = multiStart.pos.get(id);
+              if (startP) m.position.y = startP.y - half0 * startS.y + half0 * m.scale.y;
             }
           }
         });
@@ -221,6 +240,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
         tick();
         threeRef.current = { THREE, scene, camera, renderer, controls, transform, meshes, anim };
         setReady(true);
+        try { loadScene(); } catch { /* */ }
       } catch (e) {
         console.error(e);
         if (!cancelled) setError(es ? "No se pudo cargar el motor 3D." : "Could not load the 3D engine.");
@@ -280,6 +300,14 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
               <button type="button" onClick={ungroupSelected} disabled={!selectedIds.some((id) => groupIds.includes(id))} className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[11px] font-semibold text-rose-50 disabled:opacity-40">{es ? "Desagrupar" : "Ungroup"}</button>
               <button type="button" onClick={deleteSelected} disabled={selectedIds.length === 0} className="rounded-md border border-rose-500/40 bg-rose-950/70 px-2 py-1 text-[11px] font-semibold text-rose-200 disabled:opacity-40">{es ? "Eliminar" : "Delete"}</button>
               <button type="button" onClick={toggleFullscreen} className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[11px] font-semibold text-rose-50">{fullscreen ? (es ? "Salir" : "Exit") : (es ? "Pantalla" : "Full")}</button>
+              <button type="button" title={es ? "Snap de rejilla" : "Grid snap"} onClick={() => {
+                const steps = [0, 0.1, 0.25, 0.5, 1];
+                const i = steps.indexOf(snap);
+                setSnap(steps[(i + 1) % steps.length]!);
+              }} className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[11px] font-semibold text-rose-50">
+                {snap === 0 ? "Snap:off" : `Snap:${snap}`}
+              </button>
+              <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[11px] font-semibold text-rose-50">{es ? "Limpiar" : "Clear"}</button>
               <span className="mx-0.5 h-4 w-px bg-white/15" />
               {shapeList(es).map((s) => (
                 <button key={s.kind} type="button" onClick={() => addShape(s.kind)} title={s.label} className="rounded-md border border-white/10 bg-white/5 px-1.5 py-1 text-[11px] font-semibold text-rose-50 hover:bg-white/15">{s.icon}</button>
