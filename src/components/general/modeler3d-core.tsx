@@ -139,6 +139,12 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  }
  setGroupIds(restoredGroupIds);
  setObjects(nextObjs); objectsRef.current = nextObjs;
+ let maxN = 0;
+ for (const o of nextObjs) {
+ const m = /^m(\d+)$/.exec(o.id);
+ if (m) maxN = Math.max(maxN, parseInt(m[1], 10));
+ }
+ if (maxN > idSeq) idSeq = maxN;
  if (selectId && t.meshes.has(selectId)) {
  setSelectedId(selectId); selectedIdRef.current = selectId;
  setSelectedIds([selectId]); selectedIdsRef.current = [selectId];
@@ -291,18 +297,20 @@ export function useModelerCore(locale: "en" | "es" = "en") {
 
  const nudgeSelected = useCallback((dx: number, dy: number, dz: number) => {
  const t = threeRef.current;
- const ids = selectedIdsRef.current.filter((id) => t?.meshes.has(id) && !groupsRef.current.has(id));
- if (!t || !ids.length) return;
+ if (!t) return;
+ const ids = selectedIdsRef.current.filter((id) => t.meshes.has(id));
+ if (!ids.length) return;
  if (!transformHistPushedRef.current) { pushHistory(); transformHistPushedRef.current = true; }
  for (const id of ids) {
- const mesh = t.meshes.get(id);
- if (!mesh) continue;
- mesh.position.x = clampPos(mesh.position.x + dx);
- mesh.position.y = clampPos(mesh.position.y + dy);
- mesh.position.z = clampPos(mesh.position.z + dz);
+ const g = groupsRef.current.get(id);
+ const obj = g?.groupObj || t.meshes.get(id);
+ if (!obj) continue;
+ obj.position.x = clampPos(obj.position.x + dx);
+ obj.position.y = clampPos(obj.position.y + dy);
+ obj.position.z = clampPos(obj.position.z + dz);
  }
  const primary = selectedIdRef.current;
- if (primary) readTransform(primary);
+ if (primary && !groupsRef.current.has(primary)) readTransform(primary);
  }, [pushHistory, readTransform]);
 
  const createMesh = useCallback((kind: ShapeKind, opts: { color: string; name?: string; position?: [number, number, number]; rotation?: [number, number, number]; scale?: [number, number, number]; recordHistory?: boolean }) => {
@@ -400,16 +408,20 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  if (!t || !items.length) return;
  pushHistory();
  const newIds: string[] = [];
+ const nextClip: ClipItem[] = [];
  for (const item of items) {
+ const pos: [number, number, number] = [item.position[0] + 0.35, item.position[1], item.position[2] + 0.35];
  const id = createMesh(item.kind, {
  color: item.color,
- position: [item.position[0] + 0.35, item.position[1], item.position[2] + 0.35],
+ position: pos,
  rotation: item.rotation,
  scale: item.scale,
  recordHistory: false,
  });
  if (id) newIds.push(id);
+ nextClip.push({ ...item, position: pos });
  }
+ clipboardRef.current = nextClip;
  if (newIds.length) {
  selectedIdsRef.current = newIds;
  setSelectedIds(newIds);
