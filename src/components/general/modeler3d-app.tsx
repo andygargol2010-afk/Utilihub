@@ -13,6 +13,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
     modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, setSizeAxis,
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
+    copySelected, cutSelected, pasteClipboard,
   } = core;
 
   type DraftKey = string;
@@ -266,6 +267,10 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
       if (mod && (e.key === "y" || e.key === "Y")) { e.preventDefault(); redo(); return; }
       if (mod && (e.key === "g" || e.key === "G") && e.shiftKey) { e.preventDefault(); ungroupSelected(); return; }
       if (mod && (e.key === "g" || e.key === "G")) { e.preventDefault(); groupSelected(); return; }
+      if (mod && (e.key === "c" || e.key === "C")) { e.preventDefault(); copySelected(); return; }
+      if (mod && (e.key === "x" || e.key === "X")) { e.preventDefault(); cutSelected(); return; }
+      if (mod && (e.key === "v" || e.key === "V")) { e.preventDefault(); pasteClipboard(); return; }
+      if (mod && (e.key === "d" || e.key === "D")) { e.preventDefault(); copySelected(); pasteClipboard(); return; }
       if (mod) return;
       if (e.key === "v" || e.key === "V") setMode("translate");
       if (e.key === "r" || e.key === "R") setMode("rotate");
@@ -275,7 +280,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [deleteSelected, groupSelected, redo, setMode, toggleFullscreen, undo, ungroupSelected]);
+  }, [copySelected, cutSelected, deleteSelected, groupSelected, pasteClipboard, redo, setMode, toggleFullscreen, undo, ungroupSelected]);
 
   return (
     <div ref={studioRef} className={`relative ${fullscreen ? "fixed inset-0 z-50 bg-black" : ""}`}>
