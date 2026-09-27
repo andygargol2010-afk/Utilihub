@@ -289,11 +289,29 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
         nudgeSelected(dx, dy, dz);
         return;
       }
+      if (e.key === "Escape") {
+        e.preventDefault();
+        selectedIdsRef.current = []; setSelectedIds([]);
+        selectedIdRef.current = null; setSelectedId(null);
+        const t = threeRef.current;
+        if (t) t.transform.detach();
+        setCtxMenu(null);
+        return;
+      }
       if (e.key === "f" || e.key === "F") void toggleFullscreen();
     };
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "PageUp" || e.key === "PageDown") {
+        endTransformEdit();
+      }
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [copySelected, cutSelected, deleteSelected, groupSelected, nudgeSelected, pasteClipboard, redo, setMode, snap, toggleFullscreen, undo, ungroupSelected]);
+    window.addEventListener("keyup", onKeyUp);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("keyup", onKeyUp);
+    };
+  }, [copySelected, cutSelected, deleteSelected, endTransformEdit, groupSelected, nudgeSelected, pasteClipboard, redo, setMode, setSelectedId, setSelectedIds, snap, threeRef, toggleFullscreen, undo, ungroupSelected]);
 
   return (
     <div ref={studioRef} className={`relative ${fullscreen ? "fixed inset-0 z-50 bg-black" : ""}`}>
