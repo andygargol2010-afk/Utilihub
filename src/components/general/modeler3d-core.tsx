@@ -289,6 +289,22 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  transformHistPushedRef.current = false;
  }, []);
 
+ const nudgeSelected = useCallback((dx: number, dy: number, dz: number) => {
+ const t = threeRef.current;
+ const ids = selectedIdsRef.current.filter((id) => t?.meshes.has(id) && !groupsRef.current.has(id));
+ if (!t || !ids.length) return;
+ if (!transformHistPushedRef.current) { pushHistory(); transformHistPushedRef.current = true; }
+ for (const id of ids) {
+ const mesh = t.meshes.get(id);
+ if (!mesh) continue;
+ mesh.position.x = clampPos(mesh.position.x + dx);
+ mesh.position.y = clampPos(mesh.position.y + dy);
+ mesh.position.z = clampPos(mesh.position.z + dz);
+ }
+ const primary = selectedIdRef.current;
+ if (primary) readTransform(primary);
+ }, [pushHistory, readTransform]);
+
  const createMesh = useCallback((kind: ShapeKind, opts: { color: string; name?: string; position?: [number, number, number]; rotation?: [number, number, number]; scale?: [number, number, number]; recordHistory?: boolean }) => {
  const t = threeRef.current; if (!t) return null;
  const { THREE } = t;
@@ -547,7 +563,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  color, setColor, fullscreen, ready, setReady, error, setError,
  canUndo, canRedo, size, pos, rotDeg, snap, setSnap, mountRef, studioRef, threeRef,
  sizeHistPushedRef, selectedIdRef, selectedIdsRef, groupsRef, marqueeRef,
- modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, setSizeAxis,
+ modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, nudgeSelected, setSizeAxis,
  addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
  setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
  copySelected, cutSelected, pasteClipboard,
