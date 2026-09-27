@@ -208,8 +208,8 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
   }, [deleteSelected, groupSelected, redo, toggleFullscreen, undo, ungroupSelected]);
 
   return (
-    <div ref={studioRef} className={`relative ${fullscreen ? "fixed inset-0 z-50 bg-black p-2" : ""}`}>
-      <div className="relative min-h-[480px] h-[min(70vh,640px)] w-full overflow-hidden rounded-xl border border-rose-500/20 bg-[#0c0810]">
+    <div ref={studioRef} className={`relative ${fullscreen ? "fixed inset-0 z-50 bg-black" : ""}`}>
+      <div className={`relative w-full overflow-hidden bg-[#0c0810] ${fullscreen ? "h-full rounded-none border-0" : "min-h-[480px] h-[min(70vh,640px)] rounded-xl border border-rose-500/20"}`}>
         <div ref={mountRef} className="absolute inset-0" />
         {!ready && !error && (
           <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70">
