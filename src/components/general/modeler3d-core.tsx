@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
- BASE_SIZE, HISTORY_MAX, NAME_PAIR,
+ BASE_SIZE, HISTORY_MAX, NAME_PAIR, STORAGE_KEY,
  clampPos, clampSize, degToRad, makeGeometry, makeMaterial, normDeg, radToDeg, snapVal,
  type ShapeKind,
 } from "./modeler3d-helpers";
@@ -95,6 +95,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  if (historyRef.current.length > HISTORY_MAX) historyRef.current.shift();
  futureRef.current = [];
  setCanUndo(true); setCanRedo(false);
+ try { localStorage.setItem(STORAGE_KEY, JSON.stringify(snap)); } catch { /* */ }
  }, [captureSnapshot]);
 
  const rebuildFromSnapshot = useCallback((snap: FullSnapshot, selectId: string | null = null) => {
@@ -214,10 +215,6 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  if (target) { t.transform.attach(target); t.transform.setMode(modeRef.current); if (!g) readTransform(primary); }
  }, [readTransform]);
 
- const applySize = useCallback((next: [number, number, number]) => {
- setSize(next);
- }, []);
-
  const setSizeAxis = useCallback((axis: 0 | 1 | 2, value: number) => {
  const v = clampSize(value);
  setSize((prev) => {
@@ -305,7 +302,10 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  if (opts.position) mesh.position.fromArray(opts.position);
  else {
  const halfY = BASE_SIZE[kind][1] / 2;
- mesh.position.set(0, halfY, 0);
+ const n = objectsRef.current.filter((o) => !groupsRef.current.has(o.id)).length;
+ const ox = ((n % 4) - 1.5) * 0.4;
+ const oz = (Math.floor(n / 4) - 0.5) * 0.4;
+ mesh.position.set(ox, halfY, oz);
  }
  if (opts.rotation) mesh.rotation.set(opts.rotation[0], opts.rotation[1], opts.rotation[2]);
  if (opts.scale) mesh.scale.fromArray(opts.scale);
@@ -431,6 +431,32 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  selectMesh(released[0] || null);
  }, [pushHistory, selectMesh]);
 
+ const saveScene = useCallback(() => {
+ try { localStorage.setItem(STORAGE_KEY, JSON.stringify(captureSnapshot())); } catch { /* */ }
+ }, [captureSnapshot]);
+
+ const loadScene = useCallback(() => {
+ try {
+ const raw = localStorage.getItem(STORAGE_KEY);
+ if (!raw) return false;
+ const snap = JSON.parse(raw) as FullSnapshot;
+ if (!snap || !Array.isArray(snap.objects)) return false;
+ skipHistoryRef.current = true;
+ rebuildFromSnapshot(snap, null);
+ skipHistoryRef.current = false;
+ return true;
+ } catch { return false; }
+ }, [rebuildFromSnapshot]);
+
+ const clearScene = useCallback(() => {
+ try { localStorage.removeItem(STORAGE_KEY); } catch { /* */ }
+ skipHistoryRef.current = true;
+ rebuildFromSnapshot({ objects: [], groups: [] }, null);
+ skipHistoryRef.current = false;
+ historyRef.current = []; futureRef.current = [];
+ setCanUndo(false); setCanRedo(false);
+ }, [rebuildFromSnapshot]);
+
  const undo = useCallback(() => {
  if (historyRef.current.length === 0) return;
  const current = captureSnapshot(); const prev = historyRef.current.pop()!;
@@ -469,6 +495,6 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  sizeHistPushedRef, selectedIdRef, selectedIdsRef, groupsRef, marqueeRef,
  modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, setSizeAxis,
  addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
- setSelectedId, setSelectedIds, readTransform,
+ setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
  };
 }
