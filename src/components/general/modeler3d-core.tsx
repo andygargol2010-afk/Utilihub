@@ -11,91 +11,90 @@ type MeshSnapshot = { id: string; name: string; kind: ShapeKind; color: string; 
 type GroupSnapshot = { id: string; name: string; childIds: string[]; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
 type FullSnapshot = { objects: MeshSnapshot[]; groups: GroupSnapshot[] };
 
-let idSeq = 1;
-function nextId() { return `obj-${idSeq++}`; }
+let idSeq = 0;
+const nextId = () => `m${++idSeq}`;
 
 export function useModelerCore(locale: "en" | "es" = "en") {
  const es = locale === "es";
- const mountRef = useRef<HTMLDivElement>(null);
- const studioRef = useRef<HTMLDivElement>(null);
- const threeRef = useRef<{ THREE: any; scene: any; camera: any; renderer: any; controls: any; transform: any; meshes: Map<string, any>; anim: number } | null>(null);
  const [objects, setObjects] = useState<SceneObj[]>([]);
+ const objectsRef = useRef<SceneObj[]>([]);
  const [selectedId, setSelectedId] = useState<string | null>(null);
+ const selectedIdRef = useRef<string | null>(null);
  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+ const selectedIdsRef = useRef<string[]>([]);
  const [groupIds, setGroupIds] = useState<string[]>([]);
+ const groupsRef = useRef<Map<string, { childIds: string[]; groupObj: any }>>(new Map());
  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
  const [mode, setMode] = useState<Mode>("translate");
+ const modeRef = useRef<Mode>("translate");
  const [color, setColor] = useState("#a78bfa");
  const [fullscreen, setFullscreen] = useState(false);
  const [ready, setReady] = useState(false);
  const [error, setError] = useState<string | null>(null);
  const [canUndo, setCanUndo] = useState(false);
  const [canRedo, setCanRedo] = useState(false);
- const [showGrid, setShowGrid] = useState(true);
  const [size, setSize] = useState<[number, number, number]>([1, 1, 1]);
- const [uniformScale, setUniformScale] = useState(false);
  const [pos, setPos] = useState<[number, number, number]>([0, 0, 0]);
  const [rotDeg, setRotDeg] = useState<[number, number, number]>([0, 0, 0]);
  const [snap, setSnap] = useState(0.25);
- const sizeHistPushedRef = useRef(false);
- const transformHistPushedRef = useRef(false);
- const snapRef = useRef(0.25);
- const selectedIdRef = useRef<string | null>(null);
- const selectedIdsRef = useRef<string[]>([]);
- const groupsRef = useRef<Map<string, { childIds: string[]; groupObj: any }>>(new Map());
- const marqueeRef = useRef<{ on: boolean; x0: number; y0: number; el: HTMLDivElement | null }>({ on: false, x0: 0, y0: 0, el: null });
- const modeRef = useRef<Mode>("translate");
- const objectsRef = useRef<SceneObj[]>([]);
+ const [uniformScale] = useState(false);
+ const mountRef = useRef<HTMLDivElement | null>(null);
+ const studioRef = useRef<HTMLDivElement | null>(null);
+ const threeRef = useRef<any>(null);
+ const gridRef = useRef<any>(null);
  const historyRef = useRef<FullSnapshot[]>([]);
  const futureRef = useRef<FullSnapshot[]>([]);
  const skipHistoryRef = useRef(false);
- const gridRef = useRef<any>(null);
- selectedIdRef.current = selectedId;
- selectedIdsRef.current = selectedIds;
- modeRef.current = mode;
- objectsRef.current = objects;
- snapRef.current = snap;
+ const sizeHistPushedRef = useRef(false);
+ const transformHistPushedRef = useRef(false);
+ const marqueeRef = useRef<{ on: boolean; x0: number; y0: number; el: HTMLDivElement | null }>({ on: false, x0: 0, y0: 0, el: null });
+
+ useEffect(() => { modeRef.current = mode; if (threeRef.current?.transform) threeRef.current.transform.setMode(mode); }, [mode]);
+ useEffect(() => { objectsRef.current = objects; }, [objects]);
+ useEffect(() => { selectedIdRef.current = selectedId; }, [selectedId]);
+ useEffect(() => { selectedIdsRef.current = selectedIds; }, [selectedIds]);
 
  const captureSnapshot = useCallback((): FullSnapshot => {
  const t = threeRef.current;
- if (!t) return { objects: [], groups: [] };
- const { THREE } = t;
- const posV = new THREE.Vector3();
- const quat = new THREE.Quaternion();
- const scl = new THREE.Vector3();
- const euler = new THREE.Euler();
- const objects: MeshSnapshot[] = [];
+ const objectsSnap: MeshSnapshot[] = [];
+ const groupsSnap: GroupSnapshot[] = [];
+ if (!t) return { objects: objectsSnap, groups: groupsSnap };
  for (const o of objectsRef.current) {
  if (groupsRef.current.has(o.id)) continue;
  const mesh = t.meshes.get(o.id);
- if (!mesh) {
- objects.push({ id: o.id, name: o.name, kind: o.kind, color: o.color, position: [0, 0.5, 0], rotation: [0, 0, 0], scale: [1, 1, 1] });
- continue;
- }
+ if (!mesh || !mesh.isMesh) continue;
  mesh.updateMatrixWorld(true);
- mesh.matrixWorld.decompose(posV, quat, scl);
- euler.setFromQuaternion(quat);
- const col = mesh.material?.color?.getHexString?.() ? `#${mesh.material.color.getHexString()}` : o.color;
- objects.push({ id: o.id, name: o.name, kind: o.kind, color: col, position: [posV.x, posV.y, posV.z], rotation: [euler.x, euler.y, euler.z], scale: [scl.x, scl.y, scl.z] });
+ const pos = mesh.getWorldPosition(new t.THREE.Vector3());
+ const quat = mesh.getWorldQuaternion(new t.THREE.Quaternion());
+ const scl = mesh.getWorldScale(new t.THREE.Vector3());
+ const eul = new t.THREE.Euler().setFromQuaternion(quat);
+ objectsSnap.push({
+ id: o.id, name: o.name, kind: o.kind, color: o.color,
+ position: [pos.x, pos.y, pos.z],
+ rotation: [eul.x, eul.y, eul.z],
+ scale: [scl.x, scl.y, scl.z],
+ });
  }
- const groups: GroupSnapshot[] = [];
  for (const [gid, g] of groupsRef.current) {
- const meta = objectsRef.current.find((o) => o.id === gid);
- g.groupObj.updateMatrixWorld(true);
- g.groupObj.matrixWorld.decompose(posV, quat, scl);
- euler.setFromQuaternion(quat);
- groups.push({ id: gid, name: meta?.name || "Group", childIds: [...g.childIds], position: [posV.x, posV.y, posV.z], rotation: [euler.x, euler.y, euler.z], scale: [scl.x, scl.y, scl.z] });
+ const go = g.groupObj;
+ groupsSnap.push({
+ id: gid, name: objectsRef.current.find((x) => x.id === gid)?.name ?? "Group",
+ childIds: [...g.childIds],
+ position: [go.position.x, go.position.y, go.position.z],
+ rotation: [go.rotation.x, go.rotation.y, go.rotation.z],
+ scale: [go.scale.x, go.scale.y, go.scale.z],
+ });
  }
- return { objects, groups };
+ return { objects: objectsSnap, groups: groupsSnap };
  }, []);
 
  const pushHistory = useCallback(() => {
  if (skipHistoryRef.current) return;
- historyRef.current.push(captureSnapshot());
+ const snap = captureSnapshot();
+ historyRef.current.push(snap);
  if (historyRef.current.length > HISTORY_MAX) historyRef.current.shift();
  futureRef.current = [];
- setCanUndo(historyRef.current.length > 0);
- setCanRedo(false);
+ setCanUndo(true); setCanRedo(false);
  }, [captureSnapshot]);
 
  const rebuildFromSnapshot = useCallback((snap: FullSnapshot, selectId: string | null = null) => {
@@ -143,9 +142,29 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  const g = groupsRef.current.get(selectId);
  t.transform.attach(g?.groupObj || t.meshes.get(selectId));
  t.transform.setMode(modeRef.current);
+ if (!g) {
+ const mesh = t.meshes.get(selectId);
+ const meta = nextObjs.find((o) => o.id === selectId);
+ if (mesh && meta) {
+ const b = BASE_SIZE[meta.kind];
+ const clean = (n: number, d: number) => {
+ const r = Math.round(n * 10 ** d) / 10 ** d;
+ return Math.abs(r) < 1 / 10 ** d / 2 ? 0 : r;
+ };
+ const sx = clampSize(clean(b[0] * mesh.scale.x, 2));
+ const sy = clampSize(clean(b[1] * mesh.scale.y, 2));
+ const sz = clampSize(clean(b[2] * mesh.scale.z, 2));
+ setSize([sx, sy, sz]);
+ setPos([clean(mesh.position.x, 3), clean(mesh.position.y - sy / 2, 3), clean(mesh.position.z, 3)]);
+ setRotDeg([normDeg(radToDeg(mesh.rotation.x)), normDeg(radToDeg(mesh.rotation.y)), normDeg(radToDeg(mesh.rotation.z))]);
+ }
+ } else {
+ setSize([1, 1, 1]); setPos([0, 0, 0]); setRotDeg([0, 0, 0]);
+ }
  } else {
  setSelectedId(null); selectedIdRef.current = null;
  setSelectedIds([]); selectedIdsRef.current = [];
+ setSize([1, 1, 1]); setPos([0, 0, 0]); setRotDeg([0, 0, 0]);
  }
  }, []);
 
@@ -196,104 +215,8 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  }, [readTransform]);
 
  const applySize = useCallback((next: [number, number, number]) => {
- const t = threeRef.current;
- const ids = selectedIdsRef.current.filter((id) => t?.meshes.has(id) && !groupsRef.current.has(id));
- if (!t || !ids.length) return;
- pushHistory();
- const sx = clampSize(next[0]), sy = clampSize(next[1]), sz = clampSize(next[2]);
- for (const id of ids) {
- const mesh = t.meshes.get(id); const meta = objectsRef.current.find((o) => o.id === id);
- if (!mesh || !meta) continue;
- const b = BASE_SIZE[meta.kind];
- const oldHalf = (b[1] * mesh.scale.y) / 2;
- mesh.scale.set(sx / b[0], sy / b[1], sz / b[2]);
- const newHalf = (b[1] * mesh.scale.y) / 2;
- mesh.position.y = mesh.position.y - oldHalf + newHalf;
- }
- setSize([sx, sy, sz]);
- }, [pushHistory]);
-
- const setPosAxis = useCallback((axis: 0 | 1 | 2, value: number, opts?: { snap?: boolean }) => {
- const t = threeRef.current;
- if (!t) return;
- const ids = selectedIdsRef.current.filter((id) => t.meshes.has(id) && !groupsRef.current.has(id));
- if (!ids.length) return;
- const primaryId = selectedIdRef.current && ids.includes(selectedIdRef.current) ? selectedIdRef.current : ids[0]!;
- const primaryMesh = t.meshes.get(primaryId);
- const primaryMeta = objectsRef.current.find((o) => o.id === primaryId);
- if (!primaryMesh || !primaryMeta) return;
- if (!transformHistPushedRef.current) { pushHistory(); transformHistPushedRef.current = true; }
- const useSnap = opts?.snap !== false;
- const target = useSnap ? snapVal(clampPos(value), snap) : clampPos(value);
- if (axis === 1) {
- for (const id of ids) {
- const mesh = t.meshes.get(id);
- const meta = objectsRef.current.find((o) => o.id === id);
- if (!mesh || !meta) continue;
- const halfH = (BASE_SIZE[meta.kind][1] * mesh.scale.y) / 2;
- const y = useSnap ? snapVal(clampPos(target + halfH), snap) : clampPos(target + halfH);
- mesh.position.y = y;
- }
- const halfPrimary = (BASE_SIZE[primaryMeta.kind][1] * primaryMesh.scale.y) / 2;
- const floorY = primaryMesh.position.y - halfPrimary;
- setPos([
- Math.round(primaryMesh.position.x * 1000) / 1000,
- Math.round(floorY * 1000) / 1000,
- Math.round(primaryMesh.position.z * 1000) / 1000,
- ]);
- return;
- }
- const delta = target - primaryMesh.position.getComponent(axis);
- for (const id of ids) {
- const mesh = t.meshes.get(id);
- if (!mesh) continue;
- const next = mesh.position.toArray() as [number, number, number];
- const v = next[axis] + delta;
- next[axis] = useSnap ? snapVal(clampPos(v), snap) : clampPos(v);
- mesh.position.set(next[0], next[1], next[2]);
- }
- const p = primaryMesh.position;
- const halfPrimary = (BASE_SIZE[primaryMeta.kind][1] * primaryMesh.scale.y) / 2;
- setPos([
- Math.round(p.x * 1000) / 1000,
- Math.round((p.y - halfPrimary) * 1000) / 1000,
- Math.round(p.z * 1000) / 1000,
- ]);
- }, [pushHistory, snap]);
-
- const setRotAxis = useCallback((axis: 0 | 1 | 2, value: number) => {
- const t = threeRef.current;
- if (!t) return;
- const ids = selectedIdsRef.current.filter((id) => t.meshes.has(id) && !groupsRef.current.has(id));
- if (!ids.length) return;
- const primaryId = selectedIdRef.current && ids.includes(selectedIdRef.current) ? selectedIdRef.current : ids[0]!;
- const primaryMesh = t.meshes.get(primaryId);
- if (!primaryMesh) return;
- if (!transformHistPushedRef.current) { pushHistory(); transformHistPushedRef.current = true; }
- const safe = normDeg(Number.isFinite(value) ? value : 0);
- const oldDeg = [
- normDeg(radToDeg(primaryMesh.rotation.x)),
- normDeg(radToDeg(primaryMesh.rotation.y)),
- normDeg(radToDeg(primaryMesh.rotation.z)),
- ] as [number, number, number];
- const delta = safe - oldDeg[axis];
- for (const id of ids) {
- const mesh = t.meshes.get(id);
- if (!mesh) continue;
- const cur = [
- radToDeg(mesh.rotation.x),
- radToDeg(mesh.rotation.y),
- radToDeg(mesh.rotation.z),
- ] as [number, number, number];
- cur[axis] = cur[axis] + delta;
- mesh.rotation.set(degToRad(cur[0]), degToRad(cur[1]), degToRad(cur[2]));
- }
- const next: [number, number, number] = [oldDeg[0], oldDeg[1], oldDeg[2]];
- next[axis] = safe;
- setRotDeg(next);
- }, [pushHistory]);
-
- const endTransformEdit = useCallback(() => { transformHistPushedRef.current = false; }, []);
+ setSize(next);
+ }, []);
 
  const setSizeAxis = useCallback((axis: 0 | 1 | 2, value: number) => {
  const v = clampSize(value);
@@ -317,6 +240,55 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  return next;
  });
  }, [pushHistory, uniformScale]);
+
+ const setPosAxis = useCallback((axis: 0 | 1 | 2, value: number, opts: { snap?: boolean } = {}) => {
+ const useSnap = opts.snap !== false;
+ const final = useSnap ? snapVal(clampPos(value), snap) : value;
+ const t = threeRef.current;
+ const ids = selectedIdsRef.current.filter((id) => t?.meshes.has(id) && !groupsRef.current.has(id));
+ if (t && ids.length) {
+ if (!transformHistPushedRef.current) { pushHistory(); transformHistPushedRef.current = true; }
+ for (const id of ids) {
+ const mesh = t.meshes.get(id); const meta = objectsRef.current.find((o) => o.id === id);
+ if (!mesh || !meta) continue;
+ if (axis === 1) {
+ const halfH = (BASE_SIZE[meta.kind][1] * mesh.scale.y) / 2;
+ mesh.position.y = final + halfH;
+ } else if (axis === 0) mesh.position.x = final;
+ else mesh.position.z = final;
+ }
+ }
+ setPos((prev) => {
+ const n: [number, number, number] = [...prev] as any;
+ n[axis] = final;
+ return n;
+ });
+ }, [pushHistory, snap]);
+
+ const setRotAxis = useCallback((axis: 0 | 1 | 2, value: number) => {
+ const deg = normDeg(value);
+ const t = threeRef.current;
+ const ids = selectedIdsRef.current.filter((id) => t?.meshes.has(id) && !groupsRef.current.has(id));
+ if (t && ids.length) {
+ if (!transformHistPushedRef.current) { pushHistory(); transformHistPushedRef.current = true; }
+ for (const id of ids) {
+ const mesh = t.meshes.get(id);
+ if (!mesh) continue;
+ if (axis === 0) mesh.rotation.x = degToRad(deg);
+ else if (axis === 1) mesh.rotation.y = degToRad(deg);
+ else mesh.rotation.z = degToRad(deg);
+ }
+ }
+ setRotDeg((prev) => {
+ const n: [number, number, number] = [...prev] as any;
+ n[axis] = deg;
+ return n;
+ });
+ }, [pushHistory]);
+
+ const endTransformEdit = useCallback(() => {
+ transformHistPushedRef.current = false;
+ }, []);
 
  const createMesh = useCallback((kind: ShapeKind, opts: { color: string; name?: string; position?: [number, number, number]; rotation?: [number, number, number]; scale?: [number, number, number]; recordHistory?: boolean }) => {
  const t = threeRef.current; if (!t) return null;
@@ -387,12 +359,16 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  pushHistory();
  for (const id of ids) {
  const mesh = t.meshes.get(id);
- if (mesh?.material) mesh.material.color.set(hex);
+ if (mesh?.material) {
+ mesh.material.color?.set?.(hex);
+ if (mesh.material.emissive) mesh.material.emissive.set(hex);
  }
  setObjects((prev) => {
- const next = prev.map((o) => (ids.includes(o.id) ? { ...o, color: hex } : o));
- objectsRef.current = next; return next;
+ const next = prev.map((o) => (o.id === id ? { ...o, color: hex } : o));
+ objectsRef.current = next;
+ return next;
  });
+ }
  }, [pushHistory]);
 
  const groupSelected = useCallback(() => {
@@ -403,7 +379,10 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  const { THREE } = t;
  const group = new THREE.Group();
  const box = new THREE.Box3();
- for (const id of ids) { const m = t.meshes.get(id); if (m) box.expandByObject(m); }
+ for (const id of ids) {
+ const m = t.meshes.get(id);
+ if (m) box.expandByObject(m);
+ }
  const center = box.getCenter(new THREE.Vector3());
  group.position.copy(center);
  t.scene.add(group);
@@ -412,45 +391,45 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  if (m) group.attach(m);
  }
  const gid = nextId();
- group.userData = { id: gid, kind: "group" };
- groupsRef.current.set(gid, { childIds: [...ids], groupObj: group });
+ const name = es ? `Grupo ${groupsRef.current.size + 1}` : `Group ${groupsRef.current.size + 1}`;
+ groupsRef.current.set(gid, { childIds: ids, groupObj: group });
  t.meshes.set(gid, group as any);
- const gname = es ? "Grupo" : "Group";
+ group.userData = { id: gid, kind: "group" };
  setGroupIds((p) => [...p, gid]);
  setObjects((prev) => {
- const next = [...prev, { id: gid, name: gname, kind: "box" as ShapeKind, color: "#a78bfa" }];
- objectsRef.current = next; return next;
+ const next = [...prev, { id: gid, name, kind: "box" as ShapeKind, color: "#a78bfa" }];
+ objectsRef.current = next;
+ return next;
  });
- setSelectedIds([gid]); selectedIdsRef.current = [gid];
- setSelectedId(gid); selectedIdRef.current = gid;
- t.transform.attach(group); t.transform.setMode(modeRef.current);
- setCtxMenu(null);
- }, [es, pushHistory]);
+ selectMesh(gid);
+ }, [es, pushHistory, selectMesh]);
 
  const ungroupSelected = useCallback(() => {
  const t = threeRef.current;
- if (!t) return;
- const targets = selectedIdsRef.current.filter((id) => groupsRef.current.has(id));
- if (!targets.length) return;
+ const ids = selectedIdsRef.current.filter((id) => groupsRef.current.has(id));
+ if (!t || !ids.length) return;
  pushHistory();
  const released: string[] = [];
- for (const gid of targets) {
- const g = groupsRef.current.get(gid)!;
+ for (const gid of ids) {
+ const g = groupsRef.current.get(gid);
+ if (!g) continue;
  for (const cid of g.childIds) {
  const m = t.meshes.get(cid);
- if (m) { t.scene.attach(m); released.push(cid); }
+ if (m) t.scene.attach(m);
+ released.push(cid);
  }
- t.scene.remove(g.groupObj); t.meshes.delete(gid); groupsRef.current.delete(gid);
- setGroupIds((p) => p.filter((x) => x !== gid));
- setObjects((prev) => { const next = prev.filter((o) => o.id !== gid); objectsRef.current = next; return next; });
+ t.scene.remove(g.groupObj);
+ t.meshes.delete(gid);
+ groupsRef.current.delete(gid);
  }
- setSelectedIds(released); selectedIdsRef.current = released;
- const primary = released[0] || null;
- setSelectedId(primary); selectedIdRef.current = primary;
- if (primary && t.meshes.has(primary)) t.transform.attach(t.meshes.get(primary));
- else t.transform.detach();
- setCtxMenu(null);
- }, [pushHistory]);
+ setGroupIds((p) => p.filter((x) => !ids.includes(x)));
+ setObjects((prev) => {
+ const next = prev.filter((o) => !ids.includes(o.id));
+ objectsRef.current = next;
+ return next;
+ });
+ selectMesh(released[0] || null);
+ }, [pushHistory, selectMesh]);
 
  const undo = useCallback(() => {
  if (historyRef.current.length === 0) return;
@@ -464,15 +443,17 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  if (futureRef.current.length === 0) return;
  const current = captureSnapshot(); const next = futureRef.current.pop()!;
  historyRef.current.push(current);
- setCanUndo(historyRef.current.length > 0); setCanRedo(futureRef.current.length > 0);
+ setCanUndo(true); setCanRedo(futureRef.current.length > 0);
  skipHistoryRef.current = true; rebuildFromSnapshot(next, selectedIdRef.current); skipHistoryRef.current = false;
  }, [captureSnapshot, rebuildFromSnapshot]);
 
- const toggleFullscreen = useCallback(() => {
+ const toggleFullscreen = useCallback(async () => {
  const el = studioRef.current;
  if (!el) return;
- if (!document.fullscreenElement) { void el.requestFullscreen?.(); setFullscreen(true); }
- else { void document.exitFullscreen?.(); setFullscreen(false); }
+ try {
+ if (!document.fullscreenElement) { await el.requestFullscreen(); setFullscreen(true); }
+ else { await document.exitFullscreen(); setFullscreen(false); }
+ } catch { /* */ }
  }, []);
 
  useEffect(() => {
@@ -481,25 +462,13 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  return () => document.removeEventListener("fullscreenchange", onFs);
  }, []);
 
- useEffect(() => { if (gridRef.current) gridRef.current.visible = showGrid; }, [showGrid]);
-
- const changeMode = useCallback((m: Mode) => {
- setMode(m);
- modeRef.current = m;
- const t = threeRef.current;
- if (t?.transform) t.transform.setMode(m);
- }, []);
-
  return {
- es, objects, setObjects, selectedId, setSelectedId, selectedIds, setSelectedIds,
- groupIds, setGroupIds, ctxMenu, setCtxMenu, mode, setMode: changeMode, color, setColor,
- fullscreen, setFullscreen, ready, setReady, error, setError, canUndo, setCanUndo,
- canRedo, setCanRedo, showGrid, setShowGrid, size, setSize, uniformScale, setUniformScale,
- pos, setPos, rotDeg, setRotDeg, snap, setSnap, mountRef, studioRef, threeRef,
- sizeHistPushedRef, transformHistPushedRef, snapRef, selectedIdRef, selectedIdsRef,
- groupsRef, marqueeRef, modeRef, objectsRef, historyRef, futureRef, skipHistoryRef, gridRef,
- captureSnapshot, pushHistory, rebuildFromSnapshot, readTransform, selectMesh, applySize,
- setPosAxis, setRotAxis, endTransformEdit, setSizeAxis, createMesh, addShape, deleteSelected,
- applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
+ es, objects, selectedId, selectedIds, groupIds, ctxMenu, setCtxMenu, mode, setMode,
+ color, setColor, fullscreen, ready, setReady, error, setError,
+ canUndo, canRedo, size, pos, rotDeg, snap, setSnap, mountRef, studioRef, threeRef,
+ sizeHistPushedRef, selectedIdRef, selectedIdsRef, groupsRef, marqueeRef,
+ modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, setSizeAxis,
+ addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
+ setSelectedId, setSelectedIds, readTransform,
  };
 }
