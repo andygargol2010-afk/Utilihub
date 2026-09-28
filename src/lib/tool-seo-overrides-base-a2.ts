@@ -3,12 +3,12 @@ import type { ToolSeoOverrideBase } from "./tool-seo-overrides-base-a";
 
 export const TOOL_SEO_OVERRIDES_BASE_A2: Record<string, ToolSeoOverrideBase> = {
   "conversor-de-temperatura": {
-    metaTitle: "Temperature Converter — °C, °F, Kelvin | UtiliHub",
-    metaTitleEs: "Conversor de temperatura °C °F Kelvin | UtiliHub",
+    metaTitle: "Temperature Converter — °C to °F to Kelvin Free | UtiliHub",
+    metaTitleEs: "Conversor de temperatura online gratis (°C °F K) | UtiliHub",
     metaDescription:
-      "Convert Celsius, Fahrenheit, and Kelvin instantly. Free temperature converter in your browser.",
+      "Convert temperature instantly between Celsius, Fahrenheit, and Kelvin. Free online converter — no signup.",
     metaDescriptionEs:
-      "Convertí Celsius, Fahrenheit y Kelvin al instante. Conversor de temperatura gratis en el navegador.",
+      "Convertí temperatura al instante entre Celsius, Fahrenheit y Kelvin. Conversor online gratis, sin registro.",
     about: [
       "Temperature scales differ by region and science context: everyday weather often uses °C or °F, while science frequently uses Kelvin.",
       "This converter applies the standard linear relationships between the scales so you can switch units for cooking, travel, or lab notes without memorizing formulas.",
