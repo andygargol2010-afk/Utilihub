@@ -32,6 +32,10 @@ import { PERCENT_ADVANCED_TOOLS } from "./percent-advanced";
 import { ALGEBRA_ADVANCED_TOOLS } from "./algebra-advanced";
 import { GEOMETRY_SUITE_TOOLS } from "./geometry-suite";
 import { ARITHMETIC_SUITE_TOOLS } from "./arithmetic-suite";
+import { SEQUENCE_SUITE_TOOLS } from "./sequence-suite";
+import { TRIG_SUITE_TOOLS } from "./trig-suite";
+import { EXPLOG_SUITE_TOOLS } from "./explog-suite";
+import { MATRIX_BINARY_SUITE_TOOLS } from "./matrix-binary-suite";
 
 export { GENERAL_CATEGORIES };
 
@@ -69,4 +73,8 @@ export const GENERAL_TOOLS = [
   ...ALGEBRA_ADVANCED_TOOLS,
   ...GEOMETRY_SUITE_TOOLS,
   ...ARITHMETIC_SUITE_TOOLS,
+  ...SEQUENCE_SUITE_TOOLS,
+  ...TRIG_SUITE_TOOLS,
+  ...EXPLOG_SUITE_TOOLS,
+  ...MATRIX_BINARY_SUITE_TOOLS,
 ];
