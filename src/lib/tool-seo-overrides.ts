@@ -13,6 +13,7 @@ import { TOOL_SEO_OVERRIDES_GROWTH_B2 } from "./tool-seo-overrides-growth-b2";
 import { TOOL_SEO_OVERRIDES_GROWTH_B3 } from "./tool-seo-overrides-growth-b3";
 import { TOOL_SEO_OVERRIDES_GAP } from "./tool-seo-overrides-gap";
 import { TOOL_SEO_OVERRIDES_PERCENT } from "./tool-seo-overrides-percent";
+import { TOOL_SEO_OVERRIDES_ALGEBRA } from "./tool-seo-overrides-algebra";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -41,6 +42,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...(TOOL_SEO_OVERRIDES_GROWTH_B3 as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_GAP as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_PERCENT as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_ALGEBRA as Record<string, ToolSeoOverride>),
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
