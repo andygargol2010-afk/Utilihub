@@ -69,16 +69,28 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
 
   if (!allowed || !viewport) return null;
 
-  const minH = viewport === "desktop" ? 90 : 50;
+  const isMobile = viewport === "mobile";
+  const minH = isMobile ? 50 : 90;
 
   return (
-    <aside className="ad-slot my-6 overflow-hidden rounded-xl border border-border/60 bg-surface/35" aria-label={label}>
+    <aside
+      className={
+        isMobile
+          ? "ad-slot my-6 w-full max-w-full overflow-x-hidden rounded-xl border border-border/60 bg-surface/35"
+          : "ad-slot my-6 overflow-hidden rounded-xl border border-border/60 bg-surface/35"
+      }
+      aria-label={label}
+    >
       <div className="flex min-h-7 items-center justify-center px-2 pt-1 text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
         {label}
       </div>
       <div
         ref={slotRef}
-        className="flex items-center justify-center overflow-hidden px-0 pb-1"
+        className={
+          isMobile
+            ? "mx-auto flex w-full max-w-[320px] items-center justify-center px-0 pb-2 [&_iframe]:max-w-full [&_iframe]:!h-auto"
+            : "flex items-center justify-center overflow-hidden px-0 pb-1"
+        }
         style={{ minHeight: minH }}
       />
     </aside>
