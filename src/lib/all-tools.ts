@@ -32,20 +32,58 @@ const legacyCards: CatalogTool[] = TOOLS
   .filter((tool) => !canonicalSlugs.has(tool.slug));
 
 const catalogSources = [...generalCards, ...financialCards, ...legacyCards];
-const duplicateSlugs = Array.from(catalogSources.reduce((map, tool) => map.set(tool.slug, (map.get(tool.slug) ?? 0) + 1), new Map<string, number>()).entries()).filter(([, count]) => count > 1).map(([slug]) => slug);
+const duplicateSlugs = Array.from(
+  catalogSources
+    .reduce((map, tool) => map.set(tool.slug, (map.get(tool.slug) ?? 0) + 1), new Map<string, number>())
+    .entries(),
+)
+  .filter(([, count]) => count > 1)
+  .map(([slug]) => slug);
 export const CATALOG_DUPLICATE_SLUGS = duplicateSlugs;
 if (duplicateSlugs.length) throw new Error(`UtiliHub catalog integrity error: duplicate tool slugs: ${duplicateSlugs.join(", ")}`);
 
 export const ALL_TOOLS: CatalogTool[] = catalogSources;
-const unknownSecondaryTools = Object.keys(SECONDARY_CATEGORY_MAP).filter((slug) => !ALL_TOOLS.some((tool) => tool.slug === slug));
-if (unknownSecondaryTools.length) throw new Error(`UtiliHub catalog integrity error: unknown secondary category tools: ${unknownSecondaryTools.join(", ")}`);
-export const allToolBySlug = (slug: string) => ALL_TOOLS.find((tool) => tool.slug === slug);
-export const allToolsByCategory = (slug: string) => ALL_TOOLS.filter((tool) => tool.category === slug || SECONDARY_CATEGORY_MAP[tool.slug]?.includes(slug));
+
+/** O(1) slug → tool index (built once at module load). */
+const TOOL_BY_SLUG = new Map<string, CatalogTool>(ALL_TOOLS.map((tool) => [tool.slug, tool]));
+
+/** Primary category → tools (secondary categories resolved on demand). */
+const TOOLS_BY_PRIMARY_CATEGORY = new Map<string, CatalogTool[]>();
+for (const tool of ALL_TOOLS) {
+  const list = TOOLS_BY_PRIMARY_CATEGORY.get(tool.category);
+  if (list) list.push(tool);
+  else TOOLS_BY_PRIMARY_CATEGORY.set(tool.category, [tool]);
+}
+
+const CATEGORY_BY_SLUG = new Map(ALL_CATEGORIES.map((c) => [c.slug, c]));
+const LEGACY_CATEGORY_BY_SLUG = new Map(CATEGORIES.map((c) => [c.slug, c]));
+
+const unknownSecondaryTools = Object.keys(SECONDARY_CATEGORY_MAP).filter((slug) => !TOOL_BY_SLUG.has(slug));
+if (unknownSecondaryTools.length) {
+  throw new Error(`UtiliHub catalog integrity error: unknown secondary category tools: ${unknownSecondaryTools.join(", ")}`);
+}
+
+export const allToolBySlug = (slug: string) => TOOL_BY_SLUG.get(slug);
+
+export const allToolsByCategory = (slug: string) => {
+  const primary = TOOLS_BY_PRIMARY_CATEGORY.get(slug) ?? [];
+  // Secondary membership is sparse; only scan when needed
+  const secondary: CatalogTool[] = [];
+  for (const [toolSlug, cats] of Object.entries(SECONDARY_CATEGORY_MAP)) {
+    if (!cats.includes(slug)) continue;
+    const tool = TOOL_BY_SLUG.get(toolSlug);
+    if (tool && tool.category !== slug) secondary.push(tool);
+  }
+  return secondary.length ? [...primary, ...secondary] : primary;
+};
+
 export const allCategoryBySlug = (slug: string) => {
   const canonical = LEGACY_CATEGORY_REDIRECTS[slug] ?? slug;
-  return ALL_CATEGORIES.find((category) => category.slug === canonical);
+  return CATEGORY_BY_SLUG.get(canonical);
 };
-export const legacyCategoryBySlug = (slug: string) => CATEGORIES.find((category) => category.slug === slug);
+
+export const legacyCategoryBySlug = (slug: string) => LEGACY_CATEGORY_BY_SLUG.get(slug);
+
 export const toolHref = (tool: Pick<CatalogTool, "category"> & Partial<Pick<CatalogTool, "name" | "slug">>) => {
   if (tool.name) return englishToolPath(tool as Pick<CatalogTool, "name" | "category">);
   if (tool.slug) return tool.category === "finanzas" ? `/finance/${tool.slug}` : `/tools/${tool.slug}`;
