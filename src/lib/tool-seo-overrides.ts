@@ -16,6 +16,10 @@ import { TOOL_SEO_OVERRIDES_PERCENT } from "./tool-seo-overrides-percent";
 import { TOOL_SEO_OVERRIDES_ALGEBRA } from "./tool-seo-overrides-algebra";
 import { TOOL_SEO_OVERRIDES_GEOMETRY } from "./tool-seo-overrides-geometry";
 import { TOOL_SEO_OVERRIDES_ARITHMETIC } from "./tool-seo-overrides-arithmetic";
+import { TOOL_SEO_OVERRIDES_SEQUENCE } from "./tool-seo-overrides-sequence";
+import { TOOL_SEO_OVERRIDES_TRIG } from "./tool-seo-overrides-trig";
+import { TOOL_SEO_OVERRIDES_EXPLOG } from "./tool-seo-overrides-explog";
+import { TOOL_SEO_OVERRIDES_MATRIX } from "./tool-seo-overrides-matrix";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -47,6 +51,10 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...(TOOL_SEO_OVERRIDES_ALGEBRA as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_GEOMETRY as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_ARITHMETIC as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_SEQUENCE as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_TRIG as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_EXPLOG as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_MATRIX as Record<string, ToolSeoOverride>),
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
