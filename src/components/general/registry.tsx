@@ -45,6 +45,18 @@ const GeometrySuiteTool = lazy(() =>
 const ArithmeticSuiteTool = lazy(() =>
   import("./ArithmeticSuiteTool").then((m) => ({ default: m.ArithmeticSuiteTool })),
 );
+const SequenceSuiteTool = lazy(() =>
+  import("./SequenceSuiteTool").then((m) => ({ default: m.SequenceSuiteTool })),
+);
+const TrigSuiteTool = lazy(() =>
+  import("./TrigSuiteTool").then((m) => ({ default: m.TrigSuiteTool })),
+);
+const ExpLogSuiteTool = lazy(() =>
+  import("./ExpLogSuiteTool").then((m) => ({ default: m.ExpLogSuiteTool })),
+);
+const MatrixBinarySuiteTool = lazy(() =>
+  import("./MatrixBinarySuiteTool").then((m) => ({ default: m.MatrixBinarySuiteTool })),
+);
 const GpaCalculator = lazy(() => import("./GpaCalculator").then((m) => ({ default: m.GpaCalculator })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
@@ -57,6 +69,10 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
   if (tool.config?.mode === "geometry-suite") return GeometrySuiteTool as ToolComp;
   if (tool.config?.mode === "arithmetic-suite") return ArithmeticSuiteTool as ToolComp;
+  if (tool.config?.mode === "sequence-suite") return SequenceSuiteTool as ToolComp;
+  if (tool.config?.mode === "trig-suite") return TrigSuiteTool as ToolComp;
+  if (tool.config?.mode === "explog-suite") return ExpLogSuiteTool as ToolComp;
+  if (tool.config?.mode === "matrix-binary-suite") return MatrixBinarySuiteTool as ToolComp;
   if (tool.slug === "secuencias") return SequenceTool as ToolComp;
   if (tool.slug === "potencias-y-raices") return PowerRootTool as ToolComp;
   if (tool.slug === "distribucion-normal") return NormalDistributionTool as ToolComp;
