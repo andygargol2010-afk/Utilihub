@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, createRootRouteWithContext, HeadContent, Scripts, useRouter, useLocation } from "@tanstack/react-router";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import "../styles.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -13,6 +13,9 @@ import { AdsterraSocialBar } from "@/components/AdsterraSocialBar";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage, websiteSchema } from "@/lib/seo";
 import { useShareableParams } from "@/hooks/use-shareable-params";
 import { useDailyStreak } from "@/hooks/use-daily-streak";
+
+const FONT_HREF =
+  "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap";
 
 function useIsSpanish() {
   const { pathname } = useLocation();
@@ -100,10 +103,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap",
-      },
+      // Warm DNS for ad network without blocking first paint
+      { rel: "dns-prefetch", href: "https://www.highrevenueformat.com" },
+      // Preload stylesheet so the browser can fetch early; display=swap avoids FOIT
+      { rel: "preload", as: "style", href: FONT_HREF },
+      { rel: "stylesheet", href: FONT_HREF },
       { rel: "icon", href: "/utilihub-logo.svg", type: "image/svg+xml", sizes: "any" },
       { rel: "apple-touch-icon", href: "/utilihub-logo.svg" },
       { rel: "manifest", href: "/site.webmanifest" },
@@ -131,6 +135,40 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/** Mount Vercel analytics after first paint / idle to free the main thread. */
+function DeferredInsights() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const enable = () => {
+      if (!cancelled) setReady(true);
+    };
+
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(enable, { timeout: 4000 });
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(id);
+      };
+    }
+
+    const t = window.setTimeout(enable, 1500);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(t);
+    };
+  }, []);
+
+  if (!ready) return null;
+  return (
+    <>
+      <Analytics />
+      <SpeedInsights />
+    </>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const isSpanish = useIsSpanish();
@@ -145,8 +183,7 @@ function RootComponent() {
       </main>
       {isSpanish ? <SpanishSiteFooter /> : <SiteFooter />}
       <AdsterraSocialBar />
-      <Analytics />
-      <SpeedInsights />
+      <DeferredInsights />
     </QueryClientProvider>
   );
 }
