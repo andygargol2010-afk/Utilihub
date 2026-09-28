@@ -28,6 +28,7 @@ import { UTILITY_EXTRA_TOOLS } from "./utility-extra";
 import { FINANCE_TOOLS } from "./finance";
 import { SEO_GROWTH_TOOLS } from "./seo-growth";
 import { GAP_TOOLS } from "./gap-tools";
+import { PERCENT_ADVANCED_TOOLS } from "./percent-advanced";
 
 export { GENERAL_CATEGORIES };
 
@@ -61,4 +62,5 @@ export const GENERAL_TOOLS = [
   ...FINANCE_TOOLS,
   ...SEO_GROWTH_TOOLS,
   ...GAP_TOOLS,
+  ...PERCENT_ADVANCED_TOOLS,
 ];
