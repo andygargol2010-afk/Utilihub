@@ -1,4 +1,4 @@
-/** Marketing/ads cookie consent (localStorage + mirror cookie). */
+/** Marketing/ads helpers — consent banner removed; ads always allowed. */
 
 export type ConsentValue = "accepted" | "rejected";
 
@@ -24,8 +24,9 @@ export function getConsent(): ConsentValue | null {
   return null;
 }
 
+/** Ads load without a consent banner. */
 export function hasMarketingConsent(): boolean {
-  return getConsent() === "accepted";
+  return true;
 }
 
 export function setConsent(value: ConsentValue) {
