@@ -9,6 +9,8 @@ import { TOOL_SEO_OVERRIDES_GROWTH } from "./tool-seo-overrides-growth";
 import { TOOL_SEO_OVERRIDES_GROWTH_A } from "./tool-seo-overrides-growth-a";
 import { TOOL_SEO_OVERRIDES_GROWTH_A2 } from "./tool-seo-overrides-growth-a2";
 import { TOOL_SEO_OVERRIDES_GROWTH_B1 } from "./tool-seo-overrides-growth-b1";
+import { TOOL_SEO_OVERRIDES_GROWTH_B2 } from "./tool-seo-overrides-growth-b2";
+import { TOOL_SEO_OVERRIDES_GROWTH_B3 } from "./tool-seo-overrides-growth-b3";
 import { TOOL_SEO_OVERRIDES_GAP } from "./tool-seo-overrides-gap";
 
 export type ToolSeoOverride = {
@@ -34,6 +36,8 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...(TOOL_SEO_OVERRIDES_GROWTH_A as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_GROWTH_A2 as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_GROWTH_B1 as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_GROWTH_B2 as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_GROWTH_B3 as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_GAP as Record<string, ToolSeoOverride>),
 };
 
