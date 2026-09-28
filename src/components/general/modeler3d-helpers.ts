@@ -25,7 +25,22 @@ export const BASE_SIZE: Record<ShapeKind, [number, number, number]> = {
 
 export const ALL_KINDS: ShapeKind[] = ["box", "sphere", "cylinder", "cone", "plane", "torus", "prism", "tube"];
 export const STORAGE_KEY = "utilihub_3d_scene_v1";
-export const COLORS = ["#f43f5e", "#a78bfa", "#22d3ee", "#4ade80", "#fbbf24", "#f8fafc"];
+export const COLORS = [
+  // Reds / pinks
+  "#f43f5e", "#e11d48", "#fb7185", "#f472b6", "#ec4899",
+  // Purples
+  "#a78bfa", "#8b5cf6", "#7c3aed", "#c084fc", "#d946ef",
+  // Blues / cyan
+  "#22d3ee", "#06b6d4", "#0ea5e9", "#3b82f6", "#60a5fa",
+  // Greens
+  "#4ade80", "#22c55e", "#10b981", "#34d399", "#84cc16",
+  // Yellows / oranges
+  "#fbbf24", "#f59e0b", "#f97316", "#fb923c", "#eab308",
+  // Neutrals
+  "#f8fafc", "#e2e8f0", "#94a3b8", "#64748b", "#1e293b", "#0f172a",
+  // Extra
+  "#f87171", "#2dd4bf", "#a3e635", "#facc15", "#c026d3", "#2563eb",
+];
 export const HISTORY_MAX = 40;
 
 export const clampSize = (n: number) => (!Number.isFinite(n) || n <= 0 ? 0.05 : Math.min(Math.max(n, 0.05), 50));
