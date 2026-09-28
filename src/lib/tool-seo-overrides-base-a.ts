@@ -168,12 +168,12 @@ export const TOOL_SEO_OVERRIDES_BASE_A: Record<string, ToolSeoOverrideBase> = {
   },
 
   porcentaje: {
-    metaTitle: "Percentage Calculator — Free Online | UtiliHub",
-    metaTitleEs: "Calculadora de porcentajes gratis | UtiliHub",
+    metaTitle: "Percentage Calculator — What is X% of Y? Free | UtiliHub",
+    metaTitleEs: "Calculadora de porcentajes online gratis | UtiliHub",
     metaDescription:
-      "Free percentage calculator for discounts, increases, and proportions. What is X% of Y, or what percent is A of B.",
+      "Calculate percentages instantly: X% of Y, what percent A is of B, and percent change. Free, no signup — in your browser.",
     metaDescriptionEs:
-      "Calculadora de porcentajes gratis: descuentos, aumentos y proporciones. Cuánto es el X% de Y, o qué % es A de B.",
+      "Calculá porcentajes al instante: el X% de Y, qué % es A de B y el cambio porcentual. Gratis, sin registro, en el navegador.",
     about: [
       "Percentage problems show up in discounts, tips, taxes, grades, and growth rates. This calculator handles common cases: finding a percent of a number, finding what percent one number is of another, and percent change.",
       "All math runs locally so you can check store prices, markups, or homework without a spreadsheet.",
