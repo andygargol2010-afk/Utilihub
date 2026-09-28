@@ -29,6 +29,7 @@ import { FINANCE_TOOLS } from "./finance";
 import { SEO_GROWTH_TOOLS } from "./seo-growth";
 import { GAP_TOOLS } from "./gap-tools";
 import { PERCENT_ADVANCED_TOOLS } from "./percent-advanced";
+import { ALGEBRA_ADVANCED_TOOLS } from "./algebra-advanced";
 
 export { GENERAL_CATEGORIES };
 
@@ -63,4 +64,5 @@ export const GENERAL_TOOLS = [
   ...SEO_GROWTH_TOOLS,
   ...GAP_TOOLS,
   ...PERCENT_ADVANCED_TOOLS,
+  ...ALGEBRA_ADVANCED_TOOLS,
 ];
