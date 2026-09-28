@@ -99,13 +99,38 @@ function pickComponent(tool: GeneralTool): ToolComp {
   return GeneralToolUi as ToolComp;
 }
 
-const buildRegistry = (locale: "en" | "es"): Record<string, () => ReactNode> =>
-  Object.fromEntries(
-    GENERAL_TOOLS.map((tool) => {
-      const Comp = pickComponent(tool);
-      return [tool.slug, () => <Comp tool={tool} locale={locale} />];
-    }),
-  );
+/** O(1) tool lookup — avoid scanning GENERAL_TOOLS on every registry access. */
+const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((tool) => [tool.slug, tool]));
 
-export const GENERAL_TOOL_UI = buildRegistry("en");
-export const GENERAL_TOOL_UI_ES = buildRegistry("es");
+/**
+ * Build a registry that only materializes render closures for tools that are
+ * actually opened (instead of allocating one closure per catalog entry × locale).
+ */
+function buildLazyRegistry(locale: "en" | "es"): Record<string, () => ReactNode> {
+  const cache = new Map<string, () => ReactNode>();
+
+  return new Proxy({} as Record<string, () => ReactNode>, {
+    get(_target, prop) {
+      if (typeof prop !== "string") return undefined;
+      // Avoid Promise-like traps when something does `await registry`
+      if (prop === "then") return undefined;
+
+      const hit = cache.get(prop);
+      if (hit) return hit;
+
+      const tool = TOOL_BY_SLUG.get(prop);
+      if (!tool) return undefined;
+
+      const Comp = pickComponent(tool);
+      const render = () => <Comp tool={tool} locale={locale} />;
+      cache.set(prop, render);
+      return render;
+    },
+    has(_target, prop) {
+      return typeof prop === "string" && TOOL_BY_SLUG.has(prop);
+    },
+  });
+}
+
+export const GENERAL_TOOL_UI = buildLazyRegistry("en");
+export const GENERAL_TOOL_UI_ES = buildLazyRegistry("es");
