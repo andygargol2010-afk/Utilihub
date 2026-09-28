@@ -49,25 +49,79 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
         if (cancelled || !mountRef.current) return;
         const w = mount.clientWidth || 640, h = mount.clientHeight || 400;
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0c0810);
-        const camera = new THREE.PerspectiveCamera(48, w / h, 0.1, 100);
-        camera.position.set(3.6, 2.8, 4.6);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        scene.background = new THREE.Color(0x0a0610);
+        scene.fog = new THREE.FogExp2(0x0a0610, 0.045);
+        const camera = new THREE.PerspectiveCamera(46, w / h, 0.08, 120);
+        camera.position.set(3.8, 2.9, 4.8);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         renderer.setSize(w, h);
         renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        if ("outputColorSpace" in renderer) (renderer as any).outputColorSpace = (THREE as any).SRGBColorSpace ?? (THREE as any).sRGBEncoding;
+        else if ("outputEncoding" in renderer) (renderer as any).outputEncoding = (THREE as any).sRGBEncoding;
+        renderer.toneMapping = (THREE as any).ACESFilmicToneMapping ?? 4;
+        renderer.toneMappingExposure = 1.15;
         mount.appendChild(renderer.domElement);
         Object.assign(renderer.domElement.style, { width: "100%", height: "100%", display: "block", touchAction: "none" });
-        scene.add(new THREE.HemisphereLight(0xffe4ec, 0x1a1020, 0.55));
-        scene.add(new THREE.AmbientLight(0xffffff, 0.28));
-        const key = new THREE.DirectionalLight(0xfff0f5, 1.2);
-        key.position.set(5, 9, 4); key.castShadow = true; scene.add(key);
-        const floor = new THREE.Mesh(new THREE.CircleGeometry(6, 48), new THREE.MeshStandardMaterial({ color: 0x1a1220 }));
-        floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
-        const grid = new THREE.GridHelper(10, 20, 0xf43f5e, 0x3f1d2e);
+
+        scene.add(new THREE.HemisphereLight(0xffe8f0, 0x1a1028, 0.42));
+        scene.add(new THREE.AmbientLight(0xb8a0c8, 0.22));
+
+        const key = new THREE.DirectionalLight(0xfff5f8, 1.35);
+        key.position.set(5.5, 10, 4.5);
+        key.castShadow = true;
+        key.shadow.mapSize.set(2048, 2048);
+        key.shadow.camera.near = 0.5;
+        key.shadow.camera.far = 28;
+        key.shadow.camera.left = -8; key.shadow.camera.right = 8;
+        key.shadow.camera.top = 8; key.shadow.camera.bottom = -8;
+        key.shadow.bias = -0.00025;
+        key.shadow.normalBias = 0.02;
+        key.shadow.radius = 3.5;
+        scene.add(key);
+
+        const fill = new THREE.DirectionalLight(0xa8c4ff, 0.35);
+        fill.position.set(-4, 3, -2);
+        scene.add(fill);
+
+        const rim = new THREE.DirectionalLight(0xff6b9d, 0.28);
+        rim.position.set(-2, 6, -5);
+        scene.add(rim);
+
+        const spark = new THREE.PointLight(0xffc0d8, 0.45, 12, 2);
+        spark.position.set(1.2, 2.4, 1.8);
+        scene.add(spark);
+
+        const floorMat = new THREE.MeshStandardMaterial({
+          color: 0x14101c,
+          roughness: 0.92,
+          metalness: 0.05,
+        });
+        const floor = new THREE.Mesh(new THREE.CircleGeometry(8, 64), floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        floor.receiveShadow = true;
+        floor.position.y = -0.001;
+        scene.add(floor);
+
+        const ringMat = new THREE.MeshStandardMaterial({ color: 0x08060c, roughness: 1, metalness: 0 });
+        const ring = new THREE.Mesh(new THREE.RingGeometry(7.5, 11, 64), ringMat);
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = -0.002;
+        scene.add(ring);
+
+        const grid = new THREE.GridHelper(10, 20, 0xf43f5e, 0x3a2030);
+        (grid.material as any).opacity = 0.55;
+        (grid.material as any).transparent = true;
         scene.add(grid); gridRef.current = grid;
+
         const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true; controls.target.set(0, 0.55, 0);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.target.set(0, 0.55, 0);
+        controls.maxPolarAngle = Math.PI * 0.49;
+        controls.minDistance = 1.2;
+        controls.maxDistance = 18;
         const meshes = new Map();
         const transform = new TransformControls(camera, renderer.domElement);
         transform.setSize(0.9);
@@ -316,7 +370,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
 
   return (
     <div ref={studioRef} className={`relative ${fullscreen ? "fixed inset-0 z-50 bg-black" : ""}`}>
-      <div className={`relative w-full overflow-hidden bg-[#0c0810] ${fullscreen ? "h-full rounded-none border-0" : "min-h-[480px] h-[min(70vh,640px)] rounded-xl border border-rose-500/20"}`}>
+      <div className={`relative w-full overflow-hidden bg-[#0a0610] ${fullscreen ? "h-full rounded-none border-0" : "min-h-[480px] h-[min(70vh,640px)] rounded-xl border border-rose-500/25 shadow-[0_0_40px_rgba(244,63,94,0.08)]"}`}>
         <div ref={mountRef} className="absolute inset-0" />
         {!ready && !error && (
           <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70">
