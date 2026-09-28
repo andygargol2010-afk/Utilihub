@@ -180,9 +180,21 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  const readTransform = useCallback((id: string | null) => {
  const t = threeRef.current;
  if (!t || !id) { setSize([1, 1, 1]); setPos([0, 0, 0]); setRotDeg([0, 0, 0]); return; }
+ const g = groupsRef.current.get(id);
+ if (g) {
+ const go = g.groupObj;
+ const clean = (n: number, digits: number) => {
+ const r = Math.round(n * 10 ** digits) / 10 ** digits;
+ return Math.abs(r) < 1 / 10 ** digits / 2 ? 0 : r;
+ };
+ setSize([1, 1, 1]);
+ setPos([clean(go.position.x, 3), clean(go.position.y, 3), clean(go.position.z, 3)]);
+ setRotDeg([normDeg(radToDeg(go.rotation.x)), normDeg(radToDeg(go.rotation.y)), normDeg(radToDeg(go.rotation.z))]);
+ return;
+ }
  const mesh = t.meshes.get(id);
  const meta = objectsRef.current.find((o) => o.id === id);
- if (!mesh || !meta || groupsRef.current.has(id)) return;
+ if (!mesh || !meta) return;
  const b = BASE_SIZE[meta.kind];
  const clean = (n: number, digits: number) => {
  const r = Math.round(n * 10 ** digits) / 10 ** digits;
@@ -220,7 +232,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  if (!t || !primary) return;
  const g = groupsRef.current.get(primary);
  const target = g?.groupObj || t.meshes.get(primary);
- if (target) { t.transform.attach(target); t.transform.setMode(modeRef.current); if (!g) readTransform(primary); }
+ if (target) { t.transform.attach(target); t.transform.setMode(modeRef.current); readTransform(primary); }
  }, [readTransform]);
 
  const setSizeAxis = useCallback((axis: 0 | 1 | 2, value: number) => {
@@ -250,10 +262,18 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  const useSnap = opts.snap !== false;
  const final = useSnap ? snapVal(clampPos(value), snap) : value;
  const t = threeRef.current;
- const ids = selectedIdsRef.current.filter((id) => t?.meshes.has(id) && !groupsRef.current.has(id));
+ const ids = selectedIdsRef.current.filter((id) => t?.meshes.has(id));
  if (t && ids.length) {
  if (!transformHistPushedRef.current) { pushHistory(); transformHistPushedRef.current = true; }
  for (const id of ids) {
+ const g = groupsRef.current.get(id);
+ if (g) {
+ const go = g.groupObj;
+ if (axis === 0) go.position.x = final;
+ else if (axis === 1) go.position.y = final;
+ else go.position.z = final;
+ continue;
+ }
  const mesh = t.meshes.get(id); const meta = objectsRef.current.find((o) => o.id === id);
  if (!mesh || !meta) continue;
  if (axis === 1) {
@@ -380,19 +400,38 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  const copySelected = useCallback(() => {
  const t = threeRef.current;
  if (!t) return;
+ const { THREE } = t;
  const items: ClipItem[] = [];
- for (const id of selectedIdsRef.current) {
- if (groupsRef.current.has(id)) continue;
- const mesh = t.meshes.get(id);
- const meta = objectsRef.current.find((o) => o.id === id);
- if (!mesh || !meta || !mesh.isMesh) continue;
+ const seen = new Set<string>();
+ const pushMesh = (mesh: any, meta: SceneObj) => {
+ if (!mesh?.isMesh || seen.has(meta.id)) return;
+ seen.add(meta.id);
+ mesh.updateMatrixWorld(true);
+ const pos = mesh.getWorldPosition(new THREE.Vector3());
+ const quat = mesh.getWorldQuaternion(new THREE.Quaternion());
+ const scl = mesh.getWorldScale(new THREE.Vector3());
+ const eul = new THREE.Euler().setFromQuaternion(quat);
  items.push({
  kind: meta.kind,
  color: meta.color,
- position: [mesh.position.x, mesh.position.y, mesh.position.z],
- rotation: [mesh.rotation.x, mesh.rotation.y, mesh.rotation.z],
- scale: [mesh.scale.x, mesh.scale.y, mesh.scale.z],
+ position: [pos.x, pos.y, pos.z],
+ rotation: [eul.x, eul.y, eul.z],
+ scale: [scl.x, scl.y, scl.z],
  });
+ };
+ for (const id of selectedIdsRef.current) {
+ const g = groupsRef.current.get(id);
+ if (g) {
+ for (const cid of g.childIds) {
+ const mesh = t.meshes.get(cid);
+ const meta = objectsRef.current.find((o) => o.id === cid);
+ if (mesh && meta) pushMesh(mesh, meta);
+ }
+ } else {
+ const mesh = t.meshes.get(id);
+ const meta = objectsRef.current.find((o) => o.id === id);
+ if (mesh && meta) pushMesh(mesh, meta);
+ }
  }
  if (items.length) clipboardRef.current = items;
  }, []);
@@ -539,6 +578,60 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  setCanUndo(false); setCanRedo(false);
  }, [rebuildFromSnapshot]);
 
+ const downloadBlob = (blob: Blob, filename: string) => {
+ const url = URL.createObjectURL(blob);
+ const a = document.createElement("a");
+ a.href = url; a.download = filename;
+ document.body.appendChild(a); a.click(); a.remove();
+ URL.revokeObjectURL(url);
+ };
+
+ const exportJSON = useCallback(() => {
+ const snap = captureSnapshot();
+ const blob = new Blob([JSON.stringify(snap, null, 2)], { type: "application/json" });
+ downloadBlob(blob, "utilihub-scene.json");
+ }, [captureSnapshot]);
+
+ const exportSTL = useCallback(() => {
+ const t = threeRef.current;
+ if (!t) return;
+ const { THREE } = t;
+ const lines: string[] = ["solid utilihub"];
+ const vA = new THREE.Vector3(), vB = new THREE.Vector3(), vC = new THREE.Vector3();
+ const n = new THREE.Vector3();
+ for (const o of objectsRef.current) {
+ if (groupsRef.current.has(o.id)) continue;
+ const mesh = t.meshes.get(o.id);
+ if (!mesh?.isMesh || !mesh.geometry) continue;
+ mesh.updateMatrixWorld(true);
+ const geo = mesh.geometry;
+ const posAttr = geo.attributes?.position;
+ if (!posAttr) continue;
+ const idx = geo.index;
+ const face = (i0: number, i1: number, i2: number) => {
+ vA.fromBufferAttribute(posAttr, i0).applyMatrix4(mesh.matrixWorld);
+ vB.fromBufferAttribute(posAttr, i1).applyMatrix4(mesh.matrixWorld);
+ vC.fromBufferAttribute(posAttr, i2).applyMatrix4(mesh.matrixWorld);
+ n.crossVectors(vB.clone().sub(vA), vC.clone().sub(vA)).normalize();
+ lines.push(` facet normal ${n.x} ${n.y} ${n.z}`);
+ lines.push("  outer loop");
+ lines.push(`   vertex ${vA.x} ${vA.y} ${vA.z}`);
+ lines.push(`   vertex ${vB.x} ${vB.y} ${vB.z}`);
+ lines.push(`   vertex ${vC.x} ${vC.y} ${vC.z}`);
+ lines.push("  endloop");
+ lines.push(" endfacet");
+ };
+ if (idx) {
+ for (let i = 0; i < idx.count; i += 3) face(idx.getX(i), idx.getX(i + 1), idx.getX(i + 2));
+ } else {
+ for (let i = 0; i < posAttr.count; i += 3) face(i, i + 1, i + 2);
+ }
+ }
+ lines.push("endsolid utilihub");
+ const blob = new Blob([lines.join("\n")], { type: "model/stl" });
+ downloadBlob(blob, "utilihub-scene.stl");
+ }, []);
+
  const undo = useCallback(() => {
  if (historyRef.current.length === 0) return;
  const current = captureSnapshot(); const prev = historyRef.current.pop()!;
@@ -578,6 +671,6 @@ export function useModelerCore(locale: "en" | "es" = "en") {
  modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, nudgeSelected, setSizeAxis,
  addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
  setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
- copySelected, cutSelected, pasteClipboard,
+ copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL,
  };
 }
