@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
@@ -8,7 +10,6 @@ const DESKTOP = {
   src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
 };
 
-/** Prefer a mobile-sized unit; if the network still serves 728×90, CSS scales it down. */
 const MOBILE = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
   width: 320,
@@ -16,10 +17,11 @@ const MOBILE = {
   src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
 };
 
-/** Home banner — only after marketing cookie consent. */
+/** Home banner. On mobile, scale down if the network injects a wider creative. */
 export function AdBanner() {
   const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
   const [allowed, setAllowed] = useState(false);
+  const [scale, setScale] = useState(1);
 
   useEffect(() => {
     setAllowed(hasMarketingConsent());
@@ -35,6 +37,21 @@ export function AdBanner() {
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
   }, []);
+
+  useEffect(() => {
+    if (viewport !== "mobile") {
+      setScale(1);
+      return;
+    }
+    const updateScale = () => {
+      // Fit a 728-wide creative into the usable content width (padding ~16px each side).
+      const usable = Math.max(280, window.innerWidth - 32);
+      setScale(Math.min(1, usable / 728));
+    };
+    updateScale();
+    window.addEventListener("resize", updateScale);
+    return () => window.removeEventListener("resize", updateScale);
+  }, [viewport]);
 
   useEffect(() => {
     if (!allowed || !viewport) return;
@@ -60,26 +77,32 @@ export function AdBanner() {
   if (!allowed || !viewport) return null;
 
   const isMobile = viewport === "mobile";
-  const minH = isMobile ? 50 : 90;
+  const minH = isMobile ? Math.ceil(90 * scale) : 90;
 
   return (
     <div
-      className={
-        isMobile
-          ? "mx-auto w-full max-w-full overflow-x-hidden py-2"
-          : "mx-auto flex w-full max-w-[728px] items-center justify-center overflow-hidden py-2"
-      }
+      className="mx-auto w-full max-w-full overflow-x-hidden py-2"
       aria-label="Advertisement"
     >
       <div
-        id="utilihub-ad-banner"
-        className={
-          isMobile
-            ? "mx-auto flex w-full max-w-[320px] items-center justify-center [&_iframe]:max-w-full [&_iframe]:!h-auto"
-            : "flex w-full items-center justify-center"
-        }
-        style={{ minHeight: minH }}
-      />
+        className="mx-auto flex items-center justify-center"
+        style={{
+          minHeight: minH,
+          width: isMobile ? 728 * scale : undefined,
+          maxWidth: "100%",
+        }}
+      >
+        <div
+          id="utilihub-ad-banner"
+          className="flex items-center justify-center [&_iframe]:max-w-none"
+          style={{
+            width: isMobile ? 728 : 728,
+            minHeight: isMobile ? 90 : 90,
+            transform: isMobile && scale < 1 ? `scale(${scale})` : undefined,
+            transformOrigin: "top center",
+          }}
+        />
+      </div>
     </div>
   );
 }
