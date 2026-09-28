@@ -10,7 +10,6 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SpanishSiteHeader } from "@/components/SpanishSiteHeader";
 import { SpanishSiteFooter } from "@/components/SpanishSiteFooter";
 import { AdsterraSocialBar } from "@/components/AdsterraSocialBar";
-import { CookieConsentBanner } from "@/components/CookieConsentBanner";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage, websiteSchema } from "@/lib/seo";
 import { useShareableParams } from "@/hooks/use-shareable-params";
 import { useDailyStreak } from "@/hooks/use-daily-streak";
@@ -146,7 +145,6 @@ function RootComponent() {
       </main>
       {isSpanish ? <SpanishSiteFooter /> : <SiteFooter />}
       <AdsterraSocialBar />
-      <CookieConsentBanner />
       <Analytics />
       <SpeedInsights />
     </QueryClientProvider>
