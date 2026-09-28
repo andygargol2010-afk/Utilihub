@@ -46,20 +46,30 @@ export function snapVal(n: number, step: number) {
 
 export function makeGeometry(THREE: any, kind: ShapeKind) {
   switch (kind) {
-    case "sphere": return new THREE.SphereGeometry(0.55, 48, 32);
-    case "cylinder": return new THREE.CylinderGeometry(0.45, 0.45, 1.1, 40);
-    case "cone": return new THREE.ConeGeometry(0.5, 1.1, 40);
+    case "sphere": return new THREE.SphereGeometry(0.55, 64, 48);
+    case "cylinder": return new THREE.CylinderGeometry(0.45, 0.45, 1.1, 48);
+    case "cone": return new THREE.ConeGeometry(0.5, 1.1, 48);
     case "plane": return new THREE.BoxGeometry(1.4, 0.06, 1.4);
-    case "torus": return new THREE.TorusGeometry(0.55, 0.2, 24, 48);
+    case "torus": return new THREE.TorusGeometry(0.55, 0.2, 32, 64);
     case "prism": return new THREE.CylinderGeometry(0.55, 0.55, 1.1, 3);
-    case "tube": return new THREE.CylinderGeometry(0.28, 0.28, 1.2, 32);
+    case "tube": return new THREE.CylinderGeometry(0.28, 0.28, 1.2, 40);
     default: return new THREE.BoxGeometry(1, 1, 1);
   }
 }
 
-export function makeMaterial(THREE: any, color: string, metalness = 0.18, roughness = 0.32) {
+export function makeMaterial(THREE: any, color: string, metalness = 0.12, roughness = 0.28) {
   return new THREE.MeshPhysicalMaterial({
-    color, metalness, roughness, clearcoat: 0.35, clearcoatRoughness: 0.25, reflectivity: 0.4,
+    color,
+    metalness,
+    roughness,
+    clearcoat: 0.55,
+    clearcoatRoughness: 0.18,
+    reflectivity: 0.55,
+    sheen: 0.15,
+    sheenRoughness: 0.4,
+    sheenColor: 0xffffff,
+    envMapIntensity: 0.85,
+    flatShading: false,
   });
 }
 
