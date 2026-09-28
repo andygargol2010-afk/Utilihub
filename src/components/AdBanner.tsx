@@ -8,6 +8,7 @@ const DESKTOP = {
   src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
 };
 
+/** Prefer a mobile-sized unit; if the network still serves 728×90, CSS scales it down. */
 const MOBILE = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
   width: 320,
@@ -58,14 +59,27 @@ export function AdBanner() {
 
   if (!allowed || !viewport) return null;
 
-  const minH = viewport === "desktop" ? 90 : 50;
+  const isMobile = viewport === "mobile";
+  const minH = isMobile ? 50 : 90;
 
   return (
     <div
-      id="utilihub-ad-banner"
-      className="mx-auto flex w-full max-w-[728px] items-center justify-center overflow-hidden py-2"
-      style={{ minHeight: minH }}
+      className={
+        isMobile
+          ? "mx-auto w-full max-w-full overflow-x-hidden py-2"
+          : "mx-auto flex w-full max-w-[728px] items-center justify-center overflow-hidden py-2"
+      }
       aria-label="Advertisement"
-    />
+    >
+      <div
+        id="utilihub-ad-banner"
+        className={
+          isMobile
+            ? "mx-auto flex w-full max-w-[320px] items-center justify-center [&_iframe]:max-w-full [&_iframe]:!h-auto"
+            : "flex w-full items-center justify-center"
+        }
+        style={{ minHeight: minH }}
+      />
+    </div>
   );
 }
