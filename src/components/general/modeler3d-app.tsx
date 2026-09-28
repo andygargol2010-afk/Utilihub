@@ -407,8 +407,17 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
               ))}
               <span className="mx-0.5 h-4 w-px bg-white/15" />
               {COLORS.map((c) => (
-                <button key={c} type="button" title={c} onClick={() => applyColor(c)} className={`size-5 shrink-0 rounded-full border-2 ${color === c ? "scale-110 border-white" : "border-transparent"}`} style={{ backgroundColor: c }} />
+                <button key={c} type="button" title={c} onClick={() => applyColor(c)} className={`size-4 shrink-0 rounded-full border-2 ${color.toLowerCase() === c.toLowerCase() ? "scale-125 border-white ring-1 ring-white/40" : "border-black/20"}`} style={{ backgroundColor: c }} />
               ))}
+              <label title={es ? "Color personalizado" : "Custom color"} className="relative ml-0.5 flex size-5 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-white/40 bg-white/10 hover:border-white/70">
+                <span className="pointer-events-none absolute text-[10px] font-bold text-rose-50">+</span>
+                <input
+                  type="color"
+                  value={/^#[0-9a-fA-F]{6}$/.test(color) ? color : "#a78bfa"}
+                  onChange={(e) => applyColor(e.target.value)}
+                  className="absolute inset-0 cursor-pointer opacity-0"
+                />
+              </label>
             </div>
           </div>
         )}
