@@ -13,7 +13,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
     modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, nudgeSelected, setSizeAxis,
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
-    copySelected, cutSelected, pasteClipboard,
+    copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL,
   } = core;
 
   type DraftKey = string;
@@ -86,7 +86,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
             }
           } else {
             const pid = selectedIdRef.current;
-            if (pid && !groupsRef.current.has(pid)) readTransform(pid);
+            if (pid) readTransform(pid);
           }
         });
         transform.addEventListener("objectChange", () => {
@@ -152,7 +152,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
             const target = g?.groupObj || meshes.get(primary);
             if (target) transform.attach(target);
             transform.setMode(modeRef.current);
-            if (!g) readTransform(primary);
+            readTransform(primary);
             setCtxMenu(null);
           } else {
             if (!event.shiftKey) {
@@ -214,6 +214,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
             const g = groupsRef.current.get(primary);
             const target = g?.groupObj || meshes.get(primary);
             if (target) { transform.attach(target); transform.setMode(modeRef.current); }
+            readTransform(primary);
           }
         };
         const onPointerUp = (event: PointerEvent) => endMarquee(event, true);
@@ -344,6 +345,8 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
                 {snap === 0 ? "Snap:off" : `Snap:${snap}`}
               </button>
               <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[11px] font-semibold text-rose-50">{es ? "Limpiar" : "Clear"}</button>
+              <button type="button" title="Export JSON" onClick={exportJSON} className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[11px] font-semibold text-rose-50">JSON</button>
+              <button type="button" title="Export STL" onClick={exportSTL} className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[11px] font-semibold text-rose-50">STL</button>
               <span className="mx-0.5 h-4 w-px bg-white/15" />
               {shapeList(es).map((s) => (
                 <button key={s.kind} type="button" onClick={() => addShape(s.kind)} title={s.label} className="rounded-md border border-white/10 bg-white/5 px-1.5 py-1 text-[11px] font-semibold text-rose-50 hover:bg-white/15">{s.icon}</button>
@@ -355,9 +358,10 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
             </div>
           </div>
         )}
-        {selectedId && ready && !groupIds.includes(selectedId) && (
+        {selectedId && ready && (
           <div className="pointer-events-auto absolute bottom-2 left-2 z-10 max-w-[calc(100%-1rem)] overflow-x-auto rounded-lg border border-white/10 bg-black/80 p-2 text-[11px] text-rose-50 backdrop-blur-sm">
             <div className="flex flex-wrap gap-3">
+              {!groupIds.includes(selectedId) && (
               <div className="flex flex-col gap-0.5">
                 <span className="text-[9px] font-bold text-rose-200/70">{es ? "Tamaño" : "Size"}</span>
                 {(["X","Y","Z"] as const).map((lab, axis) => {
@@ -390,6 +394,7 @@ export function Modeler3DApp({ locale = "en" }: { tool: GeneralTool; locale?: "e
                   );
                 })}
               </div>
+              )}
               <div className="flex flex-col gap-0.5">
                 <span className="text-[9px] font-bold text-rose-200/70">{es ? "Posición" : "Position"}</span>
                 {(["X","Y","Z"] as const).map((lab, axis) => {
