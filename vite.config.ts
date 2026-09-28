@@ -15,7 +15,25 @@ export default defineConfig({
       preset: process.env.VERCEL ? "vercel" : undefined,
     }),
   ],
-  // Note: aggressive rollup manualChunks (esp. for @tanstack/*) breaks
-  // Nitro/TanStack Start SSR (createRequestHandler becomes undefined).
-  // Heavy libs are still code-split via React.lazy in tool registries.
+  build: {
+    target: "es2022",
+    cssCodeSplit: true,
+    // Avoid modulepreload polyfill overhead on modern browsers
+    modulePreload: { polyfill: false },
+    rollupOptions: {
+      output: {
+        // Only split heavy optional libs. Never chunk @tanstack/* — breaks Nitro SSR.
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+          if (id.includes("/three/") || id.endsWith("/three")) return "vendor-three";
+          if (id.includes("pdfjs-dist") || id.includes("pdf-lib")) return "vendor-pdf";
+          if (id.includes("/xlsx") || id.includes("node_modules/xlsx")) return "vendor-xlsx";
+          if (id.includes("jspdf") || id.includes("html2canvas")) return "vendor-export";
+        },
+      },
+    },
+  },
+  optimizeDeps: {
+    include: ["react", "react-dom", "@tanstack/react-router", "@tanstack/react-query"],
+  },
 });
