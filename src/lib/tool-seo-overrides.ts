@@ -6,6 +6,8 @@ import { TOOL_SEO_OVERRIDES_BASE_B } from "./tool-seo-overrides-base-b";
 import { TOOL_SEO_OVERRIDES_BLOCK3 } from "./tool-seo-overrides-block3";
 import { TOOL_SEO_OVERRIDES_BLOCK4 } from "./tool-seo-overrides-block4";
 import { TOOL_SEO_OVERRIDES_GROWTH } from "./tool-seo-overrides-growth";
+import { TOOL_SEO_OVERRIDES_GROWTH_A } from "./tool-seo-overrides-growth-a";
+import { TOOL_SEO_OVERRIDES_GROWTH_B } from "./tool-seo-overrides-growth-b";
 import { TOOL_SEO_OVERRIDES_GAP } from "./tool-seo-overrides-gap";
 
 export type ToolSeoOverride = {
@@ -28,6 +30,8 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...(TOOL_SEO_OVERRIDES_BLOCK3 as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_BLOCK4 as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_GROWTH as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_GROWTH_A as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_GROWTH_B as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_GAP as Record<string, ToolSeoOverride>),
 };
 
