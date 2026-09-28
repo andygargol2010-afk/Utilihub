@@ -36,6 +36,9 @@ const SeoGrowthTool = lazy(() => import("./SeoGrowthTool").then((m) => ({ defaul
 const PercentAdvancedTool = lazy(() =>
   import("./PercentAdvancedTool").then((m) => ({ default: m.PercentAdvancedTool })),
 );
+const AlgebraAdvancedTool = lazy(() =>
+  import("./AlgebraAdvancedTool").then((m) => ({ default: m.AlgebraAdvancedTool })),
+);
 const GpaCalculator = lazy(() => import("./GpaCalculator").then((m) => ({ default: m.GpaCalculator })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
@@ -45,6 +48,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
+  if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
   if (tool.slug === "secuencias") return SequenceTool as ToolComp;
   if (tool.slug === "potencias-y-raices") return PowerRootTool as ToolComp;
   if (tool.slug === "distribucion-normal") return NormalDistributionTool as ToolComp;
