@@ -146,9 +146,9 @@ export function TrigSuiteTool({ tool, locale = "en" }: { tool: GeneralTool; loca
               </>
             ) : (
               <>
-                <button type="button" onClick={() => setWhich(0)} className={`rounded-full px-3 py-1 text-xs font-semibold ${which === 0 ? "bg-primary text-primary-foreground" : "border border-border"}`}>Opp 30°</button>
-                <button type="button" onClick={() => setWhich(1)} className={`rounded-full px-3 py-1 text-xs font-semibold ${which === 1 ? "bg-primary text-primary-foreground" : "border border-border"}`}>Opp 60°</button>
-                <button type="button" onClick={() => setWhich(2)} className={`rounded-full px-3 py-1 text-xs font-semibold ${which === 2 ? "bg-primary text-primary-foreground" : "border border-border"}`}>Hyp</button>
+                <button type="button" onClick={() => setWhich(0)} className={`rounded-full px-3 py-1 text-xs font-semibold ${which === 0 ? "bg-primary text-primary-foreground" : "border border-border"}`}>{es ? "Opuesto a 30°" : "Opp. 30°"}</button>
+                <button type="button" onClick={() => setWhich(1)} className={`rounded-full px-3 py-1 text-xs font-semibold ${which === 1 ? "bg-primary text-primary-foreground" : "border border-border"}`}>{es ? "Opuesto a 60°" : "Opp. 60°"}</button>
+                <button type="button" onClick={() => setWhich(2)} className={`rounded-full px-3 py-1 text-xs font-semibold ${which === 2 ? "bg-primary text-primary-foreground" : "border border-border"}`}>{es ? "Hipotenusa" : "Hyp"}</button>
               </>
             )}
           </div>
@@ -159,13 +159,13 @@ export function TrigSuiteTool({ tool, locale = "en" }: { tool: GeneralTool; loca
         {(slug === "circulo-unitario" || slug === "angulo-referencia" || slug === "grados-radianes") && (
           <label className="space-y-1.5">
             <span className="text-sm font-semibold">{slug === "grados-radianes" ? (mode === "toRad" ? (es ? "Grados" : "Degrees") : (es ? "Radianes" : "Radians")) : (es ? "Ángulo (°)" : "Angle (°)")}</span>
-            <input type="number" value={angle} onChange={(e) => setAngle(e.target.value)} placeholder="e.g. 45" className="h-12 w-full rounded-xl border border-border bg-background px-3" />
+            <input type="number" value={angle} onChange={(e) => setAngle(e.target.value)} placeholder={es ? "ej. 45" : "e.g. 45"} className="h-12 w-full rounded-xl border border-border bg-background px-3" />
           </label>
         )}
         {slug === "triangulo-especial" && (
           <label className="space-y-1.5">
             <span className="text-sm font-semibold">{es ? "Longitud conocida" : "Known length"}</span>
-            <input type="number" value={side} onChange={(e) => setSide(e.target.value)} placeholder="e.g. 5" className="h-12 w-full rounded-xl border border-border bg-background px-3" />
+            <input type="number" value={side} onChange={(e) => setSide(e.target.value)} placeholder={es ? "ej. 5" : "e.g. 5"} className="h-12 w-full rounded-xl border border-border bg-background px-3" />
           </label>
         )}
         {slug === "ternas-pitagoricas" && (
