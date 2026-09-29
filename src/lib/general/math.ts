@@ -23,5 +23,4 @@ export const MATH_TOOLS=[
  m("notacion-cientifica","Scientific notation","number","Convert numbers to scientific notation."),
  m("mcd-mcm","GCD and LCM","number","Calculate greatest common divisor and least common multiple."),
  m("secuencias","Number sequences","number","Generate terms of arithmetic and geometric sequences."),
- m("bases-numericas","Number bases","number","Convert numbers between common bases."),
 ];
