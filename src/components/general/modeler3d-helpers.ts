@@ -1,6 +1,11 @@
 export type ShapeKind = "box" | "sphere" | "cylinder" | "cone" | "plane" | "torus" | "prism" | "tube";
 
-export type SceneObj = { id: string; name: string; kind: ShapeKind; color: string };
+export type MatPreset = "default" | "matte" | "metal" | "glass";
+
+/** 1 world unit ≈ 10 cm for measurement labels */
+export const UNIT_CM = 10;
+
+export type SceneObj = { id: string; name: string; kind: ShapeKind; color: string; matPreset?: MatPreset };
 
 export type HistoryEntry = {
   objects: SceneObj[];
@@ -78,11 +83,48 @@ export function makeGeometry(THREE: any, kind: ShapeKind) {
   }
 }
 
-export function makeMaterial(THREE: any, color: string, metalness = 0.12, roughness = 0.28) {
+export function makeMaterial(THREE: any, color: string, preset: MatPreset = "default") {
+  if (preset === "matte") {
+    return new THREE.MeshStandardMaterial({
+      color,
+      metalness: 0,
+      roughness: 0.92,
+      flatShading: false,
+    });
+  }
+  if (preset === "metal") {
+    return new THREE.MeshPhysicalMaterial({
+      color,
+      metalness: 1,
+      roughness: 0.18,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.12,
+      reflectivity: 1,
+      envMapIntensity: 1.2,
+      flatShading: false,
+    });
+  }
+  if (preset === "glass") {
+    return new THREE.MeshPhysicalMaterial({
+      color,
+      metalness: 0,
+      roughness: 0.05,
+      transmission: 0.92,
+      transparent: true,
+      opacity: 0.45,
+      thickness: 0.6,
+      ior: 1.45,
+      clearcoat: 1,
+      clearcoatRoughness: 0.05,
+      envMapIntensity: 1,
+      flatShading: false,
+    });
+  }
+  // default — same look as before (color bug fix path)
   return new THREE.MeshPhysicalMaterial({
     color,
-    metalness,
-    roughness,
+    metalness: 0.12,
+    roughness: 0.28,
     clearcoat: 0.55,
     clearcoatRoughness: 0.18,
     reflectivity: 0.55,
@@ -92,6 +134,15 @@ export function makeMaterial(THREE: any, color: string, metalness = 0.12, roughn
     envMapIntensity: 0.85,
     flatShading: false,
   });
+}
+
+export function matPresetList(es: boolean): { id: MatPreset; label: string }[] {
+  return [
+    { id: "default", label: es ? "Estándar" : "Default" },
+    { id: "matte", label: es ? "Mate" : "Matte" },
+    { id: "metal", label: es ? "Metal" : "Metal" },
+    { id: "glass", label: es ? "Vidrio" : "Glass" },
+  ];
 }
 
 export function shapeList(es: boolean): { kind: ShapeKind; label: string; icon: string }[] {
