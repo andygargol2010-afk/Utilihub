@@ -1,7 +1,10 @@
 import { allToolBySlug, type CatalogTool } from "./all-tools";
 
 export type WorkKit = {
+  /** Internal / Spanish path slug (stable for ES routes). */
   slug: string;
+  /** Public English path segment for /kits/$slug */
+  englishSlug: string;
   name: string;
   eyebrow: string;
   description: string;
@@ -12,6 +15,7 @@ export type WorkKit = {
 export const WORK_KITS: WorkKit[] = [
   {
     slug: "freelancers",
+    englishSlug: "freelancers",
     name: "Freelancer kit",
     eyebrow: "Work and deliver better",
     description: "Prepare a professional delivery: review text, organize files, adjust images, and calculate amounts.",
@@ -20,6 +24,7 @@ export const WORK_KITS: WorkKit[] = [
   },
   {
     slug: "seo-y-contenido",
+    englishSlug: "seo-content",
     name: "SEO and content",
     eyebrow: "Research and publish",
     description: "Clean and prepare content for a page: length, URL, expressions, and lighter markup.",
@@ -28,6 +33,7 @@ export const WORK_KITS: WorkKit[] = [
   },
   {
     slug: "preparar-documentos",
+    englishSlug: "prepare-documents",
     name: "Prepare documents",
     eyebrow: "Before you send",
     description: "Validate data, convert formats, and organize PDF documents and images directly in the browser.",
@@ -36,6 +42,7 @@ export const WORK_KITS: WorkKit[] = [
   },
   {
     slug: "archivos-y-formatos",
+    englishSlug: "files-and-formats",
     name: "Files and formats",
     eyebrow: "Convert without uploading files",
     description: "Handle the most common conversions between images, PDF, data, and storage units.",
@@ -44,6 +51,7 @@ export const WORK_KITS: WorkKit[] = [
   },
   {
     slug: "desarrollo-web",
+    englishSlug: "web-development",
     name: "Web development",
     eyebrow: "Debug and transform data",
     description: "Format, validate, encode, and transform data and web snippets without leaving the browser.",
@@ -52,6 +60,7 @@ export const WORK_KITS: WorkKit[] = [
   },
   {
     slug: "estudiantes",
+    englishSlug: "students",
     name: "Student tools",
     eyebrow: "Study with focus",
     description: "Solve calculations, organize dates, and prepare study materials with fast utilities.",
@@ -64,6 +73,18 @@ export function kitTools(kit: WorkKit): CatalogTool[] {
   return kit.toolSlugs.map(allToolBySlug).filter((tool): tool is CatalogTool => Boolean(tool));
 }
 
+/** Resolve by Spanish slug, English public slug, or legacy alias. */
 export function kitBySlug(slug: string) {
-  return WORK_KITS.find((kit) => kit.slug === slug);
+  return (
+    WORK_KITS.find((kit) => kit.slug === slug) ??
+    WORK_KITS.find((kit) => kit.englishSlug === slug)
+  );
+}
+
+export function kitEnglishPath(kit: WorkKit) {
+  return `/kits/${kit.englishSlug}`;
+}
+
+export function kitSpanishPath(kit: WorkKit) {
+  return `/es/kits/${kit.slug}`;
 }
