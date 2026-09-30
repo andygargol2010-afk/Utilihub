@@ -15,7 +15,7 @@ export type ToolSeoOverrideBlock4 = {
 
 export const TOOL_SEO_OVERRIDES_BLOCK4: Record<string, ToolSeoOverrideBlock4> = {
   "regla-de-tres": {
-    metaTitle: "Rule of Three Calculator — Direct & Inverse | UtiliHub",
+    metaTitle: "Rule of Three Calculator — Direct and Inverse | UtiliHub",
     metaTitleEs: "Calculadora de regla de tres directa e inversa | UtiliHub",
     metaDescription:
       "Solve direct and inverse proportions with the rule of three. Free proportion calculator, no signup.",
