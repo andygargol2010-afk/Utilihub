@@ -20,6 +20,7 @@ import { TOOL_SEO_OVERRIDES_SEQUENCE } from "./tool-seo-overrides-sequence";
 import { TOOL_SEO_OVERRIDES_TRIG } from "./tool-seo-overrides-trig";
 import { TOOL_SEO_OVERRIDES_EXPLOG } from "./tool-seo-overrides-explog";
 import { TOOL_SEO_OVERRIDES_MATRIX } from "./tool-seo-overrides-matrix";
+import { TOOL_SEO_OVERRIDES_CORE } from "./tool-seo-overrides-core";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -55,6 +56,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...(TOOL_SEO_OVERRIDES_TRIG as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_EXPLOG as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_MATRIX as Record<string, ToolSeoOverride>),
+  ...(TOOL_SEO_OVERRIDES_CORE as Record<string, ToolSeoOverride>),
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
