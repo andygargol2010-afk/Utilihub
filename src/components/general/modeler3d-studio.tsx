@@ -15,10 +15,12 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
     copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL,
+    clearSelection, dropToFloor, alignSelection, objectLimitMsg,
   } = core;
 
   type DraftKey = string;
   const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const [showHelp, setShowHelp] = useState(false);
   const draft = (key: DraftKey, fallback: number, digits: number) =>
     drafts[key] !== undefined ? drafts[key]! : String(Number(fallback.toFixed(digits)));
   const setDraft = (key: DraftKey, text: string) => setDrafts((d) => ({ ...d, [key]: text }));
@@ -52,10 +54,12 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
       if (mod && (e.key === "v" || e.key === "V")) { e.preventDefault(); pasteClipboard(); return; }
       if (mod && (e.key === "d" || e.key === "D")) { e.preventDefault(); copySelected(); pasteClipboard(); return; }
       if (mod) return;
-      if (e.key === "v" || e.key === "V") setMode("translate");
-      if (e.key === "r" || e.key === "R") setMode("rotate");
-      if (e.key === "s" || e.key === "S") setMode("scale");
-      if (e.key === "Delete" || e.key === "Backspace") { e.preventDefault(); deleteSelected(); }
+      if (e.key === "Escape") { e.preventDefault(); clearSelection(); setCtxMenu(null); setShowHelp(false); return; }
+      if (e.key === "?" || (e.shiftKey && e.key === "/")) { e.preventDefault(); setShowHelp((v) => !v); return; }
+      if (e.key === "g" || e.key === "G" || e.key === "v" || e.key === "V") { setMode("translate"); return; }
+      if (e.key === "r" || e.key === "R") { setMode("rotate"); return; }
+      if (e.key === "s" || e.key === "S") { setMode("scale"); return; }
+      if (e.key === "Delete" || e.key === "Backspace") { e.preventDefault(); deleteSelected(); return; }
       if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "PageUp" || e.key === "PageDown") {
         e.preventDefault();
         const step = (snap > 0 ? snap : 0.1) * (e.shiftKey ? 5 : 1);
@@ -71,11 +75,38 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [snap, undo, redo, groupSelected, ungroupSelected, copySelected, cutSelected, pasteClipboard, deleteSelected, setMode, nudgeSelected]);
+  }, [snap, undo, redo, groupSelected, ungroupSelected, copySelected, cutSelected, pasteClipboard, deleteSelected, setMode, nudgeSelected, clearSelection, setCtxMenu]);
 
   return (
     <div ref={studioRef} className={`relative w-full overflow-hidden bg-[#0a0610] ${fullscreen ? "fixed inset-0 z-50 h-full rounded-none border-0" : "min-h-[520px] h-[min(75vh,720px)] rounded-xl border border-rose-500/25 shadow-[0_0_40px_rgba(244,63,94,0.08)]"}`}>
       <div ref={mountRef} className="absolute inset-0" />
+      {objectLimitMsg && (
+        <div className="pointer-events-none absolute left-1/2 top-14 z-30 -translate-x-1/2 rounded-lg border border-amber-400/40 bg-amber-950/90 px-3 py-2 text-xs font-semibold text-amber-50 shadow-lg">
+          {objectLimitMsg}
+        </div>
+      )}
+      {showHelp && (
+        <div className="absolute bottom-24 right-2.5 z-30 max-h-[min(70vh,28rem)] w-[min(100%-1.25rem,20rem)] overflow-y-auto rounded-xl border border-white/15 bg-black/95 p-3 text-[11px] text-rose-50 shadow-2xl backdrop-blur-md sm:bottom-28">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <p className="text-xs font-bold uppercase tracking-wide text-rose-200">{es ? "Atajos de teclado" : "Keyboard shortcuts"}</p>
+            <button type="button" className="rounded px-1.5 py-0.5 text-rose-200/80 hover:bg-white/10" onClick={() => setShowHelp(false)}>✕</button>
+          </div>
+          <ul className="space-y-1.5 leading-snug text-rose-100/90">
+            <li><kbd className="rounded bg-white/10 px-1">G</kbd> / <kbd className="rounded bg-white/10 px-1">V</kbd> — {es ? "Mover" : "Move"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">R</kbd> — {es ? "Rotar" : "Rotate"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">S</kbd> — {es ? "Escalar" : "Scale"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">Del</kbd> — {es ? "Eliminar" : "Delete"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">Esc</kbd> — {es ? "Deseleccionar" : "Deselect"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">Ctrl+D</kbd> — {es ? "Duplicar" : "Duplicate"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">Ctrl+C/X/V</kbd> — {es ? "Copiar / cortar / pegar" : "Copy / cut / paste"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">Ctrl+Z</kbd> / <kbd className="rounded bg-white/10 px-1">Ctrl+Y</kbd> — {es ? "Deshacer / rehacer" : "Undo / redo"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">Ctrl+G</kbd> — {es ? "Agrupar" : "Group"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">Ctrl+Shift+G</kbd> — {es ? "Desagrupar" : "Ungroup"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">←↑→↓</kbd> — {es ? "Empujar (Alt = altura)" : "Nudge (Alt = height)"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">?</kbd> — {es ? "Esta ayuda" : "This help"}</li>
+          </ul>
+        </div>
+      )}
       {!ready && !error && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70">
           <p className="text-sm text-rose-100">{es ? "Cargando modelador 3D…" : "Loading 3D modeler…"}</p>
@@ -97,18 +128,47 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
                 <button type="button" onClick={groupSelected} disabled={selectedIds.length < 2} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs">{es ? "Agrupar" : "Group"}</button>
                 <button type="button" onClick={ungroupSelected} disabled={!selectedIds.some((id) => groupIds.includes(id))} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs">{es ? "Desagrupar" : "Ungroup"}</button>
                 <button type="button" onClick={deleteSelected} disabled={selectedIds.length === 0} className="rounded-lg border border-rose-500/40 bg-rose-950/60 px-2 py-1.5 text-[11px] font-semibold text-rose-100 hover:bg-rose-900/70 disabled:opacity-35 sm:px-3 sm:text-xs">{es ? "Eliminar" : "Delete"}</button>
+                <button type="button" onClick={() => { copySelected(); pasteClipboard(); }} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs" title="Ctrl+D">{es ? "Duplicar" : "Duplicate"}</button>
+                <button type="button" onClick={dropToFloor} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs" title={es ? "Apoyar en el piso" : "Drop to floor"}>{es ? "Piso" : "Floor"}</button>
+                <button type="button" onClick={() => setShowHelp((v) => !v)} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs" title={es ? "Atajos" : "Shortcuts"}>?</button>
               </div>
               <span className="hidden h-6 w-px bg-white/15 sm:block" />
               <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
                 <span className="hidden text-[10px] font-bold uppercase tracking-wide text-rose-200/50 sm:inline">View</span>
                 <button type="button" onClick={toggleFullscreen} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">{fullscreen ? (es ? "Salir" : "Exit") : (es ? "Pantalla" : "Full")}</button>
                 <button type="button" title={es ? "Snap de rejilla" : "Grid snap"} onClick={() => {
-                  const steps = [0, 0.1, 0.25, 0.5, 1];
+                  const steps = [0, 0.1, 0.5, 1];
                   const i = steps.indexOf(snap);
                   setSnap(steps[(i + 1) % steps.length]!);
                 }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">
                   {snap === 0 ? "Snap off" : `Snap ${snap}`}
                 </button>
+            {selectedIds.length >= 2 && (
+              <div className="mt-1.5 flex flex-wrap items-center gap-1 border-t border-white/10 pt-1.5">
+                <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/70">{es ? "Alinear" : "Align"}</span>
+                {([
+                  ["x", "min", es ? "X min" : "X min"],
+                  ["x", "center", es ? "X cen" : "X mid"],
+                  ["x", "max", es ? "X max" : "X max"],
+                  ["y", "min", es ? "Y min" : "Y min"],
+                  ["y", "center", es ? "Y cen" : "Y mid"],
+                  ["y", "max", es ? "Y max" : "Y max"],
+                  ["z", "min", es ? "Z min" : "Z min"],
+                  ["z", "center", es ? "Z cen" : "Z mid"],
+                  ["z", "max", es ? "Z max" : "Z max"],
+                ] as const).map(([axis, mode, lab]) => (
+                  <button
+                    key={`${axis}-${mode}`}
+                    type="button"
+                    onClick={() => alignSelection(axis, mode)}
+                    className="rounded border border-white/10 bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-rose-50 hover:bg-white/20"
+                  >
+                    {lab}
+                  </button>
+                ))}
+              </div>
+            )}
+
                 <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">{es ? "Limpiar" : "Clear"}</button>
                 <button type="button" title="Export JSON" onClick={exportJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">JSON</button>
                 <button type="button" title="Export STL" onClick={exportSTL} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">STL</button>
