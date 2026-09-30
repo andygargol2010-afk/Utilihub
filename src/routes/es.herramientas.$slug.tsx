@@ -1,5 +1,6 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Suspense, useEffect } from "react";
+import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { TOOL_UI_ES } from "@/components/tools/registry";
 import { GENERAL_TOOL_UI_ES } from "@/components/general/registry";
@@ -7,11 +8,13 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolSeoContent } from "@/components/ToolSeoContent";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
+import { ToolCard } from "@/components/ToolCard";
 import { allToolBySlug, ALL_CATEGORIES } from "@/lib/all-tools";
-import { englishToolPath } from "@/lib/route-slugs";
+import { englishToolPath, spanishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, cleanDescription, faqSchema, ogImage } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { toolSeoOverride } from "@/lib/tool-seo-overrides";
+import { journeyLabel, journeyTools } from "@/lib/discovery";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
@@ -38,7 +41,6 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
     const name = spanishToolName(tool);
     const category = spanishCategoryName(tool.category);
     const title = override?.metaTitleEs ?? `${name} gratis online | UtiliHub`;
-    // Prefer ES override; never fall back to English catalog description on /es/*
     const description = cleanDescription(
       override?.metaDescriptionEs ??
         `Herramienta gratuita de ${category.toLowerCase()} para usar directamente en el navegador: ${name}. Sin registro.`,
@@ -82,6 +84,8 @@ function SpanishToolPage() {
   const ui = TOOL_UI_ES[tool.slug] ?? GENERAL_TOOL_UI_ES[tool.slug];
   const showcase = getToolShowcase(tool.slug);
   const name = spanishToolName(tool);
+  const related = journeyTools(tool);
+  const nextStep = related[0];
   useEffect(() => {
     addRecent(tool.slug);
   }, [addRecent, tool.slug]);
@@ -124,6 +128,42 @@ function SpanishToolPage() {
         </div>
       </section>
       <AdsterraBanner />
+      {nextStep && (
+        <section className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5" aria-labelledby="next-step-es">
+          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Siguiente paso recomendado</p>
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 id="next-step-es" className="text-base font-black">{journeyLabel(tool)}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Después de usar {name}, continúa con {spanishToolName(nextStep)}.
+              </p>
+            </div>
+            <Link
+              to={spanishToolPath(nextStep) as "/es/herramientas/$slug"}
+              params={{ slug: nextStep.slug }}
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90"
+            >
+              Abrir siguiente <ArrowRight className="size-4" />
+            </Link>
+          </div>
+        </section>
+      )}
+      {related.length > 0 && (
+        <section className="mt-8" aria-labelledby="related-es">
+          <div className="mb-2 flex items-center justify-between">
+            <div>
+              <h2 id="related-es" className="text-base font-bold">Herramientas relacionadas</h2>
+              <p className="mt-1 text-xs text-muted-foreground">Mismo tipo de tarea, para seguir en el sitio.</p>
+            </div>
+            <span className="text-xs text-muted-foreground">{related.length}</span>
+          </div>
+          <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+            {related.map((t) => (
+              <ToolCard key={t.slug} tool={t} locale="es" />
+            ))}
+          </div>
+        </section>
+      )}
       <ToolSeoContent tool={tool} locale="es" />
     </main>
   );
