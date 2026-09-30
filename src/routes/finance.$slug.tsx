@@ -4,6 +4,7 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolCard } from "@/components/ToolCard";
 import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
+import type { CatalogTool } from "@/lib/all-tools";
 import { financeSeo } from "@/lib/finance-seo-content";
 import { toolByEnglishSlug, englishToolPath, englishToolSlug } from "@/lib/route-slugs";
 import { journeyLabel, journeyTools } from "@/lib/discovery";
@@ -83,6 +84,24 @@ export const Route = createFileRoute("/finance/$slug")({
   component: FinancialPage,
 });
 
+function FinanceNextLink({ tool }: { tool: CatalogTool }) {
+  const slug = englishToolSlug(tool);
+  const className =
+    "inline-flex min-h-11 items-center rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground";
+  if (tool.category === "finanzas") {
+    return (
+      <Link to="/finance/$slug" params={{ slug }} className={className}>
+        Open next
+      </Link>
+    );
+  }
+  return (
+    <Link to="/tools/$slug" params={{ slug }} className={className}>
+      Open next
+    </Link>
+  );
+}
+
 function FinancialPage() {
   const { tool } = Route.useLoaderData();
   const ui = FINANCIAL_UI[tool.slug];
@@ -131,18 +150,12 @@ function FinancialPage() {
           <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p>
           <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-base font-black">{journeyLabel({ slug: tool.slug, category: "finanzas" })}</h2>
+              <h2 className="text-base font-black">{journeyLabel({ slug: tool.slug, category: "finanzas" }, "en")}</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Continue with {next.name} to compare or complete the analysis.
               </p>
             </div>
-            <Link
-              to={englishToolPath(next) as "/finance/$slug"}
-              params={{ slug: englishToolSlug(next) }}
-              className="inline-flex min-h-11 items-center rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground"
-            >
-              Open next
-            </Link>
+            <FinanceNextLink tool={next} />
           </div>
         </section>
       )}
