@@ -14,7 +14,8 @@ const growth = (
   kind: string,
   summary: string,
   keywords: string[] = [],
-) => makeTool(slug, name, category, kind, summary, keywords, { mode: "seo-growth" });
+  extra: Record<string, unknown> = {},
+) => makeTool(slug, name, category, kind, summary, keywords, { mode: "seo-growth", ...extra });
 
 export const GAP_TOOLS = [
   text(
@@ -78,7 +79,12 @@ export const GAP_TOOLS = [
     "CUIT/CUIL validator",
     "productividad",
     "utility",
-    "Validate Argentine CUIT/CUIL numbers with check digit verification.",
-    ["cuit", "cuil", "validador cuit", "cuit argentina"],
+    "Validate Argentine CUIT/CUIL with the official AFIP check digit (format XX-XXXXXXXX-X). Free, local, no signup.",
+    ["cuit", "cuil", "cuit validator", "cuil validator", "afip check digit", "validador cuit", "cuit argentina"],
+    {
+      title: "CUIT/CUIL Validator — AFIP Check Digit Online | UtiliHub",
+      description:
+        "Validate Argentine CUIT/CUIL numbers with the official check-digit algorithm. Format XX-XXXXXXXX-X, free, runs in your browser.",
+    },
   ),
 ];
