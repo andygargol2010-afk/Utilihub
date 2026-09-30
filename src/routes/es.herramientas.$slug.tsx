@@ -40,10 +40,11 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
     const url = absoluteUrl(`/es/herramientas/${tool.slug}`);
     const name = spanishToolName(tool);
     const category = spanishCategoryName(tool.category);
-    const title = override?.metaTitleEs ?? `${name} gratis online | UtiliHub`;
+    const title =
+      override?.metaTitleEs ?? `${name} gratis online — ${category} | UtiliHub`;
     const description = cleanDescription(
       override?.metaDescriptionEs ??
-        `Herramienta gratuita de ${category.toLowerCase()} para usar directamente en el navegador: ${name}. Sin registro.`,
+        `${name}: herramienta gratuita de ${category.toLowerCase()}. Usala en el navegador, sin cuenta ni instalación. Resultados al instante en UtiliHub.`,
     );
     const englishUrl = absoluteUrl(englishToolPath(tool));
     const faqEs = override?.faqEs ?? [];
