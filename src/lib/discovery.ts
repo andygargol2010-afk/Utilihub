@@ -46,7 +46,8 @@ export const TOOL_JOURNEYS: Record<string, string[]> = {
   "uuid-generator": ["generador-de-contrasenas", "password-strength", "qr-wifi", "timestamp-generator"],
   "qr-wifi": ["generador-de-contrasenas", "uuid-generator", "password-strength", "slug-generator"],
 
-  "validador-cuit": ["uuid-generator", "generador-de-contrasenas", "qr-wifi", "slug-generator"],
+  // No other AFIP/AR tax ID tools in catalog — cluster on validate / format / ID workflows
+  "validador-cuit": ["password-strength", "json-validator", "uuid-generator", "base64-encode"],
 
   propina: ["porcentaje", "porcentaje-de-cambio", "regla-de-tres", "divisor-gastos"],
   "divisor-gastos": ["propina", "porcentaje", "regla-50-30-20", "porcentaje-de-cambio"],
@@ -96,7 +97,9 @@ export function journeyLabel(
   const es = locale === "es";
 
   if (current.slug === "validador-cuit") {
-    return es ? "Generar o verificar identificadores relacionados" : "Generate or verify related identifiers";
+    return es
+      ? "Después del CUIT: validar datos, IDs y formato"
+      : "After CUIT: validate data, IDs, and encoding";
   }
   if (current.slug === "porcentaje" || current.slug === "regla-de-tres" || current.slug === "porcentaje-de-cambio") {
     return es ? "Más herramientas de porcentajes y proporciones" : "More proportion and percentage tools";
