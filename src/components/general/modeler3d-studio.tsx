@@ -14,13 +14,26 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, nudgeSelected, setSizeAxis,
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
-    copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL,
+    copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL, exportPNG,
     clearSelection, dropToFloor, alignSelection, objectLimitMsg,
   } = core;
 
   type DraftKey = string;
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [showHelp, setShowHelp] = useState(false);
+  const [showOnboard, setShowOnboard] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem("utilihub-modeler3d-onboarded")) setShowOnboard(true);
+    } catch { /* */ }
+  }, []);
+
+  const dismissOnboard = () => {
+    setShowOnboard(false);
+    try { localStorage.setItem("utilihub-modeler3d-onboarded", "1"); } catch { /* */ }
+  };
+
   const draft = (key: DraftKey, fallback: number, digits: number) =>
     drafts[key] !== undefined ? drafts[key]! : String(Number(fallback.toFixed(digits)));
   const setDraft = (key: DraftKey, text: string) => setDrafts((d) => ({ ...d, [key]: text }));
@@ -107,6 +120,21 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
           </ul>
         </div>
       )}
+      {showOnboard && ready && !error && (
+        <div className="absolute inset-0 z-40 flex items-end justify-center bg-black/55 p-3 sm:items-center">
+          <div className="w-full max-w-sm rounded-2xl border border-white/15 bg-[#120a14] p-4 text-rose-50 shadow-2xl">
+            <p className="text-xs font-bold uppercase tracking-wide text-rose-300">{es ? "Primeros pasos" : "Quick start"}</p>
+            <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm leading-snug text-rose-100/90">
+              <li>{es ? "Tocá una forma arriba para crear (cubo, esfera…)." : "Tap a shape above to create (cube, sphere…)."}</li>
+              <li>{es ? "Arrastrá con un dedo para orbitar; dos dedos para zoom/pan." : "Drag with one finger to orbit; two fingers to zoom/pan."}</li>
+              <li>{es ? "Seleccioná un objeto y usá G / R / S o los controles para mover, rotar y escalar." : "Select an object and use G / R / S or the gizmo to move, rotate, and scale."}</li>
+            </ol>
+            <button type="button" onClick={dismissOnboard} className="mt-4 w-full rounded-lg bg-rose-500 px-3 py-2.5 text-sm font-bold text-white hover:bg-rose-400">
+              {es ? "Entendido" : "Got it"}
+            </button>
+          </div>
+        </div>
+      )}
       {!ready && !error && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/70">
           <p className="text-sm text-rose-100">{es ? "Cargando modelador 3D…" : "Loading 3D modeler…"}</p>
@@ -143,24 +171,30 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
                 }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">
                   {snap === 0 ? "Snap off" : `Snap ${snap}`}
                 </button>
+                <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">{es ? "Limpiar" : "Clear"}</button>
+                <button type="button" title="Export JSON" onClick={exportJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">JSON</button>
+                <button type="button" title="Export STL" onClick={exportSTL} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">STL</button>
+                <button type="button" title={es ? "Captura PNG" : "Screenshot PNG"} onClick={exportPNG} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">PNG</button>
+              </div>
+            </div>
             {selectedIds.length >= 2 && (
-              <div className="mt-1.5 flex flex-wrap items-center gap-1 border-t border-white/10 pt-1.5">
+              <div className="flex flex-wrap items-center gap-1 border-t border-white/10 pt-2">
                 <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/70">{es ? "Alinear" : "Align"}</span>
                 {([
-                  ["x", "min", es ? "X min" : "X min"],
-                  ["x", "center", es ? "X cen" : "X mid"],
-                  ["x", "max", es ? "X max" : "X max"],
-                  ["y", "min", es ? "Y min" : "Y min"],
-                  ["y", "center", es ? "Y cen" : "Y mid"],
-                  ["y", "max", es ? "Y max" : "Y max"],
-                  ["z", "min", es ? "Z min" : "Z min"],
-                  ["z", "center", es ? "Z cen" : "Z mid"],
-                  ["z", "max", es ? "Z max" : "Z max"],
-                ] as const).map(([axis, mode, lab]) => (
+                  ["x", "min", "X min"],
+                  ["x", "center", "X mid"],
+                  ["x", "max", "X max"],
+                  ["y", "min", "Y min"],
+                  ["y", "center", "Y mid"],
+                  ["y", "max", "Y max"],
+                  ["z", "min", "Z min"],
+                  ["z", "center", "Z mid"],
+                  ["z", "max", "Z max"],
+                ] as const).map(([axis, amode, lab]) => (
                   <button
-                    key={`${axis}-${mode}`}
+                    key={`${axis}-${amode}`}
                     type="button"
-                    onClick={() => alignSelection(axis, mode)}
+                    onClick={() => alignSelection(axis, amode)}
                     className="rounded border border-white/10 bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-rose-50 hover:bg-white/20"
                   >
                     {lab}
@@ -168,12 +202,6 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
                 ))}
               </div>
             )}
-
-                <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">{es ? "Limpiar" : "Clear"}</button>
-                <button type="button" title="Export JSON" onClick={exportJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">JSON</button>
-                <button type="button" title="Export STL" onClick={exportSTL} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">STL</button>
-              </div>
-            </div>
             <div className="flex flex-wrap items-center gap-2 border-t border-white/10 pt-2">
               <div className="flex flex-wrap items-center gap-1.5">
                 <span className="text-[10px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Formas" : "Shapes"}</span>
