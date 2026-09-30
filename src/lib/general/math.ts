@@ -1,8 +1,8 @@
 import {makeTool} from "./types";
-const m=(s:string,n:string,k:string,summary:string,c:string={})=>makeTool(s,n,"matematicas",k,summary,n.toLowerCase().split(/\s+/),c);
+const m=(s:string,n:string,k:string,summary:string,c:Record<string,unknown>={})=>makeTool(s,n,"matematicas",k,summary,n.toLowerCase().split(/\s+/),c);
 export const MATH_TOOLS=[
- m("porcentaje","Percentage","number","Calculate percentages, increases, discounts, and proportions."),
- m("regla-de-tres","Rule of three","number","Solve direct and inverse proportions."),
+ m("porcentaje","Percentage","number","Calculate percentages, increases, discounts, and proportions.",{title:"Percentage Calculator — Of Amount, Change & Discount | UtiliHub",description:"Calculate the percentage of an amount, what percent one number is of another, and percentage change or discount. Free online."}),
+ m("regla-de-tres","Rule of three","number","Solve direct and inverse proportions.",{title:"Rule of Three Calculator — Direct & Inverse Proportion | UtiliHub",description:"Solve direct and inverse proportions with the rule of three. Free proportion calculator, no signup."}),
  m("promedio","Average","stats","Calculate the arithmetic mean of a list of numbers."),
  m("mediana","Median","stats","Get the median of a data set."),
  m("moda","Mode","stats","Find the most frequent value or values."),
