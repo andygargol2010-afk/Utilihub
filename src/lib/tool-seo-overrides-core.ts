@@ -1,7 +1,21 @@
-import type { ToolSeoOverride } from "./tool-seo-overrides";
+/** High-traffic legacy/core tools (calculator, etc.).
+ *  Do NOT import from tool-seo-overrides.ts (circular). Inline the shape.
+ */
 
-/** High-traffic legacy/core tools (calculator, etc.). */
-export const TOOL_SEO_OVERRIDES_CORE: Record<string, ToolSeoOverride> = {
+type CoreSeoOverride = {
+  metaTitle?: string;
+  metaTitleEs?: string;
+  metaDescription?: string;
+  metaDescriptionEs?: string;
+  about: string[];
+  aboutEs?: string[];
+  steps: string[];
+  stepsEs?: string[];
+  faq: { q: string; a: string }[];
+  faqEs?: { q: string; a: string }[];
+};
+
+export const TOOL_SEO_OVERRIDES_CORE: Record<string, CoreSeoOverride> = {
   calculadora: {
     metaTitle: "Online Calculator — Add, Subtract, Multiply, Divide | UtiliHub",
     metaTitleEs: "Calculadora online gratis — sumar, restar, multiplicar | UtiliHub",
