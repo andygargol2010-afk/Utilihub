@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "npm run validate:catalog && vite build",
+    "build": "node scripts/write-og-png.mjs && npm run validate:catalog && vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -14,7 +14,8 @@
     "agent:status": "node scripts/agent-system.mjs status",
     "agent:run": "node scripts/agent-system.mjs run",
     "agent:innovator": "node scripts/innovator-cycle.mjs",
-    "agent:self-improve": "node scripts/self-improvement.mjs"
+    "agent:self-improve": "node scripts/self-improvement.mjs",
+    "write-og": "node scripts/write-og-png.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
