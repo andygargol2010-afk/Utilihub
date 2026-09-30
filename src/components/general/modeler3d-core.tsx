@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  BASE_SIZE, HISTORY_MAX, NAME_PAIR, STORAGE_KEY,
+  BASE_SIZE, HISTORY_MAX, OBJECT_MAX, NAME_PAIR, STORAGE_KEY,
   clampPos, clampSize, degToRad, makeGeometry, makeMaterial, normDeg, radToDeg, snapVal,
   type ShapeKind,
 } from "./modeler3d-helpers";
+import { makeAlignApi } from "./modeler3d-align";
 
 type SceneObj = { id: string; name: string; kind: ShapeKind; color: string };
 type MeshSnapshot = { id: string; name: string; kind: ShapeKind; color: string; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
@@ -32,6 +33,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
   const [pos, setPos] = useState<[number, number, number]>([0, 0, 0]);
   const [rotDeg, setRotDeg] = useState<[number, number, number]>([0, 0, 0]);
   const [snap, setSnap] = useState(0.25);
+  const [objectLimitMsg, setObjectLimitMsg] = useState<string | null>(null);
 
   const mountRef = useRef<HTMLDivElement | null>(null);
   const studioRef = useRef<HTMLDivElement | null>(null);
@@ -190,6 +192,10 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     readTransform(id);
   }, [readTransform]);
 
+  const clearSelection = useCallback(() => {
+    selectMesh(null);
+  }, [selectMesh]);
+
   const setMode = useCallback((m: "translate" | "rotate" | "scale") => {
     setModeState(m);
     modeRef.current = m;
@@ -266,6 +272,14 @@ export function useModelerCore(locale: "en" | "es" = "en") {
 
   const createMesh = useCallback((kind: ShapeKind, opts: { color: string; name?: string; position?: [number, number, number]; rotation?: [number, number, number]; scale?: [number, number, number]; recordHistory?: boolean }) => {
     const t = threeRef.current; if (!t) return null;
+    if (t.meshes.size >= OBJECT_MAX) {
+      setObjectLimitMsg(es
+        ? `Máximo ${OBJECT_MAX} objetos. Eliminá algunos para seguir.`
+        : `Maximum ${OBJECT_MAX} objects. Delete some to continue.`);
+      window.setTimeout(() => setObjectLimitMsg(null), 4000);
+      return null;
+    }
+    setObjectLimitMsg(null);
     const { THREE } = t;
     if (opts.recordHistory !== false) pushHistory();
     const id = nextId();
@@ -385,7 +399,6 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     for (const id of ids) {
       const mesh = t.meshes.get(id);
       if (mesh) {
-        // Same material path as createMesh so recolor matches a newly spawned shape
         const prev = mesh.material;
         mesh.material = makeMaterial(THREE, hex);
         if (prev && prev !== mesh.material) {
@@ -458,9 +471,11 @@ export function useModelerCore(locale: "en" | "es" = "en") {
       return next;
     });
     if (released.length) {
-      selectedIdsRef.current = released; setSelectedIds(released);
-      const primary = released[released.length - 1]!;
-      selectedIdRef.current = primary; setSelectedId(primary);
+      selectedIdsRef.current = released;
+      setSelectedIds(released);
+      const primary = released[0]!;
+      selectedIdRef.current = primary;
+      setSelectedId(primary);
       const m = t.meshes.get(primary);
       if (m) { t.transform.attach(m); t.transform.setMode(modeRef.current); readTransform(primary); }
     } else selectMesh(null);
@@ -478,7 +493,8 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     t.meshes.clear();
     for (const [, g] of groupsRef.current) t.scene.remove(g.groupObj);
     groupsRef.current.clear();
-    objectsRef.current = []; setObjects([]);
+    objectsRef.current = [];
+    setObjects([]);
     setGroupIds([]);
     selectMesh(null);
   }, [pushHistory, selectMesh]);
@@ -499,7 +515,8 @@ export function useModelerCore(locale: "en" | "es" = "en") {
       restoreSnapshot(data);
       historyRef.current = [data];
       histIdxRef.current = 0;
-      setCanUndo(false); setCanRedo(false);
+      setCanUndo(false);
+      setCanRedo(false);
     } catch { /* */ }
   }, [restoreSnapshot]);
 
@@ -553,6 +570,17 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     return () => document.removeEventListener("fullscreenchange", onFs);
   }, []);
 
+  const alignApi = makeAlignApi({
+    threeRef,
+    selectedIdsRef,
+    selectedIdRef,
+    groupsRef,
+    pushHistory,
+    readTransform,
+  });
+  const dropToFloor = alignApi.dropToFloor;
+  const alignSelection = alignApi.alignSelection;
+
   return {
     es, selectedId, selectedIds, groupIds, objects, ctxMenu, setCtxMenu, mode, setMode,
     color, setColor, fullscreen, ready, setReady, error, setError,
@@ -562,5 +590,6 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
     copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL,
+    clearSelection, dropToFloor, alignSelection, objectLimitMsg,
   };
 }
