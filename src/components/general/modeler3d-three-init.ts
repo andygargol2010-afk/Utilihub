@@ -50,8 +50,9 @@ export function useModelerThreeInit(d: ThreeDeps) {
         scene.fog = new THREE.FogExp2(0x0a0610, 0.045);
         const camera = new THREE.PerspectiveCamera(46, w / h, 0.08, 120);
         camera.position.set(3.8, 2.9, 4.8);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        const isTouch = typeof window !== "undefined" && ("ontouchstart" in window || (navigator.maxTouchPoints ?? 0) > 0);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance", preserveDrawingBuffer: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2));
         renderer.setSize(w, h);
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -115,9 +116,16 @@ export function useModelerThreeInit(d: ThreeDeps) {
         controls.maxPolarAngle = Math.PI * 0.49;
         controls.minDistance = 1.2;
         controls.maxDistance = 18;
+        controls.enablePan = true;
+        controls.screenSpacePanning = true;
+        // 1 finger = orbit, 2 fingers = pan + zoom (mobile)
+        if ((controls as any).touches && (THREE as any).TOUCH) {
+          (controls as any).touches.ONE = (THREE as any).TOUCH.ROTATE;
+          (controls as any).touches.TWO = (THREE as any).TOUCH.DOLLY_PAN;
+        }
         const meshes = new Map();
         const transform = new TransformControls(camera, renderer.domElement);
-        transform.setSize(0.9);
+        transform.setSize(isTouch ? 1.4 : 0.9);
         const multiStart = { pos: new Map<string, { x: number; y: number; z: number }>(), rot: new Map<string, { x: number; y: number; z: number }>(), scl: new Map<string, { x: number; y: number; z: number }>() };
         transform.addEventListener("dragging-changed", (event: { value: boolean }) => {
           controls.enabled = !event.value;
