@@ -10,7 +10,7 @@ import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolSeoContent } from "@/components/ToolSeoContent";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
-import { toolByEnglishSlug, englishToolPath, englishToolSlug, englishCategorySlug, englishCategoryPath } from "@/lib/route-slugs";
+import { toolByEnglishSlug, englishCategorySlug, englishCategoryPath, publicToolLink } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
 import { resolvedToolSeo } from "@/lib/tool-seo-overrides";
 import { useRecentTools } from "@/hooks/use-recent-tools";
@@ -33,7 +33,10 @@ export const Route = createFileRoute("/tools/$slug")({
     const seo = resolvedToolSeo(tool);
     const title = seo.title ?? tool.title;
     const description = cleanDescription(seo.description ?? tool.description);
-    const url = absoluteUrl(englishToolPath(tool));
+    const url = absoluteUrl(publicToolLink(tool, "en").to.replace("$slug", publicToolLink(tool, "en").params.slug).replace("/tools/", "/tools/").replace("/finance/", "/finance/"));
+    // Prefer path helpers that don't rely on string replace for canonical
+    const path = tool.category === "finanzas" ? `/finance/${publicToolLink(tool, "en").params.slug}` : `/tools/${publicToolLink(tool, "en").params.slug}`;
+    const canonical = absoluteUrl(path);
     const esUrl = absoluteUrl(tool.category === "finanzas" ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`);
     const categoryPath = englishCategoryPath(category.slug);
     const faq = seo.faq;
@@ -46,7 +49,7 @@ export const Route = createFileRoute("/tools/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
-        { property: "og:url", content: url },
+        { property: "og:url", content: canonical },
         { property: "og:site_name", content: "UtiliHub" },
         { property: "og:image", content: ogImage() },
         { name: "twitter:card", content: "summary_large_image" },
@@ -55,10 +58,10 @@ export const Route = createFileRoute("/tools/$slug")({
         { name: "twitter:image", content: ogImage() },
       ],
       links: [
-        { rel: "canonical", href: url },
-        { rel: "alternate", hrefLang: "en", href: url },
+        { rel: "canonical", href: canonical },
+        { rel: "alternate", hrefLang: "en", href: canonical },
         { rel: "alternate", hrefLang: "es", href: esUrl },
-        { rel: "alternate", hrefLang: "x-default", href: url },
+        { rel: "alternate", hrefLang: "x-default", href: canonical },
       ],
       scripts: [{
         type: "application/ld+json",
@@ -97,6 +100,7 @@ function ToolPage() {
 
   const categoryPublicSlug = englishCategorySlug(category.slug);
   const showcase = getToolShowcase(tool.slug);
+  const nextLink = nextStep ? publicToolLink(nextStep, "en") : null;
 
   return (
     <main className="container-page py-6 sm:py-8">
@@ -124,8 +128,40 @@ function ToolPage() {
         <div className="mt-4"><ShareAndExportActions title={tool.name} /></div>
       </section>
       <AdsterraBanner />
-      {nextStep && <section className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5" aria-labelledby="next-step"><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p><div className="mt-2 flex flex-wrap items-center justify-between gap-3"><div><h2 id="next-step" className="text-base font-black">{journeyLabel(tool)}</h2><p className="mt-1 text-sm text-muted-foreground">After using {tool.name}, continue with {nextStep.name}.</p></div><Link to={englishToolPath(nextStep) as "/tools/$slug"} params={{ slug: englishToolSlug(nextStep) }} className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">Open next <ArrowRight className="size-4" /></Link></div></section>}
-      {related.length > 0 && <section className="mt-8" aria-labelledby="related"><div className="mb-2 flex items-center justify-between"><div><h2 id="related" className="text-base font-bold">Continue this path</h2><p className="mt-1 text-xs text-muted-foreground">Tools selected to complete the same task.</p></div><span className="text-xs text-muted-foreground">{related.length} steps</span></div><div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">{related.map((t) => <ToolCard key={t.slug} tool={t} />)}</div></section>}
+      {nextStep && nextLink && (
+        <section className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5" aria-labelledby="next-step">
+          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p>
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 id="next-step" className="text-base font-black">{journeyLabel(tool, "en")}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">After using {tool.name}, continue with {nextStep.name}.</p>
+            </div>
+            <Link
+              to={nextLink.to as "/tools/$slug"}
+              params={nextLink.params}
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90"
+            >
+              Open next <ArrowRight className="size-4" />
+            </Link>
+          </div>
+        </section>
+      )}
+      {related.length > 0 && (
+        <section className="mt-8" aria-labelledby="related">
+          <div className="mb-2 flex items-center justify-between">
+            <div>
+              <h2 id="related" className="text-base font-bold">Continue this path</h2>
+              <p className="mt-1 text-xs text-muted-foreground">Tools selected to complete the same task.</p>
+            </div>
+            <span className="text-xs text-muted-foreground">{related.length} steps</span>
+          </div>
+          <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+            {related.map((t) => (
+              <ToolCard key={t.slug} tool={t} />
+            ))}
+          </div>
+        </section>
+      )}
       <ToolSeoContent tool={tool} locale="en" />
     </main>
   );
