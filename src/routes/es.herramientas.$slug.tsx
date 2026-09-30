@@ -9,8 +9,8 @@ import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolSeoContent } from "@/components/ToolSeoContent";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { ToolCard } from "@/components/ToolCard";
-import { allToolBySlug, ALL_CATEGORIES } from "@/lib/all-tools";
-import { englishToolPath, spanishToolPath } from "@/lib/route-slugs";
+import { allToolBySlug, ALL_CATEGORIES, type CatalogTool } from "@/lib/all-tools";
+import { englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, cleanDescription, faqSchema, ogImage } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { toolSeoOverride } from "@/lib/tool-seo-overrides";
@@ -77,6 +77,23 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
   component: SpanishToolPage,
 });
 
+function NextStepLinkEs({ tool }: { tool: CatalogTool }) {
+  const className =
+    "inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90";
+  if (tool.category === "finanzas") {
+    return (
+      <Link to="/es/finanzas/$slug" params={{ slug: tool.slug }} className={className}>
+        Abrir siguiente <ArrowRight className="size-4" />
+      </Link>
+    );
+  }
+  return (
+    <Link to="/es/herramientas/$slug" params={{ slug: tool.slug }} className={className}>
+      Abrir siguiente <ArrowRight className="size-4" />
+    </Link>
+  );
+}
+
 function SpanishToolPage() {
   const { tool } = Route.useLoaderData();
   const { addRecent } = useRecentTools();
@@ -133,18 +150,14 @@ function SpanishToolPage() {
           <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Siguiente paso recomendado</p>
           <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 id="next-step-es" className="text-base font-black">{journeyLabel(tool)}</h2>
+              <h2 id="next-step-es" className="text-base font-black">
+                {journeyLabel(tool, "es")}
+              </h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Después de usar {name}, continúa con {spanishToolName(nextStep)}.
               </p>
             </div>
-            <Link
-              to={spanishToolPath(nextStep) as "/es/herramientas/$slug"}
-              params={{ slug: nextStep.slug }}
-              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90"
-            >
-              Abrir siguiente <ArrowRight className="size-4" />
-            </Link>
+            <NextStepLinkEs tool={nextStep} />
           </div>
         </section>
       )}
@@ -152,7 +165,9 @@ function SpanishToolPage() {
         <section className="mt-8" aria-labelledby="related-es">
           <div className="mb-2 flex items-center justify-between">
             <div>
-              <h2 id="related-es" className="text-base font-bold">Herramientas relacionadas</h2>
+              <h2 id="related-es" className="text-base font-bold">
+                Herramientas relacionadas
+              </h2>
               <p className="mt-1 text-xs text-muted-foreground">Mismo tipo de tarea, para seguir en el sitio.</p>
             </div>
             <span className="text-xs text-muted-foreground">{related.length}</span>

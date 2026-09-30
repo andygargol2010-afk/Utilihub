@@ -10,7 +10,13 @@ import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolSeoContent } from "@/components/ToolSeoContent";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
-import { toolByEnglishSlug, englishCategorySlug, englishCategoryPath, publicToolLink } from "@/lib/route-slugs";
+import {
+  toolByEnglishSlug,
+  englishToolPath,
+  englishToolSlug,
+  englishCategorySlug,
+  englishCategoryPath,
+} from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
 import { resolvedToolSeo } from "@/lib/tool-seo-overrides";
 import { useRecentTools } from "@/hooks/use-recent-tools";
@@ -29,15 +35,22 @@ export const Route = createFileRoute("/tools/$slug")({
     if (!loaderData) return { meta: [{ title: "Tool not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
     const { tool } = loaderData;
     const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
-    if (!category) return { meta: [{ title: tool.title }, { name: "description", content: cleanDescription(tool.description) }, { name: "robots", content: "noindex" }] };
+    if (!category) {
+      return {
+        meta: [
+          { title: tool.title },
+          { name: "description", content: cleanDescription(tool.description) },
+          { name: "robots", content: "noindex" },
+        ],
+      };
+    }
     const seo = resolvedToolSeo(tool);
     const title = seo.title ?? tool.title;
     const description = cleanDescription(seo.description ?? tool.description);
-    const url = absoluteUrl(publicToolLink(tool, "en").to.replace("$slug", publicToolLink(tool, "en").params.slug).replace("/tools/", "/tools/").replace("/finance/", "/finance/"));
-    // Prefer path helpers that don't rely on string replace for canonical
-    const path = tool.category === "finanzas" ? `/finance/${publicToolLink(tool, "en").params.slug}` : `/tools/${publicToolLink(tool, "en").params.slug}`;
-    const canonical = absoluteUrl(path);
-    const esUrl = absoluteUrl(tool.category === "finanzas" ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`);
+    const url = absoluteUrl(englishToolPath(tool));
+    const esUrl = absoluteUrl(
+      tool.category === "finanzas" ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`,
+    );
     const categoryPath = englishCategoryPath(category.slug);
     const faq = seo.faq;
     return {
@@ -49,7 +62,7 @@ export const Route = createFileRoute("/tools/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
-        { property: "og:url", content: canonical },
+        { property: "og:url", content: url },
         { property: "og:site_name", content: "UtiliHub" },
         { property: "og:image", content: ogImage() },
         { name: "twitter:card", content: "summary_large_image" },
@@ -58,31 +71,51 @@ export const Route = createFileRoute("/tools/$slug")({
         { name: "twitter:image", content: ogImage() },
       ],
       links: [
-        { rel: "canonical", href: canonical },
-        { rel: "alternate", hrefLang: "en", href: canonical },
+        { rel: "canonical", href: url },
+        { rel: "alternate", hrefLang: "en", href: url },
         { rel: "alternate", hrefLang: "es", href: esUrl },
-        { rel: "alternate", hrefLang: "x-default", href: canonical },
+        { rel: "alternate", hrefLang: "x-default", href: url },
       ],
-      scripts: [{
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@graph": [
-            webApplicationSchema({ ...tool, description, title }),
-            ...(faq.length ? [faqSchema(faq)] : []),
-            breadcrumbSchema([
-              { name: "Home", path: "/" },
-              { name: "Tools", path: "/tools" },
-              { name: category.name, path: categoryPath },
-              { name: tool.name },
-            ]),
-          ],
-        }),
-      }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              webApplicationSchema({ ...tool, description, title }),
+              ...(faq.length ? [faqSchema(faq)] : []),
+              breadcrumbSchema([
+                { name: "Home", path: "/" },
+                { name: "Tools", path: "/tools" },
+                { name: category.name, path: categoryPath },
+                { name: tool.name },
+              ]),
+            ],
+          }),
+        },
+      ],
     };
   },
   component: ToolPage,
 });
+
+function NextStepLink({ tool }: { tool: CatalogTool }) {
+  const slug = englishToolSlug(tool);
+  const className =
+    "inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90";
+  if (tool.category === "finanzas") {
+    return (
+      <Link to="/finance/$slug" params={{ slug }} className={className}>
+        Open next <ArrowRight className="size-4" />
+      </Link>
+    );
+  }
+  return (
+    <Link to="/tools/$slug" params={{ slug }} className={className}>
+      Open next <ArrowRight className="size-4" />
+    </Link>
+  );
+}
 
 function ToolPage() {
   const { tool } = Route.useLoaderData() as { tool: CatalogTool };
@@ -100,16 +133,17 @@ function ToolPage() {
 
   const categoryPublicSlug = englishCategorySlug(category.slug);
   const showcase = getToolShowcase(tool.slug);
-  const nextLink = nextStep ? publicToolLink(nextStep, "en") : null;
 
   return (
     <main className="container-page py-6 sm:py-8">
-      <Breadcrumbs items={[
-        { label: "Home", to: "/" },
-        { label: "Tools", to: "/tools" },
-        { label: category.name, to: "/category/$slug", params: { slug: categoryPublicSlug } },
-        { label: tool.name },
-      ]} />
+      <Breadcrumbs
+        items={[
+          { label: "Home", to: "/" },
+          { label: "Tools", to: "/tools" },
+          { label: category.name, to: "/category/$slug", params: { slug: categoryPublicSlug } },
+          { label: tool.name },
+        ]}
+      />
       {showcase ? (
         <ToolShowcaseHero name={tool.name} slug={tool.slug} showcase={showcase} locale="en" />
       ) : (
@@ -121,28 +155,34 @@ function ToolPage() {
           <FavoriteButton slug={tool.slug} name={tool.name} />
         </div>
       )}
-      <section data-tool-surface aria-label={`Tool: ${tool.name}`} className={`surface-card mt-4 p-4 sm:p-6 ${showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""}`}>
+      <section
+        data-tool-surface
+        aria-label={`Tool: ${tool.name}`}
+        className={`surface-card mt-4 p-4 sm:p-6 ${
+          showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""
+        }`}
+      >
         <Suspense fallback={<ToolUiFallback locale="en" />}>
           {ui ? ui() : <p role="alert" className="text-muted-foreground">Tool not available.</p>}
         </Suspense>
-        <div className="mt-4"><ShareAndExportActions title={tool.name} /></div>
+        <div className="mt-4">
+          <ShareAndExportActions title={tool.name} />
+        </div>
       </section>
       <AdsterraBanner />
-      {nextStep && nextLink && (
+      {nextStep && (
         <section className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5" aria-labelledby="next-step">
           <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p>
           <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 id="next-step" className="text-base font-black">{journeyLabel(tool, "en")}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">After using {tool.name}, continue with {nextStep.name}.</p>
+              <h2 id="next-step" className="text-base font-black">
+                {journeyLabel(tool, "en")}
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                After using {tool.name}, continue with {nextStep.name}.
+              </p>
             </div>
-            <Link
-              to={nextLink.to as "/tools/$slug"}
-              params={nextLink.params}
-              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90"
-            >
-              Open next <ArrowRight className="size-4" />
-            </Link>
+            <NextStepLink tool={nextStep} />
           </div>
         </section>
       )}
@@ -150,7 +190,9 @@ function ToolPage() {
         <section className="mt-8" aria-labelledby="related">
           <div className="mb-2 flex items-center justify-between">
             <div>
-              <h2 id="related" className="text-base font-bold">Continue this path</h2>
+              <h2 id="related" className="text-base font-bold">
+                Continue this path
+              </h2>
               <p className="mt-1 text-xs text-muted-foreground">Tools selected to complete the same task.</p>
             </div>
             <span className="text-xs text-muted-foreground">{related.length} steps</span>
