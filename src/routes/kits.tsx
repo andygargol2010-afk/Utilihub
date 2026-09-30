@@ -46,7 +46,7 @@ function KitsPage() {
       {WORK_KITS.map((kit, index) => {
         const Icon = icons[index % icons.length];
         const tools = kitTools(kit);
-        return <Link key={kit.slug} to="/kits/$slug" params={{ slug: kit.slug }} className="surface-card group p-5 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lift">
+        return <Link key={kit.slug} to="/kits/$slug" params={{ slug: kit.englishSlug }} className="surface-card group p-5 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lift">
           <div className="flex items-start justify-between gap-4"><span className="grid size-11 place-items-center rounded-xl bg-accent text-primary"><Icon className="size-5" /></span><span className="rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">{tools.length} steps</span></div>
           <p className="mt-5 text-xs font-bold uppercase tracking-[.14em] text-primary">{kit.eyebrow}</p>
           <h2 className="mt-1 text-xl font-black group-hover:text-primary">{kit.name}</h2>
