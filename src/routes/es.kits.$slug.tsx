@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
-import { kitBySlug, kitTools } from "@/lib/work-kits";
+import { kitBySlug, kitTools, kitEnglishPath } from "@/lib/work-kits";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 const KIT_ES: Record<string, { name: string; eyebrow: string; description: string; outcome: string }> = {
@@ -57,6 +57,7 @@ export const Route = createFileRoute("/es/kits/$slug")({
     const title = `${es.name} | UtiliHub`;
     const description = cleanDescription(es.description);
     const url = absoluteUrl(`/es/kits/${kit.slug}`);
+    const enUrl = absoluteUrl(kitEnglishPath(kit));
     return {
       meta: [
         { title },
@@ -71,7 +72,8 @@ export const Route = createFileRoute("/es/kits/$slug")({
       links: [
         { rel: "canonical", href: url },
         { rel: "alternate", hrefLang: "es", href: url },
-        { rel: "alternate", hrefLang: "en", href: absoluteUrl(`/kits/${kit.slug}`) },
+        { rel: "alternate", hrefLang: "en", href: enUrl },
+        { rel: "alternate", hrefLang: "x-default", href: enUrl },
       ],
       scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: title, description, url, breadcrumb: breadcrumbSchema([{ name: "Inicio", path: "/es" }, { name: "Kits", path: "/es/kits" }, { name: es.name }]) }) }],
     };
