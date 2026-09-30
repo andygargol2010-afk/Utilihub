@@ -1,11 +1,11 @@
 import { ALL_TOOLS, type CatalogTool } from "./all-tools";
+import type { PublicLocale } from "./route-slugs";
 
 /**
  * Intent clusters for internal linking (SEO + bounce).
  * Keys/values use internal catalog slugs.
  */
 export const TOOL_JOURNEYS: Record<string, string[]> = {
-  // Math / proportions
   porcentaje: ["regla-de-tres", "porcentaje-de-cambio", "propina", "promedio"],
   "regla-de-tres": ["porcentaje", "porcentaje-de-cambio", "promedio", "propina"],
   "porcentaje-de-cambio": ["porcentaje", "regla-de-tres", "propina", "promedio"],
@@ -18,14 +18,12 @@ export const TOOL_JOURNEYS: Record<string, string[]> = {
   permutaciones: ["combinaciones", "factorial", "probabilidad", "promedio"],
   probabilidad: ["combinaciones", "permutaciones", "promedio", "z-score"],
 
-  // Dates
   "calculadora-de-fechas": ["diferencia-fechas", "sumar-dias", "timestamp-to-date", "timestamp-generator"],
   "diferencia-fechas": ["calculadora-de-fechas", "sumar-dias", "timestamp-to-date", "timestamp-generator"],
   "sumar-dias": ["calculadora-de-fechas", "diferencia-fechas", "timestamp-generator", "timestamp-to-date"],
   "timestamp-generator": ["timestamp-to-date", "calculadora-de-fechas", "sumar-dias", "diferencia-fechas"],
   "timestamp-to-date": ["timestamp-generator", "calculadora-de-fechas", "sumar-dias", "diferencia-fechas"],
 
-  // Text
   "contador-de-palabras": ["contador-de-caracteres", "limpiar-texto", "frecuencia-palabras", "nivel-lectura"],
   "contador-de-caracteres": ["contador-de-palabras", "limpiar-texto", "frecuencia-palabras", "nivel-lectura"],
   "limpiar-texto": ["contador-de-palabras", "slug-generator", "generador-nombres-archivos", "html-encode"],
@@ -34,7 +32,6 @@ export const TOOL_JOURNEYS: Record<string, string[]> = {
   "generador-nombres-archivos": ["slug-generator", "limpiar-texto", "contador-de-palabras", "html-encode"],
   "slug-generator": ["generador-nombres-archivos", "limpiar-texto", "url-encode", "html-encode"],
 
-  // Dev encode
   "base64-encode": ["base64-decode", "url-encode", "html-encode", "json-formatter"],
   "base64-decode": ["base64-encode", "url-decode", "html-decode", "json-formatter"],
   "url-encode": ["url-decode", "base64-encode", "html-encode", "slug-generator"],
@@ -44,26 +41,21 @@ export const TOOL_JOURNEYS: Record<string, string[]> = {
   "json-formatter": ["json-validator", "json-minifier", "json-a-csv", "base64-encode"],
   "json-validator": ["json-formatter", "json-minifier", "json-a-csv", "csv-a-json"],
 
-  // Security / generators
   "generador-de-contrasenas": ["password-strength", "uuid-generator", "qr-wifi", "slug-generator"],
   "password-strength": ["generador-de-contrasenas", "uuid-generator", "qr-wifi", "analizador-entropia"],
   "uuid-generator": ["generador-de-contrasenas", "password-strength", "qr-wifi", "timestamp-generator"],
   "qr-wifi": ["generador-de-contrasenas", "uuid-generator", "password-strength", "slug-generator"],
 
-  // Identity (CUIT was falling back to pomodoro/stopwatch)
   "validador-cuit": ["uuid-generator", "generador-de-contrasenas", "qr-wifi", "slug-generator"],
 
-  // Money helpers
   propina: ["porcentaje", "porcentaje-de-cambio", "regla-de-tres", "divisor-gastos"],
   "divisor-gastos": ["propina", "porcentaje", "regla-50-30-20", "porcentaje-de-cambio"],
   "regla-50-30-20": ["propina", "objetivo-de-ahorro", "porcentaje", "porcentaje-de-cambio"],
 
-  // Finance
   "interes-compuesto": ["objetivo-de-ahorro", "ahorro-periodico", "rentabilidad-real", "regla-50-30-20"],
   "objetivo-de-ahorro": ["interes-compuesto", "ahorro-periodico", "regla-50-30-20", "propina"],
   "valoracion-dcf": ["calculadora-wacc", "calculadora-roic", "valor-actual-neto", "interes-compuesto"],
 
-  // Prior curated
   "diferencia-textos": ["contador-de-palabras", "limpiar-texto", "comparador-de-textos", "frecuencia-palabras"],
   "comparador-de-textos": ["diferencia-textos", "contador-de-palabras", "limpiar-texto", "nivel-lectura"],
   "markdown-a-html": ["html-encode", "html-decode", "limpiar-texto", "slug-generator"],
@@ -97,18 +89,44 @@ export function journeyTools(current: Pick<CatalogTool, "slug" | "category">): C
   return [...curated, ...scored].slice(0, 4);
 }
 
-export function journeyLabel(current: Pick<CatalogTool, "slug" | "category">): string {
-  if (current.slug === "validador-cuit") return "Generate or verify related identifiers";
-  if (current.slug === "porcentaje" || current.slug === "regla-de-tres" || current.slug === "porcentaje-de-cambio") {
-    return "More proportion & percentage tools";
+export function journeyLabel(
+  current: Pick<CatalogTool, "slug" | "category">,
+  locale: PublicLocale = "en",
+): string {
+  const es = locale === "es";
+
+  if (current.slug === "validador-cuit") {
+    return es ? "Generar o verificar identificadores relacionados" : "Generate or verify related identifiers";
   }
-  if (current.category === "seguridad") return "Protect and verify your data";
-  if (current.category === "diseno") return "Design and validate your interface";
-  if (current.category === "utilidades") return "Complete your calculation";
-  if (current.category === "finanzas") return "Analyze the next scenario";
-  if (current.category === "texto") return "Keep working on your content";
-  if (current.category === "matematicas") return "Related math tools";
-  if (current.category === "desarrollo") return "Related developer tools";
-  if (current.category === "fechas") return "Related date tools";
-  return "Continue with related tools";
+  if (current.slug === "porcentaje" || current.slug === "regla-de-tres" || current.slug === "porcentaje-de-cambio") {
+    return es ? "Más herramientas de porcentajes y proporciones" : "More proportion and percentage tools";
+  }
+  if (current.category === "seguridad") {
+    return es ? "Protegé y verificá tus datos" : "Protect and verify your data";
+  }
+  if (current.category === "diseno") {
+    return es ? "Diseñá y validá tu interfaz" : "Design and validate your interface";
+  }
+  if (current.category === "utilidades") {
+    return es ? "Completá tu cálculo" : "Complete your calculation";
+  }
+  if (current.category === "finanzas") {
+    return es ? "Analizá el siguiente escenario" : "Analyze the next scenario";
+  }
+  if (current.category === "texto") {
+    return es ? "Seguí trabajando tu contenido" : "Keep working on your content";
+  }
+  if (current.category === "matematicas") {
+    return es ? "Herramientas de matemáticas relacionadas" : "Related math tools";
+  }
+  if (current.category === "desarrollo") {
+    return es ? "Herramientas de desarrollo relacionadas" : "Related developer tools";
+  }
+  if (current.category === "fechas") {
+    return es ? "Herramientas de fechas relacionadas" : "Related date tools";
+  }
+  if (current.category === "productividad") {
+    return es ? "Herramientas de productividad relacionadas" : "Related productivity tools";
+  }
+  return es ? "Continuar con herramientas relacionadas" : "Continue with related tools";
 }

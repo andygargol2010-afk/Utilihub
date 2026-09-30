@@ -62,6 +62,26 @@ export function publicToolPath(tool: CatalogTool, locale: PublicLocale = "en") {
   return locale === "es" ? spanishToolPath(tool) : englishToolPath(tool);
 }
 
+/**
+ * TanStack route `to` + `params` for a catalog tool (handles finance vs tools, EN vs ES).
+ * Avoids casting `/tools/$slug` when the real path is `/finance/...`.
+ */
+export function publicToolLink(
+  tool: Pick<CatalogTool, "name" | "slug" | "category">,
+  locale: PublicLocale = "en",
+): { to: string; params: { slug: string } } {
+  if (locale === "es") {
+    if (tool.category === "finanzas") {
+      return { to: "/es/finanzas/$slug", params: { slug: tool.slug } };
+    }
+    return { to: "/es/herramientas/$slug", params: { slug: tool.slug } };
+  }
+  if (tool.category === "finanzas") {
+    return { to: "/finance/$slug", params: { slug: englishToolSlug(tool) } };
+  }
+  return { to: "/tools/$slug", params: { slug: englishToolSlug(tool) } };
+}
+
 export function englishCategorySlug(internalCategorySlug: string) {
   return ENGLISH_CATEGORY_SLUGS[internalCategorySlug] ?? internalCategorySlug;
 }
@@ -75,7 +95,6 @@ export function englishCategoryPath(internalCategorySlug: string) {
 }
 
 export function buildEnglishToolIndex(tools: readonly CatalogTool[]) {
-  // Rebuild only when the tools array identity changes.
   if (indexedToolsRef === tools && englishEntries.size) {
     return new Map(englishEntries);
   }
@@ -90,11 +109,9 @@ export function buildEnglishToolIndex(tools: readonly CatalogTool[]) {
       const names = englishCollisions.get(slug) ?? [previous.name];
       names.push(tool.name);
       englishCollisions.set(slug, names);
-      // Keep the first tool; do not throw — collisions must not break production routes.
       continue;
     }
     englishEntries.set(slug, tool);
-    // Also index by internal Spanish slug so legacy links still resolve.
     if (!englishEntries.has(tool.slug)) {
       englishEntries.set(tool.slug, tool);
     }
@@ -116,6 +133,5 @@ export function allEnglishRouteSlugs(tools: readonly CatalogTool[]) {
 export function toolByEnglishSlug(tools: readonly CatalogTool[], slug: string) {
   const byEnglish = buildEnglishToolIndex(tools).get(slug);
   if (byEnglish) return byEnglish;
-  // Fallback: match internal catalog slug (Spanish) if URL still uses it.
   return tools.find((tool) => tool.slug === slug);
 }
