@@ -192,6 +192,7 @@ const EXACT_NAMES: Record<string, string> = {
   "csv-a-json": "CSV a JSON",
   "qr-wifi": "Generador de QR WiFi",
   "validador-cuit": "Validador CUIT/CUIL",
+  "validador-iban": "Validador IBAN",
   "modelador-3d": "Modelador 3D",
   // Percent advanced suite
   "porcentaje-aumento": "Aumento porcentual",

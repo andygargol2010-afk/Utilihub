@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
+import { buildGapSeoFields, runGapSeo } from "@/lib/general/gap-seo-ops";
 
 type Locale = "en" | "es";
 
@@ -134,6 +135,8 @@ function activityOptions(es: boolean) {
 }
 
 function buildFields(slug: string, es: boolean): { title: string; btn: string; fields: FieldDef[] } {
+  const gap = buildGapSeoFields(slug, es);
+  if (gap) return gap;
   const calc = es ? "Calcular" : "Calculate";
   switch (slug) {
     case "imc":
@@ -201,7 +204,13 @@ export function SeoGrowthTool({ tool, locale = "en" }: { tool: GeneralTool; loca
       setQrUrl("");
       const v = values;
       let result = "";
-      switch (tool.slug) {
+      const gap = runGapSeo(tool.slug, v, es);
+      if (gap) {
+        result = gap.result;
+        if (gap.qrPayload) {
+          setQrUrl(`https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(gap.qrPayload)}`);
+        }
+      } else switch (tool.slug) {
         case "imc": {
           const w = n(v[0]!), hCm = n(v[1]!);
           if (!(w > 0 && hCm > 0)) throw new Error("Height and weight must be positive.");

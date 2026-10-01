@@ -224,6 +224,30 @@ export const TOOL_SEO_OVERRIDES_GAP: Record<string, ToolSeoOverride> = {
       { q: "¿Se guarda la contraseña?", a: "No. Solo aparece en el payload del QR que generás en la sesión." },
     ],
   },
+  "validador-iban": {
+    metaTitle: "IBAN Validator — Mod-97 Checksum Online | UtiliHub",
+    metaTitleEs: "Validador IBAN — dígito de control mod-97 | UtiliHub",
+    metaDescription: "Validate IBAN numbers with the ISO 13616 mod-97 checksum and country length. Free, local, no signup.",
+    metaDescriptionEs: "Validá un IBAN con el checksum mod-97 de ISO 13616 y la longitud del país. Gratis, local y sin registro.",
+    about: [
+      "Paste an IBAN with or without spaces. The tool checks the country length when known and the ISO 13616 mod-97 checksum.",
+      "A valid checksum does not prove the bank account exists — only that the number is well formed.",
+    ],
+    aboutEs: [
+      "Pegá un IBAN con o sin espacios. Se comprueba la longitud del país si está en la tabla y el checksum mod-97 de ISO 13616.",
+      "Un checksum válido no prueba que la cuenta exista: solo que el número está bien formado.",
+    ],
+    steps: ["Paste the IBAN.", "Press Validate.", "Read valid or invalid, the grouped format, and the length note."],
+    stepsEs: ["Pegá el IBAN.", "Pulsá Validar.", "Leé válido o inválido, el formato agrupado y la nota de longitud."],
+    faq: [
+      { q: "Which countries are checked for length?", a: "Common SEPA and several other ISO registries (ES, DE, FR, GB, IT, PT, BR, and others). Unknown countries still get a checksum check if the length is 15–34." },
+      { q: "Is the IBAN uploaded?", a: "No. The checksum runs in your browser." },
+    ],
+    faqEs: [
+      { q: "¿Qué países tienen control de longitud?", a: "Los habituales de SEPA y otros del registro ISO (ES, DE, FR, GB, IT, PT, BR y más). Si el país no está en la tabla, igual se valida el checksum si hay entre 15 y 34 caracteres." },
+      { q: "¿Se sube el IBAN?", a: "No. El checksum se calcula en el navegador." },
+    ],
+  },
   "validador-cuit": {
     metaTitle: "CUIT/CUIL Validator — Argentina Check Digit | UtiliHub",
     metaTitleEs: "Validador CUIT/CUIL Argentina | UtiliHub",
