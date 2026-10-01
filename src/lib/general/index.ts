@@ -36,6 +36,7 @@ import { SEQUENCE_SUITE_TOOLS } from "./sequence-suite";
 import { TRIG_SUITE_TOOLS } from "./trig-suite";
 import { EXPLOG_SUITE_TOOLS } from "./explog-suite";
 import { MATRIX_BINARY_SUITE_TOOLS } from "./matrix-binary-suite";
+import { OVERTIME_PAY_TOOLS } from "./overtime-pay";
 
 export { GENERAL_CATEGORIES };
 
@@ -77,4 +78,5 @@ export const GENERAL_TOOLS = [
   ...TRIG_SUITE_TOOLS,
   ...EXPLOG_SUITE_TOOLS,
   ...MATRIX_BINARY_SUITE_TOOLS,
+  ...OVERTIME_PAY_TOOLS,
 ];

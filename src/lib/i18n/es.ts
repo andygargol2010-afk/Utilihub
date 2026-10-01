@@ -181,6 +181,7 @@ const EXACT_NAMES: Record<string, string> = {
   "mpg-a-litros": "MPG a L/100 km",
   "ppi-pantalla": "PPI de pantalla",
   "crecimiento-periodico": "Crecimiento periódico",
+  "calculadora-horas-extra": "Calculadora de horas extra",
   // Gap tools
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",

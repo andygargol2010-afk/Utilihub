@@ -58,11 +58,13 @@ const MatrixBinarySuiteTool = lazy(() =>
   import("./MatrixBinarySuiteTool").then((m) => ({ default: m.MatrixBinarySuiteTool })),
 );
 const GpaCalculator = lazy(() => import("./GpaCalculator").then((m) => ({ default: m.GpaCalculator })));
+const OvertimePayTool = lazy(() => import("./OvertimePayTool").then((m) => ({ default: m.OvertimePayTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
 function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "gpa") return GpaCalculator as ToolComp;
+  if (tool.slug === "calculadora-horas-extra") return OvertimePayTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
