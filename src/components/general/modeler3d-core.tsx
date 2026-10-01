@@ -37,7 +37,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
   const [size, setSize] = useState<[number, number, number]>([1, 1, 1]);
   const [pos, setPos] = useState<[number, number, number]>([0, 0, 0]);
   const [rotDeg, setRotDeg] = useState<[number, number, number]>([0, 0, 0]);
-  const [snap, setSnap] = useState(0.25);
+  const [snap, setSnap] = useState(0.1);
   const [objectLimitMsg, setObjectLimitMsg] = useState<string | null>(null);
 
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -181,6 +181,11 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     if (id) {
       selectedIdsRef.current = [id];
       setSelectedIds([id]);
+      const meta = objectsRef.current.find((o) => o.id === id);
+      if (meta && !groupsRef.current.has(id)) {
+        if (meta.color) setColor(meta.color);
+        if (meta.matPreset) setMatPreset(meta.matPreset);
+      }
     } else {
       selectedIdsRef.current = [];
       setSelectedIds([]);
@@ -277,7 +282,11 @@ export function useModelerCore(locale: "en" | "es" = "en") {
 
   const createMesh = useCallback((kind: ShapeKind, opts: { color: string; matPreset?: MatPreset; name?: string; position?: [number, number, number]; rotation?: [number, number, number]; scale?: [number, number, number]; recordHistory?: boolean }) => {
     const t = threeRef.current; if (!t) return null;
-    if (t.meshes.size >= OBJECT_MAX) {
+    let meshCount = 0;
+    for (const [mid] of t.meshes) {
+      if (!groupsRef.current.has(mid)) meshCount += 1;
+    }
+    if (meshCount >= OBJECT_MAX) {
       setObjectLimitMsg(es
         ? `Máximo ${OBJECT_MAX} objetos. Eliminá algunos para seguir.`
         : `Maximum ${OBJECT_MAX} objects. Delete some to continue.`);
@@ -553,6 +562,11 @@ export function useModelerCore(locale: "en" | "es" = "en") {
           histIdxRef.current = 0;
           setCanUndo(false);
           setCanRedo(false);
+          try {
+            const url = window.location.pathname + window.location.search;
+            window.history.replaceState(null, "", url);
+          } catch { /* */ }
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch { /* */ }
           return;
         }
       }
@@ -586,7 +600,19 @@ export function useModelerCore(locale: "en" | "es" = "en") {
   const deleteNamedScene = useCallback((id: string) => { removeNamedScene(id); }, []);
   const copyShareLink = useCallback(async () => {
     if (typeof window === "undefined") return false;
-    const url = buildShareUrl(window.location.origin, window.location.pathname, window.location.search, snapshot());
+    const data = snapshot();
+    const url = buildShareUrl(window.location.origin, window.location.pathname, window.location.search, data);
+    if (url.length > 7000) {
+      try {
+        const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "utilihub-scene.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      } catch { /* */ }
+      return false;
+    }
     try {
       await navigator.clipboard.writeText(url);
       return true;
@@ -597,6 +623,10 @@ export function useModelerCore(locale: "en" | "es" = "en") {
   const applyPreset = useCallback((presetId: string) => {
     const preset = scenePresets(es).find((p) => p.id === presetId);
     if (!preset) return;
+    if (objectsRef.current.length > 0) {
+      const ok = window.confirm(es ? "¿Reemplazar la escena actual por la plantilla?" : "Replace the current scene with this preset?");
+      if (!ok) return;
+    }
     const meshes = preset.data.meshes.map((m, i) => ({ ...m, name: m.name || `${m.kind} ${i + 1}` }));
     const entry = { meshes, groups: preset.data.groups || [] } as HistoryEntry;
     pushHistory();
@@ -626,8 +656,20 @@ export function useModelerCore(locale: "en" | "es" = "en") {
       catch { ({ STLExporter } = await import("three/examples/jsm/exporters/STLExporter.js")); }
       const exporter = new STLExporter();
       const group = new t.THREE.Group();
-      for (const [, m] of t.meshes) {
-        if (m.isMesh) group.add(m.clone());
+      const childOfGroup = new Set<string>();
+      for (const [, g] of groupsRef.current) {
+        for (const cid of g.childIds) childOfGroup.add(cid);
+      }
+      for (const [id, m] of t.meshes) {
+        if (childOfGroup.has(id)) continue;
+        if (m.isMesh || m.isGroup) {
+          m.updateWorldMatrix(true, true);
+          const clone = m.clone(true);
+          clone.matrix.copy(m.matrixWorld);
+          clone.matrix.decompose(clone.position, clone.quaternion, clone.scale);
+          clone.rotation.setFromQuaternion(clone.quaternion);
+          group.add(clone);
+        }
       }
       const stl = exporter.parse(group, { binary: true });
       const blob = new Blob([stl], { type: "application/octet-stream" });
@@ -665,9 +707,20 @@ export function useModelerCore(locale: "en" | "es" = "en") {
       catch { ({ GLTFExporter } = await import("three/examples/jsm/exporters/GLTFExporter.js")); }
       const exporter = new GLTFExporter();
       const group = new t.THREE.Group();
-      for (const [, m] of t.meshes) {
-        if (m.isMesh) group.add(m.clone(true));
-        else if (m.isGroup) group.add(m.clone(true));
+      const childOfGroup = new Set<string>();
+      for (const [, g] of groupsRef.current) {
+        for (const cid of g.childIds) childOfGroup.add(cid);
+      }
+      for (const [id, m] of t.meshes) {
+        if (childOfGroup.has(id)) continue;
+        if (m.isMesh || m.isGroup) {
+          m.updateWorldMatrix(true, true);
+          const clone = m.clone(true);
+          clone.matrix.copy(m.matrixWorld);
+          clone.matrix.decompose(clone.position, clone.quaternion, clone.scale);
+          clone.rotation.setFromQuaternion(clone.quaternion);
+          group.add(clone);
+        }
       }
       const result = await new Promise<ArrayBuffer>((resolve, reject) => {
         exporter.parse(
