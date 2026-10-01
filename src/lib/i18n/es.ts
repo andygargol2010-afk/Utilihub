@@ -182,6 +182,7 @@ const EXACT_NAMES: Record<string, string> = {
   "ppi-pantalla": "PPI de pantalla",
   "crecimiento-periodico": "Crecimiento periódico",
   "calculadora-horas-extra": "Calculadora de horas extra",
+  "generador-utm": "Generador de enlaces UTM",
   // Gap tools
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",
