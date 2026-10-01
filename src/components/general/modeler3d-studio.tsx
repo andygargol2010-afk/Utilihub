@@ -78,7 +78,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
       if (mod && (e.key === "v" || e.key === "V")) { e.preventDefault(); pasteClipboard(); return; }
       if (mod && (e.key === "d" || e.key === "D")) { e.preventDefault(); copySelected(); pasteClipboard(); return; }
       if (mod) return;
-      if (e.key === "Escape") { e.preventDefault(); clearSelection(); setCtxMenu(null); setShowHelp(false); return; }
+      if (e.key === "Escape") { e.preventDefault(); clearSelection(); setCtxMenu(null); setShowHelp(false); setShowScenes(false); return; }
       if (e.key === "?" || (e.shiftKey && e.key === "/")) { e.preventDefault(); setShowHelp((v) => !v); return; }
       if (e.key === "g" || e.key === "G" || e.key === "v" || e.key === "V") { setMode("translate"); return; }
       if (e.key === "r" || e.key === "R") { setMode("rotate"); return; }
@@ -155,8 +155,10 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
               className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-left font-semibold hover:bg-white/15"
               onClick={async () => {
                 const ok = await copyShareLink();
-                setShareMsg(ok ? (es ? "Enlace copiado" : "Link copied") : (es ? "No se pudo copiar" : "Copy failed"));
-                window.setTimeout(() => setShareMsg(null), 2500);
+                setShareMsg(ok
+                  ? (es ? "Enlace copiado" : "Link copied")
+                  : (es ? "Escena grande: se descargó JSON" : "Scene too large: JSON downloaded"));
+                window.setTimeout(() => setShareMsg(null), 3500);
               }}
             >
               {es ? "Copiar enlace para compartir" : "Copy share link"}
@@ -305,7 +307,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
           <div className="flex flex-wrap gap-3">
             {!groupIds.includes(selectedId) && (
               <div className="flex flex-col gap-0.5">
-                <span className="text-[9px] font-bold text-rose-200/70">{es ? "Tamaño (×10 cm)" : "Size (×10 cm)"}</span>
+                <span className="text-[9px] font-bold text-rose-200/70">{es ? "Tamaño (1 u = 10 cm)" : "Size (1 u = 10 cm)"}</span>
                 <span className="text-[9px] text-rose-200/50">{`${(size[0] * UNIT_CM).toFixed(1)}×${(size[1] * UNIT_CM).toFixed(1)}×${(size[2] * UNIT_CM).toFixed(1)} cm`}</span>
                 {(["X","Y","Z"] as const).map((lab, axis) => {
                   const key = `sz${axis}`;
