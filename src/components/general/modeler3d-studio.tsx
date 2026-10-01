@@ -132,7 +132,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
         </div>
       )}
       {showScenes && ready && !error && (
-        <div className="absolute right-2 top-14 z-30 w-[min(100%-1rem,18rem)] rounded-xl border border-white/15 bg-black/95 p-3 text-xs text-rose-50 shadow-2xl backdrop-blur-md">
+        <div className="absolute right-2 top-12 z-30 w-[min(100%-1rem,18rem)] rounded-xl border border-white/15 bg-black/95 p-3 text-xs text-rose-50 shadow-2xl backdrop-blur-md sm:top-14">
           <div className="mb-2 flex items-center justify-between">
             <p className="text-[10px] font-bold uppercase tracking-wide text-rose-200">{es ? "Escenas" : "Scenes"}</p>
             <button type="button" className="rounded px-1.5 py-0.5 text-rose-200/80 hover:bg-white/10" onClick={() => setShowScenes(false)}>✕</button>
@@ -219,91 +219,113 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
         </div>
       )}
       {ready && !error && (
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-1.5 sm:p-2.5">
-          <div className="pointer-events-auto flex w-full max-w-full flex-col gap-2 rounded-xl border border-white/10 bg-black/80 p-2 shadow-lg backdrop-blur-md sm:p-2.5">
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
-                <span className="hidden text-[10px] font-bold uppercase tracking-wide text-rose-200/50 sm:inline">Edit</span>
-                <button type="button" onClick={undo} disabled={!canUndo} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs">{es ? "Deshacer" : "Undo"}</button>
-                <button type="button" onClick={redo} disabled={!canRedo} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs">{es ? "Rehacer" : "Redo"}</button>
-                <button type="button" onClick={groupSelected} disabled={selectedIds.length < 2} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs">{es ? "Agrupar" : "Group"}</button>
-                <button type="button" onClick={ungroupSelected} disabled={!selectedIds.some((id) => groupIds.includes(id))} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs">{es ? "Desagrupar" : "Ungroup"}</button>
-                <button type="button" onClick={deleteSelected} disabled={selectedIds.length === 0} className="rounded-lg border border-rose-500/40 bg-rose-950/60 px-2 py-1.5 text-[11px] font-semibold text-rose-100 hover:bg-rose-900/70 disabled:opacity-35 sm:px-3 sm:text-xs">{es ? "Eliminar" : "Delete"}</button>
-                <button type="button" onClick={() => { copySelected(); pasteClipboard(); }} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs" title="Ctrl+D">{es ? "Duplicar" : "Duplicate"}</button>
-                <button type="button" onClick={dropToFloor} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:px-3 sm:text-xs" title={es ? "Apoyar en el piso" : "Drop to floor"}>{es ? "Piso" : "Floor"}</button>
-                <button type="button" onClick={() => setShowHelp((v) => !v)} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs" title={es ? "Atajos" : "Shortcuts"}>?</button>
-              </div>
-              <span className="hidden h-6 w-px bg-white/15 sm:block" />
-              <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
-                <span className="hidden text-[10px] font-bold uppercase tracking-wide text-rose-200/50 sm:inline">View</span>
-                <button type="button" onClick={toggleFullscreen} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">{fullscreen ? (es ? "Salir" : "Exit") : (es ? "Pantalla" : "Full")}</button>
-                <button type="button" title={es ? "Snap de rejilla" : "Grid snap"} onClick={() => {
-                  const steps = [0, 0.1, 0.5, 1];
-                  const i = steps.indexOf(snap);
-                  setSnap(steps[(i + 1) % steps.length]!);
-                }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">
-                  {snap === 0 ? "Snap off" : `Snap ${snap}`}
-                </button>
-                <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">{es ? "Limpiar" : "Clear"}</button>
-                <button type="button" title="Export JSON" onClick={exportJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">JSON</button>
-                <button type="button" title="Export STL" onClick={exportSTL} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">STL</button>
-                <button type="button" title={es ? "Captura PNG" : "Screenshot PNG"} onClick={exportPNG} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">PNG</button>
-                <button type="button" title={es ? "Exportar GLB" : "Export GLB"} onClick={exportGLB} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">GLB</button>
-                <button type="button" title={es ? "Escenas y compartir" : "Scenes & share"} onClick={() => { refreshScenes(); setShowScenes((v) => !v); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:px-3 sm:text-xs">{es ? "Escenas" : "Scenes"}</button>
-              </div>
+        <>
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-1.5 sm:p-2">
+          <div className="pointer-events-auto mx-auto flex max-w-full flex-wrap items-center gap-1 rounded-xl border border-white/10 bg-black/80 px-1.5 py-1.5 shadow-lg backdrop-blur-md sm:gap-1.5 sm:px-2">
+            <button type="button" onClick={undo} disabled={!canUndo} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs">{es ? "Deshacer" : "Undo"}</button>
+            <button type="button" onClick={redo} disabled={!canRedo} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs">{es ? "Rehacer" : "Redo"}</button>
+            <button type="button" onClick={groupSelected} disabled={selectedIds.length < 2} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs">{es ? "Agrupar" : "Group"}</button>
+            <button type="button" onClick={ungroupSelected} disabled={!selectedIds.some((id) => groupIds.includes(id))} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs">{es ? "Desagrupar" : "Ungroup"}</button>
+            <button type="button" onClick={deleteSelected} disabled={selectedIds.length === 0} className="rounded-lg border border-rose-500/40 bg-rose-950/60 px-2 py-1.5 text-[11px] font-semibold text-rose-100 hover:bg-rose-900/70 disabled:opacity-35 sm:text-xs">{es ? "Eliminar" : "Delete"}</button>
+            <button type="button" onClick={() => { copySelected(); pasteClipboard(); }} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs" title="Ctrl+D">{es ? "Duplicar" : "Duplicate"}</button>
+            <button type="button" onClick={dropToFloor} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs" title={es ? "Apoyar en el piso" : "Drop to floor"}>{es ? "Piso" : "Floor"}</button>
+            <button type="button" onClick={() => setShowHelp((v) => !v)} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs" title={es ? "Atajos" : "Shortcuts"}>?</button>
+            <span className="hidden h-5 w-px bg-white/15 sm:block" />
+            <button type="button" onClick={toggleFullscreen} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">{fullscreen ? (es ? "Salir" : "Exit") : (es ? "Pantalla" : "Full")}</button>
+            <button type="button" title={es ? "Snap de rejilla" : "Grid snap"} onClick={() => {
+              const steps = [0, 0.1, 0.5, 1];
+              const i = steps.indexOf(snap);
+              setSnap(steps[(i + 1) % steps.length]!);
+            }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">
+              {snap === 0 ? "Snap off" : `Snap ${snap}`}
+            </button>
+            <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">{es ? "Limpiar" : "Clear"}</button>
+            <button type="button" title="Export JSON" onClick={exportJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">JSON</button>
+            <button type="button" title="Export STL" onClick={exportSTL} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">STL</button>
+            <button type="button" title={es ? "Captura PNG" : "Screenshot PNG"} onClick={exportPNG} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">PNG</button>
+            <button type="button" title={es ? "Exportar GLB" : "Export GLB"} onClick={exportGLB} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">GLB</button>
+            <button type="button" title={es ? "Escenas y compartir" : "Scenes & share"} onClick={() => { refreshScenes(); setShowScenes((v) => !v); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">{es ? "Escenas" : "Scenes"}</button>
+          </div>
+          {selectedIds.length >= 2 && (
+            <div className="pointer-events-auto mx-auto mt-1.5 flex max-w-full flex-wrap items-center justify-center gap-1 rounded-lg border border-white/10 bg-black/80 px-2 py-1 shadow-lg backdrop-blur-md">
+              <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/70">{es ? "Alinear" : "Align"}</span>
+              {([
+                ["x", "min", "X min"],
+                ["x", "center", "X mid"],
+                ["x", "max", "X max"],
+                ["y", "min", "Y min"],
+                ["y", "center", "Y mid"],
+                ["y", "max", "Y max"],
+                ["z", "min", "Z min"],
+                ["z", "center", "Z mid"],
+                ["z", "max", "Z max"],
+              ] as const).map(([axis, amode, lab]) => (
+                <button key={`${axis}-${amode}`} type="button" onClick={() => alignSelection(axis, amode)} className="rounded border border-white/10 bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-rose-50 hover:bg-white/20">{lab}</button>
+              ))}
             </div>
-            {selectedIds.length >= 2 && (
-              <div className="flex flex-wrap items-center gap-1 border-t border-white/10 pt-2">
-                <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/70">{es ? "Alinear" : "Align"}</span>
-                {([
-                  ["x", "min", "X min"],
-                  ["x", "center", "X mid"],
-                  ["x", "max", "X max"],
-                  ["y", "min", "Y min"],
-                  ["y", "center", "Y mid"],
-                  ["y", "max", "Y max"],
-                  ["z", "min", "Z min"],
-                  ["z", "center", "Z mid"],
-                  ["z", "max", "Z max"],
-                ] as const).map(([axis, amode, lab]) => (
-                  <button key={`${axis}-${amode}`} type="button" onClick={() => alignSelection(axis, amode)} className="rounded border border-white/10 bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-rose-50 hover:bg-white/20">{lab}</button>
-                ))}
-              </div>
-            )}
-            <div className="flex flex-wrap items-center gap-2 border-t border-white/10 pt-2">
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-[10px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Formas" : "Shapes"}</span>
+          )}
+        </div>
+
+        <div className="pointer-events-none absolute bottom-16 left-1.5 top-14 z-10 flex max-h-[calc(100%-5.5rem)] w-[4.75rem] flex-col sm:left-2 sm:w-[5.25rem]">
+          <div className="pointer-events-auto flex max-h-full flex-col gap-2 overflow-y-auto rounded-xl border border-white/10 bg-black/85 p-1.5 shadow-lg backdrop-blur-md">
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Formas" : "Shapes"}</span>
+              <div className="grid grid-cols-2 gap-1">
                 {shapeList(es).map((s) => (
-                  <button key={s.kind} type="button" onClick={() => addShape(s.kind)} title={s.label} className="flex min-w-[2.25rem] items-center justify-center gap-1 rounded-lg border border-white/10 bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-rose-50 hover:bg-rose-500/30">
+                  <button
+                    key={s.kind}
+                    type="button"
+                    onClick={() => addShape(s.kind)}
+                    title={s.label}
+                    className="flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-sm font-semibold text-rose-50 hover:bg-rose-500/30 sm:size-9"
+                  >
                     <span>{s.icon}</span>
-                    <span className="hidden text-[11px] sm:inline">{s.label}</span>
                   </button>
                 ))}
               </div>
-              <span className="hidden h-6 w-px bg-white/15 sm:block" />
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-[10px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Color" : "Color"}</span>
+            </div>
+            <div className="h-px w-full bg-white/10" />
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Color" : "Color"}</span>
+              <div className="grid grid-cols-3 gap-1">
                 {COLORS.map((c) => (
-                  <button key={c} type="button" title={c} onClick={() => applyColor(c)} className={`size-6 shrink-0 rounded-full border-2 transition ${color.toLowerCase() === c.toLowerCase() ? "scale-110 border-white ring-2 ring-white/30" : "border-black/30 hover:scale-105"}`} style={{ backgroundColor: c }} />
+                  <button
+                    key={c}
+                    type="button"
+                    title={c}
+                    onClick={() => applyColor(c)}
+                    className={`size-5 rounded-full border-2 transition sm:size-6 ${color.toLowerCase() === c.toLowerCase() ? "scale-110 border-white ring-2 ring-white/30" : "border-black/30 hover:scale-105"}`}
+                    style={{ backgroundColor: c }}
+                  />
                 ))}
-                <label title={es ? "Color personalizado" : "Custom color"} className="relative flex size-7 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-white/40 bg-white/10 hover:border-white/70">
-                  <span className="pointer-events-none text-xs font-bold text-rose-50">+</span>
+                <label title={es ? "Color personalizado" : "Custom color"} className="relative flex size-5 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-white/40 bg-white/10 hover:border-white/70 sm:size-6">
+                  <span className="pointer-events-none text-[10px] font-bold text-rose-50">+</span>
                   <input type="color" value={/^#[0-9a-fA-F]{6}$/.test(color) ? color : "#a78bfa"} onChange={(e) => applyColor(e.target.value)} className="absolute inset-0 cursor-pointer opacity-0" />
                 </label>
               </div>
-              <span className="hidden h-6 w-px bg-white/15 sm:block" />
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-[10px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Material" : "Material"}</span>
+            </div>
+            <div className="h-px w-full bg-white/10" />
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Mat." : "Mat."}</span>
+              <div className="flex w-full flex-col gap-1">
                 {matPresetList(es).map((p) => (
-                  <button key={p.id} type="button" onClick={() => applyMatPreset(p.id)} className={`rounded-lg border px-2 py-1 text-[11px] font-semibold ${matPreset === p.id ? "border-rose-400 bg-rose-500/30 text-rose-50" : "border-white/10 bg-white/10 text-rose-100/80 hover:bg-white/15"}`}>{p.label}</button>
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => applyMatPreset(p.id)}
+                    className={`w-full rounded-md border px-1 py-1 text-[10px] font-semibold leading-tight ${matPreset === p.id ? "border-rose-400 bg-rose-500/30 text-rose-50" : "border-white/10 bg-white/10 text-rose-100/80 hover:bg-white/15"}`}
+                  >
+                    {p.label}
+                  </button>
                 ))}
               </div>
             </div>
           </div>
         </div>
+        </>
       )}
       {selectedId && ready && (
-        <div className="pointer-events-auto absolute bottom-2.5 left-2.5 z-10 max-w-[calc(100%-1.25rem)] overflow-x-auto rounded-xl border border-white/10 bg-black/85 p-2.5 text-xs text-rose-50 shadow-lg backdrop-blur-sm">
+        <div className="pointer-events-auto absolute bottom-2.5 right-2.5 z-10 max-w-[min(100%-5.5rem,22rem)] overflow-x-auto rounded-xl border border-white/10 bg-black/85 p-2.5 text-xs text-rose-50 shadow-lg backdrop-blur-sm">
           <div className="flex flex-wrap gap-3">
             {!groupIds.includes(selectedId) && (
               <div className="flex flex-col gap-0.5">
@@ -323,7 +345,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
                         if (Number.isFinite(n)) setSizeAxis(axis as 0|1|2, n);
                         clearDraft(key); sizeHistPushedRef.current = false;
                       }} onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }} className="w-14 rounded border border-white/10 bg-black/50 px-1 py-0.5 text-center" />
-                    </div>
+                    pendiv>
                   );
                 })}
               </div>
