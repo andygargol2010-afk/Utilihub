@@ -138,44 +138,23 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
             <button type="button" className="rounded px-1.5 py-0.5 text-rose-200/80 hover:bg-white/10" onClick={() => setShowScenes(false)}>✕</button>
           </div>
           <div className="mb-2 flex flex-col gap-1.5">
-            <button
-              type="button"
-              className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-left font-semibold hover:bg-white/15"
-              onClick={() => {
-                const name = window.prompt(es ? "Nombre de la escena" : "Scene name", es ? "Mi escena" : "My scene");
-                if (name === null) return;
-                saveNamedScene(name.trim() || (es ? "Escena" : "Scene"));
-                refreshScenes();
-              }}
-            >
-              {es ? "Guardar escena actual" : "Save current scene"}
-            </button>
-            <button
-              type="button"
-              className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-left font-semibold hover:bg-white/15"
-              onClick={async () => {
-                const ok = await copyShareLink();
-                setShareMsg(ok
-                  ? (es ? "Enlace copiado" : "Link copied")
-                  : (es ? "Escena grande: se descargó JSON" : "Scene too large: JSON downloaded"));
-                window.setTimeout(() => setShareMsg(null), 3500);
-              }}
-            >
-              {es ? "Copiar enlace para compartir" : "Copy share link"}
-            </button>
+            <button type="button" className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-left font-semibold hover:bg-white/15" onClick={() => {
+              const name = window.prompt(es ? "Nombre de la escena" : "Scene name", es ? "Mi escena" : "My scene");
+              if (name === null) return;
+              saveNamedScene(name.trim() || (es ? "Escena" : "Scene"));
+              refreshScenes();
+            }}>{es ? "Guardar escena actual" : "Save current scene"}</button>
+            <button type="button" className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-left font-semibold hover:bg-white/15" onClick={async () => {
+              const ok = await copyShareLink();
+              setShareMsg(ok ? (es ? "Enlace copiado" : "Link copied") : (es ? "Escena grande: se descargó JSON" : "Scene too large: JSON downloaded"));
+              window.setTimeout(() => setShareMsg(null), 3500);
+            }}>{es ? "Copiar enlace para compartir" : "Copy share link"}</button>
             {shareMsg && <p className="text-[10px] text-emerald-300">{shareMsg}</p>}
           </div>
           <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-rose-200/60">{es ? "Plantillas" : "Presets"}</p>
           <div className="mb-2 flex flex-wrap gap-1">
             {scenePresets(es).map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => { applyPreset(p.id); setShowScenes(false); }}
-                className="rounded border border-white/10 bg-white/10 px-2 py-1 text-[10px] font-semibold hover:bg-white/20"
-              >
-                {p.label}
-              </button>
+              <button key={p.id} type="button" onClick={() => { applyPreset(p.id); setShowScenes(false); }} className="rounded border border-white/10 bg-white/10 px-2 py-1 text-[10px] font-semibold hover:bg-white/20">{p.label}</button>
             ))}
           </div>
           <p className="mb-1 text-[10px] font-bold uppercase tracking-wide text-rose-200/60">{es ? "Guardadas" : "Saved"}</p>
@@ -198,13 +177,11 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
           <div className="w-full max-w-sm rounded-2xl border border-white/15 bg-[#120a14] p-4 text-rose-50 shadow-2xl">
             <p className="text-xs font-bold uppercase tracking-wide text-rose-300">{es ? "Primeros pasos" : "Quick start"}</p>
             <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm leading-snug text-rose-100/90">
-              <li>{es ? "Tocá una forma arriba para crear (cubo, esfera…)." : "Tap a shape above to create (cube, sphere…)."}</li>
+              <li>{es ? "Tocá una forma a la izquierda para crear." : "Tap a shape on the left to create."}</li>
               <li>{es ? "Arrastrá con un dedo para orbitar; dos dedos para zoom/pan." : "Drag with one finger to orbit; two fingers to zoom/pan."}</li>
-              <li>{es ? "Seleccioná un objeto y usá G / R / S o los controles para mover, rotar y escalar." : "Select an object and use G / R / S or the gizmo to move, rotate, and scale."}</li>
+              <li>{es ? "Seleccioná un objeto y usá G / R / S o el gizmo." : "Select an object and use G / R / S or the gizmo."}</li>
             </ol>
-            <button type="button" onClick={dismissOnboard} className="mt-4 w-full rounded-lg bg-rose-500 px-3 py-2.5 text-sm font-bold text-white hover:bg-rose-400">
-              {es ? "Entendido" : "Got it"}
-            </button>
+            <button type="button" onClick={dismissOnboard} className="mt-4 w-full rounded-lg bg-rose-500 px-3 py-2.5 text-sm font-bold text-white hover:bg-rose-400">{es ? "Entendido" : "Got it"}</button>
           </div>
         </div>
       )}
@@ -236,9 +213,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
               const steps = [0, 0.1, 0.5, 1];
               const i = steps.indexOf(snap);
               setSnap(steps[(i + 1) % steps.length]!);
-            }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">
-              {snap === 0 ? "Snap off" : `Snap ${snap}`}
-            </button>
+            }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">{snap === 0 ? "Snap off" : `Snap ${snap}`}</button>
             <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">{es ? "Limpiar" : "Clear"}</button>
             <button type="button" title="Export JSON" onClick={exportJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">JSON</button>
             <button type="button" title="Export STL" onClick={exportSTL} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">STL</button>
@@ -249,17 +224,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
           {selectedIds.length >= 2 && (
             <div className="pointer-events-auto mx-auto mt-1.5 flex max-w-full flex-wrap items-center justify-center gap-1 rounded-lg border border-white/10 bg-black/80 px-2 py-1 shadow-lg backdrop-blur-md">
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/70">{es ? "Alinear" : "Align"}</span>
-              {([
-                ["x", "min", "X min"],
-                ["x", "center", "X mid"],
-                ["x", "max", "X max"],
-                ["y", "min", "Y min"],
-                ["y", "center", "Y mid"],
-                ["y", "max", "Y max"],
-                ["z", "min", "Z min"],
-                ["z", "center", "Z mid"],
-                ["z", "max", "Z max"],
-              ] as const).map(([axis, amode, lab]) => (
+              {([["x", "min", "X min"], ["x", "center", "X mid"], ["x", "max", "X max"], ["y", "min", "Y min"], ["y", "center", "Y mid"], ["y", "max", "Y max"], ["z", "min", "Z min"], ["z", "center", "Z mid"], ["z", "max", "Z max"]] as const).map(([axis, amode, lab]) => (
                 <button key={`${axis}-${amode}`} type="button" onClick={() => alignSelection(axis, amode)} className="rounded border border-white/10 bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-rose-50 hover:bg-white/20">{lab}</button>
               ))}
             </div>
@@ -272,13 +237,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Formas" : "Shapes"}</span>
               <div className="grid grid-cols-2 gap-1">
                 {shapeList(es).map((s) => (
-                  <button
-                    key={s.kind}
-                    type="button"
-                    onClick={() => addShape(s.kind)}
-                    title={s.label}
-                    className="flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-sm font-semibold text-rose-50 hover:bg-rose-500/30 sm:size-9"
-                  >
+                  <button key={s.kind} type="button" onClick={() => addShape(s.kind)} title={s.label} className="flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-sm font-semibold text-rose-50 hover:bg-rose-500/30 sm:size-9">
                     <span>{s.icon}</span>
                   </button>
                 ))}
@@ -289,14 +248,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Color" : "Color"}</span>
               <div className="grid grid-cols-3 gap-1">
                 {COLORS.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    title={c}
-                    onClick={() => applyColor(c)}
-                    className={`size-5 rounded-full border-2 transition sm:size-6 ${color.toLowerCase() === c.toLowerCase() ? "scale-110 border-white ring-2 ring-white/30" : "border-black/30 hover:scale-105"}`}
-                    style={{ backgroundColor: c }}
-                  />
+                  <button key={c} type="button" title={c} onClick={() => applyColor(c)} className={`size-5 rounded-full border-2 transition sm:size-6 ${color.toLowerCase() === c.toLowerCase() ? "scale-110 border-white ring-2 ring-white/30" : "border-black/30 hover:scale-105"}`} style={{ backgroundColor: c }} />
                 ))}
                 <label title={es ? "Color personalizado" : "Custom color"} className="relative flex size-5 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-white/40 bg-white/10 hover:border-white/70 sm:size-6">
                   <span className="pointer-events-none text-[10px] font-bold text-rose-50">+</span>
@@ -309,14 +261,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Mat." : "Mat."}</span>
               <div className="flex w-full flex-col gap-1">
                 {matPresetList(es).map((p) => (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => applyMatPreset(p.id)}
-                    className={`w-full rounded-md border px-1 py-1 text-[10px] font-semibold leading-tight ${matPreset === p.id ? "border-rose-400 bg-rose-500/30 text-rose-50" : "border-white/10 bg-white/10 text-rose-100/80 hover:bg-white/15"}`}
-                  >
-                    {p.label}
-                  </button>
+                  <button key={p.id} type="button" onClick={() => applyMatPreset(p.id)} className={`w-full rounded-md border px-1 py-1 text-[10px] font-semibold leading-tight ${matPreset === p.id ? "border-rose-400 bg-rose-500/30 text-rose-50" : "border-white/10 bg-white/10 text-rose-100/80 hover:bg-white/15"}`}>{p.label}</button>
                 ))}
               </div>
             </div>
@@ -345,7 +290,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
                         if (Number.isFinite(n)) setSizeAxis(axis as 0|1|2, n);
                         clearDraft(key); sizeHistPushedRef.current = false;
                       }} onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }} className="w-14 rounded border border-white/10 bg-black/50 px-1 py-0.5 text-center" />
-                    pendiv>
+                    </div>
                   );
                 })}
               </div>
