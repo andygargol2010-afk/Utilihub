@@ -23,6 +23,7 @@ import { TOOL_SEO_OVERRIDES_MATRIX } from "./tool-seo-overrides-matrix";
 import { TOOL_SEO_OVERRIDES_CORE } from "./tool-seo-overrides-core";
 import { TOOL_SEO_OVERRIDES_OVERTIME } from "./tool-seo-overrides-overtime";
 import { TOOL_SEO_OVERRIDES_UTM } from "./tool-seo-overrides-utm";
+import { TOOL_SEO_OVERRIDES_TILE } from "./tool-seo-overrides-tile";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -61,6 +62,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...(TOOL_SEO_OVERRIDES_CORE as Record<string, ToolSeoOverride>),
   ...TOOL_SEO_OVERRIDES_OVERTIME,
   ...TOOL_SEO_OVERRIDES_UTM,
+  ...TOOL_SEO_OVERRIDES_TILE,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {

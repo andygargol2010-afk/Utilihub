@@ -38,6 +38,7 @@ import { EXPLOG_SUITE_TOOLS } from "./explog-suite";
 import { MATRIX_BINARY_SUITE_TOOLS } from "./matrix-binary-suite";
 import { OVERTIME_PAY_TOOLS } from "./overtime-pay";
 import { UTM_BUILDER_TOOLS } from "./utm-builder";
+import { TILE_CALCULATOR_TOOLS } from "./tile-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -81,4 +82,5 @@ export const GENERAL_TOOLS = [
   ...MATRIX_BINARY_SUITE_TOOLS,
   ...OVERTIME_PAY_TOOLS,
   ...UTM_BUILDER_TOOLS,
+  ...TILE_CALCULATOR_TOOLS,
 ];
