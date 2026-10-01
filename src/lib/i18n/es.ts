@@ -184,6 +184,7 @@ const EXACT_NAMES: Record<string, string> = {
   "calculadora-horas-extra": "Calculadora de horas extra",
   "generador-utm": "Generador de enlaces UTM",
   "calculadora-baldosas": "Calculadora de baldosas",
+  "quitar-iva": "Quitar IVA del precio",
   // Gap tools
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",
