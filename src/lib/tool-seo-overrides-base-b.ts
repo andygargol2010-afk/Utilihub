@@ -76,7 +76,7 @@ export const TOOL_SEO_OVERRIDES_BASE_B: Record<string, ToolSeoOverrideBase> = {
     stepsEs: [
       "Pegá el texto a codificar.",
       "Copiá la salida Base64.",
-      "Usala en headers, data URLs o APIs.",
+      "Úsala en headers, data URLs o APIs.",
     ],
     faq: [
       {
