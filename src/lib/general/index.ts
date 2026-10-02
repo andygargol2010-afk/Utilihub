@@ -41,6 +41,7 @@ import { UTM_BUILDER_TOOLS } from "./utm-builder";
 import { TILE_CALCULATOR_TOOLS } from "./tile-calculator";
 import { VAT_EXTRACTOR_TOOLS } from "./vat-extractor";
 import { AC_SIZE_TOOLS } from "./ac-size";
+import { CONCRETE_CALCULATOR_TOOLS } from "./concrete-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -87,4 +88,5 @@ export const GENERAL_TOOLS = [
   ...TILE_CALCULATOR_TOOLS,
   ...VAT_EXTRACTOR_TOOLS,
   ...AC_SIZE_TOOLS,
+  ...CONCRETE_CALCULATOR_TOOLS,
 ];

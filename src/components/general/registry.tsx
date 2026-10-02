@@ -63,6 +63,7 @@ const UtmBuilderTool = lazy(() => import("./UtmBuilderTool").then((m) => ({ defa
 const TileCalculatorTool = lazy(() => import("./TileCalculatorTool").then((m) => ({ default: m.TileCalculatorTool })));
 const VatExtractorTool = lazy(() => import("./VatExtractorTool").then((m) => ({ default: m.VatExtractorTool })));
 const AcSizeTool = lazy(() => import("./AcSizeTool").then((m) => ({ default: m.AcSizeTool })));
+const ConcreteCalculatorTool = lazy(() => import("./ConcreteCalculatorTool").then((m) => ({ default: m.ConcreteCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -73,6 +74,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-baldosas") return TileCalculatorTool as ToolComp;
   if (tool.slug === "quitar-iva") return VatExtractorTool as ToolComp;
   if (tool.slug === "calculadora-btu") return AcSizeTool as ToolComp;
+  if (tool.slug === "calculadora-hormigon") return ConcreteCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
