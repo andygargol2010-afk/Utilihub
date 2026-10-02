@@ -23,6 +23,9 @@ const BudgetSurvivorGame = lazy(() =>
 const PathfinderGame = lazy(() =>
   import("./PathfinderGame").then((m) => ({ default: m.PathfinderGame })),
 );
+const RefractionChallengeGame = lazy(() =>
+  import("./RefractionChallengeGame").then((m) => ({ default: m.RefractionChallengeGame })),
+);
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -47,6 +50,8 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "supervivencia-presupuesto": BudgetSurvivorGame,
   pathfinder: PathfinderGame,
   "busca-caminos": PathfinderGame,
+  "refraction-challenge": RefractionChallengeGame,
+  "desafio-refraccion": RefractionChallengeGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {

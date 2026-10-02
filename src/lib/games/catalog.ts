@@ -172,6 +172,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Dibujá paredes y mirá cómo BFS o A* encuentran el camino paso a paso.",
     hasScore: true,
   },
+  {
+    slug: "refraction-challenge",
+    slugEs: "desafio-refraccion",
+    nameEn: "Refraction Challenge",
+    nameEs: "Desafío de refracción",
+    tag: "arcade",
+    emoji: "🔦",
+    summaryEn: "Aim a laser through lenses and hit the target. Bend light, clear levels.",
+    summaryEs: "Apuntá un láser a través de lentes y pegale al blanco. Doblá la luz y pasá niveles.",
+    hasScore: true,
+  },
 ] as const;
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
