@@ -143,6 +143,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Compartimentos SIR: susceptibles, infectados, recuperados. Ajustá β, γ y vacunación. Mirá R₀ y la curva de la epidemia.",
   },
+  {
+    slug: "market-equilibrium",
+    slugEs: "equilibrio-mercado",
+    nameEn: "Market equilibrium",
+    nameEs: "Equilibrio de mercado",
+    tag: "math",
+    theme: "lab",
+    emoji: "📈",
+    badgeEn: "Supply & demand",
+    badgeEs: "Oferta y demanda",
+    summaryEn:
+      "Shift supply and demand curves, add a per-unit tax, and see equilibrium price, quantity, revenue, and surplus.",
+    summaryEs:
+      "Mové las curvas de oferta y demanda, agregá un impuesto unitario y mirá precio, cantidad, ingresos y excedentes de equilibrio.",
+  },
 ] as const;
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
