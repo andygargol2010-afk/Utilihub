@@ -14,6 +14,9 @@ const TetrisGame = lazy(() => import("./TetrisGame").then((m) => ({ default: m.T
 const CodeTypeRaceGame = lazy(() =>
   import("./CodeTypeRaceGame").then((m) => ({ default: m.CodeTypeRaceGame })),
 );
+const FormulaMemoryGame = lazy(() =>
+  import("./FormulaMemoryGame").then((m) => ({ default: m.FormulaMemoryGame })),
+);
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -32,6 +35,8 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   tetris: TetrisGame,
   "code-type-race": CodeTypeRaceGame,
   "carrera-de-codigo": CodeTypeRaceGame,
+  "formula-memory": FormulaMemoryGame,
+  "memoria-formulas": FormulaMemoryGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {

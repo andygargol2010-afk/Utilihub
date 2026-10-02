@@ -139,6 +139,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Escribí snippets reales de JS y Python. Competí por WPM y precisión.",
     hasScore: true,
   },
+  {
+    slug: "formula-memory",
+    slugEs: "memoria-formulas",
+    nameEn: "Formula Memory",
+    nameEs: "Memoria de fórmulas",
+    tag: "puzzle",
+    emoji: "∫",
+    summaryEn: "Match each formula name with its equation — physics, geometry, and finance.",
+    summaryEs: "Emparejá el nombre de cada fórmula con su ecuación: física, geometría y finanzas.",
+    hasScore: true,
+  },
 ] as const;
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
