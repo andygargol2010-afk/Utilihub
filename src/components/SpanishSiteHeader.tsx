@@ -45,7 +45,7 @@ export function SpanishSiteHeader() {
     <header className="site-header sticky top-0 z-50">
       <div className="container-page flex h-16 items-center justify-between gap-3">
         <Link to="/es" className="brand-lockup flex min-h-11 min-w-0 items-center gap-2.5" aria-label="Inicio de UtiliHub">
-          <img src="/utilihub-logo.svg" alt="" className="brand-mark size-9 shrink-0" />
+          <img src="/page-logo.png" alt="" className="brand-mark size-9 shrink-0" />
           <span className="min-w-0">
             <span className="block truncate text-base font-extrabold tracking-tight">UtiliHub</span>
             <span className="hidden text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground sm:block">
