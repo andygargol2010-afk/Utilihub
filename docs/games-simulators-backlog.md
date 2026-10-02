@@ -1,7 +1,6 @@
 # Backlog: juegos y simuladores
 
 Lista acordada para implementar **de a una**, priorizando calidad sobre cantidad.
-El catálogo de tools simples sigue expandiéndose por automatización; este backlog es trabajo manual/asistido.
 
 Última actualización: 2026-10-02
 
@@ -9,7 +8,7 @@ El catálogo de tools simples sigue expandiéndose por automatización; este bac
 
 | # | Tipo | Nombre | Estado |
 |---|------|--------|--------|
-| 1 | Simulador | Óptica: lentes y espejos | pendiente |
+| 1 | Simulador | Óptica: lentes y espejos | **hecho** — `optics-bench` / `banco-optico` |
 | 2 | Simulador | Circuitos DC interactivos | pendiente |
 | 3 | Simulador | Cadenas tróficas / ecosistema | pendiente |
 | 4 | Simulador | Propagación de epidemias (SIR) | pendiente |
@@ -22,26 +21,17 @@ El catálogo de tools simples sigue expandiéndose por automatización; este bac
 
 ## Detalle
 
-### 1–5. Simuladores
-Pendientes (óptica, circuitos, ecosistema, SIR, mercado).
+### 1. Óptica ✅
+`/simulators/optics-bench` · `/es/simuladores/banco-optico`
 
-### 6. Type race con código ✅
-`/games/code-type-race` · `/es/juegos/carrera-de-codigo`
+### 2–5. Simuladores pendientes
+Circuitos DC, ecosistema, SIR, mercado.
 
-### 7. Memory de fórmulas ✅
-`/games/formula-memory` · `/es/juegos/memoria-formulas`
-
-### 8. Budget survivor ✅
-`/games/budget-survivor` · `/es/juegos/supervivencia-presupuesto`
-
-### 9. Pathfinder grid ✅
-`/games/pathfinder` · `/es/juegos/busca-caminos`
-
-### 10. Refracción challenge ✅
-`/games/refraction-challenge` · `/es/juegos/desafio-refraccion`
+### 6–10. Juegos ✅
+Todos implementados.
 
 ## Reglas de implementación
 
-- Una pieza a la vez (MVP completo: UI EN/ES, registry, SEO, mobile).
+- Una pieza a la vez (MVP completo: UI EN/ES, registry, mobile).
 - No mezclar con el ritmo de la automatización de tools simples.
 - Al terminar una: marcar estado `hecho` + commit/slug en esta tabla.
