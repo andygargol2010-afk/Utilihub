@@ -18,45 +18,27 @@ El catálogo de tools simples sigue expandiéndose por automatización; este bac
 | 7 | Juego | Memory de fórmulas | **hecho** — `formula-memory` / `memoria-formulas` |
 | 8 | Juego | Budget survivor | **hecho** — `budget-survivor` / `supervivencia-presupuesto` |
 | 9 | Juego | Pathfinder grid (BFS/A*) | **hecho** — `pathfinder` / `busca-caminos` |
-| 10 | Juego | Refracción challenge | pendiente |
+| 10 | Juego | Refracción challenge | **hecho** — `refraction-challenge` / `desafio-refraccion` |
 
 ## Detalle
 
-### 1. Óptica: lentes y espejos
-Rayos, foco, imagen real/virtual. Educación / ciencia.
-
-### 2. Circuitos DC interactivos
-Arrastrar batería, resistencias, LEDs; corriente y voltaje en vivo.
-
-### 3. Cadenas tróficas / ecosistema
-Ajustar depredadores/presas; equilibrio o colapso.
-
-### 4. Propagación de epidemias (SIR)
-R₀, vacunación, cuarentena; curvas en vivo.
-
-### 5. Mercado / oferta-demanda
-Mover curvas; precio de equilibrio e ingresos.
+### 1–5. Simuladores
+Pendientes (óptica, circuitos, ecosistema, SIR, mercado).
 
 ### 6. Type race con código ✅
-Snippets JS/Python; WPM + errores. SLugs: `/games/code-type-race`, `/es/juegos/carrera-de-codigo`.
+`/games/code-type-race` · `/es/juegos/carrera-de-codigo`
 
 ### 7. Memory de fórmulas ✅
-Emparejar nombre ↔ fórmula (física, finanzas, geometría). SLugs: `/games/formula-memory`, `/es/juegos/memoria-formulas`.
+`/games/formula-memory` · `/es/juegos/memoria-formulas`
 
 ### 8. Budget survivor ✅
-Un mes de gastos aleatorios; no llegar a cero. SLugs: `/games/budget-survivor`, `/es/juegos/supervivencia-presupuesto`.
+`/games/budget-survivor` · `/es/juegos/supervivencia-presupuesto`
 
 ### 9. Pathfinder grid ✅
-Dibujar obstáculos; visualizar BFS/A* paso a paso. Slugs: `/games/pathfinder`, `/es/juegos/busca-caminos`.
+`/games/pathfinder` · `/es/juegos/busca-caminos`
 
-### 10. Refracción challenge
-Apuntar láser al target con 1–3 lentes (arcade del #1).
-
-## Prioridad sugerida (esfuerzo vs impacto)
-
-1. **Alta:** Circuitos DC (#2), Óptica (#1), Type race (#6) ✅
-2. **Media:** SIR (#4), Pathfinder (#9) ✅, Memory fórmulas (#7) ✅
-3. **Experimental:** Budget survivor (#8) ✅, Ecosistema (#3), Mercado (#5), Refracción (#10)
+### 10. Refracción challenge ✅
+`/games/refraction-challenge` · `/es/juegos/desafio-refraccion`
 
 ## Reglas de implementación
 
