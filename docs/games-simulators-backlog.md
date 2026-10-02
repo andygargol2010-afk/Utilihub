@@ -16,7 +16,7 @@ El catálogo de tools simples sigue expandiéndose por automatización; este bac
 | 5 | Simulador | Mercado / oferta-demanda | pendiente |
 | 6 | Juego | Type race con código | **hecho** — `code-type-race` / `carrera-de-codigo` |
 | 7 | Juego | Memory de fórmulas | **hecho** — `formula-memory` / `memoria-formulas` |
-| 8 | Juego | Budget survivor | pendiente |
+| 8 | Juego | Budget survivor | **hecho** — `budget-survivor` / `supervivencia-presupuesto` |
 | 9 | Juego | Pathfinder grid (BFS/A*) | pendiente |
 | 10 | Juego | Refracción challenge | pendiente |
 
@@ -38,13 +38,13 @@ R₀, vacunación, cuarentena; curvas en vivo.
 Mover curvas; precio de equilibrio e ingresos.
 
 ### 6. Type race con código ✅
-Snippets JS/Python; WPM + errores. SLugs: `/games/code-type-race`, `/es/juegos/carrera-de-codigo`.
+Snippets JS/Python; WPM + errores. Slugs: `/games/code-type-race`, `/es/juegos/carrera-de-codigo`.
 
 ### 7. Memory de fórmulas ✅
 Emparejar nombre ↔ fórmula (física, finanzas, geometría). Slugs: `/games/formula-memory`, `/es/juegos/memoria-formulas`.
 
-### 8. Budget survivor
-Un mes de gastos aleatorios; no llegar a cero. Gamifica finanzas/productividad.
+### 8. Budget survivor ✅
+Un mes de gastos aleatorios; no llegar a cero. SLugs: `/games/budget-survivor`, `/es/juegos/supervivencia-presupuesto`.
 
 ### 9. Pathfinder grid
 Dibujar obstáculos; visualizar BFS/A* paso a paso.
@@ -56,7 +56,7 @@ Apuntar láser al target con 1–3 lentes (arcade del #1).
 
 1. **Alta:** Circuitos DC (#2), Óptica (#1), Type race (#6) ✅
 2. **Media:** SIR (#4), Pathfinder (#9), Memory fórmulas (#7) ✅
-3. **Experimental:** Budget survivor (#8), Ecosistema (#3), Mercado (#5), Refracción (#10)
+3. **Experimental:** Budget survivor (#8) ✅, Ecosistema (#3), Mercado (#5), Refracción (#10)
 
 ## Reglas de implementación
 
