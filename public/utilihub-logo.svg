@@ -1,9 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
   <title id="title">UtiliHub</title>
-  <desc id="desc">Símbolo U formado por nodos conectados</desc>
-  <rect width="128" height="128" rx="30" fill="#071a4a"/>
-  <path d="M38 38v27c0 16 10 25 26 25s26-9 26-25V38" fill="none" stroke="#43e6ad" stroke-width="14" stroke-linecap="round"/>
-  <circle cx="38" cy="38" r="10" fill="#2d63ff"/>
-  <circle cx="90" cy="38" r="10" fill="#2d63ff"/>
-  <circle cx="64" cy="90" r="10" fill="#43e6ad"/>
+  <defs>
+    <linearGradient id="gL" x1="0%" y1="0%" x2="40%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="gR" x1="60%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#071a4a"/>
+  <!-- U shape left (green) -->
+  <path d="M24 24c0-4 3-8 8-8h16c5 0 8 4 8 8v40c0 14-10 24-24 24S8 78 8 64V24c0-4 3-8 8-8h8" fill="url(#gL)"/>
+  <circle cx="40" cy="40" r="18" fill="#fff"/>
+  <!-- wrench -->
+  <path d="M34 34c3-4 9-5 13-2l3 3-5 5-2-2c-2-1-4 0-4 2v10h-5V40c0-2 0-4 0-6z" fill="#059669"/>
+  <rect x="41" y="48" width="5" height="14" rx="2" fill="#059669"/>
+  <!-- U shape right (blue) -->
+  <path d="M72 24c0-4 3-8 8-8h16c5 0 8 4 8 8v40c0 14-10 24-24 24S56 78 56 64V24c0-4 3-8 8-8h8" fill="url(#gR)"/>
+  <circle cx="88" cy="40" r="18" fill="#fff"/>
+  <!-- share icon -->
+  <circle cx="80" cy="34" r="4" fill="#1d4ed8"/>
+  <circle cx="96" cy="34" r="4" fill="#1d4ed8"/>
+  <circle cx="88" cy="48" r="4" fill="#1d4ed8"/>
+  <line x1="80" y1="34" x2="88" y2="48" stroke="#1d4ed8" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="96" y1="34" x2="88" y2="48" stroke="#1d4ed8" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- bottom ring -->
+  <circle cx="64" cy="100" r="20" fill="#1d4ed8"/>
+  <circle cx="64" cy="100" r="13" fill="#071a4a"/>
+  <circle cx="64" cy="100" r="8" fill="#34d399"/>
 </svg>
