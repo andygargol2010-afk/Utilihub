@@ -42,6 +42,7 @@ import { TILE_CALCULATOR_TOOLS } from "./tile-calculator";
 import { VAT_EXTRACTOR_TOOLS } from "./vat-extractor";
 import { AC_SIZE_TOOLS } from "./ac-size";
 import { CONCRETE_CALCULATOR_TOOLS } from "./concrete-calculator";
+import { WALLPAPER_CALCULATOR_TOOLS } from "./wallpaper-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -89,4 +90,5 @@ export const GENERAL_TOOLS = [
   ...VAT_EXTRACTOR_TOOLS,
   ...AC_SIZE_TOOLS,
   ...CONCRETE_CALCULATOR_TOOLS,
+  ...WALLPAPER_CALCULATOR_TOOLS,
 ];
