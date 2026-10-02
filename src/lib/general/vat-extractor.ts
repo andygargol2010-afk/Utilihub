@@ -5,7 +5,7 @@ export const VAT_EXTRACTOR_TOOLS = [
   makeTool(
     "quitar-iva",
     "Remove VAT from price",
-    "hogar",
+    "utilidades",
     "formula",
     "Extract the net price and VAT amount from a tax-inclusive price, or add VAT with common rate presets.",
     [
