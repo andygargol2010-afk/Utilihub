@@ -44,6 +44,7 @@ import { AC_SIZE_TOOLS } from "./ac-size";
 import { CONCRETE_CALCULATOR_TOOLS } from "./concrete-calculator";
 import { WALLPAPER_CALCULATOR_TOOLS } from "./wallpaper-calculator";
 import { DRYWALL_CALCULATOR_TOOLS } from "./drywall-calculator";
+import { MEETING_COST_TOOLS } from "./meeting-cost";
 
 export { GENERAL_CATEGORIES };
 
@@ -93,4 +94,5 @@ export const GENERAL_TOOLS = [
   ...CONCRETE_CALCULATOR_TOOLS,
   ...WALLPAPER_CALCULATOR_TOOLS,
   ...DRYWALL_CALCULATOR_TOOLS,
+  ...MEETING_COST_TOOLS,
 ];

@@ -66,6 +66,7 @@ const AcSizeTool = lazy(() => import("./AcSizeTool").then((m) => ({ default: m.A
 const ConcreteCalculatorTool = lazy(() => import("./ConcreteCalculatorTool").then((m) => ({ default: m.ConcreteCalculatorTool })));
 const WallpaperCalculatorTool = lazy(() => import("./WallpaperCalculatorTool").then((m) => ({ default: m.WallpaperCalculatorTool })));
 const DrywallCalculatorTool = lazy(() => import("./DrywallCalculatorTool").then((m) => ({ default: m.DrywallCalculatorTool })));
+const MeetingCostTool = lazy(() => import("./MeetingCostTool").then((m) => ({ default: m.MeetingCostTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -79,6 +80,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-hormigon") return ConcreteCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-papel-pintado") return WallpaperCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-pladur") return DrywallCalculatorTool as ToolComp;
+  if (tool.slug === "coste-reunion") return MeetingCostTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
