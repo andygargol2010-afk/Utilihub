@@ -8,7 +8,15 @@ const outDir = join(root, "public");
 const chunkDir = join(root, "scripts", "brand-b64");
 mkdirSync(outDir, { recursive: true });
 
-const files = ["favicon-32.png", "favicon-48.png"];
+const files = [
+  "favicon-32.png",
+  "favicon-48.png",
+  "apple-touch-icon.png",
+  "icon-192.png",
+  "icon-512.png",
+  "utilihub-logo.png",
+  "og-image.jpg",
+];
 for (const name of files) {
   const b64Path = join(chunkDir, name + ".b64");
   if (!existsSync(b64Path)) {
