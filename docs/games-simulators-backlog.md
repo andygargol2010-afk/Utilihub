@@ -10,7 +10,7 @@ Lista acordada para implementar **de a una**, priorizando calidad sobre cantidad
 |---|------|--------|--------|
 | 1 | Simulador | Óptica: lentes y espejos | **hecho** — `optics-bench` / `banco-optico` |
 | 2 | Simulador | Circuitos DC interactivos | **hecho** — `dc-circuit` / `circuito-dc` |
-| 3 | Simulador | Cadenas tróficas / ecosistema | pendiente |
+| 3 | Simulador | Cadenas tróficas / ecosistema | **hecho** — `ecosystem` / `ecosistema` |
 | 4 | Simulador | Propagación de epidemias (SIR) | pendiente |
 | 5 | Simulador | Mercado / oferta-demanda | pendiente |
 | 6 | Juego | Type race con código | **hecho** — `code-type-race` / `carrera-de-codigo` |
@@ -27,8 +27,11 @@ Lista acordada para implementar **de a una**, priorizando calidad sobre cantidad
 ### 2. Circuitos DC ✅
 `/simulators/dc-circuit` · `/es/simuladores/circuito-dc`
 
-### 3–5. Simuladores pendientes
-Ecosistema, SIR, mercado.
+### 3. Ecosistema ✅
+`/simulators/ecosystem` · `/es/simuladores/ecosistema`
+
+### 4–5. Simuladores pendientes
+SIR, mercado.
 
 ### 6–10. Juegos ✅
 Todos implementados.

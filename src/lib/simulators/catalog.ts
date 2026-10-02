@@ -113,6 +113,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Armá circuitos en serie o paralelo, ajustá la batería y un LED opcional. Corriente, caídas de tensión y potencia en vivo con flujo animado.",
   },
+  {
+    slug: "ecosystem",
+    slugEs: "ecosistema",
+    nameEn: "Ecosystem",
+    nameEs: "Ecosistema",
+    tag: "math",
+    theme: "lab",
+    emoji: "🌿",
+    badgeEn: "Food chain",
+    badgeEs: "Cadena trófica",
+    summaryEn:
+      "Three-level food chain: plants, herbivores, predators. Tune growth, grazing, and hunting — watch populations balance or collapse.",
+    summaryEs:
+      "Cadena trófica de tres niveles: plantas, herbívoros y depredadores. Ajustá crecimiento, pastoreo y caza; mirá equilibrio o colapso.",
+  },
 ] as const;
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
