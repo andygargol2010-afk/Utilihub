@@ -185,6 +185,7 @@ const EXACT_NAMES: Record<string, string> = {
   "generador-utm": "Generador de enlaces UTM",
   "calculadora-baldosas": "Calculadora de baldosas",
   "quitar-iva": "Quitar IVA del precio",
+  "calculadora-btu": "Calculadora de BTU y frigorías",
   // Gap tools
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",

@@ -40,6 +40,7 @@ import { OVERTIME_PAY_TOOLS } from "./overtime-pay";
 import { UTM_BUILDER_TOOLS } from "./utm-builder";
 import { TILE_CALCULATOR_TOOLS } from "./tile-calculator";
 import { VAT_EXTRACTOR_TOOLS } from "./vat-extractor";
+import { AC_SIZE_TOOLS } from "./ac-size";
 
 export { GENERAL_CATEGORIES };
 
@@ -85,4 +86,5 @@ export const GENERAL_TOOLS = [
   ...UTM_BUILDER_TOOLS,
   ...TILE_CALCULATOR_TOOLS,
   ...VAT_EXTRACTOR_TOOLS,
+  ...AC_SIZE_TOOLS,
 ];
