@@ -128,6 +128,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Cadena trófica de tres niveles: plantas, herbívoros y depredadores. Ajustá crecimiento, pastoreo y caza; mirá equilibrio o colapso.",
   },
+  {
+    slug: "sir-epidemic",
+    slugEs: "epidemia-sir",
+    nameEn: "SIR epidemic",
+    nameEs: "Epidemia SIR",
+    tag: "math",
+    theme: "lab",
+    emoji: "🦠",
+    badgeEn: "Outbreak model",
+    badgeEs: "Modelo de brote",
+    summaryEn:
+      "Classic SIR compartments: susceptible, infected, recovered. Tune β, γ, and vaccination. Watch R₀ and the epidemic curve.",
+    summaryEs:
+      "Compartimentos SIR: susceptibles, infectados, recuperados. Ajustá β, γ y vacunación. Mirá R₀ y la curva de la epidemia.",
+  },
 ] as const;
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
@@ -146,7 +161,7 @@ export function simName(sim: SimDef, locale: SimLocale = "en") {
 }
 
 export function simSummary(sim: SimDef, locale: SimLocale = "en") {
-  return locale === "es" ? sim.summaryEs : sim.summaryEn;
+  return locale === "es" ? sim.summaryEs : sim.nameEn;
 }
 
 export function simBadge(sim: SimDef, locale: SimLocale = "en") {

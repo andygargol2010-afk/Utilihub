@@ -8,6 +8,7 @@ const ProjectileSim = lazy(() => import("./ProjectileSim").then((m) => ({ defaul
 const OpticsSim = lazy(() => import("./OpticsSim").then((m) => ({ default: m.OpticsSim })));
 const DcCircuitSim = lazy(() => import("./DcCircuitSim").then((m) => ({ default: m.DcCircuitSim })));
 const EcosystemSim = lazy(() => import("./EcosystemSim").then((m) => ({ default: m.EcosystemSim })));
+const SirEpidemicSim = lazy(() => import("./SirEpidemicSim").then((m) => ({ default: m.SirEpidemicSim })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -24,6 +25,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "circuito-dc": DcCircuitSim,
   ecosystem: EcosystemSim,
   ecosistema: EcosystemSim,
+  "sir-epidemic": SirEpidemicSim,
+  "epidemia-sir": SirEpidemicSim,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
