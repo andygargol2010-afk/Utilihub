@@ -161,6 +161,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Sobreviví un mes de gastos y sorpresas sin quedar en cero.",
     hasScore: true,
   },
+  {
+    slug: "pathfinder",
+    slugEs: "busca-caminos",
+    nameEn: "Pathfinder",
+    nameEs: "Busca caminos",
+    tag: "puzzle",
+    emoji: "🗺️",
+    summaryEn: "Draw walls, then watch BFS or A* find a path step by step.",
+    summaryEs: "Dibujá paredes y mirá cómo BFS o A* encuentran el camino paso a paso.",
+    hasScore: true,
+  },
 ] as const;
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
