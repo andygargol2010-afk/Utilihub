@@ -6,6 +6,7 @@ const GravitySandbox = lazy(() => import("./GravitySandbox").then((m) => ({ defa
 const PendulumSim = lazy(() => import("./PendulumSim").then((m) => ({ default: m.PendulumSim })));
 const ProjectileSim = lazy(() => import("./ProjectileSim").then((m) => ({ default: m.ProjectileSim })));
 const OpticsSim = lazy(() => import("./OpticsSim").then((m) => ({ default: m.OpticsSim })));
+const DcCircuitSim = lazy(() => import("./DcCircuitSim").then((m) => ({ default: m.DcCircuitSim })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -18,6 +19,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "movimiento-proyectil": ProjectileSim,
   "optics-bench": OpticsSim,
   "banco-optico": OpticsSim,
+  "dc-circuit": DcCircuitSim,
+  "circuito-dc": DcCircuitSim,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {

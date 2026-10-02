@@ -98,6 +98,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Laboratorio de rayos: lentes convergentes y divergentes, espejos cóncavos y convexos. Mové el objeto, cambiá la focal y mirá distancia e imagen.",
   },
+  {
+    slug: "dc-circuit",
+    slugEs: "circuito-dc",
+    nameEn: "DC circuit lab",
+    nameEs: "Lab de circuitos DC",
+    tag: "physics",
+    theme: "lab",
+    emoji: "⚡",
+    badgeEn: "Series & parallel",
+    badgeEs: "Serie y paralelo",
+    summaryEn:
+      "Build series or parallel resistor circuits, tweak battery voltage, optional LED drop. Live current, voltage drops, and power with animated flow.",
+    summaryEs:
+      "Armá circuitos en serie o paralelo, ajustá la batería y un LED opcional. Corriente, caídas de tensión y potencia en vivo con flujo animado.",
+  },
 ] as const;
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
