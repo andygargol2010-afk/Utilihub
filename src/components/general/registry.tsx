@@ -67,6 +67,7 @@ const ConcreteCalculatorTool = lazy(() => import("./ConcreteCalculatorTool").the
 const WallpaperCalculatorTool = lazy(() => import("./WallpaperCalculatorTool").then((m) => ({ default: m.WallpaperCalculatorTool })));
 const DrywallCalculatorTool = lazy(() => import("./DrywallCalculatorTool").then((m) => ({ default: m.DrywallCalculatorTool })));
 const MeetingCostTool = lazy(() => import("./MeetingCostTool").then((m) => ({ default: m.MeetingCostTool })));
+const PaintCalculatorTool = lazy(() => import("./PaintCalculatorTool").then((m) => ({ default: m.PaintCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -81,6 +82,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-papel-pintado") return WallpaperCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-pladur") return DrywallCalculatorTool as ToolComp;
   if (tool.slug === "coste-reunion") return MeetingCostTool as ToolComp;
+  if (tool.slug === "calculadora-pintura") return PaintCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
