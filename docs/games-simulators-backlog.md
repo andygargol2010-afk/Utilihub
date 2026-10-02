@@ -12,7 +12,7 @@ Lista acordada para implementar **de a una**, priorizando calidad sobre cantidad
 | 2 | Simulador | Circuitos DC interactivos | **hecho** — `dc-circuit` / `circuito-dc` |
 | 3 | Simulador | Cadenas tróficas / ecosistema | **hecho** — `ecosystem` / `ecosistema` |
 | 4 | Simulador | Propagación de epidemias (SIR) | **hecho** — `sir-epidemic` / `epidemia-sir` |
-| 5 | Simulador | Mercado / oferta-demanda | pendiente |
+| 5 | Simulador | Mercado / oferta-demanda | **hecho** — `market-equilibrium` / `equilibrio-mercado` |
 | 6 | Juego | Type race con código | **hecho** — `code-type-race` / `carrera-de-codigo` |
 | 7 | Juego | Memory de fórmulas | **hecho** — `formula-memory` / `memoria-formulas` |
 | 8 | Juego | Budget survivor | **hecho** — `budget-survivor` / `supervivencia-presupuesto` |
@@ -21,10 +21,8 @@ Lista acordada para implementar **de a una**, priorizando calidad sobre cantidad
 
 ## Detalle
 
-### 1–4. Simuladores ✅
-Óptica, circuitos DC, ecosistema, epidemia SIR.
-
-### 5. Mercado / oferta-demanda | pendiente
+### 1–5. Simuladores ✅
+Óptica, circuitos DC, ecosistema, epidemia SIR, mercado.
 
 ### 6–10. Juegos ✅
 Todos implementados.
