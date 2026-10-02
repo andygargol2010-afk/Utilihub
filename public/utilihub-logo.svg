@@ -1,4 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
   <title id="title">UtiliHub</title>
-  <image href="data:image/png;base64,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" width="64" height="64"/>
+  <defs>
+    <linearGradient id="gL" x1="0%" y1="0%" x2="40%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="gR" x1="60%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#071a4a"/>
+  <!-- U shape left (green) -->
+  <path d="M24 24c0-4 3-8 8-8h16c5 0 8 4 8 8v40c0 14-10 24-24 24S8 78 8 64V24c0-4 3-8 8-8h8" fill="url(#gL)"/>
+  <circle cx="40" cy="40" r="18" fill="#fff"/>
+  <!-- wrench -->
+  <path d="M34 34c3-4 9-5 13-2l3 3-5 5-2-2c-2-1-4 0-4 2v10h-5V40c0-2 0-4 0-6z" fill="#059669"/>
+  <rect x="41" y="48" width="5" height="14" rx="2" fill="#059669"/>
+  <!-- U shape right (blue) -->
+  <path d="M72 24c0-4 3-8 8-8h16c5 0 8 4 8 8v40c0 14-10 24-24 24S56 78 56 64V24c0-4 3-8 8-8h8" fill="url(#gR)"/>
+  <circle cx="88" cy="40" r="18" fill="#fff"/>
+  <!-- share icon -->
+  <circle cx="80" cy="34" r="4" fill="#1d4ed8"/>
+  <circle cx="96" cy="34" r="4" fill="#1d4ed8"/>
+  <circle cx="88" cy="48" r="4" fill="#1d4ed8"/>
+  <line x1="80" y1="34" x2="88" y2="48" stroke="#1d4ed8" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="96" y1="34" x2="88" y2="48" stroke="#1d4ed8" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- bottom ring -->
+  <circle cx="64" cy="100" r="20" fill="#1d4ed8"/>
+  <circle cx="64" cy="100" r="13" fill="#071a4a"/>
+  <circle cx="64" cy="100" r="8" fill="#34d399"/>
 </svg>
