@@ -44,7 +44,7 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
       override?.metaTitleEs ?? `${name} gratis online — ${category} | UtiliHub`;
     const description = cleanDescription(
       override?.metaDescriptionEs ??
-        `${name}: herramienta gratuita de ${category.toLowerCase()}. Usala en el navegador, sin cuenta ni instalación. Resultados al instante en UtiliHub.`,
+        `${name}: herramienta gratuita de ${category.toLowerCase()}. Úsala en el navegador, sin cuenta ni instalación. Resultados al instante en UtiliHub.`,
     );
     const englishUrl = absoluteUrl(englishToolPath(tool));
     const faqEs = override?.faqEs ?? [];
