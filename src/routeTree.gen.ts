@@ -11,19 +11,35 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as EsRouteImport } from './routes/es'
+import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as FinanzasRouteImport } from './routes/finanzas'
 import { Route as KitsRouteImport } from './routes/kits'
+import { Route as LegalRouteImport } from './routes/legal'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
+import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as EducacionSubjectRouteImport } from './routes/educacion.$subject'
+import { Route as EducationSubjectRouteImport } from './routes/education.$subject'
+import { Route as EsIndexRouteImport } from './routes/es.index'
+import { Route as EsFinanzasRouteImport } from './routes/es.finanzas'
+import { Route as EsHerramientasRouteImport } from './routes/es.herramientas'
+import { Route as FinanceSlugRouteImport } from './routes/finance.$slug'
 import { Route as FinanzasSlugRouteImport } from './routes/finanzas.$slug'
 import { Route as HerramientasIndexRouteImport } from './routes/herramientas.index'
 import { Route as HerramientasSlugRouteImport } from './routes/herramientas.$slug'
 import { Route as HubsDocumentosYArchivosRouteImport } from './routes/hubs.documentos-y-archivos'
+import { Route as HubsDocumentsAndFilesRouteImport } from './routes/hubs.documents-and-files'
 import { Route as KitsSlugRouteImport } from './routes/kits.$slug'
+import { Route as ToolsIndexRouteImport } from './routes/tools.index'
+import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
+import { Route as EsFinanzasSlugRouteImport } from './routes/es.finanzas.$slug'
+import { Route as EsHerramientasSlugRouteImport } from './routes/es.herramientas.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -35,9 +51,24 @@ const AvisoLegalRoute = AvisoLegalRouteImport.update({
   path: '/aviso-legal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactoRoute = ContactoRouteImport.update({
   id: '/contacto',
   path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsRoute = EsRouteImport.update({
+  id: '/es',
+  path: '/es',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinanceRoute = FinanceRouteImport.update({
+  id: '/finance',
+  path: '/finance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FinanzasRoute = FinanzasRouteImport.update({
@@ -50,9 +81,19 @@ const KitsRoute = KitsRouteImport.update({
   path: '/kits',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LegalRoute = LegalRouteImport.update({
+  id: '/legal',
+  path: '/legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacidadRoute = PrivacidadRouteImport.update({
   id: '/privacidad',
   path: '/privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -70,10 +111,40 @@ const CategoriaSlugRoute = CategoriaSlugRouteImport.update({
   path: '/categoria/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CategorySlugRoute = CategorySlugRouteImport.update({
+  id: '/category/$slug',
+  path: '/category/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EducacionSubjectRoute = EducacionSubjectRouteImport.update({
   id: '/educacion/$subject',
   path: '/educacion/$subject',
   getParentRoute: () => rootRouteImport,
+} as any)
+const EducationSubjectRoute = EducationSubjectRouteImport.update({
+  id: '/education/$subject',
+  path: '/education/$subject',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsIndexRoute = EsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsFinanzasRoute = EsFinanzasRouteImport.update({
+  id: '/finanzas',
+  path: '/finanzas',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsHerramientasRoute = EsHerramientasRouteImport.update({
+  id: '/herramientas',
+  path: '/herramientas',
+  getParentRoute: () => EsRoute,
+} as any)
+const FinanceSlugRoute = FinanceSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => FinanceRoute,
 } as any)
 const FinanzasSlugRoute = FinanzasSlugRouteImport.update({
   id: '/$slug',
@@ -95,132 +166,261 @@ const HubsDocumentosYArchivosRoute = HubsDocumentosYArchivosRouteImport.update({
   path: '/hubs/documentos-y-archivos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HubsDocumentsAndFilesRoute = HubsDocumentsAndFilesRouteImport.update({
+  id: '/hubs/documents-and-files',
+  path: '/hubs/documents-and-files',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KitsSlugRoute = KitsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => KitsRoute,
 } as any)
+const ToolsIndexRoute = ToolsIndexRouteImport.update({
+  id: '/tools/',
+  path: '/tools/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsSlugRoute = ToolsSlugRouteImport.update({
+  id: '/tools/$slug',
+  path: '/tools/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsFinanzasSlugRoute = EsFinanzasSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EsFinanzasRoute,
+} as any)
+const EsHerramientasSlugRoute = EsHerramientasSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EsHerramientasRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/contact': typeof ContactRoute
   '/contacto': typeof ContactoRoute
+  '/es': typeof EsRouteWithChildren
+  '/finance': typeof FinanceRouteWithChildren
   '/finanzas': typeof FinanzasRouteWithChildren
   '/kits': typeof KitsRouteWithChildren
+  '/legal': typeof LegalRoute
   '/privacidad': typeof PrivacidadRoute
+  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
+  '/education/$subject': typeof EducationSubjectRoute
+  '/es/finanzas': typeof EsFinanzasRouteWithChildren
+  '/es/herramientas': typeof EsHerramientasRouteWithChildren
+  '/finance/$slug': typeof FinanceSlugRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
   '/hubs/documentos-y-archivos': typeof HubsDocumentosYArchivosRoute
+  '/hubs/documents-and-files': typeof HubsDocumentsAndFilesRoute
   '/kits/$slug': typeof KitsSlugRoute
+  '/tools/$slug': typeof ToolsSlugRoute
+  '/es/': typeof EsIndexRoute
   '/herramientas/': typeof HerramientasIndexRoute
+  '/tools/': typeof ToolsIndexRoute
+  '/es/finanzas/$slug': typeof EsFinanzasSlugRoute
+  '/es/herramientas/$slug': typeof EsHerramientasSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/contact': typeof ContactRoute
   '/contacto': typeof ContactoRoute
+  '/finance': typeof FinanceRouteWithChildren
   '/finanzas': typeof FinanzasRouteWithChildren
   '/kits': typeof KitsRouteWithChildren
+  '/legal': typeof LegalRoute
   '/privacidad': typeof PrivacidadRoute
+  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
+  '/education/$subject': typeof EducationSubjectRoute
+  '/es/finanzas': typeof EsFinanzasRouteWithChildren
+  '/es/herramientas': typeof EsHerramientasRouteWithChildren
+  '/finance/$slug': typeof FinanceSlugRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
   '/hubs/documentos-y-archivos': typeof HubsDocumentosYArchivosRoute
+  '/hubs/documents-and-files': typeof HubsDocumentsAndFilesRoute
   '/kits/$slug': typeof KitsSlugRoute
+  '/tools/$slug': typeof ToolsSlugRoute
+  '/es': typeof EsIndexRoute
   '/herramientas': typeof HerramientasIndexRoute
+  '/tools': typeof ToolsIndexRoute
+  '/es/finanzas/$slug': typeof EsFinanzasSlugRoute
+  '/es/herramientas/$slug': typeof EsHerramientasSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/contact': typeof ContactRoute
   '/contacto': typeof ContactoRoute
+  '/es': typeof EsRouteWithChildren
+  '/finance': typeof FinanceRouteWithChildren
   '/finanzas': typeof FinanzasRouteWithChildren
   '/kits': typeof KitsRouteWithChildren
+  '/legal': typeof LegalRoute
   '/privacidad': typeof PrivacidadRoute
+  '/privacy': typeof PrivacyRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
+  '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
+  '/education/$subject': typeof EducationSubjectRoute
+  '/es/finanzas': typeof EsFinanzasRouteWithChildren
+  '/es/herramientas': typeof EsHerramientasRouteWithChildren
+  '/finance/$slug': typeof FinanceSlugRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
   '/hubs/documentos-y-archivos': typeof HubsDocumentosYArchivosRoute
+  '/hubs/documents-and-files': typeof HubsDocumentsAndFilesRoute
   '/kits/$slug': typeof KitsSlugRoute
+  '/tools/$slug': typeof ToolsSlugRoute
+  '/es/': typeof EsIndexRoute
   '/herramientas/': typeof HerramientasIndexRoute
+  '/tools/': typeof ToolsIndexRoute
+  '/es/finanzas/$slug': typeof EsFinanzasSlugRoute
+  '/es/herramientas/$slug': typeof EsHerramientasSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/aviso-legal'
+    | '/contact'
     | '/contacto'
+    | '/es'
+    | '/finance'
     | '/finanzas'
     | '/kits'
+    | '/legal'
     | '/privacidad'
+    | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/categoria/$slug'
+    | '/category/$slug'
     | '/educacion/$subject'
+    | '/education/$subject'
+    | '/es/finanzas'
+    | '/es/herramientas'
+    | '/finance/$slug'
     | '/finanzas/$slug'
     | '/herramientas/$slug'
     | '/hubs/documentos-y-archivos'
+    | '/hubs/documents-and-files'
     | '/kits/$slug'
+    | '/tools/$slug'
+    | '/es/'
     | '/herramientas/'
+    | '/tools/'
+    | '/es/finanzas/$slug'
+    | '/es/herramientas/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/aviso-legal'
+    | '/contact'
     | '/contacto'
+    | '/finance'
     | '/finanzas'
     | '/kits'
+    | '/legal'
     | '/privacidad'
+    | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/categoria/$slug'
+    | '/category/$slug'
     | '/educacion/$subject'
+    | '/education/$subject'
+    | '/es/finanzas'
+    | '/es/herramientas'
+    | '/finance/$slug'
     | '/finanzas/$slug'
     | '/herramientas/$slug'
     | '/hubs/documentos-y-archivos'
+    | '/hubs/documents-and-files'
     | '/kits/$slug'
+    | '/tools/$slug'
+    | '/es'
     | '/herramientas'
+    | '/tools'
+    | '/es/finanzas/$slug'
+    | '/es/herramientas/$slug'
   id:
     | '__root__'
     | '/'
     | '/aviso-legal'
+    | '/contact'
     | '/contacto'
+    | '/es'
+    | '/finance'
     | '/finanzas'
     | '/kits'
+    | '/legal'
     | '/privacidad'
+    | '/privacy'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/categoria/$slug'
+    | '/category/$slug'
     | '/educacion/$subject'
+    | '/education/$subject'
+    | '/es/finanzas'
+    | '/es/herramientas'
+    | '/finance/$slug'
     | '/finanzas/$slug'
     | '/herramientas/$slug'
     | '/hubs/documentos-y-archivos'
+    | '/hubs/documents-and-files'
     | '/kits/$slug'
+    | '/tools/$slug'
+    | '/es/'
     | '/herramientas/'
+    | '/tools/'
+    | '/es/finanzas/$slug'
+    | '/es/herramientas/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
+  ContactRoute: typeof ContactRoute
   ContactoRoute: typeof ContactoRoute
+  EsRoute: typeof EsRouteWithChildren
+  FinanceRoute: typeof FinanceRouteWithChildren
   FinanzasRoute: typeof FinanzasRouteWithChildren
   KitsRoute: typeof KitsRouteWithChildren
+  LegalRoute: typeof LegalRoute
   PrivacidadRoute: typeof PrivacidadRoute
+  PrivacyRoute: typeof PrivacyRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   CategoriaSlugRoute: typeof CategoriaSlugRoute
+  CategorySlugRoute: typeof CategorySlugRoute
   EducacionSubjectRoute: typeof EducacionSubjectRoute
+  EducationSubjectRoute: typeof EducationSubjectRoute
   HerramientasSlugRoute: typeof HerramientasSlugRoute
   HubsDocumentosYArchivosRoute: typeof HubsDocumentosYArchivosRoute
+  HubsDocumentsAndFilesRoute: typeof HubsDocumentsAndFilesRoute
+  ToolsSlugRoute: typeof ToolsSlugRoute
   HerramientasIndexRoute: typeof HerramientasIndexRoute
+  ToolsIndexRoute: typeof ToolsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -239,11 +439,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AvisoLegalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contacto': {
       id: '/contacto'
       path: '/contacto'
       fullPath: '/contacto'
       preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/es': {
+      id: '/es'
+      path: '/es'
+      fullPath: '/es'
+      preLoaderRoute: typeof EsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/finance': {
+      id: '/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof FinanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/finanzas': {
@@ -260,11 +481,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KitsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/legal': {
+      id: '/legal'
+      path: '/legal'
+      fullPath: '/legal'
+      preLoaderRoute: typeof LegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacidad': {
       id: '/privacidad'
       path: '/privacidad'
       fullPath: '/privacidad'
       preLoaderRoute: typeof PrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -288,12 +523,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/category/$slug': {
+      id: '/category/$slug'
+      path: '/category/$slug'
+      fullPath: '/category/$slug'
+      preLoaderRoute: typeof CategorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/educacion/$subject': {
       id: '/educacion/$subject'
       path: '/educacion/$subject'
       fullPath: '/educacion/$subject'
       preLoaderRoute: typeof EducacionSubjectRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/education/$subject': {
+      id: '/education/$subject'
+      path: '/education/$subject'
+      fullPath: '/education/$subject'
+      preLoaderRoute: typeof EducationSubjectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/es/': {
+      id: '/es/'
+      path: '/'
+      fullPath: '/es/'
+      preLoaderRoute: typeof EsIndexRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/finanzas': {
+      id: '/es/finanzas'
+      path: '/finanzas'
+      fullPath: '/es/finanzas'
+      preLoaderRoute: typeof EsFinanzasRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/herramientas': {
+      id: '/es/herramientas'
+      path: '/herramientas'
+      fullPath: '/es/herramientas'
+      preLoaderRoute: typeof EsHerramientasRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/finance/$slug': {
+      id: '/finance/$slug'
+      path: '/$slug'
+      fullPath: '/finance/$slug'
+      preLoaderRoute: typeof FinanceSlugRouteImport
+      parentRoute: typeof FinanceRoute
     }
     '/finanzas/$slug': {
       id: '/finanzas/$slug'
@@ -323,6 +600,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HubsDocumentosYArchivosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hubs/documents-and-files': {
+      id: '/hubs/documents-and-files'
+      path: '/hubs/documents-and-files'
+      fullPath: '/hubs/documents-and-files'
+      preLoaderRoute: typeof HubsDocumentsAndFilesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/kits/$slug': {
       id: '/kits/$slug'
       path: '/$slug'
@@ -330,8 +614,85 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KitsSlugRouteImport
       parentRoute: typeof KitsRoute
     }
+    '/tools/': {
+      id: '/tools/'
+      path: '/tools'
+      fullPath: '/tools/'
+      preLoaderRoute: typeof ToolsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/$slug': {
+      id: '/tools/$slug'
+      path: '/tools/$slug'
+      fullPath: '/tools/$slug'
+      preLoaderRoute: typeof ToolsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/es/finanzas/$slug': {
+      id: '/es/finanzas/$slug'
+      path: '/$slug'
+      fullPath: '/es/finanzas/$slug'
+      preLoaderRoute: typeof EsFinanzasSlugRouteImport
+      parentRoute: typeof EsFinanzasRoute
+    }
+    '/es/herramientas/$slug': {
+      id: '/es/herramientas/$slug'
+      path: '/$slug'
+      fullPath: '/es/herramientas/$slug'
+      preLoaderRoute: typeof EsHerramientasSlugRouteImport
+      parentRoute: typeof EsHerramientasRoute
+    }
   }
 }
+
+interface EsFinanzasRouteChildren {
+  EsFinanzasSlugRoute: typeof EsFinanzasSlugRoute
+}
+
+const EsFinanzasRouteChildren: EsFinanzasRouteChildren = {
+  EsFinanzasSlugRoute: EsFinanzasSlugRoute,
+}
+
+const EsFinanzasRouteWithChildren = EsFinanzasRoute._addFileChildren(
+  EsFinanzasRouteChildren,
+)
+
+interface EsHerramientasRouteChildren {
+  EsHerramientasSlugRoute: typeof EsHerramientasSlugRoute
+}
+
+const EsHerramientasRouteChildren: EsHerramientasRouteChildren = {
+  EsHerramientasSlugRoute: EsHerramientasSlugRoute,
+}
+
+const EsHerramientasRouteWithChildren = EsHerramientasRoute._addFileChildren(
+  EsHerramientasRouteChildren,
+)
+
+interface EsRouteChildren {
+  EsFinanzasRoute: typeof EsFinanzasRouteWithChildren
+  EsHerramientasRoute: typeof EsHerramientasRouteWithChildren
+  EsIndexRoute: typeof EsIndexRoute
+}
+
+const EsRouteChildren: EsRouteChildren = {
+  EsFinanzasRoute: EsFinanzasRouteWithChildren,
+  EsHerramientasRoute: EsHerramientasRouteWithChildren,
+  EsIndexRoute: EsIndexRoute,
+}
+
+const EsRouteWithChildren = EsRoute._addFileChildren(EsRouteChildren)
+
+interface FinanceRouteChildren {
+  FinanceSlugRoute: typeof FinanceSlugRoute
+}
+
+const FinanceRouteChildren: FinanceRouteChildren = {
+  FinanceSlugRoute: FinanceSlugRoute,
+}
+
+const FinanceRouteWithChildren =
+  FinanceRoute._addFileChildren(FinanceRouteChildren)
 
 interface FinanzasRouteChildren {
   FinanzasSlugRoute: typeof FinanzasSlugRoute
@@ -358,17 +719,27 @@ const KitsRouteWithChildren = KitsRoute._addFileChildren(KitsRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AvisoLegalRoute: AvisoLegalRoute,
+  ContactRoute: ContactRoute,
   ContactoRoute: ContactoRoute,
+  EsRoute: EsRouteWithChildren,
+  FinanceRoute: FinanceRouteWithChildren,
   FinanzasRoute: FinanzasRouteWithChildren,
   KitsRoute: KitsRouteWithChildren,
+  LegalRoute: LegalRoute,
   PrivacidadRoute: PrivacidadRoute,
+  PrivacyRoute: PrivacyRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   CategoriaSlugRoute: CategoriaSlugRoute,
+  CategorySlugRoute: CategorySlugRoute,
   EducacionSubjectRoute: EducacionSubjectRoute,
+  EducationSubjectRoute: EducationSubjectRoute,
   HerramientasSlugRoute: HerramientasSlugRoute,
   HubsDocumentosYArchivosRoute: HubsDocumentosYArchivosRoute,
+  HubsDocumentsAndFilesRoute: HubsDocumentsAndFilesRoute,
+  ToolsSlugRoute: ToolsSlugRoute,
   HerramientasIndexRoute: HerramientasIndexRoute,
+  ToolsIndexRoute: ToolsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
