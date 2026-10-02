@@ -10,7 +10,7 @@
   "theme_color": "#1d4ed8",
   "icons": [
     {
-      "src": "/google-favicon-32.png",
+      "src": "/google-favicon-48.png",
       "sizes": "48x48",
       "type": "image/png",
       "purpose": "any"
@@ -35,8 +35,8 @@
     },
     {
       "src": "/google-logo.png",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
