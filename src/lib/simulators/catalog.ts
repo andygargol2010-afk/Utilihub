@@ -161,7 +161,7 @@ export function simName(sim: SimDef, locale: SimLocale = "en") {
 }
 
 export function simSummary(sim: SimDef, locale: SimLocale = "en") {
-  return locale === "es" ? sim.summaryEs : sim.nameEn;
+  return locale === "es" ? sim.summaryEs : sim.summaryEn;
 }
 
 export function simBadge(sim: SimDef, locale: SimLocale = "en") {
