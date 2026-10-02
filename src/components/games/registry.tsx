@@ -1,5 +1,4 @@
 import { lazy, Suspense, type ComponentType } from "react";
-import { CardGridSkeleton } from "@/components/ListSkeleton";
 import type { GameDef, GameLocale } from "@/lib/games/catalog";
 
 const TicTacToeGame = lazy(() => import("./TicTacToeGame").then((m) => ({ default: m.TicTacToeGame })));
@@ -12,6 +11,9 @@ const PongGame = lazy(() => import("./PongGame").then((m) => ({ default: m.PongG
 const SudokuGame = lazy(() => import("./SudokuGame").then((m) => ({ default: m.SudokuGame })));
 const PacManGame = lazy(() => import("./PacManGame").then((m) => ({ default: m.PacManGame })));
 const TetrisGame = lazy(() => import("./TetrisGame").then((m) => ({ default: m.TetrisGame })));
+const CodeTypeRaceGame = lazy(() =>
+  import("./CodeTypeRaceGame").then((m) => ({ default: m.CodeTypeRaceGame })),
+);
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -28,6 +30,8 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   sudoku: SudokuGame,
   pacman: PacManGame,
   tetris: TetrisGame,
+  "code-type-race": CodeTypeRaceGame,
+  "carrera-de-codigo": CodeTypeRaceGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {

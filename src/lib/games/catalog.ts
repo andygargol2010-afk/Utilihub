@@ -128,6 +128,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Apilá tetrominós, limpiá líneas y buscá el high score.",
     hasScore: true,
   },
+  {
+    slug: "code-type-race",
+    slugEs: "carrera-de-codigo",
+    nameEn: "Code Type Race",
+    nameEs: "Carrera de código",
+    tag: "arcade",
+    emoji: "⌨️",
+    summaryEn: "Type real JS and Python snippets. Race the clock for WPM and accuracy.",
+    summaryEs: "Escribí snippets reales de JS y Python. Competí por WPM y precisión.",
+    hasScore: true,
+  },
 ] as const;
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {

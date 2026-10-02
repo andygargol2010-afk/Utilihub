@@ -14,7 +14,7 @@ El catálogo de tools simples sigue expandiéndose por automatización; este bac
 | 3 | Simulador | Cadenas tróficas / ecosistema | pendiente |
 | 4 | Simulador | Propagación de epidemias (SIR) | pendiente |
 | 5 | Simulador | Mercado / oferta-demanda | pendiente |
-| 6 | Juego | Type race con código | pendiente |
+| 6 | Juego | Type race con código | **hecho** — `code-type-race` / `carrera-de-codigo` |
 | 7 | Juego | Memory de fórmulas | pendiente |
 | 8 | Juego | Budget survivor | pendiente |
 | 9 | Juego | Pathfinder grid (BFS/A*) | pendiente |
@@ -37,8 +37,8 @@ R₀, vacunación, cuarentena; curvas en vivo.
 ### 5. Mercado / oferta-demanda
 Mover curvas; precio de equilibrio e ingresos.
 
-### 6. Type race con código
-Snippets JS/Python; WPM + errores. Encaja con desarrollo.
+### 6. Type race con código ✅
+Snippets JS/Python; WPM + errores. Slugs: `/games/code-type-race`, `/es/juegos/carrera-de-codigo`.
 
 ### 7. Memory de fórmulas
 Emparejar nombre ↔ fórmula (física, finanzas, geometría).
@@ -54,7 +54,7 @@ Apuntar láser al target con 1–3 lentes (arcade del #1).
 
 ## Prioridad sugerida (esfuerzo vs impacto)
 
-1. **Alta:** Circuitos DC (#2), Óptica (#1), Type race (#6)
+1. **Alta:** Circuitos DC (#2), Óptica (#1), Type race (#6) ✅
 2. **Media:** SIR (#4), Pathfinder (#9), Memory fórmulas (#7)
 3. **Experimental:** Budget survivor (#8), Ecosistema (#3), Mercado (#5), Refracción (#10)
 
