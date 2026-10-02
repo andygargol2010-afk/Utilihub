@@ -5,6 +5,7 @@ const MoleculesSim = lazy(() => import("./MoleculesSim").then((m) => ({ default:
 const GravitySandbox = lazy(() => import("./GravitySandbox").then((m) => ({ default: m.GravitySandbox })));
 const PendulumSim = lazy(() => import("./PendulumSim").then((m) => ({ default: m.PendulumSim })));
 const ProjectileSim = lazy(() => import("./ProjectileSim").then((m) => ({ default: m.ProjectileSim })));
+const OpticsSim = lazy(() => import("./OpticsSim").then((m) => ({ default: m.OpticsSim })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -15,6 +16,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   pendulo: PendulumSim,
   "projectile-motion": ProjectileSim,
   "movimiento-proyectil": ProjectileSim,
+  "optics-bench": OpticsSim,
+  "banco-optico": OpticsSim,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
@@ -29,9 +32,12 @@ export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLoc
   return (
     <Suspense
       fallback={
-        <p className="py-12 text-center text-sm text-white/60">
-          {locale === "es" ? "Cargando simulador…" : "Loading simulator…"}
-        </p>
+        <div className="mx-auto max-w-md py-8">
+          <div className="skeleton mx-auto h-48 w-full max-w-sm rounded-2xl" />
+          <p className="mt-4 text-center text-xs text-white/50">
+            {locale === "es" ? "Cargando…" : "Loading…"}
+          </p>
+        </div>
       }
     >
       <Comp locale={locale} />

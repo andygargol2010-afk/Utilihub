@@ -83,6 +83,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Lanzá un proyectil: ángulo y velocidad, arrastre del aire opcional, y compará la parábola ideal con la trayectoria real. Alcance, altura y tiempo de vuelo en vivo.",
   },
+  {
+    slug: "optics-bench",
+    slugEs: "banco-optico",
+    nameEn: "Optics bench",
+    nameEs: "Banco óptico",
+    tag: "physics",
+    theme: "lab",
+    emoji: "🔬",
+    badgeEn: "Lenses & mirrors",
+    badgeEs: "Lentes y espejos",
+    summaryEn:
+      "Ray diagram lab: converging and diverging lenses, concave and convex mirrors. Move the object, change focal length, see image distance and magnification.",
+    summaryEs:
+      "Laboratorio de rayos: lentes convergentes y divergentes, espejos cóncavos y convexos. Mové el objeto, cambiá la focal y mirá distancia e imagen.",
+  },
 ] as const;
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
@@ -104,13 +119,13 @@ export function simSummary(sim: SimDef, locale: SimLocale = "en") {
   return locale === "es" ? sim.summaryEs : sim.summaryEn;
 }
 
+export function simBadge(sim: SimDef, locale: SimLocale = "en") {
+  return locale === "es" ? sim.badgeEs : sim.badgeEn;
+}
+
 export function simTagLabel(tag: SimTag, locale: SimLocale = "en") {
   if (locale === "es") {
     return tag === "physics" ? "Física" : tag === "chemistry" ? "Química" : "Matemática";
   }
   return tag === "physics" ? "Physics" : tag === "chemistry" ? "Chemistry" : "Math";
-}
-
-export function simBadge(sim: SimDef, locale: SimLocale = "en") {
-  return locale === "es" ? sim.badgeEs : sim.badgeEn;
 }
