@@ -191,6 +191,7 @@ const EXACT_NAMES: Record<string, string> = {
   "calculadora-pladur": "Calculadora de pladur y placas de yeso",
   "coste-reunion": "Calculadora de coste de reunión",
   "calculadora-pintura": "Calculadora de pintura",
+  "calculadora-valla": "Calculadora de valla",
   // Gap tools
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",

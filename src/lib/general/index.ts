@@ -46,6 +46,7 @@ import { WALLPAPER_CALCULATOR_TOOLS } from "./wallpaper-calculator";
 import { DRYWALL_CALCULATOR_TOOLS } from "./drywall-calculator";
 import { MEETING_COST_TOOLS } from "./meeting-cost";
 import { PAINT_CALCULATOR_TOOLS } from "./paint-calculator";
+import { FENCE_CALCULATOR_TOOLS } from "./fence-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -97,4 +98,5 @@ export const GENERAL_TOOLS = [
   ...DRYWALL_CALCULATOR_TOOLS,
   ...MEETING_COST_TOOLS,
   ...PAINT_CALCULATOR_TOOLS,
+  ...FENCE_CALCULATOR_TOOLS,
 ];
