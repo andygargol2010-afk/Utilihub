@@ -17,6 +17,9 @@ const CodeTypeRaceGame = lazy(() =>
 const FormulaMemoryGame = lazy(() =>
   import("./FormulaMemoryGame").then((m) => ({ default: m.FormulaMemoryGame })),
 );
+const BudgetSurvivorGame = lazy(() =>
+  import("./BudgetSurvivorGame").then((m) => ({ default: m.BudgetSurvivorGame })),
+);
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -37,6 +40,8 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "carrera-de-codigo": CodeTypeRaceGame,
   "formula-memory": FormulaMemoryGame,
   "memoria-formulas": FormulaMemoryGame,
+  "budget-survivor": BudgetSurvivorGame,
+  "supervivencia-presupuesto": BudgetSurvivorGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {

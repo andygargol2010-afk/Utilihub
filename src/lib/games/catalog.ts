@@ -150,6 +150,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Emparejá el nombre de cada fórmula con su ecuación: física, geometría y finanzas.",
     hasScore: true,
   },
+  {
+    slug: "budget-survivor",
+    slugEs: "supervivencia-presupuesto",
+    nameEn: "Budget Survivor",
+    nameEs: "Supervivencia de presupuesto",
+    tag: "puzzle",
+    emoji: "💸",
+    summaryEn: "Survive a month of random bills and surprises without going broke.",
+    summaryEs: "Sobreviví un mes de gastos y sorpresas sin quedar en cero.",
+    hasScore: true,
+  },
 ] as const;
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
