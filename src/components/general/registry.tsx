@@ -74,6 +74,7 @@ const FenceCalculatorTool = lazy(() => import("./FenceCalculatorTool").then((m) 
 const GravelCalculatorTool = lazy(() => import("./GravelCalculatorTool").then((m) => ({ default: m.GravelCalculatorTool })));
 const FlooringCalculatorTool = lazy(() => import("./FlooringCalculatorTool").then((m) => ({ default: m.FlooringCalculatorTool })));
 const AirFryerCalculatorTool = lazy(() => import("./AirFryerCalculatorTool").then((m) => ({ default: m.AirFryerCalculatorTool })));
+const DeckCalculatorTool = lazy(() => import("./DeckCalculatorTool").then((m) => ({ default: m.DeckCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -94,6 +95,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-grava") return GravelCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-suelo-laminado") return FlooringCalculatorTool as ToolComp;
   if (tool.slug === "conversor-freidora-aire") return AirFryerCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-deck") return DeckCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
