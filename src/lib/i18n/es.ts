@@ -197,6 +197,7 @@ const EXACT_NAMES: Record<string, string> = {
   "calculadora-suelo-laminado": "Calculadora de suelo laminado",
   "conversor-freidora-aire": "Conversor horno a freidora de aire",
   "calculadora-deck": "Calculadora de deck y tarima exterior",
+  "calculadora-tejado": "Calculadora de tejado y tejas",
   // Gap tools
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",

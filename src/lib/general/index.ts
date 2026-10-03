@@ -52,6 +52,7 @@ import { GRAVEL_CALCULATOR_TOOLS } from "./gravel-calculator";
 import { FLOORING_CALCULATOR_TOOLS } from "./flooring-calculator";
 import { AIRFRYER_CALCULATOR_TOOLS } from "./airfryer-calculator";
 import { DECK_CALCULATOR_TOOLS } from "./deck-calculator";
+import { ROOF_CALCULATOR_TOOLS } from "./roof-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -109,4 +110,5 @@ export const GENERAL_TOOLS = [
   ...FLOORING_CALCULATOR_TOOLS,
   ...AIRFRYER_CALCULATOR_TOOLS,
   ...DECK_CALCULATOR_TOOLS,
+  ...ROOF_CALCULATOR_TOOLS,
 ];
