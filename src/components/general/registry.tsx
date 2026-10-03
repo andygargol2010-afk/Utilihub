@@ -72,6 +72,7 @@ const PaintCalculatorTool = lazy(() => import("./PaintCalculatorTool").then((m) 
 const StairCalculatorTool = lazy(() => import("./StairCalculatorTool").then((m) => ({ default: m.StairCalculatorTool })));
 const FenceCalculatorTool = lazy(() => import("./FenceCalculatorTool").then((m) => ({ default: m.FenceCalculatorTool })));
 const GravelCalculatorTool = lazy(() => import("./GravelCalculatorTool").then((m) => ({ default: m.GravelCalculatorTool })));
+const FlooringCalculatorTool = lazy(() => import("./FlooringCalculatorTool").then((m) => ({ default: m.FlooringCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -90,6 +91,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-valla") return FenceCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-escalera") return StairCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-grava") return GravelCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-suelo-laminado") return FlooringCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;

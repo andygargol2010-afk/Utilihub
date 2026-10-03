@@ -34,6 +34,7 @@ import { TOOL_SEO_OVERRIDES_PAINT } from "./tool-seo-overrides-paint";
 import { TOOL_SEO_OVERRIDES_FENCE } from "./tool-seo-overrides-fence";
 import { TOOL_SEO_OVERRIDES_STAIR } from "./tool-seo-overrides-stair";
 import { TOOL_SEO_OVERRIDES_GRAVEL } from "./tool-seo-overrides-gravel";
+import { TOOL_SEO_OVERRIDES_FLOORING } from "./tool-seo-overrides-flooring";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -83,6 +84,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_FENCE,
   ...TOOL_SEO_OVERRIDES_STAIR,
   ...TOOL_SEO_OVERRIDES_GRAVEL,
+  ...TOOL_SEO_OVERRIDES_FLOORING,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
