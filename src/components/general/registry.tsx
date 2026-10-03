@@ -11,6 +11,7 @@ const AdvancedDateTool = lazy(() => import("./AdvancedDateTool").then((m) => ({ 
 const MathTool = lazy(() => import("./MathTool").then((m) => ({ default: m.MathTool })));
 const DesignTool = lazy(() => import("./DesignTool").then((m) => ({ default: m.DesignTool })));
 const Modeler3D = lazy(() => import("./Modeler3D").then((m) => ({ default: m.Modeler3D })));
+const HouseModeler3D = lazy(() => import("./HouseModeler3D").then((m) => ({ default: m.HouseModeler3D })));
 const SecurityTool = lazy(() => import("./SecurityTool").then((m) => ({ default: m.SecurityTool })));
 const TimeTool = lazy(() => import("./TimeTool").then((m) => ({ default: m.TimeTool })));
 const ConverterTool = lazy(() => import("./ConverterTool").then((m) => ({ default: m.ConverterTool })));
@@ -90,6 +91,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-escalera") return StairCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-grava") return GravelCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
+  if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
