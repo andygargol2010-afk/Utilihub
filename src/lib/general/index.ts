@@ -50,6 +50,7 @@ import { FENCE_CALCULATOR_TOOLS } from "./fence-calculator";
 import { STAIR_CALCULATOR_TOOLS } from "./stair-calculator";
 import { GRAVEL_CALCULATOR_TOOLS } from "./gravel-calculator";
 import { FLOORING_CALCULATOR_TOOLS } from "./flooring-calculator";
+import { AIRFRYER_CALCULATOR_TOOLS } from "./airfryer-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -105,4 +106,5 @@ export const GENERAL_TOOLS = [
   ...STAIR_CALCULATOR_TOOLS,
   ...GRAVEL_CALCULATOR_TOOLS,
   ...FLOORING_CALCULATOR_TOOLS,
+  ...AIRFRYER_CALCULATOR_TOOLS,
 ];
