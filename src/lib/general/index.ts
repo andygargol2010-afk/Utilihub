@@ -48,6 +48,7 @@ import { MEETING_COST_TOOLS } from "./meeting-cost";
 import { PAINT_CALCULATOR_TOOLS } from "./paint-calculator";
 import { FENCE_CALCULATOR_TOOLS } from "./fence-calculator";
 import { STAIR_CALCULATOR_TOOLS } from "./stair-calculator";
+import { GRAVEL_CALCULATOR_TOOLS } from "./gravel-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -101,4 +102,5 @@ export const GENERAL_TOOLS = [
   ...PAINT_CALCULATOR_TOOLS,
   ...FENCE_CALCULATOR_TOOLS,
   ...STAIR_CALCULATOR_TOOLS,
+  ...GRAVEL_CALCULATOR_TOOLS,
 ];
