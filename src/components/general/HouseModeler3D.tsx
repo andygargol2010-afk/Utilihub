@@ -180,6 +180,42 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [86, 112, 58], 26);
+  for (let i = 0; i < 48; i++) {
+    const x = hash2(i, 2.2) * size;
+    const y = hash2(i, 8.4) * size;
+    const rx = 5 + hash2(i, 5) * 16;
+    const ry = rx * (0.45 + hash2(i, 6) * 0.4);
+    const g = 88 + Math.floor(hash2(i, 3) * 55);
+    const r = 62 + Math.floor(hash2(i, 1) * 30);
+    ctx.fillStyle = `rgba(${r}, ${g}, ${40 + Math.floor(hash2(i, 7) * 18)}, 0.38)`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, rx, ry, hash2(i, 4) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.strokeStyle = "rgba(50,70,32,0.18)";
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 30; i++) {
+    const x = hash2(i, 12) * size;
+    const y = hash2(i, 19) * size;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + (hash2(i, 2) - 0.5) * 6, y - 4 - hash2(i, 8) * 6);
+    ctx.stroke();
+  }
+}
+
+function paintContactAO(ctx: CanvasRenderingContext2D, size: number) {
+  const c = size / 2;
+  const g = ctx.createRadialGradient(c, c, size * 0.08, c, c, size * 0.5);
+  g.addColorStop(0, "rgba(28,24,16,0.55)");
+  g.addColorStop(0.45, "rgba(28,24,16,0.22)");
+  g.addColorStop(1, "rgba(28,24,16,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+}
+
 function paintRoughness(ctx: CanvasRenderingContext2D, size: number, base: number, amp: number) {
   const img = ctx.getImageData(0, 0, size, size);
   const d = img.data;
@@ -205,6 +241,8 @@ function makeMaterials() {
   const floorRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 150, 50), false);
   const roofMap = makeCanvasTexture(TEX, paintClayTiles, true);
   const roofRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 175, 35), false);
+  const groundMap = makeCanvasTexture(TEX, paintGrass, true);
+  const groundRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 210, 28), false);
 
   const applyRepeat = (tex: THREE.CanvasTexture | null, x: number, y: number) => {
     if (!tex) return;
@@ -217,6 +255,8 @@ function makeMaterials() {
   applyRepeat(floorRough, 2, 2);
   applyRepeat(roofMap, 3, 2);
   applyRepeat(roofRough, 3, 2);
+  applyRepeat(groundMap, 10, 10);
+  applyRepeat(groundRough, 10, 10);
 
   const wall = new THREE.MeshStandardMaterial({
     color: 0xffffff,
@@ -252,8 +292,10 @@ function makeMaterials() {
     metalness: 0.05,
   });
   const ground = new THREE.MeshStandardMaterial({
-    color: 0x4a6741,
-    roughness: 0.95,
+    color: 0xffffff,
+    map: groundMap ?? undefined,
+    roughnessMap: groundRough ?? undefined,
+    roughness: 0.96,
     metalness: 0,
   });
   return { wall, wallEdge, floor, roof, ground };
@@ -403,7 +445,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     let disposed = false;
     try {
       const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0xb8c4d4, 0.012);
+      scene.fog = new THREE.FogExp2(0xc5d2e0, 0.0075);
 
       const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
       camera.position.set(12, 9, 14);
@@ -414,7 +456,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.05;
+      renderer.toneMappingExposure = 1.08;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       el.appendChild(renderer.domElement);
 
@@ -422,31 +464,36 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sky.scale.setScalar(450);
       scene.add(sky);
       const skyUniforms = sky.material.uniforms;
-      skyUniforms["turbidity"].value = 4.2;
-      skyUniforms["rayleigh"].value = 2.1;
-      skyUniforms["mieCoefficient"].value = 0.004;
-      skyUniforms["mieDirectionalG"].value = 0.8;
+      skyUniforms["turbidity"].value = 5.4;
+      skyUniforms["rayleigh"].value = 1.75;
+      skyUniforms["mieCoefficient"].value = 0.005;
+      skyUniforms["mieDirectionalG"].value = 0.78;
       const sun = new THREE.Vector3();
-      const phi = THREE.MathUtils.degToRad(88.5);
-      const theta = THREE.MathUtils.degToRad(165);
+      const phi = THREE.MathUtils.degToRad(74);
+      const theta = THREE.MathUtils.degToRad(148);
       sun.setFromSphericalCoords(1, phi, theta);
       skyUniforms["sunPosition"].value.copy(sun);
 
-      const hemi = new THREE.HemisphereLight(0xc8d8f0, 0x6b5a45, 0.55);
+      const hemi = new THREE.HemisphereLight(0xd4e2f4, 0x6a5a40, 0.48);
       scene.add(hemi);
-      const dir = new THREE.DirectionalLight(0xfff2dd, 1.35);
-      dir.position.copy(sun).multiplyScalar(40);
+      const dir = new THREE.DirectionalLight(0xfff0d4, 1.45);
+      dir.position.copy(sun).multiplyScalar(48);
       dir.castShadow = true;
       dir.shadow.mapSize.set(2048, 2048);
-      dir.shadow.camera.near = 1;
-      dir.shadow.camera.far = 80;
-      dir.shadow.camera.left = -30;
-      dir.shadow.camera.right = 30;
-      dir.shadow.camera.top = 30;
-      dir.shadow.camera.bottom = -30;
-      dir.shadow.bias = -0.0002;
+      dir.shadow.camera.near = 2;
+      dir.shadow.camera.far = 90;
+      dir.shadow.camera.left = -22;
+      dir.shadow.camera.right = 22;
+      dir.shadow.camera.top = 22;
+      dir.shadow.camera.bottom = -22;
+      dir.shadow.bias = -0.00035;
+      dir.shadow.normalBias = 0.02;
+      dir.shadow.radius = 3;
       scene.add(dir);
-      scene.add(new THREE.AmbientLight(0xffffff, 0.18));
+      const fill = new THREE.DirectionalLight(0x9eb6d4, 0.28);
+      fill.position.set(-18, 10, -12);
+      scene.add(fill);
+      scene.add(new THREE.AmbientLight(0xfff6ea, 0.12));
 
       const mats = makeMaterials();
 
@@ -456,15 +503,30 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       ground.receiveShadow = true;
       scene.add(ground);
 
-      const ringMat = new THREE.LineBasicMaterial({ color: 0x3d5238, transparent: true, opacity: 0.25 });
+      const ringMat = new THREE.LineBasicMaterial({ color: 0x2f452c, transparent: true, opacity: 0.22 });
+      const ringGeos: THREE.BufferGeometry[] = [];
       for (let r = 5; r <= 40; r += 5) {
         const pts = [];
         for (let i = 0; i <= 64; i++) {
           const a = (i / 64) * Math.PI * 2;
-          pts.push(new THREE.Vector3(Math.cos(a) * r, 0.02, Math.sin(a) * r));
+          pts.push(new THREE.Vector3(Math.cos(a) * r, 0.03, Math.sin(a) * r));
         }
-        scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), ringMat));
+        const geo = new THREE.BufferGeometry().setFromPoints(pts);
+        ringGeos.push(geo);
+        scene.add(new THREE.Line(geo, ringMat));
       }
+      const aoMap = makeCanvasTexture(128, paintContactAO, false);
+      const aoMat = new THREE.MeshBasicMaterial({
+        map: aoMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        toneMapped: false,
+      });
+      const aoGeo = new THREE.CircleGeometry(9.5, 48);
+      const contactAo = new THREE.Mesh(aoGeo, aoMat);
+      contactAo.rotation.x = -Math.PI / 2;
+      contactAo.position.y = 0.018;
+      scene.add(contactAo);
 
       const partsRoot = new THREE.Group();
       scene.add(partsRoot);
@@ -552,6 +614,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         }
         disposeObjectResources(ground, false);
         ringMat.dispose();
+        for (const geo of ringGeos) geo.dispose();
+        contactAo.geometry.dispose();
+        aoMat.dispose();
+        aoMap?.dispose();
         disposeCatalogMaterials(mats);
         sky.geometry.dispose();
         sky.material.dispose();
