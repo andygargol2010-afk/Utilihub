@@ -94,6 +94,7 @@ function createRoofMesh(mats: ReturnType<typeof makeMaterials>) {
 export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
   const mountRef = useRef<HTMLDivElement>(null);
+  const shellRef = useRef<HTMLDivElement>(null);
   const threeRef = useRef<{
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
@@ -113,9 +114,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [tool, setTool] = useState<PartKind>("wall");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [count, setCount] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [placingFromPalette, setPlacingFromPalette] = useState(false);
   const toolRef = useRef(tool);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
+  const paletteDragRef = useRef<PartKind | null>(null);
 
   useEffect(() => {
     toolRef.current = tool;
@@ -307,6 +311,17 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     }
   }, []);
 
+  // Keep renderer size in sync when entering/leaving fullscreen
+  useEffect(() => {
+    const t = threeRef.current;
+    if (!t || !mountRef.current) return;
+    const w = mountRef.current.clientWidth;
+    const h = mountRef.current.clientHeight;
+    t.camera.aspect = w / Math.max(h, 1);
+    t.camera.updateProjectionMatrix();
+    t.renderer.setSize(w, h);
+  }, [isFullscreen, ready]);
+
   const placeAt = useCallback((point: THREE.Vector3, kind: PartKind) => {
     const t = threeRef.current;
     if (!t) return;
@@ -380,6 +395,31 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setCount(0);
   }, [findPartObject]);
 
+  const toggleFullscreen = useCallback(async () => {
+    const shell = shellRef.current;
+    if (!shell) return;
+    try {
+      if (!document.fullscreenElement) {
+        await shell.requestFullscreen();
+        setIsFullscreen(true);
+      } else {
+        await document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    } catch {
+      // Fullscreen may be blocked by browser policy
+    }
+  }, []);
+
+  useEffect(() => {
+    const onFsChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
+
+  // Canvas pointer interactions
   useEffect(() => {
     const el = mountRef.current;
     if (!el || !ready) return;
@@ -406,6 +446,15 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const point = worldPointFromEvent(ev.clientX, ev.clientY);
       if (!point) return;
 
+      // If dragging from palette, place on release handled in window pointerup
+      if (paletteDragRef.current) {
+        placeAt(point, paletteDragRef.current);
+        paletteDragRef.current = null;
+        setPlacingFromPalette(false);
+        t.controls.enabled = true;
+        return;
+      }
+
       const rect = el.getBoundingClientRect();
       t.pointer.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
       t.pointer.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
@@ -429,6 +478,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         return;
       }
 
+      // Click ground with active tool → place
       placeAt(point, toolRef.current);
       t.controls.enabled = false;
     };
@@ -456,20 +506,85 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     };
   }, [ready, worldPointFromEvent, placeAt, findPartObject]);
 
+  // Global pointer move while dragging from palette (ghost follows even outside canvas)
+  useEffect(() => {
+    if (!placingFromPalette) return;
+    const onMove = (ev: PointerEvent) => {
+      const point = worldPointFromEvent(ev.clientX, ev.clientY);
+      const t = threeRef.current;
+      if (point && t?.ghost) {
+        t.ghost.position.set(snap(point.x), 0, snap(point.z));
+      }
+    };
+    const onUp = (ev: PointerEvent) => {
+      const kind = paletteDragRef.current;
+      if (!kind) {
+        setPlacingFromPalette(false);
+        return;
+      }
+      const point = worldPointFromEvent(ev.clientX, ev.clientY);
+      if (point) {
+        placeAt(point, kind);
+      }
+      paletteDragRef.current = null;
+      setPlacingFromPalette(false);
+      if (threeRef.current) threeRef.current.controls.enabled = true;
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+  }, [placingFromPalette, worldPointFromEvent, placeAt]);
+
+  // Keyboard shortcuts
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+
       if (e.key === "Delete" || e.key === "Backspace") {
         e.preventDefault();
         deleteSelected();
       }
-      if (e.key.toLowerCase() === "r") rotateSelected();
+      if (e.key.toLowerCase() === "r") {
+        e.preventDefault();
+        rotateSelected();
+      }
       if (e.key === "1") setTool("wall");
       if (e.key === "2") setTool("floor");
       if (e.key === "3") setTool("roof");
+      if (e.key.toLowerCase() === "f") {
+        e.preventDefault();
+        void toggleFullscreen();
+      }
+      if (e.key === "Escape") {
+        if (document.fullscreenElement) {
+          void document.exitFullscreen();
+        } else {
+          setSelectedId(null);
+        }
+      }
+      if (e.key.toLowerCase() === "c" && (e.ctrlKey || e.metaKey)) {
+        // allow browser copy; ignore
+      } else if (e.key.toLowerCase() === "c" && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        clearAll();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [deleteSelected, rotateSelected]);
+  }, [deleteSelected, rotateSelected, toggleFullscreen, clearAll]);
+
+  const startPaletteDrag = (kind: PartKind) => (ev: React.PointerEvent) => {
+    ev.preventDefault();
+    setTool(kind);
+    paletteDragRef.current = kind;
+    setPlacingFromPalette(true);
+    if (threeRef.current) threeRef.current.controls.enabled = false;
+    makeGhost(kind);
+  };
 
   const labels = es
     ? {
@@ -477,27 +592,41 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         wall: "Pared",
         floor: "Piso",
         roof: "Techo",
-        place: "Clic en el suelo para colocar · Arrastrá para mover",
-        cam: "Cámara libre: arrastrá con el botón derecho o el medio · rueda para zoom",
+        place: "Arrastrá desde la barra derecha al terreno · o hacé clic en el suelo",
+        cam: "Cámara libre: botón derecho / medio · rueda zoom",
         rot: "Rotar 90°",
         del: "Eliminar",
-        clear: "Limpiar todo",
+        clear: "Limpiar",
         parts: "elementos",
-        tip: "Teclas: 1 pared · 2 piso · 3 techo · R rotar · Supr borrar",
+        fullscreen: "Pantalla completa",
+        exitFs: "Salir",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · R rotar · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        palette: "Estructuras",
+        dragHint: "Arrastrá al terreno",
       }
     : {
         title: "3D house modeler",
         wall: "Wall",
         floor: "Floor",
         roof: "Roof",
-        place: "Click the ground to place · Drag to move",
-        cam: "Free camera: right/middle drag · scroll to zoom",
+        place: "Drag from the right toolbar onto the ground · or click the ground",
+        cam: "Free camera: right/middle drag · scroll zoom",
         rot: "Rotate 90°",
         del: "Delete",
-        clear: "Clear all",
+        clear: "Clear",
         parts: "parts",
-        tip: "Keys: 1 wall · 2 floor · 3 roof · R rotate · Del delete",
+        fullscreen: "Fullscreen",
+        exitFs: "Exit",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · R rotate · Del delete · C clear · F fullscreen · Esc cancel",
+        palette: "Structures",
+        dragHint: "Drag to ground",
       };
+
+  const paletteItems: { kind: PartKind; label: string; swatch: string; key: string }[] = [
+    { kind: "wall", label: labels.wall, swatch: "#d8d0c4", key: "1" },
+    { kind: "floor", label: labels.floor, swatch: "#8b7355", key: "2" },
+    { kind: "roof", label: labels.roof, swatch: "#6b3a2a", key: "3" },
+  ];
 
   return (
     <div className="flex flex-col gap-3">
@@ -509,30 +638,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {(
-          [
-            ["wall", labels.wall],
-            ["floor", labels.floor],
-            ["roof", labels.roof],
-          ] as const
-        ).map(([k, label]) => (
-          <button
-            key={k}
-            type="button"
-            onClick={() => setTool(k)}
-            className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${
-              tool === k
-                ? "bg-amber-800 text-amber-50 shadow"
-                : "border border-border bg-card text-foreground hover:bg-accent"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
         <button
           type="button"
           onClick={rotateSelected}
           className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
+          title="R"
         >
           {labels.rot}
         </button>
@@ -540,6 +650,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           type="button"
           onClick={deleteSelected}
           className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
+          title="Del"
         >
           {labels.del}
         </button>
@@ -547,8 +658,17 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           type="button"
           onClick={clearAll}
           className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
+          title="C"
         >
           {labels.clear}
+        </button>
+        <button
+          type="button"
+          onClick={() => void toggleFullscreen()}
+          className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
+          title="F"
+        >
+          {isFullscreen ? labels.exitFs : labels.fullscreen}
         </button>
       </div>
 
@@ -563,10 +683,68 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       )}
 
       <div
-        ref={mountRef}
-        className="relative h-[min(70vh,640px)] w-full overflow-hidden rounded-xl border border-border shadow-inner"
-        style={{ background: "linear-gradient(180deg, #87a8c8 0%, #c5d4a8 55%, #5a7a48 100%)" }}
-      />
+        ref={shellRef}
+        className={`relative flex overflow-hidden rounded-xl border border-border shadow-inner ${
+          isFullscreen ? "h-screen w-screen rounded-none border-0" : "h-[min(70vh,640px)] w-full"
+        }`}
+        style={{
+          background: isFullscreen
+            ? "#0a1210"
+            : "linear-gradient(180deg, #87a8c8 0%, #c5d4a8 55%, #5a7a48 100%)",
+        }}
+      >
+        {/* 3D canvas */}
+        <div
+          ref={mountRef}
+          className="relative min-h-0 min-w-0 flex-1"
+          style={{ touchAction: "none" }}
+        />
+
+        {/* Right structure palette — drag to place */}
+        <aside
+          className={`flex shrink-0 flex-col gap-2 border-l border-border/60 bg-card/95 p-2 backdrop-blur-sm ${
+            isFullscreen ? "w-36" : "w-32 sm:w-36"
+          }`}
+        >
+          <p className="px-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+            {labels.palette}
+          </p>
+          <p className="px-1 text-[10px] text-muted-foreground">{labels.dragHint}</p>
+          {paletteItems.map((item) => (
+            <button
+              key={item.kind}
+              type="button"
+              onPointerDown={startPaletteDrag(item.kind)}
+              onClick={() => setTool(item.kind)}
+              className={`group flex cursor-grab flex-col items-center gap-1.5 rounded-xl border px-2 py-3 text-center transition active:cursor-grabbing ${
+                tool === item.kind
+                  ? "border-amber-700/60 bg-amber-900/20 shadow-sm"
+                  : "border-border bg-background/80 hover:bg-accent"
+              } ${placingFromPalette && paletteDragRef.current === item.kind ? "ring-2 ring-amber-600" : ""}`}
+            >
+              <span
+                className="block h-8 w-10 rounded-md border border-black/10 shadow-inner"
+                style={{ background: item.swatch }}
+                aria-hidden
+              />
+              <span className="text-xs font-semibold text-foreground">{item.label}</span>
+              <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
+                {item.key}
+              </span>
+            </button>
+          ))}
+
+          {isFullscreen && (
+            <button
+              type="button"
+              onClick={() => void toggleFullscreen()}
+              className="mt-auto rounded-lg border border-border bg-background px-2 py-2 text-xs font-semibold hover:bg-accent"
+            >
+              {labels.exitFs} (F)
+            </button>
+          )}
+        </aside>
+      </div>
     </div>
   );
 }
