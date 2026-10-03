@@ -180,6 +180,27 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [158, 148, 132], 28);
+  for (let i = 0; i < 90; i++) {
+    const x = hash2(i, 1.7) * size;
+    const y = hash2(i, 4.1) * size;
+    const r = 1.2 + hash2(i, 9) * 3.4;
+    const tone = 120 + Math.floor(hash2(i, 2.4) * 70);
+    ctx.fillStyle = `rgba(${tone}, ${tone - 8}, ${tone - 18}, 0.55)`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * (0.7 + hash2(i, 6) * 0.4), hash2(i, 3) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // Compacted center so the build pad reads slightly darker than the rim.
+  const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.08, size / 2, size / 2, size * 0.52);
+  g.addColorStop(0, "rgba(70,60,48,0.22)");
+  g.addColorStop(0.7, "rgba(70,60,48,0.06)");
+  g.addColorStop(1, "rgba(70,60,48,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+}
+
 function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [86, 112, 58], 26);
   for (let i = 0; i < 48; i++) {
@@ -243,6 +264,8 @@ function makeMaterials() {
   const roofRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 175, 35), false);
   const groundMap = makeCanvasTexture(TEX, paintGrass, true);
   const groundRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 210, 28), false);
+  const gravelMap = makeCanvasTexture(TEX, paintGravel, true);
+  const gravelRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 200, 36), false);
 
   const applyRepeat = (tex: THREE.CanvasTexture | null, x: number, y: number) => {
     if (!tex) return;
@@ -257,6 +280,8 @@ function makeMaterials() {
   applyRepeat(roofRough, 3, 2);
   applyRepeat(groundMap, 10, 10);
   applyRepeat(groundRough, 10, 10);
+  applyRepeat(gravelMap, 5, 5);
+  applyRepeat(gravelRough, 5, 5);
 
   const wall = new THREE.MeshStandardMaterial({
     color: 0xffffff,
@@ -298,7 +323,16 @@ function makeMaterials() {
     roughness: 0.96,
     metalness: 0,
   });
-  return { wall, wallEdge, floor, roof, ground };
+  const gravel = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: gravelMap ?? undefined,
+    roughnessMap: gravelRough ?? undefined,
+    bumpMap: gravelRough ?? undefined,
+    bumpScale: 0.04,
+    roughness: 0.92,
+    metalness: 0.01,
+  });
+  return { wall, wallEdge, floor, roof, ground, gravel };
 }
 
 function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
@@ -445,7 +479,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     let disposed = false;
     try {
       const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0xc5d2e0, 0.0075);
+      scene.fog = new THREE.FogExp2(0xc9d3e1, 0.0058);
+      scene.background = new THREE.Color(0xc9d3e1);
 
       const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
       camera.position.set(12, 9, 14);
@@ -464,13 +499,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sky.scale.setScalar(450);
       scene.add(sky);
       const skyUniforms = sky.material.uniforms;
-      skyUniforms["turbidity"].value = 5.4;
-      skyUniforms["rayleigh"].value = 1.75;
-      skyUniforms["mieCoefficient"].value = 0.005;
-      skyUniforms["mieDirectionalG"].value = 0.78;
+      skyUniforms["turbidity"].value = 6.1;
+      skyUniforms["rayleigh"].value = 1.45;
+      skyUniforms["mieCoefficient"].value = 0.0042;
+      skyUniforms["mieDirectionalG"].value = 0.8;
       const sun = new THREE.Vector3();
-      const phi = THREE.MathUtils.degToRad(74);
-      const theta = THREE.MathUtils.degToRad(148);
+      // Lower sun (closer to horizon) so walls cast longer, readable shadows on the pad.
+      const phi = THREE.MathUtils.degToRad(80);
+      const theta = THREE.MathUtils.degToRad(132);
       sun.setFromSphericalCoords(1, phi, theta);
       skyUniforms["sunPosition"].value.copy(sun);
 
@@ -480,15 +516,16 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       dir.position.copy(sun).multiplyScalar(48);
       dir.castShadow = true;
       dir.shadow.mapSize.set(2048, 2048);
-      dir.shadow.camera.near = 2;
-      dir.shadow.camera.far = 90;
-      dir.shadow.camera.left = -22;
-      dir.shadow.camera.right = 22;
-      dir.shadow.camera.top = 22;
-      dir.shadow.camera.bottom = -22;
-      dir.shadow.bias = -0.00035;
-      dir.shadow.normalBias = 0.02;
-      dir.shadow.radius = 3;
+      dir.shadow.camera.near = 8;
+      dir.shadow.camera.far = 80;
+      // Tighter frustum around the build pad so the 2048 map stays sharp.
+      dir.shadow.camera.left = -14;
+      dir.shadow.camera.right = 14;
+      dir.shadow.camera.top = 14;
+      dir.shadow.camera.bottom = -14;
+      dir.shadow.bias = -0.0004;
+      dir.shadow.normalBias = 0.025;
+      dir.shadow.radius = 2;
       scene.add(dir);
       const fill = new THREE.DirectionalLight(0x9eb6d4, 0.28);
       fill.position.set(-18, 10, -12);
@@ -502,6 +539,25 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       ground.rotation.x = -Math.PI / 2;
       ground.receiveShadow = true;
       scene.add(ground);
+
+      // Compacted gravel pad so parts sit on a site, not raw grass. Raycasts stay on ground.
+      const padGeo = new THREE.CircleGeometry(11, 56);
+      const pad = new THREE.Mesh(padGeo, mats.gravel);
+      pad.rotation.x = -Math.PI / 2;
+      pad.position.y = 0.015;
+      pad.receiveShadow = true;
+      scene.add(pad);
+      const rimGeo = new THREE.RingGeometry(10.55, 11.35, 56);
+      const rimMat = new THREE.MeshStandardMaterial({
+        color: 0x6d624f,
+        roughness: 0.95,
+        metalness: 0,
+      });
+      const rim = new THREE.Mesh(rimGeo, rimMat);
+      rim.rotation.x = -Math.PI / 2;
+      rim.position.y = 0.012;
+      rim.receiveShadow = true;
+      scene.add(rim);
 
       const ringMat = new THREE.LineBasicMaterial({ color: 0x2f452c, transparent: true, opacity: 0.22 });
       const ringGeos: THREE.BufferGeometry[] = [];
@@ -522,10 +578,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         depthWrite: false,
         toneMapped: false,
       });
-      const aoGeo = new THREE.CircleGeometry(9.5, 48);
+      const aoGeo = new THREE.CircleGeometry(8.2, 48);
       const contactAo = new THREE.Mesh(aoGeo, aoMat);
       contactAo.rotation.x = -Math.PI / 2;
-      contactAo.position.y = 0.018;
+      contactAo.position.y = 0.02;
       scene.add(contactAo);
 
       const partsRoot = new THREE.Group();
@@ -613,6 +669,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           disposeObjectResources(child, false);
         }
         disposeObjectResources(ground, false);
+        pad.geometry.dispose();
+        rim.geometry.dispose();
+        rimMat.dispose();
         ringMat.dispose();
         for (const geo of ringGeos) geo.dispose();
         contactAo.geometry.dispose();
