@@ -21,6 +21,20 @@ function snap(v: number) {
   return Math.round(v / GRID) * GRID;
 }
 
+/** Dispose unique geometries. Materials only when they are not the shared catalog set (ghost clones). */
+function disposeObjectResources(obj: THREE.Object3D, disposeMaterials: boolean) {
+  obj.traverse((c) => {
+    if (c instanceof THREE.Mesh || c instanceof THREE.Line) {
+      c.geometry?.dispose();
+      if (disposeMaterials) {
+        const mat = c.material;
+        const list = Array.isArray(mat) ? mat : [mat];
+        for (const m of list) m?.dispose();
+      }
+    }
+  });
+}
+
 function uid() {
   return `p-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
@@ -145,6 +159,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const t = threeRef.current;
     if (!t?.ghost) return;
     t.partsRoot.remove(t.ghost);
+    // Ghost materials are clones; geometries are unique per preview.
+    disposeObjectResources(t.ghost, true);
     t.ghost = null;
   }, []);
 
@@ -273,6 +289,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         renderer.setSize(w, h);
       };
       window.addEventListener("resize", onResize);
+      const resizeObserver = new ResizeObserver(() => onResize());
+      resizeObserver.observe(el);
       onResize();
 
       threeRef.current = {
@@ -318,7 +336,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       return () => {
         disposed = true;
         window.removeEventListener("resize", onResize);
+        resizeObserver.disconnect();
         cancelAnimationFrame(threeRef.current?.anim ?? 0);
+        const ghost = threeRef.current?.ghost;
+        if (ghost) {
+          partsRoot.remove(ghost);
+          disposeObjectResources(ghost, true);
+        }
+        for (const child of [...partsRoot.children]) {
+          partsRoot.remove(child);
+          disposeObjectResources(child, false);
+        }
+        disposeObjectResources(ground, false);
+        ringMat.dispose();
+        Object.values(mats).forEach((m) => m.dispose());
+        sky.geometry.dispose();
+        sky.material.dispose();
         controls.dispose();
         selectionHelper.dispose();
         renderer.dispose();
@@ -358,10 +391,16 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     obj.traverse((c) => {
       if (!primary && c instanceof THREE.Mesh) primary = c;
     });
-    if (!primary) return;
+    if (!primary) {
+      t.partsRoot.remove(obj);
+      disposeObjectResources(obj, false);
+      return;
+    }
     const id = uid();
-    (primary as THREE.Mesh).userData.partId = id;
     obj.userData.partId = id;
+    obj.traverse((c) => {
+      if (c instanceof THREE.Mesh) c.userData.partId = id;
+    });
     partsRef.current.push({
       id,
       kind,
@@ -388,10 +427,15 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (!id) return;
     const obj = findPartObject(id);
     const t = threeRef.current;
-    if (obj && t) t.partsRoot.remove(obj);
+    if (obj && t) {
+      t.partsRoot.remove(obj);
+      disposeObjectResources(obj, false);
+    }
     partsRef.current = partsRef.current.filter((p) => p.id !== id);
+    selectedRef.current = null;
     setSelectedId(null);
     setCount(partsRef.current.length);
+    if (t) t.selectionHelper.visible = false;
   }, [findPartObject]);
 
   const rotateSelected = useCallback(() => {
@@ -409,11 +453,16 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (!t) return;
     for (const p of [...partsRef.current]) {
       const obj = findPartObject(p.id);
-      if (obj) t.partsRoot.remove(obj);
+      if (obj) {
+        t.partsRoot.remove(obj);
+        disposeObjectResources(obj, false);
+      }
     }
     partsRef.current = [];
+    selectedRef.current = null;
     setSelectedId(null);
     setCount(0);
+    t.selectionHelper.visible = false;
   }, [findPartObject]);
 
   const toggleFullscreen = useCallback(async () => {
@@ -451,7 +500,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const point = worldPointFromEvent(ev.clientX, ev.clientY);
       if (!point) return;
       if (t.ghost) {
-        t.ghost.position.set(snap(point.x), 0, snap(point.z));
+        if (draggingRef.current) {
+          t.ghost.visible = false;
+        } else {
+          t.ghost.visible = true;
+          t.ghost.position.set(snap(point.x), 0, snap(point.z));
+        }
       }
       if (draggingRef.current) {
         const obj = findPartObject(draggingRef.current.id);
@@ -467,12 +521,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const point = worldPointFromEvent(ev.clientX, ev.clientY);
       if (!point) return;
 
-      // If dragging from palette, place on release handled in window pointerup
+      // Palette placement happens only on pointerup (avoids double-place with the window listener).
       if (paletteDragRef.current) {
-        placeAt(point, paletteDragRef.current);
-        paletteDragRef.current = null;
-        setPlacingFromPalette(false);
-        t.controls.enabled = true;
+        t.controls.enabled = false;
         return;
       }
 
@@ -524,6 +575,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointerup", onUp);
+      draggingRef.current = null;
+      if (threeRef.current) threeRef.current.controls.enabled = true;
     };
   }, [ready, worldPointFromEvent, placeAt, findPartObject]);
 
@@ -539,17 +592,20 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     };
     const onUp = (ev: PointerEvent) => {
       const kind = paletteDragRef.current;
-      if (!kind) {
-        setPlacingFromPalette(false);
-        return;
-      }
-      const point = worldPointFromEvent(ev.clientX, ev.clientY);
-      if (point) {
-        placeAt(point, kind);
-      }
       paletteDragRef.current = null;
       setPlacingFromPalette(false);
       if (threeRef.current) threeRef.current.controls.enabled = true;
+      if (!kind) return;
+      const point = worldPointFromEvent(ev.clientX, ev.clientY);
+      const mount = mountRef.current;
+      if (!point || !mount) return;
+      const rect = mount.getBoundingClientRect();
+      const inside =
+        ev.clientX >= rect.left &&
+        ev.clientX <= rect.right &&
+        ev.clientY >= rect.top &&
+        ev.clientY <= rect.bottom;
+      if (inside) placeAt(point, kind);
     };
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
@@ -562,8 +618,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   // Keyboard shortcuts
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const tag = (e.target as HTMLElement)?.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || target?.isContentEditable) return;
 
       if (e.key === "Delete" || e.key === "Backspace") {
         e.preventDefault();
@@ -581,10 +638,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         void toggleFullscreen();
       }
       if (e.key === "Escape") {
+        if (paletteDragRef.current) {
+          paletteDragRef.current = null;
+          setPlacingFromPalette(false);
+          draggingRef.current = null;
+          if (threeRef.current) {
+            threeRef.current.controls.enabled = true;
+            if (threeRef.current.ghost) threeRef.current.ghost.visible = true;
+          }
+          e.preventDefault();
+          return;
+        }
         if (document.fullscreenElement) {
           void document.exitFullscreen();
         } else {
+          selectedRef.current = null;
           setSelectedId(null);
+          if (threeRef.current) threeRef.current.selectionHelper.visible = false;
         }
       }
       if (e.key.toLowerCase() === "c" && (e.ctrlKey || e.metaKey)) {
