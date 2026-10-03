@@ -39,27 +39,217 @@ function uid() {
   return `p-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
-/** Architectural materials — warm concrete / timber / clay (not toy-studio neon). */
+function hash2(x: number, y: number) {
+  const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+  return n - Math.floor(n);
+}
+
+/** Procedural albedo/roughness ≤256px. Shared across parts; do not dispose on ghost clones. */
+function makeCanvasTexture(
+  size: number,
+  paint: (ctx: CanvasRenderingContext2D, size: number) => void,
+  srgb: boolean,
+) {
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  paint(ctx, size);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.anisotropy = 4;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+function noiseFill(
+  ctx: CanvasRenderingContext2D,
+  size: number,
+  base: [number, number, number],
+  amp: number,
+) {
+  const img = ctx.getImageData(0, 0, size, size);
+  const d = img.data;
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const n = (hash2(x * 0.73, y * 0.73) - 0.5) * amp;
+      const coarse = (hash2(Math.floor(x / 8), Math.floor(y / 8)) - 0.5) * amp * 0.55;
+      const i = (y * size + x) * 4;
+      d[i] = Math.min(255, Math.max(0, base[0] + n + coarse));
+      d[i + 1] = Math.min(255, Math.max(0, base[1] + n * 0.92 + coarse));
+      d[i + 2] = Math.min(255, Math.max(0, base[2] + n * 0.8 + coarse));
+      d[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
+function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [212, 203, 189], 22);
+  ctx.strokeStyle = "rgba(160,148,132,0.18)";
+  ctx.lineWidth = 1;
+  for (let y = 6; y < size; y += 9) {
+    ctx.beginPath();
+    ctx.moveTo(0, y + (hash2(y, 3) - 0.5) * 2);
+    ctx.lineTo(size, y + (hash2(y, 9) - 0.5) * 2);
+    ctx.stroke();
+  }
+}
+
+function paintPlinth(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [168, 156, 140], 16);
+  ctx.strokeStyle = "rgba(90,78,66,0.45)";
+  ctx.lineWidth = 2;
+  const cols = 6;
+  const rows = 3;
+  for (let r = 0; r < rows; r++) {
+    const y = (r / rows) * size;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(size, y);
+    ctx.stroke();
+    const shift = r % 2 === 0 ? 0 : size / cols / 2;
+    for (let c = 0; c <= cols; c++) {
+      const x = (c / cols) * size + shift;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x, y + size / rows);
+      ctx.stroke();
+    }
+  }
+}
+
+function paintTimber(ctx: CanvasRenderingContext2D, size: number) {
+  const planks = 7;
+  for (let i = 0; i < planks; i++) {
+    const y0 = Math.floor((i / planks) * size);
+    const y1 = Math.floor(((i + 1) / planks) * size);
+    const tone = 118 + Math.floor(hash2(i, 4) * 28);
+    ctx.fillStyle = `rgb(${tone + 28}, ${tone - 6}, ${tone - 38})`;
+    ctx.fillRect(0, y0, size, y1 - y0);
+    ctx.strokeStyle = "rgba(62,40,22,0.55)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, y1 - 1);
+    ctx.lineTo(size, y1 - 1);
+    ctx.stroke();
+    ctx.strokeStyle = "rgba(90,58,32,0.28)";
+    ctx.lineWidth = 1;
+    for (let g = 0; g < 5; g++) {
+      const gy = y0 + 3 + g * ((y1 - y0) / 6);
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      for (let x = 0; x <= size; x += 12) {
+        ctx.lineTo(x, gy + Math.sin(x * 0.08 + i) * 1.2);
+      }
+      ctx.stroke();
+    }
+  }
+}
+
+function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#6b3a2a";
+  ctx.fillRect(0, 0, size, size);
+  const rows = 8;
+  const cols = 6;
+  const rh = size / rows;
+  const cw = size / cols;
+  for (let r = 0; r < rows; r++) {
+    const shift = r % 2 === 0 ? 0 : cw * 0.5;
+    for (let c = -1; c < cols + 1; c++) {
+      const vary = hash2(c + 3, r + 11);
+      const rr = 108 + Math.floor(vary * 28);
+      const gg = 52 + Math.floor(vary * 18);
+      const bb = 38 + Math.floor(vary * 10);
+      ctx.fillStyle = `rgb(${rr}, ${gg}, ${bb})`;
+      const x = c * cw + shift;
+      const y = r * rh;
+      ctx.beginPath();
+      ctx.moveTo(x + 2, y + rh * 0.35);
+      ctx.quadraticCurveTo(x + cw * 0.5, y - rh * 0.15, x + cw - 2, y + rh * 0.35);
+      ctx.lineTo(x + cw - 2, y + rh - 1);
+      ctx.quadraticCurveTo(x + cw * 0.5, y + rh * 0.55, x + 2, y + rh - 1);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = "rgba(48,22,16,0.45)";
+      ctx.stroke();
+    }
+  }
+}
+
+function paintRoughness(ctx: CanvasRenderingContext2D, size: number, base: number, amp: number) {
+  const img = ctx.getImageData(0, 0, size, size);
+  const d = img.data;
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const n = base + (hash2(x, y) - 0.5) * amp;
+      const v = Math.min(255, Math.max(0, n));
+      const i = (y * size + x) * 4;
+      d[i] = d[i + 1] = d[i + 2] = v;
+      d[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
+/** Architectural materials — warm plaster / timber / clay (not toy-studio neon). */
 function makeMaterials() {
+  const TEX = 256;
+  const wallMap = makeCanvasTexture(TEX, paintPlaster, true);
+  const wallRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 190, 40), false);
+  const edgeMap = makeCanvasTexture(TEX, paintPlinth, true);
+  const floorMap = makeCanvasTexture(TEX, paintTimber, true);
+  const floorRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 150, 50), false);
+  const roofMap = makeCanvasTexture(TEX, paintClayTiles, true);
+  const roofRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 175, 35), false);
+
+  const applyRepeat = (tex: THREE.CanvasTexture | null, x: number, y: number) => {
+    if (!tex) return;
+    tex.repeat.set(x, y);
+  };
+  applyRepeat(wallMap, 2, 2);
+  applyRepeat(wallRough, 2, 2);
+  applyRepeat(edgeMap, 2, 1);
+  applyRepeat(floorMap, 2, 2);
+  applyRepeat(floorRough, 2, 2);
+  applyRepeat(roofMap, 3, 2);
+  applyRepeat(roofRough, 3, 2);
+
   const wall = new THREE.MeshStandardMaterial({
-    color: 0xd8d0c4,
-    roughness: 0.82,
-    metalness: 0.04,
+    color: 0xffffff,
+    map: wallMap ?? undefined,
+    roughnessMap: wallRough ?? undefined,
+    bumpMap: wallRough ?? undefined,
+    bumpScale: 0.035,
+    roughness: 0.86,
+    metalness: 0.02,
   });
   const wallEdge = new THREE.MeshStandardMaterial({
-    color: 0xb8aea0,
-    roughness: 0.75,
+    color: 0xffffff,
+    map: edgeMap ?? undefined,
+    roughness: 0.8,
     metalness: 0.02,
   });
   const floor = new THREE.MeshStandardMaterial({
-    color: 0x8b7355,
-    roughness: 0.7,
-    metalness: 0.05,
+    color: 0xffffff,
+    map: floorMap ?? undefined,
+    roughnessMap: floorRough ?? undefined,
+    bumpMap: floorRough ?? undefined,
+    bumpScale: 0.06,
+    roughness: 0.74,
+    metalness: 0.04,
   });
   const roof = new THREE.MeshStandardMaterial({
-    color: 0x6b3a2a,
-    roughness: 0.78,
-    metalness: 0.08,
+    color: 0xffffff,
+    map: roofMap ?? undefined,
+    roughnessMap: roofRough ?? undefined,
+    bumpMap: roofRough ?? undefined,
+    bumpScale: 0.05,
+    roughness: 0.8,
+    metalness: 0.05,
   });
   const ground = new THREE.MeshStandardMaterial({
     color: 0x4a6741,
@@ -67,6 +257,19 @@ function makeMaterials() {
     metalness: 0,
   });
   return { wall, wallEdge, floor, roof, ground };
+}
+
+function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
+  const seen = new Set<THREE.Texture>();
+  for (const m of Object.values(mats)) {
+    for (const tex of [m.map, m.roughnessMap, m.bumpMap]) {
+      if (tex && !seen.has(tex)) {
+        seen.add(tex);
+        tex.dispose();
+      }
+    }
+    m.dispose();
+  }
 }
 
 function createWallMesh(mats: ReturnType<typeof makeMaterials>) {
@@ -349,7 +552,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         }
         disposeObjectResources(ground, false);
         ringMat.dispose();
-        Object.values(mats).forEach((m) => m.dispose());
+        disposeCatalogMaterials(mats);
         sky.geometry.dispose();
         sky.material.dispose();
         controls.dispose();
