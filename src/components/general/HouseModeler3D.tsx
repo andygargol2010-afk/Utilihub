@@ -1550,6 +1550,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         help: "Ayuda",
         hideHelp: "Ocultar",
         active: "Activa",
+        inspector: "Pieza seleccionada",
+        deselect: "Deseleccionar",
+        snap: "Grilla 0,5 m",
+        tapRotate: "Giro en el sitio",
       }
     : {
         title: "3D house modeler",
@@ -1580,11 +1584,24 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         help: "Help",
         hideHelp: "Hide",
         active: "Active",
+        inspector: "Selected part",
+        deselect: "Deselect",
+        snap: "0.5 m snap",
+        tapRotate: "Yaw in place",
       };
 
   const selectedKind = partsRef.current.find((p) => p.id === selectedId)?.kind;
   const selectedKindLabel =
     selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : "";
+  const selectedSize =
+    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : "";
+
+  const clearSelection = () => {
+    selectedRef.current = null;
+    setSelectedId(null);
+    setSelectedRot(0);
+    if (threeRef.current) threeRef.current.selectionHelper.visible = false;
+  };
 
   const paletteItems: { kind: PartKind; label: string; swatch: string; key: string; size: string }[] = [
     { kind: "wall", label: labels.wall, swatch: "#d8d0c4", key: "1", size: labels.sizeWall },
@@ -1705,27 +1722,81 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           </div>
           <div className="pointer-events-none absolute bottom-3 left-3 z-10 flex max-w-[75%] flex-col gap-1">
             <span
+              role="status"
+              aria-live="polite"
               className={`rounded-md px-2 py-1 text-[11px] font-medium shadow ${
-                selectedKindLabel ? "bg-amber-900/85 text-amber-50" : "bg-black/55 text-amber-50"
+                selectedKindLabel ? "bg-amber-900/85 text-amber-50 ring-1 ring-amber-200/50" : "bg-black/55 text-amber-50"
               }`}
             >
               {selectedKindLabel
-                ? `${labels.selected}: ${selectedKindLabel} · ${labels.rotDeg} ${selectedRot * 90}°`
+                ? `${labels.selected}: ${selectedKindLabel} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°`
                 : labels.none}
+            </span>
+            <span className="w-fit rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-medium text-amber-100/90">
+              {labels.snap}
             </span>
           </div>
         </div>
 
         {/* Right structure palette — drag to place */}
         <aside
-          className={`flex shrink-0 flex-col gap-2 border-l border-border/60 bg-card/95 p-2 backdrop-blur-sm ${
-            isFullscreen ? "w-40" : "w-32 sm:w-40"
+          className={`flex shrink-0 flex-col gap-2 overflow-y-auto border-l border-border/60 bg-card/95 p-2 backdrop-blur-sm ${
+            isFullscreen ? "w-44" : "w-36 sm:w-44"
           }`}
         >
           <p className="px-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
             {labels.palette}
           </p>
           <p className="px-1 text-[10px] leading-snug text-muted-foreground">{labels.dragHint}</p>
+          {selectedKindLabel ? (
+            <div className="rounded-xl border border-amber-700/50 bg-amber-900/15 p-2 text-left">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-800 dark:text-amber-200">
+                {labels.inspector}
+              </p>
+              <p className="mt-0.5 text-xs font-semibold text-foreground">{selectedKindLabel}</p>
+              <p className="text-[10px] text-muted-foreground">{selectedSize}</p>
+              <div className="mt-1.5 flex items-center gap-1" aria-hidden>
+                {[0, 1, 2, 3].map((step) => (
+                  <span
+                    key={step}
+                    className={`h-1.5 flex-1 rounded-full ${
+                      step === ((selectedRot % 4) + 4) % 4 ? "bg-amber-700" : "bg-amber-900/25"
+                    }`}
+                  />
+                ))}
+              </div>
+              <p className="mt-1 text-[10px] leading-snug text-muted-foreground">
+                {labels.rotDeg} {selectedRot * 90}° · {labels.tapRotate}
+              </p>
+              <div className="mt-2 grid grid-cols-1 gap-1.5">
+                <button
+                  type="button"
+                  onClick={rotateSelected}
+                  className="min-h-11 rounded-lg border border-border bg-background px-2 text-xs font-semibold hover:bg-accent"
+                >
+                  {labels.rot}
+                </button>
+                <button
+                  type="button"
+                  onClick={deleteSelected}
+                  className="min-h-11 rounded-lg border border-destructive/40 bg-background px-2 text-xs font-semibold text-destructive hover:bg-destructive/10"
+                >
+                  {labels.del}
+                </button>
+                <button
+                  type="button"
+                  onClick={clearSelection}
+                  className="min-h-11 rounded-lg border border-border bg-background px-2 text-xs font-semibold hover:bg-accent"
+                >
+                  {labels.deselect}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <p className="rounded-lg border border-dashed border-border px-2 py-2 text-[10px] leading-snug text-muted-foreground">
+              {labels.none}
+            </p>
+          )}
           {paletteItems.map((item) => (
             <button
               key={item.kind}
