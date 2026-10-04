@@ -384,6 +384,34 @@ function createRoofMesh(mats: ReturnType<typeof makeMaterials>) {
   return group;
 }
 
+
+function StructureGlyph({ kind }: { kind: PartKind }) {
+  if (kind === "wall") {
+    return (
+      <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
+        <rect x="3" y="7" width="34" height="20" rx="1" fill="#d8d0c4" stroke="#8a7d6c" />
+        <rect x="3" y="24" width="34" height="3.5" fill="#b7ab9a" />
+        <rect x="14" y="12" width="6" height="9" fill="#6d8eaa" opacity="0.85" />
+      </svg>
+    );
+  }
+  if (kind === "floor") {
+    return (
+      <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
+        <path d="M6 10 L34 6 L34 24 L6 28 Z" fill="#8b7355" stroke="#5c4634" />
+        <path d="M6 18 L34 14" stroke="#c4a882" strokeWidth="1" />
+        <path d="M16 9 L16 26" stroke="#c4a882" strokeWidth="1" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
+      <path d="M4 22 L20 8 L36 22 L32 22 L20 12 L8 22 Z" fill="#6b3a2a" stroke="#3d2218" />
+      <path d="M8 22 L32 22 L32 26 L8 26 Z" fill="#8a4e3a" />
+    </svg>
+  );
+}
+
 export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
   const mountRef = useRef<HTMLDivElement>(null);
@@ -410,6 +438,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [count, setCount] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [placingFromPalette, setPlacingFromPalette] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const toolRef = useRef(tool);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
@@ -1075,6 +1104,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         selected: "Seleccionado",
         drop: "Soltá sobre el terreno para colocar",
         needSel: "Seleccioná una pieza primero",
+        help: "Ayuda",
+        hideHelp: "Ocultar",
+        active: "Activa",
       }
     : {
         title: "3D house modeler",
@@ -1096,6 +1128,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         selected: "Selected",
         drop: "Release over the ground to place",
         needSel: "Select a part first",
+        help: "Help",
+        hideHelp: "Hide",
+        active: "Active",
       };
 
   const selectedKind = partsRef.current.find((p) => p.id === selectedId)?.kind;
@@ -1107,14 +1142,27 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     { kind: "floor", label: labels.floor, swatch: "#8b7355", key: "2" },
     { kind: "roof", label: labels.roof, swatch: "#6b3a2a", key: "3" },
   ];
+  const activeLabel =
+    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : labels.roof;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
         <p className="text-sm font-semibold text-foreground">{labels.title}</p>
-        <span className="text-xs text-muted-foreground">
+        <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
           {count} {labels.parts}
         </span>
+        <span className="rounded-full border border-amber-700/40 bg-amber-900/15 px-2 py-0.5 text-[11px] font-semibold text-foreground">
+          {labels.active}: {activeLabel}
+        </span>
+        <button
+          type="button"
+          onClick={() => setShowHelp((v) => !v)}
+          aria-expanded={showHelp}
+          className="ml-auto rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs font-semibold hover:bg-accent"
+        >
+          {showHelp ? labels.hideHelp : labels.help}
+        </button>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -1123,46 +1171,54 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           onClick={rotateSelected}
           disabled={!selectedId}
           aria-label={labels.rot}
-          className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
           title={selectedId ? "R" : labels.needSel}
         >
           {labels.rot}
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">R</kbd>
         </button>
         <button
           type="button"
           onClick={deleteSelected}
           disabled={!selectedId}
           aria-label={labels.del}
-          className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
           title={selectedId ? "Del" : labels.needSel}
         >
           {labels.del}
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">Del</kbd>
         </button>
         <button
           type="button"
           onClick={clearAll}
           disabled={count === 0}
           aria-label={labels.clear}
-          className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
           title="C"
         >
           {labels.clear}
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">C</kbd>
         </button>
         <button
           type="button"
           onClick={() => void toggleFullscreen()}
           aria-pressed={isFullscreen}
           aria-label={isFullscreen ? labels.exitFs : labels.fullscreen}
-          className="rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
           title="F"
         >
           {isFullscreen ? labels.exitFs : labels.fullscreen}
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
         </button>
       </div>
 
-      <p className="text-xs text-muted-foreground">{labels.place}</p>
-      <p className="text-xs text-muted-foreground">{labels.cam}</p>
-      <p className="text-xs text-muted-foreground">{labels.tip}</p>
+      {showHelp && (
+        <div className="rounded-lg border border-border/70 bg-card/80 px-3 py-2 text-xs text-muted-foreground">
+          <p>{labels.place}</p>
+          <p className="mt-1">{labels.cam}</p>
+          <p className="mt-1">{labels.tip}</p>
+        </div>
+      )}
 
       {error && (
         <p className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -1173,7 +1229,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       <div
         ref={shellRef}
         className={`relative flex overflow-hidden rounded-xl border border-border shadow-inner ${
-          isFullscreen ? "h-screen w-screen rounded-none border-0" : "h-[min(70vh,640px)] w-full"
+          isFullscreen ? "h-screen w-screen rounded-none border-0" : "h-[min(72vh,680px)] w-full"
         }`}
         style={{
           background: isFullscreen
@@ -1188,9 +1244,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             className="h-full w-full"
             style={{ touchAction: "none" }}
           />
-          <div className="pointer-events-none absolute bottom-3 left-3 z-10 flex max-w-[75%] flex-col gap-1">
+          <div className="pointer-events-none absolute left-3 top-3 z-10 flex max-w-[80%] flex-col gap-1">
             <span className="rounded-md bg-black/55 px-2 py-1 text-[11px] font-medium text-amber-50 shadow">
-              {selectedKindLabel ? `${labels.selected}: ${selectedKindLabel}` : labels.none}
+              {labels.active}: {activeLabel}
             </span>
             {placingFromPalette && (
               <span className="rounded-md bg-amber-800/90 px-2 py-1 text-[11px] font-semibold text-amber-50 shadow">
@@ -1198,18 +1254,27 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               </span>
             )}
           </div>
+          <div className="pointer-events-none absolute bottom-3 left-3 z-10 flex max-w-[75%] flex-col gap-1">
+            <span
+              className={`rounded-md px-2 py-1 text-[11px] font-medium shadow ${
+                selectedKindLabel ? "bg-amber-900/85 text-amber-50" : "bg-black/55 text-amber-50"
+              }`}
+            >
+              {selectedKindLabel ? `${labels.selected}: ${selectedKindLabel}` : labels.none}
+            </span>
+          </div>
         </div>
 
         {/* Right structure palette — drag to place */}
         <aside
           className={`flex shrink-0 flex-col gap-2 border-l border-border/60 bg-card/95 p-2 backdrop-blur-sm ${
-            isFullscreen ? "w-36" : "w-32 sm:w-36"
+            isFullscreen ? "w-40" : "w-32 sm:w-40"
           }`}
         >
           <p className="px-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
             {labels.palette}
           </p>
-          <p className="px-1 text-[10px] text-muted-foreground">{labels.dragHint}</p>
+          <p className="px-1 text-[10px] leading-snug text-muted-foreground">{labels.dragHint}</p>
           {paletteItems.map((item) => (
             <button
               key={item.kind}
@@ -1218,21 +1283,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               onClick={() => setTool(item.kind)}
               aria-pressed={tool === item.kind}
               aria-label={`${item.label} (${item.key})`}
-              title={`${item.label} · ${item.key}`}
-              className={`group flex min-h-16 cursor-grab flex-col items-center gap-1.5 rounded-xl border px-2 py-3 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
+              title={`${item.label} · ${item.key} · ${labels.dragHint}`}
+              className={`group flex min-h-[4.5rem] cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2.5 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
                 tool === item.kind
                   ? "border-amber-700/70 bg-amber-900/20 shadow-sm ring-1 ring-amber-700/40"
                   : "border-border bg-background/80 hover:bg-accent"
-              } ${placingFromPalette && tool === item.kind ? "ring-2 ring-amber-600" : ""}`}
+              } ${placingFromPalette && tool === item.kind ? "scale-[0.98] ring-2 ring-amber-600" : ""}`}
             >
-              <span
-                className="block h-8 w-10 rounded-md border border-black/10 shadow-inner"
-                style={{ background: item.swatch }}
-                aria-hidden
-              />
+              <StructureGlyph kind={item.kind} />
               <span className="text-xs font-semibold text-foreground">{item.label}</span>
               <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
                 {item.key}
+                {tool === item.kind ? ` · ${labels.active}` : ""}
               </span>
             </button>
           ))}
@@ -1241,7 +1303,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             <button
               type="button"
               onClick={() => void toggleFullscreen()}
-              className="mt-auto rounded-lg border border-border bg-background px-2 py-2 text-xs font-semibold hover:bg-accent"
+              className="mt-auto min-h-11 rounded-lg border border-border bg-background px-2 py-2 text-xs font-semibold hover:bg-accent"
             >
               {labels.exitFs} (F)
             </button>
