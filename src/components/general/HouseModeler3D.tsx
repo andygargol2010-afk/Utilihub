@@ -993,6 +993,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   // Owning pointer for place/drag. A second finger's pointerup must not commit or unlock orbit.
   const gesturePointerRef = useRef<number | null>(null);
   const palettePointerRef = useRef<number | null>(null);
+  // Listeners attached in pointerdown. A useEffect after setState misses a fast tap's pointerup
+  // and leaves OrbitControls disabled with a stuck drag chip.
+  const paletteDragCleanupRef = useRef<(() => void) | null>(null);
+  const pendingPlaceRef = useRef(false);
 
   useEffect(() => {
     toolRef.current = tool;
@@ -1476,6 +1480,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setSelectedRot(0);
     setCount(partsRef.current.length);
     if (t) t.selectionHelper.visible = false;
+    // Deleting the part under the pointer must not keep a stale drag or a locked orbit.
+    if (draggingRef.current?.id === id) {
+      draggingRef.current = null;
+      gesturePointerRef.current = null;
+      pendingPlaceRef.current = false;
+      if (t && !paletteDragRef.current) t.controls.enabled = true;
+    }
   }, [findPartObject]);
 
   const setSelectedYaw = useCallback((step: number) => {
@@ -1547,7 +1558,6 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   // Left-click places or drags a part. Capture phase runs before OrbitControls
   // (which listens on the canvas) so a place/drag cannot also yaw the camera.
-  const pendingPlaceRef = useRef(false);
 
   // Canvas pointer interactions
   useEffect(() => {
@@ -1714,74 +1724,16 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     };
   }, [ready, worldPointFromEvent, placeAt, findPartObject]);
 
-  // Global pointer move while dragging from palette (ghost follows even outside canvas)
+  // Unmount mid-drag: drop window listeners and unlock orbit. Place itself is wired in pointerdown.
   useEffect(() => {
-    if (!placingFromPalette) return;
-    const overCanvas = (ev: PointerEvent) => {
-      const mount = mountRef.current;
-      if (!mount) return false;
-      const rect = mount.getBoundingClientRect();
-      return (
-        ev.clientX >= rect.left &&
-        ev.clientX <= rect.right &&
-        ev.clientY >= rect.top &&
-        ev.clientY <= rect.bottom
-      );
-    };
-    const onMove = (ev: PointerEvent) => {
-      if (palettePointerRef.current != null && ev.pointerId !== palettePointerRef.current) return;
-      const over = overCanvas(ev);
-      setDragCursor({ x: ev.clientX, y: ev.clientY, over });
-      const point = worldPointFromEvent(ev.clientX, ev.clientY);
-      const t = threeRef.current;
-      if (point && t?.ghost) {
-        t.ghost.position.set(snap(point.x), 0, snap(point.z));
-        t.ghost.visible = over;
-      }
-    };
-    const onUp = (ev: PointerEvent) => {
-      if (palettePointerRef.current != null && ev.pointerId !== palettePointerRef.current) return;
-      const kind = paletteDragRef.current;
-      paletteDragRef.current = null;
-      palettePointerRef.current = null;
-      setPlacingFromPalette(false);
-      setDragCursor(null);
-      if (threeRef.current) threeRef.current.controls.enabled = true;
-      if (!kind) return;
-      const point = worldPointFromEvent(ev.clientX, ev.clientY);
-      if (!point || !overCanvas(ev)) return;
-      placeAt(point, kind);
-    };
-    const endPalette = (ev?: PointerEvent) => {
-      if (ev && palettePointerRef.current != null && ev.pointerId !== palettePointerRef.current) return;
-      paletteDragRef.current = null;
-      palettePointerRef.current = null;
-      setPlacingFromPalette(false);
-      setDragCursor(null);
-      if (threeRef.current) {
-        threeRef.current.controls.enabled = true;
-        if (threeRef.current.ghost) threeRef.current.ghost.visible = true;
-      }
-    };
-    const onCancel = (ev: PointerEvent) => endPalette(ev);
-    const onBlur = () => endPalette();
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-    window.addEventListener("pointercancel", onCancel);
-    window.addEventListener("blur", onBlur);
     return () => {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-      window.removeEventListener("pointercancel", onCancel);
-      window.removeEventListener("blur", onBlur);
-      // Tear-down mid-drag (Escape, blur, unmount): never leave orbit locked.
-      if (paletteDragRef.current) {
-        paletteDragRef.current = null;
-        palettePointerRef.current = null;
-        if (threeRef.current) threeRef.current.controls.enabled = true;
-      }
+      paletteDragCleanupRef.current?.();
+      paletteDragCleanupRef.current = null;
+      paletteDragRef.current = null;
+      palettePointerRef.current = null;
+      if (threeRef.current) threeRef.current.controls.enabled = true;
     };
-  }, [placingFromPalette, worldPointFromEvent, placeAt]);
+  }, []);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -1810,6 +1762,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       }
       if (e.key === "Escape") {
         if (paletteDragRef.current || pendingPlaceRef.current || draggingRef.current) {
+          paletteDragCleanupRef.current?.();
+          paletteDragCleanupRef.current = null;
           paletteDragRef.current = null;
           palettePointerRef.current = null;
           gesturePointerRef.current = null;
@@ -1845,7 +1799,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, [deleteSelected, rotateSelected, toggleFullscreen, clearAll]);
 
   const startPaletteDrag = (kind: PartKind) => (ev: React.PointerEvent) => {
+    if (ev.button !== 0) return;
     ev.preventDefault();
+    paletteDragCleanupRef.current?.();
+    paletteDragCleanupRef.current = null;
     setTool(kind);
     paletteDragRef.current = kind;
     palettePointerRef.current = ev.pointerId;
@@ -1853,6 +1810,63 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setDragCursor({ x: ev.clientX, y: ev.clientY, over: false });
     if (threeRef.current) threeRef.current.controls.enabled = false;
     makeGhost(kind);
+    try {
+      ev.currentTarget.setPointerCapture(ev.pointerId);
+    } catch {
+      // Capture can fail if the button unmounts mid-gesture; window listeners still own the drag.
+    }
+
+    const pointerId = ev.pointerId;
+    const overCanvas = (e: PointerEvent) => {
+      const mount = mountRef.current;
+      if (!mount) return false;
+      const rect = mount.getBoundingClientRect();
+      return e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+    };
+    const detach = () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onCancel);
+      if (paletteDragCleanupRef.current === detach) paletteDragCleanupRef.current = null;
+    };
+    const finish = (e: PointerEvent, commit: boolean) => {
+      if (e.pointerId !== pointerId) return;
+      detach();
+      const dragKind = paletteDragRef.current;
+      paletteDragRef.current = null;
+      palettePointerRef.current = null;
+      setPlacingFromPalette(false);
+      setDragCursor(null);
+      const t = threeRef.current;
+      if (t) {
+        t.controls.enabled = true;
+        // Canvas move hides the preview while a palette drag is active; show it again after drop.
+        if (t.ghost) t.ghost.visible = true;
+      }
+      if (!commit || !dragKind) return;
+      const point = worldPointFromEvent(e.clientX, e.clientY);
+      if (!point || !overCanvas(e)) return;
+      placeAt(point, dragKind);
+    };
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerId !== pointerId || !paletteDragRef.current) return;
+      const over = overCanvas(e);
+      setDragCursor({ x: e.clientX, y: e.clientY, over });
+      const point = worldPointFromEvent(e.clientX, e.clientY);
+      const t = threeRef.current;
+      if (point && t?.ghost) {
+        t.ghost.position.set(snap(point.x), 0, snap(point.z));
+        t.ghost.visible = over;
+      } else if (t?.ghost) {
+        t.ghost.visible = false;
+      }
+    };
+    const onUp = (e: PointerEvent) => finish(e, true);
+    const onCancel = (e: PointerEvent) => finish(e, false);
+    paletteDragCleanupRef.current = detach;
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onCancel);
   };
 
   const labels = es
