@@ -449,6 +449,18 @@ function paintHorizonHaze(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+/** Additive sun disc so the key-light direction reads in the sky shell. */
+function paintSunDisc(ctx: CanvasRenderingContext2D, size: number) {
+  const c = size / 2;
+  const g = ctx.createRadialGradient(c, c, size * 0.04, c, c, size * 0.5);
+  g.addColorStop(0, "rgba(255,248,230,0.95)");
+  g.addColorStop(0.16, "rgba(255,214,150,0.62)");
+  g.addColorStop(0.42, "rgba(255,176,96,0.14)");
+  g.addColorStop(1, "rgba(255,176,96,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+}
+
 /** Tangent-space normal from the height already painted into the canvas (not sRGB). */
 function paintNormalFromHeight(ctx: CanvasRenderingContext2D, size: number, strength: number) {
   const img = ctx.getImageData(0, 0, size, size);
@@ -1029,10 +1041,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sky.scale.setScalar(450);
       scene.add(sky);
       const skyUniforms = sky.material.uniforms;
-      skyUniforms["turbidity"].value = 6.1;
-      skyUniforms["rayleigh"].value = 1.45;
-      skyUniforms["mieCoefficient"].value = 0.0042;
-      skyUniforms["mieDirectionalG"].value = 0.8;
+      skyUniforms["turbidity"].value = 5.2;
+      skyUniforms["rayleigh"].value = 1.22;
+      skyUniforms["mieCoefficient"].value = 0.0034;
+      skyUniforms["mieDirectionalG"].value = 0.78;
       const sun = new THREE.Vector3();
       // Lower sun (closer to horizon) so walls cast longer, readable shadows on the pad.
       const phi = THREE.MathUtils.degToRad(80);
@@ -1050,16 +1062,31 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       dir.castShadow = true;
       dir.shadow.mapSize.set(2048, 2048);
       dir.shadow.camera.near = 8;
-      dir.shadow.camera.far = 80;
-      // Tighter frustum around the build pad so the 2048 map stays sharp.
-      dir.shadow.camera.left = -14;
-      dir.shadow.camera.right = 14;
-      dir.shadow.camera.top = 14;
-      dir.shadow.camera.bottom = -14;
+      dir.shadow.camera.far = 90;
+      // Frustum rides the orbit target (updated each frame) so panning does not
+      // push walls out of the 2048 map.
+      dir.shadow.camera.left = -16;
+      dir.shadow.camera.right = 16;
+      dir.shadow.camera.top = 16;
+      dir.shadow.camera.bottom = -16;
       dir.shadow.bias = -0.00035;
       dir.shadow.normalBias = 0.028;
-      dir.shadow.radius = 2.4;
+      dir.shadow.radius = 2.2;
       scene.add(dir);
+      scene.add(dir.target);
+      const sunDiscMap = makeCanvasTexture(128, paintSunDisc, true);
+      const sunDiscMat = new THREE.SpriteMaterial({
+        map: sunDiscMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        fog: false,
+        toneMapped: false,
+        blending: THREE.AdditiveBlending,
+      });
+      const sunDisc = new THREE.Sprite(sunDiscMat);
+      sunDisc.position.copy(sun).multiplyScalar(220);
+      sunDisc.scale.set(34, 34, 1);
+      scene.add(sunDisc);
       const fill = new THREE.DirectionalLight(0x9eb6d4, 0.22);
       fill.position.set(-18, 10, -12);
       scene.add(fill);
@@ -1095,6 +1122,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       rim.position.y = 0.012;
       rim.receiveShadow = true;
       scene.add(rim);
+      // Worn earth apron: gravel pad dissolves into grass instead of a hard cut.
+      const apronGeo = new THREE.RingGeometry(11.15, 16.8, 64);
+      const apronMat = new THREE.MeshStandardMaterial({
+        color: 0x8a7860,
+        roughness: 0.97,
+        metalness: 0,
+      });
+      const apron = new THREE.Mesh(apronGeo, apronMat);
+      apron.rotation.x = -Math.PI / 2;
+      apron.position.y = 0.006;
+      apron.receiveShadow = true;
+      scene.add(apron);
 
       const ringMat = new THREE.LineBasicMaterial({ color: 0x2f452c, transparent: true, opacity: 0.22 });
       const ringGeos: THREE.BufferGeometry[] = [];
@@ -1207,6 +1246,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           selectionHelper.visible = false;
         }
         controls.update();
+        // Keep the shadow frustum on the work point so orbit-pan does not clip shadows.
+        const focusX = controls.target.x;
+        const focusZ = controls.target.z;
+        dir.position.set(sun.x * 48 + focusX, Math.max(14, sun.y * 48), sun.z * 48 + focusZ);
+        dir.target.position.set(focusX, 0.5, focusZ);
+        dir.target.updateMatrixWorld();
         renderer.render(scene, camera);
         threeRef.current!.anim = requestAnimationFrame(tick);
       };
@@ -1232,6 +1277,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         pad.geometry.dispose();
         rim.geometry.dispose();
         rimMat.dispose();
+        apron.geometry.dispose();
+        apronMat.dispose();
+        sunDiscMat.dispose();
+        sunDiscMap?.dispose();
         ringMat.dispose();
         for (const geo of ringGeos) geo.dispose();
         contactAo.geometry.dispose();
