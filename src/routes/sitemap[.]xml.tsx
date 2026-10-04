@@ -7,13 +7,20 @@ import { SITE_URL } from "@/lib/seo";
 import { SIMULATORS } from "@/lib/simulators/catalog";
 import { WORK_KITS } from "@/lib/work-kits";
 
-const escapeXml = (value: string) =>
-  value
-    .replace(/&/g, "&")
-    .replace(/</g, "<")
-    .replace(/>/g, ">")
-    .replace(/"/g, """)
-    .replace(/'/g, "'");
+/** Escape XML special chars without embedding &entity; literals that get mangled by some editors. */
+const escapeXml = (value: string) => {
+  let out = "";
+  for (let i = 0; i < value.length; i++) {
+    const c = value[i];
+    if (c === "&") out += "&" + "amp;";
+    else if (c === "<") out += "&" + "lt;";
+    else if (c === ">") out += "&" + "gt;";
+    else if (c === '"') out += "&" + "quot;";
+    else if (c === "'") out += "&" + "apos;";
+    else out += c;
+  }
+  return out;
+};
 
 type SitemapEntry = {
   path: string;
@@ -73,7 +80,6 @@ export const Route = createFileRoute("/sitemap.xml")({
           pair(`/education/${slug}`, `/es/educacion/${slug}`, "0.8"),
         );
 
-        // EN public path uses englishSlug; ES uses internal slug
         const kitPairs: SitemapEntry[] = WORK_KITS.flatMap((kit) =>
           pair(`/kits/${kit.englishSlug}`, `/es/kits/${kit.slug}`, "0.8"),
         );
@@ -102,13 +108,18 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...toolEntries,
         ];
 
-        // Omit lastmod: a synthetic "today" trains Google to distrust it.
-        const xml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${paths
-          .map(
-            (entry) =>
-              `<url><loc>${escapeXml(`${SITE_URL}${entry.path}`)}</loc><changefreq>weekly</changefreq><priority>${entry.priority}</priority>${hreflangXml(entry)}</url>`,
-          )
-          .join("")}</urlset>`;
+        const xml =
+          `<?xml version="1.0" encoding="UTF-8"?>` +
+          `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">` +
+          paths
+            .map(
+              (entry) =>
+                `<url><loc>${escapeXml(`${SITE_URL}${entry.path}`)}</loc>` +
+                `<changefreq>weekly</changefreq><priority>${entry.priority}</priority>` +
+                `${hreflangXml(entry)}</url>`,
+            )
+            .join("") +
+          `</urlset>`;
 
         return new Response(xml, {
           headers: {
