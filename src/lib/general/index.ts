@@ -61,6 +61,7 @@ import { GUTTER_CALCULATOR_TOOLS } from "./gutter-calculator";
 import { INSULATION_CALCULATOR_TOOLS } from "./insulation-calculator";
 import { BRICK_CALCULATOR_TOOLS } from "./brick-calculator";
 import { YEAST_CONVERTER_TOOLS } from "./yeast-converter";
+import { DOUGH_WATER_TEMP_TOOLS } from "./dough-water-temp";
 
 export { GENERAL_CATEGORIES };
 
@@ -127,4 +128,5 @@ export const GENERAL_TOOLS = [
   ...INSULATION_CALCULATOR_TOOLS,
   ...BRICK_CALCULATOR_TOOLS,
   ...YEAST_CONVERTER_TOOLS,
+  ...DOUGH_WATER_TEMP_TOOLS,
 ];
