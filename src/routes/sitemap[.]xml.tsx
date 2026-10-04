@@ -73,8 +73,9 @@ export const Route = createFileRoute("/sitemap.xml")({
           pair(`/education/${slug}`, `/es/educacion/${slug}`, "0.8"),
         );
 
+        // EN public path uses englishSlug; ES uses internal slug
         const kitPairs: SitemapEntry[] = WORK_KITS.flatMap((kit) =>
-          pair(`/kits/${kit.slug}`, `/es/kits/${kit.slug}`, "0.8"),
+          pair(`/kits/${kit.englishSlug}`, `/es/kits/${kit.slug}`, "0.8"),
         );
 
         const gamePairs: SitemapEntry[] = GAMES.flatMap((game) =>
