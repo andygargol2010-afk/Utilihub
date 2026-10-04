@@ -7,6 +7,7 @@ import { ALL_CATEGORIES, ALL_TOOLS } from "@/lib/all-tools";
 import { ToolCard } from "@/components/ToolCard";
 import { useFavorites } from "@/hooks/use-favorites";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
+import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
 
 function normalize(s: string) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -18,13 +19,17 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [category, setCategory] = useState<string>(initialCategory ?? "all");
-  const [keyword, setKeyword] = useState("all");
+  const [tag, setTag] = useState<string>("all");
   const { favorites, toggle, ready } = useFavorites();
 
   useEffect(() => {
     const id = window.setTimeout(() => setDebouncedQuery(query), 160);
     return () => window.clearTimeout(id);
   }, [query]);
+
+  useEffect(() => {
+    setTag("all");
+  }, [category]);
 
   const index = useMemo(
     () =>
@@ -41,21 +46,21 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
     [],
   );
 
-  const popularKeywords = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const item of index) {
-      for (const raw of item.keywords) {
-        const key = raw.trim();
-        if (key && key.length > 3 && !STOP.has(key)) counts.set(key, (counts.get(key) ?? 0) + 1);
-      }
-    }
-    return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10).map(([value]) => value);
-  }, [index]);
+  const categoryTools = useMemo(() => {
+    if (category === "all") return ALL_TOOLS;
+    return ALL_TOOLS.filter((t) => t.category === category);
+  }, [category]);
+
+  const facets = useMemo(
+    () => facetsWithCounts(categoryTools, category, "es"),
+    [categoryTools, category],
+  );
 
   const results = useMemo(() => {
     const tokens = normalize(debouncedQuery).split(/\s+/).filter((token) => token.length > 1 && !STOP.has(token));
     return index
-      .filter(({ tool, keywords }) => (category === "all" || tool.category === category) && (keyword === "all" || keywords.includes(keyword)))
+      .filter(({ tool }) => category === "all" || tool.category === category)
+      .filter(({ tool }) => tag === "all" || toolMatchesTag(tool, tag))
       .map((item) => {
         if (!tokens.length) return { tool: item.tool, score: 0 };
         let score = 0;
@@ -70,9 +75,9 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
         return { tool: item.tool, score: score === tokens.length * 5 ? 0 : score };
       })
       .filter(({ score }) => !tokens.length || score > 0)
-      .sort((a, b) => b.score - a.score || a.tool.name.localeCompare(b.tool.name))
+      .sort((a, b) => b.score - a.score || spanishToolName(a.tool).localeCompare(spanishToolName(b.tool), "es"))
       .map(({ tool }) => tool);
-  }, [category, index, keyword, debouncedQuery]);
+  }, [category, index, tag, debouncedQuery]);
 
   const favTools = useMemo(() => ALL_TOOLS.filter((t) => favorites.includes(t.slug)), [favorites]);
   const compactResults = results.slice(0, 6);
@@ -143,22 +148,35 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
             </Button>
           ))}
         </div>
-        {popularKeywords.length > 0 && (
-          <div className="mt-1.5 flex items-center gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Filtrar por etiqueta">
+        {facets.length > 0 && (
+          <div className="mt-1.5 flex items-center gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Filtrar por tema">
             <Tag className="size-4 shrink-0 text-muted-foreground" />
-            <Button type="button" size="sm" variant={keyword === "all" ? "default" : "outline"} onClick={() => setKeyword("all")} className={categoryButtonClass}>
-              Etiquetas
+            <Button type="button" size="sm" variant={tag === "all" ? "default" : "outline"} onClick={() => setTag("all")} className={categoryButtonClass}>
+              Temas
             </Button>
-            {popularKeywords.map((tag) => (
-              <Button key={tag} type="button" size="sm" variant={keyword === tag ? "default" : "outline"} onClick={() => setKeyword(tag)} className={categoryButtonClass}>
-                {tag}
+            {facets.map((f) => (
+              <Button
+                key={f.id}
+                type="button"
+                size="sm"
+                variant={tag === f.id ? "default" : "outline"}
+                onClick={() => setTag((prev) => (prev === f.id ? "all" : f.id))}
+                className={categoryButtonClass}
+              >
+                {f.label}
+                <span className="ml-1 opacity-70">{f.count}</span>
               </Button>
             ))}
           </div>
         )}
+        <p className="mt-2 text-xs font-semibold text-muted-foreground" aria-live="polite">
+          {results.length} herramienta{results.length === 1 ? "" : "s"}
+          {category !== "all" ? ` · ${spanishCategoryName(category)}` : ""}
+          {tag !== "all" ? ` · ${facets.find((f) => f.id === tag)?.label ?? tag}` : ""}
+        </p>
       </div>
 
-      {ready && favTools.length > 0 && !query && keyword === "all" && (
+      {ready && favTools.length > 0 && !query && tag === "all" && category === "all" && (
         <section aria-labelledby="favorites-es">
           <div className="mb-2 flex items-center gap-2">
             <Star className="size-4 fill-highlight text-highlight" />
@@ -175,7 +193,7 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
       <div aria-live="polite">
         {results.length === 0 ? (
           <p className="rounded-xl border border-dashed border-border bg-surface p-8 text-center text-sm text-muted-foreground">
-            No hay herramientas que coincidan con «{query || keyword}».
+            No hay herramientas que coincidan con «{query || tag}».
           </p>
         ) : (
           <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
