@@ -449,6 +449,34 @@ function paintHorizonHaze(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+/** Tangent-space normal from the height already painted into the canvas (not sRGB). */
+function paintNormalFromHeight(ctx: CanvasRenderingContext2D, size: number, strength: number) {
+  const img = ctx.getImageData(0, 0, size, size);
+  const src = new Uint8ClampedArray(img.data);
+  const d = img.data;
+  const h = (x: number, y: number) => {
+    const x2 = (x + size) % size;
+    const y2 = (y + size) % size;
+    return src[(y2 * size + x2) * 4] / 255;
+  };
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const dx = (h(x + 1, y) - h(x - 1, y)) * strength;
+      const dy = (h(x, y + 1) - h(x, y - 1)) * strength;
+      const nx = -dx;
+      const ny = -dy;
+      const nz = 1;
+      const len = Math.hypot(nx, ny, nz) || 1;
+      const i = (y * size + x) * 4;
+      d[i] = (nx / len) * 127.5 + 127.5;
+      d[i + 1] = (ny / len) * 127.5 + 127.5;
+      d[i + 2] = (nz / len) * 127.5 + 127.5;
+      d[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
 function paintRoughness(ctx: CanvasRenderingContext2D, size: number, base: number, amp: number) {
   const img = ctx.getImageData(0, 0, size, size);
   const d = img.data;
@@ -470,13 +498,34 @@ function makeMaterials() {
   const wallMap = makeCanvasTexture(TEX, paintPlaster, true);
   const wallRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 198, 28), false);
   const wallBump = makeCanvasTexture(TEX, paintPlasterBump, false);
+  const wallNormal = makeCanvasTexture(TEX, (ctx, s) => {
+    paintPlasterBump(ctx, s);
+    paintNormalFromHeight(ctx, s, 2.4);
+  }, false);
   const edgeMap = makeCanvasTexture(TEX, paintPlinth, true);
+  const edgeRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 176, 34), false);
+  const edgeBump = makeCanvasTexture(TEX, (ctx, s) => {
+    paintPlinth(ctx, s);
+    // Mortar joints darker in the color map become the relief source.
+  }, false);
+  const edgeNormal = makeCanvasTexture(TEX, (ctx, s) => {
+    paintPlinth(ctx, s);
+    paintNormalFromHeight(ctx, s, 3.1);
+  }, false);
   const floorMap = makeCanvasTexture(TEX, paintTimber, true);
   const floorRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 142, 36), false);
   const floorBump = makeCanvasTexture(TEX, paintTimberBump, false);
+  const floorNormal = makeCanvasTexture(TEX, (ctx, s) => {
+    paintTimberBump(ctx, s);
+    paintNormalFromHeight(ctx, s, 3.6);
+  }, false);
   const roofMap = makeCanvasTexture(TEX, paintClayTiles, true);
   const roofRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 168, 30), false);
   const roofBump = makeCanvasTexture(TEX, paintTileBump, false);
+  const roofNormal = makeCanvasTexture(TEX, (ctx, s) => {
+    paintTileBump(ctx, s);
+    paintNormalFromHeight(ctx, s, 4.2);
+  }, false);
   const groundMap = makeCanvasTexture(TEX, paintGrass, true);
   const groundRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 210, 28), false);
   const gravelMap = makeCanvasTexture(TEX, paintGravel, true);
@@ -484,6 +533,10 @@ function makeMaterials() {
   const plateMap = makeCanvasTexture(TEX, paintPlate, true);
   const plateRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 150, 30), false);
   const plateBump = makeCanvasTexture(TEX, paintPlateBump, false);
+  const plateNormal = makeCanvasTexture(TEX, (ctx, s) => {
+    paintPlateBump(ctx, s);
+    paintNormalFromHeight(ctx, s, 2.8);
+  }, false);
   const nosingMap = makeCanvasTexture(TEX, paintNosing, true);
   const nosingRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 160, 24), false);
   const fasciaMap = makeCanvasTexture(TEX, paintFascia, true);
@@ -496,13 +549,19 @@ function makeMaterials() {
   applyRepeat(wallMap, 2, 2);
   applyRepeat(wallRough, 2, 2);
   applyRepeat(wallBump, 2, 2);
+  applyRepeat(wallNormal, 2, 2);
   applyRepeat(edgeMap, 2, 1);
+  applyRepeat(edgeRough, 2, 1);
+  applyRepeat(edgeBump, 2, 1);
+  applyRepeat(edgeNormal, 2, 1);
   applyRepeat(floorMap, 2, 2);
   applyRepeat(floorRough, 2, 2);
   applyRepeat(floorBump, 2, 2);
+  applyRepeat(floorNormal, 2, 2);
   applyRepeat(roofMap, 3, 2);
   applyRepeat(roofRough, 3, 2);
   applyRepeat(roofBump, 3, 2);
+  applyRepeat(roofNormal, 3, 2);
   applyRepeat(groundMap, 10, 10);
   applyRepeat(groundRough, 10, 10);
   applyRepeat(gravelMap, 5, 5);
@@ -510,6 +569,7 @@ function makeMaterials() {
   applyRepeat(plateMap, 3, 1);
   applyRepeat(plateRough, 3, 1);
   applyRepeat(plateBump, 3, 1);
+  applyRepeat(plateNormal, 3, 1);
   applyRepeat(nosingMap, 4, 1);
   applyRepeat(nosingRough, 4, 1);
   applyRepeat(fasciaMap, 3, 1);
@@ -520,13 +580,20 @@ function makeMaterials() {
     map: wallMap ?? undefined,
     roughnessMap: wallRough ?? undefined,
     bumpMap: wallBump ?? wallRough ?? undefined,
-    bumpScale: 0.05,
+    bumpScale: 0.035,
+    normalMap: wallNormal ?? undefined,
+    normalScale: new THREE.Vector2(0.42, 0.42),
     roughness: 0.86,
     metalness: 0.02,
   });
   const wallEdge = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     map: edgeMap ?? undefined,
+    roughnessMap: edgeRough ?? undefined,
+    bumpMap: edgeBump ?? undefined,
+    bumpScale: 0.04,
+    normalMap: edgeNormal ?? undefined,
+    normalScale: new THREE.Vector2(0.55, 0.55),
     roughness: 0.8,
     metalness: 0.02,
   });
@@ -535,7 +602,9 @@ function makeMaterials() {
     map: floorMap ?? undefined,
     roughnessMap: floorRough ?? undefined,
     bumpMap: floorBump ?? floorRough ?? undefined,
-    bumpScale: 0.07,
+    bumpScale: 0.045,
+    normalMap: floorNormal ?? undefined,
+    normalScale: new THREE.Vector2(0.62, 0.62),
     roughness: 0.74,
     metalness: 0.04,
   });
@@ -544,7 +613,9 @@ function makeMaterials() {
     map: roofMap ?? undefined,
     roughnessMap: roofRough ?? undefined,
     bumpMap: roofBump ?? roofRough ?? undefined,
-    bumpScale: 0.06,
+    bumpScale: 0.04,
+    normalMap: roofNormal ?? undefined,
+    normalScale: new THREE.Vector2(0.78, 0.78),
     roughness: 0.8,
     metalness: 0.05,
   });
@@ -569,7 +640,9 @@ function makeMaterials() {
     map: plateMap ?? undefined,
     roughnessMap: plateRough ?? undefined,
     bumpMap: plateBump ?? plateRough ?? undefined,
-    bumpScale: 0.05,
+    bumpScale: 0.035,
+    normalMap: plateNormal ?? undefined,
+    normalScale: new THREE.Vector2(0.4, 0.4),
     roughness: 0.72,
     metalness: 0.03,
   });
@@ -593,7 +666,7 @@ function makeMaterials() {
 function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
   const seen = new Set<THREE.Texture>();
   for (const m of Object.values(mats)) {
-    for (const tex of [m.map, m.roughnessMap, m.bumpMap]) {
+    for (const tex of [m.map, m.roughnessMap, m.bumpMap, m.normalMap]) {
       if (tex && !seen.has(tex)) {
         seen.add(tex);
         tex.dispose();
@@ -603,12 +676,25 @@ function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
   }
 }
 
+/** Shift UVs so shared repeat maps do not stamp identical plaster/boards/tiles on every piece. */
+function staggerUvs(mesh: THREE.Mesh) {
+  const attr = mesh.geometry.getAttribute("uv");
+  if (!attr) return;
+  const u = Math.random() * 0.85;
+  const v = Math.random() * 0.85;
+  for (let i = 0; i < attr.count; i++) {
+    attr.setXY(i, attr.getX(i) + u, attr.getY(i) + v);
+  }
+  attr.needsUpdate = true;
+}
+
 function createWallMesh(mats: ReturnType<typeof makeMaterials>) {
   const group = new THREE.Group();
   const body = new THREE.Mesh(new THREE.BoxGeometry(3, 2.6, 0.2), mats.wall);
   body.position.y = 1.3;
   body.castShadow = true;
   body.receiveShadow = true;
+  staggerUvs(body);
   group.add(body);
   const base = new THREE.Mesh(new THREE.BoxGeometry(3.05, 0.12, 0.24), mats.wallEdge);
   base.position.y = 0.06;
@@ -628,6 +714,7 @@ function createFloorMesh(mats: ReturnType<typeof makeMaterials>) {
   mesh.position.y = 0.04;
   mesh.receiveShadow = true;
   mesh.castShadow = true;
+  staggerUvs(mesh);
   group.add(mesh);
   const edges: Array<[number, number, number]> = [
     [3.06, 0.09, 0.07],
@@ -656,10 +743,12 @@ function createRoofMesh(mats: ReturnType<typeof makeMaterials>) {
   left.position.set(0, 2.85, -0.55);
   left.rotation.x = 0.45;
   left.castShadow = true;
+  staggerUvs(left);
   const right = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.12, 1.8), mats.roof);
   right.position.set(0, 2.85, 0.55);
   right.rotation.x = -0.45;
   right.castShadow = true;
+  staggerUvs(right);
   group.add(left, right);
   const addVerge = (src: THREE.Mesh, localZ: number) => {
     const verge = new THREE.Mesh(new THREE.BoxGeometry(3.24, 0.07, 0.09), mats.fascia);
