@@ -10,7 +10,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SpanishSiteHeader } from "@/components/SpanishSiteHeader";
 import { SpanishSiteFooter } from "@/components/SpanishSiteFooter";
 import { AdsterraSocialBar } from "@/components/AdsterraSocialBar";
-import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage, websiteSchema } from "@/lib/seo";
+import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
 import { useShareableParams } from "@/hooks/use-shareable-params";
 import { useDailyStreak } from "@/hooks/use-daily-streak";
 
@@ -103,9 +103,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      // Warm DNS for ad network without blocking first paint
       { rel: "dns-prefetch", href: "https://www.highrevenueformat.com" },
-      // Preload stylesheet so the browser can fetch early; display=swap avoids FOIT
       { rel: "preload", as: "style", href: FONT_HREF },
       { rel: "stylesheet", href: FONT_HREF },
       { rel: "icon", href: "/google-favicon-16.png", type: "image/png", sizes: "16x16" },
@@ -116,7 +114,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/google-apple-touch-icon.png", sizes: "180x180" },
       { rel: "manifest", href: "/site.webmanifest" },
     ],
-    scripts: [{ type: "application/ld+json", children: JSON.stringify(websiteSchema()) }],
+    // WebSite JSON-LD lives only on `/` (index.tsx) to avoid duplicate graph nodes.
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -139,7 +137,6 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
-/** Mount Vercel analytics after first paint / idle to free the main thread. */
 function DeferredInsights() {
   const [ready, setReady] = useState(false);
 
