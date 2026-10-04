@@ -1270,15 +1270,29 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (t) t.selectionHelper.visible = false;
   }, [findPartObject]);
 
+  const setSelectedYaw = useCallback((step: number) => {
+    const id = selectedRef.current;
+    if (!id) return;
+    const obj = findPartObject(id);
+    if (!obj) return;
+    const norm = ((step % 4) + 4) % 4;
+    obj.rotation.y = norm * (Math.PI / 2);
+    const part = partsRef.current.find((p) => p.id === id);
+    if (part) part.rotationY = obj.rotation.y;
+    setSelectedRot(norm);
+  }, [findPartObject]);
+
   const rotateSelected = useCallback(() => {
     const id = selectedRef.current;
     if (!id) return;
     const obj = findPartObject(id);
     if (!obj) return;
-    obj.rotation.y += Math.PI / 2;
+    const next = ((Math.round(obj.rotation.y / (Math.PI / 2)) % 4) + 4) % 4 + 1;
+    const norm = next % 4;
+    obj.rotation.y = norm * (Math.PI / 2);
     const part = partsRef.current.find((p) => p.id === id);
     if (part) part.rotationY = obj.rotation.y;
-    setSelectedRot(((Math.round(obj.rotation.y / (Math.PI / 2)) % 4) + 4) % 4);
+    setSelectedRot(norm);
   }, [findPartObject]);
 
   const clearAll = useCallback(() => {
@@ -1649,6 +1663,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         compact: "Iconos",
         expandPalette: "Lista",
         selHint: "R gira · Supr borra",
+        orient: "Orientación",
+        yawHint: "Toque para fijar el giro",
       }
     : {
         title: "3D house modeler",
@@ -1688,6 +1704,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         compact: "Icons",
         expandPalette: "List",
         selHint: "R rotate · Del delete",
+        orient: "Orientation",
+        yawHint: "Tap to set the yaw",
       };
 
   const selectedKind = partsRef.current.find((p) => p.id === selectedId)?.kind;
@@ -1874,23 +1892,40 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               </p>
               <p className="mt-0.5 text-xs font-semibold text-foreground">{selectedKindLabel}</p>
               <p className="text-[10px] text-muted-foreground">{selectedSize}</p>
-              <div className="mt-1.5 flex items-center gap-1" aria-hidden>
-                {[0, 1, 2, 3].map((step) => (
-                  <span
-                    key={step}
-                    className={`h-1.5 flex-1 rounded-full ${
-                      step === ((selectedRot % 4) + 4) % 4 ? "bg-amber-700" : "bg-amber-900/25"
-                    }`}
-                  />
-                ))}
+              <div className="mt-1.5" role="group" aria-label={labels.orient}>
+                <p className="mb-1 text-[10px] font-semibold text-muted-foreground">{labels.orient}</p>
+                <div className="grid grid-cols-4 gap-1">
+                  {[0, 1, 2, 3].map((step) => {
+                    const active = step === ((selectedRot % 4) + 4) % 4;
+                    const deg = step * 90;
+                    return (
+                      <button
+                        key={step}
+                        type="button"
+                        onClick={() => setSelectedYaw(step)}
+                        aria-pressed={active}
+                        title={`${labels.orient} ${deg}°`}
+                        className={`min-h-11 rounded-md border text-[10px] font-semibold ${
+                          active
+                            ? "border-amber-700 bg-amber-800 text-amber-50"
+                            : "border-border bg-background text-muted-foreground hover:bg-accent"
+                        }`}
+                      >
+                        {deg}°
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
               <p className="mt-1 text-[10px] leading-snug text-muted-foreground">
-                {labels.rotDeg} {selectedRot * 90}° · {labels.tapRotate}
+                {labels.rotDeg} {selectedRot * 90}° · {labels.yawHint}
               </p>
               <div className="mt-2 grid grid-cols-1 gap-1.5">
                 <button
                   type="button"
                   onClick={rotateSelected}
+                  title="R"
+                  aria-label={labels.rot}
                   className="min-h-11 rounded-lg border border-border bg-background px-2 text-xs font-semibold hover:bg-accent"
                 >
                   {labels.rot}
@@ -1898,6 +1933,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 <button
                   type="button"
                   onClick={deleteSelected}
+                  title="Del"
+                  aria-label={labels.del}
                   className="min-h-11 rounded-lg border border-destructive/40 bg-background px-2 text-xs font-semibold text-destructive hover:bg-destructive/10"
                 >
                   {labels.del}
@@ -1910,6 +1947,30 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                   {labels.deselect}
                 </button>
               </div>
+            </div>
+          ) : paletteCompact && selectedKindLabel ? (
+            <div className="flex flex-col gap-1">
+              <span className="text-center text-[9px] font-semibold text-amber-800 dark:text-amber-200">
+                {selectedRot * 90}°
+              </span>
+              <button
+                type="button"
+                onClick={rotateSelected}
+                title="R"
+                aria-label={labels.rot}
+                className="min-h-11 rounded-lg border border-border bg-background px-1 text-[10px] font-semibold hover:bg-accent"
+              >
+                R
+              </button>
+              <button
+                type="button"
+                onClick={deleteSelected}
+                title="Del"
+                aria-label={labels.del}
+                className="min-h-11 rounded-lg border border-destructive/40 bg-background px-1 text-[10px] font-semibold text-destructive hover:bg-destructive/10"
+              >
+                Del
+              </button>
             </div>
           ) : !paletteCompact ? (
             <p className="rounded-lg border border-dashed border-border px-2 py-2 text-[10px] leading-snug text-muted-foreground">
