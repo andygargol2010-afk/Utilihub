@@ -4,7 +4,8 @@ import { ToolCard } from "@/components/ToolCard";
 import { ToolListBrowser } from "@/components/ToolListBrowser";
 import { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { spanishCategoryName } from "@/lib/i18n/es";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
+import { englishCategoryPath } from "@/lib/route-slugs";
+import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
 
 export const Route = createFileRoute("/es/categoria/$slug")({
   loader: ({ params }) => {
@@ -14,13 +15,17 @@ export const Route = createFileRoute("/es/categoria/$slug")({
     return { category, tools };
   },
   head: ({ loaderData }) => {
-    if (!loaderData) return { meta: [{ title: "Categoría no encontrada | UtiliHub" }, { name: "robots", content: "noindex" }] };
+    if (!loaderData)
+      return { meta: [{ title: "Categoría no encontrada | UtiliHub" }, { name: "robots", content: "noindex" }] };
     const { category, tools } = loaderData;
     const name = spanishCategoryName(category.slug);
     const description = cleanDescription(
       `Herramientas gratuitas de ${name.toLowerCase()} para usar en el navegador. ${tools.length} utilidades sin registro.`,
     );
-    const url = absoluteUrl(`/es/categoria/${category.slug}`);
+    const esPath = `/es/categoria/${category.slug}`;
+    const enPath =
+      category.slug === "finanzas" ? "/finance" : englishCategoryPath(category.slug);
+    const url = absoluteUrl(esPath);
     return {
       meta: [
         { title: `${name} | UtiliHub` },
@@ -31,11 +36,9 @@ export const Route = createFileRoute("/es/categoria/$slug")({
         { property: "og:locale", content: "es_ES" },
         { property: "og:url", content: url },
         { property: "og:image", content: ogImage() },
+        { name: "twitter:card", content: "summary_large_image" },
       ],
-      links: [
-        { rel: "canonical", href: url },
-        { rel: "alternate", hrefLang: "es", href: url },
-      ],
+      links: [{ rel: "canonical", href: url }, ...hreflangLinks(enPath, esPath)],
       scripts: [
         {
           type: "application/ld+json",
