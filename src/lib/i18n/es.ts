@@ -196,6 +196,7 @@ const EXACT_NAMES: Record<string, string> = {
   "calculadora-grava": "Calculadora de grava y mantillo",
   "calculadora-suelo-laminado": "Calculadora de suelo laminado",
   "conversor-freidora-aire": "Conversor horno a freidora de aire",
+  "calculadora-porcentaje-panadero": "Calculadora de porcentaje panadero",
   "calculadora-deck": "Calculadora de deck y tarima exterior",
   "calculadora-tejado": "Calculadora de tejado y tejas",
   "calculadora-piscina": "Calculadora de volumen de piscina",

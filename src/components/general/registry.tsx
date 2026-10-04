@@ -74,6 +74,7 @@ const FenceCalculatorTool = lazy(() => import("./FenceCalculatorTool").then((m) 
 const GravelCalculatorTool = lazy(() => import("./GravelCalculatorTool").then((m) => ({ default: m.GravelCalculatorTool })));
 const FlooringCalculatorTool = lazy(() => import("./FlooringCalculatorTool").then((m) => ({ default: m.FlooringCalculatorTool })));
 const AirFryerCalculatorTool = lazy(() => import("./AirFryerCalculatorTool").then((m) => ({ default: m.AirFryerCalculatorTool })));
+const BakersPercentageTool = lazy(() => import("./BakersPercentageTool").then((m) => ({ default: m.BakersPercentageTool })));
 const DeckCalculatorTool = lazy(() => import("./DeckCalculatorTool").then((m) => ({ default: m.DeckCalculatorTool })));
 const RoofCalculatorTool = lazy(() => import("./RoofCalculatorTool").then((m) => ({ default: m.RoofCalculatorTool })));
 const PoolCalculatorTool = lazy(() => import("./PoolCalculatorTool").then((m) => ({ default: m.PoolCalculatorTool })));
@@ -102,6 +103,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-grava") return GravelCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-suelo-laminado") return FlooringCalculatorTool as ToolComp;
   if (tool.slug === "conversor-freidora-aire") return AirFryerCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-porcentaje-panadero") return BakersPercentageTool as ToolComp;
   if (tool.slug === "calculadora-deck") return DeckCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-tejado") return RoofCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-piscina") return PoolCalculatorTool as ToolComp;

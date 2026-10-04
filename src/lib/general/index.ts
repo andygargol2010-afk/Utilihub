@@ -51,6 +51,7 @@ import { STAIR_CALCULATOR_TOOLS } from "./stair-calculator";
 import { GRAVEL_CALCULATOR_TOOLS } from "./gravel-calculator";
 import { FLOORING_CALCULATOR_TOOLS } from "./flooring-calculator";
 import { AIRFRYER_CALCULATOR_TOOLS } from "./airfryer-calculator";
+import { BAKERS_PERCENTAGE_TOOLS } from "./bakers-percentage";
 import { DECK_CALCULATOR_TOOLS } from "./deck-calculator";
 import { ROOF_CALCULATOR_TOOLS } from "./roof-calculator";
 import { POOL_CALCULATOR_TOOLS } from "./pool-calculator";
@@ -115,6 +116,7 @@ export const GENERAL_TOOLS = [
   ...GRAVEL_CALCULATOR_TOOLS,
   ...FLOORING_CALCULATOR_TOOLS,
   ...AIRFRYER_CALCULATOR_TOOLS,
+  ...BAKERS_PERCENTAGE_TOOLS,
   ...DECK_CALCULATOR_TOOLS,
   ...ROOF_CALCULATOR_TOOLS,
   ...POOL_CALCULATOR_TOOLS,
