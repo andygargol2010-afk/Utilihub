@@ -1,18 +1,37 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Calculator, Search } from "lucide-react";
-import { ALL_CATEGORIES, ALL_TOOLS } from "@/lib/all-tools";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { SpanishToolSearch } from "@/components/SpanishToolSearch";
+import { HomeReviews } from "@/components/HomeReviews";
+import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
-import { HomeReviews } from "@/components/HomeReviews";
+
+const QUICK_TOOL_SLUGS = [
+  "calculadora",
+  "calculadora-de-porcentajes",
+  "regla-de-tres",
+  "calculadora-de-fechas",
+  "contador-de-palabras",
+  "generador-de-contrasenas",
+  "conversor-de-temperatura",
+  "conversor-de-unidades",
+];
 
 export const Route = createFileRoute("/es/")({
   head: () => ({
     meta: [
       { title: "Herramientas online gratis | UtiliHub" },
-      { name: "description", content: "Herramientas online gratuitas para calcular, convertir, estudiar y resolver tareas cotidianas." },
+      {
+        name: "description",
+        content:
+          "Herramientas online gratuitas para calcular, convertir, estudiar y resolver tareas cotidianas.",
+      },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { property: "og:title", content: "Herramientas online gratis | UtiliHub" },
-      { property: "og:description", content: "Calculadoras, conversores y utilidades gratuitas en español." },
+      {
+        property: "og:description",
+        content: "Calculadoras, conversores y utilidades gratuitas en español.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "es_ES" },
       { property: "og:url", content: absoluteUrl("/es") },
@@ -29,23 +48,209 @@ export const Route = createFileRoute("/es/")({
   component: SpanishHome,
 });
 
+function categoryHref(slug: string) {
+  if (slug === "finanzas") return "/es/finanzas";
+  return `/es/categoria/${slug}`;
+}
+
 function SpanishHome() {
   const categories = ALL_CATEGORIES.slice(0, 9);
-  const featured = ALL_TOOLS.slice(0, 8);
-  return <main className="pb-12">
-    <section className="hero-gradient border-b border-border/70">
-      <div className="container-page py-10 sm:py-16 lg:py-20">
-        <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">UtiliHub en español</p>
-        <h1 className="mt-3 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">Resuelve lo que necesitas en segundos.</h1>
-        <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Calcula, convierte, estudia y resuelve tareas cotidianas con herramientas gratuitas directamente en tu navegador.</p>
-        <div className="mt-7 flex flex-wrap gap-3"><Link to="/es/herramientas" className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground">Ver herramientas <ArrowRight className="size-4" /></Link><Link to="/es/finanzas" className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold">Calculadoras financieras</Link></div>
+  const quickTools = QUICK_TOOL_SLUGS.map((s) => ALL_TOOLS.find((t) => t.slug === s)).filter(
+    Boolean,
+  ) as typeof ALL_TOOLS;
+
+  return (
+    <main className="pb-12">
+      <section className="hero-gradient border-b border-border/70">
+        <div className="container-page grid gap-8 py-10 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-12 lg:py-20">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/75 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-primary">
+              <Sparkles className="size-3.5" aria-hidden /> Utilidades sin fricción
+            </div>
+            <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+              Resuelve lo que necesitas en segundos.
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+              Calcula, convierte, estudia y organiza tareas cotidianas con herramientas gratuitas que
+              funcionan en tu navegador.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link
+                to="/es/herramientas"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:opacity-95"
+              >
+                Ver herramientas <ArrowRight className="size-4" />
+              </Link>
+              <Link
+                to="/es/finanzas"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold hover:border-primary/40 hover:bg-accent"
+              >
+                Calculadoras financieras
+              </Link>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <Check className="size-3.5 text-primary" /> Sin registro
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="size-3.5 text-primary" /> Gratis
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="size-3.5 text-primary" /> Privacidad local
+              </span>
+            </div>
+          </div>
+
+          <div className="surface-card bg-card/80 p-3 shadow-lift sm:p-4">
+            <div className="rounded-xl border border-border/70 bg-background p-4 sm:p-5">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">
+                    Acceso rápido
+                  </p>
+                  <h2 className="mt-1 text-xl font-black">¿Qué querés resolver?</h2>
+                </div>
+                <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">
+                  {ALL_TOOLS.length} tools
+                </span>
+              </div>
+              <div className="mt-4">
+                <SpanishToolSearch compactHome />
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
+                <Link
+                  to="/es/categoria/$slug"
+                  params={{ slug: "matematicas" }}
+                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
+                >
+                  Matemáticas
+                </Link>
+                <Link
+                  to="/es/categoria/$slug"
+                  params={{ slug: "texto" }}
+                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
+                >
+                  Texto
+                </Link>
+                <Link
+                  to="/es/categoria/$slug"
+                  params={{ slug: "desarrollo" }}
+                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
+                >
+                  Desarrollo
+                </Link>
+                <Link
+                  to="/es/finanzas"
+                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
+                >
+                  Finanzas
+                </Link>
+                <Link
+                  to="/es/categoria/$slug"
+                  params={{ slug: "conversiones" }}
+                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
+                >
+                  Conversores
+                </Link>
+                <Link
+                  to="/es/juegos"
+                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
+                >
+                  Juegos
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="container-page">
+        <section className="pt-14 pb-10 sm:pt-16 sm:pb-12" aria-labelledby="es-shortcuts-title">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Empezá acá</p>
+              <h2 id="es-shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
+                Enlaces rápidos
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Las herramientas más prácticas para empezar sin recorrer todo el catálogo.
+              </p>
+            </div>
+            <Link
+              to="/es/herramientas"
+              className="hidden min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent sm:inline-flex"
+            >
+              Ver catálogo <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {quickTools.map((tool) => (
+              <Link
+                key={tool.slug}
+                to={spanishToolPath(tool) as never}
+                className="card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
+              >
+                <span className="text-xs font-bold uppercase tracking-wide text-primary">
+                  {spanishCategoryName(tool.category)}
+                </span>
+                <h3 className="mt-2 font-bold group-hover:text-primary">{spanishToolName(tool)}</h3>
+                <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                  {tool.summary}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="es-explore-categories">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">
+                Explorá por objetivo
+              </p>
+              <h2 id="es-explore-categories" className="mt-1 text-2xl font-black">
+                Todas las categorías
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Colecciones de herramientas organizadas por tipo de tarea.
+              </p>
+            </div>
+            <Link
+              to="/es/herramientas"
+              className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent"
+            >
+              Ver todas <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category) => {
+              const count = allToolsByCategory(category.slug).length;
+              const href = categoryHref(category.slug);
+              return (
+                <a
+                  key={category.slug}
+                  href={href}
+                  className="card-hover group flex min-h-16 items-center justify-between rounded-xl border border-border/70 bg-card px-4 py-3 hover:border-primary/20 hover:bg-accent"
+                >
+                  <span>
+                    <span className="block font-bold group-hover:text-primary">
+                      {spanishCategoryName(category.slug)}
+                    </span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">
+                      {category.description}
+                    </span>
+                  </span>
+                  <span className="ml-3 shrink-0 rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">
+                    {count}
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+
+        <HomeReviews locale="es" />
       </div>
-    </section>
-    <div className="container-page">
-      <section className="pt-14 pb-10 sm:pt-16 sm:pb-12" aria-labelledby="es-categories"><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explora</p><h2 id="es-categories" className="mt-1 text-2xl font-black">Categorías</h2><div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{categories.map((category) => <a key={category.slug} href={category.slug === "finanzas" ? "/es/finanzas" : "/es/herramientas"} className="card-hover group flex min-h-16 items-center justify-between rounded-xl border border-border/70 bg-card px-4 py-3 hover:border-primary/20 hover:bg-accent"><span className="font-bold group-hover:text-primary">{spanishCategoryName(category.slug)}</span><span className="text-xs text-muted-foreground">Ver</span></a>)}</div></section>
-      <section className="border-t border-border/70 py-10" aria-labelledby="es-featured"><div className="flex items-center gap-2"><Calculator className="size-5 text-primary" /><h2 id="es-featured" className="text-2xl font-black">Herramientas destacadas</h2></div><div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{featured.map((tool) => <Link key={tool.slug} to={spanishToolPath(tool) as any} className="rounded-xl border border-border/70 bg-card p-4 hover:border-primary/20"><h3 className="font-bold">{spanishToolName(tool)}</h3><p className="mt-1 text-xs text-muted-foreground">{spanishCategoryName(tool.category)}</p></Link>)}</div></section>
-      <section className="rounded-2xl border border-border/70 bg-surface/55 p-5 sm:p-6"><div className="flex items-center gap-3"><Search className="size-5 text-primary" /><div><h2 className="font-black">¿Qué necesitas resolver?</h2><p className="mt-1 text-sm text-muted-foreground">Consulta todo el catálogo de UtiliHub en español.</p></div></div><Link to="/es/herramientas" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground">Buscar herramientas <ArrowRight className="size-4" /></Link></section>
-      <HomeReviews locale="es" />
-    </div>
-  </main>;
+    </main>
+  );
 }
