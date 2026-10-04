@@ -10,7 +10,6 @@ export const Route = createFileRoute("/es/categoria/$slug")({
   loader: ({ params }) => {
     const category = allCategoryBySlug(params.slug);
     if (!category) throw notFound();
-    // Include secondary-category tools (same as EN /category/$slug)
     const tools = allToolsByCategory(category.slug);
     return { category, tools };
   },
@@ -108,8 +107,8 @@ function SpanishCategoryPage() {
           {neighboring.map((item) => (
             <Link
               key={item.slug}
-              to="/es/categoria/$slug"
-              params={{ slug: item.slug }}
+              to={item.slug === "finanzas" ? "/es/finanzas" : "/es/categoria/$slug"}
+              params={item.slug === "finanzas" ? undefined : { slug: item.slug }}
               className="rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold hover:border-primary/40 hover:bg-accent"
             >
               {spanishCategoryName(item.slug)}
