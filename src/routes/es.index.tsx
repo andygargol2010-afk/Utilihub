@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { SpanishToolSearch } from "@/components/SpanishToolSearch";
+import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
+import { RecentToolsSection } from "@/components/RecentToolsSection";
 import { HomeReviews } from "@/components/HomeReviews";
 import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
@@ -16,6 +18,27 @@ const QUICK_TOOL_SLUGS = [
   "conversor-de-temperatura",
   "conversor-de-unidades",
 ];
+
+/** Short ES blurbs for home category cards (catalog descriptions are English-only). */
+const CATEGORY_BLURB_ES: Record<string, string> = {
+  finanzas: "Inversiones, préstamos, ahorro e inflación.",
+  matematicas: "Cálculos, porcentajes, geometría y estadística.",
+  texto: "Contar, limpiar, transformar y analizar texto.",
+  desarrollo: "JSON, Base64, hashes, IDs y utilidades para devs.",
+  conversiones: "Unidades, color, divisas y más conversiones.",
+  fechas: "Diferencias de fechas, edades y temporizadores.",
+  generadores: "Contraseñas, UUID, QR y datos aleatorios.",
+  diseno: "Colores, contraste, paletas y modelado.",
+  "herramientas-avanzadas": "Modeladores 3D y utilidades avanzadas.",
+  seguridad: "Contraseñas, hashes y validadores.",
+  ciencia: "Física, química y simulaciones.",
+  productividad: "Temporizadores, fechas y organización.",
+  educacion: "Práctica y ejercicios de estudio.",
+  cocina: "Recetas, porciones y conversiones de cocina.",
+  viajes: "Combustible, divisas y planificación.",
+  hogar: "Pintura, materiales y cálculos del hogar.",
+  utilidades: "Utilidades prácticas del día a día.",
+};
 
 export const Route = createFileRoute("/es/")({
   head: () => ({
@@ -195,7 +218,7 @@ function SpanishHome() {
                 </span>
                 <h3 className="mt-2 font-bold group-hover:text-primary">{spanishToolName(tool)}</h3>
                 <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
-                  {tool.summary}
+                  {CATEGORY_BLURB_ES[tool.category] ?? "Herramienta gratuita en el navegador."}
                 </p>
               </Link>
             ))}
@@ -226,6 +249,9 @@ function SpanishHome() {
             {categories.map((category) => {
               const count = allToolsByCategory(category.slug).length;
               const href = categoryHref(category.slug);
+              const blurb =
+                CATEGORY_BLURB_ES[category.slug] ??
+                `Herramientas de ${spanishCategoryName(category.slug).toLowerCase()}.`;
               return (
                 <a
                   key={category.slug}
@@ -236,9 +262,7 @@ function SpanishHome() {
                     <span className="block font-bold group-hover:text-primary">
                       {spanishCategoryName(category.slug)}
                     </span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground">
-                      {category.description}
-                    </span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">{blurb}</span>
                   </span>
                   <span className="ml-3 shrink-0 rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">
                     {count}
@@ -249,6 +273,8 @@ function SpanishHome() {
           </div>
         </section>
 
+        <FavoriteToolsSection locale="es" />
+        <RecentToolsSection locale="es" />
         <HomeReviews locale="es" />
       </div>
     </main>
