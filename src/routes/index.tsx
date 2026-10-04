@@ -68,7 +68,7 @@ function HomePage() {
               <Sparkles className="size-3.5" aria-hidden /> Hassle-free utilities
             </div>
             <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-              Solve what you need in seconds.
+              Free online tools to solve what you need in seconds.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
               Calculate, convert, study, and organize everyday tasks with free tools that run right in your browser.
