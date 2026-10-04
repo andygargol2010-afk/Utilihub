@@ -83,7 +83,7 @@ function SpanishHome() {
   ) as typeof ALL_TOOLS;
 
   return (
-    <main className="pb-12">
+    <div className="pb-12">
       <section className="hero-gradient border-b border-border/70">
         <div className="container-page grid gap-8 py-10 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-12 lg:py-20">
           <div>
@@ -91,7 +91,7 @@ function SpanishHome() {
               <Sparkles className="size-3.5" aria-hidden /> Utilidades sin fricción
             </div>
             <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-              Resuelve lo que necesitas en segundos.
+              Herramientas online gratis para resolverlo en segundos.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
               Calcula, convierte, estudia y organiza tareas cotidianas con herramientas gratuitas que
@@ -128,10 +128,8 @@ function SpanishHome() {
             <div className="rounded-xl border border-border/70 bg-background p-4 sm:p-5">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">
-                    Acceso rápido
-                  </p>
-                  <h2 className="mt-1 text-xl font-black">¿Qué querés resolver?</h2>
+                  <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Acceso rápido</p>
+                  <h2 className="mt-1 text-xl font-black">¿Qué quieres resolver?</h2>
                 </div>
                 <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">
                   {ALL_TOOLS.length} herramientas
@@ -191,7 +189,7 @@ function SpanishHome() {
         <section className="pt-14 pb-10 sm:pt-16 sm:pb-12" aria-labelledby="es-shortcuts-title">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Empezá acá</p>
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Empieza aquí</p>
               <h2 id="es-shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
                 Enlaces rápidos
               </h2>
@@ -228,9 +226,7 @@ function SpanishHome() {
         <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="es-explore-categories">
           <div className="flex items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">
-                Explorá por objetivo
-              </p>
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explora por objetivo</p>
               <h2 id="es-explore-categories" className="mt-1 text-2xl font-black">
                 Todas las categorías
               </h2>
@@ -277,6 +273,6 @@ function SpanishHome() {
         <RecentToolsSection locale="es" />
         <HomeReviews locale="es" />
       </div>
-    </main>
+    </div>
   );
 }
