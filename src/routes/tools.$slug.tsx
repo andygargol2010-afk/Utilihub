@@ -135,7 +135,7 @@ function ToolPage() {
   const showcase = getToolShowcase(tool.slug);
 
   return (
-    <main className="container-page py-6 sm:py-8">
+    <div className="container-page py-6 sm:py-8">
       <Breadcrumbs
         items={[
           { label: "Home", to: "/" },
@@ -205,6 +205,6 @@ function ToolPage() {
         </section>
       )}
       <ToolSeoContent tool={tool} locale="en" />
-    </main>
+    </div>
   );
 }
