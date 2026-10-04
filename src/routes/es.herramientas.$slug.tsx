@@ -11,7 +11,14 @@ import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { ToolCard } from "@/components/ToolCard";
 import { allToolBySlug, ALL_CATEGORIES, type CatalogTool } from "@/lib/all-tools";
 import { englishToolPath } from "@/lib/route-slugs";
-import { absoluteUrl, cleanDescription, faqSchema, ogImage } from "@/lib/seo";
+import {
+  absoluteUrl,
+  breadcrumbSchema,
+  cleanDescription,
+  faqSchema,
+  ogImage,
+  organizationSchema,
+} from "@/lib/seo";
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { toolSeoOverride } from "@/lib/tool-seo-overrides";
 import { journeyLabel, journeyTools } from "@/lib/discovery";
@@ -48,6 +55,8 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
     );
     const englishUrl = absoluteUrl(englishToolPath(tool));
     const faqEs = override?.faqEs ?? [];
+    const categoryPath =
+      tool.category === "finanzas" ? "/es/finanzas" : `/es/categoria/${tool.category}`;
     return {
       meta: [
         { title },
@@ -62,6 +71,7 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
+        { name: "twitter:image", content: ogImage() },
       ],
       links: [
         { rel: "canonical", href: url },
@@ -69,10 +79,34 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
         { rel: "alternate", hrefLang: "en", href: englishUrl },
         { rel: "alternate", hrefLang: "x-default", href: englishUrl },
       ],
-      scripts:
-        faqEs.length > 0
-          ? [{ type: "application/ld+json", children: JSON.stringify(faqSchema(faqEs)) }]
-          : undefined,
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebApplication",
+                name,
+                description,
+                url,
+                applicationCategory: "UtilityApplication",
+                operatingSystem: "Any",
+                isAccessibleForFree: true,
+                offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+                publisher: organizationSchema(),
+              },
+              ...(faqEs.length ? [faqSchema(faqEs)] : []),
+              breadcrumbSchema([
+                { name: "Inicio", path: "/es" },
+                { name: "Herramientas", path: "/es/herramientas" },
+                { name: category, path: categoryPath },
+                { name: name },
+              ]),
+            ],
+          }),
+        },
+      ],
     };
   },
   component: SpanishToolPage,
@@ -108,13 +142,22 @@ function SpanishToolPage() {
     addRecent(tool.slug);
   }, [addRecent, tool.slug]);
   return (
-    <main className="container-page py-6 sm:py-8">
+    <div className="container-page py-6 sm:py-8">
       <Breadcrumbs
         locale="es"
         items={[
           { label: "Inicio", to: "/es" },
           { label: "Herramientas", to: "/es/herramientas" },
-          { label: category ? spanishCategoryName(category.slug) : "Categoría" },
+          {
+            label: category ? spanishCategoryName(category.slug) : "Categoría",
+            to: category
+              ? category.slug === "finanzas"
+                ? "/es/finanzas"
+                : "/es/categoria/$slug"
+              : undefined,
+            params:
+              category && category.slug !== "finanzas" ? { slug: category.slug } : undefined,
+          },
           { label: name },
         ]}
       />
@@ -181,6 +224,6 @@ function SpanishToolPage() {
         </section>
       )}
       <ToolSeoContent tool={tool} locale="es" />
-    </main>
+    </div>
   );
 }
