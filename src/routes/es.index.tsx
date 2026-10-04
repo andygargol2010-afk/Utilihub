@@ -111,7 +111,7 @@ function SpanishHome() {
                   <h2 className="mt-1 text-xl font-black">¿Qué querés resolver?</h2>
                 </div>
                 <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">
-                  {ALL_TOOLS.length} tools
+                  {ALL_TOOLS.length} herramientas
                 </span>
               </div>
               <div className="mt-4">
