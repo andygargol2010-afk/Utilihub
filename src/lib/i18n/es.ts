@@ -209,6 +209,7 @@ const EXACT_NAMES: Record<string, string> = {
   "temperatura-agua-masa": "Temperatura del agua para la masa",
   "calculadora-siding": "Calculadora de siding vinílico",
   "calculadora-zocalos": "Calculadora de zócalos y rodapié",
+  "calculadora-semilla-cesped": "Calculadora de semilla de césped",
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",
   "frecuencia-palabras": "Frecuencia de palabras",
