@@ -81,6 +81,7 @@ const PaverCalculatorTool = lazy(() => import("./PaverCalculatorTool").then((m) 
 const SodCalculatorTool = lazy(() => import("./SodCalculatorTool").then((m) => ({ default: m.SodCalculatorTool })));
 const GutterCalculatorTool = lazy(() => import("./GutterCalculatorTool").then((m) => ({ default: m.GutterCalculatorTool })));
 const InsulationCalculatorTool = lazy(() => import("./InsulationCalculatorTool").then((m) => ({ default: m.InsulationCalculatorTool })));
+const BrickCalculatorTool = lazy(() => import("./BrickCalculatorTool").then((m) => ({ default: m.BrickCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -108,6 +109,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-cesped") return SodCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-canalones") return GutterCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-aislamiento") return InsulationCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-ladrillos") return BrickCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
