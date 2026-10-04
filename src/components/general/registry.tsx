@@ -86,6 +86,7 @@ const BrickCalculatorTool = lazy(() => import("./BrickCalculatorTool").then((m) 
 const YeastConverterTool = lazy(() => import("./YeastConverterTool").then((m) => ({ default: m.YeastConverterTool })));
 const DoughWaterTempTool = lazy(() => import("./DoughWaterTempTool").then((m) => ({ default: m.DoughWaterTempTool })));
 const SidingCalculatorTool = lazy(() => import("./SidingCalculatorTool").then((m) => ({ default: m.SidingCalculatorTool })));
+const BaseboardCalculatorTool = lazy(() => import("./BaseboardCalculatorTool").then((m) => ({ default: m.BaseboardCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -118,6 +119,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "conversor-levadura") return YeastConverterTool as ToolComp;
   if (tool.slug === "temperatura-agua-masa") return DoughWaterTempTool as ToolComp;
   if (tool.slug === "calculadora-siding") return SidingCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-zocalos") return BaseboardCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;

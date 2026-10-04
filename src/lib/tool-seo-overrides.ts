@@ -48,6 +48,7 @@ import { TOOL_SEO_OVERRIDES_BRICK } from "./tool-seo-overrides-brick";
 import { TOOL_SEO_OVERRIDES_YEAST } from "./tool-seo-overrides-yeast";
 import { TOOL_SEO_OVERRIDES_DOUGH_WATER } from "./tool-seo-overrides-dough-water";
 import { TOOL_SEO_OVERRIDES_SIDING } from "./tool-seo-overrides-siding";
+import { TOOL_SEO_OVERRIDES_BASEBOARD } from "./tool-seo-overrides-baseboard";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -111,6 +112,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_YEAST,
   ...TOOL_SEO_OVERRIDES_DOUGH_WATER,
   ...TOOL_SEO_OVERRIDES_SIDING,
+  ...TOOL_SEO_OVERRIDES_BASEBOARD,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
