@@ -932,6 +932,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
   const paletteDragRef = useRef<PartKind | null>(null);
+  // Owning pointer for place/drag. A second finger's pointerup must not commit or unlock orbit.
+  const gesturePointerRef = useRef<number | null>(null);
+  const palettePointerRef = useRef<number | null>(null);
 
   useEffect(() => {
     toolRef.current = tool;
@@ -1019,6 +1022,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       renderer.toneMappingExposure = 1.08;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       el.appendChild(renderer.domElement);
+      renderer.domElement.style.touchAction = "none";
+      renderer.domElement.style.display = "block";
 
       const sky = new Sky();
       sky.scale.setScalar(450);
@@ -1438,6 +1443,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     };
 
     const onMove = (ev: PointerEvent) => {
+      if (gesturePointerRef.current != null && ev.pointerId !== gesturePointerRef.current) return;
       const point = worldPointFromEvent(ev.clientX, ev.clientY);
       const rect = el.getBoundingClientRect();
       const inside =
@@ -1503,6 +1509,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             id,
             offset: new THREE.Vector3(point.x - obj.position.x, 0, point.z - obj.position.z),
           };
+          gesturePointerRef.current = ev.pointerId;
           t.controls.enabled = false;
           pendingPlaceRef.current = false;
           ev.stopImmediatePropagation();
@@ -1513,38 +1520,55 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
       // Arm a ground place; commit on pointerup so a cancelled gesture does not spawn a part.
       pendingPlaceRef.current = true;
+      gesturePointerRef.current = ev.pointerId;
       t.controls.enabled = false;
       ev.stopImmediatePropagation();
       ev.preventDefault();
     };
 
+    const ownsGesture = (ev: PointerEvent) =>
+      gesturePointerRef.current == null || ev.pointerId === gesturePointerRef.current;
+
     const onUp = (ev: PointerEvent) => {
       if (ev.button !== 0 && ev.button !== undefined) return;
+      if (!ownsGesture(ev)) return;
+      gesturePointerRef.current = null;
       endGesture(true, ev);
     };
 
-    const onCancel = () => {
+    const onCancel = (ev: PointerEvent) => {
+      if (!ownsGesture(ev)) return;
+      gesturePointerRef.current = null;
       endGesture(false);
     };
 
     const onBlur = () => {
       // Tab switch / lost capture: do not leave controls disabled or a half-drag.
+      gesturePointerRef.current = null;
       endGesture(false);
     };
 
+    const onContextMenu = (ev: Event) => {
+      // Right-drag is orbit. The browser menu was cancelling that gesture.
+      ev.preventDefault();
+    };
+
     canvas.addEventListener("pointerdown", onDown, true);
+    canvas.addEventListener("contextmenu", onContextMenu);
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
     window.addEventListener("pointercancel", onCancel);
     window.addEventListener("blur", onBlur);
     return () => {
       canvas.removeEventListener("pointerdown", onDown, true);
+      canvas.removeEventListener("contextmenu", onContextMenu);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onCancel);
       window.removeEventListener("blur", onBlur);
       draggingRef.current = null;
       pendingPlaceRef.current = false;
+      gesturePointerRef.current = null;
       if (threeRef.current) threeRef.current.controls.enabled = true;
     };
   }, [ready, worldPointFromEvent, placeAt, findPartObject]);
@@ -1564,6 +1588,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       );
     };
     const onMove = (ev: PointerEvent) => {
+      if (palettePointerRef.current != null && ev.pointerId !== palettePointerRef.current) return;
       const over = overCanvas(ev);
       setDragCursor({ x: ev.clientX, y: ev.clientY, over });
       const point = worldPointFromEvent(ev.clientX, ev.clientY);
@@ -1574,8 +1599,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       }
     };
     const onUp = (ev: PointerEvent) => {
+      if (palettePointerRef.current != null && ev.pointerId !== palettePointerRef.current) return;
       const kind = paletteDragRef.current;
       paletteDragRef.current = null;
+      palettePointerRef.current = null;
       setPlacingFromPalette(false);
       setDragCursor(null);
       if (threeRef.current) threeRef.current.controls.enabled = true;
@@ -1584,8 +1611,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (!point || !overCanvas(ev)) return;
       placeAt(point, kind);
     };
-    const onCancel = () => {
+    const endPalette = (ev?: PointerEvent) => {
+      if (ev && palettePointerRef.current != null && ev.pointerId !== palettePointerRef.current) return;
       paletteDragRef.current = null;
+      palettePointerRef.current = null;
       setPlacingFromPalette(false);
       setDragCursor(null);
       if (threeRef.current) {
@@ -1593,15 +1622,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         if (threeRef.current.ghost) threeRef.current.ghost.visible = true;
       }
     };
-    const onBlur = () => {
-      paletteDragRef.current = null;
-      setPlacingFromPalette(false);
-      setDragCursor(null);
-      if (threeRef.current) {
-        threeRef.current.controls.enabled = true;
-        if (threeRef.current.ghost) threeRef.current.ghost.visible = true;
-      }
-    };
+    const onCancel = (ev: PointerEvent) => endPalette(ev);
+    const onBlur = () => endPalette();
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
     window.addEventListener("pointercancel", onCancel);
@@ -1614,6 +1636,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       // Tear-down mid-drag (Escape, blur, unmount): never leave orbit locked.
       if (paletteDragRef.current) {
         paletteDragRef.current = null;
+        palettePointerRef.current = null;
         if (threeRef.current) threeRef.current.controls.enabled = true;
       }
     };
@@ -1646,6 +1669,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (e.key === "Escape") {
         if (paletteDragRef.current || pendingPlaceRef.current || draggingRef.current) {
           paletteDragRef.current = null;
+          palettePointerRef.current = null;
+          gesturePointerRef.current = null;
           pendingPlaceRef.current = false;
           setPlacingFromPalette(false);
           setDragCursor(null);
@@ -1681,6 +1706,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     ev.preventDefault();
     setTool(kind);
     paletteDragRef.current = kind;
+    palettePointerRef.current = ev.pointerId;
     setPlacingFromPalette(true);
     setDragCursor({ x: ev.clientX, y: ev.clientY, over: false });
     if (threeRef.current) threeRef.current.controls.enabled = false;
