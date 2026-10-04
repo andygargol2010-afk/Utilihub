@@ -5,7 +5,7 @@ import { ToolListBrowser } from "@/components/ToolListBrowser";
 import { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
 import { englishCategorySlug, englishToolSlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
+import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
 
 export const Route = createFileRoute("/category/$slug")({
   loader: ({ params }) => {
@@ -24,7 +24,10 @@ export const Route = createFileRoute("/category/$slug")({
     const { category } = loaderData;
     const publicSlug = englishCategorySlug(category.slug);
     const description = cleanDescription(category.description);
-    const url = absoluteUrl(`/category/${publicSlug}`);
+    const enPath = `/category/${publicSlug}`;
+    const esPath =
+      category.slug === "finanzas" ? "/es/finanzas" : `/es/categoria/${category.slug}`;
+    const url = absoluteUrl(enPath);
     const itemList = loaderData.tools.slice(0, 50).map((tool, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -48,7 +51,7 @@ export const Route = createFileRoute("/category/$slug")({
         { property: "og:image", content: ogImage() },
         { name: "twitter:card", content: "summary_large_image" },
       ],
-      links: [{ rel: "canonical", href: url }],
+      links: [{ rel: "canonical", href: url }, ...hreflangLinks(enPath, esPath)],
       scripts: [
         {
           type: "application/ld+json",
