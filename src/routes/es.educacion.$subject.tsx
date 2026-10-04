@@ -110,7 +110,7 @@ export const Route = createFileRoute("/es/educacion/$subject")({
     const { slug, name } = loaderData;
     const title = `Tests de ${name} online | Primaria, secundaria y universidad | UtiliHub`;
     const description = cleanDescription(
-      `Generá tests de ${name} por tema para primaria, secundaria y universidad. Elegí dificultad y cantidad de preguntas y practicá gratis.`,
+      `Genera tests de ${name} por tema para primaria, secundaria y universidad. Elige dificultad y cantidad de preguntas y practica gratis.`,
     );
     const url = absoluteUrl(`/es/educacion/${slug}`);
     return {
@@ -169,8 +169,8 @@ function SpanishEducationSubjectPage() {
       />
       <h1 className="mt-4 text-3xl font-bold sm:text-4xl">Tests de {name}</h1>
       <p className="mt-3 max-w-3xl text-muted-foreground">
-        Generá tests gratuitos de {name} por tema. Podés elegir primaria, secundaria o universidad,
-        más la dificultad y la cantidad de preguntas.
+        Genera tests gratuitos de {name} por tema. Puedes elegir primaria, secundaria o universidad, más la dificultad y
+        la cantidad de preguntas.
       </p>
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {tools.map((tool) => (
