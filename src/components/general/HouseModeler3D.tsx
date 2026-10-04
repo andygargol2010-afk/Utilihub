@@ -1019,8 +1019,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     try {
       const scene = new THREE.Scene();
       // Horizon-matched haze: pad stays clear, outer grass fades into the sky.
-      scene.fog = new THREE.FogExp2(0xb7c6d6, 0.0082);
-      scene.background = new THREE.Color(0xb7c6d6);
+      scene.fog = new THREE.FogExp2(0xc3cdd6, 0.0072);
+      scene.background = new THREE.Color(0xc3cdd6);
 
       const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
       camera.position.set(12, 9, 14);
@@ -1041,10 +1041,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sky.scale.setScalar(450);
       scene.add(sky);
       const skyUniforms = sky.material.uniforms;
-      skyUniforms["turbidity"].value = 5.2;
-      skyUniforms["rayleigh"].value = 1.22;
-      skyUniforms["mieCoefficient"].value = 0.0034;
-      skyUniforms["mieDirectionalG"].value = 0.78;
+      // Slightly hazier low sun: warmer horizon, less washed zenith.
+      skyUniforms["turbidity"].value = 6.6;
+      skyUniforms["rayleigh"].value = 0.98;
+      skyUniforms["mieCoefficient"].value = 0.0048;
+      skyUniforms["mieDirectionalG"].value = 0.82;
       const sun = new THREE.Vector3();
       // Lower sun (closer to horizon) so walls cast longer, readable shadows on the pad.
       const phi = THREE.MathUtils.degToRad(80);
@@ -1057,21 +1058,20 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
       const hemi = new THREE.HemisphereLight(0xd4e2f4, 0x6a5a40, 0.42);
       scene.add(hemi);
-      const dir = new THREE.DirectionalLight(0xfff0d4, 1.45);
+      const dir = new THREE.DirectionalLight(0xffe6c2, 1.36);
       dir.position.copy(sun).multiplyScalar(48);
       dir.castShadow = true;
       dir.shadow.mapSize.set(2048, 2048);
-      dir.shadow.camera.near = 8;
-      dir.shadow.camera.far = 90;
-      // Frustum rides the orbit target (updated each frame) so panning does not
-      // push walls out of the 2048 map.
-      dir.shadow.camera.left = -16;
-      dir.shadow.camera.right = 16;
-      dir.shadow.camera.top = 16;
-      dir.shadow.camera.bottom = -16;
-      dir.shadow.bias = -0.00035;
-      dir.shadow.normalBias = 0.028;
-      dir.shadow.radius = 2.2;
+      dir.shadow.camera.near = 6;
+      dir.shadow.camera.far = 72;
+      // Tighter frustum on the pad: same 2048 map, crisper contact on walls.
+      dir.shadow.camera.left = -13;
+      dir.shadow.camera.right = 13;
+      dir.shadow.camera.top = 13;
+      dir.shadow.camera.bottom = -13;
+      dir.shadow.bias = -0.00025;
+      dir.shadow.normalBias = 0.02;
+      dir.shadow.radius = 1.4;
       scene.add(dir);
       scene.add(dir.target);
       const sunDiscMap = makeCanvasTexture(128, paintSunDisc, true);
@@ -1087,8 +1087,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sunDisc.position.copy(sun).multiplyScalar(220);
       sunDisc.scale.set(34, 34, 1);
       scene.add(sunDisc);
-      const fill = new THREE.DirectionalLight(0x9eb6d4, 0.22);
-      fill.position.set(-18, 10, -12);
+      const fill = new THREE.DirectionalLight(0x9eb6d4, 0.28);
+      fill.position.set(-sun.x * 26, 9, -sun.z * 26);
       scene.add(fill);
       // Warm bounce off the gravel pad, no shadow (keeps mid-range fill cheap).
       const bounce = new THREE.DirectionalLight(0xe7d2b4, 0.18);
@@ -1135,6 +1135,45 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       apron.receiveShadow = true;
       scene.add(apron);
 
+      // Compacted access path so the pad reads as a site, not a floating disc.
+      const pathGeo = new THREE.PlaneGeometry(1.7, 9.2);
+      const pathMat = new THREE.MeshStandardMaterial({
+        color: 0x8a7860,
+        roughness: 0.97,
+        metalness: 0,
+      });
+      const path = new THREE.Mesh(pathGeo, pathMat);
+      path.rotation.x = -Math.PI / 2;
+      path.position.set(0.35, 0.017, 11.4);
+      path.receiveShadow = true;
+      scene.add(path);
+
+      // Cheap grass clumps on the apron. One instanced mesh, no shadow maps.
+      const tuftGeo = new THREE.ConeGeometry(0.14, 0.38, 4);
+      tuftGeo.translate(0, 0.19, 0);
+      const tuftMat = new THREE.MeshStandardMaterial({
+        color: 0x5c7840,
+        roughness: 0.94,
+        metalness: 0,
+      });
+      const TUFTS = 40;
+      const tufts = new THREE.InstancedMesh(tuftGeo, tuftMat, TUFTS);
+      tufts.castShadow = false;
+      tufts.receiveShadow = false;
+      const tuftDummy = new THREE.Object3D();
+      for (let i = 0; i < TUFTS; i++) {
+        const a = hash2(i, 1.3) * Math.PI * 2;
+        const rad = 12.2 + hash2(i, 4.7) * 7.2;
+        tuftDummy.position.set(Math.cos(a) * rad, 0, Math.sin(a) * rad);
+        const s = 0.65 + hash2(i, 2.2) * 1.35;
+        tuftDummy.scale.set(s, 0.5 + hash2(i, 8.1) * 1.15, s * 0.85);
+        tuftDummy.rotation.y = hash2(i, 9.4) * Math.PI;
+        tuftDummy.updateMatrix();
+        tufts.setMatrixAt(i, tuftDummy.matrix);
+      }
+      tufts.instanceMatrix.needsUpdate = true;
+      scene.add(tufts);
+
       const ringMat = new THREE.LineBasicMaterial({ color: 0x2f452c, transparent: true, opacity: 0.22 });
       const ringGeos: THREE.BufferGeometry[] = [];
       for (let r = 5; r <= 40; r += 5) {
@@ -1164,7 +1203,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (hazeMap) hazeMap.repeat.set(1, 1);
       const hazeMat = new THREE.MeshBasicMaterial({
         map: hazeMap ?? undefined,
-        color: 0xb7c6d6,
+        color: 0xc3cdd6,
         transparent: true,
         depthWrite: false,
         fog: false,
@@ -1252,6 +1291,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         dir.position.set(sun.x * 48 + focusX, Math.max(14, sun.y * 48), sun.z * 48 + focusZ);
         dir.target.position.set(focusX, 0.5, focusZ);
         dir.target.updateMatrixWorld();
+        // Cool fill stays opposite the key so wall backs do not go flat black.
+        fill.position.set(-sun.x * 26 + focusX, 9, -sun.z * 26 + focusZ);
         renderer.render(scene, camera);
         threeRef.current!.anim = requestAnimationFrame(tick);
       };
@@ -1279,6 +1320,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         rimMat.dispose();
         apron.geometry.dispose();
         apronMat.dispose();
+        path.geometry.dispose();
+        pathMat.dispose();
+        tufts.geometry.dispose();
+        tuftMat.dispose();
+        tufts.dispose();
         sunDiscMat.dispose();
         sunDiscMap?.dispose();
         ringMat.dispose();
