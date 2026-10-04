@@ -438,6 +438,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [count, setCount] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [placingFromPalette, setPlacingFromPalette] = useState(false);
+  const [dragCursor, setDragCursor] = useState<{ x: number; y: number; over: boolean } | null>(null);
+  const [selectedRot, setSelectedRot] = useState(0);
   const [showHelp, setShowHelp] = useState(false);
   const toolRef = useRef(tool);
   const selectedRef = useRef(selectedId);
@@ -775,6 +777,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     });
     setCount(partsRef.current.length);
     setSelectedId(id);
+    setSelectedRot(0);
   }, []);
 
   const findPartObject = useCallback((id: string) => {
@@ -799,6 +802,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     partsRef.current = partsRef.current.filter((p) => p.id !== id);
     selectedRef.current = null;
     setSelectedId(null);
+    setSelectedRot(0);
     setCount(partsRef.current.length);
     if (t) t.selectionHelper.visible = false;
   }, [findPartObject]);
@@ -811,6 +815,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     obj.rotation.y += Math.PI / 2;
     const part = partsRef.current.find((p) => p.id === id);
     if (part) part.rotationY = obj.rotation.y;
+    setSelectedRot(((Math.round(obj.rotation.y / (Math.PI / 2)) % 4) + 4) % 4);
   }, [findPartObject]);
 
   const clearAll = useCallback(() => {
@@ -826,6 +831,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     partsRef.current = [];
     selectedRef.current = null;
     setSelectedId(null);
+    setSelectedRot(0);
     setCount(0);
     t.selectionHelper.visible = false;
   }, [findPartObject]);
@@ -940,6 +946,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         const id = hits[0].object.userData.partId as string;
         setSelectedId(id);
         selectedRef.current = id;
+        const picked = partsRef.current.find((p) => p.id === id);
+        setSelectedRot(picked ? ((Math.round(picked.rotationY / (Math.PI / 2)) % 4) + 4) % 4 : 0);
         const obj = findPartObject(id);
         if (obj) {
           draggingRef.current = {
@@ -988,35 +996,54 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   // Global pointer move while dragging from palette (ghost follows even outside canvas)
   useEffect(() => {
     if (!placingFromPalette) return;
+    const overCanvas = (ev: PointerEvent) => {
+      const mount = mountRef.current;
+      if (!mount) return false;
+      const rect = mount.getBoundingClientRect();
+      return (
+        ev.clientX >= rect.left &&
+        ev.clientX <= rect.right &&
+        ev.clientY >= rect.top &&
+        ev.clientY <= rect.bottom
+      );
+    };
     const onMove = (ev: PointerEvent) => {
+      const over = overCanvas(ev);
+      setDragCursor({ x: ev.clientX, y: ev.clientY, over });
       const point = worldPointFromEvent(ev.clientX, ev.clientY);
       const t = threeRef.current;
       if (point && t?.ghost) {
         t.ghost.position.set(snap(point.x), 0, snap(point.z));
+        t.ghost.visible = over;
       }
     };
     const onUp = (ev: PointerEvent) => {
       const kind = paletteDragRef.current;
       paletteDragRef.current = null;
       setPlacingFromPalette(false);
+      setDragCursor(null);
       if (threeRef.current) threeRef.current.controls.enabled = true;
       if (!kind) return;
       const point = worldPointFromEvent(ev.clientX, ev.clientY);
-      const mount = mountRef.current;
-      if (!point || !mount) return;
-      const rect = mount.getBoundingClientRect();
-      const inside =
-        ev.clientX >= rect.left &&
-        ev.clientX <= rect.right &&
-        ev.clientY >= rect.top &&
-        ev.clientY <= rect.bottom;
-      if (inside) placeAt(point, kind);
+      if (!point || !overCanvas(ev)) return;
+      placeAt(point, kind);
+    };
+    const onCancel = () => {
+      paletteDragRef.current = null;
+      setPlacingFromPalette(false);
+      setDragCursor(null);
+      if (threeRef.current) {
+        threeRef.current.controls.enabled = true;
+        if (threeRef.current.ghost) threeRef.current.ghost.visible = true;
+      }
     };
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onCancel);
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onCancel);
     };
   }, [placingFromPalette, worldPointFromEvent, placeAt]);
 
@@ -1060,6 +1087,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         } else {
           selectedRef.current = null;
           setSelectedId(null);
+          setSelectedRot(0);
           if (threeRef.current) threeRef.current.selectionHelper.visible = false;
         }
       }
@@ -1079,6 +1107,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setTool(kind);
     paletteDragRef.current = kind;
     setPlacingFromPalette(true);
+    setDragCursor({ x: ev.clientX, y: ev.clientY, over: false });
     if (threeRef.current) threeRef.current.controls.enabled = false;
     makeGhost(kind);
   };
@@ -1103,7 +1132,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         none: "Nada seleccionado",
         selected: "Seleccionado",
         drop: "Soltá sobre el terreno para colocar",
+        dropOver: "Sobre el terreno",
+        dropOut: "Fuera del terreno — no se coloca",
         needSel: "Seleccioná una pieza primero",
+        rotDeg: "giro",
+        sizeWall: "3.0 × 2.6 m",
+        sizeFloor: "3.0 × 3.0 m",
+        sizeRoof: "3.2 m de ancho",
         help: "Ayuda",
         hideHelp: "Ocultar",
         active: "Activa",
@@ -1127,7 +1162,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         none: "Nothing selected",
         selected: "Selected",
         drop: "Release over the ground to place",
+        dropOver: "Over the ground",
+        dropOut: "Outside the ground — won't place",
         needSel: "Select a part first",
+        rotDeg: "yaw",
+        sizeWall: "3.0 × 2.6 m",
+        sizeFloor: "3.0 × 3.0 m",
+        sizeRoof: "3.2 m wide",
         help: "Help",
         hideHelp: "Hide",
         active: "Active",
@@ -1137,10 +1178,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedKindLabel =
     selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : "";
 
-  const paletteItems: { kind: PartKind; label: string; swatch: string; key: string }[] = [
-    { kind: "wall", label: labels.wall, swatch: "#d8d0c4", key: "1" },
-    { kind: "floor", label: labels.floor, swatch: "#8b7355", key: "2" },
-    { kind: "roof", label: labels.roof, swatch: "#6b3a2a", key: "3" },
+  const paletteItems: { kind: PartKind; label: string; swatch: string; key: string; size: string }[] = [
+    { kind: "wall", label: labels.wall, swatch: "#d8d0c4", key: "1", size: labels.sizeWall },
+    { kind: "floor", label: labels.floor, swatch: "#8b7355", key: "2", size: labels.sizeFloor },
+    { kind: "roof", label: labels.roof, swatch: "#6b3a2a", key: "3", size: labels.sizeRoof },
   ];
   const activeLabel =
     tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : labels.roof;
@@ -1260,7 +1301,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 selectedKindLabel ? "bg-amber-900/85 text-amber-50" : "bg-black/55 text-amber-50"
               }`}
             >
-              {selectedKindLabel ? `${labels.selected}: ${selectedKindLabel}` : labels.none}
+              {selectedKindLabel
+                ? `${labels.selected}: ${selectedKindLabel} · ${labels.rotDeg} ${selectedRot * 90}°`
+                : labels.none}
             </span>
           </div>
         </div>
@@ -1292,6 +1335,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             >
               <StructureGlyph kind={item.kind} />
               <span className="text-xs font-semibold text-foreground">{item.label}</span>
+              <span className="text-[10px] leading-none text-muted-foreground">{item.size}</span>
               <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
                 {item.key}
                 {tool === item.kind ? ` · ${labels.active}` : ""}
@@ -1310,6 +1354,19 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           )}
         </aside>
       </div>
+      {dragCursor && (
+        <div
+          className="pointer-events-none fixed z-50 max-w-[14rem] -translate-x-1/2 -translate-y-[130%] rounded-md px-2 py-1 text-[11px] font-semibold shadow-lg"
+          style={{
+            left: dragCursor.x,
+            top: dragCursor.y,
+            background: dragCursor.over ? "rgba(120, 53, 15, 0.92)" : "rgba(69, 26, 26, 0.92)",
+            color: "#fff7ed",
+          }}
+        >
+          {activeLabel} · {dragCursor.over ? labels.dropOver : labels.dropOut}
+        </div>
+      )}
     </div>
   );
 }
