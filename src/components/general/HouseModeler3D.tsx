@@ -290,6 +290,98 @@ function paintTileBump(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+function paintPlate(ctx: CanvasRenderingContext2D, size: number) {
+  // Wall head plate: sawn oak with checks, not a second plaster map.
+  noiseFill(ctx, size, [132, 86, 48], 18);
+  const beams = 2;
+  for (let i = 0; i < beams; i++) {
+    const y0 = Math.floor((i / beams) * size);
+    const y1 = Math.floor(((i + 1) / beams) * size);
+    const tone = 118 + Math.floor(hash2(i, 3.3) * 28);
+    ctx.fillStyle = `rgb(${tone + 40}, ${tone - 6}, ${tone - 42})`;
+    ctx.fillRect(0, y0, size, y1 - y0);
+    ctx.strokeStyle = "rgba(62,34,16,0.55)";
+    ctx.lineWidth = 1;
+    for (let g = 0; g < 5; g++) {
+      const gy = y0 + 6 + g * ((y1 - y0) / 6);
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      for (let x = 0; x <= size; x += 6) {
+        ctx.lineTo(x, gy + Math.sin(x * 0.04 + i) * 1.1);
+      }
+      ctx.stroke();
+    }
+    const split = (0.3 + hash2(i, 9) * 0.4) * size;
+    ctx.fillStyle = "rgba(40,22,10,0.75)";
+    ctx.fillRect(split, y0 + 2, 2, y1 - y0 - 4);
+  }
+  ctx.fillStyle = "rgba(36,20,10,0.8)";
+  ctx.fillRect(0, size / 2 - 2, size, 4);
+}
+
+function paintPlateBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#a4a4a4";
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = "#3c3c3c";
+  ctx.fillRect(0, size / 2 - 2, size, 5);
+  ctx.strokeStyle = "rgba(255,255,255,0.28)";
+  ctx.lineWidth = 1;
+  for (let g = 0; g < 8; g++) {
+    const y = (g / 8) * size;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(size, y + 1);
+    ctx.stroke();
+  }
+}
+
+function paintNosing(ctx: CanvasRenderingContext2D, size: number) {
+  // Board edge / end grain so the slab reads as timber, not a flat tile.
+  noiseFill(ctx, size, [96, 62, 36], 16);
+  const boards = 5;
+  for (let i = 0; i < boards; i++) {
+    const x0 = Math.floor((i / boards) * size);
+    const x1 = Math.floor(((i + 1) / boards) * size);
+    const tone = 92 + Math.floor(hash2(i, 6.1) * 30);
+    ctx.fillStyle = `rgb(${tone + 28}, ${tone - 4}, ${tone - 28})`;
+    ctx.fillRect(x0, 0, x1 - x0, size);
+    const cx = (x0 + x1) / 2;
+    const cy = size * (0.35 + hash2(i, 2) * 0.3);
+    for (let ring = 3; ring >= 1; ring--) {
+      ctx.strokeStyle = `rgba(54,30,14,${0.18 + ring * 0.12})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, (x1 - x0) * 0.28 * ring / 3, size * 0.18 * ring / 3, 0.2, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.fillStyle = "rgba(42,24,12,0.8)";
+    ctx.fillRect(x1 - 2, 0, 2, size);
+  }
+}
+
+function paintFascia(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [108, 78, 52], 14);
+  ctx.fillStyle = "#6d4a30";
+  ctx.fillRect(0, 0, size, size);
+  for (let i = 0; i < 7; i++) {
+    const y0 = Math.floor((i / 7) * size);
+    const h = Math.floor(size / 7) - 2;
+    const tone = 102 + Math.floor(hash2(i, 4.4) * 32);
+    ctx.fillStyle = `rgb(${tone + 22}, ${tone - 8}, ${tone - 30})`;
+    ctx.fillRect(1, y0 + 1, size - 2, h);
+    ctx.strokeStyle = "rgba(70,42,22,0.4)";
+    ctx.lineWidth = 1;
+    const gy = y0 + h * 0.45;
+    ctx.beginPath();
+    ctx.moveTo(0, gy);
+    for (let x = 0; x <= size; x += 8) ctx.lineTo(x, gy + Math.sin(x * 0.08 + i) * 1.2);
+    ctx.stroke();
+  }
+  // Weathered drip line along the lower edge.
+  ctx.fillStyle = "rgba(42,26,16,0.55)";
+  ctx.fillRect(0, size - 6, size, 6);
+}
+
 function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [158, 148, 132], 28);
   for (let i = 0; i < 90; i++) {
@@ -389,6 +481,13 @@ function makeMaterials() {
   const groundRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 210, 28), false);
   const gravelMap = makeCanvasTexture(TEX, paintGravel, true);
   const gravelRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 200, 36), false);
+  const plateMap = makeCanvasTexture(TEX, paintPlate, true);
+  const plateRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 150, 30), false);
+  const plateBump = makeCanvasTexture(TEX, paintPlateBump, false);
+  const nosingMap = makeCanvasTexture(TEX, paintNosing, true);
+  const nosingRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 160, 24), false);
+  const fasciaMap = makeCanvasTexture(TEX, paintFascia, true);
+  const fasciaRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 156, 26), false);
 
   const applyRepeat = (tex: THREE.CanvasTexture | null, x: number, y: number) => {
     if (!tex) return;
@@ -408,6 +507,13 @@ function makeMaterials() {
   applyRepeat(groundRough, 10, 10);
   applyRepeat(gravelMap, 5, 5);
   applyRepeat(gravelRough, 5, 5);
+  applyRepeat(plateMap, 3, 1);
+  applyRepeat(plateRough, 3, 1);
+  applyRepeat(plateBump, 3, 1);
+  applyRepeat(nosingMap, 4, 1);
+  applyRepeat(nosingRough, 4, 1);
+  applyRepeat(fasciaMap, 3, 1);
+  applyRepeat(fasciaRough, 3, 1);
 
   const wall = new THREE.MeshStandardMaterial({
     color: 0xffffff,
@@ -458,7 +564,30 @@ function makeMaterials() {
     roughness: 0.92,
     metalness: 0.01,
   });
-  return { wall, wallEdge, floor, roof, ground, gravel };
+  const plate = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: plateMap ?? undefined,
+    roughnessMap: plateRough ?? undefined,
+    bumpMap: plateBump ?? plateRough ?? undefined,
+    bumpScale: 0.05,
+    roughness: 0.72,
+    metalness: 0.03,
+  });
+  const nosing = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: nosingMap ?? undefined,
+    roughnessMap: nosingRough ?? undefined,
+    roughness: 0.7,
+    metalness: 0.03,
+  });
+  const fascia = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: fasciaMap ?? undefined,
+    roughnessMap: fasciaRough ?? undefined,
+    roughness: 0.76,
+    metalness: 0.03,
+  });
+  return { wall, wallEdge, floor, roof, ground, gravel, plate, nosing, fascia };
 }
 
 function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
@@ -485,15 +614,40 @@ function createWallMesh(mats: ReturnType<typeof makeMaterials>) {
   base.position.y = 0.06;
   base.castShadow = true;
   group.add(base);
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(3.02, 0.1, 0.22), mats.plate);
+  plate.position.y = 2.55;
+  plate.castShadow = true;
+  plate.receiveShadow = true;
+  group.add(plate);
   return group;
 }
 
 function createFloorMesh(mats: ReturnType<typeof makeMaterials>) {
+  const group = new THREE.Group();
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(3, 0.08, 3), mats.floor);
   mesh.position.y = 0.04;
   mesh.receiveShadow = true;
   mesh.castShadow = true;
-  return mesh;
+  group.add(mesh);
+  const edges: Array<[number, number, number]> = [
+    [3.06, 0.09, 0.07],
+    [0.07, 0.09, 3.06],
+  ];
+  const placements: Array<[number, number, number, number]> = [
+    [0, 0.045, 1.515, 0],
+    [0, 0.045, -1.515, 0],
+    [1.515, 0.045, 0, 1],
+    [-1.515, 0.045, 0, 1],
+  ];
+  for (const [x, y, z, which] of placements) {
+    const [w, h, d] = edges[which];
+    const nosing = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats.nosing);
+    nosing.position.set(x, y, z);
+    nosing.castShadow = true;
+    nosing.receiveShadow = true;
+    group.add(nosing);
+  }
+  return group;
 }
 
 function createRoofMesh(mats: ReturnType<typeof makeMaterials>) {
@@ -507,6 +661,18 @@ function createRoofMesh(mats: ReturnType<typeof makeMaterials>) {
   right.rotation.x = -0.45;
   right.castShadow = true;
   group.add(left, right);
+  const addVerge = (src: THREE.Mesh, localZ: number) => {
+    const verge = new THREE.Mesh(new THREE.BoxGeometry(3.24, 0.07, 0.09), mats.fascia);
+    verge.position.copy(src.position);
+    verge.rotation.copy(src.rotation);
+    verge.translateY(0.07);
+    verge.translateZ(localZ);
+    verge.castShadow = true;
+    verge.receiveShadow = true;
+    group.add(verge);
+  };
+  addVerge(left, -0.84);
+  addVerge(right, 0.84);
   return group;
 }
 
