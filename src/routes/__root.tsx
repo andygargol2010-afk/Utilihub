@@ -24,6 +24,16 @@ function useIsSpanish() {
 
 function NotFound() {
   const isSpanish = useIsSpanish();
+  useEffect(() => {
+    document.title = isSpanish ? "Página no encontrada | UtiliHub" : "Page not found | UtiliHub";
+    let robots = document.querySelector('meta[name="robots"]');
+    if (!robots) {
+      robots = document.createElement("meta");
+      robots.setAttribute("name", "robots");
+      document.head.appendChild(robots);
+    }
+    robots.setAttribute("content", "noindex, nofollow");
+  }, [isSpanish]);
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
@@ -32,7 +42,10 @@ function NotFound() {
         <p className="mt-4 text-muted-foreground">
           {isSpanish ? "No encontramos esta página." : "We could not find this page."}
         </p>
-        <a href={isSpanish ? "/es" : "/"} className="mt-6 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
+        <a
+          href={isSpanish ? "/es" : "/"}
+          className="mt-6 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+        >
           {isSpanish ? "Ir al inicio" : "Go home"}
         </a>
       </div>
@@ -114,7 +127,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/google-apple-touch-icon.png", sizes: "180x180" },
       { rel: "manifest", href: "/site.webmanifest" },
     ],
-    // WebSite JSON-LD lives only on `/` (index.tsx) to avoid duplicate graph nodes.
   }),
   shellComponent: RootShell,
   component: RootComponent,
