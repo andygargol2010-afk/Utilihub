@@ -1030,6 +1030,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       controls.minDistance = 2;
       controls.maxDistance = 80;
       controls.target.set(0, 1, 0);
+      // Left button is place/drag only. Orbit on left was stealing the gesture
+      // whenever the ray missed the pad (OrbitControls default is LEFT=ROTATE).
+      controls.mouseButtons.LEFT = -1 as unknown as typeof controls.mouseButtons.LEFT;
+      controls.mouseButtons.MIDDLE = THREE.MOUSE.DOLLY;
+      controls.mouseButtons.RIGHT = THREE.MOUSE.ROTATE;
+      controls.touches.ONE = -1 as unknown as typeof controls.touches.ONE;
+      controls.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;
 
       const raycaster = new THREE.Raycaster();
       const pointer = new THREE.Vector2();
@@ -1308,9 +1315,19 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
     const onMove = (ev: PointerEvent) => {
       const point = worldPointFromEvent(ev.clientX, ev.clientY);
-      if (!point) return;
+      const rect = el.getBoundingClientRect();
+      const inside =
+        ev.clientX >= rect.left &&
+        ev.clientX <= rect.right &&
+        ev.clientY >= rect.top &&
+        ev.clientY <= rect.bottom;
+      if (!point) {
+        // Ray missed the pad: hide the preview so it does not sit as a ghost leak.
+        if (t.ghost && !draggingRef.current) t.ghost.visible = false;
+        return;
+      }
       if (t.ghost) {
-        if (draggingRef.current) {
+        if (draggingRef.current || !inside || paletteDragRef.current) {
           t.ghost.visible = false;
         } else {
           t.ghost.visible = true;
@@ -1386,15 +1403,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       endGesture(false);
     };
 
+    const onBlur = () => {
+      // Tab switch / lost capture: do not leave controls disabled or a half-drag.
+      endGesture(false);
+    };
+
     canvas.addEventListener("pointerdown", onDown, true);
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
     window.addEventListener("pointercancel", onCancel);
+    window.addEventListener("blur", onBlur);
     return () => {
       canvas.removeEventListener("pointerdown", onDown, true);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onCancel);
+      window.removeEventListener("blur", onBlur);
       draggingRef.current = null;
       pendingPlaceRef.current = false;
       if (threeRef.current) threeRef.current.controls.enabled = true;
@@ -1445,13 +1469,29 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         if (threeRef.current.ghost) threeRef.current.ghost.visible = true;
       }
     };
+    const onBlur = () => {
+      paletteDragRef.current = null;
+      setPlacingFromPalette(false);
+      setDragCursor(null);
+      if (threeRef.current) {
+        threeRef.current.controls.enabled = true;
+        if (threeRef.current.ghost) threeRef.current.ghost.visible = true;
+      }
+    };
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
     window.addEventListener("pointercancel", onCancel);
+    window.addEventListener("blur", onBlur);
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onCancel);
+      window.removeEventListener("blur", onBlur);
+      // Tear-down mid-drag (Escape, blur, unmount): never leave orbit locked.
+      if (paletteDragRef.current) {
+        paletteDragRef.current = null;
+        if (threeRef.current) threeRef.current.controls.enabled = true;
+      }
     };
   }, [placingFromPalette, worldPointFromEvent, placeAt]);
 
@@ -1482,6 +1522,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           paletteDragRef.current = null;
           pendingPlaceRef.current = false;
           setPlacingFromPalette(false);
+          setDragCursor(null);
           draggingRef.current = null;
           if (threeRef.current) {
             threeRef.current.controls.enabled = true;
