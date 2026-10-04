@@ -2,6 +2,10 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/educacion/$subject")({
   loader: ({ params }) => {
-    throw redirect({ to: "/education/$subject", params: { subject: params.subject } });
+    throw redirect({
+      to: "/es/educacion/$subject",
+      params: { subject: params.subject },
+      statusCode: 301,
+    });
   },
 });
