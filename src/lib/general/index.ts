@@ -60,6 +60,7 @@ import { SOD_CALCULATOR_TOOLS } from "./sod-calculator";
 import { GUTTER_CALCULATOR_TOOLS } from "./gutter-calculator";
 import { INSULATION_CALCULATOR_TOOLS } from "./insulation-calculator";
 import { BRICK_CALCULATOR_TOOLS } from "./brick-calculator";
+import { YEAST_CONVERTER_TOOLS } from "./yeast-converter";
 
 export { GENERAL_CATEGORIES };
 
@@ -125,4 +126,5 @@ export const GENERAL_TOOLS = [
   ...GUTTER_CALCULATOR_TOOLS,
   ...INSULATION_CALCULATOR_TOOLS,
   ...BRICK_CALCULATOR_TOOLS,
+  ...YEAST_CONVERTER_TOOLS,
 ];
