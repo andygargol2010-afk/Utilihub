@@ -237,6 +237,16 @@ function paintContactAO(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+/** Soft horizon band so the grass disc dissolves into the sky instead of a hard edge. */
+function paintHorizonHaze(ctx: CanvasRenderingContext2D, size: number) {
+  const g = ctx.createLinearGradient(0, 0, 0, size);
+  g.addColorStop(0, "rgba(183,198,214,0)");
+  g.addColorStop(0.42, "rgba(183,198,214,0.28)");
+  g.addColorStop(1, "rgba(176,194,214,0.72)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+}
+
 function paintRoughness(ctx: CanvasRenderingContext2D, size: number, base: number, amp: number) {
   const img = ctx.getImageData(0, 0, size, size);
   const d = img.data;
@@ -510,8 +520,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     let disposed = false;
     try {
       const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0xc9d3e1, 0.0058);
-      scene.background = new THREE.Color(0xc9d3e1);
+      // Horizon-matched haze: pad stays clear, outer grass fades into the sky.
+      scene.fog = new THREE.FogExp2(0xb7c6d6, 0.0082);
+      scene.background = new THREE.Color(0xb7c6d6);
 
       const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
       camera.position.set(12, 9, 14);
@@ -540,8 +551,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const theta = THREE.MathUtils.degToRad(132);
       sun.setFromSphericalCoords(1, phi, theta);
       skyUniforms["sunPosition"].value.copy(sun);
+      // Sky is a huge shell; fog would flatten it to the clear color.
+      sky.material.fog = false;
+      sky.material.depthWrite = false;
 
-      const hemi = new THREE.HemisphereLight(0xd4e2f4, 0x6a5a40, 0.48);
+      const hemi = new THREE.HemisphereLight(0xd4e2f4, 0x6a5a40, 0.42);
       scene.add(hemi);
       const dir = new THREE.DirectionalLight(0xfff0d4, 1.45);
       dir.position.copy(sun).multiplyScalar(48);
@@ -554,14 +568,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       dir.shadow.camera.right = 14;
       dir.shadow.camera.top = 14;
       dir.shadow.camera.bottom = -14;
-      dir.shadow.bias = -0.0004;
-      dir.shadow.normalBias = 0.025;
-      dir.shadow.radius = 2;
+      dir.shadow.bias = -0.00035;
+      dir.shadow.normalBias = 0.028;
+      dir.shadow.radius = 2.4;
       scene.add(dir);
-      const fill = new THREE.DirectionalLight(0x9eb6d4, 0.28);
+      const fill = new THREE.DirectionalLight(0x9eb6d4, 0.22);
       fill.position.set(-18, 10, -12);
       scene.add(fill);
-      scene.add(new THREE.AmbientLight(0xfff6ea, 0.12));
+      // Warm bounce off the gravel pad, no shadow (keeps mid-range fill cheap).
+      const bounce = new THREE.DirectionalLight(0xe7d2b4, 0.18);
+      bounce.position.set(6, 1.2, 8);
+      scene.add(bounce);
+      scene.add(new THREE.AmbientLight(0xfff6ea, 0.1));
 
       const mats = makeMaterials();
 
@@ -614,6 +632,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       contactAo.rotation.x = -Math.PI / 2;
       contactAo.position.y = 0.02;
       scene.add(contactAo);
+
+      const hazeMap = makeCanvasTexture(64, paintHorizonHaze, true);
+      if (hazeMap) hazeMap.repeat.set(1, 1);
+      const hazeMat = new THREE.MeshBasicMaterial({
+        map: hazeMap ?? undefined,
+        color: 0xb7c6d6,
+        transparent: true,
+        depthWrite: false,
+        fog: false,
+        toneMapped: false,
+        side: THREE.DoubleSide,
+      });
+      const hazeGeo = new THREE.CylinderGeometry(118, 118, 7, 48, 1, true);
+      const horizonHaze = new THREE.Mesh(hazeGeo, hazeMat);
+      horizonHaze.position.y = 2.4;
+      scene.add(horizonHaze);
 
       const partsRoot = new THREE.Group();
       scene.add(partsRoot);
@@ -708,6 +742,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         contactAo.geometry.dispose();
         aoMat.dispose();
         aoMap?.dispose();
+        horizonHaze.geometry.dispose();
+        hazeMat.dispose();
+        hazeMap?.dispose();
         disposeCatalogMaterials(mats);
         sky.geometry.dispose();
         sky.material.dispose();
