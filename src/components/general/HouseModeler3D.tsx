@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 
-type PartKind = "wall" | "floor" | "roof" | "column";
+type PartKind = "wall" | "floor" | "roof" | "column" | "door";
 type Locale = "en" | "es";
 
 type ScenePart = {
@@ -660,7 +660,14 @@ function makeMaterials() {
     roughness: 0.76,
     metalness: 0.03,
   });
-  return { wall, wallEdge, floor, roof, ground, gravel, plate, nosing, fascia };
+  const doorGlass = new THREE.MeshStandardMaterial({
+    color: 0x9bb7c9,
+    roughness: 0.08,
+    metalness: 0.04,
+    transparent: true,
+    opacity: 0.55,
+  });
+  return { wall, wallEdge, floor, roof, ground, gravel, plate, nosing, fascia, doorGlass };
 }
 
 function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
@@ -792,11 +799,56 @@ function createColumnMesh(mats: ReturnType<typeof makeMaterials>) {
   return group;
 }
 
+function createDoorMesh(mats: ReturnType<typeof makeMaterials>) {
+  // Single leaf: timber jambs, raised panels, glazed top light. 0.96 × 2.1 m so it sits in a wall bay.
+  const group = new THREE.Group();
+  const threshold = new THREE.Mesh(new THREE.BoxGeometry(1.08, 0.05, 0.16), mats.wallEdge);
+  threshold.position.y = 0.025;
+  threshold.castShadow = true;
+  threshold.receiveShadow = true;
+  group.add(threshold);
+  const jambL = new THREE.Mesh(new THREE.BoxGeometry(0.08, 2.1, 0.12), mats.plate);
+  jambL.position.set(-0.48, 1.05, 0);
+  jambL.castShadow = true;
+  jambL.receiveShadow = true;
+  const jambR = new THREE.Mesh(new THREE.BoxGeometry(0.08, 2.1, 0.12), mats.plate);
+  jambR.position.set(0.48, 1.05, 0);
+  jambR.castShadow = true;
+  jambR.receiveShadow = true;
+  const head = new THREE.Mesh(new THREE.BoxGeometry(1.04, 0.08, 0.12), mats.plate);
+  head.position.set(0, 2.06, 0);
+  head.castShadow = true;
+  head.receiveShadow = true;
+  group.add(jambL, jambR, head);
+  const leaf = new THREE.Mesh(new THREE.BoxGeometry(0.82, 1.48, 0.04), mats.nosing);
+  leaf.position.set(0, 0.82, 0.01);
+  leaf.castShadow = true;
+  leaf.receiveShadow = true;
+  staggerUvs(leaf);
+  group.add(leaf);
+  const rail = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.06, 0.05), mats.fascia);
+  rail.position.set(0, 1.58, 0.012);
+  rail.castShadow = true;
+  group.add(rail);
+  const lite = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.38, 0.02), mats.doorGlass);
+  lite.position.set(0, 1.82, 0.012);
+  lite.castShadow = false;
+  lite.receiveShadow = true;
+  group.add(lite);
+  const muntinV = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.38, 0.03), mats.fascia);
+  muntinV.position.set(0, 1.82, 0.02);
+  const muntinH = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.03, 0.03), mats.fascia);
+  muntinH.position.set(0, 1.82, 0.02);
+  group.add(muntinV, muntinH);
+  return group;
+}
+
 function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>) {
   if (kind === "wall") return createWallMesh(mats);
   if (kind === "floor") return createFloorMesh(mats);
   if (kind === "roof") return createRoofMesh(mats);
-  return createColumnMesh(mats);
+  if (kind === "column") return createColumnMesh(mats);
+  return createDoorMesh(mats);
 }
 
 function StructureGlyph({ kind }: { kind: PartKind }) {
@@ -826,11 +878,21 @@ function StructureGlyph({ kind }: { kind: PartKind }) {
       </svg>
     );
   }
+  if (kind === "column") {
+    return (
+      <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
+        <rect x="12" y="26" width="16" height="3" fill="#b7ab9a" stroke="#8a7d6c" />
+        <rect x="15" y="6" width="10" height="20" fill="#d8d0c4" stroke="#8a7d6c" />
+        <rect x="11" y="4" width="18" height="3" fill="#8b5a32" />
+      </svg>
+    );
+  }
   return (
     <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
-      <rect x="12" y="26" width="16" height="3" fill="#b7ab9a" stroke="#8a7d6c" />
-      <rect x="15" y="6" width="10" height="20" fill="#d8d0c4" stroke="#8a7d6c" />
-      <rect x="11" y="4" width="18" height="3" fill="#8b5a32" />
+      <rect x="10" y="6" width="20" height="22" fill="#8b5a32" stroke="#5c3a22" />
+      <rect x="13" y="16" width="14" height="10" fill="#c4a882" />
+      <rect x="14" y="8" width="12" height="6" fill="#9bb7c9" opacity="0.9" />
+      <circle cx="24" cy="21" r="1.1" fill="#d8d0c4" />
     </svg>
   );
 }
@@ -1576,6 +1638,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (e.key === "2") setTool("floor");
       if (e.key === "3") setTool("roof");
       if (e.key === "4") setTool("column");
+      if (e.key === "5") setTool("door");
       if (e.key.toLowerCase() === "f") {
         e.preventDefault();
         void toggleFullscreen();
@@ -1631,6 +1694,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         floor: "Piso",
         roof: "Techo",
         column: "Pilar",
+        door: "Puerta",
         place: "Arrastrá desde la barra derecha al terreno · o hacé clic en el suelo",
         cam: "Cámara libre: botón derecho / medio · rueda zoom",
         rot: "Rotar 90°",
@@ -1639,7 +1703,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "elementos",
         fullscreen: "Pantalla completa",
         exitFs: "Salir",
-        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · R rotar · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · R rotar · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         none: "Nada seleccionado",
@@ -1653,6 +1717,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizeFloor: "3.0 × 3.0 m",
         sizeRoof: "3.2 m de ancho",
         sizeColumn: "0.4 × 2.6 m",
+        sizeDoor: "0.96 × 2.1 m",
         help: "Ayuda",
         hideHelp: "Ocultar",
         active: "Activa",
@@ -1672,6 +1737,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         floor: "Floor",
         roof: "Roof",
         column: "Column",
+        door: "Door",
         place: "Drag from the right toolbar onto the ground · or click the ground",
         cam: "Free camera: right/middle drag · scroll zoom",
         rot: "Rotate 90°",
@@ -1680,7 +1746,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "parts",
         fullscreen: "Fullscreen",
         exitFs: "Exit",
-        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · R rotate · Del delete · C clear · F fullscreen · Esc cancel",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · R rotate · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
         none: "Nothing selected",
@@ -1694,6 +1760,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizeFloor: "3.0 × 3.0 m",
         sizeRoof: "3.2 m wide",
         sizeColumn: "0.4 × 2.6 m",
+        sizeDoor: "0.96 × 2.1 m",
         help: "Help",
         hideHelp: "Hide",
         active: "Active",
@@ -1710,9 +1777,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   const selectedKind = partsRef.current.find((p) => p.id === selectedId)?.kind;
   const selectedKindLabel =
-    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : "";
+    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : "";
   const selectedSize =
-    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : "";
+    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : "";
 
   const clearSelection = () => {
     selectedRef.current = null;
@@ -1726,9 +1793,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     { kind: "floor", label: labels.floor, swatch: "#8b7355", key: "2", size: labels.sizeFloor },
     { kind: "roof", label: labels.roof, swatch: "#6b3a2a", key: "3", size: labels.sizeRoof },
     { kind: "column", label: labels.column, swatch: "#c8bfb0", key: "4", size: labels.sizeColumn },
+    { kind: "door", label: labels.door, swatch: "#8b5a32", key: "5", size: labels.sizeDoor },
   ];
   const activeLabel =
-    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : labels.column;
+    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : labels.door;
 
   return (
     <div className="flex flex-col gap-2">
