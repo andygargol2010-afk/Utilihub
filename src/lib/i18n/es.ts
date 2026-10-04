@@ -202,6 +202,7 @@ const EXACT_NAMES: Record<string, string> = {
   "calculadora-adoquines": "Calculadora de adoquines de patio",
   "calculadora-cesped": "Calculadora de césped en rollo",
   "calculadora-canalones": "Calculadora de canalones y bajantes",
+  "calculadora-aislamiento": "Calculadora de aislamiento y lana de roca",
   // Gap tools
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",
