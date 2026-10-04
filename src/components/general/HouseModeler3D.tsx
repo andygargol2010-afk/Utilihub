@@ -88,70 +88,144 @@ function noiseFill(
 }
 
 function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
-  noiseFill(ctx, size, [212, 203, 189], 22);
-  ctx.strokeStyle = "rgba(160,148,132,0.18)";
-  ctx.lineWidth = 1;
-  for (let y = 6; y < size; y += 9) {
+  noiseFill(ctx, size, [214, 204, 188], 16);
+  // Lime-wash patches: walls read as troweled plaster, not uniform noise.
+  for (let i = 0; i < 14; i++) {
+    const x = hash2(i, 2.1) * size;
+    const y = hash2(i, 5.4) * size;
+    const rx = 18 + hash2(i, 8) * 40;
+    const ry = 12 + hash2(i, 3) * 26;
+    const lift = hash2(i, 1.2) > 0.5 ? 16 : -14;
+    ctx.fillStyle = `rgba(${198 + lift}, ${188 + Math.floor(lift * 0.75)}, ${170 + Math.floor(lift * 0.4)}, 0.24)`;
     ctx.beginPath();
-    ctx.moveTo(0, y + (hash2(y, 3) - 0.5) * 2);
-    ctx.lineTo(size, y + (hash2(y, 9) - 0.5) * 2);
+    ctx.ellipse(x, y, rx, ry, hash2(i, 9) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.strokeStyle = "rgba(148,136,120,0.22)";
+  ctx.lineWidth = 1;
+  for (let s = 0; s < 10; s++) {
+    const y = hash2(s, 4.2) * size;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    for (let x = 0; x <= size; x += 10) {
+      ctx.lineTo(x, y + Math.sin(x * 0.05 + s) * 2.2);
+    }
+    ctx.stroke();
+  }
+}
+
+/** Grayscale trowel relief used as a wall bump map (not sRGB). */
+function paintPlasterBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#8e8e8e";
+  ctx.fillRect(0, 0, size, size);
+  for (let s = 0; s < 14; s++) {
+    const y = (s / 14) * size + (hash2(s, 2) - 0.5) * 5;
+    ctx.strokeStyle = hash2(s, 7) > 0.45 ? "rgba(255,255,255,0.38)" : "rgba(30,30,30,0.28)";
+    ctx.lineWidth = 1 + hash2(s, 3) * 1.4;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    for (let x = 0; x <= size; x += 8) {
+      ctx.lineTo(x, y + Math.sin(x * 0.07 + s * 1.3) * 2.8);
+    }
     ctx.stroke();
   }
 }
 
 function paintPlinth(ctx: CanvasRenderingContext2D, size: number) {
-  noiseFill(ctx, size, [168, 156, 140], 16);
-  ctx.strokeStyle = "rgba(90,78,66,0.45)";
-  ctx.lineWidth = 2;
+  noiseFill(ctx, size, [158, 146, 130], 14);
   const cols = 6;
   const rows = 3;
+  const mortar = 3;
   for (let r = 0; r < rows; r++) {
+    const y0 = (r / rows) * size;
+    const rh = size / rows;
+    const shift = r % 2 === 0 ? 0 : size / cols / 2;
+    for (let c = -1; c < cols + 1; c++) {
+      const vary = hash2(c + 2, r + 5);
+      const tone = 150 + Math.floor(vary * 36);
+      ctx.fillStyle = `rgb(${tone + 8}, ${tone - 2}, ${tone - 16})`;
+      const x = c * (size / cols) + shift + mortar;
+      const w = size / cols - mortar * 1.4;
+      ctx.fillRect(x, y0 + mortar, w, rh - mortar * 1.6);
+      // Chipped top edge so the course is not a perfect grid.
+      ctx.fillStyle = `rgba(${tone - 28}, ${tone - 34}, ${tone - 40}, 0.45)`;
+      ctx.fillRect(x + vary * 6, y0 + mortar, 4 + vary * 8, 2);
+    }
+  }
+  ctx.strokeStyle = "rgba(72,60,48,0.55)";
+  ctx.lineWidth = 1;
+  for (let r = 0; r <= rows; r++) {
     const y = (r / rows) * size;
     ctx.beginPath();
     ctx.moveTo(0, y);
     ctx.lineTo(size, y);
     ctx.stroke();
-    const shift = r % 2 === 0 ? 0 : size / cols / 2;
-    for (let c = 0; c <= cols; c++) {
-      const x = (c / cols) * size + shift;
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(x, y + size / rows);
-      ctx.stroke();
-    }
   }
 }
 
 function paintTimber(ctx: CanvasRenderingContext2D, size: number) {
-  const planks = 7;
+  const planks = 6;
   for (let i = 0; i < planks; i++) {
     const y0 = Math.floor((i / planks) * size);
     const y1 = Math.floor(((i + 1) / planks) * size);
-    const tone = 118 + Math.floor(hash2(i, 4) * 28);
-    ctx.fillStyle = `rgb(${tone + 28}, ${tone - 6}, ${tone - 38})`;
+    const tone = 110 + Math.floor(hash2(i, 4) * 36);
+    ctx.fillStyle = `rgb(${tone + 34}, ${tone - 2}, ${tone - 36})`;
     ctx.fillRect(0, y0, size, y1 - y0);
-    ctx.strokeStyle = "rgba(62,40,22,0.55)";
+    // Staggered end joint so boards do not run as one endless plank.
+    const joint = (0.18 + hash2(i, 11) * 0.58) * size;
+    ctx.fillStyle = "rgba(46,28,14,0.7)";
+    ctx.fillRect(joint, y0 + 1, 2, Math.max(2, y1 - y0 - 2));
+    ctx.strokeStyle = "rgba(58,36,18,0.7)";
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(0, y1 - 1);
     ctx.lineTo(size, y1 - 1);
     ctx.stroke();
-    ctx.strokeStyle = "rgba(90,58,32,0.28)";
+    ctx.strokeStyle = "rgba(96,62,34,0.34)";
     ctx.lineWidth = 1;
-    for (let g = 0; g < 5; g++) {
-      const gy = y0 + 3 + g * ((y1 - y0) / 6);
+    for (let g = 0; g < 4; g++) {
+      const gy = y0 + 4 + g * ((y1 - y0) / 5);
       ctx.beginPath();
       ctx.moveTo(0, gy);
-      for (let x = 0; x <= size; x += 12) {
-        ctx.lineTo(x, gy + Math.sin(x * 0.08 + i) * 1.2);
+      for (let x = 0; x <= size; x += 8) {
+        ctx.lineTo(x, gy + Math.sin(x * 0.09 + i * 1.7) * 1.5);
       }
       ctx.stroke();
     }
+    const kx = hash2(i, 6.2) * size;
+    const ky = y0 + (y1 - y0) * 0.48;
+    const kr = 3 + hash2(i, 8) * 4.2;
+    const kg = ctx.createRadialGradient(kx, ky, 0.4, kx, ky, kr);
+    kg.addColorStop(0, "rgba(64,36,18,0.9)");
+    kg.addColorStop(0.65, "rgba(118,72,38,0.4)");
+    kg.addColorStop(1, "rgba(118,72,38,0)");
+    ctx.fillStyle = kg;
+    ctx.beginPath();
+    ctx.ellipse(kx, ky, kr, kr * 0.7, 0.35, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+/** Groove map: dark joints, lighter board faces. */
+function paintTimberBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#b0b0b0";
+  ctx.fillRect(0, 0, size, size);
+  const planks = 6;
+  ctx.fillStyle = "#3a3a3a";
+  for (let i = 1; i < planks; i++) {
+    const y = Math.floor((i / planks) * size);
+    ctx.fillRect(0, y - 1, size, 3);
+  }
+  for (let i = 0; i < planks; i++) {
+    const y0 = Math.floor((i / planks) * size);
+    const y1 = Math.floor(((i + 1) / planks) * size);
+    const joint = (0.18 + hash2(i, 11) * 0.58) * size;
+    ctx.fillRect(joint, y0, 3, y1 - y0);
   }
 }
 
 function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
-  ctx.fillStyle = "#6b3a2a";
+  ctx.fillStyle = "#5c3224";
   ctx.fillRect(0, 0, size, size);
   const rows = 8;
   const cols = 6;
@@ -161,12 +235,12 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
     const shift = r % 2 === 0 ? 0 : cw * 0.5;
     for (let c = -1; c < cols + 1; c++) {
       const vary = hash2(c + 3, r + 11);
-      const rr = 108 + Math.floor(vary * 28);
-      const gg = 52 + Math.floor(vary * 18);
-      const bb = 38 + Math.floor(vary * 10);
-      ctx.fillStyle = `rgb(${rr}, ${gg}, ${bb})`;
+      const rr = 104 + Math.floor(vary * 34);
+      const gg = 48 + Math.floor(vary * 20);
+      const bb = 34 + Math.floor(vary * 12);
       const x = c * cw + shift;
       const y = r * rh;
+      ctx.fillStyle = `rgb(${rr}, ${gg}, ${bb})`;
       ctx.beginPath();
       ctx.moveTo(x + 2, y + rh * 0.35);
       ctx.quadraticCurveTo(x + cw * 0.5, y - rh * 0.15, x + cw - 2, y + rh * 0.35);
@@ -174,7 +248,43 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
       ctx.quadraticCurveTo(x + cw * 0.5, y + rh * 0.55, x + 2, y + rh - 1);
       ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = "rgba(48,22,16,0.45)";
+      // Underlap shadow and crown highlight so courses overlap instead of flat stamps.
+      ctx.fillStyle = "rgba(36,16,10,0.38)";
+      ctx.fillRect(x + 3, y + rh * 0.78, cw - 6, rh * 0.18);
+      ctx.strokeStyle = "rgba(186,120,86,0.45)";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(x + 6, y + rh * 0.32);
+      ctx.quadraticCurveTo(x + cw * 0.5, y + rh * 0.02, x + cw - 6, y + rh * 0.32);
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(48,22,16,0.5)";
+      ctx.stroke();
+    }
+  }
+}
+
+function paintTileBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#6e6e6e";
+  ctx.fillRect(0, 0, size, size);
+  const rows = 8;
+  const cols = 6;
+  const rh = size / rows;
+  const cw = size / cols;
+  for (let r = 0; r < rows; r++) {
+    const shift = r % 2 === 0 ? 0 : cw * 0.5;
+    for (let c = -1; c < cols + 1; c++) {
+      const x = c * cw + shift;
+      const y = r * rh;
+      ctx.strokeStyle = "rgba(255,255,255,0.55)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x + 4, y + rh * 0.38);
+      ctx.quadraticCurveTo(x + cw * 0.5, y + rh * 0.05, x + cw - 4, y + rh * 0.38);
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(20,20,20,0.65)";
+      ctx.beginPath();
+      ctx.moveTo(x + 3, y + rh * 0.86);
+      ctx.lineTo(x + cw - 3, y + rh * 0.86);
       ctx.stroke();
     }
   }
@@ -266,12 +376,15 @@ function paintRoughness(ctx: CanvasRenderingContext2D, size: number, base: numbe
 function makeMaterials() {
   const TEX = 256;
   const wallMap = makeCanvasTexture(TEX, paintPlaster, true);
-  const wallRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 190, 40), false);
+  const wallRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 198, 28), false);
+  const wallBump = makeCanvasTexture(TEX, paintPlasterBump, false);
   const edgeMap = makeCanvasTexture(TEX, paintPlinth, true);
   const floorMap = makeCanvasTexture(TEX, paintTimber, true);
-  const floorRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 150, 50), false);
+  const floorRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 142, 36), false);
+  const floorBump = makeCanvasTexture(TEX, paintTimberBump, false);
   const roofMap = makeCanvasTexture(TEX, paintClayTiles, true);
-  const roofRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 175, 35), false);
+  const roofRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 168, 30), false);
+  const roofBump = makeCanvasTexture(TEX, paintTileBump, false);
   const groundMap = makeCanvasTexture(TEX, paintGrass, true);
   const groundRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 210, 28), false);
   const gravelMap = makeCanvasTexture(TEX, paintGravel, true);
@@ -283,11 +396,14 @@ function makeMaterials() {
   };
   applyRepeat(wallMap, 2, 2);
   applyRepeat(wallRough, 2, 2);
+  applyRepeat(wallBump, 2, 2);
   applyRepeat(edgeMap, 2, 1);
   applyRepeat(floorMap, 2, 2);
   applyRepeat(floorRough, 2, 2);
+  applyRepeat(floorBump, 2, 2);
   applyRepeat(roofMap, 3, 2);
   applyRepeat(roofRough, 3, 2);
+  applyRepeat(roofBump, 3, 2);
   applyRepeat(groundMap, 10, 10);
   applyRepeat(groundRough, 10, 10);
   applyRepeat(gravelMap, 5, 5);
@@ -297,8 +413,8 @@ function makeMaterials() {
     color: 0xffffff,
     map: wallMap ?? undefined,
     roughnessMap: wallRough ?? undefined,
-    bumpMap: wallRough ?? undefined,
-    bumpScale: 0.035,
+    bumpMap: wallBump ?? wallRough ?? undefined,
+    bumpScale: 0.05,
     roughness: 0.86,
     metalness: 0.02,
   });
@@ -312,8 +428,8 @@ function makeMaterials() {
     color: 0xffffff,
     map: floorMap ?? undefined,
     roughnessMap: floorRough ?? undefined,
-    bumpMap: floorRough ?? undefined,
-    bumpScale: 0.06,
+    bumpMap: floorBump ?? floorRough ?? undefined,
+    bumpScale: 0.07,
     roughness: 0.74,
     metalness: 0.04,
   });
@@ -321,8 +437,8 @@ function makeMaterials() {
     color: 0xffffff,
     map: roofMap ?? undefined,
     roughnessMap: roofRough ?? undefined,
-    bumpMap: roofRough ?? undefined,
-    bumpScale: 0.05,
+    bumpMap: roofBump ?? roofRough ?? undefined,
+    bumpScale: 0.06,
     roughness: 0.8,
     metalness: 0.05,
   });
