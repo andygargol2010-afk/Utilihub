@@ -55,6 +55,7 @@ import { DECK_CALCULATOR_TOOLS } from "./deck-calculator";
 import { ROOF_CALCULATOR_TOOLS } from "./roof-calculator";
 import { POOL_CALCULATOR_TOOLS } from "./pool-calculator";
 import { PAVER_CALCULATOR_TOOLS } from "./paver-calculator";
+import { SOD_CALCULATOR_TOOLS } from "./sod-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -115,4 +116,5 @@ export const GENERAL_TOOLS = [
   ...ROOF_CALCULATOR_TOOLS,
   ...POOL_CALCULATOR_TOOLS,
   ...PAVER_CALCULATOR_TOOLS,
+  ...SOD_CALCULATOR_TOOLS,
 ];
