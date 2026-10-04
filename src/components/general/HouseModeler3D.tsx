@@ -822,6 +822,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [dragCursor, setDragCursor] = useState<{ x: number; y: number; over: boolean } | null>(null);
   const [selectedRot, setSelectedRot] = useState(0);
   const [showHelp, setShowHelp] = useState(false);
+  // Narrow viewports: icon-only palette so the canvas keeps the layout (canvas + right rail).
+  const [paletteCompact, setPaletteCompact] = useState(false);
   const toolRef = useRef(tool);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
@@ -833,6 +835,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   useEffect(() => {
     selectedRef.current = selectedId;
   }, [selectedId]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const apply = () => setPaletteCompact(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   const worldPointFromEvent = useCallback((clientX: number, clientY: number) => {
     const t = threeRef.current;
@@ -1595,6 +1605,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         deselect: "Deseleccionar",
         snap: "Grilla 0,5 m",
         tapRotate: "Giro en el sitio",
+        compact: "Iconos",
+        expandPalette: "Lista",
+        selHint: "R gira · Supr borra",
       }
     : {
         title: "3D house modeler",
@@ -1629,6 +1642,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         deselect: "Deselect",
         snap: "0.5 m snap",
         tapRotate: "Yaw in place",
+        compact: "Icons",
+        expandPalette: "List",
+        selHint: "R rotate · Del delete",
       };
 
   const selectedKind = partsRef.current.find((p) => p.id === selectedId)?.kind;
@@ -1770,7 +1786,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               }`}
             >
               {selectedKindLabel
-                ? `${labels.selected}: ${selectedKindLabel} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°`
+                ? `${labels.selected}: ${selectedKindLabel} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}° · ${labels.selHint}`
                 : labels.none}
             </span>
             <span className="w-fit rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-medium text-amber-100/90">
@@ -1781,15 +1797,33 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
         {/* Right structure palette — drag to place */}
         <aside
+          role="toolbar"
+          aria-label={labels.palette}
+          aria-orientation="vertical"
           className={`flex shrink-0 flex-col gap-2 overflow-y-auto border-l border-border/60 bg-card/95 p-2 backdrop-blur-sm ${
-            isFullscreen ? "w-44" : "w-36 sm:w-44"
+            paletteCompact ? "w-[4.25rem]" : isFullscreen ? "w-44" : "w-36 sm:w-44"
           }`}
         >
-          <p className="px-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
-            {labels.palette}
-          </p>
-          <p className="px-1 text-[10px] leading-snug text-muted-foreground">{labels.dragHint}</p>
-          {selectedKindLabel ? (
+          <div className="flex items-center justify-between gap-1 px-0.5">
+            {!paletteCompact && (
+              <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
+                {labels.palette}
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={() => setPaletteCompact((v) => !v)}
+              aria-pressed={paletteCompact}
+              title={paletteCompact ? labels.expandPalette : labels.compact}
+              className="ml-auto min-h-9 min-w-9 rounded-lg border border-border bg-background px-1.5 text-[10px] font-semibold hover:bg-accent"
+            >
+              {paletteCompact ? labels.expandPalette : labels.compact}
+            </button>
+          </div>
+          {!paletteCompact && (
+            <p className="px-1 text-[10px] leading-snug text-muted-foreground">{labels.dragHint}</p>
+          )}
+          {selectedKindLabel && !paletteCompact ? (
             <div className="rounded-xl border border-amber-700/50 bg-amber-900/15 p-2 text-left">
               <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-800 dark:text-amber-200">
                 {labels.inspector}
@@ -1833,11 +1867,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 </button>
               </div>
             </div>
-          ) : (
+          ) : !paletteCompact ? (
             <p className="rounded-lg border border-dashed border-border px-2 py-2 text-[10px] leading-snug text-muted-foreground">
               {labels.none}
             </p>
-          )}
+          ) : null}
           {paletteItems.map((item) => (
             <button
               key={item.kind}
@@ -1847,18 +1881,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               aria-pressed={tool === item.kind}
               aria-label={`${item.label} (${item.key})`}
               title={`${item.label} · ${item.key} · ${labels.dragHint}`}
-              className={`group flex min-h-[4.5rem] cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2.5 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
+              className={`group flex min-h-11 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
                 tool === item.kind
                   ? "border-amber-700/70 bg-amber-900/20 shadow-sm ring-1 ring-amber-700/40"
                   : "border-border bg-background/80 hover:bg-accent"
               } ${placingFromPalette && tool === item.kind ? "scale-[0.98] ring-2 ring-amber-600" : ""}`}
             >
               <StructureGlyph kind={item.kind} />
-              <span className="text-xs font-semibold text-foreground">{item.label}</span>
-              <span className="text-[10px] leading-none text-muted-foreground">{item.size}</span>
+              {!paletteCompact && (
+                <>
+                  <span className="text-xs font-semibold text-foreground">{item.label}</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{item.size}</span>
+                </>
+              )}
               <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
                 {item.key}
-                {tool === item.kind ? ` · ${labels.active}` : ""}
+                {!paletteCompact && tool === item.kind ? ` · ${labels.active}` : ""}
               </span>
             </button>
           ))}
@@ -1876,15 +1914,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       </div>
       {dragCursor && (
         <div
-          className="pointer-events-none fixed z-50 max-w-[14rem] -translate-x-1/2 -translate-y-[130%] rounded-md px-2 py-1 text-[11px] font-semibold shadow-lg"
+          role="status"
+          aria-live="polite"
+          className="pointer-events-none fixed z-50 flex max-w-[16rem] -translate-x-1/2 -translate-y-[120%] items-center gap-2 rounded-lg px-2 py-1.5 text-[11px] font-semibold shadow-lg ring-1 ring-amber-100/30"
           style={{
-            left: dragCursor.x,
-            top: dragCursor.y,
-            background: dragCursor.over ? "rgba(120, 53, 15, 0.92)" : "rgba(69, 26, 26, 0.92)",
+            left: Math.min(window.innerWidth - 88, Math.max(88, dragCursor.x)),
+            top: Math.min(window.innerHeight - 28, Math.max(56, dragCursor.y)),
+            background: dragCursor.over ? "rgba(120, 53, 15, 0.94)" : "rgba(69, 26, 26, 0.94)",
             color: "#fff7ed",
           }}
         >
-          {activeLabel} · {dragCursor.over ? labels.dropOver : labels.dropOut}
+          <span className="rounded bg-amber-50/95 px-0.5">
+            <StructureGlyph kind={tool} />
+          </span>
+          <span>
+            {activeLabel} · {dragCursor.over ? labels.dropOver : labels.dropOut}
+          </span>
         </div>
       )}
     </div>
