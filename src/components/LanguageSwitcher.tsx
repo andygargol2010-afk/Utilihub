@@ -20,6 +20,12 @@ function equivalentPath(pathname: string, targetLocale: "en" | "es") {
       const internal = internalCategorySlugFromEnglish(publicSlug);
       return `/es/categoria/${internal}`;
     }
+    if (pathname.startsWith("/education/")) {
+      return `/es/educacion/${pathname.slice("/education/".length)}`;
+    }
+    if (pathname.startsWith("/educacion/")) {
+      return `/es/educacion/${pathname.slice("/educacion/".length)}`;
+    }
     if (pathname.startsWith("/tools/")) {
       const tool = toolByEnglishSlug(ALL_TOOLS, pathname.slice("/tools/".length));
       return tool ? spanishToolPath(tool) : "/es/herramientas";
@@ -53,6 +59,9 @@ function equivalentPath(pathname: string, targetLocale: "en" | "es") {
   if (pathname.startsWith("/es/categoria/")) {
     const internal = pathname.slice("/es/categoria/".length);
     return `/category/${englishCategorySlug(internal)}`;
+  }
+  if (pathname.startsWith("/es/educacion/")) {
+    return `/education/${pathname.slice("/es/educacion/".length)}`;
   }
   if (pathname.startsWith("/es/herramientas/")) {
     const tool = ALL_TOOLS.find((item) => item.slug === pathname.slice("/es/herramientas/".length));
