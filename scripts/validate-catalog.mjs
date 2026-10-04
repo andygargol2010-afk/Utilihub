@@ -28,7 +28,10 @@ for (const { file, text } of libSources) {
     const objectText = end >= 0 ? block.slice(0, end) : block;
     const slugMatch = objectText.match(/^\s*slug\s*:\s*["']([^"']+)["']/);
     if (!slugMatch) continue;
-    const isToolLike = /(fields\s*:|calculate\s*:|operation\s*:|kind\s*:|component\s*:|keywords\s*:|faq\s*:|steps\s*:|about\s*:)/.test(objectText);
+    const isToolLike =
+      /(fields\s*:|calculate\s*:|operation\s*:|kind\s*:|component\s*:|keywords\s*:|faq\s*:|steps\s*:|about\s*:)/.test(
+        objectText,
+      );
     if (!isToolLike) continue;
     const slug = slugMatch[1];
     const list = slugMap.get(slug) ?? [];
@@ -39,8 +42,19 @@ for (const { file, text } of libSources) {
 for (const [slug, locations] of slugMap) {
   const unique = [...new Set(locations)];
   if (unique.length > 1) {
-    errors.push(`slug duplicado en definiciones de herramientas: ${slug} (${unique.map((p) => path.relative(process.cwd(), p)).join(", ")})`);
+    errors.push(
+      `slug duplicado en definiciones de herramientas: ${slug} (${unique.map((p) => path.relative(process.cwd(), p)).join(", ")})`,
+    );
   }
+}
+
+// SEO marketing claim: DEFAULT_DESCRIPTION and homepage say "500+ tools".
+const MIN_TOOLS = 500;
+const toolCount = slugMap.size;
+if (toolCount < MIN_TOOLS) {
+  errors.push(
+    `Catálogo por debajo del claim SEO "500+": se detectaron ${toolCount} herramientas (mínimo ${MIN_TOOLS}). Actualizá el copy o agregá tools.`,
+  );
 }
 
 // Every configured operation must have a corresponding implementation marker.
@@ -63,13 +77,14 @@ for (const { file, text } of libSources) {
   if (!text.includes("slug:")) continue;
   const hasSlug = /slug\s*:\s*["'][^"']+["']/.test(text);
   if (!hasSlug) continue;
-  const hasToolContract = /name\s*:\s*["'][^"']+["']/.test(text)
-    || (/fields\s*:/.test(text) && /calculate\s*:/.test(text));
+  const hasToolContract =
+    /name\s*:\s*["'][^"']+["']/.test(text) || (/fields\s*:/.test(text) && /calculate\s*:/.test(text));
   if (!hasToolContract) {
-    // Files containing only category metadata are intentionally ignored.
     const hasCategoryMetadata = /intro\s*:/.test(text) && /description\s*:/.test(text);
     if (!hasCategoryMetadata) {
-      warnings.push(`archivo con slugs sin contrato de herramienta reconocible: ${path.relative(process.cwd(), file)}`);
+      warnings.push(
+        `archivo con slugs sin contrato de herramienta reconocible: ${path.relative(process.cwd(), file)}`,
+      );
     }
   }
 }
@@ -83,4 +98,6 @@ if (errors.length) {
   for (const error of errors) console.error(`- ${error}`);
   process.exit(1);
 }
-console.log(`Catalog validator OK: ${files.length} archivos inspeccionados, ${configuredOps.size} operations configuradas.`);
+console.log(
+  `Catalog validator OK: ${files.length} archivos, ${toolCount} tools (≥${MIN_TOOLS}), ${configuredOps.size} operations.`,
+);
