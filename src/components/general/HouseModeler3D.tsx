@@ -1477,6 +1477,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [placingFromPalette, setPlacingFromPalette] = useState(false);
   const [dragCursor, setDragCursor] = useState<{ x: number; y: number; over: boolean } | null>(null);
   const [selectedRot, setSelectedRot] = useState(0);
+  const [selectedPos, setSelectedPos] = useState<[number, number] | null>(null);
   const [showHelp, setShowHelp] = useState(false);
   // Narrow viewports: icon-only palette so the canvas keeps the layout (canvas + right rail).
   const [paletteCompact, setPaletteCompact] = useState(false);
@@ -1969,6 +1970,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     selectedRef.current = id;
     setSelectedId(id);
     setSelectedRot(0);
+    setSelectedPos([x, z]);
   }, []);
 
   const findPartObject = useCallback((id: string) => {
@@ -1994,6 +1996,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     selectedRef.current = null;
     setSelectedId(null);
     setSelectedRot(0);
+    setSelectedPos(null);
     setCount(partsRef.current.length);
     if (t) t.selectionHelper.visible = false;
     // Deleting the part under the pointer must not keep a stale drag or a locked orbit.
@@ -2044,6 +2047,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     obj.position.z = z;
     const part = partsRef.current.find((p) => p.id === id);
     if (part) part.position = [x, obj.position.y, z];
+    setSelectedPos([x, z]);
   }, [findPartObject]);
 
   const duplicateSelected = useCallback(() => {
@@ -2085,6 +2089,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     selectedRef.current = nid;
     setSelectedId(nid);
     setSelectedRot(((Math.round(obj.rotation.y / (Math.PI / 2)) % 4) + 4) % 4);
+    setSelectedPos([x, z]);
+  }, [findPartObject]);
+
+  const frameSelected = useCallback(() => {
+    const id = selectedRef.current;
+    const t = threeRef.current;
+    if (!id || !t) return;
+    const obj = findPartObject(id);
+    if (!obj) return;
+    const focus = obj.position.clone();
+    focus.y = 1.3;
+    const offset = new THREE.Vector3(6.2, 4.4, 6.2);
+    t.controls.target.copy(focus);
+    t.camera.position.copy(focus).add(offset);
+    t.camera.lookAt(focus);
+    t.controls.update();
   }, [findPartObject]);
 
   const clearAll = useCallback(() => {
@@ -2101,6 +2121,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     selectedRef.current = null;
     setSelectedId(null);
     setSelectedRot(0);
+    setSelectedPos(null);
     setCount(0);
     t.selectionHelper.visible = false;
   }, [findPartObject]);
@@ -2147,6 +2168,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         const part = partsRef.current.find((p) => p.id === id);
         if (obj && part) {
           part.position = [obj.position.x, 0, obj.position.z];
+          if (selectedRef.current === id) setSelectedPos([obj.position.x, obj.position.z]);
         }
       }
       draggingRef.current = null;
@@ -2237,6 +2259,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         selectedRef.current = id;
         const picked = partsRef.current.find((p) => p.id === id);
         setSelectedRot(picked ? ((Math.round(picked.rotationY / (Math.PI / 2)) % 4) + 4) % 4 : 0);
+        if (picked) setSelectedPos([picked.position[0], picked.position[2]]);
         const obj = findPartObject(id);
         if (obj) {
           // Arm only: a click selects. Snap-drag starts after the pointer leaves the slop.
@@ -2365,6 +2388,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         e.preventDefault();
         duplicateSelected();
       }
+      if (e.key.toLowerCase() === "g" && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        frameSelected();
+      }
       if (e.key.toLowerCase() === "f") {
         e.preventDefault();
         void toggleFullscreen();
@@ -2394,6 +2421,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           selectedRef.current = null;
           setSelectedId(null);
           setSelectedRot(0);
+          setSelectedPos(null);
           if (threeRef.current) threeRef.current.selectionHelper.visible = false;
         }
       }
@@ -2406,7 +2434,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [deleteSelected, rotateSelected, nudgeSelected, duplicateSelected, toggleFullscreen, clearAll]);
+  }, [deleteSelected, rotateSelected, nudgeSelected, duplicateSelected, frameSelected, toggleFullscreen, clearAll]);
 
   const startPaletteDrag = (kind: PartKind) => (ev: React.PointerEvent) => {
     if (ev.button !== 0) return;
@@ -2496,12 +2524,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         rot: "Rotar 90°",
         del: "Eliminar",
         dup: "Duplicar",
+        frame: "Encuadrar",
+        coords: "Posición",
         emptyHint: "Todavía no hay piezas. Arrastrá una estructura desde la barra derecha, o elegí una y hacé clic en el terreno.",
         clear: "Limpiar",
         parts: "elementos",
         fullscreen: "Pantalla completa",
         exitFs: "Salir",
-        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · R rotar · D duplicar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · R rotar · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         none: "Nada seleccionado",
@@ -2554,12 +2584,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         rot: "Rotate 90°",
         del: "Delete",
         dup: "Duplicate",
+        frame: "Frame",
+        coords: "Position",
         emptyHint: "No pieces yet. Drag a structure from the right bar, or pick one and click the ground.",
         clear: "Clear",
         parts: "parts",
         fullscreen: "Fullscreen",
         exitFs: "Exit",
-        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · R rotate · D duplicate · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · R rotate · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
         none: "Nothing selected",
@@ -2607,6 +2639,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     selectedRef.current = null;
     setSelectedId(null);
     setSelectedRot(0);
+    setSelectedPos(null);
     if (threeRef.current) threeRef.current.selectionHelper.visible = false;
   };
 
@@ -2655,6 +2688,17 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         >
           {labels.dup}
           <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">D</kbd>
+        </button>
+        <button
+          type="button"
+          onClick={frameSelected}
+          disabled={!selectedId}
+          aria-label={labels.frame}
+          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+          title={selectedId ? "G" : labels.needSel}
+        >
+          {labels.frame}
+          <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">G</kbd>
         </button>
         <button
           type="button"
@@ -2760,7 +2804,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               }`}
             >
               {selectedKindLabel
-                ? `${labels.selected}: ${selectedKindLabel} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}° · ${labels.selHint}`
+                ? `${labels.selected}: ${selectedKindLabel} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°${
+                    selectedPos ? ` · X ${selectedPos[0].toFixed(1)} Z ${selectedPos[1].toFixed(1)}` : ""
+                  }`
                 : labels.none}
             </span>
             <span className="w-fit rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-medium text-amber-100/90">
@@ -2859,6 +2905,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               </p>
               <p className="mt-0.5 text-xs font-semibold text-foreground">{selectedKindLabel}</p>
               <p className="text-[10px] text-muted-foreground">{selectedSize}</p>
+              {selectedPos && (
+                <p className="mt-1 font-mono text-[10px] text-foreground" aria-label={labels.coords}>
+                  {labels.coords} X {selectedPos[0].toFixed(1)} · Z {selectedPos[1].toFixed(1)}
+                </p>
+              )}
               <div className="mt-1.5" role="group" aria-label={labels.orient}>
                 <p className="mb-1 text-[10px] font-semibold text-muted-foreground">{labels.orient}</p>
                 <div className="grid grid-cols-4 gap-1">
