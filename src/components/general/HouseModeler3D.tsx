@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 
-type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing";
+type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney";
 type Locale = "en" | "es";
 
 type ScenePart = {
@@ -1135,6 +1135,47 @@ function createRailingMesh(mats: ReturnType<typeof makeMaterials>) {
   return group;
 }
 
+
+function createChimneyMesh(mats: ReturnType<typeof makeMaterials>) {
+  // Masonry stack: brick shaft, clay crown, twin flue pots. Sits on the ground beside a wall.
+  const group = new THREE.Group();
+  const plinth = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.16, 0.78), mats.wallEdge);
+  plinth.position.y = 0.08;
+  plinth.castShadow = true;
+  plinth.receiveShadow = true;
+  staggerUvs(plinth);
+  group.add(plinth);
+  const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.62, 2.55, 0.62), mats.wallEdge);
+  shaft.position.y = 0.16 + 1.275;
+  shaft.castShadow = true;
+  shaft.receiveShadow = true;
+  staggerUvs(shaft);
+  group.add(shaft);
+  const shoulder = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.1, 0.74), mats.wallEdge);
+  shoulder.position.y = 2.76;
+  shoulder.castShadow = true;
+  staggerUvs(shoulder);
+  group.add(shoulder);
+  const crown = new THREE.Mesh(new THREE.BoxGeometry(0.84, 0.08, 0.84), mats.roof);
+  crown.position.y = 2.85;
+  crown.castShadow = true;
+  crown.receiveShadow = true;
+  staggerUvs(crown);
+  group.add(crown);
+  for (const x of [-0.16, 0.16]) {
+    const pot = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.32, 0.2), mats.fascia);
+    pot.position.set(x, 3.06, 0);
+    pot.castShadow = true;
+    pot.receiveShadow = true;
+    group.add(pot);
+    const lip = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.04, 0.24), mats.roof);
+    lip.position.set(x, 3.24, 0);
+    lip.castShadow = true;
+    group.add(lip);
+  }
+  return group;
+}
+
 function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>) {
   if (kind === "wall") return createWallMesh(mats);
   if (kind === "floor") return createFloorMesh(mats);
@@ -1143,7 +1184,8 @@ function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>) 
   if (kind === "door") return createDoorMesh(mats);
   if (kind === "window") return createWindowMesh(mats);
   if (kind === "stairs") return createStairsMesh(mats);
-  return createRailingMesh(mats);
+  if (kind === "railing") return createRailingMesh(mats);
+  return createChimneyMesh(mats);
 }
 
 function StructureGlyph({ kind }: { kind: PartKind }) {
@@ -1210,12 +1252,24 @@ function StructureGlyph({ kind }: { kind: PartKind }) {
       </svg>
     );
   }
+  if (kind === "railing") {
+    return (
+      <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
+        <path d="M4 26 V8 M20 26 V8 M36 26 V8" stroke="#6d4a30" strokeWidth="2.2" />
+        <path d="M4 9 H36" stroke="#8b5a32" strokeWidth="2.4" />
+        <path d="M6 24 H18 M22 24 H34" stroke="#c4a882" strokeWidth="1.4" />
+        <path d="M8 22 V12 M12 22 V12 M16 22 V12 M24 22 V12 M28 22 V12 M32 22 V12" stroke="#a67c52" strokeWidth="1" />
+      </svg>
+    );
+  }
   return (
     <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
-      <path d="M4 26 V8 M20 26 V8 M36 26 V8" stroke="#6d4a30" strokeWidth="2.2" />
-      <path d="M4 9 H36" stroke="#8b5a32" strokeWidth="2.4" />
-      <path d="M6 24 H18 M22 24 H34" stroke="#c4a882" strokeWidth="1.4" />
-      <path d="M8 22 V12 M12 22 V12 M16 22 V12 M24 22 V12 M28 22 V12 M32 22 V12" stroke="#a67c52" strokeWidth="1" />
+      <rect x="12" y="10" width="16" height="16" fill="#b7ab9a" stroke="#8a7d6c" />
+      <rect x="9" y="8" width="22" height="3" fill="#6b3a2a" />
+      <rect x="14" y="3" width="5" height="6" fill="#6d4a30" />
+      <rect x="21" y="3" width="5" height="6" fill="#6d4a30" />
+      <rect x="15" y="2" width="3" height="2" fill="#5c3224" />
+      <rect x="22" y="2" width="3" height="2" fill="#5c3224" />
     </svg>
   );
 }
@@ -2114,6 +2168,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (e.key === "6") setTool("window");
       if (e.key === "7") setTool("stairs");
       if (e.key === "8") setTool("railing");
+      if (e.key === "9") setTool("chimney");
       if (e.key.toLowerCase() === "d" && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
         duplicateSelected();
@@ -2243,6 +2298,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         window: "Ventana",
         stairs: "Escalera",
         railing: "Baranda",
+        chimney: "Chimenea",
         place: "Arrastrá desde la barra derecha al terreno · o hacé clic en el suelo",
         cam: "Cámara libre: botón derecho / medio · rueda zoom",
         rot: "Rotar 90°",
@@ -2253,7 +2309,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "elementos",
         fullscreen: "Pantalla completa",
         exitFs: "Salir",
-        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · R rotar · D duplicar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · R rotar · D duplicar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         none: "Nada seleccionado",
@@ -2271,6 +2327,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizeWindow: "1.2 × 1.15 m",
         sizeStairs: "1.0 m · subida 1.02 m",
         sizeRailing: "1.8 × 0.95 m",
+        sizeChimney: "0.8 × 3.2 m",
         help: "Ayuda",
         hideHelp: "Ocultar",
         active: "Activa",
@@ -2299,6 +2356,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         window: "Window",
         stairs: "Stairs",
         railing: "Railing",
+        chimney: "Chimney",
         place: "Drag from the right toolbar onto the ground · or click the ground",
         cam: "Free camera: right/middle drag · scroll zoom",
         rot: "Rotate 90°",
@@ -2309,7 +2367,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "parts",
         fullscreen: "Fullscreen",
         exitFs: "Exit",
-        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · R rotate · D duplicate · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · R rotate · D duplicate · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
         none: "Nothing selected",
@@ -2327,6 +2385,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizeWindow: "1.2 × 1.15 m",
         sizeStairs: "1.0 m wide · 1.02 m rise",
         sizeRailing: "1.8 × 0.95 m",
+        sizeChimney: "0.8 × 3.2 m",
         help: "Help",
         hideHelp: "Hide",
         active: "Active",
@@ -2348,9 +2407,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   const selectedKind = partsRef.current.find((p) => p.id === selectedId)?.kind;
   const selectedKindLabel =
-    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : "";
+    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : "";
   const selectedSize =
-    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : selectedKind === "window" ? labels.sizeWindow : selectedKind === "stairs" ? labels.sizeStairs : selectedKind === "railing" ? labels.sizeRailing : "";
+    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : selectedKind === "window" ? labels.sizeWindow : selectedKind === "stairs" ? labels.sizeStairs : selectedKind === "railing" ? labels.sizeRailing : selectedKind === "chimney" ? labels.sizeChimney : "";
 
   const clearSelection = () => {
     selectedRef.current = null;
@@ -2368,9 +2427,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     { kind: "window", label: labels.window, swatch: "#9bb7c9", key: "6", size: labels.sizeWindow },
     { kind: "stairs", label: labels.stairs, swatch: "#8b5a32", key: "7", size: labels.sizeStairs },
     { kind: "railing", label: labels.railing, swatch: "#6d4a30", key: "8", size: labels.sizeRailing },
+    { kind: "chimney", label: labels.chimney, swatch: "#b7ab9a", key: "9", size: labels.sizeChimney },
   ];
   const activeLabel =
-    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : labels.railing;
+    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : labels.chimney;
 
   return (
     <div className="flex flex-col gap-2">
