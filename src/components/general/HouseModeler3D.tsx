@@ -1750,11 +1750,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         roughness: 0.95,
         metalness: 0,
       });
-      const rim = new THREE.Mesh(rimGeo, rimMat);
-      rim.rotation.x = -Math.PI / 2;
-      rim.position.y = 0.012;
-      rim.receiveShadow = true;
-      scene.add(rim);
+      const padRim = new THREE.Mesh(rimGeo, rimMat);
+      padRim.rotation.x = -Math.PI / 2;
+      padRim.position.y = 0.012;
+      padRim.receiveShadow = true;
+      scene.add(padRim);
       // Worn earth apron and access path share one packed-earth map (not a flat tint).
       const earthMap = makeCanvasTexture(256, paintWornEarth, true);
       const earthRough = makeCanvasTexture(256, (ctx, s) => {
@@ -1984,7 +1984,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         }
         disposeObjectResources(ground, false);
         pad.geometry.dispose();
-        rim.geometry.dispose();
+        padRim.geometry.dispose();
         rimMat.dispose();
         apron.geometry.dispose();
         apronMat.dispose();
