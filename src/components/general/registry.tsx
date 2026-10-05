@@ -98,6 +98,7 @@ const DewPointTool = lazy(() => import("./DewPointTool").then((m) => ({ default:
 const RaisedBedCalculatorTool = lazy(() => import("./RaisedBedCalculatorTool").then((m) => ({ default: m.RaisedBedCalculatorTool })));
 const RetainingWallCalculatorTool = lazy(() => import("./RetainingWallCalculatorTool").then((m) => ({ default: m.RetainingWallCalculatorTool })));
 const StudCalculatorTool = lazy(() => import("./StudCalculatorTool").then((m) => ({ default: m.StudCalculatorTool })));
+const RainwaterCalculatorTool = lazy(() => import("./RainwaterCalculatorTool").then((m) => ({ default: m.RainwaterCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -142,6 +143,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-jardinera") return RaisedBedCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-muro-contencion") return RetainingWallCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-montantes") return StudCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-agua-lluvia") return RainwaterCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;

@@ -60,6 +60,7 @@ import { TOOL_SEO_OVERRIDES_DEW_POINT } from "./tool-seo-overrides-dew-point";
 import { TOOL_SEO_OVERRIDES_RAISED_BED } from "./tool-seo-overrides-raised-bed";
 import { TOOL_SEO_OVERRIDES_RETAINING_WALL } from "./tool-seo-overrides-retaining-wall";
 import { TOOL_SEO_OVERRIDES_STUD } from "./tool-seo-overrides-stud";
+import { TOOL_SEO_OVERRIDES_RAINWATER } from "./tool-seo-overrides-rainwater";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -135,6 +136,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_RAISED_BED,
   ...TOOL_SEO_OVERRIDES_RETAINING_WALL,
   ...TOOL_SEO_OVERRIDES_STUD,
+  ...TOOL_SEO_OVERRIDES_RAINWATER,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
