@@ -91,6 +91,7 @@ const GrassSeedCalculatorTool = lazy(() => import("./GrassSeedCalculatorTool").t
 const FirewoodCalculatorTool = lazy(() => import("./FirewoodCalculatorTool").then((m) => ({ default: m.FirewoodCalculatorTool })));
 const SheetCalculatorTool = lazy(() => import("./SheetCalculatorTool").then((m) => ({ default: m.SheetCalculatorTool })));
 const CaulkCalculatorTool = lazy(() => import("./CaulkCalculatorTool").then((m) => ({ default: m.CaulkCalculatorTool })));
+const GroutCalculatorTool = lazy(() => import("./GroutCalculatorTool").then((m) => ({ default: m.GroutCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -128,6 +129,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-lena") return FirewoodCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-tableros") return SheetCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-silicona") return CaulkCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-junta-baldosas") return GroutCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
