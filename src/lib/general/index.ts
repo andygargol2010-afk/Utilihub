@@ -74,6 +74,7 @@ import { HEAT_INDEX_TOOLS } from "./heat-index-calculator";
 import { DEW_POINT_TOOLS } from "./dew-point-calculator";
 import { RAISED_BED_CALCULATOR_TOOLS } from "./raised-bed-calculator";
 import { RETAINING_WALL_CALCULATOR_TOOLS } from "./retaining-wall-calculator";
+import { STUD_CALCULATOR_TOOLS } from "./stud-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -153,4 +154,5 @@ export const GENERAL_TOOLS = [
   ...DEW_POINT_TOOLS,
   ...RAISED_BED_CALCULATOR_TOOLS,
   ...RETAINING_WALL_CALCULATOR_TOOLS,
+  ...STUD_CALCULATOR_TOOLS,
 ];
