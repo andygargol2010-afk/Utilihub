@@ -12,7 +12,7 @@ jobs:
           ref: fix/spanish-complete
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore HouseModeler3D from 9e7cfe5
+      - name: Restore HouseModeler3D from 9e7cfe5 and fix rim redeclaration
         run: |
           set -euo pipefail
           GOOD=9e7cfe5f989adf28455adb0fb164c6d2e7c6e3ef
@@ -22,6 +22,26 @@ jobs:
           rm -f src/components/general/house-modeler-lib.ts \
                 src/components/general/house-modeler-textures.ts \
                 src/components/general/house-modeler-glyph.tsx
+          # Fix: const rim used twice (DirectionalLight + RingGeometry mesh)
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("src/components/general/HouseModeler3D.tsx")
+          t = p.read_text()
+          old = """      const rim = new THREE.Mesh(rimGeo, rimMat);
+      rim.rotation.x = -Math.PI / 2;
+      rim.position.y = 0.012;
+      rim.receiveShadow = true;
+      scene.add(rim);"""
+          new = """      const padRim = new THREE.Mesh(rimGeo, rimMat);
+      padRim.rotation.x = -Math.PI / 2;
+      padRim.position.y = 0.012;
+      padRim.receiveShadow = true;
+      scene.add(padRim);"""
+          if old not in t:
+              raise SystemExit("pad rim block not found — abort")
+          p.write_text(t.replace(old, new, 1))
+          print("renamed mesh rim -> padRim")
+          PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
@@ -30,5 +50,5 @@ jobs:
             echo "Nothing to commit — already restored"
             exit 0
           fi
-          git commit -m "restore: HouseModeler3D from 9e7cfe5 (full detailed graphics)"
+          git commit -m "restore: HouseModeler3D from 9e7cfe5 + fix rim redeclaration"
           git push origin HEAD:fix/spanish-complete
