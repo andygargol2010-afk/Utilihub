@@ -1568,6 +1568,21 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setSelectedRot(norm);
   }, [findPartObject]);
 
+  // Snap-step the selected part. Touch drags fight OrbitControls; a pad is more reliable on phones.
+  const nudgeSelected = useCallback((dx: number, dz: number) => {
+    if (paletteDragRef.current || draggingRef.current) return;
+    const id = selectedRef.current;
+    if (!id) return;
+    const obj = findPartObject(id);
+    if (!obj) return;
+    const x = snap(obj.position.x + dx);
+    const z = snap(obj.position.z + dz);
+    obj.position.x = x;
+    obj.position.z = z;
+    const part = partsRef.current.find((p) => p.id === id);
+    if (part) part.position = [x, obj.position.y, z];
+  }, [findPartObject]);
+
   const clearAll = useCallback(() => {
     const t = threeRef.current;
     if (!t) return;
@@ -1804,6 +1819,19 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         e.preventDefault();
         rotateSelected();
       }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        nudgeSelected(-GRID, 0);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        nudgeSelected(GRID, 0);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        nudgeSelected(0, -GRID);
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        nudgeSelected(0, GRID);
+      }
       if (e.key === "1") setTool("wall");
       if (e.key === "2") setTool("floor");
       if (e.key === "3") setTool("roof");
@@ -1851,7 +1879,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [deleteSelected, rotateSelected, toggleFullscreen, clearAll]);
+  }, [deleteSelected, rotateSelected, nudgeSelected, toggleFullscreen, clearAll]);
 
   const startPaletteDrag = (kind: PartKind) => (ev: React.PointerEvent) => {
     if (ev.button !== 0) return;
@@ -1942,7 +1970,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "elementos",
         fullscreen: "Pantalla completa",
         exitFs: "Salir",
-        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · R rotar · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · R rotar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         none: "Nada seleccionado",
@@ -1971,6 +1999,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         selHint: "R gira · Supr borra",
         orient: "Orientación",
         yawHint: "Toque para fijar el giro",
+        nudge: "Mover 0,5 m",
+        nudgeXP: "Mover +X",
+        nudgeXN: "Mover −X",
+        nudgeZP: "Mover +Z",
+        nudgeZN: "Mover −Z",
       }
     : {
         title: "3D house modeler",
@@ -1989,7 +2022,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "parts",
         fullscreen: "Fullscreen",
         exitFs: "Exit",
-        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · R rotate · Del delete · C clear · F fullscreen · Esc cancel",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · R rotate · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
         none: "Nothing selected",
@@ -2018,6 +2051,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         selHint: "R rotate · Del delete",
         orient: "Orientation",
         yawHint: "Tap to set the yaw",
+        nudge: "Nudge 0.5 m",
+        nudgeXP: "Move +X",
+        nudgeXN: "Move −X",
+        nudgeZP: "Move +Z",
+        nudgeZN: "Move −Z",
       };
 
   const selectedKind = partsRef.current.find((p) => p.id === selectedId)?.kind;
@@ -2172,6 +2210,61 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           </div>
         </div>
 
+          {selectedKindLabel && (
+            <div
+              role="group"
+              aria-label={labels.nudge}
+              className="absolute bottom-3 right-3 z-10 grid grid-cols-3 gap-1 rounded-xl bg-black/50 p-1 shadow ring-1 ring-amber-100/20"
+            >
+              <span className="col-span-3 px-1 text-center text-[9px] font-semibold uppercase tracking-wide text-amber-100/90">
+                {labels.nudge}
+              </span>
+              <span />
+              <button
+                type="button"
+                onClick={() => nudgeSelected(0, -GRID)}
+                aria-label={labels.nudgeZN}
+                title={labels.nudgeZN}
+                className="min-h-11 min-w-11 rounded-lg border border-amber-100/20 bg-amber-950/80 text-sm font-semibold text-amber-50 hover:bg-amber-800"
+              >
+                −Z
+              </button>
+              <span />
+              <button
+                type="button"
+                onClick={() => nudgeSelected(-GRID, 0)}
+                aria-label={labels.nudgeXN}
+                title={labels.nudgeXN}
+                className="min-h-11 min-w-11 rounded-lg border border-amber-100/20 bg-amber-950/80 text-sm font-semibold text-amber-50 hover:bg-amber-800"
+              >
+                −X
+              </button>
+              <span className="flex min-h-11 items-center justify-center text-[10px] font-semibold text-amber-100/80">
+                {selectedRot * 90}°
+              </span>
+              <button
+                type="button"
+                onClick={() => nudgeSelected(GRID, 0)}
+                aria-label={labels.nudgeXP}
+                title={labels.nudgeXP}
+                className="min-h-11 min-w-11 rounded-lg border border-amber-100/20 bg-amber-950/80 text-sm font-semibold text-amber-50 hover:bg-amber-800"
+              >
+                +X
+              </button>
+              <span />
+              <button
+                type="button"
+                onClick={() => nudgeSelected(0, GRID)}
+                aria-label={labels.nudgeZP}
+                title={labels.nudgeZP}
+                className="min-h-11 min-w-11 rounded-lg border border-amber-100/20 bg-amber-950/80 text-sm font-semibold text-amber-50 hover:bg-amber-800"
+              >
+                +Z
+              </button>
+              <span />
+            </div>
+          )}
+
         {/* Right structure palette — drag to place */}
         <aside
           role="toolbar"
@@ -2235,6 +2328,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <p className="mt-1 text-[10px] leading-snug text-muted-foreground">
                 {labels.rotDeg} {selectedRot * 90}° · {labels.yawHint}
               </p>
+              <div className="mt-1.5 grid grid-cols-4 gap-1" role="group" aria-label={labels.nudge}>
+                <button type="button" onClick={() => nudgeSelected(-GRID, 0)} aria-label={labels.nudgeXN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">−X</button>
+                <button type="button" onClick={() => nudgeSelected(GRID, 0)} aria-label={labels.nudgeXP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">+X</button>
+                <button type="button" onClick={() => nudgeSelected(0, -GRID)} aria-label={labels.nudgeZN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">−Z</button>
+                <button type="button" onClick={() => nudgeSelected(0, GRID)} aria-label={labels.nudgeZP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">+Z</button>
+              </div>
               <div className="mt-2 grid grid-cols-1 gap-1.5">
                 <button
                   type="button"
