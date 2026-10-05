@@ -16,6 +16,7 @@ const MOBILE = {
   height: 50,
   src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
 };
+const MOBILE_HEIGHT_SCALE = 1.35;
 
 /**
  * Tool/game/finance banner.
@@ -48,7 +49,8 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
       return;
     }
     const updateScale = () => {
-      const usable = Math.max(280, window.innerWidth - 48);
+      // Use a narrow 8px mobile gutter while keeping desktop sizing unchanged.
+      const usable = Math.max(280, window.innerWidth - 16);
       setScale(Math.min(1, usable / 728));
     };
     updateScale();
@@ -85,7 +87,7 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
   if (!allowed || !viewport) return null;
 
   const isMobile = viewport === "mobile";
-  const minH = isMobile ? Math.ceil(90 * scale) : 90;
+  const minH = isMobile ? Math.ceil(90 * scale * MOBILE_HEIGHT_SCALE) : 90;
 
   return (
     <aside
@@ -96,9 +98,10 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
         {label}
       </div>
       <div
-        className="mx-auto flex items-center justify-center overflow-hidden pb-2"
+        className="mx-auto flex items-center justify-center overflow-x-hidden pb-2"
         style={{
           minHeight: minH,
+          height: isMobile ? minH : 90,
           width: isMobile ? 728 * scale : undefined,
           maxWidth: "100%",
         }}
@@ -109,7 +112,7 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
           style={{
             width: 728,
             minHeight: 90,
-            transform: isMobile && scale < 1 ? `scale(${scale})` : undefined,
+            transform: isMobile && scale < 1 ? `scale(${scale}) scaleY(${MOBILE_HEIGHT_SCALE})` : undefined,
             transformOrigin: "top center",
           }}
         />
