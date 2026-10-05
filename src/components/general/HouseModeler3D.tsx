@@ -382,6 +382,97 @@ function paintFascia(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, size - 6, size, 6);
 }
 
+function paintDoorLeaf(ctx: CanvasRenderingContext2D, size: number) {
+  // Stained raised-panel leaf: stiles and rails lighter, recessed fields darker.
+  noiseFill(ctx, size, [118, 74, 42], 12);
+  ctx.fillStyle = "#7a4e30";
+  ctx.fillRect(0, 0, size, size);
+  const stile = Math.floor(size * 0.12);
+  const rail = Math.floor(size * 0.1);
+  ctx.fillStyle = "#8d5c38";
+  ctx.fillRect(0, 0, stile, size);
+  ctx.fillRect(size - stile, 0, stile, size);
+  ctx.fillRect(0, 0, size, rail);
+  ctx.fillRect(0, size - rail, size, rail);
+  const mid = Math.floor(size * 0.46);
+  ctx.fillRect(0, mid - rail / 2, size, rail);
+  const fields: Array<[number, number, number, number]> = [
+    [stile, rail, size - stile * 2, mid - rail - rail / 2],
+    [stile, mid + rail / 2, size - stile * 2, size - rail - (mid + rail / 2)],
+  ];
+  for (let f = 0; f < fields.length; f++) {
+    const [x, y, w, h] = fields[f];
+    const tone = 92 + Math.floor(hash2(f, 4.4) * 18);
+    ctx.fillStyle = `rgb(${tone + 18}, ${tone - 8}, ${tone - 28})`;
+    ctx.fillRect(x + 4, y + 4, w - 8, h - 8);
+    ctx.strokeStyle = "rgba(48,26,14,0.55)";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(x + 6, y + 6, w - 12, h - 12);
+    ctx.strokeStyle = "rgba(176,124,78,0.35)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x + 10, y + 10, w - 20, h - 20);
+    for (let g = 0; g < 4; g++) {
+      const gy = y + 14 + g * (h / 5);
+      ctx.strokeStyle = "rgba(70,40,22,0.28)";
+      ctx.beginPath();
+      ctx.moveTo(x + 12, gy);
+      for (let px = x + 12; px < x + w - 12; px += 8) {
+        ctx.lineTo(px, gy + Math.sin(px * 0.06 + f) * 1.1);
+      }
+      ctx.stroke();
+    }
+  }
+}
+
+function paintDoorLeafBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#9a9a9a";
+  ctx.fillRect(0, 0, size, size);
+  const stile = Math.floor(size * 0.12);
+  const rail = Math.floor(size * 0.1);
+  ctx.fillStyle = "#d2d2d2";
+  ctx.fillRect(0, 0, stile, size);
+  ctx.fillRect(size - stile, 0, stile, size);
+  ctx.fillRect(0, 0, size, rail);
+  ctx.fillRect(0, size - rail, size, rail);
+  const mid = Math.floor(size * 0.46);
+  ctx.fillRect(0, mid - rail / 2, size, rail);
+  ctx.fillStyle = "#4a4a4a";
+  ctx.fillRect(stile + 8, rail + 8, size - stile * 2 - 16, mid - rail - rail / 2 - 12);
+  ctx.fillRect(stile + 8, mid + rail / 2 + 8, size - stile * 2 - 16, size - rail - (mid + rail / 2) - 16);
+}
+
+function paintNosingBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#a8a8a8";
+  ctx.fillRect(0, 0, size, size);
+  const boards = 5;
+  for (let i = 0; i < boards; i++) {
+    const x0 = Math.floor((i / boards) * size);
+    const x1 = Math.floor(((i + 1) / boards) * size);
+    const cx = (x0 + x1) / 2;
+    const cy = size * (0.35 + hash2(i, 2) * 0.3);
+    for (let ring = 3; ring >= 1; ring--) {
+      ctx.strokeStyle = ring % 2 === 0 ? "rgba(255,255,255,0.45)" : "rgba(20,20,20,0.4)";
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, ((x1 - x0) * 0.28 * ring) / 3, (size * 0.18 * ring) / 3, 0.2, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.fillStyle = "#303030";
+    ctx.fillRect(x1 - 2, 0, 3, size);
+  }
+}
+
+function paintFasciaBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#b4b4b4";
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = "#3a3a3a";
+  for (let i = 1; i < 7; i++) {
+    const y = Math.floor((i / 7) * size);
+    ctx.fillRect(0, y - 1, size, 3);
+  }
+  ctx.fillRect(0, size - 6, size, 6);
+}
+
 function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [158, 148, 132], 28);
   for (let i = 0; i < 90; i++) {
@@ -504,18 +595,49 @@ function paintRoughness(ctx: CanvasRenderingContext2D, size: number, base: numbe
   ctx.putImageData(img, 0, 0);
 }
 
+/** Turn the painted albedo into a roughness map so joints and crowns are not independent noise. */
+function paintRoughFromAlbedo(
+  ctx: CanvasRenderingContext2D,
+  size: number,
+  base: number,
+  amp: number,
+  invert: boolean,
+) {
+  const img = ctx.getImageData(0, 0, size, size);
+  const d = img.data;
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const i = (y * size + x) * 4;
+      const luma = d[i] * 0.3 + d[i + 1] * 0.52 + d[i + 2] * 0.18;
+      const centered = luma / 255 - 0.5;
+      const grain = (hash2(x * 0.61, y * 0.61) - 0.5) * 10;
+      const signed = (invert ? -centered : centered) * amp + grain;
+      const v = Math.min(255, Math.max(0, base + signed));
+      d[i] = d[i + 1] = d[i + 2] = v;
+      d[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
 /** Architectural materials — warm plaster / timber / clay (not toy-studio neon). */
 function makeMaterials() {
   const TEX = 256;
   const wallMap = makeCanvasTexture(TEX, paintPlaster, true);
-  const wallRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 198, 28), false);
+  const wallRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintPlaster(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 196, 70, true);
+  }, false);
   const wallBump = makeCanvasTexture(TEX, paintPlasterBump, false);
   const wallNormal = makeCanvasTexture(TEX, (ctx, s) => {
     paintPlasterBump(ctx, s);
     paintNormalFromHeight(ctx, s, 2.4);
   }, false);
   const edgeMap = makeCanvasTexture(TEX, paintPlinth, true);
-  const edgeRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 176, 34), false);
+  const edgeRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintPlinth(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 168, 80, true);
+  }, false);
   const edgeBump = makeCanvasTexture(TEX, (ctx, s) => {
     paintPlinth(ctx, s);
     // Mortar joints darker in the color map become the relief source.
@@ -525,14 +647,20 @@ function makeMaterials() {
     paintNormalFromHeight(ctx, s, 3.1);
   }, false);
   const floorMap = makeCanvasTexture(TEX, paintTimber, true);
-  const floorRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 142, 36), false);
+  const floorRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintTimber(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 150, 64, true);
+  }, false);
   const floorBump = makeCanvasTexture(TEX, paintTimberBump, false);
   const floorNormal = makeCanvasTexture(TEX, (ctx, s) => {
     paintTimberBump(ctx, s);
     paintNormalFromHeight(ctx, s, 3.6);
   }, false);
   const roofMap = makeCanvasTexture(TEX, paintClayTiles, true);
-  const roofRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 168, 30), false);
+  const roofRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintClayTiles(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 160, 72, true);
+  }, false);
   const roofBump = makeCanvasTexture(TEX, paintTileBump, false);
   const roofNormal = makeCanvasTexture(TEX, (ctx, s) => {
     paintTileBump(ctx, s);
@@ -550,9 +678,23 @@ function makeMaterials() {
     paintNormalFromHeight(ctx, s, 2.8);
   }, false);
   const nosingMap = makeCanvasTexture(TEX, paintNosing, true);
-  const nosingRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 160, 24), false);
+  const nosingRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintNosing(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 146, 58, true);
+  }, false);
+  const nosingBump = makeCanvasTexture(TEX, paintNosingBump, false);
   const fasciaMap = makeCanvasTexture(TEX, paintFascia, true);
-  const fasciaRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 156, 26), false);
+  const fasciaRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintFascia(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 158, 54, true);
+  }, false);
+  const fasciaBump = makeCanvasTexture(TEX, paintFasciaBump, false);
+  const doorMap = makeCanvasTexture(TEX, paintDoorLeaf, true);
+  const doorRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintDoorLeaf(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 132, 70, true);
+  }, false);
+  const doorBump = makeCanvasTexture(TEX, paintDoorLeafBump, false);
 
   const applyRepeat = (tex: THREE.CanvasTexture | null, x: number, y: number) => {
     if (!tex) return;
@@ -584,8 +726,13 @@ function makeMaterials() {
   applyRepeat(plateNormal, 3, 1);
   applyRepeat(nosingMap, 4, 1);
   applyRepeat(nosingRough, 4, 1);
+  applyRepeat(nosingBump, 4, 1);
   applyRepeat(fasciaMap, 3, 1);
   applyRepeat(fasciaRough, 3, 1);
+  applyRepeat(fasciaBump, 3, 1);
+  applyRepeat(doorMap, 1, 1);
+  applyRepeat(doorRough, 1, 1);
+  applyRepeat(doorBump, 1, 1);
 
   const wall = new THREE.MeshStandardMaterial({
     color: 0xffffff,
@@ -662,6 +809,8 @@ function makeMaterials() {
     color: 0xffffff,
     map: nosingMap ?? undefined,
     roughnessMap: nosingRough ?? undefined,
+    bumpMap: nosingBump ?? undefined,
+    bumpScale: 0.03,
     roughness: 0.7,
     metalness: 0.03,
   });
@@ -669,7 +818,18 @@ function makeMaterials() {
     color: 0xffffff,
     map: fasciaMap ?? undefined,
     roughnessMap: fasciaRough ?? undefined,
+    bumpMap: fasciaBump ?? undefined,
+    bumpScale: 0.028,
     roughness: 0.76,
+    metalness: 0.03,
+  });
+  const doorLeaf = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: doorMap ?? undefined,
+    roughnessMap: doorRough ?? undefined,
+    bumpMap: doorBump ?? undefined,
+    bumpScale: 0.04,
+    roughness: 0.62,
     metalness: 0.03,
   });
   const doorGlass = new THREE.MeshStandardMaterial({
@@ -679,7 +839,7 @@ function makeMaterials() {
     transparent: true,
     opacity: 0.55,
   });
-  return { wall, wallEdge, floor, roof, ground, gravel, plate, nosing, fascia, doorGlass };
+  return { wall, wallEdge, floor, roof, ground, gravel, plate, nosing, fascia, doorLeaf, doorGlass };
 }
 
 function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
@@ -832,7 +992,7 @@ function createDoorMesh(mats: ReturnType<typeof makeMaterials>) {
   head.castShadow = true;
   head.receiveShadow = true;
   group.add(jambL, jambR, head);
-  const leaf = new THREE.Mesh(new THREE.BoxGeometry(0.82, 1.48, 0.04), mats.nosing);
+  const leaf = new THREE.Mesh(new THREE.BoxGeometry(0.82, 1.48, 0.04), mats.doorLeaf);
   leaf.position.set(0, 0.82, 0.01);
   leaf.castShadow = true;
   leaf.receiveShadow = true;
