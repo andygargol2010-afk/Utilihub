@@ -43,18 +43,38 @@ const BLOCKED = [
   /https?:\/\//i,
   /\b(seo|backlink|guest\s*post)\b/i,
   /\$\d{2,}/,
+  /javascript\s*:/i,
+  /data\s*:\s*text\/html/i,
+  /vbscript\s*:/i,
+  /\bon\w+\s*=/i,
 ];
 
+/**
+ * Defense-in-depth for user-generated text.
+ * React already escapes on render; this strips markup so stored content stays plain text
+ * even if a future UI uses dangerouslySetInnerHTML by mistake.
+ */
+function stripUnsafeMarkup(input: string): string {
+  return input
+    .replace(/\u0000/g, "")
+    .replace(/[\u0001-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
+    .replace(/<\/?[a-zA-Z][^>]*>/g, " ")
+    .replace(/[<>]/g, "")
+    .replace(/&(?!(amp|lt|gt|quot|apos|#\d+|#x[\da-fA-F]+);)/g, "& ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function sanitizeName(name: string) {
-  return name.replace(/\s+/g, " ").trim().slice(0, 40) || "Anonymous";
+  return stripUnsafeMarkup(name).slice(0, 40) || "Anonymous";
 }
 
 export function sanitizeText(text: string) {
-  return text.replace(/\s+/g, " ").trim().slice(0, 400);
+  return stripUnsafeMarkup(text).slice(0, 400);
 }
 
 export function sanitizeReply(text: string) {
-  return text.replace(/\s+/g, " ").trim().slice(0, 600);
+  return stripUnsafeMarkup(text).slice(0, 600);
 }
 
 export function validateReview(
