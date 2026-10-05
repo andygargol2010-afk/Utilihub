@@ -76,6 +76,7 @@ import { RAISED_BED_CALCULATOR_TOOLS } from "./raised-bed-calculator";
 import { RETAINING_WALL_CALCULATOR_TOOLS } from "./retaining-wall-calculator";
 import { STUD_CALCULATOR_TOOLS } from "./stud-calculator";
 import { RAINWATER_CALCULATOR_TOOLS } from "./rainwater-calculator";
+import { BOARD_FOOT_CALCULATOR_TOOLS } from "./board-foot-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -157,4 +158,5 @@ export const GENERAL_TOOLS = [
   ...RETAINING_WALL_CALCULATOR_TOOLS,
   ...STUD_CALCULATOR_TOOLS,
   ...RAINWATER_CALCULATOR_TOOLS,
+  ...BOARD_FOOT_CALCULATOR_TOOLS,
 ];
