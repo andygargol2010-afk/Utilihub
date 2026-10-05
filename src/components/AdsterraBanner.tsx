@@ -48,7 +48,8 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
       return;
     }
     const updateScale = () => {
-      const usable = Math.max(280, window.innerWidth - 48);
+      // Use a narrow 8px mobile gutter while keeping desktop sizing unchanged.
+      const usable = Math.max(280, window.innerWidth - 16);
       setScale(Math.min(1, usable / 728));
     };
     updateScale();
