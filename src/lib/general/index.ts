@@ -69,6 +69,7 @@ import { FIREWOOD_CALCULATOR_TOOLS } from "./firewood-calculator";
 import { SHEET_CALCULATOR_TOOLS } from "./sheet-calculator";
 import { CAULK_CALCULATOR_TOOLS } from "./caulk-calculator";
 import { GROUT_CALCULATOR_TOOLS } from "./grout-calculator";
+import { THINSET_CALCULATOR_TOOLS } from "./thinset-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -143,4 +144,5 @@ export const GENERAL_TOOLS = [
   ...SHEET_CALCULATOR_TOOLS,
   ...CAULK_CALCULATOR_TOOLS,
   ...GROUT_CALCULATOR_TOOLS,
+  ...THINSET_CALCULATOR_TOOLS,
 ];
