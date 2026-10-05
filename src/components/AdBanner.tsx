@@ -101,9 +101,10 @@ export function AdBanner() {
   return (
     <div className="mx-auto w-full max-w-full overflow-x-hidden py-2" aria-label="Advertisement">
       <div
-        className="mx-auto flex items-center justify-center"
+        className="mx-auto flex items-center justify-center overflow-hidden"
         style={{
           minHeight: minH,
+          height: isMobile ? minH : 90,
           width: isMobile ? 728 * scale : undefined,
           maxWidth: "100%",
         }}
