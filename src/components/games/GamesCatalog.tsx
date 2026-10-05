@@ -119,7 +119,7 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
                   <GamePreview game={game} />
                   {isNew && (
                     <span className="absolute right-5 top-5 rounded-full bg-emerald-500 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white shadow">
-                      New
+                      {es ? "Nuevo" : "New"}
                     </span>
                   )}
                 </div>
