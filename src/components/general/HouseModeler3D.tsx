@@ -2567,6 +2567,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         nudgeXN: "Mover −X",
         nudgeZP: "Mover +Z",
         nudgeZN: "Mover −Z",
+        fsBar: "Acciones en pantalla completa",
       }
     : {
         title: "3D house modeler",
@@ -2627,6 +2628,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         nudgeXN: "Move −X",
         nudgeZP: "Move +Z",
         nudgeZN: "Move −Z",
+        fsBar: "Fullscreen actions",
       };
 
   const selectedKind = partsRef.current.find((p) => p.id === selectedId)?.kind;
@@ -2785,7 +2787,81 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               </p>
             </div>
           )}
-          <div className="pointer-events-none absolute left-3 top-3 z-10 flex max-w-[80%] flex-col gap-1">
+          {isFullscreen && (
+            <div
+              role="toolbar"
+              aria-label={labels.fsBar}
+              className="absolute right-3 top-3 z-20 flex max-w-[62%] flex-wrap justify-end gap-1"
+            >
+              <button
+                type="button"
+                onClick={rotateSelected}
+                disabled={!selectedId}
+                aria-label={labels.rot}
+                title={selectedId ? "R" : labels.needSel}
+                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+              >
+                {labels.rot}
+              </button>
+              <button
+                type="button"
+                onClick={duplicateSelected}
+                disabled={!selectedId}
+                aria-label={labels.dup}
+                title={selectedId ? "D" : labels.needSel}
+                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+              >
+                {labels.dup}
+              </button>
+              <button
+                type="button"
+                onClick={frameSelected}
+                disabled={!selectedId}
+                aria-label={labels.frame}
+                title={selectedId ? "G" : labels.needSel}
+                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+              >
+                {labels.frame}
+              </button>
+              <button
+                type="button"
+                onClick={deleteSelected}
+                disabled={!selectedId}
+                aria-label={labels.del}
+                title={selectedId ? "Del" : labels.needSel}
+                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+              >
+                {labels.del}
+              </button>
+              <button
+                type="button"
+                onClick={clearAll}
+                disabled={count === 0}
+                aria-label={labels.clear}
+                title="C"
+                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+              >
+                {labels.clear}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowHelp((v) => !v)}
+                aria-pressed={showHelp}
+                aria-label={showHelp ? labels.hideHelp : labels.help}
+                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800"
+              >
+                {showHelp ? labels.hideHelp : labels.help}
+              </button>
+            </div>
+          )}
+          {isFullscreen && showHelp && (
+            <div className="pointer-events-none absolute left-3 top-16 z-20 max-w-md rounded-lg bg-black/70 px-3 py-2 text-[11px] leading-snug text-amber-50 shadow ring-1 ring-amber-100/20">
+              <p>{labels.place}</p>
+              <p className="mt-1">{labels.cam}</p>
+              <p className="mt-1">{labels.tip}</p>
+            </div>
+          )}
+          <div className="pointer-events-none absolute left-3 top-3 z-10 flex max-w-[42%] flex-col gap-1">
             <span className="rounded-md bg-black/55 px-2 py-1 text-[11px] font-medium text-amber-50 shadow">
               {labels.active}: {activeLabel}
             </span>
