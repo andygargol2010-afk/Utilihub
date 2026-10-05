@@ -97,7 +97,7 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
         {label}
       </div>
       <div
-        className="mx-auto flex items-center justify-center overflow-hidden pb-2"
+        className="mx-auto flex items-center justify-center overflow-x-hidden pb-2"
         style={{
           minHeight: minH,
           height: isMobile ? minH : 90,
