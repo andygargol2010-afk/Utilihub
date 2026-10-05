@@ -12,17 +12,26 @@ jobs:
           ref: fix/spanish-complete
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore good HouseModeler3D and remove split modules
+      - name: Restore full HouseModeler3D from ed40dbc (on this branch history)
         run: |
           set -euo pipefail
-          git checkout 9e7cfe5f989adf28455adb0fb164c6d2e7c6e3ef -- src/components/general/HouseModeler3D.tsx
+          # ed40dbc is in fix/spanish-complete history — last full detailed graphics
+          # (cirrus, plaster, timber, clay tiles) before placeholder/modular split
+          GOOD=ed40dbc09f5a0e4490b30f0b2acf22cc98ab526c
+          echo "Restoring from:"
+          git log --oneline -1 "$GOOD"
+          git checkout "$GOOD" -- src/components/general/HouseModeler3D.tsx
+          # Drop emergency split modules (simplified box geometry)
           rm -f src/components/general/house-modeler-lib.ts \
                 src/components/general/house-modeler-textures.ts \
-                src/components/general/house-modeler-glyph.tsx \
-                docs/test-upload-size.txt
+                src/components/general/house-modeler-glyph.tsx
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git status
-          git commit -m "restore: HouseModeler3D from 9e7cfe5 (good detailed version)" || exit 0
+          if git diff --staged --quiet; then
+            echo "Nothing to commit — already restored"
+            exit 0
+          fi
+          git commit -m "restore: HouseModeler3D from ed40dbc (full detailed graphics)"
           git push origin HEAD:fix/spanish-complete
