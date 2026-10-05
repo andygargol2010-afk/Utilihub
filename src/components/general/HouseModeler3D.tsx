@@ -698,6 +698,28 @@ function paintSunDisc(ctx: CanvasRenderingContext2D, size: number) {
 }
 
 /** Tangent-space normal from the height already painted into the canvas (not sRGB). */
+/** Directional pad shade: light on the sun side, soft olive falloff opposite. Not sRGB-critical. */
+function paintSiteShade(ctx: CanvasRenderingContext2D, size: number) {
+  const g = ctx.createLinearGradient(0, size * 0.2, size, size * 0.8);
+  g.addColorStop(0, "rgba(255,220,170,0.05)");
+  g.addColorStop(0.38, "rgba(120,96,64,0.04)");
+  g.addColorStop(0.72, "rgba(62,50,34,0.28)");
+  g.addColorStop(1, "rgba(36,30,20,0.46)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+  const v = ctx.createRadialGradient(size / 2, size / 2, size * 0.18, size / 2, size / 2, size * 0.5);
+  v.addColorStop(0, "rgba(255,255,255,0)");
+  v.addColorStop(0.7, "rgba(255,255,255,0)");
+  v.addColorStop(1, "rgba(0,0,0,0.55)");
+  ctx.globalCompositeOperation = "destination-out";
+  ctx.fillStyle = v;
+  ctx.beginPath();
+  ctx.arc(size / 2, size / 2, size * 0.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.globalCompositeOperation = "source-over";
+}
+
+
 function paintNormalFromHeight(ctx: CanvasRenderingContext2D, size: number, strength: number) {
   const img = ctx.getImageData(0, 0, size, size);
   const src = new Uint8ClampedArray(img.data);
@@ -1604,7 +1626,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sky.material.fog = false;
       sky.material.depthWrite = false;
 
-      const hemi = new THREE.HemisphereLight(0xd6e4f2, 0x5c6840, 0.46);
+      // Sky bounce matches the late-day shell (warm zenith, olive ground) so shaded faces are not cool blue.
+      const hemi = new THREE.HemisphereLight(0xf3d7b4, 0x5e6844, 0.4);
       scene.add(hemi);
       const dir = new THREE.DirectionalLight(0xffe6c2, 1.36);
       dir.position.copy(sun).multiplyScalar(48);
@@ -1642,7 +1665,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const bounce = new THREE.DirectionalLight(0xe7d2b4, 0.18);
       bounce.position.set(6, 1.2, 8);
       scene.add(bounce);
-      scene.add(new THREE.AmbientLight(0xfff6ea, 0.1));
+      scene.add(new THREE.AmbientLight(0xfff6ea, 0.08));
+      // Low golden rim along the sun azimuth. No shadow map — eaves and columns pick up an edge.
+      const rim = new THREE.DirectionalLight(0xffb56a, 0.38);
+      rim.position.set(sun.x * 18, 2.6, sun.z * 18);
+      scene.add(rim);
+      scene.add(rim.target);
 
       const mats = makeMaterials();
 
@@ -1762,6 +1790,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       contactAo.position.y = 0.02;
       scene.add(contactAo);
 
+      // Sun-side light, opposite olive shade on the pad. Sits above gravel, fades at the rim.
+      const shadeMap = makeCanvasTexture(256, paintSiteShade, true);
+      const shadeMat = new THREE.MeshBasicMaterial({
+        map: shadeMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        toneMapped: false,
+        opacity: 0.62,
+      });
+      const shadeGeo = new THREE.CircleGeometry(11.05, 48);
+      const siteShade = new THREE.Mesh(shadeGeo, shadeMat);
+      siteShade.rotation.order = "YXZ";
+      siteShade.rotation.y = Math.atan2(-sun.x, -sun.z);
+      siteShade.rotation.x = -Math.PI / 2;
+      siteShade.position.y = 0.026;
+      scene.add(siteShade);
+
       const hazeMap = makeCanvasTexture(64, paintHorizonHaze, true);
       if (hazeMap) hazeMap.repeat.set(1, 1);
       const hazeMat = new THREE.MeshBasicMaterial({
@@ -1856,6 +1901,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         dir.target.updateMatrixWorld();
         // Cool fill stays opposite the key so wall backs do not go flat black.
         fill.position.set(-sun.x * 26 + focusX, 9, -sun.z * 26 + focusZ);
+        rim.position.set(sun.x * 18 + focusX, 2.6, sun.z * 18 + focusZ);
+        rim.target.position.set(focusX, 1.5, focusZ);
+        rim.target.updateMatrixWorld();
         renderer.render(scene, camera);
         threeRef.current!.anim = requestAnimationFrame(tick);
       };
@@ -1897,6 +1945,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         contactAo.geometry.dispose();
         aoMat.dispose();
         aoMap?.dispose();
+        siteShade.geometry.dispose();
+        shadeMat.dispose();
+        shadeMap?.dispose();
         horizonHaze.geometry.dispose();
         hazeMat.dispose();
         hazeMap?.dispose();
