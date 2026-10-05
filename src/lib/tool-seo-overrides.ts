@@ -56,6 +56,7 @@ import { TOOL_SEO_OVERRIDES_CAULK } from "./tool-seo-overrides-caulk";
 import { TOOL_SEO_OVERRIDES_GROUT } from "./tool-seo-overrides-grout";
 import { TOOL_SEO_OVERRIDES_THINSET } from "./tool-seo-overrides-thinset";
 import { TOOL_SEO_OVERRIDES_HEAT_INDEX } from "./tool-seo-overrides-heat-index";
+import { TOOL_SEO_OVERRIDES_DEW_POINT } from "./tool-seo-overrides-dew-point";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -127,6 +128,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_GROUT,
   ...TOOL_SEO_OVERRIDES_THINSET,
   ...TOOL_SEO_OVERRIDES_HEAT_INDEX,
+  ...TOOL_SEO_OVERRIDES_DEW_POINT,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {

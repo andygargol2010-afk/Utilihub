@@ -71,6 +71,7 @@ import { CAULK_CALCULATOR_TOOLS } from "./caulk-calculator";
 import { GROUT_CALCULATOR_TOOLS } from "./grout-calculator";
 import { THINSET_CALCULATOR_TOOLS } from "./thinset-calculator";
 import { HEAT_INDEX_TOOLS } from "./heat-index-calculator";
+import { DEW_POINT_TOOLS } from "./dew-point-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -147,4 +148,5 @@ export const GENERAL_TOOLS = [
   ...GROUT_CALCULATOR_TOOLS,
   ...THINSET_CALCULATOR_TOOLS,
   ...HEAT_INDEX_TOOLS,
+  ...DEW_POINT_TOOLS,
 ];
