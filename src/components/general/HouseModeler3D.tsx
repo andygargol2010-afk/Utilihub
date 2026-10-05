@@ -1043,6 +1043,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const toolRef = useRef(tool);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
+  // Click-select must not snap the part. Drag arms only after the pointer moves past this.
+  const dragArmRef = useRef<{ id: string; offset: THREE.Vector3; x: number; y: number } | null>(null);
+  const DRAG_ARM_PX = 6;
   const paletteDragRef = useRef<PartKind | null>(null);
   // Owning pointer for place/drag. A second finger's pointerup must not commit or unlock orbit.
   const gesturePointerRef = useRef<number | null>(null);
@@ -1505,6 +1508,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       mesh: primary as THREE.Mesh,
     });
     setCount(partsRef.current.length);
+    // selectedRef is read by Delete/R before the state effect flushes.
+    selectedRef.current = id;
     setSelectedId(id);
     setSelectedRot(0);
   }, []);
@@ -1535,8 +1540,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setCount(partsRef.current.length);
     if (t) t.selectionHelper.visible = false;
     // Deleting the part under the pointer must not keep a stale drag or a locked orbit.
-    if (draggingRef.current?.id === id) {
+    if (draggingRef.current?.id === id || dragArmRef.current?.id === id) {
       draggingRef.current = null;
+      dragArmRef.current = null;
       gesturePointerRef.current = null;
       pendingPlaceRef.current = false;
       if (t && !paletteDragRef.current) t.controls.enabled = true;
@@ -1646,6 +1652,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         }
       }
       draggingRef.current = null;
+      dragArmRef.current = null;
       const shouldPlace = place && pendingPlaceRef.current && !paletteDragRef.current;
       pendingPlaceRef.current = false;
       if (shouldPlace && ev) {
@@ -1677,11 +1684,20 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         return;
       }
       if (t.ghost) {
-        if (draggingRef.current || !inside || paletteDragRef.current) {
+        if (draggingRef.current || dragArmRef.current || !inside || paletteDragRef.current) {
           t.ghost.visible = false;
         } else {
           t.ghost.visible = true;
           t.ghost.position.set(snap(point.x), 0, snap(point.z));
+        }
+      }
+      const arm = dragArmRef.current;
+      if (arm && !draggingRef.current) {
+        const dx = ev.clientX - arm.x;
+        const dy = ev.clientY - arm.y;
+        if (dx * dx + dy * dy >= DRAG_ARM_PX * DRAG_ARM_PX) {
+          draggingRef.current = { id: arm.id, offset: arm.offset };
+          dragArmRef.current = null;
         }
       }
       if (draggingRef.current) {
@@ -1725,10 +1741,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         setSelectedRot(picked ? ((Math.round(picked.rotationY / (Math.PI / 2)) % 4) + 4) % 4 : 0);
         const obj = findPartObject(id);
         if (obj) {
-          draggingRef.current = {
+          // Arm only: a click selects. Snap-drag starts after the pointer leaves the slop.
+          dragArmRef.current = {
             id,
             offset: new THREE.Vector3(point.x - obj.position.x, 0, point.z - obj.position.z),
+            x: ev.clientX,
+            y: ev.clientY,
           };
+          draggingRef.current = null;
           gesturePointerRef.current = ev.pointerId;
           t.controls.enabled = false;
           pendingPlaceRef.current = false;
@@ -1750,7 +1770,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       gesturePointerRef.current == null || ev.pointerId === gesturePointerRef.current;
 
     const onUp = (ev: PointerEvent) => {
-      if (ev.button !== 0 && ev.button !== undefined) return;
+      // Touch pointerup often reports button -1; only a secondary mouse button should be ignored.
+      if (ev.pointerType === "mouse" && ev.button !== 0) return;
       if (!ownsGesture(ev)) return;
       gesturePointerRef.current = null;
       endGesture(true, ev);
@@ -1787,6 +1808,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       window.removeEventListener("pointercancel", onCancel);
       window.removeEventListener("blur", onBlur);
       draggingRef.current = null;
+      dragArmRef.current = null;
       pendingPlaceRef.current = false;
       gesturePointerRef.current = null;
       if (threeRef.current) threeRef.current.controls.enabled = true;
@@ -1854,6 +1876,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           setPlacingFromPalette(false);
           setDragCursor(null);
           draggingRef.current = null;
+          dragArmRef.current = null;
           if (threeRef.current) {
             threeRef.current.controls.enabled = true;
             if (threeRef.current.ghost) threeRef.current.ghost.visible = true;
