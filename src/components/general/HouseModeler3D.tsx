@@ -685,6 +685,26 @@ function paintHorizonHaze(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+/** Late-day cirrus streaks. Transparent edges so banks sit in the sky shell, not as cards. */
+function paintCirrus(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.clearRect(0, 0, size, size);
+  for (let i = 0; i < 8; i++) {
+    const y = size * (0.22 + hash2(i, 2.4) * 0.5);
+    const x = size * (0.08 + hash2(i, 6.1) * 0.78);
+    const rx = 46 + hash2(i, 1.7) * 78;
+    const ry = 5 + hash2(i, 8.2) * 12;
+    const warm = hash2(i, 4.4) > 0.45;
+    const g = ctx.createRadialGradient(x, y, 2, x, y, rx);
+    g.addColorStop(0, warm ? "rgba(255,236,206,0.62)" : "rgba(244,236,224,0.48)");
+    g.addColorStop(0.4, "rgba(214,196,172,0.2)");
+    g.addColorStop(1, "rgba(214,196,172,0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(x, y, rx, ry, hash2(i, 3.3) * 0.7 - 0.3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
 /** Additive sun disc so the key-light direction reads in the sky shell. */
 function paintSunDisc(ctx: CanvasRenderingContext2D, size: number) {
   const c = size / 2;
@@ -1668,11 +1688,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sky.scale.setScalar(450);
       scene.add(sky);
       const skyUniforms = sky.material.uniforms;
-      // Slightly hazier low sun: warmer horizon, less washed zenith.
-      skyUniforms["turbidity"].value = 6.6;
-      skyUniforms["rayleigh"].value = 0.98;
-      skyUniforms["mieCoefficient"].value = 0.0048;
-      skyUniforms["mieDirectionalG"].value = 0.82;
+      // A touch more Mie so cirrus banks read against the shell, not a flat wash.
+      skyUniforms["turbidity"].value = 7.1;
+      skyUniforms["rayleigh"].value = 1.04;
+      skyUniforms["mieCoefficient"].value = 0.0054;
+      skyUniforms["mieDirectionalG"].value = 0.8;
       const sun = new THREE.Vector3();
       // Lower sun (closer to horizon) so walls cast longer, readable shadows on the pad.
       const phi = THREE.MathUtils.degToRad(80);
@@ -1715,6 +1735,27 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sunDisc.position.copy(sun).multiplyScalar(220);
       sunDisc.scale.set(34, 34, 1);
       scene.add(sunDisc);
+      // Four shared cirrus cards on the sky shell. Fog off so they do not flatten to the clear color.
+      const cirrusMap = makeCanvasTexture(256, paintCirrus, true);
+      const cirrusMat = new THREE.MeshBasicMaterial({
+        map: cirrusMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        fog: false,
+        toneMapped: false,
+        side: THREE.DoubleSide,
+        opacity: 0.7,
+      });
+      const cirrusGeo = new THREE.PlaneGeometry(168, 34);
+      const cirrusBanks: THREE.Mesh[] = [];
+      for (let i = 0; i < 4; i++) {
+        const bank = new THREE.Mesh(cirrusGeo, cirrusMat);
+        const ang = theta + (i - 1.5) * 0.62;
+        bank.position.set(Math.sin(ang) * 200, 42 + i * 7, Math.cos(ang) * 200);
+        bank.lookAt(0, 16, 0);
+        cirrusBanks.push(bank);
+        scene.add(bank);
+      }
       const fill = new THREE.DirectionalLight(0x9eb6d4, 0.28);
       fill.position.set(-sun.x * 26, 9, -sun.z * 26);
       scene.add(fill);
@@ -1997,6 +2038,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         tufts.dispose();
         sunDiscMat.dispose();
         sunDiscMap?.dispose();
+        cirrusGeo.dispose();
+        cirrusMat.dispose();
+        cirrusMap?.dispose();
         ringMat.dispose();
         for (const geo of ringGeos) geo.dispose();
         contactAo.geometry.dispose();
