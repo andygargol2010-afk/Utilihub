@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
 const DESKTOP = {
@@ -17,8 +17,11 @@ const MOBILE = {
   src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
 };
 
+type AtWindow = Window & { atOptions?: Record<string, unknown> };
+
 /** Home banner. On mobile, scale down if the network injects a wider creative. */
 export function AdBanner() {
+  const slotRef = useRef<HTMLDivElement>(null);
   const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
   const [allowed, setAllowed] = useState(false);
   const [scale, setScale] = useState(1);
@@ -44,7 +47,6 @@ export function AdBanner() {
       return;
     }
     const updateScale = () => {
-      // Fit a 728-wide creative into the usable content width (padding ~16px each side).
       const usable = Math.max(280, window.innerWidth - 32);
       setScale(Math.min(1, usable / 728));
     };
@@ -54,24 +56,40 @@ export function AdBanner() {
   }, [viewport]);
 
   useEffect(() => {
-    if (!allowed || !viewport) return;
-    const container = document.getElementById("utilihub-ad-banner");
-    if (!container) return;
+    if (!allowed || !viewport || !slotRef.current) return;
+    const slot = slotRef.current;
+    if (slot.dataset.loaded === "true") return;
 
-    container.replaceChildren();
-    delete container.dataset.loaded;
+    slot.replaceChildren();
+    slot.dataset.loaded = "true";
 
     const config = viewport === "desktop" ? DESKTOP : MOBILE;
-    const options = document.createElement("script");
-    options.text = `atOptions = {'key':'${config.key}','format':'iframe','height':${config.height},'width':${config.width},'params':{}};`;
-    container.appendChild(options);
+    const w = window as AtWindow;
+    const previous = w.atOptions;
+    w.atOptions = {
+      key: config.key,
+      format: "iframe",
+      height: config.height,
+      width: config.width,
+      params: {},
+    };
 
     const script = document.createElement("script");
-    script.src = config.src;
     script.async = true;
+    script.src = config.src;
     script.dataset.utilihubAd = viewport;
-    container.appendChild(script);
-    container.dataset.loaded = "true";
+    script.onerror = () => {
+      slot.dataset.loaded = "error";
+    };
+    slot.appendChild(script);
+
+    return () => {
+      if (previous) w.atOptions = previous;
+      else delete w.atOptions;
+      script.remove();
+      delete slot.dataset.loaded;
+      slot.replaceChildren();
+    };
   }, [allowed, viewport]);
 
   if (!allowed || !viewport) return null;
@@ -80,10 +98,7 @@ export function AdBanner() {
   const minH = isMobile ? Math.ceil(90 * scale) : 90;
 
   return (
-    <div
-      className="mx-auto w-full max-w-full overflow-x-hidden py-2"
-      aria-label="Advertisement"
-    >
+    <div className="mx-auto w-full max-w-full overflow-x-hidden py-2" aria-label="Advertisement">
       <div
         className="mx-auto flex items-center justify-center"
         style={{
@@ -93,11 +108,11 @@ export function AdBanner() {
         }}
       >
         <div
-          id="utilihub-ad-banner"
+          ref={slotRef}
           className="flex items-center justify-center [&_iframe]:max-w-none"
           style={{
-            width: isMobile ? 728 : 728,
-            minHeight: isMobile ? 90 : 90,
+            width: 728,
+            minHeight: 90,
             transform: isMobile && scale < 1 ? `scale(${scale})` : undefined,
             transformOrigin: "top center",
           }}
