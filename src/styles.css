@@ -70,6 +70,13 @@ body {
   box-shadow: 0 12px 30px -26px rgba(31, 41, 88, .55);
   z-index: 2147483000;
 }
+/* Adsterra injects the Social Bar outside React. Keep top-anchored instances below the sticky navbar. */
+@media (min-width: 768px) {
+  .utilihub-social-bar-top {
+    top: 72px !important;
+    bottom: auto !important;
+  }
+}
 h1 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.04em; line-height: 1.03; }
 h2,h3,h4 { font-family: var(--font-sans); letter-spacing: -0.02em; }
 h2 { line-height: 1.12; }

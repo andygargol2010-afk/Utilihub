@@ -13,6 +13,8 @@ const HIDE_STYLE_ID = "utilihub-social-bar-cooldown";
 const MIN_DELAY_MS = 15_000;
 const IDLE_TIMEOUT_MS = 20_000;
 const MIN_SCROLL_PX = 120;
+const SOCIAL_BAR_IFRAME_SELECTOR = 'iframe[src*="profitableratecpmnetwork"]';
+const SOCIAL_BAR_TOP_CLASS = "utilihub-social-bar-top";
 
 /** Only hide social-bar / push overlays — never the in-page banner iframes. */
 const HIDE_CSS = `
@@ -79,6 +81,24 @@ function injectScript() {
   document.body.appendChild(script);
 }
 
+/** Mark only top-anchored wrappers created by the external Social Bar script. */
+function markTopAnchoredBars() {
+  document.querySelectorAll<HTMLIFrameElement>(SOCIAL_BAR_IFRAME_SELECTOR).forEach((frame) => {
+    let node: HTMLElement | null = frame;
+    let fixedAncestor: HTMLElement | null = null;
+    while (node && node !== document.body) {
+      if (window.getComputedStyle(node).position === "fixed") {
+        fixedAncestor = node;
+        break;
+      }
+      node = node.parentElement;
+    }
+    if (!fixedAncestor) return;
+    const top = Number.parseFloat(window.getComputedStyle(fixedAncestor).top);
+    if (Number.isFinite(top) && top <= 96) fixedAncestor.classList.add(SOCIAL_BAR_TOP_CLASS);
+  });
+}
+
 /**
  * Social bar — desktop only, after marketing consent.
  */
@@ -113,12 +133,20 @@ export function AdsterraSocialBar() {
     let idleId = 0;
     let fallbackTimer = 0;
     let scrolledPx = 0;
+    const observer = new MutationObserver(markTopAnchoredBars);
 
     const tryInject = () => {
       if (cancelled || injected) return;
       if (!window.matchMedia("(min-width: 768px)").matches) return;
       injected = true;
       injectScript();
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["style", "src"],
+      });
+      window.setTimeout(markTopAnchoredBars, 250);
     };
 
     const onInteract = () => {
@@ -177,6 +205,7 @@ export function AdsterraSocialBar() {
       if (idleId && window.cancelIdleCallback) window.cancelIdleCallback(idleId);
       cleanupInteract();
       document.removeEventListener("click", onClick, true);
+      observer.disconnect();
     };
   }, [allowed]);
 
