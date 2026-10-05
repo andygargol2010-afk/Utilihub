@@ -65,6 +65,7 @@ import { DOUGH_WATER_TEMP_TOOLS } from "./dough-water-temp";
 import { SIDING_CALCULATOR_TOOLS } from "./siding-calculator";
 import { BASEBOARD_CALCULATOR_TOOLS } from "./baseboard-calculator";
 import { GRASS_SEED_CALCULATOR_TOOLS } from "./grass-seed-calculator";
+import { FIREWOOD_CALCULATOR_TOOLS } from "./firewood-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -135,4 +136,5 @@ export const GENERAL_TOOLS = [
   ...SIDING_CALCULATOR_TOOLS,
   ...BASEBOARD_CALCULATOR_TOOLS,
   ...GRASS_SEED_CALCULATOR_TOOLS,
+  ...FIREWOOD_CALCULATOR_TOOLS,
 ];
