@@ -520,6 +520,54 @@ function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+/** Blade clumps as height so the field catches the key light instead of reading as a flat disc. */
+function paintGrassRelief(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#7a7a7a";
+  ctx.fillRect(0, 0, size, size);
+  for (let i = 0; i < 70; i++) {
+    const x = hash2(i, 2.2) * size;
+    const y = hash2(i, 8.4) * size;
+    const rx = 4 + hash2(i, 5) * 14;
+    const ry = rx * (0.4 + hash2(i, 6) * 0.35);
+    const lift = hash2(i, 3) > 0.45 ? 210 : 92;
+    ctx.fillStyle = `rgba(${lift}, ${lift}, ${lift}, 0.42)`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, rx, ry, hash2(i, 4) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 46; i++) {
+    const x = hash2(i, 12) * size;
+    const y = hash2(i, 19) * size;
+    ctx.strokeStyle = hash2(i, 1.4) > 0.5 ? "rgba(255,255,255,0.45)" : "rgba(20,20,20,0.35)";
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + (hash2(i, 2) - 0.5) * 7, y - 5 - hash2(i, 8) * 7);
+    ctx.stroke();
+  }
+}
+
+/** Packed earth for the access path and apron: worn center, pebble rim. */
+function paintWornEarth(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [138, 118, 92], 22);
+  for (let i = 0; i < 64; i++) {
+    const x = hash2(i, 3.1) * size;
+    const y = hash2(i, 6.6) * size;
+    const r = 1 + hash2(i, 8) * 2.8;
+    const tone = 108 + Math.floor(hash2(i, 2.2) * 62);
+    ctx.fillStyle = `rgba(${tone + 8}, ${tone - 4}, ${tone - 18}, 0.5)`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * 0.72, hash2(i, 4) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.05, size / 2, size / 2, size * 0.48);
+  g.addColorStop(0, "rgba(62,48,34,0.28)");
+  g.addColorStop(0.55, "rgba(92,74,52,0.08)");
+  g.addColorStop(1, "rgba(92,74,52,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+}
+
 function paintContactAO(ctx: CanvasRenderingContext2D, size: number) {
   const c = size / 2;
   const g = ctx.createRadialGradient(c, c, size * 0.08, c, c, size * 0.5);
@@ -533,9 +581,9 @@ function paintContactAO(ctx: CanvasRenderingContext2D, size: number) {
 /** Soft horizon band so the grass disc dissolves into the sky instead of a hard edge. */
 function paintHorizonHaze(ctx: CanvasRenderingContext2D, size: number) {
   const g = ctx.createLinearGradient(0, 0, 0, size);
-  g.addColorStop(0, "rgba(183,198,214,0)");
-  g.addColorStop(0.42, "rgba(183,198,214,0.28)");
-  g.addColorStop(1, "rgba(176,194,214,0.72)");
+  g.addColorStop(0, "rgba(198,193,176,0)");
+  g.addColorStop(0.42, "rgba(198,190,168,0.26)");
+  g.addColorStop(1, "rgba(188,178,152,0.7)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, size, size);
 }
@@ -668,6 +716,11 @@ function makeMaterials() {
   }, false);
   const groundMap = makeCanvasTexture(TEX, paintGrass, true);
   const groundRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 210, 28), false);
+  const groundBump = makeCanvasTexture(TEX, paintGrassRelief, false);
+  const groundNormal = makeCanvasTexture(TEX, (ctx, s) => {
+    paintGrassRelief(ctx, s);
+    paintNormalFromHeight(ctx, s, 2.2);
+  }, false);
   const gravelMap = makeCanvasTexture(TEX, paintGravel, true);
   const gravelRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 200, 36), false);
   const plateMap = makeCanvasTexture(TEX, paintPlate, true);
@@ -718,6 +771,8 @@ function makeMaterials() {
   applyRepeat(roofNormal, 3, 2);
   applyRepeat(groundMap, 10, 10);
   applyRepeat(groundRough, 10, 10);
+  applyRepeat(groundBump, 10, 10);
+  applyRepeat(groundNormal, 10, 10);
   applyRepeat(gravelMap, 5, 5);
   applyRepeat(gravelRough, 5, 5);
   applyRepeat(plateMap, 3, 1);
@@ -782,6 +837,10 @@ function makeMaterials() {
     color: 0xffffff,
     map: groundMap ?? undefined,
     roughnessMap: groundRough ?? undefined,
+    bumpMap: groundBump ?? undefined,
+    bumpScale: 0.028,
+    normalMap: groundNormal ?? undefined,
+    normalScale: new THREE.Vector2(0.35, 0.35),
     roughness: 0.96,
     metalness: 0,
   });
@@ -1390,9 +1449,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     let disposed = false;
     try {
       const scene = new THREE.Scene();
-      // Horizon-matched haze: pad stays clear, outer grass fades into the sky.
-      scene.fog = new THREE.FogExp2(0xc3cdd6, 0.0072);
-      scene.background = new THREE.Color(0xc3cdd6);
+      // Warm horizon haze so the grass disc fades into the late-day sky, not a cool cut.
+      scene.fog = new THREE.FogExp2(0xc6c1b0, 0.0064);
+      scene.background = new THREE.Color(0xc6c1b0);
 
       const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
       camera.position.set(12, 9, 14);
@@ -1428,7 +1487,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sky.material.fog = false;
       sky.material.depthWrite = false;
 
-      const hemi = new THREE.HemisphereLight(0xd4e2f4, 0x6a5a40, 0.42);
+      const hemi = new THREE.HemisphereLight(0xd6e4f2, 0x5c6840, 0.46);
       scene.add(hemi);
       const dir = new THREE.DirectionalLight(0xffe6c2, 1.36);
       dir.position.copy(sun).multiplyScalar(48);
@@ -1494,10 +1553,21 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       rim.position.y = 0.012;
       rim.receiveShadow = true;
       scene.add(rim);
-      // Worn earth apron: gravel pad dissolves into grass instead of a hard cut.
+      // Worn earth apron and access path share one packed-earth map (not a flat tint).
+      const earthMap = makeCanvasTexture(256, paintWornEarth, true);
+      const earthRough = makeCanvasTexture(256, (ctx, s) => {
+        paintWornEarth(ctx, s);
+        paintRoughFromAlbedo(ctx, s, 188, 48, true);
+      }, false);
+      if (earthMap) earthMap.repeat.set(3, 3);
+      if (earthRough) earthRough.repeat.set(3, 3);
       const apronGeo = new THREE.RingGeometry(11.15, 16.8, 64);
       const apronMat = new THREE.MeshStandardMaterial({
-        color: 0x8a7860,
+        color: 0xffffff,
+        map: earthMap ?? undefined,
+        roughnessMap: earthRough ?? undefined,
+        bumpMap: earthRough ?? undefined,
+        bumpScale: 0.03,
         roughness: 0.97,
         metalness: 0,
       });
@@ -1510,8 +1580,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       // Compacted access path so the pad reads as a site, not a floating disc.
       const pathGeo = new THREE.PlaneGeometry(1.7, 9.2);
       const pathMat = new THREE.MeshStandardMaterial({
-        color: 0x8a7860,
-        roughness: 0.97,
+        color: 0xd8cbb6,
+        map: earthMap ?? undefined,
+        roughnessMap: earthRough ?? undefined,
+        bumpMap: earthRough ?? undefined,
+        bumpScale: 0.035,
+        roughness: 0.96,
         metalness: 0,
       });
       const path = new THREE.Mesh(pathGeo, pathMat);
@@ -1575,7 +1649,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (hazeMap) hazeMap.repeat.set(1, 1);
       const hazeMat = new THREE.MeshBasicMaterial({
         map: hazeMap ?? undefined,
-        color: 0xc3cdd6,
+        color: 0xc6c1b0,
         transparent: true,
         depthWrite: false,
         fog: false,
@@ -1694,6 +1768,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         apronMat.dispose();
         path.geometry.dispose();
         pathMat.dispose();
+        earthMap?.dispose();
+        earthRough?.dispose();
         tufts.geometry.dispose();
         tuftMat.dispose();
         tufts.dispose();
