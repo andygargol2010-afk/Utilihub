@@ -66,6 +66,7 @@ import { SIDING_CALCULATOR_TOOLS } from "./siding-calculator";
 import { BASEBOARD_CALCULATOR_TOOLS } from "./baseboard-calculator";
 import { GRASS_SEED_CALCULATOR_TOOLS } from "./grass-seed-calculator";
 import { FIREWOOD_CALCULATOR_TOOLS } from "./firewood-calculator";
+import { SHEET_CALCULATOR_TOOLS } from "./sheet-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -137,4 +138,5 @@ export const GENERAL_TOOLS = [
   ...BASEBOARD_CALCULATOR_TOOLS,
   ...GRASS_SEED_CALCULATOR_TOOLS,
   ...FIREWOOD_CALCULATOR_TOOLS,
+  ...SHEET_CALCULATOR_TOOLS,
 ];

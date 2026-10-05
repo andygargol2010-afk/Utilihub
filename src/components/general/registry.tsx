@@ -89,6 +89,7 @@ const SidingCalculatorTool = lazy(() => import("./SidingCalculatorTool").then((m
 const BaseboardCalculatorTool = lazy(() => import("./BaseboardCalculatorTool").then((m) => ({ default: m.BaseboardCalculatorTool })));
 const GrassSeedCalculatorTool = lazy(() => import("./GrassSeedCalculatorTool").then((m) => ({ default: m.GrassSeedCalculatorTool })));
 const FirewoodCalculatorTool = lazy(() => import("./FirewoodCalculatorTool").then((m) => ({ default: m.FirewoodCalculatorTool })));
+const SheetCalculatorTool = lazy(() => import("./SheetCalculatorTool").then((m) => ({ default: m.SheetCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -124,6 +125,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-zocalos") return BaseboardCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-semilla-cesped") return GrassSeedCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-lena") return FirewoodCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-tableros") return SheetCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;

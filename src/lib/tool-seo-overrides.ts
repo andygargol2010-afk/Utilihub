@@ -51,6 +51,7 @@ import { TOOL_SEO_OVERRIDES_SIDING } from "./tool-seo-overrides-siding";
 import { TOOL_SEO_OVERRIDES_BASEBOARD } from "./tool-seo-overrides-baseboard";
 import { TOOL_SEO_OVERRIDES_GRASS_SEED } from "./tool-seo-overrides-grass-seed";
 import { TOOL_SEO_OVERRIDES_FIREWOOD } from "./tool-seo-overrides-firewood";
+import { TOOL_SEO_OVERRIDES_SHEET } from "./tool-seo-overrides-sheet";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -117,6 +118,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_BASEBOARD,
   ...TOOL_SEO_OVERRIDES_GRASS_SEED,
   ...TOOL_SEO_OVERRIDES_FIREWOOD,
+  ...TOOL_SEO_OVERRIDES_SHEET,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
