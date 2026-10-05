@@ -441,6 +441,103 @@ function paintDoorLeafBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(stile + 8, mid + rail / 2 + 8, size - stile * 2 - 16, size - rail - (mid + rail / 2) - 16);
 }
 
+
+function paintJoinery(ctx: CanvasRenderingContext2D, size: number) {
+  // Painted sash: cream enamel over timber, brush drag, not the oak plate map.
+  noiseFill(ctx, size, [214, 206, 190], 10);
+  ctx.fillStyle = "#d9d0c0";
+  ctx.fillRect(0, 0, size, size);
+  for (let i = 0; i < 9; i++) {
+    const y0 = Math.floor((i / 9) * size);
+    const h = Math.floor(size / 9);
+    const tone = 206 + Math.floor(hash2(i, 2.8) * 22);
+    ctx.fillStyle = `rgb(${tone}, ${tone - 6}, ${tone - 18})`;
+    ctx.fillRect(0, y0, size, h - 1);
+    ctx.strokeStyle = "rgba(120,104,82,0.22)";
+    ctx.lineWidth = 1;
+    const gy = y0 + h * 0.45;
+    ctx.beginPath();
+    ctx.moveTo(0, gy);
+    for (let x = 0; x <= size; x += 7) ctx.lineTo(x, gy + Math.sin(x * 0.05 + i) * 0.9);
+    ctx.stroke();
+  }
+  ctx.fillStyle = "rgba(92,78,62,0.35)";
+  ctx.fillRect(0, size - 4, size, 4);
+  ctx.fillRect(0, 0, size, 3);
+}
+
+function paintJoineryBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#b8b8b8";
+  ctx.fillRect(0, 0, size, size);
+  ctx.strokeStyle = "rgba(255,255,255,0.28)";
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 9; i++) {
+    const y = Math.floor((i / 9) * size) + 2;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    for (let x = 0; x <= size; x += 8) ctx.lineTo(x, y + Math.sin(x * 0.04 + i) * 0.8);
+    ctx.stroke();
+  }
+  ctx.fillStyle = "#4a4a4a";
+  ctx.fillRect(0, size - 4, size, 4);
+}
+
+function paintGlazing(ctx: CanvasRenderingContext2D, size: number) {
+  // Sky-tinted pane with faint reflection streaks and edge dirt. Mostly light so the tint still shows.
+  ctx.fillStyle = "#e7eef2";
+  ctx.fillRect(0, 0, size, size);
+  const sky = ctx.createLinearGradient(0, 0, size, size);
+  sky.addColorStop(0, "rgba(210,226,234,0.55)");
+  sky.addColorStop(0.45, "rgba(176,198,210,0.2)");
+  sky.addColorStop(1, "rgba(148,168,176,0.35)");
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, size, size);
+  for (let i = 0; i < 5; i++) {
+    const y = (0.12 + hash2(i, 3.1) * 0.7) * size;
+    ctx.strokeStyle = `rgba(255,255,255,${0.18 + hash2(i, 6) * 0.22})`;
+    ctx.lineWidth = 2 + hash2(i, 1.4) * 3;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    for (let x = 0; x <= size; x += 10) ctx.lineTo(x, y + Math.sin(x * 0.03 + i) * 4);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = "rgba(72,64,54,0.28)";
+  ctx.lineWidth = 8;
+  ctx.strokeRect(4, 4, size - 8, size - 8);
+  for (let i = 0; i < 18; i++) {
+    const x = hash2(i, 8.2) * size;
+    const y = hash2(i, 1.9) * size;
+    if (x > 18 && x < size - 18 && y > 18 && y < size - 18 && hash2(i, 4) > 0.35) continue;
+    ctx.fillStyle = `rgba(90,82,70,${0.12 + hash2(i, 5) * 0.2})`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, 1.2 + hash2(i, 7) * 2.4, 0.8, hash2(i, 2) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function paintGlazingRough(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#2a2a2a";
+  ctx.fillRect(0, 0, size, size);
+  const g = ctx.createRadialGradient(size * 0.42, size * 0.38, size * 0.05, size / 2, size / 2, size * 0.72);
+  g.addColorStop(0, "#1c1c1c");
+  g.addColorStop(0.65, "#3a3a3a");
+  g.addColorStop(1, "#9a9a9a");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+  ctx.strokeStyle = "#c8c8c8";
+  ctx.lineWidth = 10;
+  ctx.strokeRect(2, 2, size - 4, size - 4);
+  for (let i = 0; i < 5; i++) {
+    const y = (0.12 + hash2(i, 3.1) * 0.7) * size;
+    ctx.strokeStyle = "rgba(90,90,90,0.55)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    for (let x = 0; x <= size; x += 10) ctx.lineTo(x, y + Math.sin(x * 0.03 + i) * 4);
+    ctx.stroke();
+  }
+}
+
 function paintNosingBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "#a8a8a8";
   ctx.fillRect(0, 0, size, size);
@@ -748,6 +845,14 @@ function makeMaterials() {
     paintRoughFromAlbedo(ctx, s, 132, 70, true);
   }, false);
   const doorBump = makeCanvasTexture(TEX, paintDoorLeafBump, false);
+  const joineryMap = makeCanvasTexture(TEX, paintJoinery, true);
+  const joineryRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintJoinery(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 168, 48, true);
+  }, false);
+  const joineryBump = makeCanvasTexture(TEX, paintJoineryBump, false);
+  const glazingMap = makeCanvasTexture(TEX, paintGlazing, true);
+  const glazingRough = makeCanvasTexture(TEX, paintGlazingRough, false);
 
   const applyRepeat = (tex: THREE.CanvasTexture | null, x: number, y: number) => {
     if (!tex) return;
@@ -891,14 +996,25 @@ function makeMaterials() {
     roughness: 0.62,
     metalness: 0.03,
   });
+  const joinery = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: joineryMap ?? undefined,
+    roughnessMap: joineryRough ?? undefined,
+    bumpMap: joineryBump ?? undefined,
+    bumpScale: 0.02,
+    roughness: 0.58,
+    metalness: 0.02,
+  });
   const doorGlass = new THREE.MeshStandardMaterial({
     color: 0x9bb7c9,
-    roughness: 0.08,
-    metalness: 0.04,
+    map: glazingMap ?? undefined,
+    roughnessMap: glazingRough ?? undefined,
+    roughness: 0.12,
+    metalness: 0.06,
     transparent: true,
-    opacity: 0.55,
+    opacity: 0.58,
   });
-  return { wall, wallEdge, floor, roof, ground, gravel, plate, nosing, fascia, doorLeaf, doorGlass };
+  return { wall, wallEdge, floor, roof, ground, gravel, plate, nosing, fascia, doorLeaf, joinery, doorGlass };
 }
 
 function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
@@ -1086,13 +1202,13 @@ function createWindowMesh(mats: ReturnType<typeof makeMaterials>) {
   apron.position.set(0, 0.82, 0);
   apron.castShadow = true;
   group.add(apron);
-  const jambL = new THREE.Mesh(new THREE.BoxGeometry(0.07, 1.12, 0.1), mats.plate);
+  const jambL = new THREE.Mesh(new THREE.BoxGeometry(0.07, 1.12, 0.1), mats.joinery);
   jambL.position.set(-0.56, 1.49, 0);
   jambL.castShadow = true;
   jambL.receiveShadow = true;
   const jambR = jambL.clone();
   jambR.position.x = 0.56;
-  const head = new THREE.Mesh(new THREE.BoxGeometry(1.19, 0.07, 0.1), mats.plate);
+  const head = new THREE.Mesh(new THREE.BoxGeometry(1.19, 0.07, 0.1), mats.joinery);
   head.position.set(0, 2.02, 0);
   head.castShadow = true;
   head.receiveShadow = true;
@@ -1102,9 +1218,9 @@ function createWindowMesh(mats: ReturnType<typeof makeMaterials>) {
   glass.castShadow = false;
   glass.receiveShadow = true;
   group.add(glass);
-  const muntinV = new THREE.Mesh(new THREE.BoxGeometry(0.035, 1.0, 0.035), mats.fascia);
+  const muntinV = new THREE.Mesh(new THREE.BoxGeometry(0.035, 1.0, 0.035), mats.joinery);
   muntinV.position.set(0, 1.48, 0.022);
-  const muntinH = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.035, 0.035), mats.fascia);
+  const muntinH = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.035, 0.035), mats.joinery);
   muntinH.position.set(0, 1.48, 0.022);
   group.add(muntinV, muntinH);
   return group;
