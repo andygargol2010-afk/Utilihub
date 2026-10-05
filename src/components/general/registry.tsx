@@ -93,6 +93,7 @@ const SheetCalculatorTool = lazy(() => import("./SheetCalculatorTool").then((m) 
 const CaulkCalculatorTool = lazy(() => import("./CaulkCalculatorTool").then((m) => ({ default: m.CaulkCalculatorTool })));
 const GroutCalculatorTool = lazy(() => import("./GroutCalculatorTool").then((m) => ({ default: m.GroutCalculatorTool })));
 const ThinsetCalculatorTool = lazy(() => import("./ThinsetCalculatorTool").then((m) => ({ default: m.ThinsetCalculatorTool })));
+const HeatIndexTool = lazy(() => import("./HeatIndexTool").then((m) => ({ default: m.HeatIndexTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -132,6 +133,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-silicona") return CaulkCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-junta-baldosas") return GroutCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-adhesivo-baldosas") return ThinsetCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-sensacion-termica") return HeatIndexTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
