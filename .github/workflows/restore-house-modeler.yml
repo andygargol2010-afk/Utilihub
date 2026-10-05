@@ -12,10 +12,13 @@ jobs:
           ref: fix/spanish-complete
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore good HouseModeler3D and remove split modules
+      - name: Restore HouseModeler3D from ed40dbc (cirrus / full graphics)
         run: |
           set -euo pipefail
-          git checkout 9e7cfe5f989adf28455adb0fb164c6d2e7c6e3ef -- src/components/general/HouseModeler3D.tsx
+          # Last good detailed modeler before the simplified/placeholder overwrite
+          GOOD=ed40dbc09f5a0e4490b30f0b2acf22cc98ab526c
+          git checkout "$GOOD" -- src/components/general/HouseModeler3D.tsx
+          # Remove emergency split modules if present
           rm -f src/components/general/house-modeler-lib.ts \
                 src/components/general/house-modeler-textures.ts \
                 src/components/general/house-modeler-glyph.tsx \
@@ -25,8 +28,8 @@ jobs:
           git add -A
           git status
           if git diff --staged --quiet; then
-            echo "Nothing to commit"
+            echo "Nothing to commit — already restored"
             exit 0
           fi
-          git commit -m "restore: HouseModeler3D from 9e7cfe5 (good detailed version)"
+          git commit -m "restore: HouseModeler3D from ed40dbc (full detailed graphics)"
           git push origin HEAD:fix/spanish-complete
