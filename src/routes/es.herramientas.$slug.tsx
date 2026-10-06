@@ -1,13 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { TOOL_UI_ES } from "@/components/tools/registry";
-import { GENERAL_TOOL_UI_ES } from "@/components/general/registry";
+import { DeferredToolUi } from "@/components/DeferredToolUi";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolSeoContent } from "@/components/ToolSeoContent";
-import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { ToolCard } from "@/components/ToolCard";
 import { allToolBySlug, ALL_CATEGORIES, type CatalogTool } from "@/lib/all-tools";
 import { englishToolPath } from "@/lib/route-slugs";
@@ -133,7 +131,6 @@ function SpanishToolPage() {
   const { tool } = Route.useLoaderData();
   const { addRecent } = useRecentTools();
   const category = ALL_CATEGORIES.find((item) => item.slug === tool.category);
-  const ui = TOOL_UI_ES[tool.slug] ?? GENERAL_TOOL_UI_ES[tool.slug];
   const showcase = getToolShowcase(tool.slug);
   const name = spanishToolName(tool);
   const related = journeyTools(tool);
@@ -181,9 +178,7 @@ function SpanishToolPage() {
           showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""
         }`}
       >
-        <Suspense fallback={<ToolUiFallback locale="es" />}>
-          {ui ? ui() : <p role="alert" className="text-muted-foreground">Herramienta no disponible.</p>}
-        </Suspense>
+        <DeferredToolUi slug={tool.slug} locale="es" />
         <div className="mt-4">
           <ShareAndExportActions title={name} locale="es" />
         </div>

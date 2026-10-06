@@ -1,14 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { TOOL_UI } from "@/components/tools/registry";
-import { GENERAL_TOOL_UI } from "@/components/general/registry";
+import { DeferredToolUi } from "@/components/DeferredToolUi";
 import { ToolCard } from "@/components/ToolCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolSeoContent } from "@/components/ToolSeoContent";
-import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
 import {
   toolByEnglishSlug,
@@ -123,7 +121,6 @@ function ToolPage() {
   const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
   const related = journeyTools(tool);
   const nextStep = related[0];
-  const ui = TOOL_UI[tool.slug] ?? GENERAL_TOOL_UI[tool.slug];
 
   useEffect(() => {
     addRecent(tool.slug);
@@ -162,9 +159,7 @@ function ToolPage() {
           showcase ? "-mt-1 border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""
         }`}
       >
-        <Suspense fallback={<ToolUiFallback locale="en" />}>
-          {ui ? ui() : <p role="alert" className="text-muted-foreground">Tool not available.</p>}
-        </Suspense>
+        <DeferredToolUi slug={tool.slug} locale="en" />
         <div className="mt-4">
           <ShareAndExportActions title={tool.name} />
         </div>
