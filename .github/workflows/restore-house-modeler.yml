@@ -12,38 +12,26 @@ jobs:
           ref: fix/spanish-complete
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore and fix
+      - name: Restore monolith from a4c81b5
         run: |
           set -euo pipefail
-          GOOD=9e7cfe5f989adf28455adb0fb164c6d2e7c6e3ef
+          GOOD=a4c81b5ec28ea4a01e4731752c30c08fee19795b
+          echo "Restoring from $GOOD"
           git log --oneline -1 "$GOOD"
           git checkout "$GOOD" -- src/components/general/HouseModeler3D.tsx
-          rm -f src/components/general/house-modeler-lib.ts src/components/general/house-modeler-textures.ts src/components/general/house-modeler-glyph.tsx
-          python3 -c "
-          from pathlib import Path
-          p = Path('src/components/general/HouseModeler3D.tsx')
-          t = p.read_text()
-          old = '''      const rim = new THREE.Mesh(rimGeo, rimMat);
-      rim.rotation.x = -Math.PI / 2;
-      rim.position.y = 0.012;
-      rim.receiveShadow = true;
-      scene.add(rim);'''
-          new = '''      const padRim = new THREE.Mesh(rimGeo, rimMat);
-      padRim.rotation.x = -Math.PI / 2;
-      padRim.position.y = 0.012;
-      padRim.receiveShadow = true;
-      scene.add(padRim);'''
-          assert old in t, 'pad rim block missing'
-          p.write_text(t.replace(old, new, 1))
-          print('renamed mesh rim -> padRim')
-          "
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          LINES=$(wc -l < src/components/general/HouseModeler3D.tsx)
+          echo "Restored lines: $LINES"
+          test "$LINES" -gt 4000 || { echo "ERROR: file too small ($LINES lines)"; exit 1; }
+          grep -q partFrozen src/components/general/HouseModeler3D.tsx
+          grep -q paintPlaster src/components/general/HouseModeler3D.tsx
+          grep -q SceneLayer src/components/general/HouseModeler3D.tsx
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/HouseModeler3D.tsx
           git status
           if git diff --staged --quiet; then
-            echo "Nothing to commit"
+            echo "Nothing to commit — already restored?"
             exit 0
           fi
-          git commit -m "restore: HouseModeler3D from 9e7cfe5 + fix rim redeclaration"
+          git commit -m "fix(house-modeler): restore full monolith from a4c81b5 after accidental wipe"
           git push origin HEAD:fix/spanish-complete
