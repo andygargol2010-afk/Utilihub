@@ -1,0 +1,43 @@
+name: Fix HouseModeler JSX
+on:
+  workflow_dispatch:
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Balance door JSX
+        run: |
+          set -euo pipefail
+          python3 << 'PY'
+          from pathlib import Path
+          p = Path("src/components/general/HouseModeler3D.tsx")
+          t = p.read_text()
+          old_open = "          ))}\n\n            <div className=\"rounded-xl border border-border bg-background/80 p-2\" role=\"group\" aria-label={labels.doorFinish}>\n"
+          new_open = "          ))}\n\n          {(tool === \"door\" || selectedKind === \"door\") && (\n            <div className=\"rounded-xl border border-border bg-background/80 p-2\" role=\"group\" aria-label={labels.doorFinish}>\n"
+          if old_open in t:
+              t = t.replace(old_open, new_open, 1)
+              print("wrapped")
+          else:
+              print("open already ok or different")
+          old_orphan = "          {(tool === \"door\" || selectedKind === \"door\") && (\n\n          {isFullscreen && (\n"
+          if old_orphan in t:
+              t = t.replace(old_orphan, "          {isFullscreen && (\n", 1)
+              print("orphan removed")
+          n = t.count('{(tool === "door" || selectedKind === "door") && (')
+          print("count", n)
+          assert n == 1, n
+          p.write_text(t)
+          PY
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/HouseModeler3D.tsx
+          if git diff --staged --quiet; then echo nothing; exit 0; fi
+          git commit -m "fix(house-modeler): balance door-finish JSX so vite build passes"
+          git push origin HEAD:fix/spanish-complete
