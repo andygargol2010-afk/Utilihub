@@ -10,6 +10,8 @@ type Locale = "en" | "es";
 type DoorFinish = "timber" | "metal";
 /** Roof covering. Clay tile stays the default; standing-seam metal is the selectable alternate. */
 type RoofFinish = "clay" | "metal";
+/** Wall face. Lime plaster stays the default; ashlar masonry is the selectable alternate. */
+type WallFinish = "plaster" | "masonry";
 
 type ScenePart = {
   id: string;
@@ -24,6 +26,8 @@ type ScenePart = {
   finish: DoorFinish;
   /** Kept on the part so rotate/clone do not drop the chosen roof covering. */
   roofFinish: RoofFinish;
+  /** Kept on the part so rotate/clone do not drop the chosen wall face. */
+  wallFinish: WallFinish;
 };
 
 function doorFinishOf(part: { kind: PartKind; finish?: DoorFinish } | undefined, fallback: DoorFinish = "timber"): DoorFinish {
@@ -36,6 +40,12 @@ function roofFinishOf(part: { kind: PartKind; roofFinish?: RoofFinish } | undefi
   if (part?.kind === "roof" && part.roofFinish === "metal") return "metal";
   if (part?.kind === "roof") return part.roofFinish === "clay" ? "clay" : fallback;
   return "clay";
+}
+
+function wallFinishOf(part: { kind: PartKind; wallFinish?: WallFinish } | undefined, fallback: WallFinish = "plaster"): WallFinish {
+  if (part?.kind === "wall" && part.wallFinish === "masonry") return "masonry";
+  if (part?.kind === "wall") return part.wallFinish === "plaster" ? "plaster" : fallback;
+  return "plaster";
 }
 
 type SceneLayer = {
@@ -267,6 +277,63 @@ function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
       ctx.beginPath();
       ctx.arc(x, (y0 + y1) / 2, 3.1, 0, Math.PI * 2);
       ctx.fill();
+    }
+  }
+}
+
+/** Running-bond ashlar for wall faces. Port of the plinth course, scaled for a 2.6 m bay. */
+function paintWallMasonry(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [176, 164, 146], 12);
+  const cols = 4;
+  const rows = 7;
+  const mortar = 4;
+  for (let r = 0; r < rows; r++) {
+    const y0 = (r / rows) * size;
+    const rh = size / rows;
+    const shift = r % 2 === 0 ? 0 : size / cols / 2;
+    for (let c = -1; c < cols + 1; c++) {
+      const vary = hash2(c + 4.2, r + 1.7);
+      const tone = 158 + Math.floor(vary * 42);
+      ctx.fillStyle = `rgb(${tone + 14}, ${tone}, ${tone - 18})`;
+      const x = c * (size / cols) + shift + mortar;
+      const w = size / cols - mortar * 1.6;
+      ctx.fillRect(x, y0 + mortar, w, rh - mortar * 1.7);
+      ctx.fillStyle = `rgba(${tone + 28}, ${tone + 16}, ${tone - 4}, 0.28)`;
+      ctx.fillRect(x + 3, y0 + mortar + 2, w * 0.55, 2);
+      if (vary > 0.62) {
+        ctx.fillStyle = `rgba(${tone - 36}, ${tone - 42}, ${tone - 48}, 0.4)`;
+        ctx.fillRect(x + vary * 8, y0 + rh * 0.45, 6 + vary * 10, 2);
+      }
+    }
+  }
+  ctx.strokeStyle = "rgba(78,66,52,0.62)";
+  ctx.lineWidth = 2;
+  for (let r = 0; r <= rows; r++) {
+    const y = (r / rows) * size;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(size, y);
+    ctx.stroke();
+  }
+}
+
+function paintWallMasonryBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#c2c2c2";
+  ctx.fillRect(0, 0, size, size);
+  const cols = 4;
+  const rows = 7;
+  ctx.fillStyle = "#3a3a3a";
+  for (let r = 0; r <= rows; r++) {
+    const y = Math.floor((r / rows) * size);
+    ctx.fillRect(0, y - 1, size, 3);
+  }
+  for (let r = 0; r < rows; r++) {
+    const y0 = Math.floor((r / rows) * size);
+    const rh = size / rows;
+    const shift = r % 2 === 0 ? 0 : size / cols / 2;
+    for (let c = 0; c <= cols; c++) {
+      const x = Math.floor(c * (size / cols) + shift);
+      ctx.fillRect(x - 1, y0, 3, rh);
     }
   }
 }
@@ -1007,6 +1074,12 @@ function makeMaterials() {
     paintNormalFromHeight(ctx, s, 2.4);
   }, false);
   const edgeMap = makeCanvasTexture(TEX, paintPlinth, true);
+  const wallMasonryMap = makeCanvasTexture(TEX, paintWallMasonry, true);
+  const wallMasonryRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintWallMasonry(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 150, 46, true);
+  }, false);
+  const wallMasonryBump = makeCanvasTexture(TEX, paintWallMasonryBump, false);
   const edgeRough = makeCanvasTexture(TEX, (ctx, s) => {
     paintPlinth(ctx, s);
     paintRoughFromAlbedo(ctx, s, 168, 80, true);
@@ -1103,6 +1176,9 @@ function makeMaterials() {
   applyRepeat(wallBump, 2, 2);
   applyRepeat(wallNormal, 2, 2);
   applyRepeat(edgeMap, 2, 1);
+  applyRepeat(wallMasonryMap, 1.4, 1.6);
+  applyRepeat(wallMasonryRough, 1.4, 1.6);
+  applyRepeat(wallMasonryBump, 1.4, 1.6);
   applyRepeat(edgeRough, 2, 1);
   applyRepeat(edgeBump, 2, 1);
   applyRepeat(edgeNormal, 2, 1);
@@ -1150,6 +1226,15 @@ function makeMaterials() {
     normalScale: new THREE.Vector2(0.42, 0.42),
     roughness: 0.86,
     metalness: 0.02,
+  });
+  const wallMasonry = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: wallMasonryMap ?? undefined,
+    roughnessMap: wallMasonryRough ?? undefined,
+    bumpMap: wallMasonryBump ?? undefined,
+    bumpScale: 0.05,
+    roughness: 0.84,
+    metalness: 0.03,
   });
   const wallEdge = new THREE.MeshStandardMaterial({
     color: 0xffffff,
@@ -1292,7 +1377,14 @@ function makeMaterials() {
     transparent: true,
     opacity: 0.58,
   });
-  return { wall, wallEdge, floor, roof, roofMetal, ground, gravel, plate, nosing, fascia, doorLeaf, doorMetal, joinery, doorGlass, footing };
+  return { wall, wallMasonry, wallEdge, floor, roof, roofMetal, ground, gravel, plate, nosing, fascia, doorLeaf, doorMetal, joinery, doorGlass, footing };
+}
+
+function applyWallFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: WallFinish) {
+  const mat = finish === "masonry" ? mats.wallMasonry : mats.wall;
+  obj.traverse((c) => {
+    if (c instanceof THREE.Mesh && c.name === "wallSkin") c.material = mat;
+  });
 }
 
 function applyDoorFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish) {
@@ -1334,9 +1426,11 @@ function staggerUvs(mesh: THREE.Mesh) {
   attr.needsUpdate = true;
 }
 
-function createWallMesh(mats: ReturnType<typeof makeMaterials>) {
+function createWallMesh(mats: ReturnType<typeof makeMaterials>, finish: WallFinish = "plaster") {
   const group = new THREE.Group();
-  const body = new THREE.Mesh(new THREE.BoxGeometry(3, 2.6, 0.2), mats.wall);
+  group.userData.wallFinish = finish;
+  const body = new THREE.Mesh(new THREE.BoxGeometry(3, 2.6, 0.2), finish === "masonry" ? mats.wallMasonry : mats.wall);
+  body.name = "wallSkin";
   body.position.y = 1.3;
   body.castShadow = true;
   body.receiveShadow = true;
@@ -1730,8 +1824,8 @@ function createFoundationMesh(mats: ReturnType<typeof makeMaterials>) {
   return group;
 }
 
-function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish = "timber", roofFinish: RoofFinish = "clay") {
-  if (kind === "wall") return createWallMesh(mats);
+function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish = "timber", roofFinish: RoofFinish = "clay", wallFinish: WallFinish = "plaster") {
+  if (kind === "wall") return createWallMesh(mats, wallFinish);
   if (kind === "floor") return createFloorMesh(mats);
   if (kind === "roof") return createRoofMesh(mats, roofFinish);
   if (kind === "column") return createColumnMesh(mats);
@@ -1876,6 +1970,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [tool, setTool] = useState<PartKind>("wall");
   const [doorFinish, setDoorFinish] = useState<DoorFinish>("timber");
   const [roofFinish, setRoofFinish] = useState<RoofFinish>("clay");
+  const [wallFinish, setWallFinish] = useState<WallFinish>("plaster");
   const [finishRev, setFinishRev] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [count, setCount] = useState(0);
@@ -1897,6 +1992,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const toolRef = useRef(tool);
   const doorFinishRef = useRef(doorFinish);
   const roofFinishRef = useRef(roofFinish);
+  const wallFinishRef = useRef(wallFinish);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
   // Click-select must not snap the part. Drag arms only after the pointer moves past this.
@@ -1920,6 +2016,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   useEffect(() => {
     roofFinishRef.current = roofFinish;
   }, [roofFinish]);
+  useEffect(() => {
+    wallFinishRef.current = wallFinish;
+  }, [wallFinish]);
   useEffect(() => {
     selectedRef.current = selectedId;
   }, [selectedId]);
@@ -1962,12 +2061,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, []);
 
   const makeGhost = useCallback(
-    (kind: PartKind, finish: DoorFinish = "timber", roofCover: RoofFinish = "clay") => {
+    (kind: PartKind, finish: DoorFinish = "timber", roofCover: RoofFinish = "clay", wallCover: WallFinish = "plaster") => {
       const t = threeRef.current;
       if (!t) return;
       clearGhost();
       let obj: THREE.Object3D;
-      obj = createPartMesh(kind, t.mats, kind === "door" ? finish : "timber", kind === "roof" ? roofCover : "clay");
+      obj = createPartMesh(kind, t.mats, kind === "door" ? finish : "timber", kind === "roof" ? roofCover : "clay", kind === "wall" ? wallCover : "plaster");
       obj.traverse((c) => {
         if (c instanceof THREE.Mesh && c.material) {
           const m = (c.material as THREE.MeshStandardMaterial).clone();
@@ -1985,8 +2084,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   useEffect(() => {
     if (!ready) return;
-    makeGhost(tool, doorFinish, roofFinish);
-  }, [tool, doorFinish, roofFinish, ready, makeGhost]);
+    makeGhost(tool, doorFinish, roofFinish, wallFinish);
+  }, [tool, doorFinish, roofFinish, wallFinish, ready, makeGhost]);
 
   useEffect(() => {
     const el = mountRef.current;
@@ -2430,10 +2529,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     let obj: THREE.Object3D;
     const finish: DoorFinish = kind === "door" ? doorFinishRef.current : "timber";
     const roofCover: RoofFinish = kind === "roof" ? roofFinishRef.current : "clay";
-    obj = createPartMesh(kind, t.mats, finish, roofCover);
+    const wallCover: WallFinish = kind === "wall" ? wallFinishRef.current : "plaster";
+    obj = createPartMesh(kind, t.mats, finish, roofCover, wallCover);
     obj.position.set(x, 0, z);
     obj.userData.finish = finish;
     obj.userData.roofFinish = roofCover;
+    obj.userData.wallFinish = wallCover;
     t.partsRoot.add(obj);
     let primary: THREE.Mesh | null = null;
     obj.traverse((c) => {
@@ -2466,6 +2567,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       layerId,
       finish,
       roofFinish: roofCover,
+      wallFinish: wallCover,
     });
     syncLockBadge(obj, !!layersRef.current.find((l) => l.id === layerId)?.locked);
     setCount(partsRef.current.length);
@@ -2586,11 +2688,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const z = snap(obj.position.z);
     const finish = doorFinishOf(part);
     const roofCover = roofFinishOf(part);
-    const clone = createPartMesh(part.kind, t.mats, finish, roofCover);
+    const wallCover = wallFinishOf(part);
+    const clone = createPartMesh(part.kind, t.mats, finish, roofCover, wallCover);
     clone.position.set(x, 0, z);
     clone.rotation.y = obj.rotation.y;
     clone.userData.finish = finish;
     clone.userData.roofFinish = roofCover;
+    clone.userData.wallFinish = wallCover;
     t.partsRoot.add(clone);
     let primary: THREE.Mesh | null = null;
     clone.traverse((c) => {
@@ -2620,6 +2724,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       layerId: part.layerId,
       finish,
       roofFinish: roofCover,
+      wallFinish: wallCover,
     });
     syncLockBadge(clone, !!layersRef.current.find((l) => l.id === part.layerId)?.locked);
     setCount(partsRef.current.length);
@@ -3022,7 +3127,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setPlacingFromPalette(true);
     setDragCursor({ x: ev.clientX, y: ev.clientY, over: false });
     if (threeRef.current) threeRef.current.controls.enabled = false;
-    makeGhost(kind);
+    makeGhost(kind, doorFinishRef.current, roofFinishRef.current, wallFinishRef.current);
     try {
       ev.currentTarget.setPointerCapture(ev.pointerId);
     } catch {
@@ -3127,6 +3232,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         doorTimber: "Madera",
         doorMetal: "Chapa",
         roofFinish: "Cubierta",
+        wallFinish: "Acabado de muro",
+        wallPlaster: "Revoco",
+        wallMasonry: "Mampostería",
         roofClay: "Teja",
         roofMetal: "Chapa de zinc",
         sizeWindow: "1.2 × 1.15 m",
@@ -3213,6 +3321,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         doorTimber: "Timber",
         doorMetal: "Sheet metal",
         roofFinish: "Roof covering",
+        wallFinish: "Wall finish",
+        wallPlaster: "Plaster",
+        wallMasonry: "Masonry",
         roofClay: "Clay tile",
         roofMetal: "Standing seam",
         sizeWindow: "1.2 × 1.15 m",
@@ -3260,6 +3371,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedKind = selectedPart?.kind;
   const selectedDoorFinish = doorFinishOf(selectedPart, doorFinish);
   const selectedRoofFinish = roofFinishOf(selectedPart, roofFinish);
+  const selectedWallFinish = wallFinishOf(selectedPart, wallFinish);
   void finishRev;
   const selectedLocked = selectedPart ? partFrozen(selectedPart, layers) : false;
   void lockRev;
@@ -3306,6 +3418,24 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         applyRoofFinish(obj, t.mats, next);
         obj.userData.roofFinish = next;
         part.roofFinish = next;
+        setFinishRev((n) => n + 1);
+      }
+    }
+  };
+
+
+  const chooseWallFinish = (next: WallFinish) => {
+    wallFinishRef.current = next;
+    setWallFinish(next);
+    const id = selectedRef.current;
+    const part = partsRef.current.find((p) => p.id === id);
+    const t = threeRef.current;
+    if (part && part.kind === "wall" && t && !partFrozen(part, layersRef.current)) {
+      const obj = findPartObject(part.id);
+      if (obj) {
+        applyWallFinish(obj, t.mats, next);
+        obj.userData.wallFinish = next;
+        part.wallFinish = next;
         setFinishRev((n) => n + 1);
       }
     }
@@ -3966,6 +4096,33 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       key={id}
                       type="button"
                       onClick={() => chooseDoorFinish(id)}
+                      aria-pressed={active}
+                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
+                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
+                      }`}
+                    >
+                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
+                      <span className="truncate">{label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {(tool === "wall" || selectedKind === "wall") && (
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.wallFinish}>
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.wallFinish}</p>
+              <div className="grid grid-cols-2 gap-1">
+                {([
+                  ["plaster", labels.wallPlaster, "#d8d0c4"],
+                  ["masonry", labels.wallMasonry, "#c4b49a"],
+                ] as const).map(([id, label, swatch]) => {
+                  const active = (selectedKind === "wall" ? selectedWallFinish : wallFinish) === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => chooseWallFinish(id)}
                       aria-pressed={active}
                       className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
