@@ -15,46 +15,58 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Restore HouseModeler3D and fix rim redeclaration
+      - name: Fix door-finish JSX imbalance
         run: |
           set -euo pipefail
-          GOOD=9e7cfe5f989adf28455adb0fb164c6d2e7c6e3ef
-          echo "Restoring from:"
-          git log --oneline -1 "$GOOD"
-          git checkout "$GOOD" -- src/components/general/HouseModeler3D.tsx
-          rm -f src/components/general/house-modeler-lib.ts \
-                src/components/general/house-modeler-textures.ts \
-                src/components/general/house-modeler-glyph.tsx
-          python3 <<'PY'
+          python3 << 'PY'
           from pathlib import Path
           p = Path("src/components/general/HouseModeler3D.tsx")
           t = p.read_text()
-          old = (
-              "      const rim = new THREE.Mesh(rimGeo, rimMat);\n"
-              "      rim.rotation.x = -Math.PI / 2;\n"
-              "      rim.position.y = 0.012;\n"
-              "      rim.receiveShadow = true;\n"
-              "      scene.add(rim);"
-          )
-          new = (
-              "      const padRim = new THREE.Mesh(rimGeo, rimMat);\n"
-              "      padRim.rotation.x = -Math.PI / 2;\n"
-              "      padRim.position.y = 0.012;\n"
-              "      padRim.receiveShadow = true;\n"
-              "      scene.add(padRim);"
-          )
-          if old not in t:
-              raise SystemExit("pad rim block not found")
-          p.write_text(t.replace(old, new, 1))
-          print("renamed mesh rim -> padRim")
+          # 1) Wrap orphan door-finish panel
+          old_open = '''          ))}
+
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
+'''
+          new_open = '''          ))}
+
+          {(tool === "door" || selectedKind === "door") && (
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
+'''
+          if old_open not in t:
+              # already fixed?
+              if '{(tool === "door" || selectedKind === "door") && (' in t and t.count('{(tool === "door" || selectedKind === "door") && (') == 1:
+                  print("Already balanced; skip open wrap")
+              else:
+                  raise SystemExit("door-finish open marker not found")
+          else:
+              t = t.replace(old_open, new_open, 1)
+              print("Wrapped door-finish panel")
+          # 2) Remove duplicate empty door conditional before isFullscreen
+          old_orphan = '''          {(tool === "door" || selectedKind === "door") && (
+
+          {isFullscreen && (
+'''
+          new_orphan = '''          {isFullscreen && (
+'''
+          if old_orphan in t:
+              t = t.replace(old_orphan, new_orphan, 1)
+              print("Removed orphan door conditional")
+          else:
+              print("No orphan conditional (ok)")
+          p.write_text(t)
+          n = t.count('{(tool === "door" || selectedKind === "door") && (')
+          print(f"door conditionals count: {n}")
+          if n != 1:
+              raise SystemExit(f"expected 1 door conditional, got {n}")
           PY
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          grep -n 'tool === "door" || selectedKind === "door"' src/components/general/HouseModeler3D.tsx || true
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/HouseModeler3D.tsx
           git status
           if git diff --staged --quiet; then
             echo "Nothing to commit"
             exit 0
           fi
-          git commit -m "restore: HouseModeler3D from 9e7cfe5 + fix rim redeclaration"
+          git commit -m "fix(house-modeler): balance door-finish JSX so vite build passes"
           git push origin HEAD:fix/spanish-complete
