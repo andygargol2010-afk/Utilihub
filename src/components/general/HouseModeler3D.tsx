@@ -12,6 +12,8 @@ type DoorFinish = "timber" | "metal";
 type RoofFinish = "clay" | "metal";
 /** Wall face. Lime plaster stays the default; ashlar masonry is the selectable alternate. */
 type WallFinish = "plaster" | "masonry";
+/** Column shaft. Lime plaster stays the default; ashlar masonry is the selectable alternate (ported from walls). */
+type ColumnFinish = "plaster" | "masonry";
 
 type ScenePart = {
   id: string;
@@ -28,6 +30,8 @@ type ScenePart = {
   roofFinish: RoofFinish;
   /** Kept on the part so rotate/clone do not drop the chosen wall face. */
   wallFinish: WallFinish;
+  /** Kept on the part so rotate/clone do not drop the chosen column shaft. */
+  columnFinish: ColumnFinish;
 };
 
 function doorFinishOf(part: { kind: PartKind; finish?: DoorFinish } | undefined, fallback: DoorFinish = "timber"): DoorFinish {
@@ -45,6 +49,12 @@ function roofFinishOf(part: { kind: PartKind; roofFinish?: RoofFinish } | undefi
 function wallFinishOf(part: { kind: PartKind; wallFinish?: WallFinish } | undefined, fallback: WallFinish = "plaster"): WallFinish {
   if (part?.kind === "wall" && part.wallFinish === "masonry") return "masonry";
   if (part?.kind === "wall") return part.wallFinish === "plaster" ? "plaster" : fallback;
+  return "plaster";
+}
+
+function columnFinishOf(part: { kind: PartKind; columnFinish?: ColumnFinish } | undefined, fallback: ColumnFinish = "plaster"): ColumnFinish {
+  if (part?.kind === "column" && part.columnFinish === "masonry") return "masonry";
+  if (part?.kind === "column") return part.columnFinish === "plaster" ? "plaster" : fallback;
   return "plaster";
 }
 
@@ -1450,6 +1460,13 @@ function applyWallFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMateri
   });
 }
 
+function applyColumnFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: ColumnFinish) {
+  const mat = finish === "masonry" ? mats.wallMasonry : mats.wall;
+  obj.traverse((c) => {
+    if (c instanceof THREE.Mesh && c.name === "columnSkin") c.material = mat;
+  });
+}
+
 function applyDoorFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish) {
   const mat = finish === "metal" ? mats.doorMetal : mats.doorLeaf;
   obj.traverse((c) => {
@@ -1573,15 +1590,17 @@ function createRoofMesh(mats: ReturnType<typeof makeMaterials>, finish: RoofFini
 }
 
 
-function createColumnMesh(mats: ReturnType<typeof makeMaterials>) {
-  // Square pier: stone plinth, plastered shaft, timber capital. Height matches walls (2.6 m).
+function createColumnMesh(mats: ReturnType<typeof makeMaterials>, finish: ColumnFinish = "plaster") {
+  // Square pier: stone plinth, plaster or ashlar shaft, timber capital. Height matches walls (2.6 m).
   const group = new THREE.Group();
+  group.userData.columnFinish = finish;
   const plinth = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.14, 0.5), mats.wallEdge);
   plinth.position.y = 0.07;
   plinth.castShadow = true;
   plinth.receiveShadow = true;
   group.add(plinth);
-  const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.34, 2.32, 0.34), mats.wall);
+  const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.34, 2.32, 0.34), finish === "masonry" ? mats.wallMasonry : mats.wall);
+  shaft.name = "columnSkin";
   shaft.position.y = 1.3;
   shaft.castShadow = true;
   shaft.receiveShadow = true;
@@ -1887,11 +1906,11 @@ function createFoundationMesh(mats: ReturnType<typeof makeMaterials>) {
   return group;
 }
 
-function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish = "timber", roofFinish: RoofFinish = "clay", wallFinish: WallFinish = "plaster") {
+function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish = "timber", roofFinish: RoofFinish = "clay", wallFinish: WallFinish = "plaster", columnFinish: ColumnFinish = "plaster") {
   if (kind === "wall") return createWallMesh(mats, wallFinish);
   if (kind === "floor") return createFloorMesh(mats);
   if (kind === "roof") return createRoofMesh(mats, roofFinish);
-  if (kind === "column") return createColumnMesh(mats);
+  if (kind === "column") return createColumnMesh(mats, columnFinish);
   if (kind === "door") return createDoorMeshWithFinish(mats, finish);
   if (kind === "window") return createWindowMesh(mats);
   if (kind === "stairs") return createStairsMesh(mats);
@@ -2034,6 +2053,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [doorFinish, setDoorFinish] = useState<DoorFinish>("timber");
   const [roofFinish, setRoofFinish] = useState<RoofFinish>("clay");
   const [wallFinish, setWallFinish] = useState<WallFinish>("plaster");
+  const [columnFinish, setColumnFinish] = useState<ColumnFinish>("plaster");
   const [finishRev, setFinishRev] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [count, setCount] = useState(0);
@@ -2056,6 +2076,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const doorFinishRef = useRef(doorFinish);
   const roofFinishRef = useRef(roofFinish);
   const wallFinishRef = useRef(wallFinish);
+  const columnFinishRef = useRef(columnFinish);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
   // Click-select must not snap the part. Drag arms only after the pointer moves past this.
@@ -2082,6 +2103,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   useEffect(() => {
     wallFinishRef.current = wallFinish;
   }, [wallFinish]);
+  useEffect(() => {
+    columnFinishRef.current = columnFinish;
+  }, [columnFinish]);
   useEffect(() => {
     selectedRef.current = selectedId;
   }, [selectedId]);
@@ -2124,12 +2148,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, []);
 
   const makeGhost = useCallback(
-    (kind: PartKind, finish: DoorFinish = "timber", roofCover: RoofFinish = "clay", wallCover: WallFinish = "plaster") => {
+    (kind: PartKind, finish: DoorFinish = "timber", roofCover: RoofFinish = "clay", wallCover: WallFinish = "plaster", columnCover: ColumnFinish = "plaster") => {
       const t = threeRef.current;
       if (!t) return;
       clearGhost();
       let obj: THREE.Object3D;
-      obj = createPartMesh(kind, t.mats, kind === "door" ? finish : "timber", kind === "roof" ? roofCover : "clay", kind === "wall" ? wallCover : "plaster");
+      obj = createPartMesh(kind, t.mats, kind === "door" ? finish : "timber", kind === "roof" ? roofCover : "clay", kind === "wall" ? wallCover : "plaster", kind === "column" ? columnCover : "plaster");
       obj.traverse((c) => {
         if (c instanceof THREE.Mesh && c.material) {
           const m = (c.material as THREE.MeshStandardMaterial).clone();
@@ -2147,8 +2171,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   useEffect(() => {
     if (!ready) return;
-    makeGhost(tool, doorFinish, roofFinish, wallFinish);
-  }, [tool, doorFinish, roofFinish, wallFinish, ready, makeGhost]);
+    makeGhost(tool, doorFinish, roofFinish, wallFinish, columnFinish);
+  }, [tool, doorFinish, roofFinish, wallFinish, columnFinish, ready, makeGhost]);
 
   useEffect(() => {
     const el = mountRef.current;
@@ -2662,11 +2686,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const finish: DoorFinish = kind === "door" ? doorFinishRef.current : "timber";
     const roofCover: RoofFinish = kind === "roof" ? roofFinishRef.current : "clay";
     const wallCover: WallFinish = kind === "wall" ? wallFinishRef.current : "plaster";
-    obj = createPartMesh(kind, t.mats, finish, roofCover, wallCover);
+    const columnCover: ColumnFinish = kind === "column" ? columnFinishRef.current : "plaster";
+    obj = createPartMesh(kind, t.mats, finish, roofCover, wallCover, columnCover);
     obj.position.set(x, 0, z);
     obj.userData.finish = finish;
     obj.userData.roofFinish = roofCover;
     obj.userData.wallFinish = wallCover;
+    obj.userData.columnFinish = columnCover;
     t.partsRoot.add(obj);
     let primary: THREE.Mesh | null = null;
     obj.traverse((c) => {
@@ -2700,6 +2726,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       finish,
       roofFinish: roofCover,
       wallFinish: wallCover,
+      columnFinish: columnCover,
     });
     syncLockBadge(obj, !!layersRef.current.find((l) => l.id === layerId)?.locked);
     setCount(partsRef.current.length);
@@ -2819,12 +2846,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const finish = doorFinishOf(part);
     const roofCover = roofFinishOf(part);
     const wallCover = wallFinishOf(part);
-    const clone = createPartMesh(part.kind, t.mats, finish, roofCover, wallCover);
+    const columnCover = columnFinishOf(part);
+    const clone = createPartMesh(part.kind, t.mats, finish, roofCover, wallCover, columnCover);
     clone.position.set(x, 0, z);
     clone.rotation.y = obj.rotation.y;
     clone.userData.finish = finish;
     clone.userData.roofFinish = roofCover;
     clone.userData.wallFinish = wallCover;
+    clone.userData.columnFinish = columnCover;
     t.partsRoot.add(clone);
     let primary: THREE.Mesh | null = null;
     clone.traverse((c) => {
@@ -2855,6 +2884,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       finish,
       roofFinish: roofCover,
       wallFinish: wallCover,
+      columnFinish: columnCover,
     });
     syncLockBadge(clone, !!layersRef.current.find((l) => l.id === part.layerId)?.locked);
     setCount(partsRef.current.length);
@@ -3306,7 +3336,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setPlacingFromPalette(true);
     setDragCursor({ x: ev.clientX, y: ev.clientY, over: false });
     if (threeRef.current) threeRef.current.controls.enabled = false;
-    makeGhost(kind, doorFinishRef.current, roofFinishRef.current, wallFinishRef.current);
+    makeGhost(kind, doorFinishRef.current, roofFinishRef.current, wallFinishRef.current, columnFinishRef.current);
     try {
       ev.currentTarget.setPointerCapture(ev.pointerId);
     } catch {
@@ -3414,6 +3444,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         wallFinish: "Acabado de muro",
         wallPlaster: "Revoco",
         wallMasonry: "Mampostería",
+        columnFinish: "Acabado de columna",
+        columnPlaster: "Revoco",
+        columnMasonry: "Mampostería",
         roofClay: "Teja",
         roofMetal: "Chapa de zinc",
         sizeWindow: "1.2 × 1.15 m",
@@ -3503,6 +3536,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         wallFinish: "Wall finish",
         wallPlaster: "Plaster",
         wallMasonry: "Masonry",
+        columnFinish: "Column finish",
+        columnPlaster: "Plaster",
+        columnMasonry: "Masonry",
         roofClay: "Clay tile",
         roofMetal: "Standing seam",
         sizeWindow: "1.2 × 1.15 m",
@@ -3551,6 +3587,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedDoorFinish = doorFinishOf(selectedPart, doorFinish);
   const selectedRoofFinish = roofFinishOf(selectedPart, roofFinish);
   const selectedWallFinish = wallFinishOf(selectedPart, wallFinish);
+  const selectedColumnFinish = columnFinishOf(selectedPart, columnFinish);
   void finishRev;
   const selectedLocked = selectedPart ? partFrozen(selectedPart, layers) : false;
   void lockRev;
@@ -3620,6 +3657,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     }
   };
 
+  const chooseColumnFinish = (next: ColumnFinish) => {
+    columnFinishRef.current = next;
+    setColumnFinish(next);
+    const id = selectedRef.current;
+    const part = partsRef.current.find((p) => p.id === id);
+    const t = threeRef.current;
+    if (part && part.kind === "column" && t && !partFrozen(part, layersRef.current)) {
+      const obj = findPartObject(part.id);
+      if (obj) {
+        applyColumnFinish(obj, t.mats, next);
+        obj.userData.columnFinish = next;
+        part.columnFinish = next;
+        setFinishRev((n) => n + 1);
+      }
+    }
+  };
+
   const paletteItems: { kind: PartKind; label: string; swatch: string; key: string; size: string }[] = [
     { kind: "wall", label: labels.wall, swatch: "#d8d0c4", key: "1", size: labels.sizeWall },
     { kind: "floor", label: labels.floor, swatch: "#8b7355", key: "2", size: labels.sizeFloor },
@@ -3645,6 +3699,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (kind === "roof") {
       const id = selectedKind === "roof" ? selectedRoofFinish : roofFinish;
       return id === "metal" ? labels.roofMetal : labels.roofClay;
+    }
+    if (kind === "column") {
+      const id = selectedKind === "column" ? selectedColumnFinish : columnFinish;
+      return id === "masonry" ? labels.columnMasonry : labels.columnPlaster;
     }
     return null;
   };
@@ -4118,6 +4176,34 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       key={id}
                       type="button"
                       onClick={() => chooseWallFinish(id)}
+                      aria-pressed={active}
+                      title={label}
+                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
+                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
+                      }`}
+                    >
+                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
+                      {!paletteCompact && <span className="truncate">{label}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {(tool === "column" || selectedKind === "column") && (
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.columnFinish}>
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.columnFinish}</p>
+              <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
+                {([
+                  ["plaster", labels.columnPlaster, "#d8d0c4"],
+                  ["masonry", labels.columnMasonry, "#c4b49a"],
+                ] as const).map(([id, label, swatch]) => {
+                  const active = (selectedKind === "column" ? selectedColumnFinish : columnFinish) === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => chooseColumnFinish(id)}
                       aria-pressed={active}
                       title={label}
                       className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
