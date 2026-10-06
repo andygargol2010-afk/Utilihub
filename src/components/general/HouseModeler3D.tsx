@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 
-type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam";
+type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation";
 type Locale = "en" | "es";
 
 type ScenePart = {
@@ -217,6 +217,37 @@ function paintPlinth(ctx: CanvasRenderingContext2D, size: number) {
     ctx.moveTo(0, y);
     ctx.lineTo(size, y);
     ctx.stroke();
+  }
+}
+
+/** Board-formed warm concrete for strip footings. Shared catalog map; do not dispose per part. */
+function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [168, 158, 144], 14);
+  const boards = 4;
+  for (let i = 0; i < boards; i++) {
+    const y0 = Math.floor((i / boards) * size);
+    const y1 = Math.floor(((i + 1) / boards) * size);
+    const tone = 154 + Math.floor(hash2(i, 2.4) * 24);
+    ctx.fillStyle = `rgba(${tone + 8}, ${tone - 2}, ${tone - 12}, 0.62)`;
+    ctx.fillRect(0, y0, size, y1 - y0);
+    ctx.fillStyle = "rgba(62,54,44,0.62)";
+    ctx.fillRect(0, y1 - 3, size, 3);
+    ctx.strokeStyle = "rgba(92,82,70,0.35)";
+    ctx.lineWidth = 1;
+    for (let g = 0; g < 3; g++) {
+      const gy = y0 + 6 + g * ((y1 - y0) / 4);
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      for (let x = 0; x <= size; x += 10) ctx.lineTo(x, gy + Math.sin(x * 0.05 + i) * 1.1);
+      ctx.stroke();
+    }
+    for (let h = 0; h < 3; h++) {
+      const x = (0.16 + hash2(i, h + 3.2) * 0.68) * size;
+      ctx.fillStyle = "rgba(48,42,34,0.75)";
+      ctx.beginPath();
+      ctx.arc(x, (y0 + y1) / 2, 3.1, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 }
 
@@ -1086,6 +1117,20 @@ function makeMaterials() {
     roughness: 0.76,
     metalness: 0.03,
   });
+  const footingMap = makeCanvasTexture(TEX, paintBoardFormed, true);
+  const footingRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintBoardFormed(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 188, 42, true);
+  }, false);
+  const footing = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: footingMap ?? undefined,
+    roughnessMap: footingRough ?? undefined,
+    bumpMap: footingRough ?? undefined,
+    bumpScale: 0.02,
+    roughness: 0.86,
+    metalness: 0.02,
+  });
   const doorLeaf = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     map: doorMap ?? undefined,
@@ -1113,7 +1158,7 @@ function makeMaterials() {
     transparent: true,
     opacity: 0.58,
   });
-  return { wall, wallEdge, floor, roof, ground, gravel, plate, nosing, fascia, doorLeaf, joinery, doorGlass };
+  return { wall, wallEdge, floor, roof, ground, gravel, plate, nosing, fascia, doorLeaf, joinery, doorGlass, footing };
 }
 
 function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
@@ -1494,6 +1539,33 @@ function createBeamMesh(mats: ReturnType<typeof makeMaterials>) {
   return group;
 }
 
+function createFoundationMesh(mats: ReturnType<typeof makeMaterials>) {
+  // Strip footing: gravel bed, board-formed concrete, stone drip course. Sits on the ground under a wall.
+  const group = new THREE.Group();
+  const bed = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.06, 0.92), mats.gravel);
+  bed.position.y = 0.03;
+  bed.receiveShadow = true;
+  staggerUvs(bed);
+  group.add(bed);
+  const strip = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.28, 0.55), mats.footing);
+  strip.position.y = 0.2;
+  strip.castShadow = true;
+  strip.receiveShadow = true;
+  staggerUvs(strip);
+  group.add(strip);
+  const drip = new THREE.Mesh(new THREE.BoxGeometry(3.08, 0.07, 0.64), mats.wallEdge);
+  drip.position.y = 0.375;
+  drip.castShadow = true;
+  drip.receiveShadow = true;
+  staggerUvs(drip);
+  group.add(drip);
+  const joint = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.22, 0.56), mats.wallEdge);
+  joint.position.set(0, 0.2, 0);
+  joint.castShadow = true;
+  group.add(joint);
+  return group;
+}
+
 function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>) {
   if (kind === "wall") return createWallMesh(mats);
   if (kind === "floor") return createFloorMesh(mats);
@@ -1504,7 +1576,8 @@ function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>) 
   if (kind === "stairs") return createStairsMesh(mats);
   if (kind === "railing") return createRailingMesh(mats);
   if (kind === "chimney") return createChimneyMesh(mats);
-  return createBeamMesh(mats);
+  if (kind === "beam") return createBeamMesh(mats);
+  return createFoundationMesh(mats);
 }
 
 function StructureGlyph({ kind }: { kind: PartKind }) {
@@ -1590,6 +1663,16 @@ function StructureGlyph({ kind }: { kind: PartKind }) {
         <rect x="29.5" y="8" width="3" height="16" fill="#8b5a32" />
         <rect x="4" y="6" width="32" height="4" fill="#6d4a30" />
         <path d="M11 10 L16 7 M29 10 L24 7" stroke="#c4a882" strokeWidth="1.4" />
+      </svg>
+    );
+  }
+  if (kind === "foundation") {
+    return (
+      <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
+        <rect x="3" y="22" width="34" height="6" fill="#9a907e" />
+        <rect x="5" y="16" width="30" height="7" fill="#c4b8a4" stroke="#8a7d6c" />
+        <rect x="4" y="14" width="32" height="3" fill="#b7ab9a" />
+        <path d="M8 18.5 H32 M8 20.5 H32" stroke="#8a7d6c" strokeWidth="0.6" opacity="0.7" />
       </svg>
     );
   }
@@ -2684,6 +2767,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (e.key === "8") setTool("railing");
       if (e.key === "9") setTool("chimney");
       if (e.key === "0") setTool("beam");
+      if (e.key.toLowerCase() === "q") setTool("foundation");
       if (e.key.toLowerCase() === "l" && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
         toggleLockSelected();
@@ -2824,6 +2908,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         railing: "Baranda",
         chimney: "Chimenea",
         beam: "Viga",
+        foundation: "Cimentación",
         place: "Arrastrá desde la barra derecha al terreno · o hacé clic en el suelo",
         cam: "Cámara libre: botón derecho / medio · rueda zoom",
         rot: "Rotar 90°",
@@ -2836,7 +2921,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "elementos",
         fullscreen: "Pantalla completa",
         exitFs: "Salir",
-        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         none: "Nada seleccionado",
@@ -2856,6 +2941,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizeRailing: "1.8 × 0.95 m",
         sizeChimney: "0.8 × 3.2 m",
         sizeBeam: "2.5 × 2.7 m",
+        sizeFoundation: "3.0 × 0.55 × 0.4 m",
         help: "Ayuda",
         hideHelp: "Ocultar",
         active: "Activa",
@@ -2901,6 +2987,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         railing: "Railing",
         chimney: "Chimney",
         beam: "Beam",
+        foundation: "Foundation",
         place: "Drag from the right toolbar onto the ground · or click the ground",
         cam: "Free camera: right/middle drag · scroll zoom",
         rot: "Rotate 90°",
@@ -2913,7 +3000,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "parts",
         fullscreen: "Fullscreen",
         exitFs: "Exit",
-        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
         none: "Nothing selected",
@@ -2933,6 +3020,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizeRailing: "1.8 × 0.95 m",
         sizeChimney: "0.8 × 3.2 m",
         sizeBeam: "2.5 × 2.7 m",
+        sizeFoundation: "3.0 × 0.55 × 0.4 m",
         help: "Help",
         hideHelp: "Hide",
         active: "Active",
@@ -2972,10 +3060,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedLocked = selectedPart ? partFrozen(selectedPart, layers) : false;
   void lockRev;
   const selectedKindLabel =
-    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : selectedKind === "beam" ? labels.beam : "";
+    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : selectedKind === "beam" ? labels.beam : selectedKind === "foundation" ? labels.foundation : "";
   const selectedLayer = layers.find((l) => l.id === selectedPart?.layerId);
   const selectedSize =
-    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : selectedKind === "window" ? labels.sizeWindow : selectedKind === "stairs" ? labels.sizeStairs : selectedKind === "railing" ? labels.sizeRailing : selectedKind === "chimney" ? labels.sizeChimney : selectedKind === "beam" ? labels.sizeBeam : "";
+    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : selectedKind === "window" ? labels.sizeWindow : selectedKind === "stairs" ? labels.sizeStairs : selectedKind === "railing" ? labels.sizeRailing : selectedKind === "chimney" ? labels.sizeChimney : selectedKind === "beam" ? labels.sizeBeam : selectedKind === "foundation" ? labels.sizeFoundation : "";
 
   const clearSelection = () => {
     selectedRef.current = null;
@@ -2996,9 +3084,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     { kind: "railing", label: labels.railing, swatch: "#6d4a30", key: "8", size: labels.sizeRailing },
     { kind: "chimney", label: labels.chimney, swatch: "#b7ab9a", key: "9", size: labels.sizeChimney },
     { kind: "beam", label: labels.beam, swatch: "#6d4a30", key: "0", size: labels.sizeBeam },
+    { kind: "foundation", label: labels.foundation, swatch: "#c4b8a4", key: "Q", size: labels.sizeFoundation },
   ];
   const activeLabel =
-    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : tool === "chimney" ? labels.chimney : labels.beam;
+    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : tool === "chimney" ? labels.chimney : tool === "beam" ? labels.beam : labels.foundation;
 
   const assignSelectedLayer = (layerId: string) => {
     const id = selectedRef.current;
