@@ -43,7 +43,7 @@ export function IsbnValidatorTool({ locale = "en" }: { tool: GeneralTool; locale
           {es ? "ISBN-10 de ejemplo" : "Sample ISBN-10"}
         </button>
         <button type="button" className={buttonClass} onClick={() => setRaw("9780306406158")}>
-          {es ? "Dígito mal" : "Bad check digit"}
+          {es ? "Dígito de control incorrecto" : "Bad check digit"}
         </button>
         <button type="button" className={buttonClass} onClick={() => setRaw("")}>
           {es ? "Reiniciar" : "Reset"}
