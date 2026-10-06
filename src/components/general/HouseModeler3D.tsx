@@ -95,6 +95,23 @@ function snap(v: number) {
   return Math.round(v / GRID) * GRID;
 }
 
+/** Site disc is radius 120. Keep dragged parts inside it when the ray misses the mesh. */
+const SITE_RADIUS = 118;
+const sitePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+const siteHit = new THREE.Vector3();
+
+function pointOnSitePlane(raycaster: THREE.Raycaster): THREE.Vector3 | null {
+  const hit = raycaster.ray.intersectPlane(sitePlane, siteHit);
+  if (!hit) return null;
+  const len = Math.hypot(hit.x, hit.z);
+  if (len > SITE_RADIUS) {
+    const scale = SITE_RADIUS / len;
+    hit.x *= scale;
+    hit.z *= scale;
+  }
+  return hit;
+}
+
 /** Dispose unique geometries. Materials only when they are not the shared catalog set (ghost clones). */
 function disposeObjectResources(obj: THREE.Object3D, disposeMaterials: boolean) {
   const seen = new Set<THREE.Material>();
@@ -2850,7 +2867,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
     const onMove = (ev: PointerEvent) => {
       if (gesturePointerRef.current != null && ev.pointerId !== gesturePointerRef.current) return;
-      const point = worldPointFromEvent(ev.clientX, ev.clientY);
+      let point = worldPointFromEvent(ev.clientX, ev.clientY);
+      // Ground mesh miss (sky / past the disc) used to freeze an in-progress drag.
+      if (!point && draggingRef.current) point = pointOnSitePlane(t.raycaster);
       const rect = el.getBoundingClientRect();
       const inside =
         ev.clientX >= rect.left &&
@@ -3027,6 +3046,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const target = e.target as HTMLElement | null;
       const tag = target?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || target?.isContentEditable) return;
+      // Do not swallow browser chords (Ctrl/Cmd+R reload, Ctrl/Cmd+F find, Alt+arrows).
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
 
       if (e.key === "Delete" || e.key === "Backspace") {
         e.preventDefault();
@@ -3060,24 +3081,24 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (e.key === "9") setTool("chimney");
       if (e.key === "0") setTool("beam");
       if (e.key.toLowerCase() === "q") setTool("foundation");
-      if (e.key.toLowerCase() === "l" && !e.ctrlKey && !e.metaKey) {
+      if (e.key.toLowerCase() === "l" && !e.repeat) {
         e.preventDefault();
         toggleLockSelected();
       }
-      if (e.key.toLowerCase() === "d" && !e.ctrlKey && !e.metaKey) {
+      if (e.key.toLowerCase() === "d" && !e.repeat) {
         e.preventDefault();
         duplicateSelected();
       }
-      if (e.key.toLowerCase() === "g" && !e.ctrlKey && !e.metaKey) {
+      if (e.key.toLowerCase() === "g" && !e.repeat) {
         e.preventDefault();
         frameSelected();
       }
-      if (e.key.toLowerCase() === "f") {
+      if (e.key.toLowerCase() === "f" && !e.repeat) {
         e.preventDefault();
         void toggleFullscreen();
       }
       if (e.key === "Escape") {
-        if (paletteDragRef.current || pendingPlaceRef.current || draggingRef.current) {
+        if (paletteDragRef.current || pendingPlaceRef.current || draggingRef.current || dragArmRef.current) {
           paletteDragCleanupRef.current?.();
           paletteDragCleanupRef.current = null;
           paletteDragRef.current = null;
@@ -3107,7 +3128,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       }
       if (e.key.toLowerCase() === "c" && (e.ctrlKey || e.metaKey)) {
         // allow browser copy; ignore
-      } else if (e.key.toLowerCase() === "c" && !e.ctrlKey && !e.metaKey) {
+      } else if (e.key.toLowerCase() === "c" && !e.repeat) {
         e.preventDefault();
         clearAll();
       }
