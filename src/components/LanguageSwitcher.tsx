@@ -5,6 +5,20 @@ import { spanishToolPath } from "@/lib/i18n/es";
 import { gameBySlug } from "@/lib/games/catalog";
 import { simBySlug } from "@/lib/simulators/catalog";
 
+/** Tools that own a persistent WebGL context. Soft SPA locale switches can race
+ *  with Three.js dispose/re-init and hit the error boundary even though a hard
+ *  reload of the same URL works. Force a full navigation for these paths. */
+const HARD_NAV_PATH_PREFIXES = [
+  "/tools/3d-house-modeler",
+  "/es/herramientas/modelador-casas-3d",
+  "/tools/3d-modeler",
+  "/es/herramientas/modelador-3d",
+];
+
+function needsHardNav(pathname: string) {
+  return HARD_NAV_PATH_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "/"));
+}
+
 function equivalentPath(pathname: string, targetLocale: "en" | "es") {
   if (targetLocale === "es") {
     if (pathname === "/") return "/es";
@@ -90,6 +104,25 @@ function equivalentPath(pathname: string, targetLocale: "en" | "es") {
 export function LanguageSwitcher({ locale, onClick }: { locale: "en" | "es"; onClick?: () => void }) {
   const pathname = useLocation({ select: (location) => location.pathname });
   const target = equivalentPath(pathname, locale === "en" ? "es" : "en");
+  const hard = needsHardNav(pathname);
+
+  if (hard) {
+    return (
+      <a
+        href={target}
+        onClick={(e) => {
+          onClick?.();
+          // Full page load so WebGL context is torn down cleanly before the
+          // opposite-locale tool mounts. preventDefault is intentionally omitted.
+        }}
+        aria-label={locale === "en" ? "Ver UtiliHub en español" : "View UtiliHub in English"}
+        className="ml-1 rounded-full border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-bold text-primary hover:bg-primary/15"
+      >
+        {locale === "en" ? "Español" : "English"}
+      </a>
+    );
+  }
+
   return (
     <Link
       to={target as never}
