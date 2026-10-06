@@ -13,7 +13,51 @@ type ScenePart = {
   position: [number, number, number];
   rotationY: number;
   mesh: THREE.Mesh;
+  /** Part-level lock: cannot move, rotate, or delete. */
+  locked: boolean;
+  layerId: string;
 };
+
+type SceneLayer = {
+  id: string;
+  name: string;
+  visible: boolean;
+  locked: boolean;
+};
+
+const BASE_LAYER_ID = "layer-base";
+
+function partFrozen(part: ScenePart, layers: SceneLayer[]) {
+  const layer = layers.find((l) => l.id === part.layerId);
+  return part.locked || !!layer?.locked;
+}
+
+/** Small padlock so locked parts read at a glance. Unique geometry per badge (safe to dispose). */
+function syncLockBadge(obj: THREE.Object3D, on: boolean) {
+  let badge = obj.getObjectByName("lockBadge");
+  if (!badge) {
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0xf2c14e,
+      metalness: 0.5,
+      roughness: 0.38,
+      emissive: 0x8a5a10,
+      emissiveIntensity: 0.5,
+    });
+    const group = new THREE.Group();
+    group.name = "lockBadge";
+    const shackle = new THREE.Mesh(new THREE.TorusGeometry(0.07, 0.016, 6, 10, Math.PI), mat);
+    shackle.position.y = 0.06;
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.03), mat);
+    group.add(shackle, body);
+    const box = new THREE.Box3().setFromObject(obj);
+    const top = Number.isFinite(box.max.y) ? box.max.y - obj.position.y : 2.4;
+    group.position.set(0, top + 0.16, 0);
+    group.visible = false;
+    obj.add(group);
+    badge = group;
+  }
+  badge.visible = on;
+}
 
 const GRID = 0.5;
 
@@ -1580,6 +1624,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [showHelp, setShowHelp] = useState(false);
   // Narrow viewports: icon-only palette so the canvas keeps the layout (canvas + right rail).
   const [paletteCompact, setPaletteCompact] = useState(false);
+  const [layers, setLayers] = useState<SceneLayer[]>([
+    { id: BASE_LAYER_ID, name: "Base", visible: true, locked: false },
+  ]);
+  const [activeLayerId, setActiveLayerId] = useState(BASE_LAYER_ID);
+  const [lockRev, setLockRev] = useState(0);
+  const layersRef = useRef(layers);
+  const activeLayerRef = useRef(activeLayerId);
   const toolRef = useRef(tool);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
@@ -1601,6 +1652,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   useEffect(() => {
     selectedRef.current = selectedId;
   }, [selectedId]);
+
+  useEffect(() => {
+    layersRef.current = layers;
+  }, [layers]);
+
+  useEffect(() => {
+    activeLayerRef.current = activeLayerId;
+  }, [activeLayerId]);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px)");
@@ -1981,7 +2040,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           partsRoot.children.forEach((c) => {
             if (c.userData.partId === selId) target = c;
           });
-          if (target) {
+          if (target && target.visible) {
+            const part = partsRef.current.find((p) => p.id === selId);
+            const frozen = part ? partFrozen(part, layersRef.current) : false;
+            const mat = selectionHelper.material as THREE.LineBasicMaterial;
+            mat.color.set(frozen ? 0xf0c14e : 0xc4843a);
             selectionHelper.setFromObject(target);
             selectionHelper.visible = true;
           } else {
@@ -2110,13 +2173,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     obj.traverse((c) => {
       if (c instanceof THREE.Mesh) c.userData.partId = id;
     });
+    const layerId = activeLayerRef.current || BASE_LAYER_ID;
+    const layer = layersRef.current.find((l) => l.id === layerId);
+    if (layer && !layer.visible) {
+      layersRef.current = layersRef.current.map((l) => (l.id === layerId ? { ...l, visible: true } : l));
+      setLayers(layersRef.current);
+    }
+    obj.userData.layerId = layerId;
     partsRef.current.push({
       id,
       kind,
       position: [x, 0, z],
       rotationY: 0,
       mesh: primary as THREE.Mesh,
+      locked: false,
+      layerId,
     });
+    syncLockBadge(obj, !!layersRef.current.find((l) => l.id === layerId)?.locked);
     setCount(partsRef.current.length);
     // selectedRef is read by Delete/R before the state effect flushes.
     selectedRef.current = id;
@@ -2135,9 +2208,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     return found;
   }, []);
 
+  const applyLayerVisibility = useCallback(() => {
+    const t = threeRef.current;
+    if (!t) return;
+    for (const part of partsRef.current) {
+      const layer = layersRef.current.find((l) => l.id === part.layerId);
+      const obj = findPartObject(part.id);
+      if (!obj) continue;
+      obj.visible = layer ? layer.visible : true;
+      syncLockBadge(obj, partFrozen(part, layersRef.current));
+    }
+  }, [findPartObject]);
+
   const deleteSelected = useCallback(() => {
     const id = selectedRef.current;
     if (!id) return;
+    const part = partsRef.current.find((p) => p.id === id);
+    if (part && partFrozen(part, layersRef.current)) return;
     const obj = findPartObject(id);
     const t = threeRef.current;
     if (obj && t) {
@@ -2164,6 +2251,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const setSelectedYaw = useCallback((step: number) => {
     const id = selectedRef.current;
     if (!id) return;
+    const part0 = partsRef.current.find((p) => p.id === id);
+    if (part0 && partFrozen(part0, layersRef.current)) return;
     const obj = findPartObject(id);
     if (!obj) return;
     const norm = ((step % 4) + 4) % 4;
@@ -2176,6 +2265,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const rotateSelected = useCallback(() => {
     const id = selectedRef.current;
     if (!id) return;
+    const part0 = partsRef.current.find((p) => p.id === id);
+    if (part0 && partFrozen(part0, layersRef.current)) return;
     const obj = findPartObject(id);
     if (!obj) return;
     const next = ((Math.round(obj.rotation.y / (Math.PI / 2)) % 4) + 4) % 4 + 1;
@@ -2191,6 +2282,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (paletteDragRef.current || draggingRef.current) return;
     const id = selectedRef.current;
     if (!id) return;
+    const part0 = partsRef.current.find((p) => p.id === id);
+    if (part0 && partFrozen(part0, layersRef.current)) return;
     const obj = findPartObject(id);
     if (!obj) return;
     const x = snap(obj.position.x + dx);
@@ -2230,18 +2323,33 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     clone.traverse((c) => {
       if (c instanceof THREE.Mesh) c.userData.partId = nid;
     });
+    clone.userData.layerId = part.layerId;
     partsRef.current.push({
       id: nid,
       kind: part.kind,
       position: [x, 0, z],
       rotationY: obj.rotation.y,
       mesh: primary as THREE.Mesh,
+      locked: false,
+      layerId: part.layerId,
     });
+    syncLockBadge(clone, !!layersRef.current.find((l) => l.id === part.layerId)?.locked);
     setCount(partsRef.current.length);
     selectedRef.current = nid;
     setSelectedId(nid);
     setSelectedRot(((Math.round(obj.rotation.y / (Math.PI / 2)) % 4) + 4) % 4);
     setSelectedPos([x, z]);
+  }, [findPartObject]);
+
+  const toggleLockSelected = useCallback(() => {
+    const id = selectedRef.current;
+    if (!id) return;
+    const part = partsRef.current.find((p) => p.id === id);
+    if (!part) return;
+    part.locked = !part.locked;
+    const obj = findPartObject(id);
+    if (obj) syncLockBadge(obj, partFrozen(part, layersRef.current));
+    setLockRev((n) => n + 1);
   }, [findPartObject]);
 
   const frameSelected = useCallback(() => {
@@ -2262,19 +2370,24 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const clearAll = useCallback(() => {
     const t = threeRef.current;
     if (!t) return;
+    const kept: ScenePart[] = [];
     for (const p of [...partsRef.current]) {
+      if (partFrozen(p, layersRef.current)) {
+        kept.push(p);
+        continue;
+      }
       const obj = findPartObject(p.id);
       if (obj) {
         t.partsRoot.remove(obj);
         disposeObjectResources(obj, false);
       }
     }
-    partsRef.current = [];
+    partsRef.current = kept;
     selectedRef.current = null;
     setSelectedId(null);
     setSelectedRot(0);
     setSelectedPos(null);
-    setCount(0);
+    setCount(partsRef.current.length);
     t.selectionHelper.visible = false;
   }, [findPartObject]);
 
@@ -2373,12 +2486,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         }
       }
       if (draggingRef.current) {
-        const obj = findPartObject(draggingRef.current.id);
-        if (obj) {
-          obj.position.x = snap(point.x - draggingRef.current.offset.x);
-          obj.position.z = snap(point.z - draggingRef.current.offset.z);
-          const part = partsRef.current.find((p) => p.id === draggingRef.current!.id);
-          if (part) part.position = [obj.position.x, 0, obj.position.z];
+        const dragId = draggingRef.current.id;
+        const part = partsRef.current.find((p) => p.id === dragId);
+        if (part && partFrozen(part, layersRef.current)) {
+          draggingRef.current = null;
+          dragArmRef.current = null;
+        } else {
+          const obj = findPartObject(dragId);
+          if (obj && part) {
+            obj.position.x = snap(point.x - draggingRef.current.offset.x);
+            obj.position.z = snap(point.z - draggingRef.current.offset.z);
+            part.position = [obj.position.x, 0, obj.position.z];
+          }
         }
       }
     };
@@ -2402,7 +2521,15 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       t.raycaster.setFromCamera(t.pointer, t.camera);
       const meshes: THREE.Object3D[] = [];
       t.partsRoot.traverse((c) => {
-        if (c instanceof THREE.Mesh && c.userData.partId && c.visible) meshes.push(c);
+        if (c instanceof THREE.Mesh && c.userData.partId && c.visible) {
+          let shown = true;
+          let node: THREE.Object3D | null = c;
+          while (node) {
+            if (!node.visible) { shown = false; break; }
+            node = node.parent;
+          }
+          if (shown) meshes.push(c);
+        }
       });
       const hits = t.raycaster.intersectObjects(meshes, false);
       if (hits.length) {
@@ -2413,7 +2540,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         setSelectedRot(picked ? ((Math.round(picked.rotationY / (Math.PI / 2)) % 4) + 4) % 4 : 0);
         if (picked) setSelectedPos([picked.position[0], picked.position[2]]);
         const obj = findPartObject(id);
-        if (obj) {
+        const frozen = picked ? partFrozen(picked, layersRef.current) : false;
+        if (obj && !frozen) {
           // Arm only: a click selects. Snap-drag starts after the pointer leaves the slop.
           dragArmRef.current = {
             id,
@@ -2537,6 +2665,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (e.key === "8") setTool("railing");
       if (e.key === "9") setTool("chimney");
       if (e.key === "0") setTool("beam");
+      if (e.key.toLowerCase() === "l" && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        toggleLockSelected();
+      }
       if (e.key.toLowerCase() === "d" && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
         duplicateSelected();
@@ -2587,7 +2719,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [deleteSelected, rotateSelected, nudgeSelected, duplicateSelected, frameSelected, toggleFullscreen, clearAll]);
+  }, [deleteSelected, rotateSelected, nudgeSelected, duplicateSelected, frameSelected, toggleFullscreen, clearAll, toggleLockSelected]);
 
   const startPaletteDrag = (kind: PartKind) => (ev: React.PointerEvent) => {
     if (ev.button !== 0) return;
@@ -2714,7 +2846,20 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         tapRotate: "Giro en el sitio",
         compact: "Iconos",
         expandPalette: "Lista",
-        selHint: "R gira · Supr borra",
+        selHint: "R gira · L bloquea · Supr borra",
+        lock: "Bloquear",
+        unlock: "Desbloquear",
+        locked: "Bloqueada",
+        layers: "Capas",
+        layer: "Capa",
+        activeLayer: "Activa",
+        showLayer: "Mostrar",
+        hideLayer: "Ocultar",
+        lockLayer: "Bloquear capa",
+        unlockLayer: "Desbloquear capa",
+        addLayer: "Nueva capa",
+        renameLayer: "Nombre de capa",
+        removeLayer: "Quitar capa",
         orient: "Orientación",
         yawHint: "Toque para fijar el giro",
         nudge: "Mover 0,5 m",
@@ -2748,7 +2893,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "parts",
         fullscreen: "Fullscreen",
         exitFs: "Exit",
-        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · R rotate · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
         none: "Nothing selected",
@@ -2777,7 +2922,20 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         tapRotate: "Yaw in place",
         compact: "Icons",
         expandPalette: "List",
-        selHint: "R rotate · Del delete",
+        selHint: "R rotate · L lock · Del delete",
+        lock: "Lock",
+        unlock: "Unlock",
+        locked: "Locked",
+        layers: "Layers",
+        layer: "Layer",
+        activeLayer: "Active",
+        showLayer: "Show",
+        hideLayer: "Hide",
+        lockLayer: "Lock layer",
+        unlockLayer: "Unlock layer",
+        addLayer: "New layer",
+        renameLayer: "Layer name",
+        removeLayer: "Remove layer",
         orient: "Orientation",
         yawHint: "Tap to set the yaw",
         nudge: "Nudge 0.5 m",
@@ -2788,7 +2946,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         fsBar: "Fullscreen actions",
       };
 
-  const selectedKind = partsRef.current.find((p) => p.id === selectedId)?.kind;
+  const selectedPart = partsRef.current.find((p) => p.id === selectedId);
+  const selectedKind = selectedPart?.kind;
+  const selectedLocked = selectedPart ? partFrozen(selectedPart, layers) : false;
+  void lockRev;
   const selectedKindLabel =
     selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : "";
   const selectedSize =
@@ -2873,8 +3034,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         </button>
         <button
           type="button"
-          onClick={deleteSelected}
+          onClick={toggleLockSelected}
           disabled={!selectedId}
+          aria-pressed={selectedLocked}
+          aria-label={selectedLocked ? labels.unlock : labels.lock}
+          className={`inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 ${
+            selectedLocked ? "border-amber-600 bg-amber-500/15" : "border-border bg-card"
+          }`}
+          title={selectedId ? "L" : labels.needSel}
+        >
+          {selectedLocked ? labels.unlock : labels.lock}
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">L</kbd>
+        </button>
+        <button
+          type="button"
+          onClick={deleteSelected}
+          disabled={!selectedId || selectedLocked}
           aria-label={labels.del}
           className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
           title={selectedId ? "Del" : labels.needSel}
@@ -3132,12 +3307,120 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {!paletteCompact && (
             <p className="px-1 text-[10px] leading-snug text-muted-foreground">{labels.dragHint}</p>
           )}
+          <div className="rounded-xl border border-border bg-background/80 p-1.5">
+            {!paletteCompact && (
+              <p className="px-0.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">{labels.layers}</p>
+            )}
+            <div className="mt-1 flex max-h-36 flex-col gap-1 overflow-y-auto">
+              {layers.map((layer) => (
+                <div key={layer.id} className={`rounded-lg border px-1 py-1 ${layer.id === activeLayerId ? "border-amber-700/60 bg-amber-900/10" : "border-border"}`}>
+                  <button
+                    type="button"
+                    onClick={() => setActiveLayerId(layer.id)}
+                    className="w-full truncate text-left text-[10px] font-semibold"
+                    title={labels.activeLayer}
+                  >
+                    {layer.id === activeLayerId ? "● " : "○ "}
+                    {paletteCompact ? layer.name.slice(0, 3) : layer.name}
+                  </button>
+                  {!paletteCompact && (
+                    <input
+                      aria-label={labels.renameLayer}
+                      value={layer.name}
+                      onChange={(e) => {
+                        const name = e.target.value.slice(0, 24);
+                        setLayers((prev) => prev.map((l) => (l.id === layer.id ? { ...l, name } : l)));
+                      }}
+                      className="mt-1 w-full rounded border border-border bg-card px-1 py-0.5 text-[10px]"
+                    />
+                  )}
+                  <div className="mt-1 flex gap-1">
+                    <button
+                      type="button"
+                      aria-pressed={layer.visible}
+                      aria-label={layer.visible ? labels.hideLayer : labels.showLayer}
+                      title={layer.visible ? labels.hideLayer : labels.showLayer}
+                      onClick={() => {
+                        setLayers((prev) => {
+                          const next = prev.map((l) => (l.id === layer.id ? { ...l, visible: !l.visible } : l));
+                          layersRef.current = next;
+                          return next;
+                        });
+                        queueMicrotask(() => applyLayerVisibility());
+                      }}
+                      className="min-h-8 flex-1 rounded border border-border bg-card text-[9px] font-semibold hover:bg-accent"
+                    >
+                      {layer.visible ? labels.hideLayer : labels.showLayer}
+                    </button>
+                    <button
+                      type="button"
+                      aria-pressed={layer.locked}
+                      aria-label={layer.locked ? labels.unlockLayer : labels.lockLayer}
+                      title={layer.locked ? labels.unlockLayer : labels.lockLayer}
+                      onClick={() => {
+                        setLayers((prev) => {
+                          const next = prev.map((l) => (l.id === layer.id ? { ...l, locked: !l.locked } : l));
+                          layersRef.current = next;
+                          return next;
+                        });
+                        queueMicrotask(() => applyLayerVisibility());
+                      }}
+                      className={`min-h-8 flex-1 rounded border text-[9px] font-semibold hover:bg-accent ${layer.locked ? "border-amber-600 bg-amber-500/15" : "border-border bg-card"}`}
+                    >
+                      {layer.locked ? labels.unlock : labels.lock}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-1 flex gap-1">
+              <button
+                type="button"
+                onClick={() => {
+                  const id = `layer-${uid()}`;
+                  const name = es ? `Capa ${layers.length + 1}` : `Layer ${layers.length + 1}`;
+                  setLayers((prev) => [...prev, { id, name, visible: true, locked: false }]);
+                  setActiveLayerId(id);
+                }}
+                className="min-h-8 flex-1 rounded border border-border bg-card text-[9px] font-semibold hover:bg-accent"
+              >
+                {labels.addLayer}
+              </button>
+              {layers.length > 1 && (
+                <button
+                  type="button"
+                  aria-label={labels.removeLayer}
+                  title={labels.removeLayer}
+                  onClick={() => {
+                    const victim = layers.find((l) => l.id === activeLayerId);
+                    if (!victim) return;
+                    const fallback = layers.find((l) => l.id !== victim.id);
+                    if (!fallback) return;
+                    for (const part of partsRef.current) {
+                      if (part.layerId === victim.id) part.layerId = fallback.id;
+                    }
+                    const next = layers.filter((l) => l.id !== victim.id);
+                    layersRef.current = next;
+                    setLayers(next);
+                    setActiveLayerId(fallback.id);
+                    queueMicrotask(() => applyLayerVisibility());
+                  }}
+                  className="min-h-8 rounded border border-border bg-card px-1.5 text-[9px] font-semibold hover:bg-accent"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          </div>
           {selectedKindLabel && !paletteCompact ? (
             <div className="rounded-xl border border-amber-700/50 bg-amber-900/15 p-2 text-left">
               <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-800 dark:text-amber-200">
                 {labels.inspector}
               </p>
-              <p className="mt-0.5 text-xs font-semibold text-foreground">{selectedKindLabel}</p>
+              <p className="mt-0.5 text-xs font-semibold text-foreground">
+                {selectedKindLabel}
+                {selectedLocked ? ` · ${labels.locked}` : ""}
+              </p>
               <p className="text-[10px] text-muted-foreground">{selectedSize}</p>
               {selectedPos && (
                 <p className="mt-1 font-mono text-[10px] text-foreground" aria-label={labels.coords}>
