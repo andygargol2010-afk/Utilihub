@@ -33,7 +33,7 @@ export const TOOL_SEO_OVERRIDES_ISBN: Record<string, ToolSeoOverride> = {
     faq: [
       {
         q: "Is 978-0-306-40615-7 valid?",
-        a: "Yes. Compact 9780306406157. Weights 1,3,1,3… give sum 100. 100 mod 10 is 0, so the check digit is 0 and the printed 7 matches. The ISBN-10 form is 0306406152.",
+        a: "Yes. Compact 9780306406157. The first 12 digits with weights 1,3,1,3… sum to 93. 93 mod 10 is 3, so the check digit is (10−3) mod 10 = 7. The ISBN-10 form is 0306406152.",
       },
       {
         q: "How is the ISBN-10 check digit calculated?",
@@ -51,7 +51,7 @@ export const TOOL_SEO_OVERRIDES_ISBN: Record<string, ToolSeoOverride> = {
     faqEs: [
       {
         q: "¿Es válido 978-0-306-40615-7?",
-        a: "Sí. Compacto 9780306406157. Los pesos 1,3,1,3… dan suma 100. 100 mod 10 es 0, así que el control es 0 y el 7 impreso coincide. La forma ISBN-10 es 0306406152.",
+        a: "Sí. Compacto 9780306406157. Los primeros 12 dígitos con pesos 1,3,1,3… suman 93. 93 mod 10 es 3, así que el control es (10−3) mod 10 = 7. La forma ISBN-10 es 0306406152.",
       },
       {
         q: "¿Cómo se calcula el dígito de ISBN-10?",
