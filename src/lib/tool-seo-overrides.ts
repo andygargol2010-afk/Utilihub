@@ -69,6 +69,7 @@ import { TOOL_SEO_OVERRIDES_ICS } from "./tool-seo-overrides-ics";
 import { TOOL_SEO_OVERRIDES_WIND_CHILL } from "./tool-seo-overrides-wind-chill";
 import { TOOL_SEO_OVERRIDES_ISO_DURATION } from "./tool-seo-overrides-iso-duration";
 import { TOOL_SEO_OVERRIDES_CONTRAST } from "./tool-seo-overrides-contrast";
+import { TOOL_SEO_OVERRIDES_CRON } from "./tool-seo-overrides-cron";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -153,6 +154,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_WIND_CHILL,
   ...TOOL_SEO_OVERRIDES_ISO_DURATION,
   ...TOOL_SEO_OVERRIDES_CONTRAST,
+  ...TOOL_SEO_OVERRIDES_CRON,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {

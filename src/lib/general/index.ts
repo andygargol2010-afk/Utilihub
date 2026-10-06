@@ -84,6 +84,7 @@ import { ICS_EVENT_TOOLS } from "./ics-event-tool";
 import { WIND_CHILL_TOOLS } from "./wind-chill-tool";
 import { ISO_DURATION_TOOLS } from "./iso-duration-tool";
 import { CONTRAST_TOOLS } from "./contrast-tool";
+import { CRON_TOOLS } from "./cron-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -173,4 +174,5 @@ export const GENERAL_TOOLS = [
   ...WIND_CHILL_TOOLS,
   ...ISO_DURATION_TOOLS,
   ...CONTRAST_TOOLS,
+  ...CRON_TOOLS,
 ];

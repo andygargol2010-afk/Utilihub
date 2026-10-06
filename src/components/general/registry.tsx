@@ -107,6 +107,7 @@ const IcsEventTool = lazy(() => import("./IcsEventTool").then((m) => ({ default:
 const WindChillTool = lazy(() => import("./WindChillTool").then((m) => ({ default: m.WindChillTool })));
 const IsoDurationTool = lazy(() => import("./IsoDurationTool").then((m) => ({ default: m.IsoDurationTool })));
 const ContrastTool = lazy(() => import("./ContrastTool").then((m) => ({ default: m.ContrastTool })));
+const CronTool = lazy(() => import("./CronTool").then((m) => ({ default: m.CronTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -160,6 +161,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-enfriamiento-viento") return WindChillTool as ToolComp;
   if (tool.slug === "generador-duracion-iso") return IsoDurationTool as ToolComp;
   if (tool.slug === "validador-contraste") return ContrastTool as ToolComp;
+  if (tool.slug === "generador-cron") return CronTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
