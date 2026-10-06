@@ -86,6 +86,7 @@ import { ISO_DURATION_TOOLS } from "./iso-duration-tool";
 import { CONTRAST_TOOLS } from "./contrast-tool";
 import { CRON_TOOLS } from "./cron-tool";
 import { NATO_TOOLS } from "./nato-tool";
+import { JETLAG_TOOLS } from "./jetlag-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -177,4 +178,5 @@ export const GENERAL_TOOLS = [
   ...CONTRAST_TOOLS,
   ...CRON_TOOLS,
   ...NATO_TOOLS,
+  ...JETLAG_TOOLS,
 ];
