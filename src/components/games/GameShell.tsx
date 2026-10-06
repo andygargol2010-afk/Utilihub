@@ -29,7 +29,7 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
             {es ? "Juegos" : "Games"}
           </Link>
           <span aria-hidden>/</span>
-          <span className="text-foreground">{title}</span>
+          <span className="text-foreground" aria-current="page">{title}</span>
         </nav>
 
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -42,7 +42,7 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
           </div>
           <Link
             to={hub}
-            className="inline-flex min-h-10 items-center justify-center rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
+            className="inline-flex min-h-10 items-center justify-center rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
           >
             {es ? "Todos los juegos" : "All games"}
           </Link>
@@ -86,7 +86,7 @@ export function GamePrimaryButton({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="inline-flex min-h-10 items-center justify-center rounded-full bg-gradient-to-b from-emerald-400 to-emerald-600 px-4 text-sm font-bold text-emerald-950 shadow-[0_4px_14px_rgba(16,185,129,0.35)] transition hover:from-emerald-300 hover:to-emerald-500 disabled:opacity-50"
+      className="inline-flex min-h-10 items-center justify-center rounded-full bg-gradient-to-b from-emerald-400 to-emerald-600 px-4 text-sm font-bold text-emerald-950 shadow-[0_4px_14px_rgba(16,185,129,0.35)] transition hover:from-emerald-300 hover:to-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
     >
       {children}
     </button>
@@ -108,8 +108,8 @@ export function GameSecondaryButton({
       onClick={onClick}
       className={
         active
-          ? "inline-flex min-h-10 items-center justify-center rounded-full bg-gradient-to-b from-slate-800 to-slate-950 px-3 text-sm font-semibold text-white ring-2 ring-emerald-400/50 shadow-md"
-          : "inline-flex min-h-10 items-center justify-center rounded-full border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
+          ? "inline-flex min-h-10 items-center justify-center rounded-full bg-gradient-to-b from-slate-800 to-slate-950 px-3 text-sm font-semibold text-white ring-2 ring-emerald-400/50 shadow-md focus-visible:outline-none focus-visible:ring-emerald-300 focus-visible:ring-offset-2"
+          : "inline-flex min-h-10 items-center justify-center rounded-full border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
       }
     >
       {children}
