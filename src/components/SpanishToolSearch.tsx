@@ -14,12 +14,14 @@ function normalize(s: string) {
 }
 const STOP = new Set(["de", "la", "el", "los", "las", "para", "por", "un", "una", "y", "o", "en", "the", "a", "an", "and", "or", "for", "to", "of", "in"]);
 const categoryButtonClass = "min-h-11 shrink-0 rounded-full px-3 text-xs font-semibold";
+const PAGE_SIZE = 30;
 
 export function SpanishToolSearch({ initialCategory, compactHome = false }: { initialCategory?: string; compactHome?: boolean }) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [category, setCategory] = useState<string>(initialCategory ?? "all");
   const [tag, setTag] = useState<string>("all");
+  const [visible, setVisible] = useState(PAGE_SIZE);
   const { favorites, toggle, ready } = useFavorites();
 
   useEffect(() => {
@@ -28,8 +30,13 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
   }, [query]);
 
   useEffect(() => {
+    setVisible(PAGE_SIZE);
     setTag("all");
   }, [category]);
+
+  useEffect(() => {
+    setVisible(PAGE_SIZE);
+  }, [tag, debouncedQuery]);
 
   const index = useMemo(
     () =>
@@ -80,7 +87,9 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
   }, [category, index, tag, debouncedQuery]);
 
   const favTools = useMemo(() => ALL_TOOLS.filter((t) => favorites.includes(t.slug)), [favorites]);
-  const compactResults = results.slice(0, 6);
+  const compactResults = debouncedQuery.trim() ? results.slice(0, 6) : [];
+  const shown = results.slice(0, visible);
+  const remaining = Math.max(0, results.length - shown.length);
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
@@ -196,11 +205,24 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
             No hay herramientas que coincidan con «{query || tag}».
           </p>
         ) : (
-          <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-            {results.map((t) => (
-              <ToolCard key={t.slug} tool={t} locale="es" isFavorite={favorites.includes(t.slug)} onToggleFavorite={toggle} />
-            ))}
-          </div>
+          <>
+            <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+              {shown.map((t) => (
+                <ToolCard key={t.slug} tool={t} locale="es" isFavorite={favorites.includes(t.slug)} onToggleFavorite={toggle} />
+              ))}
+            </div>
+            {remaining > 0 && (
+              <div className="mt-3 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                  className="inline-flex min-h-11 items-center rounded-xl border border-border bg-card px-5 text-sm font-bold hover:border-primary/40 hover:bg-accent"
+                >
+                  Mostrar {Math.min(PAGE_SIZE, remaining)} más ({remaining} restantes)
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
