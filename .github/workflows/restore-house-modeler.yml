@@ -12,26 +12,48 @@ jobs:
           ref: fix/spanish-complete
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore monolith from a4c81b5
+      - name: Fix door-finish JSX imbalance
         run: |
           set -euo pipefail
-          GOOD=a4c81b5ec28ea4a01e4731752c30c08fee19795b
-          echo "Restoring from $GOOD"
-          git log --oneline -1 "$GOOD"
-          git checkout "$GOOD" -- src/components/general/HouseModeler3D.tsx
-          LINES=$(wc -l < src/components/general/HouseModeler3D.tsx)
-          echo "Restored lines: $LINES"
-          test "$LINES" -gt 4000 || { echo "ERROR: file too small ($LINES lines)"; exit 1; }
-          grep -q partFrozen src/components/general/HouseModeler3D.tsx
-          grep -q paintPlaster src/components/general/HouseModeler3D.tsx
-          grep -q SceneLayer src/components/general/HouseModeler3D.tsx
+          python3 << 'PY'
+          from pathlib import Path
+          p = Path("src/components/general/HouseModeler3D.tsx")
+          t = p.read_text()
+          # 1) Wrap orphan door-finish panel with the same conditional as wall/roof
+          old_open = '''          ))}
+
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
+'''
+          new_open = '''          ))}
+
+          {(tool === "door" || selectedKind === "door") && (
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
+'''
+          if old_open not in t:
+              raise SystemExit("door-finish open marker not found")
+          t = t.replace(old_open, new_open, 1)
+          # 2) Remove duplicate empty door conditional before isFullscreen
+          old_orphan = '''          {(tool === "door" || selectedKind === "door") && (
+
+          {isFullscreen && (
+'''
+          new_orphan = '''          {isFullscreen && (
+'''
+          if old_orphan not in t:
+              raise SystemExit("orphan door conditional not found")
+          t = t.replace(old_orphan, new_orphan, 1)
+          p.write_text(t)
+          print("JSX fixed: door finish wrapped; orphan conditional removed")
+          PY
+          # Sanity: balanced-ish check for the two markers
+          grep -n 'tool === "door" || selectedKind === "door"' src/components/general/HouseModeler3D.tsx
           git config user.name "andygargol2010-afk"
           git config user.email "andygargol2010@gmail.com"
           git add src/components/general/HouseModeler3D.tsx
           git status
           if git diff --staged --quiet; then
-            echo "Nothing to commit — already restored?"
+            echo "Nothing to commit"
             exit 0
           fi
-          git commit -m "fix(house-modeler): restore full monolith from a4c81b5 after accidental wipe"
+          git commit -m "fix(house-modeler): balance door-finish JSX so vite build passes"
           git push origin HEAD:fix/spanish-complete
