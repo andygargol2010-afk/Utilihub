@@ -86,6 +86,14 @@ function syncLockBadge(obj: THREE.Object3D, on: boolean) {
     obj.add(group);
     badge = group;
   }
+  // Badge sits above the mesh. Without partId a click passes through and places a new piece.
+  const partId = obj.userData.partId;
+  if (partId) {
+    badge.userData.partId = partId;
+    badge.traverse((c) => {
+      if (c instanceof THREE.Mesh) c.userData.partId = partId;
+    });
+  }
   badge.visible = on;
 }
 
@@ -2877,6 +2885,15 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setSelectedPos(null);
     setCount(partsRef.current.length);
     t.selectionHelper.visible = false;
+    // Cleared parts must not leave a drag armed or OrbitControls locked.
+    const dragId = draggingRef.current?.id ?? dragArmRef.current?.id;
+    if (dragId && !kept.some((p) => p.id === dragId)) {
+      draggingRef.current = null;
+      dragArmRef.current = null;
+      gesturePointerRef.current = null;
+      pendingPlaceRef.current = false;
+      if (!paletteDragRef.current) t.controls.enabled = true;
+    }
   }, [findPartObject]);
 
   const toggleFullscreen = useCallback(async () => {
