@@ -2163,8 +2163,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       dir.shadow.camera.right = 13;
       dir.shadow.camera.top = 13;
       dir.shadow.camera.bottom = -13;
-      dir.shadow.bias = -0.00025;
-      dir.shadow.normalBias = 0.02;
+      dir.shadow.bias = -0.00028;
+      dir.shadow.normalBias = 0.028;
       dir.shadow.radius = 1.4;
       scene.add(dir);
       scene.add(dir.target);
@@ -2447,8 +2447,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         dir.position.set(sun.x * 48 + focusX, Math.max(14, sun.y * 48), sun.z * 48 + focusZ);
         dir.target.position.set(focusX, 0.5, focusZ);
         dir.target.updateMatrixWorld();
+        // Same 2048 map: tighten when close for contact, widen when pulled back so a house is not clipped.
+        const orbitDist = Math.hypot(camera.position.x - focusX, camera.position.z - focusZ);
+        const half = THREE.MathUtils.clamp(8 + orbitDist * 0.38, 9, 22);
+        const shadowCam = dir.shadow.camera;
+        if (Math.abs(shadowCam.right - half) > 0.4) {
+          shadowCam.left = -half;
+          shadowCam.right = half;
+          shadowCam.top = half;
+          shadowCam.bottom = -half;
+          shadowCam.updateProjectionMatrix();
+          dir.shadow.radius = half > 16 ? 2 : 1.4;
+        }
         // Cool fill stays opposite the key so wall backs do not go flat black.
         fill.position.set(-sun.x * 26 + focusX, 9, -sun.z * 26 + focusZ);
+        // Warm pad bounce follows the work point; still no shadow map.
+        bounce.position.set(focusX + 5, 1.4, focusZ + 6);
         rim.position.set(sun.x * 18 + focusX, 2.6, sun.z * 18 + focusZ);
         rim.target.position.set(focusX, 1.5, focusZ);
         rim.target.updateMatrixWorld();
