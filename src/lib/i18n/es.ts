@@ -222,6 +222,7 @@ const EXACT_NAMES: Record<string, string> = {
   "calculadora-agua-lluvia": "Calculadora de agua de lluvia",
   "calculadora-pies-tablares": "Calculadora de pies tablares",
   "generador-robots-txt": "Generador de robots.txt",
+  "calculadora-schengen": "Calculadora Schengen 90/180",
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",
   "frecuencia-palabras": "Frecuencia de palabras",

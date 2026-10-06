@@ -101,6 +101,7 @@ const StudCalculatorTool = lazy(() => import("./StudCalculatorTool").then((m) =>
 const RainwaterCalculatorTool = lazy(() => import("./RainwaterCalculatorTool").then((m) => ({ default: m.RainwaterCalculatorTool })));
 const BoardFootCalculatorTool = lazy(() => import("./BoardFootCalculatorTool").then((m) => ({ default: m.BoardFootCalculatorTool })));
 const RobotsTxtTool = lazy(() => import("./RobotsTxtTool").then((m) => ({ default: m.RobotsTxtTool })));
+const SchengenCalculatorTool = lazy(() => import("./SchengenCalculatorTool").then((m) => ({ default: m.SchengenCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -148,6 +149,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-agua-lluvia") return RainwaterCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-pies-tablares") return BoardFootCalculatorTool as ToolComp;
   if (tool.slug === "generador-robots-txt") return RobotsTxtTool as ToolComp;
+  if (tool.slug === "calculadora-schengen") return SchengenCalculatorTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;

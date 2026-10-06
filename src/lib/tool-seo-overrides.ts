@@ -63,6 +63,7 @@ import { TOOL_SEO_OVERRIDES_STUD } from "./tool-seo-overrides-stud";
 import { TOOL_SEO_OVERRIDES_RAINWATER } from "./tool-seo-overrides-rainwater";
 import { TOOL_SEO_OVERRIDES_BOARD_FOOT } from "./tool-seo-overrides-board-foot";
 import { TOOL_SEO_OVERRIDES_ROBOTS } from "./tool-seo-overrides-robots";
+import { TOOL_SEO_OVERRIDES_SCHENGEN } from "./tool-seo-overrides-schengen";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -141,6 +142,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_RAINWATER,
   ...TOOL_SEO_OVERRIDES_BOARD_FOOT,
   ...TOOL_SEO_OVERRIDES_ROBOTS,
+  ...TOOL_SEO_OVERRIDES_SCHENGEN,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {

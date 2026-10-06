@@ -78,6 +78,7 @@ import { STUD_CALCULATOR_TOOLS } from "./stud-calculator";
 import { RAINWATER_CALCULATOR_TOOLS } from "./rainwater-calculator";
 import { BOARD_FOOT_CALCULATOR_TOOLS } from "./board-foot-calculator";
 import { ROBOTS_TXT_TOOLS } from "./robots-txt-generator";
+import { SCHENGEN_CALCULATOR_TOOLS } from "./schengen-calculator";
 
 export { GENERAL_CATEGORIES };
 
@@ -161,4 +162,5 @@ export const GENERAL_TOOLS = [
   ...RAINWATER_CALCULATOR_TOOLS,
   ...BOARD_FOOT_CALCULATOR_TOOLS,
   ...ROBOTS_TXT_TOOLS,
+  ...SCHENGEN_CALCULATOR_TOOLS,
 ];
