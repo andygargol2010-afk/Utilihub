@@ -65,6 +65,7 @@ import { TOOL_SEO_OVERRIDES_BOARD_FOOT } from "./tool-seo-overrides-board-foot";
 import { TOOL_SEO_OVERRIDES_ROBOTS } from "./tool-seo-overrides-robots";
 import { TOOL_SEO_OVERRIDES_SCHENGEN } from "./tool-seo-overrides-schengen";
 import { TOOL_SEO_OVERRIDES_ISBN } from "./tool-seo-overrides-isbn";
+import { TOOL_SEO_OVERRIDES_ICS } from "./tool-seo-overrides-ics";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -145,6 +146,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_ROBOTS,
   ...TOOL_SEO_OVERRIDES_SCHENGEN,
   ...TOOL_SEO_OVERRIDES_ISBN,
+  ...TOOL_SEO_OVERRIDES_ICS,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
