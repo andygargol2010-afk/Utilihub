@@ -945,6 +945,18 @@ function paintContactAO(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+/** Per-part foot shadow. Shared 128px map; one instanced quad, no extra shadow map. */
+function paintFootAO(ctx: CanvasRenderingContext2D, size: number) {
+  const c = size / 2;
+  const g = ctx.createRadialGradient(c, c, size * 0.06, c, c, size * 0.48);
+  g.addColorStop(0, "rgba(36,30,22,0.62)");
+  g.addColorStop(0.42, "rgba(36,30,22,0.28)");
+  g.addColorStop(0.78, "rgba(36,30,22,0.08)");
+  g.addColorStop(1, "rgba(36,30,22,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+}
+
 /** Soft horizon band so the grass disc dissolves into the sky instead of a hard edge. */
 function paintHorizonHaze(ctx: CanvasRenderingContext2D, size: number) {
   const g = ctx.createLinearGradient(0, 0, 0, size);
@@ -2370,6 +2382,30 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const partsRoot = new THREE.Group();
       scene.add(partsRoot);
 
+      // Soft contact under each placed part. One instanced quad, shared map, no shadow pass.
+      const FOOT_AO_MAX = 48;
+      const footAoMap = makeCanvasTexture(128, paintFootAO, true);
+      const footAoMat = new THREE.MeshBasicMaterial({
+        map: footAoMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        toneMapped: false,
+        opacity: 0.72,
+      });
+      footAoMat.polygonOffset = true;
+      footAoMat.polygonOffsetFactor = -2;
+      footAoMat.polygonOffsetUnits = -2;
+      const footAoGeo = new THREE.PlaneGeometry(1, 1);
+      const footAo = new THREE.InstancedMesh(footAoGeo, footAoMat, FOOT_AO_MAX);
+      footAo.count = 0;
+      footAo.frustumCulled = false;
+      footAo.renderOrder = 2;
+      footAo.castShadow = false;
+      footAo.receiveShadow = false;
+      scene.add(footAo);
+      const footDummy = new THREE.Object3D();
+      const footBox = new THREE.Box3();
+
       const controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.06;
@@ -2459,6 +2495,29 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           shadowCam.updateProjectionMatrix();
           dir.shadow.radius = half > 16 ? 2 : 1.4;
         }
+        // Foot contact follows the mesh, so drag/rotate keep the shadow without a second shadow map.
+        let footN = 0;
+        for (const child of partsRoot.children) {
+          if (footN >= FOOT_AO_MAX) break;
+          if (!child.userData.partId || !child.visible) continue;
+          footBox.setFromObject(child);
+          if (!Number.isFinite(footBox.min.x) || footBox.isEmpty()) continue;
+          const sx = THREE.MathUtils.clamp((footBox.max.x - footBox.min.x) * 0.72, 0.42, 8);
+          const sz = THREE.MathUtils.clamp((footBox.max.z - footBox.min.z) * 0.72, 0.42, 8);
+          footDummy.position.set(
+            (footBox.min.x + footBox.max.x) * 0.5,
+            0.034,
+            (footBox.min.z + footBox.max.z) * 0.5,
+          );
+          footDummy.rotation.set(-Math.PI / 2, 0, 0);
+          footDummy.scale.set(sx, sz, 1);
+          footDummy.updateMatrix();
+          footAo.setMatrixAt(footN, footDummy.matrix);
+          footN++;
+        }
+        if (footAo.count !== footN) footAo.count = footN;
+        footAo.instanceMatrix.needsUpdate = true;
+        footAo.visible = footN > 0;
         // Cool fill stays opposite the key so wall backs do not go flat black.
         fill.position.set(-sun.x * 26 + focusX, 9, -sun.z * 26 + focusZ);
         // Warm pad bounce follows the work point; still no shadow map.
@@ -2517,6 +2576,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         horizonHaze.geometry.dispose();
         hazeMat.dispose();
         hazeMap?.dispose();
+        footAo.geometry.dispose();
+        footAoMat.dispose();
+        footAoMap?.dispose();
+        footAo.dispose();
         disposeCatalogMaterials(mats);
         sky.geometry.dispose();
         sky.material.dispose();
