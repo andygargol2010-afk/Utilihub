@@ -67,6 +67,7 @@ import { TOOL_SEO_OVERRIDES_SCHENGEN } from "./tool-seo-overrides-schengen";
 import { TOOL_SEO_OVERRIDES_ISBN } from "./tool-seo-overrides-isbn";
 import { TOOL_SEO_OVERRIDES_ICS } from "./tool-seo-overrides-ics";
 import { TOOL_SEO_OVERRIDES_WIND_CHILL } from "./tool-seo-overrides-wind-chill";
+import { TOOL_SEO_OVERRIDES_ISO_DURATION } from "./tool-seo-overrides-iso-duration";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -149,6 +150,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_ISBN,
   ...TOOL_SEO_OVERRIDES_ICS,
   ...TOOL_SEO_OVERRIDES_WIND_CHILL,
+  ...TOOL_SEO_OVERRIDES_ISO_DURATION,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {

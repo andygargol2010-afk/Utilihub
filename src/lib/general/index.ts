@@ -82,6 +82,7 @@ import { SCHENGEN_CALCULATOR_TOOLS } from "./schengen-calculator";
 import { ISBN_VALIDATOR_TOOLS } from "./isbn-validator";
 import { ICS_EVENT_TOOLS } from "./ics-event-tool";
 import { WIND_CHILL_TOOLS } from "./wind-chill-tool";
+import { ISO_DURATION_TOOLS } from "./iso-duration-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -169,4 +170,5 @@ export const GENERAL_TOOLS = [
   ...ISBN_VALIDATOR_TOOLS,
   ...ICS_EVENT_TOOLS,
   ...WIND_CHILL_TOOLS,
+  ...ISO_DURATION_TOOLS,
 ];
