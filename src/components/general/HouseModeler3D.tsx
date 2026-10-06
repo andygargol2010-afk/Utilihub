@@ -67,16 +67,29 @@ function snap(v: number) {
 
 /** Dispose unique geometries. Materials only when they are not the shared catalog set (ghost clones). */
 function disposeObjectResources(obj: THREE.Object3D, disposeMaterials: boolean) {
+  const seen = new Set<THREE.Material>();
   obj.traverse((c) => {
     if (c instanceof THREE.Mesh || c instanceof THREE.Line) {
       c.geometry?.dispose();
       if (disposeMaterials) {
         const mat = c.material;
         const list = Array.isArray(mat) ? mat : [mat];
-        for (const m of list) m?.dispose();
+        for (const m of list) {
+          if (!m || seen.has(m)) continue;
+          seen.add(m);
+          m.dispose();
+        }
       }
     }
   });
+}
+
+/** Lock badges own a material outside the shared catalog. Dispose it without touching catalog mats. */
+function disposeLockBadge(obj: THREE.Object3D) {
+  const badge = obj.getObjectByName("lockBadge");
+  if (!badge) return;
+  obj.remove(badge);
+  disposeObjectResources(badge, true);
 }
 
 function uid() {
@@ -2083,6 +2096,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           disposeObjectResources(ghost, true);
         }
         for (const child of [...partsRoot.children]) {
+          disposeLockBadge(child);
           partsRoot.remove(child);
           disposeObjectResources(child, false);
         }
@@ -2228,6 +2242,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const obj = findPartObject(id);
     const t = threeRef.current;
     if (obj && t) {
+      disposeLockBadge(obj);
       t.partsRoot.remove(obj);
       disposeObjectResources(obj, false);
     }
@@ -2324,6 +2339,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (c instanceof THREE.Mesh) c.userData.partId = nid;
     });
     clone.userData.layerId = part.layerId;
+    const layer = layersRef.current.find((l) => l.id === part.layerId);
+    // Hidden layers must not leak a visible twin. placeAt unhides; duplicate must not.
+    clone.visible = layer ? layer.visible : obj.visible;
     partsRef.current.push({
       id: nid,
       kind: part.kind,
@@ -2378,6 +2396,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       }
       const obj = findPartObject(p.id);
       if (obj) {
+        disposeLockBadge(obj);
         t.partsRoot.remove(obj);
         disposeObjectResources(obj, false);
       }
@@ -2817,7 +2836,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "elementos",
         fullscreen: "Pantalla completa",
         exitFs: "Salir",
-        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · R rotar · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         none: "Nada seleccionado",
@@ -3397,7 +3416,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                     const fallback = layers.find((l) => l.id !== victim.id);
                     if (!fallback) return;
                     for (const part of partsRef.current) {
-                      if (part.layerId === victim.id) part.layerId = fallback.id;
+                      if (part.layerId !== victim.id) continue;
+                      part.layerId = fallback.id;
+                      const obj = findPartObject(part.id);
+                      if (obj) obj.userData.layerId = fallback.id;
                     }
                     const next = layers.filter((l) => l.id !== victim.id);
                     layersRef.current = next;
@@ -3474,9 +3496,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 <button
                   type="button"
                   onClick={deleteSelected}
-                  title="Del"
+                  title={selectedLocked ? labels.locked : "Del"}
                   aria-label={labels.del}
-                  className="min-h-11 rounded-lg border border-destructive/40 bg-background px-2 text-xs font-semibold text-destructive hover:bg-destructive/10"
+                  disabled={selectedLocked}
+                  className="min-h-11 rounded-lg border border-destructive/40 bg-background px-2 text-xs font-semibold text-destructive hover:bg-destructive/10 disabled:opacity-40"
                 >
                   {labels.del}
                 </button>
@@ -3506,9 +3529,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <button
                 type="button"
                 onClick={deleteSelected}
-                title="Del"
+                title={selectedLocked ? labels.locked : "Del"}
                 aria-label={labels.del}
-                className="min-h-11 rounded-lg border border-destructive/40 bg-background px-1 text-[10px] font-semibold text-destructive hover:bg-destructive/10"
+                disabled={selectedLocked}
+                className="min-h-11 rounded-lg border border-destructive/40 bg-background px-1 text-[10px] font-semibold text-destructive hover:bg-destructive/10 disabled:opacity-40"
               >
                 Del
               </button>
