@@ -3011,8 +3011,6 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
     const onDown = (ev: PointerEvent) => {
       if (ev.button !== 0) return;
-      const point = worldPointFromEvent(ev.clientX, ev.clientY);
-      if (!point) return;
 
       // Palette placement happens only on its own pointerup (avoids double-place).
       if (paletteDragRef.current) {
@@ -3026,6 +3024,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       t.pointer.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
       t.pointer.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
       t.raycaster.setFromCamera(t.pointer, t.camera);
+      // Ground hit is optional: a roof/chimney against the sky still has to select.
+      const point = worldPointFromEvent(ev.clientX, ev.clientY) ?? pointOnSitePlane(t.raycaster);
       const meshes: THREE.Object3D[] = [];
       t.partsRoot.traverse((c) => {
         if (c instanceof THREE.Mesh && c.userData.partId && c.visible) {
@@ -3049,13 +3049,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         const obj = findPartObject(id);
         const frozen = picked ? partFrozen(picked, layersRef.current) : false;
         if (obj && !frozen) {
-          // Arm only: a click selects. Snap-drag starts after the pointer leaves the slop.
-          dragArmRef.current = {
-            id,
-            offset: new THREE.Vector3(point.x - obj.position.x, 0, point.z - obj.position.z),
-            x: ev.clientX,
-            y: ev.clientY,
-          };
+          // Arm only when we have a pad/site anchor. A pure sky click still selects
+          // and must not yaw the camera, but it cannot snap-drag.
+          if (point) {
+            dragArmRef.current = {
+              id,
+              offset: new THREE.Vector3(point.x - obj.position.x, 0, point.z - obj.position.z),
+              x: ev.clientX,
+              y: ev.clientY,
+            };
+          } else {
+            dragArmRef.current = null;
+          }
           draggingRef.current = null;
           gesturePointerRef.current = ev.pointerId;
           t.controls.enabled = false;
@@ -3066,6 +3071,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         return;
       }
 
+      // A sky miss must not place. Only a real pad hit arms a ground place.
+      const padPoint = worldPointFromEvent(ev.clientX, ev.clientY);
+      if (!padPoint) return;
       // Arm a ground place; commit on pointerup so a cancelled gesture does not spawn a part.
       pendingPlaceRef.current = true;
       gesturePointerRef.current = ev.pointerId;
