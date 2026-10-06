@@ -85,6 +85,7 @@ import { WIND_CHILL_TOOLS } from "./wind-chill-tool";
 import { ISO_DURATION_TOOLS } from "./iso-duration-tool";
 import { CONTRAST_TOOLS } from "./contrast-tool";
 import { CRON_TOOLS } from "./cron-tool";
+import { NATO_TOOLS } from "./nato-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -175,4 +176,5 @@ export const GENERAL_TOOLS = [
   ...ISO_DURATION_TOOLS,
   ...CONTRAST_TOOLS,
   ...CRON_TOOLS,
+  ...NATO_TOOLS,
 ];

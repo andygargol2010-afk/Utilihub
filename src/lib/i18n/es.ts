@@ -229,6 +229,7 @@ const EXACT_NAMES: Record<string, string> = {
   "generador-duracion-iso": "Generador de duración ISO 8601",
   "validador-contraste": "Validador de contraste WCAG",
   "generador-cron": "Generador de expresiones cron",
+  "traductor-fonetico-otan": "Traductor del alfabeto fonético OTAN",
   "codigo-morse": "Traductor de código Morse",
   "texto-binario": "Texto a binario",
   "frecuencia-palabras": "Frecuencia de palabras",
