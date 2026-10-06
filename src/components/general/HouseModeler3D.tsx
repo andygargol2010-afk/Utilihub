@@ -3109,8 +3109,16 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
           {count} {labels.parts}
         </span>
-        <span className="rounded-full border border-amber-700/40 bg-amber-900/15 px-2 py-0.5 text-[11px] font-semibold text-foreground">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-700/40 bg-amber-900/15 px-2 py-0.5 text-[11px] font-semibold text-foreground">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-full ring-1 ring-black/20"
+            style={{ background: paletteItems.find((item) => item.kind === tool)?.swatch ?? "#d8d0c4" }}
+            aria-hidden
+          />
           {labels.active}: {activeLabel}
+          <kbd className="rounded bg-amber-50/80 px-1 font-mono text-[10px] text-amber-950 dark:bg-amber-950/40 dark:text-amber-100">
+            {paletteItems.find((item) => item.kind === tool)?.key}
+          </kbd>
         </span>
         <button
           type="button"
@@ -3122,13 +3130,17 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         </button>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div
+        role="toolbar"
+        aria-label={labels.title}
+        className="flex gap-2 overflow-x-auto overscroll-x-contain pb-1 snap-x snap-mandatory [scrollbar-width:thin]"
+      >
         <button
           type="button"
           onClick={duplicateSelected}
           disabled={!selectedId}
           aria-label={labels.dup}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
           title={selectedId ? "D" : labels.needSel}
         >
           {labels.dup}
@@ -3139,7 +3151,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           onClick={frameSelected}
           disabled={!selectedId}
           aria-label={labels.frame}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
           title={selectedId ? "G" : labels.needSel}
         >
           {labels.frame}
@@ -3150,7 +3162,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           onClick={rotateSelected}
           disabled={!selectedId}
           aria-label={labels.rot}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
           title={selectedId ? "R" : labels.needSel}
         >
           {labels.rot}
@@ -3162,7 +3174,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           disabled={!selectedId}
           aria-pressed={selectedLocked}
           aria-label={selectedLocked ? labels.unlock : labels.lock}
-          className={`inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 ${
+          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 ${
             selectedLocked ? "border-amber-600 bg-amber-500/15" : "border-border bg-card"
           }`}
           title={selectedId ? "L" : labels.needSel}
@@ -3175,7 +3187,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           onClick={deleteSelected}
           disabled={!selectedId || selectedLocked}
           aria-label={labels.del}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
           title={selectedId ? "Del" : labels.needSel}
         >
           {labels.del}
@@ -3186,7 +3198,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           onClick={clearAll}
           disabled={count === 0}
           aria-label={labels.clear}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
+          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
           title="C"
         >
           {labels.clear}
@@ -3197,7 +3209,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           onClick={() => void toggleFullscreen()}
           aria-pressed={isFullscreen}
           aria-label={isFullscreen ? labels.exitFs : labels.fullscreen}
-          className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
+          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
           title="F"
         >
           {isFullscreen ? labels.exitFs : labels.fullscreen}
@@ -3684,6 +3696,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               } ${placingFromPalette && tool === item.kind ? "scale-[0.98] ring-2 ring-amber-600" : ""}`}
             >
               <StructureGlyph kind={item.kind} />
+              <span
+                className="h-1.5 w-10 rounded-full ring-1 ring-black/15"
+                style={{ background: item.swatch }}
+                aria-hidden
+              />
               {!paletteCompact && (
                 <>
                   <span className="text-xs font-semibold text-foreground">{item.label}</span>
