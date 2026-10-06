@@ -4,14 +4,15 @@ import { ToolSearch } from "@/components/ToolSearch";
 import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
 import { RecentToolsSection } from "@/components/RecentToolsSection";
 import { HomeReviews } from "@/components/HomeReviews";
+import { HomeFeaturedSection } from "@/components/HomeFeaturedSection";
 import { AdBanner } from "@/components/AdBanner";
 import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
 import { englishToolSlug, englishCategorySlug } from "@/lib/route-slugs";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
 
-const title = "UtiliHub · Free online tools to solve it fast";
+const title = "UtiliHub · Free online tools, 3D studios & games";
 const description = cleanDescription(
-  "500+ free online tools to calculate, convert, study, and handle everyday tasks. Find the tool you need with no signup.",
+  "Free online tools, advanced 3D house modeler, and browser games. Calculate, convert, build, and play — no signup.",
 );
 const QUICK_TOOL_SLUGS = [
   "calculadora",
@@ -29,7 +30,11 @@ export const Route = createFileRoute("/")({
     meta: [
       { title },
       { name: "description", content: description },
-      { name: "keywords", content: "online tools, online calculators, converters, free tools, UtiliHub" },
+      {
+        name: "keywords",
+        content:
+          "online tools, 3D house modeler, free browser games, online calculators, converters, advanced tools, UtiliHub",
+      },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
@@ -65,26 +70,32 @@ function HomePage() {
         <div className="container-page grid gap-8 py-10 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-12 lg:py-20">
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/75 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-primary">
-              <Sparkles className="size-3.5" aria-hidden /> Hassle-free utilities
+              <Sparkles className="size-3.5" aria-hidden /> Tools, studios & games
             </div>
             <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
               Free online tools to solve what you need in seconds.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-              Calculate, convert, study, and organize everyday tasks with free tools that run right in your browser.
+              Calculate and convert everyday tasks — plus advanced 3D studios and free browser games. No signup.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                to="/tools"
+              <a
+                href="/category/advanced-tools"
                 className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:opacity-95"
               >
-                Browse tools <ArrowRight className="size-4" />
+                Explore advanced tools <ArrowRight className="size-4" />
+              </a>
+              <Link
+                to="/games"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-violet-500/40 bg-card px-5 py-3 text-sm font-bold text-violet-800 hover:border-violet-500/60 hover:bg-violet-500/10 dark:text-violet-200"
+              >
+                Play games
               </Link>
               <Link
-                to="/finance"
+                to="/tools"
                 className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold hover:border-primary/40 hover:bg-accent"
               >
-                View financial calculators
+                Full catalog
               </Link>
             </div>
             <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
@@ -114,23 +125,29 @@ function HomePage() {
                 <ToolSearch compactHome />
               </div>
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
+                <a
+                  href="/category/advanced-tools"
+                  className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-2.5 hover:border-primary/50 hover:bg-primary/10"
+                >
+                  Advanced
+                </a>
+                <Link
+                  to="/games"
+                  className="rounded-lg border border-violet-500/30 bg-violet-500/5 px-3 py-2.5 hover:border-violet-500/50 hover:bg-violet-500/10"
+                >
+                  Games
+                </Link>
                 <Link to="/category/math" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
                   Math
-                </Link>
-                <Link to="/category/text" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
-                  Text
-                </Link>
-                <Link to="/category/developer" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
-                  Developer
                 </Link>
                 <Link to="/finance" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
                   Finance
                 </Link>
+                <Link to="/category/text" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                  Text
+                </Link>
                 <Link to="/category/converters" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
                   Converters
-                </Link>
-                <Link to="/games" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
-                  Games
                 </Link>
               </div>
             </div>
@@ -139,7 +156,8 @@ function HomePage() {
       </section>
       <AdBanner />
       <div className="container-page">
-        <section className="pt-14 pb-10 sm:pt-16 sm:pb-12" aria-labelledby="shortcuts-title">
+        <HomeFeaturedSection locale="en" />
+        <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="shortcuts-title">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Start here</p>

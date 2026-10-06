@@ -50,6 +50,13 @@ const hreflangXml = (entry: SitemapEntry) => {
     .join("");
 };
 
+/** Higher priority for advanced tools and flagship 3D studios. */
+function toolPriority(tool: (typeof ALL_TOOLS)[number]): string {
+  if (tool.category === "herramientas-avanzadas") return "0.85";
+  if (tool.slug === "modelador-casas-3d" || tool.slug === "modelador-3d") return "0.85";
+  return "0.7";
+}
+
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
@@ -60,7 +67,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...pair("/finance", "/es/finanzas", "0.9"),
           ...pair("/kits", "/es/kits", "0.9"),
           ...pair("/hubs/documents-and-files", "/es/hubs/documentos-y-archivos", "0.9"),
-          ...pair("/games", "/es/juegos", "0.9"),
+          // Featured hubs: games + advanced sit at the top of discovery
+          ...pair("/games", "/es/juegos", "0.95"),
           ...pair("/simulators", "/es/simuladores", "0.9"),
           ...pair("/legal", "/es/aviso-legal", "0.3"),
           ...pair("/privacy", "/es/privacidad", "0.3"),
@@ -72,7 +80,9 @@ export const Route = createFileRoute("/sitemap.xml")({
             category.slug === "finanzas" ? "/finance" : englishCategoryPath(category.slug);
           const esPath =
             category.slug === "finanzas" ? "/es/finanzas" : `/es/categoria/${category.slug}`;
-          const priority = category.slug === "educacion" ? "0.9" : "0.8";
+          let priority = "0.8";
+          if (category.slug === "herramientas-avanzadas") priority = "0.95";
+          else if (category.slug === "educacion") priority = "0.9";
           return pair(enPath, esPath, priority);
         });
 
@@ -85,7 +95,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         );
 
         const gamePairs: SitemapEntry[] = GAMES.flatMap((game) =>
-          pair(`/games/${game.slug}`, `/es/juegos/${game.slugEs}`, "0.8"),
+          pair(`/games/${game.slug}`, `/es/juegos/${game.slugEs}`, "0.85"),
         );
 
         const simPairs: SitemapEntry[] = SIMULATORS.flatMap((sim) =>
@@ -95,7 +105,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         const toolEntries: SitemapEntry[] = ALL_TOOLS.flatMap((tool) => {
           const enPath = toolHref(tool);
           const esPath = spanishToolPath(tool);
-          return pair(enPath, esPath, "0.7");
+          return pair(enPath, esPath, toolPriority(tool));
         });
 
         const paths = [

@@ -4,6 +4,7 @@ import { SpanishToolSearch } from "@/components/SpanishToolSearch";
 import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
 import { RecentToolsSection } from "@/components/RecentToolsSection";
 import { HomeReviews } from "@/components/HomeReviews";
+import { HomeFeaturedSection } from "@/components/HomeFeaturedSection";
 import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
@@ -40,26 +41,32 @@ const CATEGORY_BLURB_ES: Record<string, string> = {
   utilidades: "Utilidades prácticas del día a día.",
 };
 
+const titleEs = "UtiliHub · Herramientas online, studios 3D y juegos";
+const descriptionEs =
+  "Herramientas online gratis, modelador de casas 3D y juegos en el navegador. Calculá, convertí, diseñá y jugá — sin registro.";
+
 export const Route = createFileRoute("/es/")({
   head: () => ({
     meta: [
-      { title: "Herramientas online gratis | UtiliHub" },
+      { title: titleEs },
+      { name: "description", content: descriptionEs },
       {
-        name: "description",
+        name: "keywords",
         content:
-          "Herramientas online gratuitas para calcular, convertir, estudiar y resolver tareas cotidianas.",
+          "herramientas online, modelador casas 3D, juegos gratis navegador, calculadoras, herramientas avanzadas, UtiliHub",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
-      { property: "og:title", content: "Herramientas online gratis | UtiliHub" },
-      {
-        property: "og:description",
-        content: "Calculadoras, conversores y utilidades gratuitas en español.",
-      },
+      { property: "og:title", content: titleEs },
+      { property: "og:description", content: descriptionEs },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "es_ES" },
       { property: "og:url", content: absoluteUrl("/es") },
       { property: "og:site_name", content: SITE_NAME },
       { property: "og:image", content: ogImage() },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: titleEs },
+      { name: "twitter:description", content: descriptionEs },
+      { name: "twitter:image", content: ogImage() },
     ],
     links: [
       { rel: "canonical", href: absoluteUrl("/es") },
@@ -88,27 +95,34 @@ function SpanishHome() {
         <div className="container-page grid gap-8 py-10 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-12 lg:py-20">
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/75 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-primary">
-              <Sparkles className="size-3.5" aria-hidden /> Utilidades sin fricción
+              <Sparkles className="size-3.5" aria-hidden /> Herramientas, studios y juegos
             </div>
             <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
               Herramientas online gratis para resolverlo en segundos.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-              Calcula, convierte, estudia y organiza tareas cotidianas con herramientas gratuitas que
-              funcionan en tu navegador.
+              Calculá y convertí tareas del día a día — más studios 3D avanzados y juegos gratis en el navegador. Sin
+              registro.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                to="/es/herramientas"
+                to="/es/categoria/$slug"
+                params={{ slug: "herramientas-avanzadas" }}
                 className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:opacity-95"
               >
-                Ver herramientas <ArrowRight className="size-4" />
+                Explorar avanzadas <ArrowRight className="size-4" />
               </Link>
               <Link
-                to="/es/finanzas"
+                to="/es/juegos"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-violet-500/40 bg-card px-5 py-3 text-sm font-bold text-violet-800 hover:border-violet-500/60 hover:bg-violet-500/10 dark:text-violet-200"
+              >
+                Jugar
+              </Link>
+              <Link
+                to="/es/herramientas"
                 className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold hover:border-primary/40 hover:bg-accent"
               >
-                Calculadoras financieras
+                Catálogo completo
               </Link>
             </div>
             <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
@@ -141,10 +155,29 @@ function SpanishHome() {
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
                 <Link
                   to="/es/categoria/$slug"
+                  params={{ slug: "herramientas-avanzadas" }}
+                  className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-2.5 hover:border-primary/50 hover:bg-primary/10"
+                >
+                  Avanzadas
+                </Link>
+                <Link
+                  to="/es/juegos"
+                  className="rounded-lg border border-violet-500/30 bg-violet-500/5 px-3 py-2.5 hover:border-violet-500/50 hover:bg-violet-500/10"
+                >
+                  Juegos
+                </Link>
+                <Link
+                  to="/es/categoria/$slug"
                   params={{ slug: "matematicas" }}
                   className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
                 >
                   Matemáticas
+                </Link>
+                <Link
+                  to="/es/finanzas"
+                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
+                >
+                  Finanzas
                 </Link>
                 <Link
                   to="/es/categoria/$slug"
@@ -155,29 +188,10 @@ function SpanishHome() {
                 </Link>
                 <Link
                   to="/es/categoria/$slug"
-                  params={{ slug: "desarrollo" }}
-                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
-                >
-                  Desarrollo
-                </Link>
-                <Link
-                  to="/es/finanzas"
-                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
-                >
-                  Finanzas
-                </Link>
-                <Link
-                  to="/es/categoria/$slug"
                   params={{ slug: "conversiones" }}
                   className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
                 >
                   Conversores
-                </Link>
-                <Link
-                  to="/es/juegos"
-                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
-                >
-                  Juegos
                 </Link>
               </div>
             </div>
@@ -186,7 +200,9 @@ function SpanishHome() {
       </section>
 
       <div className="container-page">
-        <section className="pt-14 pb-10 sm:pt-16 sm:pb-12" aria-labelledby="es-shortcuts-title">
+        <HomeFeaturedSection locale="es" />
+
+        <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="es-shortcuts-title">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Empieza aquí</p>
