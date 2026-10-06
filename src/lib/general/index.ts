@@ -81,6 +81,7 @@ import { ROBOTS_TXT_TOOLS } from "./robots-txt-generator";
 import { SCHENGEN_CALCULATOR_TOOLS } from "./schengen-calculator";
 import { ISBN_VALIDATOR_TOOLS } from "./isbn-validator";
 import { ICS_EVENT_TOOLS } from "./ics-event-tool";
+import { WIND_CHILL_TOOLS } from "./wind-chill-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -167,4 +168,5 @@ export const GENERAL_TOOLS = [
   ...SCHENGEN_CALCULATOR_TOOLS,
   ...ISBN_VALIDATOR_TOOLS,
   ...ICS_EVENT_TOOLS,
+  ...WIND_CHILL_TOOLS,
 ];

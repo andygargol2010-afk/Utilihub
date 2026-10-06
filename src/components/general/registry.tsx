@@ -104,6 +104,7 @@ const RobotsTxtTool = lazy(() => import("./RobotsTxtTool").then((m) => ({ defaul
 const SchengenCalculatorTool = lazy(() => import("./SchengenCalculatorTool").then((m) => ({ default: m.SchengenCalculatorTool })));
 const IsbnValidatorTool = lazy(() => import("./IsbnValidatorTool").then((m) => ({ default: m.IsbnValidatorTool })));
 const IcsEventTool = lazy(() => import("./IcsEventTool").then((m) => ({ default: m.IcsEventTool })));
+const WindChillTool = lazy(() => import("./WindChillTool").then((m) => ({ default: m.WindChillTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -154,6 +155,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-schengen") return SchengenCalculatorTool as ToolComp;
   if (tool.slug === "validador-isbn") return IsbnValidatorTool as ToolComp;
   if (tool.slug === "generador-ics") return IcsEventTool as ToolComp;
+  if (tool.slug === "calculadora-enfriamiento-viento") return WindChillTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
