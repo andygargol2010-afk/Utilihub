@@ -79,6 +79,7 @@ import { RAINWATER_CALCULATOR_TOOLS } from "./rainwater-calculator";
 import { BOARD_FOOT_CALCULATOR_TOOLS } from "./board-foot-calculator";
 import { ROBOTS_TXT_TOOLS } from "./robots-txt-generator";
 import { SCHENGEN_CALCULATOR_TOOLS } from "./schengen-calculator";
+import { ISBN_VALIDATOR_TOOLS } from "./isbn-validator";
 
 export { GENERAL_CATEGORIES };
 
@@ -163,4 +164,5 @@ export const GENERAL_TOOLS = [
   ...BOARD_FOOT_CALCULATOR_TOOLS,
   ...ROBOTS_TXT_TOOLS,
   ...SCHENGEN_CALCULATOR_TOOLS,
+  ...ISBN_VALIDATOR_TOOLS,
 ];
