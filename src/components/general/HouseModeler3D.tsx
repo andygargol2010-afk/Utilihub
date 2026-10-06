@@ -2893,6 +2893,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const clearAll = useCallback(() => {
     const t = threeRef.current;
     if (!t) return;
+    const prevId = selectedRef.current;
     const kept: ScenePart[] = [];
     for (const p of [...partsRef.current]) {
       if (partFrozen(p, layersRef.current)) {
@@ -2907,20 +2908,33 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       }
     }
     partsRef.current = kept;
-    selectedRef.current = null;
-    setSelectedId(null);
-    setSelectedRot(0);
-    setSelectedPos(null);
+    // Locked parts survive Clear. Dropping their highlight looked like they vanished.
+    const still = prevId && kept.some((p) => p.id === prevId) ? prevId : null;
+    selectedRef.current = still;
+    setSelectedId(still);
+    if (still) {
+      const part = kept.find((p) => p.id === still);
+      setSelectedRot(part ? ((Math.round(part.rotationY / (Math.PI / 2)) % 4) + 4) % 4 : 0);
+      setSelectedPos(part ? [part.position[0], part.position[2]] : null);
+    } else {
+      setSelectedRot(0);
+      setSelectedPos(null);
+      t.selectionHelper.visible = false;
+    }
     setCount(partsRef.current.length);
-    t.selectionHelper.visible = false;
-    // Cleared parts must not leave a drag armed or OrbitControls locked.
+    // A ground click arms a place and disables orbit before any part exists.
+    // Clear must cancel that gesture, or pointerup spawns a piece and orbit stays locked.
     const dragId = draggingRef.current?.id ?? dragArmRef.current?.id;
-    if (dragId && !kept.some((p) => p.id === dragId)) {
+    const dragKept = !!dragId && kept.some((p) => p.id === dragId);
+    if (!dragKept) {
       draggingRef.current = null;
       dragArmRef.current = null;
-      gesturePointerRef.current = null;
       pendingPlaceRef.current = false;
-      if (!paletteDragRef.current) t.controls.enabled = true;
+      if (!paletteDragRef.current) {
+        gesturePointerRef.current = null;
+        t.controls.enabled = true;
+        if (t.ghost) t.ghost.visible = true;
+      }
     }
   }, [findPartObject]);
 
