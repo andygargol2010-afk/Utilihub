@@ -3619,6 +3619,21 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     { kind: "beam", label: labels.beam, swatch: "#6d4a30", key: "0", size: labels.sizeBeam },
     { kind: "foundation", label: labels.foundation, swatch: "#c4b8a4", key: "Q", size: labels.sizeFoundation },
   ];
+  const finishCaption = (kind: PartKind): string | null => {
+    if (kind === "wall") {
+      const id = selectedKind === "wall" ? selectedWallFinish : wallFinish;
+      return id === "masonry" ? labels.wallMasonry : labels.wallPlaster;
+    }
+    if (kind === "door") {
+      const id = selectedKind === "door" ? selectedDoorFinish : doorFinish;
+      return id === "metal" ? labels.doorMetal : labels.doorTimber;
+    }
+    if (kind === "roof") {
+      const id = selectedKind === "roof" ? selectedRoofFinish : roofFinish;
+      return id === "metal" ? labels.roofMetal : labels.roofClay;
+    }
+    return null;
+  };
   const activeLabel =
     tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : tool === "chimney" ? labels.chimney : tool === "beam" ? labels.beam : labels.foundation;
 
@@ -3648,7 +3663,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             style={{ background: paletteItems.find((item) => item.kind === tool)?.swatch ?? "#d8d0c4" }}
             aria-hidden
           />
-          {labels.active}: {activeLabel}
+          {labels.active}: {activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""}
           <kbd className="rounded bg-amber-50/80 px-1 font-mono text-[10px] text-amber-950 dark:bg-amber-950/40 dark:text-amber-100">
             {paletteItems.find((item) => item.kind === tool)?.key}
           </kbd>
@@ -4010,6 +4025,126 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {!paletteCompact && (
             <p className="px-1 text-[10px] leading-snug text-muted-foreground">{labels.dragHint}</p>
           )}
+          {paletteItems.map((item) => (
+            <button
+              key={item.kind}
+              type="button"
+              onPointerDown={startPaletteDrag(item.kind)}
+              onClick={() => setTool(item.kind)}
+              aria-pressed={tool === item.kind}
+              aria-label={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} (${item.key})`}
+              title={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} · ${item.size} · ${labels.dragHint} (${item.key})`}
+            className={`group flex min-h-11 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
+                tool === item.kind
+                  ? "border-amber-700/70 bg-amber-900/20 shadow-sm ring-1 ring-amber-700/40"
+                  : "border-border bg-background/80 hover:bg-accent"
+              } ${placingFromPalette && tool === item.kind ? "scale-[0.98] ring-2 ring-amber-600" : ""}`}
+            >
+              <StructureGlyph kind={item.kind} />
+              <span
+                className="h-1.5 w-10 rounded-full ring-1 ring-black/15"
+                style={{ background: item.swatch }}
+                aria-hidden
+              />
+              {!paletteCompact && (
+                <>
+                  <span className="text-xs font-semibold text-foreground">{item.label}</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{item.size}</span>
+                  {finishCaption(item.kind) && (
+                    <span className="text-[10px] font-semibold leading-none text-amber-800 dark:text-amber-200">{finishCaption(item.kind)}</span>
+                  )}
+                </>
+              )}
+              <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
+                {item.key}
+                {!paletteCompact && tool === item.kind ? ` · ${labels.active}` : ""}
+              </span>
+            </button>
+          ))}
+
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.doorFinish}</p>
+              <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
+                {([
+                  ["timber", labels.doorTimber, "#8d5c38"],
+                  ["metal", labels.doorMetal, "#b7c4cc"],
+                ] as const).map(([id, label, swatch]) => {
+                  const active = (selectedKind === "door" ? selectedDoorFinish : doorFinish) === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => chooseDoorFinish(id)}
+                      aria-pressed={active}
+                      title={label}
+                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
+                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
+                      }`}
+                    >
+                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
+                      {!paletteCompact && <span className="truncate">{label}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {(tool === "wall" || selectedKind === "wall") && (
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.wallFinish}>
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.wallFinish}</p>
+              <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
+                {([
+                  ["plaster", labels.wallPlaster, "#d8d0c4"],
+                  ["masonry", labels.wallMasonry, "#c4b49a"],
+                ] as const).map(([id, label, swatch]) => {
+                  const active = (selectedKind === "wall" ? selectedWallFinish : wallFinish) === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => chooseWallFinish(id)}
+                      aria-pressed={active}
+                      title={label}
+                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
+                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
+                      }`}
+                    >
+                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
+                      {!paletteCompact && <span className="truncate">{label}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {(tool === "roof" || selectedKind === "roof") && (
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.roofFinish}>
+              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.roofFinish}</p>
+              <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
+                {([
+                  ["clay", labels.roofClay, "#6b3a2a"],
+                  ["metal", labels.roofMetal, "#9aa7ae"],
+                ] as const).map(([id, label, swatch]) => {
+                  const active = (selectedKind === "roof" ? selectedRoofFinish : roofFinish) === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => chooseRoofFinish(id)}
+                      aria-pressed={active}
+                      title={label}
+                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
+                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
+                      }`}
+                    >
+                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
+                      {!paletteCompact && <span className="truncate">{label}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           <div className="rounded-xl border border-border bg-background/80 p-1.5">
             {!paletteCompact && (
               <p className="px-0.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">{labels.layers}</p>
@@ -4248,119 +4383,6 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             </p>
           ) : null}
           {(tool === "door" || selectedKind === "door") && (
-            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.doorFinish}</p>
-              <div className="grid grid-cols-2 gap-1">
-                {([
-                  ["timber", labels.doorTimber, "#8d5c38"],
-                  ["metal", labels.doorMetal, "#b7c4cc"],
-                ] as const).map(([id, label, swatch]) => {
-                  const active = (selectedKind === "door" ? selectedDoorFinish : doorFinish) === id;
-                  return (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => chooseDoorFinish(id)}
-                      aria-pressed={active}
-                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
-                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
-                      }`}
-                    >
-                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
-                      <span className="truncate">{label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-          {(tool === "wall" || selectedKind === "wall") && (
-            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.wallFinish}>
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.wallFinish}</p>
-              <div className="grid grid-cols-2 gap-1">
-                {([
-                  ["plaster", labels.wallPlaster, "#d8d0c4"],
-                  ["masonry", labels.wallMasonry, "#c4b49a"],
-                ] as const).map(([id, label, swatch]) => {
-                  const active = (selectedKind === "wall" ? selectedWallFinish : wallFinish) === id;
-                  return (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => chooseWallFinish(id)}
-                      aria-pressed={active}
-                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
-                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
-                      }`}
-                    >
-                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
-                      <span className="truncate">{label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-          {(tool === "roof" || selectedKind === "roof") && (
-            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.roofFinish}>
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.roofFinish}</p>
-              <div className="grid grid-cols-2 gap-1">
-                {([
-                  ["clay", labels.roofClay, "#6b3a2a"],
-                  ["metal", labels.roofMetal, "#9aa7ae"],
-                ] as const).map(([id, label, swatch]) => {
-                  const active = (selectedKind === "roof" ? selectedRoofFinish : roofFinish) === id;
-                  return (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => chooseRoofFinish(id)}
-                      aria-pressed={active}
-                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
-                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
-                      }`}
-                    >
-                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
-                      <span className="truncate">{label}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-          {paletteItems.map((item) => (
-            <button
-              key={item.kind}
-              type="button"
-              onPointerDown={startPaletteDrag(item.kind)}
-              onClick={() => setTool(item.kind)}
-              aria-pressed={tool === item.kind}
-              aria-label={`${item.label} (${item.key})`}
-              title={`${item.label} · ${item.size} · ${labels.dragHint} (${item.key})`}
-            className={`group flex min-h-11 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
-                tool === item.kind
-                  ? "border-amber-700/70 bg-amber-900/20 shadow-sm ring-1 ring-amber-700/40"
-                  : "border-border bg-background/80 hover:bg-accent"
-              } ${placingFromPalette && tool === item.kind ? "scale-[0.98] ring-2 ring-amber-600" : ""}`}
-            >
-              <StructureGlyph kind={item.kind} />
-              <span
-                className="h-1.5 w-10 rounded-full ring-1 ring-black/15"
-                style={{ background: item.swatch }}
-                aria-hidden
-              />
-              {!paletteCompact && (
-                <>
-                  <span className="text-xs font-semibold text-foreground">{item.label}</span>
-                  <span className="text-[10px] leading-none text-muted-foreground">{item.size}</span>
-                </>
-              )}
-              <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
-                {item.key}
-                {!paletteCompact && tool === item.kind ? ` · ${labels.active}` : ""}
-              </span>
-            </button>
-          ))}
 
           {isFullscreen && (
             <button
@@ -4389,7 +4411,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             <StructureGlyph kind={tool} />
           </span>
           <span>
-            {activeLabel} · {dragCursor.over ? labels.dropOver : labels.dropOut}
+            {activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · {dragCursor.over ? labels.dropOver : labels.dropOut}
           </span>
         </div>
       )}
