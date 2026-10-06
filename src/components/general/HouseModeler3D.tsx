@@ -105,6 +105,32 @@ function snap(v: number) {
 
 /** Site disc is radius 120. Keep dragged parts inside it when the ray misses the mesh. */
 const SITE_RADIUS = 118;
+
+/** Snap can step past the rim. Pull the origin back so nudge/duplicate cannot leave the pad. */
+function clampToSite(x: number, z: number): [number, number] {
+  const len = Math.hypot(x, z);
+  if (!Number.isFinite(len) || len <= SITE_RADIUS) return [x, z];
+  const scale = SITE_RADIUS / len;
+  let cx = snap(x * scale);
+  let cz = snap(z * scale);
+  const clamped = Math.hypot(cx, cz);
+  if (clamped > SITE_RADIUS && clamped > 0) {
+    const again = SITE_RADIUS / clamped;
+    cx = snap(cx * again);
+    cz = snap(cz * again);
+  }
+  return [cx, cz];
+}
+
+/** Lock badge sits above the mesh. Including it inflates the selection box and the foot shadow. */
+function boxWithoutBadge(obj: THREE.Object3D, target: THREE.Box3) {
+  const badge = obj.getObjectByName("lockBadge");
+  const was = badge?.visible ?? false;
+  if (badge) badge.visible = false;
+  target.setFromObject(obj);
+  if (badge) badge.visible = was;
+  return target;
+}
 const sitePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
 const siteHit = new THREE.Vector3();
 
@@ -2476,7 +2502,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             const frozen = part ? partFrozen(part, layersRef.current) : false;
             const mat = selectionHelper.material as THREE.LineBasicMaterial;
             mat.color.set(frozen ? 0xf0c14e : 0xc4843a);
+            const badge = target.getObjectByName("lockBadge");
+            const badgeWas = badge?.visible ?? false;
+            if (badge) badge.visible = false;
             selectionHelper.setFromObject(target);
+            if (badge) badge.visible = badgeWas;
             selectionHelper.visible = true;
           } else {
             selectionHelper.visible = false;
@@ -2508,7 +2538,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         for (const child of partsRoot.children) {
           if (footN >= FOOT_AO_MAX) break;
           if (!child.userData.partId || !child.visible) continue;
-          footBox.setFromObject(child);
+          boxWithoutBadge(child, footBox);
           if (!Number.isFinite(footBox.min.x) || footBox.isEmpty()) continue;
           const sx = THREE.MathUtils.clamp((footBox.max.x - footBox.min.x) * 0.72, 0.42, 8);
           const sz = THREE.MathUtils.clamp((footBox.max.z - footBox.min.z) * 0.72, 0.42, 8);
@@ -2769,8 +2799,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (part0 && partFrozen(part0, layersRef.current)) return;
     const obj = findPartObject(id);
     if (!obj) return;
-    const x = snap(obj.position.x + dx);
-    const z = snap(obj.position.z + dz);
+    const [x, z] = clampToSite(snap(obj.position.x + dx), snap(obj.position.z + dz));
     obj.position.x = x;
     obj.position.z = z;
     const part = partsRef.current.find((p) => p.id === id);
@@ -2786,8 +2815,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const obj = findPartObject(id);
     const t = threeRef.current;
     if (!part || !obj || !t) return;
-    const x = snap(obj.position.x + GRID);
-    const z = snap(obj.position.z);
+    const [x, z] = clampToSite(snap(obj.position.x + GRID), snap(obj.position.z));
     const finish = doorFinishOf(part);
     const roofCover = roofFinishOf(part);
     const wallCover = wallFinishOf(part);
@@ -3001,9 +3029,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         } else {
           const obj = findPartObject(dragId);
           if (obj && part) {
-            obj.position.x = snap(point.x - draggingRef.current.offset.x);
-            obj.position.z = snap(point.z - draggingRef.current.offset.z);
-            part.position = [obj.position.x, 0, obj.position.z];
+            const [nx, nz] = clampToSite(
+              snap(point.x - draggingRef.current.offset.x),
+              snap(point.z - draggingRef.current.offset.z),
+            );
+            obj.position.x = nx;
+            obj.position.z = nz;
+            part.position = [nx, 0, obj.position.z];
           }
         }
       }
@@ -3048,6 +3080,16 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         if (picked) setSelectedPos([picked.position[0], picked.position[2]]);
         const obj = findPartObject(id);
         const frozen = picked ? partFrozen(picked, layersRef.current) : false;
+        // A locked pick must not fall through to OrbitControls or a ground place.
+        if (frozen) {
+          dragArmRef.current = null;
+          draggingRef.current = null;
+          pendingPlaceRef.current = false;
+          gesturePointerRef.current = ev.pointerId;
+          ev.stopImmediatePropagation();
+          ev.preventDefault();
+          return;
+        }
         if (obj && !frozen) {
           // Arm only when we have a pad/site anchor. A pure sky click still selects
           // and must not yaw the camera, but it cannot snap-drag.
