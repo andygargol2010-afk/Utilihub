@@ -3,8 +3,18 @@
 @source "../src";
 @custom-variant dark (&:is(.dark *));
 
+/* ExtraBold (h1, 800) vs Arial Bold. Capsize latin widths: 489/1000 and 983/2048. */
+@font-face {
+  font-family: "Plus Jakarta Fallback";
+  src: local("Arial Bold"), local("Arial");
+  size-adjust: 101.88%;
+  ascent-override: 101.89%;
+  descent-override: 21.79%;
+  line-gap-override: 0%;
+}
+
 @theme inline {
-  --font-display: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Plus Jakarta Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --radius-sm: calc(var(--radius) - 4px);
