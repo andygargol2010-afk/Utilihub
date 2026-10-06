@@ -1,0 +1,64 @@
+name: Build preview (fix/spanish-complete)
+
+on:
+  push:
+    branches: [fix/spanish-complete]
+  pull_request:
+    branches: [fix/spanish-complete]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Guard HouseModeler3D size (anti-wipe)
+        run: |
+          set -euo pipefail
+          F=src/components/general/HouseModeler3D.tsx
+          if [ ! -f "$F" ]; then
+            echo "::error::$F missing"
+            exit 1
+          fi
+          BYTES=$(wc -c < "$F")
+          LINES=$(wc -l < "$F")
+          echo "HouseModeler3D.tsx: $LINES lines, $BYTES bytes"
+          # Full monolith is ~4400 lines / ~179kB. Stub after wipe was ~1 line.
+          if [ "$LINES" -lt 3500 ] || [ "$BYTES" -lt 120000 ]; then
+            echo "::error::HouseModeler3D.tsx looks wiped or truncated ($LINES lines, $BYTES bytes). Refusing CI."
+            exit 1
+          fi
+          # Basic JSX balance for door-finish panel
+          DOOR_OPEN=$(grep -c 'tool === "door" || selectedKind === "door"' "$F" || true)
+          if [ "$DOOR_OPEN" -lt 1 ]; then
+            echo "::error::door finish conditional missing"
+            exit 1
+          fi
+          echo "Guard OK"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm install --no-audit --no-fund
+
+      - name: Validate catalog
+        run: npm run validate:catalog
+
+      - name: Build
+        run: npm run build
