@@ -4076,6 +4076,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             </button>
           ))}
 
+          {(tool === "door" || selectedKind === "door") && (
             <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
               <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.doorFinish}</p>
               <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
@@ -4396,8 +4397,6 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               {labels.none}
             </p>
           ) : null}
-          {(tool === "door" || selectedKind === "door") && (
-
           {isFullscreen && (
             <button
               type="button"
