@@ -87,6 +87,7 @@ import { CONTRAST_TOOLS } from "./contrast-tool";
 import { CRON_TOOLS } from "./cron-tool";
 import { NATO_TOOLS } from "./nato-tool";
 import { JETLAG_TOOLS } from "./jetlag-tool";
+import { IBAN_TOOLS } from "./iban-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -179,4 +180,5 @@ export const GENERAL_TOOLS = [
   ...CRON_TOOLS,
   ...NATO_TOOLS,
   ...JETLAG_TOOLS,
+  ...IBAN_TOOLS,
 ];
