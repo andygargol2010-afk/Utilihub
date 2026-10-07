@@ -112,6 +112,7 @@ const IbanTool = lazy(() => import("./IbanTool").then((m) => ({ default: m.IbanT
 const ShoeSizeTool = lazy(() => import("./ShoeSizeTool").then((m) => ({ default: m.ShoeSizeTool })));
 const ChmodTool = lazy(() => import("./ChmodTool").then((m) => ({ default: m.ChmodTool })));
 const ResistorBandsTool = lazy(() => import("./ResistorBandsTool").then((m) => ({ default: m.ResistorBandsTool })));
+const ApaCitationTool = lazy(() => import("./ApaCitationTool").then((m) => ({ default: m.ApaCitationTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -172,6 +173,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "conversor-tallas-zapatos") return ShoeSizeTool as ToolComp;
   if (tool.slug === "conversor-permisos-chmod") return ChmodTool as ToolComp;
   if (tool.slug === "decodificador-bandas-resistencia") return ResistorBandsTool as ToolComp;
+  if (tool.slug === "generador-cita-apa") return ApaCitationTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;

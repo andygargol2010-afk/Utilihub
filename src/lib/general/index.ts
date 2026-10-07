@@ -91,6 +91,7 @@ import { IBAN_TOOLS } from "./iban-tool";
 import { SHOE_SIZE_TOOLS } from "./shoe-size-tool";
 import { CHMOD_TOOLS } from "./chmod-tool";
 import { RESISTOR_BAND_TOOLS } from "./resistor-bands-tool";
+import { APA_CITATION_TOOLS } from "./apa-citation-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -187,4 +188,5 @@ export const GENERAL_TOOLS = [
   ...SHOE_SIZE_TOOLS,
   ...CHMOD_TOOLS,
   ...RESISTOR_BAND_TOOLS,
+  ...APA_CITATION_TOOLS,
 ];
