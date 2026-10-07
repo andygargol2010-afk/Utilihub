@@ -59,6 +59,8 @@ function removeHideStyle() {
 }
 
 function shouldSkipAdsPath(pathname: string) {
+  // Home only (EN + ES) — Social Bar stays on tools, categories, games, etc.
+  if (pathname === "/" || pathname === "/es") return true;
   return (
     pathname.includes("/privacidad") ||
     pathname.includes("/privacy") ||
@@ -81,6 +83,7 @@ function injectScript() {
 
 /**
  * Social bar — desktop only, after marketing consent.
+ * Disabled on home (/ and /es) to avoid interrupting entry navigation.
  */
 export function AdsterraSocialBar() {
   const [allowed, setAllowed] = useState(false);
