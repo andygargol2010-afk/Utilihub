@@ -4037,9 +4037,17 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <p className="mt-1">{labels.tip}</p>
             </div>
           )}
-          <div className="pointer-events-none absolute left-3 top-3 z-10 flex max-w-[42%] flex-col gap-1">
-            <span className="rounded-md bg-black/55 px-2 py-1 text-[11px] font-medium text-amber-50 shadow">
-              {labels.active}: {activeLabel}
+          <div className={`pointer-events-none absolute left-3 z-10 flex max-w-[min(18rem,46%)] flex-col gap-1 ${isFullscreen ? "top-16" : "top-3"}`}>
+            <span
+              className={`rounded-md px-2 py-1 text-[11px] font-medium shadow ${
+                selectedKindLabel && !placingFromPalette
+                  ? "bg-amber-900/90 text-amber-50 ring-1 ring-amber-200/50"
+                  : "bg-black/55 text-amber-50"
+              }`}
+            >
+              {selectedKindLabel && !placingFromPalette
+                ? `${labels.selected}: ${selectedKindLabel}${finishCaption(selectedKind!) ? ` · ${finishCaption(selectedKind!)}` : ""} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°${selectedLocked ? ` · ${labels.locked}` : ""}`
+                : `${labels.armed}: ${activeLabel}${finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · ${paletteItems.find((item) => item.kind === tool)?.size ?? ""} · ${paletteItems.find((item) => item.kind === tool)?.key ?? ""}`}
             </span>
             {placingFromPalette && (
               <span className="rounded-md bg-amber-800/90 px-2 py-1 text-[11px] font-semibold text-amber-50 shadow">
