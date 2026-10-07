@@ -3440,15 +3440,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         doorFinish: "Acabado de puerta",
         doorTimber: "Madera",
         doorMetal: "Chapa",
+        doorTimberShort: "Madera",
+        doorMetalShort: "Chapa",
         roofFinish: "Cubierta",
         wallFinish: "Acabado de muro",
         wallPlaster: "Revoco",
         wallMasonry: "Mampostería",
+        wallPlasterShort: "Revoco",
+        wallMasonryShort: "Sillar",
         columnFinish: "Acabado de columna",
         columnPlaster: "Revoco",
         columnMasonry: "Mampostería",
+        columnPlasterShort: "Revoco",
+        columnMasonryShort: "Sillar",
         roofClay: "Teja",
         roofMetal: "Chapa de zinc",
+        roofClayShort: "Teja",
+        roofMetalShort: "Zinc",
         sizeWindow: "1.2 × 1.15 m",
         sizeStairs: "1.0 m · subida 1.02 m",
         sizeRailing: "1.8 × 0.95 m",
@@ -3532,15 +3540,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         doorFinish: "Door finish",
         doorTimber: "Timber",
         doorMetal: "Sheet metal",
+        doorTimberShort: "Timber",
+        doorMetalShort: "Metal",
         roofFinish: "Roof covering",
         wallFinish: "Wall finish",
         wallPlaster: "Plaster",
         wallMasonry: "Masonry",
+        wallPlasterShort: "Plaster",
+        wallMasonryShort: "Ashlar",
         columnFinish: "Column finish",
         columnPlaster: "Plaster",
         columnMasonry: "Masonry",
+        columnPlasterShort: "Plaster",
+        columnMasonryShort: "Ashlar",
         roofClay: "Clay tile",
         roofMetal: "Standing seam",
+        roofClayShort: "Clay",
+        roofMetalShort: "Seam",
         sizeWindow: "1.2 × 1.15 m",
         sizeStairs: "1.0 m wide · 1.02 m rise",
         sizeRailing: "1.8 × 0.95 m",
@@ -4136,12 +4152,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
           {(tool === "door" || selectedKind === "door") && (
             <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.doorFinish}</p>
+              <p className={`mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground ${paletteCompact ? "sr-only" : ""}`}>{labels.doorFinish}</p>
               <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
                 {([
-                  ["timber", labels.doorTimber, "#8d5c38"],
-                  ["metal", labels.doorMetal, "#b7c4cc"],
-                ] as const).map(([id, label, swatch]) => {
+                  ["timber", labels.doorTimber, "#8d5c38", labels.doorTimberShort],
+                  ["metal", labels.doorMetal, "#b7c4cc", labels.doorMetalShort],
+                ] as const).map(([id, label, swatch, shortLabel]) => {
                   const active = (selectedKind === "door" ? selectedDoorFinish : doorFinish) === id;
                   return (
                     <button
@@ -4150,12 +4166,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseDoorFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
+                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                        paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
+                      } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
                       }`}
                     >
                       <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
-                      {!paletteCompact && <span className="truncate">{label}</span>}
+                      <span className={`truncate leading-tight ${paletteCompact ? "max-w-full text-[9px]" : ""}`}>{paletteCompact ? shortLabel : label}</span>
                     </button>
                   );
                 })}
@@ -4164,12 +4182,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           )}
           {(tool === "wall" || selectedKind === "wall") && (
             <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.wallFinish}>
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.wallFinish}</p>
+              <p className={`mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground ${paletteCompact ? "sr-only" : ""}`}>{labels.wallFinish}</p>
               <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
                 {([
-                  ["plaster", labels.wallPlaster, "#d8d0c4"],
-                  ["masonry", labels.wallMasonry, "#c4b49a"],
-                ] as const).map(([id, label, swatch]) => {
+                  ["plaster", labels.wallPlaster, "#d8d0c4", labels.wallPlasterShort],
+                  ["masonry", labels.wallMasonry, "#c4b49a", labels.wallMasonryShort],
+                ] as const).map(([id, label, swatch, shortLabel]) => {
                   const active = (selectedKind === "wall" ? selectedWallFinish : wallFinish) === id;
                   return (
                     <button
@@ -4178,12 +4196,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseWallFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
+                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                        paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
+                      } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
                       }`}
                     >
                       <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
-                      {!paletteCompact && <span className="truncate">{label}</span>}
+                      <span className={`truncate leading-tight ${paletteCompact ? "max-w-full text-[9px]" : ""}`}>{paletteCompact ? shortLabel : label}</span>
                     </button>
                   );
                 })}
@@ -4192,12 +4212,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           )}
           {(tool === "column" || selectedKind === "column") && (
             <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.columnFinish}>
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.columnFinish}</p>
+              <p className={`mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground ${paletteCompact ? "sr-only" : ""}`}>{labels.columnFinish}</p>
               <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
                 {([
-                  ["plaster", labels.columnPlaster, "#d8d0c4"],
-                  ["masonry", labels.columnMasonry, "#c4b49a"],
-                ] as const).map(([id, label, swatch]) => {
+                  ["plaster", labels.columnPlaster, "#d8d0c4", labels.columnPlasterShort],
+                  ["masonry", labels.columnMasonry, "#c4b49a", labels.columnMasonryShort],
+                ] as const).map(([id, label, swatch, shortLabel]) => {
                   const active = (selectedKind === "column" ? selectedColumnFinish : columnFinish) === id;
                   return (
                     <button
@@ -4206,12 +4226,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseColumnFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
+                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                        paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
+                      } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
                       }`}
                     >
                       <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
-                      {!paletteCompact && <span className="truncate">{label}</span>}
+                      <span className={`truncate leading-tight ${paletteCompact ? "max-w-full text-[9px]" : ""}`}>{paletteCompact ? shortLabel : label}</span>
                     </button>
                   );
                 })}
@@ -4220,12 +4242,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           )}
           {(tool === "roof" || selectedKind === "roof") && (
             <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.roofFinish}>
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{labels.roofFinish}</p>
+              <p className={`mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground ${paletteCompact ? "sr-only" : ""}`}>{labels.roofFinish}</p>
               <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
                 {([
-                  ["clay", labels.roofClay, "#6b3a2a"],
-                  ["metal", labels.roofMetal, "#9aa7ae"],
-                ] as const).map(([id, label, swatch]) => {
+                  ["clay", labels.roofClay, "#6b3a2a", labels.roofClayShort],
+                  ["metal", labels.roofMetal, "#9aa7ae", labels.roofMetalShort],
+                ] as const).map(([id, label, swatch, shortLabel]) => {
                   const active = (selectedKind === "roof" ? selectedRoofFinish : roofFinish) === id;
                   return (
                     <button
@@ -4234,12 +4256,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseRoofFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1.5 rounded-lg border px-1.5 text-[10px] font-semibold ${
+                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                        paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
+                      } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
                       }`}
                     >
                       <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
-                      {!paletteCompact && <span className="truncate">{label}</span>}
+                      <span className={`truncate leading-tight ${paletteCompact ? "max-w-full text-[9px]" : ""}`}>{paletteCompact ? shortLabel : label}</span>
                     </button>
                   );
                 })}
