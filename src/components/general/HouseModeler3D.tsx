@@ -2082,6 +2082,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   // Live move chip is DOM-updated so a drag does not re-render the monolith each pointermove.
   const [moveChip, setMoveChip] = useState<{ x: number; y: number; text: string } | null>(null);
   const moveChipPosRef = useRef({ x: 0, y: 0, text: "" });
+  const [lockHint, setLockHint] = useState<{ x: number; y: number } | null>(null);
+  const lockHintTimer = useRef<number | null>(null);
   const moveLabelRef = useRef<{ moving: string; kinds: Partial<Record<PartKind, string>> }>({ moving: "Moving", kinds: {} });
   // Click-select must not snap the part. Drag arms only after the pointer moves past this.
   const dragArmRef = useRef<{ id: string; offset: THREE.Vector3; x: number; y: number } | null>(null);
@@ -2095,6 +2097,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const paletteDragCleanupRef = useRef<(() => void) | null>(null);
   const pendingPlaceRef = useRef(false);
 
+  useEffect(() => {
+    return () => {
+      if (lockHintTimer.current != null) window.clearTimeout(lockHintTimer.current);
+    };
+  }, []);
   useEffect(() => {
     toolRef.current = tool;
   }, [tool]);
@@ -3145,6 +3152,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           draggingRef.current = null;
           pendingPlaceRef.current = false;
           gesturePointerRef.current = ev.pointerId;
+          if (lockHintTimer.current != null) window.clearTimeout(lockHintTimer.current);
+          setLockHint({ x: ev.clientX, y: ev.clientY });
+          lockHintTimer.current = window.setTimeout(() => {
+            setLockHint(null);
+            lockHintTimer.current = null;
+          }, 1400);
           ev.stopImmediatePropagation();
           ev.preventDefault();
           return;
@@ -3497,6 +3510,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         lock: "Bloquear",
         unlock: "Desbloquear",
         locked: "Bloqueada",
+        lockedDrag: "Bloqueada — L desbloquea",
         layers: "Capas",
         layer: "Capa",
         activeLayer: "Activa",
@@ -3600,6 +3614,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         lock: "Lock",
         unlock: "Unlock",
         locked: "Locked",
+        lockedDrag: "Locked — L unlocks",
         layers: "Layers",
         layer: "Layer",
         activeLayer: "Active",
@@ -4613,6 +4628,19 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           }}
         >
           {moveChip.text}
+        </div>
+      )}
+      {lockHint && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="pointer-events-none fixed z-50 rounded-lg bg-stone-900/95 px-2.5 py-1.5 text-[11px] font-semibold text-amber-50 shadow-lg ring-1 ring-amber-200/50"
+          style={{
+            left: Math.min(window.innerWidth - 16, Math.max(8, lockHint.x + 16)),
+            top: Math.min(window.innerHeight - 40, Math.max(8, lockHint.y + 18)),
+          }}
+        >
+          {labels.lockedDrag}
         </div>
       )}
       {dragCursor && (
