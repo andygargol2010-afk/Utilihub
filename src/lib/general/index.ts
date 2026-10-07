@@ -96,6 +96,7 @@ import { CHORD_TRANSPOSE_TOOLS } from "./chord-transpose-tool";
 import { DNI_LETTER_TOOLS } from "./dni-letter-tool";
 import { SUBNET_TOOLS } from "./subnet-tool";
 import { COORDINATE_TOOLS } from "./coordinates-tool";
+import { EAN_TOOLS } from "./ean-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -197,4 +198,5 @@ export const GENERAL_TOOLS = [
   ...DNI_LETTER_TOOLS,
   ...SUBNET_TOOLS,
   ...COORDINATE_TOOLS,
+  ...EAN_TOOLS,
 ];

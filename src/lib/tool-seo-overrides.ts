@@ -81,6 +81,7 @@ import { TOOL_SEO_OVERRIDES_CHORDS } from "./tool-seo-overrides-chords";
 import { TOOL_SEO_OVERRIDES_DNI } from "./tool-seo-overrides-dni";
 import { TOOL_SEO_OVERRIDES_SUBNET } from "./tool-seo-overrides-subnet";
 import { TOOL_SEO_OVERRIDES_COORDINATES } from "./tool-seo-overrides-coordinates";
+import { TOOL_SEO_OVERRIDES_EAN } from "./tool-seo-overrides-ean";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -177,6 +178,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_DNI,
   ...TOOL_SEO_OVERRIDES_SUBNET,
   ...TOOL_SEO_OVERRIDES_COORDINATES,
+  ...TOOL_SEO_OVERRIDES_EAN,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
