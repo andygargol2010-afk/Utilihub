@@ -27,6 +27,7 @@ export const Route = createFileRoute("/tools/$slug")({
     const tool = toolByEnglishSlug(ALL_TOOLS, params.slug);
     if (!tool) throw notFound();
     const { resolvedToolSeo } = await import("@/lib/tool-seo-overrides");
+    const seo = resolvedToolSeo(tool);
     return {
       tool,
       seo: { title: seo.title, description: seo.description, faq: seo.faq },
