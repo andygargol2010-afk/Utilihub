@@ -114,7 +114,7 @@ export function MeetingCostTool({ locale = "en" }: { tool: GeneralTool; locale?:
       cadence === "weekly"
         ? es ? "semanal" : "weekly"
         : cadence === "biweekly"
-          ? es ? "quincenal" : "biweekly"
+          ? es ? "cada dos semanas" : "biweekly"
           : cadence === "monthly"
             ? es ? "mensual" : "monthly"
             : es ? "una vez" : "once";
@@ -158,7 +158,7 @@ export function MeetingCostTool({ locale = "en" }: { tool: GeneralTool; locale?:
   const cadences: { id: Cadence; en: string; es: string }[] = [
     { id: "once", en: "Once", es: "Una vez" },
     { id: "weekly", en: "Weekly", es: "Semanal" },
-    { id: "biweekly", en: "Biweekly", es: "Quincenal" },
+    { id: "biweekly", en: "Biweekly", es: "Cada dos semanas" },
     { id: "monthly", en: "Monthly", es: "Mensual" },
   ];
 
