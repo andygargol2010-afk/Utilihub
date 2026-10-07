@@ -6,7 +6,7 @@ export function SpanishSiteFooter() {
       <div className="container-page grid gap-10 py-10 sm:grid-cols-[1.4fr_1fr_1fr] sm:py-12">
         <div>
           <Link to="/es" className="flex min-h-11 items-center gap-2 font-extrabold tracking-tight">
-            <img src="/page-logo.png" alt="" className="brand-mark size-8" />
+            <img src="/page-logo.png" alt="" width={32} height={32} loading="lazy" decoding="async" className="brand-mark size-8" />
             UtiliHub
           </Link>
           <p className="mt-3 max-w-sm text-sm leading-6 text-muted-foreground">
