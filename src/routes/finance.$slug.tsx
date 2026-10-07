@@ -1,5 +1,5 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
-import { FINANCIAL_UI } from "@/components/financial/registry";
+import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { ToolCard } from "@/components/ToolCard";
@@ -104,11 +104,9 @@ function FinanceNextLink({ tool }: { tool: CatalogTool }) {
 
 function FinancialPage() {
   const { tool } = Route.useLoaderData();
-  const ui = FINANCIAL_UI[tool.slug];
   const seo = financeSeo(tool.slug);
   const journey = journeyTools({ slug: tool.slug, category: "finanzas" });
   const next = journey[0];
-  if (!ui) throw new Error(`Missing financial UI for catalog tool: ${tool.slug}`);
 
   const intro = seo?.intro ?? tool.description;
   const aboutParas = seo?.about ?? [
@@ -139,7 +137,7 @@ function FinancialPage() {
       </div>
 
       <section data-tool-surface className="surface-card mt-8 p-5 sm:p-7" aria-label={tool.name}>
-        {ui()}
+        <DeferredFinancialUi slug={tool.slug} locale="en" />
         <ShareAndExportActions title={tool.name} />
       </section>
 

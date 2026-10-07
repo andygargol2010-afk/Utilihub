@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { FINANCIAL_UI_ES } from "@/components/financial/registry";
+import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { financialToolBySlug } from "@/lib/financial-tools";
@@ -84,10 +84,6 @@ function SpanishFinancialToolPage() {
   const { tool } = Route.useLoaderData();
   const seo = financeSeo(tool.slug);
   const name = spanishToolName({ slug: tool.slug, name: tool.name });
-  const ui = FINANCIAL_UI_ES[tool.slug];
-  if (!ui) {
-    return <p className="container-page py-10 text-muted-foreground">Herramienta no disponible.</p>;
-  }
 
   const intro =
     seo?.introEs ??
@@ -134,7 +130,7 @@ function SpanishFinancialToolPage() {
         <FavoriteButton slug={tool.slug} name={name} locale="es" />
       </div>
       <section data-tool-surface className="surface-card mt-8 p-5 sm:p-7" aria-label={name}>
-        {ui()}
+        <DeferredFinancialUi slug={tool.slug} locale="es" />
         <ShareAndExportActions title={name} locale="es" />
       </section>
       <AdsterraBanner />
