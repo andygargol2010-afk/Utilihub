@@ -116,6 +116,7 @@ const ApaCitationTool = lazy(() => import("./ApaCitationTool").then((m) => ({ de
 const ChordTransposeTool = lazy(() => import("./ChordTransposeTool").then((m) => ({ default: m.ChordTransposeTool })));
 const DniLetterTool = lazy(() => import("./DniLetterTool").then((m) => ({ default: m.DniLetterTool })));
 const SubnetTool = lazy(() => import("./SubnetTool").then((m) => ({ default: m.SubnetTool })));
+const CoordinatesTool = lazy(() => import("./CoordinatesTool").then((m) => ({ default: m.CoordinatesTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -180,6 +181,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "transportador-acordes") return ChordTransposeTool as ToolComp;
   if (tool.slug === "letra-dni-nie") return DniLetterTool as ToolComp;
   if (tool.slug === "calculadora-subred") return SubnetTool as ToolComp;
+  if (tool.slug === "conversor-coordenadas") return CoordinatesTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;

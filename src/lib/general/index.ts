@@ -95,6 +95,7 @@ import { APA_CITATION_TOOLS } from "./apa-citation-tool";
 import { CHORD_TRANSPOSE_TOOLS } from "./chord-transpose-tool";
 import { DNI_LETTER_TOOLS } from "./dni-letter-tool";
 import { SUBNET_TOOLS } from "./subnet-tool";
+import { COORDINATE_TOOLS } from "./coordinates-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -195,4 +196,5 @@ export const GENERAL_TOOLS = [
   ...CHORD_TRANSPOSE_TOOLS,
   ...DNI_LETTER_TOOLS,
   ...SUBNET_TOOLS,
+  ...COORDINATE_TOOLS,
 ];

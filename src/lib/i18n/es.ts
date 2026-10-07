@@ -249,6 +249,7 @@ const EXACT_NAMES: Record<string, string> = {
   "transportador-acordes": "Transportador de acordes",
   "letra-dni-nie": "Letra del DNI y NIE",
   "calculadora-subred": "Calculadora de subredes IPv4",
+  "conversor-coordenadas": "Conversor de coordenadas DMS",
   "modelador-3d": "Modelador 3D",
   "modelador-casas-3d": "Modelador de casas 3D",
   "asignacion-de-cartera": "Asignación de cartera",
