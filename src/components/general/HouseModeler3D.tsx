@@ -4624,19 +4624,27 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               </div>
             </div>
           ) : paletteCompact && selectedKindLabel ? (
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1" role="group" aria-label={labels.nudge}>
               <span className="truncate text-center text-[9px] font-semibold text-amber-800 dark:text-amber-200" title={selectedKindLabel}>
-                {selectedKindLabel}
+                {selectedKindLabel}{selectedLocked ? ` · ${labels.locked}` : ""}
               </span>
               <span className="text-center text-[9px] font-semibold text-amber-800 dark:text-amber-200">
                 {selectedRot * 90}°
               </span>
+              <div className="grid grid-cols-2 gap-1">
+                <button type="button" onClick={() => nudgeSelected(-GRID, 0)} disabled={selectedLocked} aria-label={labels.nudgeXN} title={selectedLocked ? labels.lockedAction : labels.nudgeXN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">−X</button>
+                <button type="button" onClick={() => nudgeSelected(GRID, 0)} disabled={selectedLocked} aria-label={labels.nudgeXP} title={selectedLocked ? labels.lockedAction : labels.nudgeXP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">+X</button>
+                <button type="button" onClick={() => nudgeSelected(0, -GRID)} disabled={selectedLocked} aria-label={labels.nudgeZN} title={selectedLocked ? labels.lockedAction : labels.nudgeZN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">−Z</button>
+                <button type="button" onClick={() => nudgeSelected(0, GRID)} disabled={selectedLocked} aria-label={labels.nudgeZP} title={selectedLocked ? labels.lockedAction : labels.nudgeZP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">+Z</button>
+              </div>
+              <p className="text-center text-[8px] leading-tight text-muted-foreground">{labels.nudge}</p>
               <button
                 type="button"
                 onClick={rotateSelected}
-                title="R"
+                title={selectedLocked ? labels.lockedAction : "R"}
                 aria-label={labels.rot}
-                className="min-h-11 rounded-lg border border-border bg-background px-1 text-[10px] font-semibold hover:bg-accent"
+                disabled={selectedLocked}
+                className="min-h-11 rounded-lg border border-border bg-background px-1 text-[10px] font-semibold hover:bg-accent disabled:opacity-40"
               >
                 R
               </button>
