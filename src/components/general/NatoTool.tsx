@@ -59,7 +59,7 @@ export function NatoTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale
         <div className="flex flex-col justify-end gap-2 text-sm">
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={keepSpaces} onChange={(event) => setKeepSpaces(event.target.checked)} />
-            {es ? "Marcar espacios" : "Label spaces"}
+            {es ? "Etiquetar espacios" : "Label spaces"}
           </label>
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={labelPunctuation} onChange={(event) => setLabelPunctuation(event.target.checked)} />
