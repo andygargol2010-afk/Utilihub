@@ -50,12 +50,25 @@ export function ToolSearch({
   const [category, setCategory] = useState<string>(initialCategory ?? "all");
   const [tag, setTag] = useState<string>("all");
   const [visible, setVisible] = useState(PAGE_SIZE);
+  // Home only needs the normalized catalog after idle or the first keystroke.
+  const [indexReady, setIndexReady] = useState(!compactHome);
   const { favorites, toggle, ready } = useFavorites();
 
   useEffect(() => {
     const id = window.setTimeout(() => setDebouncedQuery(query), 160);
     return () => window.clearTimeout(id);
   }, [query]);
+
+  useEffect(() => {
+    if (!compactHome || indexReady) return;
+    const idle = window.requestIdleCallback;
+    if (typeof idle === "function") {
+      const id = idle(() => setIndexReady(true), { timeout: 1200 });
+      return () => window.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(() => setIndexReady(true), 250);
+    return () => window.clearTimeout(id);
+  }, [compactHome, indexReady]);
 
   useEffect(() => {
     setVisible(PAGE_SIZE);
@@ -66,20 +79,21 @@ export function ToolSearch({
     setVisible(PAGE_SIZE);
   }, [tag, debouncedQuery]);
 
-  const index = useMemo(
-    () =>
-      ALL_TOOLS.map((tool) => ({
-        tool,
-        name: normalize(tool.name),
-        text: normalize(`${tool.name} ${tool.summary} ${tool.description} ${tool.keywords.join(" ")}`),
-      })),
-    [],
-  );
+  const buildIndex = !compactHome || indexReady || query.length > 0;
+  const index = useMemo(() => {
+    if (!buildIndex) return [];
+    return ALL_TOOLS.map((tool) => ({
+      tool,
+      name: normalize(tool.name),
+      text: normalize(`${tool.name} ${tool.summary} ${tool.description} ${tool.keywords.join(" ")}`),
+    }));
+  }, [buildIndex]);
 
   const categoryTools = useMemo(() => {
+    if (compactHome) return [];
     if (category === "all") return ALL_TOOLS;
     return ALL_TOOLS.filter((t) => t.category === category);
-  }, [category]);
+  }, [category, compactHome]);
 
   const facets = useMemo(
     () => facetsWithCounts(categoryTools, category, "en"),
