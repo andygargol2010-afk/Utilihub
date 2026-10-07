@@ -1,9 +1,8 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { DeferredToolUi } from "@/components/DeferredToolUi";
-import { ToolCard } from "@/components/ToolCard";
+import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { DeferredToolSeo } from "@/components/DeferredToolSeo";
@@ -11,13 +10,11 @@ import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
 import {
   toolByEnglishSlug,
   englishToolPath,
-  englishToolSlug,
   englishCategorySlug,
   englishCategoryPath,
 } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
 import { useRecentTools } from "@/hooks/use-recent-tools";
-import { journeyLabel, journeyTools } from "@/lib/discovery";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
 import { getToolShowcase } from "@/lib/tool-showcase";
@@ -100,30 +97,10 @@ export const Route = createFileRoute("/tools/$slug")({
   component: ToolPage,
 });
 
-function NextStepLink({ tool }: { tool: CatalogTool }) {
-  const slug = englishToolSlug(tool);
-  const className =
-    "inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90";
-  if (tool.category === "finanzas") {
-    return (
-      <Link to="/finance/$slug" params={{ slug }} className={className}>
-        Open next <ArrowRight className="size-4" />
-      </Link>
-    );
-  }
-  return (
-    <Link to="/tools/$slug" params={{ slug }} className={className}>
-      Open next <ArrowRight className="size-4" />
-    </Link>
-  );
-}
-
 function ToolPage() {
   const { tool } = Route.useLoaderData() as { tool: CatalogTool };
   const { addRecent } = useRecentTools();
   const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
-  const related = journeyTools(tool);
-  const nextStep = related[0];
 
   useEffect(() => {
     addRecent(tool.slug);
@@ -168,40 +145,7 @@ function ToolPage() {
         </div>
       </section>
       <AdsterraBanner />
-      {nextStep && (
-        <section className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5" aria-labelledby="next-step">
-          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p>
-          <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 id="next-step" className="text-base font-black">
-                {journeyLabel(tool, "en")}
-              </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                After using {tool.name}, continue with {nextStep.name}.
-              </p>
-            </div>
-            <NextStepLink tool={nextStep} />
-          </div>
-        </section>
-      )}
-      {related.length > 0 && (
-        <section className="mt-8" aria-labelledby="related">
-          <div className="mb-2 flex items-center justify-between">
-            <div>
-              <h2 id="related" className="text-base font-bold">
-                Continue this path
-              </h2>
-              <p className="mt-1 text-xs text-muted-foreground">Tools selected to complete the same task.</p>
-            </div>
-            <span className="text-xs text-muted-foreground">{related.length} steps</span>
-          </div>
-          <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-            {related.map((t) => (
-              <ToolCard key={t.slug} tool={t} />
-            ))}
-          </div>
-        </section>
-      )}
+      <DeferredRelatedTools tool={tool} locale="en" />
       <DeferredToolSeo tool={tool} locale="en" />
     </div>
   );
