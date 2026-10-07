@@ -3762,6 +3762,25 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     { kind: "beam", label: labels.beam, swatch: "#6d4a30", key: "0", size: labels.sizeBeam },
     { kind: "foundation", label: labels.foundation, swatch: "#c4b8a4", key: "Q", size: labels.sizeFoundation },
   ];
+  const swatchFor = (kind: PartKind): string => {
+    if (kind === "wall") {
+      const id = selectedKind === "wall" ? selectedWallFinish : wallFinish;
+      return id === "masonry" ? "#c4b49a" : "#d8d0c4";
+    }
+    if (kind === "door") {
+      const id = selectedKind === "door" ? selectedDoorFinish : doorFinish;
+      return id === "metal" ? "#b7c4cc" : "#8d5c38";
+    }
+    if (kind === "roof") {
+      const id = selectedKind === "roof" ? selectedRoofFinish : roofFinish;
+      return id === "metal" ? "#9aa7ae" : "#6b3a2a";
+    }
+    if (kind === "column") {
+      const id = selectedKind === "column" ? selectedColumnFinish : columnFinish;
+      return id === "masonry" ? "#c4b49a" : "#c8bfb0";
+    }
+    return paletteItems.find((item) => item.kind === kind)?.swatch ?? "#d8d0c4";
+  };
   const finishCaption = (kind: PartKind): string | null => {
     if (kind === "wall") {
       const id = selectedKind === "wall" ? selectedWallFinish : wallFinish;
@@ -3823,7 +3842,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-700/40 bg-amber-900/15 px-2 py-0.5 text-[11px] font-semibold text-foreground">
           <span
             className="h-2.5 w-2.5 shrink-0 rounded-full ring-1 ring-black/20"
-            style={{ background: paletteItems.find((item) => item.kind === tool)?.swatch ?? "#d8d0c4" }}
+            style={{ background: swatchFor(tool) }}
             aria-hidden
           />
           {labels.active}: {activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""}
@@ -4260,7 +4279,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <StructureGlyph kind={item.kind} />
               <span
                 className="h-1.5 w-10 rounded-full ring-1 ring-black/15"
-                style={{ background: item.swatch }}
+                style={{ background: swatchFor(item.kind) }}
                 aria-hidden
               />
               {!paletteCompact && (
@@ -4686,11 +4705,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             color: "#fff7ed",
           }}
         >
+          <span className="h-3.5 w-3.5 shrink-0 rounded-sm ring-1 ring-amber-50/70" style={{ background: swatchFor(tool) }} aria-hidden />
           <span className="rounded bg-amber-50/95 px-0.5">
             <StructureGlyph kind={tool} />
           </span>
           <span>
-            {activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · {dragCursor.over ? labels.dropOver : labels.dropOut}
+            {activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · {paletteItems.find((item) => item.kind === tool)?.size ?? ""} · {dragCursor.over ? labels.dropOver : labels.dropOut}
           </span>
         </div>
       )}
