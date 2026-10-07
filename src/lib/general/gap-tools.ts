@@ -74,19 +74,7 @@ export const GAP_TOOLS = [
     "Generate a WiFi QR code with SSID, security type, and password.",
     ["wifi qr", "qr wifi", "wifi qr code", "código qr wifi"],
   ),
-  growth(
-    "validador-iban",
-    "IBAN validator",
-    "seguridad",
-    "utility",
-    "Validate an IBAN with the ISO 13616 mod-97 checksum and country length. Local only, no signup.",
-    ["iban", "iban validator", "iban checksum", "validador iban", "iban check digit", "iso 13616"],
-    {
-      title: "IBAN Validator — Mod-97 Checksum Online | UtiliHub",
-      description:
-        "Validate IBAN numbers with the ISO 13616 mod-97 checksum and country length. Free, runs in your browser.",
-    },
-  ),
+  // validador-iban lives in iban-tool.ts (dedicated UI + MOD-97). Do not re-register here.
   growth(
     "validador-cuit",
     "CUIT/CUIL validator",
