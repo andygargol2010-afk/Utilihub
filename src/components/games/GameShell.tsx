@@ -38,7 +38,7 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-600/90">
-              {tagLabel(game.tag, locale)} · {game.emoji}
+              {tagLabel(game.tag, locale)} · <span aria-hidden="true">{game.emoji}</span>
             </p>
             <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{title}</h1>
             <p className="mt-2 max-w-xl text-sm text-slate-600">{gameSummary(game, locale)}</p>
@@ -63,9 +63,18 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
           aria-label={es ? `Superficie de juego: ${title}` : `Game board: ${title}`}
           className="relative overflow-hidden rounded-3xl border border-emerald-400/10 bg-gradient-to-b from-slate-900 via-slate-950 to-black p-3 shadow-[0_24px_60px_-20px_rgba(6,78,59,0.65),0_0_0_1px_rgba(52,211,153,0.08)] sm:p-5"
         >
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(52,211,153,0.14),_transparent_50%)]" />
-          <div className="pointer-events-none absolute -left-20 top-0 h-40 w-40 rounded-full bg-emerald-500/10 blur-3xl" />
-          <div className="pointer-events-none absolute -right-16 bottom-0 h-36 w-36 rounded-full bg-cyan-500/10 blur-3xl" />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(52,211,153,0.14),_transparent_50%)]"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-20 top-0 h-40 w-40 rounded-full bg-emerald-500/10 blur-3xl"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-16 bottom-0 h-36 w-36 rounded-full bg-cyan-500/10 blur-3xl"
+          />
           <div className="relative">{children}</div>
         </div>
 
