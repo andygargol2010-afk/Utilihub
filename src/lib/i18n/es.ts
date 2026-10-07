@@ -242,6 +242,7 @@ const EXACT_NAMES: Record<string, string> = {
   "qr-wifi": "Generador de QR WiFi",
   "validador-cuit": "Validador CUIT/CUIL",
   "validador-iban": "Validador IBAN",
+  "conversor-tallas-zapatos": "Conversor de tallas de zapatos",
   "modelador-3d": "Modelador 3D",
   "modelador-casas-3d": "Modelador de casas 3D",
   "asignacion-de-cartera": "Asignación de cartera",

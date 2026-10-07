@@ -111,6 +111,7 @@ const CronTool = lazy(() => import("./CronTool").then((m) => ({ default: m.CronT
 const NatoTool = lazy(() => import("./NatoTool").then((m) => ({ default: m.NatoTool })));
 const JetLagTool = lazy(() => import("./JetLagTool").then((m) => ({ default: m.JetLagTool })));
 const IbanTool = lazy(() => import("./IbanTool").then((m) => ({ default: m.IbanTool })));
+const ShoeSizeTool = lazy(() => import("./ShoeSizeTool").then((m) => ({ default: m.ShoeSizeTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -168,6 +169,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "traductor-fonetico-otan") return NatoTool as ToolComp;
   if (tool.slug === "planificador-jet-lag") return JetLagTool as ToolComp;
   if (tool.slug === "validador-iban") return IbanTool as ToolComp;
+  if (tool.slug === "conversor-tallas-zapatos") return ShoeSizeTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
