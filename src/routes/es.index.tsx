@@ -45,6 +45,10 @@ const titleEs = "UtiliHub · Herramientas online, studios 3D y juegos";
 const descriptionEs =
   "Herramientas online gratis, modelador de casas 3D y juegos en el navegador. Calculá, convertí, diseñá y jugá — sin registro.";
 
+/** Same latin subset as EN (covers áéíóúñ). Weights 700 and 800 share this file. */
+const HERO_FONT_WOFF2 =
+  "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2";
+
 export const Route = createFileRoute("/es/")({
   head: () => ({
     meta: [
@@ -73,6 +77,13 @@ export const Route = createFileRoute("/es/")({
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es") },
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/") },
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: HERO_FONT_WOFF2,
+        crossOrigin: "anonymous",
+      },
     ],
   }),
   component: SpanishHome,

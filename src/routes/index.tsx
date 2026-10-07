@@ -25,6 +25,10 @@ const QUICK_TOOL_SLUGS = [
   "conversor-de-unidades",
 ];
 
+/** Latin subset shared by weights 700 and 800 (hero h1). Discovered from the Google CSS, started with the document. */
+const HERO_FONT_WOFF2 =
+  "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -52,6 +56,13 @@ export const Route = createFileRoute("/")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/") },
+      {
+        rel: "preload",
+        as: "font",
+        type: "font/woff2",
+        href: HERO_FONT_WOFF2,
+        crossOrigin: "anonymous",
+      },
     ],
     scripts: [{ type: "application/ld+json", children: JSON.stringify(websiteSchema()) }],
   }),
