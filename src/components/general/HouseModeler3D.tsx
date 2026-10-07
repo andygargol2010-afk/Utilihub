@@ -3492,6 +3492,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         compact: "Iconos",
         expandPalette: "Lista",
         selHint: "R gira · L bloquea · Supr borra",
+        selectedMark: "Pieza",
         lock: "Bloquear",
         unlock: "Desbloquear",
         locked: "Bloqueada",
@@ -3593,6 +3594,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         compact: "Icons",
         expandPalette: "List",
         selHint: "R rotate · L lock · Del delete",
+        selectedMark: "Sel",
         lock: "Lock",
         unlock: "Unlock",
         locked: "Locked",
@@ -4051,7 +4053,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               {selectedKindLabel
                 ? `${labels.selected}: ${selectedKindLabel} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°${
                     selectedPos ? ` · X ${selectedPos[0].toFixed(1)} Z ${selectedPos[1].toFixed(1)}` : ""
-                  }`
+                  }${selectedLocked ? ` · ${labels.locked}` : ""}`
                 : labels.none}
             </span>
             <span className="w-fit rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-medium text-amber-100/90">
@@ -4189,7 +4191,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             className={`group flex min-h-11 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
                 tool === item.kind
                   ? "border-amber-700/70 bg-amber-900/20 shadow-sm ring-1 ring-amber-700/40"
-                  : "border-border bg-background/80 hover:bg-accent"
+                  : selectedKind === item.kind
+                    ? "border-dashed border-amber-600 bg-amber-900/10 ring-1 ring-amber-600/50"
+                    : "border-border bg-background/80 hover:bg-accent"
               } ${placingFromPalette && tool === item.kind ? "scale-[0.98] ring-2 ring-amber-600" : ""}`}
             >
               <StructureGlyph kind={item.kind} />
@@ -4210,6 +4214,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
                 {item.key}
                 {!paletteCompact && tool === item.kind ? ` · ${labels.active}` : ""}
+                {selectedKind === item.kind ? ` · ${labels.selectedMark}` : ""}
               </span>
             </button>
           ))}
