@@ -87,7 +87,7 @@ export function ResistorBandsTool({ locale = "en" }: { tool: GeneralTool; locale
         ))}
         {RESISTOR_PRESETS.map((p) => (
           <button key={p.id} type="button" className={buttonClass} onClick={() => { setCount(p.count); setBands(p.bands); }}>
-            {p.id === "1k5" ? "1 kΩ" : p.id === "10k1" ? "10 kΩ" : "4.7 kΩ"}
+            {p.id === "1k5" ? "1 kΩ" : p.id === "10k1" ? "10 kΩ" : es ? "4,7 kΩ" : "4.7 kΩ"}
           </button>
         ))}
         <button type="button" className={buttonClass} onClick={() => { setCount(4); setBands(["brown", "black", "red", "gold"]); }}>
