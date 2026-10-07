@@ -2079,6 +2079,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const columnFinishRef = useRef(columnFinish);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
+  // Live move chip is DOM-updated so a drag does not re-render the monolith each pointermove.
+  const [moveChip, setMoveChip] = useState<{ x: number; y: number; text: string } | null>(null);
+  const moveChipPosRef = useRef({ x: 0, y: 0, text: "" });
+  const moveLabelRef = useRef<{ moving: string; kinds: Partial<Record<PartKind, string>> }>({ moving: "Moving", kinds: {} });
   // Click-select must not snap the part. Drag arms only after the pointer moves past this.
   const dragArmRef = useRef<{ id: string; offset: THREE.Vector3; x: number; y: number } | null>(null);
   const DRAG_ARM_PX = 6;
@@ -3014,6 +3018,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         }
       }
       draggingRef.current = null;
+      moveChipPosRef.current = { x: 0, y: 0, text: "" };
+      setMoveChip(null);
       dragArmRef.current = null;
       const shouldPlace = place && pendingPlaceRef.current && !paletteDragRef.current;
       pendingPlaceRef.current = false;
@@ -3070,6 +3076,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         if (part && partFrozen(part, layersRef.current)) {
           draggingRef.current = null;
           dragArmRef.current = null;
+          moveChipPosRef.current = { x: 0, y: 0, text: "" };
+          setMoveChip(null);
         } else {
           const obj = findPartObject(dragId);
           if (obj && part) {
@@ -3080,6 +3088,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             obj.position.x = nx;
             obj.position.z = nz;
             part.position = [nx, 0, obj.position.z];
+            const names = moveLabelRef.current;
+            const text = `${names.moving} · ${names.kinds[part.kind] ?? part.kind} · X ${nx.toFixed(1)} Z ${nz.toFixed(1)}`;
+            const prev = moveChipPosRef.current;
+            if (prev.text !== text || Math.abs(prev.x - ev.clientX) >= 10 || Math.abs(prev.y - ev.clientY) >= 10) {
+              moveChipPosRef.current = { x: ev.clientX, y: ev.clientY, text };
+              setMoveChip({ x: ev.clientX, y: ev.clientY, text });
+            }
           }
         }
       }
@@ -3213,6 +3228,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       dragArmRef.current = null;
       pendingPlaceRef.current = false;
       gesturePointerRef.current = null;
+      moveChipPosRef.current = { x: 0, y: 0, text: "" };
+      setMoveChip(null);
       if (threeRef.current) threeRef.current.controls.enabled = true;
     };
   }, [ready, worldPointFromEvent, placeAt, findPartObject]);
@@ -3428,6 +3445,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         none: "Nada seleccionado",
         selected: "Seleccionado",
         drop: "Soltá sobre el terreno para colocar",
+        moving: "Moviendo",
         dropOver: "Sobre el terreno",
         dropOut: "Fuera del terreno — no se coloca",
         needSel: "Seleccioná una pieza primero",
@@ -3528,6 +3546,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         none: "Nothing selected",
         selected: "Selected",
         drop: "Release over the ground to place",
+        moving: "Moving",
         dropOver: "Over the ground",
         dropOut: "Outside the ground — won't place",
         needSel: "Select a part first",
@@ -3724,6 +3743,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   };
   const activeLabel =
     tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : tool === "chimney" ? labels.chimney : tool === "beam" ? labels.beam : labels.foundation;
+  moveLabelRef.current = {
+    moving: labels.moving,
+    kinds: {
+      wall: labels.wall,
+      floor: labels.floor,
+      roof: labels.roof,
+      column: labels.column,
+      door: labels.door,
+      window: labels.window,
+      stairs: labels.stairs,
+      railing: labels.railing,
+      chimney: labels.chimney,
+      beam: labels.beam,
+      foundation: labels.foundation,
+    },
+  };
 
   const assignSelectedLayer = (layerId: string) => {
     const id = selectedRef.current;
@@ -4547,6 +4582,19 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           )}
         </aside>
       </div>
+      {moveChip && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="pointer-events-none fixed z-50 rounded-lg bg-amber-950/95 px-2.5 py-1.5 text-[11px] font-semibold text-amber-50 shadow-lg ring-1 ring-amber-100/40"
+          style={{
+            left: Math.min(window.innerWidth - 16, Math.max(8, moveChip.x + 16)),
+            top: Math.min(window.innerHeight - 40, Math.max(8, moveChip.y + 18)),
+          }}
+        >
+          {moveChip.text}
+        </div>
+      )}
       {dragCursor && (
         <div
           role="status"
