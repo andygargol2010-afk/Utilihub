@@ -251,6 +251,7 @@ const EXACT_NAMES: Record<string, string> = {
   "calculadora-subred": "Calculadora de subredes IPv4",
   "conversor-coordenadas": "Conversor de coordenadas DMS",
   "validador-ean": "Validador de dígito EAN y UPC",
+  "generador-css-clamp": "Generador CSS clamp()",
   "modelador-3d": "Modelador 3D",
   "modelador-casas-3d": "Modelador de casas 3D",
   "asignacion-de-cartera": "Asignación de cartera",

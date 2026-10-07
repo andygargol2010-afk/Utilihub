@@ -97,6 +97,7 @@ import { DNI_LETTER_TOOLS } from "./dni-letter-tool";
 import { SUBNET_TOOLS } from "./subnet-tool";
 import { COORDINATE_TOOLS } from "./coordinates-tool";
 import { EAN_TOOLS } from "./ean-tool";
+import { CLAMP_TOOLS } from "./clamp-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -199,4 +200,5 @@ export const GENERAL_TOOLS = [
   ...SUBNET_TOOLS,
   ...COORDINATE_TOOLS,
   ...EAN_TOOLS,
+  ...CLAMP_TOOLS,
 ];
