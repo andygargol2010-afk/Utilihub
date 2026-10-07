@@ -243,6 +243,7 @@ const EXACT_NAMES: Record<string, string> = {
   "validador-cuit": "Validador CUIT/CUIL",
   "validador-iban": "Validador IBAN",
   "conversor-tallas-zapatos": "Conversor de tallas de zapatos",
+  "conversor-permisos-chmod": "Conversor de permisos chmod",
   "modelador-3d": "Modelador 3D",
   "modelador-casas-3d": "Modelador de casas 3D",
   "asignacion-de-cartera": "Asignación de cartera",

@@ -89,6 +89,7 @@ import { NATO_TOOLS } from "./nato-tool";
 import { JETLAG_TOOLS } from "./jetlag-tool";
 import { IBAN_TOOLS } from "./iban-tool";
 import { SHOE_SIZE_TOOLS } from "./shoe-size-tool";
+import { CHMOD_TOOLS } from "./chmod-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -183,4 +184,5 @@ export const GENERAL_TOOLS = [
   ...JETLAG_TOOLS,
   ...IBAN_TOOLS,
   ...SHOE_SIZE_TOOLS,
+  ...CHMOD_TOOLS,
 ];
