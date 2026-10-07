@@ -92,6 +92,7 @@ import { SHOE_SIZE_TOOLS } from "./shoe-size-tool";
 import { CHMOD_TOOLS } from "./chmod-tool";
 import { RESISTOR_BAND_TOOLS } from "./resistor-bands-tool";
 import { APA_CITATION_TOOLS } from "./apa-citation-tool";
+import { CHORD_TRANSPOSE_TOOLS } from "./chord-transpose-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -189,4 +190,5 @@ export const GENERAL_TOOLS = [
   ...CHMOD_TOOLS,
   ...RESISTOR_BAND_TOOLS,
   ...APA_CITATION_TOOLS,
+  ...CHORD_TRANSPOSE_TOOLS,
 ];
