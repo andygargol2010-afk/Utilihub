@@ -3443,6 +3443,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         none: "Nada seleccionado",
+        armed: "Listo para colocar",
         selected: "Seleccionado",
         drop: "Soltá sobre el terreno para colocar",
         moving: "Moviendo",
@@ -3545,6 +3546,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         palette: "Structures",
         dragHint: "Drag to ground",
         none: "Nothing selected",
+        armed: "Ready to place",
         selected: "Selected",
         drop: "Release over the ground to place",
         moving: "Moving",
@@ -3789,6 +3791,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             aria-hidden
           />
           {labels.active}: {activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""}
+          <span className="font-medium text-muted-foreground">
+            {paletteItems.find((item) => item.kind === tool)?.size}
+          </span>
           <kbd className="rounded bg-amber-50/80 px-1 font-mono text-[10px] text-amber-950 dark:bg-amber-950/40 dark:text-amber-100">
             {paletteItems.find((item) => item.kind === tool)?.key}
           </kbd>
@@ -4054,7 +4059,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 ? `${labels.selected}: ${selectedKindLabel} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°${
                     selectedPos ? ` · X ${selectedPos[0].toFixed(1)} Z ${selectedPos[1].toFixed(1)}` : ""
                   }${selectedLocked ? ` · ${labels.locked}` : ""}`
-                : labels.none}
+                : `${labels.armed}: ${activeLabel}${finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · ${
+                    paletteItems.find((item) => item.kind === tool)?.size ?? ""
+                  } · ${paletteItems.find((item) => item.kind === tool)?.key ?? ""}`}
             </span>
             <span className="w-fit rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-medium text-amber-100/90">
               {labels.snap}
