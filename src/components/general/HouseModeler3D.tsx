@@ -3525,6 +3525,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         renameLayer: "Nombre de capa",
         removeLayer: "Quitar capa",
         partLayer: "Capa de la pieza",
+        layerHidden: "oculta",
+        layerLocked: "bloqueada",
         orient: "Orientación",
         yawHint: "Toque para fijar el giro",
         nudge: "Mover 0,5 m",
@@ -3630,6 +3632,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         renameLayer: "Layer name",
         removeLayer: "Remove layer",
         partLayer: "Part layer",
+        layerHidden: "hidden",
+        layerLocked: "locked",
         orient: "Orientation",
         yawHint: "Tap to set the yaw",
         nudge: "Nudge 0.5 m",
@@ -3652,6 +3656,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedKindLabel =
     selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : selectedKind === "beam" ? labels.beam : selectedKind === "foundation" ? labels.foundation : "";
   const selectedLayer = layers.find((l) => l.id === selectedPart?.layerId);
+  const activeLayer = layers.find((l) => l.id === activeLayerId) ?? layers[0];
+  const layerCaption = (layer: SceneLayer | undefined) => {
+    if (!layer) return "";
+    const flags = [!layer.visible ? labels.layerHidden : "", layer.locked ? labels.layerLocked : ""].filter(Boolean);
+    return flags.length ? `${layer.name} (${flags.join(", ")})` : layer.name;
+  };
+  const placeLayerCaption = layerCaption(selectedKindLabel ? selectedLayer : activeLayer);
   const selectedSize =
     selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : selectedKind === "window" ? labels.sizeWindow : selectedKind === "stairs" ? labels.sizeStairs : selectedKind === "railing" ? labels.sizeRailing : selectedKind === "chimney" ? labels.sizeChimney : selectedKind === "beam" ? labels.sizeBeam : selectedKind === "foundation" ? labels.sizeFoundation : "";
 
@@ -4111,8 +4122,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               }`}
             >
               {selectedKindLabel && !placingFromPalette
-                ? `${labels.selected}: ${selectedKindLabel}${finishCaption(selectedKind!) ? ` · ${finishCaption(selectedKind!)}` : ""} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°${selectedLocked ? ` · ${labels.locked}` : ""}`
-                : `${labels.armed}: ${activeLabel}${finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · ${paletteItems.find((item) => item.kind === tool)?.size ?? ""} · ${paletteItems.find((item) => item.kind === tool)?.key ?? ""}`}
+                ? `${labels.selected}: ${selectedKindLabel}${finishCaption(selectedKind!) ? ` · ${finishCaption(selectedKind!)}` : ""} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°${selectedLocked ? ` · ${labels.locked}` : ""}${placeLayerCaption ? ` · ${placeLayerCaption}` : ""}`
+                : `${labels.armed}: ${activeLabel}${finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · ${paletteItems.find((item) => item.kind === tool)?.size ?? ""} · ${paletteItems.find((item) => item.kind === tool)?.key ?? ""}${placeLayerCaption ? ` · ${placeLayerCaption}` : ""}`}
             </span>
             {placingFromPalette && (
               <span className="rounded-md bg-amber-800/90 px-2 py-1 text-[11px] font-semibold text-amber-50 shadow">
@@ -4131,10 +4142,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               {selectedKindLabel
                 ? `${labels.selected}: ${selectedKindLabel} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°${
                     selectedPos ? ` · X ${selectedPos[0].toFixed(1)} Z ${selectedPos[1].toFixed(1)}` : ""
-                  }${selectedLocked ? ` · ${labels.locked}` : ""}`
+                  }${selectedLocked ? ` · ${labels.locked}` : ""}${placeLayerCaption ? ` · ${placeLayerCaption}` : ""}`
                 : `${labels.armed}: ${activeLabel}${finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · ${
                     paletteItems.find((item) => item.kind === tool)?.size ?? ""
-                  } · ${paletteItems.find((item) => item.kind === tool)?.key ?? ""}`}
+                  } · ${paletteItems.find((item) => item.kind === tool)?.key ?? ""}${placeLayerCaption ? ` · ${placeLayerCaption}` : ""}`}
             </span>
             <span className="w-fit rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-medium text-amber-100/90">
               {labels.snap}
@@ -4460,9 +4471,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                         });
                         queueMicrotask(() => applyLayerVisibility());
                       }}
-                      className="min-h-8 flex-1 rounded border border-border bg-card text-[9px] font-semibold hover:bg-accent"
+                      className={`rounded border border-border bg-card font-semibold hover:bg-accent ${paletteCompact ? "min-h-11 min-w-11 flex-1 text-sm" : "min-h-8 flex-1 text-[9px]"} ${!layer.visible ? "border-amber-700 bg-amber-500/20" : ""}`}
                     >
-                      {layer.visible ? labels.hideLayer : labels.showLayer}
+                      {paletteCompact ? (layer.visible ? "◉" : "○") : layer.visible ? labels.hideLayer : labels.showLayer}
                     </button>
                     <button
                       type="button"
@@ -4477,9 +4488,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                         });
                         queueMicrotask(() => applyLayerVisibility());
                       }}
-                      className={`min-h-8 flex-1 rounded border text-[9px] font-semibold hover:bg-accent ${layer.locked ? "border-amber-600 bg-amber-500/15" : "border-border bg-card"}`}
+                      className={`rounded border font-semibold hover:bg-accent ${paletteCompact ? "min-h-11 min-w-11 flex-1 text-sm" : "min-h-8 flex-1 text-[9px]"} ${layer.locked ? "border-amber-600 bg-amber-500/15" : "border-border bg-card"}`}
                     >
-                      {layer.locked ? labels.unlock : labels.lock}
+                      {paletteCompact ? (layer.locked ? "L" : "○") : layer.locked ? labels.unlock : labels.lock}
                     </button>
                   </div>
                 </div>
@@ -4494,9 +4505,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                   setLayers((prev) => [...prev, { id, name, visible: true, locked: false }]);
                   setActiveLayerId(id);
                 }}
-                className="min-h-8 flex-1 rounded border border-border bg-card text-[9px] font-semibold hover:bg-accent"
+                className={`rounded border border-border bg-card font-semibold hover:bg-accent ${paletteCompact ? "min-h-11 flex-1 text-sm" : "min-h-8 flex-1 text-[9px]"}`}
+                title={labels.addLayer}
               >
-                {labels.addLayer}
+                {paletteCompact ? "+" : labels.addLayer}
               </button>
               {layers.length > 1 && (
                 <button
@@ -4718,7 +4730,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             <StructureGlyph kind={tool} />
           </span>
           <span>
-            {activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · {paletteItems.find((item) => item.kind === tool)?.size ?? ""} · {dragCursor.over ? labels.dropOver : labels.dropOut}
+            {activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · {paletteItems.find((item) => item.kind === tool)?.size ?? ""} · {layerCaption(activeLayer)} · {dragCursor.over ? labels.dropOver : labels.dropOut}
           </span>
         </div>
       )}
