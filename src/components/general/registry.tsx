@@ -10,8 +10,6 @@ const AdvancedCalculatorTool = lazy(() =>
 const AdvancedDateTool = lazy(() => import("./AdvancedDateTool").then((m) => ({ default: m.AdvancedDateTool })));
 const MathTool = lazy(() => import("./MathTool").then((m) => ({ default: m.MathTool })));
 const DesignTool = lazy(() => import("./DesignTool").then((m) => ({ default: m.DesignTool })));
-const Modeler3D = lazy(() => import("./Modeler3D").then((m) => ({ default: m.Modeler3D })));
-const HouseModeler3D = lazy(() => import("./HouseModeler3D").then((m) => ({ default: m.HouseModeler3D })));
 const SecurityTool = lazy(() => import("./SecurityTool").then((m) => ({ default: m.SecurityTool })));
 const TimeTool = lazy(() => import("./TimeTool").then((m) => ({ default: m.TimeTool })));
 const ConverterTool = lazy(() => import("./ConverterTool").then((m) => ({ default: m.ConverterTool })));
@@ -174,8 +172,6 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "conversor-tallas-zapatos") return ShoeSizeTool as ToolComp;
   if (tool.slug === "conversor-permisos-chmod") return ChmodTool as ToolComp;
   if (tool.slug === "decodificador-bandas-resistencia") return ResistorBandsTool as ToolComp;
-  if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
-  if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
@@ -212,7 +208,11 @@ function pickComponent(tool: GeneralTool): ToolComp {
 }
 
 /** O(1) tool lookup — avoid scanning GENERAL_TOOLS on every registry access. */
-const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((tool) => [tool.slug, tool]));
+// Studios live in registry-3d so this module has no import() edge to three.js.
+const STUDIO_3D_SLUGS = new Set(["modelador-3d", "modelador-casas-3d"]);
+const TOOL_BY_SLUG = new Map(
+  GENERAL_TOOLS.filter((tool) => !STUDIO_3D_SLUGS.has(tool.slug)).map((tool) => [tool.slug, tool]),
+);
 
 /**
  * Build a registry that only materializes render closures for tools that are
