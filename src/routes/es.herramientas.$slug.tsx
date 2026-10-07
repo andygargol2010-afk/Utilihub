@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { DeferredToolUi } from "@/components/DeferredToolUi";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
-import { ToolSeoContent } from "@/components/ToolSeoContent";
+import { DeferredToolSeo } from "@/components/DeferredToolSeo";
 import { ToolCard } from "@/components/ToolCard";
 import { allToolBySlug, ALL_CATEGORIES, type CatalogTool } from "@/lib/all-tools";
 import { englishToolPath } from "@/lib/route-slugs";
@@ -18,7 +18,6 @@ import {
   organizationSchema,
 } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
-import { toolSeoOverride } from "@/lib/tool-seo-overrides";
 import { journeyLabel, journeyTools } from "@/lib/discovery";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
@@ -26,10 +25,19 @@ import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
 import { getToolShowcase } from "@/lib/tool-showcase";
 
 export const Route = createFileRoute("/es/herramientas/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const tool = allToolBySlug(params.slug);
     if (!tool || tool.category === "finanzas") throw notFound();
-    return { tool };
+    const { toolSeoOverride } = await import("@/lib/tool-seo-overrides");
+    const override = toolSeoOverride(tool.slug);
+    return {
+      tool,
+      seo: {
+        metaTitleEs: override?.metaTitleEs,
+        metaDescriptionEs: override?.metaDescriptionEs,
+        faqEs: override?.faqEs ?? [],
+      },
+    };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -40,8 +48,8 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
         ],
       };
     }
-    const { tool } = loaderData;
-    const override = toolSeoOverride(tool.slug);
+    const { tool, seo } = loaderData;
+    const override = seo;
     const url = absoluteUrl(`/es/herramientas/${tool.slug}`);
     const name = spanishToolName(tool);
     const category = spanishCategoryName(tool.category);
@@ -218,7 +226,7 @@ function SpanishToolPage() {
           </div>
         </section>
       )}
-      <ToolSeoContent tool={tool} locale="es" />
+      <DeferredToolSeo tool={tool} locale="es" />
     </div>
   );
 }

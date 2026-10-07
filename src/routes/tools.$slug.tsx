@@ -6,7 +6,7 @@ import { DeferredToolUi } from "@/components/DeferredToolUi";
 import { ToolCard } from "@/components/ToolCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
-import { ToolSeoContent } from "@/components/ToolSeoContent";
+import { DeferredToolSeo } from "@/components/DeferredToolSeo";
 import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
 import {
   toolByEnglishSlug,
@@ -16,7 +16,6 @@ import {
   englishCategoryPath,
 } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
-import { resolvedToolSeo } from "@/lib/tool-seo-overrides";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { journeyLabel, journeyTools } from "@/lib/discovery";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
@@ -24,14 +23,18 @@ import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
 import { getToolShowcase } from "@/lib/tool-showcase";
 
 export const Route = createFileRoute("/tools/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const tool = toolByEnglishSlug(ALL_TOOLS, params.slug);
     if (!tool) throw notFound();
-    return { tool };
+    const { resolvedToolSeo } = await import("@/lib/tool-seo-overrides");
+    return {
+      tool,
+      seo: { title: seo.title, description: seo.description, faq: seo.faq },
+    };
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Tool not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
-    const { tool } = loaderData;
+    const { tool, seo } = loaderData;
     const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
     if (!category) {
       return {
@@ -42,7 +45,6 @@ export const Route = createFileRoute("/tools/$slug")({
         ],
       };
     }
-    const seo = resolvedToolSeo(tool);
     const title = seo.title ?? tool.title;
     const description = cleanDescription(seo.description ?? tool.description);
     const url = absoluteUrl(englishToolPath(tool));
@@ -199,7 +201,7 @@ function ToolPage() {
           </div>
         </section>
       )}
-      <ToolSeoContent tool={tool} locale="en" />
+      <DeferredToolSeo tool={tool} locale="en" />
     </div>
   );
 }
