@@ -113,6 +113,7 @@ const JetLagTool = lazy(() => import("./JetLagTool").then((m) => ({ default: m.J
 const IbanTool = lazy(() => import("./IbanTool").then((m) => ({ default: m.IbanTool })));
 const ShoeSizeTool = lazy(() => import("./ShoeSizeTool").then((m) => ({ default: m.ShoeSizeTool })));
 const ChmodTool = lazy(() => import("./ChmodTool").then((m) => ({ default: m.ChmodTool })));
+const ResistorBandsTool = lazy(() => import("./ResistorBandsTool").then((m) => ({ default: m.ResistorBandsTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -172,6 +173,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "validador-iban") return IbanTool as ToolComp;
   if (tool.slug === "conversor-tallas-zapatos") return ShoeSizeTool as ToolComp;
   if (tool.slug === "conversor-permisos-chmod") return ChmodTool as ToolComp;
+  if (tool.slug === "decodificador-bandas-resistencia") return ResistorBandsTool as ToolComp;
   if (tool.slug === "modelador-3d") return Modeler3D as ToolComp;
   if (tool.slug === "modelador-casas-3d") return HouseModeler3D as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;

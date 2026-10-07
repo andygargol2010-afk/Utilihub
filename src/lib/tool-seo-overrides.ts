@@ -75,6 +75,7 @@ import { TOOL_SEO_OVERRIDES_JETLAG } from "./tool-seo-overrides-jetlag";
 import { TOOL_SEO_OVERRIDES_IBAN } from "./tool-seo-overrides-iban";
 import { TOOL_SEO_OVERRIDES_SHOE } from "./tool-seo-overrides-shoe";
 import { TOOL_SEO_OVERRIDES_CHMOD } from "./tool-seo-overrides-chmod";
+import { TOOL_SEO_OVERRIDES_RESISTOR } from "./tool-seo-overrides-resistor";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -165,6 +166,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_IBAN,
   ...TOOL_SEO_OVERRIDES_SHOE,
   ...TOOL_SEO_OVERRIDES_CHMOD,
+  ...TOOL_SEO_OVERRIDES_RESISTOR,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
