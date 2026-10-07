@@ -2063,6 +2063,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [selectedRot, setSelectedRot] = useState(0);
   const [selectedPos, setSelectedPos] = useState<[number, number] | null>(null);
   const [showHelp, setShowHelp] = useState(false);
+  const [actionHint, setActionHint] = useState<string | null>(null);
+  const actionHintTimer = useRef<number | null>(null);
   // Narrow viewports: icon-only palette so the canvas keeps the layout (canvas + right rail).
   const [paletteCompact, setPaletteCompact] = useState(false);
   const [layers, setLayers] = useState<SceneLayer[]>([
@@ -3511,6 +3513,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         unlock: "Desbloquear",
         locked: "Bloqueada",
         lockedDrag: "Bloqueada — L desbloquea",
+        lockedAction: "Pieza bloqueada — L desbloquea",
         layers: "Capas",
         layer: "Capa",
         activeLayer: "Activa",
@@ -3615,6 +3618,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         unlock: "Unlock",
         locked: "Locked",
         lockedDrag: "Locked — L unlocks",
+        lockedAction: "Locked piece — L unlocks",
         layers: "Layers",
         layer: "Layer",
         activeLayer: "Active",
@@ -3728,6 +3732,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     }
   };
 
+  const flashActionHint = (msg: string) => {
+    setActionHint(msg);
+    if (actionHintTimer.current) window.clearTimeout(actionHintTimer.current);
+    actionHintTimer.current = window.setTimeout(() => setActionHint(null), 2400);
+  };
+  const refuseSelection = (needsUnlock = false) => {
+    if (!selectedId) {
+      flashActionHint(labels.needSel);
+      return true;
+    }
+    if (needsUnlock && selectedLocked) {
+      flashActionHint(labels.lockedAction);
+      return true;
+    }
+    return false;
+  };
+
   const paletteItems: { kind: PartKind; label: string; swatch: string; key: string; size: string }[] = [
     { kind: "wall", label: labels.wall, swatch: "#d8d0c4", key: "1", size: labels.sizeWall },
     { kind: "floor", label: labels.floor, swatch: "#8b7355", key: "2", size: labels.sizeFloor },
@@ -3830,10 +3851,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       >
         <button
           type="button"
-          onClick={duplicateSelected}
-          disabled={!selectedId}
+          onClick={() => { if (!refuseSelection()) duplicateSelected(); }}
+          aria-disabled={!selectedId}
           aria-label={labels.dup}
-          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId ? "cursor-not-allowed opacity-50" : ""}`}
           title={selectedId ? "D" : labels.needSel}
         >
           {labels.dup}
@@ -3841,10 +3862,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         </button>
         <button
           type="button"
-          onClick={frameSelected}
-          disabled={!selectedId}
+          onClick={() => { if (!refuseSelection()) frameSelected(); }}
+          aria-disabled={!selectedId}
           aria-label={labels.frame}
-          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId ? "cursor-not-allowed opacity-50" : ""}`}
           title={selectedId ? "G" : labels.needSel}
         >
           {labels.frame}
@@ -3852,22 +3873,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         </button>
         <button
           type="button"
-          onClick={rotateSelected}
-          disabled={!selectedId}
+          onClick={() => { if (!refuseSelection(true)) rotateSelected(); }}
+          aria-disabled={!selectedId || selectedLocked}
           aria-label={labels.rot}
-          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
-          title={selectedId ? "R" : labels.needSel}
+          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
+          title={selectedLocked ? labels.lockedAction : selectedId ? "R" : labels.needSel}
         >
           {labels.rot}
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">R</kbd>
         </button>
         <button
           type="button"
-          onClick={toggleLockSelected}
-          disabled={!selectedId}
+          onClick={() => { if (!refuseSelection()) toggleLockSelected(); }}
+          aria-disabled={!selectedId}
           aria-pressed={selectedLocked}
           aria-label={selectedLocked ? labels.unlock : labels.lock}
-          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 ${
+          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId ? "cursor-not-allowed opacity-40" : ""} ${
             selectedLocked ? "border-amber-600 bg-amber-500/15" : "border-border bg-card"
           }`}
           title={selectedId ? "L" : labels.needSel}
@@ -3877,11 +3898,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         </button>
         <button
           type="button"
-          onClick={deleteSelected}
-          disabled={!selectedId || selectedLocked}
+          onClick={() => { if (!refuseSelection(true)) deleteSelected(); }}
+          aria-disabled={!selectedId || selectedLocked}
           aria-label={labels.del}
-          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40"
-          title={selectedId ? "Del" : labels.needSel}
+          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
+          title={selectedLocked ? labels.lockedAction : selectedId ? "Del" : labels.needSel}
         >
           {labels.del}
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">Del</kbd>
@@ -3916,6 +3937,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           <p className="mt-1">{labels.cam}</p>
           <p className="mt-1">{labels.tip}</p>
         </div>
+      )}
+      {actionHint && !isFullscreen && (
+        <p role="status" aria-live="polite" className="rounded-lg border border-amber-700/40 bg-amber-900/15 px-3 py-1.5 text-xs font-semibold text-foreground">
+          {actionHint}
+        </p>
       )}
 
       {error && (
@@ -3957,45 +3983,45 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             >
               <button
                 type="button"
-                onClick={rotateSelected}
-                disabled={!selectedId || selectedLocked}
+                onClick={() => { if (!refuseSelection(true)) rotateSelected(); }}
+                aria-disabled={!selectedId || selectedLocked}
                 aria-label={labels.rot}
-                title={selectedId ? "R" : labels.needSel}
-                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+                title={selectedLocked ? labels.lockedAction : selectedId ? "R" : labels.needSel}
+                className={`inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {labels.rot}
                 <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">R</kbd>
               </button>
               <button
                 type="button"
-                onClick={duplicateSelected}
-                disabled={!selectedId}
+                onClick={() => { if (!refuseSelection()) duplicateSelected(); }}
+                aria-disabled={!selectedId}
                 aria-label={labels.dup}
                 title={selectedId ? "D" : labels.needSel}
-                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+                className={`inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 ${!selectedId ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {labels.dup}
                 <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">D</kbd>
               </button>
               <button
                 type="button"
-                onClick={frameSelected}
-                disabled={!selectedId}
+                onClick={() => { if (!refuseSelection()) frameSelected(); }}
+                aria-disabled={!selectedId}
                 aria-label={labels.frame}
                 title={selectedId ? "G" : labels.needSel}
-                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+                className={`inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 ${!selectedId ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {labels.frame}
                 <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">G</kbd>
               </button>
               <button
                 type="button"
-                onClick={toggleLockSelected}
-                disabled={!selectedId}
+                onClick={() => { if (!refuseSelection()) toggleLockSelected(); }}
+                aria-disabled={!selectedId}
                 aria-pressed={selectedLocked}
                 aria-label={selectedLocked ? labels.unlock : labels.lock}
                 title={selectedId ? "L" : labels.needSel}
-                className={`inline-flex min-h-11 items-center gap-1 rounded-lg border px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40 ${
+                className={`inline-flex min-h-11 items-center gap-1 rounded-lg border px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 ${!selectedId ? "cursor-not-allowed opacity-40" : ""} ${
                   selectedLocked ? "border-amber-200 bg-amber-700" : "border-amber-100/25 bg-amber-950/85"
                 }`}
               >
@@ -4004,11 +4030,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               </button>
               <button
                 type="button"
-                onClick={deleteSelected}
-                disabled={!selectedId || selectedLocked}
+                onClick={() => { if (!refuseSelection(true)) deleteSelected(); }}
+                aria-disabled={!selectedId || selectedLocked}
                 aria-label={labels.del}
-                title={selectedLocked ? labels.locked : selectedId ? "Del" : labels.needSel}
-                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+                title={selectedLocked ? labels.lockedAction : selectedId ? "Del" : labels.needSel}
+                className={`inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {labels.del}
                 <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">Del</kbd>
@@ -4050,6 +4076,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <p>{labels.place}</p>
               <p className="mt-1">{labels.cam}</p>
               <p className="mt-1">{labels.tip}</p>
+            </div>
+          )}
+          {actionHint && isFullscreen && (
+            <div role="status" aria-live="polite" className="pointer-events-none absolute left-1/2 top-16 z-30 max-w-[min(20rem,80%)] -translate-x-1/2 rounded-lg bg-stone-900/95 px-3 py-1.5 text-center text-[11px] font-semibold text-amber-50 shadow-lg ring-1 ring-amber-200/50">
+              {actionHint}
             </div>
           )}
           <div className={`pointer-events-none absolute left-3 z-10 flex max-w-[min(18rem,46%)] flex-col gap-1 ${isFullscreen ? "top-16" : "top-3"}`}>
