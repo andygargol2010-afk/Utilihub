@@ -18,8 +18,22 @@ export default defineConfig({
   build: {
     target: "es2022",
     cssCodeSplit: true,
-    // Avoid modulepreload polyfill overhead on modern browsers
-    modulePreload: { polyfill: false },
+    // Avoid modulepreload polyfill overhead on modern browsers.
+    // Drop heavy on-demand chunks from the automatic modulepreload list so
+    // home EN/ES do not fetch pdf.js / jspdf / xlsx / three.js before LCP.
+    // Those modules stay dynamic-imported; the browser loads them on use.
+    modulePreload: {
+      polyfill: false,
+      resolveDependencies(_filename, deps) {
+        return deps.filter(
+          (dep) =>
+            !dep.includes("vendor-pdf") &&
+            !dep.includes("vendor-export") &&
+            !dep.includes("vendor-xlsx") &&
+            !dep.includes("vendor-three"),
+        );
+      },
+    },
     rollupOptions: {
       output: {
         // Only split heavy optional libs. Never chunk @tanstack/* — breaks Nitro SSR.
