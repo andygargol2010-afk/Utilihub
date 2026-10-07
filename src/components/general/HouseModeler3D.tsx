@@ -409,6 +409,72 @@ function paintWallMasonryBump(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+/** Running-bond brick for the chimney stack. Smaller courses than wall ashlar, soot under the crown. */
+function paintChimneyBrick(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [132, 78, 62], 14);
+  const cols = 6;
+  const rows = 12;
+  const mortar = 3;
+  for (let r = 0; r < rows; r++) {
+    const y0 = (r / rows) * size;
+    const rh = size / rows;
+    const shift = r % 2 === 0 ? 0 : size / cols / 2;
+    for (let c = -1; c < cols + 1; c++) {
+      const vary = hash2(c + 1.4, r + 8.2);
+      const tone = 118 + Math.floor(vary * 48);
+      const warm = vary > 0.72 ? 16 : 0;
+      ctx.fillStyle = `rgb(${tone + 28 + warm}, ${tone - 6}, ${tone - 28})`;
+      const x = c * (size / cols) + shift + mortar;
+      const w = size / cols - mortar * 1.5;
+      ctx.fillRect(x, y0 + mortar, w, rh - mortar * 1.6);
+      ctx.fillStyle = `rgba(${tone + 46}, ${tone + 8}, ${tone - 10}, 0.22)`;
+      ctx.fillRect(x + 2, y0 + mortar + 1, w * 0.4, 1.5);
+      if (vary > 0.8) {
+        ctx.fillStyle = `rgba(${tone - 20}, ${tone - 30}, ${tone - 34}, 0.35)`;
+        ctx.fillRect(x + 4, y0 + rh * 0.4, w * 0.35, 2);
+      }
+    }
+  }
+  ctx.strokeStyle = "rgba(186, 170, 154, 0.55)";
+  ctx.lineWidth = 2;
+  for (let r = 0; r <= rows; r++) {
+    const y = (r / rows) * size;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(size, y);
+    ctx.stroke();
+  }
+  const soot = ctx.createLinearGradient(0, 0, 0, size * 0.28);
+  soot.addColorStop(0, "rgba(42, 36, 32, 0.42)");
+  soot.addColorStop(1, "rgba(42, 36, 32, 0)");
+  ctx.fillStyle = soot;
+  ctx.fillRect(0, 0, size, size * 0.28);
+  ctx.fillStyle = "rgba(48, 32, 24, 0.18)";
+  ctx.fillRect(0, 0, 6, size);
+  ctx.fillRect(size - 6, 0, 6, size);
+}
+
+function paintChimneyBrickBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#b4b4b4";
+  ctx.fillRect(0, 0, size, size);
+  const cols = 6;
+  const rows = 12;
+  ctx.fillStyle = "#2e2e2e";
+  for (let r = 0; r <= rows; r++) {
+    const y = Math.floor((r / rows) * size);
+    ctx.fillRect(0, y - 1, size, 3);
+  }
+  for (let r = 0; r < rows; r++) {
+    const y0 = Math.floor((r / rows) * size);
+    const rh = size / rows;
+    const shift = r % 2 === 0 ? 0 : size / cols / 2;
+    for (let c = 0; c <= cols; c++) {
+      const x = Math.floor(c * (size / cols) + shift);
+      ctx.fillRect(x - 1, y0, 2, rh);
+    }
+  }
+}
+
 function paintTimber(ctx: CanvasRenderingContext2D, size: number) {
   const planks = 6;
   for (let i = 0; i < planks; i++) {
@@ -1424,6 +1490,24 @@ function makeMaterials() {
     roughness: 0.86,
     metalness: 0.02,
   });
+  const chimneyMap = makeCanvasTexture(TEX, paintChimneyBrick, true);
+  const chimneyRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintChimneyBrick(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 168, 58, true);
+  }, false);
+  const chimneyBump = makeCanvasTexture(TEX, paintChimneyBrickBump, false);
+  applyRepeat(chimneyMap, 1.4, 2.6);
+  applyRepeat(chimneyRough, 1.4, 2.6);
+  applyRepeat(chimneyBump, 1.4, 2.6);
+  const chimney = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: chimneyMap ?? undefined,
+    roughnessMap: chimneyRough ?? undefined,
+    bumpMap: chimneyBump ?? undefined,
+    bumpScale: 0.046,
+    roughness: 0.88,
+    metalness: 0.02,
+  });
   const doorLeaf = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     map: doorMap ?? undefined,
@@ -1460,7 +1544,7 @@ function makeMaterials() {
     transparent: true,
     opacity: 0.58,
   });
-  return { wall, wallMasonry, wallEdge, floor, roof, roofMetal, ground, gravel, plate, nosing, fascia, doorLeaf, doorMetal, joinery, doorGlass, footing };
+  return { wall, wallMasonry, wallEdge, floor, roof, roofMetal, ground, gravel, plate, nosing, fascia, doorLeaf, doorMetal, joinery, doorGlass, footing, chimney };
 }
 
 function applyWallFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: WallFinish) {
@@ -1829,21 +1913,21 @@ function createRailingMesh(mats: ReturnType<typeof makeMaterials>) {
 
 
 function createChimneyMesh(mats: ReturnType<typeof makeMaterials>) {
-  // Masonry stack: brick shaft, clay crown, twin flue pots. Sits on the ground beside a wall.
+  // Brick stack: dedicated running-bond shaft, clay crown, twin flue pots. Sits on the ground beside a wall.
   const group = new THREE.Group();
-  const plinth = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.16, 0.78), mats.wallEdge);
+  const plinth = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.16, 0.78), mats.chimney);
   plinth.position.y = 0.08;
   plinth.castShadow = true;
   plinth.receiveShadow = true;
   staggerUvs(plinth);
   group.add(plinth);
-  const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.62, 2.55, 0.62), mats.wallEdge);
+  const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.62, 2.55, 0.62), mats.chimney);
   shaft.position.y = 0.16 + 1.275;
   shaft.castShadow = true;
   shaft.receiveShadow = true;
   staggerUvs(shaft);
   group.add(shaft);
-  const shoulder = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.1, 0.74), mats.wallEdge);
+  const shoulder = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.1, 0.74), mats.chimney);
   shoulder.position.y = 2.76;
   shoulder.castShadow = true;
   staggerUvs(shoulder);
@@ -1855,7 +1939,7 @@ function createChimneyMesh(mats: ReturnType<typeof makeMaterials>) {
   staggerUvs(crown);
   group.add(crown);
   for (const x of [-0.16, 0.16]) {
-    const pot = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.32, 0.2), mats.fascia);
+    const pot = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.32, 0.2), mats.roof);
     pot.position.set(x, 3.06, 0);
     pot.castShadow = true;
     pot.receiveShadow = true;
@@ -3849,7 +3933,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     { kind: "window", label: labels.window, swatch: "#9bb7c9", key: "6", size: labels.sizeWindow },
     { kind: "stairs", label: labels.stairs, swatch: "#8b5a32", key: "7", size: labels.sizeStairs },
     { kind: "railing", label: labels.railing, swatch: "#6d4a30", key: "8", size: labels.sizeRailing },
-    { kind: "chimney", label: labels.chimney, swatch: "#b7ab9a", key: "9", size: labels.sizeChimney },
+    { kind: "chimney", label: labels.chimney, swatch: "#8f4a3c", key: "9", size: labels.sizeChimney },
     { kind: "beam", label: labels.beam, swatch: "#6d4a30", key: "0", size: labels.sizeBeam },
     { kind: "foundation", label: labels.foundation, swatch: "#c4b8a4", key: "Q", size: labels.sizeFoundation },
   ];
