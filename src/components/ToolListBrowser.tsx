@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { startTransition, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Search, Tag } from "lucide-react";
 import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
 
@@ -31,6 +31,7 @@ const PAGE_SIZE = 20;
 
 /**
  * Mobile-friendly tool list: local search, intent tags, A–Z jump, progressive reveal.
+ * Filtering runs on a debounced query so keystrokes stay off the main-thread filter/sort.
  */
 export function ToolListBrowser<T extends BrowseableTool>({
   tools,
@@ -50,9 +51,21 @@ export function ToolListBrowser<T extends BrowseableTool>({
 }) {
   const es = locale === "es";
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [visible, setVisible] = useState(pageSize);
   const [activeLetter, setActiveLetter] = useState<string | "all">("all");
   const [activeTag, setActiveTag] = useState<string | "all">("all");
+
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      startTransition(() => setDebouncedQuery(query));
+    }, 160);
+    return () => window.clearTimeout(id);
+  }, [query]);
+
+  useEffect(() => {
+    setVisible(pageSize);
+  }, [debouncedQuery, activeLetter, activeTag, pageSize]);
 
   const facets = useMemo(
     () => facetsWithCounts(tools, categorySlug ?? "all", locale),
@@ -60,7 +73,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
   );
 
   const filtered = useMemo(() => {
-    const tokens = normalize(query)
+    const tokens = normalize(debouncedQuery)
       .split(/\s+/)
       .filter((t) => t.length > 1);
     let list = tools;
@@ -88,7 +101,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
       list = list.filter((tool) => letterOf(tool.name) === activeLetter);
     }
     return [...list].sort((a, b) => a.name.localeCompare(b.name, es ? "es" : "en"));
-  }, [tools, query, activeLetter, activeTag, es]);
+  }, [tools, debouncedQuery, activeLetter, activeTag, es]);
 
   const letters = useMemo(() => {
     const set = new Set<string>();
@@ -104,8 +117,6 @@ export function ToolListBrowser<T extends BrowseableTool>({
   const placeholder =
     searchPlaceholder ?? (es ? "Buscar en esta lista…" : "Search in this list…");
 
-  const resetPage = () => setVisible(pageSize);
-
   return (
     <div className="space-y-3">
       <div className="sticky top-16 z-20 -mx-1 space-y-2 bg-background/95 px-1 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -114,10 +125,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
           <input
             type="search"
             value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              resetPage();
-            }}
+            onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder}
             aria-label={placeholder}
             className="h-12 w-full rounded-xl border border-border/70 bg-card pl-11 pr-3 text-base shadow-sm focus-visible:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -133,10 +141,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
             <Tag className="size-4 shrink-0 text-muted-foreground" aria-hidden />
             <button
               type="button"
-              onClick={() => {
-                setActiveTag("all");
-                resetPage();
-              }}
+              onClick={() => setActiveTag("all")}
               className={`min-h-9 shrink-0 rounded-full px-3 text-xs font-bold ${
                 activeTag === "all"
                   ? "bg-primary text-primary-foreground"
@@ -149,10 +154,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
               <button
                 key={f.id}
                 type="button"
-                onClick={() => {
-                  setActiveTag((prev) => (prev === f.id ? "all" : f.id));
-                  resetPage();
-                }}
+                onClick={() => setActiveTag((prev) => (prev === f.id ? "all" : f.id))}
                 className={`min-h-9 shrink-0 rounded-full px-3 text-xs font-semibold ${
                   activeTag === f.id
                     ? "bg-primary text-primary-foreground"
@@ -174,10 +176,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
           >
             <button
               type="button"
-              onClick={() => {
-                setActiveLetter("all");
-                resetPage();
-              }}
+              onClick={() => setActiveLetter("all")}
               className={`min-h-9 shrink-0 rounded-full px-3 text-xs font-bold ${
                 activeLetter === "all"
                   ? "bg-primary text-primary-foreground"
@@ -190,10 +189,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
               <button
                 key={L}
                 type="button"
-                onClick={() => {
-                  setActiveLetter(L);
-                  resetPage();
-                }}
+                onClick={() => setActiveLetter(L)}
                 className={`grid size-9 shrink-0 place-items-center rounded-full text-xs font-bold ${
                   activeLetter === L
                     ? "bg-primary text-primary-foreground"
