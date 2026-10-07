@@ -63,7 +63,7 @@ export function RainwaterCalculatorTool({ locale = "en" }: { tool: GeneralTool; 
         daily: "Uso diario (L, opcional)",
         result: "Captación",
         stormOut: "Tormenta neta",
-        annualOut: "Año neto",
+        annualOut: "Captación anual",
         gallons: "Galones (tormenta)",
         barrels: "Tanques para la tormenta",
         days: "Días de uso con la tormenta",
@@ -95,7 +95,7 @@ export function RainwaterCalculatorTool({ locale = "en" }: { tool: GeneralTool; 
         daily: "Daily use (L, optional)",
         result: "Capture",
         stormOut: "Net storm",
-        annualOut: "Net year",
+        annualOut: "Annual capture",
         gallons: "Gallons (storm)",
         barrels: "Barrels for the storm",
         days: "Days of use from the storm",
@@ -130,10 +130,10 @@ export function RainwaterCalculatorTool({ locale = "en" }: { tool: GeneralTool; 
     const stormGross = areaM2 * stormMm * runoff;
     const annualGross = areaM2 * annualMm * runoff;
     const stormNet = Math.max(0, stormGross - flushL);
-    const annualNet = Math.max(0, annualGross - flushL);
+    const annualCapture = annualGross;
     const barrels = stormNet === 0 ? 0 : Math.ceil(stormNet / barrelL);
     const days = dailyL != null && dailyL > 0 ? stormNet / dailyL : null;
-    return { stormNet, annualNet, gallons: stormNet * GAL_PER_L, barrels, days };
+    return { stormNet, annualCapture, gallons: stormNet * GAL_PER_L, barrels, days };
   }, [annual, area, barrel, coeff, copy.errAnnual, copy.errArea, copy.errBarrel, copy.errCoeff, copy.errDaily, copy.errFlush, copy.errStorm, daily, flush, storm]);
 
   function applyPreset(preset: Preset) {
@@ -154,8 +154,8 @@ export function RainwaterCalculatorTool({ locale = "en" }: { tool: GeneralTool; 
   async function copyResult() {
     if ("error" in result) return;
     const text = es
-      ? `Agua de lluvia: ${formatNum(result.stormNet)} L en la tormenta (${formatNum(result.gallons)} gal), ${result.barrels} tanques, ${formatNum(result.annualNet, 0)} L al año.`
-      : `Rainwater: ${formatNum(result.stormNet)} L in the storm (${formatNum(result.gallons)} gal), ${result.barrels} barrels, ${formatNum(result.annualNet, 0)} L a year.`;
+      ? `Agua de lluvia: ${formatNum(result.stormNet)} L en la tormenta (${formatNum(result.gallons)} gal), ${result.barrels} tanques, ${formatNum(result.annualCapture, 0)} L al año.`
+      : `Rainwater: ${formatNum(result.stormNet)} L in the storm (${formatNum(result.gallons)} gal), ${result.barrels} barrels, ${formatNum(result.annualCapture, 0)} L a year.`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -236,7 +236,7 @@ export function RainwaterCalculatorTool({ locale = "en" }: { tool: GeneralTool; 
               </div>
               <div className="flex justify-between gap-3">
                 <dt className="text-muted-foreground">{copy.annualOut}</dt>
-                <dd className="font-medium">{formatNum(result.annualNet, 0)} L</dd>
+                <dd className="font-medium">{formatNum(result.annualCapture, 0)} L</dd>
               </div>
               {result.days != null && (
                 <div className="flex justify-between gap-3">
