@@ -247,6 +247,7 @@ const EXACT_NAMES: Record<string, string> = {
   "decodificador-bandas-resistencia": "Decodificador de bandas de resistencia",
   "generador-cita-apa": "Generador de citas APA 7",
   "transportador-acordes": "Transportador de acordes",
+  "letra-dni-nie": "Letra del DNI y NIE",
   "modelador-3d": "Modelador 3D",
   "modelador-casas-3d": "Modelador de casas 3D",
   "asignacion-de-cartera": "Asignación de cartera",

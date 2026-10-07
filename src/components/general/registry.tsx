@@ -114,6 +114,7 @@ const ChmodTool = lazy(() => import("./ChmodTool").then((m) => ({ default: m.Chm
 const ResistorBandsTool = lazy(() => import("./ResistorBandsTool").then((m) => ({ default: m.ResistorBandsTool })));
 const ApaCitationTool = lazy(() => import("./ApaCitationTool").then((m) => ({ default: m.ApaCitationTool })));
 const ChordTransposeTool = lazy(() => import("./ChordTransposeTool").then((m) => ({ default: m.ChordTransposeTool })));
+const DniLetterTool = lazy(() => import("./DniLetterTool").then((m) => ({ default: m.DniLetterTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -176,6 +177,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "decodificador-bandas-resistencia") return ResistorBandsTool as ToolComp;
   if (tool.slug === "generador-cita-apa") return ApaCitationTool as ToolComp;
   if (tool.slug === "transportador-acordes") return ChordTransposeTool as ToolComp;
+  if (tool.slug === "letra-dni-nie") return DniLetterTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
