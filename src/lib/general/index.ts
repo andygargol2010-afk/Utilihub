@@ -98,6 +98,7 @@ import { SUBNET_TOOLS } from "./subnet-tool";
 import { COORDINATE_TOOLS } from "./coordinates-tool";
 import { EAN_TOOLS } from "./ean-tool";
 import { CLAMP_TOOLS } from "./clamp-tool";
+import { BRAILLE_TOOLS } from "./braille-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -201,4 +202,5 @@ export const GENERAL_TOOLS = [
   ...COORDINATE_TOOLS,
   ...EAN_TOOLS,
   ...CLAMP_TOOLS,
+  ...BRAILLE_TOOLS,
 ];
