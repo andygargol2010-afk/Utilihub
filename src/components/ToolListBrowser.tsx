@@ -72,13 +72,20 @@ export function ToolListBrowser<T extends BrowseableTool>({
     [tools, categorySlug, locale],
   );
 
+  // Sort once per catalog. Search, topic, and letter only filter this list,
+  // so a keystroke or chip does not localeCompare the whole category again.
+  const sorted = useMemo(
+    () => [...tools].sort((a, b) => a.name.localeCompare(b.name, es ? "es" : "en")),
+    [tools, es],
+  );
+
   const filtered = useMemo(() => {
     const tokens = normalize(debouncedQuery)
       .split(/\s+/)
       .filter((t) => t.length > 1);
-    let list = tools;
+    let list = sorted;
     if (tokens.length) {
-      list = tools.filter((tool) => {
+      list = sorted.filter((tool) => {
         const hay = normalize(`${tool.name} ${tool.searchText ?? ""}`);
         return tokens.every((token) => hay.includes(token));
       });
@@ -100,8 +107,8 @@ export function ToolListBrowser<T extends BrowseableTool>({
     if (activeLetter !== "all") {
       list = list.filter((tool) => letterOf(tool.name) === activeLetter);
     }
-    return [...list].sort((a, b) => a.name.localeCompare(b.name, es ? "es" : "en"));
-  }, [tools, debouncedQuery, activeLetter, activeTag, es]);
+    return list;
+  }, [sorted, debouncedQuery, activeLetter, activeTag]);
 
   const letters = useMemo(() => {
     const set = new Set<string>();
@@ -141,7 +148,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
             <Tag className="size-4 shrink-0 text-muted-foreground" aria-hidden />
             <button
               type="button"
-              onClick={() => setActiveTag("all")}
+              onClick={() => startTransition(() => setActiveTag("all"))}
               className={`min-h-9 shrink-0 rounded-full px-3 text-xs font-bold ${
                 activeTag === "all"
                   ? "bg-primary text-primary-foreground"
@@ -154,7 +161,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
               <button
                 key={f.id}
                 type="button"
-                onClick={() => setActiveTag((prev) => (prev === f.id ? "all" : f.id))}
+                onClick={() => startTransition(() => setActiveTag((prev) => (prev === f.id ? "all" : f.id)))}
                 className={`min-h-9 shrink-0 rounded-full px-3 text-xs font-semibold ${
                   activeTag === f.id
                     ? "bg-primary text-primary-foreground"
@@ -176,7 +183,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
           >
             <button
               type="button"
-              onClick={() => setActiveLetter("all")}
+              onClick={() => startTransition(() => setActiveLetter("all"))}
               className={`min-h-9 shrink-0 rounded-full px-3 text-xs font-bold ${
                 activeLetter === "all"
                   ? "bg-primary text-primary-foreground"
@@ -189,7 +196,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
               <button
                 key={L}
                 type="button"
-                onClick={() => setActiveLetter(L)}
+                onClick={() => startTransition(() => setActiveLetter(L))}
                 className={`grid size-9 shrink-0 place-items-center rounded-full text-xs font-bold ${
                   activeLetter === L
                     ? "bg-primary text-primary-foreground"
@@ -228,7 +235,7 @@ export function ToolListBrowser<T extends BrowseableTool>({
             <div className="flex justify-center pt-1">
               <button
                 type="button"
-                onClick={() => setVisible((v) => v + pageSize)}
+                onClick={() => startTransition(() => setVisible((v) => v + pageSize))}
                 className="inline-flex min-h-11 items-center rounded-xl border border-border bg-card px-5 text-sm font-bold hover:border-primary/40 hover:bg-accent"
               >
                 {es
