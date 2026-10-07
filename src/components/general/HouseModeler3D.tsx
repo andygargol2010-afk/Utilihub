@@ -3901,12 +3901,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <button
                 type="button"
                 onClick={rotateSelected}
-                disabled={!selectedId}
+                disabled={!selectedId || selectedLocked}
                 aria-label={labels.rot}
                 title={selectedId ? "R" : labels.needSel}
-                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
               >
                 {labels.rot}
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">R</kbd>
               </button>
               <button
                 type="button"
@@ -3914,9 +3915,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 disabled={!selectedId}
                 aria-label={labels.dup}
                 title={selectedId ? "D" : labels.needSel}
-                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
               >
                 {labels.dup}
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">D</kbd>
               </button>
               <button
                 type="button"
@@ -3924,19 +3926,35 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 disabled={!selectedId}
                 aria-label={labels.frame}
                 title={selectedId ? "G" : labels.needSel}
-                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
               >
                 {labels.frame}
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">G</kbd>
+              </button>
+              <button
+                type="button"
+                onClick={toggleLockSelected}
+                disabled={!selectedId}
+                aria-pressed={selectedLocked}
+                aria-label={selectedLocked ? labels.unlock : labels.lock}
+                title={selectedId ? "L" : labels.needSel}
+                className={`inline-flex min-h-11 items-center gap-1 rounded-lg border px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40 ${
+                  selectedLocked ? "border-amber-200 bg-amber-700" : "border-amber-100/25 bg-amber-950/85"
+                }`}
+              >
+                {selectedLocked ? labels.unlock : labels.lock}
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">L</kbd>
               </button>
               <button
                 type="button"
                 onClick={deleteSelected}
-                disabled={!selectedId}
+                disabled={!selectedId || selectedLocked}
                 aria-label={labels.del}
-                title={selectedId ? "Del" : labels.needSel}
-                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+                title={selectedLocked ? labels.locked : selectedId ? "Del" : labels.needSel}
+                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
               >
                 {labels.del}
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">Del</kbd>
               </button>
               <button
                 type="button"
@@ -3944,9 +3962,20 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 disabled={count === 0}
                 aria-label={labels.clear}
                 title="C"
-                className="min-h-11 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
+                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
               >
                 {labels.clear}
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">C</kbd>
+              </button>
+              <button
+                type="button"
+                onClick={() => void toggleFullscreen()}
+                aria-label={labels.exitFs}
+                title="F"
+                className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800"
+              >
+                {labels.exitFs}
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">F</kbd>
               </button>
               <button
                 type="button"
