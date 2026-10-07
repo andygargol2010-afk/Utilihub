@@ -6,7 +6,9 @@ import type { GeneralTool } from "@/lib/general/types";
 type Locale = "en" | "es";
 
 function parse(v: string) {
-  return Number(String(v).trim().replace(",", "."));
+  const t = String(v).trim();
+  if (!t) return Number.NaN;
+  return Number(t.replace(",", "."));
 }
 
 function fmt(n: number, d = 8) {
