@@ -19,12 +19,11 @@ const MOBILE = {
 
 type AtWindow = Window & { atOptions?: Record<string, unknown> };
 
-/** Home banner. On mobile, scale down if the network injects a wider creative. */
+/** Home banner. The 728×90 box is in the first paint so the script cannot shift the page. */
 export function AdBanner() {
   const slotRef = useRef<HTMLDivElement>(null);
   const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
   const [allowed, setAllowed] = useState(false);
-  const [scale, setScale] = useState(1);
 
   useEffect(() => {
     setAllowed(hasMarketingConsent());
@@ -40,20 +39,6 @@ export function AdBanner() {
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
   }, []);
-
-  useEffect(() => {
-    if (viewport !== "mobile") {
-      setScale(1);
-      return;
-    }
-    const updateScale = () => {
-      const usable = Math.max(280, window.innerWidth - 32);
-      setScale(Math.min(1, usable / 728));
-    };
-    updateScale();
-    window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
-  }, [viewport]);
 
   useEffect(() => {
     if (!allowed || !viewport || !slotRef.current) return;
@@ -92,30 +77,16 @@ export function AdBanner() {
     };
   }, [allowed, viewport]);
 
-  if (!allowed || !viewport) return null;
-
-  const isMobile = viewport === "mobile";
-  const minH = isMobile ? Math.ceil(90 * scale) : 90;
-
   return (
     <div className="mx-auto w-full max-w-full overflow-x-hidden py-2" aria-label="Advertisement">
       <div
-        className="mx-auto flex items-center justify-center"
-        style={{
-          minHeight: minH,
-          width: isMobile ? 728 * scale : undefined,
-          maxWidth: "100%",
-        }}
+        className="relative mx-auto w-full max-w-[728px] overflow-hidden"
+        style={{ aspectRatio: "728 / 90", containerType: "inline-size" }}
       >
         <div
           ref={slotRef}
-          className="flex items-center justify-center [&_iframe]:max-w-none"
-          style={{
-            width: 728,
-            minHeight: 90,
-            transform: isMobile && scale < 1 ? `scale(${scale})` : undefined,
-            transformOrigin: "top center",
-          }}
+          className="flex h-[90px] w-[728px] items-center justify-center [&_iframe]:max-w-none"
+          style={{ transform: "scale(min(1, 100cqw / 728))", transformOrigin: "top left" }}
         />
       </div>
     </div>
