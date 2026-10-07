@@ -14,9 +14,6 @@ import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
 import { useShareableParams } from "@/hooks/use-shareable-params";
 import { useDailyStreak } from "@/hooks/use-daily-streak";
 
-const FONT_HREF =
-  "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap";
-
 function useIsSpanish() {
   const { pathname } = useLocation();
   return pathname === "/es" || pathname.startsWith("/es/");
@@ -114,11 +111,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: ogImage() },
     ],
     links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://www.highrevenueformat.com" },
-      { rel: "preload", as: "style", href: FONT_HREF },
-      { rel: "stylesheet", href: FONT_HREF },
       { rel: "icon", href: "/google-favicon-16.png", type: "image/png", sizes: "16x16" },
       { rel: "icon", href: "/google-favicon-32.png", type: "image/png", sizes: "32x32" },
       { rel: "icon", href: "/google-favicon-48.png", type: "image/png", sizes: "48x48" },
