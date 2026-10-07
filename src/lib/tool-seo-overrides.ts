@@ -79,6 +79,7 @@ import { TOOL_SEO_OVERRIDES_RESISTOR } from "./tool-seo-overrides-resistor";
 import { TOOL_SEO_OVERRIDES_APA } from "./tool-seo-overrides-apa";
 import { TOOL_SEO_OVERRIDES_CHORDS } from "./tool-seo-overrides-chords";
 import { TOOL_SEO_OVERRIDES_DNI } from "./tool-seo-overrides-dni";
+import { TOOL_SEO_OVERRIDES_SUBNET } from "./tool-seo-overrides-subnet";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -173,6 +174,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_APA,
   ...TOOL_SEO_OVERRIDES_CHORDS,
   ...TOOL_SEO_OVERRIDES_DNI,
+  ...TOOL_SEO_OVERRIDES_SUBNET,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
