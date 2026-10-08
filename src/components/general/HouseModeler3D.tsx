@@ -4476,7 +4476,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedLocked = selectedPart ? partFrozen(selectedPart, layers) : false;
   void lockRev;
   const selectedKindLabel =
-    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : selectedKind === "beam" ? labels.beam : selectedKind === "foundation" ? labels.foundation : selectedKind === "pergola" ? labels.pergola : selectedKind === "fence" ? labels.fence : "";
+    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : selectedKind === "beam" ? labels.beam : selectedKind === "foundation" ? labels.foundation : selectedKind === "pergola" ? labels.pergola : selectedKind === "fence" ? labels.fence : selectedKind === "path" ? labels.path : "";
   const selectedLayer = layers.find((l) => l.id === selectedPart?.layerId);
   const activeLayer = layers.find((l) => l.id === activeLayerId) ?? layers[0];
   const layerCaption = (layer: SceneLayer | undefined) => {
@@ -5151,7 +5151,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               }`}
             >
               {selectedKindLabel
-                ? `${labels.selected}: ${selectedKindLabel} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°${
+                ? `${labels.selected}: ${selectedKindLabel}${finishCaption(selectedKind!) ? ` · ${finishCaption(selectedKind!)}` : ""} · ${selectedSize} · ${labels.rotDeg} ${selectedRot * 90}°${
                     selectedPos ? ` · X ${selectedPos[0].toFixed(1)} Z ${selectedPos[1].toFixed(1)}` : ""
                   }${selectedLocked ? ` · ${labels.locked}` : ""}${placeLayerCaption ? ` · ${placeLayerCaption}` : ""}`
                 : `${labels.armed}: ${activeLabel}${finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · ${
@@ -5740,6 +5740,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               </p>
               <p className="mt-0.5 text-xs font-semibold text-foreground">
                 {selectedKindLabel}
+                {selectedKind && finishShort(selectedKind) ? ` · ${finishShort(selectedKind)}` : ""}
                 {selectedLocked ? ` · ${labels.locked}` : ""}
               </p>
               <p className="text-[10px] text-muted-foreground">{selectedSize}</p>
@@ -5832,7 +5833,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           ) : paletteCompact && selectedKindLabel ? (
             <div className="flex flex-col gap-1" role="group" aria-label={labels.nudge}>
               <span className="truncate text-center text-[9px] font-semibold text-amber-800 dark:text-amber-200" title={selectedKindLabel}>
-                {selectedKindLabel}{selectedLocked ? ` · ${labels.locked}` : ""}
+                {selectedKindLabel}{selectedKind && finishShort(selectedKind) ? ` · ${finishShort(selectedKind)}` : ""}{selectedLocked ? ` · ${labels.locked}` : ""}
               </span>
               <span className="text-center text-[9px] font-semibold text-amber-800 dark:text-amber-200">
                 {selectedRot * 90}°
