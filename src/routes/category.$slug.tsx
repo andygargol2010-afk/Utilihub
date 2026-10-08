@@ -1,6 +1,7 @@
 import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
+import { RevealOnScroll } from "@/components/RevealOnScroll";
 import { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
 import { englishCategorySlug, englishToolSlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
@@ -31,5 +32,38 @@ export const Route = createFileRoute("/category/$slug")({
 function CategoryPage() {
   const { category, tools } = Route.useLoaderData();
   const neighboring = ALL_CATEGORIES.filter((item) => item.slug !== category.slug).slice(0, 4);
-  return <div className="container-page py-6 sm:py-8"><Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Tools", to: "/tools" }, { label: category.name }]} /><div className="mt-4 flex items-end justify-between gap-3"><div><h1 className="text-2xl font-bold sm:text-3xl">{category.name}</h1><p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">{category.intro}</p></div><span className="shrink-0 text-xs font-semibold text-muted-foreground">{tools.length} tools</span></div><div className="mt-5 divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">{tools.map(t => <ToolCard key={t.slug} tool={t} />)}</div><section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories"><h2 id="other-categories" className="text-base font-bold">You can also explore</h2><div className="mt-3 flex flex-wrap gap-2">{neighboring.map((item) => <Link key={item.slug} to="/category/$slug" params={{ slug: englishCategorySlug(item.slug) }} className="rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold hover:border-primary/40 hover:bg-accent">{item.name}</Link>)}</div></section></div>;
+  return (
+    <div className="container-page py-6 sm:py-8">
+      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Tools", to: "/tools" }, { label: category.name }]} />
+      <div className="mt-4 flex items-end justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold sm:text-3xl">{category.name}</h1>
+          <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">{category.intro}</p>
+        </div>
+        <span className="shrink-0 text-xs font-semibold text-muted-foreground">{tools.length} tools</span>
+      </div>
+      <div className="mt-5 divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+        {tools.map((t) => (
+          <RevealOnScroll key={t.slug}>
+            <ToolCard tool={t} />
+          </RevealOnScroll>
+        ))}
+      </div>
+      <section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories">
+        <h2 id="other-categories" className="text-base font-bold">You can also explore</h2>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {neighboring.map((item) => (
+            <Link
+              key={item.slug}
+              to="/category/$slug"
+              params={{ slug: englishCategorySlug(item.slug) }}
+              className="btn-press rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold hover:border-primary/40 hover:bg-accent"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
 }
