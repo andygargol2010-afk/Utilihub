@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { KitCarryBoard } from "@/components/kits/KitCarryBoard";
 import { ToolCard } from "@/components/ToolCard";
 import { kitBySlug, kitTools, kitEnglishPath, kitSpanishPath } from "@/lib/work-kits";
 import { englishToolSlug } from "@/lib/route-slugs";
@@ -78,6 +79,7 @@ function KitPage() {
           <CheckCircle2 className="size-4 text-primary" /> {kit.outcome}
         </p>
       </header>
+      <KitCarryBoard kitSlug={kit.slug} steps={tools.map((tool) => ({ slug: tool.slug, label: tool.name }))} />
       <section className="mt-8" aria-labelledby="kit-steps">
         <h2 id="kit-steps" className="text-base font-bold">
           Kit steps
