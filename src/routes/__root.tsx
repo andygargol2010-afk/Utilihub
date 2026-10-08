@@ -13,6 +13,7 @@ import { AdsterraSocialBar } from "@/components/AdsterraSocialBar";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
 import { useShareableParams } from "@/hooks/use-shareable-params";
 import { useDailyStreak } from "@/hooks/use-daily-streak";
+import { FavoritesProvider } from "@/hooks/use-favorites";
 
 function useIsSpanish() {
   const { pathname } = useLocation();
@@ -192,13 +193,15 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {isSpanish ? <SpanishSiteHeader /> : <SiteHeader />}
-      <main id="main-content">
-        <Outlet />
-      </main>
-      {isSpanish ? <SpanishSiteFooter /> : <SiteFooter />}
-      <AdsterraSocialBar />
-      <DeferredInsights />
+      <FavoritesProvider>
+        {isSpanish ? <SpanishSiteHeader /> : <SiteHeader />}
+        <main id="main-content">
+          <Outlet />
+        </main>
+        {isSpanish ? <SpanishSiteFooter /> : <SiteFooter />}
+        <AdsterraSocialBar />
+        <DeferredInsights />
+      </FavoritesProvider>
     </QueryClientProvider>
   );
 }
