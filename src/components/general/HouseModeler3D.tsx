@@ -1118,6 +1118,21 @@ function paintContactAO(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+/** Sun-aligned contact under the gravel disc. Dark lobe is offset so it falls on grass. */
+function paintPadCast(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.clearRect(0, 0, size, size);
+  const c = size / 2;
+  const g = ctx.createRadialGradient(c * 0.62, c, size * 0.05, c * 0.92, c, size * 0.46);
+  g.addColorStop(0, "rgba(28,24,16,0.5)");
+  g.addColorStop(0.38, "rgba(28,24,16,0.24)");
+  g.addColorStop(0.72, "rgba(28,24,16,0.08)");
+  g.addColorStop(1, "rgba(28,24,16,0)");
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.ellipse(c * 0.9, c, size * 0.42, size * 0.28, 0, 0, Math.PI * 2);
+  ctx.fill();
+}
+
 /** Per-part foot shadow. Shared 128px map; one instanced quad, no extra shadow map. */
 function paintFootAO(ctx: CanvasRenderingContext2D, size: number) {
   const c = size / 2;
@@ -2660,6 +2675,29 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       contactAo.position.y = 0.02;
       scene.add(contactAo);
 
+      // Disc contact stretched away from the sun. One quad, no extra shadow map.
+      const padCastMap = makeCanvasTexture(128, paintPadCast, true);
+      const padCastMat = new THREE.MeshBasicMaterial({
+        map: padCastMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        toneMapped: false,
+        opacity: 0.5,
+      });
+      padCastMat.polygonOffset = true;
+      padCastMat.polygonOffsetFactor = -1;
+      padCastMat.polygonOffsetUnits = -1;
+      const padCastGeo = new THREE.PlaneGeometry(16.5, 22);
+      const padCast = new THREE.Mesh(padCastGeo, padCastMat);
+      padCast.rotation.order = "YXZ";
+      padCast.rotation.y = Math.atan2(sun.x, sun.z);
+      padCast.rotation.x = -Math.PI / 2;
+      padCast.position.set(-sun.x * 3.6, 0.008, -sun.z * 3.6);
+      padCast.renderOrder = 1;
+      padCast.castShadow = false;
+      padCast.receiveShadow = false;
+      scene.add(padCast);
+
       // Sun-side light, opposite olive shade on the pad. Sits above gravel, fades at the rim.
       const shadeMap = makeCanvasTexture(256, paintSiteShade, true);
       const shadeMat = new THREE.MeshBasicMaterial({
@@ -2822,13 +2860,16 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           if (!Number.isFinite(footBox.min.x) || footBox.isEmpty()) continue;
           const sx = THREE.MathUtils.clamp((footBox.max.x - footBox.min.x) * 0.72, 0.42, 8);
           const sz = THREE.MathUtils.clamp((footBox.max.z - footBox.min.z) * 0.72, 0.42, 8);
+          const height = Math.max(0, footBox.max.y - footBox.min.y);
+          const cast = THREE.MathUtils.clamp(height * 0.14, 0.06, 1.15);
           footDummy.position.set(
-            (footBox.min.x + footBox.max.x) * 0.5,
+            (footBox.min.x + footBox.max.x) * 0.5 - sun.x * cast,
             0.034,
-            (footBox.min.z + footBox.max.z) * 0.5,
+            (footBox.min.z + footBox.max.z) * 0.5 - sun.z * cast,
           );
-          footDummy.rotation.set(-Math.PI / 2, 0, 0);
-          footDummy.scale.set(sx, sz, 1);
+          footDummy.rotation.order = "YXZ";
+          footDummy.rotation.set(-Math.PI / 2, Math.atan2(sun.x, sun.z), 0);
+          footDummy.scale.set(Math.min(sx, sz) * 0.92, Math.max(sx, sz) * 0.86 + cast * 0.55, 1);
           footDummy.updateMatrix();
           footAo.setMatrixAt(footN, footDummy.matrix);
           footN++;
@@ -2891,6 +2932,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           contactAo.geometry.dispose();
           aoMat.dispose();
           aoMap?.dispose();
+          padCast.geometry.dispose();
+          padCastMat.dispose();
+          padCastMap?.dispose();
           siteShade.geometry.dispose();
           shadeMat.dispose();
           shadeMap?.dispose();
