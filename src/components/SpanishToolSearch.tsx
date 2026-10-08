@@ -3,7 +3,7 @@ import { Search, SlidersHorizontal, Star, Tag } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ALL_CATEGORIES, ALL_TOOLS } from "@/lib/all-tools";
+import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
 import { ToolCard } from "@/components/ToolCard";
 import { useFavorites } from "@/hooks/use-favorites";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
@@ -22,8 +22,8 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
   const [category, setCategory] = useState<string>(initialCategory ?? "all");
   const [tag, setTag] = useState<string>("all");
   const [visible, setVisible] = useState(PAGE_SIZE);
-  // Home only needs the normalized catalog after idle or the first keystroke.
-  const [indexReady, setIndexReady] = useState(!compactHome);
+  // Full catalog normalize + 30 favorite rows wait for idle (or the first keystroke).
+  const [indexReady, setIndexReady] = useState(false);
   const { favorites, toggle, ready } = useFavorites();
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
   }, [query]);
 
   useEffect(() => {
-    if (!compactHome || indexReady) return;
+    if (indexReady) return;
     const idle = window.requestIdleCallback;
     if (typeof idle === "function") {
       const id = idle(() => setIndexReady(true), { timeout: 1200 });
@@ -40,7 +40,7 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
     }
     const id = window.setTimeout(() => setIndexReady(true), 250);
     return () => window.clearTimeout(id);
-  }, [compactHome, indexReady]);
+  }, [indexReady]);
 
   useEffect(() => {
     setVisible(PAGE_SIZE);
@@ -51,7 +51,7 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
     setVisible(PAGE_SIZE);
   }, [tag, debouncedQuery]);
 
-  const buildIndex = !compactHome || indexReady || query.length > 0;
+  const buildIndex = indexReady || query.length > 0;
   const index = useMemo(() => {
     if (!buildIndex) return [];
     return ALL_TOOLS.map((tool) => {
@@ -67,10 +67,10 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
   }, [buildIndex]);
 
   const categoryTools = useMemo(() => {
-    if (compactHome) return [];
+    if (!indexReady || compactHome) return [];
     if (category === "all") return ALL_TOOLS;
     return ALL_TOOLS.filter((t) => t.category === category);
-  }, [category, compactHome]);
+  }, [category, compactHome, indexReady]);
 
   const facets = useMemo(
     () => facetsWithCounts(categoryTools, category, "es"),
@@ -100,10 +100,15 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
       .map(({ tool }) => tool);
   }, [category, index, tag, debouncedQuery]);
 
-  const favTools = useMemo(() => ALL_TOOLS.filter((t) => favorites.includes(t.slug)), [favorites]);
+  const favTools = useMemo(
+    () => (ready && indexReady ? ALL_TOOLS.filter((t) => favorites.includes(t.slug)) : []),
+    [favorites, ready, indexReady],
+  );
   const compactResults = debouncedQuery.trim() ? results.slice(0, 6) : [];
   const shown = results.slice(0, visible);
   const remaining = Math.max(0, results.length - shown.length);
+  const staticTools = ALL_TOOLS.filter((tool) => category === "all" || tool.category === category).slice(0, PAGE_SIZE);
+  const listedCount = indexReady || query ? results.length : staticTools.length;
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
@@ -193,13 +198,13 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
           </div>
         )}
         <p className="mt-2 text-xs font-semibold text-muted-foreground" aria-live="polite">
-          {results.length} herramienta{results.length === 1 ? "" : "s"}
+          {listedCount} herramienta{listedCount === 1 ? "" : "s"}
           {category !== "all" ? ` · ${spanishCategoryName(category)}` : ""}
           {tag !== "all" ? ` · ${facets.find((f) => f.id === tag)?.label ?? tag}` : ""}
         </p>
       </div>
 
-      {ready && favTools.length > 0 && !query && tag === "all" && category === "all" && (
+      {favTools.length > 0 && !query && tag === "all" && category === "all" && (
         <section aria-labelledby="favorites-es">
           <div className="mb-2 flex items-center gap-2">
             <Star className="size-4 fill-highlight text-highlight" />
@@ -214,7 +219,9 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
       )}
 
       <div aria-live="polite">
-        {results.length === 0 ? (
+        {!indexReady && !query ? (
+          <StaticListing tools={staticTools} />
+        ) : results.length === 0 ? (
           <p className="rounded-xl border border-dashed border-border bg-surface p-8 text-center text-sm text-muted-foreground">
             No hay herramientas que coincidan con «{query || tag}».
           </p>
@@ -239,6 +246,32 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
           </>
         )}
       </div>
+    </div>
+  );
+}
+
+/** First page as plain anchors so hydration does not attach 30 router links and star buttons. */
+function StaticListing({ tools }: { tools: CatalogTool[] }) {
+  return (
+    <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+      {tools.map((tool) => (
+        <article
+          key={tool.slug}
+          className="flex min-h-14 items-center gap-3 border-b border-border/70 px-1 py-2 last:border-b-0 sm:min-h-16"
+        >
+          <span
+            aria-hidden="true"
+            className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-black text-primary"
+          >
+            {spanishCategoryName(tool.category).slice(0, 1)}
+          </span>
+          <a href={spanishToolPath(tool)} className="min-w-0 flex-1 rounded-md py-1">
+            <span className="block truncate text-sm font-bold">{spanishToolName(tool)}</span>
+            <span className="mt-0.5 block truncate text-xs text-muted-foreground">{spanishCategoryName(tool.category)}</span>
+          </a>
+          <span className="size-11 shrink-0" aria-hidden="true" />
+        </article>
+      ))}
     </div>
   );
 }

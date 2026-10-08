@@ -3,7 +3,7 @@ import { Search, SlidersHorizontal, Star, Tag } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ALL_CATEGORIES, ALL_TOOLS, toolHref } from "@/lib/all-tools";
+import { ALL_CATEGORIES, ALL_TOOLS, toolHref, type CatalogTool } from "@/lib/all-tools";
 import { ToolCard } from "@/components/ToolCard";
 import { useFavorites } from "@/hooks/use-favorites";
 import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
@@ -50,8 +50,8 @@ export function ToolSearch({
   const [category, setCategory] = useState<string>(initialCategory ?? "all");
   const [tag, setTag] = useState<string>("all");
   const [visible, setVisible] = useState(PAGE_SIZE);
-  // Home only needs the normalized catalog after idle or the first keystroke.
-  const [indexReady, setIndexReady] = useState(!compactHome);
+  // Full catalog normalize + 30 favorite rows wait for idle (or the first keystroke).
+  const [indexReady, setIndexReady] = useState(false);
   const { favorites, toggle, ready } = useFavorites();
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export function ToolSearch({
   }, [query]);
 
   useEffect(() => {
-    if (!compactHome || indexReady) return;
+    if (indexReady) return;
     const idle = window.requestIdleCallback;
     if (typeof idle === "function") {
       const id = idle(() => setIndexReady(true), { timeout: 1200 });
@@ -68,7 +68,7 @@ export function ToolSearch({
     }
     const id = window.setTimeout(() => setIndexReady(true), 250);
     return () => window.clearTimeout(id);
-  }, [compactHome, indexReady]);
+  }, [indexReady]);
 
   useEffect(() => {
     setVisible(PAGE_SIZE);
@@ -79,7 +79,7 @@ export function ToolSearch({
     setVisible(PAGE_SIZE);
   }, [tag, debouncedQuery]);
 
-  const buildIndex = !compactHome || indexReady || query.length > 0;
+  const buildIndex = indexReady || query.length > 0;
   const index = useMemo(() => {
     if (!buildIndex) return [];
     return ALL_TOOLS.map((tool) => ({
@@ -90,10 +90,10 @@ export function ToolSearch({
   }, [buildIndex]);
 
   const categoryTools = useMemo(() => {
-    if (compactHome) return [];
+    if (!indexReady || compactHome) return [];
     if (category === "all") return ALL_TOOLS;
     return ALL_TOOLS.filter((t) => t.category === category);
-  }, [category, compactHome]);
+  }, [category, compactHome, indexReady]);
 
   const facets = useMemo(
     () => facetsWithCounts(categoryTools, category, "en"),
@@ -128,6 +128,8 @@ export function ToolSearch({
   const compactResults = debouncedQuery.trim() ? results.slice(0, 6) : [];
   const shown = results.slice(0, visible);
   const remaining = Math.max(0, results.length - shown.length);
+  const staticTools = ALL_TOOLS.filter((tool) => category === "all" || tool.category === category).slice(0, PAGE_SIZE);
+  const listedCount = indexReady || query ? results.length : staticTools.length;
 
   const submitCompactSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -146,7 +148,7 @@ export function ToolSearch({
     }
   };
 
-  const favTools = ready ? ALL_TOOLS.filter((tool) => favorites.includes(tool.slug)) : [];
+  const favTools = ready && indexReady ? ALL_TOOLS.filter((tool) => favorites.includes(tool.slug)) : [];
   const categoryButtonClass = "min-h-11 shrink-0 rounded-full px-3 text-xs font-semibold";
 
   return (
@@ -253,7 +255,7 @@ export function ToolSearch({
         )}
         {!compactHome && (
           <p className="mt-2 text-xs font-semibold text-muted-foreground" aria-live="polite">
-            {results.length} tool{results.length === 1 ? "" : "s"}
+            {listedCount} tool{listedCount === 1 ? "" : "s"}
             {category !== "all" ? ` · ${ALL_CATEGORIES.find((c) => c.slug === category)?.name ?? category}` : ""}
             {tag !== "all" ? ` · ${facets.find((f) => f.id === tag)?.label ?? tag}` : ""}
           </p>
@@ -276,7 +278,9 @@ export function ToolSearch({
       )}
       {!compactHome && (
         <div aria-live="polite">
-          {results.length === 0 ? (
+          {!indexReady && !query ? (
+            <StaticListing tools={staticTools} />
+          ) : results.length === 0 ? (
             <p className="rounded-xl border border-dashed border-border bg-surface p-8 text-center text-sm text-muted-foreground">
               No tools match «{query || tag}».
             </p>
@@ -307,6 +311,32 @@ export function ToolSearch({
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+/** First page as plain anchors so hydration does not attach 30 router links and star buttons. */
+function StaticListing({ tools }: { tools: CatalogTool[] }) {
+  return (
+    <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+      {tools.map((tool) => (
+        <article
+          key={tool.slug}
+          className="flex min-h-14 items-center gap-3 border-b border-border/70 px-1 py-2 last:border-b-0 sm:min-h-16"
+        >
+          <span
+            aria-hidden="true"
+            className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-black text-primary"
+          >
+            {(ALL_CATEGORIES.find((c) => c.slug === tool.category)?.name ?? "U").slice(0, 1)}
+          </span>
+          <a href={toolHref(tool)} className="min-w-0 flex-1 rounded-md py-1">
+            <span className="block truncate text-sm font-bold">{tool.name}</span>
+            <span className="mt-0.5 block truncate text-xs text-muted-foreground">{tool.summary}</span>
+          </a>
+          <span className="size-11 shrink-0" aria-hidden="true" />
+        </article>
+      ))}
     </div>
   );
 }
