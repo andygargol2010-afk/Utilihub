@@ -94,6 +94,7 @@ import { TOOL_SEO_OVERRIDES_BPM_DELAY } from "./tool-seo-overrides-bpm-delay";
 import { TOOL_SEO_OVERRIDES_VCARD } from "./tool-seo-overrides-vcard";
 import { TOOL_SEO_OVERRIDES_BRAILLE } from "./tool-seo-overrides-braille";
 import { TOOL_SEO_OVERRIDES_OHM } from "./tool-seo-overrides-ohm";
+import { TOOL_SEO_OVERRIDES_SECURITY_TXT } from "./tool-seo-overrides-security-txt";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -203,6 +204,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_VCARD,
   ...TOOL_SEO_OVERRIDES_BRAILLE,
   ...TOOL_SEO_OVERRIDES_OHM,
+  ...TOOL_SEO_OVERRIDES_SECURITY_TXT,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
