@@ -104,6 +104,7 @@ import { DECIBEL_TOOLS } from "./decibel-tool";
 import { JWT_TOOLS } from "./jwt-tool";
 import { PASSWORD_ENTROPY_TOOLS } from "./password-entropy-tool";
 import { OPEN_GRAPH_TOOLS } from "./open-graph-tool";
+import { MARKDOWN_TABLE_TOOLS } from "./markdown-table-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -213,4 +214,5 @@ export const GENERAL_TOOLS = [
   ...JWT_TOOLS,
   ...PASSWORD_ENTROPY_TOOLS,
   ...OPEN_GRAPH_TOOLS,
+  ...MARKDOWN_TABLE_TOOLS,
 ];
