@@ -48,11 +48,32 @@ for (const [slug, locations] of slugMap) {
   }
 }
 
+// makeTool("slug", ...) is the primary registration path for GENERAL_TOOLS.
+// Without this check, re-adding the same slug in two modules only fails at runtime
+// (UtiliHub catalog integrity error → 500 on /__server).
+const makeToolMap = new Map();
+for (const { file, text } of libSources) {
+  for (const match of text.matchAll(/\bmakeTool\(\s*["']([a-z0-9-]+)["']/g)) {
+    const slug = match[1];
+    const list = makeToolMap.get(slug) ?? [];
+    list.push(file);
+    makeToolMap.set(slug, list);
+  }
+}
+for (const [slug, locations] of makeToolMap) {
+  const unique = [...new Set(locations)];
+  if (unique.length > 1) {
+    errors.push(
+      `slug duplicado en makeTool(): ${slug} (${unique.map((p) => path.relative(process.cwd(), p)).join(", ")})`,
+    );
+  }
+}
+
 // Heuristic tool count is incomplete (many catalog entries lack fields/faq markers).
 // Do NOT fail the build on this — the live ALL_TOOLS.length in the app is authoritative.
 // Marketing copy "500+" is still desirable; log a warning only.
 const MIN_TOOLS_HINT = 500;
-const heuristicToolCount = slugMap.size;
+const heuristicToolCount = Math.max(slugMap.size, makeToolMap.size);
 if (heuristicToolCount < MIN_TOOLS_HINT) {
   warnings.push(
     `Heurística de tools (${heuristicToolCount}) < ${MIN_TOOLS_HINT}. No falla el build: el contador real es ALL_TOOLS en runtime.`,
@@ -101,5 +122,5 @@ if (errors.length) {
   process.exit(1);
 }
 console.log(
-  `Catalog validator OK: ${files.length} archivos, heurística ${heuristicToolCount} tools, ${configuredOps.size} operations.`,
+  `Catalog validator OK: ${files.length} archivos, heurística ${heuristicToolCount} tools, ${configuredOps.size} operations, ${makeToolMap.size} makeTool().`,
 );
