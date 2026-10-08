@@ -25,7 +25,6 @@ import { hasToolShowcase } from "@/lib/showcase-slugs";
 
 export const Route = createFileRoute("/es/herramientas/$slug")({
   loader: async ({ params }) => {
-    // Catalog stays off the route shell chunk so hydration does not parse it.
     const { allToolBySlug } = await import("@/lib/all-tools");
     const tool = allToolBySlug(params.slug);
     if (!tool || tool.category === "finanzas") throw notFound();
@@ -40,7 +39,6 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
       },
     };
   },
-  // Catalog import blocks the real page. Paint a reserved shell instead of a blank route.
   pendingComponent: SpanishToolRoutePending,
   pendingMs: 100,
   pendingMinMs: 0,
@@ -149,6 +147,11 @@ function SpanishToolPage() {
     <div className="container-page py-6 sm:py-8">
       <Breadcrumbs
         locale="es"
+        back={{
+          label: spanishCategoryName(categorySlug),
+          to: categorySlug === "finanzas" ? "/es/finanzas" : "/es/categoria/$slug",
+          params: categorySlug === "finanzas" ? undefined : { slug: categorySlug },
+        }}
         items={[
           { label: "Inicio", to: "/es" },
           { label: "Herramientas", to: "/es/herramientas" },
