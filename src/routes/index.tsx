@@ -1,30 +1,19 @@
+import { lazy, Suspense, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
-import { ToolSearch } from "@/components/ToolSearch";
-import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
-import { RecentToolsSection } from "@/components/RecentToolsSection";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
-import { HomeFeaturedSection } from "@/components/HomeFeaturedSection";
 import { AdBanner } from "@/components/AdBanner";
-import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
-import { englishToolSlug, englishCategorySlug } from "@/lib/route-slugs";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
+
+const loadHomeCatalog = () => import("@/components/home-catalog");
+const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeToolCount })));
+const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
+const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
 
 const title = "UtiliHub · Free online tools, 3D studios & games";
 const description = cleanDescription(
   "Free online tools, advanced 3D house modeler, and browser games. Calculate, convert, build, and play — no signup.",
 );
-const QUICK_TOOL_SLUGS = [
-  "calculadora",
-  "calculadora-de-porcentajes",
-  "regla-de-tres",
-  "calculadora-de-fechas",
-  "contador-de-palabras",
-  "generador-de-contrasenas",
-  "conversor-de-temperatura",
-  "conversor-de-unidades",
-];
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -59,10 +48,15 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const quickTools = QUICK_TOOL_SLUGS.map((s) => ALL_TOOLS.find((t) => t.slug === s)).filter(
-    Boolean,
-  ) as typeof ALL_TOOLS;
-  const categories = ALL_CATEGORIES.slice(0, 9);
+  useEffect(() => {
+    const idle = window.requestIdleCallback;
+    if (typeof idle === "function") {
+      const id = idle(() => void loadHomeCatalog(), { timeout: 1500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = window.setTimeout(() => void loadHomeCatalog(), 400);
+    return () => window.clearTimeout(t);
+  }, []);
 
   return (
     <div className="pb-12">
@@ -117,12 +111,14 @@ function HomePage() {
                   <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Quick access</p>
                   <h2 className="mt-1 text-xl font-black">What do you want to solve?</h2>
                 </div>
-                <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">
-                  {ALL_TOOLS.length} tools
-                </span>
+                <Suspense fallback={<span className="inline-block h-6 w-16 rounded-full bg-accent" />}>
+                  <HomeToolCount locale="en" />
+                </Suspense>
               </div>
-              <div className="mt-4">
-                <ToolSearch compactHome />
+              <div className="mt-4 min-h-24">
+                <Suspense fallback={<div className="h-11 animate-pulse rounded-xl bg-accent/70" />}>
+                  <HomeSearch locale="en" />
+                </Suspense>
               </div>
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
                 <a
@@ -156,78 +152,9 @@ function HomePage() {
       </section>
       <AdBanner />
       <div className="container-page">
-        <HomeFeaturedSection locale="en" />
-        <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="shortcuts-title">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Start here</p>
-              <h2 id="shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
-                Quick links
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                The most practical tools to start without browsing the full catalog.
-              </p>
-            </div>
-            <Link
-              to="/tools"
-              className="hidden min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent sm:inline-flex"
-            >
-              View catalog <ArrowRight className="size-4" />
-            </Link>
-          </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {quickTools.map((tool) => (
-              <Link
-                key={tool.slug}
-                to={tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug"}
-                params={{ slug: englishToolSlug(tool) }}
-                className="card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
-              >
-                <span className="text-xs font-bold uppercase tracking-wide text-primary">{tool.category}</span>
-                <h3 className="mt-2 font-bold group-hover:text-primary">{tool.name}</h3>
-                <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{tool.summary}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-        <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="explore-categories">
-          <div className="flex items-end justify-between gap-3">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explore by goal</p>
-              <h2 id="explore-categories" className="mt-1 text-2xl font-black">
-                All categories
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">Find a collection of tools organized by task.</p>
-            </div>
-            <Link to="/tools" className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent">
-              View all <ArrowRight className="size-4" />
-            </Link>
-          </div>
-          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => {
-              const count = allToolsByCategory(category.slug).length;
-              const href =
-                category.slug === "finanzas" ? "/finance" : `/category/${englishCategorySlug(category.slug)}`;
-              return (
-                <a
-                  key={category.slug}
-                  href={href}
-                  className="card-hover group flex min-h-16 items-center justify-between rounded-xl border border-border/70 bg-card px-4 py-3 hover:border-primary/20 hover:bg-accent"
-                >
-                  <span>
-                    <span className="block font-bold group-hover:text-primary">{category.name}</span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground">{category.description}</span>
-                  </span>
-                  <span className="ml-3 shrink-0 rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">
-                    {count}
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        </section>
-        <FavoriteToolsSection />
-        <RecentToolsSection />
+        <Suspense fallback={<div className="min-h-48" />}>
+          <HomeCatalogRest locale="en" />
+        </Suspense>
         <DeferredHomeReviews locale="en" />
       </div>
     </div>

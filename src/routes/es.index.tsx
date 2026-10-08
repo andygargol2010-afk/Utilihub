@@ -1,45 +1,13 @@
+import { lazy, Suspense, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
-import { SpanishToolSearch } from "@/components/SpanishToolSearch";
-import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
-import { RecentToolsSection } from "@/components/RecentToolsSection";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
-import { HomeFeaturedSection } from "@/components/HomeFeaturedSection";
-import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
-import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 
-const QUICK_TOOL_SLUGS = [
-  "calculadora",
-  "calculadora-de-porcentajes",
-  "regla-de-tres",
-  "calculadora-de-fechas",
-  "contador-de-palabras",
-  "generador-de-contrasenas",
-  "conversor-de-temperatura",
-  "conversor-de-unidades",
-];
-
-/** Short ES blurbs for home category cards (catalog descriptions are English-only). */
-const CATEGORY_BLURB_ES: Record<string, string> = {
-  finanzas: "Inversiones, préstamos, ahorro e inflación.",
-  matematicas: "Cálculos, porcentajes, geometría y estadística.",
-  texto: "Contar, limpiar, transformar y analizar texto.",
-  desarrollo: "JSON, Base64, hashes, IDs y utilidades para devs.",
-  conversiones: "Unidades, color, divisas y más conversiones.",
-  fechas: "Diferencias de fechas, edades y temporizadores.",
-  generadores: "Contraseñas, UUID, QR y datos aleatorios.",
-  diseno: "Colores, contraste, paletas y modelado.",
-  "herramientas-avanzadas": "Modeladores 3D y utilidades avanzadas.",
-  seguridad: "Contraseñas, hashes y validadores.",
-  ciencia: "Física, química y simulaciones.",
-  productividad: "Temporizadores, fechas y organización.",
-  educacion: "Práctica y ejercicios de estudio.",
-  cocina: "Recetas, porciones y conversiones de cocina.",
-  viajes: "Combustible, divisas y planificación.",
-  hogar: "Pintura, materiales y cálculos del hogar.",
-  utilidades: "Utilidades prácticas del día a día.",
-};
+const loadHomeCatalog = () => import("@/components/home-catalog");
+const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeToolCount })));
+const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
+const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
 
 const titleEs = "UtiliHub · Herramientas online, studios 3D y juegos";
 const descriptionEs =
@@ -78,16 +46,16 @@ export const Route = createFileRoute("/es/")({
   component: SpanishHome,
 });
 
-function categoryHref(slug: string) {
-  if (slug === "finanzas") return "/es/finanzas";
-  return `/es/categoria/${slug}`;
-}
-
 function SpanishHome() {
-  const categories = ALL_CATEGORIES.slice(0, 9);
-  const quickTools = QUICK_TOOL_SLUGS.map((s) => ALL_TOOLS.find((t) => t.slug === s)).filter(
-    Boolean,
-  ) as typeof ALL_TOOLS;
+  useEffect(() => {
+    const idle = window.requestIdleCallback;
+    if (typeof idle === "function") {
+      const id = idle(() => void loadHomeCatalog(), { timeout: 1500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = window.setTimeout(() => void loadHomeCatalog(), 400);
+    return () => window.clearTimeout(t);
+  }, []);
 
   return (
     <div className="pb-12">
@@ -145,12 +113,14 @@ function SpanishHome() {
                   <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Acceso rápido</p>
                   <h2 className="mt-1 text-xl font-black">¿Qué quieres resolver?</h2>
                 </div>
-                <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">
-                  {ALL_TOOLS.length} herramientas
-                </span>
+                <Suspense fallback={<span className="inline-block h-6 w-24 rounded-full bg-accent" />}>
+                  <HomeToolCount locale="es" />
+                </Suspense>
               </div>
-              <div className="mt-4">
-                <SpanishToolSearch compactHome />
+              <div className="mt-4 min-h-24">
+                <Suspense fallback={<div className="h-11 animate-pulse rounded-xl bg-accent/70" />}>
+                  <HomeSearch locale="es" />
+                </Suspense>
               </div>
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
                 <Link
@@ -200,93 +170,9 @@ function SpanishHome() {
       </section>
 
       <div className="container-page">
-        <HomeFeaturedSection locale="es" />
-
-        <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="es-shortcuts-title">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Empieza aquí</p>
-              <h2 id="es-shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
-                Enlaces rápidos
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Las herramientas más prácticas para empezar sin recorrer todo el catálogo.
-              </p>
-            </div>
-            <Link
-              to="/es/herramientas"
-              className="hidden min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent sm:inline-flex"
-            >
-              Ver catálogo <ArrowRight className="size-4" />
-            </Link>
-          </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {quickTools.map((tool) => (
-              <Link
-                key={tool.slug}
-                to={spanishToolPath(tool) as never}
-                className="card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
-              >
-                <span className="text-xs font-bold uppercase tracking-wide text-primary">
-                  {spanishCategoryName(tool.category)}
-                </span>
-                <h3 className="mt-2 font-bold group-hover:text-primary">{spanishToolName(tool)}</h3>
-                <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
-                  {CATEGORY_BLURB_ES[tool.category] ?? "Herramienta gratuita en el navegador."}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="es-explore-categories">
-          <div className="flex items-end justify-between gap-3">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explora por objetivo</p>
-              <h2 id="es-explore-categories" className="mt-1 text-2xl font-black">
-                Todas las categorías
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Colecciones de herramientas organizadas por tipo de tarea.
-              </p>
-            </div>
-            <Link
-              to="/es/herramientas"
-              className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent"
-            >
-              Ver todas <ArrowRight className="size-4" />
-            </Link>
-          </div>
-          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => {
-              const count = allToolsByCategory(category.slug).length;
-              const href = categoryHref(category.slug);
-              const blurb =
-                CATEGORY_BLURB_ES[category.slug] ??
-                `Herramientas de ${spanishCategoryName(category.slug).toLowerCase()}.`;
-              return (
-                <a
-                  key={category.slug}
-                  href={href}
-                  className="card-hover group flex min-h-16 items-center justify-between rounded-xl border border-border/70 bg-card px-4 py-3 hover:border-primary/20 hover:bg-accent"
-                >
-                  <span>
-                    <span className="block font-bold group-hover:text-primary">
-                      {spanishCategoryName(category.slug)}
-                    </span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground">{blurb}</span>
-                  </span>
-                  <span className="ml-3 shrink-0 rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">
-                    {count}
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        </section>
-
-        <FavoriteToolsSection locale="es" />
-        <RecentToolsSection locale="es" />
+        <Suspense fallback={<div className="min-h-48" />}>
+          <HomeCatalogRest locale="es" />
+        </Suspense>
         <DeferredHomeReviews locale="es" />
       </div>
     </div>
