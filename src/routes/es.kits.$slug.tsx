@@ -3,8 +3,9 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { KitCarryBoard } from "@/components/kits/KitCarryBoard";
 import { ToolCard } from "@/components/ToolCard";
+import { spanishToolName } from "@/lib/i18n/es";
 import { kitBySlug, kitTools, kitEnglishPath } from "@/lib/work-kits";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
 
 const KIT_ES: Record<string, { name: string; eyebrow: string; description: string; outcome: string }> = {
   freelancers: {
@@ -99,7 +100,7 @@ function SpanishKitPage() {
       <KitCarryBoard
         locale="es"
         kitSlug={kit.slug}
-        steps={tools.map((tool) => ({ slug: tool.slug, label: tool.name }))}
+        steps={tools.map((tool) => ({ slug: tool.slug, label: spanishToolName(tool) }))}
       />
       <section className="mt-8" aria-labelledby="kit-steps">
         <h2 id="kit-steps" className="text-base font-bold">Pasos del kit</h2>
