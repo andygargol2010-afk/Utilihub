@@ -254,6 +254,7 @@ const EXACT_NAMES: Record<string, string> = {
   "generador-css-clamp": "Generador CSS clamp()",
   "traductor-braille": "Traductor de braille grado 1",
   "generador-ulid": "Generador de ULID",
+  "sumador-decibelios": "Sumador de decibelios",
   "modelador-3d": "Modelador 3D",
   "modelador-casas-3d": "Modelador de casas 3D",
   "asignacion-de-cartera": "Asignación de cartera",

@@ -84,6 +84,7 @@ import { TOOL_SEO_OVERRIDES_COORDINATES } from "./tool-seo-overrides-coordinates
 import { TOOL_SEO_OVERRIDES_EAN } from "./tool-seo-overrides-ean";
 import { TOOL_SEO_OVERRIDES_CLAMP } from "./tool-seo-overrides-clamp";
 import { TOOL_SEO_OVERRIDES_ULID } from "./tool-seo-overrides-ulid";
+import { TOOL_SEO_OVERRIDES_DECIBEL } from "./tool-seo-overrides-decibel";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -183,6 +184,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_EAN,
   ...TOOL_SEO_OVERRIDES_CLAMP,
   ...TOOL_SEO_OVERRIDES_ULID,
+  ...TOOL_SEO_OVERRIDES_DECIBEL,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {

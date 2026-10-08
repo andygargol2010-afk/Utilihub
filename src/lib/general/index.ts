@@ -100,6 +100,7 @@ import { EAN_TOOLS } from "./ean-tool";
 import { CLAMP_TOOLS } from "./clamp-tool";
 import { BRAILLE_TOOLS } from "./braille-tool";
 import { ULID_TOOLS } from "./ulid-tool";
+import { DECIBEL_TOOLS } from "./decibel-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -205,4 +206,5 @@ export const GENERAL_TOOLS = [
   ...CLAMP_TOOLS,
   ...BRAILLE_TOOLS,
   ...ULID_TOOLS,
+  ...DECIBEL_TOOLS,
 ];
