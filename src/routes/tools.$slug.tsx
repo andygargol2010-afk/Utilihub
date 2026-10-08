@@ -95,12 +95,19 @@ function ToolPage() {
 
   return (
     <main className="container-page py-6 sm:py-8">
-      <Breadcrumbs items={[
-        { label: "Home", to: "/" },
-        { label: "Tools", to: "/tools" },
-        { label: category.name, to: "/category/$slug", params: { slug: categoryPublicSlug } },
-        { label: tool.name },
-      ]} />
+      <Breadcrumbs
+        items={[
+          { label: "Home", to: "/" },
+          { label: "Tools", to: "/tools" },
+          { label: category.name, to: "/category/$slug", params: { slug: categoryPublicSlug } },
+          { label: tool.name },
+        ]}
+        back={{
+          label: `Back to ${category.name}`,
+          to: "/category/$slug",
+          params: { slug: categoryPublicSlug },
+        }}
+      />
       {showcase ? (
         <ToolShowcaseHero name={tool.name} slug={tool.slug} showcase={showcase} locale="en" />
       ) : (
