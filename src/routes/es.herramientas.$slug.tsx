@@ -6,7 +6,7 @@ import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { DeferredToolSeo } from "@/components/DeferredToolSeo";
-import { allToolBySlug, ALL_CATEGORIES } from "@/lib/all-tools";
+import type { CatalogTool } from "@/lib/all-tools";
 import { englishToolPath } from "@/lib/route-slugs";
 import {
   absoluteUrl,
@@ -24,6 +24,8 @@ import { hasToolShowcase } from "@/lib/showcase-slugs";
 
 export const Route = createFileRoute("/es/herramientas/$slug")({
   loader: async ({ params }) => {
+    // Catalog stays off the route shell chunk so hydration does not parse it.
+    const { allToolBySlug } = await import("@/lib/all-tools");
     const tool = allToolBySlug(params.slug);
     if (!tool || tool.category === "finanzas") throw notFound();
     const { toolSeoOverride } = await import("@/lib/tool-seo-overrides");
@@ -117,9 +119,9 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
 });
 
 function SpanishToolPage() {
-  const { tool } = Route.useLoaderData();
+  const { tool } = Route.useLoaderData() as { tool: CatalogTool };
   const { addRecent } = useRecentTools();
-  const category = ALL_CATEGORIES.find((item) => item.slug === tool.category);
+  const categorySlug = tool.category;
   const showcase = hasToolShowcase(tool.slug);
   const name = spanishToolName(tool);
   useEffect(() => {
@@ -133,14 +135,9 @@ function SpanishToolPage() {
           { label: "Inicio", to: "/es" },
           { label: "Herramientas", to: "/es/herramientas" },
           {
-            label: category ? spanishCategoryName(category.slug) : "Categoría",
-            to: category
-              ? category.slug === "finanzas"
-                ? "/es/finanzas"
-                : "/es/categoria/$slug"
-              : undefined,
-            params:
-              category && category.slug !== "finanzas" ? { slug: category.slug } : undefined,
+            label: spanishCategoryName(categorySlug),
+            to: categorySlug === "finanzas" ? "/es/finanzas" : "/es/categoria/$slug",
+            params: categorySlug === "finanzas" ? undefined : { slug: categorySlug },
           },
           { label: name },
         ]}

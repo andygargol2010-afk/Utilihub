@@ -6,7 +6,7 @@ import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { DeferredToolSeo } from "@/components/DeferredToolSeo";
-import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
+import type { CatalogTool } from "@/lib/all-tools";
 import {
   toolByEnglishSlug,
   englishToolPath,
@@ -21,19 +21,22 @@ import { hasToolShowcase } from "@/lib/showcase-slugs";
 
 export const Route = createFileRoute("/tools/$slug")({
   loader: async ({ params }) => {
+    // Catalog stays off the route shell chunk so hydration does not parse it.
+    const { ALL_TOOLS, ALL_CATEGORIES } = await import("@/lib/all-tools");
     const tool = toolByEnglishSlug(ALL_TOOLS, params.slug);
     if (!tool) throw notFound();
+    const category = ALL_CATEGORIES.find((c) => c.slug === tool.category) ?? null;
     const { resolvedToolSeo } = await import("@/lib/tool-seo-overrides");
     const seo = resolvedToolSeo(tool);
     return {
       tool,
+      category: category ? { slug: category.slug, name: category.name } : null,
       seo: { title: seo.title, description: seo.description, faq: seo.faq },
     };
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Tool not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
-    const { tool, seo } = loaderData;
-    const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
+    const { tool, seo, category } = loaderData;
     if (!category) {
       return {
         meta: [
@@ -98,9 +101,11 @@ export const Route = createFileRoute("/tools/$slug")({
 });
 
 function ToolPage() {
-  const { tool } = Route.useLoaderData() as { tool: CatalogTool };
+  const { tool, category } = Route.useLoaderData() as {
+    tool: CatalogTool;
+    category: { slug: string; name: string } | null;
+  };
   const { addRecent } = useRecentTools();
-  const category = ALL_CATEGORIES.find((c) => c.slug === tool.category);
 
   useEffect(() => {
     addRecent(tool.slug);
