@@ -45,7 +45,7 @@ const titleEs = "UtiliHub · Herramientas online, studios 3D y juegos";
 const descriptionEs =
   "Herramientas online gratis, modelador de casas 3D y juegos en el navegador. Calculá, convertí, diseñá y jugá — sin registro.";
 
-/** Same latin subset as EN (covers áéíóúñ). Weights 700 and 800 share this file. */
+/** Same latin subset as EN (covers áéíóúñ). Hero h1 must stay at 800 so LCP uses this file. */
 const HERO_FONT_WOFF2 =
   "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2";
 
@@ -108,7 +108,7 @@ function SpanishHome() {
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/75 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-primary">
               <Sparkles className="size-3.5" aria-hidden /> Herramientas, studios y juegos
             </div>
-            <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
               Herramientas online gratis para resolverlo en segundos.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
