@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { ClipboardCopy, RotateCcw } from "lucide-react";
+import { ArrowRight, ClipboardCopy, RotateCcw } from "lucide-react";
+import { publicToolPath } from "@/lib/route-slugs";
+import { kitBySlug, kitTools } from "@/lib/work-kits";
 
 export type KitBoardStep = { slug: string; label: string };
 
@@ -12,6 +14,13 @@ type KitCarryBoardProps = {
 type StoredBoard = { note?: string; done?: string[] };
 
 const storageKey = (slug: string) => `utilihub-kit-board:${slug}`;
+
+function stepToolPath(kitSlug: string, stepSlug: string, locale: "en" | "es") {
+  const kit = kitBySlug(kitSlug);
+  const tool = kit ? kitTools(kit).find((item) => item.slug === stepSlug) : undefined;
+  if (!tool) return locale === "es" ? `/es/herramientas/${stepSlug}` : `/tools/${stepSlug}`;
+  return publicToolPath(tool, locale);
+}
 
 export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardProps) {
   const es = locale === "es";
@@ -48,6 +57,8 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
   }, [note, done, ready, kitSlug]);
 
   const doneCount = steps.filter((step) => done.includes(step.slug)).length;
+  const nextStep = steps.find((step) => !done.includes(step.slug));
+  const nextHref = nextStep ? stepToolPath(kitSlug, nextStep.slug, locale) : "";
 
   function toggle(slug: string) {
     setDone((prev) => (prev.includes(slug) ? prev.filter((item) => item !== slug) : [...prev, slug]));
@@ -83,6 +94,21 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
         <p className="text-sm font-semibold text-muted-foreground">
           {doneCount}/{steps.length} {es ? "hechos" : "done"}
         </p>
+      </div>
+      <div
+        className="mt-3 rounded-xl border border-primary/30 bg-accent/40 px-3 py-2 text-sm"
+        data-kit-next-step={ready ? (nextStep ? nextHref : "done") : "pending"}
+      >
+        {!ready ? (
+          <span className="text-muted-foreground">{es ? "Buscando el siguiente paso…" : "Finding the next step…"}</span>
+        ) : nextStep ? (
+          <a href={nextHref} className="inline-flex items-center gap-1.5 font-bold text-primary">
+            {es ? "Siguiente paso" : "Next step"}: {nextStep.label}
+            <ArrowRight className="size-4" />
+          </a>
+        ) : (
+          <span className="font-bold">{es ? "Kit listo" : "Kit ready"}</span>
+        )}
       </div>
       <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
         {es
