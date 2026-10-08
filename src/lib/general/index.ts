@@ -105,6 +105,7 @@ import { JWT_TOOLS } from "./jwt-tool";
 import { PASSWORD_ENTROPY_TOOLS } from "./password-entropy-tool";
 import { OPEN_GRAPH_TOOLS } from "./open-graph-tool";
 import { MARKDOWN_TABLE_TOOLS } from "./markdown-table-tool";
+import { JSON_TS_TOOLS } from "./json-to-typescript-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -215,4 +216,5 @@ export const GENERAL_TOOLS = [
   ...PASSWORD_ENTROPY_TOOLS,
   ...OPEN_GRAPH_TOOLS,
   ...MARKDOWN_TABLE_TOOLS,
+  ...JSON_TS_TOOLS,
 ];
