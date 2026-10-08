@@ -18,7 +18,7 @@ import {
   organizationSchema,
 } from "@/lib/seo";
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
-import { useRecentTools } from "@/hooks/use-recent-tools";
+import { recordRecentTool } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
 import { hasToolShowcase } from "@/lib/showcase-slugs";
@@ -136,13 +136,12 @@ function SpanishToolRoutePending() {
 
 function SpanishToolPage() {
   const { tool } = Route.useLoaderData() as { tool: CatalogTool };
-  const { addRecent } = useRecentTools();
   const categorySlug = tool.category;
   const showcase = hasToolShowcase(tool.slug);
   const name = spanishToolName(tool);
   useEffect(() => {
-    addRecent(tool.slug);
-  }, [addRecent, tool.slug]);
+    recordRecentTool(tool.slug);
+  }, [tool.slug]);
   return (
     <div className="container-page py-6 sm:py-8">
       <Breadcrumbs

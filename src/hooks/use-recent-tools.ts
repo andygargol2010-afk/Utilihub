@@ -14,6 +14,20 @@ function read(): string[] {
   }
 }
 
+/** Persist a visit without subscribing. Tool shells call this so they do not hydrate the list. */
+export function recordRecentTool(slug: string) {
+  if (!slug || typeof window === "undefined") return;
+  const prev = read();
+  if (prev[0] === slug) return;
+  const next = [slug, ...prev.filter((item) => item !== slug)].slice(0, LIMIT);
+  try {
+    localStorage.setItem(KEY, JSON.stringify(next));
+    window.dispatchEvent(new Event(EVENT));
+  } catch {
+    /* storage may be unavailable */
+  }
+}
+
 export function useRecentTools() {
   const [recent, setRecent] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
@@ -32,15 +46,8 @@ export function useRecentTools() {
   }, []);
 
   const addRecent = useCallback((slug: string) => {
-    if (!slug) return;
-    setRecent((prev) => {
-      const next = [slug, ...prev.filter((item) => item !== slug)].slice(0, LIMIT);
-      try {
-        localStorage.setItem(KEY, JSON.stringify(next));
-        window.dispatchEvent(new Event(EVENT));
-      } catch { /* storage may be unavailable */ }
-      return next;
-    });
+    recordRecentTool(slug);
+    setRecent(read());
   }, []);
 
   return { recent, addRecent, ready };

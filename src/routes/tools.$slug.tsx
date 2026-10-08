@@ -15,7 +15,7 @@ import {
   englishCategoryPath,
 } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
-import { useRecentTools } from "@/hooks/use-recent-tools";
+import { recordRecentTool } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
 import { hasToolShowcase } from "@/lib/showcase-slugs";
@@ -123,11 +123,10 @@ function ToolPage() {
     tool: CatalogTool;
     category: { slug: string; name: string } | null;
   };
-  const { addRecent } = useRecentTools();
 
   useEffect(() => {
-    addRecent(tool.slug);
-  }, [addRecent, tool.slug]);
+    recordRecentTool(tool.slug);
+  }, [tool.slug]);
 
   if (!category) return <p className="container-page py-10">Tool not available.</p>;
 
