@@ -103,6 +103,7 @@ import { ULID_TOOLS } from "./ulid-tool";
 import { DECIBEL_TOOLS } from "./decibel-tool";
 import { JWT_TOOLS } from "./jwt-tool";
 import { PASSWORD_ENTROPY_TOOLS } from "./password-entropy-tool";
+import { OPEN_GRAPH_TOOLS } from "./open-graph-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -211,4 +212,5 @@ export const GENERAL_TOOLS = [
   ...DECIBEL_TOOLS,
   ...JWT_TOOLS,
   ...PASSWORD_ENTROPY_TOOLS,
+  ...OPEN_GRAPH_TOOLS,
 ];
