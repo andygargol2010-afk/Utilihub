@@ -3,7 +3,7 @@ import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { SpanishToolSearch } from "@/components/SpanishToolSearch";
 import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
 import { RecentToolsSection } from "@/components/RecentToolsSection";
-import { HomeReviews } from "@/components/HomeReviews";
+import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeFeaturedSection } from "@/components/HomeFeaturedSection";
 import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
@@ -287,7 +287,7 @@ function SpanishHome() {
 
         <FavoriteToolsSection locale="es" />
         <RecentToolsSection locale="es" />
-        <HomeReviews locale="es" />
+        <DeferredHomeReviews locale="es" />
       </div>
     </div>
   );

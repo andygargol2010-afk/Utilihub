@@ -3,7 +3,7 @@ import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { ToolSearch } from "@/components/ToolSearch";
 import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
 import { RecentToolsSection } from "@/components/RecentToolsSection";
-import { HomeReviews } from "@/components/HomeReviews";
+import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeFeaturedSection } from "@/components/HomeFeaturedSection";
 import { AdBanner } from "@/components/AdBanner";
 import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
@@ -228,7 +228,7 @@ function HomePage() {
         </section>
         <FavoriteToolsSection />
         <RecentToolsSection />
-        <HomeReviews locale="en" />
+        <DeferredHomeReviews locale="en" />
       </div>
     </div>
   );
