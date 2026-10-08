@@ -1219,6 +1219,24 @@ function paintSiteShade(ctx: CanvasRenderingContext2D, size: number) {
   ctx.globalCompositeOperation = "source-over";
 }
 
+/** Late-day wash on the meadow, not the pad. Warm lobe faces the sun; cool lobe sits opposite. */
+function paintMeadowWash(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.clearRect(0, 0, size, size);
+  const warm = ctx.createRadialGradient(size * 0.26, size * 0.5, size * 0.04, size * 0.5, size * 0.5, size * 0.48);
+  warm.addColorStop(0, "rgba(255,214,150,0.5)");
+  warm.addColorStop(0.34, "rgba(214,186,120,0.18)");
+  warm.addColorStop(0.68, "rgba(120,132,72,0)");
+  warm.addColorStop(1, "rgba(90,104,58,0)");
+  ctx.fillStyle = warm;
+  ctx.fillRect(0, 0, size, size);
+  const cool = ctx.createRadialGradient(size * 0.82, size * 0.5, size * 0.02, size * 0.78, size * 0.5, size * 0.34);
+  cool.addColorStop(0, "rgba(42,52,32,0.32)");
+  cool.addColorStop(0.55, "rgba(48,58,36,0.12)");
+  cool.addColorStop(1, "rgba(48,58,36,0)");
+  ctx.fillStyle = cool;
+  ctx.fillRect(0, 0, size, size);
+}
+
 
 function paintNormalFromHeight(ctx: CanvasRenderingContext2D, size: number, strength: number) {
   const img = ctx.getImageData(0, 0, size, size);
@@ -2756,6 +2774,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         tuftDummy.updateMatrix();
         tufts.setMatrixAt(i, tuftDummy.matrix);
       }
+      const tuftColor = new THREE.Color();
+      for (let i = 0; i < TUFTS; i++) {
+        const tint = hash2(i, 5.5);
+        tuftColor.setHex(tint > 0.66 ? 0x8a9a4e : tint > 0.33 ? 0x4e6a34 : 0x6d8444);
+        tufts.setColorAt(i, tuftColor);
+      }
+      if (tufts.instanceColor) tufts.instanceColor.needsUpdate = true;
       tufts.instanceMatrix.needsUpdate = true;
       scene.add(tufts);
 
@@ -2823,6 +2848,29 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       siteShade.rotation.x = -Math.PI / 2;
       siteShade.position.y = 0.026;
       scene.add(siteShade);
+
+      // Meadow key outside the pad. One 256px card, no shadow map.
+      const meadowMap = makeCanvasTexture(256, paintMeadowWash, true);
+      const meadowMat = new THREE.MeshBasicMaterial({
+        map: meadowMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        toneMapped: false,
+        opacity: 0.5,
+      });
+      meadowMat.polygonOffset = true;
+      meadowMat.polygonOffsetFactor = -1;
+      meadowMat.polygonOffsetUnits = -1;
+      const meadowGeo = new THREE.CircleGeometry(46, 48);
+      const meadowWash = new THREE.Mesh(meadowGeo, meadowMat);
+      meadowWash.rotation.order = "YXZ";
+      meadowWash.rotation.y = Math.atan2(sun.x, sun.z);
+      meadowWash.rotation.x = -Math.PI / 2;
+      meadowWash.position.set(sun.x * 6, 0.021, sun.z * 6);
+      meadowWash.renderOrder = 1;
+      meadowWash.castShadow = false;
+      meadowWash.receiveShadow = false;
+      scene.add(meadowWash);
 
       const hazeMap = makeCanvasTexture(64, paintHorizonHaze, true);
       if (hazeMap) hazeMap.repeat.set(1, 1);
@@ -3047,6 +3095,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           siteShade.geometry.dispose();
           shadeMat.dispose();
           shadeMap?.dispose();
+          meadowWash.geometry.dispose();
+          meadowMat.dispose();
+          meadowMap?.dispose();
           horizonHaze.geometry.dispose();
           hazeMat.dispose();
           hazeMap?.dispose();
