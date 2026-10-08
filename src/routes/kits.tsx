@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { ArrowRight, BriefcaseBusiness, CheckCircle2, GraduationCap, FileText, Search } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { KitDeskTrail } from "@/components/kits/KitDeskTrail";
 import { WORK_KITS, kitTools } from "@/lib/work-kits";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage, SITE_NAME } from "@/lib/seo";
 
@@ -83,6 +84,7 @@ function KitsPage() {
               <h2 className="mt-1 text-xl font-black group-hover:text-primary">{kit.name}</h2>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{kit.description}</p>
               <p className="mt-4 text-sm font-semibold">{kit.outcome}</p>
+              <KitDeskTrail kitSlug={kit.slug} stepCount={tools.length} />
               <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
                 Open kit <ArrowRight className="size-4" />
               </span>
