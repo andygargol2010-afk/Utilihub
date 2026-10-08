@@ -137,6 +137,11 @@ function ToolPage() {
   return (
     <div className="container-page py-6 sm:py-8">
       <Breadcrumbs
+        back={{
+          label: category.name,
+          to: "/category/$slug",
+          params: { slug: categoryPublicSlug },
+        }}
         items={[
           { label: "Home", to: "/" },
           { label: "Tools", to: "/tools" },
