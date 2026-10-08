@@ -1196,6 +1196,25 @@ function paintSunHorizon(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+/** Cloud shade on the far lawn. Soft ovals, clear rim, opposite the sun bank. */
+function paintLawnDapple(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.clearRect(0, 0, size, size);
+  for (let i = 0; i < 7; i++) {
+    const x = size * (0.18 + hash2(i, 2.2) * 0.64);
+    const y = size * (0.18 + hash2(i, 5.1) * 0.64);
+    const rx = 18 + hash2(i, 1.4) * 28;
+    const ry = 10 + hash2(i, 7.7) * 16;
+    const g = ctx.createRadialGradient(x, y, 2, x, y, rx);
+    g.addColorStop(0, "rgba(36,42,24,0.42)");
+    g.addColorStop(0.55, "rgba(36,42,24,0.16)");
+    g.addColorStop(1, "rgba(36,42,24,0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(x, y, rx, ry, hash2(i, 3.6) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
 /** Late-day cirrus streaks. Transparent edges so banks sit in the sky shell, not as cards. */
 function paintCirrus(ctx: CanvasRenderingContext2D, size: number) {
   ctx.clearRect(0, 0, size, size);
@@ -3111,6 +3130,25 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sunHorizon.castShadow = false;
       sunHorizon.receiveShadow = false;
       scene.add(sunHorizon);
+      // Cloud shade on the far lawn. Opposite the sun bank, no extra shadow map.
+      const lawnDappleMap = makeCanvasTexture(128, paintLawnDapple, true);
+      const lawnDappleMat = new THREE.MeshBasicMaterial({
+        map: lawnDappleMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        toneMapped: false,
+        opacity: 0.55,
+      });
+      lawnDappleMat.polygonOffset = true;
+      lawnDappleMat.polygonOffsetFactor = -1;
+      lawnDappleMat.polygonOffsetUnits = -1;
+      const lawnDapple = new THREE.Mesh(new THREE.CircleGeometry(22, 40), lawnDappleMat);
+      lawnDapple.rotation.x = -Math.PI / 2;
+      lawnDapple.position.set(-sun.x * 18, 0.022, -sun.z * 18);
+      lawnDapple.castShadow = false;
+      lawnDapple.receiveShadow = false;
+      lawnDapple.renderOrder = 1;
+      scene.add(lawnDapple);
 
       const partsRoot = new THREE.Group();
       scene.add(partsRoot);
@@ -3331,6 +3369,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           sunHorizon.geometry.dispose();
           sunHorizonMat.dispose();
           sunHorizonMap?.dispose();
+          lawnDapple.geometry.dispose();
+          lawnDappleMat.dispose();
+          lawnDappleMap?.dispose();
           footAo.geometry.dispose();
           footAoMat.dispose();
           footAoMap?.dispose();
