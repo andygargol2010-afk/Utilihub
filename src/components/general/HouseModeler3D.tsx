@@ -4202,6 +4202,37 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     }
     return null;
   };
+  const finishShort = (kind: PartKind): string | null => {
+    if (kind === "wall") {
+      const id = selectedKind === "wall" ? selectedWallFinish : wallFinish;
+      return id === "masonry" ? labels.wallMasonryShort : labels.wallPlasterShort;
+    }
+    if (kind === "door") {
+      const id = selectedKind === "door" ? selectedDoorFinish : doorFinish;
+      return id === "metal" ? labels.doorMetalShort : labels.doorTimberShort;
+    }
+    if (kind === "roof") {
+      const id = selectedKind === "roof" ? selectedRoofFinish : roofFinish;
+      return id === "metal" ? labels.roofMetalShort : labels.roofClayShort;
+    }
+    if (kind === "column") {
+      const id = selectedKind === "column" ? selectedColumnFinish : columnFinish;
+      return id === "masonry" ? labels.columnMasonryShort : labels.columnPlasterShort;
+    }
+    if (kind === "stairs") {
+      const id = selectedKind === "stairs" ? selectedStairsFinish : stairsFinish;
+      return id === "masonry" ? labels.stairsMasonryShort : labels.stairsTimberShort;
+    }
+    if (kind === "railing") {
+      const id = selectedKind === "railing" ? selectedRailingFinish : railingFinish;
+      return id === "metal" ? labels.railingMetalShort : labels.railingTimberShort;
+    }
+    if (kind === "window") {
+      const id = selectedKind === "window" ? selectedWindowFinish : windowFinish;
+      return id === "metal" ? labels.windowMetalShort : labels.windowTimberShort;
+    }
+    return null;
+  };
   const activeLabel =
     tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : tool === "chimney" ? labels.chimney : tool === "beam" ? labels.beam : labels.foundation;
   moveLabelRef.current = {
@@ -4639,7 +4670,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           aria-label={labels.palette}
           aria-orientation="vertical"
           className={`flex shrink-0 flex-col gap-2 overflow-y-auto border-l border-border/60 bg-card/95 p-2 backdrop-blur-sm ${
-            paletteCompact ? "w-[4.25rem]" : isFullscreen ? "w-44" : "w-36 sm:w-44"
+            paletteCompact ? "w-[4.75rem]" : isFullscreen ? "w-44" : "w-36 sm:w-44"
           }`}
         >
           <div className="flex items-center justify-between gap-1 px-0.5">
@@ -4684,6 +4715,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 style={{ background: swatchFor(item.kind) }}
                 aria-hidden
               />
+              {paletteCompact && finishShort(item.kind) && (
+                <span className="max-w-full truncate text-[9px] font-semibold leading-none text-amber-800 dark:text-amber-200">{finishShort(item.kind)}</span>
+              )}
               {!paletteCompact && (
                 <>
                   <span className="text-xs font-semibold text-foreground">{item.label}</span>
@@ -5198,10 +5232,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         <div
           role="status"
           aria-live="polite"
-          className="pointer-events-none fixed z-50 flex max-w-[16rem] -translate-x-1/2 -translate-y-[120%] items-center gap-2 rounded-lg px-2 py-1.5 text-[11px] font-semibold shadow-lg ring-1 ring-amber-100/30"
+          className="pointer-events-none fixed z-50 flex max-w-[min(16rem,70vw)] -translate-x-1/2 -translate-y-[130%] items-center gap-2 rounded-lg px-2 py-1.5 text-[11px] font-semibold shadow-lg ring-1 ring-amber-100/30"
           style={{
-            left: Math.min(window.innerWidth - 88, Math.max(88, dragCursor.x)),
-            top: Math.min(window.innerHeight - 28, Math.max(56, dragCursor.y)),
+            left: Math.min(window.innerWidth - 96, Math.max(96, dragCursor.x)),
+            top: Math.min(window.innerHeight - 36, Math.max(64, dragCursor.y)),
             background: dragCursor.over ? "rgba(120, 53, 15, 0.94)" : "rgba(69, 26, 26, 0.94)",
             color: "#fff7ed",
           }}
@@ -5210,8 +5244,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           <span className="rounded bg-amber-50/95 px-0.5">
             <StructureGlyph kind={tool} />
           </span>
-          <span>
-            {activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""} · {paletteItems.find((item) => item.kind === tool)?.size ?? ""} · {layerCaption(activeLayer)} · {dragCursor.over ? labels.dropOver : labels.dropOut}
+          <span className="min-w-0">
+            <span className="block truncate">{activeLabel}{finishCaption(tool) ? ` · ${finishCaption(tool)}` : ""}</span>
+            <span className={`mt-0.5 block truncate text-[10px] font-medium ${dragCursor.over ? "text-amber-100" : "text-red-100"}`}>
+              {dragCursor.over ? labels.dropOver : labels.dropOut}
+            </span>
           </span>
         </div>
       )}
