@@ -256,6 +256,7 @@ const EXACT_NAMES: Record<string, string> = {
   "generador-ulid": "Generador de ULID",
   "sumador-decibelios": "Sumador de decibelios",
   "decodificador-jwt": "Decodificador JWT",
+  "estimador-entropia-contrasena": "Estimador de entropía de contraseña",
   "modelador-3d": "Modelador 3D",
   "modelador-casas-3d": "Modelador de casas 3D",
   "asignacion-de-cartera": "Asignación de cartera",
