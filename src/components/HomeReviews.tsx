@@ -94,6 +94,7 @@ function AdminReply({ reply, locale }: { reply: NonNullable<PublicReview["reply"
 export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
   const es = locale === "es";
   const [reviews, setReviews] = useState<PublicReview[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [durable, setDurable] = useState(true);
   const [name, setName] = useState("");
   const [rating, setRating] = useState(5);
@@ -111,6 +112,8 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
       setReviews(mergeReviews(local, serverList));
     } catch {
       setReviews(mergeReviews(local));
+    } finally {
+      setLoaded(true);
     }
   }, []);
 
@@ -162,6 +165,9 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
   };
 
   const visible = reviews.slice(0, 12);
+  const storageNotice = es
+    ? "Las reseñas nuevas se guardan en tu navegador hasta activar Upstash Redis en Vercel (así quedan visibles para todo el mundo)."
+    : "New reviews are kept in your browser until Upstash Redis is enabled on Vercel (so everyone can see them).";
 
   return (
     <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="reviews-title">
@@ -179,18 +185,15 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
         </div>
       </div>
 
-      {!durable && (
-        <p className="mt-4 rounded-xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-500/40 dark:bg-amber-950/30 dark:text-amber-100">
-          {es
-            ? "Las reseñas nuevas se guardan en tu navegador hasta activar Upstash Redis en Vercel (así quedan visibles para todo el mundo)."
-            : "New reviews are kept in your browser until Upstash Redis is enabled on Vercel (so everyone can see them)."}
-        </p>
-      )}
-
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="grid gap-3 sm:grid-cols-2">
-          {visible.length === 0 ? (
-            <p className="col-span-full rounded-xl border border-dashed border-border/80 bg-muted/30 px-4 py-8 text-center text-sm text-muted-foreground">
+        <div className="grid min-h-36 gap-3 sm:grid-cols-2">
+          {!loaded ? (
+            <>
+              <div className="h-36 rounded-xl border border-border/70 bg-muted/30" aria-hidden />
+              <div className="hidden h-36 rounded-xl border border-border/70 bg-muted/30 sm:block" aria-hidden />
+            </>
+          ) : visible.length === 0 ? (
+            <p className="col-span-full flex min-h-36 items-center justify-center rounded-xl border border-dashed border-border/80 bg-muted/30 px-4 py-8 text-center text-sm text-muted-foreground">
               {es
                 ? "Todavía no hay reseñas. Sé el primero en dejar tu opinión."
                 : "No reviews yet. Be the first to leave feedback."}
@@ -217,6 +220,11 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
           <p className="mt-1 text-xs text-muted-foreground">
             {es ? "Sin registro. Máximo unas pocas por día." : "No signup. A few per day max."}
           </p>
+          {loaded && !durable && (
+            <p className="mt-3 rounded-xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-500/40 dark:bg-amber-950/30 dark:text-amber-100">
+              {storageNotice}
+            </p>
+          )}
 
           <label className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
             Website
