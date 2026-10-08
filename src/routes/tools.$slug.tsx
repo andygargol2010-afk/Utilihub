@@ -6,6 +6,7 @@ import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { DeferredToolSeo } from "@/components/DeferredToolSeo";
+import { ToolUiFallback } from "@/components/ToolUiFallback";
 import type { CatalogTool } from "@/lib/all-tools";
 import {
   toolByEnglishSlug,
@@ -34,6 +35,10 @@ export const Route = createFileRoute("/tools/$slug")({
       seo: { title: seo.title, description: seo.description, faq: seo.faq },
     };
   },
+  // Catalog import blocks the real page. Paint a reserved shell instead of a blank route.
+  pendingComponent: ToolRoutePending,
+  pendingMs: 100,
+  pendingMinMs: 0,
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Tool not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
     const { tool, seo, category } = loaderData;
@@ -99,6 +104,19 @@ export const Route = createFileRoute("/tools/$slug")({
   },
   component: ToolPage,
 });
+
+function ToolRoutePending() {
+  return (
+    <div className="container-page py-6 sm:py-8" aria-busy="true">
+      <div className="h-5 w-56 max-w-full animate-pulse rounded bg-muted" />
+      <div className="mt-3 h-8 w-72 max-w-full animate-pulse rounded bg-muted" />
+      <p className="mt-1 h-5 w-48 max-w-full animate-pulse rounded bg-muted" />
+      <section className="surface-card mt-4 min-h-72 p-4 sm:p-6" aria-label="Loading tool">
+        <ToolUiFallback locale="en" />
+      </section>
+    </div>
+  );
+}
 
 function ToolPage() {
   const { tool, category } = Route.useLoaderData() as {

@@ -6,6 +6,7 @@ import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { DeferredToolSeo } from "@/components/DeferredToolSeo";
+import { ToolUiFallback } from "@/components/ToolUiFallback";
 import type { CatalogTool } from "@/lib/all-tools";
 import { englishToolPath } from "@/lib/route-slugs";
 import {
@@ -39,6 +40,10 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
       },
     };
   },
+  // Catalog import blocks the real page. Paint a reserved shell instead of a blank route.
+  pendingComponent: SpanishToolRoutePending,
+  pendingMs: 100,
+  pendingMinMs: 0,
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {
@@ -117,6 +122,19 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
   },
   component: SpanishToolPage,
 });
+
+function SpanishToolRoutePending() {
+  return (
+    <div className="container-page py-6 sm:py-8" aria-busy="true">
+      <div className="h-5 w-56 max-w-full animate-pulse rounded bg-muted" />
+      <div className="mt-3 h-8 w-72 max-w-full animate-pulse rounded bg-muted" />
+      <p className="mt-1 h-5 w-48 max-w-full animate-pulse rounded bg-muted" />
+      <section className="surface-card mt-4 min-h-72 p-4 sm:p-6" aria-label="Cargando herramienta">
+        <ToolUiFallback locale="es" />
+      </section>
+    </div>
+  );
+}
 
 function SpanishToolPage() {
   const { tool } = Route.useLoaderData() as { tool: CatalogTool };
