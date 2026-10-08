@@ -89,6 +89,7 @@ import { TOOL_SEO_OVERRIDES_JWT } from "./tool-seo-overrides-jwt";
 import { TOOL_SEO_OVERRIDES_OPEN_GRAPH } from "./tool-seo-overrides-open-graph";
 import { TOOL_SEO_OVERRIDES_MARKDOWN_TABLE } from "./tool-seo-overrides-markdown-table";
 import { TOOL_SEO_OVERRIDES_JSON_TS } from "./tool-seo-overrides-json-ts";
+import { TOOL_SEO_OVERRIDES_LUHN } from "./tool-seo-overrides-luhn";
 import { TOOL_SEO_OVERRIDES_BRAILLE } from "./tool-seo-overrides-braille";
 
 export type ToolSeoOverride = {
@@ -194,6 +195,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_OPEN_GRAPH,
   ...TOOL_SEO_OVERRIDES_MARKDOWN_TABLE,
   ...TOOL_SEO_OVERRIDES_JSON_TS,
+  ...TOOL_SEO_OVERRIDES_LUHN,
   ...TOOL_SEO_OVERRIDES_BRAILLE,
 };
 

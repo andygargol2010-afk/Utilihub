@@ -127,6 +127,7 @@ const PasswordEntropyTool = lazy(() => import("./PasswordEntropyTool").then((m) 
 const OpenGraphTool = lazy(() => import("./OpenGraphTool").then((m) => ({ default: m.OpenGraphTool })));
 const MarkdownTableTool = lazy(() => import("./MarkdownTableTool").then((m) => ({ default: m.MarkdownTableTool })));
 const JsonToTypescriptTool = lazy(() => import("./JsonToTypescriptTool").then((m) => ({ default: m.JsonToTypescriptTool })));
+const LuhnTool = lazy(() => import("./LuhnTool").then((m) => ({ default: m.LuhnTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -202,6 +203,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "generador-open-graph") return OpenGraphTool as ToolComp;
   if (tool.slug === "generador-tabla-markdown") return MarkdownTableTool as ToolComp;
   if (tool.slug === "json-a-typescript") return JsonToTypescriptTool as ToolComp;
+  if (tool.slug === "validador-luhn") return LuhnTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
