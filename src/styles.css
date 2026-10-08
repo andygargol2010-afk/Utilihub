@@ -164,3 +164,41 @@ a { transition: color .15s ease, background-color .15s ease, border-color .15s e
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* Tool cards + microinteractions */
+@utility btn-press {
+  transition: transform .12s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.btn-press:active {
+  transform: scale(0.97);
+}
+.tool-card-row:hover {
+  z-index: 1;
+}
+
+/* Scroll reveal for list sections */
+@utility reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .btn-press:active {
+    transform: none;
+  }
+  .tool-card-row {
+    transition: border-color .15s ease, background-color .15s ease !important;
+  }
+  .tool-card-row:hover {
+    transform: none !important;
+  }
+}
