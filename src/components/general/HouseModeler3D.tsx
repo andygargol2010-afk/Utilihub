@@ -1893,42 +1893,52 @@ function createDoorMeshWithFinish(mats: ReturnType<typeof makeMaterials>, finish
 function createWindowMesh(mats: ReturnType<typeof makeMaterials>, finish: WindowFinish = "timber") {
   // Casement bay: painted sash or iron frame, glazed lights. Sill at 0.9 m so it sits in a 2.6 m wall.
   // Timber is the default; iron reuses the railing bar-stock catalog map on jambs, head, and muntins.
+  // Wall body is 0.2 m and centered on the part origin. A co-located window used to bury the jamb
+  // in that solid (z-fight). Seat the bay on the +Z face so ghost and placed frames stay readable.
   const group = new THREE.Group();
   group.userData.windowFinish = finish;
   const frameMat = finish === "metal" ? mats.railingMetal : mats.joinery;
+  const wallHalf = 0.1;
+  const frameDepth = 0.1;
+  const reveal = 0.016;
+  const frameZ = wallHalf + frameDepth / 2 + reveal;
   const sill = new THREE.Mesh(new THREE.BoxGeometry(1.28, 0.06, 0.2), mats.wallEdge);
-  sill.position.set(0, 0.9, 0.02);
+  sill.position.set(0, 0.9, frameZ - 0.02);
   sill.castShadow = true;
   sill.receiveShadow = true;
   group.add(sill);
   const apron = new THREE.Mesh(new THREE.BoxGeometry(1.16, 0.08, 0.08), mats.fascia);
-  apron.position.set(0, 0.82, 0);
+  apron.position.set(0, 0.82, frameZ);
   apron.castShadow = true;
   group.add(apron);
-  const jambL = new THREE.Mesh(new THREE.BoxGeometry(0.07, 1.12, 0.1), frameMat);
+  const jambL = new THREE.Mesh(new THREE.BoxGeometry(0.07, 1.12, frameDepth), frameMat);
   jambL.name = "windowFrame";
-  jambL.position.set(-0.56, 1.49, 0);
+  jambL.position.set(-0.56, 1.49, frameZ);
   jambL.castShadow = true;
   jambL.receiveShadow = true;
+  jambL.renderOrder = 2;
   const jambR = jambL.clone();
   jambR.position.x = 0.56;
-  const head = new THREE.Mesh(new THREE.BoxGeometry(1.19, 0.07, 0.1), frameMat);
+  const head = new THREE.Mesh(new THREE.BoxGeometry(1.19, 0.07, frameDepth), frameMat);
   head.name = "windowFrame";
-  head.position.set(0, 2.02, 0);
+  head.position.set(0, 2.02, frameZ);
   head.castShadow = true;
   head.receiveShadow = true;
+  head.renderOrder = 2;
   group.add(jambL, jambR, head);
   const glass = new THREE.Mesh(new THREE.BoxGeometry(1.02, 1.0, 0.02), mats.doorGlass);
-  glass.position.set(0, 1.48, 0.01);
+  glass.position.set(0, 1.48, frameZ + 0.008);
   glass.castShadow = false;
   glass.receiveShadow = true;
   group.add(glass);
   const muntinV = new THREE.Mesh(new THREE.BoxGeometry(0.035, 1.0, 0.035), frameMat);
   muntinV.name = "windowFrame";
-  muntinV.position.set(0, 1.48, 0.022);
+  muntinV.position.set(0, 1.48, frameZ + 0.02);
+  muntinV.renderOrder = 2;
   const muntinH = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.035, 0.035), frameMat);
   muntinH.name = "windowFrame";
-  muntinH.position.set(0, 1.48, 0.022);
+  muntinH.position.set(0, 1.48, frameZ + 0.02);
+  muntinH.renderOrder = 2;
   group.add(muntinV, muntinH);
   return group;
 }
