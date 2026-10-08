@@ -110,6 +110,7 @@ import { LUHN_TOOLS } from "./luhn-tool";
 import { BPM_DELAY_TOOLS } from "./bpm-delay-tool";
 import { VCARD_TOOLS } from "./vcard-tool";
 import { SECURITY_TXT_TOOLS } from "./security-txt-tool";
+import { RUT_CHILE_TOOLS } from "./rut-chile-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -225,4 +226,5 @@ export const GENERAL_TOOLS = [
   ...BPM_DELAY_TOOLS,
   ...VCARD_TOOLS,
   ...SECURITY_TXT_TOOLS,
+  ...RUT_CHILE_TOOLS,
 ];

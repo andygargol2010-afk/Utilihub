@@ -95,6 +95,7 @@ import { TOOL_SEO_OVERRIDES_VCARD } from "./tool-seo-overrides-vcard";
 import { TOOL_SEO_OVERRIDES_BRAILLE } from "./tool-seo-overrides-braille";
 import { TOOL_SEO_OVERRIDES_OHM } from "./tool-seo-overrides-ohm";
 import { TOOL_SEO_OVERRIDES_SECURITY_TXT } from "./tool-seo-overrides-security-txt";
+import { TOOL_SEO_OVERRIDES_RUT_CHILE } from "./tool-seo-overrides-rut-chile";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -205,6 +206,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_BRAILLE,
   ...TOOL_SEO_OVERRIDES_OHM,
   ...TOOL_SEO_OVERRIDES_SECURITY_TXT,
+  ...TOOL_SEO_OVERRIDES_RUT_CHILE,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {

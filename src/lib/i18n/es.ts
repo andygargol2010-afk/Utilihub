@@ -180,6 +180,7 @@ const EXACT_NAMES: Record<string, string> = {
   "convertidor-delay-bpm": "Convertidor de delay BPM",
   "generador-vcard": "Generador de vCard",
   "generador-security-txt": "Generador de security.txt",
+  "validador-rut-chile": "Validador de RUT chileno",
   "punto-equilibrio-unidades": "Punto de equilibrio (unidades)",
   "mpg-a-litros": "MPG a L/100 km",
   "ppi-pantalla": "PPI de pantalla",
