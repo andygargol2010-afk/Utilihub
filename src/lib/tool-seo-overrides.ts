@@ -85,6 +85,7 @@ import { TOOL_SEO_OVERRIDES_EAN } from "./tool-seo-overrides-ean";
 import { TOOL_SEO_OVERRIDES_CLAMP } from "./tool-seo-overrides-clamp";
 import { TOOL_SEO_OVERRIDES_ULID } from "./tool-seo-overrides-ulid";
 import { TOOL_SEO_OVERRIDES_DECIBEL } from "./tool-seo-overrides-decibel";
+import { TOOL_SEO_OVERRIDES_JWT } from "./tool-seo-overrides-jwt";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -185,6 +186,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_CLAMP,
   ...TOOL_SEO_OVERRIDES_ULID,
   ...TOOL_SEO_OVERRIDES_DECIBEL,
+  ...TOOL_SEO_OVERRIDES_JWT,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {

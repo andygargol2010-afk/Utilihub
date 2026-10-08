@@ -122,6 +122,7 @@ const ClampTool = lazy(() => import("./ClampTool").then((m) => ({ default: m.Cla
 const BrailleTool = lazy(() => import("./BrailleTool").then((m) => ({ default: m.BrailleTool })));
 const UlidTool = lazy(() => import("./UlidTool").then((m) => ({ default: m.UlidTool })));
 const DecibelTool = lazy(() => import("./DecibelTool").then((m) => ({ default: m.DecibelTool })));
+const JwtTool = lazy(() => import("./JwtTool").then((m) => ({ default: m.JwtTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -192,6 +193,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "traductor-braille") return BrailleTool as ToolComp;
   if (tool.slug === "generador-ulid") return UlidTool as ToolComp;
   if (tool.slug === "sumador-decibelios") return DecibelTool as ToolComp;
+  if (tool.slug === "decodificador-jwt") return JwtTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
