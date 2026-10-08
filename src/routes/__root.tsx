@@ -133,6 +133,14 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang={pathname === "/es" || pathname.startsWith("/es/") ? "es" : "en"}>
       <head>
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2"
+          crossOrigin="anonymous"
+          fetchPriority="high"
+        />
         <HeadContent />
       </head>
       <body>
