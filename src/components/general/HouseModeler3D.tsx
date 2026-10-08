@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 
-type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola";
+type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence";
 type Locale = "en" | "es";
 /** Door leaf finish. Timber stays the default; sheet metal is the selectable alternate. */
 type DoorFinish = "timber" | "metal";
@@ -2258,6 +2258,49 @@ function createPergolaMesh(mats: ReturnType<typeof makeMaterials>) {
   return group;
 }
 
+
+function createFenceMesh(mats: ReturnType<typeof makeMaterials>) {
+  // Garden bay: two posts, twin rails, open pickets. Sits on the ground; timber maps are shared.
+  const group = new THREE.Group();
+  const span = 2.4;
+  const postH = 1.22;
+  for (const x of [-span / 2, span / 2]) {
+    const pad = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.04, 0.28), mats.gravel);
+    pad.position.set(x, 0.02, 0);
+    pad.receiveShadow = true;
+    staggerUvs(pad);
+    group.add(pad);
+    const post = new THREE.Mesh(new THREE.BoxGeometry(0.1, postH, 0.1), mats.plate);
+    post.position.set(x, 0.04 + postH / 2, 0);
+    post.castShadow = true;
+    post.receiveShadow = true;
+    staggerUvs(post);
+    group.add(post);
+    const cap = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.04, 0.13), mats.nosing);
+    cap.position.set(x, 0.04 + postH + 0.02, 0);
+    cap.castShadow = true;
+    group.add(cap);
+  }
+  for (const y of [0.42, 1.02]) {
+    const rail = new THREE.Mesh(new THREE.BoxGeometry(span - 0.08, 0.06, 0.05), mats.nosing);
+    rail.position.set(0, y, 0);
+    rail.castShadow = true;
+    rail.receiveShadow = true;
+    staggerUvs(rail);
+    group.add(rail);
+  }
+  const pickets = 9;
+  for (let i = 0; i < pickets; i++) {
+    const x = -span / 2 + 0.22 + i * ((span - 0.44) / (pickets - 1));
+    const picket = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.92, 0.03), mats.fascia);
+    picket.position.set(x, 0.58, 0.02);
+    picket.castShadow = true;
+    staggerUvs(picket);
+    group.add(picket);
+  }
+  return group;
+}
+
 function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish = "timber", roofFinish: RoofFinish = "clay", wallFinish: WallFinish = "plaster", columnFinish: ColumnFinish = "plaster", stairsFinish: StairsFinish = "timber", railingFinish: RailingFinish = "timber", windowFinish: WindowFinish = "timber", floorFinish: FloorFinish = "timber") {
   if (kind === "wall") return createWallMesh(mats, wallFinish);
   if (kind === "floor") return createFloorMesh(mats, floorFinish);
@@ -2270,7 +2313,8 @@ function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, 
   if (kind === "chimney") return createChimneyMesh(mats);
   if (kind === "beam") return createBeamMesh(mats);
   if (kind === "foundation") return createFoundationMesh(mats);
-  return createPergolaMesh(mats);
+  if (kind === "pergola") return createPergolaMesh(mats);
+  return createFenceMesh(mats);
 }
 
 function StructureGlyph({ kind }: { kind: PartKind }) {
@@ -2378,6 +2422,19 @@ function StructureGlyph({ kind }: { kind: PartKind }) {
         <rect x="5" y="16" width="30" height="7" fill="#c4b8a4" stroke="#8a7d6c" />
         <rect x="4" y="14" width="32" height="3" fill="#b7ab9a" />
         <path d="M8 18.5 H32 M8 20.5 H32" stroke="#8a7d6c" strokeWidth="0.6" opacity="0.7" />
+      </svg>
+    );
+  }
+  if (kind === "fence") {
+    return (
+      <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
+        <rect x="4" y="24" width="4" height="4" fill="#9a907e" />
+        <rect x="32" y="24" width="4" height="4" fill="#9a907e" />
+        <rect x="5" y="10" width="2.2" height="15" fill="#6d4a30" />
+        <rect x="32.8" y="10" width="2.2" height="15" fill="#6d4a30" />
+        <rect x="6" y="12" width="28" height="1.6" fill="#8b5a32" />
+        <rect x="6" y="20" width="28" height="1.6" fill="#8b5a32" />
+        <path d="M9 11 V23 M14 11 V23 M19 11 V23 M24 11 V23 M29 11 V23" stroke="#c4a882" strokeWidth="1.2" />
       </svg>
     );
   }
@@ -3793,6 +3850,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         if (e.key === "0") setTool("beam");
         if (e.key.toLowerCase() === "q") setTool("foundation");
         if (e.key.toLowerCase() === "w") setTool("pergola");
+        if (e.key.toLowerCase() === "e") setTool("fence");
       }
       if (e.key.toLowerCase() === "l" && !e.repeat) {
         if (!selId) return;
@@ -3943,6 +4001,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         beam: "Viga",
         foundation: "Cimentación",
         pergola: "Pérgola",
+        fence: "Valla",
         place: "Arrastrá desde la barra derecha al terreno · o hacé clic en el suelo",
         cam: "Cámara libre: botón derecho / medio · rueda zoom",
         rot: "Rotar 90°",
@@ -3955,7 +4014,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "elementos",
         fullscreen: "Pantalla completa",
         exitFs: "Salir",
-        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · E valla · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         none: "Nada seleccionado",
@@ -4019,6 +4078,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizeBeam: "2.5 × 2.7 m",
         sizeFoundation: "3.0 × 0.55 × 0.4 m",
         sizePergola: "2.4 × 2.2 × 2.4 m",
+        sizeFence: "2.4 × 1.2 m",
         help: "Ayuda",
         hideHelp: "Ocultar",
         active: "Activa",
@@ -4072,6 +4132,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         beam: "Beam",
         foundation: "Foundation",
         pergola: "Pergola",
+        fence: "Fence",
         place: "Drag from the right toolbar onto the ground · or click the ground",
         cam: "Free camera: right/middle drag · scroll zoom",
         rot: "Rotate 90°",
@@ -4084,7 +4145,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "parts",
         fullscreen: "Fullscreen",
         exitFs: "Exit",
-        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · E fence · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
         none: "Nothing selected",
@@ -4148,6 +4209,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizeBeam: "2.5 × 2.7 m",
         sizeFoundation: "3.0 × 0.55 × 0.4 m",
         sizePergola: "2.4 × 2.2 × 2.4 m",
+        sizeFence: "2.4 × 1.2 m",
         help: "Help",
         hideHelp: "Hide",
         active: "Active",
@@ -4202,7 +4264,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedLocked = selectedPart ? partFrozen(selectedPart, layers) : false;
   void lockRev;
   const selectedKindLabel =
-    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : selectedKind === "beam" ? labels.beam : selectedKind === "foundation" ? labels.foundation : selectedKind === "pergola" ? labels.pergola : "";
+    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : selectedKind === "beam" ? labels.beam : selectedKind === "foundation" ? labels.foundation : selectedKind === "pergola" ? labels.pergola : selectedKind === "fence" ? labels.fence : "";
   const selectedLayer = layers.find((l) => l.id === selectedPart?.layerId);
   const activeLayer = layers.find((l) => l.id === activeLayerId) ?? layers[0];
   const layerCaption = (layer: SceneLayer | undefined) => {
@@ -4212,7 +4274,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   };
   const placeLayerCaption = layerCaption(selectedKindLabel ? selectedLayer : activeLayer);
   const selectedSize =
-    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : selectedKind === "window" ? labels.sizeWindow : selectedKind === "stairs" ? labels.sizeStairs : selectedKind === "railing" ? labels.sizeRailing : selectedKind === "chimney" ? labels.sizeChimney : selectedKind === "beam" ? labels.sizeBeam : selectedKind === "foundation" ? labels.sizeFoundation : selectedKind === "pergola" ? labels.sizePergola : "";
+    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : selectedKind === "window" ? labels.sizeWindow : selectedKind === "stairs" ? labels.sizeStairs : selectedKind === "railing" ? labels.sizeRailing : selectedKind === "chimney" ? labels.sizeChimney : selectedKind === "beam" ? labels.sizeBeam : selectedKind === "foundation" ? labels.sizeFoundation : selectedKind === "pergola" ? labels.sizePergola : selectedKind === "fence" ? labels.sizeFence : "";
 
   const clearSelection = () => {
     selectedRef.current = null;
@@ -4391,6 +4453,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     { kind: "beam", label: labels.beam, swatch: "#6d4a30", key: "0", size: labels.sizeBeam },
     { kind: "foundation", label: labels.foundation, swatch: "#c4b8a4", key: "Q", size: labels.sizeFoundation },
     { kind: "pergola", label: labels.pergola, swatch: "#6d4a30", key: "W", size: labels.sizePergola },
+    { kind: "fence", label: labels.fence, swatch: "#8b5a32", key: "E", size: labels.sizeFence },
   ];
   const swatchFor = (kind: PartKind): string => {
     if (kind === "wall") {
@@ -4494,7 +4557,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     return null;
   };
   const activeLabel =
-    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : tool === "chimney" ? labels.chimney : tool === "beam" ? labels.beam : tool === "foundation" ? labels.foundation : labels.pergola;
+    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : tool === "chimney" ? labels.chimney : tool === "beam" ? labels.beam : tool === "foundation" ? labels.foundation : tool === "pergola" ? labels.pergola : labels.fence;
   moveLabelRef.current = {
     moving: labels.moving,
     kinds: {
@@ -4510,6 +4573,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       beam: labels.beam,
       foundation: labels.foundation,
       pergola: labels.pergola,
+      fence: labels.fence,
     },
   };
 
