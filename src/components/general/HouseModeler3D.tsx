@@ -3104,6 +3104,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, [findPartObject]);
 
   const setSelectedYaw = useCallback((step: number) => {
+    // A pointer already owns this part. Yawing before the drag threshold makes the grab offset stale.
+    if (paletteDragRef.current || draggingRef.current || dragArmRef.current) return;
     const id = selectedRef.current;
     if (!id) return;
     const part0 = partsRef.current.find((p) => p.id === id);
@@ -3118,6 +3120,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, [findPartObject]);
 
   const rotateSelected = useCallback(() => {
+    if (paletteDragRef.current || draggingRef.current || dragArmRef.current) return;
     const id = selectedRef.current;
     if (!id) return;
     const part0 = partsRef.current.find((p) => p.id === id);
@@ -3134,7 +3137,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   // Snap-step the selected part. Touch drags fight OrbitControls; a pad is more reliable on phones.
   const nudgeSelected = useCallback((dx: number, dz: number) => {
-    if (paletteDragRef.current || draggingRef.current) return;
+    // Arm phase still holds the pointerdown offset. Nudging first jumps the part when the drag starts.
+    if (paletteDragRef.current || draggingRef.current || dragArmRef.current) return;
     const id = selectedRef.current;
     if (!id) return;
     const part0 = partsRef.current.find((p) => p.id === id);
@@ -3150,7 +3154,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, [findPartObject]);
 
   const duplicateSelected = useCallback(() => {
-    if (paletteDragRef.current || draggingRef.current) return;
+    if (paletteDragRef.current || draggingRef.current || dragArmRef.current) return;
     const id = selectedRef.current;
     if (!id) return;
     const part = partsRef.current.find((p) => p.id === id);
@@ -3590,12 +3594,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         deleteSelected();
       }
       if (e.key.toLowerCase() === "r") {
-        if (!canMutate) return;
+        if (!canMutate || paletteDragRef.current || draggingRef.current || dragArmRef.current) return;
         e.preventDefault();
         rotateSelected();
       }
       if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown") {
-        if (!canMutate || paletteDragRef.current || draggingRef.current) return;
+        if (!canMutate || paletteDragRef.current || draggingRef.current || dragArmRef.current) return;
         e.preventDefault();
         if (e.key === "ArrowLeft") nudgeSelected(-GRID, 0);
         else if (e.key === "ArrowRight") nudgeSelected(GRID, 0);
@@ -3624,14 +3628,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         if (e.key.toLowerCase() === "q") setTool("foundation");
       }
       if (e.key.toLowerCase() === "l" && !e.repeat) {
+        if (!selId) return;
         e.preventDefault();
         toggleLockSelected();
       }
       if (e.key.toLowerCase() === "d" && !e.repeat) {
+        // Duplicate mid-arm switched selection under the pointer and left the grab on the old id.
+        if (!selPart || paletteDragRef.current || draggingRef.current || dragArmRef.current) return;
         e.preventDefault();
         duplicateSelected();
       }
       if (e.key.toLowerCase() === "g" && !e.repeat) {
+        if (!selId) return;
         e.preventDefault();
         frameSelected();
       }
