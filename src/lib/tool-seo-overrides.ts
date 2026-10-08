@@ -91,6 +91,7 @@ import { TOOL_SEO_OVERRIDES_MARKDOWN_TABLE } from "./tool-seo-overrides-markdown
 import { TOOL_SEO_OVERRIDES_JSON_TS } from "./tool-seo-overrides-json-ts";
 import { TOOL_SEO_OVERRIDES_LUHN } from "./tool-seo-overrides-luhn";
 import { TOOL_SEO_OVERRIDES_BPM_DELAY } from "./tool-seo-overrides-bpm-delay";
+import { TOOL_SEO_OVERRIDES_VCARD } from "./tool-seo-overrides-vcard";
 import { TOOL_SEO_OVERRIDES_BRAILLE } from "./tool-seo-overrides-braille";
 
 export type ToolSeoOverride = {
@@ -198,6 +199,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_JSON_TS,
   ...TOOL_SEO_OVERRIDES_LUHN,
   ...TOOL_SEO_OVERRIDES_BPM_DELAY,
+  ...TOOL_SEO_OVERRIDES_VCARD,
   ...TOOL_SEO_OVERRIDES_BRAILLE,
 };
 

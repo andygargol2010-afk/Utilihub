@@ -178,6 +178,7 @@ const EXACT_NAMES: Record<string, string> = {
   "tiempo-lectura": "Tiempo de lectura",
   "validador-luhn": "Validador Luhn",
   "convertidor-delay-bpm": "Convertidor de delay BPM",
+  "generador-vcard": "Generador de vCard",
   "punto-equilibrio-unidades": "Punto de equilibrio (unidades)",
   "mpg-a-litros": "MPG a L/100 km",
   "ppi-pantalla": "PPI de pantalla",

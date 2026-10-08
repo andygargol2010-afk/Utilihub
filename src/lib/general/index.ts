@@ -108,6 +108,7 @@ import { MARKDOWN_TABLE_TOOLS } from "./markdown-table-tool";
 import { JSON_TS_TOOLS } from "./json-to-typescript-tool";
 import { LUHN_TOOLS } from "./luhn-tool";
 import { BPM_DELAY_TOOLS } from "./bpm-delay-tool";
+import { VCARD_TOOLS } from "./vcard-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -221,4 +222,5 @@ export const GENERAL_TOOLS = [
   ...JSON_TS_TOOLS,
   ...LUHN_TOOLS,
   ...BPM_DELAY_TOOLS,
+  ...VCARD_TOOLS,
 ];
