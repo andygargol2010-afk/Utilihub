@@ -20,6 +20,8 @@ type StairsFinish = "timber" | "masonry";
 type RailingFinish = "timber" | "metal";
 /** Window sash. Painted timber stays the default; iron frame is the selectable alternate (ported from railing bar stock). */
 type WindowFinish = "timber" | "metal";
+/** Floor deck. Timber boards stay the default; clay tile is the selectable alternate (ported from roof tiles). */
+type FloorFinish = "timber" | "clay";
 
 type ScenePart = {
   id: string;
@@ -44,6 +46,8 @@ type ScenePart = {
   railingFinish: RailingFinish;
   /** Kept on the part so rotate/clone do not drop the chosen window sash. */
   windowFinish: WindowFinish;
+  /** Kept on the part so rotate/clone do not drop the chosen floor deck. */
+  floorFinish: FloorFinish;
 };
 
 function doorFinishOf(part: { kind: PartKind; finish?: DoorFinish } | undefined, fallback: DoorFinish = "timber"): DoorFinish {
@@ -85,6 +89,12 @@ function railingFinishOf(part: { kind: PartKind; railingFinish?: RailingFinish }
 function windowFinishOf(part: { kind: PartKind; windowFinish?: WindowFinish } | undefined, fallback: WindowFinish = "timber"): WindowFinish {
   if (part?.kind === "window" && part.windowFinish === "metal") return "metal";
   if (part?.kind === "window") return part.windowFinish === "timber" ? "timber" : fallback;
+  return "timber";
+}
+
+function floorFinishOf(part: { kind: PartKind; floorFinish?: FloorFinish } | undefined, fallback: FloorFinish = "timber"): FloorFinish {
+  if (part?.kind === "floor" && part.floorFinish === "clay") return "clay";
+  if (part?.kind === "floor") return part.floorFinish === "timber" ? "timber" : fallback;
   return "timber";
 }
 
@@ -1504,6 +1514,18 @@ function makeMaterials() {
     roughness: 0.4,
     metalness: 0.7,
   });
+  // Interior quarry tile reuses the roof clay maps (shared; do not dispose separately).
+  const floorClay = new THREE.MeshStandardMaterial({
+    color: 0xfff4ea,
+    map: roofMap ?? undefined,
+    roughnessMap: roofRough ?? undefined,
+    bumpMap: roofBump ?? roofRough ?? undefined,
+    bumpScale: 0.042,
+    normalMap: roofNormal ?? undefined,
+    normalScale: new THREE.Vector2(0.62, 0.62),
+    roughness: 0.74,
+    metalness: 0.04,
+  });
   const ground = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     map: groundMap ?? undefined,
@@ -1630,7 +1652,7 @@ function makeMaterials() {
     transparent: true,
     opacity: 0.58,
   });
-  return { wall, wallMasonry, wallEdge, floor, roof, roofMetal, ground, gravel, plate, nosing, fascia, doorLeaf, doorMetal, railingMetal, joinery, doorGlass, footing, chimney };
+  return { wall, wallMasonry, wallEdge, floor, floorClay, roof, roofMetal, ground, gravel, plate, nosing, fascia, doorLeaf, doorMetal, railingMetal, joinery, doorGlass, footing, chimney };
 }
 
 function applyWallFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: WallFinish) {
@@ -1680,6 +1702,16 @@ function applyWindowFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMate
   const frame = finish === "metal" ? mats.railingMetal : mats.joinery;
   obj.traverse((c) => {
     if (c instanceof THREE.Mesh && c.name === "windowFrame") c.material = frame;
+  });
+}
+
+function applyFloorFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: FloorFinish) {
+  const skin = finish === "clay" ? mats.floorClay : mats.floor;
+  const edge = finish === "clay" ? mats.floorClay : mats.nosing;
+  obj.traverse((c) => {
+    if (!(c instanceof THREE.Mesh)) return;
+    if (c.name === "floorSkin") c.material = skin;
+    else if (c.name === "floorNosing") c.material = edge;
   });
 }
 
@@ -1744,9 +1776,13 @@ function createWallMesh(mats: ReturnType<typeof makeMaterials>, finish: WallFini
   return group;
 }
 
-function createFloorMesh(mats: ReturnType<typeof makeMaterials>) {
+function createFloorMesh(mats: ReturnType<typeof makeMaterials>, finish: FloorFinish = "timber") {
   const group = new THREE.Group();
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(3, 0.08, 3), mats.floor);
+  group.userData.floorFinish = finish;
+  const skin = finish === "clay" ? mats.floorClay : mats.floor;
+  const edgeMat = finish === "clay" ? mats.floorClay : mats.nosing;
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(3, 0.08, 3), skin);
+  mesh.name = "floorSkin";
   mesh.position.y = 0.04;
   mesh.receiveShadow = true;
   mesh.castShadow = true;
@@ -1764,7 +1800,8 @@ function createFloorMesh(mats: ReturnType<typeof makeMaterials>) {
   ];
   for (const [x, y, z, which] of placements) {
     const [w, h, d] = edges[which];
-    const nosing = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats.nosing);
+    const nosing = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), edgeMat);
+    nosing.name = "floorNosing";
     nosing.position.set(x, y, z);
     nosing.castShadow = true;
     nosing.receiveShadow = true;
@@ -2203,9 +2240,9 @@ function createPergolaMesh(mats: ReturnType<typeof makeMaterials>) {
   return group;
 }
 
-function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish = "timber", roofFinish: RoofFinish = "clay", wallFinish: WallFinish = "plaster", columnFinish: ColumnFinish = "plaster", stairsFinish: StairsFinish = "timber", railingFinish: RailingFinish = "timber", windowFinish: WindowFinish = "timber") {
+function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish = "timber", roofFinish: RoofFinish = "clay", wallFinish: WallFinish = "plaster", columnFinish: ColumnFinish = "plaster", stairsFinish: StairsFinish = "timber", railingFinish: RailingFinish = "timber", windowFinish: WindowFinish = "timber", floorFinish: FloorFinish = "timber") {
   if (kind === "wall") return createWallMesh(mats, wallFinish);
-  if (kind === "floor") return createFloorMesh(mats);
+  if (kind === "floor") return createFloorMesh(mats, floorFinish);
   if (kind === "roof") return createRoofMesh(mats, roofFinish);
   if (kind === "column") return createColumnMesh(mats, columnFinish);
   if (kind === "door") return createDoorMeshWithFinish(mats, finish);
@@ -2367,6 +2404,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [stairsFinish, setStairsFinish] = useState<StairsFinish>("timber");
   const [railingFinish, setRailingFinish] = useState<RailingFinish>("timber");
   const [windowFinish, setWindowFinish] = useState<WindowFinish>("timber");
+  const [floorFinish, setFloorFinish] = useState<FloorFinish>("timber");
   const [finishRev, setFinishRev] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [count, setCount] = useState(0);
@@ -2395,6 +2433,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const stairsFinishRef = useRef(stairsFinish);
   const railingFinishRef = useRef(railingFinish);
   const windowFinishRef = useRef(windowFinish);
+  const floorFinishRef = useRef(floorFinish);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
   // Live move chip is DOM-updated so a drag does not re-render the monolith each pointermove.
@@ -2445,6 +2484,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     windowFinishRef.current = windowFinish;
   }, [windowFinish]);
   useEffect(() => {
+    floorFinishRef.current = floorFinish;
+  }, [floorFinish]);
+  useEffect(() => {
     selectedRef.current = selectedId;
   }, [selectedId]);
 
@@ -2486,12 +2528,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, []);
 
   const makeGhost = useCallback(
-    (kind: PartKind, finish: DoorFinish = "timber", roofCover: RoofFinish = "clay", wallCover: WallFinish = "plaster", columnCover: ColumnFinish = "plaster", stairsCover: StairsFinish = "timber", railingCover: RailingFinish = "timber", windowCover: WindowFinish = "timber") => {
+    (kind: PartKind, finish: DoorFinish = "timber", roofCover: RoofFinish = "clay", wallCover: WallFinish = "plaster", columnCover: ColumnFinish = "plaster", stairsCover: StairsFinish = "timber", railingCover: RailingFinish = "timber", windowCover: WindowFinish = "timber", floorCover: FloorFinish = "timber") => {
       const t = threeRef.current;
       if (!t) return;
       clearGhost();
       let obj: THREE.Object3D;
-      obj = createPartMesh(kind, t.mats, kind === "door" ? finish : "timber", kind === "roof" ? roofCover : "clay", kind === "wall" ? wallCover : "plaster", kind === "column" ? columnCover : "plaster", kind === "stairs" ? stairsCover : "timber", kind === "railing" ? railingCover : "timber", kind === "window" ? windowCover : "timber");
+      obj = createPartMesh(kind, t.mats, kind === "door" ? finish : "timber", kind === "roof" ? roofCover : "clay", kind === "wall" ? wallCover : "plaster", kind === "column" ? columnCover : "plaster", kind === "stairs" ? stairsCover : "timber", kind === "railing" ? railingCover : "timber", kind === "window" ? windowCover : "timber", kind === "floor" ? floorCover : "timber");
       obj.traverse((c) => {
         if (c instanceof THREE.Mesh && c.material) {
           const m = (c.material as THREE.MeshStandardMaterial).clone();
@@ -2509,8 +2551,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   useEffect(() => {
     if (!ready) return;
-    makeGhost(tool, doorFinish, roofFinish, wallFinish, columnFinish, stairsFinish, railingFinish, windowFinish);
-  }, [tool, doorFinish, roofFinish, wallFinish, columnFinish, stairsFinish, railingFinish, windowFinish, ready, makeGhost]);
+    makeGhost(tool, doorFinish, roofFinish, wallFinish, columnFinish, stairsFinish, railingFinish, windowFinish, floorFinish);
+  }, [tool, doorFinish, roofFinish, wallFinish, columnFinish, stairsFinish, railingFinish, windowFinish, floorFinish, ready, makeGhost]);
 
   useEffect(() => {
     const el = mountRef.current;
@@ -3063,7 +3105,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const stairsCover: StairsFinish = kind === "stairs" ? stairsFinishRef.current : "timber";
     const railingCover: RailingFinish = kind === "railing" ? railingFinishRef.current : "timber";
     const windowCover: WindowFinish = kind === "window" ? windowFinishRef.current : "timber";
-    obj = createPartMesh(kind, t.mats, finish, roofCover, wallCover, columnCover, stairsCover, railingCover, windowCover);
+    const floorCover: FloorFinish = kind === "floor" ? floorFinishRef.current : "timber";
+    obj = createPartMesh(kind, t.mats, finish, roofCover, wallCover, columnCover, stairsCover, railingCover, windowCover, floorCover);
     obj.position.set(x, 0, z);
     obj.userData.finish = finish;
     obj.userData.roofFinish = roofCover;
@@ -3072,6 +3115,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     obj.userData.stairsFinish = stairsCover;
     obj.userData.railingFinish = railingCover;
     obj.userData.windowFinish = windowCover;
+    obj.userData.floorFinish = floorCover;
     t.partsRoot.add(obj);
     let primary: THREE.Mesh | null = null;
     obj.traverse((c) => {
@@ -3109,6 +3153,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       stairsFinish: stairsCover,
       railingFinish: railingCover,
       windowFinish: windowCover,
+      floorFinish: floorCover,
     });
     syncLockBadge(obj, !!layersRef.current.find((l) => l.id === layerId)?.locked);
     setCount(partsRef.current.length);
@@ -3236,7 +3281,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const stairsCover = stairsFinishOf(part);
     const railingCover = railingFinishOf(part);
     const windowCover = windowFinishOf(part);
-    const clone = createPartMesh(part.kind, t.mats, finish, roofCover, wallCover, columnCover, stairsCover, railingCover, windowCover);
+    const floorCover = floorFinishOf(part);
+    const clone = createPartMesh(part.kind, t.mats, finish, roofCover, wallCover, columnCover, stairsCover, railingCover, windowCover, floorCover);
     clone.position.set(x, 0, z);
     clone.rotation.y = obj.rotation.y;
     clone.userData.finish = finish;
@@ -3246,6 +3292,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     clone.userData.stairsFinish = stairsCover;
     clone.userData.railingFinish = railingCover;
     clone.userData.windowFinish = windowCover;
+    clone.userData.floorFinish = floorCover;
     t.partsRoot.add(clone);
     let primary: THREE.Mesh | null = null;
     clone.traverse((c) => {
@@ -3280,6 +3327,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       stairsFinish: stairsCover,
       railingFinish: railingCover,
       windowFinish: windowCover,
+      floorFinish: floorCover,
     });
     syncLockBadge(clone, !!layersRef.current.find((l) => l.id === part.layerId)?.locked);
     setCount(partsRef.current.length);
@@ -3769,7 +3817,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setPlacingFromPalette(true);
     setDragCursor({ x: ev.clientX, y: ev.clientY, over: false });
     if (threeRef.current) threeRef.current.controls.enabled = false;
-    makeGhost(kind, doorFinishRef.current, roofFinishRef.current, wallFinishRef.current, columnFinishRef.current, stairsFinishRef.current, railingFinishRef.current, windowFinishRef.current);
+    makeGhost(kind, doorFinishRef.current, roofFinishRef.current, wallFinishRef.current, columnFinishRef.current, stairsFinishRef.current, railingFinishRef.current, windowFinishRef.current, floorFinishRef.current);
     try {
       ev.currentTarget.setPointerCapture(ev.pointerId);
     } catch {
@@ -3904,6 +3952,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         windowMetal: "Marco de hierro",
         windowTimberShort: "Madera",
         windowMetalShort: "Hierro",
+        floorFinish: "Acabado de piso",
+        floorTimber: "Tablas",
+        floorClay: "Baldosa de barro",
+        floorTimberShort: "Tablas",
+        floorClayShort: "Barro",
         roofClay: "Teja",
         roofMetal: "Chapa de zinc",
         roofClayShort: "Teja",
@@ -4028,6 +4081,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         windowMetal: "Iron frame",
         windowTimberShort: "Timber",
         windowMetalShort: "Iron",
+        floorFinish: "Floor finish",
+        floorTimber: "Boards",
+        floorClay: "Clay tile",
+        floorTimberShort: "Boards",
+        floorClayShort: "Clay",
         roofClay: "Clay tile",
         roofMetal: "Standing seam",
         roofClayShort: "Clay",
@@ -4088,6 +4146,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedStairsFinish = stairsFinishOf(selectedPart, stairsFinish);
   const selectedRailingFinish = railingFinishOf(selectedPart, railingFinish);
   const selectedWindowFinish = windowFinishOf(selectedPart, windowFinish);
+  const selectedFloorFinish = floorFinishOf(selectedPart, floorFinish);
   void finishRev;
   const selectedLocked = selectedPart ? partFrozen(selectedPart, layers) : false;
   void lockRev;
@@ -4251,6 +4310,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     }
   };
 
+  const chooseFloorFinish = (next: FloorFinish) => {
+    floorFinishRef.current = next;
+    setFloorFinish(next);
+    const id = selectedRef.current;
+    const part = partsRef.current.find((p) => p.id === id);
+    const t = threeRef.current;
+    if (part && part.kind === "floor" && t && !partFrozen(part, layersRef.current)) {
+      const obj = findPartObject(part.id);
+      if (obj) {
+        applyFloorFinish(obj, t.mats, next);
+        obj.userData.floorFinish = next;
+        part.floorFinish = next;
+        setFinishRev((n) => n + 1);
+      }
+    }
+  };
+
   const paletteItems: { kind: PartKind; label: string; swatch: string; key: string; size: string }[] = [
     { kind: "wall", label: labels.wall, swatch: "#d8d0c4", key: "1", size: labels.sizeWall },
     { kind: "floor", label: labels.floor, swatch: "#8b7355", key: "2", size: labels.sizeFloor },
@@ -4325,6 +4401,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const id = selectedKind === "window" ? selectedWindowFinish : windowFinish;
       return id === "metal" ? labels.windowMetal : labels.windowTimber;
     }
+    if (kind === "floor") {
+      const id = selectedKind === "floor" ? selectedFloorFinish : floorFinish;
+      return id === "clay" ? labels.floorClay : labels.floorTimber;
+    }
     return null;
   };
   const finishShort = (kind: PartKind): string | null => {
@@ -4355,6 +4435,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (kind === "window") {
       const id = selectedKind === "window" ? selectedWindowFinish : windowFinish;
       return id === "metal" ? labels.windowMetalShort : labels.windowTimberShort;
+    }
+    if (kind === "floor") {
+      const id = selectedKind === "floor" ? selectedFloorFinish : floorFinish;
+      return id === "clay" ? labels.floorClayShort : labels.floorTimberShort;
     }
     return null;
   };
@@ -4905,6 +4989,36 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       key={id}
                       type="button"
                       onClick={() => chooseWallFinish(id)}
+                      aria-pressed={active}
+                      title={label}
+                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                        paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
+                      } ${
+                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
+                      }`}
+                    >
+                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
+                      <span className={`truncate leading-tight ${paletteCompact ? "max-w-full text-[9px]" : ""}`}>{paletteCompact ? shortLabel : label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {(tool === "floor" || selectedKind === "floor") && (
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.floorFinish}>
+              <p className={`mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground ${paletteCompact ? "sr-only" : ""}`}>{labels.floorFinish}</p>
+              <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
+                {([
+                  ["timber", labels.floorTimber, "#8b7355", labels.floorTimberShort],
+                  ["clay", labels.floorClay, "#8a4e3a", labels.floorClayShort],
+                ] as const).map(([id, label, swatch, shortLabel]) => {
+                  const active = (selectedKind === "floor" ? selectedFloorFinish : floorFinish) === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => chooseFloorFinish(id)}
                       aria-pressed={active}
                       title={label}
                       className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
