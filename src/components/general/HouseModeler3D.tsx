@@ -1165,6 +1165,17 @@ function paintHorizonHaze(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+/** Warm bank on the sun azimuth. Additive, so the horizon ring is not a flat wash. */
+function paintSunHorizon(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.clearRect(0, 0, size, size);
+  const g = ctx.createRadialGradient(size * 0.5, size * 0.72, size * 0.04, size * 0.5, size * 0.72, size * 0.55);
+  g.addColorStop(0, "rgba(255,196,120,0.55)");
+  g.addColorStop(0.35, "rgba(255,168,90,0.22)");
+  g.addColorStop(1, "rgba(255,168,90,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+}
+
 /** Late-day cirrus streaks. Transparent edges so banks sit in the sky shell, not as cards. */
 function paintCirrus(ctx: CanvasRenderingContext2D, size: number) {
   ctx.clearRect(0, 0, size, size);
@@ -2978,6 +2989,24 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const horizonHaze = new THREE.Mesh(hazeGeo, hazeMat);
       horizonHaze.position.y = 2.4;
       scene.add(horizonHaze);
+      // Low sun bank on the same azimuth as the key light. Additive, fog off, no shadow map.
+      const sunHorizonMap = makeCanvasTexture(128, paintSunHorizon, true);
+      const sunHorizonMat = new THREE.MeshBasicMaterial({
+        map: sunHorizonMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        fog: false,
+        toneMapped: false,
+        blending: THREE.AdditiveBlending,
+        side: THREE.DoubleSide,
+        opacity: 0.62,
+      });
+      const sunHorizon = new THREE.Mesh(new THREE.PlaneGeometry(86, 18), sunHorizonMat);
+      sunHorizon.position.set(sun.x * 108, 5.2, sun.z * 108);
+      sunHorizon.lookAt(0, 4.2, 0);
+      sunHorizon.castShadow = false;
+      sunHorizon.receiveShadow = false;
+      scene.add(sunHorizon);
 
       const partsRoot = new THREE.Group();
       scene.add(partsRoot);
@@ -3195,6 +3224,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           horizonHaze.geometry.dispose();
           hazeMat.dispose();
           hazeMap?.dispose();
+          sunHorizon.geometry.dispose();
+          sunHorizonMat.dispose();
+          sunHorizonMap?.dispose();
           footAo.geometry.dispose();
           footAoMat.dispose();
           footAoMap?.dispose();
