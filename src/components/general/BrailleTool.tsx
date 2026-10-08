@@ -112,7 +112,7 @@ export function BrailleTool({ locale = "en" }: { tool: GeneralTool; locale?: Loc
             setValue("");
           }}
         >
-          {es ? "Limpiar" : "Reset"}
+          {es ? "Limpiar" : "Clear"}
         </button>
       </div>
       <p className="text-sm text-muted-foreground">{status}</p>
