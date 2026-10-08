@@ -18,16 +18,12 @@ export function FavoriteButton({
   const copy =
     locale === "es"
       ? {
-          remove: "Quitar",
-          save: "Guardar",
           active: "En favoritos",
           inactive: "Guardar",
           ariaRemove: `Quitar ${name} de favoritos`,
           ariaSave: `Guardar ${name} en favoritos`,
         }
       : {
-          remove: "Remove",
-          save: "Save",
           active: "In favorites",
           inactive: "Save",
           ariaRemove: `Remove ${name} from favorites`,
@@ -36,10 +32,15 @@ export function FavoriteButton({
   return (
     <Button
       type="button"
-      variant="outline"
+      variant={active ? "default" : "outline"}
       onClick={() => toggle(slug)}
       aria-pressed={active}
       aria-label={active ? copy.ariaRemove : copy.ariaSave}
+      className={
+        active
+          ? "btn-press gap-2 border-amber-500/40 bg-amber-500/15 text-amber-800 hover:bg-amber-500/25 dark:text-amber-200"
+          : "btn-press gap-2"
+      }
     >
       <Star className="size-4" fill={active ? "currentColor" : "none"} />
       {active ? copy.active : copy.inactive}
