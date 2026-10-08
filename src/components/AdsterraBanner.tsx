@@ -59,24 +59,41 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
   useEffect(() => {
     if (!allowed || !viewport || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
     const slot = slotRef.current;
-    slot.dataset.loaded = "true";
-    const config = viewport === "desktop" ? DESKTOP : MOBILE;
+    let cancelled = false;
+    let script: HTMLScriptElement | null = null;
     const previous = (window as Window & { atOptions?: Record<string, unknown> }).atOptions;
-    (window as Window & { atOptions?: Record<string, unknown> }).atOptions = {
-      key: config.key,
-      format: "iframe",
-      height: config.height,
-      width: config.width,
-      params: {},
+
+    const inject = () => {
+      if (cancelled || slot.dataset.loaded === "true") return;
+      slot.dataset.loaded = "true";
+      const config = viewport === "desktop" ? DESKTOP : MOBILE;
+      (window as Window & { atOptions?: Record<string, unknown> }).atOptions = {
+        key: config.key,
+        format: "iframe",
+        height: config.height,
+        width: config.width,
+        params: {},
+      };
+      script = document.createElement("script");
+      script.async = true;
+      script.src = config.src;
+      script.dataset.utilihubAd = viewport;
+      slot.appendChild(script);
     };
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = config.src;
-    script.dataset.utilihubAd = viewport;
-    slot.appendChild(script);
+
+    // invoke.js does layout and timer work on the main thread. The 728×90 / 320×50
+    // slot is already reserved, so wait for idle (or 2s) before competing with
+    // hydration and the first click on the tool shell.
+    const idle = window.requestIdleCallback;
+    const idleId = typeof idle === "function" ? idle(inject, { timeout: 2000 }) : 0;
+    const timer = typeof idle === "function" ? 0 : window.setTimeout(inject, 1500);
+
     return () => {
+      cancelled = true;
+      if (idleId) window.cancelIdleCallback?.(idleId);
+      if (timer) window.clearTimeout(timer);
       if (previous) (window as Window & { atOptions?: Record<string, unknown> }).atOptions = previous;
-      script.remove();
+      script?.remove();
       if (slot.dataset.loaded) delete slot.dataset.loaded;
       slot.replaceChildren();
     };
