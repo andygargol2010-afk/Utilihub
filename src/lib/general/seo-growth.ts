@@ -91,8 +91,7 @@ export const SEO_GROWTH_TOOLS = [
     "tiempo de lectura",
     "words per minute",
   ]),
-  t("validador-luhn", "Luhn check digit validator", "seguridad", "number", "Validate a number sequence with the Luhn algorithm (local only).",
-    ["luhn", "check digit", "card validation"]),
+  // validador-luhn lives in luhn-tool.ts (dedicated UI + brand guess). Do not re-register here.
   t("punto-equilibrio-unidades", "Break-even units calculator", "utilidades", "number", "Find units to sell to cover fixed and variable costs.", [
     "break even",
     "punto de equilibrio",
