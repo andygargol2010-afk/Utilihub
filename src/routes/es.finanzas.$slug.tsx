@@ -115,6 +115,7 @@ function SpanishFinancialToolPage() {
     <main className="container-page py-10 sm:py-14">
       <Breadcrumbs
         locale="es"
+        back={{ label: "Finanzas", to: "/es/finanzas" }}
         items={[
           { label: "Inicio", to: "/es" },
           { label: "Finanzas", to: "/es/finanzas" },
