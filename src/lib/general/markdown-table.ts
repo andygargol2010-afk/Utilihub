@@ -60,6 +60,31 @@ function parseLine(line: string, delimiter: string): string[] {
   return cells;
 }
 
+function splitRecords(raw: string): string[] {
+  const records: string[] = [];
+  let start = 0;
+  let quoted = false;
+  for (let i = 0; i < raw.length; i += 1) {
+    const char = raw[i];
+    if (char === '"') {
+      if (quoted && raw[i + 1] === '"') {
+        i += 1;
+        continue;
+      }
+      quoted = !quoted;
+      continue;
+    }
+    if (char === "\n" && !quoted) {
+      const record = raw.slice(start, i).replace(/\r$/, "");
+      if (record.trim().length > 0) records.push(record);
+      start = i + 1;
+    }
+  }
+  const last = raw.slice(start).replace(/\r$/, "");
+  if (last.trim().length > 0) records.push(last);
+  return records;
+}
+
 export function escapeCell(value: string): string {
   return value.replace(/\|/g, "\\|").replace(/\r?\n/g, " ");
 }
@@ -69,10 +94,7 @@ export function buildMarkdownTable(
   options: { delimiter: DelimiterChoice; header: boolean; align: AlignChoice },
 ): MarkdownTableResult {
   const issues: MarkdownTableIssue[] = [];
-  const lines = raw
-    .replace(/^\uFEFF/, "")
-    .split(/\r?\n/)
-    .filter((line) => line.trim().length > 0);
+  const lines = splitRecords(raw.replace(/^\uFEFF/, ""));
 
   if (lines.length === 0) {
     return { markdown: "", issues: [{ level: "error", code: "empty" }], rows: 0, columns: 0, delimiter: "," };
