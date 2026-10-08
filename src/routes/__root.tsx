@@ -11,8 +11,6 @@ import { SpanishSiteHeader } from "@/components/SpanishSiteHeader";
 import { SpanishSiteFooter } from "@/components/SpanishSiteFooter";
 import { AdsterraSocialBar } from "@/components/AdsterraSocialBar";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
-import { useShareableParams } from "@/hooks/use-shareable-params";
-import { useDailyStreak } from "@/hooks/use-daily-streak";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 
 function useIsSpanish() {
@@ -186,8 +184,6 @@ function DeferredInsights() {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const isSpanish = useIsSpanish();
-  useShareableParams();
-  useDailyStreak();
 
   return (
     <QueryClientProvider client={queryClient}>
