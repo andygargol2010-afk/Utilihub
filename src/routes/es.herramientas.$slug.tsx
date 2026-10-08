@@ -19,8 +19,8 @@ import {
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
-import { getToolShowcase } from "@/lib/tool-showcase";
+import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
+import { hasToolShowcase } from "@/lib/showcase-slugs";
 
 export const Route = createFileRoute("/es/herramientas/$slug")({
   loader: async ({ params }) => {
@@ -120,7 +120,7 @@ function SpanishToolPage() {
   const { tool } = Route.useLoaderData();
   const { addRecent } = useRecentTools();
   const category = ALL_CATEGORIES.find((item) => item.slug === tool.category);
-  const showcase = getToolShowcase(tool.slug);
+  const showcase = hasToolShowcase(tool.slug);
   const name = spanishToolName(tool);
   useEffect(() => {
     addRecent(tool.slug);
@@ -146,7 +146,7 @@ function SpanishToolPage() {
         ]}
       />
       {showcase ? (
-        <ToolShowcaseHero name={name} slug={tool.slug} showcase={showcase} locale="es" />
+        <DeferredShowcaseHero name={name} slug={tool.slug} locale="es" />
       ) : (
         <div className="mt-3 flex items-center justify-between gap-3">
           <div className="min-w-0">

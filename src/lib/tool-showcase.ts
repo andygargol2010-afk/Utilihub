@@ -194,3 +194,16 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
 export function getToolShowcase(slug: string): ToolShowcase | undefined {
   return TOOL_SHOWCASE[slug];
 }
+
+/** Dev-only drift check. Routes import showcase-slugs, not this module. */
+if (import.meta.env?.DEV) {
+  void import("./showcase-slugs").then(({ SHOWCASE_SLUGS }) => {
+    const keys = Object.keys(TOOL_SHOWCASE);
+    const missing = keys.filter((slug) => !SHOWCASE_SLUGS.has(slug));
+    const extra = [...SHOWCASE_SLUGS].filter((slug) => !(slug in TOOL_SHOWCASE));
+    if (missing.length || extra.length) {
+      console.warn("UtiliHub showcase slug drift", { missing, extra });
+    }
+  });
+}
+

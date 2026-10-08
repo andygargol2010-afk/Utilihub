@@ -16,8 +16,8 @@ import {
 import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } from "@/lib/seo";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { ToolShowcaseHero } from "@/components/ToolShowcaseHero";
-import { getToolShowcase } from "@/lib/tool-showcase";
+import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
+import { hasToolShowcase } from "@/lib/showcase-slugs";
 
 export const Route = createFileRoute("/tools/$slug")({
   loader: async ({ params }) => {
@@ -109,7 +109,7 @@ function ToolPage() {
   if (!category) return <p className="container-page py-10">Tool not available.</p>;
 
   const categoryPublicSlug = englishCategorySlug(category.slug);
-  const showcase = getToolShowcase(tool.slug);
+  const showcase = hasToolShowcase(tool.slug);
 
   return (
     <div className="container-page py-6 sm:py-8">
@@ -122,7 +122,7 @@ function ToolPage() {
         ]}
       />
       {showcase ? (
-        <ToolShowcaseHero name={tool.name} slug={tool.slug} showcase={showcase} locale="en" />
+        <DeferredShowcaseHero name={tool.name} slug={tool.slug} locale="en" />
       ) : (
         <div className="mt-3 flex items-center justify-between gap-3">
           <div className="min-w-0">
