@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { KitCarryBoard } from "@/components/kits/KitCarryBoard";
 import { ToolCard } from "@/components/ToolCard";
 import { kitBySlug, kitTools, kitEnglishPath } from "@/lib/work-kits";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
@@ -95,6 +96,11 @@ function SpanishKitPage() {
           <CheckCircle2 className="size-4 text-primary" /> {es.outcome}
         </p>
       </header>
+      <KitCarryBoard
+        locale="es"
+        kitSlug={kit.slug}
+        steps={tools.map((tool) => ({ slug: tool.slug, label: tool.name }))}
+      />
       <section className="mt-8" aria-labelledby="kit-steps">
         <h2 id="kit-steps" className="text-base font-bold">Pasos del kit</h2>
         <div className="mt-3 divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
