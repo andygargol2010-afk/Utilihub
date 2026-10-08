@@ -1219,6 +1219,20 @@ function paintSiteShade(ctx: CanvasRenderingContext2D, size: number) {
   ctx.globalCompositeOperation = "source-over";
 }
 
+/** Annular seat where the gravel disc meets grass. Center stays clear so the pad is not double-darkened. */
+function paintPadSeat(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.clearRect(0, 0, size, size);
+  const c = size / 2;
+  const g = ctx.createRadialGradient(c, c, size * 0.34, c, c, size * 0.5);
+  g.addColorStop(0, "rgba(28,24,16,0)");
+  g.addColorStop(0.72, "rgba(28,24,16,0)");
+  g.addColorStop(0.84, "rgba(28,24,16,0.42)");
+  g.addColorStop(0.93, "rgba(28,24,16,0.16)");
+  g.addColorStop(1, "rgba(28,24,16,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+}
+
 /** Late-day wash on the meadow, not the pad. Warm lobe faces the sun; cool lobe sits opposite. */
 function paintMeadowWash(ctx: CanvasRenderingContext2D, size: number) {
   ctx.clearRect(0, 0, size, size);
@@ -2889,6 +2903,26 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       padCast.receiveShadow = false;
       scene.add(padCast);
 
+      // Soft seat under the gravel lip so the disc reads as set into the lawn. One 128px ring, no shadow map.
+      const padSeatMap = makeCanvasTexture(128, paintPadSeat, true);
+      const padSeatMat = new THREE.MeshBasicMaterial({
+        map: padSeatMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        toneMapped: false,
+        opacity: 0.62,
+      });
+      padSeatMat.polygonOffset = true;
+      padSeatMat.polygonOffsetFactor = -1;
+      padSeatMat.polygonOffsetUnits = -1;
+      const padSeat = new THREE.Mesh(new THREE.CircleGeometry(13.2, 56), padSeatMat);
+      padSeat.rotation.x = -Math.PI / 2;
+      padSeat.position.y = 0.009;
+      padSeat.renderOrder = 1;
+      padSeat.castShadow = false;
+      padSeat.receiveShadow = false;
+      scene.add(padSeat);
+
       // Sun-side light, opposite olive shade on the pad. Sits above gravel, fades at the rim.
       const shadeMap = makeCanvasTexture(256, paintSiteShade, true);
       const shadeMat = new THREE.MeshBasicMaterial({
@@ -3149,6 +3183,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           padCast.geometry.dispose();
           padCastMat.dispose();
           padCastMap?.dispose();
+          padSeat.geometry.dispose();
+          padSeatMat.dispose();
+          padSeatMap?.dispose();
           siteShade.geometry.dispose();
           shadeMat.dispose();
           shadeMap?.dispose();
