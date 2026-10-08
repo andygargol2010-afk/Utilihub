@@ -5,8 +5,14 @@ const ToolShowcaseHero = lazy(() =>
   import("@/components/ToolShowcaseHero").then((m) => ({ default: m.ToolShowcaseHero })),
 );
 
+/** PNG to JPG hero: 291px at 412px wide, 312px at desktop. Keep the slot at that floor. */
 function HeroSlot() {
-  return <div className="mt-3 min-h-[220px] animate-pulse rounded-[1.5rem] bg-muted/50 sm:min-h-[248px]" aria-hidden />;
+  return (
+    <div
+      className="mt-3 min-h-[291px] animate-pulse rounded-[1.5rem] bg-muted/50 lg:min-h-[312px]"
+      aria-hidden
+    />
+  );
 }
 
 /**

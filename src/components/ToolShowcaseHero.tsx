@@ -158,7 +158,7 @@ export function ToolShowcaseHero({
 
   return (
     <section
-      className="relative mt-3 overflow-hidden rounded-[1.5rem] text-white"
+      className="relative mt-3 min-h-[291px] overflow-hidden rounded-[1.5rem] text-white lg:min-h-[312px]"
       aria-labelledby="showcase-title"
       style={{ background: theme.bg }}
     >
