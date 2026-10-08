@@ -3536,38 +3536,49 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       // Do not swallow browser chords (Ctrl/Cmd+R reload, Ctrl/Cmd+F find, Alt+arrows).
       if (e.ctrlKey || e.metaKey || e.altKey) return;
 
+      const selId = selectedRef.current;
+      const selPart = selId ? partsRef.current.find((part) => part.id === selId) : undefined;
+      const canMutate = !!selPart && !partFrozen(selPart, layersRef.current);
+      // Backspace/arrows must not be swallowed when nothing can move — that blocked history and page scroll.
       if (e.key === "Delete" || e.key === "Backspace") {
+        if (!canMutate) return;
         e.preventDefault();
         deleteSelected();
       }
       if (e.key.toLowerCase() === "r") {
+        if (!canMutate) return;
         e.preventDefault();
         rotateSelected();
       }
-      if (e.key === "ArrowLeft") {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown") {
+        if (!canMutate || paletteDragRef.current || draggingRef.current) return;
         e.preventDefault();
-        nudgeSelected(-GRID, 0);
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault();
-        nudgeSelected(GRID, 0);
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        nudgeSelected(0, -GRID);
-      } else if (e.key === "ArrowDown") {
-        e.preventDefault();
-        nudgeSelected(0, GRID);
+        if (e.key === "ArrowLeft") nudgeSelected(-GRID, 0);
+        else if (e.key === "ArrowRight") nudgeSelected(GRID, 0);
+        else if (e.key === "ArrowUp") nudgeSelected(0, -GRID);
+        else nudgeSelected(0, GRID);
       }
-      if (e.key === "1") setTool("wall");
-      if (e.key === "2") setTool("floor");
-      if (e.key === "3") setTool("roof");
-      if (e.key === "4") setTool("column");
-      if (e.key === "5") setTool("door");
-      if (e.key === "6") setTool("window");
-      if (e.key === "7") setTool("stairs");
-      if (e.key === "8") setTool("railing");
-      if (e.key === "9") setTool("chimney");
-      if (e.key === "0") setTool("beam");
-      if (e.key.toLowerCase() === "q") setTool("foundation");
+      // A palette/ground place commits on pointerup with toolRef. Switching tools mid-gesture
+      // placed a different kind than the ghost the pointer was showing.
+      const gestureLive = !!(
+        paletteDragRef.current ||
+        pendingPlaceRef.current ||
+        draggingRef.current ||
+        dragArmRef.current
+      );
+      if (!gestureLive) {
+        if (e.key === "1") setTool("wall");
+        if (e.key === "2") setTool("floor");
+        if (e.key === "3") setTool("roof");
+        if (e.key === "4") setTool("column");
+        if (e.key === "5") setTool("door");
+        if (e.key === "6") setTool("window");
+        if (e.key === "7") setTool("stairs");
+        if (e.key === "8") setTool("railing");
+        if (e.key === "9") setTool("chimney");
+        if (e.key === "0") setTool("beam");
+        if (e.key.toLowerCase() === "q") setTool("foundation");
+      }
       if (e.key.toLowerCase() === "l" && !e.repeat) {
         e.preventDefault();
         toggleLockSelected();
@@ -3596,6 +3607,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           setDragCursor(null);
           draggingRef.current = null;
           dragArmRef.current = null;
+          moveChipPosRef.current = { x: 0, y: 0, text: "" };
+          setMoveChip(null);
+          setLockHint(null);
           if (threeRef.current) {
             threeRef.current.controls.enabled = true;
             if (threeRef.current.ghost) threeRef.current.ghost.visible = true;
