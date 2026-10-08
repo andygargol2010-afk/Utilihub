@@ -36,9 +36,22 @@ function SpanishToolPage() {
   const ui = TOOL_UI_ES[tool.slug] ?? GENERAL_TOOL_UI_ES[tool.slug];
   const showcase = getToolShowcase(tool.slug);
   const name = spanishToolName(tool);
+  const catLabel = category ? spanishCategoryName(category.slug) : "Categoría";
   useEffect(() => { addRecent(tool.slug); }, [addRecent, tool.slug]);
   return <main className="container-page py-6 sm:py-8">
-    <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Herramientas", to: "/es/herramientas" }, { label: category ? spanishCategoryName(category.slug) : "Categoría" }, { label: name }]} />
+    <Breadcrumbs
+      locale="es"
+      items={[
+        { label: "Inicio", to: "/es" },
+        { label: "Herramientas", to: "/es/herramientas" },
+        { label: catLabel },
+        { label: name },
+      ]}
+      back={{
+        label: `Volver a ${catLabel}`,
+        to: "/es/herramientas",
+      }}
+    />
     {showcase ? (
       <ToolShowcaseHero name={name} slug={tool.slug} showcase={showcase} locale="es" />
     ) : (
