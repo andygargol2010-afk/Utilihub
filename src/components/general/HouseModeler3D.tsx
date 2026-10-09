@@ -400,6 +400,38 @@ function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
       ctx.fill();
     }
   }
+  // Vertical pour joint so the strip is not one continuous board.
+  ctx.fillStyle = "rgba(72,64,54,0.48)";
+  ctx.fillRect(Math.floor(size * 0.5) - 1, 0, 2, size);
+}
+
+/** Height for board joints and form-tie cones. Shared; do not dispose per part. */
+function paintBoardFormedBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#9a9a9a";
+  ctx.fillRect(0, 0, size, size);
+  const boards = 4;
+  for (let i = 0; i < boards; i++) {
+    const y0 = Math.floor((i / boards) * size);
+    const y1 = Math.floor(((i + 1) / boards) * size);
+    ctx.fillStyle = hash2(i, 1.1) > 0.5 ? "rgba(228,228,228,0.32)" : "rgba(48,48,48,0.2)";
+    ctx.fillRect(0, y0 + 2, size, Math.max(1, y1 - y0 - 4));
+    ctx.fillStyle = "rgba(18,18,18,0.88)";
+    ctx.fillRect(0, y1 - 4, size, 4);
+    for (let h = 0; h < 3; h++) {
+      const x = (0.16 + hash2(i, h + 3.2) * 0.68) * size;
+      const y = (y0 + y1) / 2;
+      ctx.fillStyle = "rgba(16,16,16,0.92)";
+      ctx.beginPath();
+      ctx.arc(x, y, 3.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(214,214,214,0.55)";
+      ctx.beginPath();
+      ctx.arc(x - 0.7, y - 0.7, 1.15, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  ctx.fillStyle = "rgba(12,12,12,0.72)";
+  ctx.fillRect(Math.floor(size * 0.5) - 2, 0, 3, size);
 }
 
 /** Running-bond ashlar for wall faces. Port of the plinth course, scaled for a 2.6 m bay. */
@@ -1662,12 +1694,13 @@ function makeMaterials() {
     paintBoardFormed(ctx, s);
     paintRoughFromAlbedo(ctx, s, 188, 42, true);
   }, false);
+  const footingBump = makeCanvasTexture(TEX, paintBoardFormedBump, false);
   const footing = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     map: footingMap ?? undefined,
     roughnessMap: footingRough ?? undefined,
-    bumpMap: footingRough ?? undefined,
-    bumpScale: 0.02,
+    bumpMap: footingBump ?? undefined,
+    bumpScale: 0.034,
     roughness: 0.86,
     metalness: 0.02,
   });
