@@ -24,6 +24,7 @@ export default defineConfig({
     // Those modules stay dynamic-imported; the browser loads them on use.
     // home-catalog is idle-prefetched after first paint (index / es.index).
     // Do not also modulepreload it — or the featured block it pulls — ahead of CSS and the hero font.
+    // KitReturnRibbon is idle-imported on tool shells; work-kits pulls all-tools.
     modulePreload: {
       polyfill: false,
       resolveDependencies(_filename, deps) {
@@ -34,7 +35,9 @@ export default defineConfig({
             !dep.includes("vendor-xlsx") &&
             !dep.includes("vendor-three") &&
             !dep.includes("home-catalog") &&
-            !dep.includes("HomeFeatured"),
+            !dep.includes("HomeFeatured") &&
+            !dep.includes("KitReturnRibbon") &&
+            !dep.includes("work-kits"),
         );
       },
     },
