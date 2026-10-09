@@ -132,6 +132,7 @@ const BpmDelayTool = lazy(() => import("./BpmDelayTool").then((m) => ({ default:
 const VcardTool = lazy(() => import("./VcardTool").then((m) => ({ default: m.VcardTool })));
 const SecurityTxtTool = lazy(() => import("./SecurityTxtTool").then((m) => ({ default: m.SecurityTxtTool })));
 const RutChileTool = lazy(() => import("./RutChileTool").then((m) => ({ default: m.RutChileTool })));
+const MorseTool = lazy(() => import("./MorseTool").then((m) => ({ default: m.MorseTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -212,6 +213,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "generador-vcard") return VcardTool as ToolComp;
   if (tool.slug === "generador-security-txt") return SecurityTxtTool as ToolComp;
   if (tool.slug === "validador-rut-chile") return RutChileTool as ToolComp;
+  if (tool.slug === "traductor-morse") return MorseTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
