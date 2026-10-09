@@ -118,6 +118,7 @@ import { RICE_TOOLS } from "./rice-tool";
 import { SRT_OFFSET_TOOLS } from "./srt-offset-tool";
 import { MANIFEST_TOOLS } from "./manifest-tool";
 import { OKLCH_TOOLS } from "./oklch-tool";
+import { WHATSAPP_LINK_TOOLS } from "./whatsapp-link-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -241,4 +242,5 @@ export const GENERAL_TOOLS = [
   ...SRT_OFFSET_TOOLS,
   ...MANIFEST_TOOLS,
   ...OKLCH_TOOLS,
+  ...WHATSAPP_LINK_TOOLS,
 ];

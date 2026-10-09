@@ -186,6 +186,7 @@ const EXACT_NAMES: Record<string, string> = {
   "desfase-srt": "Desfase de subtítulos SRT",
   "generador-manifest-pwa": "Generador de manifest PWA",
   "convertidor-oklch": "Conversor OKLCH a hex",
+  "generador-enlace-whatsapp": "Generador de enlace de WhatsApp",
   "punto-equilibrio-unidades": "Punto de equilibrio (unidades)",
   "mpg-a-litros": "MPG a L/100 km",
   "ppi-pantalla": "PPI de pantalla",
