@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ToolListBrowser } from "@/components/ToolListBrowser";
-import { ALL_TOOLS } from "@/lib/all-tools";
+import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
 import { absoluteUrl } from "@/lib/seo";
 import { spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 
@@ -29,7 +29,8 @@ export const Route = createFileRoute("/es/finanzas/")({
 });
 
 function SpanishFinanceIndex() {
-  const tools = ALL_TOOLS.filter((tool) => tool.category === "finanzas");
+  // Finance-only catalog. ALL_TOOLS also pulls the general registry (~480KB) into this route chunk.
+  const tools = FINANCIAL_TOOLS;
   const browseItems = tools.map((tool) => ({
     id: tool.slug,
     name: spanishToolName(tool),
