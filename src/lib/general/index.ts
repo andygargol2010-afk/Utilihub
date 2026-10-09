@@ -112,6 +112,7 @@ import { VCARD_TOOLS } from "./vcard-tool";
 import { SECURITY_TXT_TOOLS } from "./security-txt-tool";
 import { RUT_CHILE_TOOLS } from "./rut-chile-tool";
 import { MORSE_TOOLS } from "./morse-tool";
+import { ROMAN_TOOLS } from "./roman-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -229,4 +230,5 @@ export const GENERAL_TOOLS = [
   ...SECURITY_TXT_TOOLS,
   ...RUT_CHILE_TOOLS,
   ...MORSE_TOOLS,
+  ...ROMAN_TOOLS,
 ];
