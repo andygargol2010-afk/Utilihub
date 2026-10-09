@@ -158,6 +158,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Mové las curvas de oferta y demanda, agregá un impuesto unitario y mirá precio, cantidad, ingresos y excedentes de equilibrio.",
   },
+  {
+    slug: "standing-wave",
+    slugEs: "ondas-estacionarias",
+    nameEn: "Standing wave",
+    nameEs: "Onda estacionaria",
+    tag: "physics",
+    theme: "lab",
+    emoji: "🌊",
+    badgeEn: "String harmonics",
+    badgeEs: "Armónicos de cuerda",
+    summaryEn:
+      "A string fixed at both ends. Pick the harmonic, amplitude, and tension. Nodes stay still; wavelength is 2L/n.",
+    summaryEs:
+      "Cuerda fija en ambos extremos. Elegí el armónico, la amplitud y la tensión. Los nodos no se mueven; la longitud de onda es 2L/n.",
+  },
 ] as const;
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
