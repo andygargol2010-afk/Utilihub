@@ -188,6 +188,7 @@ const EXACT_NAMES: Record<string, string> = {
   "convertidor-oklch": "Conversor OKLCH a hex",
   "generador-enlace-whatsapp": "Generador de enlace de WhatsApp",
   "conversor-semana-iso": "Conversor de semana ISO",
+  "conversor-escala-beaufort": "Conversor de escala Beaufort",
   "punto-equilibrio-unidades": "Punto de equilibrio (unidades)",
   "mpg-a-litros": "MPG a L/100 km",
   "ppi-pantalla": "PPI de pantalla",

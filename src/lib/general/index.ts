@@ -120,6 +120,7 @@ import { MANIFEST_TOOLS } from "./manifest-tool";
 import { OKLCH_TOOLS } from "./oklch-tool";
 import { WHATSAPP_LINK_TOOLS } from "./whatsapp-link-tool";
 import { ISO_WEEK_TOOLS } from "./iso-week-tool";
+import { BEAUFORT_TOOLS } from "./beaufort-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -245,4 +246,5 @@ export const GENERAL_TOOLS = [
   ...OKLCH_TOOLS,
   ...WHATSAPP_LINK_TOOLS,
   ...ISO_WEEK_TOOLS,
+  ...BEAUFORT_TOOLS,
 ];

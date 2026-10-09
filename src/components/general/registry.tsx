@@ -141,6 +141,7 @@ const ManifestTool = lazy(() => import("./ManifestTool").then((m) => ({ default:
 const OklchTool = lazy(() => import("./OklchTool").then((m) => ({ default: m.OklchTool })));
 const WhatsAppLinkTool = lazy(() => import("./WhatsAppLinkTool").then((m) => ({ default: m.WhatsAppLinkTool })));
 const IsoWeekTool = lazy(() => import("./IsoWeekTool").then((m) => ({ default: m.IsoWeekTool })));
+const BeaufortTool = lazy(() => import("./BeaufortTool").then((m) => ({ default: m.BeaufortTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -230,6 +231,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "convertidor-oklch") return OklchTool as ToolComp;
   if (tool.slug === "generador-enlace-whatsapp") return WhatsAppLinkTool as ToolComp;
   if (tool.slug === "conversor-semana-iso") return IsoWeekTool as ToolComp;
+  if (tool.slug === "conversor-escala-beaufort") return BeaufortTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
