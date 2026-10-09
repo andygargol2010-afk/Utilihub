@@ -557,6 +557,50 @@ function paintChimneyBrickBump(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+/** Crown and flue pots: weathered clay cap, not a second roof-tile map. */
+function paintChimneyCrown(ctx: CanvasRenderingContext2D, size: number) {
+  noiseFill(ctx, size, [148, 78, 52], 16);
+  const courses = 4;
+  for (let r = 0; r < courses; r++) {
+    const y0 = Math.floor((r / courses) * size);
+    const y1 = Math.floor(((r + 1) / courses) * size);
+    const tone = 128 + Math.floor(hash2(r, 4.4) * 36);
+    ctx.fillStyle = `rgb(${tone + 22}, ${tone - 18}, ${tone - 42})`;
+    ctx.fillRect(0, y0, size, y1 - y0);
+    ctx.fillStyle = "rgba(214, 186, 160, 0.55)";
+    ctx.fillRect(0, y1 - 3, size, 3);
+  }
+  // Soot ring under the flue opening, lighter lime bloom on the drip edge.
+  const soot = ctx.createRadialGradient(size * 0.5, size * 0.42, size * 0.06, size * 0.5, size * 0.42, size * 0.46);
+  soot.addColorStop(0, "rgba(36, 30, 26, 0.55)");
+  soot.addColorStop(0.45, "rgba(48, 36, 30, 0.22)");
+  soot.addColorStop(1, "rgba(48, 36, 30, 0)");
+  ctx.fillStyle = soot;
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = "rgba(186, 168, 142, 0.28)";
+  ctx.fillRect(0, size - 8, size, 8);
+  ctx.fillStyle = "rgba(62, 34, 22, 0.35)";
+  ctx.fillRect(0, 0, 4, size);
+  ctx.fillRect(size - 4, 0, 4, size);
+}
+
+function paintChimneyCrownBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#a8a8a8";
+  ctx.fillRect(0, 0, size, size);
+  const courses = 4;
+  ctx.fillStyle = "#ececec";
+  for (let r = 1; r <= courses; r++) {
+    const y = Math.floor((r / courses) * size);
+    ctx.fillRect(0, y - 2, size, 3);
+  }
+  ctx.fillStyle = "#3a3a3a";
+  ctx.beginPath();
+  ctx.arc(size * 0.5, size * 0.42, size * 0.16, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#d8d8d8";
+  ctx.fillRect(0, size - 7, size, 4);
+}
+
 function paintTimber(ctx: CanvasRenderingContext2D, size: number) {
   const planks = 6;
   for (let i = 0; i < planks; i++) {
@@ -1722,6 +1766,24 @@ function makeMaterials() {
     roughness: 0.88,
     metalness: 0.02,
   });
+  const chimneyCrownMap = makeCanvasTexture(TEX, paintChimneyCrown, true);
+  const chimneyCrownRough = makeCanvasTexture(TEX, (ctx, s) => {
+    paintChimneyCrown(ctx, s);
+    paintRoughFromAlbedo(ctx, s, 154, 52, true);
+  }, false);
+  const chimneyCrownBump = makeCanvasTexture(TEX, paintChimneyCrownBump, false);
+  applyRepeat(chimneyCrownMap, 1.2, 1.1);
+  applyRepeat(chimneyCrownRough, 1.2, 1.1);
+  applyRepeat(chimneyCrownBump, 1.2, 1.1);
+  const chimneyCrown = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: chimneyCrownMap ?? undefined,
+    roughnessMap: chimneyCrownRough ?? undefined,
+    bumpMap: chimneyCrownBump ?? undefined,
+    bumpScale: 0.032,
+    roughness: 0.82,
+    metalness: 0.02,
+  });
   const doorLeaf = new THREE.MeshStandardMaterial({
     color: 0xffffff,
     map: doorMap ?? undefined,
@@ -1767,7 +1829,7 @@ function makeMaterials() {
     transparent: true,
     opacity: 0.58,
   });
-  return { wall, wallMasonry, wallEdge, floor, floorClay, roof, roofMetal, ground, gravel, plate, nosing, fascia, doorLeaf, doorMetal, railingMetal, joinery, doorGlass, footing, chimney };
+  return { wall, wallMasonry, wallEdge, floor, floorClay, roof, roofMetal, ground, gravel, plate, nosing, fascia, doorLeaf, doorMetal, railingMetal, joinery, doorGlass, footing, chimney, chimneyCrown };
 }
 
 function applyWallFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: WallFinish) {
@@ -2245,19 +2307,19 @@ function createChimneyMesh(mats: ReturnType<typeof makeMaterials>) {
   shoulder.castShadow = true;
   staggerUvs(shoulder);
   group.add(shoulder);
-  const crown = new THREE.Mesh(new THREE.BoxGeometry(0.84, 0.08, 0.84), mats.roof);
+  const crown = new THREE.Mesh(new THREE.BoxGeometry(0.84, 0.08, 0.84), mats.chimneyCrown);
   crown.position.y = 2.85;
   crown.castShadow = true;
   crown.receiveShadow = true;
   staggerUvs(crown);
   group.add(crown);
   for (const x of [-0.16, 0.16]) {
-    const pot = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.32, 0.2), mats.roof);
+    const pot = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.32, 0.2), mats.chimneyCrown);
     pot.position.set(x, 3.06, 0);
     pot.castShadow = true;
     pot.receiveShadow = true;
     group.add(pot);
-    const lip = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.04, 0.24), mats.roof);
+    const lip = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.04, 0.24), mats.chimneyCrown);
     lip.position.set(x, 3.24, 0);
     lip.castShadow = true;
     group.add(lip);
