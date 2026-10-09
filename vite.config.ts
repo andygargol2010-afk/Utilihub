@@ -25,6 +25,7 @@ export default defineConfig({
     // home-catalog is idle-prefetched after first paint (index / es.index).
     // Do not also modulepreload it — or the featured block it pulls — ahead of CSS and the hero font.
     // KitReturnRibbon is idle-imported on tool shells; work-kits pulls all-tools.
+    // FinanceJourney is the deferred related-calculator block; discovery pulls all-tools.
     modulePreload: {
       polyfill: false,
       resolveDependencies(_filename, deps) {
@@ -37,7 +38,9 @@ export default defineConfig({
             !dep.includes("home-catalog") &&
             !dep.includes("HomeFeatured") &&
             !dep.includes("KitReturnRibbon") &&
-            !dep.includes("work-kits"),
+            !dep.includes("work-kits") &&
+            !dep.includes("FinanceJourney") &&
+            !dep.includes("discovery"),
         );
       },
     },
