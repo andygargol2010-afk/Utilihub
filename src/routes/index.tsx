@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
+import { HomeCatalogSlot } from "@/components/home-catalog-slot";
 import { AdBanner } from "@/components/AdBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
 
@@ -152,7 +153,7 @@ function HomePage() {
       </section>
       <AdBanner />
       <div className="container-page">
-        <Suspense fallback={<div className="min-h-48" />}>
+        <Suspense fallback={<HomeCatalogSlot />}>
           <HomeCatalogRest locale="en" />
         </Suspense>
         <DeferredHomeReviews locale="en" />
