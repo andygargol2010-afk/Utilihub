@@ -22,6 +22,8 @@ export default defineConfig({
     // Drop heavy on-demand chunks from the automatic modulepreload list so
     // home EN/ES do not fetch pdf.js / jspdf / xlsx / three.js before LCP.
     // Those modules stay dynamic-imported; the browser loads them on use.
+    // home-catalog is idle-prefetched after first paint (index / es.index).
+    // Do not also modulepreload it — or the featured block it pulls — ahead of CSS and the hero font.
     modulePreload: {
       polyfill: false,
       resolveDependencies(_filename, deps) {
@@ -30,7 +32,9 @@ export default defineConfig({
             !dep.includes("vendor-pdf") &&
             !dep.includes("vendor-export") &&
             !dep.includes("vendor-xlsx") &&
-            !dep.includes("vendor-three"),
+            !dep.includes("vendor-three") &&
+            !dep.includes("home-catalog") &&
+            !dep.includes("HomeFeatured"),
         );
       },
     },
