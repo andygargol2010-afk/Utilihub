@@ -6169,16 +6169,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             </div>
           )}
           </div>
-          {paletteItems.map((item) => (
+          {paletteItems.map((item) => {
+            const placed = partsRef.current.filter((part) => part.kind === item.kind).length;
+            return (
             <button
               key={item.kind}
               type="button"
               onPointerDown={startPaletteDrag(item.kind)}
               onClick={() => setTool(item.kind)}
               aria-pressed={tool === item.kind}
-              aria-label={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} (${item.key})`}
-              title={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} · ${item.size} · ${labels.dragHint} (${item.key})`}
-            className={`group flex min-h-11 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
+              aria-label={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} (${item.key})${placed ? ` · ${placed} ${labels.parts}` : ""}`}
+              title={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} · ${item.size} · ${labels.dragHint} (${item.key})${placed ? ` · ${placed} ${labels.parts}` : ""}`}
+            className={`group relative flex min-h-11 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
                 tool === item.kind
                   ? "border-amber-700/70 bg-amber-900/20 shadow-sm ring-1 ring-amber-700/40"
                   : selectedKind === item.kind
@@ -6186,6 +6188,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                     : "border-border bg-background/80 hover:bg-accent"
               } ${placingFromPalette && tool === item.kind ? "scale-[0.98] ring-2 ring-amber-600" : ""}`}
             >
+              {placed > 0 && (
+                <span
+                  className="absolute right-1 top-1 min-w-[1.1rem] rounded-full bg-amber-800 px-1 text-center text-[9px] font-bold leading-4 text-amber-50 ring-1 ring-amber-100/40"
+                  aria-hidden
+                >
+                  {placed}
+                </span>
+              )}
               <StructureGlyph kind={item.kind} />
               {variantPair(item.kind) ? (
                 <span className="flex items-center gap-1" aria-hidden>
@@ -6222,7 +6232,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 {selectedKind === item.kind ? ` · ${labels.selectedMark}` : ""}
               </span>
             </button>
-          ))}
+            );
+          })}
 
           <div className="rounded-xl border border-border bg-background/80 p-1.5">
             {!paletteCompact && (
