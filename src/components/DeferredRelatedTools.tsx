@@ -17,12 +17,18 @@ export function DeferredRelatedTools({
   locale: "en" | "es";
 }) {
   return (
-    <Suspense
-      fallback={
-        <div className="mt-5 h-28 rounded-2xl border border-border/50 bg-card/30" aria-hidden />
-      }
-    >
+    <Suspense fallback={<RelatedToolsSlot />}>
       <RelatedToolPath tool={tool} locale={locale} />
     </Suspense>
+  );
+}
+
+/** Next-step card plus four compact rows. Same floor as RelatedToolPath so the ad/SEO below do not jump when the chunk arrives. */
+function RelatedToolsSlot() {
+  return (
+    <div aria-hidden>
+      <div className="mt-5 min-h-[8.75rem] rounded-2xl border border-border/50 bg-card/30" />
+      <div className="mt-8 min-h-[22rem] rounded-xl border border-border/50 bg-card/20" />
+    </div>
   );
 }

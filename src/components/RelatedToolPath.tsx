@@ -50,7 +50,7 @@ export function RelatedToolPath({ tool, locale }: { tool: CatalogTool; locale: "
     <>
       {nextStep && (
         <section
-          className="mt-5 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5"
+          className="mt-5 min-h-[8.75rem] rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5"
           aria-labelledby={es ? "next-step-es" : "next-step"}
         >
           <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">
@@ -72,7 +72,7 @@ export function RelatedToolPath({ tool, locale }: { tool: CatalogTool; locale: "
         </section>
       )}
       {related.length > 0 && (
-        <section className="mt-8" aria-labelledby={es ? "related-es" : "related"}>
+        <section className="mt-8 min-h-[22rem]" aria-labelledby={es ? "related-es" : "related"}>
           <div className="mb-2 flex items-center justify-between">
             <div>
               <h2 id={es ? "related-es" : "related"} className="text-base font-bold">
