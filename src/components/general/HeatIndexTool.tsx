@@ -6,6 +6,7 @@ const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
 const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
 
 function parseNum(value: string) {
+  if (!value.trim()) return null;
   const n = Number(value.replace(",", "."));
   return Number.isFinite(n) ? n : null;
 }
