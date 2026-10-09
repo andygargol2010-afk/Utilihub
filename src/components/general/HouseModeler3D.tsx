@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 
-type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench";
+type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
 /** Door leaf finish. Timber stays the default; sheet metal is the selectable alternate. */
 type DoorFinish = "timber" | "metal";
@@ -32,6 +32,8 @@ type PlanterFinish = "clay" | "timber";
 type BenchFinish = "timber" | "masonry";
 /** Chimney stack. Running-bond brick stays the default; ashlar masonry is the selectable alternate (ported from walls). */
 type ChimneyFinish = "brick" | "masonry";
+/** Garden lamp. Timber post stays the default; iron bar stock is the selectable alternate (ported from railing). */
+type LampFinish = "timber" | "metal";
 
 type ScenePart = {
   id: string;
@@ -68,6 +70,8 @@ type ScenePart = {
   benchFinish: BenchFinish;
   /** Kept on the part so rotate/clone do not drop the chosen chimney stack. */
   chimneyFinish: ChimneyFinish;
+  /** Kept on the part so rotate/clone do not drop the chosen lamp post. */
+  lampFinish: LampFinish;
 };
 
 function doorFinishOf(part: { kind: PartKind; finish?: DoorFinish } | undefined, fallback: DoorFinish = "timber"): DoorFinish {
@@ -146,6 +150,12 @@ function chimneyFinishOf(part: { kind: PartKind; chimneyFinish?: ChimneyFinish }
   if (part?.kind === "chimney" && part.chimneyFinish === "masonry") return "masonry";
   if (part?.kind === "chimney") return part.chimneyFinish === "brick" ? "brick" : fallback;
   return "brick";
+}
+
+function lampFinishOf(part: { kind: PartKind; lampFinish?: LampFinish } | undefined, fallback: LampFinish = "timber"): LampFinish {
+  if (part?.kind === "lamp" && part.lampFinish === "metal") return "metal";
+  if (part?.kind === "lamp") return part.lampFinish === "timber" ? "timber" : fallback;
+  return "timber";
 }
 
 type SceneLayer = {
@@ -2001,6 +2011,19 @@ function applyChimneyFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMat
 }
 
 /** Ashlar seat reuses the shared wall masonry map. Timber keeps plate legs and nosing slats. Pads stay footing. */
+/** Iron post reuses the shared railing bar stock. Glass stays. Pad stays footing. */
+function applyLampFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: LampFinish) {
+  const post = finish === "metal" ? mats.railingMetal : mats.plate;
+  const cap = finish === "metal" ? mats.railingMetal : mats.nosing;
+  obj.traverse((c) => {
+    if (!(c instanceof THREE.Mesh)) return;
+    if (c.name === "lampPost" || c.name === "lampFinial") c.material = post;
+    else if (c.name === "lampCap" || c.name === "lampHood") c.material = cap;
+    else if (c.name === "lampGlass") c.material = mats.doorGlass;
+    else if (c.name === "lampPad") c.material = mats.footing;
+  });
+}
+
 function applyBenchFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMaterials>, finish: BenchFinish) {
   const seat = finish === "masonry" ? mats.wallMasonry : mats.nosing;
   const leg = finish === "masonry" ? mats.wallEdge : mats.plate;
@@ -2728,7 +2751,52 @@ function createBenchMesh(mats: ReturnType<typeof makeMaterials>, finish: BenchFi
   return group;
 }
 
-function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish = "timber", roofFinish: RoofFinish = "clay", wallFinish: WallFinish = "plaster", columnFinish: ColumnFinish = "plaster", stairsFinish: StairsFinish = "timber", railingFinish: RailingFinish = "timber", windowFinish: WindowFinish = "timber", floorFinish: FloorFinish = "timber", fenceFinish: FenceFinish = "timber", pathFinish: PathFinish = "gravel", planterFinish: PlanterFinish = "clay", benchFinish: BenchFinish = "timber", chimneyFinish: ChimneyFinish = "brick") {
+function createLampMesh(mats: ReturnType<typeof makeMaterials>, finish: LampFinish = "timber") {
+  // Garden lamp on the lawn: footing, post, glazed lantern, hood. Not a column.
+  const group = new THREE.Group();
+  const pad = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.05, 0.36), mats.footing);
+  pad.name = "lampPad";
+  pad.position.set(0, 0.025, 0);
+  pad.receiveShadow = true;
+  staggerUvs(pad);
+  group.add(pad);
+  const post = new THREE.Mesh(new THREE.BoxGeometry(0.09, 1.28, 0.09), mats.plate);
+  post.name = "lampPost";
+  post.position.set(0, 0.69, 0);
+  post.castShadow = true;
+  post.receiveShadow = true;
+  staggerUvs(post);
+  group.add(post);
+  const glass = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.26, 0.2), mats.doorGlass);
+  glass.name = "lampGlass";
+  glass.position.set(0, 1.46, 0);
+  glass.castShadow = true;
+  staggerUvs(glass);
+  group.add(glass);
+  const hood = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.06, 0.28), mats.nosing);
+  hood.name = "lampHood";
+  hood.position.set(0, 1.62, 0);
+  hood.castShadow = true;
+  staggerUvs(hood);
+  group.add(hood);
+  const finial = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.1, 0.05), mats.plate);
+  finial.name = "lampFinial";
+  finial.position.set(0, 1.7, 0);
+  finial.castShadow = true;
+  staggerUvs(finial);
+  group.add(finial);
+  const cap = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.04, 0.16), mats.nosing);
+  cap.name = "lampCap";
+  cap.position.set(0, 1.3, 0);
+  cap.castShadow = true;
+  staggerUvs(cap);
+  group.add(cap);
+  applyLampFinish(group, mats, finish);
+  group.userData.lampFinish = finish;
+  return group;
+}
+
+function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, finish: DoorFinish = "timber", roofFinish: RoofFinish = "clay", wallFinish: WallFinish = "plaster", columnFinish: ColumnFinish = "plaster", stairsFinish: StairsFinish = "timber", railingFinish: RailingFinish = "timber", windowFinish: WindowFinish = "timber", floorFinish: FloorFinish = "timber", fenceFinish: FenceFinish = "timber", pathFinish: PathFinish = "gravel", planterFinish: PlanterFinish = "clay", benchFinish: BenchFinish = "timber", chimneyFinish: ChimneyFinish = "brick", lampFinish: LampFinish = "timber") {
   if (kind === "wall") return createWallMesh(mats, wallFinish);
   if (kind === "floor") return createFloorMesh(mats, floorFinish);
   if (kind === "roof") return createRoofMesh(mats, roofFinish);
@@ -2744,7 +2812,8 @@ function createPartMesh(kind: PartKind, mats: ReturnType<typeof makeMaterials>, 
   if (kind === "fence") return createFenceMesh(mats, fenceFinish);
   if (kind === "path") return createPathMesh(mats, pathFinish);
   if (kind === "planter") return createPlanterMesh(mats, planterFinish);
-  return createBenchMesh(mats, benchFinish);
+  if (kind === "bench") return createBenchMesh(mats, benchFinish);
+  return createLampMesh(mats, lampFinish);
 }
 
 function StructureGlyph({ kind }: { kind: PartKind }) {
@@ -2906,6 +2975,16 @@ function StructureGlyph({ kind }: { kind: PartKind }) {
       </svg>
     );
   }
+  if (kind === "lamp") {
+    return (
+      <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
+        <rect x="16" y="26" width="8" height="3" fill="#9a907e" />
+        <rect x="18.6" y="10" width="2.8" height="16" fill="#6d4a30" />
+        <rect x="14" y="8" width="12" height="7" fill="#9bb7c9" stroke="#5c6670" />
+        <path d="M13 8 H27 L20 4 Z" fill="#8b5a32" />
+      </svg>
+    );
+  }
   return (
     <svg viewBox="0 0 40 32" className="h-8 w-10" aria-hidden>
       <rect x="12" y="10" width="16" height="16" fill="#b7ab9a" stroke="#8a7d6c" />
@@ -2953,6 +3032,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [planterFinish, setPlanterFinish] = useState<PlanterFinish>("clay");
   const [benchFinish, setBenchFinish] = useState<BenchFinish>("timber");
   const [chimneyFinish, setChimneyFinish] = useState<ChimneyFinish>("brick");
+  const [lampFinish, setLampFinish] = useState<LampFinish>("timber");
   const [finishRev, setFinishRev] = useState(0);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [count, setCount] = useState(0);
@@ -2987,6 +3067,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const planterFinishRef = useRef(planterFinish);
   const benchFinishRef = useRef(benchFinish);
   const chimneyFinishRef = useRef(chimneyFinish);
+  const lampFinishRef = useRef(lampFinish);
   const selectedRef = useRef(selectedId);
   const draggingRef = useRef<{ id: string; offset: THREE.Vector3 } | null>(null);
   // Live move chip is DOM-updated so a drag does not re-render the monolith each pointermove.
@@ -3043,7 +3124,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     planterFinishRef.current = planterFinish;
     benchFinishRef.current = benchFinish;
     chimneyFinishRef.current = chimneyFinish;
-  }, [floorFinish, fenceFinish, pathFinish, planterFinish, benchFinish, chimneyFinish]);
+    lampFinishRef.current = lampFinish;
+  }, [floorFinish, fenceFinish, pathFinish, planterFinish, benchFinish, chimneyFinish, lampFinish]);
   useEffect(() => {
     selectedRef.current = selectedId;
   }, [selectedId]);
@@ -3086,12 +3168,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, []);
 
   const makeGhost = useCallback(
-    (kind: PartKind, finish: DoorFinish = "timber", roofCover: RoofFinish = "clay", wallCover: WallFinish = "plaster", columnCover: ColumnFinish = "plaster", stairsCover: StairsFinish = "timber", railingCover: RailingFinish = "timber", windowCover: WindowFinish = "timber", floorCover: FloorFinish = "timber", fenceCover: FenceFinish = "timber", pathCover: PathFinish = "gravel", planterCover: PlanterFinish = "clay", benchCover: BenchFinish = "timber", chimneyCover: ChimneyFinish = "brick") => {
+    (kind: PartKind, finish: DoorFinish = "timber", roofCover: RoofFinish = "clay", wallCover: WallFinish = "plaster", columnCover: ColumnFinish = "plaster", stairsCover: StairsFinish = "timber", railingCover: RailingFinish = "timber", windowCover: WindowFinish = "timber", floorCover: FloorFinish = "timber", fenceCover: FenceFinish = "timber", pathCover: PathFinish = "gravel", planterCover: PlanterFinish = "clay", benchCover: BenchFinish = "timber", chimneyCover: ChimneyFinish = "brick", lampCover: LampFinish = "timber") => {
       const t = threeRef.current;
       if (!t) return;
       clearGhost();
       let obj: THREE.Object3D;
-      obj = createPartMesh(kind, t.mats, kind === "door" ? finish : "timber", kind === "roof" ? roofCover : "clay", kind === "wall" ? wallCover : "plaster", kind === "column" ? columnCover : "plaster", kind === "stairs" ? stairsCover : "timber", kind === "railing" ? railingCover : "timber", kind === "window" ? windowCover : "timber", kind === "floor" ? floorCover : "timber", kind === "fence" ? fenceCover : "timber", kind === "path" ? pathCover : "gravel", kind === "planter" ? planterCover : "clay", kind === "bench" ? benchCover : "timber", kind === "chimney" ? chimneyCover : "brick");
+      obj = createPartMesh(kind, t.mats, kind === "door" ? finish : "timber", kind === "roof" ? roofCover : "clay", kind === "wall" ? wallCover : "plaster", kind === "column" ? columnCover : "plaster", kind === "stairs" ? stairsCover : "timber", kind === "railing" ? railingCover : "timber", kind === "window" ? windowCover : "timber", kind === "floor" ? floorCover : "timber", kind === "fence" ? fenceCover : "timber", kind === "path" ? pathCover : "gravel", kind === "planter" ? planterCover : "clay", kind === "bench" ? benchCover : "timber", kind === "chimney" ? chimneyCover : "brick", kind === "lamp" ? lampCover : "timber");
       obj.traverse((c) => {
         if (c instanceof THREE.Mesh && c.material) {
           const m = (c.material as THREE.MeshStandardMaterial).clone();
@@ -3109,8 +3191,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   useEffect(() => {
     if (!ready) return;
-    makeGhost(tool, doorFinish, roofFinish, wallFinish, columnFinish, stairsFinish, railingFinish, windowFinish, floorFinish, fenceFinish, pathFinish, planterFinish, benchFinish, chimneyFinish);
-  }, [tool, doorFinish, roofFinish, wallFinish, columnFinish, stairsFinish, railingFinish, windowFinish, floorFinish, fenceFinish, pathFinish, planterFinish, benchFinish, chimneyFinish, ready, makeGhost]);
+    makeGhost(tool, doorFinish, roofFinish, wallFinish, columnFinish, stairsFinish, railingFinish, windowFinish, floorFinish, fenceFinish, pathFinish, planterFinish, benchFinish, chimneyFinish, lampFinish);
+  }, [tool, doorFinish, roofFinish, wallFinish, columnFinish, stairsFinish, railingFinish, windowFinish, floorFinish, fenceFinish, pathFinish, planterFinish, benchFinish, chimneyFinish, lampFinish, ready, makeGhost]);
 
   useEffect(() => {
     const el = mountRef.current;
@@ -3815,7 +3897,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const planterCover: PlanterFinish = kind === "planter" ? planterFinishRef.current : "clay";
     const benchCover: BenchFinish = kind === "bench" ? benchFinishRef.current : "timber";
     const chimneyCover: ChimneyFinish = kind === "chimney" ? chimneyFinishRef.current : "brick";
-    obj = createPartMesh(kind, t.mats, finish, roofCover, wallCover, columnCover, stairsCover, railingCover, windowCover, floorCover, fenceCover, pathCover, planterCover, benchCover, chimneyCover);
+    const lampCover: LampFinish = kind === "lamp" ? lampFinishRef.current : "timber";
+    obj = createPartMesh(kind, t.mats, finish, roofCover, wallCover, columnCover, stairsCover, railingCover, windowCover, floorCover, fenceCover, pathCover, planterCover, benchCover, chimneyCover, lampCover);
     obj.position.set(x, 0, z);
     obj.userData.finish = finish;
     obj.userData.roofFinish = roofCover;
@@ -3830,6 +3913,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     obj.userData.planterFinish = planterCover;
     obj.userData.benchFinish = benchCover;
     obj.userData.chimneyFinish = chimneyCover;
+    obj.userData.lampFinish = lampCover;
     t.partsRoot.add(obj);
     let primary: THREE.Mesh | null = null;
     obj.traverse((c) => {
@@ -3873,6 +3957,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       planterFinish: planterCover,
       benchFinish: benchCover,
       chimneyFinish: chimneyCover,
+      lampFinish: lampCover,
     });
     syncLockBadge(obj, !!layersRef.current.find((l) => l.id === layerId)?.locked);
     setCount(partsRef.current.length);
@@ -4037,7 +4122,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const planterCover = planterFinishOf(part);
     const benchCover = benchFinishOf(part);
     const chimneyCover = chimneyFinishOf(part);
-    const clone = createPartMesh(part.kind, t.mats, finish, roofCover, wallCover, columnCover, stairsCover, railingCover, windowCover, floorCover, fenceCover, pathCover, planterCover, benchCover, chimneyCover);
+    const lampCover = lampFinishOf(part);
+    const clone = createPartMesh(part.kind, t.mats, finish, roofCover, wallCover, columnCover, stairsCover, railingCover, windowCover, floorCover, fenceCover, pathCover, planterCover, benchCover, chimneyCover, lampCover);
     clone.position.set(x, 0, z);
     clone.rotation.y = obj.rotation.y;
     clone.userData.finish = finish;
@@ -4053,6 +4139,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     clone.userData.planterFinish = planterCover;
     clone.userData.benchFinish = benchCover;
     clone.userData.chimneyFinish = chimneyCover;
+    clone.userData.lampFinish = lampCover;
     t.partsRoot.add(clone);
     let primary: THREE.Mesh | null = null;
     clone.traverse((c) => {
@@ -4093,6 +4180,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       planterFinish: planterCover,
       benchFinish: benchCover,
       chimneyFinish: chimneyCover,
+      lampFinish: lampCover,
     });
     syncLockBadge(clone, !!layersRef.current.find((l) => l.id === part.layerId)?.locked);
     setCount(partsRef.current.length);
@@ -4511,6 +4599,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         if (e.key.toLowerCase() === "t") setTool("path");
         if (e.key.toLowerCase() === "y") setTool("planter");
         if (e.key.toLowerCase() === "u") setTool("bench");
+        if (e.key.toLowerCase() === "i") setTool("lamp");
       }
       if (e.key.toLowerCase() === "l" && !e.repeat) {
         if (!selId) return;
@@ -4586,7 +4675,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     setPlacingFromPalette(true);
     setDragCursor({ x: ev.clientX, y: ev.clientY, over: false });
     if (threeRef.current) threeRef.current.controls.enabled = false;
-    makeGhost(kind, doorFinishRef.current, roofFinishRef.current, wallFinishRef.current, columnFinishRef.current, stairsFinishRef.current, railingFinishRef.current, windowFinishRef.current, floorFinishRef.current, fenceFinishRef.current, pathFinishRef.current, planterFinishRef.current, benchFinishRef.current, chimneyFinishRef.current);
+    makeGhost(kind, doorFinishRef.current, roofFinishRef.current, wallFinishRef.current, columnFinishRef.current, stairsFinishRef.current, railingFinishRef.current, windowFinishRef.current, floorFinishRef.current, fenceFinishRef.current, pathFinishRef.current, planterFinishRef.current, benchFinishRef.current, chimneyFinishRef.current, lampFinishRef.current);
     try {
       ev.currentTarget.setPointerCapture(ev.pointerId);
     } catch {
@@ -4665,6 +4754,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         path: "Sendero",
         planter: "Jardinera",
         bench: "Banco",
+        lamp: "Farol",
         place: "Arrastrá desde la barra derecha al terreno · o hacé clic en el suelo",
         cam: "Cámara libre: botón derecho / medio · rueda zoom",
         rot: "Rotar 90°",
@@ -4677,7 +4767,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "elementos",
         fullscreen: "Pantalla completa",
         exitFs: "Salir",
-        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · E valla · T sendero · Y jardinera · U banco · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · E valla · T sendero · Y jardinera · U banco · I farol · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         variants: "Acabado activo",
@@ -4747,6 +4837,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         planterClayShort: "Barro",
         planterTimberShort: "Madera",
         benchFinish: "Asiento",
+        lampFinish: "Poste del farol",
+        lampTimber: "Madera",
+        lampMetal: "Hierro",
+        lampTimberShort: "Madera",
+        lampMetalShort: "Hierro",
         benchTimber: "Madera",
         benchMasonry: "Sillería",
         benchTimberShort: "Madera",
@@ -4771,6 +4866,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizePath: "3.6 × 1.2 m",
         sizePlanter: "1.4 × 0.7 m",
         sizeBench: "1.6 × 0.55 m",
+        sizeLamp: "0.4 × 1.8 m",
         help: "Ayuda",
         hideHelp: "Ocultar",
         active: "Activa",
@@ -4828,6 +4924,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         path: "Path",
         planter: "Planter",
         bench: "Bench",
+        lamp: "Lamp",
         place: "Drag from the right toolbar onto the ground · or click the ground",
         cam: "Free camera: right/middle drag · scroll zoom",
         rot: "Rotate 90°",
@@ -4840,7 +4937,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "parts",
         fullscreen: "Fullscreen",
         exitFs: "Exit",
-        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · E fence · T path · Y planter · U bench · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · E fence · T path · Y planter · U bench · I lamp · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
         variants: "Active finish",
@@ -4910,6 +5007,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         planterClayShort: "Clay",
         planterTimberShort: "Timber",
         benchFinish: "Seat",
+        lampFinish: "Lamp post",
+        lampTimber: "Timber",
+        lampMetal: "Iron",
+        lampTimberShort: "Timber",
+        lampMetalShort: "Iron",
         benchTimber: "Timber",
         benchMasonry: "Ashlar",
         benchTimberShort: "Timber",
@@ -4934,6 +5036,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         sizePath: "3.6 × 1.2 m",
         sizePlanter: "1.4 × 0.7 m",
         sizeBench: "1.6 × 0.55 m",
+        sizeLamp: "0.4 × 1.8 m",
         help: "Help",
         hideHelp: "Hide",
         active: "Active",
@@ -4988,12 +5091,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const selectedPathFinish = pathFinishOf(selectedPart, pathFinish);
   const selectedPlanterFinish = planterFinishOf(selectedPart, planterFinish);
   const selectedBenchFinish = benchFinishOf(selectedPart, benchFinish);
+  const selectedLampFinish = lampFinishOf(selectedPart, lampFinish);
   const selectedChimneyFinish = chimneyFinishOf(selectedPart, chimneyFinish);
   void finishRev;
   const selectedLocked = selectedPart ? partFrozen(selectedPart, layers) : false;
   void lockRev;
   const selectedKindLabel =
-    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : selectedKind === "beam" ? labels.beam : selectedKind === "foundation" ? labels.foundation : selectedKind === "pergola" ? labels.pergola : selectedKind === "fence" ? labels.fence : selectedKind === "path" ? labels.path : selectedKind === "planter" ? labels.planter : selectedKind === "bench" ? labels.bench : "";
+    selectedKind === "wall" ? labels.wall : selectedKind === "floor" ? labels.floor : selectedKind === "roof" ? labels.roof : selectedKind === "column" ? labels.column : selectedKind === "door" ? labels.door : selectedKind === "window" ? labels.window : selectedKind === "stairs" ? labels.stairs : selectedKind === "railing" ? labels.railing : selectedKind === "chimney" ? labels.chimney : selectedKind === "beam" ? labels.beam : selectedKind === "foundation" ? labels.foundation : selectedKind === "pergola" ? labels.pergola : selectedKind === "fence" ? labels.fence : selectedKind === "path" ? labels.path : selectedKind === "planter" ? labels.planter : selectedKind === "bench" ? labels.bench : selectedKind === "lamp" ? labels.lamp : "";
   const selectedLayer = layers.find((l) => l.id === selectedPart?.layerId);
   const activeLayer = layers.find((l) => l.id === activeLayerId) ?? layers[0];
   const layerCaption = (layer: SceneLayer | undefined) => {
@@ -5003,7 +5107,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   };
   const placeLayerCaption = layerCaption(selectedKindLabel ? selectedLayer : activeLayer);
   const selectedSize =
-    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : selectedKind === "window" ? labels.sizeWindow : selectedKind === "stairs" ? labels.sizeStairs : selectedKind === "railing" ? labels.sizeRailing : selectedKind === "chimney" ? labels.sizeChimney : selectedKind === "beam" ? labels.sizeBeam : selectedKind === "foundation" ? labels.sizeFoundation : selectedKind === "pergola" ? labels.sizePergola : selectedKind === "fence" ? labels.sizeFence : selectedKind === "path" ? labels.sizePath : selectedKind === "planter" ? labels.sizePlanter : selectedKind === "bench" ? labels.sizeBench : "";
+    selectedKind === "wall" ? labels.sizeWall : selectedKind === "floor" ? labels.sizeFloor : selectedKind === "roof" ? labels.sizeRoof : selectedKind === "column" ? labels.sizeColumn : selectedKind === "door" ? labels.sizeDoor : selectedKind === "window" ? labels.sizeWindow : selectedKind === "stairs" ? labels.sizeStairs : selectedKind === "railing" ? labels.sizeRailing : selectedKind === "chimney" ? labels.sizeChimney : selectedKind === "beam" ? labels.sizeBeam : selectedKind === "foundation" ? labels.sizeFoundation : selectedKind === "pergola" ? labels.sizePergola : selectedKind === "fence" ? labels.sizeFence : selectedKind === "path" ? labels.sizePath : selectedKind === "planter" ? labels.sizePlanter : selectedKind === "bench" ? labels.sizeBench : selectedKind === "lamp" ? labels.sizeLamp : "";
 
   const clearSelection = () => {
     selectedRef.current = null;
@@ -5218,6 +5322,22 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     }
   };
 
+  const chooseLampFinish = (next: LampFinish) => {
+    lampFinishRef.current = next;
+    setLampFinish(next);
+    setFinishRev((n) => n + 1);
+    const part = partsRef.current.find((p) => p.id === selectedRef.current);
+    const t = threeRef.current;
+    if (part && part.kind === "lamp" && t && !partFrozen(part, layersRef.current)) {
+      const obj = findPartObject(part.id);
+      if (obj) {
+        applyLampFinish(obj, t.mats, next);
+        obj.userData.lampFinish = next;
+        part.lampFinish = next;
+      }
+    }
+  };
+
   const chooseChimneyFinish = (next: ChimneyFinish) => {
     chimneyFinishRef.current = next;
     setChimneyFinish(next);
@@ -5268,6 +5388,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     { kind: "path", label: labels.path, swatch: "#b7ab9a", key: "T", size: labels.sizePath },
     { kind: "planter", label: labels.planter, swatch: "#8a4e3a", key: "Y", size: labels.sizePlanter },
     { kind: "bench", label: labels.bench, swatch: "#8b5a32", key: "U", size: labels.sizeBench },
+    { kind: "lamp", label: labels.lamp, swatch: "#6d4a30", key: "I", size: labels.sizeLamp },
   ];
   const swatchFor = (kind: PartKind): string => {
     if (kind === "wall") {
@@ -5301,6 +5422,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (kind === "bench") {
       const id = selectedKind === "bench" ? selectedBenchFinish : benchFinish;
       return id === "masonry" ? "#c4b49a" : "#8b5a32";
+    }
+    if (kind === "lamp") {
+      const id = selectedKind === "lamp" ? selectedLampFinish : lampFinish;
+      return id === "metal" ? "#5c6670" : "#6d4a30";
     }
     if (kind === "chimney") {
       const id = selectedKind === "chimney" ? selectedChimneyFinish : chimneyFinish;
@@ -5358,6 +5483,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const id = selectedKind === "bench" ? selectedBenchFinish : benchFinish;
       return [{ color: "#8b5a32", on: id !== "masonry" }, { color: "#c4b49a", on: id === "masonry" }];
     }
+    if (kind === "lamp") {
+      const id = selectedKind === "lamp" ? selectedLampFinish : lampFinish;
+      return [{ color: "#6d4a30", on: id !== "metal" }, { color: "#5c6670", on: id === "metal" }];
+    }
     if (kind === "chimney") {
       const id = selectedKind === "chimney" ? selectedChimneyFinish : chimneyFinish;
       return [{ color: "#8f4a3c", on: id !== "masonry" }, { color: "#c4b49a", on: id === "masonry" }];
@@ -5412,6 +5541,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (kind === "bench") {
       const id = selectedKind === "bench" ? selectedBenchFinish : benchFinish;
       return id === "masonry" ? labels.benchMasonry : labels.benchTimber;
+    }
+    if (kind === "lamp") {
+      const id = selectedKind === "lamp" ? selectedLampFinish : lampFinish;
+      return id === "metal" ? labels.lampMetal : labels.lampTimber;
     }
     if (kind === "chimney") {
       const id = selectedKind === "chimney" ? selectedChimneyFinish : chimneyFinish;
@@ -5468,6 +5601,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const id = selectedKind === "bench" ? selectedBenchFinish : benchFinish;
       return id === "masonry" ? labels.benchMasonryShort : labels.benchTimberShort;
     }
+    if (kind === "lamp") {
+      const id = selectedKind === "lamp" ? selectedLampFinish : lampFinish;
+      return id === "metal" ? labels.lampMetalShort : labels.lampTimberShort;
+    }
     if (kind === "chimney") {
       const id = selectedKind === "chimney" ? selectedChimneyFinish : chimneyFinish;
       return id === "masonry" ? labels.chimneyMasonryShort : labels.chimneyBrickShort;
@@ -5475,7 +5612,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     return null;
   };
   const activeLabel =
-    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : tool === "chimney" ? labels.chimney : tool === "beam" ? labels.beam : tool === "foundation" ? labels.foundation : tool === "pergola" ? labels.pergola : tool === "fence" ? labels.fence : tool === "path" ? labels.path : tool === "planter" ? labels.planter : labels.bench;
+    tool === "wall" ? labels.wall : tool === "floor" ? labels.floor : tool === "roof" ? labels.roof : tool === "column" ? labels.column : tool === "door" ? labels.door : tool === "window" ? labels.window : tool === "stairs" ? labels.stairs : tool === "railing" ? labels.railing : tool === "chimney" ? labels.chimney : tool === "beam" ? labels.beam : tool === "foundation" ? labels.foundation : tool === "pergola" ? labels.pergola : tool === "fence" ? labels.fence : tool === "path" ? labels.path : tool === "planter" ? labels.planter : tool === "bench" ? labels.bench : labels.lamp;
   moveLabelRef.current = {
     moving: labels.moving,
     kinds: {
@@ -5495,6 +5632,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       path: labels.path,
       planter: labels.planter,
       bench: labels.bench,
+      lamp: labels.lamp,
     },
   };
 
@@ -6136,6 +6274,36 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       key={id}
                       type="button"
                       onClick={() => chooseChimneyFinish(id)}
+                      aria-pressed={active}
+                      title={label}
+                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                        paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
+                      } ${
+                        active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
+                      }`}
+                    >
+                      <span className="h-4 w-4 shrink-0 rounded-sm ring-1 ring-black/20" style={{ background: swatch }} aria-hidden />
+                      <span className={`truncate leading-tight ${paletteCompact ? "max-w-full text-[9px]" : ""}`}>{paletteCompact ? shortLabel : label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+{(tool === "lamp" || selectedKind === "lamp") && (
+            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.lampFinish}>
+              <p className={`mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground ${paletteCompact ? "sr-only" : ""}`}>{labels.lampFinish}</p>
+              <div className={`grid gap-1 ${paletteCompact ? "grid-cols-1" : "grid-cols-2"}`}>
+                {([
+                  ["timber", labels.lampTimber, "#6d4a30", labels.lampTimberShort],
+                  ["metal", labels.lampMetal, "#5c6670", labels.lampMetalShort],
+                ] as const).map(([id, label, swatch, shortLabel]) => {
+                  const active = (selectedKind === "lamp" ? selectedLampFinish : lampFinish) === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => chooseLampFinish(id)}
                       aria-pressed={active}
                       title={label}
                       className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
