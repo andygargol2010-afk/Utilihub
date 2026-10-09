@@ -71,6 +71,7 @@ function clearSlipHash() {
 
 export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardProps) {
   const es = locale === "es";
+  const stepKey = steps.map((step) => step.slug).join("|");
   const [note, setNote] = useState("");
   const [done, setDone] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
@@ -80,6 +81,7 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
   const [pendingSlip, setPendingSlip] = useState<SlipPayload | null>(null);
 
   useEffect(() => {
+    const allowed = stepKey ? stepKey.split("|") : [];
     let loadedNote = "";
     let loadedDone: string[] = [];
     try {
@@ -102,7 +104,7 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
       setSlipStatus("idle");
       setAllowPersist(true);
     } else {
-      const payload = parseSlip(hash, steps.map((step) => step.slug));
+      const payload = parseSlip(hash, allowed);
       if (!payload) {
         setPendingSlip(null);
         setSlipStatus("invalid");
@@ -115,7 +117,7 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
       }
     }
     setReady(true);
-  }, [kitSlug, steps]);
+  }, [kitSlug, stepKey]);
 
   useEffect(() => {
     if (!ready || !allowPersist) return;
@@ -152,7 +154,6 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
     try {
       await navigator.clipboard.writeText(url);
     } catch {
-      /* clipboard blocked; the attribute still records the attempt's result below only on success */
       return;
     }
     setCopied(false);
