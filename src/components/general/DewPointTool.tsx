@@ -42,7 +42,7 @@ export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
 
   const copy = es
     ? {
-        help: "Estimá el punto de rocío a partir de la temperatura del aire y la humedad relativa. No es la sensación térmica: esa tool mide cómo se siente el calor o el viento.",
+        help: "Estimá el punto de rocío a partir de la temperatura del aire y la humedad relativa. No es la sensación térmica: el índice de calor mide cómo se siente el calor, y la sensación del viento la mide otra herramienta.",
         presets: "Presets",
         room: "Ambiente confortable",
         humid: "Tarde húmeda",
@@ -75,7 +75,7 @@ export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
         margin: "antes de condensar",
       }
     : {
-        help: "Estimate dew point from air temperature and relative humidity. This is not feels-like temperature; the heat-index tool covers heat and wind.",
+        help: "Estimate dew point from air temperature and relative humidity. This is not the feels-like temperature; the heat index covers heat, and the wind-chill tool covers wind.",
         presets: "Presets",
         room: "Comfortable room",
         humid: "Humid afternoon",
