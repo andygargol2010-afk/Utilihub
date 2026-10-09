@@ -3728,7 +3728,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const obj = findPartObject(id);
     const t = threeRef.current;
     if (!part || !obj || !t) return;
-    const [x, z] = clampToSite(snap(obj.position.x + GRID), snap(obj.position.z));
+    // A fixed +0.5 m world-X step leaves a 3 m wall inside its twin, so the clone cannot be picked.
+    // Measure the unrotated span, step along the part yaw, then snap back onto the pad.
+    const yaw = obj.rotation.y;
+    obj.rotation.y = 0;
+    obj.updateMatrixWorld(true);
+    const spanBox = new THREE.Box3();
+    boxWithoutBadge(obj, spanBox);
+    obj.rotation.y = yaw;
+    obj.updateMatrixWorld(true);
+    const span = Math.max(GRID, snap(spanBox.max.x - spanBox.min.x));
+    const dx = Math.cos(yaw) * span;
+    const dz = -Math.sin(yaw) * span;
+    let [x, z] = clampToSite(snap(obj.position.x + dx), snap(obj.position.z + dz));
+    if (x === snap(obj.position.x) && z === snap(obj.position.z)) {
+      const bump = span + GRID;
+      [x, z] = clampToSite(snap(obj.position.x + Math.cos(yaw) * bump), snap(obj.position.z - Math.sin(yaw) * bump));
+    }
     const finish = doorFinishOf(part);
     const roofCover = roofFinishOf(part);
     const wallCover = wallFinishOf(part);
