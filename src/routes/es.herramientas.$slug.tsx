@@ -7,6 +7,7 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareAndExportActions } from "@/components/ShareAndExportActions";
 import { DeferredToolSeo } from "@/components/DeferredToolSeo";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
+import { KitReturnRibbon } from "@/components/kits/KitReturnRibbon";
 import type { CatalogTool } from "@/lib/all-tools";
 import { englishToolPath } from "@/lib/route-slugs";
 import {
@@ -162,6 +163,7 @@ function SpanishToolPage() {
           { label: name },
         ]}
       />
+      <KitReturnRibbon toolSlug={tool.slug} locale="es" />
       {showcase ? (
         <DeferredShowcaseHero name={name} slug={tool.slug} locale="es" />
       ) : (
