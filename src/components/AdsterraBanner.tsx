@@ -19,7 +19,8 @@ const MOBILE = {
 
 /**
  * Tool/game/finance banner.
- * Desktop: 728×90 · Mobile: requests 320×50; if network serves 728×90, scales to fit.
+ * The 728×90 box is in the first paint (same as the home banner) so consent/viewport
+ * effects cannot insert it later. Desktop: 728×90 · Mobile: scales the reserved box.
  */
 export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) {
   const slotRef = useRef<HTMLDivElement>(null);
@@ -81,8 +82,8 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
       slot.appendChild(script);
     };
 
-    // invoke.js does layout and timer work on the main thread. The 728×90 / 320×50
-    // slot is already reserved, so wait for idle (or 2s) before competing with
+    // invoke.js does layout and timer work on the main thread. The 728×90 slot is
+    // already in the first paint, so wait for idle (or 2s) before competing with
     // hydration and the first click on the tool shell.
     const idle = window.requestIdleCallback;
     const idleId = typeof idle === "function" ? idle(inject, { timeout: 2000 }) : 0;
@@ -99,11 +100,6 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
     };
   }, [allowed, viewport]);
 
-  if (!allowed || !viewport) return null;
-
-  const isMobile = viewport === "mobile";
-  const minH = isMobile ? Math.ceil(90 * scale) : 90;
-
   return (
     <aside
       className="ad-slot my-6 w-full max-w-full overflow-x-hidden rounded-xl border border-border/60 bg-surface/35"
@@ -113,20 +109,14 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
         {label}
       </div>
       <div
-        className="mx-auto flex items-center justify-center overflow-hidden pb-2"
-        style={{
-          minHeight: minH,
-          width: isMobile ? 728 * scale : undefined,
-          maxWidth: "100%",
-        }}
+        className="relative mx-auto w-full max-w-[728px] overflow-hidden pb-2"
+        style={{ aspectRatio: "728 / 90" }}
       >
         <div
           ref={slotRef}
-          className="flex items-center justify-center"
+          className="flex h-[90px] w-[728px] items-center justify-center [&_iframe]:max-w-none"
           style={{
-            width: 728,
-            minHeight: 90,
-            transform: isMobile && scale < 1 ? `scale(${scale})` : undefined,
+            transform: viewport === "mobile" && scale < 1 ? `scale(${scale})` : undefined,
             transformOrigin: "top center",
           }}
         />
