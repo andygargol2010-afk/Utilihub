@@ -10,6 +10,7 @@ const DcCircuitSim = lazy(() => import("./DcCircuitSim").then((m) => ({ default:
 const EcosystemSim = lazy(() => import("./EcosystemSim").then((m) => ({ default: m.EcosystemSim })));
 const SirEpidemicSim = lazy(() => import("./SirEpidemicSim").then((m) => ({ default: m.SirEpidemicSim })));
 const MarketSim = lazy(() => import("./MarketSim").then((m) => ({ default: m.MarketSim })));
+const StandingWaveSim = lazy(() => import("./StandingWaveSim").then((m) => ({ default: m.StandingWaveSim })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -30,6 +31,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "epidemia-sir": SirEpidemicSim,
   "market-equilibrium": MarketSim,
   "equilibrio-mercado": MarketSim,
+  "standing-wave": StandingWaveSim,
+  "ondas-estacionarias": StandingWaveSim,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
