@@ -2,7 +2,7 @@ import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { DeferredFinanceJourney } from "@/components/DeferredFinanceJourney";
 import { FavoriteButton } from "@/components/FavoriteButton";
-import { ShareAndExportActions } from "@/components/ShareAndExportActions";
+import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
 import { financeSeo } from "@/lib/finance-seo-content";
 import { toolByEnglishSlug, englishToolPath } from "@/lib/route-slugs";
@@ -116,7 +116,7 @@ function FinancialPage() {
 
       <section data-tool-surface className="surface-card mt-8 p-5 sm:p-7" aria-label={tool.name}>
         <DeferredFinancialUi slug={tool.slug} locale="en" />
-        <ShareAndExportActions title={tool.name} />
+        <DeferredShareAndExport title={tool.name} />
       </section>
 
       <AdsterraBanner />

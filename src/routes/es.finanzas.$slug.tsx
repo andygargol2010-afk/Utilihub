@@ -2,7 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { FavoriteButton } from "@/components/FavoriteButton";
-import { ShareAndExportActions } from "@/components/ShareAndExportActions";
+import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { financialToolBySlug } from "@/lib/financial-tools";
 import { financeSeo } from "@/lib/finance-seo-content";
 import { englishToolPath } from "@/lib/route-slugs";
@@ -132,7 +132,7 @@ function SpanishFinancialToolPage() {
       </div>
       <section data-tool-surface className="surface-card mt-8 p-5 sm:p-7" aria-label={name}>
         <DeferredFinancialUi slug={tool.slug} locale="es" />
-        <ShareAndExportActions title={name} locale="es" />
+        <DeferredShareAndExport title={name} locale="es" />
       </section>
       <AdsterraBanner />
       <section className="mt-8 grid gap-8 border-t border-border/70 pt-8 lg:grid-cols-2">
