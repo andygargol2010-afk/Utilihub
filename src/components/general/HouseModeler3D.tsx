@@ -1323,6 +1323,31 @@ function paintLawnDapple(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+/** Distant olive hedgerow. Clear sky above, irregular crowns along the ground line. */
+function paintHedgerow(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.clearRect(0, 0, size, size);
+  const ground = ctx.createLinearGradient(0, size * 0.42, 0, size);
+  ground.addColorStop(0, "rgba(42,52,28,0)");
+  ground.addColorStop(0.55, "rgba(36,46,24,0.55)");
+  ground.addColorStop(1, "rgba(28,36,18,0.82)");
+  ctx.fillStyle = ground;
+  ctx.fillRect(0, size * 0.55, size, size * 0.45);
+  for (let i = 0; i < 14; i++) {
+    const x = (i + 0.35 + hash2(i, 1.8) * 0.4) * (size / 14);
+    const crown = size * (0.34 + hash2(i, 4.2) * 0.22);
+    const rx = size * (0.045 + hash2(i, 2.6) * 0.04);
+    const ry = size * (0.16 + hash2(i, 6.4) * 0.14);
+    const g = ctx.createRadialGradient(x, crown + ry * 0.35, 2, x, crown + ry * 0.2, ry);
+    g.addColorStop(0, "rgba(62,78,38,0.9)");
+    g.addColorStop(0.55, "rgba(40,52,24,0.72)");
+    g.addColorStop(1, "rgba(28,36,16,0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(x, crown + ry * 0.25, rx, ry, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
 /** Late-day cirrus streaks. Transparent edges so banks sit in the sky shell, not as cards. */
 function paintCirrus(ctx: CanvasRenderingContext2D, size: number) {
   ctx.clearRect(0, 0, size, size);
@@ -3444,6 +3469,30 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       lawnDapple.renderOrder = 1;
       scene.add(lawnDapple);
 
+      // Distant hedgerow so the lawn ends in trees, not an empty haze. One shared 256px card, no shadow map.
+      const hedgerowMap = makeCanvasTexture(256, paintHedgerow, true);
+      const hedgerowMat = new THREE.MeshBasicMaterial({
+        map: hedgerowMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        fog: true,
+        toneMapped: true,
+        side: THREE.DoubleSide,
+        opacity: 0.78,
+      });
+      const hedgerowGeo = new THREE.PlaneGeometry(62, 12);
+      const hedgerows: THREE.Mesh[] = [];
+      for (let i = 0; i < 3; i++) {
+        const hedge = new THREE.Mesh(hedgerowGeo, hedgerowMat);
+        const ang = theta + Math.PI * 0.55 + i * 0.85;
+        hedge.position.set(Math.sin(ang) * 92, 3.6, Math.cos(ang) * 92);
+        hedge.lookAt(0, 3.1, 0);
+        hedge.castShadow = false;
+        hedge.receiveShadow = false;
+        hedgerows.push(hedge);
+        scene.add(hedge);
+      }
+
       const partsRoot = new THREE.Group();
       scene.add(partsRoot);
 
@@ -3669,6 +3718,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           lawnDapple.geometry.dispose();
           lawnDappleMat.dispose();
           lawnDappleMap?.dispose();
+          hedgerowGeo.dispose();
+          hedgerowMat.dispose();
+          hedgerowMap?.dispose();
           footAo.geometry.dispose();
           footAoMat.dispose();
           footAoMap?.dispose();
