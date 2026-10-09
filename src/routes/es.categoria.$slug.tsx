@@ -2,18 +2,34 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
 import { ToolListBrowser } from "@/components/ToolListBrowser";
-import { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { spanishCategoryName } from "@/lib/i18n/es";
 import { englishCategoryPath } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
+import type { CatalogTool } from "@/lib/all-tools";
+
+type CategoryPayload = {
+  slug: string;
+  name: string;
+  title: string;
+  description: string;
+  intro: string;
+};
+
+type Neighbor = { slug: string };
 
 export const Route = createFileRoute("/es/categoria/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
+    const { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } = await import("@/lib/all-tools");
     const category = allCategoryBySlug(params.slug);
     if (!category) throw notFound();
-    const tools = allToolsByCategory(category.slug);
-    return { category, tools };
+    const neighboring = ALL_CATEGORIES.filter((item) => item.slug !== category.slug)
+      .slice(0, 4)
+      .map((item) => ({ slug: item.slug }));
+    return { category, tools: allToolsByCategory(category.slug), neighboring };
   },
+  pendingComponent: SpanishCategoryRoutePending,
+  pendingMs: 100,
+  pendingMinMs: 0,
   head: ({ loaderData }) => {
     if (!loaderData)
       return { meta: [{ title: "Categoría no encontrada | UtiliHub" }, { name: "robots", content: "noindex" }] };
@@ -60,10 +76,24 @@ export const Route = createFileRoute("/es/categoria/$slug")({
   component: SpanishCategoryPage,
 });
 
+function SpanishCategoryRoutePending() {
+  return (
+    <div className="container-page py-6 sm:py-8" aria-busy="true">
+      <div className="h-5 w-40 max-w-full animate-pulse rounded bg-muted" />
+      <div className="mt-4 h-8 w-56 max-w-full animate-pulse rounded bg-muted" />
+      <p className="mt-2 h-5 w-72 max-w-full animate-pulse rounded bg-muted" />
+      <div className="mt-5 min-h-72 rounded-xl border border-border/70 bg-card" />
+    </div>
+  );
+}
+
 function SpanishCategoryPage() {
-  const { category, tools } = Route.useLoaderData();
+  const { category, tools, neighboring } = Route.useLoaderData() as {
+    category: CategoryPayload;
+    tools: CatalogTool[];
+    neighboring: Neighbor[];
+  };
   const name = spanishCategoryName(category.slug);
-  const neighboring = ALL_CATEGORIES.filter((item) => item.slug !== category.slug).slice(0, 4);
   const browseItems = tools.map((t) => ({
     ...t,
     id: t.slug,

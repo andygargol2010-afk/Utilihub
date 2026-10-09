@@ -2,22 +2,40 @@ import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-route
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
 import { ToolListBrowser } from "@/components/ToolListBrowser";
-import { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } from "@/lib/all-tools";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
 import { englishCategorySlug, englishToolSlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
+import type { CatalogTool } from "@/lib/all-tools";
+
+type CategoryPayload = {
+  slug: string;
+  name: string;
+  title: string;
+  description: string;
+  intro: string;
+};
+
+type Neighbor = { slug: string; name: string };
 
 export const Route = createFileRoute("/category/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const legacy = LEGACY_CATEGORY_REDIRECTS[params.slug];
     const internalSlug = internalCategorySlugFromEnglish(params.slug);
     const canonicalSlug = englishCategorySlug(legacy ?? internalSlug);
     if (params.slug !== canonicalSlug)
       throw redirect({ to: "/category/$slug", params: { slug: canonicalSlug }, statusCode: 301 });
+    // Catalog stays off the listing route chunk so hydration does not parse it.
+    const { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } = await import("@/lib/all-tools");
     const category = allCategoryBySlug(internalSlug);
     if (!category) throw notFound();
-    return { category, tools: allToolsByCategory(category.slug) };
+    const neighboring = ALL_CATEGORIES.filter((item) => item.slug !== category.slug)
+      .slice(0, 4)
+      .map((item) => ({ slug: item.slug, name: item.name }));
+    return { category, tools: allToolsByCategory(category.slug), neighboring };
   },
+  pendingComponent: CategoryRoutePending,
+  pendingMs: 100,
+  pendingMinMs: 0,
   head: ({ loaderData }) => {
     if (!loaderData)
       return { meta: [{ title: "Category not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
@@ -49,7 +67,6 @@ export const Route = createFileRoute("/category/$slug")({
         { property: "og:url", content: url },
         { property: "og:site_name", content: "UtiliHub" },
         { property: "og:image", content: ogImage() },
-        { name: "twitter:card", content: "summary_large_image" },
       ],
       links: [{ rel: "canonical", href: url }, ...hreflangLinks(enPath, esPath)],
       scripts: [
@@ -80,9 +97,23 @@ export const Route = createFileRoute("/category/$slug")({
   component: CategoryPage,
 });
 
+function CategoryRoutePending() {
+  return (
+    <div className="container-page py-6 sm:py-8" aria-busy="true">
+      <div className="h-5 w-40 max-w-full animate-pulse rounded bg-muted" />
+      <div className="mt-4 h-8 w-56 max-w-full animate-pulse rounded bg-muted" />
+      <p className="mt-2 h-5 w-72 max-w-full animate-pulse rounded bg-muted" />
+      <div className="mt-5 min-h-72 rounded-xl border border-border/70 bg-card" />
+    </div>
+  );
+}
+
 function CategoryPage() {
-  const { category, tools } = Route.useLoaderData();
-  const neighboring = ALL_CATEGORIES.filter((item) => item.slug !== category.slug).slice(0, 4);
+  const { category, tools, neighboring } = Route.useLoaderData() as {
+    category: CategoryPayload;
+    tools: CatalogTool[];
+    neighboring: Neighbor[];
+  };
   const browseItems = tools.map((t) => ({
     ...t,
     id: t.slug,
