@@ -309,7 +309,7 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
       <p className="text-center text-[11px] text-white/50">
         {es
-          ? "Toque = abrir · mantener = bandera · número abierto = acorde"
+          ? "Toque = abrir · mantener = poner bandera · número abierto abre vecinos"
           : "Tap = open · hold = flag · open number = chord"}
       </p>
     </div>
