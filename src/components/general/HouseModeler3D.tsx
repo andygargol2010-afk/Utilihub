@@ -1261,6 +1261,18 @@ function paintHorizonHaze(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+/** Cool veil opposite the sun. Transparent rim so it reads as sky, not a card. */
+function paintCoolHorizon(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.clearRect(0, 0, size, size);
+  const g = ctx.createLinearGradient(0, size * 0.15, 0, size);
+  g.addColorStop(0, "rgba(168,188,214,0)");
+  g.addColorStop(0.42, "rgba(154,176,204,0.34)");
+  g.addColorStop(0.78, "rgba(132,156,186,0.18)");
+  g.addColorStop(1, "rgba(132,156,186,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+}
+
 /** Warm bank on the sun azimuth. Additive, so the horizon ring is not a flat wash. */
 function paintSunHorizon(ctx: CanvasRenderingContext2D, size: number) {
   ctx.clearRect(0, 0, size, size);
@@ -3225,6 +3237,23 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       sunHorizon.castShadow = false;
       sunHorizon.receiveShadow = false;
       scene.add(sunHorizon);
+      // Cool sky fill opposite the key. Fog off so it does not flatten into the haze color. No shadow map.
+      const coolHorizonMap = makeCanvasTexture(128, paintCoolHorizon, true);
+      const coolHorizonMat = new THREE.MeshBasicMaterial({
+        map: coolHorizonMap ?? undefined,
+        transparent: true,
+        depthWrite: false,
+        fog: false,
+        toneMapped: false,
+        side: THREE.DoubleSide,
+        opacity: 0.42,
+      });
+      const coolHorizon = new THREE.Mesh(new THREE.PlaneGeometry(78, 16), coolHorizonMat);
+      coolHorizon.position.set(-sun.x * 108, 6.4, -sun.z * 108);
+      coolHorizon.lookAt(0, 5.2, 0);
+      coolHorizon.castShadow = false;
+      coolHorizon.receiveShadow = false;
+      scene.add(coolHorizon);
       // Cloud shade on the far lawn. Opposite the sun bank, no extra shadow map.
       const lawnDappleMap = makeCanvasTexture(128, paintLawnDapple, true);
       const lawnDappleMat = new THREE.MeshBasicMaterial({
@@ -3464,6 +3493,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           sunHorizon.geometry.dispose();
           sunHorizonMat.dispose();
           sunHorizonMap?.dispose();
+          coolHorizon.geometry.dispose();
+          coolHorizonMat.dispose();
+          coolHorizonMap?.dispose();
           lawnDapple.geometry.dispose();
           lawnDappleMat.dispose();
           lawnDappleMap?.dispose();
