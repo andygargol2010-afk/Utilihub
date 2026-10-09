@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { DeferredToolUi } from "@/components/DeferredToolUi";
 import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { FavoriteButton } from "@/components/FavoriteButton";
-import { ShareAndExportActions } from "@/components/ShareAndExportActions";
+import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { DeferredToolSeo } from "@/components/DeferredToolSeo";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { DeferredKitReturnRibbon } from "@/components/kits/DeferredKitReturnRibbon";
@@ -170,7 +170,7 @@ function ToolPage() {
       >
         <DeferredToolUi slug={tool.slug} locale="en" />
         <div className="mt-4">
-          <ShareAndExportActions title={tool.name} />
+          <DeferredShareAndExport title={tool.name} />
         </div>
       </section>
       <AdsterraBanner />

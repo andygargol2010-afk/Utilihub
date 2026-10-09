@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { DeferredToolUi } from "@/components/DeferredToolUi";
 import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { FavoriteButton } from "@/components/FavoriteButton";
-import { ShareAndExportActions } from "@/components/ShareAndExportActions";
+import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { DeferredToolSeo } from "@/components/DeferredToolSeo";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { DeferredKitReturnRibbon } from "@/components/kits/DeferredKitReturnRibbon";
@@ -186,7 +186,7 @@ function SpanishToolPage() {
       >
         <DeferredToolUi slug={tool.slug} locale="es" />
         <div className="mt-4">
-          <ShareAndExportActions title={name} locale="es" />
+          <DeferredShareAndExport title={name} locale="es" />
         </div>
       </section>
       <AdsterraBanner />
