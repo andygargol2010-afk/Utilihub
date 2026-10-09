@@ -48,13 +48,14 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Only split heavy optional libs. Never chunk @tanstack/* — breaks Nitro SSR.
+        // Only split three and xlsx. Do not name-chunk pdfjs/pdf-lib or jspdf/html2canvas:
+        // those vendor chunks also absorbed Vite's preload helper, so the home entry
+        // statically imported ~1.6 MB (vendor-pdf + vendor-export) before LCP.
+        // Document/media tools and ShareAndExportActions already dynamic-import them.
         manualChunks(id) {
           if (!id.includes("node_modules")) return;
           if (id.includes("/three/") || id.endsWith("/three")) return "vendor-three";
-          if (id.includes("pdfjs-dist") || id.includes("pdf-lib")) return "vendor-pdf";
           if (id.includes("/xlsx") || id.includes("node_modules/xlsx")) return "vendor-xlsx";
-          if (id.includes("jspdf") || id.includes("html2canvas")) return "vendor-export";
         },
       },
     },
