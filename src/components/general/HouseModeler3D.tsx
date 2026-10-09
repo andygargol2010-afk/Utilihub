@@ -4574,6 +4574,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · E valla · T sendero · Y jardinera · U banco · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
+        variants: "Acabado activo",
         none: "Nada seleccionado",
         armed: "Listo para colocar",
         selected: "Seleccionado",
@@ -4731,6 +4732,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · E fence · T path · Y planter · U bench · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
+        variants: "Active finish",
         none: "Nothing selected",
         armed: "Ready to place",
         selected: "Selected",
@@ -5169,6 +5171,58 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     }
     return paletteItems.find((item) => item.kind === kind)?.swatch ?? "#d8d0c4";
   };
+  /** Both looks for kinds that have a selectable finish. Active chip is first flag. */
+  const variantPair = (kind: PartKind): { color: string; on: boolean }[] | null => {
+    if (kind === "wall") {
+      const id = selectedKind === "wall" ? selectedWallFinish : wallFinish;
+      return [{ color: "#d8d0c4", on: id !== "masonry" }, { color: "#c4b49a", on: id === "masonry" }];
+    }
+    if (kind === "door") {
+      const id = selectedKind === "door" ? selectedDoorFinish : doorFinish;
+      return [{ color: "#8d5c38", on: id !== "metal" }, { color: "#b7c4cc", on: id === "metal" }];
+    }
+    if (kind === "roof") {
+      const id = selectedKind === "roof" ? selectedRoofFinish : roofFinish;
+      return [{ color: "#6b3a2a", on: id !== "metal" }, { color: "#9aa7ae", on: id === "metal" }];
+    }
+    if (kind === "column") {
+      const id = selectedKind === "column" ? selectedColumnFinish : columnFinish;
+      return [{ color: "#c8bfb0", on: id !== "masonry" }, { color: "#c4b49a", on: id === "masonry" }];
+    }
+    if (kind === "stairs") {
+      const id = selectedKind === "stairs" ? selectedStairsFinish : stairsFinish;
+      return [{ color: "#8b5a32", on: id !== "masonry" }, { color: "#c4b49a", on: id === "masonry" }];
+    }
+    if (kind === "railing") {
+      const id = selectedKind === "railing" ? selectedRailingFinish : railingFinish;
+      return [{ color: "#6d4a30", on: id !== "metal" }, { color: "#8e99a1", on: id === "metal" }];
+    }
+    if (kind === "window") {
+      const id = selectedKind === "window" ? selectedWindowFinish : windowFinish;
+      return [{ color: "#9bb7c9", on: id !== "metal" }, { color: "#8e99a1", on: id === "metal" }];
+    }
+    if (kind === "floor") {
+      const id = selectedKind === "floor" ? selectedFloorFinish : floorFinish;
+      return [{ color: "#8b7355", on: id !== "clay" }, { color: "#a15a3a", on: id === "clay" }];
+    }
+    if (kind === "fence") {
+      const id = selectedKind === "fence" ? selectedFenceFinish : fenceFinish;
+      return [{ color: "#8b5a32", on: id !== "metal" }, { color: "#8e99a1", on: id === "metal" }];
+    }
+    if (kind === "path") {
+      const id = selectedKind === "path" ? selectedPathFinish : pathFinish;
+      return [{ color: "#b7ab9a", on: id !== "clay" }, { color: "#a15a3a", on: id === "clay" }];
+    }
+    if (kind === "planter") {
+      const id = selectedKind === "planter" ? selectedPlanterFinish : planterFinish;
+      return [{ color: "#8a4e3a", on: id !== "timber" }, { color: "#8b5a32", on: id === "timber" }];
+    }
+    if (kind === "bench") {
+      const id = selectedKind === "bench" ? selectedBenchFinish : benchFinish;
+      return [{ color: "#8b5a32", on: id !== "masonry" }, { color: "#c4b49a", on: id === "masonry" }];
+    }
+    return null;
+  };
   const finishCaption = (kind: PartKind): string | null => {
     if (kind === "wall") {
       const id = selectedKind === "wall" ? selectedWallFinish : wallFinish;
@@ -5213,10 +5267,6 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (kind === "planter") {
       const id = selectedKind === "planter" ? selectedPlanterFinish : planterFinish;
       return id === "timber" ? labels.planterTimber : labels.planterClay;
-    }
-    if (kind === "bench") {
-      const id = selectedKind === "bench" ? selectedBenchFinish : benchFinish;
-      return id === "masonry" ? "#c4b49a" : "#8b5a32";
     }
     if (kind === "bench") {
       const id = selectedKind === "bench" ? selectedBenchFinish : benchFinish;
@@ -5739,49 +5789,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {!paletteCompact && (
             <p className="px-1 text-[10px] leading-snug text-muted-foreground">{labels.dragHint}</p>
           )}
-          {paletteItems.map((item) => (
-            <button
-              key={item.kind}
-              type="button"
-              onPointerDown={startPaletteDrag(item.kind)}
-              onClick={() => setTool(item.kind)}
-              aria-pressed={tool === item.kind}
-              aria-label={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} (${item.key})`}
-              title={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} · ${item.size} · ${labels.dragHint} (${item.key})`}
-            className={`group flex min-h-11 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
-                tool === item.kind
-                  ? "border-amber-700/70 bg-amber-900/20 shadow-sm ring-1 ring-amber-700/40"
-                  : selectedKind === item.kind
-                    ? "border-dashed border-amber-600 bg-amber-900/10 ring-1 ring-amber-600/50"
-                    : "border-border bg-background/80 hover:bg-accent"
-              } ${placingFromPalette && tool === item.kind ? "scale-[0.98] ring-2 ring-amber-600" : ""}`}
-            >
-              <StructureGlyph kind={item.kind} />
-              <span
-                className="h-1.5 w-10 rounded-full ring-1 ring-black/15"
-                style={{ background: swatchFor(item.kind) }}
-                aria-hidden
-              />
-              {paletteCompact && finishShort(item.kind) && (
-                <span className="max-w-full truncate text-[9px] font-semibold leading-none text-amber-800 dark:text-amber-200">{finishShort(item.kind)}</span>
-              )}
-              {!paletteCompact && (
-                <>
-                  <span className="text-xs font-semibold text-foreground">{item.label}</span>
-                  <span className="text-[10px] leading-none text-muted-foreground">{item.size}</span>
-                  {finishCaption(item.kind) && (
-                    <span className="text-[10px] font-semibold leading-none text-amber-800 dark:text-amber-200">{finishCaption(item.kind)}</span>
-                  )}
-                </>
-              )}
-              <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
-                {item.key}
-                {!paletteCompact && tool === item.kind ? ` · ${labels.active}` : ""}
-                {selectedKind === item.kind ? ` · ${labels.selectedMark}` : ""}
-              </span>
-            </button>
-          ))}
-
+          <div className="sticky top-0 z-10 bg-card/95 pb-1 backdrop-blur-sm">
+            {!paletteCompact && (
+              <p className="px-0.5 pb-1 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">{labels.variants}</p>
+            )}
           {(tool === "door" || selectedKind === "door") && (
             <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
               <p className={`mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground ${paletteCompact ? "sr-only" : ""}`}>{labels.doorFinish}</p>
@@ -6142,6 +6153,62 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               </div>
             </div>
           )}
+          </div>
+          {paletteItems.map((item) => (
+            <button
+              key={item.kind}
+              type="button"
+              onPointerDown={startPaletteDrag(item.kind)}
+              onClick={() => setTool(item.kind)}
+              aria-pressed={tool === item.kind}
+              aria-label={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} (${item.key})`}
+              title={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} · ${item.size} · ${labels.dragHint} (${item.key})`}
+            className={`group flex min-h-11 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
+                tool === item.kind
+                  ? "border-amber-700/70 bg-amber-900/20 shadow-sm ring-1 ring-amber-700/40"
+                  : selectedKind === item.kind
+                    ? "border-dashed border-amber-600 bg-amber-900/10 ring-1 ring-amber-600/50"
+                    : "border-border bg-background/80 hover:bg-accent"
+              } ${placingFromPalette && tool === item.kind ? "scale-[0.98] ring-2 ring-amber-600" : ""}`}
+            >
+              <StructureGlyph kind={item.kind} />
+              {variantPair(item.kind) ? (
+                <span className="flex items-center gap-1" aria-hidden>
+                  {variantPair(item.kind)!.map((chip) => (
+                    <span
+                      key={chip.color}
+                      className={`h-2 rounded-sm ring-1 ring-black/25 ${chip.on ? "w-4 ring-2 ring-amber-700" : "w-2.5 opacity-55"}`}
+                      style={{ background: chip.color }}
+                    />
+                  ))}
+                </span>
+              ) : (
+                <span
+                  className="h-1.5 w-10 rounded-full ring-1 ring-black/15"
+                  style={{ background: swatchFor(item.kind) }}
+                  aria-hidden
+                />
+              )}
+              {paletteCompact && finishShort(item.kind) && (
+                <span className="max-w-full truncate text-[9px] font-semibold leading-none text-amber-800 dark:text-amber-200">{finishShort(item.kind)}</span>
+              )}
+              {!paletteCompact && (
+                <>
+                  <span className="text-xs font-semibold text-foreground">{item.label}</span>
+                  <span className="text-[10px] leading-none text-muted-foreground">{item.size}</span>
+                  {finishCaption(item.kind) && (
+                    <span className="text-[10px] font-semibold leading-none text-amber-800 dark:text-amber-200">{finishCaption(item.kind)}</span>
+                  )}
+                </>
+              )}
+              <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
+                {item.key}
+                {!paletteCompact && tool === item.kind ? ` · ${labels.active}` : ""}
+                {selectedKind === item.kind ? ` · ${labels.selectedMark}` : ""}
+              </span>
+            </button>
+          ))}
+
           <div className="rounded-xl border border-border bg-background/80 p-1.5">
             {!paletteCompact && (
               <p className="px-0.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">{labels.layers}</p>
