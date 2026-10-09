@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, ClipboardCopy, Link2, RotateCcw } from "lucide-react";
+import { ArrowRight, ClipboardCopy, Link2, RotateCcw, Timer } from "lucide-react";
 import { publicToolPath } from "@/lib/route-slugs";
 import { kitBySlug, kitTools } from "@/lib/work-kits";
 
@@ -14,9 +14,11 @@ type KitCarryBoardProps = {
 type StoredBoard = { note?: string; done?: string[] };
 type SlipPayload = { note: string; done: string[] };
 type SlipStatus = "idle" | "copied" | "pending" | "imported" | "kept" | "invalid";
+type PaceStatus = "idle" | "running" | "paused" | "done";
 
 const storageKey = (slug: string) => `utilihub-kit-board:${slug}`;
 const NOTE_LIMIT = 8000;
+const PACE_SECONDS = 25 * 60;
 
 function stepToolPath(kitSlug: string, stepSlug: string, locale: "en" | "es") {
   const kit = kitBySlug(kitSlug);
@@ -69,6 +71,13 @@ function clearSlipHash() {
   window.history.replaceState(null, "", `${url.pathname}${url.search}`);
 }
 
+function formatPace(seconds: number) {
+  const safe = Math.max(0, seconds);
+  const minutes = Math.floor(safe / 60);
+  const rest = safe % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(rest).padStart(2, "0")}`;
+}
+
 export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardProps) {
   const es = locale === "es";
   const stepKey = steps.map((step) => step.slug).join("|");
@@ -79,6 +88,8 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
   const [copied, setCopied] = useState(false);
   const [slipStatus, setSlipStatus] = useState<SlipStatus>("idle");
   const [pendingSlip, setPendingSlip] = useState<SlipPayload | null>(null);
+  const [paceStatus, setPaceStatus] = useState<PaceStatus>("idle");
+  const [paceLeft, setPaceLeft] = useState(PACE_SECONDS);
 
   useEffect(() => {
     const allowed = stepKey ? stepKey.split("|") : [];
@@ -127,6 +138,18 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
       /* private mode or quota */
     }
   }, [note, done, ready, allowPersist, kitSlug]);
+
+  useEffect(() => {
+    if (paceStatus !== "running") return;
+    const id = window.setInterval(() => {
+      setPaceLeft((prev) => (prev <= 1 ? 0 : prev - 1));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [paceStatus]);
+
+  useEffect(() => {
+    if (paceStatus === "running" && paceLeft === 0) setPaceStatus("done");
+  }, [paceLeft, paceStatus]);
 
   const doneCount = steps.filter((step) => done.includes(step.slug)).length;
   const nextStep = steps.find((step) => !done.includes(step.slug));
@@ -180,6 +203,21 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
     setAllowPersist(true);
     setNote("");
     setDone([]);
+  }
+
+  function startPace() {
+    setPaceLeft((prev) => (prev <= 0 ? PACE_SECONDS : prev));
+    setPaceStatus("running");
+  }
+
+  function pausePace() {
+    if (paceStatus !== "running") return;
+    setPaceStatus("paused");
+  }
+
+  function resetPace() {
+    setPaceLeft(PACE_SECONDS);
+    setPaceStatus("idle");
   }
 
   return (
@@ -248,10 +286,40 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
           <span className="font-bold">{es ? "Kit listo" : "Kit ready"}</span>
         )}
       </div>
+      <div
+        className="mt-3 flex flex-wrap items-center gap-2 rounded-xl border border-border/70 bg-card px-3 py-2"
+        data-kit-pace={paceStatus}
+      >
+        <Timer className="size-4 text-primary" aria-hidden="true" />
+        <p className="text-sm font-semibold">
+          {es ? "Ritmo de mesa" : "Desk pace"}{" "}
+          <span className="tabular-nums">{formatPace(paceLeft)}</span>
+        </p>
+        <span className="text-xs text-muted-foreground">
+          {paceStatus === "done"
+            ? es
+              ? "Bloque listo"
+              : "Block done"
+            : es
+              ? "Solo esta pestaña"
+              : "This tab only"}
+        </span>
+        <div className="ml-auto flex flex-wrap gap-2">
+          <button type="button" onClick={startPace} className="rounded-full bg-primary px-3 py-1.5 text-sm font-bold text-primary-foreground">
+            {paceStatus === "paused" ? (es ? "Seguir" : "Resume") : es ? "Empezar" : "Start"}
+          </button>
+          <button type="button" onClick={pausePace} className="rounded-full border border-border px-3 py-1.5 text-sm font-bold">
+            {es ? "Pausar" : "Pause"}
+          </button>
+          <button type="button" onClick={resetPace} className="rounded-full border border-border px-3 py-1.5 text-sm font-bold">
+            {es ? "Reiniciar" : "Reset"}
+          </button>
+        </div>
+      </div>
       <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
         {es
-          ? "Marca los pasos y pegá aquí el resultado de cada herramienta. Queda en este navegador, sin cuenta. El slip copia el enlace, no la pizarra."
-          : "Check steps and paste each tool result here. It stays in this browser, with no account. A slip copies the link, not the board."}
+          ? "Marca los pasos y pegá aquí el resultado de cada herramienta. Queda en este navegador, sin cuenta. El slip copia el enlace, no la pizarra. El ritmo no se guarda."
+          : "Check steps and paste each tool result here. It stays in this browser, with no account. A slip copies the link, not the board. Pace is not saved."}
       </p>
       <ul className="mt-4 grid gap-2 sm:grid-cols-2">
         {steps.map((step, index) => {
