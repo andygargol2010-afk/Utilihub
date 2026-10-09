@@ -99,6 +99,7 @@ import { TOOL_SEO_OVERRIDES_RUT_CHILE } from "./tool-seo-overrides-rut-chile";
 import { TOOL_SEO_OVERRIDES_MORSE } from "./tool-seo-overrides-morse";
 import { TOOL_SEO_OVERRIDES_ROMAN } from "./tool-seo-overrides-roman";
 import { TOOL_SEO_OVERRIDES_GITIGNORE } from "./tool-seo-overrides-gitignore";
+import { TOOL_SEO_OVERRIDES_WATER_CONSUMPTION } from "./tool-seo-overrides-water-consumption";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -213,6 +214,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_MORSE,
   ...TOOL_SEO_OVERRIDES_ROMAN,
   ...TOOL_SEO_OVERRIDES_GITIGNORE,
+  ...TOOL_SEO_OVERRIDES_WATER_CONSUMPTION,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
