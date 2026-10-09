@@ -3914,13 +3914,28 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     obj.rotation.y = yaw;
     obj.updateMatrixWorld(true);
     const span = Math.max(GRID, snap(spanBox.max.x - spanBox.min.x));
-    const dx = Math.cos(yaw) * span;
-    const dz = -Math.sin(yaw) * span;
-    let [x, z] = clampToSite(snap(obj.position.x + dx), snap(obj.position.z + dz));
-    if (x === snap(obj.position.x) && z === snap(obj.position.z)) {
-      const bump = span + GRID;
-      [x, z] = clampToSite(snap(obj.position.x + Math.cos(yaw) * bump), snap(obj.position.z - Math.sin(yaw) * bump));
+    const originX = snap(obj.position.x);
+    const originZ = snap(obj.position.z);
+    // Rim clamp can pull a +span step back onto the source, stacking an unselectable twin.
+    // Try the part heading, then the other three, and skip the clone if none clears the cell.
+    let x = originX;
+    let z = originZ;
+    let cleared = false;
+    for (let turn = 0; turn < 4 && !cleared; turn++) {
+      const heading = yaw + turn * (Math.PI / 2);
+      for (const dist of [span, span + GRID]) {
+        const nx = snap(obj.position.x + Math.cos(heading) * dist);
+        const nz = snap(obj.position.z - Math.sin(heading) * dist);
+        const [cx, cz] = clampToSite(nx, nz);
+        if (cx !== originX || cz !== originZ) {
+          x = cx;
+          z = cz;
+          cleared = true;
+          break;
+        }
+      }
     }
+    if (!cleared) return;
     const finish = doorFinishOf(part);
     const roofCover = roofFinishOf(part);
     const wallCover = wallFinishOf(part);
