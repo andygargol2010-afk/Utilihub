@@ -9,35 +9,41 @@ import { DeferredToolSeo } from "@/components/DeferredToolSeo";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { DeferredKitReturnRibbon } from "@/components/kits/DeferredKitReturnRibbon";
 import type { CatalogTool } from "@/lib/all-tools";
-import { englishToolPath } from "@/lib/route-slugs";
-import {
-  absoluteUrl,
-  breadcrumbSchema,
-  cleanDescription,
-  faqSchema,
-  ogImage,
-  organizationSchema,
-} from "@/lib/seo";
-import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { recordRecentTool } from "@/hooks/use-recent-tools";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
-import { hasToolShowcase } from "@/lib/showcase-slugs";
+
+type ToolHead = {
+  meta: Array<{ title?: string; name?: string; property?: string; content?: string }>;
+  links?: Array<{ rel: string; href: string; hrefLang?: string }>;
+  scripts?: Array<{ type: string; children: string }>;
+};
 
 export const Route = createFileRoute("/es/herramientas/$slug")({
   loader: async ({ params }) => {
+    // Name dictionary, SEO helpers, and the showcase set stay off the route shell chunk.
     const { allToolBySlug } = await import("@/lib/all-tools");
     const tool = allToolBySlug(params.slug);
     if (!tool || tool.category === "finanzas") throw notFound();
     const { toolSeoOverride } = await import("@/lib/tool-seo-overrides");
     const override = toolSeoOverride(tool.slug);
+    const { spanishCategoryName, spanishToolName } = await import("@/lib/i18n/es");
+    const { hasToolShowcase } = await import("@/lib/showcase-slugs");
+    const name = spanishToolName(tool);
+    const categoryName = spanishCategoryName(tool.category);
+    const seo = {
+      metaTitleEs: override?.metaTitleEs,
+      metaDescriptionEs: override?.metaDescriptionEs,
+      faqEs: override?.faqEs ?? [],
+    };
+    const head = await buildSpanishToolHead(tool, name, categoryName, seo);
     return {
       tool,
-      seo: {
-        metaTitleEs: override?.metaTitleEs,
-        metaDescriptionEs: override?.metaDescriptionEs,
-        faqEs: override?.faqEs ?? [],
-      },
+      name,
+      categoryName,
+      showcase: hasToolShowcase(tool.slug),
+      seo,
+      head,
     };
   },
   pendingComponent: SpanishToolRoutePending,
@@ -52,75 +58,82 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
         ],
       };
     }
-    const { tool, seo } = loaderData;
-    const override = seo;
-    const url = absoluteUrl(`/es/herramientas/${tool.slug}`);
-    const name = spanishToolName(tool);
-    const category = spanishCategoryName(tool.category);
-    const title =
-      override?.metaTitleEs ?? `${name} gratis online — ${category} | UtiliHub`;
-    const description = cleanDescription(
-      override?.metaDescriptionEs ??
-        `${name}: herramienta gratuita de ${category.toLowerCase()}. Usala en el navegador, sin cuenta ni instalación. Resultados al instante en UtiliHub.`,
-    );
-    const englishUrl = absoluteUrl(englishToolPath(tool));
-    const faqEs = override?.faqEs ?? [];
-    const categoryPath =
-      tool.category === "finanzas" ? "/es/finanzas" : `/es/categoria/${tool.category}`;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        { name: "robots", content: "index, follow, max-image-preview:large" },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "website" },
-        { property: "og:locale", content: "es_ES" },
-        { property: "og:url", content: url },
-        { property: "og:image", content: ogImage() },
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
-        { name: "twitter:image", content: ogImage() },
-      ],
-      links: [
-        { rel: "canonical", href: url },
-        { rel: "alternate", hrefLang: "es", href: url },
-        { rel: "alternate", hrefLang: "en", href: englishUrl },
-        { rel: "alternate", hrefLang: "x-default", href: englishUrl },
-      ],
-      scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "WebApplication",
-                name,
-                description,
-                url,
-                applicationCategory: "UtilityApplication",
-                operatingSystem: "Any",
-                isAccessibleForFree: true,
-                offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-                publisher: organizationSchema(),
-              },
-              ...(faqEs.length ? [faqSchema(faqEs)] : []),
-              breadcrumbSchema([
-                { name: "Inicio", path: "/es" },
-                { name: "Herramientas", path: "/es/herramientas" },
-                { name: category, path: categoryPath },
-                { name: name },
-              ]),
-            ],
-          }),
-        },
-      ],
-    };
+    return loaderData.head;
   },
   component: SpanishToolPage,
 });
+
+async function buildSpanishToolHead(
+  tool: CatalogTool,
+  name: string,
+  category: string,
+  seo: { metaTitleEs?: string; metaDescriptionEs?: string; faqEs: Array<{ q: string; a: string }> },
+): Promise<ToolHead> {
+  const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, organizationSchema } = await import(
+    "@/lib/seo",
+  );
+  const { englishToolPath } = await import("@/lib/route-slugs");
+  const url = absoluteUrl(`/es/herramientas/${tool.slug}`);
+  const title = seo.metaTitleEs ?? `${name} gratis online — ${category} | UtiliHub`;
+  const description = cleanDescription(
+    seo.metaDescriptionEs ??
+      `${name}: herramienta gratuita de ${category.toLowerCase()}. Usala en el navegador, sin cuenta ni instalación. Resultados al instante en UtiliHub.`,
+  );
+  const englishUrl = absoluteUrl(englishToolPath(tool));
+  const faqEs = seo.faqEs ?? [];
+  const categoryPath = tool.category === "finanzas" ? "/es/finanzas" : `/es/categoria/${tool.category}`;
+  return {
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { property: "og:locale", content: "es_ES" },
+      { property: "og:url", content: url },
+      { property: "og:image", content: ogImage() },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+      { name: "twitter:image", content: ogImage() },
+    ],
+    links: [
+      { rel: "canonical", href: url },
+      { rel: "alternate", hrefLang: "es", href: url },
+      { rel: "alternate", hrefLang: "en", href: englishUrl },
+      { rel: "alternate", hrefLang: "x-default", href: englishUrl },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebApplication",
+              name,
+              description,
+              url,
+              applicationCategory: "UtilityApplication",
+              operatingSystem: "Any",
+              isAccessibleForFree: true,
+              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+              publisher: organizationSchema(),
+            },
+            ...(faqEs.length ? [faqSchema(faqEs)] : []),
+            breadcrumbSchema([
+              { name: "Inicio", path: "/es" },
+              { name: "Herramientas", path: "/es/herramientas" },
+              { name: category, path: categoryPath },
+              { name },
+            ]),
+          ],
+        }),
+      },
+    ],
+  };
+}
 
 function SpanishToolRoutePending() {
   return (
@@ -136,10 +149,13 @@ function SpanishToolRoutePending() {
 }
 
 function SpanishToolPage() {
-  const { tool } = Route.useLoaderData() as { tool: CatalogTool };
+  const { tool, name, categoryName, showcase } = Route.useLoaderData() as {
+    tool: CatalogTool;
+    name: string;
+    categoryName: string;
+    showcase: boolean;
+  };
   const categorySlug = tool.category;
-  const showcase = hasToolShowcase(tool.slug);
-  const name = spanishToolName(tool);
   useEffect(() => {
     recordRecentTool(tool.slug);
   }, [tool.slug]);
@@ -148,7 +164,7 @@ function SpanishToolPage() {
       <Breadcrumbs
         locale="es"
         back={{
-          label: spanishCategoryName(categorySlug),
+          label: categoryName,
           to: categorySlug === "finanzas" ? "/es/finanzas" : "/es/categoria/$slug",
           params: categorySlug === "finanzas" ? undefined : { slug: categorySlug },
         }}
@@ -156,7 +172,7 @@ function SpanishToolPage() {
           { label: "Inicio", to: "/es" },
           { label: "Herramientas", to: "/es/herramientas" },
           {
-            label: spanishCategoryName(categorySlug),
+            label: categoryName,
             to: categorySlug === "finanzas" ? "/es/finanzas" : "/es/categoria/$slug",
             params: categorySlug === "finanzas" ? undefined : { slug: categorySlug },
           },
@@ -171,7 +187,7 @@ function SpanishToolPage() {
           <div className="min-w-0">
             <h1 className="text-2xl font-bold sm:text-3xl">{name}</h1>
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-              {`Herramienta de ${spanishCategoryName(tool.category).toLowerCase()}.`}
+              {`Herramienta de ${categoryName.toLowerCase()}.`}
             </p>
           </div>
           <FavoriteButton slug={tool.slug} name={name} locale="es" />
