@@ -100,6 +100,7 @@ import { TOOL_SEO_OVERRIDES_MORSE } from "./tool-seo-overrides-morse";
 import { TOOL_SEO_OVERRIDES_ROMAN } from "./tool-seo-overrides-roman";
 import { TOOL_SEO_OVERRIDES_GITIGNORE } from "./tool-seo-overrides-gitignore";
 import { TOOL_SEO_OVERRIDES_RICE } from "./tool-seo-overrides-rice";
+import { TOOL_SEO_OVERRIDES_SRT } from "./tool-seo-overrides-srt";
 import { TOOL_SEO_OVERRIDES_WATER_CONSUMPTION } from "./tool-seo-overrides-water-consumption";
 
 export type ToolSeoOverride = {
@@ -216,6 +217,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_ROMAN,
   ...TOOL_SEO_OVERRIDES_GITIGNORE,
   ...TOOL_SEO_OVERRIDES_RICE,
+  ...TOOL_SEO_OVERRIDES_SRT,
   ...TOOL_SEO_OVERRIDES_WATER_CONSUMPTION,
 };
 

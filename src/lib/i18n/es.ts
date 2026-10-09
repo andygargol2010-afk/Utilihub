@@ -183,6 +183,7 @@ const EXACT_NAMES: Record<string, string> = {
   "validador-rut-chile": "Validador de RUT chileno",
   "traductor-morse": "Traductor de código Morse",
   "calculadora-arroz": "Calculadora de agua para arroz",
+  "desfase-srt": "Desfase de subtítulos SRT",
   "punto-equilibrio-unidades": "Punto de equilibrio (unidades)",
   "mpg-a-litros": "MPG a L/100 km",
   "ppi-pantalla": "PPI de pantalla",

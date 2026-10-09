@@ -136,6 +136,7 @@ const MorseTool = lazy(() => import("./MorseTool").then((m) => ({ default: m.Mor
 const RomanTool = lazy(() => import("./RomanTool").then((m) => ({ default: m.RomanTool })));
 const GitignoreTool = lazy(() => import("./GitignoreTool").then((m) => ({ default: m.GitignoreTool })));
 const RiceTool = lazy(() => import("./RiceTool").then((m) => ({ default: m.RiceTool })));
+const SrtOffsetTool = lazy(() => import("./SrtOffsetTool").then((m) => ({ default: m.SrtOffsetTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -220,6 +221,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "conversor-numeros-romanos") return RomanTool as ToolComp;
   if (tool.slug === "generador-gitignore") return GitignoreTool as ToolComp;
   if (tool.slug === "calculadora-arroz") return RiceTool as ToolComp;
+  if (tool.slug === "desfase-srt") return SrtOffsetTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
