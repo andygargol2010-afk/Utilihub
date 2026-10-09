@@ -28,6 +28,7 @@ export function StandingWaveSim({ locale = "en" }: { locale?: SimLocale }) {
   const speed = 18 + tension * 0.55;
   const wavelength = LENGTH_M / harmonic;
   const nodes = harmonic + 1;
+  const lambdaLabel = `${wavelength.toFixed(2)} m`;
 
   useEffect(() => {
     let raf = 0;
@@ -127,7 +128,14 @@ export function StandingWaveSim({ locale = "en" }: { locale?: SimLocale }) {
   }, []);
 
   return (
-    <div className="mx-auto flex max-w-lg flex-col items-center gap-4" data-sim="standing-wave">
+    <div
+      className="mx-auto flex max-w-lg flex-col items-center gap-4"
+      data-sim="standing-wave"
+      data-sim-nodes={nodes}
+      data-sim-antinodes={harmonic}
+      data-sim-lambda={lambdaLabel}
+      data-sim-running={running ? "1" : "0"}
+    >
       <div className="w-full rounded-2xl border border-teal-500/25 bg-teal-950/40 p-3">
         <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-teal-200/85">
           {es ? "Cuerda fija en ambos extremos" : "String fixed at both ends"}
@@ -199,19 +207,19 @@ export function StandingWaveSim({ locale = "en" }: { locale?: SimLocale }) {
       <div className="grid w-full max-w-sm grid-cols-3 gap-2 text-center text-[11px]">
         <div className="rounded-xl border border-teal-500/20 bg-black/30 px-2 py-2">
           <p className="font-bold text-teal-200/70">{es ? "Nodos" : "Nodes"}</p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-teal-50" data-sim-nodes>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-teal-50" data-sim-nodes={nodes}>
             {nodes}
           </p>
         </div>
         <div className="rounded-xl border border-teal-500/20 bg-black/30 px-2 py-2">
           <p className="font-bold text-teal-200/70">λ</p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-teal-50" data-sim-lambda>
-            {wavelength.toFixed(2)} m
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-teal-50" data-sim-lambda={lambdaLabel}>
+            {lambdaLabel}
           </p>
         </div>
         <div className="rounded-xl border border-teal-500/20 bg-black/30 px-2 py-2">
           <p className="font-bold text-teal-200/70">{es ? "Vientres" : "Antinodes"}</p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-teal-50" data-sim-antinodes>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-teal-50" data-sim-antinodes={harmonic}>
             {harmonic}
           </p>
         </div>
@@ -228,8 +236,8 @@ export function StandingWaveSim({ locale = "en" }: { locale?: SimLocale }) {
 
       <p className="max-w-sm text-center text-[12px] leading-relaxed text-teal-100/70">
         {es
-          ? "λ = 2L/n. Los nodos no se mueven; la tensión solo cambia la rapidez del ciclo."
-          : "λ = 2L/n. Nodes stay put; tension only changes how fast the cycle runs."}
+          ? "\u03bb = L/n con L = 1,2 m. Los nodos no se mueven; la tensi\u00f3n solo cambia la rapidez del ciclo. Pausa no altera los n\u00fameros."
+          : "\u03bb = L/n with L = 1.2 m. Nodes stay put; tension only changes how fast the cycle runs. Pause does not change the numbers."}
       </p>
     </div>
   );
