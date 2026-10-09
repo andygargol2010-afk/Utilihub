@@ -137,6 +137,7 @@ const RomanTool = lazy(() => import("./RomanTool").then((m) => ({ default: m.Rom
 const GitignoreTool = lazy(() => import("./GitignoreTool").then((m) => ({ default: m.GitignoreTool })));
 const RiceTool = lazy(() => import("./RiceTool").then((m) => ({ default: m.RiceTool })));
 const SrtOffsetTool = lazy(() => import("./SrtOffsetTool").then((m) => ({ default: m.SrtOffsetTool })));
+const ManifestTool = lazy(() => import("./ManifestTool").then((m) => ({ default: m.ManifestTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -222,6 +223,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "generador-gitignore") return GitignoreTool as ToolComp;
   if (tool.slug === "calculadora-arroz") return RiceTool as ToolComp;
   if (tool.slug === "desfase-srt") return SrtOffsetTool as ToolComp;
+  if (tool.slug === "generador-manifest-pwa") return ManifestTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;

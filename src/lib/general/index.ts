@@ -116,6 +116,7 @@ import { ROMAN_TOOLS } from "./roman-tool";
 import { GITIGNORE_TOOLS } from "./gitignore-tool";
 import { RICE_TOOLS } from "./rice-tool";
 import { SRT_OFFSET_TOOLS } from "./srt-offset-tool";
+import { MANIFEST_TOOLS } from "./manifest-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -237,4 +238,5 @@ export const GENERAL_TOOLS = [
   ...GITIGNORE_TOOLS,
   ...RICE_TOOLS,
   ...SRT_OFFSET_TOOLS,
+  ...MANIFEST_TOOLS,
 ];

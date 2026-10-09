@@ -184,6 +184,7 @@ const EXACT_NAMES: Record<string, string> = {
   "traductor-morse": "Traductor de código Morse",
   "calculadora-arroz": "Calculadora de agua para arroz",
   "desfase-srt": "Desfase de subtítulos SRT",
+  "generador-manifest-pwa": "Generador de manifest PWA",
   "punto-equilibrio-unidades": "Punto de equilibrio (unidades)",
   "mpg-a-litros": "MPG a L/100 km",
   "ppi-pantalla": "PPI de pantalla",
