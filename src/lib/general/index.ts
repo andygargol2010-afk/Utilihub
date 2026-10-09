@@ -114,6 +114,7 @@ import { RUT_CHILE_TOOLS } from "./rut-chile-tool";
 import { MORSE_TOOLS } from "./morse-tool";
 import { ROMAN_TOOLS } from "./roman-tool";
 import { GITIGNORE_TOOLS } from "./gitignore-tool";
+import { RICE_TOOLS } from "./rice-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -233,4 +234,5 @@ export const GENERAL_TOOLS = [
   ...MORSE_TOOLS,
   ...ROMAN_TOOLS,
   ...GITIGNORE_TOOLS,
+  ...RICE_TOOLS,
 ];

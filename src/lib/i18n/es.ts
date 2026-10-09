@@ -182,6 +182,7 @@ const EXACT_NAMES: Record<string, string> = {
   "generador-security-txt": "Generador de security.txt",
   "validador-rut-chile": "Validador de RUT chileno",
   "traductor-morse": "Traductor de código Morse",
+  "calculadora-arroz": "Calculadora de agua para arroz",
   "punto-equilibrio-unidades": "Punto de equilibrio (unidades)",
   "mpg-a-litros": "MPG a L/100 km",
   "ppi-pantalla": "PPI de pantalla",

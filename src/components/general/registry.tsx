@@ -135,6 +135,7 @@ const RutChileTool = lazy(() => import("./RutChileTool").then((m) => ({ default:
 const MorseTool = lazy(() => import("./MorseTool").then((m) => ({ default: m.MorseTool })));
 const RomanTool = lazy(() => import("./RomanTool").then((m) => ({ default: m.RomanTool })));
 const GitignoreTool = lazy(() => import("./GitignoreTool").then((m) => ({ default: m.GitignoreTool })));
+const RiceTool = lazy(() => import("./RiceTool").then((m) => ({ default: m.RiceTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -218,6 +219,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "traductor-morse") return MorseTool as ToolComp;
   if (tool.slug === "conversor-numeros-romanos") return RomanTool as ToolComp;
   if (tool.slug === "generador-gitignore") return GitignoreTool as ToolComp;
+  if (tool.slug === "calculadora-arroz") return RiceTool as ToolComp;
   if (tool.config?.mode === "seo-growth") return SeoGrowthTool as ToolComp;
   if (tool.config?.mode === "percent-advanced") return PercentAdvancedTool as ToolComp;
   if (tool.config?.mode === "algebra-advanced") return AlgebraAdvancedTool as ToolComp;
