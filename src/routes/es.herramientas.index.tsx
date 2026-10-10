@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { absoluteUrl, ogImage } from "@/lib/seo";
 
 const loadSpanishToolSearch = () => import("@/components/SpanishToolSearch");
@@ -97,7 +97,7 @@ function SpanishToolsIndex() {
 
   return (
     <div className="container-page py-10">
-      <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Herramientas" }]} />
+      <DeferredBreadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Herramientas" }]} locale="es" />
       <h1 className="mt-4 text-3xl font-bold sm:text-4xl">Todas las herramientas</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">
         <CatalogCount /> herramientas gratuitas que funcionan directamente en el navegador, sin registro ni instalación.

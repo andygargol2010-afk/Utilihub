@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { absoluteUrl, hreflangLinks, ogImage } from "@/lib/seo";
 
 const loadToolSearch = () => import("@/components/ToolSearch");
@@ -105,7 +105,7 @@ function ToolsIndex() {
 
   return (
     <div className="container-page py-10">
-      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Tools" }]} />
+      <DeferredBreadcrumbs items={[{ label: "Home", to: "/" }, { label: "Tools" }]} />
       <h1 className="mt-4 text-3xl font-bold sm:text-4xl">All free online tools</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">
         <CatalogCount /> free utilities that run in the browser, with no signup or install.
