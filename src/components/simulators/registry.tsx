@@ -11,6 +11,7 @@ const EcosystemSim = lazy(() => import("./EcosystemSim").then((m) => ({ default:
 const SirEpidemicSim = lazy(() => import("./SirEpidemicSim").then((m) => ({ default: m.SirEpidemicSim })));
 const MarketSim = lazy(() => import("./MarketSim").then((m) => ({ default: m.MarketSim })));
 const StandingWaveSim = lazy(() => import("./StandingWaveSim").then((m) => ({ default: m.StandingWaveSim })));
+const WaveInterferenceSim = lazy(() => import("./WaveInterferenceSim").then((m) => ({ default: m.WaveInterferenceSim })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -33,6 +34,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "equilibrio-mercado": MarketSim,
   "standing-wave": StandingWaveSim,
   "ondas-estacionarias": StandingWaveSim,
+  "wave-interference": WaveInterferenceSim,
+  "interferencia-ondas": WaveInterferenceSim,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
