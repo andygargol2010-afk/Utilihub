@@ -125,6 +125,7 @@ import { PALINDROME_TOOLS } from "./palindrome-tool";
 import { UNIX_TIMESTAMP_TOOLS } from "./unix-timestamp-tool";
 import { PASSWORD_GENERATOR_TOOLS } from "./password-generator-tool";
 import { BMI_CALCULATOR_TOOLS } from "./bmi-calculator-tool";
+import { CASE_CONVERTER_TOOLS } from "./case-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -255,4 +256,5 @@ export const GENERAL_TOOLS = [
   ...UNIX_TIMESTAMP_TOOLS,
   ...PASSWORD_GENERATOR_TOOLS,
   ...BMI_CALCULATOR_TOOLS,
+  ...CASE_CONVERTER_TOOLS,
 ];
