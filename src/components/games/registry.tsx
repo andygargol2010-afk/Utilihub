@@ -26,6 +26,7 @@ const PathfinderGame = lazy(() =>
 const RefractionChallengeGame = lazy(() =>
   import("./RefractionChallengeGame").then((m) => ({ default: m.RefractionChallengeGame })),
 );
+const LightsOutGame = lazy(() => import("./LightsOutGame").then((m) => ({ default: m.LightsOutGame })));
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -52,6 +53,8 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "busca-caminos": PathfinderGame,
   "refraction-challenge": RefractionChallengeGame,
   "desafio-refraccion": RefractionChallengeGame,
+  "lights-out": LightsOutGame,
+  "luces-fuera": LightsOutGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {
