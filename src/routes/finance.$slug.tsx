@@ -1,7 +1,7 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { DeferredFinanceJourney } from "@/components/DeferredFinanceJourney";
-import { FavoriteButton } from "@/components/FavoriteButton";
+import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
 import { financeSeo } from "@/lib/finance-seo-content";
@@ -111,7 +111,7 @@ function FinancialPage() {
           <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">{tool.name}</h1>
           <p className="mt-3 text-base leading-7 text-muted-foreground">{intro}</p>
         </div>
-        <FavoriteButton slug={tool.slug} name={tool.name} />
+        <DeferredFavoriteButton slug={tool.slug} name={tool.name} />
       </div>
 
       <section data-tool-surface className="surface-card mt-8 p-5 sm:p-7" aria-label={tool.name}>
