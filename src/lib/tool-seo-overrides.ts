@@ -111,6 +111,7 @@ import { TOOL_SEO_OVERRIDES_PALINDROME } from "./tool-seo-overrides-palindrome";
 import { TOOL_SEO_OVERRIDES_UNIX_TIMESTAMP } from "./tool-seo-overrides-unix-timestamp";
 import { TOOL_SEO_OVERRIDES_ENTROPY } from "./tool-seo-overrides-entropy";
 import { TOOL_SEO_OVERRIDES_PASSWORD_GENERATOR } from "./tool-seo-overrides-password-generator";
+import { TOOL_SEO_OVERRIDES_LOREM } from "./tool-seo-overrides-lorem";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -237,6 +238,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_UNIX_TIMESTAMP,
   ...TOOL_SEO_OVERRIDES_ENTROPY,
   ...TOOL_SEO_OVERRIDES_PASSWORD_GENERATOR,
+  ...TOOL_SEO_OVERRIDES_LOREM,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
