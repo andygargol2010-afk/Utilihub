@@ -51,7 +51,7 @@ import { STAIR_CALCULATOR_TOOLS } from "./stair-calculator";
 import { GRAVEL_CALCULATOR_TOOLS } from "./gravel-calculator";
 import { FLOORING_CALCULATOR_TOOLS } from "./flooring-calculator";
 import { AIRFRYER_CALCULATOR_TOOLS } from "./airfryer-calculator";
-import { BAKERS_CALCULATOR_TOOLS } from "./bakers-percentage";
+import { BAKERS_PERCENTAGE_TOOLS } from "./bakers-percentage";
 import { DECK_CALCULATOR_TOOLS } from "./deck-calculator";
 import { ROOF_CALCULATOR_TOOLS } from "./roof-calculator";
 import { POOL_CALCULATOR_TOOLS } from "./pool-calculator";
