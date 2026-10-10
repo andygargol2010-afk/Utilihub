@@ -307,6 +307,8 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
       <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/40">
         <canvas
           ref={canvasRef}
+          role="img"
+          aria-label={es ? `Nivel ${levelIdx + 1}: lentes, obstáculos y blanco del láser` : `Level ${levelIdx + 1}: lenses, blockers and laser target`}
           width={W}
           height={H}
           className="h-auto w-full touch-none"
