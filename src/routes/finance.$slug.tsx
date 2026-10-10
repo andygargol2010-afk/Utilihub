@@ -7,7 +7,7 @@ import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
 import { financeSeo } from "@/lib/finance-seo-content";
 import { toolByEnglishSlug, englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, webApplicationSchema } from "@/lib/seo";
-import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 
 export const Route = createFileRoute("/finance/$slug")({
   loader: ({ params }) => {
@@ -119,7 +119,7 @@ function FinancialPage() {
         <DeferredShareAndExport title={tool.name} />
       </section>
 
-      <AdsterraBanner />
+      <DeferredAdsterraBanner />
 
       <DeferredFinanceJourney tool={tool} />
 
