@@ -67,6 +67,15 @@ export const WORK_KITS: WorkKit[] = [
     outcome: "More time to understand and less on repetitive tasks.",
     toolSlugs: ["regla-de-tres", "calculadora-de-fechas", "contador-de-palabras", "conversor-de-unidades", "calculadora-de-porcentajes"],
   },
+  {
+    slug: "puesto-de-feria",
+    englishSlug: "market-stall",
+    name: "Market stall",
+    eyebrow: "Fair day setup",
+    description: "Run a fair stall day: price sign, starting change, stall photo, link or QR, and cash close. A fixed board, not a tool list.",
+    outcome: "Stall ready from open to cash close, tracked in this browser.",
+    toolSlugs: [],
+  },
 ];
 
 export function kitTools(kit: WorkKit): CatalogTool[] {
