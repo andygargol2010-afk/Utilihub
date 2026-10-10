@@ -5,17 +5,34 @@ import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { DeferredFinanceSeo } from "@/components/DeferredFinanceSeo";
 import { financialToolBySlug } from "@/lib/financial-tools";
-import { financeSeo } from "@/lib/finance-seo-content";
 import { englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, cleanDescription, ogImage } from "@/lib/seo";
 import { spanishToolName } from "@/lib/i18n/es";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 
+type FinanceSeoLiteEs = {
+  metaTitleEs?: string;
+  metaDescriptionEs?: string;
+  introEs?: string;
+  faqEs: Array<{ q: string; a: string }>;
+};
+
 export const Route = createFileRoute("/es/finanzas/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const tool = financialToolBySlug(params.slug);
     if (!tool) throw notFound();
-    return { tool };
+    // Keep the SEO barrel off the route shell chunk.
+    const { financeSeo } = await import("@/lib/finance-seo-content");
+    const seo = financeSeo(tool.slug);
+    return {
+      tool,
+      seo: {
+        metaTitleEs: seo?.metaTitleEs,
+        metaDescriptionEs: seo?.metaDescriptionEs,
+        introEs: seo?.introEs,
+        faqEs: seo?.faqEs ?? [],
+      } satisfies FinanceSeoLiteEs,
+    };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -26,14 +43,13 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
         ],
       };
     }
-    const { tool } = loaderData;
-    const seo = financeSeo(tool.slug);
+    const { tool, seo } = loaderData;
     const name = spanishToolName({ slug: tool.slug, name: tool.name });
     const url = absoluteUrl(`/es/finanzas/${tool.slug}`);
     const englishUrl = absoluteUrl(englishToolPath({ ...tool, category: "finanzas" }));
-    const title = seo?.metaTitleEs ?? `${name} gratis online | UtiliHub`;
+    const title = seo.metaTitleEs ?? `${name} gratis online | UtiliHub`;
     const description = cleanDescription(
-      seo?.metaDescriptionEs ??
+      seo.metaDescriptionEs ??
         (tool.description?.trim()
           ? tool.description
           : `Calculadora financiera gratuita: ${name}. Analizá escenarios en el navegador, sin registro.`),
@@ -49,9 +65,6 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
         { property: "og:locale", content: "es_ES" },
         { property: "og:url", content: url },
         { property: "og:image", content: ogImage() },
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
       ],
       links: [
         { rel: "canonical", href: url },
@@ -60,7 +73,7 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
         { rel: "alternate", hrefLang: "x-default", href: englishUrl },
       ],
       scripts:
-        seo?.faqEs && seo.faqEs.length > 0
+        seo.faqEs.length > 0
           ? [
               {
                 type: "application/ld+json",
@@ -82,12 +95,11 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
 });
 
 function SpanishFinancialToolPage() {
-  const { tool } = Route.useLoaderData();
-  const seo = financeSeo(tool.slug);
+  const { tool, seo } = Route.useLoaderData();
   const name = spanishToolName({ slug: tool.slug, name: tool.name });
 
   const intro =
-    seo?.introEs ??
+    seo.introEs ??
     tool.description ??
     "Calcula y analiza este escenario financiero directamente en tu navegador.";
 
