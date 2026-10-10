@@ -202,3 +202,31 @@ a { transition: color .15s ease, background-color .15s ease, border-color .15s e
     transform: none !important;
   }
 }
+
+/* Density Lab — UX experiment spacing */
+.density-lab .card-list {
+  gap: 1rem;
+}
+.density-lab [data-ux-density="compact"] .card-list,
+.density-lab.card-list {
+  /* fallback */
+}
+[data-ux-density="compact"] .card-list {
+  gap: 0.35rem;
+}
+[data-ux-density="compact"] .surface-card {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+}
+[data-ux-density="compact"] h2 {
+  font-size: 0.95rem;
+}
+[data-ux-density="comfortable"] .card-list {
+  gap: 1rem;
+}
+[data-ux-density="spacious"] .card-list {
+  gap: 1.75rem;
+}
+[data-ux-density="spacious"] .surface-card {
+  padding: 1.25rem 1.5rem;
+}
