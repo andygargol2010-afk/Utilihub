@@ -183,6 +183,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Apuntá un láser a través de lentes y pegale al blanco. Doblá la luz y pasá niveles.",
     hasScore: true,
   },
+  {
+    slug: "lights-out",
+    slugEs: "luces-fuera",
+    nameEn: "Lights Out",
+    nameEs: "Luces fuera",
+    tag: "puzzle",
+    emoji: "💡",
+    summaryEn: "Toggle lights and neighbors. Turn the whole grid off.",
+    summaryEs: "Apagá luces y vecinas. Dejá toda la grilla apagada.",
+    hasScore: false,
+  },
 ] as const;
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
