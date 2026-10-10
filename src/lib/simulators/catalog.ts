@@ -173,6 +173,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Cuerda fija en ambos extremos. Elegí el armónico, la amplitud y la tensión. Los nodos no se mueven; la longitud de onda es L/n (L = 1,2 m).",
   },
+  {
+    slug: "wave-interference",
+    slugEs: "interferencia-ondas",
+    nameEn: "Wave interference",
+    nameEs: "Interferencia de ondas",
+    tag: "physics",
+    theme: "lab",
+    emoji: "🔪",
+    badgeEn: "Two sources",
+    badgeEs: "Dos fuentes",
+    summaryEn:
+      "Two coherent sources. Adjust frequency, separation and phase difference. Watch constructive and destructive interference form live on canvas.",
+    summaryEs:
+      "Dos fuentes coherentes. Ajustá frecuencia, separación y diferencia de fase. Mirá interferencia constructiva y destructiva en vivo.",
+  },
 ] as const;
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
