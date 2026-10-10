@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
 import { spanishCategoryName } from "@/lib/i18n/es";
 import { englishCategoryPath } from "@/lib/route-slugs";
@@ -125,7 +125,7 @@ function SpanishCategoryPage() {
 
   return (
     <div className="container-page py-6 sm:py-8">
-      <Breadcrumbs
+      <DeferredBreadcrumbs
         locale="es"
         items={[
           { label: "Inicio", to: "/es" },

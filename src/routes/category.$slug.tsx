@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
 import { englishCategorySlug, englishToolSlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
@@ -145,7 +145,7 @@ function CategoryPage() {
 
   return (
     <div className="container-page py-6 sm:py-8">
-      <Breadcrumbs
+      <DeferredBreadcrumbs
         items={[{ label: "Home", to: "/" }, { label: "Tools", to: "/tools" }, { label: category.name }]}
       />
       <div className="mt-4 flex items-end justify-between gap-3">
