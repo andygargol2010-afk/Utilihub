@@ -10,7 +10,7 @@ import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { DeferredKitReturnRibbon } from "@/components/kits/DeferredKitReturnRibbon";
 import type { CatalogTool } from "@/lib/all-tools";
 import { recordRecentTool } from "@/hooks/use-recent-tools";
-import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
 
 type ToolHead = {
@@ -205,7 +205,7 @@ function SpanishToolPage() {
           <DeferredShareAndExport title={name} locale="es" />
         </div>
       </section>
-      <AdsterraBanner />
+      <DeferredAdsterraBanner />
       <DeferredRelatedTools tool={tool} locale="es" />
       <DeferredToolSeo tool={tool} locale="es" />
     </div>
