@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { DeferredToolUi } from "@/components/DeferredToolUi";
 import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
-import { FavoriteButton } from "@/components/FavoriteButton";
+import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { DeferredToolSeo } from "@/components/DeferredToolSeo";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
@@ -190,7 +190,7 @@ function SpanishToolPage() {
               {`Herramienta de ${categoryName.toLowerCase()}.`}
             </p>
           </div>
-          <FavoriteButton slug={tool.slug} name={name} locale="es" />
+          <DeferredFavoriteButton slug={tool.slug} name={name} locale="es" />
         </div>
       )}
       <section
