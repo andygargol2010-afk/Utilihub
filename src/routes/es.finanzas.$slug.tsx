@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
@@ -8,7 +8,7 @@ import { financeSeo } from "@/lib/finance-seo-content";
 import { englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, cleanDescription, ogImage } from "@/lib/seo";
 import { spanishToolName } from "@/lib/i18n/es";
-import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 
 export const Route = createFileRoute("/es/finanzas/$slug")({
   loader: ({ params }) => {
@@ -113,7 +113,7 @@ function SpanishFinancialToolPage() {
 
   return (
     <main className="container-page py-10 sm:py-14">
-      <Breadcrumbs
+      <DeferredBreadcrumbs
         locale="es"
         back={{ label: "Finanzas", to: "/es/finanzas" }}
         items={[
@@ -134,7 +134,7 @@ function SpanishFinancialToolPage() {
         <DeferredFinancialUi slug={tool.slug} locale="es" />
         <DeferredShareAndExport title={name} locale="es" />
       </section>
-      <AdsterraBanner />
+      <DeferredAdsterraBanner />
       <section className="mt-8 grid gap-8 border-t border-border/70 pt-8 lg:grid-cols-2">
         <div>
           <h2 className="text-xl font-black">Sobre esta calculadora</h2>
