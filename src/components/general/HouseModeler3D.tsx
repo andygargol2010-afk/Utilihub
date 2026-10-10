@@ -383,6 +383,19 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
     ctx.ellipse(x, y, rx, ry, hash2(i, 9) * Math.PI, 0, Math.PI * 2);
     ctx.fill();
   }
+  // Small flecks and edge wear so the plaster reads as hand-troweled, not a flat wash.
+  for (let f = 0; f < 22; f++) {
+    const x = hash2(f, 11.3) * size;
+    const y = hash2(f, 6.7) * size;
+    const r = 1.2 + hash2(f, 4.1) * 3.4;
+    const dark = hash2(f, 2.8) > 0.55;
+    ctx.fillStyle = dark
+      ? `rgba(132,122,108,${0.18 + hash2(f, 9) * 0.22})`
+      : `rgba(228,218,202,${0.14 + hash2(f, 8) * 0.16})`;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
   ctx.strokeStyle = "rgba(148,136,120,0.22)";
   ctx.lineWidth = 1;
   for (let s = 0; s < 10; s++) {
@@ -7186,6 +7199,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     </div>
   );
 }
+
 
 
 
