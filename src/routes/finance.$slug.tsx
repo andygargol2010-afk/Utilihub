@@ -5,16 +5,33 @@ import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { DeferredFinanceSeo } from "@/components/DeferredFinanceSeo";
 import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
-import { financeSeo } from "@/lib/finance-seo-content";
 import { toolByEnglishSlug, englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, webApplicationSchema } from "@/lib/seo";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 
+type FinanceSeoLite = {
+  metaTitle?: string;
+  metaDescription?: string;
+  intro?: string;
+  faq: Array<{ q: string; a: string }>;
+};
+
 export const Route = createFileRoute("/finance/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const tool = toolByEnglishSlug(FINANCIAL_TOOLS, params.slug);
     if (!tool) throw notFound();
-    return { tool };
+    // Keep the SEO barrel off the route shell chunk.
+    const { financeSeo } = await import("@/lib/finance-seo-content");
+    const seo = financeSeo(tool.slug);
+    return {
+      tool,
+      seo: {
+        metaTitle: seo?.metaTitle,
+        metaDescription: seo?.metaDescription,
+        intro: seo?.intro,
+        faq: seo?.faq ?? [],
+      } satisfies FinanceSeoLite,
+    };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -25,10 +42,9 @@ export const Route = createFileRoute("/finance/$slug")({
         ],
       };
     }
-    const { tool } = loaderData;
-    const seo = financeSeo(tool.slug);
-    const title = seo?.metaTitle ?? `${tool.name} calculator | UtiliHub`;
-    const description = cleanDescription(seo?.metaDescription ?? tool.description);
+    const { tool, seo } = loaderData;
+    const title = seo.metaTitle ?? `${tool.name} calculator | UtiliHub`;
+    const description = cleanDescription(seo.metaDescription ?? tool.description);
     const url = absoluteUrl(englishToolPath(tool));
     const esUrl = absoluteUrl(`/es/finanzas/${tool.slug}`);
     return {
@@ -43,10 +59,6 @@ export const Route = createFileRoute("/finance/$slug")({
         { property: "og:url", content: url },
         { property: "og:site_name", content: "UtiliHub" },
         { property: "og:image", content: ogImage() },
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
-        { name: "twitter:image", content: ogImage() },
       ],
       links: [
         { rel: "canonical", href: url },
@@ -68,13 +80,13 @@ export const Route = createFileRoute("/finance/$slug")({
               ]),
               {
                 "@type": "FAQPage",
-                mainEntity: (seo?.faq ?? []).map((item) => ({
+                mainEntity: seo.faq.map((item) => ({
                   "@type": "Question",
                   name: item.q,
                   acceptedAnswer: { "@type": "Answer", text: item.a },
                 })),
               },
-            ].filter((node) => node["@type"] !== "FAQPage" || (seo?.faq?.length ?? 0) > 0),
+            ].filter((node) => node["@type"] !== "FAQPage" || seo.faq.length > 0),
           }),
         },
       ],
@@ -84,10 +96,8 @@ export const Route = createFileRoute("/finance/$slug")({
 });
 
 function FinancialPage() {
-  const { tool } = Route.useLoaderData();
-  const seo = financeSeo(tool.slug);
-
-  const intro = seo?.intro ?? tool.description;
+  const { tool, seo } = Route.useLoaderData();
+  const intro = seo.intro ?? tool.description;
 
   return (
     <main className="container-page py-10 sm:py-14">
