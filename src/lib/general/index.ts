@@ -124,6 +124,7 @@ import { BEAUFORT_TOOLS } from "./beaufort-tool";
 import { PALINDROME_TOOLS } from "./palindrome-tool";
 import { UNIX_TIMESTAMP_TOOLS } from "./unix-timestamp-tool";
 import { PASSWORD_GENERATOR_TOOLS } from "./password-generator-tool";
+import { LOREM_IPSUM_TOOLS } from "./lorem-ipsum-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -253,4 +254,5 @@ export const GENERAL_TOOLS = [
   ...PALINDROME_TOOLS,
   ...UNIX_TIMESTAMP_TOOLS,
   ...PASSWORD_GENERATOR_TOOLS,
+  ...LOREM_IPSUM_TOOLS,
 ];
