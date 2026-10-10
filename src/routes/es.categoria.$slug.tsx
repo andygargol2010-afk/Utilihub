@@ -1,11 +1,15 @@
+import { lazy, Suspense } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
-import { ToolListBrowser } from "@/components/ToolListBrowser";
 import { spanishCategoryName } from "@/lib/i18n/es";
 import { englishCategoryPath } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
 import type { CatalogTool } from "@/lib/all-tools";
+
+const ToolListBrowser = lazy(() =>
+  import("@/components/ToolListBrowser").then((m) => ({ default: m.ToolListBrowser })),
+);
 
 type CategoryPayload = {
   slug: string;
@@ -87,6 +91,25 @@ function SpanishCategoryRoutePending() {
   );
 }
 
+function SpanishCategoryListingSlot() {
+  return (
+    <div className="space-y-3" aria-busy="true">
+      <div className="h-12 rounded-xl border border-border/70 bg-card" />
+      <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+        {Array.from({ length: 20 }, (_, i) => (
+          <div key={i} className="flex min-h-14 items-center gap-3 px-1 py-2 sm:min-h-16" aria-hidden>
+            <div className="size-9 shrink-0 rounded-lg bg-accent" />
+            <div className="min-w-0 flex-1 space-y-1.5">
+              <div className="h-4 w-2/5 max-w-xs rounded bg-muted" />
+              <div className="h-3 w-3/5 max-w-md rounded bg-muted/70" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SpanishCategoryPage() {
   const { category, tools, neighboring } = Route.useLoaderData() as {
     category: CategoryPayload;
@@ -123,13 +146,15 @@ function SpanishCategoryPage() {
       </div>
 
       <div className="mt-5">
-        <ToolListBrowser
-          tools={browseItems}
-          locale="es"
-          categorySlug={category.slug}
-          searchPlaceholder={`Buscar en ${name}…`}
-          renderItem={(tool) => <ToolCard tool={tool} locale="es" />}
-        />
+        <Suspense fallback={<SpanishCategoryListingSlot />}>
+          <ToolListBrowser
+            tools={browseItems}
+            locale="es"
+            categorySlug={category.slug}
+            searchPlaceholder={`Buscar en ${name}…`}
+            renderItem={(tool) => <ToolCard tool={tool} locale="es" />}
+          />
+        </Suspense>
       </div>
 
       <section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories">
