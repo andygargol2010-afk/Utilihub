@@ -107,6 +107,7 @@ import { TOOL_SEO_OVERRIDES_WHATSAPP } from "./tool-seo-overrides-whatsapp";
 import { TOOL_SEO_OVERRIDES_ISO_WEEK } from "./tool-seo-overrides-iso-week";
 import { TOOL_SEO_OVERRIDES_BEAUFORT } from "./tool-seo-overrides-beaufort";
 import { TOOL_SEO_OVERRIDES_WATER_CONSUMPTION } from "./tool-seo-overrides-water-consumption";
+import { TOOL_SEO_OVERRIDES_PALINDROME } from "./tool-seo-overrides-palindrome";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -229,6 +230,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_ISO_WEEK,
   ...TOOL_SEO_OVERRIDES_BEAUFORT,
   ...TOOL_SEO_OVERRIDES_WATER_CONSUMPTION,
+  ...TOOL_SEO_OVERRIDES_PALINDROME,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
