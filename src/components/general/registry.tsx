@@ -144,6 +144,7 @@ const IsoWeekTool = lazy(() => import("./IsoWeekTool").then((m) => ({ default: m
 const BeaufortTool = lazy(() => import("./BeaufortTool").then((m) => ({ default: m.BeaufortTool })));
 const PalindromeTool = lazy(() => import("./PalindromeTool").then((m) => ({ default: m.PalindromeTool })));
 const UnixTimestampTool = lazy(() => import("./UnixTimestampTool").then((m) => ({ default: m.UnixTimestampTool })));
+const LoremIpsumTool = lazy(() => import("./LoremIpsumTool").then((m) => ({ default: m.LoremIpsumTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -236,6 +237,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "conversor-escala-beaufort") return BeaufortTool as ToolComp;
   if (tool.slug === "validador-palindromo") return PalindromeTool as ToolComp;
   if (tool.slug === "conversor-timestamp-unix") return UnixTimestampTool as ToolComp;
+  if (tool.slug === "generador-lorem-ipsum") return LoremIpsumTool as ToolComp;
   if (tool.config?.mode === "advanced-calculator") return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.operation) return ConfiguredTool as ToolComp;
   if (tool.category === "desarrollo") return DevTool as ToolComp;
