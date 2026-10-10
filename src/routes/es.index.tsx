@@ -60,6 +60,14 @@ function SpanishHome() {
 
   return (
     <div className="pb-12">
+      <style>{
+        /* Critical CSS so home LCP (h1) paints before the full styles.css */
+        `.hero-gradient{background-image:linear-gradient(to right,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),radial-gradient(70% 80% at 8% 0%,color-mix(in oklab,var(--color-primary) 20%,transparent),transparent 70%),radial-gradient(60% 70% at 95% 10%,color-mix(in oklab,var(--color-highlight) 18%,transparent),transparent 65%),linear-gradient(180deg,oklch(.99 .008 255),var(--color-background));background-size:36px 36px,36px 36px,auto,auto,auto}` +
+        `.container-page{width:100%;margin-inline:auto;max-width:84rem;padding-inline:clamp(1rem,3vw,2rem)}` +
+        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1.03}` +
+        `.shadow-lift{box-shadow:0 20px 46px -26px rgba(41,50,110,.38)}` +
+        `.surface-card{background:color-mix(in oklab,var(--color-card) 94%,transparent);border:1px solid var(--color-border);border-radius:1.25rem;box-shadow:0 1px 2px rgba(20,28,60,.04),0 20px 48px -30px rgba(41,50,110,.3)}`
+      }</style>
       <section className="hero-gradient border-b border-border/70">
         <div className="container-page grid gap-8 py-10 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-12 lg:py-20">
           <div>
