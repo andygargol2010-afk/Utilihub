@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { DeferredToolUi } from "@/components/DeferredToolUi";
 import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
@@ -153,7 +153,7 @@ function ToolPage() {
 
   return (
     <div className="container-page py-6 sm:py-8">
-      <Breadcrumbs
+      <DeferredBreadcrumbs
         back={{
           label: category.name,
           to: "/category/$slug",

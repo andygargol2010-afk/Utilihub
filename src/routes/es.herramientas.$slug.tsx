@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { DeferredToolUi } from "@/components/DeferredToolUi";
 import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
@@ -161,7 +161,7 @@ function SpanishToolPage() {
   }, [tool.slug]);
   return (
     <div className="container-page py-6 sm:py-8">
-      <Breadcrumbs
+      <DeferredBreadcrumbs
         locale="es"
         back={{
           label: categoryName,
