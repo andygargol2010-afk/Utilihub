@@ -121,6 +121,7 @@ import { OKLCH_TOOLS } from "./oklch-tool";
 import { WHATSAPP_LINK_TOOLS } from "./whatsapp-link-tool";
 import { ISO_WEEK_TOOLS } from "./iso-week-tool";
 import { BEAUFORT_TOOLS } from "./beaufort-tool";
+import { PALINDROME_TOOLS } from "./palindrome-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -247,4 +248,5 @@ export const GENERAL_TOOLS = [
   ...WHATSAPP_LINK_TOOLS,
   ...ISO_WEEK_TOOLS,
   ...BEAUFORT_TOOLS,
+  ...PALINDROME_TOOLS,
 ];
