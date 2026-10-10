@@ -1,1 +1,1 @@
-PLACEHOLDER_FOR_ES_UPDATE
+$(cat /tmp/es_full.ts)
