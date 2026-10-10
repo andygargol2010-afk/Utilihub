@@ -3,6 +3,7 @@ import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { DeferredFinanceJourney } from "@/components/DeferredFinanceJourney";
 import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
+import { DeferredFinanceSeo } from "@/components/DeferredFinanceSeo";
 import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
 import { financeSeo } from "@/lib/finance-seo-content";
 import { toolByEnglishSlug, englishToolPath } from "@/lib/route-slugs";
@@ -87,15 +88,6 @@ function FinancialPage() {
   const seo = financeSeo(tool.slug);
 
   const intro = seo?.intro ?? tool.description;
-  const aboutParas = seo?.about ?? [
-    `${tool.description} This tool runs in the browser and provides a mathematical estimate from the values you enter.`,
-  ];
-  const steps = seo?.steps ?? [
-    "Enter the values for the scenario you want to analyze.",
-    "Run the calculation and review each result.",
-    "Compare scenarios and verify real conditions before deciding.",
-  ];
-  const faq = seo?.faq ?? [];
 
   return (
     <main className="container-page py-10 sm:py-14">
@@ -123,51 +115,7 @@ function FinancialPage() {
 
       <DeferredFinanceJourney tool={tool} />
 
-      <section className="mt-10 grid gap-8 border-t border-border/70 pt-8 lg:grid-cols-2" aria-labelledby="financial-guide">
-        <div>
-          <h2 id="financial-guide" className="text-xl font-black">
-            About this calculator
-          </h2>
-          <div className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
-            {aboutParas.map((p) => (
-              <p key={p.slice(0, 48)}>{p}</p>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-xl font-black">How to use it</h2>
-          <ol className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
-            {steps.map((step, i) => (
-              <li key={step} className="flex gap-3">
-                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-accent text-xs font-bold text-primary">
-                  {i + 1}
-                </span>
-                <span>{step}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {faq.length > 0 && (
-        <section className="mt-10 border-t border-border/70 pt-8" aria-labelledby="financial-faq">
-          <h2 id="financial-faq" className="text-xl font-black">
-            Frequently asked questions
-          </h2>
-          <dl className="mt-4 space-y-4">
-            {faq.map((item) => (
-              <div key={item.q} className="rounded-xl border border-border/70 bg-card p-4">
-                <dt className="text-sm font-bold">{item.q}</dt>
-                <dd className="mt-2 text-sm leading-6 text-muted-foreground">{item.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )}
-
-      <p className="mt-8 max-w-3xl text-xs leading-5 text-muted-foreground">
-        Results are mathematical estimates. Verify the real conditions of any financial product before making decisions.
-      </p>
+      <DeferredFinanceSeo tool={tool} locale="en" />
     </main>
   );
 }
