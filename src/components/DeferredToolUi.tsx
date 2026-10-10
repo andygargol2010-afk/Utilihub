@@ -35,15 +35,24 @@ async function loadRenderer(slug: string, locale: Locale): Promise<() => ReactNo
   const { GENERAL_TOOL_UI, GENERAL_TOOL_UI_ES } = await import("@/components/general/registry");
   const general = locale === "es" ? GENERAL_TOOL_UI_ES : GENERAL_TOOL_UI;
   const render = general[slug];
-  if (!render) {
-    const missing = locale === "es" ? "Herramienta no disponible." : "Tool not available.";
-    return () => (
-      <p role="alert" className="text-muted-foreground">
-        {missing}
-      </p>
-    );
-  }
-  return render;
+  if (render) return render;
+
+  // Fallback for ConfiguredTool-based tools when registry entry is missing
+  try {
+    const { allToolBySlug } = await import("@/lib/all-tools");
+    const tool = allToolBySlug(slug);
+    if (tool && tool.config && typeof tool.config === "object" && "operation" in tool.config) {
+      const { ConfiguredTool } = await import("@/components/general/ConfiguredTool");
+      return () => <ConfiguredTool tool={tool} locale={locale} />;
+    }
+  } catch {}
+
+  const missing = locale === "es" ? "Herramienta no disponible." : "Tool not available.";
+  return () => (
+    <p role="alert" className="text-muted-foreground">
+      {missing}
+    </p>
+  );
 }
 
 /**
