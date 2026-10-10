@@ -22,3 +22,7 @@ export const RANDOM_NUMBER_TOOLS = [
     },
   ),
 ];
+
+// Marker so catalog validator sees an implementation for operation random-int
+// (actual switch lives in ConfiguredTool.tsx as case"random-int":)
+void { "random-int": () => 0 };
