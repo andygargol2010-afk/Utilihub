@@ -109,6 +109,7 @@ import { TOOL_SEO_OVERRIDES_BEAUFORT } from "./tool-seo-overrides-beaufort";
 import { TOOL_SEO_OVERRIDES_WATER_CONSUMPTION } from "./tool-seo-overrides-water-consumption";
 import { TOOL_SEO_OVERRIDES_PALINDROME } from "./tool-seo-overrides-palindrome";
 import { TOOL_SEO_OVERRIDES_UNIX_TIMESTAMP } from "./tool-seo-overrides-unix-timestamp";
+import { TOOL_SEO_OVERRIDES_ENTROPY } from "./tool-seo-overrides-entropy";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -233,6 +234,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_WATER_CONSUMPTION,
   ...TOOL_SEO_OVERRIDES_PALINDROME,
   ...TOOL_SEO_OVERRIDES_UNIX_TIMESTAMP,
+  ...TOOL_SEO_OVERRIDES_ENTROPY,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
