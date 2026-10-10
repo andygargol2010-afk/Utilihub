@@ -3,6 +3,7 @@ import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
+import { DeferredFinanceSeo } from "@/components/DeferredFinanceSeo";
 import { financialToolBySlug } from "@/lib/financial-tools";
 import { financeSeo } from "@/lib/finance-seo-content";
 import { englishToolPath } from "@/lib/route-slugs";
@@ -89,27 +90,6 @@ function SpanishFinancialToolPage() {
     seo?.introEs ??
     tool.description ??
     "Calcula y analiza este escenario financiero directamente en tu navegador.";
-  const aboutParas = seo?.aboutEs ?? [
-    tool.description ||
-      "Esta herramienta realiza un cálculo matemático a partir de los valores que introduces y funciona directamente en el navegador.",
-  ];
-  const steps = seo?.stepsEs ?? [
-    "Introduce los valores del escenario que quieres analizar.",
-    "Ejecuta el cálculo y revisa los resultados.",
-    "Compara escenarios y comprueba las condiciones reales antes de tomar decisiones.",
-  ];
-  const faq = seo?.faqEs?.length
-    ? seo.faqEs
-    : [
-        {
-          q: "¿Estos resultados son asesoramiento financiero?",
-          a: "No. Son cálculos matemáticos orientativos y no reemplazan el criterio de un profesional.",
-        },
-        {
-          q: "¿Se guardan mis datos?",
-          a: "El cálculo se hace en tu navegador. No necesitás crear una cuenta para usar la herramienta.",
-        },
-      ];
 
   return (
     <main className="container-page py-10 sm:py-14">
@@ -135,48 +115,7 @@ function SpanishFinancialToolPage() {
         <DeferredShareAndExport title={name} locale="es" />
       </section>
       <DeferredAdsterraBanner />
-      <section className="mt-8 grid gap-8 border-t border-border/70 pt-8 lg:grid-cols-2">
-        <div>
-          <h2 className="text-xl font-black">Sobre esta calculadora</h2>
-          <div className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
-            {aboutParas.map((p) => (
-              <p key={p.slice(0, 48)}>{p}</p>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-xl font-black">Cómo usarla</h2>
-          <ol className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
-            {steps.map((step, i) => (
-              <li key={step} className="flex gap-3">
-                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-accent text-xs font-bold text-primary">
-                  {i + 1}
-                </span>
-                <span>{step}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-      {faq.length > 0 && (
-        <section className="mt-10 border-t border-border/70 pt-8" aria-labelledby="financial-faq-es">
-          <h2 id="financial-faq-es" className="text-xl font-black">
-            Preguntas frecuentes
-          </h2>
-          <dl className="mt-4 space-y-4">
-            {faq.map((item) => (
-              <div key={item.q} className="rounded-xl border border-border/70 bg-card p-4">
-                <dt className="text-sm font-bold">{item.q}</dt>
-                <dd className="mt-2 text-sm leading-6 text-muted-foreground">{item.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )}
-      <p className="mt-8 max-w-3xl text-xs leading-5 text-muted-foreground">
-        Los resultados son estimaciones matemáticas; verificá las condiciones reales de cualquier producto financiero
-        antes de decidir.
-      </p>
+      <DeferredFinanceSeo tool={tool} locale="es" />
     </main>
   );
 }
