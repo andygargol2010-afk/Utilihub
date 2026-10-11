@@ -131,6 +131,7 @@ import { FUEL_COST_TOOLS } from "./fuel-cost-tool";
 import { RANDOM_NUMBER_TOOLS } from "./random-number-tool";
 import { DICE_ROLLER_TOOLS } from "./dice-roller-tool";
 import { RUNNING_PACE_TOOLS } from "./running-pace-tool";
+import { COIN_FLIP_TOOLS } from "./coin-flip-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -267,4 +268,5 @@ export const GENERAL_TOOLS = [
   ...RANDOM_NUMBER_TOOLS,
   ...DICE_ROLLER_TOOLS,
   ...RUNNING_PACE_TOOLS,
+  ...COIN_FLIP_TOOLS,
 ];
