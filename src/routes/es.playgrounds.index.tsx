@@ -54,6 +54,21 @@ function PlaygroundsHubEs() {
           </span>
           <span className="mt-5 text-sm font-bold text-sky-700">Abrir playground →</span>
         </Link>
+
+        <Link
+          to="/es/playgrounds/deuda-bola-nieve"
+          className="group flex flex-col rounded-3xl border border-emerald-900/15 bg-gradient-to-br from-emerald-50 via-white to-teal-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-500/50 hover:shadow-lg"
+        >
+          <span className="text-4xl" aria-hidden>
+            📉
+          </span>
+          <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Deudas</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Bola de nieve vs Avalancha</span>
+          <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+            Agregá deudas y mirá cómo compiten ambos métodos con barras de progreso y timeline en vivo.
+          </span>
+          <span className="mt-5 text-sm font-bold text-emerald-700">Abrir playground →</span>
+        </Link>
       </div>
     </div>
   );
