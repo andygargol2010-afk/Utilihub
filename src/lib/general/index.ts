@@ -134,6 +134,7 @@ import { RUNNING_PACE_TOOLS } from "./running-pace-tool";
 import { COIN_FLIP_TOOLS } from "./coin-flip-tool";
 import { RANDOM_COLOR_TOOLS } from "./random-color-tool";
 import { RANDOM_USERNAME_TOOLS } from "./random-username-tool";
+import { TRIANGLE_AREA_TOOLS } from "./triangle-area-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -273,4 +274,5 @@ export const GENERAL_TOOLS = [
   ...COIN_FLIP_TOOLS,
   ...RANDOM_COLOR_TOOLS,
   ...RANDOM_USERNAME_TOOLS,
+  ...TRIANGLE_AREA_TOOLS,
 ];
