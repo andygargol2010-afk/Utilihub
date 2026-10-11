@@ -1,1 +1,1 @@
-$(cat /tmp/HouseModeler3D.tsx)
+PLACEHOLDER_WILL_REPLACE
