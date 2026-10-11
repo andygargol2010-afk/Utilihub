@@ -2,6 +2,8 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
+/** Full general tool UI registry — deploy force 2026-10-11 (anti PLACEHOLDER/REPLACE_ME). */
+
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
 const AdvancedCalculatorTool = lazy(() =>
