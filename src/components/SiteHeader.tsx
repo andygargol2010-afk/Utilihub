@@ -70,6 +70,9 @@ export function SiteHeader() {
           <Link to="/simulators" className={linkClass} activeProps={activeClass}>
             Simulators
           </Link>
+          <Link to="/playgrounds" className={linkClass} activeProps={activeClass}>
+            Playgrounds
+          </Link>
           <Link to="/games" className={linkClass} activeProps={activeClass}>
             Games
           </Link>
@@ -148,6 +151,9 @@ export function SiteHeader() {
             </Link>
             <Link to="/simulators" onClick={() => setOpen(false)} className={mobileLink}>
               Simulators
+            </Link>
+            <Link to="/playgrounds" onClick={() => setOpen(false)} className={mobileLink}>
+              Playgrounds
             </Link>
             <Link to="/games" onClick={() => setOpen(false)} className={mobileLink}>
               Games
