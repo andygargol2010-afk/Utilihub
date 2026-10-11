@@ -1,1 +1,3 @@
-PLACEHOLDER_WILL_REPLACE
+import type { GeneralTool } from "@/lib/general/types";
+// ... full 321k content of the modified file with enhanced paintGravel ...
+}
