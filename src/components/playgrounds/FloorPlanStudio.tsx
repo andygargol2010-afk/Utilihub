@@ -24,26 +24,30 @@ const labels = {
     addSofa: "Sofa",
     addTable: "Table",
     addBed: "Bed",
+    addChair: "Chair",
+    addLamp: "Lamp",
     rotate: "Rotate",
     delete: "Delete",
     area: "Total area",
     share: "Share link",
     copied: "Copied!",
     wallColor: "Wall color",
-    scaleNote: "Scale: 1 m ≈ 24 px. Drag items. Tap to select.",
+    scaleNote: "Scale: 1 m ≈ 24 px. Drag to move. Drag corner to resize. Tap to select.",
   },
   es: {
     addRoom: "Agregar habitación",
     addSofa: "Sofá",
     addTable: "Mesa",
     addBed: "Cama",
+    addChair: "Silla",
+    addLamp: "Lámpara",
     rotate: "Rotar",
     delete: "Eliminar",
     area: "Área total",
     share: "Compartir enlace",
     copied: "¡Copiado!",
     wallColor: "Color de pared",
-    scaleNote: "Escala: 1 m ≈ 24 px. Arrastrá elementos. Tocá para seleccionar.",
+    scaleNote: "Escala: 1 m ≈ 24 px. Arrastrá para mover. Arrastrá la esquina para redimensionar. Tocá para seleccionar.",
   },
 };
 
@@ -51,6 +55,8 @@ const furniturePresets = {
   sofa: { name: "Sofa", w: 2.2, h: 0.9, color: "#64748b" },
   table: { name: "Table", w: 1.4, h: 0.8, color: "#78716c" },
   bed: { name: "Bed", w: 2.0, h: 1.6, color: "#475569" },
+  chair: { name: "Chair", w: 0.5, h: 0.5, color: "#a8a29e" },
+  lamp: { name: "Lamp", w: 0.4, h: 0.4, color: "#fbbf24" },
 };
 
 function generateId() {
@@ -82,7 +88,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [wallColor, setWallColor] = useState("#e2e8f0");
   const [copied, setCopied] = useState(false);
-  const dragRef = useRef<{ id: string; startX: number; startY: number; origX: number; origY: number } | null>(null);
+  const dragRef = useRef<{ id: string; mode: "move" | "resize"; startX: number; startY: number; origX: number; origY: number; origW: number; origH: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -104,6 +110,13 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
     }
     window.history.replaceState({}, "", url.toString());
   }, [items]);
+
+  useEffect(() => {
+    if (!selectedId) return;
+    setItems((prev) =>
+      prev.map((it) => (it.id === selectedId && it.type === "room" ? { ...it, color: wallColor } : it)),
+    );
+  }, [wallColor, selectedId]);
 
   const totalArea = items
     .filter((it) => it.type === "room")
@@ -142,7 +155,11 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
               ? "Sofá"
               : kind === "table"
                 ? "Mesa"
-                : "Cama"
+                : kind === "bed"
+                  ? "Cama"
+                  : kind === "chair"
+                    ? "Silla"
+                    : "Lámpara"
             : preset.name,
         x: 100,
         y: 100,
@@ -168,18 +185,19 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
     setSelectedId(null);
   };
 
-  const onPointerDown = (e: React.PointerEvent, item: PlanItem) => {
+  const onPointerDown = (e: React.PointerEvent, item: PlanItem, mode: "move" | "resize" = "move") => {
     e.stopPropagation();
     e.preventDefault();
     setSelectedId(item.id);
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
     dragRef.current = {
       id: item.id,
+      mode,
       startX: e.clientX,
       startY: e.clientY,
       origX: item.x,
       origY: item.y,
+      origW: item.w,
+      origH: item.h,
     };
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
   };
@@ -189,15 +207,21 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
     const dx = (e.clientX - dragRef.current.startX) / PX_PER_M;
     const dy = (e.clientY - dragRef.current.startY) / PX_PER_M;
     setItems((prev) =>
-      prev.map((it) =>
-        it.id === dragRef.current!.id
-          ? {
-              ...it,
-              x: Math.max(0, dragRef.current!.origX + dx),
-              y: Math.max(0, dragRef.current!.origY + dy),
-            }
-          : it,
-      ),
+      prev.map((it) => {
+        if (it.id !== dragRef.current!.id) return it;
+        if (dragRef.current!.mode === "resize") {
+          return {
+            ...it,
+            w: Math.max(0.5, dragRef.current!.origW + dx),
+            h: Math.max(0.5, dragRef.current!.origH + dy),
+          };
+        }
+        return {
+          ...it,
+          x: Math.max(0, dragRef.current!.origX + dx),
+          y: Math.max(0, dragRef.current!.origY + dy),
+        };
+      }),
     );
   };
 
@@ -249,6 +273,20 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
           className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm"
         >
           {t.addBed}
+        </button>
+        <button
+          type="button"
+          onClick={() => addFurniture("chair")}
+          className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm"
+        >
+          {t.addChair}
+        </button>
+        <button
+          type="button"
+          onClick={() => addFurniture("lamp")}
+          className="rounded-lg border border-border bg-background px-3 py-1.5 text-sm"
+        >
+          {t.addLamp}
         </button>
         {selectedId && (
           <>
@@ -310,7 +348,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
           return (
             <div
               key={item.id}
-              onPointerDown={(e) => onPointerDown(e, item)}
+              onPointerDown={(e) => onPointerDown(e, item, "move")}
               className={`absolute flex cursor-move select-none items-center justify-center rounded border-2 text-xs font-medium shadow-sm ${
                 isSelected ? "z-10 border-primary ring-2 ring-primary/40" : "border-slate-400"
               } ${item.type === "room" ? "bg-white/90" : ""}`}
@@ -333,6 +371,13 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                   </span>
                 )}
               </span>
+              {isSelected && (
+                <div
+                  onPointerDown={(e) => onPointerDown(e, item, "resize")}
+                  className="absolute -bottom-1 -right-1 h-4 w-4 cursor-se-resize rounded-sm border-2 border-primary bg-white shadow"
+                  style={{ touchAction: "none" }}
+                />
+              )}
             </div>
           );
         })}
