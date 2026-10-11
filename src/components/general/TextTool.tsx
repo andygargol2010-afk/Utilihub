@@ -14,6 +14,8 @@ function process(slug: string, text: string, second: string, replacement: string
   switch (slug) {
     case "contador-de-caracteres":
       return `With spaces: ${text.length}\nWithout spaces: ${text.replace(/\s/g, "").length}`;
+    case "contador-de-palabras":
+      return `Words: ${words(text)}\nCharacters (with spaces): ${text.length}\nCharacters (without spaces): ${text.replace(/\s/g, "").length}\nLines: ${lines(text)}`;
     case "contador-de-lineas":
       return `Lines: ${lines(text)}`;
     case "contador-de-frases":
