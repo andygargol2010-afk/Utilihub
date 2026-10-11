@@ -1303,23 +1303,51 @@ function paintFasciaBump(ctx: CanvasRenderingContext2D, size: number) {
 
 function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [158, 148, 132], 28);
-  for (let i = 0; i < 90; i++) {
+  // Base pebbles
+  for (let i = 0; i < 120; i++) {
     const x = hash2(i, 1.7) * size;
     const y = hash2(i, 4.1) * size;
-    const r = 1.2 + hash2(i, 9) * 3.4;
-    const tone = 120 + Math.floor(hash2(i, 2.4) * 70);
-    ctx.fillStyle = `rgba(${tone}, ${tone - 8}, ${tone - 18}, 0.55)`;
+    const r = 0.8 + hash2(i, 9) * 2.8;
+    const tone = 110 + Math.floor(hash2(i, 2.4) * 80);
+    const alpha = 0.45 + hash2(i, 7.1) * 0.25;
+    ctx.fillStyle = `rgba(${tone}, ${tone - 6}, ${tone - 16}, ${alpha})`;
     ctx.beginPath();
-    ctx.ellipse(x, y, r, r * (0.7 + hash2(i, 6) * 0.4), hash2(i, 3) * Math.PI, 0, Math.PI * 2);
+    ctx.ellipse(x, y, r, r * (0.65 + hash2(i, 6) * 0.5), hash2(i, 3) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // Occasional larger stones for outdoor path character
+  for (let i = 0; i < 18; i++) {
+    const x = hash2(i + 200, 3.3) * size;
+    const y = hash2(i + 200, 5.7) * size;
+    const r = 3.5 + hash2(i, 11) * 4.2;
+    const tone = 95 + Math.floor(hash2(i, 1.8) * 50);
+    ctx.fillStyle = `rgba(${tone}, ${tone - 10}, ${tone - 22}, 0.62)`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * (0.6 + hash2(i, 8.2) * 0.45), hash2(i, 4.4) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+    // Subtle highlight on larger stones
+    ctx.fillStyle = `rgba(${tone + 30}, ${tone + 20}, ${tone + 8}, 0.28)`;
+    ctx.beginPath();
+    ctx.ellipse(x - r * 0.2, y - r * 0.15, r * 0.4, r * 0.25, 0, 0, Math.PI * 2);
     ctx.fill();
   }
   // Compacted center so the build pad reads slightly darker than the rim.
   const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.08, size / 2, size / 2, size * 0.52);
-  g.addColorStop(0, "rgba(70,60,48,0.22)");
-  g.addColorStop(0.7, "rgba(70,60,48,0.06)");
+  g.addColorStop(0, "rgba(70,60,48,0.26)");
+  g.addColorStop(0.7, "rgba(70,60,48,0.08)");
   g.addColorStop(1, "rgba(70,60,48,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, size, size);
+  // Soft mossy patches in depressions for weathered outdoor look
+  for (let i = 0; i < 8; i++) {
+    const x = hash2(i + 400, 2.1) * size;
+    const y = hash2(i + 400, 6.9) * size;
+    const r = 6 + hash2(i, 13) * 12;
+    ctx.fillStyle = `rgba(72, 92, 48, ${0.08 + hash2(i, 4.5) * 0.12})`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * 0.7, hash2(i, 9.1) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
@@ -7275,6 +7303,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     </div>
   );
 }
+
 
 
 
