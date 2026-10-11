@@ -76,6 +76,15 @@ export const WORK_KITS: WorkKit[] = [
     outcome: "Stall ready from open to cash close, tracked in this browser.",
     toolSlugs: [],
   },
+  {
+    slug: "packing-viaje",
+    englishSlug: "travel-packing",
+    name: "Travel packing kit",
+    eyebrow: "Pack smart",
+    description: "Interactive visual suitcase: click items to add or remove, watch live weight and progress bars, get instant feedback.",
+    outcome: "A ready packing list with weight under control, right in the browser.",
+    toolSlugs: [],
+  },
 ];
 
 export function kitTools(kit: WorkKit): CatalogTool[] {
