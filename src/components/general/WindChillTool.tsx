@@ -28,7 +28,7 @@ export function WindChillTool({ locale = "en" }: { tool: GeneralTool; locale?: L
 
   const summary = result
     ? es
-      ? `Wind chill ${formatTemp(result.chillC)}°C (${formatTemp(result.chillF)}°F). Aire ${formatTemp(result.airC)}°C, viento ${formatTemp(result.windKmh)} km/h. ${result.noteEs}`
+      ? `Sensación térmica del viento: ${formatTemp(result.chillC)}°C (${formatTemp(result.chillF)}°F). Aire ${formatTemp(result.airC)}°C, viento ${formatTemp(result.windKmh)} km/h. ${result.noteEs}`
       : `Wind chill ${formatTemp(result.chillF)}°F (${formatTemp(result.chillC)}°C). Air ${formatTemp(result.airF)}°F, wind ${formatTemp(result.windMph)} mph. ${result.note}`
     : "";
 
@@ -98,7 +98,7 @@ export function WindChillTool({ locale = "en" }: { tool: GeneralTool; locale?: L
         </ul>
       ) : result ? (
         <div className="space-y-2 rounded-2xl border p-3">
-          <p className="text-sm font-medium">{es ? "Wind chill NWS" : "NWS wind chill"}</p>
+          <p className="text-sm font-medium">{es ? "Sensación térmica del viento (NWS)" : "NWS wind chill"}</p>
           <p className="text-2xl font-semibold">
             {formatTemp(result.chillC)}°C · {formatTemp(result.chillF)}°F
           </p>
@@ -107,7 +107,7 @@ export function WindChillTool({ locale = "en" }: { tool: GeneralTool; locale?: L
           <p className="text-sm">
             {es
               ? `Equivalencias: aire ${formatTemp(result.airF)}°F, viento ${formatTemp(result.windMph)} mph (${formatTemp(result.windKmh)} km/h).`
-              : `Converted inputs: air ${formatTemp(result.airC)}°C, wind ${formatTemp(result.windKmh)} km/h (${formatTemp(result.windMph)} mph).`}
+              : `Converted inputs: air ${formatTemp(result.airC)}°C, wind ${formatTemp(result.windKmh)} km/h (${formatTemp(result.windMph)} mph).`
           </p>
           <button type="button" className={buttonClass} onClick={copyResult}>
             {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar" : "Copy"}
