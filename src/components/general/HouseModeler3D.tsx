@@ -3445,7 +3445,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     try {
       const scene = new THREE.Scene();
       // Warm horizon haze so the grass disc fades into the late-day sky, not a cool cut.
-      scene.fog = new THREE.FogExp2(0xc6c1b0, 0.0064);
+      scene.fog = new THREE.FogExp2(0xc6c1b0, 0.0078); // slightly denser haze for better depth
       scene.background = new THREE.Color(0xc6c1b0);
 
       const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
@@ -3457,7 +3457,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.08;
+      renderer.toneMappingExposure = 1.12; // a touch brighter for late-day punch
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       el.appendChild(renderer.domElement);
       renderer.domElement.style.touchAction = "none";
@@ -3498,7 +3498,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       dir.shadow.camera.bottom = -13;
       dir.shadow.bias = -0.00028;
       dir.shadow.normalBias = 0.028;
-      dir.shadow.radius = 1.4;
+      dir.shadow.radius = 1.15; // slightly sharper contact shadows
       scene.add(dir);
       scene.add(dir.target);
       const sunDiscMap = makeCanvasTexture(128, paintSunDisc, true);
@@ -7303,6 +7303,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     </div>
   );
 }
+
 
 
 
