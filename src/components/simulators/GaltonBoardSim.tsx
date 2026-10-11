@@ -1,1 +1,1 @@
-PLACEHOLDER
+$(cat /tmp/GaltonBoardSim.tsx)
