@@ -42,6 +42,18 @@ const KIT_ES: Record<string, { name: string; eyebrow: string; description: strin
     description: "Resolvé cálculos, organizá fechas y prepará materiales de estudio con utilidades rápidas.",
     outcome: "Más tiempo para entender y menos en tareas repetitivas.",
   },
+  "puesto-de-feria": {
+    name: "Puesto de feria",
+    eyebrow: "Día de feria",
+    description: "Organizá un día de puesto: cartel de precios, cambio inicial, foto del puesto, enlace o QR y cierre de caja. Un tablero fijo, no un listado de herramientas.",
+    outcome: "Puesto listo desde la apertura hasta el cierre de caja, en este navegador.",
+  },
+  "packing-viaje": {
+    name: "Kit de packing de viaje",
+    eyebrow: "Empacá inteligente",
+    description: "Maleta visual interactiva: hacé clic en ítems para agregar o quitar, barras live de peso y progreso, feedback inmediato.",
+    outcome: "Lista de packing lista con el peso bajo control, directo en el navegador.",
+  },
 };
 
 const title = "Kits por objetivo | UtiliHub";
