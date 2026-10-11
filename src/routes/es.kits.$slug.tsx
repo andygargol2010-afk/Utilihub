@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { KitCarryBoard } from "@/components/kits/KitCarryBoard";
 import { MarketStallBoard } from "@/components/kits/MarketStallBoard";
+import { TravelPackingBoard } from "@/components/kits/TravelPackingBoard";
 import { ToolCard } from "@/components/ToolCard";
 import { spanishToolName } from "@/lib/i18n/es";
 import { kitBySlug, kitTools, kitEnglishPath } from "@/lib/work-kits";
@@ -11,45 +12,51 @@ import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/
 const KIT_ES: Record<string, { name: string; eyebrow: string; description: string; outcome: string }> = {
   freelancers: {
     name: "Kit para freelancers",
-    eyebrow: "Trabaj\u00e1 y entreg\u00e1 mejor",
-    description: "Prepar\u00e1 una entrega profesional: revis\u00e1 texto, organiz\u00e1 archivos, ajust\u00e1 im\u00e1genes y calcul\u00e1 montos.",
+    eyebrow: "Trabajá y entregá mejor",
+    description: "Prepará una entrega profesional: revisá texto, organizá archivos, ajustá imágenes y calculá montos.",
     outcome: "De una idea a una entrega clara lista para compartir.",
   },
   "seo-y-contenido": {
     name: "SEO y contenido",
-    eyebrow: "Investig\u00e1 y public\u00e1",
-    description: "Limpi\u00e1 y prepar\u00e1 contenido para una p\u00e1gina: extensi\u00f3n, URL, expresiones y markup m\u00e1s liviano.",
-    outcome: "Contenido m\u00e1s claro, consistente y f\u00e1cil de publicar.",
+    eyebrow: "Investigá y publicá",
+    description: "Limpiá y prepará contenido para una página: extensión, URL, expresiones y markup más liviano.",
+    outcome: "Contenido más claro, consistente y fácil de publicar.",
   },
   "preparar-documentos": {
     name: "Preparar documentos",
     eyebrow: "Antes de enviar",
-    description: "Valid\u00e1 datos, convert\u00ed formatos y organiz\u00e1 PDFs e im\u00e1genes directamente en el navegador.",
-    outcome: "Documentos m\u00e1s limpios y compatibles, listos para entregar.",
+    description: "Validá datos, convertí formatos y organizá PDFs e imágenes directamente en el navegador.",
+    outcome: "Documentos más limpios y compatibles, listos para entregar.",
   },
   "archivos-y-formatos": {
     name: "Archivos y formatos",
-    eyebrow: "Convert\u00ed sin subir archivos",
-    description: "Resolv\u00e9 las conversiones m\u00e1s comunes entre im\u00e1genes, PDF, datos y unidades de almacenamiento.",
+    eyebrow: "Convertí sin subir archivos",
+    description: "Resolvé las conversiones más comunes entre imágenes, PDF, datos y unidades de almacenamiento.",
     outcome: "El formato correcto para cada destino, con procesamiento local.",
   },
   "desarrollo-web": {
     name: "Desarrollo web",
-    eyebrow: "Depur\u00e1 y transform\u00e1 datos",
-    description: "Formate\u00e1, valid\u00e1, codific\u00e1 y transform\u00e1 datos y snippets web sin salir del navegador.",
+    eyebrow: "Depurá y transformá datos",
+    description: "Formateá, validá, codificá y transformá datos y snippets web sin salir del navegador.",
     outcome: "Datos legibles y formatos listos para integrar.",
   },
   estudiantes: {
     name: "Kit para estudiantes",
-    eyebrow: "Estudi\u00e1 con foco",
-    description: "Resolv\u00e9 c\u00e1lculos, organiz\u00e1 fechas y prepar\u00e1 materiales de estudio con utilidades r\u00e1pidas.",
-    outcome: "M\u00e1s tiempo para entender y menos en tareas repetitivas.",
+    eyebrow: "Estudiá con foco",
+    description: "Resolvé cálculos, organizá fechas y prepará materiales de estudio con utilidades rápidas.",
+    outcome: "Más tiempo para entender y menos en tareas repetitivas.",
   },
   "puesto-de-feria": {
     name: "Puesto de feria",
-    eyebrow: "D\u00eda de feria",
-    description: "Organiz\u00e1 un d\u00eda de puesto: cartel de precios, cambio inicial, foto del puesto, enlace o QR y cierre de caja. Un tablero fijo, no un listado de herramientas.",
+    eyebrow: "Día de feria",
+    description: "Organizá un día de puesto: cartel de precios, cambio inicial, foto del puesto, enlace o QR y cierre de caja. Un tablero fijo, no un listado de herramientas.",
     outcome: "Puesto listo desde la apertura hasta el cierre de caja, en este navegador.",
+  },
+  "packing-viaje": {
+    name: "Kit de packing de viaje",
+    eyebrow: "Empacá inteligente",
+    description: "Maleta visual interactiva: hacé clic en ítems para agregar o quitar, barras live de peso y progreso, feedback inmediato.",
+    outcome: "Lista de packing lista con el peso bajo control, directo en el navegador.",
   },
 };
 
@@ -94,6 +101,7 @@ function SpanishKitPage() {
   const { kit, tools } = Route.useLoaderData();
   const esMeta = KIT_ES[kit.slug] ?? { name: kit.name, eyebrow: kit.eyebrow, description: kit.description, outcome: kit.outcome };
   const isMarketStall = kit.slug === "puesto-de-feria";
+  const isTravelPacking = kit.slug === "packing-viaje";
   return (
     <main className="container-page py-6 sm:py-8">
       <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Kits", to: "/es/kits" }, { label: esMeta.name }]} />
@@ -107,6 +115,8 @@ function SpanishKitPage() {
       </header>
       {isMarketStall ? (
         <MarketStallBoard locale="es" />
+      ) : isTravelPacking ? (
+        <TravelPackingBoard locale="es" />
       ) : (
         <>
           <KitCarryBoard
