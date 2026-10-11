@@ -9,7 +9,6 @@ import { DeferredToolSeo } from "@/components/DeferredToolSeo";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { DeferredKitReturnRibbon } from "@/components/kits/DeferredKitReturnRibbon";
 import type { CatalogTool } from "@/lib/all-tools";
-import { recordRecentTool } from "@/hooks/use-recent-tools";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
 
@@ -146,7 +145,9 @@ function ToolPage() {
   };
 
   useEffect(() => {
-    recordRecentTool(tool.slug);
+    void import("@/hooks/use-recent-tools").then((mod) => {
+      mod.recordRecentTool(tool.slug);
+    });
   }, [tool.slug]);
 
   if (!category || !categoryPublicSlug) return <p className="container-page py-10">Tool not available.</p>;
