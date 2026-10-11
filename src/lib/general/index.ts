@@ -137,6 +137,7 @@ import { RANDOM_USERNAME_TOOLS } from "./random-username-tool";
 import { TRIANGLE_AREA_TOOLS } from "./triangle-area-tool";
 import { QR_CODE_GENERATOR_TOOLS } from "./qr-code-generator-tool";
 import { TIP_CALCULATOR_TOOLS } from "./tip-calculator-tool";
+import { RANDOM_QUOTE_TOOLS } from "./random-quote-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -279,4 +280,5 @@ export const GENERAL_TOOLS = [
   ...TRIANGLE_AREA_TOOLS,
   ...QR_CODE_GENERATOR_TOOLS,
   ...TIP_CALCULATOR_TOOLS,
+  ...RANDOM_QUOTE_TOOLS,
 ];
