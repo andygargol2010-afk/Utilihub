@@ -108,15 +108,15 @@ function ResizeHandle({
   onDown: (e: React.PointerEvent) => void;
 }) {
   const pos: Record<string, string> = {
-    se: "-bottom-2.5 -right-2.5 cursor-se-resize",
-    sw: "-bottom-2.5 -left-2.5 cursor-sw-resize",
-    ne: "-top-2.5 -right-2.5 cursor-ne-resize",
-    nw: "-top-2.5 -left-2.5 cursor-nw-resize",
+    se: "-bottom-3 -right-3 cursor-se-resize",
+    sw: "-bottom-3 -left-3 cursor-sw-resize",
+    ne: "-top-3 -right-3 cursor-ne-resize",
+    nw: "-top-3 -left-3 cursor-nw-resize",
   };
   return (
     <div
       onPointerDown={onDown}
-      className={`absolute h-6 w-6 rounded-full border-[3px] border-primary bg-white shadow-2xl ring-2 ring-primary/40 ${pos[position]}`}
+      className={`absolute h-7 w-7 rounded-full border-[4px] border-primary bg-white shadow-2xl ring-4 ring-primary/30 ${pos[position]}`}
       style={{ touchAction: "none" }}
     />
   );
@@ -348,7 +348,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
       {/* Canvas */}
       <div
         ref={containerRef}
-        className="relative h-[min(560px,70vh)] w-full overflow-hidden rounded-2xl border border-slate-300/80 bg-[#e8eef5] shadow-inner touch-none"
+        className="relative h-[min(560px,70vh)] w-full overflow-hidden rounded-2xl border border-slate-300/80 bg-[#f4f7fb] shadow-inner touch-none"
         onPointerDown={onCanvasPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -360,8 +360,8 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
               <path
                 d={`M ${PX_PER_M} 0 L 0 0 0 ${PX_PER_M}`}
                 fill="none"
-                stroke="#c5d0dc"
-                strokeWidth="0.6"
+                stroke="#d1d9e6"
+                strokeWidth="0.5"
               />
             </pattern>
             <pattern
@@ -374,12 +374,12 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 d={`M ${PX_PER_M * 5} 0 L 0 0 0 ${PX_PER_M * 5}`}
                 fill="none"
                 stroke="#94a3b8"
-                strokeWidth="1.1"
+                strokeWidth="1"
               />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#fps-grid)" />
-          <rect width="100%" height="100%" fill="url(#fps-grid-major)" opacity="0.55" />
+          <rect width="100%" height="100%" fill="url(#fps-grid-major)" opacity="0.4" />
           {/* X scale ticks */}
           {Array.from({ length: 22 }).map((_, i) => (
             <g key={`x${i}`}>
@@ -387,12 +387,12 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 x1={i * PX_PER_M}
                 y1={0}
                 x2={i * PX_PER_M}
-                y2={i % 5 === 0 ? 10 : 5}
-                stroke="#64748b"
-                strokeWidth={i % 5 === 0 ? 1.2 : 0.7}
+                y2={i % 5 === 0 ? 12 : 6}
+                stroke="#475569"
+                strokeWidth={i % 5 === 0 ? 1.4 : 0.8}
               />
               {i % 5 === 0 && (
-                <text x={i * PX_PER_M + 3} y={18} fontSize="9" fill="#475569" fontWeight="600">
+                <text x={i * PX_PER_M + 4} y={20} fontSize="10" fill="#334155" fontWeight="700">
                   {i}m
                 </text>
               )}
@@ -404,13 +404,13 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
               <line
                 x1={0}
                 y1={i * PX_PER_M}
-                x2={i % 5 === 0 ? 10 : 5}
+                x2={i % 5 === 0 ? 12 : 6}
                 y2={i * PX_PER_M}
-                stroke="#64748b"
-                strokeWidth={i % 5 === 0 ? 1.2 : 0.7}
+                stroke="#475569"
+                strokeWidth={i % 5 === 0 ? 1.4 : 0.8}
               />
               {i % 5 === 0 && i > 0 && (
-                <text x={12} y={i * PX_PER_M + 3} fontSize="9" fill="#475569" fontWeight="600">
+                <text x={14} y={i * PX_PER_M + 4} fontSize="10" fill="#334155" fontWeight="700">
                   {i}m
                 </text>
               )}
@@ -420,7 +420,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
 
         {items.length === 0 && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <p className="rounded-2xl border border-slate-200/80 bg-white/90 px-6 py-3.5 text-sm text-slate-500 shadow-md backdrop-blur">
+            <p className="rounded-2xl border border-slate-200/80 bg-white/95 px-6 py-4 text-sm text-slate-600 shadow-md backdrop-blur">
               {t.emptyHint}
             </p>
           </div>
@@ -443,54 +443,54 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 isSelected ? "z-20" : "z-10"
               } ${
                 isRoom
-                  ? "rounded-md border-[10px] border-slate-900 shadow-2xl"
-                  : "rounded-lg border-[3.5px] shadow-lg"
+                  ? "rounded-sm border-[12px] border-slate-800 shadow-2xl"
+                  : "rounded-xl border-[4px] shadow-xl"
               } ${
                 isSelected
                   ? isRoom
-                    ? "ring-4 ring-primary ring-offset-2 ring-offset-white/50"
-                    : "border-primary ring-4 ring-primary/70"
+                    ? "ring-4 ring-primary ring-offset-4 ring-offset-white"
+                    : "border-primary ring-4 ring-primary/60"
                   : isRoom
                     ? ""
-                    : "border-slate-800"
+                    : "border-slate-700"
               }`}
               style={{
                 left,
                 top,
                 width,
                 height,
-                backgroundColor: isRoom ? "#f8fafc" : item.color,
+                backgroundColor: isRoom ? "#fefefe" : item.color,
                 backgroundImage: isRoom
-                  ? `linear-gradient(180deg, #ffffff 0%, ${item.color}55 100%), repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(15,23,42,0.02) 10px, rgba(15,23,42,0.02) 20px)`
+                  ? `linear-gradient(180deg, #ffffff 0%, ${item.color}40 100%), repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(15,23,42,0.015) 8px, rgba(15,23,42,0.015) 16px)`
                   : item.kind === "sofa"
-                    ? `linear-gradient(90deg, ${item.color} 0%, ${item.color}dd 30%, ${item.color} 50%, ${item.color}dd 70%, ${item.color} 100%)`
+                    ? `linear-gradient(90deg, ${item.color} 0%, ${item.color}cc 25%, ${item.color} 50%, ${item.color}cc 75%, ${item.color} 100%)`
                     : item.kind === "bed"
-                      ? `linear-gradient(180deg, #f8fafc 0%, ${item.color} 18%, ${item.color} 100%)`
+                      ? `linear-gradient(180deg, #f1f5f9 0%, ${item.color} 12%, ${item.color} 100%)`
                       : item.kind === "table"
-                        ? `radial-gradient(circle at center, ${item.color}f0 0%, ${item.color} 75%)`
+                        ? `radial-gradient(ellipse at center, ${item.color}f5 0%, ${item.color} 70%)`
                         : item.kind === "chair"
-                          ? `radial-gradient(circle at 50% 40%, ${item.color}ee 0%, ${item.color} 80%)`
+                          ? `radial-gradient(circle at 50% 35%, ${item.color}f0 0%, ${item.color} 75%)`
                           : item.kind === "lamp"
-                            ? `radial-gradient(circle at center, #fef3c7 0%, ${item.color} 60%)`
+                            ? `radial-gradient(circle at center, #fffbeb 0%, ${item.color} 55%)`
                             : undefined,
                 transform: `rotate(${item.rotation}deg)`,
                 transformOrigin: "center center",
-                opacity: isRoom ? 1 : 0.98,
+                opacity: isRoom ? 1 : 0.97,
                 boxShadow: isRoom
-                  ? "inset 0 0 0 4px rgba(255,255,255,0.85), inset 0 0 12px rgba(0,0,0,0.08), 0 10px 25px rgba(0,0,0,0.25)"
-                  : "0 6px 16px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.3)",
+                  ? "inset 0 0 0 6px rgba(255,255,255,0.9), inset 0 0 16px rgba(0,0,0,0.06), 0 12px 28px rgba(0,0,0,0.22)"
+                  : "0 8px 20px rgba(0,0,0,0.28), inset 0 2px 0 rgba(255,255,255,0.35)",
               }}
             >
-              <span className="pointer-events-none flex flex-col items-center gap-0.5 px-1 text-center leading-tight">
-                {icon && <span className="text-2xl leading-none drop-shadow">{icon}</span>}
+              <span className="pointer-events-none flex flex-col items-center gap-1 px-1.5 text-center leading-tight">
+                {icon && <span className="text-3xl leading-none drop-shadow-lg">{icon}</span>}
                 <span
-                  className={`${isRoom ? "text-slate-900" : "text-white drop-shadow-md"} font-bold tracking-tight text-[11px]`}
+                  className={`${isRoom ? "text-slate-900" : "text-white drop-shadow-lg"} font-bold tracking-tight text-[12px]`}
                 >
                   {item.name}
                 </span>
                 {(isRoom || isSelected) && (
                   <span
-                    className={`text-[10px] font-semibold ${isRoom ? "text-slate-700" : "text-white/95 drop-shadow"}`}
+                    className={`text-[10px] font-semibold ${isRoom ? "text-slate-600" : "text-white/90 drop-shadow"}`}
                   >
                     {item.w.toFixed(1)}×{item.h.toFixed(1)} m
                     {isRoom ? ` · ${(item.w * item.h).toFixed(1)} m²` : ""}
@@ -511,7 +511,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
 
         {/* Dimension readout for selection */}
         {selected && (
-          <div className="pointer-events-none absolute bottom-3 left-3 rounded-xl border border-slate-200/90 bg-white/95 px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-lg backdrop-blur">
+          <div className="pointer-events-none absolute bottom-3 left-3 rounded-xl border border-slate-200/90 bg-white/95 px-4 py-2.5 text-xs font-semibold text-slate-700 shadow-lg backdrop-blur">
             {selected.name}: {selected.w.toFixed(2)} × {selected.h.toFixed(2)} m
             {selected.type === "room" ? ` · ${(selected.w * selected.h).toFixed(2)} m²` : ""}
           </div>
