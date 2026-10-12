@@ -146,6 +146,7 @@ import { LOREM_IPSUM_TOOLS } from "./lorem-ipsum-tool";
 import { AGE_CALCULATOR_TOOLS } from "./age-calculator-tool";
 import { DUE_DATE_CALCULATOR_TOOLS } from "./due-date-calculator-tool";
 import { DISCOUNT_CALCULATOR_TOOLS } from "./discount-calculator-tool";
+import { PERCENTAGE_CHANGE_TOOLS } from "./percentage-change-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -297,4 +298,5 @@ export const GENERAL_TOOLS = [
   ...AGE_CALCULATOR_TOOLS,
   ...DUE_DATE_CALCULATOR_TOOLS,
   ...DISCOUNT_CALCULATOR_TOOLS,
+  ...PERCENTAGE_CHANGE_TOOLS,
 ];
