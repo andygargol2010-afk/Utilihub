@@ -497,7 +497,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
               }}
             >
               <span className="pointer-events-none flex flex-col items-center gap-1 px-1.5 text-center leading-tight">
-                {icon && <span className="text-5xl leading-none drop-shadow-2xl">{icon}</span>}
+                {icon && <span className="text-6xl leading-none drop-shadow-2xl">{icon}</span>}
                 <span
                   className={`${isRoom ? "text-stone-900" : "text-white drop-shadow-xl"} font-bold tracking-tight text-[13px]`}
                 >
