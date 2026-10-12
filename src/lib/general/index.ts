@@ -127,6 +127,7 @@ import { PASSWORD_GENERATOR_TOOLS } from "./password-generator-tool";
 import { BMI_CALCULATOR_TOOLS } from "./bmi-calculator-tool";
 import { CASE_CONVERTER_TOOLS } from "./case-converter-tool";
 import { SIMPLE_INTEREST_TOOLS } from "./simple-interest-tool";
+import { COMPOUND_INTEREST_TOOLS } from "./compound-interest-tool";
 import { FUEL_COST_TOOLS } from "./fuel-cost-tool";
 import { RANDOM_NUMBER_TOOLS } from "./random-number-tool";
 import { DICE_ROLLER_TOOLS } from "./dice-roller-tool";
@@ -279,6 +280,7 @@ export const GENERAL_TOOLS = [
   ...BMI_CALCULATOR_TOOLS,
   ...CASE_CONVERTER_TOOLS,
   ...SIMPLE_INTEREST_TOOLS,
+  ...COMPOUND_INTEREST_TOOLS,
   ...FUEL_COST_TOOLS,
   ...RANDOM_NUMBER_TOOLS,
   ...DICE_ROLLER_TOOLS,
