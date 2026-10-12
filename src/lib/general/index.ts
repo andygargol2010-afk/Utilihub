@@ -102,7 +102,7 @@ import { BRAILLE_TOOLS } from "./braille-tool";
 import { ULID_TOOLS } from "./ulid-tool";
 import { DECIBEL_TOOLS } from "./decibel-tool";
 import { JWT_TOOLS } from "./jwt-tool";
-import { PASSWOR D_ENTROPY_TOOLS } from "./password-entropy-tool";
+import { PASSWORD_ENTROPY_TOOLS } from "./password-entropy-tool";
 import { OPEN_GRAPH_TOOLS } from "./open-graph-tool";
 import { MARKDOWN_TABLE_TOOLS } from "./markdown-table-tool";
 import { JSON_TS_TOOLS } from "./json-to-typescript-tool";
