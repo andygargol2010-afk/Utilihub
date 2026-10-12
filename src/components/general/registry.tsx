@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
-/** Full general tool UI registry — deploy force 2026-10-12 (anti PLACEHOLDER/REPLACE_ME). Age calculator wired. */
+/** Full general tool UI registry — deploy force 2026-10-12 (anti PLACEHOLDER/REPLACE_ME). Percentage change wired. */
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
@@ -104,6 +104,7 @@ const AgeCalculatorTool = lazy(() => import("./AgeCalculatorTool").then((m) => (
 const PaceCalculatorTool = lazy(() => import("./PaceCalculatorTool").then((m) => ({ default: m.PaceCalculatorTool })));
 const DueDateCalculatorTool = lazy(() => import("./DueDateCalculatorTool").then((m) => ({ default: m.DueDateCalculatorTool })));
 const DiscountCalculatorTool = lazy(() => import("./DiscountCalculatorTool").then((m) => ({ default: m.DiscountCalculatorTool })));
+const PercentageChangeTool = lazy(() => import("./PercentageChangeTool").then((m) => ({ default: m.PercentageChangeTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -122,6 +123,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-ritmo-carrera") return PaceCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-fecha-parto") return DueDateCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-descuento") return DiscountCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-cambio-porcentaje") return PercentageChangeTool as ToolComp;
   if (tool.slug === "gpa") return GpaCalculator as ToolComp;
   if (tool.slug === "calculadora-horas-extra") return OvertimePayTool as ToolComp;
   if (tool.slug === "generador-utm") return UtmBuilderTool as ToolComp;
