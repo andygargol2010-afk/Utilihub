@@ -41,8 +41,9 @@ export function SleepCycleTool({ locale = "en" }: { tool?: GeneralTool; locale?:
 
   const recommendations = useMemo(() => {
     if (!parsed) return [];
-    const results: { cycles: number; time: string; label: string }[] = [];
-    for (let c = 4; c <= 6; c++) {
+    const results: { cycles: number; time: string; label: string; preferred: boolean }[] = [];
+    const order = [numCycles, ...[4, 5, 6].filter((c) => c !== numCycles)];
+    for (const c of order) {
       const cycleMinutes = c * 90;
       let targetH = parsed.h;
       let targetM = parsed.m;
@@ -53,6 +54,7 @@ export function SleepCycleTool({ locale = "en" }: { tool?: GeneralTool; locale?:
           cycles: c,
           time: formatTime(bed.h, bed.m, es),
           label: es ? `${c} ciclos` : `${c} cycles`,
+          preferred: c === numCycles,
         });
       } else {
         // wake = bed + fallAsleep + cycles*90
@@ -61,15 +63,16 @@ export function SleepCycleTool({ locale = "en" }: { tool?: GeneralTool; locale?:
           cycles: c,
           time: formatTime(wake.h, wake.m, es),
           label: es ? `${c} ciclos` : `${c} cycles`,
+          preferred: c === numCycles,
         });
       }
     }
     return results;
-  }, [parsed, fall, mode, es]);
+  }, [parsed, fall, mode, es, numCycles]);
 
   async function copy() {
     if (!recommendations.length) return;
-    const lines = recommendations.map((r) => `${r.label}: ${r.time}`).join("\n");
+    const lines = recommendations.map((r) => `${r.label}${r.preferred ? (es ? " (preferido)" : " (preferred)") : ""}: ${r.time}`).join("\n");
     const text = es
       ? `Recomendaciones de ${mode === "wake" ? "hora de acostarse" : "hora de despertar"}:\n${lines}`
       : `Recommended ${mode === "wake" ? "bedtimes" : "wake times"}:\n${lines}`;
@@ -101,8 +104,11 @@ export function SleepCycleTool({ locale = "en" }: { tool?: GeneralTool; locale?:
         ) : (
           <ul className="space-y-2">
             {recommendations.map((r) => (
-              <li key={r.cycles} className="flex justify-between text-lg font-medium">
-                <span>{r.label}</span>
+              <li key={r.cycles} className={r.preferred ? "flex justify-between text-lg font-medium text-primary" : "flex justify-between text-lg font-medium"}>
+                <span>
+                  {r.label}
+                  {r.preferred ? <span className="ml-2 text-xs font-normal text-primary">{es ? "preferido" : "preferred"}</span> : null}
+                </span>
                 <span>{r.time}</span>
               </li>
             ))}
