@@ -108,15 +108,15 @@ function ResizeHandle({
   onDown: (e: React.PointerEvent) => void;
 }) {
   const pos: Record<string, string> = {
-    se: "-bottom-3 -right-3 cursor-se-resize",
-    sw: "-bottom-3 -left-3 cursor-sw-resize",
-    ne: "-top-3 -right-3 cursor-ne-resize",
-    nw: "-top-3 -left-3 cursor-nw-resize",
+    se: "-bottom-3.5 -right-3.5 cursor-se-resize",
+    sw: "-bottom-3.5 -left-3.5 cursor-sw-resize",
+    ne: "-top-3.5 -right-3.5 cursor-ne-resize",
+    nw: "-top-3.5 -left-3.5 cursor-nw-resize",
   };
   return (
     <div
       onPointerDown={onDown}
-      className={`absolute h-7 w-7 rounded-full border-[4px] border-primary bg-white shadow-2xl ring-4 ring-primary/30 ${pos[position]}`}
+      className={`absolute h-8 w-8 rounded-full border-[4px] border-primary bg-white shadow-2xl ring-4 ring-primary/40 ${pos[position]}`}
       style={{ touchAction: "none" }}
     />
   );
@@ -196,8 +196,8 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
   };
 
   const addFurniture = (kind: keyof typeof furniturePresets) => {
-    const preset = furniturePresets[kind];
     const id = generateId();
+    const preset = furniturePresets[kind];
     setItems((prev) => {
       const offset = prev.filter((it) => it.type === "furniture").length;
       return [
@@ -345,10 +345,10 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
         </label>
       </div>
 
-      {/* Canvas */}
+      {/* Canvas — warmer paper tone, professional grid */}
       <div
         ref={containerRef}
-        className="relative h-[min(560px,70vh)] w-full overflow-hidden rounded-2xl border border-slate-300/90 bg-[#f0f4fa] shadow-inner touch-none"
+        className="relative h-[min(560px,70vh)] w-full overflow-hidden rounded-2xl border border-slate-300/90 bg-[#f7f3eb] shadow-inner touch-none"
         onPointerDown={onCanvasPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -360,8 +360,8 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
               <path
                 d={`M ${PX_PER_M} 0 L 0 0 0 ${PX_PER_M}`}
                 fill="none"
-                stroke="#c5d0e0"
-                strokeWidth="0.5"
+                stroke="#d4cfc4"
+                strokeWidth="0.6"
               />
             </pattern>
             <pattern
@@ -373,13 +373,13 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
               <path
                 d={`M ${PX_PER_M * 5} 0 L 0 0 0 ${PX_PER_M * 5}`}
                 fill="none"
-                stroke="#7c8aa0"
-                strokeWidth="1"
+                stroke="#a89f8f"
+                strokeWidth="1.1"
               />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#fps-grid)" />
-          <rect width="100%" height="100%" fill="url(#fps-grid-major)" opacity="0.4" />
+          <rect width="100%" height="100%" fill="url(#fps-grid-major)" opacity="0.45" />
           {/* X scale ticks */}
           {Array.from({ length: 22 }).map((_, i) => (
             <g key={`x${i}`}>
@@ -387,12 +387,12 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 x1={i * PX_PER_M}
                 y1={0}
                 x2={i * PX_PER_M}
-                y2={i % 5 === 0 ? 12 : 6}
-                stroke="#475569"
-                strokeWidth={i % 5 === 0 ? 1.4 : 0.8}
+                y2={i % 5 === 0 ? 14 : 7}
+                stroke="#57534e"
+                strokeWidth={i % 5 === 0 ? 1.5 : 0.9}
               />
               {i % 5 === 0 && (
-                <text x={i * PX_PER_M + 4} y={20} fontSize="10" fill="#334155" fontWeight="700">
+                <text x={i * PX_PER_M + 4} y={22} fontSize="11" fill="#44403c" fontWeight="700">
                   {i}m
                 </text>
               )}
@@ -404,13 +404,13 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
               <line
                 x1={0}
                 y1={i * PX_PER_M}
-                x2={i % 5 === 0 ? 12 : 6}
+                x2={i % 5 === 0 ? 14 : 7}
                 y2={i * PX_PER_M}
-                stroke="#475569"
-                strokeWidth={i % 5 === 0 ? 1.4 : 0.8}
+                stroke="#57534e"
+                strokeWidth={i % 5 === 0 ? 1.5 : 0.9}
               />
               {i % 5 === 0 && i > 0 && (
-                <text x={14} y={i * PX_PER_M + 4} fontSize="10" fill="#334155" fontWeight="700">
+                <text x={16} y={i * PX_PER_M + 4} fontSize="11" fill="#44403c" fontWeight="700">
                   {i}m
                 </text>
               )}
@@ -420,7 +420,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
 
         {items.length === 0 && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <p className="rounded-2xl border border-slate-200/80 bg-white/95 px-6 py-4 text-sm text-slate-600 shadow-md backdrop-blur">
+            <p className="rounded-2xl border border-stone-200/90 bg-white/95 px-6 py-4 text-sm text-stone-600 shadow-md backdrop-blur">
               {t.emptyHint}
             </p>
           </div>
@@ -443,54 +443,54 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 isSelected ? "z-20" : "z-10"
               } ${
                 isRoom
-                  ? "rounded-md border-[16px] border-slate-800 shadow-[0_16px_40px_rgba(0,0,0,0.28)]"
-                  : "rounded-2xl border-[5px] border-slate-700 shadow-2xl"
+                  ? "rounded-sm border-[18px] border-stone-800 shadow-[0_18px_44px_rgba(0,0,0,0.32)]"
+                  : "rounded-2xl border-[6px] border-stone-700 shadow-2xl"
               } ${
                 isSelected
                   ? isRoom
-                    ? "ring-[5px] ring-primary ring-offset-4 ring-offset-[#f0f4fa] shadow-[0_0_0_2px_rgba(59,130,246,0.4)]"
-                    : "border-primary ring-[5px] ring-primary/70 shadow-[0_0_0_3px_rgba(59,130,246,0.25)]"
+                    ? "ring-[6px] ring-primary ring-offset-4 ring-offset-[#f7f3eb] shadow-[0_0_0_3px_rgba(59,130,246,0.45)]"
+                    : "border-primary ring-[6px] ring-primary/80 shadow-[0_0_0_4px_rgba(59,130,246,0.3)]"
                   : isRoom
                     ? ""
-                    : "border-slate-700"
+                    : "border-stone-700"
               }`}
               style={{
                 left,
                 top,
                 width,
                 height,
-                backgroundColor: isRoom ? "#fefefe" : item.color,
+                backgroundColor: isRoom ? "#fafaf9" : item.color,
                 backgroundImage: isRoom
-                  ? `linear-gradient(180deg, #ffffff 0%, ${item.color}55 100%), repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(15,23,42,0.012) 12px, rgba(15,23,42,0.012) 13px)`
+                  ? `linear-gradient(165deg, #ffffff 0%, ${item.color}40 55%, ${item.color}70 100%), repeating-linear-gradient(90deg, transparent, transparent 14px, rgba(28,25,23,0.018) 14px, rgba(28,25,23,0.018) 15px), repeating-linear-gradient(0deg, transparent, transparent 14px, rgba(28,25,23,0.012) 14px, rgba(28,25,23,0.012) 15px)`
                   : item.kind === "sofa"
-                    ? `linear-gradient(90deg, ${item.color} 0%, ${item.color}cc 25%, ${item.color} 50%, ${item.color}cc 75%, ${item.color} 100%)`
+                    ? `linear-gradient(95deg, ${item.color} 0%, ${item.color}dd 20%, ${item.color} 40%, ${item.color}dd 60%, ${item.color} 80%, ${item.color}dd 100%)`
                     : item.kind === "bed"
-                      ? `linear-gradient(180deg, #f1f5f9 0%, ${item.color} 12%, ${item.color} 100%)`
+                      ? `linear-gradient(180deg, #f8fafc 0%, #e2e8f0 8%, ${item.color} 18%, ${item.color} 100%)`
                       : item.kind === "table"
-                        ? `radial-gradient(ellipse at center, ${item.color}f5 0%, ${item.color} 70%)`
+                        ? `radial-gradient(ellipse at 50% 40%, ${item.color}ff 0%, ${item.color}ee 50%, ${item.color} 85%)`
                         : item.kind === "chair"
-                          ? `radial-gradient(circle at 50% 35%, ${item.color}f0 0%, ${item.color} 75%)`
+                          ? `radial-gradient(circle at 50% 30%, ${item.color}f5 0%, ${item.color} 70%)`
                           : item.kind === "lamp"
-                            ? `radial-gradient(circle at center, #fffbeb 0%, ${item.color} 55%)`
+                            ? `radial-gradient(circle at center, #fffbeb 0%, #fde68a 35%, ${item.color} 65%)`
                             : undefined,
                 transform: `rotate(${item.rotation}deg)`,
                 transformOrigin: "center center",
-                opacity: isRoom ? 1 : 0.97,
+                opacity: isRoom ? 1 : 0.98,
                 boxShadow: isRoom
-                  ? "inset 0 0 0 6px rgba(255,255,255,0.9), inset 0 0 16px rgba(0,0,0,0.06), 0 12px 28px rgba(0,0,0,0.22)"
-                  : "0 10px 24px rgba(0,0,0,0.32), inset 0 3px 0 rgba(255,255,255,0.45), inset 0 -2px 4px rgba(0,0,0,0.15)",
+                  ? "inset 0 0 0 8px rgba(255,255,255,0.92), inset 0 0 20px rgba(0,0,0,0.07), 0 14px 32px rgba(0,0,0,0.26)"
+                  : "0 12px 28px rgba(0,0,0,0.36), inset 0 3px 0 rgba(255,255,255,0.5), inset 0 -3px 6px rgba(0,0,0,0.18)",
               }}
             >
               <span className="pointer-events-none flex flex-col items-center gap-1 px-1.5 text-center leading-tight">
                 {icon && <span className="text-4xl leading-none drop-shadow-xl">{icon}</span>}
                 <span
-                  className={`${isRoom ? "text-slate-900" : "text-white drop-shadow-xl"} font-bold tracking-tight text-[13px]`}
+                  className={`${isRoom ? "text-stone-900" : "text-white drop-shadow-xl"} font-bold tracking-tight text-[13px]`}
                 >
                   {item.name}
                 </span>
                 {(isRoom || isSelected) && (
                   <span
-                    className={`mt-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-bold ${isRoom ? "bg-slate-100/90 text-slate-700" : "bg-black/40 text-white/95"}`}
+                    className={`mt-0.5 rounded-full px-2 py-0.5 text-[10px] font-bold ${isRoom ? "bg-stone-100/95 text-stone-700 shadow-sm" : "bg-black/45 text-white/95"}`}
                   >
                     {item.w.toFixed(1)}×{item.h.toFixed(1)} m
                     {isRoom ? ` · ${(item.w * item.h).toFixed(1)} m²` : ""}
@@ -511,7 +511,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
 
         {/* Dimension readout for selection */}
         {selected && (
-          <div className="pointer-events-none absolute bottom-3 left-3 rounded-xl border border-slate-200/90 bg-white/95 px-4 py-2.5 text-xs font-semibold text-slate-700 shadow-lg backdrop-blur">
+          <div className="pointer-events-none absolute bottom-3 left-3 rounded-xl border border-stone-200/90 bg-white/95 px-4 py-2.5 text-xs font-semibold text-stone-700 shadow-lg backdrop-blur">
             {selected.name}: {selected.w.toFixed(2)} × {selected.h.toFixed(2)} m
             {selected.type === "room" ? ` · ${(selected.w * selected.h).toFixed(2)} m²` : ""}
           </div>
@@ -525,7 +525,14 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
           <span className="text-2xl font-black tracking-tight text-primary">{totalArea.toFixed(1)}</span>
           <span className="font-semibold text-muted-foreground">m²</span>
           <span className="text-xs text-muted-foreground">
-            · {items.filter((i) => i.type === "room").length} {locale === "es" ? (items.filter((i) => i.type === "room").length === 1 ? "habitación" : "habitaciones") : (items.filter((i) => i.type === "room").length === 1 ? "room" : "rooms")}
+            · {items.filter((i) => i.type === "room").length}{" "}
+            {locale === "es"
+              ? items.filter((i) => i.type === "room").length === 1
+                ? "habitación"
+                : "habitaciones"
+              : items.filter((i) => i.type === "room").length === 1
+                ? "room"
+                : "rooms"}
           </span>
         </div>
         <button type="button" onClick={share} className={btnPrimary}>
