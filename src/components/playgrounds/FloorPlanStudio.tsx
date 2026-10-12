@@ -124,51 +124,59 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
 
   const addRoom = () => {
     const id = generateId();
-    setItems((prev) => [
-      ...prev,
-      {
-        id,
-        type: "room",
-        name: locale === "es" ? "Habitación" : "Room",
-        x: 40 + prev.length * 20,
-        y: 40 + prev.length * 15,
-        w: 4,
-        h: 3,
-        rotation: 0,
-        color: wallColor,
-      },
-    ]);
+    setItems((prev) => {
+      const offset = prev.filter((it) => it.type === "room").length;
+      return [
+        ...prev,
+        {
+          id,
+          type: "room",
+          name: locale === "es" ? "Habitación" : "Room",
+          // Coordinates are in meters (1 m ≈ 24 px). Keep spawn inside the ~520px canvas.
+          x: 0.5 + (offset % 4) * 1.2,
+          y: 0.5 + Math.floor(offset / 4) * 1.2,
+          w: 4,
+          h: 3,
+          rotation: 0,
+          color: wallColor,
+        },
+      ];
+    });
     setSelectedId(id);
   };
 
   const addFurniture = (kind: keyof typeof furniturePresets) => {
     const preset = furniturePresets[kind];
     const id = generateId();
-    setItems((prev) => [
-      ...prev,
-      {
-        id,
-        type: "furniture",
-        name:
-          locale === "es"
-            ? kind === "sofa"
-              ? "Sofá"
-              : kind === "table"
-                ? "Mesa"
-                : kind === "bed"
-                  ? "Cama"
-                  : kind === "chair"
-                    ? "Silla"
-                    : "Lámpara"
-            : preset.name,
-        x: 100,
-        y: 100,
-        w: preset.w,
-        h: preset.h,
-        rotation: 0,
-        color: preset.color,
-      },
-    ]);
+    setItems((prev) => {
+      const offset = prev.filter((it) => it.type === "furniture").length;
+      return [
+        ...prev,
+        {
+          id,
+          type: "furniture",
+          name:
+            locale === "es"
+              ? kind === "sofa"
+                ? "Sofá"
+                : kind === "table"
+                  ? "Mesa"
+                  : kind === "bed"
+                    ? "Cama"
+                    : kind === "chair"
+                      ? "Silla"
+                      : "Lámpara"
+              : preset.name,
+          // Spawn near top-left of canvas, staggered so items don't stack perfectly.
+          x: 1.5 + (offset % 5) * 0.6,
+          y: 1.5 + Math.floor(offset / 5) * 0.6,
+          w: preset.w,
+          h: preset.h,
+          rotation: 0,
+          color: preset.color,
+        },
+      ];
+    });
     setSelectedId(id);
   };
 
