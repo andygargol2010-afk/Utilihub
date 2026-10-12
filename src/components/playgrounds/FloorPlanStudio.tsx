@@ -116,7 +116,7 @@ function ResizeHandle({
   return (
     <div
       onPointerDown={onDown}
-      className={`absolute h-3.5 w-3.5 rounded-full border-2 border-primary bg-white shadow-md ${pos[position]}`}
+      className={`absolute h-4 w-4 rounded-full border-2 border-primary bg-white shadow-lg ${pos[position]}`}
       style={{ touchAction: "none" }}
     />
   );
@@ -378,6 +378,19 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
           </defs>
           <rect width="100%" height="100%" fill="url(#fps-grid)" />
           <rect width="100%" height="100%" fill="url(#fps-grid-major)" opacity="0.5" />
+          {/* Scale ticks */}
+          {Array.from({ length: 20 }).map((_, i) => (
+            <text
+              key={i}
+              x={i * PX_PER_M + 2}
+              y="14"
+              fontSize="10"
+              fill="#64748b"
+              className="pointer-events-none"
+            >
+              {i}
+            </text>
+          ))}
         </svg>
 
         {items.length === 0 && (
@@ -405,41 +418,41 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 isSelected ? "z-20" : "z-10"
               } ${
                 isRoom
-                  ? "rounded-sm border-[3px] border-slate-700/80 shadow-md"
-                  : "rounded-lg border-2 shadow-sm"
+                  ? "rounded-sm border-[6px] border-slate-800/90 shadow-lg"
+                  : "rounded-md border-2 shadow-md"
               } ${
                 isSelected
                   ? isRoom
-                    ? "ring-2 ring-primary ring-offset-1"
-                    : "border-primary ring-2 ring-primary/50"
+                    ? "ring-2 ring-primary ring-offset-2"
+                    : "border-primary ring-2 ring-primary/60"
                   : isRoom
                     ? ""
-                    : "border-slate-500/60"
+                    : "border-slate-600/70"
               }`}
               style={{
                 left,
                 top,
                 width,
                 height,
-                backgroundColor: isRoom ? item.color : item.color,
+                backgroundColor: isRoom ? "#f8fafc" : item.color,
                 backgroundImage: isRoom
-                  ? `linear-gradient(135deg, ${item.color} 0%, ${item.color}ee 100%)`
+                  ? `linear-gradient(180deg, #ffffff 0%, ${item.color}40 100%)`
                   : undefined,
                 transform: `rotate(${item.rotation}deg)`,
                 transformOrigin: "center center",
-                opacity: isRoom ? 1 : 0.95,
+                opacity: isRoom ? 1 : 0.92,
                 boxShadow: isRoom
-                  ? "inset 0 0 0 1px rgba(255,255,255,0.4), 0 2px 8px rgba(0,0,0,0.12)"
-                  : "0 1px 4px rgba(0,0,0,0.15)",
+                  ? "inset 0 0 0 2px rgba(255,255,255,0.6), 0 4px 12px rgba(0,0,0,0.15)"
+                  : "0 2px 6px rgba(0,0,0,0.2)",
               }}
             >
               <span className="pointer-events-none flex flex-col items-center gap-0.5 px-1 text-center leading-tight">
-                {icon && <span className="text-base leading-none drop-shadow-sm">{icon}</span>}
-                <span className={`${isRoom ? "text-slate-800" : "text-white drop-shadow"} font-semibold`}>
+                {icon && <span className="text-lg leading-none drop-shadow">{icon}</span>}
+                <span className={`${isRoom ? "text-slate-900" : "text-white drop-shadow"} font-bold`}>
                   {item.name}
                 </span>
                 {isRoom && (
-                  <span className="text-[10px] font-normal text-slate-600">
+                  <span className="text-[10px] font-medium text-slate-700">
                     {item.w.toFixed(1)}×{item.h.toFixed(1)} m · {(item.w * item.h).toFixed(1)} m²
                   </span>
                 )}
