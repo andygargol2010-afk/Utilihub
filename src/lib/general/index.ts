@@ -139,6 +139,7 @@ import { QR_CODE_GENERATOR_TOOLS } from "./qr-code-generator-tool";
 import { TIP_CALCULATOR_TOOLS } from "./tip-calculator-tool";
 import { RANDOM_QUOTE_TOOLS } from "./random-quote-tool";
 import { SLEEP_CYCLE_TOOLS } from "./sleep-cycle-tool";
+import { READING_TIME_TOOLS } from "./reading-time-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -283,4 +284,5 @@ export const GENERAL_TOOLS = [
   ...TIP_CALCULATOR_TOOLS,
   ...RANDOM_QUOTE_TOOLS,
   ...SLEEP_CYCLE_TOOLS,
+  ...READING_TIME_TOOLS,
 ];
