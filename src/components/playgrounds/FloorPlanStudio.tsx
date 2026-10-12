@@ -108,15 +108,15 @@ function ResizeHandle({
   onDown: (e: React.PointerEvent) => void;
 }) {
   const pos: Record<string, string> = {
-    se: "-bottom-1.5 -right-1.5 cursor-se-resize",
-    sw: "-bottom-1.5 -left-1.5 cursor-sw-resize",
-    ne: "-top-1.5 -right-1.5 cursor-ne-resize",
-    nw: "-top-1.5 -left-1.5 cursor-nw-resize",
+    se: "-bottom-2 -right-2 cursor-se-resize",
+    sw: "-bottom-2 -left-2 cursor-sw-resize",
+    ne: "-top-2 -right-2 cursor-ne-resize",
+    nw: "-top-2 -left-2 cursor-nw-resize",
   };
   return (
     <div
       onPointerDown={onDown}
-      className={`absolute h-4 w-4 rounded-full border-2 border-primary bg-white shadow-lg ring-1 ring-black/10 ${pos[position]}`}
+      className={`absolute h-5 w-5 rounded-full border-2 border-primary bg-white shadow-xl ring-1 ring-black/20 ${pos[position]}`}
       style={{ touchAction: "none" }}
     />
   );
@@ -443,40 +443,42 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 isSelected ? "z-20" : "z-10"
               } ${
                 isRoom
-                  ? "rounded-sm border-[7px] border-slate-800 shadow-lg"
-                  : "rounded-md border-[2.5px] shadow-md"
+                  ? "rounded-sm border-[8px] border-slate-900 shadow-xl"
+                  : "rounded-md border-[3px] shadow-md"
               } ${
                 isSelected
                   ? isRoom
-                    ? "ring-2 ring-primary ring-offset-2"
-                    : "border-primary ring-2 ring-primary/70"
+                    ? "ring-4 ring-primary ring-offset-2"
+                    : "border-primary ring-4 ring-primary/80"
                   : isRoom
                     ? ""
-                    : "border-slate-700/80"
+                    : "border-slate-800/90"
               }`}
               style={{
                 left,
                 top,
                 width,
                 height,
-                backgroundColor: isRoom ? "#f8fafc" : item.color,
+                backgroundColor: isRoom ? "#fafafa" : item.color,
                 backgroundImage: isRoom
-                  ? `linear-gradient(180deg, #ffffff 0%, ${item.color}55 100%)`
+                  ? `linear-gradient(180deg, #ffffff 0%, ${item.color}40 100%), repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(0,0,0,0.015) 8px, rgba(0,0,0,0.015) 16px)`
                   : item.kind === "sofa"
-                    ? `linear-gradient(90deg, ${item.color} 0%, ${item.color}cc 40%, ${item.color} 60%, ${item.color}cc 100%)`
+                    ? `linear-gradient(90deg, ${item.color} 0%, ${item.color}ee 35%, ${item.color} 50%, ${item.color}ee 65%, ${item.color} 100%)`
                     : item.kind === "bed"
-                      ? `linear-gradient(180deg, #e2e8f0 0%, ${item.color} 25%, ${item.color} 100%)`
-                      : undefined,
+                      ? `linear-gradient(180deg, #f1f5f9 0%, ${item.color} 20%, ${item.color} 100%)`
+                      : item.kind === "table"
+                        ? `radial-gradient(circle at center, ${item.color}ee 0%, ${item.color} 70%)`
+                        : undefined,
                 transform: `rotate(${item.rotation}deg)`,
                 transformOrigin: "center center",
-                opacity: isRoom ? 1 : 0.95,
+                opacity: isRoom ? 1 : 0.96,
                 boxShadow: isRoom
-                  ? "inset 0 0 0 2px rgba(255,255,255,0.7), 0 6px 16px rgba(0,0,0,0.18)"
-                  : "0 3px 8px rgba(0,0,0,0.22)",
+                  ? "inset 0 0 0 3px rgba(255,255,255,0.8), 0 8px 20px rgba(0,0,0,0.22)"
+                  : "0 4px 12px rgba(0,0,0,0.28)",
               }}
             >
               <span className="pointer-events-none flex flex-col items-center gap-0.5 px-1 text-center leading-tight">
-                {icon && <span className="text-lg leading-none drop-shadow-sm">{icon}</span>}
+                {icon && <span className="text-xl leading-none drop-shadow-sm">{icon}</span>}
                 <span
                   className={`${isRoom ? "text-slate-900" : "text-white drop-shadow"} font-bold tracking-tight`}
                 >
