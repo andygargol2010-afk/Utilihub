@@ -100,6 +100,7 @@ const ReadingTimeTool = lazy(() => import("./ReadingTimeTool").then((m) => ({ de
 const WaterIntakeTool = lazy(() => import("./WaterIntakeTool").then((m) => ({ default: m.WaterIntakeTool })));
 const TdeeCalculatorTool = lazy(() => import("./TdeeCalculatorTool").then((m) => ({ default: m.TdeeCalculatorTool })));
 const LoremIpsumTool = lazy(() => import("./LoremIpsumTool").then((m) => ({ default: m.LoremIpsumTool })));
+const AgeCalculatorTool = lazy(() => import("./AgeCalculatorTool").then((m) => ({ default: m.AgeCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -114,6 +115,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-ingesta-agua") return WaterIntakeTool as ToolComp;
   if (tool.slug === "calculadora-tdee") return TdeeCalculatorTool as ToolComp;
   if (tool.slug === "generador-lorem-ipsum") return LoremIpsumTool as ToolComp;
+  if (tool.slug === "calculadora-edad") return AgeCalculatorTool as ToolComp;
   if (tool.slug === "gpa") return GpaCalculator as ToolComp;
   if (tool.slug === "calculadora-horas-extra") return OvertimePayTool as ToolComp;
   if (tool.slug === "generador-utm") return UtmBuilderTool as ToolComp;
