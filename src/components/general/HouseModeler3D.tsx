@@ -421,6 +421,25 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
     }
     ctx.stroke();
   }
+  // Soft dirt and weathering band at the base so outdoor plaster reads as lived-in, not freshly washed.
+  const base = ctx.createLinearGradient(0, size * 0.78, 0, size);
+  base.addColorStop(0, "rgba(120,108,94,0)");
+  base.addColorStop(0.55, "rgba(108,96,82,0.10)");
+  base.addColorStop(1, "rgba(92,80,66,0.22)");
+  ctx.fillStyle = base;
+  ctx.fillRect(0, size * 0.78, size, size * 0.22);
+  for (let d = 0; d < 10; d++) {
+    const dx = hash2(d, 14.2) * size;
+    const dy = size * 0.82 + hash2(d, 3.6) * size * 0.16;
+    const dr = 4 + hash2(d, 9.1) * 9;
+    const dg = ctx.createRadialGradient(dx, dy, 0, dx, dy, dr);
+    dg.addColorStop(0, "rgba(86,74,60,0.28)");
+    dg.addColorStop(1, "rgba(86,74,60,0)");
+    ctx.fillStyle = dg;
+    ctx.beginPath();
+    ctx.ellipse(dx, dy, dr, dr * 0.55, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 /** Grayscale trowel relief used as a wall bump map (not sRGB). */
@@ -7324,6 +7343,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     </div>
   );
 }
+
 
 
 
