@@ -116,7 +116,7 @@ function ResizeHandle({
   return (
     <div
       onPointerDown={onDown}
-      className={`absolute h-4 w-4 rounded-full border-2 border-primary bg-white shadow-lg ${pos[position]}`}
+      className={`absolute h-4 w-4 rounded-full border-2 border-primary bg-white shadow-lg ring-1 ring-black/10 ${pos[position]}`}
       style={{ touchAction: "none" }}
     />
   );
@@ -170,6 +170,8 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
   const totalArea = items
     .filter((it) => it.type === "room")
     .reduce((sum, it) => sum + it.w * it.h, 0);
+
+  const selected = items.find((it) => it.id === selectedId) ?? null;
 
   const addRoom = () => {
     const id = generateId();
@@ -296,9 +298,9 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
   return (
     <div className="space-y-4">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border/60 bg-surface/50 p-2.5">
+      <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-border/60 bg-surface/50 p-2.5 shadow-sm">
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="px-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+          <span className="px-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             {t.rooms}
           </span>
           <button type="button" onClick={addRoom} className={btnPrimary}>
@@ -307,7 +309,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
         </div>
         <div className="mx-1 hidden h-6 w-px bg-border sm:block" />
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="px-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+          <span className="px-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             {t.furniture}
           </span>
           {(["sofa", "table", "bed", "chair", "lamp"] as const).map((k) => (
@@ -326,13 +328,13 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
             <button
               type="button"
               onClick={deleteSelected}
-              className="rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 transition hover:bg-red-100"
+              className="rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 transition hover:bg-red-100 dark:border-red-800 dark:bg-red-950/40 dark:text-red-300"
             >
               {t.delete}
             </button>
           </>
         )}
-        <label className="ml-auto flex items-center gap-2 rounded-xl border border-border/60 bg-background px-2.5 py-1 text-sm">
+        <label className="ml-auto flex items-center gap-2 rounded-xl border border-border/60 bg-background px-2.5 py-1 text-sm shadow-sm">
           <span className="text-muted-foreground">{t.wallColor}</span>
           <input
             type="color"
@@ -346,7 +348,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
       {/* Canvas */}
       <div
         ref={containerRef}
-        className="relative h-[min(560px,70vh)] w-full overflow-hidden rounded-2xl border border-slate-300/80 bg-[#eef2f7] shadow-inner touch-none"
+        className="relative h-[min(560px,70vh)] w-full overflow-hidden rounded-2xl border border-slate-300/80 bg-[#e8eef5] shadow-inner touch-none"
         onPointerDown={onCanvasPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -358,7 +360,7 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
               <path
                 d={`M ${PX_PER_M} 0 L 0 0 0 ${PX_PER_M}`}
                 fill="none"
-                stroke="#cbd5e1"
+                stroke="#c5d0dc"
                 strokeWidth="0.6"
               />
             </pattern>
@@ -372,30 +374,53 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 d={`M ${PX_PER_M * 5} 0 L 0 0 0 ${PX_PER_M * 5}`}
                 fill="none"
                 stroke="#94a3b8"
-                strokeWidth="1"
+                strokeWidth="1.1"
               />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#fps-grid)" />
-          <rect width="100%" height="100%" fill="url(#fps-grid-major)" opacity="0.5" />
-          {/* Scale ticks */}
-          {Array.from({ length: 20 }).map((_, i) => (
-            <text
-              key={i}
-              x={i * PX_PER_M + 2}
-              y="14"
-              fontSize="10"
-              fill="#64748b"
-              className="pointer-events-none"
-            >
-              {i}
-            </text>
+          <rect width="100%" height="100%" fill="url(#fps-grid-major)" opacity="0.55" />
+          {/* X scale ticks */}
+          {Array.from({ length: 22 }).map((_, i) => (
+            <g key={`x${i}`}>
+              <line
+                x1={i * PX_PER_M}
+                y1={0}
+                x2={i * PX_PER_M}
+                y2={i % 5 === 0 ? 10 : 5}
+                stroke="#64748b"
+                strokeWidth={i % 5 === 0 ? 1.2 : 0.7}
+              />
+              {i % 5 === 0 && (
+                <text x={i * PX_PER_M + 3} y={18} fontSize="9" fill="#475569" fontWeight="600">
+                  {i}m
+                </text>
+              )}
+            </g>
+          ))}
+          {/* Y scale ticks */}
+          {Array.from({ length: 18 }).map((_, i) => (
+            <g key={`y${i}`}>
+              <line
+                x1={0}
+                y1={i * PX_PER_M}
+                x2={i % 5 === 0 ? 10 : 5}
+                y2={i * PX_PER_M}
+                stroke="#64748b"
+                strokeWidth={i % 5 === 0 ? 1.2 : 0.7}
+              />
+              {i % 5 === 0 && i > 0 && (
+                <text x={12} y={i * PX_PER_M + 3} fontSize="9" fill="#475569" fontWeight="600">
+                  {i}m
+                </text>
+              )}
+            </g>
           ))}
         </svg>
 
         {items.length === 0 && (
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <p className="rounded-2xl bg-white/80 px-5 py-3 text-sm text-slate-500 shadow-sm backdrop-blur">
+            <p className="rounded-2xl border border-slate-200/80 bg-white/90 px-6 py-3.5 text-sm text-slate-500 shadow-md backdrop-blur">
               {t.emptyHint}
             </p>
           </div>
@@ -418,16 +443,16 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 isSelected ? "z-20" : "z-10"
               } ${
                 isRoom
-                  ? "rounded-sm border-[6px] border-slate-800/90 shadow-lg"
-                  : "rounded-md border-2 shadow-md"
+                  ? "rounded-sm border-[7px] border-slate-800 shadow-lg"
+                  : "rounded-md border-[2.5px] shadow-md"
               } ${
                 isSelected
                   ? isRoom
                     ? "ring-2 ring-primary ring-offset-2"
-                    : "border-primary ring-2 ring-primary/60"
+                    : "border-primary ring-2 ring-primary/70"
                   : isRoom
                     ? ""
-                    : "border-slate-600/70"
+                    : "border-slate-700/80"
               }`}
               style={{
                 left,
@@ -436,24 +461,33 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
                 height,
                 backgroundColor: isRoom ? "#f8fafc" : item.color,
                 backgroundImage: isRoom
-                  ? `linear-gradient(180deg, #ffffff 0%, ${item.color}40 100%)`
-                  : undefined,
+                  ? `linear-gradient(180deg, #ffffff 0%, ${item.color}55 100%)`
+                  : item.kind === "sofa"
+                    ? `linear-gradient(90deg, ${item.color} 0%, ${item.color}cc 40%, ${item.color} 60%, ${item.color}cc 100%)`
+                    : item.kind === "bed"
+                      ? `linear-gradient(180deg, #e2e8f0 0%, ${item.color} 25%, ${item.color} 100%)`
+                      : undefined,
                 transform: `rotate(${item.rotation}deg)`,
                 transformOrigin: "center center",
-                opacity: isRoom ? 1 : 0.92,
+                opacity: isRoom ? 1 : 0.95,
                 boxShadow: isRoom
-                  ? "inset 0 0 0 2px rgba(255,255,255,0.6), 0 4px 12px rgba(0,0,0,0.15)"
-                  : "0 2px 6px rgba(0,0,0,0.2)",
+                  ? "inset 0 0 0 2px rgba(255,255,255,0.7), 0 6px 16px rgba(0,0,0,0.18)"
+                  : "0 3px 8px rgba(0,0,0,0.22)",
               }}
             >
               <span className="pointer-events-none flex flex-col items-center gap-0.5 px-1 text-center leading-tight">
-                {icon && <span className="text-lg leading-none drop-shadow">{icon}</span>}
-                <span className={`${isRoom ? "text-slate-900" : "text-white drop-shadow"} font-bold`}>
+                {icon && <span className="text-lg leading-none drop-shadow-sm">{icon}</span>}
+                <span
+                  className={`${isRoom ? "text-slate-900" : "text-white drop-shadow"} font-bold tracking-tight`}
+                >
                   {item.name}
                 </span>
-                {isRoom && (
-                  <span className="text-[10px] font-medium text-slate-700">
-                    {item.w.toFixed(1)}×{item.h.toFixed(1)} m · {(item.w * item.h).toFixed(1)} m²
+                {(isRoom || isSelected) && (
+                  <span
+                    className={`text-[10px] font-semibold ${isRoom ? "text-slate-700" : "text-white/95 drop-shadow"}`}
+                  >
+                    {item.w.toFixed(1)}×{item.h.toFixed(1)} m
+                    {isRoom ? ` · ${(item.w * item.h).toFixed(1)} m²` : ""}
                   </span>
                 )}
               </span>
@@ -468,10 +502,18 @@ export function FloorPlanStudio({ locale }: { locale: Locale }) {
             </div>
           );
         })}
+
+        {/* Dimension readout for selection */}
+        {selected && (
+          <div className="pointer-events-none absolute bottom-3 left-3 rounded-xl border border-slate-200/90 bg-white/95 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-md backdrop-blur">
+            {selected.name}: {selected.w.toFixed(2)} × {selected.h.toFixed(2)} m
+            {selected.type === "room" ? ` · ${(selected.w * selected.h).toFixed(2)} m²` : ""}
+          </div>
+        )}
       </div>
 
       {/* Footer */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-surface/40 px-4 py-3 text-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-surface/40 px-4 py-3 text-sm shadow-sm">
         <div className="flex items-baseline gap-2">
           <span className="font-semibold text-muted-foreground">{t.area}</span>
           <span className="text-2xl font-black tracking-tight text-primary">{totalArea.toFixed(1)}</span>
