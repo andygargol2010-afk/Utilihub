@@ -103,6 +103,7 @@ const LoremIpsumTool = lazy(() => import("./LoremIpsumTool").then((m) => ({ defa
 const AgeCalculatorTool = lazy(() => import("./AgeCalculatorTool").then((m) => ({ default: m.AgeCalculatorTool })));
 const PaceCalculatorTool = lazy(() => import("./PaceCalculatorTool").then((m) => ({ default: m.PaceCalculatorTool })));
 const DueDateCalculatorTool = lazy(() => import("./DueDateCalculatorTool").then((m) => ({ default: m.DueDateCalculatorTool })));
+const DiscountCalculatorTool = lazy(() => import("./DiscountCalculatorTool").then((m) => ({ default: m.DiscountCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -120,6 +121,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-edad") return AgeCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-ritmo-carrera") return PaceCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-fecha-parto") return DueDateCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-descuento") return DiscountCalculatorTool as ToolComp;
   if (tool.slug === "gpa") return GpaCalculator as ToolComp;
   if (tool.slug === "calculadora-horas-extra") return OvertimePayTool as ToolComp;
   if (tool.slug === "generador-utm") return UtmBuilderTool as ToolComp;
