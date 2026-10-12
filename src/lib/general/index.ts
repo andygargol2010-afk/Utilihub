@@ -142,6 +142,7 @@ import { SLEEP_CYCLE_TOOLS } from "./sleep-cycle-tool";
 import { READING_TIME_TOOLS } from "./reading-time-tool";
 import { WATER_INTAKE_TOOLS } from "./water-intake-tool";
 import { TDEE_CALCULATOR_TOOLS } from "./tdee-calculator-tool";
+import { LOREM_IPSUM_TOOLS } from "./lorem-ipsum-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -289,4 +290,5 @@ export const GENERAL_TOOLS = [
   ...READING_TIME_TOOLS,
   ...WATER_INTAKE_TOOLS,
   ...TDEE_CALCULATOR_TOOLS,
+  ...LOREM_IPSUM_TOOLS,
 ];
