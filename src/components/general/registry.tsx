@@ -149,7 +149,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-lechada") return GroutCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-mortero") return ThinsetCalculatorTool as ToolComp;
   if (tool.slug === "indice-calor") return HeatIndexTool as ToolComp;
-  if (tool.slug === "punto-rocio") return DewPointTool as ToolComp;
+  if (tool.slug === "calculadora-punto-rocio") return DewPointTool as ToolComp;
   if (tool.slug === "calculadora-bancal") return RaisedBedCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-muro-contencion") return RetainingWallCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-montantes") return StudCalculatorTool as ToolComp;
