@@ -144,6 +144,7 @@ import { WATER_INTAKE_TOOLS } from "./water-intake-tool";
 import { TDEE_CALCULATOR_TOOLS } from "./tdee-calculator-tool";
 import { LOREM_IPSUM_TOOLS } from "./lorem-ipsum-tool";
 import { AGE_CALCULATOR_TOOLS } from "./age-calculator-tool";
+import { DUE_DATE_CALCULATOR_TOOLS } from "./due-date-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -293,4 +294,5 @@ export const GENERAL_TOOLS = [
   ...TDEE_CALCULATOR_TOOLS,
   ...LOREM_IPSUM_TOOLS,
   ...AGE_CALCULATOR_TOOLS,
+  ...DUE_DATE_CALCULATOR_TOOLS,
 ];
