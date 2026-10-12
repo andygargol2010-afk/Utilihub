@@ -98,6 +98,7 @@ const QrCodeGeneratorTool = lazy(() => import("./QrCodeGeneratorTool").then((m) 
 const SleepCycleTool = lazy(() => import("./SleepCycleTool").then((m) => ({ default: m.SleepCycleTool })));
 const ReadingTimeTool = lazy(() => import("./ReadingTimeTool").then((m) => ({ default: m.ReadingTimeTool })));
 const WaterIntakeTool = lazy(() => import("./WaterIntakeTool").then((m) => ({ default: m.WaterIntakeTool })));
+const TdeeCalculatorTool = lazy(() => import("./TdeeCalculatorTool").then((m) => ({ default: m.TdeeCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -110,6 +111,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-ciclo-sueno") return SleepCycleTool as ToolComp;
   if (tool.slug === "calculadora-tiempo-lectura") return ReadingTimeTool as ToolComp;
   if (tool.slug === "calculadora-ingesta-agua") return WaterIntakeTool as ToolComp;
+  if (tool.slug === "calculadora-tdee") return TdeeCalculatorTool as ToolComp;
   if (tool.slug === "gpa") return GpaCalculator as ToolComp;
   if (tool.slug === "calculadora-horas-extra") return OvertimePayTool as ToolComp;
   if (tool.slug === "generador-utm") return UtmBuilderTool as ToolComp;
