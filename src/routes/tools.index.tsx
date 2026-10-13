@@ -78,7 +78,7 @@ function ListingSlot() {
       </div>
       <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
         {Array.from({ length: 30 }, (_, i) => (
-          <div key={i} className="flex min-h-14 items-center gap-3 px-1 py-2 sm:min-h-16" aria-hidden>
+          <div key={i} className="flex min-h-[4.25rem] items-center gap-3 px-1 py-2 sm:min-h-[4.5rem]" aria-hidden>
             <div className="size-9 shrink-0 rounded-lg bg-accent" />
             <div className="min-w-0 flex-1 space-y-1.5">
               <div className="h-4 w-2/5 max-w-xs rounded bg-muted" />
