@@ -9,7 +9,6 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SpanishSiteHeader } from "@/components/SpanishSiteHeader";
 import { SpanishSiteFooter } from "@/components/SpanishSiteFooter";
-import { AdsterraSocialBar } from "@/components/AdsterraSocialBar";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 
@@ -193,7 +192,6 @@ function RootComponent() {
           <Outlet />
         </main>
         {isSpanish ? <SpanishSiteFooter /> : <SiteFooter />}
-        <AdsterraSocialBar />
         <DeferredInsights />
       </FavoritesProvider>
     </QueryClientProvider>
