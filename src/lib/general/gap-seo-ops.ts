@@ -22,7 +22,7 @@ export function buildGapSeoFields(
             { value: "nopass", label: es ? "Sin contraseña" : "No password" },
           ],
         },
-        { kind: "text" as const, label: es ? "Contraseña" : "Password", placeholder: es ? "Opcional si sin contraseña" : "Optional if no password" },
+        { kind: "text" as const, label: es ? "Contraseña" : "Password", placeholder: es ? "Opcional si la red no tiene contraseña" : "Optional if no password" },
       ],
     };
   }
