@@ -33,6 +33,9 @@ const labels = {
     tables: "Tables",
     guests: "Guests",
     emptyHint: "Add a table and guests to start arranging seating",
+    remove: "Remove",
+    selectHint: "Click a guest then a table (or drag) to assign",
+    editCapacity: "Capacity",
   },
   es: {
     title: "Estudio de Plano de Asientos",
@@ -48,6 +51,9 @@ const labels = {
     tables: "Mesas",
     guests: "Invitados",
     emptyHint: "Agregá una mesa e invitados para empezar a organizar",
+    remove: "Quitar",
+    selectHint: "Tocá un invitado y luego una mesa (o arrastrá) para asignar",
+    editCapacity: "Capacidad",
   },
 };
 
@@ -82,6 +88,9 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [newGuestName, setNewGuestName] = useState("");
   const [copied, setCopied] = useState(false);
+  const [selectedGuestId, setSelectedGuestId] = useState<string | null>(null);
+  const [draggingTableId, setDraggingTableId] = useState<string | null>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -112,8 +121,8 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
         id,
         name: locale === "es" ? `Mesa ${prev.length + 1}` : `Table ${prev.length + 1}`,
         capacity: 6,
-        x: 50 + (prev.length % 3) * 180,
-        y: 50 + Math.floor(prev.length / 3) * 140,
+        x: 40 + (prev.length % 3) * 190,
+        y: 40 + Math.floor(prev.length / 3) * 150,
       },
     ]);
   };
@@ -127,6 +136,22 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
 
   const assignGuest = (guestId: string, tableId: string | null) => {
     setGuests((prev) => prev.map((g) => (g.id === guestId ? { ...g, tableId } : g)));
+    setSelectedGuestId(null);
+  };
+
+  const removeGuest = (guestId: string) => {
+    setGuests((prev) => prev.filter((g) => g.id !== guestId));
+    if (selectedGuestId === guestId) setSelectedGuestId(null);
+  };
+
+  const removeTable = (tableId: string) => {
+    setTables((prev) => prev.filter((tbl) => tbl.id !== tableId));
+    setGuests((prev) => prev.map((g) => (g.tableId === tableId ? { ...g, tableId: null } : g)));
+  };
+
+  const updateCapacity = (tableId: string, capacity: number) => {
+    const c = Math.max(1, Math.min(20, capacity));
+    setTables((prev) => prev.map((tbl) => (tbl.id === tableId ? { ...tbl, capacity: c } : tbl)));
   };
 
   const share = async () => {
@@ -141,6 +166,27 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
 
   const guestsByTable = (tableId: string) => guests.filter((g) => g.tableId === tableId);
   const unassigned = guests.filter((g) => !g.tableId);
+
+  const onTablePointerDown = (e: React.PointerEvent, table: Table) => {
+    if ((e.target as HTMLElement).closest("input, button")) return;
+    setDraggingTableId(table.id);
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setDragOffset({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const onCanvasPointerMove = (e: React.PointerEvent) => {
+    if (!draggingTableId) return;
+    const canvas = e.currentTarget as HTMLElement;
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.max(0, e.clientX - rect.left - dragOffset.x);
+    const y = Math.max(0, e.clientY - rect.top - dragOffset.y);
+    setTables((prev) => prev.map((tbl) => (tbl.id === draggingTableId ? { ...tbl, x, y } : tbl)));
+  };
+
+  const onCanvasPointerUp = () => {
+    setDraggingTableId(null);
+  };
 
   return (
     <div className="space-y-6">
@@ -165,10 +211,17 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
         </button>
       </div>
 
+      <p className="text-xs text-muted-foreground">{t.selectHint}</p>
+
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-muted-foreground">{t.tables}</h3>
-          <div className="relative min-h-[400px] rounded-2xl border border-border bg-muted/20 p-4">
+          <div
+            className="relative min-h-[420px] overflow-auto rounded-2xl border border-border bg-muted/20 p-4"
+            onPointerMove={onCanvasPointerMove}
+            onPointerUp={onCanvasPointerUp}
+            onPointerCancel={onCanvasPointerUp}
+          >
             {tables.length === 0 && (
               <p className="text-center text-muted-foreground">{t.emptyHint}</p>
             )}
@@ -178,16 +231,37 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
               return (
                 <div
                   key={table.id}
-                  className={`absolute rounded-xl border-2 bg-background p-3 shadow-sm ${over ? "border-red-500" : "border-border"}`}
-                  style={{ left: table.x, top: table.y, width: 160 }}
+                  className={`absolute cursor-move rounded-xl border-2 bg-background p-3 shadow-sm ${over ? "border-red-500" : "border-border"} ${selectedGuestId ? "ring-2 ring-primary/40" : ""}`}
+                  style={{ left: table.x, top: table.y, width: 170 }}
+                  onPointerDown={(e) => onTablePointerDown(e, table)}
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => {
                     const guestId = e.dataTransfer.getData("guestId");
                     if (guestId) assignGuest(guestId, table.id);
                   }}
+                  onClick={() => {
+                    if (selectedGuestId) assignGuest(selectedGuestId, table.id);
+                  }}
                 >
-                  <div className="font-semibold">{table.name}</div>
-                  <div className={`text-xs ${over ? "font-bold text-red-600" : "text-muted-foreground"}`}>
+                  <div className="flex items-center justify-between gap-1">
+                    <div className="font-semibold text-sm">{table.name}</div>
+                    <button type="button" onClick={(e) => { e.stopPropagation(); removeTable(table.id); }} className="text-xs text-muted-foreground hover:text-red-600">
+                      ×
+                    </button>
+                  </div>
+                  <div className="mt-1 flex items-center gap-1 text-xs">
+                    <label className="text-muted-foreground">{t.editCapacity}</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={20}
+                      value={table.capacity}
+                      onChange={(e) => updateCapacity(table.id, Number(e.target.value) || 1)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-12 rounded border border-border px-1 py-0.5 text-xs"
+                    />
+                  </div>
+                  <div className={`mt-1 text-xs ${over ? "font-bold text-red-600" : "text-muted-foreground"}`}>
                     {assigned.length}/{table.capacity} {t.assigned}
                     {over && ` · ${t.overCapacity}`}
                   </div>
@@ -197,9 +271,11 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
                         key={g.id}
                         draggable
                         onDragStart={(e) => e.dataTransfer.setData("guestId", g.id)}
-                        className="cursor-move rounded bg-muted px-2 py-1 text-xs"
+                        onClick={(e) => { e.stopPropagation(); setSelectedGuestId(g.id); }}
+                        className={`flex cursor-move items-center justify-between rounded bg-muted px-2 py-1 text-xs ${selectedGuestId === g.id ? "ring-1 ring-primary" : ""}`}
                       >
-                        {g.name}
+                        <span>{g.name}</span>
+                        <button type="button" onClick={(e) => { e.stopPropagation(); removeGuest(g.id); }} className="text-muted-foreground hover:text-red-600">×</button>
                       </div>
                     ))}
                   </div>
@@ -218,15 +294,20 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
               const guestId = e.dataTransfer.getData("guestId");
               if (guestId) assignGuest(guestId, null);
             }}
+            onClick={() => {
+              if (selectedGuestId) assignGuest(selectedGuestId, null);
+            }}
           >
             {unassigned.map((g) => (
               <div
                 key={g.id}
                 draggable
                 onDragStart={(e) => e.dataTransfer.setData("guestId", g.id)}
-                className="cursor-move rounded-lg bg-muted px-3 py-2 text-sm"
+                onClick={(e) => { e.stopPropagation(); setSelectedGuestId(g.id); }}
+                className={`flex cursor-move items-center justify-between rounded-lg bg-muted px-3 py-2 text-sm ${selectedGuestId === g.id ? "ring-2 ring-primary" : ""}`}
               >
-                {g.name}
+                <span>{g.name}</span>
+                <button type="button" onClick={(e) => { e.stopPropagation(); removeGuest(g.id); }} className="text-muted-foreground hover:text-red-600">×</button>
               </div>
             ))}
             {unassigned.length === 0 && <p className="text-xs text-muted-foreground">—</p>}
