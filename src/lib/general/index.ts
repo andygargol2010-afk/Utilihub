@@ -150,6 +150,7 @@ import { DISCOUNT_CALCULATOR_TOOLS } from "./discount-calculator-tool";
 import { PERCENTAGE_CHANGE_TOOLS } from "./percentage-change-tool";
 import { MACRO_CALCULATOR_TOOLS } from "./macro-calculator-tool";
 import { IDEAL_WEIGHT_TOOLS } from "./ideal-weight-tool";
+import { COMPANY_NAME_GENERATOR_TOOLS } from "./company-name-generator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -305,4 +306,5 @@ export const GENERAL_TOOLS = [
   ...PERCENTAGE_CHANGE_TOOLS,
   ...MACRO_CALCULATOR_TOOLS,
   ...IDEAL_WEIGHT_TOOLS,
+  ...COMPANY_NAME_GENERATOR_TOOLS,
 ];
