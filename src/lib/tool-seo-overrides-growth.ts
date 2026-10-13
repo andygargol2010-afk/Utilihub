@@ -1,4 +1,4 @@
-/** Unique SEO for SEO-growth tools (imc, gpa, jwt, etc.). Avoid generic makeTool defaults. */
+/** Unique SEO for SEO-growth tools (calculadora-imc, gpa, jwt, etc.). Avoid generic makeTool defaults. */
 
 export type ToolSeoOverrideGrowth = {
   metaTitle?: string;
@@ -14,7 +14,7 @@ export type ToolSeoOverrideGrowth = {
 };
 
 export const TOOL_SEO_OVERRIDES_GROWTH: Record<string, ToolSeoOverrideGrowth> = {
-  imc: {
+  "calculadora-imc": {
     metaTitle: "BMI Calculator — Free Body Mass Index Online | UtiliHub",
     metaTitleEs: "Calculadora de IMC online gratis | UtiliHub",
     metaDescription:
