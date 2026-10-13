@@ -70,6 +70,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           // Featured hubs: games + advanced sit at the top of discovery
           ...pair("/games", "/es/juegos", "0.95"),
           ...pair("/simulators", "/es/simuladores", "0.9"),
+          ...pair("/experiences", "/es/experiences", "0.92"),
           ...pair("/legal", "/es/aviso-legal", "0.3"),
           ...pair("/privacy", "/es/privacidad", "0.3"),
           ...pair("/contact", "/es/contacto", "0.3"),
