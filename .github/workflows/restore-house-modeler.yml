@@ -7,6 +7,11 @@ name: Restore HouseModeler3D
 # restore-house-modeler.yml) ref=main method=run_workflow, then poll until
 # success and verify bytes >= 120000 on fix/spanish-complete.
 # Known-good blob: a074b7a6c89b530e4c4655bc9711c70053c495d8 (~330KB).
+#
+# Vercel: pushes with GITHUB_TOKEN often do NOT trigger the Git integration.
+# This workflow forces a preview via Vercel API when secrets.VERCEL_TOKEN is set.
+# Optional secrets.RESTORE_GIT_TOKEN (PAT with repo) makes the git push itself
+# trigger webhooks; otherwise GITHUB_TOKEN is used + API deploy.
 
 on:
   workflow_dispatch:
@@ -17,13 +22,15 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout fix/spanish-complete
+        uses: actions/checkout@v4
         with:
           ref: fix/spanish-complete
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RESTORE_GIT_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Restore full monolith from known-good commit
+        id: restore
         run: |
           set -euo pipefail
           GOOD=a074b7a6c89b530e4c4655bc9711c70053c495d8
@@ -36,7 +43,6 @@ jobs:
             echo "ERROR: restored file too small ($BYTES)"
             exit 1
           fi
-          # Drop split stubs so the self-contained monolith is the only source
           rm -f src/components/general/house-modeler-materials.ts \
                 src/components/general/house-modeler-meshes.tsx \
                 src/components/general/house-modeler-meshes-glyph.tsx \
@@ -48,8 +54,58 @@ jobs:
           git config user.email "andygargol2010@gmail.com"
           git add -A src/components/general/
           if git diff --cached --quiet; then
-            echo "Nothing to commit (already restored?)"
+            echo "Nothing to commit (already restored)"
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m "fix(house-modeler): restore full monolith from a074b7a6c8 via CI"
           git push origin HEAD:fix/spanish-complete
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Force Vercel preview for restored SHA
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          SHA: ${{ steps.restore.outputs.sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VERCEL_TOKEN:-}" ]; then
+            echo "::warning::secrets.VERCEL_TOKEN missing — git push may not have triggered Vercel."
+            echo "Agent/user: vercel___create_deployment with sha=$SHA ref=fix/spanish-complete"
+            exit 0
+          fi
+          if [ -z "${SHA:-}" ]; then
+            echo "No SHA from restore step"
+            exit 1
+          fi
+          # team + project from utilihub Vercel project
+          TEAM_ID=team_EPJnWuDRJXkLmhH5rgN4q5Ov
+          BODY=$(cat <<EOF
+          {
+            "name": "utilihub",
+            "project": "prj_ueRzGdQqzYfMSoMd1xL3iA4y6hu3",
+            "gitSource": {
+              "type": "github",
+              "org": "andygargol2010-afk",
+              "repo": "Utilihub",
+              "ref": "fix/spanish-complete",
+              "sha": "$SHA"
+            },
+            "meta": {
+              "githubCommitRef": "fix/spanish-complete",
+              "githubCommitSha": "$SHA",
+              "triggeredBy": "restore-house-modeler-workflow"
+            }
+          }
+          EOF
+          )
+          RESP=$(curl -sS -X POST \
+            "https://api.vercel.com/v13/deployments?forceNew=1&teamId=${TEAM_ID}" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$BODY")
+          echo "$RESP" | head -c 2000
+          URL=$(echo "$RESP" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('url') or d.get('id') or d)" 2>/dev/null || true)
+          echo ""
+          echo "Vercel response url/id: $URL"
