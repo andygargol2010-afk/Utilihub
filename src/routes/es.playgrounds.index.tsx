@@ -56,6 +56,21 @@ function PlaygroundsHubEs() {
         </Link>
 
         <Link
+          to="/es/playgrounds/particulas-gravedad"
+          className="group flex flex-col rounded-3xl border border-violet-900/15 bg-gradient-to-br from-violet-50 via-white to-fuchsia-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-violet-500/50 hover:shadow-lg"
+        >
+          <span className="text-4xl" aria-hidden>
+            🪐
+          </span>
+          <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Física</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Partículas de gravedad</span>
+          <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+            Hacé clic para colocar atrayentes. Las partículas orbitan en tiempo real. Ajustá gravedad, cantidad y estelas. Estado compartible.
+          </span>
+          <span className="mt-5 text-sm font-bold text-violet-700">Abrir playground →</span>
+        </Link>
+
+        <Link
           to="/es/playgrounds/deuda-bola-nieve"
           className="group flex flex-col rounded-3xl border border-emerald-900/15 bg-gradient-to-br from-emerald-50 via-white to-teal-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-500/50 hover:shadow-lg"
         >
