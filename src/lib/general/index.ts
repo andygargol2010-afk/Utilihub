@@ -153,6 +153,7 @@ import { IDEAL_WEIGHT_TOOLS } from "./ideal-weight-tool";
 import { COMPANY_NAME_GENERATOR_TOOLS } from "./company-name-generator-tool";
 import { EMAIL_VALIDATOR_TOOLS } from "./email-validator-tool";
 import { OHMS_LAW_TOOLS } from "./ohms-law-tool";
+import { PASSWORD_STRENGTH_TOOLS } from "./password-strength-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -311,4 +312,5 @@ export const GENERAL_TOOLS = [
   ...COMPANY_NAME_GENERATOR_TOOLS,
   ...EMAIL_VALIDATOR_TOOLS,
   ...OHMS_LAW_TOOLS,
+  ...PASSWORD_STRENGTH_TOOLS,
 ];
