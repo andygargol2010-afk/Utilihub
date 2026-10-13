@@ -135,6 +135,19 @@ function ExperiencesHubEs() {
           </Link>
         </div>
 
+        <Link
+          to="/es/playgrounds/particulas-gravedad"
+          className="group flex flex-col rounded-3xl border border-amber-900/15 bg-gradient-to-br from-amber-50 via-white to-orange-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-amber-500/50 hover:shadow-lg"
+        >
+          <span className="text-4xl" aria-hidden>✨</span>
+          <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Playground</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Partículas de gravedad</span>
+          <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+            Hacé clic para colocar atrayentes. Mirá cómo las partículas orbitan en tiempo real. Gravedad y cantidad ajustables.
+          </span>
+          <span className="mt-5 text-sm font-bold text-amber-700">Abrir playground →</span>
+        </Link>
+
         <div className="flex flex-col rounded-3xl border border-rose-900/15 bg-gradient-to-br from-rose-50 via-white to-pink-50/80 p-5 shadow-sm">
           <SeatingMini />
           <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Estudio</span>
