@@ -55,6 +55,21 @@ function PlaygroundsHubEn() {
         </Link>
 
         <Link
+          to="/playgrounds/gravity-particles"
+          className="group flex flex-col rounded-3xl border border-violet-900/15 bg-gradient-to-br from-violet-50 via-white to-fuchsia-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-violet-500/50 hover:shadow-lg"
+        >
+          <span className="text-4xl" aria-hidden>
+            🪐
+          </span>
+          <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Physics</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Gravity Particles</span>
+          <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+            Click to place attractors. Particles orbit in real time. Tune gravity, count and trails. Shareable state.
+          </span>
+          <span className="mt-5 text-sm font-bold text-violet-700">Open playground →</span>
+        </Link>
+
+        <Link
           to="/playgrounds/debt-snowball"
           className="group flex flex-col rounded-3xl border border-emerald-900/15 bg-gradient-to-br from-emerald-50 via-white to-teal-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-500/50 hover:shadow-lg"
         >
