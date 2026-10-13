@@ -156,6 +156,7 @@ import { OHMS_LAW_TOOLS } from "./ohms-law-tool";
 import { PASSWORD_STRENGTH_TOOLS } from "./password-strength-tool";
 import { HEX_COLOR_CONVERTER_TOOLS } from "./hex-color-converter-tool";
 import { ASPECT_RATIO_TOOLS } from "./aspect-ratio-tool";
+import { CSV_TO_JSON_TOOLS } from "./csv-to-json-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -317,4 +318,5 @@ export const GENERAL_TOOLS = [
   ...PASSWORD_STRENGTH_TOOLS,
   ...HEX_COLOR_CONVERTER_TOOLS,
   ...ASPECT_RATIO_TOOLS,
+  ...CSV_TO_JSON_TOOLS,
 ];
