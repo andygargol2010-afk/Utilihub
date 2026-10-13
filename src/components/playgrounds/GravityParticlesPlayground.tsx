@@ -19,6 +19,13 @@ interface Attractor {
   id: number;
 }
 
+interface Star {
+  x: number;
+  y: number;
+  r: number;
+  a: number;
+}
+
 const labels = {
   en: {
     count: "Particle count",
@@ -49,6 +56,7 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const attractorsRef = useRef<Attractor[]>([]);
+  const starsRef = useRef<Star[]>([]);
   const nextId = useRef(1);
   const paramsRef = useRef({
     count: 200,
@@ -107,6 +115,20 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
     particlesRef.current = ps;
   }, []);
 
+  const initStars = useCallback((w: number, h: number) => {
+    const stars: Star[] = [];
+    const n = Math.floor((w * h) / 2800);
+    for (let i = 0; i < n; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: 0.3 + Math.random() * 1.1,
+        a: 0.25 + Math.random() * 0.55,
+      });
+    }
+    starsRef.current = stars;
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -124,6 +146,7 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
       if (particlesRef.current.length === 0) {
         initParticles(paramsRef.current.count, rect.width, rect.height);
       }
+      initStars(rect.width, rect.height);
     };
     resize();
     window.addEventListener("resize", resize);
@@ -155,28 +178,40 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
       const { gravity: g, trails: tr } = paramsRef.current;
       const attrs = attractorsRef.current;
       const ps = particlesRef.current;
+      const stars = starsRef.current;
 
       if (tr) {
-        ctx.fillStyle = "rgba(10, 14, 28, 0.18)";
+        ctx.fillStyle = "rgba(8, 12, 28, 0.16)";
         ctx.fillRect(0, 0, w, h);
       } else {
-        ctx.fillStyle = "#0a0e1c";
+        ctx.fillStyle = "#080c1c";
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Draw attractors
+      // Starfield (static, redrawn each frame for simplicity)
+      ctx.fillStyle = "#c7d2fe";
+      for (const s of stars) {
+        ctx.globalAlpha = s.a;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      // Draw attractors with stronger glow
       for (const a of attrs) {
-        const grad = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 28);
-        grad.addColorStop(0, "rgba(255, 180, 60, 0.95)");
-        grad.addColorStop(0.4, "rgba(255, 120, 40, 0.45)");
+        const grad = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 36);
+        grad.addColorStop(0, "rgba(255, 200, 80, 0.98)");
+        grad.addColorStop(0.35, "rgba(255, 130, 50, 0.55)");
+        grad.addColorStop(0.7, "rgba(255, 90, 30, 0.18)");
         grad.addColorStop(1, "rgba(255, 80, 20, 0)");
         ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(a.x, a.y, 28, 0, Math.PI * 2);
+        ctx.arc(a.x, a.y, 36, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(a.x, a.y, 5, 0, Math.PI * 2);
-        ctx.fillStyle = "#fff7ed";
+        ctx.arc(a.x, a.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = "#fffbeb";
         ctx.fill();
       }
 
@@ -189,30 +224,34 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
           const dist2 = dx * dx + dy * dy;
           const dist = Math.sqrt(dist2) || 1;
           // Softening to avoid singularity
-          const force = g / (dist2 * 0.015 + 40);
+          const force = g / (dist2 * 0.012 + 36);
           ax += (dx / dist) * force;
           ay += (dy / dist) * force;
         }
         p.vx += ax;
         p.vy += ay;
-        p.vx *= 0.992;
-        p.vy *= 0.992;
+        p.vx *= 0.993;
+        p.vy *= 0.993;
 
         p.x += p.vx;
         p.y += p.vy;
 
-        // Soft wrap or bounce
+        // Soft wrap
         if (p.x < 0) p.x = w;
         if (p.x > w) p.x = 0;
         if (p.y < 0) p.y = h;
         if (p.y > h) p.y = 0;
 
         const speed = Math.hypot(p.vx, p.vy);
+        const hue = (p.hue + speed * 7) % 360;
+        // Glow
+        ctx.shadowColor = `hsl(${hue}, 90%, 65%)`;
+        ctx.shadowBlur = 6 + speed * 2;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        const hue = (p.hue + speed * 8) % 360;
-        ctx.fillStyle = `hsl(${hue}, 82%, 62%)`;
+        ctx.fillStyle = `hsl(${hue}, 85%, 68%)`;
         ctx.fill();
+        ctx.shadowBlur = 0;
       }
 
       raf = requestAnimationFrame(loop);
@@ -225,7 +264,7 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
       canvas.removeEventListener("mousedown", onPointerDown);
       canvas.removeEventListener("touchstart", onPointerDown);
     };
-  }, [initParticles]);
+  }, [initParticles, initStars]);
 
   // Re-init particles when count changes
   useEffect(() => {
@@ -273,7 +312,7 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
 
   return (
     <div className="space-y-4">
-      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-[#0a0e1c] shadow-inner">
+      <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-[#080c1c] shadow-inner">
         <canvas
           ref={canvasRef}
           className="h-[420px] w-full touch-none sm:h-[520px]"
