@@ -36,6 +36,8 @@ const labels = {
     remove: "Remove",
     selectHint: "Click a guest then a table (or drag) to assign",
     editCapacity: "Capacity",
+    editName: "Table name",
+    seats: "seats",
   },
   es: {
     title: "Estudio de Plano de Asientos",
@@ -54,6 +56,8 @@ const labels = {
     remove: "Quitar",
     selectHint: "Tocá un invitado y luego una mesa (o arrastrá) para asignar",
     editCapacity: "Capacidad",
+    editName: "Nombre de mesa",
+    seats: "asientos",
   },
 };
 
@@ -121,8 +125,8 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
         id,
         name: locale === "es" ? `Mesa ${prev.length + 1}` : `Table ${prev.length + 1}`,
         capacity: 6,
-        x: 40 + (prev.length % 3) * 190,
-        y: 40 + Math.floor(prev.length / 3) * 150,
+        x: 40 + (prev.length % 3) * 200,
+        y: 40 + Math.floor(prev.length / 3) * 160,
       },
     ]);
   };
@@ -152,6 +156,10 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
   const updateCapacity = (tableId: string, capacity: number) => {
     const c = Math.max(1, Math.min(20, capacity));
     setTables((prev) => prev.map((tbl) => (tbl.id === tableId ? { ...tbl, capacity: c } : tbl)));
+  };
+
+  const updateName = (tableId: string, name: string) => {
+    setTables((prev) => prev.map((tbl) => (tbl.id === tableId ? { ...tbl, name: name || tbl.name } : tbl)));
   };
 
   const share = async () => {
@@ -217,7 +225,7 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
         <div className="lg:col-span-2">
           <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-muted-foreground">{t.tables}</h3>
           <div
-            className="relative min-h-[420px] overflow-auto rounded-2xl border border-border bg-muted/20 p-4"
+            className="relative min-h-[480px] overflow-auto rounded-2xl border border-border bg-muted/20 p-4"
             onPointerMove={onCanvasPointerMove}
             onPointerUp={onCanvasPointerUp}
             onPointerCancel={onCanvasPointerUp}
@@ -231,8 +239,8 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
               return (
                 <div
                   key={table.id}
-                  className={`absolute cursor-move rounded-xl border-2 bg-background p-3 shadow-sm ${over ? "border-red-500" : "border-border"} ${selectedGuestId ? "ring-2 ring-primary/40" : ""}`}
-                  style={{ left: table.x, top: table.y, width: 170 }}
+                  className={`absolute cursor-move rounded-full border-2 bg-background p-4 shadow-md flex flex-col items-center justify-center text-center ${over ? "border-red-500 bg-red-50/50" : "border-border"} ${selectedGuestId ? "ring-2 ring-primary/40" : ""}`}
+                  style={{ left: table.x, top: table.y, width: 160, height: 160 }}
                   onPointerDown={(e) => onTablePointerDown(e, table)}
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => {
@@ -243,12 +251,13 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
                     if (selectedGuestId) assignGuest(selectedGuestId, table.id);
                   }}
                 >
-                  <div className="flex items-center justify-between gap-1">
-                    <div className="font-semibold text-sm">{table.name}</div>
-                    <button type="button" onClick={(e) => { e.stopPropagation(); removeTable(table.id); }} className="text-xs text-muted-foreground hover:text-red-600">
-                      ×
-                    </button>
-                  </div>
+                  <input
+                    value={table.name}
+                    onChange={(e) => updateName(table.id, e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full text-center text-sm font-semibold bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded"
+                    placeholder={t.editName}
+                  />
                   <div className="mt-1 flex items-center gap-1 text-xs">
                     <label className="text-muted-foreground">{t.editCapacity}</label>
                     <input
@@ -258,27 +267,30 @@ export function SeatingChartStudio({ locale }: { locale: Locale }) {
                       value={table.capacity}
                       onChange={(e) => updateCapacity(table.id, Number(e.target.value) || 1)}
                       onClick={(e) => e.stopPropagation()}
-                      className="w-12 rounded border border-border px-1 py-0.5 text-xs"
+                      className="w-10 rounded border border-border px-1 py-0.5 text-xs text-center"
                     />
                   </div>
                   <div className={`mt-1 text-xs ${over ? "font-bold text-red-600" : "text-muted-foreground"}`}>
-                    {assigned.length}/{table.capacity} {t.assigned}
+                    {assigned.length}/{table.capacity} {t.seats}
                     {over && ` · ${t.overCapacity}`}
                   </div>
-                  <div className="mt-2 space-y-1">
-                    {assigned.map((g) => (
-                      <div
+                  <div className="mt-2 flex flex-wrap justify-center gap-1 max-w-[120px]">
+                    {assigned.slice(0, 8).map((g) => (
+                      <span
                         key={g.id}
-                        draggable
-                        onDragStart={(e) => e.dataTransfer.setData("guestId", g.id)}
-                        onClick={(e) => { e.stopPropagation(); setSelectedGuestId(g.id); }}
-                        className={`flex cursor-move items-center justify-between rounded bg-muted px-2 py-1 text-xs ${selectedGuestId === g.id ? "ring-1 ring-primary" : ""}`}
-                      >
-                        <span>{g.name}</span>
-                        <button type="button" onClick={(e) => { e.stopPropagation(); removeGuest(g.id); }} className="text-muted-foreground hover:text-red-600">×</button>
-                      </div>
+                        title={g.name}
+                        className="inline-block h-2 w-2 rounded-full bg-primary"
+                      />
                     ))}
+                    {assigned.length > 8 && <span className="text-[10px] text-muted-foreground">+{assigned.length - 8}</span>}
                   </div>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); removeTable(table.id); }}
+                    className="absolute top-1 right-1 text-xs text-muted-foreground hover:text-red-600"
+                  >
+                    ×
+                  </button>
                 </div>
               );
             })}
