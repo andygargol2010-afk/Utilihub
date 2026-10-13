@@ -155,6 +155,7 @@ import { EMAIL_VALIDATOR_TOOLS } from "./email-validator-tool";
 import { OHMS_LAW_TOOLS } from "./ohms-law-tool";
 import { PASSWORD_STRENGTH_TOOLS } from "./password-strength-tool";
 import { HEX_COLOR_CONVERTER_TOOLS } from "./hex-color-converter-tool";
+import { ASPECT_RATIO_TOOLS } from "./aspect-ratio-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -315,4 +316,5 @@ export const GENERAL_TOOLS = [
   ...OHMS_LAW_TOOLS,
   ...PASSWORD_STRENGTH_TOOLS,
   ...HEX_COLOR_CONVERTER_TOOLS,
+  ...ASPECT_RATIO_TOOLS,
 ];
