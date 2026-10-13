@@ -60,7 +60,6 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
   const attractorsRef = useRef<Attractor[]>([]);
   const starsRef = useRef<Star[]>([]);
   const nextId = useRef(1);
-  const lastTapRef = useRef<{ t: number; x: number; y: number } | null>(null);
   const paramsRef = useRef({
     count: 200,
     gravity: 0.8,
@@ -187,41 +186,6 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
       }
     };
 
-    const onPointerDown = (e: MouseEvent | TouchEvent) => {
-      e.preventDefault();
-      const clientX = "touches" in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
-      const clientY = "touches" in e ? e.touches[0]?.clientY ?? 0 : e.clientY;
-      const rect = canvas.getBoundingClientRect();
-      const x = clientX - rect.left;
-      const y = clientY - rect.top;
-      const now = Date.now();
-      const last = lastTapRef.current;
-      if (last && now - last.t < 350 && Math.hypot(x - last.x, y - last.y) < 40) {
-        // Double-tap / double-click: remove nearest
-        if (!removeNearest(x, y)) {
-          // nothing to remove — still place if far
-          addAttractor(clientX, clientY);
-        }
-        lastTapRef.current = null;
-      } else {
-        lastTapRef.current = { t: now, x, y };
-        // Delay single place slightly so double can cancel; use short timeout
-        const placeId = window.setTimeout(() => {
-          if (lastTapRef.current && lastTapRef.current.t === now) {
-            addAttractor(clientX, clientY);
-          }
-        }, 280);
-        // Store cancelable via ref overwrite on second tap
-        (lastTapRef as React.MutableRefObject<{ t: number; x: number; y: number; placeId?: number } | null>).current = {
-          t: now,
-          x,
-          y,
-          placeId,
-        } as { t: number; x: number; y: number };
-      }
-    };
-
-    // Simpler reliable double-click for mouse + double-tap for touch
     const onDblClick = (e: MouseEvent) => {
       e.preventDefault();
       const rect = canvas.getBoundingClientRect();
