@@ -187,14 +187,15 @@ function ExperiencesHubEs() {
         </Link>
 
         <Link
-          to="/es/playgrounds/plano-planta"
+          to="/es/herramientas/$slug"
+          params={{ slug: "modelador-casas-3d" }}
           className="group flex flex-col rounded-3xl border border-amber-900/15 bg-gradient-to-br from-amber-50 via-white to-orange-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-amber-500/50 hover:shadow-lg"
         >
           <span className="text-4xl" aria-hidden>🏠</span>
           <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Estudio</span>
-          <span className="mt-1 text-xl font-bold text-slate-900">Estudio de plano de planta</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Modelador de casas 3D</span>
           <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-            Arrastrá habitaciones y muebles. Cálculo de área en vivo.
+            Construí casas en el navegador. Paredes, pisos, techos, cámara libre y cielo realista.
           </span>
           <span className="mt-5 text-sm font-bold text-amber-700">Abrir estudio →</span>
         </Link>
