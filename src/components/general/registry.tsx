@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
-/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator. */
+/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law. */
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
@@ -28,6 +28,7 @@ const MacroCalculatorTool = lazy(() => import("./MacroCalculatorTool").then((m) 
 const IdealWeightCalculatorTool = lazy(() => import("./IdealWeightCalculatorTool").then((m) => ({ default: m.IdealWeightCalculatorTool })));
 const CompanyNameGeneratorTool = lazy(() => import("./CompanyNameGeneratorTool").then((m) => ({ default: m.CompanyNameGeneratorTool })));
 const EmailValidatorTool = lazy(() => import("./EmailValidatorTool").then((m) => ({ default: m.EmailValidatorTool })));
+const OhmsLawTool = lazy(() => import("./OhmsLawTool").then((m) => ({ default: m.OhmsLawTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -37,6 +38,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-peso-ideal") return IdealWeightCalculatorTool as ToolComp;
   if (tool.slug === "generador-nombres-empresa") return CompanyNameGeneratorTool as ToolComp;
   if (tool.slug === "validador-email") return EmailValidatorTool as ToolComp;
+  if (tool.slug === "calculadora-ley-ohm") return OhmsLawTool as ToolComp;
   if (tool.slug === "calculadora-fecha-avanzada") return AdvancedDateTool as ToolComp;
   if (tool.config?.mode === "advanced-calculator") return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.mode === "advanced" && tool.config?.operation) return AdvancedCalculatorTool as ToolComp;
