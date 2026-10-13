@@ -1,0 +1,48 @@
+name: Restore HouseModeler monolith
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch with history
+        uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore HouseModeler3D.tsx from known-good commit
+        run: |
+          set -euo pipefail
+          GOOD=a074b7a6c89b530e4c4655bc9711c70053c495d8
+          git checkout "$GOOD" -- src/components/general/HouseModeler3D.tsx
+          BYTES=$(wc -c < src/components/general/HouseModeler3D.tsx)
+          LINES=$(wc -l < src/components/general/HouseModeler3D.tsx)
+          echo "Restored size: $BYTES bytes, $LINES lines"
+          if [ "$BYTES" -lt 120000 ]; then
+            echo "ERROR: restored file too small ($BYTES)"
+            exit 1
+          fi
+          # Drop broken split stubs so the monolith is self-contained again
+          rm -f src/components/general/house-modeler-materials.ts \
+                src/components/general/house-modeler-meshes.tsx \
+                src/components/general/house-modeler-meshes-glyph.tsx \
+                src/components/general/house-modeler-types.ts \
+                src/components/general/house-modeler-textures.ts \
+                src/components/general/house-modeler-textures-a.ts \
+                src/components/general/house-modeler-textures-b.ts || true
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add -A src/components/general/HouseModeler3D.tsx src/components/general/
+          if git diff --cached --quiet; then
+            echo "Nothing to commit (already restored?)"
+            exit 0
+          fi
+          git commit -m "fix(house-modeler): restore full monolith from a074b7a6c8 via CI"
+          git push origin HEAD:fix/spanish-complete
