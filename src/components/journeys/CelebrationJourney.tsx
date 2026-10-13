@@ -36,6 +36,7 @@ const LABELS = {
     back: "Back",
     live: "Live preview",
     dragHint: "Drag to reorder",
+    progress: "Progress",
   },
   es: {
     step1: "Paso 1: Ocasión e invitados",
@@ -67,6 +68,7 @@ const LABELS = {
     back: "Volver",
     live: "Vista previa en vivo",
     dragHint: "Arrastra para reordenar",
+    progress: "Progreso",
   },
 } as const;
 
@@ -108,6 +110,8 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
 
   const total = useMemo(() => food + decor + gifts + venue, [food, decor, gifts, venue]);
   const pct = (n: number) => (total ? Math.round((n / total) * 100) : 0);
+
+  const stepLabels = [t.step1, t.step2, t.step3, t.step4];
 
   const syncUrl = useCallback(() => {
     const params = new URLSearchParams({
@@ -165,23 +169,27 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8">
+    <div className="mx-auto max-w-3xl space-y-8 px-2 sm:px-0">
       {/* Progress */}
-      <div className="flex gap-2 text-sm font-semibold">
-        {[1, 2, 3, 4].map((n) => (
-          <button
-            key={n}
-            type="button"
-            onClick={() => setStep(n)}
-            className={`rounded-full px-4 py-1.5 transition ${step === n ? "bg-primary text-primary-foreground" : "bg-accent hover:bg-accent/80"}`}
-          >
-            {n}
-          </button>
-        ))}
+      <div className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.progress}</p>
+        <div className="flex flex-wrap gap-2 text-sm font-semibold">
+          {[1, 2, 3, 4].map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => setStep(n)}
+              className={`flex-1 min-w-[140px] rounded-full px-3 py-2 transition text-center ${step === n ? "bg-primary text-primary-foreground" : "bg-accent hover:bg-accent/80"}`}
+            >
+              <span className="block text-xs opacity-80">{n}</span>
+              <span className="block text-xs sm:text-sm leading-tight">{stepLabels[n - 1].split(":")[1]?.trim() || stepLabels[n - 1]}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {step === 1 && (
-        <section className="space-y-4 rounded-2xl border border-border/70 bg-surface p-6">
+        <section className="space-y-4 rounded-2xl border border-border/70 bg-surface p-4 sm:p-6">
           <h2 className="text-lg font-bold">{t.step1}</h2>
           <div>
             <p className="text-sm font-medium">{t.occasion}</p>
@@ -222,7 +230,7 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
       )}
 
       {step === 2 && (
-        <section className="space-y-4 rounded-2xl border border-border/70 bg-surface p-6">
+        <section className="space-y-4 rounded-2xl border border-border/70 bg-surface p-4 sm:p-6">
           <h2 className="text-lg font-bold">{t.step2}</h2>
           {([
             ["food", food, setFood, t.food],
@@ -247,14 +255,14 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
             <p className="font-bold">{t.total}: ${total}</p>
             <div className="mt-2 space-y-2 text-xs">
               {[
-                [t.food, food],
-                [t.decor, decor],
-                [t.gifts, gifts],
-                [t.venue, venue],
-              ].map(([label, val]) => (
+                [t.food, food, "bg-emerald-500"],
+                [t.decor, decor, "bg-amber-500"],
+                [t.gifts, gifts, "bg-rose-500"],
+                [t.venue, venue, "bg-sky-500"],
+              ].map(([label, val, color]) => (
                 <div key={label}>
                   <div className="flex justify-between"><span>{label}</span><span>{pct(val as number)}%</span></div>
-                  <div className="h-2 overflow-hidden rounded bg-muted"><div className="h-full bg-primary" style={{ width: `${pct(val as number)}%` }} /></div>
+                  <div className="h-2 overflow-hidden rounded bg-muted"><div className={`h-full ${color}`} style={{ width: `${pct(val as number)}%` }} /></div>
                 </div>
               ))}
             </div>
@@ -267,7 +275,7 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
       )}
 
       {step === 3 && (
-        <section className="space-y-4 rounded-2xl border border-border/70 bg-surface p-6">
+        <section className="space-y-4 rounded-2xl border border-border/70 bg-surface p-4 sm:p-6">
           <h2 className="text-lg font-bold">{t.step3}</h2>
           <p className="text-xs text-muted-foreground">{t.dragHint}</p>
           <ul className="space-y-2">
@@ -278,14 +286,14 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
                 onDragStart={() => onDragStart(i)}
                 onDragOver={(e) => onDragOver(e, i)}
                 onDragEnd={onDragEnd}
-                className={`flex items-center justify-between rounded border px-3 py-2 text-sm cursor-move ${dragIdx === i ? "opacity-50" : ""}`}
+                className={`flex items-center justify-between rounded border px-3 py-2 text-sm cursor-move transition ${dragIdx === i ? "opacity-50 bg-accent" : "hover:border-primary/40"}`}
               >
                 <span>{task}</span>
-                <button type="button" onClick={() => removeTask(i)} className="text-destructive text-xs">×</button>
+                <button type="button" onClick={() => removeTask(i)} className="text-destructive text-xs ml-2">×</button>
               </li>
             ))}
           </ul>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
@@ -303,7 +311,7 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
       )}
 
       {step === 4 && (
-        <section className="space-y-4 rounded-2xl border border-border/70 bg-surface p-6">
+        <section className="space-y-4 rounded-2xl border border-border/70 bg-surface p-4 sm:p-6">
           <h2 className="text-lg font-bold">{t.step4}</h2>
           <div className="space-y-3">
             <label className="block text-sm">{t.host}<input value={host} onChange={(e) => setHost(e.target.value)} className="mt-1 w-full rounded border px-3 py-2" /></label>
@@ -324,7 +332,7 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
         </section>
       )}
 
-      <p className="text-xs text-muted-foreground">{t.live}</p>
+      <p className="text-xs text-muted-foreground text-center">{t.live}</p>
     </div>
   );
 }
