@@ -148,6 +148,7 @@ import { AGE_CALCULATOR_TOOLS } from "./age-calculator-tool";
 import { DUE_DATE_CALCULATOR_TOOLS } from "./due-date-calculator-tool";
 import { DISCOUNT_CALCULATOR_TOOLS } from "./discount-calculator-tool";
 import { PERCENTAGE_CHANGE_TOOLS } from "./percentage-change-tool";
+import { MACRO_CALCULATOR_TOOLS } from "./macro-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -301,4 +302,5 @@ export const GENERAL_TOOLS = [
   ...DUE_DATE_CALCULATOR_TOOLS,
   ...DISCOUNT_CALCULATOR_TOOLS,
   ...PERCENTAGE_CHANGE_TOOLS,
+  ...MACRO_CALCULATOR_TOOLS,
 ];
