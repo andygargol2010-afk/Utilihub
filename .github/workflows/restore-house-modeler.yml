@@ -15,58 +15,33 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Fix door-finish JSX imbalance
+      - name: Restore full monolith from known-good commit
         run: |
           set -euo pipefail
-          python3 << 'PY'
-          from pathlib import Path
-          p = Path("src/components/general/HouseModeler3D.tsx")
-          t = p.read_text()
-          # 1) Wrap orphan door-finish panel
-          old_open = '''          ))}
-
-            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
-'''
-          new_open = '''          ))}
-
-          {(tool === "door" || selectedKind === "door") && (
-            <div className="rounded-xl border border-border bg-background/80 p-2" role="group" aria-label={labels.doorFinish}>
-'''
-          if old_open not in t:
-              # already fixed?
-              if '{(tool === "door" || selectedKind === "door") && (' in t and t.count('{(tool === "door" || selectedKind === "door") && (') == 1:
-                  print("Already balanced; skip open wrap")
-              else:
-                  raise SystemExit("door-finish open marker not found")
-          else:
-              t = t.replace(old_open, new_open, 1)
-              print("Wrapped door-finish panel")
-          # 2) Remove duplicate empty door conditional before isFullscreen
-          old_orphan = '''          {(tool === "door" || selectedKind === "door") && (
-
-          {isFullscreen && (
-'''
-          new_orphan = '''          {isFullscreen && (
-'''
-          if old_orphan in t:
-              t = t.replace(old_orphan, new_orphan, 1)
-              print("Removed orphan door conditional")
-          else:
-              print("No orphan conditional (ok)")
-          p.write_text(t)
-          n = t.count('{(tool === "door" || selectedKind === "door") && (')
-          print(f"door conditionals count: {n}")
-          if n != 1:
-              raise SystemExit(f"expected 1 door conditional, got {n}")
-          PY
-          grep -n 'tool === "door" || selectedKind === "door"' src/components/general/HouseModeler3D.tsx || true
+          GOOD=a074b7a6c89b530e4c4655bc9711c70053c495d8
+          git fetch origin "$GOOD" --depth=1 || git fetch origin --unshallow || true
+          git checkout "$GOOD" -- src/components/general/HouseModeler3D.tsx
+          BYTES=$(wc -c < src/components/general/HouseModeler3D.tsx)
+          LINES=$(wc -l < src/components/general/HouseModeler3D.tsx)
+          echo "Restored: $BYTES bytes, $LINES lines"
+          if [ "$BYTES" -lt 120000 ]; then
+            echo "ERROR: restored file too small ($BYTES)"
+            exit 1
+          fi
+          # Remove split stubs so the self-contained monolith is the only source
+          rm -f src/components/general/house-modeler-materials.ts \
+                src/components/general/house-modeler-meshes.tsx \
+                src/components/general/house-modeler-meshes-glyph.tsx \
+                src/components/general/house-modeler-types.ts \
+                src/components/general/house-modeler-textures.ts \
+                src/components/general/house-modeler-textures-a.ts \
+                src/components/general/house-modeler-textures-b.ts || true
           git config user.name "andygargol2010-afk"
           git config user.email "andygargol2010@gmail.com"
-          git add src/components/general/HouseModeler3D.tsx
-          git status
-          if git diff --staged --quiet; then
-            echo "Nothing to commit"
+          git add -A src/components/general/
+          if git diff --cached --quiet; then
+            echo "Nothing to commit (already restored?)"
             exit 0
           fi
-          git commit -m "fix(house-modeler): balance door-finish JSX so vite build passes"
+          git commit -m "fix(house-modeler): restore full monolith from a074b7a6c8 via CI"
           git push origin HEAD:fix/spanish-complete
