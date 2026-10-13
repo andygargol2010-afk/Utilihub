@@ -70,6 +70,9 @@ export function SpanishSiteHeader() {
           <Link to="/es/playgrounds" className={navLink} activeProps={activeNav}>
             Playgrounds
           </Link>
+          <Link to="/es/experiences" className={navLink} activeProps={activeNav}>
+            Experiencias
+          </Link>
           <Link to="/es/juegos" className={navLink} activeProps={activeNav}>
             Juegos
           </Link>
@@ -151,6 +154,9 @@ export function SpanishSiteHeader() {
             </Link>
             <Link to="/es/playgrounds" onClick={() => setOpen(false)} className={mobileLink}>
               Playgrounds
+            </Link>
+            <Link to="/es/experiences" onClick={() => setOpen(false)} className={mobileLink}>
+              Experiencias
             </Link>
             <Link to="/es/juegos" onClick={() => setOpen(false)} className={mobileLink}>
               Juegos
