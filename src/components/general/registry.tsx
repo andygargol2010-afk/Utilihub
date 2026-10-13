@@ -105,6 +105,7 @@ const PaceCalculatorTool = lazy(() => import("./PaceCalculatorTool").then((m) =>
 const DueDateCalculatorTool = lazy(() => import("./DueDateCalculatorTool").then((m) => ({ default: m.DueDateCalculatorTool })));
 const DiscountCalculatorTool = lazy(() => import("./DiscountCalculatorTool").then((m) => ({ default: m.DiscountCalculatorTool })));
 const PercentageChangeTool = lazy(() => import("./PercentageChangeTool").then((m) => ({ default: m.PercentageChangeTool })));
+const MacroCalculatorTool = lazy(() => import("./MacroCalculatorTool").then((m) => ({ default: m.MacroCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -124,6 +125,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-fecha-parto") return DueDateCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-descuento") return DiscountCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-cambio-porcentaje") return PercentageChangeTool as ToolComp;
+  if (tool.slug === "calculadora-macros") return MacroCalculatorTool as ToolComp;
   if (tool.slug === "gpa") return GpaCalculator as ToolComp;
   if (tool.slug === "calculadora-horas-extra") return OvertimePayTool as ToolComp;
   if (tool.slug === "generador-utm") return UtmBuilderTool as ToolComp;
