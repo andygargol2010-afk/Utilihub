@@ -25,6 +25,7 @@ export const Route = createFileRoute("/games/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
+        { property: "og:locale", content: "en_US" },
         { property: "og:url", content: url },
         { property: "og:site_name", content: SITE_NAME },
         { property: "og:image", content: ogImage() },
