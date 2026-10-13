@@ -30,23 +30,25 @@ const labels = {
   en: {
     count: "Particle count",
     gravity: "Gravity strength",
+    friction: "Friction",
     trails: "Trails",
     clear: "Clear attractors",
     reset: "Reset particles",
     share: "Copy share link",
     copied: "Copied!",
-    help: "Click or tap the canvas to place attractors. Particles orbit and respond in real time.",
+    help: "Click or tap to place attractors. Double-click or double-tap near one to remove it. Particles orbit and respond in real time.",
     attractors: "Attractors",
   },
   es: {
     count: "Cantidad de partículas",
     gravity: "Fuerza de gravedad",
+    friction: "Fricción",
     trails: "Estelas",
     clear: "Limpiar atrayentes",
     reset: "Reiniciar partículas",
     share: "Copiar enlace",
     copied: "¡Copiado!",
-    help: "Hacé clic o tocá el canvas para colocar atrayentes. Las partículas orbitan y responden en tiempo real.",
+    help: "Hacé clic o tocá para colocar atrayentes. Doble clic o doble toque cerca de uno para quitarlo. Las partículas orbitan y responden en tiempo real.",
     attractors: "Atrayentes",
   },
 };
@@ -58,14 +60,17 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
   const attractorsRef = useRef<Attractor[]>([]);
   const starsRef = useRef<Star[]>([]);
   const nextId = useRef(1);
+  const lastTapRef = useRef<{ t: number; x: number; y: number } | null>(null);
   const paramsRef = useRef({
     count: 200,
     gravity: 0.8,
+    friction: 0.993,
     trails: true,
   });
 
   const [count, setCount] = useState(200);
   const [gravity, setGravity] = useState(0.8);
+  const [friction, setFriction] = useState(0.993);
   const [trails, setTrails] = useState(true);
   const [copied, setCopied] = useState(false);
   const [attractorCount, setAttractorCount] = useState(0);
@@ -75,10 +80,12 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
     const params = new URLSearchParams(window.location.search);
     const c = parseInt(params.get("count") || "200", 10);
     const g = parseFloat(params.get("g") || "0.8");
+    const f = parseFloat(params.get("f") || "0.993");
     const tr = params.get("trails") !== "0";
     const attrs = params.get("a");
     if (!isNaN(c) && c >= 50 && c <= 600) setCount(c);
     if (!isNaN(g) && g >= 0.1 && g <= 3) setGravity(g);
+    if (!isNaN(f) && f >= 0.95 && f <= 0.999) setFriction(f);
     setTrails(tr);
     if (attrs) {
       const parts = attrs.split(";").filter(Boolean);
@@ -97,8 +104,8 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
   }, []);
 
   useEffect(() => {
-    paramsRef.current = { count, gravity, trails };
-  }, [count, gravity, trails]);
+    paramsRef.current = { count, gravity, friction, trails };
+  }, [count, gravity, friction, trails]);
 
   const initParticles = useCallback((n: number, w: number, h: number) => {
     const ps: Particle[] = [];
@@ -142,6 +149,7 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = Math.max(1, rect.width * dpr);
       canvas.height = Math.max(1, rect.height * dpr);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
       if (particlesRef.current.length === 0) {
         initParticles(paramsRef.current.count, rect.width, rect.height);
@@ -150,6 +158,24 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
     };
     resize();
     window.addEventListener("resize", resize);
+
+    const removeNearest = (x: number, y: number, maxDist = 48) => {
+      let best = -1;
+      let bestD = maxDist * maxDist;
+      attractorsRef.current.forEach((a, i) => {
+        const d = (a.x - x) ** 2 + (a.y - y) ** 2;
+        if (d < bestD) {
+          bestD = d;
+          best = i;
+        }
+      });
+      if (best >= 0) {
+        attractorsRef.current.splice(best, 1);
+        setAttractorCount(attractorsRef.current.length);
+        return true;
+      }
+      return false;
+    };
 
     const addAttractor = (clientX: number, clientY: number) => {
       const rect = canvas.getBoundingClientRect();
@@ -165,17 +191,77 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
       e.preventDefault();
       const clientX = "touches" in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
       const clientY = "touches" in e ? e.touches[0]?.clientY ?? 0 : e.clientY;
-      addAttractor(clientX, clientY);
+      const rect = canvas.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      const now = Date.now();
+      const last = lastTapRef.current;
+      if (last && now - last.t < 350 && Math.hypot(x - last.x, y - last.y) < 40) {
+        // Double-tap / double-click: remove nearest
+        if (!removeNearest(x, y)) {
+          // nothing to remove — still place if far
+          addAttractor(clientX, clientY);
+        }
+        lastTapRef.current = null;
+      } else {
+        lastTapRef.current = { t: now, x, y };
+        // Delay single place slightly so double can cancel; use short timeout
+        const placeId = window.setTimeout(() => {
+          if (lastTapRef.current && lastTapRef.current.t === now) {
+            addAttractor(clientX, clientY);
+          }
+        }, 280);
+        // Store cancelable via ref overwrite on second tap
+        (lastTapRef as React.MutableRefObject<{ t: number; x: number; y: number; placeId?: number } | null>).current = {
+          t: now,
+          x,
+          y,
+          placeId,
+        } as { t: number; x: number; y: number };
+      }
     };
 
-    canvas.addEventListener("mousedown", onPointerDown);
-    canvas.addEventListener("touchstart", onPointerDown, { passive: false });
+    // Simpler reliable double-click for mouse + double-tap for touch
+    const onDblClick = (e: MouseEvent) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      removeNearest(x, y);
+    };
+
+    let lastTouch = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      if (!touch) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      const now = Date.now();
+      if (now - lastTouch < 320) {
+        removeNearest(x, y);
+        lastTouch = 0;
+      } else {
+        lastTouch = now;
+        addAttractor(touch.clientX, touch.clientY);
+      }
+    };
+
+    const onMouseDown = (e: MouseEvent) => {
+      if (e.detail >= 2) return; // let dblclick handle
+      addAttractor(e.clientX, e.clientY);
+    };
+
+    canvas.addEventListener("mousedown", onMouseDown);
+    canvas.addEventListener("dblclick", onDblClick);
+    canvas.addEventListener("touchstart", onTouchStart, { passive: false });
 
     const loop = () => {
       const rect = canvas.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
-      const { gravity: g, trails: tr } = paramsRef.current;
+      const { gravity: g, friction: fr, trails: tr } = paramsRef.current;
       const attrs = attractorsRef.current;
       const ps = particlesRef.current;
       const stars = starsRef.current;
@@ -188,7 +274,7 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Starfield (static, redrawn each frame for simplicity)
+      // Starfield
       ctx.fillStyle = "#c7d2fe";
       for (const s of stars) {
         ctx.globalAlpha = s.a;
@@ -198,7 +284,7 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
       }
       ctx.globalAlpha = 1;
 
-      // Draw attractors with stronger glow
+      // Attractors with glow
       for (const a of attrs) {
         const grad = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 36);
         grad.addColorStop(0, "rgba(255, 200, 80, 0.98)");
@@ -223,20 +309,18 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
           const dy = a.y - p.y;
           const dist2 = dx * dx + dy * dy;
           const dist = Math.sqrt(dist2) || 1;
-          // Softening to avoid singularity
           const force = g / (dist2 * 0.012 + 36);
           ax += (dx / dist) * force;
           ay += (dy / dist) * force;
         }
         p.vx += ax;
         p.vy += ay;
-        p.vx *= 0.993;
-        p.vy *= 0.993;
+        p.vx *= fr;
+        p.vy *= fr;
 
         p.x += p.vx;
         p.y += p.vy;
 
-        // Soft wrap
         if (p.x < 0) p.x = w;
         if (p.x > w) p.x = 0;
         if (p.y < 0) p.y = h;
@@ -244,7 +328,6 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
 
         const speed = Math.hypot(p.vx, p.vy);
         const hue = (p.hue + speed * 7) % 360;
-        // Glow
         ctx.shadowColor = `hsl(${hue}, 90%, 65%)`;
         ctx.shadowBlur = 6 + speed * 2;
         ctx.beginPath();
@@ -261,12 +344,12 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
-      canvas.removeEventListener("mousedown", onPointerDown);
-      canvas.removeEventListener("touchstart", onPointerDown);
+      canvas.removeEventListener("mousedown", onMouseDown);
+      canvas.removeEventListener("dblclick", onDblClick);
+      canvas.removeEventListener("touchstart", onTouchStart);
     };
   }, [initParticles, initStars]);
 
-  // Re-init particles when count changes
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -292,6 +375,7 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
     const params = new URLSearchParams();
     params.set("count", String(count));
     params.set("g", gravity.toFixed(2));
+    params.set("f", friction.toFixed(3));
     params.set("trails", trails ? "1" : "0");
     if (attractorsRef.current.length) {
       const aStr = attractorsRef.current
@@ -305,7 +389,6 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // fallback
       prompt(locale === "es" ? "Copiá este enlace:" : "Copy this link:", url);
     }
   };
@@ -346,6 +429,19 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
             step={0.05}
             value={gravity}
             onChange={(e) => setGravity(Number(e.target.value))}
+            className="accent-primary"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="font-medium">{t.friction} ({friction.toFixed(3)})</span>
+          <input
+            type="range"
+            min={0.95}
+            max={0.999}
+            step={0.001}
+            value={friction}
+            onChange={(e) => setFriction(Number(e.target.value))}
             className="accent-primary"
           />
         </label>
