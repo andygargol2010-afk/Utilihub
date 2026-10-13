@@ -186,14 +186,15 @@ function ExperiencesHubEn() {
         </Link>
 
         <Link
-          to="/playgrounds/floor-plan"
+          to="/tools/$slug"
+          params={{ slug: "3d-house-modeler" }}
           className="group flex flex-col rounded-3xl border border-amber-900/15 bg-gradient-to-br from-amber-50 via-white to-orange-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-amber-500/50 hover:shadow-lg"
         >
           <span className="text-4xl" aria-hidden>🏠</span>
           <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Studio</span>
-          <span className="mt-1 text-xl font-bold text-slate-900">Floor Plan Studio</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">3D House Modeler</span>
           <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-            Drag rooms and furniture. Live area calculation.
+            Build houses in the browser. Walls, floors, roofs, free camera and realistic sky.
           </span>
           <span className="mt-5 text-sm font-bold text-amber-700">Open studio →</span>
         </Link>
