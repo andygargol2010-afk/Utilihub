@@ -25,7 +25,7 @@ const labels = {
     placeholder: "Type a name or phrase...",
     count: "Particle count",
     gravity: "Gravity strength",
-    generate: "Generate signature",
+    generate: "Regenerate",
     share: "Copy share link",
     copied: "Copied!",
     help: "Type text to generate a unique particle signature. Particles orbit the seeded attractors. Click to add more. Share the link to show your signature.",
@@ -35,7 +35,7 @@ const labels = {
     placeholder: "Escribí un nombre o frase...",
     count: "Cantidad de partículas",
     gravity: "Fuerza de gravedad",
-    generate: "Generar firma",
+    generate: "Regenerar",
     share: "Copiar enlace",
     copied: "¡Copiado!",
     help: "Escribí texto para generar una firma única de partículas. Orbitan los atrayentes generados. Clic para agregar más. Compartí el enlace para mostrar tu firma.",
@@ -62,6 +62,7 @@ export function ParticleSignaturePlayground({ locale }: { locale: Locale }) {
   const [count, setCount] = useState(180);
   const [gravity, setGravity] = useState(1.0);
   const [copied, setCopied] = useState(false);
+  const debounceRef = useRef<number | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -71,7 +72,9 @@ export function ParticleSignaturePlayground({ locale }: { locale: Locale }) {
     if (txt) setText(txt);
     if (!isNaN(c) && c >= 50 && c <= 400) setCount(c);
     if (!isNaN(g) && g >= 0.2 && g <= 2.5) setGravity(g);
-    if (txt) generateFromText(txt);
+    if (txt) {
+      setTimeout(() => generateFromText(txt), 50);
+    }
   }, []);
 
   useEffect(() => {
@@ -97,7 +100,6 @@ export function ParticleSignaturePlayground({ locale }: { locale: Locale }) {
       });
     }
     attractorsRef.current = attrs;
-    // reset particles with hue based on seed
     const ps: Particle[] = [];
     const baseHue = seed % 360;
     for (let i = 0; i < paramsRef.current.count; i++) {
@@ -234,6 +236,18 @@ export function ParticleSignaturePlayground({ locale }: { locale: Locale }) {
     const rect = canvas.getBoundingClientRect();
     if (rect.width > 0) initParticles(count, rect.width, rect.height);
   }, [count, initParticles]);
+
+  // Auto-generate on text change (debounced)
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (!text.trim()) return;
+    debounceRef.current = window.setTimeout(() => {
+      generateFromText(text);
+    }, 450);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [text, generateFromText]);
 
   const onGenerate = () => generateFromText(text);
 
