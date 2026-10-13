@@ -5,6 +5,14 @@ type Locale = "en" | "es";
 
 const OCCASIONS: Occasion[] = ["birthday", "wedding", "baby", "graduation", "party"];
 
+const OCCASION_META: Record<Occasion, { icon: string; gradient: string; accent: string }> = {
+  birthday: { icon: "\ud83c\udf82", gradient: "from-pink-400 to-rose-500", accent: "text-rose-600" },
+  wedding: { icon: "\ud83d\udc8d", gradient: "from-amber-200 to-yellow-400", accent: "text-amber-700" },
+  baby: { icon: "\ud83c\udf7c", gradient: "from-sky-300 to-blue-400", accent: "text-sky-700" },
+  graduation: { icon: "\ud83c\udf93", gradient: "from-violet-400 to-purple-500", accent: "text-violet-700" },
+  party: { icon: "\ud83c\udf89", gradient: "from-fuchsia-400 to-pink-500", accent: "text-fuchsia-700" },
+};
+
 const LABELS = {
   en: {
     step1: "Step 1: Occasion & Guests",
@@ -37,6 +45,7 @@ const LABELS = {
     live: "Live preview",
     dragHint: "Drag to reorder",
     progress: "Progress",
+    perGuest: "per guest",
   },
   es: {
     step1: "Paso 1: Ocasión e invitados",
@@ -69,6 +78,7 @@ const LABELS = {
     live: "Vista previa en vivo",
     dragHint: "Arrastra para reordenar",
     progress: "Progreso",
+    perGuest: "por invitado",
   },
 } as const;
 
@@ -110,6 +120,9 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
 
   const total = useMemo(() => food + decor + gifts + venue, [food, decor, gifts, venue]);
   const pct = (n: number) => (total ? Math.round((n / total) * 100) : 0);
+  const perGuest = guests ? Math.round(total / guests) : 0;
+  const meta = OCCASION_META[occasion];
+  const progressPct = ((step - 1) / 3) * 100;
 
   const stepLabels = [t.step1, t.step2, t.step3, t.step4];
 
@@ -171,8 +184,14 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-2 sm:px-0">
       {/* Progress */}
-      <div className="space-y-2">
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.progress}</p>
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.progress}</p>
+          <span className="text-xs font-bold text-primary">{Math.round(progressPct)}%</span>
+        </div>
+        <div className="h-2 overflow-hidden rounded-full bg-muted">
+          <div className="h-full bg-primary transition-all duration-300" style={{ width: `${progressPct}%` }} />
+        </div>
         <div className="flex flex-wrap gap-2 text-sm font-semibold">
           {[1, 2, 3, 4].map((n) => (
             <button
@@ -199,8 +218,9 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
                   key={o}
                   type="button"
                   onClick={() => setOccasion(o)}
-                  className={`rounded-xl border px-3 py-2 text-sm font-semibold transition ${occasion === o ? "border-primary bg-accent text-primary" : "border-border hover:border-primary/40"}`}
+                  className={`rounded-xl border px-3 py-3 text-sm font-semibold transition flex flex-col items-center gap-1 ${occasion === o ? "border-primary bg-accent text-primary" : "border-border hover:border-primary/40"}`}
                 >
+                  <span className="text-2xl">{OCCASION_META[o].icon}</span>
                   {t[o]}
                 </button>
               ))}
@@ -253,7 +273,8 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
           ))}
           <div className="rounded-lg bg-accent/50 p-3">
             <p className="font-bold">{t.total}: ${total}</p>
-            <div className="mt-2 space-y-2 text-xs">
+            <p className="text-xs text-muted-foreground mt-1">~${perGuest} {t.perGuest}</p>
+            <div className="mt-3 space-y-2 text-xs">
               {[
                 [t.food, food, "bg-emerald-500"],
                 [t.decor, decor, "bg-amber-500"],
@@ -262,7 +283,7 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
               ].map(([label, val, color]) => (
                 <div key={label}>
                   <div className="flex justify-between"><span>{label}</span><span>{pct(val as number)}%</span></div>
-                  <div className="h-2 overflow-hidden rounded bg-muted"><div className={`h-full ${color}`} style={{ width: `${pct(val as number)}%` }} /></div>
+                  <div className="h-2 overflow-hidden rounded bg-muted"><div className={`h-full ${color} transition-all`} style={{ width: `${pct(val as number)}%` }} /></div>
                 </div>
               ))}
             </div>
@@ -318,12 +339,13 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
             <label className="block text-sm">{t.date}<input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="mt-1 w-full rounded border px-3 py-2" /></label>
             <label className="block text-sm">{t.message}<textarea value={message} onChange={(e) => setMessage(e.target.value)} className="mt-1 w-full rounded border px-3 py-2" rows={2} /></label>
           </div>
-          <div className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-accent to-background p-6 text-center shadow-lg">
-            <p className="text-xs uppercase tracking-wider text-primary">{t[occasion]}</p>
-            <h3 className="mt-2 text-2xl font-black">{host}</h3>
-            <p className="mt-1 text-sm">{date}</p>
+          <div className={`rounded-2xl border-2 border-primary/30 bg-gradient-to-br ${meta.gradient} p-6 text-center text-white shadow-lg`}>
+            <p className="text-4xl">{meta.icon}</p>
+            <p className="mt-2 text-xs uppercase tracking-wider opacity-90">{t[occasion]}</p>
+            <h3 className="mt-1 text-2xl font-black">{host}</h3>
+            <p className="mt-1 text-sm opacity-90">{date}</p>
             <p className="mt-3 text-base">{message}</p>
-            <p className="mt-2 text-xs text-muted-foreground">{guests} {t.guests.toLowerCase()} · ${total}</p>
+            <p className="mt-2 text-xs opacity-80">{guests} {t.guests.toLowerCase()} · ${total}</p>
           </div>
           <button type="button" onClick={share} className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
             {copied ? t.copied : t.share}
