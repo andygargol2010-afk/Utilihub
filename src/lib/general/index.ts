@@ -158,6 +158,7 @@ import { HEX_COLOR_CONVERTER_TOOLS } from "./hex-color-converter-tool";
 import { ASPECT_RATIO_TOOLS } from "./aspect-ratio-tool";
 import { CSV_TO_JSON_TOOLS } from "./csv-to-json-tool";
 import { XML_TO_JSON_TOOLS } from "./xml-to-json-tool";
+import { BASE64_TOOLS } from "./base64-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -321,4 +322,5 @@ export const GENERAL_TOOLS = [
   ...ASPECT_RATIO_TOOLS,
   ...CSV_TO_JSON_TOOLS,
   ...XML_TO_JSON_TOOLS,
+  ...BASE64_TOOLS,
 ];
