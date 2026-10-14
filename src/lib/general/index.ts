@@ -159,6 +159,7 @@ import { ASPECT_RATIO_TOOLS } from "./aspect-ratio-tool";
 import { CSV_TO_JSON_TOOLS } from "./csv-to-json-tool";
 import { XML_TO_JSON_TOOLS } from "./xml-to-json-tool";
 import { BASE64_TOOLS } from "./base64-tool";
+import { GPA_CALCULATOR_TOOLS } from "./gpa-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -323,4 +324,5 @@ export const GENERAL_TOOLS = [
   ...CSV_TO_JSON_TOOLS,
   ...XML_TO_JSON_TOOLS,
   ...BASE64_TOOLS,
+  ...GPA_CALCULATOR_TOOLS,
 ];
