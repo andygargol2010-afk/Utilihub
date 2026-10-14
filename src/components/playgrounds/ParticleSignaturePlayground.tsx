@@ -4,6 +4,97 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 type Locale = "en" | "es";
 
+type MoodId = "seed" | "aurora" | "neon" | "sunset" | "ocean" | "ember" | "mono";
+
+interface Mood {
+  id: MoodId;
+  label: { en: string; es: string };
+  /** Base hue when not using text seed */
+  hue: number;
+  /** Hue spread for particles */
+  spread: number;
+  /** Attract glow RGB */
+  glow: [number, number, number];
+  /** Trail / clear rgba */
+  trail: string;
+  /** Solid bg for PNG export */
+  bg: string;
+  swatch: string;
+}
+
+const MOODS: Mood[] = [
+  {
+    id: "seed",
+    label: { en: "From text", es: "Del texto" },
+    hue: 200,
+    spread: 40,
+    glow: [190, 150, 255],
+    trail: "rgba(8, 12, 28, 0.2)",
+    bg: "#080c1c",
+    swatch: "linear-gradient(135deg,#a78bfa,#38bdf8,#f472b6)",
+  },
+  {
+    id: "aurora",
+    label: { en: "Aurora", es: "Aurora" },
+    hue: 160,
+    spread: 50,
+    glow: [100, 255, 200],
+    trail: "rgba(4, 18, 22, 0.22)",
+    bg: "#041216",
+    swatch: "linear-gradient(135deg,#34d399,#22d3ee,#a78bfa)",
+  },
+  {
+    id: "neon",
+    label: { en: "Neon", es: "Neón" },
+    hue: 300,
+    spread: 35,
+    glow: [255, 80, 220],
+    trail: "rgba(12, 4, 24, 0.22)",
+    bg: "#0c0418",
+    swatch: "linear-gradient(135deg,#f0abfc,#e879f9,#22d3ee)",
+  },
+  {
+    id: "sunset",
+    label: { en: "Sunset", es: "Atardecer" },
+    hue: 20,
+    spread: 45,
+    glow: [255, 140, 80],
+    trail: "rgba(22, 8, 10, 0.22)",
+    bg: "#16080a",
+    swatch: "linear-gradient(135deg,#fb923c,#f472b6,#fbbf24)",
+  },
+  {
+    id: "ocean",
+    label: { en: "Ocean", es: "Océano" },
+    hue: 205,
+    spread: 30,
+    glow: [80, 160, 255],
+    trail: "rgba(4, 12, 28, 0.22)",
+    bg: "#040c1c",
+    swatch: "linear-gradient(135deg,#38bdf8,#3b82f6,#6366f1)",
+  },
+  {
+    id: "ember",
+    label: { en: "Ember", es: "Brasa" },
+    hue: 8,
+    spread: 25,
+    glow: [255, 90, 40],
+    trail: "rgba(20, 6, 4, 0.22)",
+    bg: "#140604",
+    swatch: "linear-gradient(135deg,#ef4444,#f97316,#fbbf24)",
+  },
+  {
+    id: "mono",
+    label: { en: "Mono", es: "Mono" },
+    hue: 0,
+    spread: 0,
+    glow: [220, 220, 230],
+    trail: "rgba(10, 10, 14, 0.25)",
+    bg: "#0a0a0e",
+    swatch: "linear-gradient(135deg,#e5e7eb,#9ca3af,#6b7280)",
+  },
+];
+
 interface Particle {
   x: number;
   y: number;
@@ -25,11 +116,14 @@ const labels = {
     placeholder: "e.g. Alex, UtiliHub, good vibes…",
     count: "Particles",
     gravity: "Gravity",
+    mood: "Color mood",
     generate: "Regenerate",
     share: "Share signature",
+    download: "Download PNG",
+    downloading: "Saving…",
     copied: "Link copied!",
     shared: "Shared!",
-    help: "Type anything — particles form a unique orbit. Tap the canvas to add attractors. Share the link so others see your signature.",
+    help: "Type anything — particles form a unique orbit. Tap the canvas to add attractors. Share the link or download a PNG.",
     emptyHint: "Type your name above to generate your visual signature",
     tip: "Tip: shorter names look sharper. Try your nickname.",
   },
@@ -38,11 +132,14 @@ const labels = {
     placeholder: "ej. Sofía, UtiliHub, buenas vibras…",
     count: "Partículas",
     gravity: "Gravedad",
+    mood: "Estado de color",
     generate: "Regenerar",
     share: "Compartir firma",
+    download: "Descargar PNG",
+    downloading: "Guardando…",
     copied: "¡Enlace copiado!",
     shared: "¡Compartido!",
-    help: "Escribí cualquier cosa — las partículas forman una órbita única. Tocá el canvas para sumar atrayentes. Compartí el enlace para que vean tu firma.",
+    help: "Escribí cualquier cosa — las partículas forman una órbita única. Tocá el canvas para sumar atrayentes. Compartí el enlace o descargá un PNG.",
     emptyHint: "Escribí tu nombre arriba para generar tu firma visual",
     tip: "Tip: los nombres cortos se ven más nítidos. Probá tu apodo.",
   },
@@ -57,12 +154,15 @@ function hashString(str: string): number {
   return h >>> 0;
 }
 
+function moodById(id: string | null): Mood {
+  return MOODS.find((m) => m.id === id) || MOODS[0];
+}
+
 export function ParticleSignaturePlayground({
   locale,
   entryMode = false,
 }: {
   locale: Locale;
-  /** Softer defaults + stronger share UX for entry landings */
   entryMode?: boolean;
 }) {
   const t = labels[locale];
@@ -71,23 +171,30 @@ export function ParticleSignaturePlayground({
   const particlesRef = useRef<Particle[]>([]);
   const attractorsRef = useRef<Attractor[]>([]);
   const nextId = useRef(1);
+  const moodRef = useRef<Mood>(MOODS[0]);
   const paramsRef = useRef({ count: 180, gravity: 1.0, text: "" });
   const [text, setText] = useState("");
   const [count, setCount] = useState(entryMode ? 200 : 180);
   const [gravity, setGravity] = useState(entryMode ? 1.15 : 1.0);
+  const [moodId, setMoodId] = useState<MoodId>("seed");
   const [copied, setCopied] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const debounceRef = useRef<number | null>(null);
-  const seededFromUrl = useRef(false);
+
+  useEffect(() => {
+    moodRef.current = moodById(moodId);
+  }, [moodId]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const txt = params.get("sig") || "";
     const c = parseInt(params.get("count") || String(entryMode ? 200 : 180), 10);
     const g = parseFloat(params.get("g") || String(entryMode ? 1.15 : 1.0));
+    const m = params.get("mood");
+    if (m && MOODS.some((x) => x.id === m)) setMoodId(m as MoodId);
     if (txt) {
       setText(txt);
-      seededFromUrl.current = true;
       setHasSignature(true);
     }
     if (!isNaN(c) && c >= 50 && c <= 400) setCount(c);
@@ -95,10 +202,8 @@ export function ParticleSignaturePlayground({
     if (txt) {
       setTimeout(() => generateFromText(txt), 60);
     } else if (entryMode) {
-      // Soft demo so the canvas is never empty on first paint
       setTimeout(() => generateFromText(locale === "es" ? "Firma" : "Signature"), 80);
     }
-    // Focus input on entry landings (desktop)
     if (entryMode && !txt) {
       setTimeout(() => inputRef.current?.focus(), 200);
     }
@@ -108,41 +213,72 @@ export function ParticleSignaturePlayground({
     paramsRef.current = { count, gravity, text };
   }, [count, gravity, text]);
 
-  const generateFromText = useCallback((str: string) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const w = rect.width || 600;
-    const h = rect.height || 420;
-    const seed = hashString(str || "utilihub");
-    const n = 3 + (seed % 5);
-    const attrs: Attractor[] = [];
-    for (let i = 0; i < n; i++) {
-      const angle = (i / n) * Math.PI * 2 + (seed % 100) / 100;
-      const r = Math.min(w, h) * (0.18 + (seed % 50) / 200);
-      attrs.push({
-        x: w / 2 + Math.cos(angle) * r,
-        y: h / 2 + Math.sin(angle) * r,
-        id: nextId.current++,
-      });
-    }
-    attractorsRef.current = attrs;
-    const ps: Particle[] = [];
-    const baseHue = seed % 360;
-    const nParticles = paramsRef.current.count;
-    for (let i = 0; i < nParticles; i++) {
-      ps.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 1.5,
-        vy: (Math.random() - 0.5) * 1.5,
-        size: 1.4 + Math.random() * 2,
-        hue: (baseHue + Math.random() * 40) % 360,
-      });
-    }
-    particlesRef.current = ps;
-    if (str.trim()) setHasSignature(true);
-  }, []);
+  const baseHueFor = useCallback(
+    (str: string, mood: Mood) => {
+      if (mood.id === "seed") return hashString(str || "utilihub") % 360;
+      if (mood.id === "mono") return 0;
+      return mood.hue;
+    },
+    [],
+  );
+
+  const generateFromText = useCallback(
+    (str: string) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width || 600;
+      const h = rect.height || 420;
+      const seed = hashString(str || "utilihub");
+      const n = 3 + (seed % 5);
+      const attrs: Attractor[] = [];
+      for (let i = 0; i < n; i++) {
+        const angle = (i / n) * Math.PI * 2 + (seed % 100) / 100;
+        const r = Math.min(w, h) * (0.18 + (seed % 50) / 200);
+        attrs.push({
+          x: w / 2 + Math.cos(angle) * r,
+          y: h / 2 + Math.sin(angle) * r,
+          id: nextId.current++,
+        });
+      }
+      attractorsRef.current = attrs;
+      const mood = moodRef.current;
+      const baseHue = baseHueFor(str, mood);
+      const spread = mood.spread;
+      const ps: Particle[] = [];
+      const nParticles = paramsRef.current.count;
+      for (let i = 0; i < nParticles; i++) {
+        ps.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5,
+          size: 1.4 + Math.random() * 2,
+          hue:
+            mood.id === "mono"
+              ? 0
+              : (baseHue + (Math.random() - 0.5) * spread + Math.random() * (spread * 0.3)) % 360,
+        });
+      }
+      particlesRef.current = ps;
+      if (str.trim()) setHasSignature(true);
+    },
+    [baseHueFor],
+  );
+
+  const recolorParticles = useCallback(
+    (str: string, mood: Mood) => {
+      const baseHue = baseHueFor(str, mood);
+      const spread = mood.spread;
+      for (const p of particlesRef.current) {
+        p.hue =
+          mood.id === "mono"
+            ? 0
+            : (baseHue + (Math.random() - 0.5) * spread + Math.random() * (spread * 0.3)) % 360;
+      }
+    },
+    [baseHueFor],
+  );
 
   const initParticles = useCallback((n: number, w: number, h: number, baseHue = 200) => {
     const ps: Particle[] = [];
@@ -158,6 +294,15 @@ export function ParticleSignaturePlayground({
     }
     particlesRef.current = ps;
   }, []);
+
+  // Live mood switch without full regenerate
+  useEffect(() => {
+    const mood = moodById(moodId);
+    moodRef.current = mood;
+    if (particlesRef.current.length > 0) {
+      recolorParticles(paramsRef.current.text || text, mood);
+    }
+  }, [moodId, recolorParticles, text]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -200,22 +345,24 @@ export function ParticleSignaturePlayground({
       const { gravity: g } = paramsRef.current;
       const attrs = attractorsRef.current;
       const ps = particlesRef.current;
+      const mood = moodRef.current;
+      const [gr, gg, gb] = mood.glow;
 
-      ctx.fillStyle = "rgba(8, 12, 28, 0.2)";
+      ctx.fillStyle = mood.trail;
       ctx.fillRect(0, 0, w, h);
 
       for (const a of attrs) {
         const grad = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 36);
-        grad.addColorStop(0, "rgba(190, 150, 255, 0.95)");
-        grad.addColorStop(0.35, "rgba(120, 80, 255, 0.35)");
-        grad.addColorStop(1, "rgba(80, 40, 200, 0)");
+        grad.addColorStop(0, `rgba(${gr}, ${gg}, ${gb}, 0.95)`);
+        grad.addColorStop(0.35, `rgba(${gr}, ${gg}, ${gb}, 0.35)`);
+        grad.addColorStop(1, `rgba(${gr}, ${gg}, ${gb}, 0)`);
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.arc(a.x, a.y, 36, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
         ctx.arc(a.x, a.y, 4.5, 0, Math.PI * 2);
-        ctx.fillStyle = "#f5f3ff";
+        ctx.fillStyle = mood.id === "mono" ? "#f3f4f6" : "#f5f3ff";
         ctx.fill();
       }
 
@@ -243,13 +390,23 @@ export function ParticleSignaturePlayground({
         if (p.y < 0) p.y = h;
         if (p.y > h) p.y = 0;
         const speed = Math.hypot(p.vx, p.vy);
-        const hue = (p.hue + speed * 4) % 360;
-        ctx.shadowColor = `hsl(${hue}, 85%, 62%)`;
-        ctx.shadowBlur = 4 + speed * 1.2;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsl(${hue}, 80%, 65%)`;
-        ctx.fill();
+        if (mood.id === "mono") {
+          const light = 55 + Math.min(30, speed * 8);
+          ctx.shadowColor = `hsl(0, 0%, ${light}%)`;
+          ctx.shadowBlur = 3 + speed;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `hsl(0, 0%, ${light + 10}%)`;
+          ctx.fill();
+        } else {
+          const hue = (p.hue + speed * 4) % 360;
+          ctx.shadowColor = `hsl(${hue}, 85%, 62%)`;
+          ctx.shadowBlur = 4 + speed * 1.2;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `hsl(${hue}, 80%, 65%)`;
+          ctx.fill();
+        }
         ctx.shadowBlur = 0;
       }
       raf = requestAnimationFrame(loop);
@@ -291,6 +448,7 @@ export function ParticleSignaturePlayground({
     if (text.trim()) params.set("sig", text.trim());
     params.set("count", String(count));
     params.set("g", gravity.toFixed(2));
+    if (moodId !== "seed") params.set("mood", moodId);
     return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
   };
 
@@ -316,7 +474,7 @@ export function ParticleSignaturePlayground({
         return;
       }
     } catch {
-      /* user cancelled or share failed → fall through to clipboard */
+      /* cancelled */
     }
     try {
       await navigator.clipboard.writeText(url);
@@ -327,9 +485,87 @@ export function ParticleSignaturePlayground({
     }
   };
 
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    setDownloading(true);
+    try {
+      const mood = moodRef.current;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.max(1, Math.floor(rect.width * dpr));
+      const h = Math.max(1, Math.floor(rect.height * dpr));
+      const off = document.createElement("canvas");
+      off.width = w;
+      off.height = h;
+      const ctx = off.getContext("2d");
+      if (!ctx) return;
+
+      // Solid background (no trail translucency)
+      ctx.fillStyle = mood.bg;
+      ctx.fillRect(0, 0, w, h);
+      ctx.scale(dpr, dpr);
+
+      const attrs = attractorsRef.current;
+      const ps = particlesRef.current;
+      const [gr, gg, gb] = mood.glow;
+
+      for (const a of attrs) {
+        const grad = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, 36);
+        grad.addColorStop(0, `rgba(${gr}, ${gg}, ${gb}, 0.95)`);
+        grad.addColorStop(0.35, `rgba(${gr}, ${gg}, ${gb}, 0.4)`);
+        grad.addColorStop(1, `rgba(${gr}, ${gg}, ${gb}, 0)`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, 36, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(a.x, a.y, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = "#f5f3ff";
+        ctx.fill();
+      }
+
+      for (const p of ps) {
+        const speed = Math.hypot(p.vx, p.vy);
+        if (mood.id === "mono") {
+          const light = 60 + Math.min(25, speed * 8);
+          ctx.shadowColor = `hsl(0, 0%, ${light}%)`;
+          ctx.shadowBlur = 6;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `hsl(0, 0%, ${light + 8}%)`;
+          ctx.fill();
+        } else {
+          const hue = (p.hue + speed * 4) % 360;
+          ctx.shadowColor = `hsl(${hue}, 85%, 62%)`;
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `hsl(${hue}, 80%, 65%)`;
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+      }
+
+      // Subtle watermark
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.font = `${Math.max(11, Math.round(12 * dpr))}px system-ui, sans-serif`;
+      ctx.fillStyle = "rgba(255,255,255,0.35)";
+      ctx.textAlign = "right";
+      ctx.fillText("UtiliHub · Firma Visual", w - 12 * dpr, h - 12 * dpr);
+
+      const slug = (text.trim() || "firma").slice(0, 24).replace(/\s+/g, "-").toLowerCase();
+      const a = document.createElement("a");
+      a.download = `firma-visual-${slug}-${moodId}.png`;
+      a.href = off.toDataURL("image/png");
+      a.click();
+    } finally {
+      setTimeout(() => setDownloading(false), 400);
+    }
+  };
+
   return (
     <div className="space-y-4">
-      {/* Input first on entry landings so the path is obvious */}
       {entryMode && (
         <div className="rounded-2xl border border-violet-500/25 bg-gradient-to-br from-violet-50/80 via-white to-fuchsia-50/50 p-4 dark:from-violet-950/40 dark:via-background dark:to-fuchsia-950/20">
           <label className="flex flex-col gap-2 text-sm">
@@ -379,6 +615,37 @@ export function ParticleSignaturePlayground({
             />
           </label>
         )}
+
+        {/* Color presets */}
+        <div className="space-y-2">
+          <p className="text-sm font-medium">{t.mood}</p>
+          <div className="flex flex-wrap gap-2">
+            {MOODS.map((m) => {
+              const active = moodId === m.id;
+              return (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => setMoodId(m.id)}
+                  title={m.label[locale]}
+                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                    active
+                      ? "border-primary bg-primary/10 text-foreground ring-2 ring-primary/30"
+                      : "border-border bg-background text-muted-foreground hover:border-primary/40"
+                  }`}
+                >
+                  <span
+                    className="h-3.5 w-3.5 shrink-0 rounded-full border border-black/10 shadow-inner"
+                    style={{ background: m.swatch }}
+                    aria-hidden
+                  />
+                  {m.label[locale]}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium">
@@ -409,6 +676,7 @@ export function ParticleSignaturePlayground({
             />
           </label>
         </div>
+
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
@@ -422,7 +690,15 @@ export function ParticleSignaturePlayground({
             onClick={share}
             className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm"
           >
-            {copied ? (typeof navigator !== "undefined" && "share" in navigator ? t.shared : t.copied) : t.share}
+            {copied ? t.shared : t.share}
+          </button>
+          <button
+            type="button"
+            onClick={downloadPng}
+            disabled={downloading}
+            className="rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-semibold disabled:opacity-60"
+          >
+            {downloading ? t.downloading : t.download}
           </button>
         </div>
         <p className="text-xs text-muted-foreground">{t.help}</p>
