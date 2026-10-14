@@ -1,5 +1,5 @@
 "use client";
-// Viral Particle Postcard — particles swarm to form typed text
+// Viral Particle Postcard — particles swarm to form typed text (deploy trigger 2026-10-14)
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
