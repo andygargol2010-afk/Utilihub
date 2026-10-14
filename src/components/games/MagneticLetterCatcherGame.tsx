@@ -20,6 +20,8 @@ interface Props {
   locale?: GameLocale;
 }
 
+const BEST_KEY = "utilihub-magnetic-letter-best";
+
 export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
   const es = locale === "es";
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,11 +34,27 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
   const [caught, setCaught] = useState(0);
   const [running, setRunning] = useState(false);
   const [best, setBest] = useState(0);
+  const [flash, setFlash] = useState(0);
   const mouse = useRef({ x: 240, y: 170 });
   const particles = useRef<Particle[]>([]);
   const nextNeeded = useRef(0);
   const anim = useRef<number>(0);
   const lastCombo = useRef(0);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(BEST_KEY);
+      if (stored) setBest(Number(stored) || 0);
+    } catch {}
+  }, []);
+
+  const persistBest = useCallback((v: number) => {
+    setBest((b) => {
+      const next = Math.max(b, v);
+      try { localStorage.setItem(BEST_KEY, String(next)); } catch {}
+      return next;
+    });
+  }, []);
 
   const reset = useCallback(() => {
     const letters = (name.trim() || "A").toUpperCase().slice(0, 10).split("");
@@ -63,6 +81,7 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
     setScore(0);
     setCombo(0);
     setCaught(0);
+    setFlash(0);
     lastCombo.current = 0;
   }, [name, speed, count, mode]);
 
@@ -97,17 +116,17 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
             const pull = pullStrength * (1 - dist / attractRadius);
             p.vx += (mx - p.x) * pull * 0.018;
             p.vy += (my - p.y) * pull * 0.018;
-            // slight swirl
             const ang = Math.atan2(my - p.y, mx - p.x) + 0.4;
             p.vx += Math.cos(ang) * pull * 0.4;
             p.vy += Math.sin(ang) * pull * 0.4;
-            if (dist < 20) {
+            if (dist < 22) {
               p.caught = true;
               setCaught((c) => c + 1);
               const newCombo = lastCombo.current + 1;
               lastCombo.current = newCombo;
               setCombo(newCombo);
               setScore((s) => s + 120 * newCombo);
+              setFlash(12);
               nextNeeded.current += 1;
             }
           }
@@ -121,7 +140,6 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
           if (p.trail.length > 6) p.trail.shift();
         }
 
-        // trail
         if (p.trail.length > 1) {
           ctx.beginPath();
           ctx.strokeStyle = p.caught ? "rgba(52, 211, 153, 0.35)" : "rgba(103, 232, 249, 0.25)";
@@ -147,7 +165,6 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
         ctx.fillText(p.char, p.x, p.y);
       });
 
-      // magnet attractor glow
       const grad = ctx.createRadialGradient(mx, my, 4, mx, my, 28);
       grad.addColorStop(0, "rgba(52, 211, 153, 0.9)");
       grad.addColorStop(1, "rgba(52, 211, 153, 0)");
@@ -161,27 +178,38 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
       ctx.arc(mx, my, 16, 0, Math.PI * 2);
       ctx.stroke();
 
+      if (flash > 0) {
+        ctx.fillStyle = `rgba(52, 211, 153, ${flash / 40})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        setFlash((f) => Math.max(0, f - 1));
+      }
+
       if (running && nextNeeded.current >= (name.trim() || "A").length) {
         setRunning(false);
         setScore((s) => {
           const final = s + 600;
-          setBest((b) => Math.max(b, final));
+          persistBest(final);
           return final;
         });
+        setFlash(20);
       }
 
       anim.current = requestAnimationFrame(loop);
     };
     anim.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(anim.current);
-  }, [running, mode, name]);
+  }, [running, mode, name, flash, persistBest]);
 
   const onPointer = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
     const rect = e.currentTarget.getBoundingClientRect();
     mouse.current = {
       x: ((e.clientX - rect.left) / rect.width) * e.currentTarget.width,
       y: ((e.clientY - rect.top) / rect.height) * e.currentTarget.height,
     };
+    if (e.type === "pointerdown") {
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch {}
+    }
   };
 
   const sharePng = () => {
@@ -195,11 +223,16 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
 
   const shareScore = async () => {
     const text = es
-      ? `Atrapé las letras de "${name}" en Magnetic Letter Catcher. Puntaje: ${score} (mejor ${best}). ¡Probálo en UtiliHub!`
+      ? `Atrapé las letras de "${name}" en Atrapa Letras Magnéticas. Puntaje: ${score} (mejor ${best}). ¡Probálo en UtiliHub!`
       : `Caught the letters of "${name}" in Magnetic Letter Catcher. Score: ${score} (best ${best}). Try it on UtiliHub!`;
+    const url = window.location.href;
     try {
-      await navigator.clipboard.writeText(text);
-      alert(es ? "Puntaje copiado" : "Score copied");
+      if (navigator.share) {
+        await navigator.share({ title: es ? "Atrapa Letras Magnéticas" : "Magnetic Letter Catcher", text, url });
+        return;
+      }
+      await navigator.clipboard.writeText(text + "\n" + url);
+      alert(es ? "Puntaje copiado al portapapeles" : "Score copied to clipboard");
     } catch {
       alert(text);
     }
@@ -244,12 +277,13 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
         height={340}
         onPointerMove={onPointer}
         onPointerDown={onPointer}
-        className="w-full max-w-lg rounded-xl border border-emerald-500/40 bg-slate-950 touch-none cursor-crosshair"
+        className="w-full max-w-lg rounded-xl border border-emerald-500/40 bg-slate-950 touch-none cursor-crosshair select-none"
+        style={{ touchAction: "none" }}
       />
       <p className="text-xs text-slate-400">
         {es
-          ? "Atraé las letras en orden con el mouse o el dedo. Las partículas dejan rastro y se fijan al formar el nombre. Modo Challenge es más rápido."
-          : "Attract the letters in order with mouse or touch. Particles leave trails and lock when forming the name. Challenge mode is faster."}
+          ? "Atraé las letras en orden con el mouse o el dedo. Las partículas dejan rastro y se fijan al formar el nombre. Modo Challenge es más rápido. Mejor puntaje se guarda localmente."
+          : "Attract the letters in order with mouse or touch. Particles leave trails and lock when forming the name. Challenge mode is faster. Best score is saved locally."}
       </p>
     </div>
   );
