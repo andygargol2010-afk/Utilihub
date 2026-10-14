@@ -284,12 +284,29 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
     }
   };
 
-  const sharePng = () => {
+  const sharePng = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    // Draw score overlay on a temporary canvas for nicer share image
+    const temp = document.createElement("canvas");
+    temp.width = canvas.width;
+    temp.height = canvas.height;
+    const tctx = temp.getContext("2d");
+    if (!tctx) return;
+    tctx.drawImage(canvas, 0, 0);
+    tctx.fillStyle = "rgba(6, 10, 24, 0.7)";
+    tctx.fillRect(0, temp.height - 70, temp.width, 70);
+    tctx.fillStyle = "#34d399";
+    tctx.font = "bold 22px system-ui";
+    tctx.textAlign = "center";
+    tctx.fillText(`${es ? "Puntaje" : "Score"}: ${score} · ${es ? "Mejor" : "Best"}: ${best}`, temp.width / 2, temp.height - 40);
+    tctx.fillStyle = "#e2e8f0";
+    tctx.font = "14px system-ui";
+    tctx.fillText(es ? "Atrapa Letras Magnéticas · UtiliHub" : "Magnetic Letter Catcher · UtiliHub", temp.width / 2, temp.height - 16);
+
     const a = document.createElement("a");
-    a.href = canvas.toDataURL("image/png");
-    a.download = `magnetic-${(name || "name").slice(0, 12)}.png`;
+    a.href = temp.toDataURL("image/png");
+    a.download = `magnetic-${(name || "name").slice(0, 12)}-${score}.png`;
     a.click();
   };
 
@@ -300,6 +317,21 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
     const url = window.location.href;
     try {
       if (navigator.share) {
+        // Prefer sharing with file if possible
+        const canvas = canvasRef.current;
+        if (canvas && navigator.canShare && navigator.canShare({ files: [] })) {
+          canvas.toBlob(async (blob) => {
+            if (blob) {
+              const file = new File([blob], `magnetic-${score}.png`, { type: "image/png" });
+              try {
+                await navigator.share({ title: es ? "Atrapa Letras Magnéticas" : "Magnetic Letter Catcher", text, url, files: [file] });
+                return;
+              } catch {}
+            }
+            await navigator.share({ title: es ? "Atrapa Letras Magnéticas" : "Magnetic Letter Catcher", text, url });
+          }, "image/png");
+          return;
+        }
         await navigator.share({
           title: es ? "Atrapa Letras Magnéticas" : "Magnetic Letter Catcher",
           text,
