@@ -1,10 +1,10 @@
 {
   "status": "active",
-  "idea": "Particle Signature Playground. Type a name/phrase to generate unique shareable particle signature with seeded attractors and orbits, tunable count/gravity, EN/ES, mobile, visual glow. Encourages sharing personal signatures for traffic.",
+  "idea": "Shareable Particle Postcard. Arrange 3-6 attractors on canvas, add short message, watch unique particle orbits form a postcard scene, tunable glow/friction, EN/ES labels, shareable URL with state+message, mobile-friendly, high visual payoff. Encourages social sharing for traffic growth.",
   "domain": "growth-traffic-share",
-  "runs_total": 6,
-  "runs_remaining": 4,
-  "acceptance": "Playground page live with text input generating signature attractors, live particles, at least 2 controls, EN/ES, shareable URL with text param, mobile OK, polished, no HouseModeler3D. Deploy READY. Ads intact.",
-  "notes": "IDEATED 2026-10-13 under GROWTH (U=0.37). Shipped initial + hub cards. Polished 2026-10-13: auto-generate on text change (debounce 450ms), better init from URL. Commit f3f08f4. Next: deploy check, further visual polish if needed.",
+  "runs_total": 5,
+  "runs_remaining": 5,
+  "acceptance": "Postcard page live with click/drag attractors, message input, live particles, at least 2 controls, EN/ES, shareable URL (hash or params), mobile OK, polished visual, no HouseModeler3D. Deploy READY. Ads intact.",
+  "notes": "IDEATED 2026-10-13 under GROWTH (U=0.33 <0.50, catalog=playground-experience, method=uniform). Previous Gravity Particles closed. Prefer shareable experiences over calculators.",
   "catalog": "playground-experience (not catalog calculator)"
 }
