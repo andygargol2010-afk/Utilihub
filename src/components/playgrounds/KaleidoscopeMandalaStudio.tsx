@@ -25,6 +25,115 @@ function seeded(n: number) {
   return x - Math.floor(x);
 }
 
+function drawStrokeOnCtx(
+  ctx: CanvasRenderingContext2D,
+  stroke: Stroke,
+  w: number,
+  h: number,
+  scale = 1
+) {
+  if (stroke.points.length < 2) return;
+  const cx = w / 2;
+  const cy = h / 2;
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  const n = stroke.symmetry;
+  for (let k = 0; k < n; k++) {
+    const angle = (Math.PI * 2 * k) / n;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(angle);
+    ctx.translate(-cx, -cy);
+
+    ctx.beginPath();
+    ctx.moveTo(stroke.points[0].x * w, stroke.points[0].y * h);
+    for (let i = 1; i < stroke.points.length; i++) {
+      ctx.lineTo(stroke.points[i].x * w, stroke.points[i].y * h);
+    }
+
+    if (stroke.brush === "neon") {
+      ctx.strokeStyle = stroke.color;
+      ctx.lineWidth = 3.5 * scale;
+      ctx.shadowColor = stroke.color;
+      ctx.shadowBlur = 16 * scale;
+      ctx.stroke();
+      ctx.shadowBlur = 6 * scale;
+      ctx.lineWidth = 1.5 * scale;
+      ctx.stroke();
+    } else if (stroke.brush === "glow") {
+      ctx.strokeStyle = stroke.color;
+      ctx.globalAlpha = 0.45;
+      ctx.lineWidth = 18 * scale;
+      ctx.shadowColor = stroke.color;
+      ctx.shadowBlur = 24 * scale;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.lineWidth = 4 * scale;
+      ctx.shadowBlur = 8 * scale;
+      ctx.stroke();
+    } else if (stroke.brush === "ink") {
+      ctx.strokeStyle = stroke.color;
+      ctx.lineWidth = 2.8 * scale;
+      ctx.shadowBlur = 0;
+      ctx.stroke();
+    } else if (stroke.brush === "sparkle") {
+      ctx.strokeStyle = stroke.color;
+      ctx.lineWidth = 1.2 * scale;
+      ctx.globalAlpha = 0.75;
+      ctx.stroke();
+      ctx.fillStyle = stroke.color;
+      for (let i = 0; i < stroke.points.length; i += 2) {
+        const p = stroke.points[i];
+        const px = p.x * w;
+        const py = p.y * h;
+        const seed = i * 17 + k * 3;
+        const ox = (seeded(seed) - 0.5) * 10 * scale;
+        const oy = (seeded(seed + 1) - 0.5) * 10 * scale;
+        const r = (1.2 + seeded(seed + 2) * 2.2) * scale;
+        ctx.globalAlpha = 0.55 + seeded(seed + 3) * 0.4;
+        ctx.beginPath();
+        ctx.arc(px + ox, py + oy, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    ctx.restore();
+  }
+  ctx.restore();
+}
+
+function paintCanvas(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  strokes: Stroke[],
+  live: Stroke | null,
+  scale = 1
+) {
+  const cx = w / 2;
+  const cy = h / 2;
+  ctx.clearRect(0, 0, w, h);
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.7);
+  bg.addColorStop(0, "#1a0a2e");
+  bg.addColorStop(1, "#0d0518");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.save();
+  ctx.strokeStyle = "rgba(255,255,255,0.06)";
+  ctx.lineWidth = 1 * scale;
+  ctx.beginPath();
+  ctx.arc(cx, cy, Math.min(w, h) * 0.42, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
+
+  strokes.forEach((s) => drawStrokeOnCtx(ctx, s, w, h, scale));
+  if (live && live.points.length > 1) {
+    drawStrokeOnCtx(ctx, live, w, h, scale);
+  }
+}
+
 export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "es" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [symmetry, setSymmetry] = useState(6);
@@ -96,102 +205,9 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const w = canvas.width;
-    const h = canvas.height;
-    const cx = w / 2;
-    const cy = h / 2;
-
-    ctx.clearRect(0, 0, w, h);
-    const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.7);
-    bg.addColorStop(0, "#1a0a2e");
-    bg.addColorStop(1, "#0d0518");
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, w, h);
-
-    // Subtle center guide
-    ctx.save();
-    ctx.strokeStyle = "rgba(255,255,255,0.06)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(cx, cy, Math.min(w, h) * 0.42, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.restore();
-
-    const drawStroke = (stroke: Stroke) => {
-      if (stroke.points.length < 2) return;
-      ctx.save();
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      const n = stroke.symmetry;
-      for (let k = 0; k < n; k++) {
-        const angle = (Math.PI * 2 * k) / n;
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(angle);
-        ctx.translate(-cx, -cy);
-
-        ctx.beginPath();
-        ctx.moveTo(stroke.points[0].x * w, stroke.points[0].y * h);
-        for (let i = 1; i < stroke.points.length; i++) {
-          ctx.lineTo(stroke.points[i].x * w, stroke.points[i].y * h);
-        }
-
-        if (stroke.brush === "neon") {
-          ctx.strokeStyle = stroke.color;
-          ctx.lineWidth = 3.5;
-          ctx.shadowColor = stroke.color;
-          ctx.shadowBlur = 16;
-          ctx.stroke();
-          ctx.shadowBlur = 6;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-        } else if (stroke.brush === "glow") {
-          ctx.strokeStyle = stroke.color;
-          ctx.globalAlpha = 0.45;
-          ctx.lineWidth = 18;
-          ctx.shadowColor = stroke.color;
-          ctx.shadowBlur = 24;
-          ctx.stroke();
-          ctx.globalAlpha = 1;
-          ctx.lineWidth = 4;
-          ctx.shadowBlur = 8;
-          ctx.stroke();
-        } else if (stroke.brush === "ink") {
-          ctx.strokeStyle = stroke.color;
-          ctx.lineWidth = 2.8;
-          ctx.shadowBlur = 0;
-          ctx.stroke();
-        } else if (stroke.brush === "sparkle") {
-          ctx.strokeStyle = stroke.color;
-          ctx.lineWidth = 1.2;
-          ctx.globalAlpha = 0.75;
-          ctx.stroke();
-          ctx.fillStyle = stroke.color;
-          for (let i = 0; i < stroke.points.length; i += 2) {
-            const p = stroke.points[i];
-            const px = p.x * w;
-            const py = p.y * h;
-            const seed = i * 17 + k * 3;
-            const ox = (seeded(seed) - 0.5) * 10;
-            const oy = (seeded(seed + 1) - 0.5) * 10;
-            const r = 1.2 + seeded(seed + 2) * 2.2;
-            ctx.globalAlpha = 0.55 + seeded(seed + 3) * 0.4;
-            ctx.beginPath();
-            ctx.arc(px + ox, py + oy, r, 0, Math.PI * 2);
-            ctx.fill();
-          }
-          ctx.globalAlpha = 1;
-        }
-        ctx.restore();
-      }
-      ctx.restore();
-    };
-
-    strokes.forEach(drawStroke);
-
-    if (current.length > 1) {
-      drawStroke({ points: current, color, brush, symmetry });
-    }
+    const live =
+      current.length > 1 ? { points: current, color, brush, symmetry } : null;
+    paintCanvas(ctx, canvas.width, canvas.height, strokes, live, 1);
   }, [strokes, current, color, brush, symmetry]);
 
   useEffect(() => {
@@ -205,7 +221,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       const parent = canvas.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
-      const size = Math.min(rect.width, Math.min(window.innerWidth - 32, 640));
+      const size = Math.min(rect.width, Math.min(window.innerWidth - 24, 640));
       canvas.width = size;
       canvas.height = size;
       redraw();
@@ -259,23 +275,24 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     const canvas = canvasRef.current;
     if (!canvas) return;
     setExporting(true);
-    // Higher-res export
-    const scale = 2;
-    const off = document.createElement("canvas");
-    off.width = canvas.width * scale;
-    off.height = canvas.height * scale;
-    const octx = off.getContext("2d");
-    if (octx) {
-      octx.scale(scale, scale);
-      // Re-render into offscreen (simplified: drawImage current)
-      octx.drawImage(canvas, 0, 0);
+    try {
+      // True high-res: re-render strokes at 2× (or 3× on large screens) instead of upscaling pixels
+      const scale = canvas.width >= 500 ? 2 : 3;
+      const off = document.createElement("canvas");
+      off.width = canvas.width * scale;
+      off.height = canvas.height * scale;
+      const octx = off.getContext("2d");
+      if (octx) {
+        paintCanvas(octx, off.width, off.height, strokes, null, scale);
+      }
+      const url = off.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `mandala-utilihub-${Date.now()}.png`;
+      a.click();
+    } finally {
+      setTimeout(() => setExporting(false), 500);
     }
-    const url = off.toDataURL("image/png");
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `mandala-utilihub-${Date.now()}.png`;
-    a.click();
-    setTimeout(() => setExporting(false), 600);
   };
 
   const share = async () => {
@@ -301,10 +318,10 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+    <div className="space-y-3 sm:space-y-4">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wide text-muted-foreground">
             {labels.symmetry}
           </span>
           {[4, 6, 8].map((n) => (
@@ -312,7 +329,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
               key={n}
               type="button"
               onClick={() => setSymmetry(n)}
-              className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
+              className={`min-h-[40px] min-w-[40px] rounded-full px-3 py-1.5 text-sm font-medium transition ${
                 symmetry === n
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -323,8 +340,8 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wide text-muted-foreground">
             {labels.brush}
           </span>
           {(["neon", "sparkle", "glow", "ink"] as Brush[]).map((b) => (
@@ -332,7 +349,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
               key={b}
               type="button"
               onClick={() => setBrush(b)}
-              className={`min-h-[36px] rounded-full px-3 py-1.5 text-xs font-medium transition ${
+              className={`min-h-[40px] rounded-full px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-medium transition ${
                 brush === b
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -344,8 +361,8 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wide text-muted-foreground">
           {labels.color}
         </span>
         {PALETTE.map((c) => (
@@ -353,7 +370,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
             key={c}
             type="button"
             onClick={() => setColor(c)}
-            className={`h-8 w-8 rounded-full border-2 transition ${
+            className={`h-9 w-9 sm:h-8 sm:w-8 rounded-full border-2 transition ${
               color === c ? "border-white scale-110 shadow-md" : "border-transparent hover:scale-105"
             }`}
             style={{ backgroundColor: c }}
@@ -366,14 +383,14 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
         <button
           type="button"
           onClick={undo}
-          className="min-h-[40px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
+          className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
         >
           {labels.undo}
         </button>
         <button
           type="button"
           onClick={clear}
-          className="min-h-[40px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
+          className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
         >
           {labels.clear}
         </button>
@@ -381,20 +398,20 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
           type="button"
           onClick={exportPng}
           disabled={exporting}
-          className="min-h-[40px] rounded-full bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:opacity-60"
+          className="min-h-[44px] rounded-full bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:opacity-60"
         >
           {exporting ? "…" : labels.export}
         </button>
         <button
           type="button"
           onClick={share}
-          className="min-h-[40px] rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500"
+          className="min-h-[44px] rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500"
         >
           {labels.share}
         </button>
       </div>
 
-      <div className="relative mx-auto aspect-square max-w-[640px] overflow-hidden rounded-3xl border border-slate-700/40 bg-black shadow-2xl">
+      <div className="relative mx-auto aspect-square max-w-[640px] overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-700/40 bg-black shadow-2xl">
         <canvas
           ref={canvasRef}
           className="h-full w-full touch-none cursor-crosshair"
@@ -405,7 +422,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
           onPointerCancel={onPointerUp}
           onPointerLeave={onPointerUp}
         />
-        <p className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 select-none text-xs text-white/55">
+        <p className="pointer-events-none absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 select-none text-[10px] sm:text-xs text-white/55 px-2 text-center">
           {labels.hint}
         </p>
       </div>
