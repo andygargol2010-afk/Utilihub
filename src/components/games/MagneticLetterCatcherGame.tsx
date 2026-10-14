@@ -13,6 +13,7 @@ type Particle = {
   targetX: number;
   targetY: number;
   order: number;
+  trail: { x: number; y: number }[];
 };
 
 interface Props {
@@ -30,26 +31,30 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
   const [combo, setCombo] = useState(0);
   const [caught, setCaught] = useState(0);
   const [running, setRunning] = useState(false);
-  const mouse = useRef({ x: 200, y: 180 });
+  const [best, setBest] = useState(0);
+  const mouse = useRef({ x: 240, y: 170 });
   const particles = useRef<Particle[]>([]);
   const nextNeeded = useRef(0);
   const anim = useRef<number>(0);
+  const lastCombo = useRef(0);
 
   const reset = useCallback(() => {
     const letters = (name.trim() || "A").toUpperCase().slice(0, 10).split("");
     const pts: Particle[] = [];
+    const modeSpeed = mode === "challenge" ? speed * 1.6 : mode === "zen" ? speed * 0.6 : speed;
     letters.forEach((ch, i) => {
       for (let c = 0; c < count; c++) {
         pts.push({
           char: ch,
-          x: 40 + Math.random() * 320,
-          y: 40 + Math.random() * 240,
-          vx: (Math.random() - 0.5) * speed * 2,
-          vy: (Math.random() - 0.5) * speed * 2,
+          x: 50 + Math.random() * 380,
+          y: 40 + Math.random() * 220,
+          vx: (Math.random() - 0.5) * modeSpeed * 2.4,
+          vy: (Math.random() - 0.5) * modeSpeed * 2.4,
           caught: false,
-          targetX: 60 + i * 36,
-          targetY: 280,
+          targetX: 70 + i * 38,
+          targetY: 300,
           order: i,
+          trail: [],
         });
       }
     });
@@ -58,7 +63,8 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
     setScore(0);
     setCombo(0);
     setCaught(0);
-  }, [name, speed, count]);
+    lastCombo.current = 0;
+  }, [name, speed, count, mode]);
 
   useEffect(() => {
     reset();
@@ -71,71 +77,104 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
     if (!ctx) return;
 
     const loop = () => {
-      if (!running) {
-        anim.current = requestAnimationFrame(loop);
-        return;
-      }
-      ctx.fillStyle = "rgba(8, 12, 28, 0.25)";
+      ctx.fillStyle = "rgba(6, 10, 24, 0.22)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const mx = mouse.current.x;
       const my = mouse.current.y;
+      const attractRadius = mode === "zen" ? 180 : mode === "challenge" ? 100 : 140;
+      const pullStrength = mode === "zen" ? 0.07 : mode === "challenge" ? 0.22 : 0.14;
 
       particles.current.forEach((p) => {
         if (p.caught) {
-          p.x += (p.targetX - p.x) * 0.12;
-          p.y += (p.targetY - p.y) * 0.12;
-        } else {
-          // magnetic attract if next in sequence
+          p.x += (p.targetX - p.x) * 0.14;
+          p.y += (p.targetY - p.y) * 0.14;
+          p.trail.push({ x: p.x, y: p.y });
+          if (p.trail.length > 8) p.trail.shift();
+        } else if (running) {
           const dist = Math.hypot(mx - p.x, my - p.y);
-          if (p.order === nextNeeded.current && dist < 140) {
-            const pull = (mode === "zen" ? 0.08 : 0.15) * (1 - dist / 140);
-            p.vx += (mx - p.x) * pull * 0.02;
-            p.vy += (my - p.y) * pull * 0.02;
-            if (dist < 22) {
+          if (p.order === nextNeeded.current && dist < attractRadius) {
+            const pull = pullStrength * (1 - dist / attractRadius);
+            p.vx += (mx - p.x) * pull * 0.018;
+            p.vy += (my - p.y) * pull * 0.018;
+            // slight swirl
+            const ang = Math.atan2(my - p.y, mx - p.x) + 0.4;
+            p.vx += Math.cos(ang) * pull * 0.4;
+            p.vy += Math.sin(ang) * pull * 0.4;
+            if (dist < 20) {
               p.caught = true;
               setCaught((c) => c + 1);
-              setCombo((cm) => cm + 1);
-              setScore((s) => s + 100 * (combo + 1));
+              const newCombo = lastCombo.current + 1;
+              lastCombo.current = newCombo;
+              setCombo(newCombo);
+              setScore((s) => s + 120 * newCombo);
               nextNeeded.current += 1;
             }
           }
           p.x += p.vx;
           p.y += p.vy;
-          p.vx *= 0.985;
-          p.vy *= 0.985;
-          if (p.x < 10 || p.x > canvas.width - 10) p.vx *= -1;
-          if (p.y < 10 || p.y > canvas.height - 10) p.vy *= -1;
+          p.vx *= mode === "challenge" ? 0.99 : 0.982;
+          p.vy *= mode === "challenge" ? 0.99 : 0.982;
+          if (p.x < 12 || p.x > canvas.width - 12) p.vx *= -1;
+          if (p.y < 12 || p.y > canvas.height - 12) p.vy *= -1;
+          p.trail.push({ x: p.x, y: p.y });
+          if (p.trail.length > 6) p.trail.shift();
+        }
+
+        // trail
+        if (p.trail.length > 1) {
+          ctx.beginPath();
+          ctx.strokeStyle = p.caught ? "rgba(52, 211, 153, 0.35)" : "rgba(103, 232, 249, 0.25)";
+          ctx.lineWidth = 2;
+          ctx.moveTo(p.trail[0].x, p.trail[0].y);
+          for (let t = 1; t < p.trail.length; t++) ctx.lineTo(p.trail[t].x, p.trail[t].y);
+          ctx.stroke();
         }
 
         ctx.beginPath();
-        ctx.fillStyle = p.caught ? "#34d399" : p.order === nextNeeded.current ? "#67e8f9" : "#94a3b8";
-        ctx.arc(p.x, p.y, p.caught ? 14 : 12, 0, Math.PI * 2);
+        ctx.fillStyle = p.caught ? "#34d399" : p.order === nextNeeded.current ? "#67e8f9" : "#64748b";
+        ctx.arc(p.x, p.y, p.caught ? 15 : 13, 0, Math.PI * 2);
         ctx.fill();
+        if (p.order === nextNeeded.current && !p.caught) {
+          ctx.strokeStyle = "rgba(103, 232, 249, 0.7)";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
         ctx.fillStyle = "#0f172a";
-        ctx.font = "bold 14px system-ui";
+        ctx.font = "bold 15px system-ui";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(p.char, p.x, p.y);
       });
 
-      // attractor
+      // magnet attractor glow
+      const grad = ctx.createRadialGradient(mx, my, 4, mx, my, 28);
+      grad.addColorStop(0, "rgba(52, 211, 153, 0.9)");
+      grad.addColorStop(1, "rgba(52, 211, 153, 0)");
+      ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(52, 211, 153, 0.6)";
-      ctx.lineWidth = 2;
-      ctx.arc(mx, my, 18, 0, Math.PI * 2);
+      ctx.arc(mx, my, 28, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.strokeStyle = "#34d399";
+      ctx.lineWidth = 2.5;
+      ctx.arc(mx, my, 16, 0, Math.PI * 2);
       ctx.stroke();
 
-      if (nextNeeded.current >= (name.trim() || "A").length) {
+      if (running && nextNeeded.current >= (name.trim() || "A").length) {
         setRunning(false);
-        setScore((s) => s + 500);
+        setScore((s) => {
+          const final = s + 600;
+          setBest((b) => Math.max(b, final));
+          return final;
+        });
       }
 
       anim.current = requestAnimationFrame(loop);
     };
     anim.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(anim.current);
-  }, [running, mode, combo, name]);
+  }, [running, mode, name]);
 
   const onPointer = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -150,8 +189,20 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
     if (!canvas) return;
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
-    a.download = `magnetic-${name || "name"}.png`;
+    a.download = `magnetic-${(name || "name").slice(0, 12)}.png`;
     a.click();
+  };
+
+  const shareScore = async () => {
+    const text = es
+      ? `Atrapé las letras de "${name}" en Magnetic Letter Catcher. Puntaje: ${score} (mejor ${best}). ¡Probálo en UtiliHub!`
+      : `Caught the letters of "${name}" in Magnetic Letter Catcher. Score: ${score} (best ${best}). Try it on UtiliHub!`;
+    try {
+      await navigator.clipboard.writeText(text);
+      alert(es ? "Puntaje copiado" : "Score copied");
+    } catch {
+      alert(text);
+    }
   };
 
   return (
@@ -160,7 +211,7 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
         <input
           value={name}
           onChange={(e) => setName(e.target.value.slice(0, 10))}
-          className="rounded-lg border bg-slate-900/60 px-3 py-1.5 text-sm text-white"
+          className="rounded-lg border border-slate-700 bg-slate-900/70 px-3 py-1.5 text-sm text-white"
           placeholder={es ? "Tu nombre" : "Your name"}
           maxLength={10}
         />
@@ -169,7 +220,7 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
         <GameSecondaryButton active={mode === "challenge"} onClick={() => setMode("challenge")}>Challenge</GameSecondaryButton>
         <label className="text-xs text-slate-300">
           {es ? "Vel." : "Speed"}
-          <input type="range" min={0.4} max={2.5} step={0.1} value={speed} onChange={(e) => setSpeed(+e.target.value)} className="ml-1 w-20" />
+          <input type="range" min={0.5} max={2.4} step={0.1} value={speed} onChange={(e) => setSpeed(+e.target.value)} className="ml-1 w-20" />
         </label>
         <label className="text-xs text-slate-300">
           {es ? "Copias" : "Copies"}
@@ -179,11 +230,13 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
           {running ? (es ? "Reiniciar" : "Restart") : (es ? "Jugar" : "Play")}
         </GamePrimaryButton>
         <GameSecondaryButton onClick={sharePng}>{es ? "PNG" : "PNG"}</GameSecondaryButton>
+        <GameSecondaryButton onClick={shareScore}>{es ? "Compartir" : "Share"}</GameSecondaryButton>
       </div>
       <div className="flex gap-4 text-sm font-semibold text-emerald-300">
         <span>{es ? "Puntaje" : "Score"}: {score}</span>
         <span>Combo: x{combo}</span>
         <span>{es ? "Atrapadas" : "Caught"}: {caught}</span>
+        <span>{es ? "Mejor" : "Best"}: {best}</span>
       </div>
       <canvas
         ref={canvasRef}
@@ -191,12 +244,12 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
         height={340}
         onPointerMove={onPointer}
         onPointerDown={onPointer}
-        className="w-full max-w-lg rounded-xl border border-emerald-500/30 bg-slate-950 touch-none"
+        className="w-full max-w-lg rounded-xl border border-emerald-500/40 bg-slate-950 touch-none cursor-crosshair"
       />
       <p className="text-xs text-slate-400">
         {es
-          ? "Atraé las letras en orden con el mouse o el dedo. Formá tu nombre y combiná combos."
-          : "Attract the letters in order with mouse or touch. Form your name and chain combos."}
+          ? "Atraé las letras en orden con el mouse o el dedo. Las partículas dejan rastro y se fijan al formar el nombre. Modo Challenge es más rápido."
+          : "Attract the letters in order with mouse or touch. Particles leave trails and lock when forming the name. Challenge mode is faster."}
       </p>
     </div>
   );
