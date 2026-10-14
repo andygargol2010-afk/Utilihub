@@ -116,6 +116,7 @@ import { TOOL_SEO_OVERRIDES_CASE_CONVERTER } from "./tool-seo-overrides-case-con
 import { TOOL_SEO_OVERRIDES_COCINA } from "./tool-seo-overrides-cocina";
 import { TOOL_SEO_OVERRIDES_RANK5 } from "./tool-seo-overrides-rank5";
 import { TOOL_SEO_OVERRIDES_RANK6 } from "./tool-seo-overrides-rank6";
+import { TOOL_SEO_OVERRIDES_RANK7 } from "./tool-seo-overrides-rank7";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -247,6 +248,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_COCINA,
   ...TOOL_SEO_OVERRIDES_RANK5,
   ...TOOL_SEO_OVERRIDES_RANK6,
+  ...TOOL_SEO_OVERRIDES_RANK7,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
