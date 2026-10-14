@@ -7,7 +7,7 @@ type Stroke = {
   brush: Brush;
   symmetry: number;
 };
-type Brush = "neon" | "sparkle" | "glow" | "ink";
+type Brush = "neon" | "sparkle" | "glow" | "ink" | "ribbon";
 
 const PALETTE = [
   "#ff2d95",
@@ -77,6 +77,18 @@ function drawStrokeOnCtx(
       ctx.lineWidth = 2.8 * scale;
       ctx.shadowBlur = 0;
       ctx.stroke();
+    } else if (stroke.brush === "ribbon") {
+      ctx.strokeStyle = stroke.color;
+      ctx.globalAlpha = 0.35;
+      ctx.lineWidth = 14 * scale;
+      ctx.shadowColor = stroke.color;
+      ctx.shadowBlur = 12 * scale;
+      ctx.stroke();
+      ctx.globalAlpha = 0.9;
+      ctx.lineWidth = 3.5 * scale;
+      ctx.shadowBlur = 4 * scale;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
     } else if (stroke.brush === "sparkle") {
       ctx.strokeStyle = stroke.color;
       ctx.lineWidth = 1.2 * scale;
@@ -157,6 +169,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       sparkle: "Sparkle",
       glow: "Soft glow",
       ink: "Ink",
+      ribbon: "Ribbon",
       hint: "Draw with mouse or finger — it blooms in real time",
     },
     es: {
@@ -171,6 +184,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       sparkle: "Chispas",
       glow: "Resplandor suave",
       ink: "Tinta",
+      ribbon: "Cinta",
       hint: "Dibujá con el mouse o el dedo — florece en tiempo real",
     },
   }[locale];
@@ -183,7 +197,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       const b = params.get("brush");
       const c = params.get("color");
       if (s && ["4", "6", "8"].includes(s)) setSymmetry(Number(s));
-      if (b && ["neon", "sparkle", "glow", "ink"].includes(b)) setBrush(b as Brush);
+      if (b && ["neon", "sparkle", "glow", "ink", "ribbon"].includes(b)) setBrush(b as Brush);
       if (c && PALETTE.includes(c)) setColor(c);
     } catch {}
   }, []);
@@ -344,7 +358,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
           <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wide text-muted-foreground">
             {labels.brush}
           </span>
-          {(["neon", "sparkle", "glow", "ink"] as Brush[]).map((b) => (
+          {(["neon", "sparkle", "glow", "ink", "ribbon"] as Brush[]).map((b) => (
             <button
               key={b}
               type="button"
