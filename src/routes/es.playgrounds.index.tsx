@@ -41,6 +41,21 @@ function PlaygroundsHubEs() {
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <Link
+          to="/es/playgrounds/kaleidoscopio-mandala"
+          className="group flex flex-col rounded-3xl border border-fuchsia-900/15 bg-gradient-to-br from-fuchsia-50 via-white to-pink-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-fuchsia-500/50 hover:shadow-lg"
+        >
+          <span className="text-4xl" aria-hidden>
+            🌸
+          </span>
+          <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Estudio</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Estudio de Mandalas Caleidoscópico</span>
+          <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+            Dibujá y mirá la simetría rotacional florecer en mandalas en tiempo real. Neón, chispas, resplandor, tinta. Exportá PNG.
+          </span>
+          <span className="mt-5 text-sm font-bold text-fuchsia-700">Abrir estudio →</span>
+        </Link>
+
+        <Link
           to="/es/playgrounds/particulas"
           className="group flex flex-col rounded-3xl border border-sky-900/15 bg-gradient-to-br from-sky-50 via-white to-cyan-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-sky-500/50 hover:shadow-lg"
         >
