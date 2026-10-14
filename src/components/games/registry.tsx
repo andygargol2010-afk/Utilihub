@@ -27,6 +27,9 @@ const RefractionChallengeGame = lazy(() =>
   import("./RefractionChallengeGame").then((m) => ({ default: m.RefractionChallengeGame })),
 );
 const LightsOutGame = lazy(() => import("./LightsOutGame").then((m) => ({ default: m.LightsOutGame })));
+const MagneticLetterCatcherGame = lazy(() =>
+  import("./MagneticLetterCatcherGame").then((m) => ({ default: m.MagneticLetterCatcherGame })),
+);
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -55,6 +58,8 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "desafio-refraccion": RefractionChallengeGame,
   "lights-out": LightsOutGame,
   "luces-fuera": LightsOutGame,
+  "magnetic-letter-catcher": MagneticLetterCatcherGame,
+  "atrapa-letras-magneticas": MagneticLetterCatcherGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {
