@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ParticlePostcard } from "@/components/playgrounds/ParticlePostcard";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
 const title = "Particle Postcard | UtiliHub";
 const description = cleanDescription(
@@ -45,12 +46,8 @@ function PostcardPage() {
         </p>
       </header>
       <ParticlePostcard locale="en" />
-      <section className="mt-10">
-        <h2 className="text-lg font-bold">Keep exploring</h2>
-        <Link to="/experiences" className="mt-3 inline-block text-sm font-bold text-violet-700 hover:underline">
-          Experiences hub →
-        </Link>
-      </section>
+
+      <PlaygroundNextStep currentId="postcard" locale="en" />
       <div className="mt-10">
         <AdsterraBanner />
       </div>
