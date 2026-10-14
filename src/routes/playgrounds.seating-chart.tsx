@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SeatingChartStudio } from "@/components/playgrounds/SeatingChartStudio";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
 const title = "Event Seating Chart Studio | UtiliHub";
 const description = cleanDescription(
@@ -42,6 +43,8 @@ function SeatingChartPageEn() {
         </p>
       </header>
       <SeatingChartStudio locale="en" />
+
+      <PlaygroundNextStep currentId="seating-chart" locale="en" />
       <div className="mt-8">
         <AdsterraBanner />
       </div>
