@@ -174,6 +174,19 @@ function ExperiencesHubEs() {
           <span className="mt-5 text-sm font-bold text-sky-700">Crear firma →</span>
         </Link>
 
+        <Link
+          to="/es/constellation"
+          className="group flex flex-col rounded-3xl border border-indigo-900/15 bg-gradient-to-br from-indigo-50 via-white to-violet-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-indigo-500/50 hover:shadow-lg"
+        >
+          <span className="text-4xl" aria-hidden>✨</span>
+          <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Viral</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Mapa de Constelación</span>
+          <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+            Escribí un nombre. Las estrellas forman las letras como una constelación viva. Pozos de gravedad deforman trayectorias y dibujan líneas temporales.
+          </span>
+          <span className="mt-5 text-sm font-bold text-indigo-700">Crear mapa →</span>
+        </Link>
+
         <div className="flex flex-col rounded-3xl border border-sky-900/15 bg-gradient-to-br from-sky-50 via-white to-cyan-50/80 p-5 shadow-sm">
           <ParticleMini />
           <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Playground</span>
