@@ -4,13 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
 /**
- * Ad scripts DISABLED (2026-10-14).
- * Adsterra invoke.js was opening third-party redirects / popunders (e.g. contendvictor.com
- * fake prize surveys) on mobile after consent. Social bar was already removed.
- * Keep the reserved 728×90 slot so layout/CLS stays stable. Re-enable only with a
- * placement type that cannot navigate the top window (strict iframe banner).
+ * Banner scripts ON (experiment 2026-10-14).
+ * AdsterraSocialBar remains deleted — test whether popunders correlate with social bar
+ * absence or with Adsterra inventory alone. Set false again if redirects return.
  */
-const ADS_SCRIPTS_ENABLED = false;
+const ADS_SCRIPTS_ENABLED = true;
 
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
