@@ -1,5 +1,5 @@
 "use client";
-// Viral Particle Postcard — particles swarm to form typed text (cleaner/faster 2026-10-14)
+// Viral Particle Postcard — particles swarm to form typed text (legibility pass 2026-10-14)
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
@@ -16,11 +16,11 @@ interface Mood {
 }
 
 const MOODS: Mood[] = [
-  { id: "aurora", label: { en: "Aurora", es: "Aurora" }, hue: 160, glow: "rgba(100,255,200,0.8)", bg: "#041216", trail: "rgba(4,18,22,0.22)" },
-  { id: "neon", label: { en: "Neon", es: "Neón" }, hue: 300, glow: "rgba(255,80,220,0.8)", bg: "#0c0418", trail: "rgba(12,4,24,0.22)" },
-  { id: "sunset", label: { en: "Sunset", es: "Atardecer" }, hue: 20, glow: "rgba(255,140,80,0.8)", bg: "#16080a", trail: "rgba(22,8,10,0.22)" },
-  { id: "ocean", label: { en: "Ocean", es: "Océano" }, hue: 205, glow: "rgba(80,160,255,0.8)", bg: "#040c1c", trail: "rgba(4,12,28,0.22)" },
-  { id: "ember", label: { en: "Ember", es: "Brasa" }, hue: 8, glow: "rgba(255,90,40,0.8)", bg: "#140604", trail: "rgba(20,6,4,0.22)" },
+  { id: "aurora", label: { en: "Aurora", es: "Aurora" }, hue: 160, glow: "rgba(100,255,200,0.8)", bg: "#041216", trail: "rgba(4,18,22,0.35)" },
+  { id: "neon", label: { en: "Neon", es: "Neón" }, hue: 300, glow: "rgba(255,80,220,0.8)", bg: "#0c0418", trail: "rgba(12,4,24,0.35)" },
+  { id: "sunset", label: { en: "Sunset", es: "Atardecer" }, hue: 20, glow: "rgba(255,140,80,0.8)", bg: "#16080a", trail: "rgba(22,8,10,0.35)" },
+  { id: "ocean", label: { en: "Ocean", es: "Océano" }, hue: 205, glow: "rgba(80,160,255,0.8)", bg: "#040c1c", trail: "rgba(4,12,28,0.35)" },
+  { id: "ember", label: { en: "Ember", es: "Brasa" }, hue: 8, glow: "rgba(255,90,40,0.8)", bg: "#140604", trail: "rgba(20,6,4,0.35)" },
 ];
 
 interface Particle {
@@ -70,6 +70,7 @@ const labels = {
   },
 };
 
+/** Dense glyph sample so short words stay readable (step 1–2, high maxPts). */
 function sampleTextTargets(
   text: string,
   w: number,
@@ -88,27 +89,33 @@ function sampleTextTargets(
   ctx.fillStyle = "#fff";
   const label = text.trim().slice(0, MAX_CHARS);
   const len = Math.max(1, label.length);
-  const fontSize = Math.min(H * 0.48, Math.max(36, (W * 0.9) / (len * 0.58)));
+  // Larger type for ≤10 chars so strokes stay thick after sampling
+  const fontSize = Math.min(H * 0.52, Math.max(42, (W * 0.92) / (len * 0.55)));
   ctx.font = `900 ${fontSize}px system-ui, "Segoe UI", sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   const cx = W / 2;
   const cy = H / 2;
-  ctx.fillText(label, cx, cy);
-  ctx.fillText(label, cx + 0.7, cy);
-  ctx.fillText(label, cx, cy + 0.7);
+  // Thicker strokes: draw several slight offsets
+  for (const ox of [-1.2, -0.4, 0.4, 1.2, 0]) {
+    for (const oy of [-0.8, 0, 0.8]) {
+      ctx.fillText(label, cx + ox, cy + oy);
+    }
+  }
   const data = ctx.getImageData(0, 0, W, H).data;
-  const t = Math.max(0, Math.min(1, (density - 60) / 260));
-  const step = Math.max(2, Math.round(4 - t * 2));
+  // Always dense grid for legibility (density only raises max points)
+  const step = density >= 220 ? 1 : density >= 140 ? 2 : 2;
   const raw: { x: number; y: number }[] = [];
   for (let y = 0; y < H; y += step) {
     for (let x = 0; x < W; x += step) {
       const i = (y * W + x) * 4;
-      if (data[i] > 40) raw.push({ x, y });
+      // Mid threshold: skip pure anti-alias fringe, keep solid stroke
+      if (data[i] > 90) raw.push({ x, y });
     }
   }
   if (raw.length === 0) return raw;
-  const maxPts = Math.min(480, Math.max(100, Math.floor(density * 1.8)));
+  // Cap high so long paths still fill; short text usually under this
+  const maxPts = Math.min(900, Math.max(180, Math.floor(density * 2.4)));
   if (raw.length <= maxPts) return raw;
   const out: { x: number; y: number }[] = [];
   const stride = raw.length / maxPts;
@@ -123,10 +130,10 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const targetsRef = useRef<{ x: number; y: number }[]>([]);
-  const paramsRef = useRef({ density: 180, strength: 1.2, text: "", mood: MOODS[0] });
+  const paramsRef = useRef({ density: 220, strength: 1.4, text: "", mood: MOODS[0] });
   const [text, setText] = useState("UtiliHub".slice(0, MAX_CHARS));
-  const [density, setDensity] = useState(180);
-  const [strength, setStrength] = useState(1.2);
+  const [density, setDensity] = useState(220);
+  const [strength, setStrength] = useState(1.4);
   const [moodId, setMoodId] = useState<MoodId>("aurora");
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
@@ -147,7 +154,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
     const h = rect.height || 360;
     const targets = sampleTextTargets(text, w, h, density);
     targetsRef.current = targets;
-    const n = targets.length > 0 ? targets.length : Math.min(density, 100);
+    const n = targets.length > 0 ? targets.length : Math.min(density, 120);
     const ps: Particle[] = [];
     const baseHue = mood.hue;
     for (let i = 0; i < n; i++) {
@@ -158,12 +165,13 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
       ps.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 3,
-        vy: (Math.random() - 0.5) * 3,
+        vx: (Math.random() - 0.5) * 2.5,
+        vy: (Math.random() - 0.5) * 2.5,
         tx: tgt.x,
         ty: tgt.y,
-        size: 1.5 + Math.random() * 1.6,
-        hue: (baseHue + (Math.random() - 0.5) * 36 + 360) % 360,
+        // Smaller base size → sharper letter once locked
+        size: 1.15 + Math.random() * 0.9,
+        hue: (baseHue + (Math.random() - 0.5) * 28 + 360) % 360,
         settled: false,
       });
     }
@@ -173,8 +181,8 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const msg = (params.get("msg") || "").slice(0, MAX_CHARS);
-    const d = parseInt(params.get("d") || "180", 10);
-    const s = parseFloat(params.get("s") || "1.2");
+    const d = parseInt(params.get("d") || "220", 10);
+    const s = parseFloat(params.get("s") || "1.4");
     const m = params.get("mood") as MoodId | null;
     if (msg) setText(msg);
     if (!isNaN(d) && d >= 40 && d <= 400) setDensity(d);
@@ -184,7 +192,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = window.setTimeout(regenerate, 180);
+    debounceRef.current = window.setTimeout(regenerate, 160);
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
@@ -215,6 +223,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
       const { strength: str, mood: md } = paramsRef.current;
       const ps = particlesRef.current;
 
+      // Faster trail clear → less muddy letters
       ctx.fillStyle = md.trail;
       ctx.fillRect(0, 0, w, h);
 
@@ -223,22 +232,21 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
         const dy = p.ty - p.y;
         const dist = Math.hypot(dx, dy) || 1;
 
-        if (p.settled || dist < 3.5) {
-          // Snap + soft lock for clean letter edges
-          p.x = p.tx + dx * 0.15;
-          p.y = p.ty + dy * 0.15;
-          p.vx *= 0.55;
-          p.vy *= 0.55;
-          p.settled = dist < 2.2;
+        if (p.settled || dist < 2.5) {
+          // Hard lock on target pixel — no residual jitter
+          p.x = p.tx;
+          p.y = p.ty;
+          p.vx = 0;
+          p.vy = 0;
+          p.settled = true;
         } else {
-          // Stronger seek than before so letters form quickly
-          const seek = Math.min(0.85, (0.22 + dist * 0.003) * str);
+          const seek = Math.min(0.95, (0.28 + dist * 0.0035) * str);
           p.vx += (dx / dist) * seek;
           p.vy += (dy / dist) * seek;
-          p.vx *= 0.86;
-          p.vy *= 0.86;
+          p.vx *= 0.84;
+          p.vy *= 0.84;
           const spd = Math.hypot(p.vx, p.vy);
-          const cap = 9 + str * 2;
+          const cap = 10 + str * 2.2;
           if (spd > cap) {
             p.vx = (p.vx / spd) * cap;
             p.vy = (p.vy / spd) * cap;
@@ -248,14 +256,23 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
         }
 
         const speed = Math.hypot(p.vx, p.vy);
-        const hue = (p.hue + speed * 2) % 360;
-        ctx.shadowColor = `hsl(${hue}, 80%, 60%)`;
-        ctx.shadowBlur = p.settled ? 8 : 5 + speed * 0.5;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * (p.settled ? 1.12 : 1), 0, Math.PI * 2);
-        ctx.fillStyle = `hsl(${hue}, 78%, 62%)`;
-        ctx.fill();
-        ctx.shadowBlur = 0;
+        const hue = (p.hue + speed * 1.5) % 360;
+        // Settled: sharp disc, almost no blur; flying: soft glow ok
+        if (p.settled) {
+          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * 0.95, 0, Math.PI * 2);
+          ctx.fillStyle = `hsl(${hue}, 82%, 64%)`;
+          ctx.fill();
+        } else {
+          ctx.shadowColor = `hsl(${hue}, 80%, 55%)`;
+          ctx.shadowBlur = 4 + speed * 0.35;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `hsl(${hue}, 78%, 62%)`;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
       }
       raf = requestAnimationFrame(loop);
     };
@@ -377,7 +394,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
       <div className="grid gap-4 sm:grid-cols-3">
         <label className="flex flex-col gap-1 text-xs font-medium">
           {t.density}
-          <input type="range" min={60} max={320} value={density} onChange={(e) => setDensity(+e.target.value)} className="accent-violet-500" />
+          <input type="range" min={80} max={360} value={density} onChange={(e) => setDensity(+e.target.value)} className="accent-violet-500" />
           <span className="text-muted-foreground">{density}</span>
         </label>
         <label className="flex flex-col gap-1 text-xs font-medium">
