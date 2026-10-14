@@ -5,7 +5,7 @@ import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Firma Visual | UtiliHub";
 const description = cleanDescription(
-  "Escribí tu nombre y generá una firma visual única de partículas. Compartible, instantánea y lista para explorar más experiencias en UtiliHub.",
+  "Escribí tu nombre y generá una firma visual única de partículas. Compartible al instante. Después explorá más experiencias en UtiliHub.",
 );
 
 export const Route = createFileRoute("/es/firma-visual")({
@@ -21,6 +21,9 @@ export const Route = createFileRoute("/es/firma-visual")({
       { property: "og:url", content: absoluteUrl("/es/firma-visual") },
       { property: "og:site_name", content: SITE_NAME },
       { property: "og:image", content: ogImage() },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
     ],
     links: [
       { rel: "canonical", href: absoluteUrl("/es/firma-visual") },
@@ -35,32 +38,62 @@ export const Route = createFileRoute("/es/firma-visual")({
 function FirmaVisualPage() {
   return (
     <div className="container-page py-8 sm:py-10">
-      <header className="mb-6 text-center sm:text-left">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
-          Experiencia visual
+      <header className="mb-6 max-w-2xl">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">
+          Experiencia · Compartible
         </p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
-          Firma Visual
-        </h1>
-        <p className="mt-3 max-w-2xl text-muted-foreground">
-          Escribí tu nombre o una frase y mirá cómo nace una firma única de partículas.
-          Compartila con un enlace o seguí explorando más experiencias.
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Firma Visual</h1>
+        <p className="mt-3 text-muted-foreground">
+          Tu nombre se convierte en una órbita de partículas única. Escribí, mirá, compartí — y si te engancha,
+          hay más experiencias abajo.
         </p>
+        <ol className="mt-4 flex flex-wrap gap-3 text-xs font-medium text-slate-600">
+          <li className="rounded-full bg-violet-100 px-3 py-1">1 · Escribí</li>
+          <li className="rounded-full bg-violet-100 px-3 py-1">2 · Mirás la órbita</li>
+          <li className="rounded-full bg-violet-100 px-3 py-1">3 · Compartís el enlace</li>
+        </ol>
       </header>
 
-      <ParticleSignaturePlayground locale="es" />
+      <ParticleSignaturePlayground locale="es" entryMode />
 
-      <div className="mt-8 flex flex-col items-center gap-3 sm:items-start">
-        <Link
-          to="/es/experiences"
-          className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-bold text-primary-foreground shadow-sm transition hover:opacity-90"
-        >
-          Explorar más experiencias →
-        </Link>
-        <p className="text-xs text-muted-foreground">
-          Playgrounds, simuladores, juegos y estudios interactivos.
+      <section className="mt-10 space-y-4">
+        <h2 className="text-lg font-bold tracking-tight">Seguí explorando</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Link
+            to="/es/experiences"
+            className="group rounded-2xl border border-violet-900/15 bg-gradient-to-br from-violet-50 via-white to-fuchsia-50/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-violet-400/40 hover:shadow-md"
+          >
+            <span className="text-2xl" aria-hidden>
+              ✨
+            </span>
+            <p className="mt-2 text-base font-bold text-slate-900">Hub de Experiencias</p>
+            <p className="mt-1 text-sm text-slate-600">Playgrounds, simuladores, juegos y estudios.</p>
+            <span className="mt-3 inline-block text-sm font-bold text-violet-700 group-hover:underline">
+              Abrir hub →
+            </span>
+          </Link>
+          <Link
+            to="/es/playgrounds/particulas-gravedad"
+            className="group rounded-2xl border border-amber-900/15 bg-gradient-to-br from-amber-50 via-white to-orange-50/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-400/40 hover:shadow-md"
+          >
+            <span className="text-2xl" aria-hidden>
+              🌌
+            </span>
+            <p className="mt-2 text-base font-bold text-slate-900">Partículas de gravedad</p>
+            <p className="mt-1 text-sm text-slate-600">Colocá atrayentes y mirá las órbitas en vivo.</p>
+            <span className="mt-3 inline-block text-sm font-bold text-amber-700 group-hover:underline">
+              Abrir playground →
+            </span>
+          </Link>
+        </div>
+        <p className="text-center text-sm text-muted-foreground sm:text-left">
+          O volvé al{" "}
+          <Link to="/es" className="font-semibold text-primary hover:underline">
+            inicio de UtiliHub
+          </Link>
+          .
         </p>
-      </div>
+      </section>
 
       <div className="mt-10">
         <AdsterraBanner />
