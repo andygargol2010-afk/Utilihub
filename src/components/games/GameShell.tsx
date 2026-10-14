@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import type { GameDef, GameLocale } from "@/lib/games/catalog";
-import { gameName, gamePath, gameSummary, tagLabel } from "@/lib/games/catalog";
+import { gameName, gamePath, gameSummary, tagLabel, relatedGames } from "@/lib/games/catalog";
 
 type Props = {
   game: GameDef;
@@ -16,6 +17,8 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
   const es = locale === "es";
   const hub = es ? "/es/juegos" : "/games";
   const title = gameName(game, locale);
+  const related = relatedGames(game);
+  const next = related[0];
 
   return (
     <div className="games-skin min-h-[70vh]">
@@ -83,6 +86,53 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
             ? "Todo corre en tu navegador. No hace falta cuenta."
             : "Runs entirely in your browser. No account needed."}
         </p>
+
+        {next && (
+          <section
+            className="mt-6 rounded-2xl border border-emerald-500/25 bg-emerald-500/5 p-4 sm:p-5"
+            aria-labelledby={`game-next-${game.slug}`}
+          >
+            <p className="text-xs font-bold uppercase tracking-[.14em] text-emerald-700">
+              {es ? "Siguiente juego recomendado" : "Recommended next game"}
+            </p>
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <h2 id={`game-next-${game.slug}`} className="text-base font-black text-slate-900">
+                  {es ? (
+                    <>
+                      Seguí con <span className="text-emerald-700">{gameName(next, locale)}</span>
+                    </>
+                  ) : (
+                    <>
+                      Continue with <span className="text-emerald-700">{gameName(next, locale)}</span>
+                    </>
+                  )}
+                </h2>
+                <p className="mt-1 text-sm text-slate-600">{gameSummary(next, locale)}</p>
+              </div>
+              <Link
+                to={gamePath(next, locale)}
+                className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-500"
+              >
+                {es ? "Jugar siguiente" : "Play next"}
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </div>
+            <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+              {related.map((g) => (
+                <li key={g.slug}>
+                  <Link
+                    to={gamePath(g, locale)}
+                    className="flex min-h-11 items-center gap-2 rounded-xl border border-slate-200/80 bg-white/90 px-3 py-2 text-sm font-semibold text-slate-800 hover:border-emerald-400/50"
+                  >
+                    <span aria-hidden>{g.emoji}</span>
+                    <span className="truncate">{gameName(g, locale)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
     </div>
   );
