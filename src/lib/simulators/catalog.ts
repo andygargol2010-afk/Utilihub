@@ -205,6 +205,32 @@ export const SIMULATORS: readonly SimDef[] = [
   },
 ] as const;
 
+/** Next-step sims for bounce reduction (first = primary). Keys = EN slug. */
+export const SIM_JOURNEYS: Record<string, string[]> = {
+  pendulum: ["projectile-motion", "gravity-sandbox", "standing-wave", "molecular-motion"],
+  "projectile-motion": ["pendulum", "gravity-sandbox", "optics-bench", "standing-wave"],
+  "gravity-sandbox": ["pendulum", "projectile-motion", "molecular-motion", "optics-bench"],
+  "molecular-motion": ["gravity-sandbox", "pendulum", "optics-bench", "dc-circuit"],
+  "optics-bench": ["wave-interference", "standing-wave", "pendulum", "gravity-sandbox"],
+  "standing-wave": ["wave-interference", "optics-bench", "pendulum", "projectile-motion"],
+  "wave-interference": ["standing-wave", "optics-bench", "pendulum", "gravity-sandbox"],
+  "dc-circuit": ["molecular-motion", "optics-bench", "pendulum", "gravity-sandbox"],
+  ecosystem: ["sir-epidemic", "galton-board", "market-equilibrium", "molecular-motion"],
+  "sir-epidemic": ["ecosystem", "galton-board", "market-equilibrium", "molecular-motion"],
+  "market-equilibrium": ["galton-board", "sir-epidemic", "ecosystem", "gravity-sandbox"],
+  "galton-board": ["market-equilibrium", "sir-epidemic", "ecosystem", "pendulum"],
+};
+
+export function relatedSims(current: Pick<SimDef, "slug">): SimDef[] {
+  const curated = (SIM_JOURNEYS[current.slug] ?? [])
+    .map((slug) => SIMULATORS.find((s) => s.slug === slug))
+    .filter((s): s is SimDef => Boolean(s));
+  if (curated.length >= 4) return curated.slice(0, 4);
+  const used = new Set([current.slug, ...curated.map((s) => s.slug)]);
+  const rest = SIMULATORS.filter((s) => !used.has(s.slug));
+  return [...curated, ...rest].slice(0, 4);
+}
+
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
   const key = slug.toLowerCase();
   return SIMULATORS.find(
