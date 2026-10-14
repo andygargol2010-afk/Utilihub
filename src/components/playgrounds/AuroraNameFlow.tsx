@@ -1,105 +1,279 @@
-import { useEffect, useRef, useState } from "react";
+"use client";
+// Aurora Name Flow — full restore pending; export unblocks build
+import { useEffect, useRef, useState, useCallback } from "react";
 
-interface Props {
-  locale?: "en" | "es";
+type Locale = "en" | "es";
+type MoodId = "arctic" | "tropical" | "cosmic" | "dawn-glow";
+
+interface Mood {
+  id: MoodId;
+  label: { en: string; es: string };
+  bg: string;
+  particle: string;
+  ribbon: string;
+  glow: string;
 }
 
-export function AuroraNameFlow({ locale = "en" }: Props) {
+const MOODS: Mood[] = [
+  { id: "arctic", label: { en: "Arctic", es: "Ártico" }, bg: "#041018", particle: "#7ef9ff", ribbon: "rgba(80,220,255,0.55)", glow: "rgba(100,230,255,0.8)" },
+  { id: "tropical", label: { en: "Tropical", es: "Tropical" }, bg: "#0a1814", particle: "#ff6ad5", ribbon: "rgba(255,100,180,0.5)", glow: "rgba(255,120,200,0.75)" },
+  { id: "cosmic", label: { en: "Cosmic", es: "Cósmico" }, bg: "#08060e", particle: "#c084fc", ribbon: "rgba(160,100,255,0.5)", glow: "rgba(140,80,255,0.8)" },
+  { id: "dawn-glow", label: { en: "Dawn Glow", es: "Resplandor de amanecer" }, bg: "#1a0e0a", particle: "#ffb347", ribbon: "rgba(255,160,80,0.55)", glow: "rgba(255,140,60,0.75)" },
+];
+
+interface Particle {
+  x: number; y: number; vx: number; vy: number; tx: number; ty: number; size: number;
+  trail: { x: number; y: number }[]; hueShift: number;
+}
+
+const MAX_CHARS = 10;
+
+const labels = {
+  en: {
+    message: "Your name or phrase", placeholder: "Aurora…", density: "Particle density", speed: "Flow speed", mood: "Aurora mood",
+    shareX: "Share on X", shareWA: "WhatsApp", shareNative: "Share", copy: "Copy link", download: "Download PNG",
+    copied: "Copied!", shared: "Shared!",
+    help: "Type up to 10 characters. Particles form the letters in a flowing aurora.",
+  },
+  es: {
+    message: "Tu nombre o frase", placeholder: "Aurora…", density: "Densidad de partículas", speed: "Velocidad de flujo", mood: "Ánimo de aurora",
+    shareX: "Compartir en X", shareWA: "WhatsApp", shareNative: "Compartir", copy: "Copiar enlace", download: "Descargar PNG",
+    copied: "¡Copiado!", shared: "¡Compartido!",
+    help: "Hasta 10 caracteres. Las partículas forman las letras en una aurora fluida.",
+  },
+};
+
+function sampleTextTargets(text: string, w: number, h: number): { x: number; y: number }[] {
+  const off = document.createElement("canvas");
+  off.width = Math.floor(w); off.height = Math.floor(h);
+  const ctx = off.getContext("2d");
+  if (!ctx || !text.trim()) return [];
+  ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = "#fff";
+  ctx.font = `bold ${Math.min(h * 0.38, 90)}px system-ui, sans-serif`;
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(text.trim().slice(0, MAX_CHARS), w / 2, h / 2);
+  const data = ctx.getImageData(0, 0, w, h).data;
+  const targets: { x: number; y: number }[] = [];
+  const step = 5;
+  for (let y = 0; y < h; y += step) {
+    for (let x = 0; x < w; x += step) {
+      const i = (y * w + x) * 4;
+      if (data[i] > 120) targets.push({ x, y });
+    }
+  }
+  return targets;
+}
+
+export function AuroraNameFlow({ locale }: { locale: Locale }) {
+  const t = labels[locale];
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [name, setName] = useState(locale === "es" ? "Aurora" : "Aurora");
-  const [density, setDensity] = useState(40);
-  const [speed, setSpeed] = useState(1);
+  const particlesRef = useRef<Particle[]>([]);
+  const pointerRef = useRef({ x: -999, y: -999, active: false });
+  const paramsRef = useRef({ density: 140, speed: 0.6, text: "", mood: MOODS[0] });
+  const [text, setText] = useState("UtiliHub".slice(0, MAX_CHARS));
+  const [density, setDensity] = useState(140);
+  const [speed, setSpeed] = useState(0.6);
+  const [moodId, setMoodId] = useState<MoodId>("arctic");
+  const [copied, setCopied] = useState(false);
+  const [shared, setShared] = useState(false);
+  const debounceRef = useRef<number | null>(null);
+  const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
+  const mood = MOODS.find((m) => m.id === moodId) || MOODS[0];
+
+  useEffect(() => { paramsRef.current = { density, speed, text, mood }; }, [density, speed, text, mood]);
+
+  const regenerate = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const w = rect.width || 600;
+    const h = rect.height || 380;
+    const targets = sampleTextTargets(text, w, h);
+    const n = Math.min(density, Math.max(50, targets.length || 70));
+    const particles: Particle[] = [];
+    for (let i = 0; i < n; i++) {
+      const tgt = targets[i % Math.max(1, targets.length)] || { x: w / 2, y: h / 2 };
+      particles.push({
+        x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 1.2, vy: (Math.random() - 0.5) * 1.2,
+        tx: tgt.x, ty: tgt.y, size: 1.4 + Math.random() * 1.6, trail: [], hueShift: Math.random() * 40 - 20,
+      });
+    }
+    particlesRef.current = particles;
+  }, [text, density, mood]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const msg = (params.get("msg") || "").slice(0, MAX_CHARS);
+    const d = parseInt(params.get("d") || "140", 10);
+    const s = parseFloat(params.get("s") || "0.6");
+    const m = params.get("mood") as MoodId | null;
+    if (msg) setText(msg);
+    if (!isNaN(d) && d >= 50 && d <= 250) setDensity(d);
+    if (!isNaN(s) && s >= 0.2 && s <= 1.5) setSpeed(s);
+    if (m && MOODS.some((x) => x.id === m)) setMoodId(m);
+  }, []);
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = window.setTimeout(regenerate, 280);
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, [text, density, moodId, regenerate]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
-    let animId: number;
-    const particles: { x: number; y: number; vx: number; vy: number; hue: number }[] = [];
-
+    let raf = 0;
     const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener("resize", resize);
-
-    const spawn = () => {
-      particles.length = 0;
-      for (let i = 0; i < density; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * speed,
-          vy: (Math.random() - 0.5) * speed * 0.5,
-          hue: 180 + Math.random() * 60,
-        });
+    setTimeout(regenerate, 60);
+    const onPointer = (e: PointerEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      pointerRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top, active: true };
+    };
+    const onLeave = () => { pointerRef.current.active = false; };
+    canvas.addEventListener("pointermove", onPointer);
+    canvas.addEventListener("pointerdown", onPointer);
+    canvas.addEventListener("pointerleave", onLeave);
+    canvas.addEventListener("pointerup", onLeave);
+    const loop = () => {
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width, h = rect.height;
+      const { speed: spd, mood: md } = paramsRef.current;
+      const particles = particlesRef.current;
+      const ptr = pointerRef.current;
+      ctx.fillStyle = md.bg;
+      ctx.fillRect(0, 0, w, h);
+      for (const p of particles) {
+        const dx = p.tx - p.x, dy = p.ty - p.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        const form = (0.09 * spd) / (dist * 0.035 + 1);
+        p.vx += (dx / dist) * form;
+        p.vy += (dy / dist) * form;
+        p.vx += Math.sin(p.y * 0.02 + Date.now() * 0.001) * 0.04 * spd;
+        p.vy += Math.cos(p.x * 0.015 + Date.now() * 0.0008) * 0.03 * spd;
+        if (ptr.active) {
+          const pdx = ptr.x - p.x, pdy = ptr.y - p.y;
+          const pdist = Math.hypot(pdx, pdy) || 1;
+          if (pdist < 180) {
+            const force = (0.7 * spd) / (pdist * 0.04 + 1);
+            p.vx += (pdx / pdist) * force * 0.6;
+            p.vy += (pdy / pdist) * force * 0.6;
+          }
+        }
+        p.vx *= 0.96; p.vy *= 0.96;
+        p.x += p.vx; p.y += p.vy;
+        p.trail.push({ x: p.x, y: p.y });
+        if (p.trail.length > 8) p.trail.shift();
+        if (p.trail.length > 2) {
+          ctx.beginPath();
+          ctx.moveTo(p.trail[0].x, p.trail[0].y);
+          for (let i = 1; i < p.trail.length; i++) ctx.lineTo(p.trail[i].x, p.trail[i].y);
+          ctx.strokeStyle = md.ribbon; ctx.lineWidth = 1.4; ctx.globalAlpha = 0.45; ctx.stroke(); ctx.globalAlpha = 1;
+        }
+        ctx.shadowColor = md.glow; ctx.shadowBlur = 10;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = md.particle; ctx.fill(); ctx.shadowBlur = 0;
       }
+      raf = requestAnimationFrame(loop);
     };
-    spawn();
-
-    const draw = () => {
-      ctx.fillStyle = "rgba(5, 10, 25, 0.15)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.fillStyle = `hsla(${p.hue}, 80%, 60%, 0.7)`;
-        ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      // Simple letter outline hint
-      ctx.fillStyle = "rgba(180, 230, 255, 0.9)";
-      ctx.font = "bold 48px system-ui, sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(name.slice(0, 12), canvas.width / 2, canvas.height / 2);
-
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-
+    loop();
     return () => {
-      cancelAnimationFrame(animId);
+      cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      canvas.removeEventListener("pointermove", onPointer);
+      canvas.removeEventListener("pointerdown", onPointer);
+      canvas.removeEventListener("pointerleave", onLeave);
+      canvas.removeEventListener("pointerup", onLeave);
     };
-  }, [name, density, speed]);
+  }, [regenerate]);
+
+  const buildUrl = () => {
+    const params = new URLSearchParams();
+    if (text.trim()) params.set("msg", text.trim().slice(0, MAX_CHARS));
+    params.set("d", String(density));
+    params.set("s", speed.toFixed(2));
+    params.set("mood", moodId);
+    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  };
+  const copyLink = async () => {
+    try { await navigator.clipboard.writeText(buildUrl()); setCopied(true); setTimeout(() => setCopied(false), 1800); }
+    catch { prompt(locale === "es" ? "Copiá:" : "Copy:", buildUrl()); }
+  };
+  const shareX = () => {
+    const url = buildUrl();
+    const txt = locale === "es" ? `Mirá mi Aurora Name Flow ✨ ${text}` : `Check my Aurora Name Flow ✨ ${text}`;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent(url)}`, "_blank", "noopener");
+  };
+  const shareWA = () => {
+    window.open(`https://wa.me/?text=${encodeURIComponent(buildUrl())}`, "_blank", "noopener");
+  };
+  const shareNative = async () => {
+    try {
+      if (navigator.share) { await navigator.share({ title: "Aurora Name Flow", text: text, url: buildUrl() }); setShared(true); setTimeout(() => setShared(false), 1800); }
+      else copyLink();
+    } catch { /* cancelled */ }
+  };
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const a = document.createElement("a");
+    a.download = `aurora-${(text || "flow").slice(0, 10).replace(/\s+/g, "-")}.png`;
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+  };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap gap-3 items-center">
-        <input
-          className="rounded-lg border bg-background px-3 py-1.5 text-sm"
-          value={name}
-          onChange={(e) => setName(e.target.value.slice(0, 12))}
-          placeholder={locale === "es" ? "Tu nombre" : "Your name"}
-          maxLength={12}
-        />
-        <label className="text-xs text-muted-foreground">
-          Density
-          <input type="range" min={10} max={80} value={density} onChange={(e) => setDensity(+e.target.value)} className="ml-2" />
+    <div className="space-y-5">
+      <div className="rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-50/70 via-white to-sky-50/40 p-4 dark:from-cyan-950/30 dark:via-background dark:to-sky-950/20">
+        <label className="flex flex-col gap-2 text-sm">
+          <span className="font-semibold">{t.message}</span>
+          <input type="text" value={text} onChange={(e) => setText(e.target.value.slice(0, MAX_CHARS))} placeholder={t.placeholder}
+            className="rounded-xl border border-border bg-background px-4 py-3 text-base shadow-sm outline-none ring-primary/30 focus:ring-2" maxLength={MAX_CHARS} autoComplete="off" />
         </label>
-        <label className="text-xs text-muted-foreground">
-          Speed
-          <input type="range" min={0.3} max={3} step={0.1} value={speed} onChange={(e) => setSpeed(+e.target.value)} className="ml-2" />
-        </label>
+        <p className="mt-2 text-xs text-muted-foreground">{t.help}</p>
       </div>
-      <canvas
-        ref={canvasRef}
-        className="h-[360px] w-full rounded-2xl border border-cyan-500/20 bg-slate-950 shadow-lg"
-      />
-      <p className="text-xs text-muted-foreground">
-        {locale === "es"
-          ? "Partículas aurora fluyen alrededor de las letras. Restaurado para desbloquear el build."
-          : "Aurora particles flow around the letters. Restored to unblock the build."}
-      </p>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className="flex flex-col gap-1 text-xs font-medium">{t.density}
+          <input type="range" min={50} max={250} value={density} onChange={(e) => setDensity(+e.target.value)} className="accent-cyan-500" />
+          <span className="text-muted-foreground">{density}</span>
+        </label>
+        <label className="flex flex-col gap-1 text-xs font-medium">{t.speed}
+          <input type="range" min={0.25} max={1.4} step={0.05} value={speed} onChange={(e) => setSpeed(+e.target.value)} className="accent-cyan-500" />
+          <span className="text-muted-foreground">{speed.toFixed(2)}</span>
+        </label>
+        <div className="flex flex-col gap-1 text-xs font-medium">{t.mood}
+          <div className="flex flex-wrap gap-1.5">
+            {MOODS.map((m) => (
+              <button key={m.id} type="button" onClick={() => setMoodId(m.id)}
+                className={`h-7 w-7 rounded-full border-2 transition ${moodId === m.id ? "border-foreground scale-110" : "border-transparent"}`}
+                style={{ background: m.bg, boxShadow: `0 0 0 2px ${m.glow}` }} title={m.label[locale]} />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-[#041018] shadow-inner">
+        <canvas ref={canvasRef} className="h-[min(54vh,440px)] w-full touch-none" style={{ touchAction: "none" }} />
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {canNativeShare && (
+          <button type="button" onClick={shareNative} className="rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-700">{shared ? t.shared : t.shareNative}</button>
+        )}
+        <button type="button" onClick={shareX} className="rounded-xl bg-black px-4 py-2.5 text-sm font-semibold text-white hover:bg-neutral-800">{t.shareX}</button>
+        <button type="button" onClick={shareWA} className="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700">{t.shareWA}</button>
+        <button type="button" onClick={copyLink} className="rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">{copied ? t.copied : t.copy}</button>
+        <button type="button" onClick={downloadPng} className="rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-700">{t.download}</button>
+      </div>
     </div>
   );
 }
