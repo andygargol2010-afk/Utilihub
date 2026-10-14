@@ -1,5 +1,5 @@
 "use client";
-// Viral Firework Signature — particles launch as fireworks forming letters then burst into constellation (2026-10-14)
+// Viral Firework Signature — particles launch, settle into letter shapes, then burst (2026-10-14)
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
@@ -16,12 +16,12 @@ interface Mood {
 }
 
 const MOODS: Mood[] = [
-  { id: "aurora", label: { en: "Aurora", es: "Aurora" }, hue: 160, glow: "rgba(100,255,200,0.85)", bg: "#041216", trail: "rgba(4,18,22,0.22)" },
-  { id: "neon", label: { en: "Neon", es: "Neón" }, hue: 300, glow: "rgba(255,80,220,0.85)", bg: "#0c0418", trail: "rgba(12,4,24,0.22)" },
-  { id: "sunset", label: { en: "Sunset", es: "Atardecer" }, hue: 20, glow: "rgba(255,140,80,0.85)", bg: "#16080a", trail: "rgba(22,8,10,0.22)" },
-  { id: "ocean", label: { en: "Ocean", es: "Océano" }, hue: 205, glow: "rgba(80,160,255,0.85)", bg: "#040c1c", trail: "rgba(4,12,28,0.22)" },
-  { id: "ember", label: { en: "Ember", es: "Brasa" }, hue: 8, glow: "rgba(255,90,40,0.85)", bg: "#140604", trail: "rgba(20,6,4,0.22)" },
-  { id: "cosmic", label: { en: "Cosmic", es: "Cósmico" }, hue: 260, glow: "rgba(180,100,255,0.85)", bg: "#0a0618", trail: "rgba(10,6,24,0.22)" },
+  { id: "aurora", label: { en: "Aurora", es: "Aurora" }, hue: 160, glow: "rgba(100,255,200,0.85)", bg: "#041216", trail: "rgba(4,18,22,0.28)" },
+  { id: "neon", label: { en: "Neon", es: "Neón" }, hue: 300, glow: "rgba(255,80,220,0.85)", bg: "#0c0418", trail: "rgba(12,4,24,0.28)" },
+  { id: "sunset", label: { en: "Sunset", es: "Atardecer" }, hue: 20, glow: "rgba(255,140,80,0.85)", bg: "#16080a", trail: "rgba(22,8,10,0.28)" },
+  { id: "ocean", label: { en: "Ocean", es: "Océano" }, hue: 205, glow: "rgba(80,160,255,0.85)", bg: "#040c1c", trail: "rgba(4,12,28,0.28)" },
+  { id: "ember", label: { en: "Ember", es: "Brasa" }, hue: 8, glow: "rgba(255,90,40,0.85)", bg: "#140604", trail: "rgba(20,6,4,0.28)" },
+  { id: "cosmic", label: { en: "Cosmic", es: "Cósmico" }, hue: 260, glow: "rgba(180,100,255,0.85)", bg: "#0a0618", trail: "rgba(10,6,24,0.28)" },
 ];
 
 interface Particle {
@@ -35,6 +35,8 @@ interface Particle {
   hue: number;
   life: number;
   phase: "launch" | "form" | "burst" | "residual";
+  /** Frames spent in form before burst */
+  hold: number;
   residualX?: number;
   residualY?: number;
 }
@@ -74,24 +76,27 @@ const labels = {
 
 function sampleTextTargets(text: string, w: number, h: number): { x: number; y: number }[] {
   const off = document.createElement("canvas");
-  off.width = Math.floor(w);
-  off.height = Math.floor(h);
-  const ctx = off.getContext("2d");
+  const W = Math.max(1, Math.floor(w));
+  const H = Math.max(1, Math.floor(h));
+  off.width = W;
+  off.height = H;
+  const ctx = off.getContext("2d", { willReadFrequently: true });
   if (!ctx || !text.trim()) return [];
   ctx.fillStyle = "#000";
-  ctx.fillRect(0, 0, w, h);
+  ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#fff";
-  ctx.font = `bold ${Math.min(h * 0.38, 90)}px system-ui, sans-serif`;
+  const fontSize = Math.min(H * 0.42, Math.max(28, W / Math.max(4, text.trim().length * 0.55)));
+  ctx.font = `bold ${fontSize}px system-ui, sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(text.trim().slice(0, 24), w / 2, h / 2);
-  const data = ctx.getImageData(0, 0, w, h).data;
+  ctx.fillText(text.trim().slice(0, 24), W / 2, H / 2);
+  const data = ctx.getImageData(0, 0, W, H).data;
   const targets: { x: number; y: number }[] = [];
-  const step = 5;
-  for (let y = 0; y < h; y += step) {
-    for (let x = 0; x < w; x += step) {
-      const i = (y * w + x) * 4;
-      if (data[i] > 140) targets.push({ x, y });
+  const step = Math.max(3, Math.floor(Math.min(W, H) / 80));
+  for (let y = 0; y < H; y += step) {
+    for (let x = 0; x < W; x += step) {
+      const i = (y * W + x) * 4;
+      if (data[i] > 128) targets.push({ x, y });
     }
   }
   return targets;
@@ -112,7 +117,7 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
   const particlesRef = useRef<Particle[]>([]);
   const targetsRef = useRef<{ x: number; y: number }[]>([]);
   const paramsRef = useRef({ density: 220, burst: 1.4, text: "", mood: MOODS[0] });
-  const [text, setText] = useState(locale === "es" ? "UtiliHub" : "UtiliHub");
+  const [text, setText] = useState("UtiliHub");
   const [density, setDensity] = useState(220);
   const [burst, setBurst] = useState(1.4);
   const [moodId, setMoodId] = useState<MoodId>("aurora");
@@ -137,25 +142,35 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
     const h = rect.height || 360;
     const targets = sampleTextTargets(text, w, h);
     targetsRef.current = targets;
-    const n = Math.min(density, Math.max(60, targets.length * 1.5 || 100));
+    const n =
+      targets.length > 0
+        ? Math.min(density, Math.max(80, targets.length))
+        : Math.min(density, 120);
     const ps: Particle[] = [];
     const baseHue = mood.hue;
     const seed = seedRef.current;
     for (let i = 0; i < n; i++) {
-      const tgt = targets[i % Math.max(1, targets.length)] || { x: w / 2, y: h * 0.45 };
+      const tgt =
+        targets.length > 0
+          ? targets[i % targets.length]
+          : { x: w / 2 + (Math.random() - 0.5) * w * 0.3, y: h * 0.45 };
       const rx = (Math.sin(seed * 0.001 + i * 0.7) * 0.5 + 0.5) * w;
       const ry = (Math.cos(seed * 0.0013 + i * 0.5) * 0.5 + 0.5) * h * 0.7 + h * 0.1;
+      // Stagger starts so the letter fills in a wave, not one blob
+      const delaySpread = (i / Math.max(1, n)) * 18;
       ps.push({
-        x: Math.random() * w,
-        y: h + Math.random() * 40,
-        vx: (tgt.x - w / 2) * 0.02 + (Math.random() - 0.5) * 2,
-        vy: -8 - Math.random() * 6,
+        x: tgt.x + (Math.random() - 0.5) * 30,
+        y: h + 20 + Math.random() * 50 + delaySpread,
+        vx: (Math.random() - 0.5) * 1.2,
+        // Mild upward speed — seek handles the rest (no rocket overshoot)
+        vy: -2.2 - Math.random() * 1.8,
         tx: tgt.x,
         ty: tgt.y,
-        size: 1.8 + Math.random() * 2.2,
-        hue: (baseHue + (Math.random() - 0.5) * 50) % 360,
+        size: 1.6 + Math.random() * 2,
+        hue: (baseHue + (Math.random() - 0.5) * 40 + 360) % 360,
         life: 1,
         phase: "launch",
+        hold: 0,
         residualX: rx,
         residualY: ry,
       });
@@ -189,7 +204,6 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let raf = 0;
-    let frame = 0;
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -200,10 +214,11 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
     };
     resize();
     window.addEventListener("resize", resize);
-    setTimeout(regenerate, 80);
+    const boot = window.setTimeout(regenerate, 80);
+
+    const FORM_HOLD_FRAMES = 90; // ~1.5s visible letter shape before burst
 
     const loop = () => {
-      frame++;
       const rect = canvas.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
@@ -214,51 +229,80 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
       ctx.fillRect(0, 0, w, h);
 
       for (const p of ps) {
-        if (p.phase === "launch" || p.phase === "form") {
+        if (p.phase === "launch") {
           const dx = p.tx - p.x;
           const dy = p.ty - p.y;
           const dist = Math.hypot(dx, dy) || 1;
-          if (dist < 12 && p.phase === "launch") p.phase = "form";
-          if (p.phase === "form" && frame % 90 === 0 && Math.random() < 0.35) {
+          // Strong seek toward letter pixel — no continuous upward bias
+          const seek = Math.min(0.55, 0.12 + dist * 0.0025);
+          p.vx += (dx / dist) * seek;
+          p.vy += (dy / dist) * seek;
+          p.vx *= 0.88;
+          p.vy *= 0.88;
+          // Cap speed so they don't overshoot targets
+          const spd = Math.hypot(p.vx, p.vy);
+          if (spd > 7) {
+            p.vx = (p.vx / spd) * 7;
+            p.vy = (p.vy / spd) * 7;
+          }
+          if (dist < 8) {
+            p.x = p.tx;
+            p.y = p.ty;
+            p.vx = 0;
+            p.vy = 0;
+            p.phase = "form";
+            p.hold = 0;
+          }
+        } else if (p.phase === "form") {
+          // Soft spring lock on letter pixel so the glyph stays readable
+          const dx = p.tx - p.x;
+          const dy = p.ty - p.y;
+          p.vx += dx * 0.18;
+          p.vy += dy * 0.18;
+          p.vx *= 0.75;
+          p.vy *= 0.75;
+          p.hold += 1;
+          if (p.hold >= FORM_HOLD_FRAMES) {
             p.phase = "burst";
-            p.vx += (Math.random() - 0.5) * 14 * bst;
-            p.vy += (Math.random() - 0.5) * 14 * bst;
+            const angle = Math.random() * Math.PI * 2;
+            const power = (4 + Math.random() * 8) * bst;
+            p.vx = Math.cos(angle) * power;
+            p.vy = Math.sin(angle) * power;
+            p.life = 1;
           }
-          const force = 0.22 / (dist * 0.04 + 1);
-          p.vx += (dx / dist) * force;
-          p.vy += (dy / dist) * force + (p.phase === "launch" ? -0.15 : 0);
-          p.vx *= 0.94;
-          p.vy *= 0.94;
         } else if (p.phase === "burst") {
-          p.life -= 0.012;
-          if (p.life < 0.3 && Math.random() < 0.4) {
+          p.life -= 0.014;
+          p.vx *= 0.97;
+          p.vy *= 0.97;
+          p.vy += 0.05;
+          if (p.life < 0.28) {
             p.phase = "residual";
-            p.life = 0.85;
+            p.life = 0.9;
           }
-          p.vx *= 0.96;
-          p.vy *= 0.96;
-          p.vy += 0.04;
         } else if (p.phase === "residual" && p.residualX != null && p.residualY != null) {
           const dx = p.residualX - p.x;
           const dy = p.residualY - p.y;
           const dist = Math.hypot(dx, dy) || 1;
-          const force = 0.08 / (dist * 0.05 + 1);
+          const force = 0.1 / (dist * 0.04 + 1);
           p.vx += (dx / dist) * force;
           p.vy += (dy / dist) * force;
-          p.vx *= 0.97;
-          p.vy *= 0.97;
-          p.life = Math.min(1, p.life + 0.002);
+          p.vx *= 0.96;
+          p.vy *= 0.96;
+          p.life = Math.min(1, p.life + 0.003);
         }
+
         p.x += p.vx;
         p.y += p.vy;
         if (p.life <= 0) continue;
+
         const speed = Math.hypot(p.vx, p.vy);
-        const hue = (p.hue + speed * 2.5) % 360;
-        const alpha = Math.max(0.15, p.life);
+        const hue = (p.hue + speed * 2) % 360;
+        const alpha = Math.max(0.2, p.life);
+        const r = p.size * (p.phase === "burst" ? 1.35 : p.phase === "form" ? 1.15 : 1);
         ctx.shadowColor = `hsla(${hue}, 85%, 60%, ${alpha})`;
-        ctx.shadowBlur = 8 + speed * 0.8;
+        ctx.shadowBlur = p.phase === "form" ? 10 : 6 + speed * 0.6;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * (p.phase === "burst" ? 1.2 : 1), 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
         ctx.fillStyle = `hsla(${hue}, 80%, 62%, ${alpha})`;
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -268,6 +312,7 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
     loop();
     return () => {
       cancelAnimationFrame(raf);
+      window.clearTimeout(boot);
       window.removeEventListener("resize", resize);
     };
   }, [regenerate]);
@@ -282,9 +327,10 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
   };
 
   const getShareText = () => {
-    const base = locale === "es"
-      ? `Mirá mi firma de fuegos artificiales 🎆 ${text.trim() || "UtiliHub"}`
-      : `Check my firework signature 🎆 ${text.trim() || "UtiliHub"}`;
+    const base =
+      locale === "es"
+        ? `Mirá mi firma de fuegos artificiales 🎆 ${text.trim() || "UtiliHub"}`
+        : `Check my firework signature 🎆 ${text.trim() || "UtiliHub"}`;
     return `${base} #UtiliHub #FireworkSignature`;
   };
 
@@ -302,14 +348,19 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
   const shareX = () => {
     const url = buildUrl();
     const txt = getShareText();
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent(url)}`, "_blank", "noopener");
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent(url)}`,
+      "_blank",
+      "noopener",
+    );
   };
 
   const shareWA = () => {
     const url = buildUrl();
-    const txt = locale === "es"
-      ? `Mirá mi firma de fuegos artificiales en UtiliHub: ${url}`
-      : `Check my firework signature on UtiliHub: ${url}`;
+    const txt =
+      locale === "es"
+        ? `Mirá mi firma de fuegos artificiales en UtiliHub: ${url}`
+        : `Check my firework signature on UtiliHub: ${url}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank", "noopener");
   };
 
