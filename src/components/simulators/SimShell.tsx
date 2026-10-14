@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import type { SimDef, SimLocale, SimTheme } from "@/lib/simulators/catalog";
-import { simName, simSummary, simTagLabel, simBadge } from "@/lib/simulators/catalog";
+import { simName, simSummary, simTagLabel, simBadge, relatedSims } from "@/lib/simulators/catalog";
 
 type Props = {
   sim: SimDef;
@@ -66,6 +66,8 @@ export function SimShell({ sim, locale = "en", children }: Props) {
   const hub = es ? "/es/simuladores" : "/simulators";
   const title = simName(sim, locale);
   const t = THEME[sim.theme];
+  const related = relatedSims(sim);
+  const next = related[0];
 
   return (
     <div className={`sim-skin min-h-[70vh] bg-gradient-to-b ${t.page}`}>
@@ -111,6 +113,45 @@ export function SimShell({ sim, locale = "en", children }: Props) {
             {children}
           </div>
         </div>
+
+        {next && (
+          <section className="mt-6 rounded-2xl border border-primary/20 bg-accent/40 p-4 sm:p-5">
+            <p className={`text-xs font-bold uppercase tracking-[.14em] ${t.accent}`}>
+              {es ? "Siguiente simulador recomendado" : "Recommended next simulator"}
+            </p>
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="text-base font-black text-slate-900">
+                  {es
+                    ? `Después de ${title}, probá ${next.nameEs}`
+                    : `After ${title}, try ${next.nameEn}`}
+                </h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  {es ? next.summaryEs : next.summaryEn}
+                </p>
+              </div>
+              <Link
+                to={es ? `/es/simuladores/${next.slugEs}` : `/simulators/${next.slug}`}
+                className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90"
+              >
+                {es ? "Abrir siguiente" : "Open next"}
+              </Link>
+            </div>
+            <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+              {related.map((r) => (
+                <li key={r.slug}>
+                  <Link
+                    to={es ? `/es/simuladores/${r.slugEs}` : `/simulators/${r.slug}`}
+                    className="flex min-h-11 items-center gap-2 rounded-xl border border-border/80 bg-background/80 px-3 py-2 text-sm font-semibold text-foreground hover:border-primary/40"
+                  >
+                    <span aria-hidden>{r.emoji}</span>
+                    {es ? r.nameEs : r.nameEn}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <p className="mt-4 text-center text-xs text-muted-foreground">
           {es
