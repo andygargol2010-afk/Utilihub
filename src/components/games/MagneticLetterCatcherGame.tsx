@@ -38,6 +38,7 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
   const [caught, setCaught] = useState(0);
   const [running, setRunning] = useState(false);
   const [won, setWon] = useState(false);
+  const [newBest, setNewBest] = useState(false);
   const [best, setBest] = useState(0);
   const [flash, setFlash] = useState(0);
   const mouse = useRef({ x: 240, y: 170 });
@@ -70,6 +71,25 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
     } catch {}
   }, []);
 
+  const playTone = useCallback((freq: number, dur = 0.12, type: OscillatorType = "sine") => {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + dur);
+      setTimeout(() => ctx.close(), dur * 1000 + 50);
+    } catch {}
+  }, []);
+
   const reset = useCallback(() => {
     const letters = (name.trim() || "A").toUpperCase().slice(0, 10).split("");
     const pts: Particle[] = [];
@@ -98,6 +118,7 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
     setCaught(0);
     setFlash(0);
     setWon(false);
+    setNewBest(false);
     lastCombo.current = 0;
   }, [name, speed, count, mode]);
 
@@ -156,6 +177,7 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
               setFlash(12);
               nextNeeded.current += 1;
               buzz();
+              playTone(440 + newCombo * 40, 0.1);
             }
           }
           p.x += p.vx;
@@ -231,6 +253,8 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
         setWon(true);
         setScore((s) => {
           const final = s + 600;
+          const isNew = final > best;
+          setNewBest(isNew);
           persistBest(final);
           return final;
         });
@@ -248,6 +272,9 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
           });
         }
         buzz();
+        playTone(523, 0.15);
+        setTimeout(() => playTone(659, 0.15), 120);
+        setTimeout(() => playTone(784, 0.2), 240);
       }
 
       // Win overlay text
@@ -262,13 +289,18 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
         ctx.fillStyle = "#e2e8f0";
         ctx.font = "16px system-ui";
         ctx.fillText(`${es ? "Puntaje" : "Score"}: ${score}`, CANVAS_W / 2, CANVAS_H / 2 + 22);
+        if (newBest) {
+          ctx.fillStyle = "#fbbf24";
+          ctx.font = "bold 18px system-ui";
+          ctx.fillText(es ? "¡Nuevo récord!" : "New record!", CANVAS_W / 2, CANVAS_H / 2 + 48);
+        }
       }
 
       anim.current = requestAnimationFrame(loop);
     };
     anim.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(anim.current);
-  }, [running, mode, name, flash, persistBest, buzz, won, score, es]);
+  }, [running, mode, name, flash, persistBest, buzz, playTone, won, score, es, newBest, best]);
 
   const onPointer = (e: React.PointerEvent<HTMLCanvasElement>) => {
     e.preventDefault();
