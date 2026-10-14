@@ -3,6 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
+/**
+ * Ad scripts DISABLED (2026-10-14).
+ * Adsterra invoke.js was opening third-party redirects / popunders (e.g. contendvictor.com
+ * fake prize surveys) on mobile after consent. Social bar was already removed.
+ * Keep the reserved 728×90 slot so layout/CLS stays stable. Re-enable only with a
+ * placement type that cannot navigate the top window (strict iframe banner).
+ */
+const ADS_SCRIPTS_ENABLED = false;
+
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
   width: 728,
@@ -58,6 +67,7 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
   }, [viewport]);
 
   useEffect(() => {
+    if (!ADS_SCRIPTS_ENABLED) return;
     if (!allowed || !viewport || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
     const slot = slotRef.current;
     let cancelled = false;
@@ -82,9 +92,6 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
       slot.appendChild(script);
     };
 
-    // invoke.js does layout and timer work on the main thread. The 728×90 slot is
-    // already in the first paint, so wait for idle (or 2s) before competing with
-    // hydration and the first click on the tool shell.
     const idle = window.requestIdleCallback;
     const idleId = typeof idle === "function" ? idle(inject, { timeout: 2000 }) : 0;
     const timer = typeof idle === "function" ? 0 : window.setTimeout(inject, 1500);
