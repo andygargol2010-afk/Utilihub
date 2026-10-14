@@ -33,8 +33,20 @@ export const Route = createFileRoute("/experiences/")({
 function ParticleMini() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouse = useRef({ x: 80, y: 50 });
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    const enable = () => setReady(true);
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(enable, { timeout: 2000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = window.setTimeout(enable, 800);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -73,7 +85,7 @@ function ParticleMini() {
     };
     tick();
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [ready]);
 
   return (
     <canvas
