@@ -165,6 +165,7 @@ import { BOX_SHADOW_TOOLS } from "./box-shadow-tool";
 import { DOWNLOAD_TIME_TOOLS } from "./download-time-tool";
 import { UNIT_PRICE_TOOLS } from "./unit-price-tool";
 import { BODY_FAT_TOOLS } from "./body-fat-tool";
+import { KINETIC_ENERGY_TOOLS } from "./kinetic-energy-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -335,4 +336,5 @@ export const GENERAL_TOOLS = [
   ...DOWNLOAD_TIME_TOOLS,
   ...UNIT_PRICE_TOOLS,
   ...BODY_FAT_TOOLS,
+  ...KINETIC_ENERGY_TOOLS,
 ];
