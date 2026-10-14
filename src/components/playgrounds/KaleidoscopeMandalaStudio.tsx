@@ -20,6 +20,11 @@ const PALETTE = [
   "#ff3b30",
 ];
 
+function seeded(n: number) {
+  const x = Math.sin(n * 12.9898) * 43758.5453;
+  return x - Math.floor(x);
+}
+
 export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "es" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [symmetry, setSymmetry] = useState(6);
@@ -61,6 +66,31 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     },
   }[locale];
 
+  // Restore settings from URL on mount
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const s = params.get("sym");
+      const b = params.get("brush");
+      const c = params.get("color");
+      if (s && ["4", "6", "8"].includes(s)) setSymmetry(Number(s));
+      if (b && ["neon", "sparkle", "glow", "ink"].includes(b)) setBrush(b as Brush);
+      if (c && PALETTE.includes(c)) setColor(c);
+    } catch {}
+  }, []);
+
+  // Persist settings to URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("sym", String(symmetry));
+    params.set("brush", brush);
+    params.set("color", color);
+    const next = `${window.location.pathname}?${params.toString()}`;
+    if (next !== window.location.pathname + window.location.search) {
+      window.history.replaceState(null, "", next);
+    }
+  }, [symmetry, brush, color]);
+
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -77,6 +107,15 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     bg.addColorStop(1, "#0d0518");
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, w, h);
+
+    // Subtle center guide
+    ctx.save();
+    ctx.strokeStyle = "rgba(255,255,255,0.06)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, Math.min(w, h) * 0.42, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
 
     const drawStroke = (stroke: Stroke) => {
       if (stroke.points.length < 2) return;
@@ -99,40 +138,46 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
 
         if (stroke.brush === "neon") {
           ctx.strokeStyle = stroke.color;
-          ctx.lineWidth = 3;
+          ctx.lineWidth = 3.5;
           ctx.shadowColor = stroke.color;
-          ctx.shadowBlur = 12;
+          ctx.shadowBlur = 16;
+          ctx.stroke();
+          ctx.shadowBlur = 6;
+          ctx.lineWidth = 1.5;
           ctx.stroke();
         } else if (stroke.brush === "glow") {
           ctx.strokeStyle = stroke.color;
-          ctx.globalAlpha = 0.55;
-          ctx.lineWidth = 14;
+          ctx.globalAlpha = 0.45;
+          ctx.lineWidth = 18;
           ctx.shadowColor = stroke.color;
-          ctx.shadowBlur = 20;
+          ctx.shadowBlur = 24;
           ctx.stroke();
           ctx.globalAlpha = 1;
           ctx.lineWidth = 4;
-          ctx.shadowBlur = 6;
+          ctx.shadowBlur = 8;
           ctx.stroke();
         } else if (stroke.brush === "ink") {
           ctx.strokeStyle = stroke.color;
-          ctx.lineWidth = 2.5;
+          ctx.lineWidth = 2.8;
           ctx.shadowBlur = 0;
           ctx.stroke();
         } else if (stroke.brush === "sparkle") {
           ctx.strokeStyle = stroke.color;
-          ctx.lineWidth = 1.5;
-          ctx.globalAlpha = 0.8;
+          ctx.lineWidth = 1.2;
+          ctx.globalAlpha = 0.75;
           ctx.stroke();
-          // particles
           ctx.fillStyle = stroke.color;
-          for (let i = 0; i < stroke.points.length; i += 3) {
+          for (let i = 0; i < stroke.points.length; i += 2) {
             const p = stroke.points[i];
             const px = p.x * w;
             const py = p.y * h;
-            ctx.globalAlpha = 0.7;
+            const seed = i * 17 + k * 3;
+            const ox = (seeded(seed) - 0.5) * 10;
+            const oy = (seeded(seed + 1) - 0.5) * 10;
+            const r = 1.2 + seeded(seed + 2) * 2.2;
+            ctx.globalAlpha = 0.55 + seeded(seed + 3) * 0.4;
             ctx.beginPath();
-            ctx.arc(px + (Math.random() - 0.5) * 8, py + (Math.random() - 0.5) * 8, 1.5, 0, Math.PI * 2);
+            ctx.arc(px + ox, py + oy, r, 0, Math.PI * 2);
             ctx.fill();
           }
           ctx.globalAlpha = 1;
@@ -144,7 +189,6 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
 
     strokes.forEach(drawStroke);
 
-    // Live current stroke
     if (current.length > 1) {
       drawStroke({ points: current, color, brush, symmetry });
     }
@@ -161,7 +205,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       const parent = canvas.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
-      const size = Math.min(rect.width, 640);
+      const size = Math.min(rect.width, Math.min(window.innerWidth - 32, 640));
       canvas.width = size;
       canvas.height = size;
       redraw();
@@ -171,32 +215,30 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     return () => window.removeEventListener("resize", resize);
   }, [redraw]);
 
-  const getPos = (e: React.PointerEvent | React.TouchEvent): Point => {
+  const getPos = (e: React.PointerEvent): Point => {
     const canvas = canvasRef.current!;
     const rect = canvas.getBoundingClientRect();
-    const clientX = "touches" in e ? e.touches[0]?.clientX ?? 0 : (e as React.PointerEvent).clientX;
-    const clientY = "touches" in e ? e.touches[0]?.clientY ?? 0 : (e as React.PointerEvent).clientY;
     return {
-      x: (clientX - rect.left) / rect.width,
-      y: (clientY - rect.top) / rect.height,
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
     };
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
     e.preventDefault();
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
     setIsDrawing(true);
-    const p = getPos(e);
-    setCurrent([p]);
+    setCurrent([getPos(e)]);
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
     if (!isDrawing) return;
     e.preventDefault();
-    const p = getPos(e);
-    setCurrent((prev) => [...prev, p]);
+    setCurrent((prev) => [...prev, getPos(e)]);
   };
 
-  const onPointerUp = () => {
+  const onPointerUp = (e: React.PointerEvent) => {
+    e.preventDefault();
     if (!isDrawing || current.length < 2) {
       setIsDrawing(false);
       setCurrent([]);
@@ -207,25 +249,33 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     setIsDrawing(false);
   };
 
-  const undo = () => {
-    setStrokes((prev) => prev.slice(0, -1));
-  };
-
+  const undo = () => setStrokes((prev) => prev.slice(0, -1));
   const clear = () => {
     setStrokes([]);
     setCurrent([]);
   };
 
-  const exportPng = () => {
+  const exportPng = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     setExporting(true);
-    const url = canvas.toDataURL("image/png");
+    // Higher-res export
+    const scale = 2;
+    const off = document.createElement("canvas");
+    off.width = canvas.width * scale;
+    off.height = canvas.height * scale;
+    const octx = off.getContext("2d");
+    if (octx) {
+      octx.scale(scale, scale);
+      // Re-render into offscreen (simplified: drawImage current)
+      octx.drawImage(canvas, 0, 0);
+    }
+    const url = off.toDataURL("image/png");
     const a = document.createElement("a");
     a.href = url;
     a.download = `mandala-utilihub-${Date.now()}.png`;
     a.click();
-    setTimeout(() => setExporting(false), 800);
+    setTimeout(() => setExporting(false), 600);
   };
 
   const share = async () => {
@@ -236,9 +286,14 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       if (!blob) return;
       const file = new File([blob], "mandala.png", { type: "image/png" });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: "Mandala UtiliHub", text: labels.hint });
+        await navigator.share({
+          files: [file],
+          title: "Mandala UtiliHub",
+          text: labels.hint,
+          url: window.location.href,
+        });
       } else {
-        exportPng();
+        await exportPng();
       }
     } catch {
       exportPng();
@@ -249,14 +304,18 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase text-muted-foreground">{labels.symmetry}</span>
+          <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+            {labels.symmetry}
+          </span>
           {[4, 6, 8].map((n) => (
             <button
               key={n}
               type="button"
               onClick={() => setSymmetry(n)}
-              className={`rounded-full px-3 py-1 text-sm font-medium ${
-                symmetry === n ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+              className={`min-h-[36px] rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
+                symmetry === n
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
               {n}
@@ -265,14 +324,18 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase text-muted-foreground">{labels.brush}</span>
+          <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+            {labels.brush}
+          </span>
           {(["neon", "sparkle", "glow", "ink"] as Brush[]).map((b) => (
             <button
               key={b}
               type="button"
               onClick={() => setBrush(b)}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${
-                brush === b ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+              className={`min-h-[36px] rounded-full px-3 py-1.5 text-xs font-medium transition ${
+                brush === b
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
               }`}
             >
               {labels[b]}
@@ -282,14 +345,16 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-bold uppercase text-muted-foreground">{labels.color}</span>
+        <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          {labels.color}
+        </span>
         {PALETTE.map((c) => (
           <button
             key={c}
             type="button"
             onClick={() => setColor(c)}
-            className={`h-7 w-7 rounded-full border-2 ${
-              color === c ? "border-white scale-110" : "border-transparent"
+            className={`h-8 w-8 rounded-full border-2 transition ${
+              color === c ? "border-white scale-110 shadow-md" : "border-transparent hover:scale-105"
             }`}
             style={{ backgroundColor: c }}
             aria-label={c}
@@ -298,21 +363,33 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button type="button" onClick={undo} className="rounded-full bg-muted px-4 py-1.5 text-sm font-medium">
+        <button
+          type="button"
+          onClick={undo}
+          className="min-h-[40px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
+        >
           {labels.undo}
         </button>
-        <button type="button" onClick={clear} className="rounded-full bg-muted px-4 py-1.5 text-sm font-medium">
+        <button
+          type="button"
+          onClick={clear}
+          className="min-h-[40px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
+        >
           {labels.clear}
         </button>
         <button
           type="button"
           onClick={exportPng}
           disabled={exporting}
-          className="rounded-full bg-sky-600 px-4 py-1.5 text-sm font-medium text-white"
+          className="min-h-[40px] rounded-full bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:opacity-60"
         >
           {exporting ? "…" : labels.export}
         </button>
-        <button type="button" onClick={share} className="rounded-full bg-violet-600 px-4 py-1.5 text-sm font-medium text-white">
+        <button
+          type="button"
+          onClick={share}
+          className="min-h-[40px] rounded-full bg-violet-600 px-4 py-2 text-sm font-medium text-white hover:bg-violet-500"
+        >
           {labels.share}
         </button>
       </div>
@@ -321,12 +398,14 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
         <canvas
           ref={canvasRef}
           className="h-full w-full touch-none cursor-crosshair"
+          style={{ touchAction: "none" }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
           onPointerLeave={onPointerUp}
         />
-        <p className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-white/60">
+        <p className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 select-none text-xs text-white/55">
           {labels.hint}
         </p>
       </div>
