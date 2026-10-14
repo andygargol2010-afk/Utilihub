@@ -34,9 +34,9 @@ export const SIMULATORS: readonly SimDef[] = [
     badgeEn: "States of matter",
     badgeEs: "Estados de la materia",
     summaryEn:
-      "Watch particles vibrate, flow, or fly free as you switch solid, liquid, and gas. Interactive states of matter in your browser.",
+      "Interactive states of matter simulator: solid, liquid, and gas. Watch particles vibrate, flow, or fly free. Free educational chemistry/physics demo in the browser.",
     summaryEs:
-      "Mirá cómo las partículas vibran, fluyen o vuelan al pasar de sólido a líquido y gas. Estados de la materia interactivos en el navegador.",
+      "Simulador interactivo de estados de la materia: sólido, líquido y gas. Mirá cómo las partículas vibran, fluyen o vuelan. Demostración educativa gratis de química/física en el navegador.",
   },
   {
     slug: "gravity-sandbox",
@@ -49,9 +49,9 @@ export const SIMULATORS: readonly SimDef[] = [
     badgeEn: "N-body gravity",
     badgeEs: "Gravedad N-cuerpos",
     summaryEn:
-      "N-body gravity playground. Try orbit, binary, or cluster presets, tweak G, and tap to add masses with trails.",
+      "Free N-body gravity simulator in the browser. Orbit, binary, or cluster presets; tweak G; tap to add masses with trails. Educational physics playground.",
     summaryEs:
-      "Patio de gravedad de N cuerpos. Probá órbita, binario o cúmulo, ajustá G y tocá para añadir masas con estelas.",
+      "Simulador de gravedad de N cuerpos gratis en el navegador. Presets de órbita, binario o cúmulo; ajustá G; tocá para añadir masas con estelas. Física educativa interactiva.",
   },
   {
     slug: "pendulum",
