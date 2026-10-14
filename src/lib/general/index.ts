@@ -97,7 +97,7 @@ import { DNI_LETTER_TOOLS } from "./dni-letter-tool";
 import { SUBNET_TOOLS } from "./subnet-tool";
 import { COORDINATE_TOOLS } from "./coordinates-tool";
 import { EAN_TOOLS } from "./ean-tool";
-import { CLAMPtools } from "./clamp-tool";
+import { CLAMP_TOOLS } from "./clamp-tool";
 import { BRAILLE_TOOLS } from "./braille-tool";
 import { ULID_TOOLS } from "./ulid-tool";
 import { DECIBEL_TOOLS } from "./decibel-tool";
