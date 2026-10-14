@@ -186,6 +186,19 @@ function ExperiencesHubEn() {
           <span className="mt-5 text-sm font-bold text-amber-700">Create signature →</span>
         </Link>
 
+        <Link
+          to="/fluid-type"
+          className="group flex flex-col rounded-3xl border border-sky-900/15 bg-gradient-to-br from-sky-50 via-white to-cyan-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-sky-500/50 hover:shadow-lg"
+        >
+          <span className="text-4xl" aria-hidden>🌊</span>
+          <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Shareable</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Fluid Type Signature</span>
+          <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+            Type a name. Particles form the letters as a living fluid that responds to mouse or touch. Tune density, viscosity and moods.
+          </span>
+          <span className="mt-5 text-sm font-bold text-sky-700">Create signature →</span>
+        </Link>
+
         <div className="flex flex-col rounded-3xl border border-rose-900/15 bg-gradient-to-br from-rose-50 via-white to-pink-50/80 p-5 shadow-sm">
           <SeatingMini />
           <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Studio</span>
