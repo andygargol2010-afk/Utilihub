@@ -62,7 +62,7 @@ export function CaulkCalculatorTool({ locale = "en" }: { tool: GeneralTool; loca
   const copy = es
     ? {
         help: "Estimá tubos de silicona, acrílico o poliuretano a partir del largo de junta y del cordón. El filete de esquina usa la mitad del rectángulo; la junta a tope usa el rectángulo completo.",
-        presets: "Presets",
+        presets: "Ejemplos",
         bath: "Baño",
         windows: "Ventanas",
         counter: "Mesada",
@@ -374,3 +374,4 @@ export function CaulkCalculatorTool({ locale = "en" }: { tool: GeneralTool; loca
     </div>
   );
 }
+
