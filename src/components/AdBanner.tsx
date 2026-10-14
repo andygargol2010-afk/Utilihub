@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
 /**
- * Banner scripts ON (experiment 2026-10-14).
- * AdsterraSocialBar remains deleted — test whether popunders correlate with social bar
- * absence or with Adsterra inventory alone. Set false again if redirects return.
+ * Banner scripts OFF until a new Adsterra zone/key is installed.
+ * Experiment 2026-10-14: social bar deleted + banners ON → still redirected
+ * (pixelmeshweb → 1xbet). Cause = this zone inventory, not social bar.
+ * Re-enable only after replacing DESKTOP/MOBILE key+src with a clean banner-only placement.
  */
-const ADS_SCRIPTS_ENABLED = true;
+const ADS_SCRIPTS_ENABLED = false;
 
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
