@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
-/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price. */
+/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat. */
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
@@ -40,6 +40,7 @@ const PomodoroTimerTool = lazy(() => import("./PomodoroTimerTool").then((m) => (
 const BoxShadowTool = lazy(() => import("./BoxShadowTool").then((m) => ({ default: m.BoxShadowTool })));
 const DownloadTimeTool = lazy(() => import("./DownloadTimeTool").then((m) => ({ default: m.DownloadTimeTool })));
 const UnitPriceTool = lazy(() => import("./UnitPriceTool").then((m) => ({ default: m.UnitPriceTool })));
+const BodyFatCalculatorTool = lazy(() => import("./BodyFatCalculatorTool").then((m) => ({ default: m.BodyFatCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -61,6 +62,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "generador-sombra-css") return BoxShadowTool as ToolComp;
   if (tool.slug === "calculadora-tiempo-descarga") return DownloadTimeTool as ToolComp;
   if (tool.slug === "calculadora-precio-unitario") return UnitPriceTool as ToolComp;
+  if (tool.slug === "calculadora-grasa-corporal") return BodyFatCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-fecha-avanzada") return AdvancedDateTool as ToolComp;
   if (tool.config?.mode === "advanced-calculator") return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.mode === "advanced" && tool.config?.operation) return AdvancedCalculatorTool as ToolComp;
