@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { FireworkSignature } from "@/components/playgrounds/FireworkSignature";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
 const title = "Firma de Fuegos Artificiales | UtiliHub";
 const description = cleanDescription(
@@ -45,12 +46,8 @@ function FireworkPageEs() {
         </p>
       </header>
       <FireworkSignature locale="es" />
-      <section className="mt-10">
-        <h2 className="text-lg font-bold">Seguí explorando</h2>
-        <Link to="/es/experiences" className="mt-3 inline-block text-sm font-bold text-amber-700 hover:underline">
-          Hub de Experiencias →
-        </Link>
-      </section>
+
+      <PlaygroundNextStep currentId="firework" locale="es" />
       <div className="mt-10">
         <AdsterraBanner />
       </div>
