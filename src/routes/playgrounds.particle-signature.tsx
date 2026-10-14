@@ -1,11 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ParticleSignaturePlayground } from "@/components/playgrounds/ParticleSignaturePlayground";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
-const title = "Particle Signature Playground | UtiliHub";
+const title = "Attractor Orbits | UtiliHub";
 const description = cleanDescription(
-  "Type a name or phrase to generate a unique shareable particle signature. Watch particles orbit the seeded attractors. Mobile-friendly, instant share link.",
+  "Place attractor spheres and watch particles orbit. Text seeds the initial pattern. Shareable and mobile-friendly.",
 );
 
 export const Route = createFileRoute("/playgrounds/particle-signature")({
@@ -28,17 +28,22 @@ export const Route = createFileRoute("/playgrounds/particle-signature")({
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/playgrounds/particle-signature") },
     ],
   }),
-  component: ParticleSignaturePage,
+  component: AttractorOrbitsPage,
 });
 
-function ParticleSignaturePage() {
+function AttractorOrbitsPage() {
   return (
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-black tracking-tight">Particle Signature</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight">Attractor orbits</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Generate a unique visual signature from any name or phrase. Particles orbit the text-seeded attractors. Share your link.
+          Spheres that pull particles into orbit. Text can seed the layout; click to add attractors. This does not form
+          letters — for that see{" "}
+          <Link to="/visual-signature" className="font-semibold text-primary hover:underline">
+            Visual Signature
+          </Link>
+          .
         </p>
       </header>
       <ParticleSignaturePlayground locale="en" />

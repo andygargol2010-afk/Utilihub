@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ParticleSignaturePlayground } from "@/components/playgrounds/ParticleSignaturePlayground";
+import { TextParticlesPlayground } from "@/components/playgrounds/TextParticlesPlayground";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Visual Signature | UtiliHub";
 const description = cleanDescription(
-  "Type your name and generate a unique particle visual signature. Share instantly, then explore more experiences on UtiliHub.",
+  "Type your name and watch particles fly in to form the letters. Shareable, downloadable, and a doorway to more experiences on UtiliHub.",
 );
 
 export const Route = createFileRoute("/visual-signature")({
@@ -43,17 +43,17 @@ function VisualSignaturePage() {
         </p>
         <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Visual Signature</h1>
         <p className="mt-3 text-muted-foreground">
-          Your name becomes a unique particle orbit. Type, watch, share — and if you like it, more experiences wait
-          below.
+          Type your name: particles move and <strong className="font-semibold text-foreground">form the letters</strong>.
+          Share the link or download a PNG — more experiences wait below.
         </p>
         <ol className="mt-4 flex flex-wrap gap-3 text-xs font-medium text-slate-600">
           <li className="rounded-full bg-violet-100 px-3 py-1">1 · Type</li>
-          <li className="rounded-full bg-violet-100 px-3 py-1">2 · Watch the orbit</li>
-          <li className="rounded-full bg-violet-100 px-3 py-1">3 · Share the link</li>
+          <li className="rounded-full bg-violet-100 px-3 py-1">2 · Letters form</li>
+          <li className="rounded-full bg-violet-100 px-3 py-1">3 · Share or download</li>
         </ol>
       </header>
 
-      <ParticleSignaturePlayground locale="en" entryMode />
+      <TextParticlesPlayground locale="en" entryMode />
 
       <section className="mt-10 space-y-4">
         <h2 className="text-lg font-bold tracking-tight">Keep exploring</h2>
@@ -72,14 +72,14 @@ function VisualSignaturePage() {
             </span>
           </Link>
           <Link
-            to="/playgrounds/gravity-particles"
+            to="/playgrounds/particle-signature"
             className="group rounded-2xl border border-amber-900/15 bg-gradient-to-br from-amber-50 via-white to-orange-50/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-400/40 hover:shadow-md"
           >
             <span className="text-2xl" aria-hidden>
-              🌌
+              🌀
             </span>
-            <p className="mt-2 text-base font-bold text-slate-900">Gravity particles</p>
-            <p className="mt-1 text-sm text-slate-600">Place attractors and watch orbits in real time.</p>
+            <p className="mt-2 text-base font-bold text-slate-900">Attractor orbits</p>
+            <p className="mt-1 text-sm text-slate-600">Spheres that pull particles — the previous playground.</p>
             <span className="mt-3 inline-block text-sm font-bold text-amber-700 group-hover:underline">
               Open playground →
             </span>

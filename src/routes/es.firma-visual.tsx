@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ParticleSignaturePlayground } from "@/components/playgrounds/ParticleSignaturePlayground";
+import { TextParticlesPlayground } from "@/components/playgrounds/TextParticlesPlayground";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Firma Visual | UtiliHub";
 const description = cleanDescription(
-  "Escribí tu nombre y generá una firma visual única de partículas. Compartible al instante. Después explorá más experiencias en UtiliHub.",
+  "Escribí tu nombre y las partículas vuelan para formarlo letra por letra. Compartible, descargable y puerta a más experiencias en UtiliHub.",
 );
 
 export const Route = createFileRoute("/es/firma-visual")({
@@ -44,17 +44,17 @@ function FirmaVisualPage() {
         </p>
         <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Firma Visual</h1>
         <p className="mt-3 text-muted-foreground">
-          Tu nombre se convierte en una órbita de partículas única. Escribí, mirá, compartí — y si te engancha,
-          hay más experiencias abajo.
+          Escribí tu nombre: las partículas se mueven y <strong className="font-semibold text-foreground">forman las letras</strong>.
+          Compartí el enlace o descargá un PNG — y si te engancha, hay más abajo.
         </p>
         <ol className="mt-4 flex flex-wrap gap-3 text-xs font-medium text-slate-600">
           <li className="rounded-full bg-violet-100 px-3 py-1">1 · Escribí</li>
-          <li className="rounded-full bg-violet-100 px-3 py-1">2 · Mirás la órbita</li>
-          <li className="rounded-full bg-violet-100 px-3 py-1">3 · Compartís el enlace</li>
+          <li className="rounded-full bg-violet-100 px-3 py-1">2 · Se forma el texto</li>
+          <li className="rounded-full bg-violet-100 px-3 py-1">3 · Compartí o descargá</li>
         </ol>
       </header>
 
-      <ParticleSignaturePlayground locale="es" entryMode />
+      <TextParticlesPlayground locale="es" entryMode />
 
       <section className="mt-10 space-y-4">
         <h2 className="text-lg font-bold tracking-tight">Seguí explorando</h2>
@@ -73,14 +73,14 @@ function FirmaVisualPage() {
             </span>
           </Link>
           <Link
-            to="/es/playgrounds/particulas-gravedad"
+            to="/es/playgrounds/firma-particulas"
             className="group rounded-2xl border border-amber-900/15 bg-gradient-to-br from-amber-50 via-white to-orange-50/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-400/40 hover:shadow-md"
           >
             <span className="text-2xl" aria-hidden>
-              🌌
+              🌀
             </span>
-            <p className="mt-2 text-base font-bold text-slate-900">Partículas de gravedad</p>
-            <p className="mt-1 text-sm text-slate-600">Colocá atrayentes y mirá las órbitas en vivo.</p>
+            <p className="mt-2 text-base font-bold text-slate-900">Órbitas atrayentes</p>
+            <p className="mt-1 text-sm text-slate-600">Esferas que atraen partículas — el playground anterior.</p>
             <span className="mt-3 inline-block text-sm font-bold text-amber-700 group-hover:underline">
               Abrir playground →
             </span>

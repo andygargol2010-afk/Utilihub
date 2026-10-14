@@ -1,11 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ParticleSignaturePlayground } from "@/components/playgrounds/ParticleSignaturePlayground";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
-const title = "Firma de Partículas | UtiliHub";
+const title = "Órbitas atrayentes | UtiliHub";
 const description = cleanDescription(
-  "Escribí un nombre o frase para generar una firma única de partículas compartible. Miralas orbitar los atrayentes. Funciona en móvil, enlace instantáneo.",
+  "Colocá esferas atrayentes y mirá cómo las partículas orbitan. El texto siembra el patrón inicial. Compartible y amigable en móvil.",
 );
 
 export const Route = createFileRoute("/es/playgrounds/firma-particulas")({
@@ -29,17 +29,22 @@ export const Route = createFileRoute("/es/playgrounds/firma-particulas")({
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/playgrounds/particle-signature") },
     ],
   }),
-  component: FirmaParticulasPageEs,
+  component: OrbitasAtrayentesPageEs,
 });
 
-function FirmaParticulasPageEs() {
+function OrbitasAtrayentesPageEs() {
   return (
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-black tracking-tight">Firma de Partículas</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight">Órbitas atrayentes</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Generá una firma visual única a partir de cualquier nombre o frase. Las partículas orbitan los atrayentes generados. Compartí el enlace.
+          Esferas que atraen partículas. Un texto puede sembrar el patrón; el clic suma atrayentes. No forma letras —
+          para eso está{" "}
+          <Link to="/es/firma-visual" className="font-semibold text-primary hover:underline">
+            Firma Visual
+          </Link>
+          .
         </p>
       </header>
       <ParticleSignaturePlayground locale="es" />
