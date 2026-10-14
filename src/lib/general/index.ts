@@ -163,6 +163,7 @@ import { GPA_CALCULATOR_TOOLS } from "./gpa-calculator-tool";
 import { POMODORO_TIMER_TOOLS } from "./pomodoro-timer-tool";
 import { BOX_SHADOW_TOOLS } from "./box-shadow-tool";
 import { DOWNLOAD_TIME_TOOLS } from "./download-time-tool";
+import { UNIT_PRICE_TOOLS } from "./unit-price-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -331,4 +332,5 @@ export const GENERAL_TOOLS = [
   ...POMODORO_TIMER_TOOLS,
   ...BOX_SHADOW_TOOLS,
   ...DOWNLOAD_TIME_TOOLS,
+  ...UNIT_PRICE_TOOLS,
 ];
