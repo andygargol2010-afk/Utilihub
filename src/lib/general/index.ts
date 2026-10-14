@@ -97,7 +97,7 @@ import { DNI_LETTER_TOOLS } from "./dni-letter-tool";
 import { SUBNET_TOOLS } from "./subnet-tool";
 import { COORDINATE_TOOLS } from "./coordinates-tool";
 import { EAN_TOOLS } from "./ean-tool";
-import { CLAMP_TOOLS } from "./clamp-tool";
+import { CLAMPtools } from "./clamp-tool";
 import { BRAILLE_TOOLS } from "./braille-tool";
 import { ULID_TOOLS } from "./ulid-tool";
 import { DECIBEL_TOOLS } from "./decibel-tool";
@@ -166,6 +166,7 @@ import { DOWNLOAD_TIME_TOOLS } from "./download-time-tool";
 import { UNIT_PRICE_TOOLS } from "./unit-price-tool";
 import { BODY_FAT_TOOLS } from "./body-fat-tool";
 import { KINETIC_ENERGY_TOOLS } from "./kinetic-energy-tool";
+import { TIMEZONE_TOOLS } from "./timezone-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -337,4 +338,5 @@ export const GENERAL_TOOLS = [
   ...UNIT_PRICE_TOOLS,
   ...BODY_FAT_TOOLS,
   ...KINETIC_ENERGY_TOOLS,
+  ...TIMEZONE_TOOLS,
 ];
