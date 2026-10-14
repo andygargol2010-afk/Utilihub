@@ -74,7 +74,13 @@ const labels = {
   },
 };
 
-function sampleTextTargets(text: string, w: number, h: number): { x: number; y: number }[] {
+/** Sample glyph pixels. density 80→coarse, 360→fine. Always covers full shape (no top-only truncate). */
+function sampleTextTargets(
+  text: string,
+  w: number,
+  h: number,
+  density: number,
+): { x: number; y: number }[] {
   const off = document.createElement("canvas");
   const W = Math.max(1, Math.floor(w));
   const H = Math.max(1, Math.floor(h));
@@ -85,21 +91,42 @@ function sampleTextTargets(text: string, w: number, h: number): { x: number; y: 
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#fff";
-  const fontSize = Math.min(H * 0.42, Math.max(28, W / Math.max(4, text.trim().length * 0.55)));
-  ctx.font = `bold ${fontSize}px system-ui, sans-serif`;
+  // Slightly heavier weight so thin legs (A, N, M) survive sampling
+  const len = Math.max(1, text.trim().length);
+  const fontSize = Math.min(H * 0.44, Math.max(32, (W * 0.92) / (len * 0.62)));
+  ctx.font = `900 ${fontSize}px system-ui, "Segoe UI", sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(text.trim().slice(0, 24), W / 2, H / 2);
+  ctx.lineJoin = "round";
+  // Draw twice with tiny offset = thicker strokes without changing metrics much
+  const cx = W / 2;
+  const cy = H / 2;
+  const label = text.trim().slice(0, 24);
+  ctx.fillText(label, cx, cy);
+  ctx.fillText(label, cx + 0.6, cy);
+  ctx.fillText(label, cx, cy + 0.6);
   const data = ctx.getImageData(0, 0, W, H).data;
-  const targets: { x: number; y: number }[] = [];
-  const step = Math.max(3, Math.floor(Math.min(W, H) / 80));
+  // step 2–4 from density (higher density = denser grid)
+  const t = Math.max(0, Math.min(1, (density - 80) / 280));
+  const step = Math.max(2, Math.round(4 - t * 2));
+  const raw: { x: number; y: number }[] = [];
   for (let y = 0; y < H; y += step) {
     for (let x = 0; x < W; x += step) {
       const i = (y * W + x) * 4;
-      if (data[i] > 128) targets.push({ x, y });
+      // low threshold keeps anti-aliased edges of thin strokes
+      if (data[i] > 40) raw.push({ x, y });
     }
   }
-  return targets;
+  if (raw.length === 0) return raw;
+  // Cap for perf, but subsample evenly so we never drop only the bottom of the glyph
+  const maxPts = Math.min(520, Math.max(120, Math.floor(density * 1.6)));
+  if (raw.length <= maxPts) return raw;
+  const out: { x: number; y: number }[] = [];
+  const stride = raw.length / maxPts;
+  for (let i = 0; i < maxPts; i++) {
+    out.push(raw[Math.min(raw.length - 1, Math.floor(i * stride))]);
+  }
+  return out;
 }
 
 function hashSeed(str: string): number {
@@ -140,11 +167,12 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
     const rect = canvas.getBoundingClientRect();
     const w = rect.width || 600;
     const h = rect.height || 360;
-    const targets = sampleTextTargets(text, w, h);
+    const targets = sampleTextTargets(text, w, h, density);
     targetsRef.current = targets;
+    // One particle per target — never truncate top-to-bottom (that cut the A leg)
     const n =
       targets.length > 0
-        ? Math.min(density, Math.max(80, targets.length))
+        ? targets.length
         : Math.min(density, 120);
     const ps: Particle[] = [];
     const baseHue = mood.hue;
@@ -152,21 +180,19 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
     for (let i = 0; i < n; i++) {
       const tgt =
         targets.length > 0
-          ? targets[i % targets.length]
+          ? targets[i]
           : { x: w / 2 + (Math.random() - 0.5) * w * 0.3, y: h * 0.45 };
       const rx = (Math.sin(seed * 0.001 + i * 0.7) * 0.5 + 0.5) * w;
       const ry = (Math.cos(seed * 0.0013 + i * 0.5) * 0.5 + 0.5) * h * 0.7 + h * 0.1;
-      // Stagger starts so the letter fills in a wave, not one blob
-      const delaySpread = (i / Math.max(1, n)) * 18;
+      const delaySpread = (i / Math.max(1, n)) * 14;
       ps.push({
-        x: tgt.x + (Math.random() - 0.5) * 30,
-        y: h + 20 + Math.random() * 50 + delaySpread,
-        vx: (Math.random() - 0.5) * 1.2,
-        // Mild upward speed — seek handles the rest (no rocket overshoot)
-        vy: -2.2 - Math.random() * 1.8,
+        x: tgt.x + (Math.random() - 0.5) * 24,
+        y: h + 16 + Math.random() * 40 + delaySpread,
+        vx: (Math.random() - 0.5) * 1.0,
+        vy: -2.0 - Math.random() * 1.6,
         tx: tgt.x,
         ty: tgt.y,
-        size: 1.6 + Math.random() * 2,
+        size: 1.5 + Math.random() * 1.8,
         hue: (baseHue + (Math.random() - 0.5) * 40 + 360) % 360,
         life: 1,
         phase: "launch",
@@ -216,7 +242,7 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
     window.addEventListener("resize", resize);
     const boot = window.setTimeout(regenerate, 80);
 
-    const FORM_HOLD_FRAMES = 90; // ~1.5s visible letter shape before burst
+    const FORM_HOLD_FRAMES = 90;
 
     const loop = () => {
       const rect = canvas.getBoundingClientRect();
@@ -233,13 +259,11 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
           const dx = p.tx - p.x;
           const dy = p.ty - p.y;
           const dist = Math.hypot(dx, dy) || 1;
-          // Strong seek toward letter pixel — no continuous upward bias
           const seek = Math.min(0.55, 0.12 + dist * 0.0025);
           p.vx += (dx / dist) * seek;
           p.vy += (dy / dist) * seek;
           p.vx *= 0.88;
           p.vy *= 0.88;
-          // Cap speed so they don't overshoot targets
           const spd = Math.hypot(p.vx, p.vy);
           if (spd > 7) {
             p.vx = (p.vx / spd) * 7;
@@ -254,7 +278,6 @@ export function FireworkSignature({ locale }: { locale: Locale }) {
             p.hold = 0;
           }
         } else if (p.phase === "form") {
-          // Soft spring lock on letter pixel so the glyph stays readable
           const dx = p.tx - p.x;
           const dy = p.ty - p.y;
           p.vx += dx * 0.18;
