@@ -3,6 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
+/**
+ * Ad scripts DISABLED (2026-10-14).
+ * Same key as tool banners — Adsterra invoke.js was causing top-window redirects
+ * (contendvictor.com and similar). Keep layout slot; re-enable with safe placement only.
+ */
+const ADS_SCRIPTS_ENABLED = false;
+
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
   width: 728,
@@ -41,6 +48,7 @@ export function AdBanner() {
   }, []);
 
   useEffect(() => {
+    if (!ADS_SCRIPTS_ENABLED) return;
     if (!allowed || !viewport || !slotRef.current) return;
     const slot = slotRef.current;
     if (slot.dataset.loaded === "true") return;
