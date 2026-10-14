@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FloorPlanStudio } from "@/components/playgrounds/FloorPlanStudio";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
 const title = "Floor Plan Studio | UtiliHub";
 const description = cleanDescription(
@@ -42,6 +43,8 @@ function FloorPlanPageEn() {
         </p>
       </header>
       <FloorPlanStudio locale="en" />
+
+      <PlaygroundNextStep currentId="floor-plan" locale="en" />
       <div className="mt-8">
         <AdsterraBanner />
       </div>
