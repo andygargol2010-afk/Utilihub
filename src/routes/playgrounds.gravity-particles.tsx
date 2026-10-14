@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { GravityParticlesPlayground } from "@/components/playgrounds/GravityParticlesPlayground";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
 const title = "Gravity Particles Playground | UtiliHub";
 const description = cleanDescription(
@@ -42,6 +43,8 @@ function GravityParticlesPageEn() {
         </p>
       </header>
       <GravityParticlesPlayground locale="en" />
+
+      <PlaygroundNextStep currentId="gravity-particles" locale="en" />
       <div className="mt-8">
         <AdsterraBanner />
       </div>
