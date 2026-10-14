@@ -1,5 +1,5 @@
 "use client";
-// Viral Particle Postcard — particles swarm to form typed text (legibility pass 2026-10-14)
+// Viral Particle Postcard — particles swarm to form typed text (condense long text 2026-10-14)
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
@@ -51,7 +51,7 @@ const labels = {
     download: "Download PNG",
     copied: "Copied!",
     shared: "Shared!",
-    help: "Type up to 10 characters — particles swarm to form the text. Adjust density & strength, pick a mood, then share or download.",
+    help: "Type up to 10 characters — particles swarm to form the text. Longer text is drawn narrower so it stays readable.",
   },
   es: {
     message: "Tu mensaje o nombre",
@@ -66,11 +66,14 @@ const labels = {
     download: "Descargar PNG",
     copied: "¡Copiado!",
     shared: "¡Compartido!",
-    help: "Hasta 10 caracteres — las partículas forman el texto. Ajustá densidad y fuerza, elegí ánimo, compartí o descargá.",
+    help: "Hasta 10 caracteres — las partículas forman el texto. Con más de 5 letras se estrechan para que se lean bien.",
   },
 };
 
-/** Dense glyph sample so short words stay readable (step 1–2, high maxPts). */
+/**
+ * Sample glyph pixels. For >5 chars, horizontally compress the type so the
+ * whole word fits and each letter stays thick enough to fill with particles.
+ */
 function sampleTextTargets(
   text: string,
   w: number,
@@ -87,35 +90,61 @@ function sampleTextTargets(
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#fff";
+
   const label = text.trim().slice(0, MAX_CHARS);
   const len = Math.max(1, label.length);
-  // Larger type for ≤10 chars so strokes stay thick after sampling
-  const fontSize = Math.min(H * 0.52, Math.max(42, (W * 0.92) / (len * 0.55)));
-  ctx.font = `900 ${fontSize}px system-ui, "Segoe UI", sans-serif`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
   const cx = W / 2;
   const cy = H / 2;
-  // Thicker strokes: draw several slight offsets
-  for (const ox of [-1.2, -0.4, 0.4, 1.2, 0]) {
-    for (const oy of [-0.8, 0, 0.8]) {
-      ctx.fillText(label, cx + ox, cy + oy);
+
+  // Base height-driven size
+  let fontSize = Math.min(H * 0.5, 120);
+  ctx.font = `900 ${fontSize}px system-ui, "Segoe UI", sans-serif`;
+  let textW = ctx.measureText(label).width;
+
+  // >5 chars → progressively narrower letters (user request)
+  let scaleX = 1;
+  if (len > 5) {
+    // 6→0.90, 7→0.82, 8→0.74, 9→0.66, 10→0.58
+    scaleX = Math.max(0.55, 1 - (len - 5) * 0.09);
+  }
+
+  // Fit into ~90% of canvas width
+  const maxW = W * 0.9;
+  if (textW * scaleX > maxW) {
+    fontSize *= maxW / (textW * scaleX);
+    fontSize = Math.max(22, fontSize);
+    ctx.font = `900 ${fontSize}px system-ui, "Segoe UI", sans-serif`;
+    textW = ctx.measureText(label).width;
+  }
+
+  // Draw with horizontal scale + slight overdraw for thicker strokes
+  const thick = Math.max(0.7, fontSize * 0.02);
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(scaleX, 1);
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (const ox of [-thick * 1.4, -thick * 0.5, 0, thick * 0.5, thick * 1.4]) {
+    for (const oy of [-thick * 0.9, 0, thick * 0.9]) {
+      ctx.fillText(label, ox, oy);
     }
   }
+  ctx.restore();
+
   const data = ctx.getImageData(0, 0, W, H).data;
-  // Always dense grid for legibility (density only raises max points)
-  const step = density >= 220 ? 1 : density >= 140 ? 2 : 2;
+  // Denser step for longer (narrower) text so thin strokes still fill
+  const step = len >= 8 ? 1 : density >= 200 ? 1 : 2;
   const raw: { x: number; y: number }[] = [];
   for (let y = 0; y < H; y += step) {
     for (let x = 0; x < W; x += step) {
       const i = (y * W + x) * 4;
-      // Mid threshold: skip pure anti-alias fringe, keep solid stroke
-      if (data[i] > 90) raw.push({ x, y });
+      if (data[i] > 85) raw.push({ x, y });
     }
   }
   if (raw.length === 0) return raw;
-  // Cap high so long paths still fill; short text usually under this
-  const maxPts = Math.min(900, Math.max(180, Math.floor(density * 2.4)));
+
+  // More points for longer words
+  const maxPts = Math.min(1000, Math.max(200, Math.floor(density * (len >= 7 ? 2.8 : 2.2))));
   if (raw.length <= maxPts) return raw;
   const out: { x: number; y: number }[] = [];
   const stride = raw.length / maxPts;
@@ -155,6 +184,10 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
     const targets = sampleTextTargets(text, w, h, density);
     targetsRef.current = targets;
     const n = targets.length > 0 ? targets.length : Math.min(density, 120);
+    const len = Math.max(1, text.trim().length);
+    // Slightly smaller dots when many narrow letters
+    const sizeBase = len >= 7 ? 0.95 : 1.15;
+    const sizeSpread = len >= 7 ? 0.7 : 0.9;
     const ps: Particle[] = [];
     const baseHue = mood.hue;
     for (let i = 0; i < n; i++) {
@@ -169,8 +202,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
         vy: (Math.random() - 0.5) * 2.5,
         tx: tgt.x,
         ty: tgt.y,
-        // Smaller base size → sharper letter once locked
-        size: 1.15 + Math.random() * 0.9,
+        size: sizeBase + Math.random() * sizeSpread,
         hue: (baseHue + (Math.random() - 0.5) * 28 + 360) % 360,
         settled: false,
       });
@@ -223,7 +255,6 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
       const { strength: str, mood: md } = paramsRef.current;
       const ps = particlesRef.current;
 
-      // Faster trail clear → less muddy letters
       ctx.fillStyle = md.trail;
       ctx.fillRect(0, 0, w, h);
 
@@ -233,7 +264,6 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
         const dist = Math.hypot(dx, dy) || 1;
 
         if (p.settled || dist < 2.5) {
-          // Hard lock on target pixel — no residual jitter
           p.x = p.tx;
           p.y = p.ty;
           p.vx = 0;
@@ -257,7 +287,6 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
 
         const speed = Math.hypot(p.vx, p.vy);
         const hue = (p.hue + speed * 1.5) % 360;
-        // Settled: sharp disc, almost no blur; flying: soft glow ok
         if (p.settled) {
           ctx.shadowBlur = 0;
           ctx.beginPath();
