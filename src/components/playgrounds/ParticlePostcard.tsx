@@ -1,5 +1,5 @@
 "use client";
-// Viral Particle Postcard — particles swarm to form typed text (share polish 2026-10-14)
+// Viral Particle Postcard — particles swarm to form typed text (cleaner/faster 2026-10-14)
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
@@ -16,11 +16,11 @@ interface Mood {
 }
 
 const MOODS: Mood[] = [
-  { id: "aurora", label: { en: "Aurora", es: "Aurora" }, hue: 160, glow: "rgba(100,255,200,0.8)", bg: "#041216", trail: "rgba(4,18,22,0.18)" },
-  { id: "neon", label: { en: "Neon", es: "Neón" }, hue: 300, glow: "rgba(255,80,220,0.8)", bg: "#0c0418", trail: "rgba(12,4,24,0.18)" },
-  { id: "sunset", label: { en: "Sunset", es: "Atardecer" }, hue: 20, glow: "rgba(255,140,80,0.8)", bg: "#16080a", trail: "rgba(22,8,10,0.18)" },
-  { id: "ocean", label: { en: "Ocean", es: "Océano" }, hue: 205, glow: "rgba(80,160,255,0.8)", bg: "#040c1c", trail: "rgba(4,12,28,0.18)" },
-  { id: "ember", label: { en: "Ember", es: "Brasa" }, hue: 8, glow: "rgba(255,90,40,0.8)", bg: "#140604", trail: "rgba(20,6,4,0.18)" },
+  { id: "aurora", label: { en: "Aurora", es: "Aurora" }, hue: 160, glow: "rgba(100,255,200,0.8)", bg: "#041216", trail: "rgba(4,18,22,0.22)" },
+  { id: "neon", label: { en: "Neon", es: "Neón" }, hue: 300, glow: "rgba(255,80,220,0.8)", bg: "#0c0418", trail: "rgba(12,4,24,0.22)" },
+  { id: "sunset", label: { en: "Sunset", es: "Atardecer" }, hue: 20, glow: "rgba(255,140,80,0.8)", bg: "#16080a", trail: "rgba(22,8,10,0.22)" },
+  { id: "ocean", label: { en: "Ocean", es: "Océano" }, hue: 205, glow: "rgba(80,160,255,0.8)", bg: "#040c1c", trail: "rgba(4,12,28,0.22)" },
+  { id: "ember", label: { en: "Ember", es: "Brasa" }, hue: 8, glow: "rgba(255,90,40,0.8)", bg: "#140604", trail: "rgba(20,6,4,0.22)" },
 ];
 
 interface Particle {
@@ -32,12 +32,15 @@ interface Particle {
   ty: number;
   size: number;
   hue: number;
+  settled: boolean;
 }
+
+const MAX_CHARS = 10;
 
 const labels = {
   en: {
     message: "Your message or name",
-    placeholder: "Hello world, UtiliHub…",
+    placeholder: "Hello…",
     density: "Particle density",
     gravity: "Swarm strength",
     mood: "Mood color",
@@ -48,11 +51,11 @@ const labels = {
     download: "Download PNG",
     copied: "Copied!",
     shared: "Shared!",
-    help: "Type a short message — particles swarm to form the text. Adjust density & strength, pick a mood, then share or download.",
+    help: "Type up to 10 characters — particles swarm to form the text. Adjust density & strength, pick a mood, then share or download.",
   },
   es: {
     message: "Tu mensaje o nombre",
-    placeholder: "Hola mundo, UtiliHub…",
+    placeholder: "Hola…",
     density: "Densidad de partículas",
     gravity: "Fuerza del enjambre",
     mood: "Color de ánimo",
@@ -63,33 +66,56 @@ const labels = {
     download: "Descargar PNG",
     copied: "¡Copiado!",
     shared: "¡Compartido!",
-    help: "Escribí un mensaje corto — las partículas se agrupan para formar el texto. Ajustá densidad y fuerza, elegí un ánimo, compartí o descargá.",
+    help: "Hasta 10 caracteres — las partículas forman el texto. Ajustá densidad y fuerza, elegí ánimo, compartí o descargá.",
   },
 };
 
-function sampleTextTargets(text: string, w: number, h: number): { x: number; y: number }[] {
+function sampleTextTargets(
+  text: string,
+  w: number,
+  h: number,
+  density: number,
+): { x: number; y: number }[] {
   const off = document.createElement("canvas");
-  off.width = Math.floor(w);
-  off.height = Math.floor(h);
-  const ctx = off.getContext("2d");
+  const W = Math.max(1, Math.floor(w));
+  const H = Math.max(1, Math.floor(h));
+  off.width = W;
+  off.height = H;
+  const ctx = off.getContext("2d", { willReadFrequently: true });
   if (!ctx || !text.trim()) return [];
   ctx.fillStyle = "#000";
-  ctx.fillRect(0, 0, w, h);
+  ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#fff";
-  ctx.font = `bold ${Math.min(h * 0.35, 80)}px system-ui, sans-serif`;
+  const label = text.trim().slice(0, MAX_CHARS);
+  const len = Math.max(1, label.length);
+  const fontSize = Math.min(H * 0.48, Math.max(36, (W * 0.9) / (len * 0.58)));
+  ctx.font = `900 ${fontSize}px system-ui, "Segoe UI", sans-serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(text.trim().slice(0, 28), w / 2, h / 2);
-  const data = ctx.getImageData(0, 0, w, h).data;
-  const targets: { x: number; y: number }[] = [];
-  const step = 4;
-  for (let y = 0; y < h; y += step) {
-    for (let x = 0; x < w; x += step) {
-      const i = (y * w + x) * 4;
-      if (data[i] > 128) targets.push({ x, y });
+  const cx = W / 2;
+  const cy = H / 2;
+  ctx.fillText(label, cx, cy);
+  ctx.fillText(label, cx + 0.7, cy);
+  ctx.fillText(label, cx, cy + 0.7);
+  const data = ctx.getImageData(0, 0, W, H).data;
+  const t = Math.max(0, Math.min(1, (density - 60) / 260));
+  const step = Math.max(2, Math.round(4 - t * 2));
+  const raw: { x: number; y: number }[] = [];
+  for (let y = 0; y < H; y += step) {
+    for (let x = 0; x < W; x += step) {
+      const i = (y * W + x) * 4;
+      if (data[i] > 40) raw.push({ x, y });
     }
   }
-  return targets;
+  if (raw.length === 0) return raw;
+  const maxPts = Math.min(480, Math.max(100, Math.floor(density * 1.8)));
+  if (raw.length <= maxPts) return raw;
+  const out: { x: number; y: number }[] = [];
+  const stride = raw.length / maxPts;
+  for (let i = 0; i < maxPts; i++) {
+    out.push(raw[Math.min(raw.length - 1, Math.floor(i * stride))]);
+  }
+  return out;
 }
 
 export function ParticlePostcard({ locale }: { locale: Locale }) {
@@ -98,7 +124,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
   const particlesRef = useRef<Particle[]>([]);
   const targetsRef = useRef<{ x: number; y: number }[]>([]);
   const paramsRef = useRef({ density: 180, strength: 1.2, text: "", mood: MOODS[0] });
-  const [text, setText] = useState(locale === "es" ? "UtiliHub" : "UtiliHub");
+  const [text, setText] = useState("UtiliHub".slice(0, MAX_CHARS));
   const [density, setDensity] = useState(180);
   const [strength, setStrength] = useState(1.2);
   const [moodId, setMoodId] = useState<MoodId>("aurora");
@@ -119,22 +145,26 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
     const rect = canvas.getBoundingClientRect();
     const w = rect.width || 600;
     const h = rect.height || 360;
-    const targets = sampleTextTargets(text, w, h);
+    const targets = sampleTextTargets(text, w, h, density);
     targetsRef.current = targets;
-    const n = Math.min(density, Math.max(40, targets.length || 80));
+    const n = targets.length > 0 ? targets.length : Math.min(density, 100);
     const ps: Particle[] = [];
     const baseHue = mood.hue;
     for (let i = 0; i < n; i++) {
-      const tgt = targets[i % Math.max(1, targets.length)] || { x: w / 2, y: h / 2 };
+      const tgt =
+        targets.length > 0
+          ? targets[i]
+          : { x: w / 2 + (Math.random() - 0.5) * 40, y: h / 2 };
       ps.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2,
+        vx: (Math.random() - 0.5) * 3,
+        vy: (Math.random() - 0.5) * 3,
         tx: tgt.x,
         ty: tgt.y,
-        size: 1.6 + Math.random() * 1.8,
-        hue: (baseHue + (Math.random() - 0.5) * 40) % 360,
+        size: 1.5 + Math.random() * 1.6,
+        hue: (baseHue + (Math.random() - 0.5) * 36 + 360) % 360,
+        settled: false,
       });
     }
     particlesRef.current = ps;
@@ -142,7 +172,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const msg = params.get("msg") || "";
+    const msg = (params.get("msg") || "").slice(0, MAX_CHARS);
     const d = parseInt(params.get("d") || "180", 10);
     const s = parseFloat(params.get("s") || "1.2");
     const m = params.get("mood") as MoodId | null;
@@ -154,7 +184,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = window.setTimeout(regenerate, 280);
+    debounceRef.current = window.setTimeout(regenerate, 180);
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
@@ -176,7 +206,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
     };
     resize();
     window.addEventListener("resize", resize);
-    setTimeout(regenerate, 50);
+    const boot = window.setTimeout(regenerate, 50);
 
     const loop = () => {
       const rect = canvas.getBoundingClientRect();
@@ -192,20 +222,38 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
         const dx = p.tx - p.x;
         const dy = p.ty - p.y;
         const dist = Math.hypot(dx, dy) || 1;
-        const force = (str * 0.18) / (dist * 0.05 + 1);
-        p.vx += (dx / dist) * force;
-        p.vy += (dy / dist) * force;
-        p.vx *= 0.92;
-        p.vy *= 0.92;
-        p.x += p.vx;
-        p.y += p.vy;
+
+        if (p.settled || dist < 3.5) {
+          // Snap + soft lock for clean letter edges
+          p.x = p.tx + dx * 0.15;
+          p.y = p.ty + dy * 0.15;
+          p.vx *= 0.55;
+          p.vy *= 0.55;
+          p.settled = dist < 2.2;
+        } else {
+          // Stronger seek than before so letters form quickly
+          const seek = Math.min(0.85, (0.22 + dist * 0.003) * str);
+          p.vx += (dx / dist) * seek;
+          p.vy += (dy / dist) * seek;
+          p.vx *= 0.86;
+          p.vy *= 0.86;
+          const spd = Math.hypot(p.vx, p.vy);
+          const cap = 9 + str * 2;
+          if (spd > cap) {
+            p.vx = (p.vx / spd) * cap;
+            p.vy = (p.vy / spd) * cap;
+          }
+          p.x += p.vx;
+          p.y += p.vy;
+        }
+
         const speed = Math.hypot(p.vx, p.vy);
-        const hue = (p.hue + speed * 3) % 360;
+        const hue = (p.hue + speed * 2) % 360;
         ctx.shadowColor = `hsl(${hue}, 80%, 60%)`;
-        ctx.shadowBlur = 6 + speed;
+        ctx.shadowBlur = p.settled ? 8 : 5 + speed * 0.5;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsl(${hue}, 75%, 62%)`;
+        ctx.arc(p.x, p.y, p.size * (p.settled ? 1.12 : 1), 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(${hue}, 78%, 62%)`;
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -214,13 +262,14 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
     loop();
     return () => {
       cancelAnimationFrame(raf);
+      window.clearTimeout(boot);
       window.removeEventListener("resize", resize);
     };
   }, [regenerate]);
 
   const buildUrl = () => {
     const params = new URLSearchParams();
-    if (text.trim()) params.set("msg", text.trim());
+    if (text.trim()) params.set("msg", text.trim().slice(0, MAX_CHARS));
     params.set("d", String(density));
     params.set("s", strength.toFixed(2));
     params.set("mood", moodId);
@@ -228,9 +277,10 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
   };
 
   const getShareText = () => {
-    const base = locale === "es"
-      ? `Mirá mi postal de partículas ✨ ${text.trim() || "UtiliHub"}`
-      : `Check my particle postcard ✨ ${text.trim() || "UtiliHub"}`;
+    const base =
+      locale === "es"
+        ? `Mirá mi postal de partículas ✨ ${text.trim() || "UtiliHub"}`
+        : `Check my particle postcard ✨ ${text.trim() || "UtiliHub"}`;
     return `${base} #UtiliHub #ParticlePostcard`;
   };
 
@@ -248,14 +298,19 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
   const shareX = () => {
     const url = buildUrl();
     const txt = getShareText();
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent(url)}`, "_blank", "noopener");
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent(url)}`,
+      "_blank",
+      "noopener",
+    );
   };
 
   const shareWA = () => {
     const url = buildUrl();
-    const txt = locale === "es"
-      ? `Mirá mi postal de partículas en UtiliHub: ${url}`
-      : `Check my particle postcard on UtiliHub: ${url}`;
+    const txt =
+      locale === "es"
+        ? `Mirá mi postal de partículas en UtiliHub: ${url}`
+        : `Check my particle postcard on UtiliHub: ${url}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank", "noopener");
   };
 
@@ -275,7 +330,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
         copyLink();
       }
     } catch {
-      // user cancelled or failed
+      // cancelled
     }
   };
 
@@ -296,7 +351,7 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
     ctx.textAlign = "right";
     ctx.fillText("UtiliHub · Postcard", off.width - 16, off.height - 16);
     const a = document.createElement("a");
-    a.download = `postcard-${(text || "msg").slice(0, 20).replace(/\s+/g, "-")}.png`;
+    a.download = `postcard-${(text || "msg").slice(0, 10).replace(/\s+/g, "-")}.png`;
     a.href = off.toDataURL("image/png");
     a.click();
   };
@@ -309,10 +364,10 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
           <input
             type="text"
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => setText(e.target.value.slice(0, MAX_CHARS))}
             placeholder={t.placeholder}
             className="rounded-xl border border-border bg-background px-4 py-3 text-base shadow-sm outline-none ring-primary/30 focus:ring-2"
-            maxLength={28}
+            maxLength={MAX_CHARS}
             autoComplete="off"
           />
         </label>
