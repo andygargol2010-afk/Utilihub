@@ -6,10 +6,12 @@ import type { PublicLocale } from "./route-slugs";
  * Keys/values use internal catalog slugs.
  */
 export const TOOL_JOURNEYS: Record<string, string[]> = {
-  porcentaje: ["regla-de-tres", "porcentaje-de-cambio", "propina", "promedio"],
-  "regla-de-tres": ["porcentaje", "porcentaje-de-cambio", "promedio", "propina"],
-  "porcentaje-de-cambio": ["porcentaje", "regla-de-tres", "propina", "promedio"],
-  calculadora: ["porcentaje", "regla-de-tres", "promedio", "mcd-mcm"],
+  // Bounce-heavy landings: first slug = primary next step (must exist in catalog)
+  porcentaje: ["regla-de-tres", "calculadora-de-porcentajes", "cambio-porcentual", "promedio"],
+  "regla-de-tres": ["porcentaje", "calculadora-de-porcentajes", "cambio-porcentual", "promedio"],
+  "cambio-porcentual": ["porcentaje", "regla-de-tres", "calculadora-de-porcentajes", "promedio"],
+  calculadora: ["porcentaje", "regla-de-tres", "calculadora-de-porcentajes", "promedio"],
+  "calculadora-de-porcentajes": ["porcentaje", "regla-de-tres", "cambio-porcentual", "promedio"],
   promedio: ["mediana", "moda", "rango", "desviacion-estandar"],
   mediana: ["promedio", "moda", "rango", "percentil"],
   moda: ["promedio", "mediana", "rango", "percentil"],
@@ -24,13 +26,13 @@ export const TOOL_JOURNEYS: Record<string, string[]> = {
   "timestamp-generator": ["timestamp-to-date", "calculadora-de-fechas", "sumar-dias", "diferencia-fechas"],
   "timestamp-to-date": ["timestamp-generator", "calculadora-de-fechas", "sumar-dias", "diferencia-fechas"],
 
-  "contador-de-palabras": ["contador-de-caracteres", "limpiar-texto", "frecuencia-palabras", "nivel-lectura"],
-  "contador-de-caracteres": ["contador-de-palabras", "limpiar-texto", "frecuencia-palabras", "nivel-lectura"],
-  "limpiar-texto": ["contador-de-palabras", "slug-generator", "generador-nombres-archivos", "html-encode"],
-  "frecuencia-palabras": ["contador-de-palabras", "nivel-lectura", "limpiar-texto", "contador-de-caracteres"],
-  "nivel-lectura": ["contador-de-palabras", "frecuencia-palabras", "limpiar-texto", "contador-de-caracteres"],
-  "generador-nombres-archivos": ["slug-generator", "limpiar-texto", "contador-de-palabras", "html-encode"],
-  "slug-generator": ["generador-nombres-archivos", "limpiar-texto", "url-encode", "html-encode"],
+  "contador-de-palabras": ["tiempo-lectura", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
+  "contador-de-caracteres": ["contador-de-palabras", "tiempo-lectura", "limpiar-texto", "generador-nombres-archivos"],
+  "limpiar-texto": ["contador-de-palabras", "tiempo-lectura", "generador-nombres-archivos", "contador-de-caracteres"],
+  "tiempo-lectura": ["contador-de-palabras", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
+  "generador-nombres-archivos": ["limpiar-texto", "contador-de-palabras", "tiempo-lectura", "contador-de-caracteres"],
+  "modelador-3d": ["modelador-casas-3d", "relacion-aspecto", "ppi-pantalla", "mezclador-de-colores"],
+  "modelador-casas-3d": ["modelador-3d", "pintura-superficie", "relacion-aspecto", "ppi-pantalla"],
 
   "base64-encode": ["base64-decode", "url-encode", "html-encode", "json-formatter"],
   "base64-decode": ["base64-encode", "url-decode", "html-decode", "json-formatter"],
@@ -50,9 +52,9 @@ export const TOOL_JOURNEYS: Record<string, string[]> = {
   "validador-cuit": ["validador-iban", "validador-luhn", "password-strength", "uuid-generator"],
   "validador-iban": ["validador-cuit", "validador-luhn", "uuid-generator", "base64-encode"],
 
-  propina: ["porcentaje", "porcentaje-de-cambio", "regla-de-tres", "divisor-gastos"],
-  "divisor-gastos": ["propina", "porcentaje", "regla-50-30-20", "porcentaje-de-cambio"],
-  "regla-50-30-20": ["propina", "objetivo-de-ahorro", "porcentaje", "porcentaje-de-cambio"],
+  propina: ["porcentaje", "cambio-porcentual", "regla-de-tres", "calculadora-de-porcentajes"],
+  "divisor-gastos": ["propina", "porcentaje", "regla-50-30-20", "cambio-porcentual"],
+  "regla-50-30-20": ["propina", "objetivo-de-ahorro", "porcentaje", "cambio-porcentual"],
 
   "interes-compuesto": ["objetivo-de-ahorro", "ahorro-periodico", "rentabilidad-real", "regla-50-30-20"],
   "objetivo-de-ahorro": ["interes-compuesto", "ahorro-periodico", "regla-50-30-20", "propina"],
@@ -107,8 +109,28 @@ export function journeyLabel(
       ? "Después del IBAN: otros identificadores y formatos"
       : "After IBAN: other identifiers and formats";
   }
-  if (current.slug === "porcentaje" || current.slug === "regla-de-tres" || current.slug === "porcentaje-de-cambio") {
+  if (current.slug === "calculadora") {
+    return es
+      ? "Después de la calculadora: porcentajes y proporciones"
+      : "After the calculator: percentages and proportions";
+  }
+  if (
+    current.slug === "porcentaje" ||
+    current.slug === "regla-de-tres" ||
+    current.slug === "cambio-porcentual" ||
+    current.slug === "calculadora-de-porcentajes"
+  ) {
     return es ? "Más herramientas de porcentajes y proporciones" : "More proportion and percentage tools";
+  }
+  if (current.slug === "contador-de-palabras" || current.slug === "tiempo-lectura") {
+    return es
+      ? "Seguí con el texto: tiempo de lectura y limpieza"
+      : "Keep going with your text: reading time and cleanup";
+  }
+  if (current.slug === "modelador-3d" || current.slug === "modelador-casas-3d") {
+    return es
+      ? "Seguí en 3D o pasá a diseño y medidas"
+      : "Stay in 3D or move to design and measurements";
   }
   if (current.category === "seguridad") {
     return es ? "Protegé y verificá tus datos" : "Protect and verify your data";
