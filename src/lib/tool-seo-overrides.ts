@@ -114,6 +114,7 @@ import { TOOL_SEO_OVERRIDES_ENTROPY } from "./tool-seo-overrides-entropy";
 import { TOOL_SEO_OVERRIDES_PASSWORD_GENERATOR } from "./tool-seo-overrides-password-generator";
 import { TOOL_SEO_OVERRIDES_CASE_CONVERTER } from "./tool-seo-overrides-case-converter";
 import { TOOL_SEO_OVERRIDES_COCINA } from "./tool-seo-overrides-cocina";
+import { TOOL_SEO_OVERRIDES_RANK5 } from "./tool-seo-overrides-rank5";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -243,6 +244,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_PASSWORD_GENERATOR,
   ...TOOL_SEO_OVERRIDES_CASE_CONVERTER,
   ...TOOL_SEO_OVERRIDES_COCINA,
+  ...TOOL_SEO_OVERRIDES_RANK5,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
