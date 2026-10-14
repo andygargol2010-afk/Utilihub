@@ -171,6 +171,7 @@ const EXACT_NAMES: Record<string, string> = {
   fracciones: "Calculadora de fracciones",
   "relacion-aspecto": "Relación de aspecto",
   "peso-ideal": "Peso ideal",
+  "calculadora-grasa-corporal": "Calculadora de grasa corporal",
   "fecha-parto": "Fecha de parto",
   "ciclos-sueno": "Ciclos de sueño",
   "pago-tarjeta-credito": "Pago de tarjeta de crédito",
