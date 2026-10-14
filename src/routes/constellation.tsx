@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ConstellationNameMap } from "@/components/playgrounds/ConstellationNameMap";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
 const title = "Constellation Name Map | UtiliHub";
 const description = cleanDescription(
@@ -45,12 +46,8 @@ function ConstellationPage() {
         </p>
       </header>
       <ConstellationNameMap locale="en" />
-      <section className="mt-10">
-        <h2 className="text-lg font-bold">Keep exploring</h2>
-        <Link to="/experiences" className="mt-3 inline-block text-sm font-bold text-indigo-700 hover:underline">
-          Experiences hub →
-        </Link>
-      </section>
+
+      <PlaygroundNextStep currentId="constellation-name" locale="en" />
       <div className="mt-10">
         <AdsterraBanner />
       </div>
