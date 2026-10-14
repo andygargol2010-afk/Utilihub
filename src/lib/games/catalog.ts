@@ -194,6 +194,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Apagá luces y vecinas. Dejá toda la grilla apagada.",
     hasScore: false,
   },
+  {
+    slug: "magnetic-letter-catcher",
+    slugEs: "atrapa-letras-magneticas",
+    nameEn: "Magnetic Letter Catcher",
+    nameEs: "Atrapa Letras Magnéticas",
+    tag: "arcade",
+    emoji: "🧲",
+    summaryEn: "Catch floating letters of your name in order with magnetic attractor. Combos, modes, shareable PNG.",
+    summaryEs: "Atrapá las letras flotantes de tu nombre en orden con el atractor magnético. Combos, modos y PNG compartible.",
+    hasScore: true,
+  },
 ] as const;
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
