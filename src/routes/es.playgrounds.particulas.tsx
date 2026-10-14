@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ParticlesPlayground } from "@/components/playgrounds/ParticlesPlayground";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Playground de partículas interactivas | UtiliHub";
@@ -43,6 +44,8 @@ function ParticulasPageEs() {
         </p>
       </header>
       <ParticlesPlayground locale="es" />
+
+      <PlaygroundNextStep currentId="particles" locale="es" />
       <div className="mt-8">
         <AdsterraBanner />
       </div>

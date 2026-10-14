@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { KaleidoscopeMandalaStudio } from "@/components/playgrounds/KaleidoscopeMandalaStudio";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Kaleidoscope Mandala Studio | UtiliHub";
@@ -42,6 +43,8 @@ function KaleidoscopePageEn() {
         </p>
       </header>
       <KaleidoscopeMandalaStudio locale="en" />
+
+      <PlaygroundNextStep currentId="kaleidoscope-mandala" locale="en" />
       <div className="mt-8">
         <AdsterraBanner />
       </div>
