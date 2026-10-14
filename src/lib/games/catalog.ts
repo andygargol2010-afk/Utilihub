@@ -58,8 +58,8 @@ export const GAMES: readonly GameDef[] = [
     nameEs: "Buscaminas",
     tag: "puzzle",
     emoji: "💣",
-    summaryEn: "Clear the board without hitting a mine.",
-    summaryEs: "Limpiá el tablero sin pisar una mina.",
+    summaryEn: "Classic Minesweeper online: clear the board without hitting a mine. Free browser puzzle with timer and flags.",
+    summaryEs: "Buscaminas online clásico: limpiá el tablero sin pisar una mina. Puzzle gratis en el navegador con tiempo y banderas.",
     hasScore: true,
   },
   {
