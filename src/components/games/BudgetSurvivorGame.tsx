@@ -129,7 +129,7 @@ export function BudgetSurvivorGame({ locale = "en" }: { locale?: GameLocale }) {
               { label: es ? "Saldo" : "Balance", value: `$${balance}` },
               { label: es ? "Mejor" : "Best", value: best ? `$${best}` : "—" },
             ].map((s) => (
-              <div key={s.label} className="rounded-2xl border border-white/10 bg-black/40 px-2 py-2 text-center">
+              <div key={s.label} className="budget-stat rounded-2xl border border-emerald-500/15 bg-black/45 px-2 py-2 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-200/60">{s.label}</p>
                 <p
                   className={`mt-0.5 text-base font-bold tabular-nums ${
@@ -150,7 +150,7 @@ export function BudgetSurvivorGame({ locale = "en" }: { locale?: GameLocale }) {
           </div>
 
           {phase === "playing" && current && (
-            <div className="rounded-2xl border border-white/10 bg-black/50 p-4">
+            <div className="rounded-2xl border border-emerald-500/15 bg-black/55 p-4 shadow-[0_12px_28px_rgba(0,0,0,0.35)]">
               <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-300/70">
                 {current.kind === "income"
                   ? es
@@ -196,7 +196,7 @@ export function BudgetSurvivorGame({ locale = "en" }: { locale?: GameLocale }) {
           )}
 
           {phase === "won" && (
-            <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-4 text-center">
+            <div className="rounded-2xl border border-emerald-400/40 bg-emerald-500/15 p-4 text-center shadow-[0_0_24px_rgba(16,185,129,0.12)]">
               <p className="text-lg font-black text-emerald-300">
                 {es ? "¡Sobreviviste el mes!" : "You survived the month!"}
               </p>
@@ -212,7 +212,7 @@ export function BudgetSurvivorGame({ locale = "en" }: { locale?: GameLocale }) {
           )}
 
           {phase === "lost" && (
-            <div className="rounded-2xl border border-rose-400/30 bg-rose-500/10 p-4 text-center">
+            <div className="rounded-2xl border border-rose-400/40 bg-rose-500/15 p-4 text-center shadow-[0_0_24px_rgba(244,63,94,0.12)]">
               <p className="text-lg font-black text-rose-300">
                 {es ? "Te quedaste sin plata" : "You ran out of money"}
               </p>
