@@ -193,10 +193,17 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
         }
         .sudoku-num { display: inline-block; animation: sudoku-pop 0.18s ease-out; }
         .sudoku-frame {
-          background: linear-gradient(160deg, #064e3b, #022c22);
-          box-shadow: 0 12px 36px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(52,211,153,0.2);
-          padding: 8px;
+          background: radial-gradient(ellipse at 50% 0%, rgba(52,211,153,0.18), transparent 55%),
+            linear-gradient(165deg, #064e3b, #011a14);
+          box-shadow: 0 16px 42px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(52,211,153,0.28);
+          padding: 10px;
         }
+        @keyframes sudoku-shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-2px); }
+          75% { transform: translateX(2px); }
+        }
+        .sudoku-conflict { animation: sudoku-shake 0.28s ease; }
         .sudoku-pad-btn {
           background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
           box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -257,8 +264,8 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
                 key={`${r}-${c}`}
                 type="button"
                 onClick={() => setSelected([r, c])}
-                className={`flex h-8 w-8 items-center justify-center text-sm font-bold sm:h-9 sm:w-9 ${border} ${bg} ${
-                  conflict ? "text-rose-200" : isFixed ? "text-emerald-200" : "text-amber-200"
+                className={`flex h-9 w-9 items-center justify-center rounded-sm text-sm font-bold transition-colors sm:h-10 sm:w-10 ${border} ${bg} ${
+                  conflict ? "sudoku-conflict text-rose-200" : isFixed ? "text-emerald-100" : "text-amber-200"
                 }`}
               >
                 {v ? (
@@ -279,7 +286,7 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
             key={n}
             type="button"
             onClick={() => put(n)}
-            className={`sudoku-pad-btn flex h-10 min-w-10 items-center justify-center rounded-xl px-1 text-sm font-bold text-white ${
+            className={`sudoku-pad-btn flex h-11 min-w-11 items-center justify-center rounded-xl px-1 text-base font-bold text-white active:scale-95 ${
               selectedVal === n && n !== 0 ? "bg-emerald-500/40 ring-1 ring-emerald-300/50" : "bg-white/10"
             }`}
           >
