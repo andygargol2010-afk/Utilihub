@@ -52,6 +52,7 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
   const missFlashRef = useRef(0);
   const comboPulseRef = useRef(0);
   const newBestFlashRef = useRef(0);
+  const shakeRef = useRef(0);
   const idRef = useRef(0);
   const rafRef = useRef<number>(0);
   const lastSpawn = useRef(0);
@@ -125,6 +126,15 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
       if (running) elapsedRef.current += 16;
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
+
+      ctx.save();
+      if (shakeRef.current > 0.4) {
+        const mag = shakeRef.current;
+        ctx.translate((Math.random() - 0.5) * mag, (Math.random() - 0.5) * mag);
+        shakeRef.current *= 0.82;
+        if (shakeRef.current < 0.4) shakeRef.current = 0;
+      }
+
       ctx.fillStyle = "#05050a";
       ctx.fillRect(0, 0, w, h);
 
@@ -141,10 +151,12 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
       }
       ctx.restore();
 
-      // vignette
+      // vignette tinted by combo
+      const c = Math.min(comboRef.current, 16);
+      const tintHue = 280 + c * 4;
       const g = ctx.createRadialGradient(w / 2, h / 2, 60, w / 2, h / 2, Math.max(w, h) * 0.72);
-      g.addColorStop(0, "rgba(30,20,50,0.15)");
-      g.addColorStop(1, "rgba(0,0,0,0.7)");
+      g.addColorStop(0, `hsla(${tintHue}, 40%, 12%, 0.18)`);
+      g.addColorStop(1, "rgba(0,0,0,0.72)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
 
@@ -300,6 +312,7 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
       });
 
       ctx.globalAlpha = 1;
+      ctx.restore();
 
       rafRef.current = requestAnimationFrame(loop);
     };
@@ -376,6 +389,7 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
           size: s.rare ? 3.2 : 2.4,
         }));
         burstsRef.current.push({ x: s.x, y: s.y, particles });
+        shakeRef.current = s.rare ? 14 : 7 + Math.min(c, 12) * 0.35;
         return false;
       }
       return true;
@@ -415,6 +429,7 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
               missFlashRef.current = 0;
               comboPulseRef.current = 0;
               newBestFlashRef.current = 0;
+              shakeRef.current = 0;
               elapsedRef.current = 0;
               setRunning(true);
             }}
