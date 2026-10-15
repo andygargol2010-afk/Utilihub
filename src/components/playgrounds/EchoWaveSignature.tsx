@@ -63,6 +63,31 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
   const [copied, setCopied] = useState(false);
   const paramsRef = useRef({ text, layers, amplitude, speed });
   const timeRef = useRef(0);
+  const hydrated = useRef(false);
+
+  // Hydrate from URL params once on mount
+  useEffect(() => {
+    if (hydrated.current) return;
+    hydrated.current = true;
+    const sp = new URLSearchParams(window.location.search);
+    const tParam = sp.get("t");
+    const lParam = sp.get("l");
+    const aParam = sp.get("a");
+    const sParam = sp.get("s");
+    if (tParam) setText(tParam.slice(0, 24));
+    if (lParam) {
+      const n = parseInt(lParam, 10);
+      if (!Number.isNaN(n) && n >= 2 && n <= 7) setLayers(n);
+    }
+    if (aParam) {
+      const n = parseInt(aParam, 10);
+      if (!Number.isNaN(n) && n >= 15 && n <= 80) setAmplitude(n);
+    }
+    if (sParam) {
+      const n = parseFloat(sParam);
+      if (!Number.isNaN(n) && n >= 0.4 && n <= 2.2) setSpeed(n);
+    }
+  }, []);
 
   useEffect(() => {
     paramsRef.current = { text, layers, amplitude, speed };
@@ -197,6 +222,23 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
     }
   };
 
+  const nativeShare = async () => {
+    const url = buildUrl();
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: locale === "es" ? "Firma de Onda Eco" : "Echo Wave Signature",
+          text: text,
+          url,
+        });
+      } catch {
+        // user cancelled
+      }
+    } else {
+      copyLink();
+    }
+  };
+
   return (
     <div className="space-y-5">
       <div className="rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-50/70 via-white to-sky-50/40 p-4 dark:from-cyan-950/30 dark:via-background dark:to-sky-950/20">
@@ -240,6 +282,9 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
       <div className="flex flex-wrap gap-2">
         <button type="button" onClick={copyLink} className="rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
           {copied ? t.copied : t.copy}
+        </button>
+        <button type="button" onClick={nativeShare} className="rounded-xl border border-cyan-500/40 bg-cyan-50 px-4 py-2.5 text-sm font-semibold text-cyan-800 hover:bg-cyan-100 dark:bg-cyan-950/40 dark:text-cyan-100 dark:hover:bg-cyan-900/50">
+          {t.share}
         </button>
         <button type="button" onClick={downloadPng} className="rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-700">
           {t.download}
