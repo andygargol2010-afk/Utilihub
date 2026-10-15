@@ -171,6 +171,7 @@ import { PERCENTAGE_OF_TOOLS } from "./percentage-of-tool";
 import { SLUG_GENERATOR_TOOLS } from "./slug-generator-tool";
 import { BILL_SPLIT_TOOLS } from "./bill-split-tool";
 import { CURRENCY_CONVERTER_TOOLS } from "./currency-converter-tool";
+import { RECIPE_COST_TOOLS } from "./recipe-cost-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -347,4 +348,5 @@ export const GENERAL_TOOLS = [
   ...SLUG_GENERATOR_TOOLS,
   ...BILL_SPLIT_TOOLS,
   ...CURRENCY_CONVERTER_TOOLS,
+  ...RECIPE_COST_TOOLS,
 ];
