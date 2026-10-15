@@ -169,6 +169,7 @@ import { KINETIC_ENERGY_TOOLS } from "./kinetic-energy-tool";
 import { TIMEZONE_TOOLS } from "./timezone-tool";
 import { PERCENTAGE_OF_TOOLS } from "./percentage-of-tool";
 import { SLUG_GENERATOR_TOOLS } from "./slug-generator-tool";
+import { BILL_SPLIT_TOOLS } from "./bill-split-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -343,4 +344,5 @@ export const GENERAL_TOOLS = [
   ...TIMEZONE_TOOLS,
   ...PERCENTAGE_OF_TOOLS,
   ...SLUG_GENERATOR_TOOLS,
+  ...BILL_SPLIT_TOOLS,
 ];
