@@ -27,7 +27,6 @@ function winnerOf(board: Cell[]): Cell | "draw" | null {
   return null;
 }
 
-/** Indices of the winning trio, or null. */
 function winningLine(board: Cell[]): WinLine | null {
   for (const line of WINS) {
     const [a, b, c] = line;
@@ -68,7 +67,6 @@ function bestCpuMove(board: Cell[], level: CpuLevel): number {
   const moves = emptyIndices(board);
   if (!moves.length) return -1;
   if (level === "easy") return moves[Math.floor(Math.random() * moves.length)]!;
-  // Medium: mostly smart, 30% random so it is beatable
   if (level === "medium" && Math.random() < 0.3) {
     return moves[Math.floor(Math.random() * moves.length)]!;
   }
@@ -86,10 +84,9 @@ function bestCpuMove(board: Cell[], level: CpuLevel): number {
   return best;
 }
 
-/** Map win line → SVG endpoints. Cell=100, gap=10 matches CSS grid gap. */
 const CELL_U = 100;
 const GAP_U = 10;
-const BOARD_U = 3 * CELL_U + 2 * GAP_U; // 320
+const BOARD_U = 3 * CELL_U + 2 * GAP_U;
 
 function cellCenter(i: number) {
   const col = i % 3;
@@ -110,6 +107,37 @@ function lineCoords(line: WinLine): { x1: number; y1: number; x2: number; y2: nu
   const ux = (dx / len) * pad;
   const uy = (dy / len) * pad;
   return { x1: a.x - ux, y1: a.y - uy, x2: c.x + ux, y2: c.y + uy };
+}
+
+function MarkX() {
+  return (
+    <svg viewBox="0 0 100 100" className="h-[58%] w-[58%] drop-shadow-[0_2px_6px_rgba(56,189,248,0.45)]" aria-hidden>
+      <path
+        d="M22 22 L78 78 M78 22 L22 78"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="14"
+        strokeLinecap="round"
+        className="ttt-stroke"
+      />
+    </svg>
+  );
+}
+
+function MarkO() {
+  return (
+    <svg viewBox="0 0 100 100" className="h-[62%] w-[62%] drop-shadow-[0_2px_6px_rgba(251,113,133,0.45)]" aria-hidden>
+      <circle
+        cx="50"
+        cy="50"
+        r="28"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="12"
+        className="ttt-stroke"
+      />
+    </svg>
+  );
 }
 
 export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
@@ -178,7 +206,7 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
           from { transform: scale(0.4); opacity: 0; }
           to { transform: scale(1); opacity: 1; }
         }
-        @keyframes ttt-draw {
+        @keyframes ttt-line-draw {
           from { stroke-dashoffset: var(--ttt-len); }
           to { stroke-dashoffset: 0; }
         }
@@ -186,26 +214,39 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
           0%, 100% { filter: drop-shadow(0 0 4px currentColor); }
           50% { filter: drop-shadow(0 0 12px currentColor); }
         }
-        .ttt-mark { display: inline-block; animation: ttt-pop 0.28s cubic-bezier(0.34, 1.4, 0.64, 1) both; }
-        .ttt-win-cell { box-shadow: inset 0 0 0 2px rgba(253, 224, 71, 0.7); background: rgba(253, 224, 71, 0.12) !important; }
+        @keyframes ttt-mark-draw {
+          to { stroke-dashoffset: 0; }
+        }
+        .ttt-mark { display: inline-flex; width: 100%; height: 100%; align-items: center; justify-content: center; animation: ttt-pop 0.28s cubic-bezier(0.34, 1.4, 0.64, 1) both; }
+        .ttt-stroke {
+          stroke-dasharray: 140;
+          stroke-dashoffset: 140;
+          animation: ttt-mark-draw 0.35s ease forwards;
+        }
+        .ttt-win-cell {
+          background: linear-gradient(145deg, rgba(52,211,153,0.28), rgba(16,185,129,0.12)) !important;
+          box-shadow: 0 0 0 1px rgba(52,211,153,0.5), 0 0 22px rgba(16,185,129,0.28);
+        }
         .ttt-win-line {
           stroke-dasharray: var(--ttt-len);
           stroke-dashoffset: var(--ttt-len);
-          animation: ttt-draw 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards,
+          animation: ttt-line-draw 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards,
                      ttt-glow 1.2s ease-in-out 0.6s infinite;
         }
         .ttt-board-frame {
-          padding: 10px;
+          padding: 0.75rem;
           border-radius: 1.25rem;
-          background: linear-gradient(160deg, #1e293b, #0f172a);
-          box-shadow: 0 12px 32px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.06);
+          background: radial-gradient(ellipse at 50% 0%, rgba(52,211,153,0.12), transparent 60%),
+            linear-gradient(160deg, #12201a, #0a1210);
+          border: 1px solid rgba(52, 211, 153, 0.2);
+          box-shadow: 0 18px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
         }
         .ttt-cell {
-          background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+          background: linear-gradient(145deg, rgba(30,41,36,0.95), rgba(15,23,20,0.98));
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 10px rgba(0,0,0,0.25);
         }
         .ttt-cell:hover:not(:disabled) {
-          background: linear-gradient(145deg, rgba(52,211,153,0.15), rgba(255,255,255,0.06));
+          background: linear-gradient(145deg, rgba(52,211,153,0.18), rgba(15,23,20,0.98));
         }
       `}</style>
 
@@ -263,8 +304,8 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
                     isWin ? "ttt-win-cell" : ""
                   }`}
                 >
-                  {cell === "X" && <span className="ttt-mark text-sky-300">X</span>}
-                  {cell === "O" && <span className="ttt-mark text-rose-300">O</span>}
+                  {cell === "X" && <span className="ttt-mark text-sky-300"><MarkX /></span>}
+                  {cell === "O" && <span className="ttt-mark text-rose-300"><MarkO /></span>}
                 </button>
               );
             })}
