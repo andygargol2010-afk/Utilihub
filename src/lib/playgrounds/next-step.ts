@@ -165,6 +165,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     pathEs: "/es/playgrounds/plano-asientos",
     emoji: "🪑",
   },
+  {
+    id: "neon-sign",
+    nameEn: "Neon Signature Studio",
+    nameEs: "Estudio de Firma Neón",
+    blurbEn: "Typed text becomes a glowing animated neon tube sign with flicker.",
+    blurbEs: "El texto se convierte en un cartel de neón brillante animado con parpadeo.",
+    pathEn: "/neon-sign",
+    pathEs: "/es/neon-sign",
+    emoji: "💡",
+  },
 ] as const;
 
 /** First id = primary next step. */
@@ -184,6 +194,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "floor-plan": ["seating-chart", "constellation-studio", "debt-snowball", "particles"],
   "seating-chart": ["floor-plan", "constellation-studio", "debt-snowball", "particles"],
   "kaleidoscope-mandala": ["constellation-studio", "particles", "particle-signature", "firework"],
+  "neon-sign": ["firework", "aurora", "fluid-type", "echo-wave"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
