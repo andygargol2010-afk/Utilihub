@@ -4,12 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
 
 /**
- * Banner scripts OFF until a new Adsterra zone/key is installed.
- * Experiment 2026-10-14: social bar deleted + banners ON → still redirected
- * (pixelmeshweb → 1xbet). Cause = this zone inventory, not social bar.
- * Re-enable only after replacing DESKTOP/MOBILE key+src with a clean banner-only placement.
+ * Adsterra banner scripts ON for retest (2026-10-15).
+ * Previous note: same zone once redirected (pixelmeshweb → 1xbet).
+ * If redirect returns, set false again and swap DESKTOP/MOBILE key+src.
  */
-const ADS_SCRIPTS_ENABLED = false;
+const ADS_SCRIPTS_ENABLED = true;
 
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
@@ -28,7 +27,7 @@ const MOBILE = {
 /**
  * Tool/game/finance banner.
  * The 728×90 box is in the first paint (same as the home banner) so consent/viewport
- * effects cannot insert it later. Desktop: 728×90 · Mobile: scales the reserved box.
+ * and the deferred script cannot push the page down when the ad loads.
  */
 export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) {
   const slotRef = useRef<HTMLDivElement>(null);
@@ -44,11 +43,11 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
   }, []);
 
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
-    const update = () => setViewport(media.matches ? "desktop" : "mobile");
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
+    const mq = window.matchMedia("(min-width: 768px)");
+    const apply = () => setViewport(mq.matches ? "desktop" : "mobile");
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
   }, []);
 
   useEffect(() => {
@@ -57,8 +56,8 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
       return;
     }
     const updateScale = () => {
-      const usable = Math.max(280, window.innerWidth - 48);
-      setScale(Math.min(1, usable / 728));
+      const w = Math.min(window.innerWidth - 32, 728);
+      setScale(Math.min(1, w / 728));
     };
     updateScale();
     window.addEventListener("resize", updateScale);
