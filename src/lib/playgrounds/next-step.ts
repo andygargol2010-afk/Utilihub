@@ -185,6 +185,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     pathEs: "/es/pulse-catch",
     emoji: "⚡",
   },
+  {
+    id: "glow-trail",
+    nameEn: "Glow Trail Composer",
+    nameEs: "Compositor de Estelas Brillantes",
+    blurbEn: "Draw glowing light trails that leave persistent particle afterglows and blooms.",
+    blurbEs: "Dibujá estelas de luz brillante que dejan resplandores de partículas y floraciones persistentes.",
+    pathEn: "/glow-trail",
+    pathEs: "/es/glow-trail",
+    emoji: "✨",
+  },
 ] as const;
 
 /** First id = primary next step. */
@@ -206,6 +216,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "kaleidoscope-mandala": ["constellation-studio", "particles", "particle-signature", "firework"],
   "neon-sign": ["firework", "aurora", "fluid-type", "echo-wave"],
   "pulse-catch": ["firework", "particles", "gravity-particles", "neon-sign"],
+  "glow-trail": ["kaleidoscope-mandala", "neon-sign", "particle-signature", "particles"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
