@@ -57,7 +57,6 @@ export function WaveInterferenceSim({ locale = "en" }: { locale?: SimLocale }) {
       const x2 = cx + s / 2;
       const y = cy;
 
-      // Draw intensity field (simplified)
       const img = ctx.createImageData(W, H);
       const data = img.data;
       for (let ypx = 0; ypx < H; ypx += 2) {
@@ -68,9 +67,9 @@ export function WaveInterferenceSim({ locale = "en" }: { locale?: SimLocale }) {
           const a2 = Math.sin(t - d2 * 0.08 + dp) / (1 + d2 * 0.02);
           const amp = a1 + a2;
           const inten = Math.min(1, Math.abs(amp) * 1.8);
-          const r = Math.floor(30 + inten * 180);
-          const g = Math.floor(60 + inten * 140);
-          const b = Math.floor(120 + inten * 100);
+          const r = Math.floor(12 + inten * 80);
+          const g = Math.floor(40 + inten * 180);
+          const b = Math.floor(90 + inten * 165);
           for (let dy = 0; dy < 2 && ypx + dy < H; dy++) {
             for (let dx = 0; dx < 2 && xpx + dx < W; dx++) {
               const i = ((ypx + dy) * W + (xpx + dx)) * 4;
@@ -84,7 +83,6 @@ export function WaveInterferenceSim({ locale = "en" }: { locale?: SimLocale }) {
       }
       ctx.putImageData(img, 0, 0);
 
-      // Sources
       ctx.fillStyle = "#7dd3fc";
       ctx.beginPath();
       ctx.arc(x1, y, 6, 0, Math.PI * 2);
@@ -181,7 +179,7 @@ export function WaveInterferenceSim({ locale = "en" }: { locale?: SimLocale }) {
         height={H}
         role="img"
         aria-label={es ? "Interferencia de dos fuentes" : "Two-source wave interference"}
-        className="w-full max-w-[420px] rounded-2xl border border-sky-500/30 bg-[#061018]"
+        className="wave-frame w-full max-w-[420px] rounded-2xl border border-sky-400/40 bg-[#061018] shadow-[0_16px_40px_rgba(0,0,0,0.45),0_0_28px_rgba(56,189,248,0.12)]"
       />
 
       <p className="max-w-sm text-center text-[12px] leading-relaxed text-sky-100/70">
