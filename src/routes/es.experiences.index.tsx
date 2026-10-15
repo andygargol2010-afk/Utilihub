@@ -175,6 +175,19 @@ function ExperiencesHubEs() {
         </Link>
 
         <Link
+          to="/es/echo-wave"
+          className="group flex flex-col rounded-3xl border border-cyan-900/15 bg-gradient-to-br from-cyan-50 via-white to-sky-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-cyan-500/50 hover:shadow-lg"
+        >
+          <span className="text-4xl" aria-hidden>🌊</span>
+          <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Viral</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Firma de Onda Eco</span>
+          <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+            Escribí un nombre o frase. Ondas sinusoidales multicapa únicas a partir de frecuencias de caracteres. Hacé clic para crear ondas que interfieren. Descargá PNG.
+          </span>
+          <span className="mt-5 text-sm font-bold text-cyan-700">Crear onda →</span>
+        </Link>
+
+        <Link
           to="/es/constellation"
           className="group flex flex-col rounded-3xl border border-indigo-900/15 bg-gradient-to-br from-indigo-50 via-white to-violet-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-indigo-500/50 hover:shadow-lg"
         >
