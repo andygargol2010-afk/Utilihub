@@ -167,6 +167,7 @@ import { UNIT_PRICE_TOOLS } from "./unit-price-tool";
 import { BODY_FAT_TOOLS } from "./body-fat-tool";
 import { KINETIC_ENERGY_TOOLS } from "./kinetic-energy-tool";
 import { TIMEZONE_TOOLS } from "./timezone-tool";
+import { PERCENTAGE_OF_TOOLS } from "./percentage-of-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -339,4 +340,5 @@ export const GENERAL_TOOLS = [
   ...BODY_FAT_TOOLS,
   ...KINETIC_ENERGY_TOOLS,
   ...TIMEZONE_TOOLS,
+  ...PERCENTAGE_OF_TOOLS,
 ];
