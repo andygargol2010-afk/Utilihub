@@ -151,12 +151,20 @@ export function DcCircuitSim({ locale = "en" }: { locale?: SimLocale }) {
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-3">
+      <style>{`
+        .dc-frame {
+          box-shadow: 0 0 0 1px rgba(16,185,129,0.28), 0 18px 42px rgba(0,0,0,0.45), 0 0 36px rgba(16,185,129,0.12);
+        }
+        .dc-stat {
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+      `}</style>
       <div className="flex flex-wrap gap-2">
         <SimSecondaryButton theme="lab" active={topology === "series"} onClick={() => setTopology("series")}>{es ? "Serie" : "Series"}</SimSecondaryButton>
         <SimSecondaryButton theme="lab" active={topology === "parallel"} onClick={() => setTopology("parallel")}>{es ? "Paralelo" : "Parallel"}</SimSecondaryButton>
         <SimSecondaryButton theme="lab" active={led} onClick={() => setLed((v) => !v)}>LED {led ? "ON" : "OFF"}</SimSecondaryButton>
       </div>
-      <div className="overflow-hidden rounded-2xl border border-emerald-400/20 bg-black/40 shadow-[0_0_40px_-12px_rgba(16,185,129,0.3)]">
+      <div className="dc-frame overflow-hidden rounded-2xl border border-emerald-400/25 bg-black/50">
         <canvas ref={canvasRef} className="h-auto w-full" style={{ aspectRatio: `${W}/${H}` }} />
       </div>
       <div className="grid gap-3 sm:grid-cols-3">
@@ -177,7 +185,7 @@ export function DcCircuitSim({ locale = "en" }: { locale?: SimLocale }) {
           { label: es ? "Caídas" : "Drops", value: `V1 ${fmt(math.V1)} · V2 ${fmt(math.V2)}` },
           { label: es ? "Potencia" : "Power", value: `${fmt(math.P * 1000, 1)} mW` },
         ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-emerald-400/15 bg-black/35 px-2 py-2 text-center">
+          <div key={s.label} className="dc-stat rounded-xl border border-emerald-400/20 bg-black/40 px-2 py-2 text-center">
             <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-200/55">{s.label}</p>
             <p className="mt-0.5 text-sm font-bold tabular-nums text-white">{s.value}</p>
           </div>
