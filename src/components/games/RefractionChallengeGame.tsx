@@ -285,6 +285,11 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-3">
+      <style>{`
+        .refraction-frame {
+          background: radial-gradient(ellipse at 50% 0%, rgba(34,211,238,0.1), transparent 55%);
+        }
+      `}</style>
       <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-emerald-100/80">
         <span>
           {es ? "Nivel" : "Level"}{" "}
@@ -304,7 +309,7 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
 
       <p className="text-center text-xs text-white/55">{es ? level.hintEs : level.hintEn}</p>
 
-      <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+      <div className="refraction-frame overflow-hidden rounded-2xl border border-cyan-500/25 bg-black/50 shadow-[0_16px_40px_rgba(0,0,0,0.45),0_0_30px_rgba(34,211,238,0.08)]">
         <canvas
           ref={canvasRef}
           role="img"
