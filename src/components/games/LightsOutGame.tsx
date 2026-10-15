@@ -86,14 +86,13 @@ export function LightsOutGame({ locale = "en" }: { locale?: GameLocale }) {
       <div
         className="grid gap-2 rounded-2xl border border-white/10 bg-slate-900/60 p-3 shadow-inner"
         style={{ gridTemplateColumns: `repeat(${SIZE}, minmax(0, 1fr))` }}
-        role="grid"
+        role="group"
         aria-label={es ? "Tablero Luces fuera" : "Lights Out board"}
       >
         {board.map((on, i) => (
           <button
             key={i}
             type="button"
-            role="gridcell"
             aria-pressed={on}
             aria-label={es ? `Celda ${i + 1}${on ? ", encendida" : ", apagada"}` : `Cell ${i + 1}${on ? ", on" : ", off"}`}
             disabled={won}
