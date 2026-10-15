@@ -175,6 +175,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     pathEs: "/es/neon-sign",
     emoji: "💡",
   },
+  {
+    id: "pulse-catch",
+    nameEn: "Pulse Catch",
+    nameEs: "Pulse Catch",
+    blurbEn: "Catch glowing sparks before they fade. Build combos and particle bursts.",
+    blurbEs: "Atrapá chispas brillantes antes de que se apaguen. Construí combos y explosiones de partículas.",
+    pathEn: "/pulse-catch",
+    pathEs: "/es/pulse-catch",
+    emoji: "⚡",
+  },
 ] as const;
 
 /** First id = primary next step. */
@@ -195,6 +205,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "seating-chart": ["floor-plan", "constellation-studio", "debt-snowball", "particles"],
   "kaleidoscope-mandala": ["constellation-studio", "particles", "particle-signature", "firework"],
   "neon-sign": ["firework", "aurora", "fluid-type", "echo-wave"],
+  "pulse-catch": ["firework", "particles", "gravity-particles", "neon-sign"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
