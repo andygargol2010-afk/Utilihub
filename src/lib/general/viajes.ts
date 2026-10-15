@@ -3,7 +3,7 @@ const v=(s:string,n:string,k:string,summary:string,config:Record<string,unknown>
 export const VIAJES_TOOLS=[
  v("velocidad-media","Average speed","number","Calculate average speed from distance and time.",{operation:"divide",fields:["Distance","Time"]}),
  v("distancia-viaje-calculadora","Travel distance","number","Calculate distance from average speed and time.",{operation:"multiply",fields:["Average speed","Time"]}),
- v("tiempo-viaje","Travel time","number","Calculate the time needed to cover a distance at constant speed.",{operation:"divide",fields:["Distance","Speed"]}),
+ makeTool("tiempo-viaje","Travel time","viajes","number","Calculate the time needed to cover a distance at constant speed.",["travel time calculator","time = distance / speed","trip duration calculator","calculadora tiempo de viaje","tiempo distancia velocidad"],{operation:"divide",fields:["Distance","Speed"],title:"Travel Time Calculator — Distance ÷ Speed | UtiliHub",description:"Calculate travel time from distance and average speed using time = distance ÷ speed. Free, no signup, and instant."}),
  v("consumo-viaje","Fuel consumption","number","Calculate fuel consumption per 100 kilometers.",{operation:"fuel-rate",fields:["Fuel used","Distance"]}),
  v("combustible-necesario","Fuel needed","number","Estimate the fuel needed for a given distance and consumption.",{operation:"fuel-needed",fields:["Distance","Consumption L/100 km"]}),
  v("coste-combustible-viaje","Fuel cost","number","Calculate the fuel cost of a trip.",{operation:"multiply",fields:["Liters","Price per liter"]}),
