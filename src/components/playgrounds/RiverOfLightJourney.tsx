@@ -77,6 +77,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
   ]);
   const [speed, setSpeed] = useState(0.8);
   const [density, setDensity] = useState(40);
+  const [afterglow, setAfterglow] = useState(1.0);
   const [coreColor, setCoreColor] = useState(PALETTE[0]);
   const [glowColor, setGlowColor] = useState(PALETTE[1]);
   const [loop, setLoop] = useState(true);
@@ -88,6 +89,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
     en: {
       speed: "Flow speed",
       density: "Density",
+      afterglow: "Afterglow",
       core: "Core",
       glow: "Glow",
       loop: "Loop",
@@ -95,12 +97,13 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
       demo: "Load demo",
       export: "Snapshot PNG",
       share: "Share",
-      hint: "Click to place · drag waypoints. Particles flow as a glowing river with trails and persistent afterglows.",
-      add: "Click canvas to add waypoint · drag to move",
+      hint: "Click to place · drag waypoints · double-click to remove. Particles flow as a glowing river with trails and persistent afterglows.",
+      add: "Click canvas to add waypoint · drag to move · double-click to remove",
     },
     es: {
       speed: "Velocidad flujo",
       density: "Densidad",
+      afterglow: "Resplandor",
       core: "Núcleo",
       glow: "Resplandor",
       loop: "Bucle",
@@ -108,8 +111,8 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
       demo: "Cargar demo",
       export: "Captura PNG",
       share: "Compartir",
-      hint: "Clic para colocar · arrastrá puntos. Las partículas fluyen como un río brillante con estelas y resplandores persistentes.",
-      add: "Clic para agregar punto · arrastrá para mover",
+      hint: "Clic para colocar · arrastrá puntos · doble clic para quitar. Las partículas fluyen como un río brillante con estelas y resplandores persistentes.",
+      add: "Clic para agregar punto · arrastrá para mover · doble clic para quitar",
     },
   }[locale];
 
@@ -123,6 +126,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
       const w = params.get("w");
       const sp = params.get("sp");
       const d = params.get("d");
+      const a = params.get("a");
       const c = params.get("c");
       const g = params.get("g");
       const l = params.get("l");
@@ -132,6 +136,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
       }
       if (sp && !isNaN(Number(sp))) setSpeed(Math.max(0.2, Math.min(2.5, Number(sp))));
       if (d && !isNaN(Number(d))) setDensity(Math.max(10, Math.min(120, Number(d))));
+      if (a && !isNaN(Number(a))) setAfterglow(Math.max(0.3, Math.min(2.5, Number(a))));
       if (c && PALETTE.includes(c)) setCoreColor(c);
       if (g && PALETTE.includes(g)) setGlowColor(g);
       if (l === "0") setLoop(false);
@@ -145,6 +150,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
     params.set("w", serializeWaypoints(waypoints));
     params.set("sp", speed.toFixed(2));
     params.set("d", String(density));
+    params.set("a", afterglow.toFixed(2));
     params.set("c", coreColor);
     params.set("g", glowColor);
     params.set("l", loop ? "1" : "0");
@@ -152,7 +158,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
     if (next !== window.location.pathname + window.location.search) {
       window.history.replaceState(null, "", next);
     }
-  }, [waypoints, speed, density, coreColor, glowColor, loop]);
+  }, [waypoints, speed, density, afterglow, coreColor, glowColor, loop]);
 
   const getPathPoints = useCallback((): Point[] => {
     const pts = waypointsRef.current;
@@ -180,10 +186,10 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
     // Persistent afterglows (soft blooms left by the river)
     afterglowsRef.current.forEach((a) => {
       const alpha = Math.max(0, a.life);
-      ctx.globalAlpha = alpha * 0.45;
+      ctx.globalAlpha = alpha * 0.45 * Math.min(1.4, afterglow);
       ctx.fillStyle = a.color;
       ctx.shadowColor = a.color;
-      ctx.shadowBlur = 22;
+      ctx.shadowBlur = 22 * Math.min(1.3, afterglow);
       ctx.beginPath();
       ctx.arc(a.x * w, a.y * h, a.size * (1 + (1 - alpha) * 1.2), 0, Math.PI * 2);
       ctx.fill();
@@ -272,7 +278,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
     });
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
-  }, [coreColor, glowColor, getPathPoints]);
+  }, [coreColor, glowColor, getPathPoints, afterglow]);
 
   useEffect(() => {
     const loopFn = (now: number) => {
@@ -298,12 +304,12 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
         if (p.trail.length > 8) p.trail.shift();
 
         // Deposit afterglow along the path
-        if (path.length >= 2 && Math.random() < 0.12 * speed) {
+        if (path.length >= 2 && Math.random() < 0.12 * speed * afterglow) {
           const pos = sampleCatmullRom(path, prevT);
           afterglowsRef.current.push({
             x: pos.x + (Math.random() - 0.5) * 0.012,
             y: pos.y + (Math.random() - 0.5) * 0.012,
-            life: 0.85 + Math.random() * 0.4,
+            life: (0.85 + Math.random() * 0.4) * Math.min(1.6, afterglow),
             size: 2 + Math.random() * 4,
             color: Math.random() > 0.5 ? coreColor : glowColor,
           });
@@ -312,10 +318,10 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
 
       // Fade afterglows
       afterglowsRef.current = afterglowsRef.current
-        .map((a) => ({ ...a, life: a.life - dt * 0.22 }))
+        .map((a) => ({ ...a, life: a.life - dt * 0.22 / Math.max(0.6, afterglow) }))
         .filter((a) => a.life > 0.02);
-      if (afterglowsRef.current.length > 320) {
-        afterglowsRef.current = afterglowsRef.current.slice(-320);
+      if (afterglowsRef.current.length > 420) {
+        afterglowsRef.current = afterglowsRef.current.slice(-420);
       }
 
       while (particlesRef.current.length < targetCount && path.length >= 2) {
@@ -338,7 +344,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
     timeRef.current = performance.now();
     animRef.current = requestAnimationFrame(loopFn);
     return () => cancelAnimationFrame(animRef.current);
-  }, [redraw, speed, density, coreColor, glowColor, getPathPoints]);
+  }, [redraw, speed, density, afterglow, coreColor, glowColor, getPathPoints]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -396,6 +402,21 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
 
   const onPointerUp = () => {
     dragIndexRef.current = null;
+  };
+
+  const onDoubleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const p = {
+      x: Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)),
+      y: Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height)),
+    };
+    const hit = hitWaypoint(p);
+    if (hit >= 0 && waypoints.length > 2) {
+      setWaypoints((prev) => prev.filter((_, i) => i !== hit));
+    }
   };
 
   const clear = () => {
@@ -481,6 +502,19 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
           />
           <span className="w-8 text-right">{density}</span>
         </label>
+        <label className="flex items-center gap-2">
+          {labels.afterglow}
+          <input
+            type="range"
+            min={0.3}
+            max={2.5}
+            step={0.1}
+            value={afterglow}
+            onChange={(e) => setAfterglow(Number(e.target.value))}
+            className="w-24 accent-primary"
+          />
+          <span className="w-8 text-right">{afterglow.toFixed(1)}</span>
+        </label>
         <label className="flex items-center gap-1">
           <input type="checkbox" checked={loop} onChange={(e) => setLoop(e.target.checked)} className="accent-primary" />
           {labels.loop}
@@ -557,6 +591,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
+          onDoubleClick={onDoubleClick}
         />
         <p className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 select-none text-[10px] sm:text-xs text-white/55 px-2 text-center">
           {waypoints.length < 2 ? labels.add : labels.hint}
