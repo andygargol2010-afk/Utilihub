@@ -86,9 +86,9 @@ status: active
 idea: River of Light Journey — interactive canvas experience: place waypoints on a dark field; a continuous glowing river of particles flows between them, leaving persistent afterglows and soft blooms. Controls for flow speed, core/glow colors, particle density, and loop mode. Immediate visual payoff. Shareable via URL state + PNG snapshot. EN+ES routes /river-light and /es/rio-luz. Requires next-step catalog + PlaygroundNextStep on both routes.
 domain: journeys
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 4
 acceptance: pending
-notes: IDEATED 2026-10-15. Catalog CORE (U≈0.71>0.50), domain=journeys (weighted sample, weights pre: kits:4 journeys:4 simulators:4 playgrounds:3 games:2 studio-composition:1), weights post-roll: kits:5, simulators:5, playgrounds:4, games:3, studio-composition:2, journeys:1. Previous closed: studio-composition (Glow Trail Composer — fully shipped + next-step + READY). adsense-prep_runs=1 (unchanged). Prompt source moved to .agent/ideas-lab.md (variant A) 2026-10-15.
+notes: IDEATED 2026-10-15. Catalog CORE (U≈0.71>0.50), domain=journeys (weighted sample, weights pre: kits:4 journeys:4 simulators:4 playgrounds:3 games:2 studio-composition:1), weights post-roll: kits:5, simulators:5, playgrounds:4, games:3, studio-composition:2, journeys:1. Previous closed: studio-composition (Glow Trail Composer — fully shipped + next-step + READY). adsense-prep_runs=1 (unchanged). SHIPPED 2026-10-15 run 1/6: full interactive canvas + next-step EN+ES + READY deploy. POLISH 2026-10-15 run 2/6: Catmull-Rom smooth curves, persistent afterglow deposits, drag waypoints; commit 8fb7bfa; deploy READY. Prompt source moved to .agent/ideas-lab.md (variant A) 2026-10-15.
 adsense-prep_runs: 1
 ```
 
