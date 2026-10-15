@@ -205,19 +205,19 @@ export function StandingWaveSim({ locale = "en" }: { locale?: SimLocale }) {
       </div>
 
       <div className="grid w-full max-w-sm grid-cols-3 gap-2 text-center text-[11px]">
-        <div className="rounded-xl border border-teal-500/20 bg-black/30 px-2 py-2">
+        <div className="rounded-xl border border-teal-400/25 bg-black/40 px-2 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
           <p className="font-bold text-teal-200/70">{es ? "Nodos" : "Nodes"}</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-teal-50" data-sim-nodes={nodes}>
             {nodes}
           </p>
         </div>
-        <div className="rounded-xl border border-teal-500/20 bg-black/30 px-2 py-2">
+        <div className="rounded-xl border border-teal-400/25 bg-black/40 px-2 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
           <p className="font-bold text-teal-200/70">λ</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-teal-50" data-sim-lambda={lambdaLabel}>
             {lambdaLabel}
           </p>
         </div>
-        <div className="rounded-xl border border-teal-500/20 bg-black/30 px-2 py-2">
+        <div className="rounded-xl border border-teal-400/25 bg-black/40 px-2 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
           <p className="font-bold text-teal-200/70">{es ? "Vientres" : "Antinodes"}</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-teal-50" data-sim-antinodes={harmonic}>
             {harmonic}
@@ -231,13 +231,13 @@ export function StandingWaveSim({ locale = "en" }: { locale?: SimLocale }) {
         height={H}
         role="img"
         aria-label={es ? "Onda estacionaria en una cuerda" : "Standing wave on a string"}
-        className="w-full max-w-[420px] rounded-2xl border border-teal-500/30 bg-[#021716]"
+        className="standing-frame w-full max-w-[420px] rounded-2xl border border-teal-500/30 bg-[#021716] shadow-[0_16px_40px_rgba(0,0,0,0.45),0_0_24px_rgba(167,139,250,0.1)]"
       />
 
       <p className="max-w-sm text-center text-[12px] leading-relaxed text-teal-100/70">
         {es
-          ? "\u03bb = L/n con L = 1,2 m. Los nodos no se mueven; la tensi\u00f3n solo cambia la rapidez del ciclo. Pausa no altera los n\u00fameros."
-          : "\u03bb = L/n with L = 1.2 m. Nodes stay put; tension only changes how fast the cycle runs. Pause does not change the numbers."}
+          ? "λ = L/n con L = 1,2 m. Los nodos no se mueven; la tensión solo cambia la rapidez del ciclo. Pausa no altera los números."
+          : "λ = L/n with L = 1.2 m. Nodes stay put; tension only changes how fast the cycle runs. Pause does not change the numbers."}
       </p>
     </div>
   );
