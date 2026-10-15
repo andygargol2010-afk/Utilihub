@@ -176,6 +176,8 @@ import { ELECTRICITY_COST_TOOLS } from "./electricity-cost-tool";
 import { WORD_COUNTER_TOOLS } from "./word-counter-tool";
 import { LOAN_PAYMENT_TOOLS } from "./loan-payment-tool";
 import { AVERAGE_SPEED_TOOLS } from "./average-speed-tool";
+import { ACCELERATION_TOOLS } from "./acceleration-tool";
+import { FUEL_EFFICIENCY_TOOLS } from "./fuel-efficiency-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -357,4 +359,6 @@ export const GENERAL_TOOLS = [
   ...WORD_COUNTER_TOOLS,
   ...LOAN_PAYMENT_TOOLS,
   ...AVERAGE_SPEED_TOOLS,
+  ...ACCELERATION_TOOLS,
+  ...FUEL_EFFICIENCY_TOOLS,
 ];
