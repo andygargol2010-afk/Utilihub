@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
-/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake. */
+/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost. */
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
@@ -48,6 +48,7 @@ const SlugGeneratorTool = lazy(() => import("./SlugGeneratorTool").then((m) => (
 const BillSplitTool = lazy(() => import("./BillSplitTool").then((m) => ({ default: m.BillSplitTool })));
 const CurrencyConverterTool = lazy(() => import("./CurrencyConverterTool").then((m) => ({ default: m.CurrencyConverterTool })));
 const WaterIntakeTool = lazy(() => import("./WaterIntakeTool").then((m) => ({ default: m.WaterIntakeTool })));
+const RecipeCostCalculatorTool = lazy(() => import("./RecipeCostCalculatorTool").then((m) => ({ default: m.RecipeCostCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -77,6 +78,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "dividir-cuenta") return BillSplitTool as ToolComp;
   if (tool.slug === "conversor-divisas") return CurrencyConverterTool as ToolComp;
   if (tool.slug === "calculadora-ingesta-agua") return WaterIntakeTool as ToolComp;
+  if (tool.slug === "calculadora-costo-receta") return RecipeCostCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-fecha-avanzada") return AdvancedDateTool as ToolComp;
   if (tool.config?.mode === "advanced-calculator") return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.mode === "advanced" && tool.config?.operation) return AdvancedCalculatorTool as ToolComp;
