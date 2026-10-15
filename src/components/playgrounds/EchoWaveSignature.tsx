@@ -64,6 +64,7 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
   const paramsRef = useRef({ text, layers, amplitude, speed });
   const timeRef = useRef(0);
   const hydrated = useRef(false);
+  const urlTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Hydrate from URL params once on mount
   useEffect(() => {
@@ -93,7 +94,26 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
     paramsRef.current = { text, layers, amplitude, speed };
   }, [text, layers, amplitude, speed]);
 
-  const hash = hashString(text || "Echo");
+  // Live-update address bar so the link is always shareable without an extra click
+  useEffect(() => {
+    if (!hydrated.current) return;
+    if (urlTimerRef.current) clearTimeout(urlTimerRef.current);
+    urlTimerRef.current = setTimeout(() => {
+      const params = new URLSearchParams();
+      if (text.trim()) params.set("t", text.trim().slice(0, 24));
+      params.set("l", String(layers));
+      params.set("a", String(amplitude));
+      params.set("s", speed.toFixed(1));
+      const qs = params.toString();
+      const next = `${window.location.pathname}?${qs}`;
+      if (window.location.search !== `?${qs}`) {
+        window.history.replaceState(null, "", next);
+      }
+    }, 280);
+    return () => {
+      if (urlTimerRef.current) clearTimeout(urlTimerRef.current);
+    };
+  }, [text, layers, amplitude, speed]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -112,10 +132,23 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
     resize();
     window.addEventListener("resize", resize);
 
+    const onPointer = (e: PointerEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      ripplesRef.current.push({ x, y, age: 0, strength: 1.2 });
+      if (ripplesRef.current.length > 12) ripplesRef.current.shift();
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (e.buttons > 0) onPointer(e);
+    };
+
     const draw = () => {
       const { text: txt, layers: L, amplitude: amp, speed: spd } = paramsRef.current;
-      const w = canvas.width / (window.devicePixelRatio || 1);
-      const h = canvas.height / (window.devicePixelRatio || 1);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
       timeRef.current += 0.016 * spd;
       const tme = timeRef.current;
 
@@ -123,16 +156,16 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
       ctx.fillRect(0, 0, w, h);
 
       const hsh = hashString(txt || "Echo");
-      const freqs = [];
-      for (let i = 0; i < Math.max(1, txt.length); i++) {
+      const freqs: number[] = [];
+      const len = Math.max(1, txt.length);
+      for (let i = 0; i < len; i++) {
         freqs.push(0.5 + (txt.charCodeAt(i % txt.length) % 20) * 0.05);
       }
 
       ripplesRef.current = ripplesRef.current.filter((r) => r.age < 120);
-      ripplesRef.current.forEach((r) => r.age += 1);
+      for (const r of ripplesRef.current) r.age += 1;
 
       for (let layer = 0; layer < L; layer++) {
-        const layerOffset = layer * 0.3;
         const color = hslFromHash(hsh, layer);
         ctx.beginPath();
         ctx.strokeStyle = color;
@@ -143,17 +176,20 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
           let y = h / 2;
           for (let f = 0; f < freqs.length; f++) {
             const freq = freqs[f] * (1 + layer * 0.15);
-            y += Math.sin((x * freq * 0.02) + tme * (1.2 + layer * 0.3) + f * 0.8) * (amp * 0.6 / (layer + 1));
+            y += Math.sin(x * freq * 0.02 + tme * (1.2 + layer * 0.3) + f * 0.8) * (amp * 0.6 / (layer + 1));
           }
-          // Ripple interference
-          ripplesRef.current.forEach((r) => {
+          for (const r of ripplesRef.current) {
             const dx = x - r.x;
             const dist = Math.abs(dx);
             if (dist < 180) {
-              const wave = Math.sin(dist * 0.08 - r.age * 0.15) * Math.exp(-dist * 0.015) * r.strength * (1 - r.age / 120);
+              const wave =
+                Math.sin(dist * 0.08 - r.age * 0.15) *
+                Math.exp(-dist * 0.015) *
+                r.strength *
+                (1 - r.age / 120);
               y += wave * (amp * 0.4);
             }
-          });
+          }
           if (x === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
         }
@@ -165,22 +201,14 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
     };
     draw();
 
-    const onPointer = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ripplesRef.current.push({ x, y, age: 0, strength: 1.2 });
-      if (ripplesRef.current.length > 12) ripplesRef.current.shift();
-    };
     canvas.addEventListener("pointerdown", onPointer);
-    canvas.addEventListener("pointermove", (e) => {
-      if (e.buttons > 0) onPointer(e);
-    });
+    canvas.addEventListener("pointermove", onPointerMove);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("pointerdown", onPointer);
+      canvas.removeEventListener("pointermove", onPointerMove);
     };
   }, []);
 
@@ -203,14 +231,14 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
     a.click();
   };
 
-  const buildUrl = () => {
+  const buildUrl = useCallback(() => {
     const params = new URLSearchParams();
     if (text.trim()) params.set("t", text.trim().slice(0, 24));
     params.set("l", String(layers));
     params.set("a", String(amplitude));
     params.set("s", speed.toFixed(1));
     return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-  };
+  }, [text, layers, amplitude, speed]);
 
   const copyLink = async () => {
     try {
