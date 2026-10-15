@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 type Locale = "en" | "es";
+type SceneId = "void" | "brick" | "cyber";
 
 const PRESETS = [
   { id: "cyan", hue: 180, labelEn: "Cyan", labelEs: "Cian" },
@@ -13,6 +14,12 @@ const PRESETS = [
   { id: "red", hue: 350, labelEn: "Red", labelEs: "Rojo" },
 ];
 
+const SCENES: { id: SceneId; labelEn: string; labelEs: string }[] = [
+  { id: "void", labelEn: "Deep void", labelEs: "Vacío profundo" },
+  { id: "brick", labelEn: "Brick wall", labelEs: "Pared de ladrillo" },
+  { id: "cyber", labelEn: "Cyber grid", labelEs: "Rejilla cyber" },
+];
+
 const labels = {
   en: {
     message: "Your neon text",
@@ -21,7 +28,8 @@ const labels = {
     intensity: "Glow intensity",
     flicker: "Flicker amount",
     presets: "Classic neon colors",
-    help: "Type text. It becomes a glowing neon tube sign. Color from hash, slider or presets. Flicker + ignite animation. Download PNG or share URL.",
+    scenes: "Scene background",
+    help: "Type text. It becomes a glowing neon tube sign. Color from hash, slider or presets. Pick a scene for shareable shots. Flicker + ignite. Download PNG or share URL.",
     download: "Download PNG",
     share: "Share",
     copy: "Copy link",
@@ -34,7 +42,8 @@ const labels = {
     intensity: "Intensidad del brillo",
     flicker: "Cantidad de parpadeo",
     presets: "Colores neón clásicos",
-    help: "Escribí texto. Se convierte en un cartel de neón con tubo brillante. Color por hash, deslizador o presets. Parpadeo + animación de encendido. Descargá PNG o compartí URL.",
+    scenes: "Fondo de escena",
+    help: "Escribí texto. Se convierte en un cartel de neón con tubo brillante. Color por hash, deslizador o presets. Elegí una escena para capturas. Parpadeo + animación de encendido. Descargá PNG o compartí URL.",
     download: "Descargar PNG",
     share: "Compartir",
     copy: "Copiar enlace",
@@ -51,6 +60,56 @@ function hashString(str: string): number {
   return h >>> 0;
 }
 
+function drawBrickWall(ctx: CanvasRenderingContext2D, w: number, hgt: number) {
+  ctx.fillStyle = "#1a1210";
+  ctx.fillRect(0, 0, w, hgt);
+  const bw = 28;
+  const bh = 14;
+  const mortar = 2;
+  for (let row = 0; row * (bh + mortar) < hgt + bh; row++) {
+    const offset = (row % 2) * (bw / 2);
+    for (let col = -1; col * (bw + mortar) < w + bw; col++) {
+      const x = col * (bw + mortar) + offset;
+      const y = row * (bh + mortar);
+      const shade = 0.12 + ((row * 7 + col * 3) % 5) * 0.03;
+      ctx.fillStyle = `rgb(${Math.floor(55 + shade * 40)}, ${Math.floor(32 + shade * 20)}, ${Math.floor(28 + shade * 15)})`;
+      ctx.fillRect(x, y, bw, bh);
+    }
+  }
+  // subtle dark overlay so neon reads on top
+  ctx.fillStyle = "rgba(0,0,0,0.35)";
+  ctx.fillRect(0, 0, w, hgt);
+}
+
+function drawCyberGrid(ctx: CanvasRenderingContext2D, w: number, hgt: number, tme: number) {
+  ctx.fillStyle = "#050810";
+  ctx.fillRect(0, 0, w, hgt);
+  const step = 28;
+  const pulse = 0.08 + 0.04 * Math.sin(tme * 0.8);
+  ctx.strokeStyle = `rgba(80, 120, 180, ${0.12 + pulse})`;
+  ctx.lineWidth = 1;
+  for (let x = 0; x <= w; x += step) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, hgt);
+    ctx.stroke();
+  }
+  for (let y = 0; y <= hgt; y += step) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y);
+    ctx.stroke();
+  }
+  // horizon glow line
+  const gy = hgt * 0.72;
+  const g = ctx.createLinearGradient(0, gy - 40, 0, gy + 20);
+  g.addColorStop(0, "rgba(40, 80, 140, 0)");
+  g.addColorStop(0.5, "rgba(60, 120, 200, 0.15)");
+  g.addColorStop(1, "rgba(40, 80, 140, 0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, gy - 40, w, 60);
+}
+
 export function NeonSignature({ locale }: { locale: Locale }) {
   const t = labels[locale];
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -58,8 +117,9 @@ export function NeonSignature({ locale }: { locale: Locale }) {
   const [hue, setHue] = useState(180);
   const [intensity, setIntensity] = useState(60);
   const [flicker, setFlicker] = useState(30);
+  const [scene, setScene] = useState<SceneId>("void");
   const [copied, setCopied] = useState(false);
-  const paramsRef = useRef({ text, hue, intensity, flicker });
+  const paramsRef = useRef({ text, hue, intensity, flicker, scene });
   const timeRef = useRef(0);
   const hydrated = useRef(false);
   const urlTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -75,6 +135,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
     const hParam = sp.get("h");
     const iParam = sp.get("i");
     const fParam = sp.get("f");
+    const bParam = sp.get("b");
     if (tParam) setText(tParam.slice(0, 20));
     if (hParam) {
       const n = parseInt(hParam, 10);
@@ -88,15 +149,18 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       const n = parseInt(fParam, 10);
       if (!Number.isNaN(n) && n >= 0 && n <= 80) setFlicker(n);
     }
+    if (bParam === "brick" || bParam === "cyber" || bParam === "void") {
+      setScene(bParam);
+    }
   }, []);
 
   useEffect(() => {
-    paramsRef.current = { text, hue, intensity, flicker };
+    paramsRef.current = { text, hue, intensity, flicker, scene };
     if (text !== prevTextRef.current) {
       igniteStartRef.current = timeRef.current;
       prevTextRef.current = text;
     }
-  }, [text, hue, intensity, flicker]);
+  }, [text, hue, intensity, flicker, scene]);
 
   useEffect(() => {
     if (!hydrated.current) return;
@@ -107,6 +171,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       params.set("h", String(hue));
       params.set("i", String(intensity));
       params.set("f", String(flicker));
+      if (scene !== "void") params.set("b", scene);
       const qs = params.toString();
       const next = `${window.location.pathname}?${qs}`;
       if (window.location.search !== `?${qs}`) {
@@ -116,7 +181,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
     return () => {
       if (urlTimerRef.current) clearTimeout(urlTimerRef.current);
     };
-  }, [text, hue, intensity, flicker]);
+  }, [text, hue, intensity, flicker, scene]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -136,16 +201,22 @@ export function NeonSignature({ locale }: { locale: Locale }) {
     window.addEventListener("resize", resize);
 
     const draw = () => {
-      const { text: txt, hue: h, intensity: intens, flicker: flick } = paramsRef.current;
+      const { text: txt, hue: h, intensity: intens, flicker: flick, scene: sc } = paramsRef.current;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = canvas.width / dpr;
       const hgt = canvas.height / dpr;
       timeRef.current += 0.016;
       const tme = timeRef.current;
 
-      // Dark night base
-      ctx.fillStyle = "#07090f";
-      ctx.fillRect(0, 0, w, hgt);
+      // Scene background
+      if (sc === "brick") {
+        drawBrickWall(ctx, w, hgt);
+      } else if (sc === "cyber") {
+        drawCyberGrid(ctx, w, hgt, tme);
+      } else {
+        ctx.fillStyle = "#07090f";
+        ctx.fillRect(0, 0, w, hgt);
+      }
 
       const display = (txt || "Neon").slice(0, 20).toUpperCase();
       const baseHue = h;
@@ -263,8 +334,9 @@ export function NeonSignature({ locale }: { locale: Locale }) {
     params.set("h", String(hue));
     params.set("i", String(intensity));
     params.set("f", String(flicker));
+    if (scene !== "void") params.set("b", scene);
     return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-  }, [text, hue, intensity, flicker]);
+  }, [text, hue, intensity, flicker, scene]);
 
   const copyLink = async () => {
     try {
@@ -323,6 +395,26 @@ export function NeonSignature({ locale }: { locale: Locale }) {
               style={{ boxShadow: `0 0 0 2px hsl(${p.hue} 90% 55% / 0.35)` }}
             >
               {locale === "es" ? p.labelEs : p.labelEn}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-2 text-xs font-medium">{t.scenes}</p>
+        <div className="flex flex-wrap gap-2">
+          {SCENES.map((s) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => setScene(s.id)}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
+                scene === s.id
+                  ? "border-fuchsia-500/60 bg-fuchsia-50 text-fuchsia-900 dark:bg-fuchsia-950/50 dark:text-fuchsia-100"
+                  : "border-border/60 bg-background hover:border-fuchsia-500/40"
+              }`}
+            >
+              {locale === "es" ? s.labelEs : s.labelEn}
             </button>
           ))}
         </div>
