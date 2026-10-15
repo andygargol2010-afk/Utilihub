@@ -318,8 +318,8 @@ export function OpticsSim({ locale = "en" }: { locale?: SimLocale }) {
           </SimSecondaryButton>
         ))}
       </div>
-      <div className="overflow-hidden rounded-2xl border border-sky-400/20 bg-black/40 shadow-[0_0_40px_-12px_rgba(56,189,248,0.25)]">
-        <canvas ref={canvasRef} className="h-auto w-full" style={{ aspectRatio: `${W}/${H}` }} />
+      <div className="overflow-hidden rounded-2xl border border-cyan-400/30 bg-black/50 shadow-[0_16px_40px_rgba(0,0,0,0.45),0_0_32px_rgba(34,211,238,0.12)]">
+        <canvas ref={canvasRef} className="optics-frame h-auto w-full" style={{ aspectRatio: `${W}/${H}` }} />
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="text-xs text-sky-100/70">
