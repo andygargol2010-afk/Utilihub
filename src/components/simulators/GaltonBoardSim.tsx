@@ -161,13 +161,13 @@ export function GaltonBoardSim({ locale = "en" }: { locale?: SimLocale }) {
         const count = binsRef.current[i] || 0;
         const h = (count / maxCount) * 90;
         const x = 20 + i * binW;
-        ctx.fillStyle = "rgba(56, 189, 248, 0.35)";
+        ctx.fillStyle = "rgba(56, 189, 248, 0.5)";
         ctx.fillRect(x + 1, floorY - h, binW - 2, h);
         ctx.strokeStyle = "#334155";
         ctx.strokeRect(x, floorY, binW, 40);
       }
 
-      ctx.fillStyle = "#38bdf8";
+      ctx.fillStyle = "#7dd3fc";
       for (const ball of balls) {
         ctx.beginPath();
         ctx.arc(ball.x, ball.y, 5, 0, Math.PI * 2);
@@ -188,7 +188,7 @@ export function GaltonBoardSim({ locale = "en" }: { locale?: SimLocale }) {
 
   return (
     <div className="mx-auto flex max-w-xl flex-col items-center gap-4" data-sim="galton-board">
-      <div className="w-full rounded-2xl border border-sky-500/25 bg-sky-950/40 p-3">
+      <div className="w-full rounded-2xl border border-sky-400/30 bg-sky-950/50 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
         <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-sky-200/85">
           {es ? "Máquina de Galton · campana de Gauss" : "Galton board · Gaussian bell"}
         </p>
@@ -247,7 +247,7 @@ export function GaltonBoardSim({ locale = "en" }: { locale?: SimLocale }) {
         ref={canvasRef}
         width={W}
         height={H}
-        className="w-full max-w-[480px] rounded-2xl border border-sky-500/30 bg-[#0f172a]"
+        className="galton-frame w-full max-w-[480px] rounded-2xl border border-sky-400/40 bg-[#0f172a] shadow-[0_16px_40px_rgba(0,0,0,0.45),0_0_28px_rgba(56,189,248,0.12)]"
         role="img"
         aria-label={es ? "Tablero de Galton con bolas cayendo" : "Galton board with falling balls"}
       />
