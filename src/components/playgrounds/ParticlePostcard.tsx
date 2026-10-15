@@ -1,5 +1,6 @@
 "use client";
-// Viral Particle Postcard — particles swarm to form typed text (condense long text 2026-10-14)
+// Viral Particle Postcard — particles swarm to form typed text
+// 2026-10-15: wider letter spacing + more compact glyphs for legibility
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
@@ -71,8 +72,8 @@ const labels = {
 };
 
 /**
- * Sample glyph pixels. For >5 chars, horizontally compress the type so the
- * whole word fits and each letter stays thick enough to fill with particles.
+ * Sample glyph pixels with per-character tracking (extra letter spacing)
+ * and mild per-glyph horizontal compression for more compact, thicker letters.
  */
 function sampleTextTargets(
   text: string,
@@ -92,59 +93,90 @@ function sampleTextTargets(
   ctx.fillStyle = "#fff";
 
   const label = text.trim().slice(0, MAX_CHARS);
-  const len = Math.max(1, label.length);
+  const chars = [...label];
+  const len = Math.max(1, chars.length);
   const cx = W / 2;
   const cy = H / 2;
 
   // Base height-driven size
-  let fontSize = Math.min(H * 0.5, 120);
+  let fontSize = Math.min(H * 0.52, 128);
   ctx.font = `900 ${fontSize}px system-ui, "Segoe UI", sans-serif`;
-  let textW = ctx.measureText(label).width;
 
-  // >5 chars → progressively narrower letters (user request)
-  let scaleX = 1;
-  if (len > 5) {
-    // 6→0.90, 7→0.82, 8→0.74, 9→0.66, 10→0.58
-    scaleX = Math.max(0.55, 1 - (len - 5) * 0.09);
+  // Per-glyph compactness: letters themselves are a bit narrower
+  // so strokes stay thicker relative to width.
+  const glyphScaleX = len >= 8 ? 0.78 : len >= 6 ? 0.84 : 0.9;
+
+  // Extra tracking (space between letters) — user request
+  const tracking = fontSize * (len >= 7 ? 0.22 : 0.18);
+
+  // Measure total width with tracking + per-glyph scale
+  let totalW = 0;
+  const charWidths: number[] = [];
+  for (const ch of chars) {
+    const mw = ctx.measureText(ch).width * glyphScaleX;
+    charWidths.push(mw);
+    totalW += mw;
   }
+  totalW += tracking * Math.max(0, len - 1);
 
-  // Fit into ~90% of canvas width
-  const maxW = W * 0.9;
-  if (textW * scaleX > maxW) {
-    fontSize *= maxW / (textW * scaleX);
-    fontSize = Math.max(22, fontSize);
+  // Fit into ~92% of canvas width
+  const maxW = W * 0.92;
+  if (totalW > maxW) {
+    const fit = maxW / totalW;
+    fontSize *= fit;
+    fontSize = Math.max(24, fontSize);
     ctx.font = `900 ${fontSize}px system-ui, "Segoe UI", sans-serif`;
-    textW = ctx.measureText(label).width;
+    // re-measure
+    totalW = 0;
+    for (let i = 0; i < chars.length; i++) {
+      const mw = ctx.measureText(chars[i]).width * glyphScaleX;
+      charWidths[i] = mw;
+      totalW += mw;
+    }
+    totalW += tracking * Math.max(0, len - 1);
   }
 
-  // Draw with horizontal scale + slight overdraw for thicker strokes
-  const thick = Math.max(0.7, fontSize * 0.02);
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.scale(scaleX, 1);
+  // Thicker strokes via multi-pass overdraw
+  const thick = Math.max(0.85, fontSize * 0.028);
+
+  // Draw each character individually, centered as a group
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  for (const ox of [-thick * 1.4, -thick * 0.5, 0, thick * 0.5, thick * 1.4]) {
-    for (const oy of [-thick * 0.9, 0, thick * 0.9]) {
-      ctx.fillText(label, ox, oy);
+  let cursorX = cx - totalW / 2;
+
+  for (let i = 0; i < chars.length; i++) {
+    const ch = chars[i];
+    const gw = charWidths[i];
+    const glyphCx = cursorX + gw / 2;
+
+    ctx.save();
+    ctx.translate(glyphCx, cy);
+    ctx.scale(glyphScaleX, 1);
+    // Overdraw for denser, more compact fill
+    for (const ox of [-thick * 1.5, -thick * 0.6, 0, thick * 0.6, thick * 1.5]) {
+      for (const oy of [-thick * 1.0, -thick * 0.3, 0, thick * 0.3, thick * 1.0]) {
+        ctx.fillText(ch, ox / glyphScaleX, oy);
+      }
     }
+    ctx.restore();
+
+    cursorX += gw + tracking;
   }
-  ctx.restore();
 
   const data = ctx.getImageData(0, 0, W, H).data;
-  // Denser step for longer (narrower) text so thin strokes still fill
-  const step = len >= 8 ? 1 : density >= 200 ? 1 : 2;
+  // Denser sampling so compact glyphs still get enough particles
+  const step = len >= 7 ? 1 : density >= 180 ? 1 : 2;
   const raw: { x: number; y: number }[] = [];
   for (let y = 0; y < H; y += step) {
     for (let x = 0; x < W; x += step) {
       const i = (y * W + x) * 4;
-      if (data[i] > 85) raw.push({ x, y });
+      if (data[i] > 70) raw.push({ x, y }); // slightly lower threshold
     }
   }
   if (raw.length === 0) return raw;
 
-  // More points for longer words
-  const maxPts = Math.min(1000, Math.max(200, Math.floor(density * (len >= 7 ? 2.8 : 2.2))));
+  // More points for longer / narrower words
+  const maxPts = Math.min(1100, Math.max(220, Math.floor(density * (len >= 7 ? 3.0 : 2.4))));
   if (raw.length <= maxPts) return raw;
   const out: { x: number; y: number }[] = [];
   const stride = raw.length / maxPts;
@@ -185,9 +217,9 @@ export function ParticlePostcard({ locale }: { locale: Locale }) {
     targetsRef.current = targets;
     const n = targets.length > 0 ? targets.length : Math.min(density, 120);
     const len = Math.max(1, text.trim().length);
-    // Slightly smaller dots when many narrow letters
-    const sizeBase = len >= 7 ? 0.95 : 1.15;
-    const sizeSpread = len >= 7 ? 0.7 : 0.9;
+    // Slightly smaller dots when many compact letters
+    const sizeBase = len >= 7 ? 0.9 : 1.1;
+    const sizeSpread = len >= 7 ? 0.65 : 0.85;
     const ps: Particle[] = [];
     const baseHue = mood.hue;
     for (let i = 0; i < n; i++) {
