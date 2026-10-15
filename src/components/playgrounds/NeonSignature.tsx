@@ -126,7 +126,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       timeRef.current += 0.016;
       const tme = timeRef.current;
 
-      // Dark night background
+      // Dark night base
       ctx.fillStyle = "#07090f";
       ctx.fillRect(0, 0, w, hgt);
 
@@ -135,7 +135,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       const hsh = hashString(txt || "Neon");
       const effectiveHue = (baseHue + (hsh % 40) - 20 + 360) % 360;
 
-      // Flicker
+      // Flicker multiplier
       let glowMul = 1;
       if (flick > 0) {
         const noise = Math.sin(tme * 12 + flickerSeed.current * 10) * 0.5 + Math.sin(tme * 7.3) * 0.3;
@@ -157,31 +157,54 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       const cx = w / 2;
       const cy = hgt / 2;
 
-      // Outer glow layers
-      const glowLayers = [24, 16, 8, 3];
-      for (let i = 0; i < glowLayers.length; i++) {
-        const blur = glowLayers[i] * (intens / 60) * glowMul;
-        const alpha = (0.35 - i * 0.07) * glowMul;
-        ctx.shadowColor = `hsla(${effectiveHue}, 100%, 60%, ${alpha})`;
+      // Ambient wall wash — radial color bloom behind the sign
+      const washR = Math.max(w, hgt) * 0.55;
+      const wash = ctx.createRadialGradient(cx, cy, 0, cx, cy, washR);
+      const washA = 0.22 * (intens / 60) * glowMul;
+      wash.addColorStop(0, `hsla(${effectiveHue}, 90%, 45%, ${washA})`);
+      wash.addColorStop(0.45, `hsla(${effectiveHue}, 70%, 30%, ${washA * 0.35})`);
+      wash.addColorStop(1, "hsla(0, 0%, 0%, 0)");
+      ctx.fillStyle = wash;
+      ctx.fillRect(0, 0, w, hgt);
+
+      // Wide multi-layer tube glow (outer → inner)
+      const glowLayers = [
+        { blur: 48, alpha: 0.18, line: 10 },
+        { blur: 28, alpha: 0.28, line: 7 },
+        { blur: 14, alpha: 0.4, line: 5 },
+        { blur: 6, alpha: 0.55, line: 3.5 },
+        { blur: 2, alpha: 0.75, line: 2 },
+      ];
+      for (const layer of glowLayers) {
+        const blur = layer.blur * (intens / 60) * glowMul;
+        const alpha = layer.alpha * glowMul;
+        ctx.shadowColor = `hsla(${effectiveHue}, 100%, 58%, ${alpha})`;
         ctx.shadowBlur = blur;
-        ctx.strokeStyle = `hsla(${effectiveHue}, 100%, 70%, ${0.9 * glowMul})`;
-        ctx.lineWidth = 6 - i * 1.2;
+        ctx.strokeStyle = `hsla(${effectiveHue}, 100%, 68%, ${Math.min(1, alpha + 0.25)})`;
+        ctx.lineWidth = layer.line;
         ctx.strokeText(display, cx, cy);
       }
 
-      // Inner bright tube
+      // Hot white core + colored rim (tube look)
       ctx.shadowBlur = 0;
-      ctx.fillStyle = `hsl(${effectiveHue}, 100%, 92%)`;
+      ctx.fillStyle = `hsl(${effectiveHue}, 100%, 96%)`;
       ctx.fillText(display, cx, cy);
-      ctx.strokeStyle = `hsl(${effectiveHue}, 100%, 80%)`;
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = `hsl(${effectiveHue}, 100%, 78%)`;
+      ctx.lineWidth = 1.8;
       ctx.strokeText(display, cx, cy);
 
-      // Subtle base reflection
-      ctx.globalAlpha = 0.15 * glowMul;
-      ctx.fillStyle = `hsl(${effectiveHue}, 80%, 50%)`;
-      ctx.fillText(display, cx, cy + fontSize * 0.55);
+      // Soft floor reflection
+      ctx.globalAlpha = 0.18 * glowMul;
+      ctx.fillStyle = `hsl(${effectiveHue}, 85%, 52%)`;
+      ctx.fillText(display, cx, cy + fontSize * 0.58);
       ctx.globalAlpha = 1;
+
+      // Soft vignette for depth
+      const vig = ctx.createRadialGradient(cx, cy, Math.min(w, hgt) * 0.25, cx, cy, Math.max(w, hgt) * 0.72);
+      vig.addColorStop(0, "rgba(0,0,0,0)");
+      vig.addColorStop(1, "rgba(0,0,0,0.55)");
+      ctx.fillStyle = vig;
+      ctx.fillRect(0, 0, w, hgt);
 
       raf = requestAnimationFrame(draw);
     };
