@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
-/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed. */
+/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency. */
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
@@ -53,6 +53,8 @@ const ElectricityCostTool = lazy(() => import("./ElectricityCostTool").then((m) 
 const WordCounterTool = lazy(() => import("./WordCounterTool").then((m) => ({ default: m.WordCounterTool })));
 const LoanPaymentTool = lazy(() => import("./LoanPaymentTool").then((m) => ({ default: m.LoanPaymentTool })));
 const AverageSpeedTool = lazy(() => import("./AverageSpeedTool").then((m) => ({ default: m.AverageSpeedTool })));
+const AccelerationTool = lazy(() => import("./AccelerationTool").then((m) => ({ default: m.AccelerationTool })));
+const FuelEfficiencyTool = lazy(() => import("./FuelEfficiencyTool").then((m) => ({ default: m.FuelEfficiencyTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -87,6 +89,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "contador-palabras") return WordCounterTool as ToolComp;
   if (tool.slug === "calculadora-cuota-prestamo") return LoanPaymentTool as ToolComp;
   if (tool.slug === "calculadora-velocidad-media") return AverageSpeedTool as ToolComp;
+  if (tool.slug === "calculadora-aceleracion") return AccelerationTool as ToolComp;
+  if (tool.slug === "calculadora-eficiencia-combustible") return FuelEfficiencyTool as ToolComp;
   if (tool.slug === "calculadora-fecha-avanzada") return AdvancedDateTool as ToolComp;
   if (tool.config?.mode === "advanced-calculator") return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.mode === "advanced" && tool.config?.operation) return AdvancedCalculatorTool as ToolComp;
