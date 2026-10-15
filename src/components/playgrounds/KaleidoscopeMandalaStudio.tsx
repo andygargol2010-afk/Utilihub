@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type Point = { x: number; y: number };
+type Brush = "neon" | "sparkle" | "glow" | "ink" | "ribbon";
+type Size = "s" | "m" | "l";
 type Stroke = {
   points: Point[];
   color: string;
   brush: Brush;
   symmetry: number;
+  size: Size;
 };
-type Brush = "neon" | "sparkle" | "glow" | "ink" | "ribbon";
 
 const PALETTE = [
   "#ff2d95",
@@ -19,6 +21,8 @@ const PALETTE = [
   "#ffffff",
   "#ff3b30",
 ];
+
+const SIZE_MULT: Record<Size, number> = { s: 0.6, m: 1, l: 1.7 };
 
 function seeded(n: number) {
   const x = Math.sin(n * 12.9898) * 43758.5453;
@@ -35,6 +39,7 @@ function drawStrokeOnCtx(
   if (stroke.points.length < 2) return;
   const cx = w / 2;
   const cy = h / 2;
+  const sm = SIZE_MULT[stroke.size] || 1;
   ctx.save();
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
@@ -52,46 +57,47 @@ function drawStrokeOnCtx(
       ctx.lineTo(stroke.points[i].x * w, stroke.points[i].y * h);
     }
 
+    const base = scale * sm;
     if (stroke.brush === "neon") {
       ctx.strokeStyle = stroke.color;
-      ctx.lineWidth = 3.5 * scale;
+      ctx.lineWidth = 3.5 * base;
       ctx.shadowColor = stroke.color;
-      ctx.shadowBlur = 16 * scale;
+      ctx.shadowBlur = 16 * base;
       ctx.stroke();
-      ctx.shadowBlur = 6 * scale;
-      ctx.lineWidth = 1.5 * scale;
+      ctx.shadowBlur = 6 * base;
+      ctx.lineWidth = 1.5 * base;
       ctx.stroke();
     } else if (stroke.brush === "glow") {
       ctx.strokeStyle = stroke.color;
       ctx.globalAlpha = 0.45;
-      ctx.lineWidth = 18 * scale;
+      ctx.lineWidth = 18 * base;
       ctx.shadowColor = stroke.color;
-      ctx.shadowBlur = 24 * scale;
+      ctx.shadowBlur = 24 * base;
       ctx.stroke();
       ctx.globalAlpha = 1;
-      ctx.lineWidth = 4 * scale;
-      ctx.shadowBlur = 8 * scale;
+      ctx.lineWidth = 4 * base;
+      ctx.shadowBlur = 8 * base;
       ctx.stroke();
     } else if (stroke.brush === "ink") {
       ctx.strokeStyle = stroke.color;
-      ctx.lineWidth = 2.8 * scale;
+      ctx.lineWidth = 2.8 * base;
       ctx.shadowBlur = 0;
       ctx.stroke();
     } else if (stroke.brush === "ribbon") {
       ctx.strokeStyle = stroke.color;
       ctx.globalAlpha = 0.35;
-      ctx.lineWidth = 14 * scale;
+      ctx.lineWidth = 14 * base;
       ctx.shadowColor = stroke.color;
-      ctx.shadowBlur = 12 * scale;
+      ctx.shadowBlur = 12 * base;
       ctx.stroke();
       ctx.globalAlpha = 0.9;
-      ctx.lineWidth = 3.5 * scale;
-      ctx.shadowBlur = 4 * scale;
+      ctx.lineWidth = 3.5 * base;
+      ctx.shadowBlur = 4 * base;
       ctx.stroke();
       ctx.globalAlpha = 1;
     } else if (stroke.brush === "sparkle") {
       ctx.strokeStyle = stroke.color;
-      ctx.lineWidth = 1.2 * scale;
+      ctx.lineWidth = 1.2 * base;
       ctx.globalAlpha = 0.75;
       ctx.stroke();
       ctx.fillStyle = stroke.color;
@@ -100,9 +106,9 @@ function drawStrokeOnCtx(
         const px = p.x * w;
         const py = p.y * h;
         const seed = i * 17 + k * 3;
-        const ox = (seeded(seed) - 0.5) * 10 * scale;
-        const oy = (seeded(seed + 1) - 0.5) * 10 * scale;
-        const r = (1.2 + seeded(seed + 2) * 2.2) * scale;
+        const ox = (seeded(seed) - 0.5) * 10 * base;
+        const oy = (seeded(seed + 1) - 0.5) * 10 * base;
+        const r = (1.2 + seeded(seed + 2) * 2.2) * base;
         ctx.globalAlpha = 0.55 + seeded(seed + 3) * 0.4;
         ctx.beginPath();
         ctx.arc(px + ox, py + oy, r, 0, Math.PI * 2);
@@ -151,6 +157,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
   const [symmetry, setSymmetry] = useState(6);
   const [color, setColor] = useState(PALETTE[0]);
   const [brush, setBrush] = useState<Brush>("neon");
+  const [size, setSize] = useState<Size>("m");
   const [strokes, setStrokes] = useState<Stroke[]>([]);
   const [current, setCurrent] = useState<Point[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -160,6 +167,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     en: {
       symmetry: "Symmetry",
       brush: "Brush",
+      size: "Size",
       color: "Color",
       clear: "Clear",
       undo: "Undo",
@@ -170,11 +178,15 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       glow: "Soft glow",
       ink: "Ink",
       ribbon: "Ribbon",
+      s: "S",
+      m: "M",
+      l: "L",
       hint: "Draw with mouse or finger — it blooms in real time",
     },
     es: {
       symmetry: "Simetría",
       brush: "Pincel",
+      size: "Tamaño",
       color: "Color",
       clear: "Limpiar",
       undo: "Deshacer",
@@ -185,6 +197,9 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       glow: "Resplandor suave",
       ink: "Tinta",
       ribbon: "Cinta",
+      s: "S",
+      m: "M",
+      l: "L",
       hint: "Dibujá con el mouse o el dedo — florece en tiempo real",
     },
   }[locale];
@@ -196,9 +211,11 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       const s = params.get("sym");
       const b = params.get("brush");
       const c = params.get("color");
+      const sz = params.get("size");
       if (s && ["4", "6", "8"].includes(s)) setSymmetry(Number(s));
       if (b && ["neon", "sparkle", "glow", "ink", "ribbon"].includes(b)) setBrush(b as Brush);
       if (c && PALETTE.includes(c)) setColor(c);
+      if (sz && ["s", "m", "l"].includes(sz)) setSize(sz as Size);
     } catch {}
   }, []);
 
@@ -208,11 +225,12 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     params.set("sym", String(symmetry));
     params.set("brush", brush);
     params.set("color", color);
+    params.set("size", size);
     const next = `${window.location.pathname}?${params.toString()}`;
     if (next !== window.location.pathname + window.location.search) {
       window.history.replaceState(null, "", next);
     }
-  }, [symmetry, brush, color]);
+  }, [symmetry, brush, color, size]);
 
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -220,9 +238,9 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const live =
-      current.length > 1 ? { points: current, color, brush, symmetry } : null;
+      current.length > 1 ? { points: current, color, brush, symmetry, size } : null;
     paintCanvas(ctx, canvas.width, canvas.height, strokes, live, 1);
-  }, [strokes, current, color, brush, symmetry]);
+  }, [strokes, current, color, brush, symmetry, size]);
 
   useEffect(() => {
     redraw();
@@ -235,9 +253,9 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       const parent = canvas.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
-      const size = Math.min(rect.width, Math.min(window.innerWidth - 24, 640));
-      canvas.width = size;
-      canvas.height = size;
+      const sizePx = Math.min(rect.width, Math.min(window.innerWidth - 24, 640));
+      canvas.width = sizePx;
+      canvas.height = sizePx;
       redraw();
     };
     resize();
@@ -274,7 +292,7 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
       setCurrent([]);
       return;
     }
-    setStrokes((prev) => [...prev, { points: current, color, brush, symmetry }]);
+    setStrokes((prev) => [...prev, { points: current, color, brush, symmetry, size }]);
     setCurrent([]);
     setIsDrawing(false);
   };
@@ -290,7 +308,6 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
     if (!canvas) return;
     setExporting(true);
     try {
-      // True high-res: re-render strokes at 2× (or 3× on large screens) instead of upscaling pixels
       const scale = canvas.width >= 500 ? 2 : 3;
       const off = document.createElement("canvas");
       off.width = canvas.width * scale;
@@ -370,6 +387,26 @@ export function KaleidoscopeMandalaStudio({ locale = "en" }: { locale?: "en" | "
               }`}
             >
               {labels[b]}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wide text-muted-foreground">
+            {labels.size}
+          </span>
+          {(["s", "m", "l"] as Size[]).map((sz) => (
+            <button
+              key={sz}
+              type="button"
+              onClick={() => setSize(sz)}
+              className={`min-h-[40px] min-w-[40px] rounded-full px-3 py-1.5 text-sm font-medium transition ${
+                size === sz
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
+            >
+              {labels[sz]}
             </button>
           ))}
         </div>
