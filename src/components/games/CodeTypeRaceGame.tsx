@@ -145,13 +145,11 @@ export function CodeTypeRaceGame({ locale = "en" }: { locale?: GameLocale }) {
       setStartedAt(Date.now());
     }
 
-    // Count a new error when the latest char diverges
     if (value.length > typed.length) {
       const i = value.length - 1;
       if (value[i] !== target[i]) setErrors((e) => e + 1);
     }
 
-    // Don't allow typing far past the first error (keep one wrong char visible)
     let next = value;
     let ok = 0;
     for (let i = 0; i < next.length; i++) {
@@ -185,8 +183,27 @@ export function CodeTypeRaceGame({ locale = "en" }: { locale?: GameLocale }) {
     });
   }, [target, correctChars, hasMismatch]);
 
+  const progress = snippet.code.length ? Math.min(100, (typed.length / snippet.code.length) * 100) : 0;
+
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
+      <style>{`
+        @keyframes ctr-blink {
+          0%, 100% { border-bottom-color: rgba(52,211,153,0.95); }
+          50% { border-bottom-color: transparent; }
+        }
+        .ctr-cursor {
+          border-bottom-width: 2px;
+          border-bottom-style: solid;
+          animation: ctr-blink 0.9s step-end infinite;
+          background: rgba(52,211,153,0.12);
+        }
+        .ctr-panel {
+          background: radial-gradient(ellipse at 20% 0%, rgba(52,211,153,0.12), transparent 50%),
+            linear-gradient(165deg, #0f1f18, #070d0a);
+          box-shadow: 0 16px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+      `}</style>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap gap-2">
           {(
@@ -229,7 +246,7 @@ export function CodeTypeRaceGame({ locale = "en" }: { locale?: GameLocale }) {
         ].map((s) => (
           <div
             key={s.label}
-            className="rounded-2xl border border-white/10 bg-black/40 px-3 py-2 text-center"
+            className="rounded-2xl border border-emerald-500/15 bg-black/45 px-3 py-2 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
           >
             <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-200/60">{s.label}</p>
             <p className="mt-0.5 text-lg font-bold tabular-nums text-white">{s.value}</p>
@@ -237,7 +254,14 @@ export function CodeTypeRaceGame({ locale = "en" }: { locale?: GameLocale }) {
         ))}
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-black/50 p-4 sm:p-5">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-cyan-400 transition-all duration-150"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <div className="ctr-panel rounded-2xl border border-emerald-500/20 p-4 sm:p-5">
         <p className="mb-2 text-[10px] font-bold uppercase tracking-wider text-emerald-300/70">
           {snippet.lang === "js" ? "JavaScript" : "Python"}
           {phase === "done" ? (es ? " · Completado" : " · Done") : ""}
@@ -254,7 +278,7 @@ export function CodeTypeRaceGame({ locale = "en" }: { locale?: GameLocale }) {
                 : state === "bad"
                   ? "bg-rose-500/40 text-rose-100"
                   : state === "cursor"
-                    ? "border-b-2 border-emerald-400 text-white/90"
+                    ? "ctr-cursor text-white"
                     : "text-white/35";
             return (
               <span key={i} className={cls}>
