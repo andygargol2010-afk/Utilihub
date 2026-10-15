@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 type Locale = "en" | "es";
 type SceneId = "void" | "brick" | "cyber";
+type FontId = "block" | "script" | "condensed";
 
 const PRESETS = [
   { id: "cyan", hue: 180, labelEn: "Cyan", labelEs: "Cian" },
@@ -20,6 +21,12 @@ const SCENES: { id: SceneId; labelEn: string; labelEs: string }[] = [
   { id: "cyber", labelEn: "Cyber grid", labelEs: "Rejilla cyber" },
 ];
 
+const FONTS: { id: FontId; labelEn: string; labelEs: string }[] = [
+  { id: "block", labelEn: "Block", labelEs: "Bloque" },
+  { id: "script", labelEn: "Script", labelEs: "Manuscrita" },
+  { id: "condensed", labelEn: "Condensed", labelEs: "Condensada" },
+];
+
 const labels = {
   en: {
     message: "Your neon text",
@@ -29,7 +36,8 @@ const labels = {
     flicker: "Flicker amount",
     presets: "Classic neon colors",
     scenes: "Scene background",
-    help: "Type text. It becomes a glowing neon tube sign. Color from hash, slider or presets. Pick a scene for shareable shots. Flicker + ignite. Download PNG or share URL.",
+    fonts: "Tube font",
+    help: "Type text. It becomes a glowing neon tube sign. Color from hash, slider or presets. Pick a scene and font for shareable shots. Flicker + ignite. Download PNG or share URL.",
     download: "Download PNG",
     share: "Share",
     copy: "Copy link",
@@ -43,7 +51,8 @@ const labels = {
     flicker: "Cantidad de parpadeo",
     presets: "Colores neón clásicos",
     scenes: "Fondo de escena",
-    help: "Escribí texto. Se convierte en un cartel de neón con tubo brillante. Color por hash, deslizador o presets. Elegí una escena para capturas. Parpadeo + animación de encendido. Descargá PNG o compartí URL.",
+    fonts: "Fuente del tubo",
+    help: "Escribí texto. Se convierte en un cartel de neón con tubo brillante. Color por hash, deslizador o presets. Elegí escena y fuente para capturas. Parpadeo + animación de encendido. Descargá PNG o compartí URL.",
     download: "Descargar PNG",
     share: "Compartir",
     copy: "Copiar enlace",
@@ -76,7 +85,6 @@ function drawBrickWall(ctx: CanvasRenderingContext2D, w: number, hgt: number) {
       ctx.fillRect(x, y, bw, bh);
     }
   }
-  // subtle dark overlay so neon reads on top
   ctx.fillStyle = "rgba(0,0,0,0.35)";
   ctx.fillRect(0, 0, w, hgt);
 }
@@ -100,7 +108,6 @@ function drawCyberGrid(ctx: CanvasRenderingContext2D, w: number, hgt: number, tm
     ctx.lineTo(w, y);
     ctx.stroke();
   }
-  // horizon glow line
   const gy = hgt * 0.72;
   const g = ctx.createLinearGradient(0, gy - 40, 0, gy + 20);
   g.addColorStop(0, "rgba(40, 80, 140, 0)");
@@ -108,6 +115,12 @@ function drawCyberGrid(ctx: CanvasRenderingContext2D, w: number, hgt: number, tm
   g.addColorStop(1, "rgba(40, 80, 140, 0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, gy - 40, w, 60);
+}
+
+function fontStack(id: FontId, size: number): string {
+  if (id === "script") return `italic 700 ${Math.round(size * 1.05)}px "Brush Script MT", "Segoe Script", "Comic Sans MS", cursive`;
+  if (id === "condensed") return `900 ${size}px "Arial Narrow", Impact, "Franklin Gothic Condensed", sans-serif`;
+  return `900 ${size}px system-ui, "Arial Black", Impact, sans-serif`;
 }
 
 export function NeonSignature({ locale }: { locale: Locale }) {
@@ -118,8 +131,9 @@ export function NeonSignature({ locale }: { locale: Locale }) {
   const [intensity, setIntensity] = useState(60);
   const [flicker, setFlicker] = useState(30);
   const [scene, setScene] = useState<SceneId>("void");
+  const [font, setFont] = useState<FontId>("block");
   const [copied, setCopied] = useState(false);
-  const paramsRef = useRef({ text, hue, intensity, flicker, scene });
+  const paramsRef = useRef({ text, hue, intensity, flicker, scene, font });
   const timeRef = useRef(0);
   const hydrated = useRef(false);
   const urlTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -136,6 +150,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
     const iParam = sp.get("i");
     const fParam = sp.get("f");
     const bParam = sp.get("b");
+    const fontParam = sp.get("fnt");
     if (tParam) setText(tParam.slice(0, 20));
     if (hParam) {
       const n = parseInt(hParam, 10);
@@ -152,15 +167,18 @@ export function NeonSignature({ locale }: { locale: Locale }) {
     if (bParam === "brick" || bParam === "cyber" || bParam === "void") {
       setScene(bParam);
     }
+    if (fontParam === "script" || fontParam === "condensed" || fontParam === "block") {
+      setFont(fontParam);
+    }
   }, []);
 
   useEffect(() => {
-    paramsRef.current = { text, hue, intensity, flicker, scene };
+    paramsRef.current = { text, hue, intensity, flicker, scene, font };
     if (text !== prevTextRef.current) {
       igniteStartRef.current = timeRef.current;
       prevTextRef.current = text;
     }
-  }, [text, hue, intensity, flicker, scene]);
+  }, [text, hue, intensity, flicker, scene, font]);
 
   useEffect(() => {
     if (!hydrated.current) return;
@@ -172,6 +190,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       params.set("i", String(intensity));
       params.set("f", String(flicker));
       if (scene !== "void") params.set("b", scene);
+      if (font !== "block") params.set("fnt", font);
       const qs = params.toString();
       const next = `${window.location.pathname}?${qs}`;
       if (window.location.search !== `?${qs}`) {
@@ -181,7 +200,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
     return () => {
       if (urlTimerRef.current) clearTimeout(urlTimerRef.current);
     };
-  }, [text, hue, intensity, flicker, scene]);
+  }, [text, hue, intensity, flicker, scene, font]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -201,14 +220,13 @@ export function NeonSignature({ locale }: { locale: Locale }) {
     window.addEventListener("resize", resize);
 
     const draw = () => {
-      const { text: txt, hue: h, intensity: intens, flicker: flick, scene: sc } = paramsRef.current;
+      const { text: txt, hue: h, intensity: intens, flicker: flick, scene: sc, font: ft } = paramsRef.current;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = canvas.width / dpr;
       const hgt = canvas.height / dpr;
       timeRef.current += 0.016;
       const tme = timeRef.current;
 
-      // Scene background
       if (sc === "brick") {
         drawBrickWall(ctx, w, hgt);
       } else if (sc === "cyber") {
@@ -223,11 +241,9 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       const hsh = hashString(txt || "Neon");
       const effectiveHue = (baseHue + (hsh % 40) - 20 + 360) % 360;
 
-      // Ignite ramp (0→1 over ~0.7s after text change)
       const sinceIgnite = tme - igniteStartRef.current;
       const ignite = Math.min(1, sinceIgnite / 0.7);
 
-      // Flicker multiplier
       let glowMul = 1;
       if (flick > 0) {
         const noise = Math.sin(tme * 12 + flickerSeed.current * 10) * 0.5 + Math.sin(tme * 7.3) * 0.3;
@@ -240,8 +256,9 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       }
       glowMul *= ignite;
 
-      const fontSize = Math.min(72, Math.max(28, w / (display.length * 0.72)));
-      ctx.font = `900 ${fontSize}px system-ui, "Arial Black", sans-serif`;
+      const charFactor = ft === "condensed" ? 0.55 : ft === "script" ? 0.82 : 0.72;
+      const fontSize = Math.min(72, Math.max(28, w / (display.length * charFactor)));
+      ctx.font = fontStack(ft, fontSize);
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.lineJoin = "round";
@@ -250,7 +267,6 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       const cx = w / 2;
       const cy = hgt / 2;
 
-      // Ambient wall wash — radial color bloom behind the sign
       const washR = Math.max(w, hgt) * 0.55;
       const wash = ctx.createRadialGradient(cx, cy, 0, cx, cy, washR);
       const washA = 0.22 * (intens / 60) * glowMul;
@@ -260,13 +276,12 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       ctx.fillStyle = wash;
       ctx.fillRect(0, 0, w, hgt);
 
-      // Wide multi-layer tube glow (outer → inner)
       const glowLayers = [
-        { blur: 48, alpha: 0.18, line: 10 },
-        { blur: 28, alpha: 0.28, line: 7 },
-        { blur: 14, alpha: 0.4, line: 5 },
-        { blur: 6, alpha: 0.55, line: 3.5 },
-        { blur: 2, alpha: 0.75, line: 2 },
+        { blur: 48, alpha: 0.18, line: ft === "script" ? 8 : 10 },
+        { blur: 28, alpha: 0.28, line: ft === "script" ? 5.5 : 7 },
+        { blur: 14, alpha: 0.4, line: ft === "script" ? 4 : 5 },
+        { blur: 6, alpha: 0.55, line: ft === "script" ? 2.8 : 3.5 },
+        { blur: 2, alpha: 0.75, line: ft === "script" ? 1.6 : 2 },
       ];
       for (const layer of glowLayers) {
         const blur = layer.blur * (intens / 60) * glowMul;
@@ -278,21 +293,18 @@ export function NeonSignature({ locale }: { locale: Locale }) {
         ctx.strokeText(display, cx, cy);
       }
 
-      // Hot white core + colored rim (tube look)
       ctx.shadowBlur = 0;
       ctx.fillStyle = `hsl(${effectiveHue}, 100%, 96%)`;
       ctx.fillText(display, cx, cy);
       ctx.strokeStyle = `hsl(${effectiveHue}, 100%, 78%)`;
-      ctx.lineWidth = 1.8;
+      ctx.lineWidth = ft === "script" ? 1.4 : 1.8;
       ctx.strokeText(display, cx, cy);
 
-      // Soft floor reflection
       ctx.globalAlpha = 0.18 * glowMul;
       ctx.fillStyle = `hsl(${effectiveHue}, 85%, 52%)`;
       ctx.fillText(display, cx, cy + fontSize * 0.58);
       ctx.globalAlpha = 1;
 
-      // Soft vignette for depth
       const vig = ctx.createRadialGradient(cx, cy, Math.min(w, hgt) * 0.25, cx, cy, Math.max(w, hgt) * 0.72);
       vig.addColorStop(0, "rgba(0,0,0,0)");
       vig.addColorStop(1, "rgba(0,0,0,0.55)");
@@ -335,8 +347,9 @@ export function NeonSignature({ locale }: { locale: Locale }) {
     params.set("i", String(intensity));
     params.set("f", String(flicker));
     if (scene !== "void") params.set("b", scene);
+    if (font !== "block") params.set("fnt", font);
     return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-  }, [text, hue, intensity, flicker, scene]);
+  }, [text, hue, intensity, flicker, scene, font]);
 
   const copyLink = async () => {
     try {
@@ -415,6 +428,26 @@ export function NeonSignature({ locale }: { locale: Locale }) {
               }`}
             >
               {locale === "es" ? s.labelEs : s.labelEn}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-2 text-xs font-medium">{t.fonts}</p>
+        <div className="flex flex-wrap gap-2">
+          {FONTS.map((f) => (
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => setFont(f.id)}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
+                font === f.id
+                  ? "border-fuchsia-500/60 bg-fuchsia-50 text-fuchsia-900 dark:bg-fuchsia-950/50 dark:text-fuchsia-100"
+                  : "border-border/60 bg-background hover:border-fuchsia-500/40"
+              }`}
+            >
+              {locale === "es" ? f.labelEs : f.labelEn}
             </button>
           ))}
         </div>
