@@ -11,12 +11,13 @@ type Spark = {
   hue: number;
   radius: number;
   trail: { x: number; y: number }[];
+  rare?: boolean;
 };
 
 type Burst = {
   x: number;
   y: number;
-  particles: { x: number; y: number; vx: number; vy: number; life: number; hue: number }[];
+  particles: { x: number; y: number; vx: number; vy: number; life: number; hue: number; size?: number }[];
 };
 
 type Floater = {
@@ -25,6 +26,16 @@ type Floater = {
   text: string;
   life: number;
   maxLife: number;
+  hue: number;
+  big?: boolean;
+};
+
+type Ring = {
+  x: number;
+  y: number;
+  r: number;
+  maxR: number;
+  life: number;
   hue: number;
 };
 
@@ -37,13 +48,16 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
   const sparksRef = useRef<Spark[]>([]);
   const burstsRef = useRef<Burst[]>([]);
   const floatersRef = useRef<Floater[]>([]);
+  const ringsRef = useRef<Ring[]>([]);
   const missFlashRef = useRef(0);
   const comboPulseRef = useRef(0);
+  const newBestFlashRef = useRef(0);
   const idRef = useRef(0);
   const rafRef = useRef<number>(0);
   const lastSpawn = useRef(0);
   const elapsedRef = useRef(0);
   const comboRef = useRef(1);
+  const bestRef = useRef(0);
 
   const t = {
     start: locale === "es" ? "Empezar" : "Start",
@@ -52,18 +66,23 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
     best: locale === "es" ? "Mejor" : "Best",
     tip:
       locale === "es"
-        ? "Tocá las chispas antes de que se apaguen. ¡Mantené el combo!"
-        : "Tap sparks before they fade. Keep the combo!",
+        ? "Tocá las chispas antes de que se apaguen. ¡Mantené el combo! Doradas = más puntos."
+        : "Tap sparks before they fade. Keep the combo! Golden = more points.",
   };
 
   useEffect(() => {
     const stored = Number(localStorage.getItem("pulse-catch-best") || 0);
     setBest(stored);
+    bestRef.current = stored;
   }, []);
 
   useEffect(() => {
     comboRef.current = combo;
   }, [combo]);
+
+  useEffect(() => {
+    bestRef.current = best;
+  }, [best]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -81,22 +100,24 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
     window.addEventListener("resize", resize);
 
     const spawn = (now: number) => {
-      const interval = Math.max(260, 720 - elapsedRef.current * 0.18);
+      const interval = Math.max(240, 700 - elapsedRef.current * 0.2);
       if (!running || now - lastSpawn.current < interval) return;
       lastSpawn.current = now;
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
+      const rare = Math.random() < 0.08;
       sparksRef.current.push({
         id: idRef.current++,
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 1.35,
-        vy: (Math.random() - 0.5) * 1.35,
-        life: 150,
-        maxLife: 150,
-        hue: 160 + Math.random() * 140,
-        radius: 11 + Math.random() * 9,
+        vx: (Math.random() - 0.5) * (rare ? 0.9 : 1.4),
+        vy: (Math.random() - 0.5) * (rare ? 0.9 : 1.4),
+        life: rare ? 210 : 145,
+        maxLife: rare ? 210 : 145,
+        hue: rare ? 45 + Math.random() * 25 : 160 + Math.random() * 140,
+        radius: rare ? 16 + Math.random() * 6 : 10 + Math.random() * 8,
         trail: [],
+        rare,
       });
     };
 
@@ -107,12 +128,36 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
       ctx.fillStyle = "#05050a";
       ctx.fillRect(0, 0, w, h);
 
+      // subtle ambient dots
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      for (let i = 0; i < 40; i++) {
+        const ax = (i * 97 + now * 0.02) % w;
+        const ay = (i * 53 + now * 0.015) % h;
+        ctx.fillStyle = "#7dd3fc";
+        ctx.beginPath();
+        ctx.arc(ax, ay, 1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
       // vignette
       const g = ctx.createRadialGradient(w / 2, h / 2, 60, w / 2, h / 2, Math.max(w, h) * 0.72);
       g.addColorStop(0, "rgba(30,20,50,0.15)");
       g.addColorStop(1, "rgba(0,0,0,0.7)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
+
+      // new best gold flash
+      if (newBestFlashRef.current > 0) {
+        const a = newBestFlashRef.current / 30;
+        ctx.save();
+        ctx.globalAlpha = a * 0.35;
+        ctx.fillStyle = "#fbbf24";
+        ctx.fillRect(0, 0, w, h);
+        ctx.restore();
+        newBestFlashRef.current -= 1;
+      }
 
       // miss flash (red edge)
       if (missFlashRef.current > 0) {
@@ -144,10 +189,27 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
 
       if (running) spawn(now);
 
+      // expanding rings
+      ringsRef.current = ringsRef.current.filter((r) => {
+        r.r += (r.maxR - r.r) * 0.18;
+        r.life -= 1;
+        if (r.life <= 0) return false;
+        const a = r.life / 22;
+        ctx.save();
+        ctx.globalAlpha = a * 0.7;
+        ctx.strokeStyle = `hsl(${r.hue}, 100%, 65%)`;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+        return true;
+      });
+
       // sparks + trails
       sparksRef.current = sparksRef.current.filter((s) => {
         s.trail.push({ x: s.x, y: s.y });
-        if (s.trail.length > 10) s.trail.shift();
+        if (s.trail.length > 12) s.trail.shift();
         s.x += s.vx;
         s.y += s.vy;
         s.life -= 1;
@@ -159,17 +221,17 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
           }
           return false;
         }
-        const alpha = Math.max(0.2, s.life / s.maxLife);
+        const alpha = Math.max(0.25, s.life / s.maxLife);
 
         // trail
         ctx.save();
         for (let i = 0; i < s.trail.length; i++) {
           const p = s.trail[i];
-          const ta = (i / s.trail.length) * alpha * 0.45;
+          const ta = (i / s.trail.length) * alpha * 0.5;
           ctx.globalAlpha = ta;
-          ctx.fillStyle = `hsl(${s.hue}, 100%, 60%)`;
+          ctx.fillStyle = `hsl(${s.hue}, 100%, ${s.rare ? 55 : 60}%)`;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, s.radius * 0.45, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, s.radius * 0.4, 0, Math.PI * 2);
           ctx.fill();
         }
         ctx.restore();
@@ -177,18 +239,26 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
         // core + bloom
         ctx.save();
         ctx.globalAlpha = alpha;
-        ctx.shadowBlur = 36;
+        ctx.shadowBlur = s.rare ? 48 : 36;
         ctx.shadowColor = `hsl(${s.hue}, 100%, 65%)`;
-        ctx.fillStyle = `hsl(${s.hue}, 100%, 72%)`;
+        ctx.fillStyle = `hsl(${s.hue}, 100%, ${s.rare ? 62 : 72}%)`;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
-        ctx.globalAlpha = alpha * 0.9;
-        ctx.fillStyle = "#fff";
+        ctx.globalAlpha = alpha * 0.95;
+        ctx.fillStyle = s.rare ? "#fef3c7" : "#fff";
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.radius * 0.35, 0, Math.PI * 2);
+        ctx.arc(s.x, s.y, s.radius * (s.rare ? 0.42 : 0.35), 0, Math.PI * 2);
         ctx.fill();
+        if (s.rare) {
+          ctx.globalAlpha = alpha * 0.6;
+          ctx.strokeStyle = "#fbbf24";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.radius + 4, 0, Math.PI * 2);
+          ctx.stroke();
+        }
         ctx.restore();
         return true;
       });
@@ -198,13 +268,13 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
         b.particles = b.particles.filter((p) => {
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.06;
+          p.vy += 0.05;
           p.life -= 1;
           if (p.life <= 0) return false;
-          ctx.globalAlpha = p.life / 28;
+          ctx.globalAlpha = p.life / 30;
           ctx.fillStyle = `hsl(${p.hue}, 100%, 70%)`;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, p.size || 2.5, 0, Math.PI * 2);
           ctx.fill();
           return true;
         });
@@ -213,16 +283,16 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
 
       // floating score labels
       floatersRef.current = floatersRef.current.filter((f) => {
-        f.y -= 0.9;
+        f.y -= f.big ? 0.6 : 0.9;
         f.life -= 1;
         if (f.life <= 0) return false;
         const a = f.life / f.maxLife;
         ctx.save();
         ctx.globalAlpha = a;
-        ctx.font = `bold ${14 + (1 - a) * 6}px system-ui, sans-serif`;
+        ctx.font = `bold ${f.big ? 22 : 14 + (1 - a) * 6}px system-ui, sans-serif`;
         ctx.fillStyle = `hsl(${f.hue}, 100%, 70%)`;
         ctx.textAlign = "center";
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = f.big ? 16 : 8;
         ctx.shadowColor = `hsl(${f.hue}, 100%, 50%)`;
         ctx.fillText(f.text, f.x, f.y);
         ctx.restore();
@@ -249,22 +319,34 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
     let caught = false;
     sparksRef.current = sparksRef.current.filter((s) => {
       const d = Math.hypot(s.x - x, s.y - y);
-      if (d < s.radius + 22) {
+      if (d < s.radius + 24) {
         caught = true;
         const c = comboRef.current;
-        const pts = Math.round(8 * c + s.radius);
+        const base = s.rare ? 22 : 8;
+        const pts = Math.round(base * c + s.radius);
         setScore((prev) => {
           const next = prev + pts;
-          if (next > best) {
+          if (next > bestRef.current) {
             setBest(next);
+            bestRef.current = next;
             localStorage.setItem("pulse-catch-best", String(next));
+            newBestFlashRef.current = 30;
+            floatersRef.current.push({
+              x: s.x,
+              y: s.y - 28,
+              text: locale === "es" ? "¡NUEVO MEJOR!" : "NEW BEST!",
+              life: 50,
+              maxLife: 50,
+              hue: 45,
+              big: true,
+            });
           }
           return next;
         });
-        const nextCombo = Math.min(c + 1, 15);
+        const nextCombo = Math.min(c + 1, 20);
         setCombo(nextCombo);
         comboRef.current = nextCombo;
-        if (nextCombo === 5 || nextCombo === 10 || nextCombo === 15) {
+        if (nextCombo === 5 || nextCombo === 10 || nextCombo === 15 || nextCombo === 20) {
           comboPulseRef.current = 22;
         }
         floatersRef.current.push({
@@ -275,14 +357,23 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
           maxLife: 36,
           hue: s.hue,
         });
-        const n = 12 + c * 2;
+        ringsRef.current.push({
+          x: s.x,
+          y: s.y,
+          r: s.radius,
+          maxR: s.radius + 48 + c * 3,
+          life: 22,
+          hue: s.hue,
+        });
+        const n = (s.rare ? 20 : 12) + c * 2;
         const particles = Array.from({ length: n }, () => ({
           x: s.x,
           y: s.y,
-          vx: (Math.random() - 0.5) * 5.5,
-          vy: (Math.random() - 0.5) * 5.5 - 1,
-          life: 28,
+          vx: (Math.random() - 0.5) * (s.rare ? 7 : 5.5),
+          vy: (Math.random() - 0.5) * (s.rare ? 7 : 5.5) - 1,
+          life: s.rare ? 36 : 28,
           hue: s.hue + (Math.random() - 0.5) * 40,
+          size: s.rare ? 3.2 : 2.4,
         }));
         burstsRef.current.push({ x: s.x, y: s.y, particles });
         return false;
@@ -295,6 +386,8 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
       missFlashRef.current = 18;
     }
   };
+
+  const comboPct = Math.min(100, ((combo - 1) / 19) * 100);
 
   return (
     <div className="space-y-4">
@@ -318,8 +411,10 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
               sparksRef.current = [];
               burstsRef.current = [];
               floatersRef.current = [];
+              ringsRef.current = [];
               missFlashRef.current = 0;
               comboPulseRef.current = 0;
+              newBestFlashRef.current = 0;
               elapsedRef.current = 0;
               setRunning(true);
             }}
@@ -337,6 +432,12 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
             {locale === "es" ? "Pausa" : "Pause"}
           </button>
         )}
+      </div>
+      <div className="h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-white/10">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-400 transition-all duration-150"
+          style={{ width: `${comboPct}%` }}
+        />
       </div>
       <p className="text-xs text-muted-foreground">{t.tip}</p>
       <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black" style={{ height: 420 }}>
