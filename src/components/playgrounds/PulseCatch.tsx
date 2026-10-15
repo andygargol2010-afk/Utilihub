@@ -10,12 +10,13 @@ type Spark = {
   maxLife: number;
   hue: number;
   radius: number;
+  trail: { x: number; y: number }[];
 };
 
 type Burst = {
   x: number;
   y: number;
-  particles: { x: number; y: number; vx: number; vy: number; life: number }[];
+  particles: { x: number; y: number; vx: number; vy: number; life: number; hue: number }[];
 };
 
 export function PulseCatch({ locale }: { locale: "en" | "es" }) {
@@ -29,13 +30,14 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
   const idRef = useRef(0);
   const rafRef = useRef<number>(0);
   const lastSpawn = useRef(0);
+  const elapsedRef = useRef(0);
 
   const t = {
     start: locale === "es" ? "Empezar" : "Start",
     score: locale === "es" ? "Puntos" : "Score",
     combo: locale === "es" ? "Combo" : "Combo",
     best: locale === "es" ? "Mejor" : "Best",
-    tip: locale === "es" ? "Tocá las chispas antes de que se apaguen" : "Tap sparks before they fade",
+    tip: locale === "es" ? "Tocá las chispas antes de que se apaguen. ¡Mantené el combo!" : "Tap sparks before they fade. Keep the combo!",
   };
 
   useEffect(() => {
@@ -53,13 +55,14 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = canvas.clientWidth * dpr;
       canvas.height = canvas.clientHeight * dpr;
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener("resize", resize);
 
     const spawn = (now: number) => {
-      if (!running || now - lastSpawn.current < 700) return;
+      const interval = Math.max(280, 750 - elapsedRef.current * 0.15);
+      if (!running || now - lastSpawn.current < interval) return;
       lastSpawn.current = now;
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
@@ -67,47 +70,72 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
         id: idRef.current++,
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.8,
-        vy: (Math.random() - 0.5) * 0.8,
-        life: 180,
-        maxLife: 180,
-        hue: 180 + Math.random() * 120,
-        radius: 12 + Math.random() * 8,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
+        life: 160,
+        maxLife: 160,
+        hue: 160 + Math.random() * 140,
+        radius: 11 + Math.random() * 9,
+        trail: [],
       });
     };
 
     const loop = (now: number) => {
+      if (running) elapsedRef.current += 16;
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
-      ctx.fillStyle = "#07070b";
+      ctx.fillStyle = "#05050a";
       ctx.fillRect(0, 0, w, h);
 
-      // soft vignette
-      const g = ctx.createRadialGradient(w / 2, h / 2, 40, w / 2, h / 2, Math.max(w, h) * 0.7);
-      g.addColorStop(0, "rgba(20,20,40,0.2)");
-      g.addColorStop(1, "rgba(0,0,0,0.55)");
+      // vignette
+      const g = ctx.createRadialGradient(w / 2, h / 2, 60, w / 2, h / 2, Math.max(w, h) * 0.72);
+      g.addColorStop(0, "rgba(30,20,50,0.15)");
+      g.addColorStop(1, "rgba(0,0,0,0.7)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
 
       if (running) spawn(now);
 
-      // update & draw sparks
+      // sparks + trails
       sparksRef.current = sparksRef.current.filter((s) => {
+        s.trail.push({ x: s.x, y: s.y });
+        if (s.trail.length > 10) s.trail.shift();
         s.x += s.vx;
         s.y += s.vy;
         s.life -= 1;
-        if (s.x < 0 || s.x > w || s.y < 0 || s.y > h || s.life <= 0) {
+        if (s.x < -20 || s.x > w + 20 || s.y < -20 || s.y > h + 20 || s.life <= 0) {
           if (running && s.life <= 0) setCombo(1);
           return false;
         }
-        const alpha = Math.max(0.15, s.life / s.maxLife);
+        const alpha = Math.max(0.2, s.life / s.maxLife);
+
+        // trail
+        ctx.save();
+        for (let i = 0; i < s.trail.length; i++) {
+          const p = s.trail[i];
+          const ta = (i / s.trail.length) * alpha * 0.45;
+          ctx.globalAlpha = ta;
+          ctx.fillStyle = `hsl(${s.hue}, 100%, 60%)`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, s.radius * 0.45, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        // core + bloom
         ctx.save();
         ctx.globalAlpha = alpha;
-        ctx.shadowBlur = 24;
-        ctx.shadowColor = `hsl(${s.hue}, 100%, 60%)`;
-        ctx.fillStyle = `hsl(${s.hue}, 100%, 65%)`;
+        ctx.shadowBlur = 36;
+        ctx.shadowColor = `hsl(${s.hue}, 100%, 65%)`;
+        ctx.fillStyle = `hsl(${s.hue}, 100%, 72%)`;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = alpha * 0.9;
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius * 0.35, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
         return true;
@@ -118,12 +146,13 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
         b.particles = b.particles.filter((p) => {
           p.x += p.vx;
           p.y += p.vy;
+          p.vy += 0.06;
           p.life -= 1;
           if (p.life <= 0) return false;
-          ctx.globalAlpha = p.life / 30;
-          ctx.fillStyle = "#fff";
+          ctx.globalAlpha = p.life / 28;
+          ctx.fillStyle = `hsl(${p.hue}, 100%, 70%)`;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
           ctx.fill();
           return true;
         });
@@ -149,9 +178,9 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
     let caught = false;
     sparksRef.current = sparksRef.current.filter((s) => {
       const d = Math.hypot(s.x - x, s.y - y);
-      if (d < s.radius + 18) {
+      if (d < s.radius + 22) {
         caught = true;
-        const pts = Math.round(10 * combo);
+        const pts = Math.round(8 * combo + s.radius);
         setScore((prev) => {
           const next = prev + pts;
           if (next > best) {
@@ -160,14 +189,15 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
           }
           return next;
         });
-        setCombo((c) => Math.min(c + 1, 12));
-        // burst
-        const particles = Array.from({ length: 14 }, () => ({
+        setCombo((c) => Math.min(c + 1, 15));
+        const n = 12 + combo * 2;
+        const particles = Array.from({ length: n }, () => ({
           x: s.x,
           y: s.y,
-          vx: (Math.random() - 0.5) * 4,
-          vy: (Math.random() - 0.5) * 4,
-          life: 30,
+          vx: (Math.random() - 0.5) * 5.5,
+          vy: (Math.random() - 0.5) * 5.5 - 1,
+          life: 28,
+          hue: s.hue + (Math.random() - 0.5) * 40,
         }));
         burstsRef.current.push({ x: s.x, y: s.y, particles });
         return false;
@@ -190,6 +220,8 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
               setScore(0);
               setCombo(1);
               sparksRef.current = [];
+              burstsRef.current = [];
+              elapsedRef.current = 0;
               setRunning(true);
             }}
             className="rounded-full bg-cyan-500 px-4 py-1.5 text-black hover:bg-cyan-400"
