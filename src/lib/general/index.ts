@@ -180,6 +180,8 @@ import { ACCELERATION_TOOLS } from "./acceleration-tool";
 import { FUEL_EFFICIENCY_TOOLS } from "./fuel-efficiency-tool";
 import { HEART_RATE_ZONE_TOOLS } from "./heart-rate-zone-tool";
 import { SAVINGS_GOAL_TOOLS } from "./savings-goal-tool";
+import { HOURLY_RATE_TOOLS } from "./hourly-rate-tool";
+import { LINE_SORTER_TOOLS } from "./line-sorter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -365,4 +367,6 @@ export const GENERAL_TOOLS = [
   ...FUEL_EFFICIENCY_TOOLS,
   ...HEART_RATE_ZONE_TOOLS,
   ...SAVINGS_GOAL_TOOLS,
+  ...HOURLY_RATE_TOOLS,
+  ...LINE_SORTER_TOOLS,
 ];
