@@ -217,6 +217,21 @@ export function PathfinderGame({ locale = "en" }: { locale?: GameLocale }) {
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-3">
+      <style>{`
+        .pf-board {
+          background: linear-gradient(160deg, #0f172a, #020617);
+          box-shadow: 0 14px 36px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(148,163,184,0.12);
+        }
+        .pf-cell {
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+        }
+        .pf-wall {
+          background: repeating-linear-gradient(45deg, #0f172a, #0f172a 3px, #1e293b 3px, #1e293b 6px) !important;
+        }
+        .pf-path {
+          box-shadow: 0 0 10px rgba(251,191,36,0.55) !important;
+        }
+      `}</style>
       <div className="flex flex-wrap gap-2">
         {(
           [
@@ -266,7 +281,7 @@ export function PathfinderGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
 
       <div
-        className="select-none rounded-2xl border border-white/10 bg-black/50 p-2"
+        className="pf-board select-none rounded-2xl border border-white/10 p-2.5"
         onMouseLeave={() => {
           paintRef.current = false;
         }}
@@ -289,20 +304,21 @@ export function PathfinderGame({ locale = "en" }: { locale?: GameLocale }) {
             const isFront = frontier.has(k);
             const isVis = visited.has(k);
 
-            let bg = "bg-slate-800/80";
-            if (isWall) bg = "bg-slate-950";
-            else if (isPath) bg = "bg-amber-400";
-            else if (isFront) bg = "bg-sky-500/70";
-            else if (isVis) bg = "bg-emerald-700/60";
-            if (isStart) bg = "bg-emerald-400";
-            if (isGoal) bg = "bg-rose-400";
+            let bg = "bg-slate-700/70";
+            let extra = "";
+            if (isWall) { bg = "bg-slate-950"; extra = "pf-wall"; }
+            else if (isPath) { bg = "bg-amber-400"; extra = "pf-path"; }
+            else if (isFront) bg = "bg-sky-500/75";
+            else if (isVis) bg = "bg-emerald-700/55";
+            if (isStart) { bg = "bg-emerald-400"; extra = ""; }
+            if (isGoal) { bg = "bg-rose-400"; extra = ""; }
 
             return (
               <button
                 key={k}
                 type="button"
                 aria-label={`cell ${r},${c}`}
-                className={`aspect-square rounded-[3px] ${bg} transition-colors`}
+                className={`pf-cell aspect-square rounded-[3px] ${bg} ${extra} transition-colors duration-100`}
                 onMouseDown={() => {
                   paintRef.current = true;
                   paint(r, c);
