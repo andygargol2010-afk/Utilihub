@@ -174,6 +174,8 @@ import { CURRENCY_CONVERTER_TOOLS } from "./currency-converter-tool";
 import { RECIPE_COST_TOOLS } from "./recipe-cost-tool";
 import { ELECTRICITY_COST_TOOLS } from "./electricity-cost-tool";
 import { WORD_COUNTER_TOOLS } from "./word-counter-tool";
+import { LOAN_PAYMENT_TOOLS } from "./loan-payment-tool";
+import { AVERAGE_SPEED_TOOLS } from "./average-speed-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -353,4 +355,6 @@ export const GENERAL_TOOLS = [
   ...RECIPE_COST_TOOLS,
   ...ELECTRICITY_COST_TOOLS,
   ...WORD_COUNTER_TOOLS,
+  ...LOAN_PAYMENT_TOOLS,
+  ...AVERAGE_SPEED_TOOLS,
 ];
