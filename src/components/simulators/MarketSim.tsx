@@ -194,7 +194,7 @@ export function MarketSim({ locale = "en" }: { locale?: SimLocale }) {
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-3">
-      <div className="overflow-hidden rounded-2xl border border-sky-400/20 bg-black/40 shadow-[0_0_40px_-12px_rgba(56,189,248,0.3)]">
+      <div className="market-frame overflow-hidden rounded-2xl border border-sky-400/35 bg-black/50 shadow-[0_16px_40px_rgba(0,0,0,0.45),0_0_32px_rgba(56,189,248,0.14)]">
         <canvas ref={canvasRef} width={W} height={H} className="h-auto w-full" style={{ aspectRatio: `${W}/${H}` }} />
       </div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -204,7 +204,7 @@ export function MarketSim({ locale = "en" }: { locale?: SimLocale }) {
           { label: es ? "Ingresos" : "Revenue", value: eq.valid ? eq.revenue.toFixed(0) : "—" },
           { label: es ? "Impuesto" : "Tax rev.", value: tax > 0 ? eq.taxRev.toFixed(0) : "0" },
         ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-white/10 bg-black/35 px-2 py-2 text-center">
+          <div key={s.label} className="rounded-xl border border-sky-400/20 bg-black/40 px-2 py-2 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
             <p className="text-[10px] font-bold uppercase tracking-wider text-white/50">{s.label}</p>
             <p className="mt-0.5 text-sm font-bold tabular-nums text-white">{s.value}</p>
           </div>
