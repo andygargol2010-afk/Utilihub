@@ -26,6 +26,7 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
   const [moves, setMoves] = useState(0);
   const [locked, setLocked] = useState(false);
   const [best, setBest] = useState<number | null>(null);
+  const [burst, setBurst] = useState<number[]>([]);
 
   useEffect(() => {
     setBest(readBestLow("memory"));
@@ -44,6 +45,7 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
     setOpen([]);
     setMoves(0);
     setLocked(false);
+    setBurst([]);
   }, []);
 
   const flip = (index: number) => {
@@ -69,10 +71,12 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
       const cb = nextCards[b!];
       if (ca && cb && ca.icon === cb.icon) {
         window.setTimeout(() => {
+          setBurst([a!, b!]);
           setCards((cur) =>
             cur.map((c, i) => (i === a || i === b ? { ...c, matched: true, flipped: true } : c)),
           );
           setOpen([]);
+          window.setTimeout(() => setBurst([]), 500);
         }, 280);
       } else {
         setLocked(true);
@@ -90,50 +94,43 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-4">
       <style>{`
-        .mem-scene { perspective: 800px; }
+        .mem-scene { perspective: 900px; }
         .mem-card {
           position: relative; width: 100%; height: 100%;
-          transform-style: preserve-3d;
-          transition: transform 0.45s cubic-bezier(0.4, 0.2, 0.2, 1);
+          transform-style: preserve-3d; transition: transform 0.45s cubic-bezier(.2,.8,.2,1);
         }
         .mem-card.is-flipped { transform: rotateY(180deg); }
         .mem-face {
-          position: absolute; inset: 0;
-          backface-visibility: hidden; -webkit-backface-visibility: hidden;
-          display: flex; align-items: center; justify-content: center;
-          border-radius: 0.75rem;
+          position: absolute; inset: 0; border-radius: 1rem;
+          backface-visibility: hidden; display: flex; align-items: center; justify-content: center;
         }
         .mem-back { transform: rotateY(180deg); }
-        .mem-matched .mem-back {
-          box-shadow: 0 0 0 2px rgba(251,191,36,0.7), 0 6px 16px rgba(0,0,0,0.3);
-          animation: mem-matched-pulse 0.7s ease-in-out 2;
+        .mem-matched .mem-card { box-shadow: 0 0 0 2px rgba(251,191,36,0.75), 0 8px 20px rgba(0,0,0,0.35); }
+        @keyframes mem-burst {
+          0% { transform: scale(1); }
+          40% { transform: scale(1.08); }
+          100% { transform: scale(1); }
         }
-        @keyframes mem-matched-pulse {
-          0%, 100% { transform: rotateY(180deg) scale(1); }
-          50% { transform: rotateY(180deg) scale(1.06); }
+        .mem-burst { animation: mem-burst 0.45s ease; }
+        @keyframes mem-win-pop {
+          0% { transform: scale(0.92); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
         }
-        @keyframes mem-win {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.04); }
-        }
-        .mem-win { animation: mem-win 0.8s ease-in-out infinite; }
-        .mem-board-frame {
-          box-shadow: 0 12px 40px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(52,211,153,0.15);
-        }
+        .mem-win { animation: mem-win-pop 0.35s ease-out; }
       `}</style>
 
       <div className="flex w-full flex-wrap items-center justify-between gap-2 text-sm font-semibold text-emerald-100/90">
-        <span>
+        <span className="rounded-full border border-white/10 bg-black/30 px-2.5 py-1">
           {es ? "Movimientos" : "Moves"}: <span className="tabular-nums text-white">{moves}</span>
         </span>
-        <span>
+        <span className="rounded-full border border-white/10 bg-black/30 px-2.5 py-1">
           {es ? "Pares" : "Pairs"}:{" "}
           <span className="tabular-nums text-white">
             {matchedCount}/{ICONS.length}
           </span>
         </span>
         {best != null && (
-          <span>
+          <span className="rounded-full border border-amber-400/30 bg-amber-500/10 px-2.5 py-1">
             {es ? "Mejor" : "Best"}: <span className="tabular-nums text-amber-300">{best}</span>
           </span>
         )}
@@ -141,14 +138,17 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
 
       {done && (
-        <p className="mem-win text-base font-black text-amber-300">
+        <p className="mem-win text-base font-black text-amber-300 drop-shadow">
           {es ? `¡Completado en ${moves} movimientos!` : `Cleared in ${moves} moves!`}
         </p>
       )}
 
       <div
-        className="mem-board-frame grid grid-cols-4 gap-2.5 rounded-2xl p-3 sm:gap-3"
-        style={{ background: "linear-gradient(145deg, #1a3a2a 0%, #0f2418 100%)" }}
+        className="grid grid-cols-4 gap-2.5 rounded-2xl border border-emerald-500/20 p-3 shadow-[0_16px_40px_rgba(0,0,0,0.4)] sm:gap-3"
+        style={{
+          background:
+            "radial-gradient(circle at 30% 20%, rgba(52,211,153,0.15), transparent 50%), linear-gradient(145deg, #123528 0%, #0a1c14 100%)",
+        }}
       >
         {cards.map((card, i) => {
           const show = card.flipped || card.matched;
@@ -158,28 +158,29 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
               type="button"
               disabled={show || locked || done}
               onClick={() => flip(i)}
-              className={`mem-scene h-[4.5rem] w-[4.5rem] sm:h-20 sm:w-20 ${card.matched ? "mem-matched" : ""}`}
+              className={`mem-scene h-[4.5rem] w-[4.5rem] sm:h-20 sm:w-20 ${card.matched ? "mem-matched" : ""} ${
+                burst.includes(i) ? "mem-burst" : ""
+              }`}
               aria-label={show ? card.icon : es ? "Carta boca abajo" : "Face-down card"}
             >
               <div className={`mem-card ${show ? "is-flipped" : ""}`}>
                 <div
-                  className="mem-face"
+                  className="mem-face border border-emerald-400/30"
                   style={{
-                    background: "linear-gradient(145deg, #34d399, #059669)",
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 8px rgba(0,0,0,0.3)",
+                    background:
+                      "repeating-radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12) 0 2px, transparent 2px 10px), linear-gradient(145deg, #059669, #064e3b)",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 10px rgba(0,0,0,0.35)",
                   }}
                 >
-                  <span className="text-2xl font-black text-white/90" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}>
-                    ?
-                  </span>
+                  <span className="text-lg font-black tracking-widest text-white/85">UH</span>
                 </div>
                 <div
-                  className="mem-face mem-back text-3xl"
+                  className="mem-face mem-back text-3xl border border-white/20"
                   style={{
                     background: card.matched
-                      ? "linear-gradient(145deg, #fde68a, #fbbf24)"
-                      : "linear-gradient(145deg, #ecfdf5, #a7f3d0)",
-                    boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                      ? "linear-gradient(145deg, #fde68a, #f59e0b)"
+                      : "linear-gradient(145deg, #ecfdf5, #6ee7b7)",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
                   }}
                 >
                   <span className="drop-shadow-sm">{card.icon}</span>
