@@ -52,6 +52,15 @@ function hslFromHash(h: number, offset: number = 0): string {
   return `hsl(${hue}, 75%, 55%)`;
 }
 
+function buildFreqs(txt: string): number[] {
+  const freqs: number[] = [];
+  const len = Math.max(1, txt.length);
+  for (let i = 0; i < len; i++) {
+    freqs.push(0.5 + (txt.charCodeAt(i % txt.length) % 20) * 0.05);
+  }
+  return freqs;
+}
+
 export function EchoWaveSignature({ locale }: { locale: Locale }) {
   const t = labels[locale];
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -62,6 +71,7 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
   const [speed, setSpeed] = useState(1);
   const [copied, setCopied] = useState(false);
   const paramsRef = useRef({ text, layers, amplitude, speed });
+  const freqsRef = useRef<number[]>(buildFreqs("Echo Wave"));
   const timeRef = useRef(0);
   const hydrated = useRef(false);
   const urlTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -92,6 +102,7 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
 
   useEffect(() => {
     paramsRef.current = { text, layers, amplitude, speed };
+    freqsRef.current = buildFreqs(text || "Echo");
   }, [text, layers, amplitude, speed]);
 
   // Live-update address bar so the link is always shareable without an extra click
@@ -146,6 +157,7 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
 
     const draw = () => {
       const { text: txt, layers: L, amplitude: amp, speed: spd } = paramsRef.current;
+      const freqs = freqsRef.current;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = canvas.width / dpr;
       const h = canvas.height / dpr;
@@ -160,12 +172,6 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
       grad.addColorStop(1, "#0a0c14");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
-
-      const freqs: number[] = [];
-      const len = Math.max(1, txt.length);
-      for (let i = 0; i < len; i++) {
-        freqs.push(0.5 + (txt.charCodeAt(i % txt.length) % 20) * 0.05);
-      }
 
       ripplesRef.current = ripplesRef.current.filter((r) => r.age < 140);
       for (const r of ripplesRef.current) r.age += 1;
@@ -182,15 +188,10 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
         ctx.stroke();
       }
 
-      // Waves with glow
+      // Waves with glow + soft fill under primary layer
       for (let layer = 0; layer < L; layer++) {
         const color = hslFromHash(hsh, layer);
-        ctx.beginPath();
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 1.6 + layer * 0.35;
-        ctx.globalAlpha = 0.75 - layer * 0.08;
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 8 + layer * 2;
+        const points: { x: number; y: number }[] = [];
 
         for (let x = 0; x <= w; x += 2) {
           let y = h / 2;
@@ -210,8 +211,36 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
               y += wave * (amp * 0.4);
             }
           }
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+          points.push({ x, y });
+        }
+
+        // Soft fill under the primary (layer 0) wave for visual depth
+        if (layer === 0 && points.length > 1) {
+          ctx.beginPath();
+          ctx.moveTo(points[0].x, points[0].y);
+          for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+          }
+          ctx.lineTo(points[points.length - 1].x, h);
+          ctx.lineTo(points[0].x, h);
+          ctx.closePath();
+          const fillGrad = ctx.createLinearGradient(0, h / 2 - amp, 0, h);
+          fillGrad.addColorStop(0, `hsla(${hsh % 360}, 70%, 50%, 0.18)`);
+          fillGrad.addColorStop(1, `hsla(${hsh % 360}, 40%, 20%, 0)`);
+          ctx.fillStyle = fillGrad;
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.6 + layer * 0.35;
+        ctx.globalAlpha = 0.75 - layer * 0.08;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 10 + layer * 2.5;
+
+        for (let i = 0; i < points.length; i++) {
+          if (i === 0) ctx.moveTo(points[i].x, points[i].y);
+          else ctx.lineTo(points[i].x, points[i].y);
         }
         ctx.stroke();
       }
