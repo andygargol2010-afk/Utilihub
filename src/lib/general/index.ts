@@ -178,6 +178,8 @@ import { LOAN_PAYMENT_TOOLS } from "./loan-payment-tool";
 import { AVERAGE_SPEED_TOOLS } from "./average-speed-tool";
 import { ACCELERATION_TOOLS } from "./acceleration-tool";
 import { FUEL_EFFICIENCY_TOOLS } from "./fuel-efficiency-tool";
+import { HEART_RATE_ZONE_TOOLS } from "./heart-rate-zone-tool";
+import { SAVINGS_GOAL_TOOLS } from "./savings-goal-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -361,4 +363,6 @@ export const GENERAL_TOOLS = [
   ...AVERAGE_SPEED_TOOLS,
   ...ACCELERATION_TOOLS,
   ...FUEL_EFFICIENCY_TOOLS,
+  ...HEART_RATE_ZONE_TOOLS,
+  ...SAVINGS_GOAL_TOOLS,
 ];
