@@ -6,6 +6,8 @@ type Locale = "en" | "es";
 type SceneId = "void" | "brick" | "cyber";
 type FontId = "block" | "script" | "condensed";
 
+type Spark = { x: number; y: number; vx: number; vy: number; life: number; maxLife: number };
+
 const PRESETS = [
   { id: "cyan", hue: 180, labelEn: "Cyan", labelEs: "Cian" },
   { id: "pink", hue: 320, labelEn: "Hot Pink", labelEs: "Rosa intenso" },
@@ -37,7 +39,7 @@ const labels = {
     presets: "Classic neon colors",
     scenes: "Scene background",
     fonts: "Tube font",
-    help: "Type text. It becomes a glowing neon tube sign. Color from hash, slider or presets. Pick a scene and font for shareable shots. Flicker + ignite. Download PNG or share URL.",
+    help: "Type text. It becomes a glowing neon tube sign. Color from hash, slider or presets. Pick a scene and font for shareable shots. Flicker + ignite + glass specular + sparks. Download PNG or share URL.",
     download: "Download PNG",
     share: "Share",
     copy: "Copy link",
@@ -52,7 +54,7 @@ const labels = {
     presets: "Colores neón clásicos",
     scenes: "Fondo de escena",
     fonts: "Fuente del tubo",
-    help: "Escribí texto. Se convierte en un cartel de neón con tubo brillante. Color por hash, deslizador o presets. Elegí escena y fuente para capturas. Parpadeo + animación de encendido. Descargá PNG o compartí URL.",
+    help: "Escribí texto. Se convierte en un cartel de neón con tubo brillante. Color por hash, deslizador o presets. Elegí escena y fuente. Parpadeo + encendido + specular de vidrio + chispas. Descargá PNG o compartí URL.",
     download: "Descargar PNG",
     share: "Compartir",
     copy: "Copiar enlace",
@@ -140,6 +142,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
   const flickerSeed = useRef(Math.random());
   const igniteStartRef = useRef(0);
   const prevTextRef = useRef(text);
+  const sparksRef = useRef<Spark[]>([]);
 
   useEffect(() => {
     if (hydrated.current) return;
@@ -293,6 +296,7 @@ export function NeonSignature({ locale }: { locale: Locale }) {
         ctx.strokeText(display, cx, cy);
       }
 
+      // Glass tube core: bright fill + thin glass rim + specular highlight offset upward
       ctx.shadowBlur = 0;
       ctx.fillStyle = `hsl(${effectiveHue}, 100%, 96%)`;
       ctx.fillText(display, cx, cy);
@@ -300,9 +304,62 @@ export function NeonSignature({ locale }: { locale: Locale }) {
       ctx.lineWidth = ft === "script" ? 1.4 : 1.8;
       ctx.strokeText(display, cx, cy);
 
+      // Specular glass rim (cool white edge slightly above the tube)
+      ctx.globalAlpha = 0.55 * glowMul;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+      ctx.lineWidth = ft === "script" ? 0.9 : 1.15;
+      ctx.strokeText(display, cx, cy - fontSize * 0.045);
+      ctx.globalAlpha = 1;
+
+      // Soft floor reflection
       ctx.globalAlpha = 0.18 * glowMul;
       ctx.fillStyle = `hsl(${effectiveHue}, 85%, 52%)`;
       ctx.fillText(display, cx, cy + fontSize * 0.58);
+      ctx.globalAlpha = 1;
+
+      // Electric sparks when flicker is elevated
+      const sparks = sparksRef.current;
+      if (flick > 18 && glowMul > 0.5 && Math.random() < (flick / 100) * 0.22) {
+        const metrics = ctx.measureText(display);
+        const tw = metrics.width || fontSize * display.length * 0.55;
+        const sx = cx + (Math.random() - 0.5) * tw * 0.95;
+        const sy = cy + (Math.random() - 0.5) * fontSize * 0.7;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 40 + Math.random() * 90;
+        sparks.push({
+          x: sx,
+          y: sy,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 20,
+          life: 0,
+          maxLife: 0.18 + Math.random() * 0.22,
+        });
+        if (sparks.length > 28) sparks.splice(0, sparks.length - 28);
+      }
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.life += 0.016;
+        if (s.life >= s.maxLife) {
+          sparks.splice(i, 1);
+          continue;
+        }
+        const p = 1 - s.life / s.maxLife;
+        s.x += s.vx * 0.016;
+        s.y += s.vy * 0.016;
+        s.vy += 180 * 0.016;
+        ctx.globalAlpha = p * glowMul;
+        ctx.fillStyle = `hsla(${effectiveHue}, 100%, ${70 + p * 25}%, 1)`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 1.2 + p * 2.2, 0, Math.PI * 2);
+        ctx.fill();
+        // short trail
+        ctx.strokeStyle = `hsla(${effectiveHue}, 100%, 85%, ${0.5 * p})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.vx * 0.012, s.y - s.vy * 0.012);
+        ctx.stroke();
+      }
       ctx.globalAlpha = 1;
 
       const vig = ctx.createRadialGradient(cx, cy, Math.min(w, hgt) * 0.25, cx, cy, Math.max(w, hgt) * 0.72);
