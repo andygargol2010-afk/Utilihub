@@ -23,6 +23,7 @@ const labels = {
     share: "Share",
     copy: "Copy link",
     copied: "Copied!",
+    clear: "Clear ripples",
   },
   es: {
     message: "Tu nombre o frase",
@@ -35,6 +36,7 @@ const labels = {
     share: "Compartir",
     copy: "Copiar enlace",
     copied: "¡Copiado!",
+    clear: "Limpiar ondas",
   },
 };
 
@@ -225,7 +227,7 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
           ctx.lineTo(points[0].x, h);
           ctx.closePath();
           const fillGrad = ctx.createLinearGradient(0, h / 2 - amp, 0, h);
-          fillGrad.addColorStop(0, `hsla(${hsh % 360}, 70%, 50%, 0.18)`);
+          fillGrad.addColorStop(0, `hsla(${hsh % 360}, 70%, 50%, 0.22)`);
           fillGrad.addColorStop(1, `hsla(${hsh % 360}, 40%, 20%, 0)`);
           ctx.fillStyle = fillGrad;
           ctx.fill();
@@ -246,6 +248,12 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
       }
       ctx.shadowBlur = 0;
       ctx.globalAlpha = 1;
+
+      // Faint text label for identity in live view and screenshots
+      ctx.font = "11px system-ui";
+      ctx.fillStyle = "rgba(255,255,255,0.28)";
+      ctx.textAlign = "left";
+      ctx.fillText((txt || "Echo").slice(0, 24), 12, h - 12);
 
       raf = requestAnimationFrame(draw);
     };
@@ -317,6 +325,10 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
     }
   };
 
+  const clearRipples = () => {
+    ripplesRef.current = [];
+  };
+
   return (
     <div className="space-y-5">
       <div className="rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-50/70 via-white to-sky-50/40 p-4 dark:from-cyan-950/30 dark:via-background dark:to-sky-950/20">
@@ -366,6 +378,9 @@ export function EchoWaveSignature({ locale }: { locale: Locale }) {
         </button>
         <button type="button" onClick={downloadPng} className="rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-700">
           {t.download}
+        </button>
+        <button type="button" onClick={clearRipples} className="rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
+          {t.clear}
         </button>
       </div>
     </div>
