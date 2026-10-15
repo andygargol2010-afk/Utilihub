@@ -45,6 +45,7 @@ export function SiteFooter() {
             <Link to="/simulators" className="w-fit text-sm font-semibold hover:text-primary">Simulators</Link>
             <Link to="/kits" className="w-fit text-sm font-semibold hover:text-primary">Goal-based kits</Link>
             <Link to="/hubs/documentos-y-archivos" className="w-fit text-sm font-semibold hover:text-primary">Documents & files</Link>
+            <Link to="/about" className="w-fit text-sm font-semibold hover:text-primary">About</Link>
             <Link to="/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">Legal notice</Link>
             <Link to="/privacidad" className="w-fit text-sm font-semibold hover:text-primary">Privacy</Link>
             <Link to="/contacto" className="w-fit text-sm font-semibold hover:text-primary">Contact</Link>
