@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-16 | finanzas | calculadora-regla-72 | RuleOf72Tool
+- 2026-10-16 | hogar | calculadora-area-habitacion | RoomAreaTool
 - 2026-10-16 | fechas | calculadora-diferencia-fechas | DateDifferenceTool
 - 2026-10-16 | cocina | escalador-receta | RecipeScalerTool
 - 2026-10-15 | productividad | water-intake | WaterIntakeTool
@@ -35,8 +37,8 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 ```
 fechas/tiempo: recent
 ciencia/física: recent
-finanzas simples: watch
-hogar/construcción: watch
+finanzas simples: recent
+hogar/construcción: recent
 % / math básica: watch
 generadores texto: watch
 conversiones genéricas: watch
@@ -65,7 +67,7 @@ On PRODUCT: review SEO_LOCALES_ACTIVE; ship or defer /{code} routes beyond EN+ES
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-diferencia-fechas, escalador-receta
+last_slugs: calculadora-regla-72, calculadora-area-habitacion
 last_deploy: pending
 ```
 
