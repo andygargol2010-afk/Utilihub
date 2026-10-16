@@ -184,6 +184,8 @@ import { HOURLY_RATE_TOOLS } from "./hourly-rate-tool";
 import { LINE_SORTER_TOOLS } from "./line-sorter-tool";
 import { BUSINESS_DAYS_TOOLS } from "./business-days-tool";
 import { TEXT_NORMALIZER_TOOLS } from "./text-normalizer-tool";
+import { BUDGET_503020_TOOLS } from "./budget-503020-tool";
+import { UUID_TOOLS } from "./uuid-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -373,4 +375,6 @@ export const GENERAL_TOOLS = [
   ...LINE_SORTER_TOOLS,
   ...BUSINESS_DAYS_TOOLS,
   ...TEXT_NORMALIZER_TOOLS,
+  ...BUDGET_503020_TOOLS,
+  ...UUID_TOOLS,
 ];
