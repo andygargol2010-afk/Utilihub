@@ -190,6 +190,8 @@ import { DATE_DIFFERENCE_TOOLS } from "./date-difference-tool";
 import { RECIPE_SCALER_TOOLS } from "./recipe-scaler-tool";
 import { RULE_OF_72_TOOLS } from "./rule-of-72-tool";
 import { ROOM_AREA_TOOLS } from "./room-area-tool";
+import { FINAL_GRADE_TOOLS } from "./final-grade-tool";
+import { TEMPERATURE_CONVERTER_TOOLS } from "./temperature-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -385,4 +387,6 @@ export const GENERAL_TOOLS = [
   ...RECIPE_SCALER_TOOLS,
   ...RULE_OF_72_TOOLS,
   ...ROOM_AREA_TOOLS,
+  ...FINAL_GRADE_TOOLS,
+  ...TEMPERATURE_CONVERTER_TOOLS,
 ];
