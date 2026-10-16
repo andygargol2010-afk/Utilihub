@@ -66,11 +66,11 @@ path_en: /simulators/double-pendulum
 path_es: /es/simuladores/pendulo-doble
 domain: simulators
 runs_total: 6
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: both
 next_step_required: no
-notes: IDEATE roll U=0.63 → CORE; cumulative weight sample R≈11/20 → simulators. Set simulators=1, other CORE +1. last_closed=search-magnets (different catalog) no re-roll. Adsterra kept. CWV: lazy route + modest canvas. EXECUTE 1/6: DoublePendulumSim.tsx + catalog entry (slug double-pendulum / pendulo-doble) + registry lazy + SIM_JOURNEYS links. Physics RK-style step, trail on tip, drag-to-set, perturb button. Deploy tip prior ERROR fixed in 164f5e19; free deploy quota hit (RATE_LIMITED).
+notes: IDEATE roll U=0.63 → CORE; cumulative weight sample R≈11/20 → simulators. Set simulators=1, other CORE +1. last_closed=search-magnets (different catalog) no re-roll. Adsterra kept. CWV: lazy route + modest canvas. EXECUTE 1/6: DoublePendulumSim.tsx + catalog entry (slug double-pendulum / pendulo-doble) + registry lazy + SIM_JOURNEYS links. Physics RK-style step, trail on tip, drag-to-set, perturb button. EXECUTE 2/6: energy HUD (θ1/θ2/E), PNG share download, refined trail fade + glow, aspect-ratio for CLS. Deploy tip prior ERROR fixed in 164f5e19; free deploy quota hit (RATE_LIMITED).
 adsense-prep_runs: 2
 ```
 
