@@ -1,10 +1,10 @@
 # UtiliHub Ideas Lab — State (3/3)
 
-**Part 3 of 3 — runtime state only.** Keep this file **small**. End marker: `<!-- end:ideas-lab-state.md -->`.
+**Part 3 of 3 — runtime state only.** End marker: `<!-- end:ideas-lab-state.md -->`.
 
-If truncated: re-fetch immediately. This file must stay under practical tool limits (~few KB). Move history out of `notes` only if needed; do not paste full rules here.
+If truncated: re-fetch immediately. Keep this file small.
 
-Edit + commit on every IDEATE / EXECUTE progress / close. Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
+Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 
 ---
 
@@ -32,6 +32,7 @@ weights_growth:
   conversion-paths: 1
   traffic-diagnosis: 1
   adsense-prep: 2
+  seo-locales: 1
 
 adsense-prep_runs: 1
 ```
@@ -51,15 +52,13 @@ adsense-prep_runs: 1
 - 2026-10-1x | playgrounds | particle-signature | Particle Signature (prior)
 ```
 
-On close River of Light prepend: `2026-10-15 | journeys | river-light | River of Light Journey`.
-
 ---
 
 ## ACTIVE PROJECT
 
 ```
 status: active
-idea: River of Light Journey — interactive canvas: waypoints on dark field; glowing particle river between them with afterglows/blooms. Controls: flow speed, colors, density, loop. Share URL + PNG. Routes /river-light and /es/rio-luz. Requires next-step EN+ES.
+idea: River of Light Journey — interactive canvas: waypoints; glowing particle river; afterglows. Share URL+PNG. /river-light + /es/rio-luz. next-step EN+ES.
 id: river-light
 path_en: /river-light
 path_es: /es/rio-luz
@@ -69,7 +68,7 @@ runs_remaining: 1
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATED 2026-10-15 CORE journeys. SHIPPED+POLISH runs 1–5/6. Split to 3 files + two-urn 2026-10-15. runs_remaining=1.
+notes: CORE journeys. SHIPPED+POLISH 1–5/6. seo-locales domain+registry added 2026-10-15 (GROWTH FLEX weight 1). runs_remaining=1.
 adsense-prep_runs: 1
 ```
 
