@@ -25,6 +25,21 @@ async function loadRenderer(slug: string, locale: Locale): Promise<() => ReactNo
     return () => <Studio3d slug={slug} locale={locale} />;
   }
 
+  if (slug === "pixelihub") {
+    const { GENERAL_TOOLS } = await import("@/lib/general");
+    const tool = GENERAL_TOOLS.find((item) => item.slug === "pixelihub");
+    const { PixelArtStudio } = await import("@/components/general/PixelArtStudio");
+    if (!tool) {
+      const missing = locale === "es" ? "Herramienta no disponible." : "Tool not available.";
+      return () => (
+        <p role="alert" className="text-muted-foreground">
+          {missing}
+        </p>
+      );
+    }
+    return () => <PixelArtStudio tool={tool} locale={locale} />;
+  }
+
   if (CORE_SLUGS.has(slug)) {
     const { TOOL_UI, TOOL_UI_ES } = await import("@/components/tools/registry");
     const core = locale === "es" ? TOOL_UI_ES : TOOL_UI;
@@ -37,7 +52,6 @@ async function loadRenderer(slug: string, locale: Locale): Promise<() => ReactNo
   const render = general[slug];
   if (render) return render;
 
-  // Fallback for ConfiguredTool-based tools when registry entry is missing
   try {
     const { allToolBySlug } = await import("@/lib/all-tools");
     const tool = allToolBySlug(slug);
@@ -57,8 +71,8 @@ async function loadRenderer(slug: string, locale: Locale): Promise<() => ReactNo
 
 /**
  * Keep the tool-route shell free of catalog registries.
- * Core tools never fetch general/registry. 3D studios fetch registry-3d only,
- * so listings and the other tool pages do not pull the three.js entry module.
+ * Core tools never fetch general/registry. 3D studios fetch registry-3d only.
+ * PixeliHub loads PixelArtStudio on demand only.
  */
 export function DeferredToolUi({ slug, locale }: { slug: string; locale: Locale }) {
   const Ui = useMemo(
