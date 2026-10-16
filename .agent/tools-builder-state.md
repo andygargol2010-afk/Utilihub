@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-16 | viajes | calculadora-tiempo-viaje | TripTimeTool
+- 2026-10-16 | ciencia | calculadora-fuerza | ForceCalculatorTool
 - 2026-10-16 | productividad | contador-caracteres | CharacterCounterTool
 - 2026-10-16 | salud | calculadora-deficit-calorico | CalorieDeficitTool
 - 2026-10-16 | matematicas | calculadora-proporcion | ProportionCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-16 | hogar | calculadora-area-habitacion | RoomAreaTool
 - 2026-10-16 | fechas | calculadora-diferencia-fechas | DateDifferenceTool
 - 2026-10-16 | cocina | escalador-receta | RecipeScalerTool
-- 2026-10-15 | productividad | water-intake | WaterIntakeTool
-- 2026-10-15 | conversiones | currency-converter | CurrencyConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent
-ciencia/física: recent
+ciencia/física: recent (fuerza)
 finanzas simples: recent
 hogar/construcción: recent
 % / math básica: recent (proporcion)
@@ -50,6 +50,7 @@ productividad: recent (caracteres)
 cocina: recent
 educacion: recent
 diseno: recent
+viajes: recent (tiempo-viaje)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -65,6 +66,7 @@ Bootstrap automation prompt only points here — expand rules in tools-builder.m
 Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation field).
 2026-10-16 FIX-BUILD: restored LEGACY_CATEGORY_REDIRECTS + SECONDARY_CATEGORY_MAP in category-catalog.ts (wiped by pixelihub). No new tools this run.
 2026-10-16 FIX-BUILD: no deploy for restore commit; small docs trigger for Vercel.
+2026-10-16 PRODUCT: shipped calculadora-tiempo-viaje (viajes) + calculadora-fuerza (ciencia). Clusters distinct. Registry surgical OK.
 ```
 
 ---
@@ -72,9 +74,9 @@ Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation fiel
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: FIX-BUILD
-last_slugs: none
-last_deploy: pending (trigger commit)
+last_mode: PRODUCT
+last_slugs: calculadora-tiempo-viaje, calculadora-fuerza
+last_deploy: pending verification
 ```
 
 <!-- end:tools-builder-state.md -->
