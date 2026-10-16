@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Check, Download, FileDown, Link2 } from "lucide-react";
 import { useShareableParams } from "@/hooks/use-shareable-params";
+import { trackEvent } from "@/lib/analytics";
 
 type ExportRow = Record<string, string>;
 type Locale = "en" | "es";
@@ -45,7 +46,10 @@ export function ShareAndExportActions({ title, locale = "en" }: { title: string;
     ? { share: "Compartir configuración", pdf: "Exportar a PDF", csv: "Descargar CSV", aria: "Compartir y exportar", copied: "Enlace copiado", copyError: "No se pudo copiar el enlace", noData: "No hay datos para exportar", empty: "Esta herramienta no tiene datos exportables", pdfOk: "PDF exportado", csvOk: "CSV descargado", exportError: "No se pudo exportar" }
     : { share: "Share configuration", pdf: "Export to PDF", csv: "Download CSV", aria: "Share and export", copied: "Link copied", copyError: "Could not copy the link", noData: "No data to export", empty: "This tool has no exportable data", pdfOk: "PDF exported", csvOk: "CSV downloaded", exportError: "Could not export" };
   const showStatus = (message: string) => { setStatus(message); window.setTimeout(() => setStatus(""), 1800); };
-  const runShare = async () => showStatus(await share() ? copy.copied : copy.copyError);
+  const runShare = async () => {
+    trackEvent("share_click", { title, locale });
+    showStatus(await share() ? copy.copied : copy.copyError);
+  };
 
   const exportPdf = async () => {
     const surface = document.querySelector<HTMLElement>("[data-tool-surface]");
