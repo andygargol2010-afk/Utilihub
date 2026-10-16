@@ -148,12 +148,37 @@ function ParticlePhysicsGuideEs() {
           <strong>¿La física se ejecuta en el servidor?</strong> No. Todo ocurre en el navegador con Canvas o WebGL. Compartir una URL solo comparte los parámetros, no una simulación del lado del servidor.
         </p>
 
-        <h2>Exploración adicional</h2>
+        <h2>Consejos prácticos para construir tu propia simulación</h2>
         <p>
-          Los mismos principios impulsan muchas experiencias interactivas: firmas de partículas que forman texto, mapas de constelaciones, rastros de fuegos artificiales y patrones caleidoscópicos. Entender el bucle básico de fuerza e integración te permite inventar nuevos comportamientos rápidamente.
+          Empieza con un paso de tiempo fijo (por ejemplo 1/60 de segundo) aunque la tasa de fotogramas real varíe; así el movimiento se mantiene consistente. Limita la fuerza o aceleración máxima para que un solo atractor no lance partículas por toda la pantalla en un fotograma.
         </p>
         <p>
-          Todas las simulaciones en UtiliHub se ejecutan completamente del lado del cliente — no se envían datos a servidores para la física en sí. Experimenta, comparte las URLs resultantes y descarga instantáneas PNG.
+          Separa la lógica de actualización de la de dibujo. Eso facilita añadir pausa, cámara lenta o depuración paso a paso más adelante. Guarda las partículas en un array simple o buffer tipado y reutiliza objetos en lugar de asignar nuevos cada fotograma.
+        </p>
+        <p>
+          Cuando quieras rastros, prefiere un clear semi-transparente (fade) a mantener historiales largos de posiciones; es más barato y se ve suave. Para herramientas interactivas, expón solo dos o tres controles al principio (intensidad, cantidad, amortiguamiento) para que los usuarios exploren sin saturación.
+        </p>
+
+        <h2>Experiencias relacionadas en UtiliHub</h2>
+        <p>
+          Los mismos principios de partículas aparecen en varias otras superficies interactivas:
+        </p>
+        <ul>
+          <li><Link to="/es/playgrounds/particulas-gravedad">Partículas de gravedad</Link> — coloca atractores y mira cómo se forman órbitas en tiempo real.</li>
+          <li><Link to="/es/rio-luz">Río de Luz</Link> — flujo continuo brillante a lo largo de puntos de paso.</li>
+          <li><Link to="/es/playgrounds/firma-particulas">Firma de partículas</Link> — partículas que se ensamblan en texto o formas.</li>
+          <li><Link to="/es/constellation">Constellation Studio</Link> — diseños tipo campo de estrellas que puedes compartir.</li>
+        </ul>
+        <p>
+          Todas se ejecutan completamente en el navegador. Experimenta, comparte las URLs resultantes y descarga instantáneas PNG cuando estén disponibles.
+        </p>
+
+        <h2>Exploración adicional</h2>
+        <p>
+          Entender el bucle básico de fuerza e integración te permite inventar nuevos comportamientos rápidamente: firmas de partículas que forman texto, mapas de constelaciones, rastros de fuegos artificiales y patrones caleidoscópicos comparten la misma base.
+        </p>
+        <p>
+          Todas las simulaciones en UtiliHub se ejecutan completamente del lado del cliente — no se envían datos a servidores para la física en sí.
         </p>
       </article>
 
