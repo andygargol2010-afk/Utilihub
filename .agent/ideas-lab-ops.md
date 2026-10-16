@@ -31,7 +31,7 @@ If truncated: re-fetch; section reads; do not guess MODE.
 | conversion-paths | Home → value paths | Do not remove ads |
 | traffic-diagnosis | Measure A/B/C | Not a product idea |
 | adsense-prep | Trust gaps (temporary) | Max 5 runs; never remove Adsterra |
-| **seo-locales** | New `/{lang}/` route trees for high-spoken languages; SEO-only (no EN/ES nav) | Registry + hreflang; quality translation |
+| **seo-locales** | New `/{lang}/` route trees for high-spoken languages; SEO-only (no EN/ES nav) | Registry + hreflang; quality translation; **retire domain at 5 active** |
 
 ---
 
@@ -39,16 +39,28 @@ If truncated: re-fetch; section reads; do not guess MODE.
 
 Not a canvas playground. Goal = **search-discoverable** full pages in another language.
 
+**Hard cap:** max **5** active SEO locales (beyond EN/ES). EN and ES do not count toward the 5.
+
+### Before rolling work
+
 1. Read `.agent/seo-locales-registry.md` + `src/lib/i18n/seo-locales.ts`.
-2. Pick locale: first code in priority queue not yet **active**, unless ACTIVE PROJECT already fixed one.
-3. Scope (one outcome per run): e.g. locale home `/{code}` + 1 high-value experience **or** deepen pages for an already-active locale. Prefer complete quality over translating the entire site in one run.
-4. Implement routes under prefix `/{code}/...` with `lang` / `dir` (Arabic → rtl).
-5. Real translation of visible copy + title/description (not empty shells).
-6. hreflang / alternates to EN+ES counterparts where equivalent pages exist; sitemap entries if the project uses a central sitemap.
-7. **Do not** add header/footer/home nav entries from EN or ES pointing to these locales.
-8. Update registry table + `SEO_LOCALES_ACTIVE` in same commit.
-9. Deploy + smoke on `/{code}/...` paths. Spanish summary of locale chosen and paths shipped.
-10. runs_total typically 3–6 for a first locale beachhead; 1–3 for incremental pages.
+2. Count `active` locales. If **≥ 5**:
+   - Do **not** activate another language.
+   - Retire domain: set `seo-locales: 0` in `weights_growth` (state), remove from GROWTH roll set, note in state NOTES «seo-locales retired at 5 active».
+   - If this roll selected seo-locales only to retire → IDEATE another domain or CLOSE with the retirement commit. No new locale pages required solely for retirement.
+3. If **< 5**: pick locale = first priority-queue code not yet active, unless ACTIVE PROJECT already fixed one.
+
+### Ship (when < 5 active)
+
+4. Scope (one outcome per run): locale home `/{code}` + 1 high-value experience **or** deepen pages for an already-active locale. Prefer complete quality over translating the entire site in one run.
+5. Routes under `/{code}/...` with `lang` / `dir` (Arabic → rtl).
+6. Real translation of visible copy + title/description (not empty shells).
+7. hreflang / alternates to EN+ES counterparts where equivalent pages exist; sitemap if the project uses one.
+8. **Do not** add header/footer/home nav entries from EN or ES to these locales.
+9. Update registry table + `SEO_LOCALES_ACTIVE` same commit.
+10. Deploy + smoke on `/{code}/...`. Spanish summary: locale, paths, active count N/5.
+11. runs_total typically 3–6 for a first locale beachhead; 1–3 for incremental pages.
+12. When the **5th** language becomes active: in the same or next META/close run, retire the domain (weight 0 + roll omit) as above.
 
 ---
 
@@ -112,18 +124,18 @@ User-facing: open shipped paths (EN+ES and/or `/{seo-code}/...`). Confirm shell 
 
 EXECUTE playgrounds: component, EN+ES, next-step, Adsterra kept, smoke, state.
 
-Weight sampling: CORE cumulative; GROWTH two-urn (seo-locales in FLEX only).
+Weight sampling: CORE cumulative; GROWTH two-urn (seo-locales in FLEX only; **skip if active ≥ 5**).
 
 ---
 
 ## Spanish summary template
 
-Deploy; smoke; outcome; ACTIVE PROJECT; locale/registry if seo-locales; commits; Adsterra; next step.
+Deploy; smoke; outcome; ACTIVE PROJECT; locale/registry if seo-locales (N/5 active); commits; Adsterra; next step.
 
 ---
 
 ## ALWAYS
 
-Spanish summary; correct identity; quality > novelty; one outcome; next-step when required; never remove Adsterra; files win over automation prompt; two-urn GROWTH; truncation → re-read not invent; seo-locales → registry sync + no EN/ES nav links.
+Spanish summary; correct identity; quality > novelty; one outcome; next-step when required; never remove Adsterra; files win over automation prompt; two-urn GROWTH; truncation → re-read not invent; seo-locales → registry sync + no EN/ES nav links; **retire seo-locales domain at 5 active**.
 
 <!-- end:ideas-lab-ops.md -->
