@@ -59,18 +59,18 @@ adsense-prep_runs: 2
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Crear páginas de Términos de Uso (Terms of Use) en EN (/terms) y ES (/es/terminos) para cerrar el gap de confianza AdSense: uso aceptable, responsabilidad, anuncios (Adsterra), propiedad intelectual, limitación de garantía y contacto. Una página clara y profesional que complemente About, Privacy y Legal.
-id: terms-of-use
-path_en: /terms
-path_es: /es/terminos
-domain: adsense-prep
-runs_total: 2
-runs_remaining: 0
-acceptance: shipped
+status: active
+idea: Crear guía SEO profunda de interés compuesto (Compound Interest Guide) en EN (/guides/compound-interest) y ES (/es/guias/interes-compuesto): explicación clara con fórmulas, ejemplos prácticos, tabla de crecimiento, visual simple y enlace a la calculadora de interés compuesto del sitio. Contenido original orientado a capturar búsquedas informacionales (how compound interest works, interés compuesto ejemplos) complementando las herramientas financieras.
+id: compound-interest-guide
+path_en: /guides/compound-interest
+path_es: /es/guias/interes-compuesto
+domain: search-magnets
+runs_total: 3
+runs_remaining: 3
+acceptance: pending
 share: n/a
 next_step_required: no
-notes: DOMAIN ROLL U=0.438 → GROWTH. U_g=0.521 > 0.35 → FLEX urn. Sampled adsense-prep (weight 2). last_closed search-magnets → no re-roll. Weight updates: selected adsense-prep→1; other FLEX +1. adsense-prep_runs 1→2. Priority About/Privacy already solid → Terms next. EXECUTE 2026-10-16: shipped /terms + /es/terminos (acceptable use, IP, Adsterra ads, warranties, liability, contact), footer links, sitemap. Adsterra kept. Final polish: added last-updated note (Oct 2026) EN+ES. Production deploy lag noted (previews READY, prod on prior commit); pages in branch ready for next prod promote.
+notes: DOMAIN ROLL U=0.362 → GROWTH. U_g=0.075 < 0.35 → FIXED urn (traffic-bets|search-magnets). Sampled search-magnets (equal weight 3). last_closed adsense-prep → no re-roll. FIXED: no weight updates. adsense-prep_runs stays 2. Idea fits finance tools + SEO depth, distinct from particle-physics-guide.
 adsense-prep_runs: 2
 ```
 
