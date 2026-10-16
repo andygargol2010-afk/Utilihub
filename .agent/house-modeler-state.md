@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 162
+runs_done: 163
 runs_max: 500
 ```
 
@@ -30,30 +30,12 @@ runs_max: 500
 ## FORCE FOCUS — MOBILE UI (temporary)
 
 ```
-status: active
-remaining_runs: 1
-task: IMPROVE UI — mobile comfort only
-desktop: MUST stay visually/behaviorally the same (use CSS max-width / touch breakpoints; no desktop layout redesign)
-scope_examples:
-  - larger touch targets on tool/part/finish controls under ~768px
-  - stack or sheet panels that currently overflow on small screens
-  - safer spacing for thumbs; avoid hover-only critical actions on mobile
-  - reduce accidental mis-taps (padding, hit area, sticky primary actions)
-out_of_scope:
-  - changing desktop sidebar/palette layout
-  - new PartKinds, textures, graphics, or unrelated bugs (unless blocking mobile UI ship)
-  - full monolith rewrite
-on_each_success:
-  - remaining_runs -= 1
-  - if remaining_runs hits 0 → set status: done and remove or clear this FORCE FOCUS block next META/PRODUCT close
-  - still bump runs_done as usual
-if_FIX-BUILD_or_RESTORE:
-  - do not consume remaining_runs (mobile focus waits until PRODUCT mobile UI ships)
-if_truncation_risk:
-  - META is allowed without consuming remaining_runs; resume FORCE on next safe PRODUCT
+status: done
+remaining_runs: 0
+note: completed after PRODUCT run 163 (larger secondary controls + spacing under 768px)
 ```
 
-User request 2026-10-16: next 3 executions focus on making the UI more comfortable for phone users; PC unchanged.
+User request 2026-10-16: next 3 executions focus on making the UI more comfortable for phone users; PC unchanged. Completed.
 
 ---
 
@@ -61,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331026
-last_known_good_hint: 26128b6 (~331026 bytes, 7490 lines)
+approx_bytes: 331131
+last_known_good_hint: 73710d4 (~331131 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -77,10 +59,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-16
 SEO_LOCALES_ACTIVE: none
-deploy: pending check for SHA 26128b6… (previous READY on 60fbb98d…)
-note: FORCE mobile UI active (remaining 1 after this). Applied surgical mobile comfort:
-- Main tool palette buttons: min-h-11 → min-h-11 max-md:min-h-14 (larger hit area under 768px).
-Desktop unchanged (breakpoint-scoped). Gates OK (~331kB). remaining_runs decremented.
+deploy: pending check for SHA 73710d4…
+note: FORCE mobile UI completed (remaining_runs 0). Applied surgical mobile comfort:
+- Toolbar: gap-2 → gap-2 max-md:gap-3, pb-1 → max-md:pb-2
+- Action buttons (dup/delete/etc.): added max-md:min-h-14 to 5 more min-h-11 controls
+Desktop unchanged (breakpoint-scoped). Gates OK (~331kB). FORCE block cleared to done.
 ```
 
 Refresh after each run.
@@ -92,9 +75,9 @@ Refresh after each run.
 ```
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
-FORCE FOCUS mobile UI active: remaining_runs 1.
-Surgical PRODUCT succeeded via local git clone + edit + push (bypassed MCP content truncation risk).
-Next FORCE PRODUCT: continue mobile comfort (e.g. safer spacing, larger secondary controls under 768px).
+FORCE FOCUS mobile UI: done (remaining_runs 0).
+Surgical PRODUCT succeeded via local git clone + edit + push.
+Next runs: normal roll (META/PRODUCT).
 Unrelated catalog ERROR on older deploys does not block this surface.
 ```
 
