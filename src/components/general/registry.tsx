@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
-/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter + business days + text normalizer + budget 503020 + uuid generator + date difference + recipe scaler + rule of 72 + room area + final grade + temperature converter + proportion calculator + css gradient generator. */
+/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter + business days + text normalizer + budget 503020 + uuid generator + date difference + recipe scaler + rule of 72 + room area + final grade + temperature converter + proportion calculator + css gradient generator + character counter + calorie deficit. */
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
@@ -71,6 +71,8 @@ const FinalGradeTool = lazy(() => import("./FinalGradeTool").then((m) => ({ defa
 const TemperatureConverterTool = lazy(() => import("./TemperatureConverterTool").then((m) => ({ default: m.TemperatureConverterTool })));
 const ProportionCalculatorTool = lazy(() => import("./ProportionCalculatorTool").then((m) => ({ default: m.ProportionCalculatorTool })));
 const CssGradientGeneratorTool = lazy(() => import("./CssGradientGeneratorTool").then((m) => ({ default: m.CssGradientGeneratorTool })));
+const CharacterCounterTool = lazy(() => import("./CharacterCounterTool").then((m) => ({ default: m.CharacterCounterTool })));
+const CalorieDeficitTool = lazy(() => import("./CalorieDeficitTool").then((m) => ({ default: m.CalorieDeficitTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -123,6 +125,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "conversor-temperatura") return TemperatureConverterTool as ToolComp;
   if (tool.slug === "calculadora-proporcion") return ProportionCalculatorTool as ToolComp;
   if (tool.slug === "generador-gradiente-css") return CssGradientGeneratorTool as ToolComp;
+  if (tool.slug === "contador-caracteres") return CharacterCounterTool as ToolComp;
+  if (tool.slug === "calculadora-deficit-calorico") return CalorieDeficitTool as ToolComp;
   if (tool.slug === "calculadora-fecha-avanzada") return AdvancedDateTool as ToolComp;
   if (tool.config?.mode === "advanced-calculator") return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.mode === "advanced" && tool.config?.operation) return AdvancedCalculatorTool as ToolComp;
