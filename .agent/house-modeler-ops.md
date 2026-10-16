@@ -30,45 +30,70 @@ If truncated: re-fetch; do not invent MODE or PRODUCT steps.
 - Procedural or canvas texture ≤ **512px** where applicable.
 - Keep material response realistic (roughness/metalness consistent with concrete/timber/clay).
 - Do not replace the whole texture system.
+- **Done when:** in preview, that PartKind shows a clear visual upgrade (detail/variation) without pink textures, UV stretch, or breaking other kinds.
 
 ### 2) IMPROVE GRAPHICS
 
 - One focused change: light, shadow, sky, fog, ground, or exposure/tone.
 - **Protect FPS:** if a change tanks frame time on mid mobile, dial back or gate quality.
 - Never remove Sky or soft shadows “for performance” without before/after evidence noted in summary.
+- **Done when:** the scene reads better (depth, contact, sky) and the modeler remains interactive; summary states what improved and any FPS tradeoff.
 
 ### 3) IMPROVE UI
 
 - Palette, fullscreen, selection feedback, mobile layout, finish variant picker, lock badges clarity.
 - All new strings **EN+ES**.
 - SEO locale copy only if multi-locale review says ship **and** the change is outside a monolith-risk write.
+- **Done when:** the targeted control is easier to find/use on desktop and a narrow viewport; no dead buttons or clipped panels.
 
 ### 4) FIX BUGS
 
 - Ghosts, drag glitches, resize, dispose leaks, snap, clone finishes, TS/JSX errors, door/window placement bugs.
 - Prefer the smallest diff that fixes the bug.
 - Re-check door conditional count = 1 before push.
+- **Done when:** the reported failure mode no longer reproduces in the test steps; no new placement/selection regression called out in summary.
 
 ### 5) NEW STRUCTURE TYPE
 
 - Exactly **one** new `PartKind` + mesh + swatch + ES/EN labels.
 - Wire into existing placement/selection patterns; do not invent a second architecture.
 - Catalog/registry only if the monorepo requires it for the tool to list the kind.
+- **Done when:** user can select the kind, place it, see correct mesh+material, and labels appear in EN and ES — incomplete stubs are not shippable.
 
 ### 6) SELECTABLE TEXTURE VARIANT
 
 - One new finish on an **existing** PartKind (e.g. extra plaster or timber variant).
 - Swatch + labels EN/ES; selectable in UI.
+- **Done when:** choosing the swatch applies the finish to the selected part and persists for that selection path like other finishes.
 
 ### PRODUCT procedure (all tasks)
 
 1. Confirm monolith ≥120000 bytes **before** editing.
-2. Plan a **surgical** change. If the only path is full-file rewrite of >300KB via tool channel → **abort PRODUCT**, switch to META, document risk in state.
-3. Implement; run mental checklist: paint helpers present, door conditional once, no PLACEHOLDER.
-4. Commit: `feat(house-modeler): …` or `fix(house-modeler): …` with fixed identity.
-5. POST-PUSH: wait ~60–90s; list deploy for SHA. If no deploy → force `create_deployment` for that SHA on fix/spanish-complete.
-6. On READY (or after FIX-BUILD success): bump `runs_done` +1 in state + commit.
-7. Spanish summary with test steps (open modeler, try the changed PartKind/UI/graphics).
+2. **Pre-read:** locate a similar working block (PartKind / material / UI) and note the pattern you will mirror.
+3. Write a one-line **acceptance test** (what the user must see/do in preview).
+4. Plan a **surgical** change. If the only path is full-file rewrite of >300KB via tool channel → **abort PRODUCT**, switch to META, document risk in state.
+5. Implement against the QUALITY BAR (rules file): realism, dispose, EN+ES, no unrelated gutting.
+6. Self-check before push:
+   - paint helpers still present; door conditional exactly once; no PLACEHOLDER
+   - new strings EN+ES
+   - acceptance test still valid
+   - diff is minimal for the stated outcome
+7. Commit: `feat(house-modeler): …` or `fix(house-modeler): …` with fixed identity. Message states the user-visible outcome.
+8. POST-PUSH: wait ~60–90s; list deploy for SHA. If no deploy → force `create_deployment` for that SHA on fix/spanish-complete.
+9. On READY (or after FIX-BUILD success): bump `runs_done` +1 in state + commit.
+10. Spanish summary: acceptance steps, what was verified, monolith health, multi-locale line.
+
+### Quality ranking when choosing a task (roll 2–10)
+
+If several tasks are plausible, prefer in order:
+
+1. **FIX BUGS** with a clear user-facing break
+2. **IMPROVE UI** that unblocks mobile or selection clarity
+3. **POLISH / VARIANT** that raises perceived material quality
+4. **GRAPHICS** with FPS-safe, evidence-minded change
+5. **NEW STRUCTURE** only when patterns are clear and labels+swatch+placement all fit one run
+
+Skip “busywork” PRODUCT that does not change what the user sees or can do.
 
 ---
 
@@ -121,9 +146,11 @@ Modo: PRODUCT|META|FIX-BUILD|RESTORE (roll N)
 runs_done / runs_max: …
 Monolito: ~bytes | SHA | intacto|restaurado|riesgo truncado
 MULTI-LOCALE: SEO_LOCALES_ACTIVE=[…] | acción: shipped|deferred|n-a
-Cambio: …
+Cambio: … (user-visible)
+Criterio de aceptación: …
 Commits: …
 Deploy: READY|ERROR|BUILDING + URL
+Monolito gates: OK|fallo
 Identidad: andygargol2010@gmail.com
 Pasos de prueba: abrir modeler → …
 Handoff: (solo si cap) Fightersland activado
@@ -134,7 +161,9 @@ Handoff: (solo si cap) Fightersland activado
 ## ALWAYS
 
 - Quality of monolith integrity > shipping a risky feature.
+- User-visible correctness > lines changed.
 - Deploy ERROR > new PartKind.
+- No acceptance test in the summary → treat the run as incomplete.
 - State file owns the counter.
 - Truncation → re-read files; never invent rules.
 - Spanish, honest summary every run.

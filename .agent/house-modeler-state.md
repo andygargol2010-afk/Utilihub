@@ -61,6 +61,7 @@ Refresh after each run.
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
 Files split 2026-10-16; expanded detail same day.
+QUALITY BAR + acceptance tests added for implementation quality.
 ```
 
 <!-- end:house-modeler-state.md -->
