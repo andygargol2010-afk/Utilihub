@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type Locale = "en" | "es";
 
@@ -55,6 +56,9 @@ const labels = {
 
 export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
   const t = labels[locale];
+  useEffect(() => {
+    trackEvent("playground_open", { id: "gravity-particles", locale });
+  }, [locale]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const attractorsRef = useRef<Attractor[]>([]);
@@ -345,6 +349,7 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
   };
 
   const share = async () => {
+    trackEvent("share_click", { id: "gravity-particles", locale });
     const params = new URLSearchParams();
     params.set("count", String(count));
     params.set("g", gravity.toFixed(2));
