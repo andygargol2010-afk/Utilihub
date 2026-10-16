@@ -64,6 +64,7 @@ Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation field).
 On PRODUCT: review SEO_LOCALES_ACTIVE; ship or defer /{code} routes beyond EN+ES.
+2026-10-16 FIX-BUILD: restored LEGACY_CATEGORY_REDIRECTS + SECONDARY_CATEGORY_MAP in category-catalog.ts (wiped by pixelihub). No new tools this run.
 ```
 
 ---
@@ -71,9 +72,9 @@ On PRODUCT: review SEO_LOCALES_ACTIVE; ship or defer /{code} routes beyond EN+ES
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: contador-caracteres, calculadora-deficit-calorico
-last_deploy: pending
+last_mode: FIX-BUILD
+last_slugs: none
+last_deploy: pending (fix commit 164f5e19)
 ```
 
 <!-- end:tools-builder-state.md -->
