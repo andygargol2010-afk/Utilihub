@@ -32,7 +32,7 @@ weights_growth:
   conversion-paths: 1
   traffic-diagnosis: 1
   adsense-prep: 2
-  seo-locales: 1
+  seo-locales: 1   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 1
 ```
