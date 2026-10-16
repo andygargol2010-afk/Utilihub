@@ -188,6 +188,8 @@ import { BUDGET_503020_TOOLS } from "./budget-503020-tool";
 import { UUID_TOOLS } from "./uuid-tool";
 import { DATE_DIFFERENCE_TOOLS } from "./date-difference-tool";
 import { RECIPE_SCALER_TOOLS } from "./recipe-scaler-tool";
+import { RULE_OF_72_TOOLS } from "./rule-of-72-tool";
+import { ROOM_AREA_TOOLS } from "./room-area-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -381,4 +383,6 @@ export const GENERAL_TOOLS = [
   ...UUID_TOOLS,
   ...DATE_DIFFERENCE_TOOLS,
   ...RECIPE_SCALER_TOOLS,
+  ...RULE_OF_72_TOOLS,
+  ...ROOM_AREA_TOOLS,
 ];
