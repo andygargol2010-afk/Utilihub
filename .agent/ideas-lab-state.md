@@ -65,11 +65,11 @@ path_en: n/a
 path_es: n/a
 domain: traffic-bets
 runs_total: 3
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: GROWTH FIXED urn roll (U=0.47→GROWTH, U_g=0.31<p_fixed→FIXED; equal weight traffic-bets vs search-magnets). Prefer Analytics findings (site has Vercel Analytics). Baseline for measurable growth. Run 1: added trackEvent helper; instrumented tool_open (EN+ES tool pages), share_click (ShareAndExportActions), next_step_click (PlaygroundNextStep primary+related). Debug log in DEV. Next: extend to playgrounds/games open + finance tools if needed; verify events in Vercel Analytics.
+notes: GROWTH FIXED urn roll (U=0.47→GROWTH, U_g=0.31<p_fixed→FIXED; equal weight traffic-bets vs search-magnets). Prefer Analytics findings (site has Vercel Analytics). Baseline for measurable growth. Run 1: added trackEvent helper; instrumented tool_open (EN+ES tool pages), share_click (ShareAndExportActions), next_step_click (PlaygroundNextStep primary+related). Debug log in DEV. Run 2: extended game_open (GameShell EN+ES), playground_open + share_click on GravityParticlesPlayground and RiverOfLightJourney. Next: more playgrounds/journeys (floor-plan, neon, etc.) if needed; verify events appear in Vercel Analytics dashboard.
 adsense-prep_runs: 1
 ```
 
