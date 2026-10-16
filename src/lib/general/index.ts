@@ -192,6 +192,8 @@ import { RULE_OF_72_TOOLS } from "./rule-of-72-tool";
 import { ROOM_AREA_TOOLS } from "./room-area-tool";
 import { FINAL_GRADE_TOOLS } from "./final-grade-tool";
 import { TEMPERATURE_CONVERTER_TOOLS } from "./temperature-converter-tool";
+import { PROPORTION_CALCULATOR_TOOLS } from "./proportion-calculator-tool";
+import { CSS_GRADIENT_GENERATOR_TOOLS } from "./css-gradient-generator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -389,4 +391,6 @@ export const GENERAL_TOOLS = [
   ...ROOM_AREA_TOOLS,
   ...FINAL_GRADE_TOOLS,
   ...TEMPERATURE_CONVERTER_TOOLS,
+  ...PROPORTION_CALCULATOR_TOOLS,
+  ...CSS_GRADIENT_GENERATOR_TOOLS,
 ];
