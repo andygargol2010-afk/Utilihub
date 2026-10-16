@@ -69,6 +69,21 @@ export const SIMULATORS: readonly SimDef[] = [
       "Hacé oscilar un péndulo, cambiá longitud y amortiguación, arrastrá para fijar el ángulo. Periodo y energía en un laboratorio de relojería.",
   },
   {
+    slug: "double-pendulum",
+    slugEs: "pendulo-doble",
+    nameEn: "Double pendulum chaos",
+    nameEs: "Péndulo doble caótico",
+    tag: "physics",
+    theme: "lab",
+    emoji: "⚖️",
+    badgeEn: "Sensitive dependence",
+    badgeEs: "Dependencia sensible",
+    summaryEn:
+      "Classic double pendulum chaos lab. Adjust initial angles, rod lengths and masses; watch the second bob draw a fading trail. Optional damping, gravity, pause, reset and slight-perturbation to show sensitive dependence. Lightweight canvas, EN+ES.",
+    summaryEs:
+      "Laboratorio clásico de péndulo doble caótico. Ajustá ángulos iniciales, longitudes y masas; mirá cómo el segundo bob traza una estela que se desvanece. Amortiguación, gravedad, pausa, reinicio y perturbación leve para mostrar dependencia sensible. Canvas ligero, EN+ES.",
+  },
+  {
     slug: "projectile-motion",
     slugEs: "movimiento-proyectil",
     nameEn: "Projectile motion",
@@ -207,9 +222,10 @@ export const SIMULATORS: readonly SimDef[] = [
 
 /** Next-step sims for bounce reduction (first = primary). Keys = EN slug. */
 export const SIM_JOURNEYS: Record<string, string[]> = {
-  pendulum: ["projectile-motion", "gravity-sandbox", "standing-wave", "molecular-motion"],
-  "projectile-motion": ["pendulum", "gravity-sandbox", "optics-bench", "standing-wave"],
-  "gravity-sandbox": ["pendulum", "projectile-motion", "molecular-motion", "optics-bench"],
+  pendulum: ["double-pendulum", "projectile-motion", "gravity-sandbox", "standing-wave"],
+  "double-pendulum": ["pendulum", "gravity-sandbox", "projectile-motion", "standing-wave"],
+  "projectile-motion": ["pendulum", "double-pendulum", "gravity-sandbox", "optics-bench"],
+  "gravity-sandbox": ["pendulum", "double-pendulum", "projectile-motion", "molecular-motion"],
   "molecular-motion": ["gravity-sandbox", "pendulum", "optics-bench", "dc-circuit"],
   "optics-bench": ["wave-interference", "standing-wave", "pendulum", "gravity-sandbox"],
   "standing-wave": ["wave-interference", "optics-bench", "pendulum", "projectile-motion"],
