@@ -6,13 +6,13 @@ import { englishToolSlug } from "@/lib/route-slugs";
 import { spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 
 /** Hero product picks — advanced studios + browser games. */
-const FEATURED_ADVANCED_SLUGS = ["modelador-casas-3d", "modelador-3d"] as const;
+const FEATURED_ADVANCED_SLUGS = ["modelador-casas-3d", "modelador-3d", "pixelihub"] as const;
 const FEATURED_GAME_COUNT = 3;
 
 type Locale = "en" | "es";
 
 export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
-  const es = locale === "es";
+  const es = locale === "en" ? false : locale === "es";
   const advanced = FEATURED_ADVANCED_SLUGS.map((s) => ALL_TOOLS.find((t) => t.slug === s)).filter(
     Boolean,
   ) as typeof ALL_TOOLS;
@@ -54,16 +54,18 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
         {/* Advanced */}
-        <div className="rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/5 via-card to-card p-4 shadow-lift sm:p-5">
+        <div className="rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/8 via-card to-card p-4 shadow-lift sm:p-5">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <span className="grid size-9 place-items-center rounded-xl bg-primary/15 text-primary">
                 <Boxes className="size-4.5" aria-hidden />
               </span>
               <div>
-                <p className="text-xs font-bold uppercase tracking-[.12em] text-primary">{copy.studioBadge}</p>
+                <p className="text-xs font-bold uppercase tracking-[.12em] text-primary">
+                  {copy.studioBadge}
+                </p>
                 <p className="text-sm font-black">{es ? "Herramientas avanzadas" : "Advanced tools"}</p>
               </div>
             </div>
@@ -118,36 +120,34 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
                 <p className="text-sm font-black">{es ? "Juegos" : "Games"}</p>
               </div>
             </div>
-            <Link
-              to={copy.gamesHref as never}
-              className="inline-flex min-h-10 items-center gap-1 rounded-lg px-2.5 text-xs font-bold text-violet-700 hover:bg-accent dark:text-violet-300"
+            <a
+              href={copy.gamesHref}
+              className="inline-flex min-h-10 items-center gap-1 rounded-lg px-2.5 text-xs font-bold text-violet-600 hover:bg-accent dark:text-violet-400"
             >
               {copy.allGames} <ArrowRight className="size-3.5" />
-            </Link>
+            </a>
           </div>
           <div className="grid gap-2.5">
-            {games.map((game) => (
-              <Link
-                key={game.slug}
-                to={gamePath(game, locale) as never}
-                className="card-hover group flex gap-3 rounded-xl border border-border/60 bg-background/80 p-3.5 hover:-translate-y-0.5 hover:border-violet-500/30 hover:shadow-md"
-              >
-                <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-violet-500/10 text-lg" aria-hidden>
-                  {game.emoji}
-                </span>
-                <span className="min-w-0">
+            {games.map((game) => {
+              const name = gameName(game, es ? "es" : "en");
+              const href = gamePath(game, es ? "es" : "en");
+              const body = (
+                <>
                   <span className="text-[10px] font-bold uppercase tracking-wide text-violet-600 dark:text-violet-400">
                     {copy.playBadge}
                   </span>
-                  <h3 className="mt-0.5 font-bold group-hover:text-violet-700 dark:group-hover:text-violet-300">
-                    {gameName(game, locale)}
-                  </h3>
-                  <p className="mt-0.5 line-clamp-2 text-xs leading-5 text-muted-foreground">
-                    {gameSummary(game, locale)}
+                  <h3 className="mt-1 font-bold group-hover:text-violet-600 dark:group-hover:text-violet-400">{name}</h3>
+                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                    {gameSummary(game, es ? "es" : "en")}
                   </p>
-                </span>
-              </Link>
-            ))}
+                </>
+              );
+              return (
+                <Link key={game.slug} to={href as never} className="card-hover group block rounded-xl border border-border/60 bg-background/80 p-3.5 hover:-translate-y-0.5 hover:border-violet-500/30 hover:shadow-md">
+                  {body}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
