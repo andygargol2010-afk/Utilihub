@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
-/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter. */
+/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter + business days + text normalizer. */
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
@@ -59,6 +59,8 @@ const HeartRateZoneTool = lazy(() => import("./HeartRateZoneTool").then((m) => (
 const SavingsGoalTool = lazy(() => import("./SavingsGoalTool").then((m) => ({ default: m.SavingsGoalTool })));
 const HourlyRateTool = lazy(() => import("./HourlyRateTool").then((m) => ({ default: m.HourlyRateTool })));
 const LineSorterTool = lazy(() => import("./LineSorterTool").then((m) => ({ default: m.LineSorterTool })));
+const BusinessDaysTool = lazy(() => import("./BusinessDaysTool").then((m) => ({ default: m.BusinessDaysTool })));
+const TextNormalizerTool = lazy(() => import("./TextNormalizerTool").then((m) => ({ default: m.TextNormalizerTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -99,6 +101,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-meta-ahorro") return SavingsGoalTool as ToolComp;
   if (tool.slug === "calculadora-tarifa-horaria") return HourlyRateTool as ToolComp;
   if (tool.slug === "ordenador-lineas-texto") return LineSorterTool as ToolComp;
+  if (tool.slug === "calculadora-dias-habiles") return BusinessDaysTool as ToolComp;
+  if (tool.slug === "normalizador-texto") return TextNormalizerTool as ToolComp;
   if (tool.slug === "calculadora-fecha-avanzada") return AdvancedDateTool as ToolComp;
   if (tool.config?.mode === "advanced-calculator") return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.mode === "advanced" && tool.config?.operation) return AdvancedCalculatorTool as ToolComp;
