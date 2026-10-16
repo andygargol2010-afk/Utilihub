@@ -196,6 +196,8 @@ import { PROPORTION_CALCULATOR_TOOLS } from "./proportion-calculator-tool";
 import { CSS_GRADIENT_GENERATOR_TOOLS } from "./css-gradient-generator-tool";
 import { CHARACTER_COUNTER_TOOLS } from "./character-counter-tool";
 import { CALORIE_DEFICIT_TOOLS } from "./calorie-deficit-tool";
+import { TRIP_TIME_TOOLS } from "./trip-time-tool";
+import { FORCE_CALCULATOR_TOOLS } from "./force-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -397,4 +399,6 @@ export const GENERAL_TOOLS = [
   ...CSS_GRADIENT_GENERATOR_TOOLS,
   ...CHARACTER_COUNTER_TOOLS,
   ...CALORIE_DEFICIT_TOOLS,
+  ...TRIP_TIME_TOOLS,
+  ...FORCE_CALCULATOR_TOOLS,
 ];
