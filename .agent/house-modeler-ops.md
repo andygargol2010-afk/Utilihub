@@ -78,7 +78,7 @@ If truncated: re-fetch; do not invent MODE or PRODUCT steps.
 2. **Pre-read:** locate a similar working block (PartKind / material / UI) and note the pattern you will mirror.
 3. Write a one-line **acceptance test** (what the user must see/do in preview).
 4. Plan a **surgical** change. If the only path is full-file rewrite of >300KB via tool channel → **abort PRODUCT**, switch to META, document risk in state.
-5. Implement against the QUALITY BAR (rules file): realism, dispose, EN+ES, no unrelated gutting.
+5. Implement against the QUALITY BAR (rules file): realism, dispose, EN+ES, Core Web Vitals boundaries, no unrelated gutting.
 6. Self-check before push:
    - paint helpers still present; door conditional exactly once; no PLACEHOLDER
    - new strings EN+ES
@@ -167,6 +167,7 @@ Handoff: (solo si cap) Fightersland activado
 
 ## ALWAYS
 
+- Respect Core Web Vitals boundaries: no eager modeler on home/lists; dispose resources; FPS-safe graphics; mobile CSS without desktop CLS.
 - Quality of monolith integrity > shipping a risky feature.
 - User-visible correctness > lines changed.
 - Deploy ERROR > new PartKind.
