@@ -42,11 +42,23 @@ Example row after first ship:
 | pt | pt-BR | ltr | active | /pt | /pt, /pt/river-light | hreflang wired; no nav from EN/ES |
 ```
 
+
+---
+
+## CAP = 5 active SEO locales
+
+EN and ES are **not** SEO locales and do not count.
+
+- Maximum **5** rows with status `active` in the table above / in `SEO_LOCALES_ACTIVE`.
+- When the 5th language is activated and registered, Ideas Lab domain `seo-locales` must be **retired**: `weights_growth.seo-locales = 0`, omit from GROWTH domain roll, note in `ideas-lab-state.md`.
+- Do not open a 6th SEO locale via that domain. Further pages for the existing 5 may still be added by other work when cheap.
+
 ---
 
 ## Rules (agent)
 
-1. One primary locale expansion outcome per `seo-locales` run (or continue same locale until a minimal viable set exists).
+0. If active count ≥ 5 → no new locale; retire domain (see CAP).
+1. One primary locale expansion outcome per `seo-locales` run (or continue same locale until a minimal viable set exists), only while active < 5.
 2. Choose next code = first in priority queue not in **Active locales**, unless ACTIVE PROJECT specifies otherwise.
 3. Route prefix: `/{code}/...` (e.g. `/pt`, `/ar/river-light`). File routes follow TanStack patterns used by the repo.
 4. **No** links from EN/ES header/footer/home primary nav to these locales. Optional: hreflang alternates only.
