@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation field).
-On PRODUCT: review SEO_LOCALES_ACTIVE; ship or defer /{code} routes beyond EN+ES.
 2026-10-16 FIX-BUILD: restored LEGACY_CATEGORY_REDIRECTS + SECONDARY_CATEGORY_MAP in category-catalog.ts (wiped by pixelihub). No new tools this run.
+2026-10-16 FIX-BUILD: no deploy for restore commit; small docs trigger for Vercel.
 ```
 
 ---
@@ -74,7 +74,7 @@ On PRODUCT: review SEO_LOCALES_ACTIVE; ship or defer /{code} routes beyond EN+ES
 ```
 last_mode: FIX-BUILD
 last_slugs: none
-last_deploy: pending (fix commit 164f5e19)
+last_deploy: pending (trigger commit)
 ```
 
 <!-- end:tools-builder-state.md -->
