@@ -28,6 +28,7 @@ function TerminosPage() {
       <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Términos de Uso" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Términos de Uso</h1>
+        <p className="text-sm text-muted-foreground">Última actualización: octubre 2026</p>
         <p>
           Estos Términos de Uso regulan el acceso y uso de <strong>{SITE_NAME}</strong>, incluidas todas las herramientas,
           calculadoras, experiencias interactivas, contenidos y servicios. Al utilizar el sitio aceptas estos términos.
