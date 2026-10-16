@@ -58,18 +58,18 @@ adsense-prep_runs: 1
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: River of Light Journey — interactive canvas: waypoints; glowing particle river; afterglows. Share URL+PNG. /river-light + /es/rio-luz. next-step EN+ES.
-id: river-light
-path_en: /river-light
-path_es: /es/rio-luz
-domain: journeys
-runs_total: 6
-runs_remaining: 0
-acceptance: met
-share: both
-next_step_required: yes
-notes: CORE journeys. SHIPPED+POLISH 1–6/6 complete (final restore of full interactive particle river). Ready for IDEATE.
+status: active
+idea: Traffic bet — instrument key interactions with Vercel Analytics custom events (tool open, share click, next-step click) so we can measure engagement and conversion on playgrounds/tools. Low-traffic site (~500 daily visits per external estimates); goal is baseline metrics for future bets. No UI change beyond optional debug log. EN+ES pages unaffected.
+id: traffic-events
+path_en: n/a
+path_es: n/a
+domain: traffic-bets
+runs_total: 3
+runs_remaining: 3
+acceptance: pending
+share: n/a
+next_step_required: no
+notes: GROWTH FIXED urn roll (U=0.47→GROWTH, U_g=0.31<p_fixed→FIXED; equal weight traffic-bets vs search-magnets). Prefer Analytics findings (site has Vercel Analytics). Baseline for measurable growth.
 adsense-prep_runs: 1
 ```
 
