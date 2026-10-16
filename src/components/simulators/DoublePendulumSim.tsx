@@ -6,7 +6,7 @@ const W = 480;
 const H = 380;
 const PIVOT_X = W / 2;
 const PIVOT_Y = 48;
-const TRAIL_MAX = 180;
+const TRAIL_MAX = 220;
 const PX_PER_M = 140;
 const DT = 1 / 90;
 
@@ -22,7 +22,7 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
   const [damping, setDamping] = useState(0.02);
   const [g, setG] = useState(9.8);
   const [trails, setTrails] = useState(true);
-  const [hud, setHud] = useState({ th1: 90, th2: 0 });
+  const [hud, setHud] = useState({ th1: 90, th2: 0, E: 0 });
 
   const state = useRef({
     th1: Math.PI / 2,
@@ -47,14 +47,23 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
     state.current.th2 = 0;
     state.current.w2 = 0;
     state.current.trail = [];
-    setHud({ th1: 90, th2: 0 });
+    setHud({ th1: 90, th2: 0, E: 0 });
     setRunning(true);
   }, []);
 
   const perturb = useCallback(() => {
-    state.current.th1 += (Math.random() - 0.5) * 0.04;
-    state.current.th2 += (Math.random() - 0.5) * 0.04;
+    state.current.th1 += (Math.random() - 0.5) * 0.06;
+    state.current.th2 += (Math.random() - 0.5) * 0.06;
   }, []);
+
+  const savePng = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = es ? "pendulo-doble-caos.png" : "double-pendulum-chaos.png";
+    a.click();
+  }, [es]);
 
   useEffect(() => {
     let raf = 0;
@@ -95,6 +104,28 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
       s.th2 += s.w2 * dt;
     };
 
+    const energy = () => {
+      const p = paramsRef.current;
+      const s = state.current;
+      const L1 = p.l1;
+      const L2 = p.l2;
+      const M1 = p.m1;
+      const M2 = p.m2;
+      const G = p.g;
+      const c1 = Math.cos(s.th1);
+      const c2 = Math.cos(s.th2);
+      const s1 = Math.sin(s.th1);
+      const s2 = Math.sin(s.th2);
+      const v1sq = (L1 * s.w1) ** 2;
+      const v2sq =
+        v1sq +
+        (L2 * s.w2) ** 2 +
+        2 * L1 * L2 * s.w1 * s.w2 * (c1 * c2 + s1 * s2);
+      const KE = 0.5 * M1 * v1sq + 0.5 * M2 * v2sq;
+      const PE = -M1 * G * L1 * c1 - M2 * G * (L1 * c1 + L2 * c2);
+      return KE + PE;
+    };
+
     const tick = (now: number) => {
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
@@ -127,7 +158,7 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
       if (trailsRef.current && runningRef.current && dragging.current === 0) {
         s.trail.push({ x: x2, y: y2, a: 1 });
         if (s.trail.length > TRAIL_MAX) s.trail.shift();
-        for (const pt of s.trail) pt.a *= 0.992;
+        for (const pt of s.trail) pt.a *= 0.988;
       } else if (!trailsRef.current) s.trail.length = 0;
 
       const bg = ctx.createLinearGradient(0, 0, 0, H);
@@ -136,27 +167,25 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, W, H);
 
-      // pivot plate
-      ctx.fillStyle = "rgba(30,40,60,0.6)";
+      ctx.fillStyle = "rgba(30,40,60,0.55)";
       ctx.fillRect(PIVOT_X - 36, 10, 72, 26);
-      ctx.strokeStyle = "rgba(125,211,252,0.3)";
+      ctx.strokeStyle = "rgba(125,211,252,0.35)";
       ctx.strokeRect(PIVOT_X - 36, 10, 72, 26);
 
-      // trail
       if (s.trail.length > 1) {
         for (let i = 1; i < s.trail.length; i++) {
           const a = s.trail[i]!;
           const b = s.trail[i - 1]!;
+          const alpha = 0.05 + a.a * 0.7;
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(56,189,248,${0.08 + a.a * 0.55})`;
-          ctx.lineWidth = 1.6;
+          ctx.strokeStyle = `rgba(56,189,248,${alpha})`;
+          ctx.lineWidth = 1.8;
           ctx.moveTo(b.x, b.y);
           ctx.lineTo(a.x, a.y);
           ctx.stroke();
         }
       }
 
-      // rods
       ctx.beginPath();
       ctx.strokeStyle = "#94a3b8";
       ctx.lineWidth = 3.5;
@@ -166,25 +195,22 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
       ctx.lineTo(x2, y2);
       ctx.stroke();
 
-      // pivot
       ctx.beginPath();
       ctx.fillStyle = "#e2e8f0";
       ctx.arc(PIVOT_X, PIVOT_Y, 8, 0, Math.PI * 2);
       ctx.fill();
 
-      // bob 1
       ctx.beginPath();
       ctx.fillStyle = "#38bdf8";
       ctx.arc(x1, y1, 11 + p.m1 * 2, 0, Math.PI * 2);
       ctx.fill();
 
-      // bob 2 (chaos tip)
-      const glow = ctx.createRadialGradient(x2, y2, 4, x2, y2, 22);
-      glow.addColorStop(0, "rgba(251,191,36,0.45)");
+      const glow = ctx.createRadialGradient(x2, y2, 4, x2, y2, 24);
+      glow.addColorStop(0, "rgba(251,191,36,0.5)");
       glow.addColorStop(1, "rgba(251,191,36,0)");
       ctx.beginPath();
       ctx.fillStyle = glow;
-      ctx.arc(x2, y2, 22, 0, Math.PI * 2);
+      ctx.arc(x2, y2, 24, 0, Math.PI * 2);
       ctx.fill();
       ctx.beginPath();
       ctx.fillStyle = "#fbbf24";
@@ -192,10 +218,11 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
       ctx.fill();
 
       hudTick.current++;
-      if (hudTick.current % 8 === 0) {
+      if (hudTick.current % 6 === 0) {
         setHud({
           th1: Math.round((s.th1 * 180) / Math.PI),
           th2: Math.round((s.th2 * 180) / Math.PI),
+          E: energy(),
         });
       }
 
@@ -212,7 +239,6 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
     const y = ((e.clientY - rect.top) / rect.height) * H;
     const p = paramsRef.current;
     const L1px = p.l1 * PX_PER_M;
-    const L2px = p.l2 * PX_PER_M;
 
     const s = state.current;
     if (dragging.current === 1) {
@@ -248,6 +274,9 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
           </SimSecondaryButton>
           <SimSecondaryButton theme="lab" active={trails} onClick={() => setTrails((t) => !t)}>
             {es ? (trails ? "Estela ✓" : "Estela") : trails ? "Trail ✓" : "Trail"}
+          </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" onClick={savePng}>
+            {es ? "PNG" : "PNG"}
           </SimSecondaryButton>
         </div>
       </div>
@@ -293,7 +322,7 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
         </label>
       </div>
 
-      <div className="grid w-full max-w-md grid-cols-2 gap-2 text-center text-[11px]">
+      <div className="grid w-full max-w-md grid-cols-3 gap-2 text-center text-[11px]">
         <div className="rounded-xl border border-sky-500/20 bg-black/30 px-2 py-2">
           <p className="font-bold text-sky-200/70">θ1</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.th1}°</p>
@@ -302,12 +331,16 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
           <p className="font-bold text-sky-200/70">θ2</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.th2}°</p>
         </div>
+        <div className="rounded-xl border border-sky-500/20 bg-black/30 px-2 py-2">
+          <p className="font-bold text-sky-200/70">{es ? "Energía" : "Energy"}</p>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.E.toFixed(2)}</p>
+        </div>
       </div>
 
       <p className="text-center text-[12px] leading-relaxed text-sky-200/75">
         {es
-          ? "Arrastrá cualquiera de las masas para fijar ángulos. Usá Perturbar para ver la dependencia sensible a condiciones iniciales."
-          : "Drag either bob to set angles. Use Perturb to demonstrate sensitive dependence on initial conditions."}
+          ? "Arrastrá cualquiera de las masas para fijar ángulos. Usá Perturbar para ver la dependencia sensible. Descargá PNG para compartir la trayectoria."
+          : "Drag either bob to set angles. Use Perturb to demonstrate sensitive dependence. Download PNG to share the trail."}
       </p>
 
       <canvas
@@ -323,7 +356,10 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
           const x1 = PIVOT_X + Math.sin(state.current.th1) * L1px;
           const y1 = PIVOT_Y + Math.cos(state.current.th1) * L1px;
           const d1 = Math.hypot(x - x1, y - y1);
-          const d2 = Math.hypot(x - (x1 + Math.sin(state.current.th2) * p.l2 * PX_PER_M), y - (y1 + Math.cos(state.current.th2) * p.l2 * PX_PER_M));
+          const d2 = Math.hypot(
+            x - (x1 + Math.sin(state.current.th2) * p.l2 * PX_PER_M),
+            y - (y1 + Math.cos(state.current.th2) * p.l2 * PX_PER_M),
+          );
           dragging.current = d2 < d1 + 20 ? 2 : 1;
           e.currentTarget.setPointerCapture(e.pointerId);
           setRunning(false);
@@ -341,13 +377,13 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
         role="img"
         aria-label={es ? "Simulador de péndulo doble caótico" : "Chaotic double pendulum simulator"}
         className="relative w-full max-w-[480px] touch-none rounded-2xl border border-sky-500/30 bg-[#05070c] shadow-[inset_0_0_40px_rgba(14,165,233,0.12)]"
-        style={{ height: "auto", cursor: "grab" }}
+        style={{ height: "auto", cursor: "grab", aspectRatio: `${W}/${H}` }}
       />
 
       <p className="text-center text-[11px] text-sky-200/40">
         {es
-          ? "Sistema clásico no lineal. Pequeñas diferencias iniciales divergen rápidamente."
-          : "Classic nonlinear system. Tiny initial differences diverge rapidly."}
+          ? "Sistema clásico no lineal. Pequeñas diferencias iniciales divergen rápidamente. La energía se conserva sin amortiguación."
+          : "Classic nonlinear system. Tiny initial differences diverge rapidly. Energy is conserved without damping."}
       </p>
     </div>
   );
