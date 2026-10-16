@@ -148,12 +148,37 @@ function ParticlePhysicsGuideEn() {
           <strong>Does the physics run on the server?</strong> No. Everything happens in the browser with Canvas or WebGL. Sharing a URL only shares the parameters, not a server-side simulation.
         </p>
 
-        <h2>Further exploration</h2>
+        <h2>Practical tips for building your own simulation</h2>
         <p>
-          The same principles power many interactive experiences: particle signatures that form text, constellation maps, firework trails and kaleidoscopic patterns. Understanding the basic force and integration loop lets you invent new behaviors quickly.
+          Start with a fixed time step (for example 1/60 second) even if the real frame rate varies; this keeps motion consistent. Cap the maximum force or acceleration so a single attractor cannot fling particles across the whole screen in one frame.
         </p>
         <p>
-          All simulations on UtiliHub run entirely client-side — no data is sent to servers for the physics itself. Experiment, share the resulting URLs, and download PNG snapshots.
+          Separate the update logic from the draw logic. That makes it easy to add pause, slow-motion or step-by-step debugging later. Store particles in a plain array or typed buffer and reuse objects instead of allocating new ones every frame.
+        </p>
+        <p>
+          When you want trails, prefer a semi-transparent clear (fade) over keeping long position histories; it is cheaper and looks smooth. For interactive tools, expose only two or three controls at first (strength, count, damping) so users can explore without overwhelm.
+        </p>
+
+        <h2>Related experiences on UtiliHub</h2>
+        <p>
+          The same particle principles appear in several other interactive surfaces:
+        </p>
+        <ul>
+          <li><Link to="/playgrounds/gravity-particles">Gravity Particles</Link> — place attractors and watch orbits form in real time.</li>
+          <li><Link to="/river-light">River of Light</Link> — continuous glowing flow along waypoints.</li>
+          <li><Link to="/playgrounds/particle-signature">Particle Signature</Link> — particles that assemble into text or shapes.</li>
+          <li><Link to="/constellation">Constellation Studio</Link> — star-field style layouts you can share.</li>
+        </ul>
+        <p>
+          All of them run fully in the browser. Experiment, share the resulting URLs, and download PNG snapshots when available.
+        </p>
+
+        <h2>Further exploration</h2>
+        <p>
+          Understanding the basic force and integration loop lets you invent new behaviors quickly: particle signatures that form text, constellation maps, firework trails and kaleidoscopic patterns all share the same foundation.
+        </p>
+        <p>
+          All simulations on UtiliHub run entirely client-side — no data is sent to servers for the physics itself.
         </p>
       </article>
 
