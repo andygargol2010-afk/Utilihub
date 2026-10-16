@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-16 | productividad | contador-caracteres | CharacterCounterTool
+- 2026-10-16 | salud | calculadora-deficit-calorico | CalorieDeficitTool
 - 2026-10-16 | matematicas | calculadora-proporcion | ProportionCalculatorTool
 - 2026-10-16 | diseno | generador-gradiente-css | CssGradientGeneratorTool
 - 2026-10-16 | educacion | calculadora-nota-final | FinalGradeTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-16 | cocina | escalador-receta | RecipeScalerTool
 - 2026-10-15 | productividad | water-intake | WaterIntakeTool
 - 2026-10-15 | conversiones | currency-converter | CurrencyConverterTool
-- 2026-10-1x | ciencia | timezone | TimezoneTool
-- 2026-10-1x | ciencia | kinetic-energy | KineticEnergyTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -45,8 +45,8 @@ hogar/construcción: recent
 % / math básica: recent (proporcion)
 generadores texto: watch
 conversiones genéricas: recent
-salud / body-metrics: recent
-productividad: recent
+salud / body-metrics: recent (deficit)
+productividad: recent (caracteres)
 cocina: recent
 educacion: recent
 diseno: recent
@@ -72,7 +72,7 @@ On PRODUCT: review SEO_LOCALES_ACTIVE; ship or defer /{code} routes beyond EN+ES
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-proporcion, generador-gradiente-css
+last_slugs: contador-caracteres, calculadora-deficit-calorico
 last_deploy: pending
 ```
 
