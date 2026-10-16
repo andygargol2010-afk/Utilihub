@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 155
+runs_done: 156
 runs_max: 500
 ```
 
@@ -61,7 +61,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: ~331000
+approx_bytes: ~330509
 last_known_good_hint: edfe18bbbda25d89e49481a35bc79b7f1b3be1bb (~331KB)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -78,7 +78,7 @@ last_mode: META
 last_date: 2026-10-16
 SEO_LOCALES_ACTIVE: none
 deploy: READY
-note: FORCE mobile UI active (remaining 3); PRODUCT deferred due to monolith >300KB truncation risk on full rewrite. Planned surgical: mq to 767px, max-md larger min-h/py on palette+toolbar, hide kbd on mobile, wider compact palette. Monolito intacto.
+note: FORCE mobile UI active (remaining 3); PRODUCT deferred again due to monolith ~330KB truncation risk on full rewrite via tool channel. Planned surgical (Tailwind max-md:): larger min-h/py on toolbar+palette buttons, hide <kbd> on mobile, slightly wider compact palette. Monolito intacto (paint helpers, 1 door conditional, ~330kB, 7490 lines). No remaining_runs consumed.
 ```
 
 Refresh after each run.
@@ -91,6 +91,7 @@ Refresh after each run.
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI active: remaining_runs 3.
+Truncation barrier confirmed; surgical PRODUCT requires a non-full-rewrite path or smaller channel.
 ```
 
 <!-- end:house-modeler-state.md -->
