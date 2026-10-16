@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 160
+runs_done: 161
 runs_max: 500
 ```
 
@@ -31,7 +31,7 @@ runs_max: 500
 
 ```
 status: active
-remaining_runs: 3
+remaining_runs: 2
 task: IMPROVE UI — mobile comfort only
 desktop: MUST stay visually/behaviorally the same (use CSS max-width / touch breakpoints; no desktop layout redesign)
 scope_examples:
@@ -61,8 +61,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 330509
-last_known_good_hint: edfe18bbbda25d89e49481a35bc79b7f1b3be1bb (~330509 bytes, 7490 lines)
+approx_bytes: 331010
+last_known_good_hint: 60fbb98d812dba4eefae328e1a7d61441bc50a36 (~331010 bytes, 7490 lines)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -74,15 +74,15 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-16
 SEO_LOCALES_ACTIVE: none
-deploy: ERROR on latest SHA 3ea9c67d… (unrelated to house-modeler: missing LEGACY_CATEGORY_REDIRECTS export in category-catalog.ts imported by all-tools.ts from pixelihub commit). Previous READY exists. Monolith not the cause.
-note: FORCE mobile UI still active (remaining 3). PRODUCT deferred again — full-body tool write of 330kB monolith confirmed truncation risk. Monolith verified intact (SHA edfe18bb…, ~330509B). Surgical map still valid:
-1) ~15 <kbd> classNames: append max-md:hidden (hide shortcuts <768px).
+deploy: pending check for SHA 60fbb98d… (previous READY on 1e4ebe49…)
+note: FORCE mobile UI active (remaining 2 after this). Applied surgical mobile comfort via local edit + gh push (avoided tool-channel truncation):
+1) 15 <kbd> classNames: appended max-md:hidden (hide shortcuts <768px).
 2) paletteCompact width: "w-[4.75rem]" → "w-[4.75rem] max-md:w-[5.25rem]".
-3) palette finish buttons: min-h-11 → min-h-11 max-md:min-h-14.
-Gates pass on prepared delta. Resume PRODUCT only with verified non-truncating full payload or true line-level edit. No remaining_runs consumed (META).
+3) palette finish buttons (~17): min-h-11 → min-h-11 max-md:min-h-14.
+Desktop unchanged (breakpoint-scoped). Gates OK (door conditional=1, paint helpers present, ~331kB). remaining_runs decremented.
 ```
 
 Refresh after each run.
@@ -94,10 +94,10 @@ Refresh after each run.
 ```
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
-FORCE FOCUS mobile UI active: remaining_runs 3.
-Truncation barrier confirmed on 330KB monolith; surgical PRODUCT requires non-truncating full-content push or line-level edit tool.
-Next PRODUCT: apply the three max-md: changes once safe channel confirmed. Prefer META until then.
-Unrelated catalog ERROR on latest deploy does not block this surface; other agents handle catalog fixes.
+FORCE FOCUS mobile UI active: remaining_runs 2.
+Surgical PRODUCT succeeded via authenticated gh push of locally edited full monolith (bypassed MCP content truncation risk).
+Next FORCE PRODUCT: continue mobile comfort (e.g. larger tool palette hit areas, safer spacing under 768px).
+Unrelated catalog ERROR on older deploys does not block this surface.
 ```
 
 <!-- end:house-modeler-state.md -->
