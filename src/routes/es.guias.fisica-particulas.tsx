@@ -5,7 +5,7 @@ import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from
 
 const title = "Física de Partículas en el Navegador: Gravedad, Atracción y Sistemas | UtiliHub";
 const description = cleanDescription(
-  "Guía original sobre simulaciones de partículas en el navegador. Aprende cómo funcionan la gravedad, las fuerzas de atracción y los sistemas de partículas con fórmulas, explicaciones visuales, el bucle de simulación y ejemplos en vivo. Prueba Gravity Particles y Río de Luz.",
+  "Guía original sobre simulaciones de partículas en el navegador. Aprende cómo funcionan la gravedad, las fuerzas de atracción y los sistemas de partículas con fórmulas, explicaciones visuales y ejemplos en vivo. Prueba Gravity Particles y Río de Luz.",
 );
 
 export const Route = createFileRoute("/es/guias/fisica-particulas")({
@@ -38,7 +38,7 @@ function ParticlePhysicsGuideEs() {
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Física de Partículas en el Navegador: Cómo Funcionan la Gravedad, la Atracción y los Sistemas</h1>
         <p className="lead">
-          Las simulaciones de partículas que se ejecutan completamente en el navegador se han convertido en una forma potente de explorar conceptos de física, crear arte interactivo y construir experiencias atractivas. Esta guía original explica los mecanismos centrales detrás de la gravedad, las fuerzas de atracción y los sistemas de partículas — con fórmulas, intuición visual, el bucle de simulación y enlaces directos a playgrounds en vivo en UtiliHub.
+          Las simulaciones de partículas que se ejecutan completamente en el navegador se han convertido en una forma potente de explorar conceptos de física, crear arte interactivo y construir experiencias atractivas. Esta guía original explica los mecanismos centrales detrás de la gravedad, las fuerzas de atracción y los sistemas de partículas — con fórmulas, intuición visual y enlaces directos a playgrounds en vivo en UtiliHub.
         </p>
 
         <h2>¿Qué es un sistema de partículas?</h2>
@@ -85,23 +85,6 @@ function ParticlePhysicsGuideEs() {
           </Link>
         </div>
 
-        <h2>El bucle de simulación en la práctica</h2>
-        <p>
-          Cada fotograma el motor hace aproximadamente los siguientes pasos:
-        </p>
-        <ol>
-          <li>Para cada partícula, empieza con un vector de fuerza cero.</li>
-          <li>Para cada atractor, calcula el vector de la partícula al atractor, la distancia (con suavizado) y añade la contribución de fuerza resultante.</li>
-          <li>Actualiza la velocidad: <code>velocidad += fuerza * dt</code>.</li>
-          <li>Aplica amortiguación: <code>velocidad *= 0.995</code> (o similar) para evitar aceleración infinita.</li>
-          <li>Actualiza la posición: <code>posición += velocidad * dt</code>.</li>
-          <li>Opcionalmente recicla la partícula si su tiempo de vida expiró o salió del canvas.</li>
-          <li>Dibuja todas las partículas (o sus rastros).</li>
-        </ol>
-        <p>
-          El delta-time (<code>dt</code>) mantiene el movimiento consistente a diferentes tasas de fotogramas. La amortiguación evita que las partículas aceleren para siempre cuando los atractores son fuertes.
-        </p>
-
         <h2>Sistemas de partículas como flujos continuos</h2>
         <p>
           No todo sistema de partículas trata de atractores discretos. En el Viaje Río de Luz, las partículas se emiten a lo largo de un camino definido por puntos de paso. Cada partícula sigue una spline o curva interpolada entre puntos, con rastros de post-resplandor persistentes y efectos de bloom suave. La densidad, velocidad, color y modo de bucle controlan la densidad visual del río fluente.
@@ -123,29 +106,6 @@ function ParticlePhysicsGuideEs() {
           </Link>
         </div>
 
-        <h2>Variaciones comunes con las que puedes experimentar</h2>
-        <ul>
-          <li><strong>Repulsores</strong> — invierte la dirección de la fuerza para que las partículas sean empujadas lejos. Útil para explosiones o evitación.</li>
-          <li><strong>Amortiguación / fricción</strong> — multiplica la velocidad por un factor < 1 cada fotograma. Detiene la aceleración descontrolada y crea órbitas más naturales.</li>
-          <li><strong>Rastros y post-resplandor</strong> — almacena las últimas N posiciones y dibuja líneas con opacidad decreciente. Crea el aspecto de río brillante o cometa.</li>
-          <li><strong>Mapeo de color</strong> — tiñe las partículas por velocidad, distancia al atractor, tiempo de vida o un hash de su índice.</li>
-          <li><strong>Suavizado</strong> — añade una constante pequeña al denominador para evitar división por cero o fuerzas infinitas cuando una partícula cae exactamente sobre un atractor.</li>
-        </ul>
-        <p>
-          Estas ideas aparecen en experiencias de UtiliHub: Firma de Partículas (atractores sembrados por texto), Mapa de Constelación (pozos de gravedad + líneas de conexión), Firma de Fuegos Artificiales y más.
-        </p>
-
-        <div className="not-prose my-8 grid gap-4 sm:grid-cols-2">
-          <Link to="/es/playgrounds/firma-particulas" className="rounded-xl border p-4 hover:border-primary/40">
-            <h3 className="font-bold">Firma de Partículas</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Escribe un nombre. Las partículas orbitan atractores sembrados por el texto.</p>
-          </Link>
-          <Link to="/es/constellation" className="rounded-xl border p-4 hover:border-primary/40">
-            <h3 className="font-bold">Mapa de Constelación</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Las estrellas forman letras con pozos de gravedad y líneas temporales.</p>
-          </Link>
-        </div>
-
         <h2>Consideraciones de rendimiento en el navegador</h2>
         <ul>
           <li>Usa arrays tipados o pools de objetos para evitar pausas por recolección de basura.</li>
@@ -154,20 +114,6 @@ function ParticlePhysicsGuideEs() {
           <li>Prefiere requestAnimationFrame e integración con delta-time para velocidad consistente entre dispositivos.</li>
           <li>Para efectos más avanzados, WebGL o WebGPU pueden manejar decenas de miles de partículas.</li>
         </ul>
-
-        <h2>Preguntas frecuentes</h2>
-        <h3>¿Puedo ejecutar simulaciones de partículas en el navegador sin WebGL?</h3>
-        <p>
-          Sí. Canvas 2D es más que suficiente para unos cientos hasta un par de miles de partículas con dibujo simple. El Gravity Particles Playground y el Río de Luz funcionan bien con Canvas. WebGL se vuelve útil cuando quieres decenas de miles de partículas o shaders complejos.
-        </p>
-        <h3>¿Cómo evito que las partículas vuelen al infinito?</h3>
-        <p>
-          Aplica amortiguación (velocidad *= 0.99 o similar) cada fotograma y/o usa una fuerza suavizada que decae con la distancia. También puedes limitar la velocidad máxima.
-        </p>
-        <h3>¿Es la física precisa?</h3>
-        <p>
-          Los sistemas de partículas del navegador priorizan el atractivo visual y la interacción en tiempo real sobre la precisión numérica. Usan integración newtoniana simplificada y a menudo ignoran la masa o usan masa unitaria. Para exploración educativa son excelentes; para precisión científica necesitarías integradores de orden superior y pasos de tiempo más pequeños.
-        </p>
 
         <h2>Exploración adicional</h2>
         <p>
