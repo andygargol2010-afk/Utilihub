@@ -6150,7 +6150,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           <span className="font-medium text-muted-foreground">
             {paletteItems.find((item) => item.kind === tool)?.size}
           </span>
-          <kbd className="rounded bg-amber-50/80 px-1 font-mono text-[10px] text-amber-950 dark:bg-amber-950/40 dark:text-amber-100">
+          <kbd className="rounded bg-amber-50/80 px-1 font-mono text-[10px] text-amber-950 dark:bg-amber-950/40 dark:text-amber-100 max-md:hidden">
             {paletteItems.find((item) => item.kind === tool)?.key}
           </kbd>
         </span>
@@ -6178,7 +6178,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           title={selectedId ? "D" : labels.needSel}
         >
           {labels.dup}
-          <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">D</kbd>
+          <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground max-md:hidden">D</kbd>
         </button>
         <button
           type="button"
@@ -6189,7 +6189,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           title={selectedId ? "G" : labels.needSel}
         >
           {labels.frame}
-          <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">G</kbd>
+          <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground max-md:hidden">G</kbd>
         </button>
         <button
           type="button"
@@ -6200,7 +6200,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           title={selectedLocked ? labels.lockedAction : selectedId ? "R" : labels.needSel}
         >
           {labels.rot}
-          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">R</kbd>
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground max-md:hidden">R</kbd>
         </button>
         <button
           type="button"
@@ -6214,7 +6214,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           title={selectedId ? "L" : labels.needSel}
         >
           {selectedLocked ? labels.unlock : labels.lock}
-          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">L</kbd>
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground max-md:hidden">L</kbd>
         </button>
         <button
           type="button"
@@ -6225,7 +6225,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           title={selectedLocked ? labels.lockedAction : selectedId ? "Del" : labels.needSel}
         >
           {labels.del}
-          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">Del</kbd>
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground max-md:hidden">Del</kbd>
         </button>
         <button
           type="button"
@@ -6236,7 +6236,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           title="C"
         >
           {labels.clear}
-          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">C</kbd>
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground max-md:hidden">C</kbd>
         </button>
         <button
           type="button"
@@ -6247,7 +6247,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           title="F"
         >
           {isFullscreen ? labels.exitFs : labels.fullscreen}
-          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
+          <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground max-md:hidden">F</kbd>
         </button>
       </div>
 
@@ -6310,7 +6310,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 className={`inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {labels.rot}
-                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">R</kbd>
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100 max-md:hidden">R</kbd>
               </button>
               <button
                 type="button"
@@ -6321,7 +6321,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 className={`inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 ${!selectedId ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {labels.dup}
-                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">D</kbd>
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100 max-md:hidden">D</kbd>
               </button>
               <button
                 type="button"
@@ -6332,7 +6332,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 className={`inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 ${!selectedId ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {labels.frame}
-                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">G</kbd>
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100 max-md:hidden">G</kbd>
               </button>
               <button
                 type="button"
@@ -6346,7 +6346,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 }`}
               >
                 {selectedLocked ? labels.unlock : labels.lock}
-                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">L</kbd>
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100 max-md:hidden">L</kbd>
               </button>
               <button
                 type="button"
@@ -6357,7 +6357,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 className={`inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
               >
                 {labels.del}
-                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">Del</kbd>
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100 max-md:hidden">Del</kbd>
               </button>
               <button
                 type="button"
@@ -6368,7 +6368,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800 disabled:opacity-40"
               >
                 {labels.clear}
-                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">C</kbd>
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100 max-md:hidden">C</kbd>
               </button>
               <button
                 type="button"
@@ -6378,7 +6378,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-amber-100/25 bg-amber-950/85 px-2.5 text-[11px] font-semibold text-amber-50 hover:bg-amber-800"
               >
                 {labels.exitFs}
-                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">F</kbd>
+                <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100 max-md:hidden">F</kbd>
               </button>
               <button
                 type="button"
@@ -6538,7 +6538,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           aria-label={labels.palette}
           aria-orientation="vertical"
           className={`flex shrink-0 flex-col gap-2 overflow-y-auto border-l border-border/60 bg-card/95 p-2 backdrop-blur-sm ${
-            paletteCompact ? "w-[4.75rem]" : isFullscreen ? "w-44" : "w-36 sm:w-44"
+            paletteCompact ? "w-[4.75rem] max-md:w-[5.25rem]" : isFullscreen ? "w-44" : "w-36 sm:w-44"
           }`}
         >
           <div className="flex items-center justify-between gap-1 px-0.5">
@@ -6580,7 +6580,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseDoorFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6611,7 +6611,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseWallFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6642,7 +6642,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseFloorFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6672,7 +6672,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseFenceFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6703,7 +6703,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => choosePathFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6734,7 +6734,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => choosePlanterFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6764,7 +6764,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseChimneyFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6794,7 +6794,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseLampFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6824,7 +6824,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseBeamFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6854,7 +6854,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseFoundationFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6884,7 +6884,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => choosePergolaFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6914,7 +6914,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseBenchFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6944,7 +6944,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseWindowFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -6974,7 +6974,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseRailingFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -7005,7 +7005,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseStairsFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -7036,7 +7036,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseColumnFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -7066,7 +7066,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                       onClick={() => chooseRoofFinish(id)}
                       aria-pressed={active}
                       title={label}
-                      className={`flex min-h-11 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
+                      className={`flex min-h-11 max-md:min-h-14 items-center gap-1 rounded-lg border px-1 text-[10px] font-semibold ${
                         paletteCompact ? "flex-col justify-center py-1" : "gap-1.5 px-1.5"
                       } ${
                         active ? "border-amber-700/70 bg-amber-900/15 ring-1 ring-amber-700/40" : "border-border hover:bg-accent"
@@ -7458,6 +7458,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     </div>
   );
 }
+
 
 
 
