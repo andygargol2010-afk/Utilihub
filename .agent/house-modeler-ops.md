@@ -15,10 +15,15 @@ If truncated: re-fetch; do not invent MODE or PRODUCT steps.
    - **BUILDING / QUEUED** → note; avoid risky PRODUCT.
    - **READY** → continue.
 3. **Monolith health:** read size (and spot-check for PLACEHOLDER / missing paint helpers). If bytes <120000 or wiped → **RESTORE only** (rules D); no PRODUCT.
-4. Else roll integer **1–10**:
+4. **FORCE FOCUS** (state file): if `FORCE FOCUS — MOBILE UI` has `status: active` and `remaining_runs > 0`:
+   - Skip normal roll. Mode = **PRODUCT** task **3 IMPROVE UI** only.
+   - Goal: more comfortable **phone** UI; **desktop must stay the same** (breakpoint-scoped CSS / touch targets; no desktop redesign).
+   - On successful mobile-UI PRODUCT: decrement `remaining_runs` in state; at 0 set status `done` and clear the FORCE block.
+   - FIX-BUILD / RESTORE / truncation-META do **not** decrement `remaining_runs`.
+5. Else roll integer **1–10**:
    - **1** → META (~10%)
    - **2–10** → PRODUCT (pick one task 1–6 below)
-5. Declare at start: mode, roll, `runs_done`/`runs_max`, multi-locale snapshot (codes + planned action).
+6. Declare at start: mode, roll or FORCE, `runs_done`/`runs_max`, multi-locale snapshot, FORCE remaining if any.
 
 ---
 
@@ -45,6 +50,7 @@ If truncated: re-fetch; do not invent MODE or PRODUCT steps.
 - All new strings **EN+ES**.
 - SEO locale copy only if multi-locale review says ship **and** the change is outside a monolith-risk write.
 - **Done when:** the targeted control is easier to find/use on desktop and a narrow viewport; no dead buttons or clipped panels.
+- **When FORCE FOCUS mobile is active:** optimize **only** under mobile breakpoints (~768px and below). Desktop (≥768px) layout and density must remain unchanged. Prefer larger hit areas, less overflow, thumb-friendly stacking. Acceptance test must include a narrow-viewport check and a desktop “unchanged” check.
 
 ### 4) FIX BUGS
 
@@ -153,6 +159,7 @@ Deploy: READY|ERROR|BUILDING + URL
 Monolito gates: OK|fallo
 Identidad: andygargol2010@gmail.com
 Pasos de prueba: abrir modeler → …
+FORCE mobile remaining_runs: … (si aplica)
 Handoff: (solo si cap) Fightersland activado
 ```
 

@@ -27,6 +27,36 @@ runs_max: 500
 
 ---
 
+## FORCE FOCUS — MOBILE UI (temporary)
+
+```
+status: active
+remaining_runs: 3
+task: IMPROVE UI — mobile comfort only
+desktop: MUST stay visually/behaviorally the same (use CSS max-width / touch breakpoints; no desktop layout redesign)
+scope_examples:
+  - larger touch targets on tool/part/finish controls under ~768px
+  - stack or sheet panels that currently overflow on small screens
+  - safer spacing for thumbs; avoid hover-only critical actions on mobile
+  - reduce accidental mis-taps (padding, hit area, sticky primary actions)
+out_of_scope:
+  - changing desktop sidebar/palette layout
+  - new PartKinds, textures, graphics, or unrelated bugs (unless blocking mobile UI ship)
+  - full monolith rewrite
+on_each_success:
+  - remaining_runs -= 1
+  - if remaining_runs hits 0 → set status: done and remove or clear this FORCE FOCUS block next META/PRODUCT close
+  - still bump runs_done as usual
+if_FIX-BUILD_or_RESTORE:
+  - do not consume remaining_runs (mobile focus waits until PRODUCT mobile UI ships)
+if_truncation_risk:
+  - META is allowed without consuming remaining_runs; resume FORCE on next safe PRODUCT
+```
+
+User request 2026-10-16: next 3 executions focus on making the UI more comfortable for phone users; PC unchanged.
+
+---
+
 ## MONOLITH NOTES
 
 ```
@@ -60,8 +90,7 @@ Refresh after each run.
 ```
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
-Files split 2026-10-16; expanded detail same day.
-QUALITY BAR + acceptance tests added for implementation quality.
+FORCE FOCUS mobile UI active: remaining_runs starts at 3.
 ```
 
 <!-- end:house-modeler-state.md -->
