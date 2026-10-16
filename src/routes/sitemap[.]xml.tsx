@@ -73,6 +73,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...pair("/experiences", "/es/experiences", "0.92"),
           ...pair("/legal", "/es/aviso-legal", "0.3"),
           ...pair("/privacy", "/es/privacidad", "0.3"),
+          ...pair("/terms", "/es/terminos", "0.3"),
           ...pair("/contact", "/es/contacto", "0.3"),
         ];
 
