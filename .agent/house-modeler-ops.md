@@ -22,8 +22,13 @@ If truncated: re-fetch; do not invent MODE or PRODUCT steps.
    - FIX-BUILD / RESTORE / truncation-META do **not** decrement `remaining_runs`.
 5. Else roll integer **1–10**:
    - **1** → META (~10%)
-   - **2–10** → PRODUCT (pick one task 1–6 below)
-6. Declare at start: mode, roll or FORCE, `runs_done`/`runs_max`, multi-locale snapshot, FORCE remaining if any.
+   - **2** → **MODELADOR-3D** (~10%): improve the **generic** 3D modeler (`modelador-3d` / Tinkercad-style), **not** the house modeler. Load and follow:
+     1. `.agent/modeler-3d-state.md`
+     2. `.agent/modeler-3d.md`
+     3. `.agent/modeler-3d-ops.md`
+     Do **not** edit `HouseModeler3D.tsx` in this mode. Still bump `runs_done` when the run counts.
+   - **3–10** → PRODUCT house modeler (tasks 1–6 below)
+6. Declare at start: mode, roll or FORCE, `runs_done`/`runs_max`, multi-locale snapshot, FORCE remaining if any. If MODELADOR-3D: state task from modeler-3d-ops.
 
 ---
 
@@ -148,7 +153,7 @@ After META that did real work (state/docs commit or verified health check worth 
 ## Spanish summary template
 
 ```
-Modo: PRODUCT|META|FIX-BUILD|RESTORE (roll N)
+Modo: PRODUCT|META|FIX-BUILD|RESTORE|MODELADOR-3D (roll N)
 runs_done / runs_max: …
 Monolito: ~bytes | SHA | intacto|restaurado|riesgo truncado
 MULTI-LOCALE: SEO_LOCALES_ACTIVE=[…] | acción: shipped|deferred|n-a
@@ -167,6 +172,7 @@ Handoff: (solo si cap) Fightersland activado
 
 ## ALWAYS
 
+- ~10% of non-FORCE rolls are MODELADOR-3D (generic Tinkercad-style modeler); follow `.agent/modeler-3d*.md` and never touch the house monolith in that mode.
 - Respect Core Web Vitals boundaries: no eager modeler on home/lists; dispose resources; FPS-safe graphics; mobile CSS without desktop CLS.
 - Quality of monolith integrity > shipping a risky feature.
 - User-visible correctness > lines changed.

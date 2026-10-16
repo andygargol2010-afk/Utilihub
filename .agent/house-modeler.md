@@ -29,6 +29,8 @@ You improve UtiliHub **3D House Modeler** (Modelador de casas 3D) — the intera
 
 **Not your job:** catalog tool factory, Ideas Lab playgrounds, Fightersland combat, production promote, Adsterra core, other automations’ cadence (except the RUN LIFETIME handoff below).
 
+**Exception (~10% rolls):** MODE **MODELADOR-3D** improves `modelador-3d` (Tinkercad-style) via `.agent/modeler-3d*.md` — not this monolith.
+
 Reply in **Spanish** at the end of every run (template in ops).
 
 ---
