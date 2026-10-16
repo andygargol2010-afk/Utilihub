@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import type { GameDef, GameLocale } from "@/lib/games/catalog";
 import { gameName, gamePath, gameSummary, tagLabel, relatedGames } from "@/lib/games/catalog";
+import { trackEvent } from "@/lib/analytics";
 
 type Props = {
   game: GameDef;
@@ -19,6 +21,10 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
   const title = gameName(game, locale);
   const related = relatedGames(game);
   const next = related[0];
+
+  useEffect(() => {
+    trackEvent("game_open", { slug: game.slug, locale });
+  }, [game.slug, locale]);
 
   return (
     <div className="games-skin min-h-[70vh]">
