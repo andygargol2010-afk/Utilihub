@@ -11,7 +11,6 @@ import { DeferredKitReturnRibbon } from "@/components/kits/DeferredKitReturnRibb
 import type { CatalogTool } from "@/lib/all-tools";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
-import { trackEvent } from "@/lib/analytics";
 
 type ToolHead = {
   meta: Array<{ title?: string; name?: string; property?: string; content?: string }>;
@@ -157,7 +156,9 @@ function SpanishToolPage() {
   };
   const categorySlug = tool.category;
   useEffect(() => {
-    trackEvent("tool_open", { slug: tool.slug, locale: "es" });
+    void import("@/lib/analytics").then((mod) => {
+      mod.trackEvent("tool_open", { slug: tool.slug, locale: "es" });
+    });
     void import("@/hooks/use-recent-tools").then((mod) => {
       mod.recordRecentTool(tool.slug);
     });
