@@ -173,6 +173,14 @@ function ParticlePhysicsGuideEn() {
           All of them run fully in the browser. Experiment, share the resulting URLs, and download PNG snapshots when available.
         </p>
 
+        <h2>Conclusion</h2>
+        <p>
+          Particle systems in the browser turn simple force-and-integrate loops into rich, shareable experiences. By understanding Newton’s law approximations, softening, damping and continuous emission, you can recreate gravity orbits, glowing rivers and many other effects without leaving the page.
+        </p>
+        <p>
+          Start with the live playgrounds linked above, then experiment with your own variations. Everything runs client-side — no data leaves your browser for the simulation itself.
+        </p>
+
         <h2>Further exploration</h2>
         <p>
           Understanding the basic force and integration loop lets you invent new behaviors quickly: particle signatures that form text, constellation maps, firework trails and kaleidoscopic patterns all share the same foundation.
