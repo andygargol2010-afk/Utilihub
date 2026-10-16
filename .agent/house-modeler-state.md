@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 159
+runs_done: 160
 runs_max: 500
 ```
 
@@ -77,13 +77,12 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: META
 last_date: 2026-10-16
 SEO_LOCALES_ACTIVE: none
-deploy: READY (SHA 78b16b9b92ae993745d035597d9d24e3c0df6e4a)
-note: FORCE mobile UI active (remaining 3); PRODUCT deferred again due to confirmed 330kB truncation risk on full-body tool write. Monolith verified intact (7490 lines, 330509B, SHA edfe18bb…). Surgical map still valid and locally prepared:
-1) ~15 <kbd> classNames: append max-md:hidden (shortcuts hide <768px).
+deploy: ERROR on latest SHA 3ea9c67d… (unrelated to house-modeler: missing LEGACY_CATEGORY_REDIRECTS export in category-catalog.ts imported by all-tools.ts from pixelihub commit). Previous READY exists. Monolith not the cause.
+note: FORCE mobile UI still active (remaining 3). PRODUCT deferred again — full-body tool write of 330kB monolith confirmed truncation risk. Monolith verified intact (SHA edfe18bb…, ~330509B). Surgical map still valid:
+1) ~15 <kbd> classNames: append max-md:hidden (hide shortcuts <768px).
 2) paletteCompact width: "w-[4.75rem]" → "w-[4.75rem] max-md:w-[5.25rem]".
 3) palette finish buttons: min-h-11 → min-h-11 max-md:min-h-14.
-Local delta +515B; gates pass. Resume PRODUCT only when full verified payload can be pushed without truncation.
-No remaining_runs consumed.
+Gates pass on prepared delta. Resume PRODUCT only with verified non-truncating full payload or true line-level edit. No remaining_runs consumed (META).
 ```
 
 Refresh after each run.
@@ -98,6 +97,7 @@ Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI active: remaining_runs 3.
 Truncation barrier confirmed on 330KB monolith; surgical PRODUCT requires non-truncating full-content push or line-level edit tool.
 Next PRODUCT: apply the three max-md: changes once safe channel confirmed. Prefer META until then.
+Unrelated catalog ERROR on latest deploy does not block this surface; other agents handle catalog fixes.
 ```
 
 <!-- end:house-modeler-state.md -->
