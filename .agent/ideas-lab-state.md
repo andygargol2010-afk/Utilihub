@@ -66,11 +66,11 @@ path_en: /terms
 path_es: /es/terminos
 domain: adsense-prep
 runs_total: 2
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: DOMAIN ROLL U=0.438 → GROWTH. U_g=0.521 > 0.35 → FLEX urn. Sampled adsense-prep (weight 2). last_closed search-magnets → no re-roll. Weight updates: selected adsense-prep→1; other FLEX +1. adsense-prep_runs 1→2. Priority About/Privacy already solid → Terms next.
+notes: DOMAIN ROLL U=0.438 → GROWTH. U_g=0.521 > 0.35 → FLEX urn. Sampled adsense-prep (weight 2). last_closed search-magnets → no re-roll. Weight updates: selected adsense-prep→1; other FLEX +1. adsense-prep_runs 1→2. Priority About/Privacy already solid → Terms next. EXECUTE 2026-10-16: shipped /terms + /es/terminos (acceptable use, IP, Adsterra ads, warranties, liability, contact), footer links, sitemap. Adsterra kept.
 adsense-prep_runs: 2
 ```
 
