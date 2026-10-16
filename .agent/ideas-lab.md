@@ -6,7 +6,9 @@ Repo: `andygargol2010-afk/Utilihub`.
 
 The automation prompt is intentionally short: it must load this file via GitHub `get_file_contents` (path `.agent/ideas-lab.md`, ref `fix/spanish-complete`) and follow it exactly. Never invent rules that contradict this file.
 
-When ACTIVE PROJECT or weights change: edit **this file** and commit on `fix/spanish-complete`. Optionally keep a one-line note in the automation prompt if needed; the file always wins.
+When ACTIVE PROJECT, weights, or recent_closed change: edit **this file** and commit on `fix/spanish-complete`. Optionally keep a one-line note in the automation prompt if needed; **this file always wins**.
+
+**Deprecated:** `.agent/state/ideas-lab-active.json` is **not** the source of truth for this automation (stale / gitignored pattern). Do not read it for decisions; do not keep it in sync. All runtime state lives in the sections below.
 
 ---
 
@@ -28,23 +30,23 @@ Reply in **Spanish** at the end of every run (see Spanish summary template below
 1. ONLY branch `fix/spanish-complete`. Never `main`. Never open PRs that target main from this agent unless the human explicitly asks outside this automation.
 2. Repo: `andygargol2010-afk/Utilihub`. Prefer `github___create_or_update_file` / `github___push_files` / OAuth push. Do not rely on local git identity if the tool sets author; still require the identity in rule 3 for any commit path that allows it.
 3. COMMIT IDENTITY: name `andygargol2010-afk`, email `andygargol2010@gmail.com`. FORBIDDEN: `agent@utilihub.net`, "UtiliHub Agent", invented emails, or any other author.
-4. NEVER create / delete / update any other automation. Only `automation_update` on **THIS** task (`innovador utilihub`), and only when the short bootstrap prompt itself must change. When updating state (ACTIVE PROJECT, weights, adsense-prep_runs): prefer editing **this file** and committing; do not re-paste the full rules into the automation prompt.
+4. NEVER create / delete / update any other automation. Only `automation_update` on **THIS** task (`innovador utilihub`), and only when the short bootstrap prompt itself must change. When updating state (ACTIVE PROJECT, weights, adsense-prep_runs, recent_closed): prefer editing **this file** and committing; do not re-paste the full rules into the automation prompt.
 5. NEVER change cadence / schedule / notification of this or any other automation.
 6. Do NOT touch `HouseModeler3D.tsx` (no quality cuts, no Sky/texture removal "for FPS"). Do NOT touch Adsterra / ads core unless pure layout spacing (fixed slot height / CLS reserve). Surgical edits only. **NEVER remove Adsterra** for AdSense prep or traffic recovery.
 7. One primary outcome per run (one idea ship/polish, one diagnosis report, or one adsense-prep page improvement — not three mixed outcomes).
-8. POST-PUSH DEPLOY CHECK: list Vercel deployments for project utilihub on branch `fix/spanish-complete`. If state is ERROR → FIX-BUILD (max 2 attempts this run). If READY → state it explicitly. Never invent deploy success. RATE_LIMITED is not a build error (rule 9).
+8. POST-PUSH DEPLOY CHECK: list Vercel deployments for project utilihub on branch `fix/spanish-complete`. If state is ERROR → FIX-BUILD (max 2 attempts this run). If READY → state it explicitly. Never invent deploy success. RATE_LIMITED is not a build error (rule 9). After READY on a user-facing ship/polish, also run **POST-SHIP SMOKE CHECK** (see below).
 9. RATE_LIMITED (GitHub/Vercel API) is not a build error; retry once or report and stop without false claims.
 10. `runs_total` / `runs_remaining` are integers in 1..15. Never raise the cap mid-project. Decrement `runs_remaining` when a run consumes a slot (ship or polish that advances the idea).
 11. DOMAIN ROLL (IDEATE only — see MODE):
     - Catalogs: **CORE** = `kits | journeys | games | simulators | studio-composition | playgrounds`; **GROWTH** = `traffic-bets | growth-surfaces | share-hooks | search-magnets | retention-loops | conversion-paths | traffic-diagnosis | adsense-prep`.
     - Draw U ~ Uniform(0,1): if U < 0.50 → GROWTH, else CORE.
-    - Within the chosen catalog, sample by domain weights.
+    - Within the chosen catalog, sample by domain weights from the **DOMAIN WEIGHTS** block (not from free-text notes).
     - Base weight = 1 for all domains when the system starts or a domain is first seen.
     - **FIXED forever:** `traffic-bets` and `search-magnets` always weight **3**; never reset when selected; never increase when not selected.
     - **TEMPORARY:** `adsense-prep` weight **2** while active; track `adsense-prep_runs` (0..5) in ACTIVE PROJECT. Each time adsense-prep is selected, increment by 1. On the 5th selection (runs reaches 5), after that run completes: permanently remove `adsense-prep` from the GROWTH list in **this file** and drop its weight rules — it must not appear again.
-    - Other domains: when one is selected, set its weight to **1** and **increase by 1** every other non-fixed domain in the **same** catalog that was not selected (anti-starvation).
+    - Other domains: when one is selected, set its weight to **1** and **increase by 1** every other non-fixed domain in the **same** catalog that was not selected (anti-starvation). Write the new numbers into **DOMAIN WEIGHTS**.
     - Always state: catalog, domain, method (U + weighted sample), weights before/after, and `adsense-prep_runs` if still active.
-    - If the last **closed** domain equals the newly sampled domain, re-roll once within the same catalog.
+    - If `last_closed_domain` equals the newly sampled domain, re-roll once within the same catalog.
     - Never default to `kits` out of habit; kits must win the weighted sample fairly.
 12. NEXT STEP / SIGUIENTE RECOMENDADA (retention — required for shareable playgrounds / experiences):
     When shipping or polishing any interactive playground, experience, signature, particle studio, canvas studio, or similar under CORE domains `playgrounds | journeys | studio-composition | games` (shareable interactive surfaces — NOT plain catalog calculators, NOT adsense-prep, NOT traffic-diagnosis):
@@ -52,6 +54,61 @@ Reply in **Spanish** at the end of every run (see Spanish summary template below
     - (b) Add `PLAYGROUND_JOURNEYS[id]` with 3–4 related ids (primary next first).
     - (c) Mount `<PlaygroundNextStep currentId="…" locale="en|es" />` on **both** EN and ES route pages, after the main interactive surface and **before** `AdsterraBanner`.
     - (d) Never ship a new playground/experience route without this block. First ship may include next-step in the same run or the immediate next polish run — never leave routes without it across acceptance. Reuse `@/components/playgrounds/PlaygroundNextStep`; do not invent a parallel widget.
+
+---
+
+## DOMAIN WEIGHTS + last_closed (structured — edit on every IDEATE / close)
+
+**Authoritative for rolls.** Do not invent weights from memory or from long `notes` paragraphs. Update this block whenever a domain is selected (IDEATE) or a project is closed.
+
+```
+last_closed_domain: studio-composition
+last_closed_id: glow-trail
+
+weights_core:
+  kits: 5
+  journeys: 1
+  games: 3
+  simulators: 5
+  studio-composition: 2
+  playgrounds: 4
+
+weights_growth:
+  traffic-bets: 3
+  growth-surfaces: 1
+  share-hooks: 1
+  search-magnets: 3
+  retention-loops: 1
+  conversion-paths: 1
+  traffic-diagnosis: 1
+  adsense-prep: 2
+
+adsense-prep_runs: 1
+```
+
+Notes on this snapshot:
+- CORE weights match post-roll after journeys was selected (journeys reset to 1; others non-fixed incremented).
+- FIXED growth domains stay at 3 forever.
+- When closing the current journeys project, set `last_closed_domain: journeys` and `last_closed_id: river-light` (or the id used in next-step).
+
+---
+
+## RECENT_CLOSED (last 8–10 Ideas Lab outcomes)
+
+Newest first. Used by QUALITY BAR (“different from last 8–10”). On project close, **prepend** one line and keep at most 10 entries.
+
+```
+- 2026-10-15 | studio-composition | glow-trail | Glow Trail Composer
+- 2026-10-15 | games | pulse-catch | Pulse Catch
+- 2026-10-1x | playgrounds | gravity-particles | Gravity Particles (prior)
+- 2026-10-1x | growth-surfaces | postcard | Particle Postcard (prior)
+- 2026-10-1x | studio-composition | neon-sign | Neon Signature Studio (prior)
+- 2026-10-1x | playgrounds | kaleidoscope-mandala | Kaleidoscope Mandala (prior)
+- 2026-10-1x | playgrounds | constellation-studio | Constellation Share Studio (prior)
+- 2026-10-1x | playgrounds | particle-signature | Particle Signature (prior)
+```
+
+When closing **River of Light**, prepend: `2026-10-15 | journeys | river-light | River of Light Journey`.
 
 ---
 
@@ -101,7 +158,7 @@ Rules:
 - Do **NOT** remove Adsterra.
 - Do **NOT** claim AdSense approval or "ready for approval" as a fact.
 - Ship on `fix/spanish-complete`.
-- After each adsense-prep run: increment `adsense-prep_runs` in ACTIVE PROJECT in **this file** and commit.
+- After each adsense-prep run: increment `adsense-prep_runs` in ACTIVE PROJECT **and** in DOMAIN WEIGHTS block; commit this file.
 - On run 5 completion: delete adsense-prep from GROWTH catalog and weight rules in this file permanently.
 
 ---
@@ -129,7 +186,7 @@ Not a product idea. One measurable diagnosis outcome per run.
 
 **Must have (product ideas):**
 - Real interactive experience (canvas, live simulation, game loop, or guided visual journey).
-- Different from the last 8–10 shipped Ideas Lab outcomes.
+- Different from **RECENT_CLOSED** (last 8–10). Do not re-ship the same id or a thin rename.
 - Shippable in ≤ 6–8 runs (first ship ideally by run 1–2).
 - **Immediate visual payoff** within seconds of load / first interaction.
 - EN + ES routes (or shared component with `locale`) when the surface is user-facing.
@@ -151,20 +208,68 @@ Not a product idea. One measurable diagnosis outcome per run.
 
 ---
 
-## ACTIVE PROJECT (ONLY editable section for runtime state)
+## ACTIVE PROJECT (ONLY editable section for runtime idea state)
 
-Edit this block when status, idea, runs, acceptance, notes, or adsense-prep_runs change. Then commit on `fix/spanish-complete`.
+Edit this block when status, idea, runs, acceptance, notes, or idea-level fields change. Domain weights live in **DOMAIN WEIGHTS** (not only here). Then commit on `fix/spanish-complete`.
 
 ```
 status: active
 idea: River of Light Journey — interactive canvas experience: place waypoints on a dark field; a continuous glowing river of particles flows between them, leaving persistent afterglows and soft blooms. Controls for flow speed, core/glow colors, particle density, and loop mode. Immediate visual payoff. Shareable via URL state + PNG snapshot. EN+ES routes /river-light and /es/rio-luz. Requires next-step catalog + PlaygroundNextStep on both routes.
+id: river-light
+path_en: /river-light
+path_es: /es/rio-luz
 domain: journeys
 runs_total: 6
 runs_remaining: 1
 acceptance: pending
-notes: IDEATED 2026-10-15. Catalog CORE (U≈0.71>0.50), domain=journeys (weighted sample, weights pre: kits:4 journeys:4 simulators:4 playgrounds:3 games:2 studio-composition:1), weights post-roll: kits:5, simulators:5, playgrounds:4, games:3, studio-composition:2, journeys:1. Previous closed: studio-composition (Glow Trail Composer — fully shipped + next-step + READY). adsense-prep_runs=1 (unchanged). SHIPPED 2026-10-15 run 1/6: full interactive canvas + next-step EN+ES + READY deploy. POLISH 2026-10-15 run 2/6: Catmull-Rom smooth curves, persistent afterglow deposits, drag waypoints; commit 8fb7bfa; deploy READY. Prompt source moved to .agent/ideas-lab.md (variant A) 2026-10-15. POLISH 2026-10-15 run 3/6: particle trails, organic turbulence noise, load demo button; commit d464443; next-step already present. Expanded prompt sections 2026-10-15 (MODE/domains/traffic/quality). POLISH 2026-10-15 run 4/6: afterglow intensity slider (URL state), double-click to remove waypoint, tuned deposit/fade; commit 59275a85; next-step + Adsterra intact. POLISH 2026-10-15 run 5/6: particle size + turbulence intensity sliders (URL state sz/tu), scaled organic offset and particle sizing; next-step + Adsterra intact.
+notes: IDEATED 2026-10-15. Catalog CORE (U≈0.71>0.50), domain=journeys. Previous closed: studio-composition (Glow Trail). SHIPPED run 1/6 + POLISH runs 2–5/6 (curves, afterglow, drag, trails, turbulence, sliders sz/tu/afterglow, demo). next-step + Adsterra intact. Ops blocks added 2026-10-15 (weights, smoke, recent_closed, IDEATE template, FIX-BUILD).
 adsense-prep_runs: 1
 ```
+
+---
+
+## IDEATE idea template (required fields when writing a new ACTIVE PROJECT)
+
+Fill every field (use `n/a` only for traffic-diagnosis / adsense-prep where product fields do not apply):
+
+```
+status: active
+idea: <one paragraph: what the user does + visual payoff + why not a calculator>
+id: <kebab-case, matches next-step id when applicable>
+path_en: /...
+path_es: /es/...
+domain: <rolled domain>
+runs_total: <1..15>
+runs_remaining: <same as total at IDEATE>
+acceptance: pending
+share: url | png | both | n/a
+next_step_required: yes | no
+acceptance_bullets:
+  - <observable criterion 1>
+  - <observable criterion 2>
+  - <deploy READY + smoke if user-facing>
+notes: <roll math: U, catalog, weights pre→post, last_closed check, date>
+adsense-prep_runs: <unchanged unless adsense-prep domain>
+```
+
+Also update **DOMAIN WEIGHTS** (and GROWTH list if adsense-prep removed) in the same commit as the new ACTIVE PROJECT.
+
+---
+
+## POST-SHIP SMOKE CHECK (after READY on user-facing ship/polish)
+
+Do not claim success on deploy READY alone if routes were added or changed.
+
+1. Resolve preview or production URL for branch `fix/spanish-complete` (Vercel deployment URL is fine).
+2. Open **path_en** and **path_es** from ACTIVE PROJECT (or the paths just shipped).
+3. Confirm best-effort:
+   - Page returns 200 / renders shell (not blank error boundary).
+   - Main interactive surface present (canvas or equivalent).
+   - If next_step_required: `PlaygroundNextStep` (or visible “next” retention block) present in the page.
+4. If smoke fails but deploy is READY → fix in this run if within one primary outcome budget; else note failure honestly and leave acceptance pending.
+5. Record in Spanish summary: smoke EN/ES ok or fail + how checked (tool / assumption).
+
+Skip smoke for pure docs-only commits, traffic-diagnosis reports with no UI, or adsense-prep text-only if no new interactive route.
 
 ---
 
@@ -175,29 +280,45 @@ Every run starts with **Deploy check** + **load this file** (if not already in c
 ### 0) Bootstrap
 1. List Vercel deployments for utilihub, branch `fix/spanish-complete` (recent).
 2. If latest relevant deploy is ERROR → enter FIX-BUILD (max 2). Else note READY / BUILDING / etc. honestly.
-3. Read ACTIVE PROJECT below.
+3. Read ACTIVE PROJECT, DOMAIN WEIGHTS, RECENT_CLOSED.
 
 ### 1) If `status: active` and `runs_remaining > 0` → **EXECUTE**
 - Advance the current idea: implement, polish, or wire missing next-step / i18n / share.
 - One primary outcome.
 - After meaningful progress: decrement `runs_remaining`, append notes, commit this file + code.
-- POST-PUSH deploy check again.
-- If acceptance criteria are met (see idea text + QUALITY BAR + next-step rules) → set `acceptance: ready` or close project (`status: done` / clear idea) and on the **same or next** run go to IDEATE.
+- POST-PUSH deploy check again; if user-facing → **POST-SHIP SMOKE CHECK**.
+- If acceptance criteria are met (idea text + QUALITY BAR + next-step + smoke) → set `acceptance: ready` or close project:
+  - Prepend to **RECENT_CLOSED**
+  - Set `last_closed_domain` / `last_closed_id` in DOMAIN WEIGHTS
+  - Clear or mark ACTIVE PROJECT done
+  - Same or next run → IDEATE
 
 ### 2) If project is **done** / acceptance closed / `runs_remaining == 0` without acceptance → **IDEATE**
-1. Domain roll (IMMUTABLE §11): state U, catalog, weights pre, domain, weights post, adsense-prep_runs.
-2. If last closed domain == new domain → re-roll once same catalog.
-3. Propose one idea under QUALITY BAR (or adsense-prep / traffic-diagnosis procedures if those domains).
-4. Write new ACTIVE PROJECT (`status: active`, `runs_total` 1..15, `runs_remaining` = total, `acceptance: pending`, notes with roll math).
-5. Commit this file. Do not start a huge multi-file ship in the same run unless the idea is tiny; usually IDEATE ends with state written.
+1. Domain roll (IMMUTABLE §11) using **DOMAIN WEIGHTS** numbers: state U, catalog, weights pre, domain, weights post, adsense-prep_runs.
+2. If `last_closed_domain` == new domain → re-roll once same catalog.
+3. Check **RECENT_CLOSED** — reject duplicates / thin renames.
+4. Propose one idea under QUALITY BAR using **IDEATE idea template** (or adsense-prep / traffic-diagnosis procedures).
+5. Write new ACTIVE PROJECT + update DOMAIN WEIGHTS in this file.
+6. Commit this file. Do not start a huge multi-file ship in the same run unless the idea is tiny; usually IDEATE ends with state written.
 
-### 3) FIX-BUILD
-- Only when deploy ERROR after a push from this agent (or blocking ERROR on the branch you need).
-- Max 2 fix attempts per run.
-- Do not invent green deploys.
+### 3) FIX-BUILD (runbook — max 2 attempts per run)
+
+Only when deploy ERROR after a push from this agent (or blocking ERROR on the branch you need). Do not invent green deploys.
+
+**Order of diagnosis:**
+1. Open Vercel deployment logs / error message (build command failure vs runtime).
+2. Common UtiliHub / TanStack / Vite failures:
+   - **Missing import / wrong path** — component or route import typo; fix path to match `src/`.
+   - **Route file naming** — `createFileRoute` path must match file under `src/routes/` (e.g. `es.rio-luz.tsx` ↔ `/es/rio-luz`).
+   - **TypeScript** — unused vars, bad props, `strict` null; fix types without `as any` sprawl.
+   - **next-step.ts** — duplicate id, trailing comma, bad export; keep `PLAYGROUNDS` + `PLAYGROUND_JOURNEYS` consistent.
+   - **SEO / head** — invalid JSX in `head()`; ensure returned arrays/objects match sibling routes.
+   - **Adsterra / layout** — do not “fix” by removing ads; restore banner if accidental delete.
+3. One focused fix commit per attempt (`fix(build): …`).
+4. Re-list deployments; if still ERROR after 2 attempts → stop, report log excerpt in Spanish summary.
+5. RATE_LIMITED → wait/retry once; not counted as a successful green deploy.
 
 ### EXECUTE checklist (shareable playground / journey / studio / game)
-Use when building or polishing interactive surfaces:
 
 1. Component under `src/components/playgrounds/` (or existing pattern for games).
 2. EN route + ES route (`createFileRoute`), SEO head (title, description, canonical, hreflang), copy in both languages.
@@ -206,21 +327,24 @@ Use when building or polishing interactive surfaces:
 5. `PLAYGROUNDS` + `PLAYGROUND_JOURNEYS` in `next-step.ts`.
 6. `<PlaygroundNextStep currentId="…" locale="…" />` on both routes **before** AdsterraBanner.
 7. Do not remove Adsterra; keep banner placement consistent with sibling experiences.
-8. Deploy check; update ACTIVE PROJECT notes + runs_remaining.
+8. Deploy check → **POST-SHIP SMOKE CHECK** → update ACTIVE PROJECT notes + runs_remaining.
 
 ### Weight sampling (practical)
-- Sum weights in the catalog; draw r ~ Uniform(0, sum); walk cumulative ranges.
-- Example: weights kits:4, journeys:1, … → probability proportional to weight.
-- Record pre and post weights in notes every IDEATE.
+- Read weights from **DOMAIN WEIGHTS** for the chosen catalog only.
+- Sum weights; draw r ~ Uniform(0, sum); walk cumulative ranges.
+- Write **pre** and **post** weights back into DOMAIN WEIGHTS (selected non-fixed → 1; other non-fixed in catalog → +1; fixed unchanged).
 
 ---
 
-## How to update ACTIVE PROJECT
+## How to update state in this file
 
-1. Edit only the ACTIVE PROJECT fenced block (and adsense-prep catalog removal when required by IMMUTABLE).
-2. Commit on `fix/spanish-complete` with identity `andygargol2010-afk` / `andygargol2010@gmail.com`.
-3. Do not change IMMUTABLE text except the documented permanent removal of adsense-prep after 5 runs.
-4. Keep the automation bootstrap prompt short; do not mirror the full file back into Automations.
+1. ACTIVE PROJECT — idea runtime fields.
+2. DOMAIN WEIGHTS — last_closed_*, weights_*, adsense-prep_runs.
+3. RECENT_CLOSED — prepend on close (max 10).
+4. Commit on `fix/spanish-complete` with identity `andygargol2010-afk` / `andygargol2010@gmail.com`.
+5. Do not change IMMUTABLE text except the documented permanent removal of adsense-prep after 5 runs.
+6. Keep the automation bootstrap prompt short; do not mirror the full file back into Automations.
+7. Ignore `.agent/state/ideas-lab-active.json` for decisions.
 
 ---
 
@@ -228,8 +352,10 @@ Use when building or polishing interactive surfaces:
 
 Write a short closing section in Spanish covering:
 - Deploy: READY / ERROR / BUILDING (honest).
+- Smoke EN/ES: ok / fail / skipped (+ reason).
 - Qué se hizo (un outcome).
 - ACTIVE PROJECT: idea, domain, runs_remaining, acceptance.
+- Weights / last_closed if IDEATE or close.
 - Archivos / commits tocados (si hubo).
 - Confirmación de identidad de commit si hubo push.
 - Si aplica: Adsterra intacto; next-step presente sí/no.
@@ -245,4 +371,5 @@ Write a short closing section in Spanish covering:
 - One primary outcome per run.
 - When the idea is a retention surface (playground / experience / journey / studio / game shareable): next-step catalog + PlaygroundNextStep on EN+ES.
 - Never remove Adsterra. Never touch HouseModeler3D for "performance theater".
-- File `.agent/ideas-lab.md` wins over any stale text in the short automation prompt.
+- File `.agent/ideas-lab.md` wins over any stale text in the short automation prompt or deprecated JSON state.
+- After user-facing READY: POST-SHIP SMOKE CHECK.
