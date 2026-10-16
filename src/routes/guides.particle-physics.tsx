@@ -85,12 +85,26 @@ function ParticlePhysicsGuideEn() {
           </Link>
         </div>
 
-        <h2>Particle systems as continuous flows</h2>
+        <h2>How the simulation loop works</h2>
         <p>
-          Not every particle system is about discrete attractors. In the River of Light Journey, particles are emitted along a path defined by waypoints. Each particle follows a spline or interpolated curve between points, with persistent afterglow trails and soft bloom effects. Density, speed, color and loop mode control the visual density of the flowing river.
+          Every frame the browser calls the animation callback. Inside it we do three things in order: clear or fade the canvas, update every particle, then draw every particle.
         </p>
         <p>
-          The key idea is continuous emission + lifetime: new particles are born at the start of the path, travel toward the end, and fade. Overlapping many of them creates the solid glowing stream effect.
+          Update step for one particle: compute the total acceleration by summing forces from all attractors (or other sources), multiply by the time step dt (usually a fixed fraction of a second), add that to the current velocity, then add the new velocity multiplied by dt to the position. Optional damping multiplies velocity by a factor slightly less than 1 so particles slowly lose energy.
+        </p>
+        <p>
+          Drawing is usually a simple arc or image for each particle. Trails can be made by not fully clearing the canvas each frame, or by storing a short history of positions per particle and stroking them.
+        </p>
+
+        <h2>Common variations and tweaks</h2>
+        <p>
+          Softening prevents particles from exploding when they get too close to an attractor. A small constant added inside the distance squared term keeps the force finite.
+        </p>
+        <p>
+          Multiple force types can be combined: attraction, repulsion (negative strength), drag proportional to speed, and noise or random kicks for organic motion. Lifetime and size can fade over time so particles appear and disappear smoothly.
+        </p>
+        <p>
+          In continuous-flow systems such as River of Light the position is not integrated from forces; instead each particle has a parameter t that advances along a predefined path. Color and opacity are functions of that parameter, creating the glowing river effect.
         </p>
 
         <div className="not-prose my-8 rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-6">
@@ -106,6 +120,14 @@ function ParticlePhysicsGuideEn() {
           </Link>
         </div>
 
+        <h2>Particle systems as continuous flows</h2>
+        <p>
+          Not every particle system is about discrete attractors. In the River of Light Journey, particles are emitted along a path defined by waypoints. Each particle follows a spline or interpolated curve between points, with persistent afterglow trails and soft bloom effects. Density, speed, color and loop mode control the visual density of the flowing river.
+        </p>
+        <p>
+          The key idea is continuous emission + lifetime: new particles are born at the start of the path, travel toward the end, and fade. Overlapping many of them creates the solid glowing stream effect.
+        </p>
+
         <h2>Performance considerations in the browser</h2>
         <ul>
           <li>Use typed arrays or object pools to avoid garbage collection pauses.</li>
@@ -114,6 +136,17 @@ function ParticlePhysicsGuideEn() {
           <li>Prefer requestAnimationFrame and delta-time integration for consistent speed across devices.</li>
           <li>For more advanced effects, WebGL or WebGPU can handle tens of thousands of particles.</li>
         </ul>
+
+        <h2>Frequently asked questions</h2>
+        <p>
+          <strong>Why do particles sometimes fly off screen?</strong> Without damping or a bounding force they keep the velocity they gained near an attractor. Adding a small drag term or wrapping positions keeps the system stable.
+        </p>
+        <p>
+          <strong>Can I use this for fluid simulation?</strong> Simple particle systems approximate fluid by adding neighbor repulsion and viscosity. True fluid solvers (SPH or grid-based) are heavier but follow the same force-and-integrate pattern.
+        </p>
+        <p>
+          <strong>Does the physics run on the server?</strong> No. Everything happens in the browser with Canvas or WebGL. Sharing a URL only shares the parameters, not a server-side simulation.
+        </p>
 
         <h2>Further exploration</h2>
         <p>
