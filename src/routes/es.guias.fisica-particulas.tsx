@@ -173,6 +173,14 @@ function ParticlePhysicsGuideEs() {
           Todas se ejecutan completamente en el navegador. Experimenta, comparte las URLs resultantes y descarga instantáneas PNG cuando estén disponibles.
         </p>
 
+        <h2>Conclusión</h2>
+        <p>
+          Los sistemas de partículas en el navegador convierten bucles simples de fuerza e integración en experiencias ricas y compartibles. Al entender las aproximaciones de la ley de Newton, el suavizado, el amortiguamiento y la emisión continua, puedes recrear órbitas gravitatorias, ríos brillantes y muchos otros efectos sin salir de la página.
+        </p>
+        <p>
+          Empieza con los playgrounds en vivo enlazados arriba y luego experimenta con tus propias variaciones. Todo se ejecuta del lado del cliente — no salen datos de tu navegador para la simulación en sí.
+        </p>
+
         <h2>Exploración adicional</h2>
         <p>
           Entender el bucle básico de fuerza e integración te permite inventar nuevos comportamientos rápidamente: firmas de partículas que forman texto, mapas de constelaciones, rastros de fuegos artificiales y patrones caleidoscópicos comparten la misma base.
