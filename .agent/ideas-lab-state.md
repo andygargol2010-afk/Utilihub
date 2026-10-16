@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: journeys
-last_closed_id: river-light
+last_closed_domain: traffic-bets
+last_closed_id: traffic-events
 p_fixed: 0.35
 
 weights_core:
@@ -42,6 +42,7 @@ adsense-prep_runs: 1
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-16 | traffic-bets | traffic-events | Traffic Events Instrumentation
 - 2026-10-15 | journeys | river-light | River of Light Journey
 - 2026-10-15 | studio-composition | glow-trail | Glow Trail Composer
 - 2026-10-15 | games | pulse-catch | Pulse Catch
@@ -58,18 +59,18 @@ adsense-prep_runs: 1
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Traffic bet — instrument key interactions with Vercel Analytics custom events (tool open, share click, next-step click) so we can measure engagement and conversion on playgrounds/tools. Low-traffic site (~500 daily visits per external estimates); goal is baseline metrics for future bets. No UI change beyond optional debug log. EN+ES pages unaffected.
-id: traffic-events
+status: closed
+idea: n/a
+id: n/a
 path_en: n/a
 path_es: n/a
-domain: traffic-bets
-runs_total: 3
-runs_remaining: 1
-acceptance: pending
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
 share: n/a
 next_step_required: no
-notes: GROWTH FIXED urn roll (U=0.47→GROWTH, U_g=0.31<p_fixed→FIXED; equal weight traffic-bets vs search-magnets). Prefer Analytics findings (site has Vercel Analytics). Baseline for measurable growth. Run 1: added trackEvent helper; instrumented tool_open (EN+ES tool pages), share_click (ShareAndExportActions), next_step_click (PlaygroundNextStep primary+related). Debug log in DEV. Run 2: extended game_open (GameShell EN+ES), playground_open + share_click on GravityParticlesPlayground and RiverOfLightJourney. Next: more playgrounds/journeys (floor-plan, neon, etc.) if needed; verify events appear in Vercel Analytics dashboard.
+notes: Previous traffic-events closed after run 3/3. Instrumented floor-plan, neon-signature, glow-trail with playground_open + share_click. Baseline events ready in Vercel Analytics. Next run: IDEATE.
 adsense-prep_runs: 1
 ```
 
