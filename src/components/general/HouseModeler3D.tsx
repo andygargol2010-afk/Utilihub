@@ -6167,14 +6167,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       <div
         role="toolbar"
         aria-label={labels.title}
-        className="flex gap-2 overflow-x-auto overscroll-x-contain pb-1 snap-x snap-mandatory [scrollbar-width:thin]"
+        className="flex gap-2 max-md:gap-3 overflow-x-auto overscroll-x-contain pb-1 max-md:pb-2 snap-x snap-mandatory [scrollbar-width:thin]"
       >
         <button
           type="button"
           onClick={() => { if (!refuseSelection()) duplicateSelected(); }}
           aria-disabled={!selectedId}
           aria-label={labels.dup}
-          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId ? "cursor-not-allowed opacity-50" : ""}`}
+          className={`inline-flex min-h-11 max-md:min-h-14 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId ? "cursor-not-allowed opacity-50" : ""}`}
           title={selectedId ? "D" : labels.needSel}
         >
           {labels.dup}
@@ -6185,7 +6185,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           onClick={() => { if (!refuseSelection()) frameSelected(); }}
           aria-disabled={!selectedId}
           aria-label={labels.frame}
-          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId ? "cursor-not-allowed opacity-50" : ""}`}
+          className={`inline-flex min-h-11 max-md:min-h-14 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId ? "cursor-not-allowed opacity-50" : ""}`}
           title={selectedId ? "G" : labels.needSel}
         >
           {labels.frame}
@@ -6196,7 +6196,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           onClick={() => { if (!refuseSelection(true)) rotateSelected(); }}
           aria-disabled={!selectedId || selectedLocked}
           aria-label={labels.rot}
-          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
+          className={`inline-flex min-h-11 max-md:min-h-14 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
           title={selectedLocked ? labels.lockedAction : selectedId ? "R" : labels.needSel}
         >
           {labels.rot}
@@ -6208,7 +6208,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           aria-disabled={!selectedId}
           aria-pressed={selectedLocked}
           aria-label={selectedLocked ? labels.unlock : labels.lock}
-          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId ? "cursor-not-allowed opacity-40" : ""} ${
+          className={`inline-flex min-h-11 max-md:min-h-14 shrink-0 snap-start items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId ? "cursor-not-allowed opacity-40" : ""} ${
             selectedLocked ? "border-amber-600 bg-amber-500/15" : "border-border bg-card"
           }`}
           title={selectedId ? "L" : labels.needSel}
@@ -6221,7 +6221,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           onClick={() => { if (!refuseSelection(true)) deleteSelected(); }}
           aria-disabled={!selectedId || selectedLocked}
           aria-label={labels.del}
-          className={`inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
+          className={`inline-flex min-h-11 max-md:min-h-14 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent ${!selectedId || selectedLocked ? "cursor-not-allowed opacity-40" : ""}`}
           title={selectedLocked ? labels.lockedAction : selectedId ? "Del" : labels.needSel}
         >
           {labels.del}
