@@ -87,27 +87,17 @@ function ParticlePhysicsGuideEs() {
 
         <h2>El bucle de simulación en la práctica</h2>
         <p>
-          Cada fotograma el motor hace aproximadamente lo siguiente (pseudocódigo simplificado):
+          Cada fotograma el motor hace aproximadamente los siguientes pasos:
         </p>
-        <pre className="text-sm overflow-x-auto rounded bg-muted p-4 whitespace-pre">
-para cada partícula:
-  fuerza = vector cero
-  para cada atractor:
-    dx = atractor.x - partícula.x
-    dy = atractor.y - partícula.y
-    dist = sqrt(dx*dx + dy*dy) + suavizado
-    intensidad = atractor.masa / (dist * dist)
-    fuerza.x += dx * intensidad
-    fuerza.y += dy * intensidad
-  partícula.vx += fuerza.x * dt
-  partícula.vy += fuerza.y * dt
-  partícula.vx *= amortiguación   // p.ej. 0.995
-  partícula.vy *= amortiguación
-  partícula.x += partícula.vx * dt
-  partícula.y += partícula.vy * dt
-  // opcional: reciclar si el tiempo de vida expiró
-dibujar partículas (o rastros)
-        </pre>
+        <ol>
+          <li>Para cada partícula, empieza con un vector de fuerza cero.</li>
+          <li>Para cada atractor, calcula el vector de la partícula al atractor, la distancia (con suavizado) y añade la contribución de fuerza resultante.</li>
+          <li>Actualiza la velocidad: <code>velocidad += fuerza * dt</code>.</li>
+          <li>Aplica amortiguación: <code>velocidad *= 0.995</code> (o similar) para evitar aceleración infinita.</li>
+          <li>Actualiza la posición: <code>posición += velocidad * dt</code>.</li>
+          <li>Opcionalmente recicla la partícula si su tiempo de vida expiró o salió del canvas.</li>
+          <li>Dibuja todas las partículas (o sus rastros).</li>
+        </ol>
         <p>
           El delta-time (<code>dt</code>) mantiene el movimiento consistente a diferentes tasas de fotogramas. La amortiguación evita que las partículas aceleren para siempre cuando los atractores son fuertes.
         </p>
