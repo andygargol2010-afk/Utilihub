@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: adsense-prep
-last_closed_id: terms-of-use
+last_closed_domain: search-magnets
+last_closed_id: compound-interest-guide
 p_fixed: 0.35
 
 weights_core:
@@ -42,6 +42,7 @@ adsense-prep_runs: 2
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-16 | search-magnets | compound-interest-guide | Compound Interest SEO Guide (EN+ES)
 - 2026-10-16 | adsense-prep | terms-of-use | Terms of Use pages (EN+ES)
 - 2026-10-16 | search-magnets | particle-physics-guide | Particle Physics SEO Guide (EN+ES)
 - 2026-10-16 | traffic-bets | traffic-events | Traffic Events Instrumentation
@@ -51,7 +52,6 @@ adsense-prep_runs: 2
 - 2026-10-1x | playgrounds | gravity-particles | Gravity Particles (prior)
 - 2026-10-1x | growth-surfaces | postcard | Particle Postcard (prior)
 - 2026-10-1x | studio-composition | neon-sign | Neon Signature Studio (prior)
-- 2026-10-1x | playgrounds | kaleidoscope-mandala | Kaleidoscope Mandala (prior)
 ```
 
 ---
@@ -59,18 +59,18 @@ adsense-prep_runs: 2
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Crear guía SEO profunda de interés compuesto (Compound Interest Guide) en EN (/guides/compound-interest) y ES (/es/guias/interes-compuesto): explicación clara con fórmulas, ejemplos prácticos, tabla de crecimiento, visual simple y enlace a la calculadora de interés compuesto del sitio. Contenido original orientado a capturar búsquedas informacionales (how compound interest works, interés compuesto ejemplos) complementando las herramientas financieras.
-id: compound-interest-guide
-path_en: /guides/compound-interest
-path_es: /es/guias/interes-compuesto
-domain: search-magnets
-runs_total: 3
-runs_remaining: 1
-acceptance: pending
+status: done
+idea: n/a (closed)
+id: n/a
+path_en: n/a
+path_es: n/a
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
 share: n/a
 next_step_required: no
-notes: DOMAIN ROLL U=0.362 → GROWTH. U_g=0.075 < 0.35 → FIXED urn (traffic-bets|search-magnets). Sampled search-magnets (equal weight 3). last_closed adsense-prep → no re-roll. FIXED: no weight updates. adsense-prep_runs stays 2. Idea fits finance tools + SEO depth, distinct from particle-physics-guide. EXECUTE 1/3: EN+ES guide pages shipped with formulas, examples, growth table, FAQ and links to calculator. EXECUTE 2/3: polished — added relative growth bar visual (CSS), fixed breadcrumbs (removed non-existent /guides link), added both guides to sitemap.xml with hreflang. Smoke blocked by Vercel preview SSO protection. Ready for final review/close next run.
+notes: Closed compound-interest-guide. Final EXECUTE review: EN+ES pages complete with formulas, examples, growth table, CSS relative-bar visual, FAQ, calculator links, hreflang, breadcrumbs fixed, sitemap entry confirmed via prior polish commit. Adsterra kept. Smoke on production 404 (branch not yet promoted); preview SSO-protected as previously noted. FIXED urn — no weight updates. adsense-prep_runs remains 2.
 adsense-prep_runs: 2
 ```
 
