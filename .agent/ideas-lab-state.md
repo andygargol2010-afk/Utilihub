@@ -66,11 +66,11 @@ path_en: /simulators/double-pendulum
 path_es: /es/simuladores/pendulo-doble
 domain: simulators
 runs_total: 6
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: both
 next_step_required: no
-notes: IDEATE roll U=0.63 → CORE; cumulative weight sample R≈11/20 → simulators. Set simulators=1, other CORE +1. last_closed=search-magnets (different catalog) no re-roll. Adsterra kept. CWV: lazy route + modest canvas. EXECUTE 1/6: DoublePendulumSim.tsx + catalog entry (slug double-pendulum / pendulo-doble) + registry lazy + SIM_JOURNEYS links. Physics RK-style step, trail on tip, drag-to-set, perturb button. EXECUTE 2/6: energy HUD (θ1/θ2/E), PNG share download, refined trail fade + glow, aspect-ratio for CLS. EXECUTE 3/6: speed scale (0.25–2×), presets (Classic/Butterfly/Low energy), ω HUD, tip-speed colored trail (HSL + width). Deploy tip prior ERROR fixed; free deploy quota previously RATE_LIMITED.
+notes: IDEATE roll U=0.63 → CORE; cumulative weight sample R≈11/20 → simulators. Set simulators=1, other CORE +1. last_closed=search-magnets (different catalog) no re-roll. Adsterra kept. CWV: lazy route + modest canvas. EXECUTE 1/6: DoublePendulumSim.tsx + catalog entry (slug double-pendulum / pendulo-doble) + registry lazy + SIM_JOURNEYS links. Physics RK-style step, trail on tip, drag-to-set, perturb button. EXECUTE 2/6: energy HUD (θ1/θ2/E), PNG share download, refined trail fade + glow, aspect-ratio for CLS. EXECUTE 3/6: speed scale (0.25–2×), presets (Classic/Butterfly/Low energy), ω HUD, tip-speed colored trail (HSL + width). EXECUTE 4/6: twin chaos overlay (violet ghost with Δθ₁≈0.0015) + toggle to visualize sensitive dependence live; trails for both. Deploy tip prior ERROR fixed; free deploy quota previously RATE_LIMITED.
 adsense-prep_runs: 2
 ```
 
