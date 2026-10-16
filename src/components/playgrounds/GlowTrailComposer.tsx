@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type Point = { x: number; y: number };
 type Particle = {
@@ -15,6 +16,9 @@ type Particle = {
 const PALETTE = ["#ff2d95", "#00f5ff", "#ffd700", "#7cff6b", "#b388ff", "#ff6b35", "#ffffff", "#ff3b30"];
 
 export function GlowTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) {
+  useEffect(() => {
+    trackEvent("playground_open", { id: "glow-trail", locale });
+  }, [locale]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const trailsRef = useRef<Point[][]>([]);
@@ -222,6 +226,7 @@ export function GlowTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) {
   };
 
   const share = async () => {
+    trackEvent("share_click", { id: "glow-trail", locale });
     const canvas = canvasRef.current;
     if (!canvas) return;
     try {
