@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-16 | matematicas | calculadora-proporcion | ProportionCalculatorTool
+- 2026-10-16 | diseno | generador-gradiente-css | CssGradientGeneratorTool
 - 2026-10-16 | educacion | calculadora-nota-final | FinalGradeTool
 - 2026-10-16 | conversiones | conversor-temperatura | TemperatureConverterTool
 - 2026-10-16 | finanzas | calculadora-regla-72 | RuleOf72Tool
@@ -24,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-15 | conversiones | currency-converter | CurrencyConverterTool
 - 2026-10-1x | ciencia | timezone | TimezoneTool
 - 2026-10-1x | ciencia | kinetic-energy | KineticEnergyTool
-- 2026-10-1x | salud | body-fat | BodyFatCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -41,13 +42,14 @@ fechas/tiempo: recent
 ciencia/física: recent
 finanzas simples: recent
 hogar/construcción: recent
-% / math básica: watch
+% / math básica: recent (proporcion)
 generadores texto: watch
 conversiones genéricas: recent
 salud / body-metrics: recent
 productividad: recent
 cocina: recent
 educacion: recent
+diseno: recent
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -70,7 +72,7 @@ On PRODUCT: review SEO_LOCALES_ACTIVE; ship or defer /{code} routes beyond EN+ES
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-nota-final, conversor-temperatura
+last_slugs: calculadora-proporcion, generador-gradiente-css
 last_deploy: pending
 ```
 
