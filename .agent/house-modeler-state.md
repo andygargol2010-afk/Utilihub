@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 156
+runs_done: 157
 runs_max: 500
 ```
 
@@ -61,8 +61,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: ~330509
-last_known_good_hint: edfe18bbbda25d89e49481a35bc79b7f1b3be1bb (~331KB)
+approx_bytes: 330509
+last_known_good_hint: edfe18bbbda25d89e49481a35bc79b7f1b3be1bb (~330509 bytes, 7490 lines)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -78,7 +78,7 @@ last_mode: META
 last_date: 2026-10-16
 SEO_LOCALES_ACTIVE: none
 deploy: READY
-note: FORCE mobile UI active (remaining 3); PRODUCT deferred again due to monolith ~330KB truncation risk on full rewrite via tool channel. Planned surgical (Tailwind max-md:): larger min-h/py on toolbar+palette buttons, hide <kbd> on mobile, slightly wider compact palette. Monolito intacto (paint helpers, 1 door conditional, ~330kB, 7490 lines). No remaining_runs consumed.
+note: FORCE mobile UI active (remaining 3); PRODUCT deferred again due to monolith 330509B truncation risk on full rewrite via tool channel. Monolith verified intact (paint helpers present, door conditional count 1, 7490 lines). Planned surgical for next safe PRODUCT: 1) add max-md:hidden to all <kbd> shortcuts in toolbar/fullscreen overlays; 2) bump compact palette width from w-[4.75rem] to w-[5.25rem] only under max-md (or via existing paletteCompact which is already narrow-viewport); 3) ensure all palette finish/part buttons have min-h-12 max-md:min-h-14 or equivalent for thumb targets while desktop min-h stays. No remaining_runs consumed.
 ```
 
 Refresh after each run.
@@ -91,7 +91,8 @@ Refresh after each run.
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI active: remaining_runs 3.
-Truncation barrier confirmed; surgical PRODUCT requires a non-full-rewrite path or smaller channel.
+Truncation barrier confirmed (channel truncates ~7k of 330k response); surgical PRODUCT requires either smaller targeted write path or confirmed non-truncating channel. Prefer META until a safe edit method is available.
+Next PRODUCT attempt: locate unique className strings for toolbar buttons and palette aside, apply max-md: prefixes only.
 ```
 
 <!-- end:house-modeler-state.md -->
