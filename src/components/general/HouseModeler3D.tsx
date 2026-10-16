@@ -7092,7 +7092,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               aria-pressed={tool === item.kind}
               aria-label={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} (${item.key})${placed ? ` · ${placed} ${labels.parts}` : ""}`}
               title={`${item.label}${finishCaption(item.kind) ? ` · ${finishCaption(item.kind)}` : ""} · ${item.size} · ${labels.dragHint} (${item.key})${placed ? ` · ${placed} ${labels.parts}` : ""}`}
-            className={`group relative flex min-h-11 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
+            className={`group relative flex min-h-11 max-md:min-h-14 cursor-grab touch-manipulation flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center transition active:cursor-grabbing focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
                 tool === item.kind
                   ? "border-amber-700/70 bg-amber-900/20 shadow-sm ring-1 ring-amber-700/40"
                   : selectedKind === item.kind
