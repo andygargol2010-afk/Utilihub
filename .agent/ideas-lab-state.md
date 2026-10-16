@@ -65,11 +65,11 @@ path_en: n/a
 path_es: n/a
 domain: traffic-bets
 runs_total: 3
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: GROWTH FIXED urn roll (U=0.47→GROWTH, U_g=0.31<p_fixed→FIXED; equal weight traffic-bets vs search-magnets). Prefer Analytics findings (site has Vercel Analytics). Baseline for measurable growth.
+notes: GROWTH FIXED urn roll (U=0.47→GROWTH, U_g=0.31<p_fixed→FIXED; equal weight traffic-bets vs search-magnets). Prefer Analytics findings (site has Vercel Analytics). Baseline for measurable growth. Run 1: added trackEvent helper; instrumented tool_open (EN+ES tool pages), share_click (ShareAndExportActions), next_step_click (PlaygroundNextStep primary+related). Debug log in DEV. Next: extend to playgrounds/games open + finance tools if needed; verify events in Vercel Analytics.
 adsense-prep_runs: 1
 ```
 
