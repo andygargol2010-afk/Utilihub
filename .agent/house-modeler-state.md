@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 158
+runs_done: 159
 runs_max: 500
 ```
 
@@ -77,11 +77,12 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: META
 last_date: 2026-10-16
 SEO_LOCALES_ACTIVE: none
-deploy: READY
-note: FORCE mobile UI active (remaining 3); PRODUCT deferred due to 330509B truncation risk on full rewrite. Monolith verified intact (7490 lines, SHA edfe18bb…). Precise surgical map for next safe PRODUCT:
-1) 15 <kbd> tags (lines ~6153-6381): append " max-md:hidden" to each className so shortcuts hide under ~768px.
-2) aside palette (line ~6541): change paletteCompact ? "w-[4.75rem]" → "w-[4.75rem] max-md:w-[5.25rem]" (slightly wider thumb room only on mobile).
-3) palette finish buttons (min-h-11 at ~6583,6614,6645 etc.): change "min-h-11" → "min-h-11 max-md:min-h-14" for larger hit areas on mobile; desktop unchanged.
+deploy: READY (SHA 78b16b9b92ae993745d035597d9d24e3c0df6e4a)
+note: FORCE mobile UI active (remaining 3); PRODUCT deferred again due to confirmed 330kB truncation risk on full-body tool write. Monolith verified intact (7490 lines, 330509B, SHA edfe18bb…). Surgical map still valid and locally prepared:
+1) ~15 <kbd> classNames: append max-md:hidden (shortcuts hide <768px).
+2) paletteCompact width: "w-[4.75rem]" → "w-[4.75rem] max-md:w-[5.25rem]".
+3) palette finish buttons: min-h-11 → min-h-11 max-md:min-h-14.
+Local delta +515B; gates pass. Resume PRODUCT only when full verified payload can be pushed without truncation.
 No remaining_runs consumed.
 ```
 
@@ -95,8 +96,8 @@ Refresh after each run.
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI active: remaining_runs 3.
-Truncation barrier confirmed; surgical PRODUCT requires non-truncating full-content push or line-level edit. Prefer META until safe channel confirmed.
-Next PRODUCT: apply the three max-md: changes above once a verified full-body write is possible without truncation.
+Truncation barrier confirmed on 330KB monolith; surgical PRODUCT requires non-truncating full-content push or line-level edit tool.
+Next PRODUCT: apply the three max-md: changes once safe channel confirmed. Prefer META until then.
 ```
 
 <!-- end:house-modeler-state.md -->
