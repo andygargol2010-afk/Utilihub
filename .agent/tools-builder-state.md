@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-16 | educacion | calculadora-nota-final | FinalGradeTool
+- 2026-10-16 | conversiones | conversor-temperatura | TemperatureConverterTool
 - 2026-10-16 | finanzas | calculadora-regla-72 | RuleOf72Tool
 - 2026-10-16 | hogar | calculadora-area-habitacion | RoomAreaTool
 - 2026-10-16 | fechas | calculadora-diferencia-fechas | DateDifferenceTool
@@ -41,10 +43,11 @@ finanzas simples: recent
 hogar/construcción: recent
 % / math básica: watch
 generadores texto: watch
-conversiones genéricas: watch
+conversiones genéricas: recent
 salud / body-metrics: recent
 productividad: recent
 cocina: recent
+educacion: recent
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -67,7 +70,7 @@ On PRODUCT: review SEO_LOCALES_ACTIVE; ship or defer /{code} routes beyond EN+ES
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-regla-72, calculadora-area-habitacion
+last_slugs: calculadora-nota-final, conversor-temperatura
 last_deploy: pending
 ```
 
