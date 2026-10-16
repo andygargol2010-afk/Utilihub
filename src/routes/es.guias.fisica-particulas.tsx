@@ -85,12 +85,26 @@ function ParticlePhysicsGuideEs() {
           </Link>
         </div>
 
-        <h2>Sistemas de partículas como flujos continuos</h2>
+        <h2>Cómo funciona el bucle de simulación</h2>
         <p>
-          No todo sistema de partículas trata de atractores discretos. En el Viaje Río de Luz, las partículas se emiten a lo largo de un camino definido por puntos de paso. Cada partícula sigue una spline o curva interpolada entre puntos, con rastros de post-resplandor persistentes y efectos de bloom suave. La densidad, velocidad, color y modo de bucle controlan la densidad visual del río fluente.
+          Cada fotograma el navegador llama al callback de animación. Dentro hacemos tres cosas en orden: limpiar o desvanecer el canvas, actualizar cada partícula y luego dibujar cada partícula.
         </p>
         <p>
-          La idea clave es emisión continua + tiempo de vida: nuevas partículas nacen al inicio del camino, viajan hacia el final y se desvanecen. La superposición de muchas crea el efecto de corriente luminosa sólida.
+          Paso de actualización para una partícula: calcular la aceleración total sumando las fuerzas de todos los atractores (u otras fuentes), multiplicar por el paso de tiempo dt (normalmente una fracción fija de segundo), sumar eso a la velocidad actual y luego sumar la nueva velocidad multiplicada por dt a la posición. Un amortiguamiento opcional multiplica la velocidad por un factor ligeramente menor que 1 para que las partículas pierdan energía lentamente.
+        </p>
+        <p>
+          El dibujo suele ser un arco o imagen simple por partícula. Los rastros se pueden hacer sin limpiar completamente el canvas cada fotograma, o guardando un historial corto de posiciones por partícula y trazándolos.
+        </p>
+
+        <h2>Variaciones y ajustes comunes</h2>
+        <p>
+          El suavizado evita que las partículas exploten cuando se acercan demasiado a un atractor. Una constante pequeña añadida dentro del término de distancia al cuadrado mantiene la fuerza finita.
+        </p>
+        <p>
+          Se pueden combinar múltiples tipos de fuerza: atracción, repulsión (intensidad negativa), arrastre proporcional a la velocidad y ruido o empujones aleatorios para movimiento orgánico. El tiempo de vida y el tamaño pueden desvanecerse para que las partículas aparezcan y desaparezcan suavemente.
+        </p>
+        <p>
+          En sistemas de flujo continuo como Río de Luz la posición no se integra a partir de fuerzas; en cambio cada partícula tiene un parámetro t que avanza a lo largo de un camino predefinido. El color y la opacidad son funciones de ese parámetro, creando el efecto de río brillante.
         </p>
 
         <div className="not-prose my-8 rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-6">
@@ -106,6 +120,14 @@ function ParticlePhysicsGuideEs() {
           </Link>
         </div>
 
+        <h2>Sistemas de partículas como flujos continuos</h2>
+        <p>
+          No todo sistema de partículas trata de atractores discretos. En el Viaje Río de Luz, las partículas se emiten a lo largo de un camino definido por puntos de paso. Cada partícula sigue una spline o curva interpolada entre puntos, con rastros de post-resplandor persistentes y efectos de bloom suave. La densidad, velocidad, color y modo de bucle controlan la densidad visual del río fluente.
+        </p>
+        <p>
+          La idea clave es emisión continua + tiempo de vida: nuevas partículas nacen al inicio del camino, viajan hacia el final y se desvanecen. La superposición de muchas crea el efecto de corriente luminosa sólida.
+        </p>
+
         <h2>Consideraciones de rendimiento en el navegador</h2>
         <ul>
           <li>Usa arrays tipados o pools de objetos para evitar pausas por recolección de basura.</li>
@@ -114,6 +136,17 @@ function ParticlePhysicsGuideEs() {
           <li>Prefiere requestAnimationFrame e integración con delta-time para velocidad consistente entre dispositivos.</li>
           <li>Para efectos más avanzados, WebGL o WebGPU pueden manejar decenas de miles de partículas.</li>
         </ul>
+
+        <h2>Preguntas frecuentes</h2>
+        <p>
+          <strong>¿Por qué las partículas a veces salen de la pantalla?</strong> Sin amortiguamiento o una fuerza de contención conservan la velocidad ganada cerca de un atractor. Añadir un pequeño término de arrastre o envolver las posiciones mantiene el sistema estable.
+        </p>
+        <p>
+          <strong>¿Puedo usar esto para simulación de fluidos?</strong> Los sistemas de partículas simples aproximan fluidos añadiendo repulsión entre vecinos y viscosidad. Los solucionadores reales de fluidos (SPH o basados en malla) son más pesados pero siguen el mismo patrón de fuerza e integración.
+        </p>
+        <p>
+          <strong>¿La física se ejecuta en el servidor?</strong> No. Todo ocurre en el navegador con Canvas o WebGL. Compartir una URL solo comparte los parámetros, no una simulación del lado del servidor.
+        </p>
 
         <h2>Exploración adicional</h2>
         <p>
