@@ -28,6 +28,7 @@ function TermsPage() {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Terms of Use" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Terms of Use</h1>
+        <p className="text-sm text-muted-foreground">Last updated: October 2026</p>
         <p>
           These Terms of Use govern your access to and use of <strong>{SITE_NAME}</strong>, including all tools,
           calculators, interactive experiences, content and services. By using the site you agree to these terms.
