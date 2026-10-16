@@ -59,7 +59,7 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-16
 SEO_LOCALES_ACTIVE: none
-deploy: pending check for SHA 73710d4…
+deploy: READY on SHA 73710d4… (url utilihub-6ayuenyfr-financialproyects.vercel.app)
 note: FORCE mobile UI completed (remaining_runs 0). Applied surgical mobile comfort:
 - Toolbar: gap-2 → gap-2 max-md:gap-3, pb-1 → max-md:pb-2
 - Action buttons (dup/delete/etc.): added max-md:min-h-14 to 5 more min-h-11 controls
