@@ -90,7 +90,7 @@ function ParticlePhysicsGuideEn() {
           Every frame the engine does roughly the following (simplified pseudocode):
         </p>
         <pre className="text-sm overflow-x-auto rounded bg-muted p-4 whitespace-pre">
-{`for each particle:
+for each particle:
   force = zero vector
   for each attractor:
     dx = attractor.x - particle.x
@@ -106,7 +106,7 @@ function ParticlePhysicsGuideEn() {
   particle.x += particle.vx * dt
   particle.y += particle.vy * dt
   // optional: recycle if lifetime expired
-draw particles (or trails)`}
+draw particles (or trails)
         </pre>
         <p>
           Delta-time (<code>dt</code>) keeps motion consistent across different frame rates. Damping prevents particles from accelerating forever when attractors are strong.
