@@ -66,11 +66,11 @@ path_en: /guides/particle-physics
 path_es: /es/guias/fisica-particulas
 domain: search-magnets
 runs_total: 4
-runs_remaining: 2
+runs_remaining: 3
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: DOMAIN ROLL U=0.304 → GROWTH. U_g=0.233 < 0.35 → FIXED urn. Sampled search-magnets (weight 3). last_closed traffic-bets → no re-roll. No weight updates (FIXED). EXECUTE 1/4: shipped full EN+ES guide pages with formulas, explanations and CTAs to /playgrounds/gravity-particles and /river-light (and ES counterparts). Adsterra kept. EXECUTE 2/4: deepened both pages with simulation loop pseudocode, common variations (repulsors, damping, trails, color, softening), FAQ targeting long-tail queries, and additional CTAs to Particle Signature and Constellation. Adsterra kept.
+notes: DOMAIN ROLL U=0.304 → GROWTH. U_g=0.233 < 0.35 → FIXED urn. Sampled search-magnets (weight 3). last_closed traffic-bets → no re-roll. No weight updates (FIXED). EXECUTE 1/4: shipped full EN+ES guide pages with formulas, explanations and CTAs to /playgrounds/gravity-particles and /river-light (and ES counterparts). Adsterra kept. Attempted EXECUTE 2/4 deepen with loop/FAQ/CTAs but TanStack route generator syntax errors on pre/list content; restored original pages to keep build green. Next run should try a simpler deepen (e.g. more text sections without complex JSX).
 adsense-prep_runs: 1
 ```
 
