@@ -7,6 +7,7 @@ import {
   relatedPlaygrounds,
   type PlaygroundLocale,
 } from "@/lib/playgrounds/next-step";
+import { trackEvent } from "@/lib/analytics";
 
 type Props = {
   /** Catalog id of the current playground / experience */
@@ -25,6 +26,10 @@ export function PlaygroundNextStep({ currentId, locale = "en" }: Props) {
   const next = related[0];
   const es = locale === "es";
   const nextHref = playgroundPath(next, locale);
+
+  const onNextClick = (toId: string) => {
+    trackEvent("next_step_click", { from: currentId, to: toId, locale });
+  };
 
   return (
     <section
@@ -51,6 +56,7 @@ export function PlaygroundNextStep({ currentId, locale = "en" }: Props) {
         </div>
         <Link
           to={nextHref}
+          onClick={() => onNextClick(next.id)}
           className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90"
         >
           {es ? "Abrir siguiente" : "Open next"}
@@ -62,6 +68,7 @@ export function PlaygroundNextStep({ currentId, locale = "en" }: Props) {
           <li key={p.id}>
             <Link
               to={playgroundPath(p, locale)}
+              onClick={() => onNextClick(p.id)}
               className="flex min-h-11 items-center gap-2 rounded-xl border border-border/80 bg-background/80 px-3 py-2 text-sm font-semibold text-foreground hover:border-primary/40"
             >
               <span aria-hidden>{p.emoji}</span>
