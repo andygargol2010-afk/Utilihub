@@ -4,6 +4,7 @@ import type { SimDef, SimLocale } from "@/lib/simulators/catalog";
 const MoleculesSim = lazy(() => import("./MoleculesSim").then((m) => ({ default: m.MoleculesSim })));
 const GravitySandbox = lazy(() => import("./GravitySandbox").then((m) => ({ default: m.GravitySandbox })));
 const PendulumSim = lazy(() => import("./PendulumSim").then((m) => ({ default: m.PendulumSim })));
+const DoublePendulumSim = lazy(() => import("./DoublePendulumSim").then((m) => ({ default: m.DoublePendulumSim })));
 const ProjectileSim = lazy(() => import("./ProjectileSim").then((m) => ({ default: m.ProjectileSim })));
 const OpticsSim = lazy(() => import("./OpticsSim").then((m) => ({ default: m.OpticsSim })));
 const DcCircuitSim = lazy(() => import("./DcCircuitSim").then((m) => ({ default: m.DcCircuitSim })));
@@ -21,6 +22,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "sandbox-gravedad": GravitySandbox,
   pendulum: PendulumSim,
   pendulo: PendulumSim,
+  "double-pendulum": DoublePendulumSim,
+  "pendulo-doble": DoublePendulumSim,
   "projectile-motion": ProjectileSim,
   "movimiento-proyectil": ProjectileSim,
   "optics-bench": OpticsSim,
