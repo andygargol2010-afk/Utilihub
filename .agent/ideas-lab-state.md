@@ -16,12 +16,12 @@ last_closed_id: compound-interest-guide
 p_fixed: 0.35
 
 weights_core:
-  kits: 5
-  journeys: 1
-  games: 3
-  simulators: 5
-  studio-composition: 2
-  playgrounds: 4
+  kits: 6
+  journeys: 2
+  games: 4
+  simulators: 1
+  studio-composition: 3
+  playgrounds: 5
 
 weights_growth:
   traffic-bets: 3
@@ -59,18 +59,18 @@ adsense-prep_runs: 2
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a (closed)
-id: n/a
-path_en: n/a
-path_es: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
+status: active
+idea: Double Pendulum Chaos Lab — interactive canvas simulator of a classic double pendulum. Users adjust initial angles, rod lengths and masses; watch the second bob draw a fading trail while the system evolves. Optional damping and gravity slider. Pause / reset / slight-perturbation button to show sensitive dependence. Lightweight HTML canvas, no new heavy deps, EN+ES routes under simulators catalog.
+id: double-pendulum-chaos
+path_en: /simulators/double-pendulum
+path_es: /es/simuladores/pendulo-doble
+domain: simulators
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: both
 next_step_required: no
-notes: Closed compound-interest-guide. Final EXECUTE review: EN+ES pages complete with formulas, examples, growth table, CSS relative-bar visual, FAQ, calculator links, hreflang, breadcrumbs fixed, sitemap entry confirmed via prior polish commit. Adsterra kept. Smoke on production 404 (branch not yet promoted); preview SSO-protected as previously noted. FIXED urn — no weight updates. adsense-prep_runs remains 2.
+notes: IDEATE roll U=0.63 → CORE; cumulative weight sample R≈11/20 → simulators. Set simulators=1, other CORE +1. last_closed=search-magnets (different catalog) no re-roll. Adsterra kept. CWV: lazy route + modest canvas.
 adsense-prep_runs: 2
 ```
 
