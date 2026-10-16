@@ -59,4 +59,8 @@ Reply in **Spanish** at the end of every run (template in ideas-lab-ops.md).
     - Existing `/{code}/...` routes stay; other domains may still add pages for already-active locales when cheap.
     - Document retirement in state NOTES when the 5th language is completed.
 
+## Core Web Vitals
+
+When writing code, follow the Core Web Vitals rules in **ideas-lab-ops.md** (lazy route isolation, no home/catalog bloat, CLS-safe stages, no needless heavy deps). Site speed is shared with the daily performance automation — do not undo its work.
+
 <!-- end:ideas-lab.md -->
