@@ -128,6 +128,7 @@ Touch only what the monorepo requires: catalog data, route-slugs, i18n, nav/site
    - Registry plan (import + pickComponent branch)
    - Commit identity email
    - Confirmed: not touching HouseModeler3D
+   - **SEO locales review:** read `SEO_LOCALES_ACTIVE`; if non-empty, either ship `/{code}/...` for the new tool(s) or explicitly defer in the Spanish summary (do not ignore)
 
 7. **Implement**
    - Two components + two surgical registry entries.
@@ -173,6 +174,7 @@ Identidad email: andygargol2010@gmail.com
 Deploy: READY|ERROR|BUILDING + URL
 Verificación por slug: …
 Registry anti-wipe: OK|restaurado
+SEO locales active (codes): … | acción: shipped / deferred / n-a
 Pasos de prueba manual: …
 ```
 
