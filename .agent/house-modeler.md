@@ -141,6 +141,17 @@ Every PRODUCT change must be **user-visible and correct**, not a drive-by tweak.
 12. **Deploy READY** (or FIX-BUILD exhausted honestly) — do not mark success on ERROR.
 13. Prefer a **small, correct** diff over a large, half-wired feature.
 
+### Core Web Vitals / runtime cost
+
+The modeler is inherently heavier than a calculator. Still:
+
+1. **Do not** import `HouseModeler3D` into home, catalog lists, or unrelated tool routes — keep existing lazy boundaries.
+2. New UI chrome: prefer CSS/media queries over new large client libraries.
+3. Textures ≤512px where procedural; dispose GPU resources (already required) — leaks hurt long-session INP/FPS.
+4. Graphics PRODUCT: protect FPS on mid mobile; do not enable extra shadow maps / postprocessing stacks without a clear visual win.
+5. Mobile FORCE UI work: larger targets must not force desktop reflows that increase CLS (breakpoint-scoped styles).
+6. Never “fix LCP” by stripping Sky/shadows without evidence; prefer not loading the modeler until the tool route mounts.
+
 ### Anti-patterns (reject)
 
 - “Polish” that only renames variables or reorders imports with no visual/behavior change.
