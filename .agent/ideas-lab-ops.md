@@ -84,6 +84,15 @@ Product ideas: interactive, ≠ RECENT_CLOSED, ≤6–8 runs, visual payoff, EN+
 
 adsense-prep / traffic-diagnosis: as their sections.
 
+### Core Web Vitals when coding (Ideas Lab)
+
+- **Route isolation:** playgrounds/experiences load on their own route via lazy/dynamic import. Never eager-import heavy canvas/WebGL into home, root layout, or catalog list chunks.
+- **LCP:** do not add large hero images or fonts on shared shells without `font-display` / sized media; avoid blocking the home critical path.
+- **INP:** no heavy work on first interaction; debounce; keep animation work off the main thread when possible (or keep particle counts modest on mobile).
+- **CLS:** reserve space for interactive stages; fixed aspect boxes for canvas; do not shove layout with late-mounted UI.
+- **Bundle:** no new heavy deps unless essential; prefer existing stack. One experience must not pull HouseModeler3D or the full tools registry.
+- If a growth/idea would clearly regress mobile CWV, redesign lighter or defer — quality of discovery > flashy weight.
+
 Commits: `feat` / `polish` / `docs(agent)` / `fix(build)`.
 
 ---
@@ -135,6 +144,8 @@ Deploy; smoke; outcome; ACTIVE PROJECT; locale/registry if seo-locales (N/5 acti
 ---
 
 ## ALWAYS
+
+- Guard Core Web Vitals on every ship (lazy routes, no home bloat, modest mobile cost).
 
 Spanish summary; correct identity; quality > novelty; one outcome; next-step when required; never remove Adsterra; files win over automation prompt; two-urn GROWTH; truncation → re-read not invent; seo-locales → registry sync + no EN/ES nav links; **retire seo-locales domain at 5 active**.
 
