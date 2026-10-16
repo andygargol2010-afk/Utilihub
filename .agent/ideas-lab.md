@@ -44,7 +44,7 @@ Reply in **Spanish** at the end of every run (template in ideas-lab-ops.md).
 10. runs_total/remaining integers 1..15. Never raise cap mid-project.
 11. DOMAIN ROLL (IDEATE only):
     - **CORE** = `kits | journeys | games | simulators | studio-composition | playgrounds`
-    - **GROWTH** = `traffic-bets | growth-surfaces | share-hooks | search-magnets | retention-loops | conversion-paths | traffic-diagnosis | adsense-prep | seo-locales`
+    - **GROWTH** = `traffic-bets | growth-surfaces | share-hooks | search-magnets | retention-loops | conversion-paths | traffic-diagnosis | adsense-prep | seo-locales` (omit **seo-locales** from the roll set once active SEO locales ≥ 5; see §14)
     - U ~ Uniform(0,1): U < 0.50 → GROWTH, else CORE.
     - CORE: weighted sample from weights_core; selected→1; other CORE→+1.
     - GROWTH TWO-URN: p_fixed (default 0.35). U_g < p_fixed → FIXED urn only (`traffic-bets`,`search-magnets` weight 3; no weight updates). Else FLEX urn = all other GROWTH domains including **seo-locales** and adsense-prep; selected non-FIXED→1; other non-FIXED→+1; FIXED untouched.
@@ -52,6 +52,11 @@ Reply in **Spanish** at the end of every run (template in ideas-lab-ops.md).
     - last_closed_domain match → re-roll once same catalog.
     - Never default to kits out of habit.
 12. NEXT STEP for shareable playgrounds under playgrounds|journeys|studio-composition|games: register next-step.ts + PlaygroundNextStep EN+ES before AdsterraBanner.
-13. **seo-locales (GROWTH FLEX):** When this domain is selected or EXECUTE continues it: follow **SEO-LOCALES procedure** in ideas-lab-ops.md and `.agent/seo-locales-registry.md`. Activate/extend one high-spoken language route tree under `/{code}/...`. Do **not** add primary-nav links from EN or ES. Keep registry + `src/lib/i18n/seo-locales.ts` in sync. New major surfaces should eventually gain routes for **active** SEO locales (same run if small; else queue via seo-locales).
+13. **seo-locales (GROWTH FLEX, temporary):** When selected or EXECUTE continues it: follow **SEO-LOCALES procedure** in ideas-lab-ops.md and `.agent/seo-locales-registry.md`. Activate/extend one high-spoken language under `/{code}/...`. No primary-nav links from EN or ES. Keep registry + `src/lib/i18n/seo-locales.ts` in sync.
+14. **seo-locales CAP = 5 active languages:** Count rows with status `active` in `.agent/seo-locales-registry.md` / `SEO_LOCALES_ACTIVE`. When **active count ≥ 5**:
+    - **Retire the domain:** set `seo-locales: 0` in `weights_growth` (ideas-lab-state.md), remove `seo-locales` from the GROWTH domain list used in DOMAIN ROLL, and stop selecting it.
+    - Do not activate a 6th SEO locale via this domain.
+    - Existing `/{code}/...` routes stay; other domains may still add pages for already-active locales when cheap.
+    - Document retirement in state NOTES when the 5th language is completed.
 
 <!-- end:ideas-lab.md -->
