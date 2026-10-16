@@ -31,6 +31,24 @@ export const Route = createFileRoute("/guides/particle-physics")({
   component: ParticlePhysicsGuideEn,
 });
 
+const SIM_LOOP = `for each particle:
+  force = zero vector
+  for each attractor:
+    dx = attractor.x - particle.x
+    dy = attractor.y - particle.y
+    dist = sqrt(dx*dx + dy*dy) + softening
+    strength = attractor.mass / (dist * dist)
+    force.x += dx * strength
+    force.y += dy * strength
+  particle.vx += force.x * dt
+  particle.vy += force.y * dt
+  particle.vx *= damping   // e.g. 0.995
+  particle.vy *= damping
+  particle.x += particle.vx * dt
+  particle.y += particle.vy * dt
+  // optional: recycle if lifetime expired
+draw particles (or trails)`;
+
 function ParticlePhysicsGuideEn() {
   return (
     <div className="container-page py-8 sm:py-12">
@@ -89,25 +107,7 @@ function ParticlePhysicsGuideEn() {
         <p>
           Every frame the engine does roughly the following (simplified pseudocode):
         </p>
-        <pre className="text-sm">
-{`for each particle:
-  force = {x: 0, y: 0}
-  for each attractor:
-    dx = attractor.x - particle.x
-    dy = attractor.y - particle.y
-    dist = sqrt(dx*dx + dy*dy) + softening
-    strength = attractor.mass / (dist * dist)
-    force.x += dx * strength
-    force.y += dy * strength
-  particle.vx += force.x * dt
-  particle.vy += force.y * dt
-  particle.vx *= damping   // e.g. 0.995 to prevent infinite speed
-  particle.vy *= damping
-  particle.x += particle.vx * dt
-  particle.y += particle.vy * dt
-  // optional: recycle if lifetime expired or out of bounds
-draw particles (or trails)`}
-        </pre>
+        <pre className="text-sm overflow-x-auto rounded bg-muted p-4">{SIM_LOOP}</pre>
         <p>
           Delta-time (<code>dt</code>) keeps motion consistent across different frame rates. Damping prevents particles from accelerating forever when attractors are strong.
         </p>
