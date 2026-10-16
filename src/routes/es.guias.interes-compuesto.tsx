@@ -34,7 +34,7 @@ export const Route = createFileRoute("/es/guias/interes-compuesto")({
 function CompoundInterestGuideEs() {
   return (
     <div className="container-page py-8 sm:py-12">
-      <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Guías", to: "/es/guias" }, { label: "Interés compuesto" }]} />
+      <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Interés compuesto" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Interés Compuesto Explicado: Cómo Crece Tu Dinero con el Tiempo</h1>
         <p className="lead">
@@ -90,6 +90,37 @@ function CompoundInterestGuideEs() {
               <tr><td>30</td><td className="text-right">$76.123</td><td className="text-right">$66.123</td></tr>
             </tbody>
           </table>
+        </div>
+
+        <div className="not-prose my-6">
+          <h3 className="mb-3 text-sm font-semibold text-muted-foreground">Crecimiento visual (relativo al valor a 30 años)</h3>
+          <div className="space-y-2 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="w-8 shrink-0">5a</span>
+              <div className="h-3 flex-1 overflow-hidden rounded bg-muted"><div className="h-3 rounded bg-primary" style={{ width: "18%" }} /></div>
+              <span className="w-16 shrink-0 text-right">$14k</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-8 shrink-0">10a</span>
+              <div className="h-3 flex-1 overflow-hidden rounded bg-muted"><div className="h-3 rounded bg-primary" style={{ width: "26%" }} /></div>
+              <span className="w-16 shrink-0 text-right">$20k</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-8 shrink-0">15a</span>
+              <div className="h-3 flex-1 overflow-hidden rounded bg-muted"><div className="h-3 rounded bg-primary" style={{ width: "36%" }} /></div>
+              <span className="w-16 shrink-0 text-right">$28k</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-8 shrink-0">20a</span>
+              <div className="h-3 flex-1 overflow-hidden rounded bg-muted"><div className="h-3 rounded bg-primary" style={{ width: "51%" }} /></div>
+              <span className="w-16 shrink-0 text-right">$39k</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-8 shrink-0">30a</span>
+              <div className="h-3 flex-1 overflow-hidden rounded bg-muted"><div className="h-3 rounded bg-primary" style={{ width: "100%" }} /></div>
+              <span className="w-16 shrink-0 text-right">$76k</span>
+            </div>
+          </div>
         </div>
 
         <div className="not-prose my-8 rounded-xl border border-primary/20 bg-primary/5 p-6">

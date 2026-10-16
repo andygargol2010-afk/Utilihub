@@ -77,6 +77,11 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...pair("/contact", "/es/contacto", "0.3"),
         ];
 
+        const guidePairs: SitemapEntry[] = [
+          ...pair("/guides/compound-interest", "/es/guias/interes-compuesto", "0.75"),
+          ...pair("/guides/particle-physics", "/es/guias/fisica-particulas", "0.75"),
+        ];
+
         const categoryPairs: SitemapEntry[] = ALL_CATEGORIES.flatMap((category) => {
           const enPath =
             category.slug === "finanzas" ? "/finance" : englishCategoryPath(category.slug);
@@ -112,6 +117,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 
         const paths = [
           ...hubPairs,
+          ...guidePairs,
           ...categoryPairs,
           ...educationPairs,
           ...kitPairs,

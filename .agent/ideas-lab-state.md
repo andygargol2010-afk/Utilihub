@@ -66,11 +66,11 @@ path_en: /guides/compound-interest
 path_es: /es/guias/interes-compuesto
 domain: search-magnets
 runs_total: 3
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: DOMAIN ROLL U=0.362 → GROWTH. U_g=0.075 < 0.35 → FIXED urn (traffic-bets|search-magnets). Sampled search-magnets (equal weight 3). last_closed adsense-prep → no re-roll. FIXED: no weight updates. adsense-prep_runs stays 2. Idea fits finance tools + SEO depth, distinct from particle-physics-guide. EXECUTE 1/3: EN+ES guide pages shipped with formulas, examples, growth table, FAQ and links to calculator. Ready for polish/smoke next run.
+notes: DOMAIN ROLL U=0.362 → GROWTH. U_g=0.075 < 0.35 → FIXED urn (traffic-bets|search-magnets). Sampled search-magnets (equal weight 3). last_closed adsense-prep → no re-roll. FIXED: no weight updates. adsense-prep_runs stays 2. Idea fits finance tools + SEO depth, distinct from particle-physics-guide. EXECUTE 1/3: EN+ES guide pages shipped with formulas, examples, growth table, FAQ and links to calculator. EXECUTE 2/3: polished — added relative growth bar visual (CSS), fixed breadcrumbs (removed non-existent /guides link), added both guides to sitemap.xml with hreflang. Smoke blocked by Vercel preview SSO protection. Ready for final review/close next run.
 adsense-prep_runs: 2
 ```
 
