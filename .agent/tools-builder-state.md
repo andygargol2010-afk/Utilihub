@@ -2,19 +2,18 @@
 
 **Part 3 of 3 — runtime state only.** End marker: `<!-- end:tools-builder-state.md -->`.
 
-If truncated: re-fetch immediately. Keep this file small.
+If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
 
-Edit + commit after PRODUCT when useful (new tools, cluster notes). Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
+Edit + commit after successful PRODUCT (or when cluster notes change).  
+Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 
 ---
 
 ## RECENT_TOOLS (max 12, newest first)
 
-Update after each successful PRODUCT run.
+Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
-- 2026-10-16 | finanzas | calculadora-presupuesto-503020 | Budget503020Tool
-- 2026-10-16 | generadores | generador-uuid | UuidGeneratorTool
 - 2026-10-15 | productividad | water-intake | WaterIntakeTool
 - 2026-10-15 | conversiones | currency-converter | CurrencyConverterTool
 - 2026-10-1x | ciencia | timezone | TimezoneTool
@@ -22,34 +21,48 @@ Update after each successful PRODUCT run.
 - 2026-10-1x | salud | body-fat | BodyFatCalculatorTool
 ```
 
+Update this block when you ship. Drop entries beyond 12.
+
 ---
 
 ## CLUSTER WATCH
 
-Last ~8 thematic count (update when shipping):
+Use with PRODUCT diversity rules (ops). Prefer under-represented clusters.  
+Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: watch
 ciencia/física: recent
-finanzas simples: recent
+finanzas simples: watch
 hogar/construcción: watch
 % / math básica: watch
 generadores texto: watch
 conversiones genéricas: watch
-generadores: recent
+salud / body-metrics: recent
+productividad: recent
 ```
 
-Prefer under-represented clusters. Two tools in one PRODUCT run must not share a cluster.
+After shipping, bump the relevant lines (e.g. `recent` / count in notes).
 
 ---
 
 ## NOTES
 
 ```
-PRODUCT target: 2 tools/run with full quality bar each.
-Registry anti-wipe still critical.
-Prefer PRODUCT when last deploy READY.
-Bootstrap prompt only points here — expand rules in tools-builder.md / ops, not in the 8k automation field.
+PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 excellent.
+Registry anti-wipe remains the highest-priority safety rule.
+Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
+Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation field).
+```
+
+---
+
+## OPTIONAL — last run snapshot
+
+```
+last_mode: (fill on META or when useful)
+last_slugs: 
+last_deploy: 
 ```
 
 <!-- end:tools-builder-state.md -->

@@ -2,104 +2,189 @@
 
 **Part 2 of 3.** End marker: `<!-- end:tools-builder-ops.md -->`.
 
-If truncated: re-fetch; do not guess MODE.
+If truncated: re-fetch; do not guess MODE or PRODUCT steps.
 
 ---
 
 ## QUALITY BAR (per tool — non-negotiable)
 
-Even when shipping **2 tools**, each must pass the same bar as a solo-tool run:
+Even when the target is **2 tools**, each tool must pass the same bar as a solo-tool run:
 
-- Clear inputs, correct result, **2 real examples**, edge cases (zero / negative / empty).
-- UI: design system, EN+ES, copy/reset, mobile-first.
-- SEO: intent title, `makeTool` + override if needed; FAQ 0–3 only if useful (no padding).
-- Registry surgical + verified (rules file ANTI-WIPE).
-- Page verification EN+ES OK (POST-PUSH).
+| Area | Required |
+| --- | --- |
+| Inputs | Clear labels; sensible defaults; EN+ES |
+| Result | Correct formula / logic; no silent NaN |
+| Examples | **2 real worked examples** on the page |
+| Edges | Zero, negative, empty, absurd upper bound handled |
+| UI | Design-system cards/inputs; copy + reset; mobile-first |
+| i18n | Full EN + ES strings (not half-translated) |
+| SEO | Title/H1 with search intent; `makeTool` + override if catalog needs it |
+| FAQ | 0–3 only if they answer real questions — **no padding FAQ** |
+| Registry | Surgical entry; page does not show «Tool not available» |
+| Verify | Open EN + ES routes after deploy |
 
-If the 2nd candidate cannot meet this bar (or registry/deploy is unsafe): ship **1 excellent tool** and explain in Spanish. Never ship two mediocre tools.
+**Escape hatch:** If the 2nd candidate cannot meet this bar, or registry/deploy is unsafe after the first tool → ship **1 excellent tool** and explain why in the Spanish summary. Never ship two mediocre tools. Prefer 1 solid > 2 weak.
 
 ---
 
-## MODE
+## MODE (every run)
 
-0. Recent commits + `automation_get_results` (limit 5). Load state → rules → ops.
-1. DEPLOY CHECK start: list Vercel utilihub on `fix/spanish-complete`.
-   - ERROR → FIX-BUILD only (max 2). No new tools while ERROR.
-   - BUILDING/QUEUED → note; re-check next run.
-   - READY → PRODUCT / META / NEW-CATEGORY.
-2. Roll 1–20:
-   - 1 → META (~5%)
-   - 2 → NEW-CATEGORY (~5%, all gates)
-   - 3–20 → PRODUCT (target **2 tools**)
-Declare mode at start.
+0. Load state → rules → ops. Read `automation_get_results` (limit 5) + recent commits on fix/spanish-complete.
+1. **DEPLOY CHECK** (start): list Vercel project `utilihub`, branch `fix/spanish-complete`.
+   - **ERROR** → FIX-BUILD only (see below). No new tools while ERROR.
+   - **BUILDING / QUEUED** → note; avoid heavy PRODUCT; re-check next run.
+   - **READY** → PRODUCT / META / NEW-CATEGORY allowed.
+2. Roll integer **1–20**:
+   - **1** → META (~5%)
+   - **2** → NEW-CATEGORY (~5%, only if all gates pass)
+   - **3–20** → PRODUCT (target 2 tools)
+3. Declare mode (and roll) at the start of the run narrative.
+
+---
+
+## FIX-BUILD
+
+When deploy is ERROR or a new tool page is broken:
+
+1. Read build / runtime logs (Vercel).
+2. Minimal fix only (typo, missing export, bad import, registry branch).
+3. Push → re-check deploy. Max **2** attempts per run.
+4. No new product tools while fixing.
+5. If root cause is wiped registry → restore known-good SHA first (rules file), then re-add only safe surgical entries.
 
 ---
 
 ## POST-PUSH DEPLOY CHECK
 
-After every push: wait ~60–90s; list deploy for SHA.
+After every product push:
 
-- ERROR → FIX-BUILD.
-- READY and new tools: **page verification for each new slug**:
-  1. Open EN + ES (`/tools/<slug>`, `/es/herramientas/<slug>` or monorepo equivalents).
-  2. Must not show «Tool not available» / «Herramienta no disponible».
-  3. Title/H1 must match SEO intent (not generic fallback).
-  4. Any failure → FIX-BUILD (registry/route/SEO); do not claim success.
-
-Summary must include deploy state + URL + per-slug verification.
+1. Wait ~60–90s; list deployment for that commit SHA.
+2. If ERROR → FIX-BUILD.
+3. If READY and tools were added → **page verification for each new slug**:
+   - Open EN: `/tools/<slug>` (or monorepo equivalent)
+   - Open ES: `/es/herramientas/<slug>` (or equivalent)
+   - Must **not** show «Tool not available» / «Herramienta no disponible»
+   - Title / H1 must reflect the SEO intent (not a generic fallback)
+   - Any failure → FIX-BUILD (registry / route / SEO); do **not** claim success
+4. Spanish summary must include: deploy state, preview URL if available, per-slug pass/fail.
 
 ---
 
-## NEW-CATEGORY (roll=2 + all gates)
+## NEW-CATEGORY (roll = 2 + all gates)
 
-One category + **1 seed tool** (not 2). Routes already dynamic — data only.
+Ship **one** new category + **one** seed tool (not two tools). Category routes are already dynamic — prefer data/config changes.
 
-- G1: no new category in last 15 runs.
-- G2: `GENERAL_CATEGORIES` < 22.
-- G3: theme does not fit existing (document 3 candidates).
-- G4: ≥4 future tools possible.
-- G5: kebab slug 3–24 ASCII.
-- G6: `ENGLISH_CATEGORY_SLUGS` updated.
+Gates (all required):
 
-Files: catalog, route-slugs, i18n/es, nav/sitemap if hardcoded. Commit `feat(catalog): add <slug> + <tool>`.
+- **G1** Last ~15 runs did not already add a category.
+- **G2** `GENERAL_CATEGORIES` count still **< 22**.
+- **G3** Theme does not fit an existing category (name 3 existing candidates you considered).
+- **G4** Room for ≥4 future tools in that theme.
+- **G5** Category slug: kebab-case, 3–24 ASCII chars.
+- **G6** Update `ENGLISH_CATEGORY_SLUGS` (and ES maps if required).
+
+Touch only what the monorepo requires: catalog data, route-slugs, i18n, nav/sitemap if hardcoded. Commit message: `feat(catalog): add <category-slug> + <seed-tool>`.
 
 ---
 
 ## PRODUCT — TWO TOOLS (roll 3–20)
 
-Mandatory order:
+### Mandatory order
 
-1. **ANTI-DUPE:** grep each slug; 3 sisters; do not repeat cluster of last ~8. Skip if UtiliHub already covers the same intent under another slug.
-2. **CLUSTER diversity:** count last ~8 tools by cluster. If ≥3 same cluster → forbid another of that cluster. The **two tools this run must be different clusters** from each other. Watch: home/construction, dates/time, %/basic math, text generators, generic unit conversion, simple finance.
-3. **TYPE:** calculator | converter | generator | validator | studio. Prefer not both the same type if last 5 were numeric calculators.
-4. **DEMAND selection (before code):**
-   - Propose ≥4 candidates (≥2 per slot) with clear EN (and ES if useful) queries. Do not invent search volumes.
-   - Drop if own catalog already covers the intent.
-   - Differentiation: inputs, outputs, use cases that justify a page.
-   - Pick 2 maximizing observable demand + gap + utility, distinct clusters. Not “slug free” alone.
-5. UI + SEO + FAQ per tool (quality bar).
-6. Checklist per tool before push: category/cluster, type, anti-dupe, candidates, queries, 2 examples, edges, SEO, UI, registry, identity email, no HouseModeler3D.
-7. Implement: 2 components + 2 registry entries (surgical). One or two clear `feat(cat):` commits. Max 2 build-fix attempts. Then POST-PUSH for **both**.
-8. If after the first tool deploy/registry is fragile: stop at 1; document.
+1. **ANTI-DUPE**
+   - Grep each candidate slug in repo.
+   - Check 3 sister tools (same problem family).
+   - Skip if UtiliHub already covers the same user intent under another slug (even with a different name).
+
+2. **CLUSTER diversity** (read state file)
+   - Count last ~8 shipped tools by cluster.
+   - If a cluster already has ≥3 in that window → **forbid** another from that cluster.
+   - The **two tools of this run must be different clusters** from each other.
+   - Watched clusters: hogar/construcción, fechas/tiempo, %/math básica, generadores de texto, conversiones genéricas, finanzas simples, salud/BMI-family, ciencia/física one-shot.
+
+3. **TYPE mix**
+   - Types: `calculadora` | `conversor` | `generador` | `validador` | `studio`.
+   - Prefer not both the same type if the last 5 catalog tools were numeric calculators.
+
+4. **DEMAND selection (before any code)**
+   - Propose **≥4 candidates** (≥2 per slot) with explicit EN query and ES query when relevant.
+   - Do **not** invent search volumes or “high demand” without a concrete query phrase.
+   - Drop candidates already covered by own catalog.
+   - Prefer differentiation: inputs, outputs, or use-cases that justify a dedicated page.
+   - Pick 2 that best combine: clear query, gap in catalog, implementable quality this run, distinct clusters.
+   - Reject “slug is free” as the only reason.
+
+5. **Design + SEO per tool**
+   - UI on design system; EN+ES; 2 examples; edges.
+   - SEO title with intent; optional FAQ 0–3 only if useful.
+   - Same quality bar as a single-tool run.
+
+6. **Pre-push checklist (each tool)**
+   - Category + cluster + type
+   - Anti-dupe done
+   - Candidates + queries recorded
+   - 2 examples + edges
+   - SEO title/H1
+   - Registry plan (import + pickComponent branch)
+   - Commit identity email
+   - Confirmed: not touching HouseModeler3D
+
+7. **Implement**
+   - Two components + two surgical registry entries.
+   - One or two clear commits: `feat(cat): add <slug>` …
+   - Max 2 build-fix attempts.
+   - Then POST-PUSH verification for **both** slugs.
+
+8. **Safety stop**
+   - If after the first tool the deploy or registry looks fragile → stop at 1; document; do not force the second.
 
 ---
 
-## META (roll=1)
+## META (roll = 1)
 
-Only `automation_update` of **this** task_id if bootstrap needs a tiny fix — prefer editing `.agent/tools-builder*.md` via commit.
+Prefer improving `.agent/tools-builder*.md` via commit over lengthening the automation bootstrap.
 
-One evidence-based clause. Do not weaken IMMUTABLE / ANTI-WIPE / identity. May reinforce clusters or quality bar in ops/state.
+Allowed:
+
+- Clarify cluster list, quality bar, or NEW-CATEGORY gates with evidence from last results.
+- Update bootstrap **only** if load-order instructions broke (rare).
+- One evidence-based change.
+
+Forbidden:
+
+- Weaken IMMUTABLE / ANTI-WIPE / identity.
+- Touch other automations.
+- Raise implicit volume above 2 or remove the “1 excellent tool” escape hatch.
 
 ---
 
 ## Spanish summary template
 
-Mode; candidates and why these 2 (or 1); categories/clusters; slugs; 2 examples per tool; SEO; SHA; identity email; test steps; DEPLOY + per-slug verification; registry OK if touched.
+```
+Modo: PRODUCT|META|NEW-CATEGORY|FIX-BUILD (roll N)
+Candidatos: …
+Elegidas (1 o 2) y por qué: …
+Clusters / categorías: …
+Slugs EN+ES: …
+2 ejemplos por tool: …
+SEO: …
+SHA / commits: …
+Identidad email: andygargol2010@gmail.com
+Deploy: READY|ERROR|BUILDING + URL
+Verificación por slug: …
+Registry anti-wipe: OK|restaurado
+Pasos de prueba manual: …
+```
 
 ---
 
 ## ALWAYS
 
-Quality > speed. Deploy ERROR > new feature. Two solid tools beat two weak ones. Never sacrifice full registry for volume. Files under `.agent/` are source of truth. Truncation → re-read, never invent.
+- Quality > speed. Deploy ERROR > new feature.
+- Two solid tools expand the catalog more than two weak ones.
+- Never sacrifice a complete registry for volume.
+- `.agent/` files are the full source of truth; this ops file is part of it.
+- Truncation → re-read, never invent.
+- End every run with an honest Spanish summary.
 
 <!-- end:tools-builder-ops.md -->
