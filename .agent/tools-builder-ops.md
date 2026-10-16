@@ -22,6 +22,15 @@ Even when the target is **2 tools**, each tool must pass the same bar as a solo-
 | FAQ | 0–3 only if they answer real questions — **no padding FAQ** |
 | Registry | Surgical entry; page does not show «Tool not available» |
 | Verify | Open EN + ES routes after deploy |
+| **Core Web Vitals** | No new heavy deps; keep tool route lean; lazy-load any canvas/3D/chart; avoid blocking home/catalog chunks; no layout shift from ads/images without size; prefer CSS over large client JS for chrome |
+
+### Core Web Vitals when coding (tools)
+
+- **LCP:** do not import registry/3D/modeler into the tool shell or home. Tool component loads on its route only.
+- **INP:** avoid heavy sync work on every keystroke (debounce if needed); keep main thread free on first paint.
+- **CLS:** reserve space for result cards; images/icons with width/height or fixed aspect; do not inject late banners that shove content without a reserved slot (Adsterra slots already reserved — do not break them).
+- **Bundle:** no new npm packages without strong need; prefer browser-native math. Charts/canvas → dynamic `import()` / existing lazy patterns.
+- **JS weight:** one tool file should not pull the whole catalog or HouseModeler3D.
 
 **Escape hatch:** If the 2nd candidate cannot meet this bar, or registry/deploy is unsafe after the first tool → ship **1 excellent tool** and explain why in the Spanish summary. Never ship two mediocre tools. Prefer 1 solid > 2 weak.
 
@@ -117,7 +126,7 @@ Touch only what the monorepo requires: catalog data, route-slugs, i18n, nav/site
 5. **Design + SEO per tool**
    - UI on design system; EN+ES; 2 examples; edges.
    - SEO title with intent; optional FAQ 0–3 only if useful.
-   - Same quality bar as a single-tool run.
+   - Same quality bar as a single-tool run (including Core Web Vitals).
 
 6. **Pre-push checklist (each tool)**
    - Category + cluster + type
@@ -128,6 +137,7 @@ Touch only what the monorepo requires: catalog data, route-slugs, i18n, nav/site
    - Registry plan (import + pickComponent branch)
    - Commit identity email
    - Confirmed: not touching HouseModeler3D
+   - CWV: no eager home import; no heavy deps; lazy canvas if any
    - **SEO locales review:** read `SEO_LOCALES_ACTIVE`; if non-empty, either ship `/{code}/...` for the new tool(s) or explicitly defer in the Spanish summary (do not ignore)
 
 7. **Implement**
@@ -169,6 +179,7 @@ Clusters / categorías: …
 Slugs EN+ES: …
 2 ejemplos por tool: …
 SEO: …
+CWV: lean route / no home bloat / deps OK
 SHA / commits: …
 Identidad email: andygargol2010@gmail.com
 Deploy: READY|ERROR|BUILDING + URL
@@ -182,6 +193,7 @@ Pasos de prueba manual: …
 
 ## ALWAYS
 
+- Protect Core Web Vitals on every tool ship (lazy heavy UI, no home/catalog bloat, no needless deps).
 - Quality > speed. Deploy ERROR > new feature.
 - Two solid tools expand the catalog more than two weak ones.
 - Never sacrifice a complete registry for volume.
