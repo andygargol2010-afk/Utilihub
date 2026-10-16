@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: studio-composition
-last_closed_id: glow-trail
+last_closed_domain: journeys
+last_closed_id: river-light
 p_fixed: 0.35
 
 weights_core:
@@ -42,6 +42,7 @@ adsense-prep_runs: 1
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-15 | journeys | river-light | River of Light Journey
 - 2026-10-15 | studio-composition | glow-trail | Glow Trail Composer
 - 2026-10-15 | games | pulse-catch | Pulse Catch
 - 2026-10-1x | playgrounds | gravity-particles | Gravity Particles (prior)
@@ -57,18 +58,18 @@ adsense-prep_runs: 1
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: done
 idea: River of Light Journey — interactive canvas: waypoints; glowing particle river; afterglows. Share URL+PNG. /river-light + /es/rio-luz. next-step EN+ES.
 id: river-light
 path_en: /river-light
 path_es: /es/rio-luz
 domain: journeys
 runs_total: 6
-runs_remaining: 1
-acceptance: pending
+runs_remaining: 0
+acceptance: met
 share: both
 next_step_required: yes
-notes: CORE journeys. SHIPPED+POLISH 1–5/6. seo-locales domain+registry added 2026-10-15 (GROWTH FLEX weight 1). runs_remaining=1.
+notes: CORE journeys. SHIPPED+POLISH 1–6/6 complete (final restore of full interactive particle river). Ready for IDEATE.
 adsense-prep_runs: 1
 ```
 
