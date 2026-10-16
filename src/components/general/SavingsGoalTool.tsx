@@ -41,7 +41,7 @@ export function SavingsGoalTool({ locale = "en" }: { tool?: GeneralTool; locale?
       ? `Ahorro mensual necesario: ${monthly.toFixed(2)}`
       : `Monthly savings needed: ${monthly.toFixed(2)}`
     : es
-      ? "Meses debe ser mayor que 0"
+      ? "Los meses deben ser mayores que 0"
       : "Months must be greater than 0";
 
   async function copy() {
