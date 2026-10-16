@@ -59,18 +59,18 @@ adsense-prep_runs: 1
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
+status: active
+idea: Guía SEO original (EN+ES) sobre física de partículas en el navegador: cómo funcionan la gravedad, atracción y sistemas de partículas, con explicaciones, fórmulas, ejemplos visuales y CTAs a Gravity Particles Playground y River of Light. Contenido profundo para búsquedas como "particle simulation browser", "gravity particles online", "cómo funcionan las partículas".
+id: particle-physics-guide
+path_en: /guides/particle-physics
+path_es: /es/guias/fisica-particulas
+domain: search-magnets
+runs_total: 4
+runs_remaining: 4
+acceptance: pending
 share: n/a
 next_step_required: no
-notes: Previous traffic-events closed after run 3/3. Instrumented floor-plan, neon-signature, glow-trail with playground_open + share_click. Baseline events ready in Vercel Analytics. Next run: IDEATE.
+notes: DOMAIN ROLL U=0.304 → GROWTH. U_g=0.233 < 0.35 → FIXED urn. Sampled search-magnets (weight 3). last_closed traffic-bets → no re-roll. No weight updates (FIXED). Idea targets existing playgrounds for depth without new calculators.
 adsense-prep_runs: 1
 ```
 
