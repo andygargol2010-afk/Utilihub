@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 157
+runs_done: 158
 runs_max: 500
 ```
 
@@ -78,7 +78,11 @@ last_mode: META
 last_date: 2026-10-16
 SEO_LOCALES_ACTIVE: none
 deploy: READY
-note: FORCE mobile UI active (remaining 3); PRODUCT deferred again due to monolith 330509B truncation risk on full rewrite via tool channel. Monolith verified intact (paint helpers present, door conditional count 1, 7490 lines). Planned surgical for next safe PRODUCT: 1) add max-md:hidden to all <kbd> shortcuts in toolbar/fullscreen overlays; 2) bump compact palette width from w-[4.75rem] to w-[5.25rem] only under max-md (or via existing paletteCompact which is already narrow-viewport); 3) ensure all palette finish/part buttons have min-h-12 max-md:min-h-14 or equivalent for thumb targets while desktop min-h stays. No remaining_runs consumed.
+note: FORCE mobile UI active (remaining 3); PRODUCT deferred due to 330509B truncation risk on full rewrite. Monolith verified intact (7490 lines, SHA edfe18bb…). Precise surgical map for next safe PRODUCT:
+1) 15 <kbd> tags (lines ~6153-6381): append " max-md:hidden" to each className so shortcuts hide under ~768px.
+2) aside palette (line ~6541): change paletteCompact ? "w-[4.75rem]" → "w-[4.75rem] max-md:w-[5.25rem]" (slightly wider thumb room only on mobile).
+3) palette finish buttons (min-h-11 at ~6583,6614,6645 etc.): change "min-h-11" → "min-h-11 max-md:min-h-14" for larger hit areas on mobile; desktop unchanged.
+No remaining_runs consumed.
 ```
 
 Refresh after each run.
@@ -91,8 +95,8 @@ Refresh after each run.
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI active: remaining_runs 3.
-Truncation barrier confirmed (channel truncates ~7k of 330k response); surgical PRODUCT requires either smaller targeted write path or confirmed non-truncating channel. Prefer META until a safe edit method is available.
-Next PRODUCT attempt: locate unique className strings for toolbar buttons and palette aside, apply max-md: prefixes only.
+Truncation barrier confirmed; surgical PRODUCT requires non-truncating full-content push or line-level edit. Prefer META until safe channel confirmed.
+Next PRODUCT: apply the three max-md: changes above once a verified full-body write is possible without truncation.
 ```
 
 <!-- end:house-modeler-state.md -->
