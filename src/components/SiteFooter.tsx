@@ -48,6 +48,7 @@ export function SiteFooter() {
             <Link to="/about" className="w-fit text-sm font-semibold hover:text-primary">About</Link>
             <Link to="/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">Legal notice</Link>
             <Link to="/privacidad" className="w-fit text-sm font-semibold hover:text-primary">Privacy</Link>
+            <Link to="/terms" className="w-fit text-sm font-semibold hover:text-primary">Terms of Use</Link>
             <Link to="/contacto" className="w-fit text-sm font-semibold hover:text-primary">Contact</Link>
           </nav>
         </div>
