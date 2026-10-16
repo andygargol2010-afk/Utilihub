@@ -31,7 +31,7 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
   const [speed, setSpeed] = useState(1);
   const [trails, setTrails] = useState(true);
   const [showTwin, setShowTwin] = useState(true);
-  const [hud, setHud] = useState({ th1: 90, th2: 0, w1: 0, w2: 0, E: 0 });
+  const [hud, setHud] = useState({ th1: 90, th2: 0, w1: 0, w2: 0, E: 0, div: 0 });
 
   const state = useRef({
     th1: Math.PI / 2,
@@ -75,7 +75,7 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
     state.current.w2 = 0;
     state.current.trail = [];
     syncTwin();
-    setHud({ th1: 90, th2: 0, w1: 0, w2: 0, E: 0 });
+    setHud({ th1: 90, th2: 0, w1: 0, w2: 0, E: 0, div: 0 });
     setRunning(true);
   }, [syncTwin]);
 
@@ -95,6 +95,11 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
     state.current.th2 += (Math.random() - 0.5) * 0.08;
     syncTwin();
   }, [syncTwin]);
+
+  const clearTrails = useCallback(() => {
+    state.current.trail = [];
+    twin.current.trail = [];
+  }, []);
 
   const savePng = useCallback(() => {
     const canvas = canvasRef.current;
@@ -323,12 +328,24 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
 
       hudTick.current++;
       if (hudTick.current % 8 === 0) {
+        let div = 0;
+        if (twinRef.current) {
+          const t = twin.current;
+          const L1px = p.l1 * PX_PER_M;
+          const L2px = p.l2 * PX_PER_M;
+          const tx1 = PIVOT_X + Math.sin(t.th1) * L1px;
+          const ty1 = PIVOT_Y + Math.cos(t.th1) * L1px;
+          const tx2 = tx1 + Math.sin(t.th2) * L2px;
+          const ty2 = ty1 + Math.cos(t.th2) * L2px;
+          div = Math.hypot(x2 - tx2, y2 - ty2) / PX_PER_M;
+        }
         setHud({
           th1: Math.round((s.th1 * 180) / Math.PI),
           th2: Math.round((s.th2 * 180) / Math.PI),
           w1: s.w1,
           w2: s.w2,
           E: energy(),
+          div,
         });
       }
 
@@ -384,6 +401,9 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
           </SimSecondaryButton>
           <SimSecondaryButton theme="lab" active={showTwin} onClick={() => setShowTwin((t) => !t)}>
             {es ? (showTwin ? "Gemelo ✓" : "Gemelo") : showTwin ? "Twin ✓" : "Twin"}
+          </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" onClick={clearTrails}>
+            {es ? "Limpiar estela" : "Clear trail"}
           </SimSecondaryButton>
           <SimSecondaryButton theme="lab" onClick={savePng}>
             PNG
@@ -446,7 +466,7 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
         </label>
       </div>
 
-      <div className="grid w-full max-w-md grid-cols-5 gap-1.5 text-center text-[10px]">
+      <div className="grid w-full max-w-md grid-cols-3 sm:grid-cols-6 gap-1.5 text-center text-[10px]">
         <div className="rounded-xl border border-sky-500/20 bg-black/30 px-1 py-2">
           <p className="font-bold text-sky-200/70">θ1</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.th1}°</p>
@@ -467,12 +487,16 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
           <p className="font-bold text-sky-200/70">E</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.E.toFixed(2)}</p>
         </div>
+        <div className="rounded-xl border border-violet-500/30 bg-black/30 px-1 py-2">
+          <p className="font-bold text-violet-200/70">{es ? "Δ punta" : "Δ tip"}</p>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-violet-100">{hud.div.toFixed(3)} m</p>
+        </div>
       </div>
 
       <p className="text-center text-[12px] leading-relaxed text-sky-200/75">
         {es
-          ? "Arrastrá cualquiera de las masas para fijar ángulos. Presets para condiciones clásicas de caos. El gemelo (violeta) parte con Δθ₁ ≈ 0.0015 rad y diverge rápido."
-          : "Drag either bob to set angles. Presets for classic chaos conditions. The twin (violet) starts with Δθ₁ ≈ 0.0015 rad and diverges rapidly."}
+          ? "Arrastrá cualquiera de las masas para fijar ángulos. Presets para condiciones clásicas de caos. El gemelo (violeta) parte con Δθ₁ ≈ 0.0015 rad y diverge rápido. Δ punta mide la separación actual entre puntas."
+          : "Drag either bob to set angles. Presets for classic chaos conditions. The twin (violet) starts with Δθ₁ ≈ 0.0015 rad and diverges rapidly. Δ tip shows current tip separation."}
       </p>
 
       <canvas
@@ -514,8 +538,8 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
 
       <p className="text-center text-[11px] text-sky-200/40">
         {es
-          ? "Sistema clásico no lineal. El gemelo muestra dependencia sensible: diferencias iniciales minúsculas divergen rápidamente. Energía se conserva sin amortiguación."
-          : "Classic nonlinear system. The twin shows sensitive dependence: tiny initial differences diverge rapidly. Energy is conserved without damping."}
+          ? "Sistema clásico no lineal. El gemelo muestra dependencia sensible: diferencias iniciales minúsculas divergen rápidamente. Δ punta cuantifica la separación. Energía se conserva sin amortiguación."
+          : "Classic nonlinear system. The twin shows sensitive dependence: tiny initial differences diverge rapidly. Δ tip quantifies the separation. Energy is conserved without damping."}
       </p>
     </div>
   );
