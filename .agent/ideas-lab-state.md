@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: traffic-bets
-last_closed_id: traffic-events
+last_closed_domain: search-magnets
+last_closed_id: particle-physics-guide
 p_fixed: 0.35
 
 weights_core:
@@ -42,6 +42,7 @@ adsense-prep_runs: 1
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-16 | search-magnets | particle-physics-guide | Particle Physics SEO Guide (EN+ES)
 - 2026-10-16 | traffic-bets | traffic-events | Traffic Events Instrumentation
 - 2026-10-15 | journeys | river-light | River of Light Journey
 - 2026-10-15 | studio-composition | glow-trail | Glow Trail Composer
@@ -51,7 +52,6 @@ adsense-prep_runs: 1
 - 2026-10-1x | studio-composition | neon-sign | Neon Signature Studio (prior)
 - 2026-10-1x | playgrounds | kaleidoscope-mandala | Kaleidoscope Mandala (prior)
 - 2026-10-1x | playgrounds | constellation-studio | Constellation Share Studio (prior)
-- 2026-10-1x | playgrounds | particle-signature | Particle Signature (prior)
 ```
 
 ---
@@ -59,18 +59,18 @@ adsense-prep_runs: 1
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: closed
 idea: Guía SEO original (EN+ES) sobre física de partículas en el navegador: cómo funcionan la gravedad, atracción y sistemas de partículas, con explicaciones, fórmulas, ejemplos visuales y CTAs a Gravity Particles Playground y River of Light. Contenido profundo para búsquedas como "particle simulation browser", "gravity particles online", "cómo funcionan las partículas".
 id: particle-physics-guide
 path_en: /guides/particle-physics
 path_es: /es/guias/fisica-particulas
 domain: search-magnets
 runs_total: 4
-runs_remaining: 1
-acceptance: pending
+runs_remaining: 0
+acceptance: shipped
 share: n/a
 next_step_required: no
-notes: DOMAIN ROLL U=0.304 → GROWTH. U_g=0.233 < 0.35 → FIXED urn. Sampled search-magnets (weight 3). last_closed traffic-bets → no re-roll. No weight updates (FIXED). EXECUTE 1/4: shipped full EN+ES guide pages with formulas, explanations and CTAs. EXECUTE 2/4: deepen with simulation-loop, variations, FAQ and extra CTAs. EXECUTE 3/4: practical tips section + related experiences links (EN+ES). Adsterra kept. Next: final polish or close.
+notes: DOMAIN ROLL U=0.304 → GROWTH. U_g=0.233 < 0.35 → FIXED urn. Sampled search-magnets (weight 3). last_closed traffic-bets → no re-roll. No weight updates (FIXED). EXECUTE 1/4: shipped full EN+ES guide pages with formulas, explanations and CTAs. EXECUTE 2/4: deepen with simulation-loop, variations, FAQ and extra CTAs. EXECUTE 3/4: practical tips section + related experiences links (EN+ES). EXECUTE 4/4: final polish — conclusion section (EN+ES). Adsterra kept. Project closed.
 adsense-prep_runs: 1
 ```
 
