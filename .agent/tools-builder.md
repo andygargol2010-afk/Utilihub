@@ -72,6 +72,16 @@ A single truncated registry write wipes the entire catalog UI for every tool. Vo
 
 ---
 
+## Core Web Vitals (when writing code)
+
+Ship tools that do **not** regress LCP / INP / CLS / JS weight:
+
+1. Tool code stays on the tool route (lazy registry entry already). Never import a new tool into home, root, or list pages eagerly.
+2. No new heavy dependencies; no pulling HouseModeler3D or large playgrounds into calculator pages.
+3. Prefer light UI (inputs + result card). Canvas/WebGL/charts only if the tool needs them — then load dynamically.
+4. Avoid layout shift: stable result area; sized media; do not break reserved ad slots.
+5. If a design would clearly hurt mobile LCP or main-thread INP, simplify before ship.
+
 ## Multi-locale routes (EN + ES + SEO locales)
 
 Primary product locales remain **EN** and **ES** (nav, full catalog).
