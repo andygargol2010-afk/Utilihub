@@ -13,6 +13,8 @@ Edit + commit after PRODUCT when useful (new tools, cluster notes). Identity: `a
 Update after each successful PRODUCT run.
 
 ```
+- 2026-10-16 | finanzas | calculadora-presupuesto-503020 | Budget503020Tool
+- 2026-10-16 | generadores | generador-uuid | UuidGeneratorTool
 - 2026-10-15 | productividad | water-intake | WaterIntakeTool
 - 2026-10-15 | conversiones | currency-converter | CurrencyConverterTool
 - 2026-10-1x | ciencia | timezone | TimezoneTool
@@ -29,11 +31,12 @@ Last ~8 thematic count (update when shipping):
 ```
 fechas/tiempo: watch
 ciencia/física: recent
-finanzas simples: watch
+finanzas simples: recent
 hogar/construcción: watch
 % / math básica: watch
 generadores texto: watch
 conversiones genéricas: watch
+generadores: recent
 ```
 
 Prefer under-represented clusters. Two tools in one PRODUCT run must not share a cluster.
