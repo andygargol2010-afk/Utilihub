@@ -6,9 +6,15 @@ const W = 480;
 const H = 380;
 const PIVOT_X = W / 2;
 const PIVOT_Y = 48;
-const TRAIL_MAX = 220;
+const TRAIL_MAX = 240;
 const PX_PER_M = 140;
 const DT = 1 / 90;
+
+const PRESETS = {
+  classic: { th1: Math.PI / 2, th2: 0, labelEn: "Classic", labelEs: "Clásico" },
+  butterfly: { th1: Math.PI * 0.85, th2: Math.PI * 0.35, labelEn: "Butterfly", labelEs: "Mariposa" },
+  low: { th1: Math.PI * 0.35, th2: Math.PI * 0.15, labelEn: "Low energy", labelEs: "Baja energía" },
+} as const;
 
 export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";
@@ -21,24 +27,25 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
   const [m2, setM2] = useState(1);
   const [damping, setDamping] = useState(0.02);
   const [g, setG] = useState(9.8);
+  const [speed, setSpeed] = useState(1);
   const [trails, setTrails] = useState(true);
-  const [hud, setHud] = useState({ th1: 90, th2: 0, E: 0 });
+  const [hud, setHud] = useState({ th1: 90, th2: 0, w1: 0, w2: 0, E: 0 });
 
   const state = useRef({
     th1: Math.PI / 2,
     w1: 0,
     th2: 0,
     w2: 0,
-    trail: [] as { x: number; y: number; a: number }[],
+    trail: [] as { x: number; y: number; a: number; s: number }[],
   });
   const runningRef = useRef(true);
-  const paramsRef = useRef({ l1: 0.65, l2: 0.55, m1: 1, m2: 1, damp: 0.02, g: 9.8 });
+  const paramsRef = useRef({ l1: 0.65, l2: 0.55, m1: 1, m2: 1, damp: 0.02, g: 9.8, speed: 1 });
   const trailsRef = useRef(true);
   const dragging = useRef<0 | 1 | 2>(0);
   const hudTick = useRef(0);
 
   runningRef.current = running;
-  paramsRef.current = { l1, l2, m1, m2, damp: damping, g };
+  paramsRef.current = { l1, l2, m1, m2, damp: damping, g, speed };
   trailsRef.current = trails;
 
   const reset = useCallback(() => {
@@ -47,13 +54,23 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
     state.current.th2 = 0;
     state.current.w2 = 0;
     state.current.trail = [];
-    setHud({ th1: 90, th2: 0, E: 0 });
+    setHud({ th1: 90, th2: 0, w1: 0, w2: 0, E: 0 });
+    setRunning(true);
+  }, []);
+
+  const applyPreset = useCallback((key: keyof typeof PRESETS) => {
+    const p = PRESETS[key];
+    state.current.th1 = p.th1;
+    state.current.th2 = p.th2;
+    state.current.w1 = 0;
+    state.current.w2 = 0;
+    state.current.trail = [];
     setRunning(true);
   }, []);
 
   const perturb = useCallback(() => {
-    state.current.th1 += (Math.random() - 0.5) * 0.06;
-    state.current.th2 += (Math.random() - 0.5) * 0.06;
+    state.current.th1 += (Math.random() - 0.5) * 0.08;
+    state.current.th2 += (Math.random() - 0.5) * 0.08;
   }, []);
 
   const savePng = useCallback(() => {
@@ -126,6 +143,20 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
       return KE + PE;
     };
 
+    const tipSpeed = () => {
+      const p = paramsRef.current;
+      const s = state.current;
+      const L1 = p.l1;
+      const L2 = p.l2;
+      const c1 = Math.cos(s.th1);
+      const c2 = Math.cos(s.th2);
+      const s1 = Math.sin(s.th1);
+      const s2 = Math.sin(s.th2);
+      const vx = L1 * s.w1 * c1 + L2 * s.w2 * c2;
+      const vy = -L1 * s.w1 * s1 - L2 * s.w2 * s2;
+      return Math.hypot(vx, vy);
+    };
+
     const tick = (now: number) => {
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
@@ -134,9 +165,10 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
         return;
       }
 
-      const dtFrame = Math.min(0.04, (now - last) / 1000);
+      const dtFrame = Math.min(0.05, (now - last) / 1000);
       last = now;
-      acc += dtFrame;
+      const scaled = dtFrame * paramsRef.current.speed;
+      acc += scaled;
 
       if (runningRef.current && dragging.current === 0) {
         while (acc >= DT) {
@@ -155,10 +187,12 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
       const x2 = x1 + Math.sin(s.th2) * L2px;
       const y2 = y1 + Math.cos(s.th2) * L2px;
 
+      const spd = tipSpeed();
+
       if (trailsRef.current && runningRef.current && dragging.current === 0) {
-        s.trail.push({ x: x2, y: y2, a: 1 });
+        s.trail.push({ x: x2, y: y2, a: 1, s: spd });
         if (s.trail.length > TRAIL_MAX) s.trail.shift();
-        for (const pt of s.trail) pt.a *= 0.988;
+        for (const pt of s.trail) pt.a *= 0.985;
       } else if (!trailsRef.current) s.trail.length = 0;
 
       const bg = ctx.createLinearGradient(0, 0, 0, H);
@@ -176,10 +210,11 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
         for (let i = 1; i < s.trail.length; i++) {
           const a = s.trail[i]!;
           const b = s.trail[i - 1]!;
-          const alpha = 0.05 + a.a * 0.7;
+          const hue = 190 + Math.min(80, a.s * 12);
+          const alpha = 0.06 + a.a * 0.75;
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(56,189,248,${alpha})`;
-          ctx.lineWidth = 1.8;
+          ctx.strokeStyle = `hsla(${hue}, 85%, 62%, ${alpha})`;
+          ctx.lineWidth = 1.6 + Math.min(1.4, a.s * 0.15);
           ctx.moveTo(b.x, b.y);
           ctx.lineTo(a.x, a.y);
           ctx.stroke();
@@ -205,12 +240,12 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
       ctx.arc(x1, y1, 11 + p.m1 * 2, 0, Math.PI * 2);
       ctx.fill();
 
-      const glow = ctx.createRadialGradient(x2, y2, 4, x2, y2, 24);
-      glow.addColorStop(0, "rgba(251,191,36,0.5)");
+      const glow = ctx.createRadialGradient(x2, y2, 4, x2, y2, 26);
+      glow.addColorStop(0, "rgba(251,191,36,0.55)");
       glow.addColorStop(1, "rgba(251,191,36,0)");
       ctx.beginPath();
       ctx.fillStyle = glow;
-      ctx.arc(x2, y2, 24, 0, Math.PI * 2);
+      ctx.arc(x2, y2, 26, 0, Math.PI * 2);
       ctx.fill();
       ctx.beginPath();
       ctx.fillStyle = "#fbbf24";
@@ -218,10 +253,12 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
       ctx.fill();
 
       hudTick.current++;
-      if (hudTick.current % 6 === 0) {
+      if (hudTick.current % 8 === 0) {
         setHud({
           th1: Math.round((s.th1 * 180) / Math.PI),
           th2: Math.round((s.th2 * 180) / Math.PI),
+          w1: s.w1,
+          w2: s.w2,
           E: energy(),
         });
       }
@@ -276,8 +313,15 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
             {es ? (trails ? "Estela ✓" : "Estela") : trails ? "Trail ✓" : "Trail"}
           </SimSecondaryButton>
           <SimSecondaryButton theme="lab" onClick={savePng}>
-            {es ? "PNG" : "PNG"}
+            PNG
           </SimSecondaryButton>
+        </div>
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+          {(Object.keys(PRESETS) as Array<keyof typeof PRESETS>).map((k) => (
+            <SimSecondaryButton key={k} theme="lab" onClick={() => applyPreset(k)}>
+              {es ? PRESETS[k].labelEs : PRESETS[k].labelEn}
+            </SimSecondaryButton>
+          ))}
         </div>
       </div>
 
@@ -320,27 +364,42 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
           </span>
           <input type="range" min={20} max={200} value={Math.round(g * 10)} onChange={(e) => setG(Number(e.target.value) / 10)} className="h-2 w-full cursor-pointer accent-sky-400" />
         </label>
+        <label className="flex flex-col gap-1">
+          <span className="flex justify-between font-semibold">
+            <span>{es ? "Velocidad" : "Speed"}</span>
+            <span className="tabular-nums text-sky-300">{speed.toFixed(2)}×</span>
+          </span>
+          <input type="range" min={25} max={200} value={Math.round(speed * 100)} onChange={(e) => setSpeed(Number(e.target.value) / 100)} className="h-2 w-full cursor-pointer accent-sky-400" />
+        </label>
       </div>
 
-      <div className="grid w-full max-w-md grid-cols-3 gap-2 text-center text-[11px]">
-        <div className="rounded-xl border border-sky-500/20 bg-black/30 px-2 py-2">
+      <div className="grid w-full max-w-md grid-cols-5 gap-1.5 text-center text-[10px]">
+        <div className="rounded-xl border border-sky-500/20 bg-black/30 px-1 py-2">
           <p className="font-bold text-sky-200/70">θ1</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.th1}°</p>
         </div>
-        <div className="rounded-xl border border-sky-500/20 bg-black/30 px-2 py-2">
+        <div className="rounded-xl border border-sky-500/20 bg-black/30 px-1 py-2">
           <p className="font-bold text-sky-200/70">θ2</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.th2}°</p>
         </div>
-        <div className="rounded-xl border border-sky-500/20 bg-black/30 px-2 py-2">
-          <p className="font-bold text-sky-200/70">{es ? "Energía" : "Energy"}</p>
+        <div className="rounded-xl border border-sky-500/20 bg-black/30 px-1 py-2">
+          <p className="font-bold text-sky-200/70">ω1</p>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.w1.toFixed(1)}</p>
+        </div>
+        <div className="rounded-xl border border-sky-500/20 bg-black/30 px-1 py-2">
+          <p className="font-bold text-sky-200/70">ω2</p>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.w2.toFixed(1)}</p>
+        </div>
+        <div className="rounded-xl border border-sky-500/20 bg-black/30 px-1 py-2">
+          <p className="font-bold text-sky-200/70">{es ? "E" : "E"}</p>
           <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.E.toFixed(2)}</p>
         </div>
       </div>
 
       <p className="text-center text-[12px] leading-relaxed text-sky-200/75">
         {es
-          ? "Arrastrá cualquiera de las masas para fijar ángulos. Usá Perturbar para ver la dependencia sensible. Descargá PNG para compartir la trayectoria."
-          : "Drag either bob to set angles. Use Perturb to demonstrate sensitive dependence. Download PNG to share the trail."}
+          ? "Arrastrá cualquiera de las masas para fijar ángulos. Presets para condiciones clásicas de caos. Velocidad controla el tiempo. Estela coloreada por rapidez."
+          : "Drag either bob to set angles. Presets for classic chaos conditions. Speed controls time scale. Trail colored by tip speed."}
       </p>
 
       <canvas
