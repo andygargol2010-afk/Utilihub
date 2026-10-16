@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-16 | fechas | calculadora-diferencia-fechas | DateDifferenceTool
+- 2026-10-16 | cocina | escalador-receta | RecipeScalerTool
 - 2026-10-15 | productividad | water-intake | WaterIntakeTool
 - 2026-10-15 | conversiones | currency-converter | CurrencyConverterTool
 - 2026-10-1x | ciencia | timezone | TimezoneTool
@@ -31,7 +33,7 @@ Use with PRODUCT diversity rules (ops). Prefer under-represented clusters.
 Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
-fechas/tiempo: watch
+fechas/tiempo: recent
 ciencia/física: recent
 finanzas simples: watch
 hogar/construcción: watch
@@ -40,6 +42,7 @@ generadores texto: watch
 conversiones genéricas: watch
 salud / body-metrics: recent
 productividad: recent
+cocina: recent
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -61,9 +64,9 @@ On PRODUCT: review SEO_LOCALES_ACTIVE; ship or defer /{code} routes beyond EN+ES
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: (fill on META or when useful)
-last_slugs: 
-last_deploy: 
+last_mode: PRODUCT
+last_slugs: calculadora-diferencia-fechas, escalador-receta
+last_deploy: pending
 ```
 
 <!-- end:tools-builder-state.md -->
