@@ -70,4 +70,21 @@ F. Forbidden commit messages implying a wipe: «minimal registry», «stub regis
 
 A single truncated registry write wipes the entire catalog UI for every tool. Volume (2 tools/run) never justifies risking the registry. Prefer one safe tool over two if the second write would be a full rewrite under truncation risk.
 
+---
+
+## Multi-locale routes (EN + ES + SEO locales)
+
+Primary product locales remain **EN** and **ES** (nav, full catalog).
+
+Additionally, before closing a PRODUCT run, **review SEO locales**:
+
+1. Read `.agent/seo-locales-registry.md` and/or `src/lib/i18n/seo-locales.ts` → list `SEO_LOCALES_ACTIVE` (codes with status active).
+2. If the list is **empty**: only EN + ES are required (current default).
+3. If one or more SEO locales are **active**: for each new tool, decide explicitly:
+   - **Same run (preferred when cheap):** add matching `/{code}/...` page(s) for that tool with real translated title/description/UI strings, hreflang to EN/ES, **no** EN/ES nav links to those URLs; **or**
+   - **Defer:** note in Spanish summary + optionally in tools-builder-state NOTES that slug X is queued for active codes (pt, fr, …). Do not claim multi-locale coverage if you only shipped EN/ES.
+4. Never invent a 6th SEO language; Ideas Lab caps SEO locales at **5** active. Do not create new SEO locale trees from this automation — only pages under **already active** codes when you choose to ship them.
+5. HouseModeler3D and other autos are out of scope for inventing locale infrastructure.
+
+
 <!-- end:tools-builder.md -->
