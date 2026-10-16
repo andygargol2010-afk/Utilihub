@@ -36,6 +36,7 @@ export function SpanishSiteFooter() {
             <Link to="/es/acerca" className="w-fit text-sm font-semibold hover:text-primary">Acerca de</Link>
             <Link to="/es/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">Aviso legal</Link>
             <Link to="/es/privacidad" className="w-fit text-sm font-semibold hover:text-primary">Privacidad</Link>
+            <Link to="/es/terminos" className="w-fit text-sm font-semibold hover:text-primary">Términos de Uso</Link>
             <Link to="/es/contacto" className="w-fit text-sm font-semibold hover:text-primary">Contacto</Link>
             <Link to="/" className="w-fit text-sm font-semibold hover:text-primary">Versión en inglés</Link>
           </nav>
