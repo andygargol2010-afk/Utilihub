@@ -1,1 +1,1 @@
-$(cat /tmp/RiverOfLightJourney.tsx)
+PLACEHOLDER_FOR_FULL_CONTENT
