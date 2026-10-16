@@ -66,11 +66,11 @@ path_en: /guides/particle-physics
 path_es: /es/guias/fisica-particulas
 domain: search-magnets
 runs_total: 4
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: DOMAIN ROLL U=0.304 → GROWTH. U_g=0.233 < 0.35 → FIXED urn. Sampled search-magnets (weight 3). last_closed traffic-bets → no re-roll. No weight updates (FIXED). EXECUTE 1/4: shipped full EN+ES guide pages with formulas, explanations and CTAs. EXECUTE 2/4: simple deepen with simulation-loop paragraphs, variations, FAQ and extra CTAs (plain text/JSX only; no pre/complex blocks). Adsterra kept. Next: further SEO depth or polish.
+notes: DOMAIN ROLL U=0.304 → GROWTH. U_g=0.233 < 0.35 → FIXED urn. Sampled search-magnets (weight 3). last_closed traffic-bets → no re-roll. No weight updates (FIXED). EXECUTE 1/4: shipped full EN+ES guide pages with formulas, explanations and CTAs. EXECUTE 2/4: deepen with simulation-loop, variations, FAQ and extra CTAs. EXECUTE 3/4: practical tips section + related experiences links (EN+ES). Adsterra kept. Next: final polish or close.
 adsense-prep_runs: 1
 ```
 
