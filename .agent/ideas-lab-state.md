@@ -26,15 +26,15 @@ weights_core:
 weights_growth:
   traffic-bets: 3
   search-magnets: 3
-  growth-surfaces: 1
-  share-hooks: 1
-  retention-loops: 1
-  conversion-paths: 1
-  traffic-diagnosis: 1
-  adsense-prep: 2
-  seo-locales: 1   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  growth-surfaces: 2
+  share-hooks: 2
+  retention-loops: 2
+  conversion-paths: 2
+  traffic-diagnosis: 2
+  adsense-prep: 1
+  seo-locales: 2   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
-adsense-prep_runs: 1
+adsense-prep_runs: 2
 ```
 
 ---
@@ -59,19 +59,19 @@ adsense-prep_runs: 1
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: Guía SEO original (EN+ES) sobre física de partículas en el navegador: cómo funcionan la gravedad, atracción y sistemas de partículas, con explicaciones, fórmulas, ejemplos visuales y CTAs a Gravity Particles Playground y River of Light. Contenido profundo para búsquedas como "particle simulation browser", "gravity particles online", "cómo funcionan las partículas".
-id: particle-physics-guide
-path_en: /guides/particle-physics
-path_es: /es/guias/fisica-particulas
-domain: search-magnets
-runs_total: 4
-runs_remaining: 0
-acceptance: shipped
+status: active
+idea: Crear páginas de Términos de Uso (Terms of Use) en EN (/terms) y ES (/es/terminos) para cerrar el gap de confianza AdSense: uso aceptable, responsabilidad, anuncios (Adsterra), propiedad intelectual, limitación de garantía y contacto. Una página clara y profesional que complemente About, Privacy y Legal.
+id: terms-of-use
+path_en: /terms
+path_es: /es/terminos
+domain: adsense-prep
+runs_total: 2
+runs_remaining: 2
+acceptance: pending
 share: n/a
 next_step_required: no
-notes: DOMAIN ROLL U=0.304 → GROWTH. U_g=0.233 < 0.35 → FIXED urn. Sampled search-magnets (weight 3). last_closed traffic-bets → no re-roll. No weight updates (FIXED). EXECUTE 1/4: shipped full EN+ES guide pages with formulas, explanations and CTAs. EXECUTE 2/4: deepen with simulation-loop, variations, FAQ and extra CTAs. EXECUTE 3/4: practical tips section + related experiences links (EN+ES). EXECUTE 4/4: final polish — conclusion section (EN+ES). Adsterra kept. Project closed.
-adsense-prep_runs: 1
+notes: DOMAIN ROLL U=0.438 → GROWTH. U_g=0.521 > 0.35 → FLEX urn. Sampled adsense-prep (weight 2). last_closed search-magnets → no re-roll. Weight updates: selected adsense-prep→1; other FLEX +1. adsense-prep_runs 1→2. Priority About/Privacy already solid → Terms next.
+adsense-prep_runs: 2
 ```
 
 <!-- end:ideas-lab-state.md -->
