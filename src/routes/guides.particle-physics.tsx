@@ -87,27 +87,17 @@ function ParticlePhysicsGuideEn() {
 
         <h2>The simulation loop in practice</h2>
         <p>
-          Every frame the engine does roughly the following (simplified pseudocode):
+          Every frame the engine does roughly the following steps:
         </p>
-        <pre className="text-sm overflow-x-auto rounded bg-muted p-4 whitespace-pre">
-for each particle:
-  force = zero vector
-  for each attractor:
-    dx = attractor.x - particle.x
-    dy = attractor.y - particle.y
-    dist = sqrt(dx*dx + dy*dy) + softening
-    strength = attractor.mass / (dist * dist)
-    force.x += dx * strength
-    force.y += dy * strength
-  particle.vx += force.x * dt
-  particle.vy += force.y * dt
-  particle.vx *= damping   // e.g. 0.995
-  particle.vy *= damping
-  particle.x += particle.vx * dt
-  particle.y += particle.vy * dt
-  // optional: recycle if lifetime expired
-draw particles (or trails)
-        </pre>
+        <ol>
+          <li>For each particle, start with a zero force vector.</li>
+          <li>For each attractor, compute the vector from particle to attractor, the distance (with softening), and add the resulting force contribution.</li>
+          <li>Update velocity: <code>velocity += force * dt</code>.</li>
+          <li>Apply damping: <code>velocity *= 0.995</code> (or similar) to prevent infinite acceleration.</li>
+          <li>Update position: <code>position += velocity * dt</code>.</li>
+          <li>Optionally recycle the particle if its lifetime expired or it left the canvas.</li>
+          <li>Draw all particles (or their trails).</li>
+        </ol>
         <p>
           Delta-time (<code>dt</code>) keeps motion consistent across different frame rates. Damping prevents particles from accelerating forever when attractors are strong.
         </p>
