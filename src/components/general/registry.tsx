@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
-/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter + business days + text normalizer + budget 503020 + uuid generator + date difference + recipe scaler. */
+/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter + business days + text normalizer + budget 503020 + uuid generator + date difference + recipe scaler + rule of 72 + room area. */
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
@@ -65,6 +65,8 @@ const Budget503020Tool = lazy(() => import("./Budget503020Tool").then((m) => ({ 
 const UuidGeneratorTool = lazy(() => import("./UuidGeneratorTool").then((m) => ({ default: m.UuidGeneratorTool })));
 const DateDifferenceTool = lazy(() => import("./DateDifferenceTool").then((m) => ({ default: m.DateDifferenceTool })));
 const RecipeScalerTool = lazy(() => import("./RecipeScalerTool").then((m) => ({ default: m.RecipeScalerTool })));
+const RuleOf72Tool = lazy(() => import("./RuleOf72Tool").then((m) => ({ default: m.RuleOf72Tool })));
+const RoomAreaTool = lazy(() => import("./RoomAreaTool").then((m) => ({ default: m.RoomAreaTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -111,6 +113,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "generador-uuid") return UuidGeneratorTool as ToolComp;
   if (tool.slug === "calculadora-diferencia-fechas") return DateDifferenceTool as ToolComp;
   if (tool.slug === "escalador-receta") return RecipeScalerTool as ToolComp;
+  if (tool.slug === "calculadora-regla-72") return RuleOf72Tool as ToolComp;
+  if (tool.slug === "calculadora-area-habitacion") return RoomAreaTool as ToolComp;
   if (tool.slug === "calculadora-fecha-avanzada") return AdvancedDateTool as ToolComp;
   if (tool.config?.mode === "advanced-calculator") return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.mode === "advanced" && tool.config?.operation) return AdvancedCalculatorTool as ToolComp;
