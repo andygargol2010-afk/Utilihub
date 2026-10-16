@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 161
+runs_done: 162
 runs_max: 500
 ```
 
@@ -31,7 +31,7 @@ runs_max: 500
 
 ```
 status: active
-remaining_runs: 2
+remaining_runs: 1
 task: IMPROVE UI — mobile comfort only
 desktop: MUST stay visually/behaviorally the same (use CSS max-width / touch breakpoints; no desktop layout redesign)
 scope_examples:
@@ -61,8 +61,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331010
-last_known_good_hint: 60fbb98d812dba4eefae328e1a7d61441bc50a36 (~331010 bytes, 7490 lines)
+approx_bytes: 331026
+last_known_good_hint: 26128b6 (~331026 bytes, 7490 lines)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -77,12 +77,10 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-16
 SEO_LOCALES_ACTIVE: none
-deploy: pending check for SHA 60fbb98d… (previous READY on 1e4ebe49…)
-note: FORCE mobile UI active (remaining 2 after this). Applied surgical mobile comfort via local edit + gh push (avoided tool-channel truncation):
-1) 15 <kbd> classNames: appended max-md:hidden (hide shortcuts <768px).
-2) paletteCompact width: "w-[4.75rem]" → "w-[4.75rem] max-md:w-[5.25rem]".
-3) palette finish buttons (~17): min-h-11 → min-h-11 max-md:min-h-14.
-Desktop unchanged (breakpoint-scoped). Gates OK (door conditional=1, paint helpers present, ~331kB). remaining_runs decremented.
+deploy: pending check for SHA 26128b6… (previous READY on 60fbb98d…)
+note: FORCE mobile UI active (remaining 1 after this). Applied surgical mobile comfort:
+- Main tool palette buttons: min-h-11 → min-h-11 max-md:min-h-14 (larger hit area under 768px).
+Desktop unchanged (breakpoint-scoped). Gates OK (~331kB). remaining_runs decremented.
 ```
 
 Refresh after each run.
@@ -94,9 +92,9 @@ Refresh after each run.
 ```
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
-FORCE FOCUS mobile UI active: remaining_runs 2.
-Surgical PRODUCT succeeded via authenticated gh push of locally edited full monolith (bypassed MCP content truncation risk).
-Next FORCE PRODUCT: continue mobile comfort (e.g. larger tool palette hit areas, safer spacing under 768px).
+FORCE FOCUS mobile UI active: remaining_runs 1.
+Surgical PRODUCT succeeded via local git clone + edit + push (bypassed MCP content truncation risk).
+Next FORCE PRODUCT: continue mobile comfort (e.g. safer spacing, larger secondary controls under 768px).
 Unrelated catalog ERROR on older deploys does not block this surface.
 ```
 
