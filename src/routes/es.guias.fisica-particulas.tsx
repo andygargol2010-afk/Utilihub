@@ -31,6 +31,24 @@ export const Route = createFileRoute("/es/guias/fisica-particulas")({
   component: ParticlePhysicsGuideEs,
 });
 
+const SIM_LOOP_ES = `para cada partícula:
+  fuerza = vector cero
+  para cada atractor:
+    dx = atractor.x - partícula.x
+    dy = atractor.y - partícula.y
+    dist = sqrt(dx*dx + dy*dy) + suavizado
+    intensidad = atractor.masa / (dist * dist)
+    fuerza.x += dx * intensidad
+    fuerza.y += dy * intensidad
+  partícula.vx += fuerza.x * dt
+  partícula.vy += fuerza.y * dt
+  partícula.vx *= amortiguación   // p.ej. 0.995
+  partícula.vy *= amortiguación
+  partícula.x += partícula.vx * dt
+  partícula.y += partícula.vy * dt
+  // opcional: reciclar si el tiempo de vida expiró
+dibujar partículas (o rastros)`;
+
 function ParticlePhysicsGuideEs() {
   return (
     <div className="container-page py-8 sm:py-12">
@@ -89,25 +107,7 @@ function ParticlePhysicsGuideEs() {
         <p>
           Cada fotograma el motor hace aproximadamente lo siguiente (pseudocódigo simplificado):
         </p>
-        <pre className="text-sm">
-{`para cada partícula:
-  fuerza = {x: 0, y: 0}
-  para cada atractor:
-    dx = atractor.x - partícula.x
-    dy = atractor.y - partícula.y
-    dist = sqrt(dx*dx + dy*dy) + suavizado
-    intensidad = atractor.masa / (dist * dist)
-    fuerza.x += dx * intensidad
-    fuerza.y += dy * intensidad
-  partícula.vx += fuerza.x * dt
-  partícula.vy += fuerza.y * dt
-  partícula.vx *= amortiguación   // p.ej. 0.995 para evitar velocidad infinita
-  partícula.vy *= amortiguación
-  partícula.x += partícula.vx * dt
-  partícula.y += partícula.vy * dt
-  // opcional: reciclar si el tiempo de vida expiró o está fuera de límites
-dibujar partículas (o rastros)`}
-        </pre>
+        <pre className="text-sm overflow-x-auto rounded bg-muted p-4">{SIM_LOOP_ES}</pre>
         <p>
           El delta-time (<code>dt</code>) mantiene el movimiento consistente a diferentes tasas de fotogramas. La amortiguación evita que las partículas aceleren para siempre cuando los atractores son fuertes.
         </p>
