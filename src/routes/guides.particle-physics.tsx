@@ -5,7 +5,7 @@ import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from
 
 const title = "Particle Physics in the Browser: Gravity, Attraction & Systems | UtiliHub";
 const description = cleanDescription(
-  "Original guide to particle simulations in the browser. Learn how gravity, attraction forces and particle systems work with formulas, visual explanations and live examples. Try Gravity Particles Playground and River of Light.",
+  "Original guide to particle simulations in the browser. Learn how gravity, attraction forces and particle systems work with formulas, visual explanations, simulation loop and live examples. Try Gravity Particles Playground and River of Light.",
 );
 
 export const Route = createFileRoute("/guides/particle-physics")({
@@ -38,7 +38,7 @@ function ParticlePhysicsGuideEn() {
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Particle Physics in the Browser: How Gravity, Attraction and Systems Work</h1>
         <p className="lead">
-          Particle simulations running entirely in the browser have become a powerful way to explore physics concepts, create interactive art and build engaging experiences. This original guide explains the core mechanics behind gravity, attraction forces and particle systems — with formulas, visual intuition and direct links to live playgrounds on UtiliHub.
+          Particle simulations running entirely in the browser have become a powerful way to explore physics concepts, create interactive art and build engaging experiences. This original guide explains the core mechanics behind gravity, attraction forces and particle systems — with formulas, visual intuition, the simulation loop and direct links to live playgrounds on UtiliHub.
         </p>
 
         <h2>What is a particle system?</h2>
@@ -85,6 +85,33 @@ function ParticlePhysicsGuideEn() {
           </Link>
         </div>
 
+        <h2>The simulation loop in practice</h2>
+        <p>
+          Every frame the engine does roughly the following (simplified pseudocode):
+        </p>
+        <pre className="text-sm">
+{`for each particle:
+  force = {x: 0, y: 0}
+  for each attractor:
+    dx = attractor.x - particle.x
+    dy = attractor.y - particle.y
+    dist = sqrt(dx*dx + dy*dy) + softening
+    strength = attractor.mass / (dist * dist)
+    force.x += dx * strength
+    force.y += dy * strength
+  particle.vx += force.x * dt
+  particle.vy += force.y * dt
+  particle.vx *= damping   // e.g. 0.995 to prevent infinite speed
+  particle.vy *= damping
+  particle.x += particle.vx * dt
+  particle.y += particle.vy * dt
+  // optional: recycle if lifetime expired or out of bounds
+draw particles (or trails)`}
+        </pre>
+        <p>
+          Delta-time (<code>dt</code>) keeps motion consistent across different frame rates. Damping prevents particles from accelerating forever when attractors are strong.
+        </p>
+
         <h2>Particle systems as continuous flows</h2>
         <p>
           Not every particle system is about discrete attractors. In the River of Light Journey, particles are emitted along a path defined by waypoints. Each particle follows a spline or interpolated curve between points, with persistent afterglow trails and soft bloom effects. Density, speed, color and loop mode control the visual density of the flowing river.
@@ -106,6 +133,29 @@ function ParticlePhysicsGuideEn() {
           </Link>
         </div>
 
+        <h2>Common variations you can experiment with</h2>
+        <ul>
+          <li><strong>Repulsors</strong> — invert the force direction so particles are pushed away. Useful for explosions or avoidance.</li>
+          <li><strong>Damping / friction</strong> — multiply velocity by a factor < 1 each frame. Stops runaway acceleration and creates more natural orbits.</li>
+          <li><strong>Trails & afterglow</strong> — store the last N positions and draw lines with decreasing opacity. Creates the glowing river or comet look.</li>
+          <li><strong>Color mapping</strong> — tint particles by speed, distance to attractor, lifetime or a hash of their index.</li>
+          <li><strong>Softening</strong> — add a small constant to the denominator to avoid division-by-zero or infinite forces when a particle lands exactly on an attractor.</li>
+        </ul>
+        <p>
+          These ideas appear across UtiliHub experiences: Particle Signature (text-seeded attractors), Constellation Name Map (gravity wells + connecting lines), Firework Signature and more.
+        </p>
+
+        <div className="not-prose my-8 grid gap-4 sm:grid-cols-2">
+          <Link to="/playgrounds/particle-signature" className="rounded-xl border p-4 hover:border-primary/40">
+            <h3 className="font-bold">Particle Signature</h3>
+            <p className="mt-1 text-sm text-muted-foreground">Type a name. Particles orbit text-seeded attractors.</p>
+          </Link>
+          <Link to="/constellation" className="rounded-xl border p-4 hover:border-primary/40">
+            <h3 className="font-bold">Constellation Map</h3>
+            <p className="mt-1 text-sm text-muted-foreground">Stars form letters with gravity wells and temporary lines.</p>
+          </Link>
+        </div>
+
         <h2>Performance considerations in the browser</h2>
         <ul>
           <li>Use typed arrays or object pools to avoid garbage collection pauses.</li>
@@ -114,6 +164,20 @@ function ParticlePhysicsGuideEn() {
           <li>Prefer requestAnimationFrame and delta-time integration for consistent speed across devices.</li>
           <li>For more advanced effects, WebGL or WebGPU can handle tens of thousands of particles.</li>
         </ul>
+
+        <h2>Frequently asked questions</h2>
+        <h3>Can I run particle simulations in the browser without WebGL?</h3>
+        <p>
+          Yes. Canvas 2D is more than enough for a few hundred to a couple of thousand particles with simple drawing. The Gravity Particles Playground and River of Light both work well on Canvas. WebGL becomes useful when you want tens of thousands of particles or complex shaders.
+        </p>
+        <h3>How do I avoid particles flying off to infinity?</h3>
+        <p>
+          Apply damping (velocity *= 0.99 or similar) every frame and/or use a softened force that falls off with distance. You can also clamp maximum speed.
+        </p>
+        <h3>Is the physics accurate?</h3>
+        <p>
+          Browser particle systems prioritize visual appeal and real-time interaction over numerical accuracy. They use simplified Newtonian integration and often ignore mass or use unit mass. For educational exploration they are excellent; for scientific precision you would need higher-order integrators and smaller timesteps.
+        </p>
 
         <h2>Further exploration</h2>
         <p>
