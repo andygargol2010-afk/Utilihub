@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type Point = { x: number; y: number };
 type Particle = {
@@ -12,6 +13,9 @@ type Particle = {
 const PALETTE = ["#00f5ff", "#7cff6b", "#ffd700", "#ff2d95", "#b388ff", "#ffffff", "#ff6b35", "#4fc3f7"];
 
 export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" }) {
+  useEffect(() => {
+    trackEvent("playground_open", { id: "river-light", locale });
+  }, [locale]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const waypointsRef = useRef<Point[]>([]);
   const particlesRef = useRef<Particle[]>([]);
@@ -324,6 +328,7 @@ export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" })
   };
 
   const share = async () => {
+    trackEvent("share_click", { id: "river-light", locale });
     const canvas = canvasRef.current;
     if (!canvas) return;
     try {
