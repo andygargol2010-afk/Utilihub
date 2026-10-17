@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 169
+runs_done: 170
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331551
-last_known_good_hint: 5c7080f88017af7fabc1fb83a9f780ac72fa38b8 (~331551 bytes, verified 2026-10-17 PRODUCT)
+approx_bytes: 331991
+last_known_good_hint: 8b17ff13b1eacc342380adb557b817f75234e1f7 (~331991 bytes, verified 2026-10-17 PRODUCT)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: pending force (402 limit) / BUILDING on prior SHA; check for 5c7080f
-note: Roll 3 → PRODUCT task 1 POLISH DEFAULT TEXTURES (gravel path). Local-clone surgical: added fine grit scatter to paintGravel. Monolith 331551 bytes intact; paint helpers + door conditional=1. Deploy force hit daily limit; webhook may lag.
+deploy: pending check for 8b17ff13
+note: Roll 6 → PRODUCT task 1 POLISH DEFAULT TEXTURES (board-formed foundation). Local-clone surgical: added fine form-release grit and air bubbles to paintBoardFormed. Monolith 331991 bytes intact; paint helpers + door conditional=1.
 ```
 
 Refresh after each run.
