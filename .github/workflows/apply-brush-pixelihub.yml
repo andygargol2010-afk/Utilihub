@@ -1,0 +1,35 @@
+name: Apply PixeliHub brush size
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/apply-brush-pixelihub.py"
+      - ".github/workflows/apply-brush-pixelihub.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 80
+
+      - name: Restore + brush patch
+        run: python3 scripts/apply-brush-pixelihub.py
+
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/PixelArtStudio.tsx
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "feat(pixelihub): brush size 1–8px for pencil and eraser (roadmap item 4)"
+          git push
