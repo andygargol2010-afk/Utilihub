@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 182
+runs_done: 183
 runs_max: 500
 ```
 
@@ -44,7 +44,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 ```
 path: src/components/general/HouseModeler3D.tsx
 approx_bytes: 337004
-last_known_good_hint: 7b4495a (~337004 bytes, verified 2026-10-17 PRODUCT timber polish)
+last_known_good_hint: 7b4495a (~337004 bytes, verified 2026-10-17 PRODUCT timber polish; READY on Vercel)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: META
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: READY https://utilihub-ofq3qv5u0-financialproyects.vercel.app
-note: Roll 5 → PRODUCT task 1 POLISH TEXTURES (timber). Denser micro-fibers + surface flecks. Monolith SHA 7b4495a ~337004 bytes.
+deploy: READY (timber SHA 7b4495a) + BUILDING (state 1798b92)
+note: Roll 10 → switched to META (push auth for large monolith unavailable this session). Verified gates + deploy health. Next PRODUCT candidate: clay tiles denser flecks (prepared pattern ready).
 ```
 
 Refresh after each run.
@@ -73,9 +73,9 @@ Refresh after each run.
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI: done (remaining_runs 0).
-Surgical PRODUCT succeeded via local git clone + edit + push (prior runs) — credential helper allowed push after rebase. Prefer local-clone surgical when PRODUCT.
-Next runs: normal roll (META/PRODUCT); prefer local-clone surgical when PRODUCT if auth available.
-Monolith SHA 7b4495a after timber polish (PRODUCT run 182).
+Surgical PRODUCT succeeded via local git clone + edit + push (prior runs) — credential helper allowed push after rebase. Prefer local-clone surgical when PRODUCT if auth available.
+This run: local clone + gates OK; git push https failed (no credential). Avoided create_or_update_file full rewrite of ~330KB.
+Monolith SHA 7b4495a after timber polish (PRODUCT run 182) — READY.
 Unrelated catalog ERROR on older deploys does not block this surface.
 ```
 
