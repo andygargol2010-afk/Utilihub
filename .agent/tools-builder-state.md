@@ -67,6 +67,7 @@ Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation fiel
 2026-10-16 FIX-BUILD: restored LEGACY_CATEGORY_REDIRECTS + SECONDARY_CATEGORY_MAP in category-catalog.ts (wiped by pixelihub). No new tools this run.
 2026-10-16 FIX-BUILD: no deploy for restore commit; small docs trigger for Vercel.
 2026-10-16 PRODUCT: shipped calculadora-tiempo-viaje (viajes) + calculadora-fuerza (ciencia). Clusters distinct. Registry surgical OK.
+2026-10-17 PRODUCT run: deploy READY on latest; anti-dupe check showed high-demand candidates already covered (password gen, lorem, random color, BMI, etc.). Cluster watch saturated. No new tools to preserve quality and avoid dupes. Registry intact.
 ```
 
 ---
@@ -75,8 +76,8 @@ Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation fiel
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-tiempo-viaje, calculadora-fuerza
-last_deploy: pending verification
+last_slugs: none (anti-dupe)
+last_deploy: READY
 ```
 
 <!-- end:tools-builder-state.md -->
