@@ -377,7 +377,7 @@ function noiseFill(
 function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [214, 204, 188], 16);
   // Lime-wash patches: walls read as troweled plaster, not uniform noise.
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 18; i++) {
     const x = hash2(i, 2.1) * size;
     const y = hash2(i, 5.4) * size;
     const rx = 18 + hash2(i, 8) * 40;
@@ -444,7 +444,7 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Fine micro-pits and lime bloom so the plaster surface reads as hand-troweled rather than machine-flat.
-  for (let p = 0; p < 36; p++) {
+  for (let p = 0; p < 48; p++) {
     const px = hash2(p, 17.4) * size;
     const py = hash2(p, 8.9) * size;
     const pr = 0.6 + hash2(p, 2.3) * 1.8;
@@ -643,7 +643,7 @@ function paintWallMasonry(ctx: CanvasRenderingContext2D, size: number) {
     ctx.stroke();
   }
   // Soft lichen patches and surface chips so ashlar reads as weathered outdoor masonry.
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 18; i++) {
     if (hash2(i, 17.3) < 0.55) continue;
     const x = hash2(i, 2.8) * size;
     const y = hash2(i, 6.4) * size;
@@ -1753,7 +1753,7 @@ function paintHedgerow(ctx: CanvasRenderingContext2D, size: number) {
   ground.addColorStop(1, "rgba(28,36,18,0.82)");
   ctx.fillStyle = ground;
   ctx.fillRect(0, size * 0.55, size, size * 0.45);
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 18; i++) {
     const x = (i + 0.35 + hash2(i, 1.8) * 0.4) * (size / 14);
     const crown = size * (0.34 + hash2(i, 4.2) * 0.22);
     const rx = size * (0.045 + hash2(i, 2.6) * 0.04);
