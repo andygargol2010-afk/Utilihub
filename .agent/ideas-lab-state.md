@@ -66,11 +66,11 @@ path_en: /games/pulse-catch-arena
 path_es: /es/juegos/pulse-catch-arena
 domain: games
 runs_total: 6
-runs_remaining: 1
+runs_remaining: 0
 acceptance: pending
 share: url
 next_step_required: yes
-notes: DOMAIN ROLL U=0.858 → CORE. Weighted r=12.17/22 → games. last_closed search-magnets (GROWTH) — no re-roll. Weights: games→1, other CORE +1. Idea selected for rules/score visual game. EXECUTE 1/6: game shipped under existing games catalog + lazy GamePlayer. Paths corrected to /es/juegos/.... Next-step via relatedGames + GameShell. Adsterra kept. CWV: lazy route, fixed canvas, modest particles. EXECUTE 2/6: polish — pause/game-over overlays, +pts floaters, miss vignette, combo ring flash, idle start hint, aspect-ratio canvas, New badge + dark preview in catalog. Adsterra kept. EXECUTE 3/6: life power-ups (green +1 vida, max 5), combo-reactive bar color/glow, difficulty level meter + Lv display, on-screen ← → hold buttons for mobile. Misses ignore life pulses. Adsterra kept. EXECUTE 4/6: visual polish — pulse trails, mild catch shake, rare outer ring, vertical combo meter. Adsterra kept. CWV: no new deps, modest extra draws. EXECUTE 5/6: perfect-center catch bonus (1.6× + PERFECT floater) + intensifying horizontal combo grid. Adsterra kept. CWV: no new deps, modest grid draws.
+notes: DOMAIN ROLL U=0.858 → CORE. Weighted r=12.17/22 → games. last_closed search-magnets (GROWTH) — no re-roll. Weights: games→1, other CORE +1. Idea selected for rules/score visual game. EXECUTE 1/6: game shipped under existing games catalog + lazy GamePlayer. Paths corrected to /es/juegos/.... Next-step via relatedGames + GameShell. Adsterra kept. CWV: lazy route, fixed canvas, modest particles. EXECUTE 2/6: polish — pause/game-over overlays, +pts floaters, miss vignette, combo ring flash, idle start hint, aspect-ratio canvas, New badge + dark preview in catalog. Adsterra kept. EXECUTE 3/6: life power-ups (green +1 vida, max 5), combo-reactive bar color/glow, difficulty level meter + Lv display, on-screen ← → hold buttons for mobile. Misses ignore life pulses. Adsterra kept. EXECUTE 4/6: visual polish — pulse trails, mild catch shake, rare outer ring, vertical combo meter. Adsterra kept. CWV: no new deps, modest extra draws. EXECUTE 5/6: perfect-center catch bonus (1.6× + PERFECT floater) + intensifying horizontal combo grid. Adsterra kept. CWV: no new deps, modest grid draws. EXECUTE 6/6: fever mode (combo≥8 faster bar + purple ambient) + NEW BEST! floater + extra particles on perfect. Adsterra kept. CWV: no new deps, modest extra draws.
 adsense-prep_runs: 3
 ```
 
