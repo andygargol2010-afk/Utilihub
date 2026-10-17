@@ -58,7 +58,7 @@ Reply in **Spanish** at the end of every run (template in ideas-lab-ops.md).
     - Do not activate a 6th SEO locale via this domain.
     - Existing `/{code}/...` routes stay; other domains may still add pages for already-active locales when cheap.
     - Document retirement in state NOTES when the 5th language is completed.
-15. **quality-lift (CORE):** When selected or EXECUTE continues it: follow **QUALITY-LIFT procedure** in ideas-lab-ops.md. Compare 3 existing playgrounds|games|simulators; improve one to an *elevated* standard (not parity). runs_total **must** be 5–10. Forbidden: generic polish that only matches the other two.
+15. **quality-lift (CORE):** When selected or EXECUTE continues it: follow **QUALITY-LIFT procedure** in ideas-lab-ops.md. Family = uniform random among `playgrounds` | `games` | `simulators` (U_f thirds; **no** bias from catalog size or “more material”). Compare 3 existing; improve one to an *elevated* standard (not parity). runs_total **must** be 5–10. Forbidden: generic polish that only matches the other two.
 
 ## Core Web Vitals
 
