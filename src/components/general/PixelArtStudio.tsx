@@ -716,8 +716,8 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   ];
 
   return (
-    <div className="-m-1 overflow-hidden rounded-xl border border-zinc-700/80 bg-[#1a1a1f] text-zinc-100 shadow-inner sm:-m-2">
-      <div className="flex flex-wrap items-center gap-1 border-b border-zinc-700/80 bg-[#121216] px-2 py-1.5">
+    <div className="/* sticky-mobile-v1 */ -m-1 overflow-x-hidden rounded-xl border border-zinc-700/80 bg-[#1a1a1f] text-zinc-100 shadow-inner sm:-m-2">
+      <div className="sticky top-0 z-30 flex flex-wrap items-center gap-1 border-b border-zinc-700/80 bg-[#121216]/95 px-2 py-1.5 backdrop-blur-sm supports-[backdrop-filter]:bg-[#121216]/80">
         <span className="mr-1 text-[11px] font-black tracking-[0.18em] text-rose-400">PIXELIHUB</span>
         <div className="mx-1 h-4 w-px bg-zinc-700" />
         <button type="button" onClick={undo} disabled={!history.length} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800 disabled:opacity-30">↶ {t.undo}</button>
@@ -772,7 +772,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
       </div>
 
       <div className="flex min-h-[min(70vh,560px)] flex-col md:flex-row">
-        <div className="flex shrink-0 flex-row gap-0.5 overflow-x-auto border-b border-zinc-700/80 bg-[#141418] p-1.5 md:w-12 md:flex-col md:border-b-0 md:border-r">
+        <div className="order-2 flex shrink-0 flex-row gap-0.5 overflow-x-auto border-t border-zinc-700/80 bg-[#141418]/95 p-1.5 backdrop-blur-sm sticky bottom-0 z-20 md:order-none md:static md:bottom-auto md:w-12 md:flex-col md:border-b-0 md:border-t-0 md:border-r md:bg-[#141418] md:backdrop-blur-none">
           {tools.map((tb) => (
             <button key={tb.id} type="button" title={tb.label} onClick={() => setTool(tb.id)}
               className={`flex size-9 shrink-0 items-center justify-center rounded-md text-base ${tool === tb.id ? "bg-rose-500/90 text-white shadow" : "text-zinc-400 hover:bg-zinc-800"}`}>
@@ -782,7 +782,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
           <div className="mt-auto hidden size-8 rounded border border-zinc-600 md:block" style={{ background: color }} />
         </div>
 
-        <div className="relative min-w-0 flex-1 bg-[#0e0e12]">
+        <div className="relative order-1 min-w-0 flex-1 bg-[#0e0e12] md:order-none">
           <div className="flex h-full min-h-[280px] items-center justify-center overflow-auto p-3"
             onWheel={(e) => { e.preventDefault(); setZoom((z) => Math.min(32, Math.max(4, z + (e.deltaY > 0 ? -1 : 1)))); }}>
             <canvas ref={canvasRef} className={`touch-none rounded-sm ${tool === "eyedropper" ? "cursor-copy" : tool === "fill" ? "cursor-cell" : "cursor-none"}`}
@@ -793,7 +793,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
           {status ? <p className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 text-[11px] text-rose-300">{status}</p> : null}
         </div>
 
-        <aside className="flex w-full shrink-0 flex-col border-t border-zinc-700/80 bg-[#141418] md:w-52 md:border-l md:border-t-0">
+        <aside className="order-3 flex w-full shrink-0 flex-col border-t border-zinc-700/80 bg-[#141418] md:order-none md:w-52 md:border-l md:border-t-0">
           <div className="border-b border-zinc-700/60 p-2">
             <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-500">{t.size}</p>
             <div className="flex flex-wrap gap-1">
