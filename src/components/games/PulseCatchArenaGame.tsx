@@ -9,13 +9,15 @@ const BAR_W = 72;
 const BAR_H = 12;
 const BAR_Y = H - 36;
 
+type PulseKind = "normal" | "rare" | "life";
+
 type Pulse = {
   x: number;
   y: number;
   r: number;
   vy: number;
   hue: number;
-  rare?: boolean;
+  kind: PulseKind;
 };
 
 type Particle = {
@@ -47,6 +49,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
   const [best, setBest] = useState(0);
   const [shared, setShared] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [difficultyLevel, setDifficultyLevel] = useState(1);
 
   const pulsesRef = useRef<Pulse[]>([]);
   const particlesRef = useRef<Particle[]>([]);
@@ -62,6 +65,8 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
   const gameOverRef = useRef(false);
   const missFlashRef = useRef(0);
   const comboFlashRef = useRef(0);
+  const holdLeftRef = useRef(false);
+  const holdRightRef = useRef(false);
 
   useEffect(() => {
     setBest(readBestScore("pulse-catch-arena"));
@@ -84,9 +89,12 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
     elapsedRef.current = 0;
     missFlashRef.current = 0;
     comboFlashRef.current = 0;
+    holdLeftRef.current = false;
+    holdRightRef.current = false;
     setScore(0);
     setCombo(1);
     setLives(3);
+    setDifficultyLevel(1);
     setGameOver(false);
     setPaused(false);
     setRunning(true);
@@ -131,25 +139,29 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
       if (!paused && !gameOver) {
         elapsedRef.current += 16;
         const difficulty = 1 + elapsedRef.current / 25000;
+        const level = Math.min(12, Math.floor(elapsedRef.current / 18000) + 1);
+        if (level !== difficultyLevel) setDifficultyLevel(level);
+
         spawnTimerRef.current += 16;
-        const spawnInterval = Math.max(280, 900 - difficulty * 120);
+        const spawnInterval = Math.max(260, 900 - difficulty * 130);
         if (spawnTimerRef.current >= spawnInterval) {
           spawnTimerRef.current = 0;
-          const rare = Math.random() < 0.07;
+          const roll = Math.random();
+          const kind: PulseKind = roll < 0.055 ? "life" : roll < 0.12 ? "rare" : "normal";
           pulsesRef.current.push({
             x: 20 + Math.random() * (W - 40),
             y: -10,
-            r: rare ? 14 : 9 + Math.random() * 4,
-            vy: (1.6 + Math.random() * 1.2) * difficulty * (rare ? 0.85 : 1),
-            hue: rare ? 40 + Math.random() * 20 : 160 + Math.random() * 160,
-            rare,
+            r: kind === "life" ? 13 : kind === "rare" ? 12 : 9 + Math.random() * 4,
+            vy: (1.55 + Math.random() * 1.3) * difficulty * (kind === "life" ? 0.9 : 1),
+            hue: kind === "life" ? 140 + Math.random() * 20 : kind === "rare" ? 40 + Math.random() * 25 : 160 + Math.random() * 160,
+            kind,
           });
         }
 
         // move bar
-        const speed = 5.5;
-        if (keysRef.current.left) barXRef.current = Math.max(0, barXRef.current - speed);
-        if (keysRef.current.right) barXRef.current = Math.min(W - BAR_W, barXRef.current + speed);
+        const speed = 5.6;
+        if (keysRef.current.left || holdLeftRef.current) barXRef.current = Math.max(0, barXRef.current - speed);
+        if (keysRef.current.right || holdRightRef.current) barXRef.current = Math.min(W - BAR_W, barXRef.current + speed);
 
         // update pulses
         pulsesRef.current = pulsesRef.current.filter((p) => {
@@ -161,26 +173,42 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             p.x >= barXRef.current - 4 &&
             p.x <= barXRef.current + BAR_W + 4
           ) {
-            const c = comboRef.current;
-            const pts = Math.round((p.rare ? 18 : 8) * c);
-            setScore((s) => {
-              const next = s + pts;
-              setBest((b) => writeBestScore("pulse-catch-arena", Math.max(b, next)));
-              return next;
-            });
-            const nextC = Math.min(c + 1, 20);
-            setCombo(nextC);
-            comboRef.current = nextC;
-            if (nextC >= 3) comboFlashRef.current = 18;
-            floatersRef.current.push({
-              x: p.x,
-              y: p.y - 8,
-              text: `+${pts}${nextC > 1 ? ` x${nextC}` : ""}`,
-              life: 40,
-              hue: p.hue,
-            });
+            if (p.kind === "life") {
+              setLives((l) => {
+                const next = Math.min(5, l + 1);
+                livesRef.current = next;
+                return next;
+              });
+              floatersRef.current.push({
+                x: p.x,
+                y: p.y - 8,
+                text: es ? "+1 vida" : "+1 life",
+                life: 46,
+                hue: 140,
+              });
+            } else {
+              const c = comboRef.current;
+              const base = p.kind === "rare" ? 18 : 8;
+              const pts = Math.round(base * c);
+              setScore((s) => {
+                const next = s + pts;
+                setBest((b) => writeBestScore("pulse-catch-arena", Math.max(b, next)));
+                return next;
+              });
+              const nextC = Math.min(c + 1, 20);
+              setCombo(nextC);
+              comboRef.current = nextC;
+              if (nextC >= 3) comboFlashRef.current = 18;
+              floatersRef.current.push({
+                x: p.x,
+                y: p.y - 8,
+                text: `+${pts}${nextC > 1 ? ` x${nextC}` : ""}`,
+                life: 40,
+                hue: p.hue,
+              });
+            }
             // particles
-            const n = p.rare ? 22 : 14;
+            const n = p.kind === "life" ? 20 : p.kind === "rare" ? 22 : 14;
             for (let i = 0; i < n; i++) {
               particlesRef.current.push({
                 x: p.x,
@@ -189,27 +217,29 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
                 vy: (Math.random() - 0.5) * 6 - 1,
                 life: 28,
                 hue: p.hue + (Math.random() - 0.5) * 40,
-                size: p.rare ? 3 : 2.2,
+                size: p.kind === "normal" ? 2.2 : 3,
               });
             }
             return false;
           }
           // miss
           if (p.y - p.r > H) {
-            setLives((l) => {
-              const next = l - 1;
-              livesRef.current = next;
-              if (next <= 0) {
-                setGameOver(true);
-                gameOverRef.current = true;
-                setRunning(false);
-                runningRef.current = false;
-              }
-              return next;
-            });
-            setCombo(1);
-            comboRef.current = 1;
-            missFlashRef.current = 14;
+            if (p.kind !== "life") {
+              setLives((l) => {
+                const next = l - 1;
+                livesRef.current = next;
+                if (next <= 0) {
+                  setGameOver(true);
+                  gameOverRef.current = true;
+                  setRunning(false);
+                  runningRef.current = false;
+                }
+                return next;
+              });
+              setCombo(1);
+              comboRef.current = 1;
+              missFlashRef.current = 14;
+            }
             return false;
           }
           return true;
@@ -256,17 +286,23 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         // pulses
         for (const p of pulsesRef.current) {
           ctx.save();
-          ctx.shadowBlur = p.rare ? 28 : 18;
+          ctx.shadowBlur = p.kind === "normal" ? 18 : 28;
           ctx.shadowColor = `hsl(${p.hue},100%,65%)`;
-          ctx.fillStyle = `hsl(${p.hue},100%,${p.rare ? 60 : 70}%)`;
+          ctx.fillStyle = `hsl(${p.hue},100%,${p.kind === "life" ? 55 : p.kind === "rare" ? 60 : 70}%)`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
           ctx.fill();
           ctx.shadowBlur = 0;
-          ctx.fillStyle = p.rare ? "#fef3c7" : "#fff";
+          ctx.fillStyle = p.kind === "life" ? "#bbf7d0" : p.kind === "rare" ? "#fef3c7" : "#fff";
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r * 0.38, 0, Math.PI * 2);
           ctx.fill();
+          if (p.kind === "life") {
+            ctx.fillStyle = "#052e16";
+            ctx.font = "bold 11px system-ui";
+            ctx.textAlign = "center";
+            ctx.fillText("+", p.x, p.y + 4);
+          }
           ctx.restore();
         }
 
@@ -290,16 +326,35 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         }
         ctx.globalAlpha = 1;
 
-        // bar
+        // bar (combo reactive)
         ctx.save();
-        ctx.shadowBlur = 16;
-        ctx.shadowColor = "#22d3ee";
+        const comboBoost = Math.min(comboRef.current, 12);
+        ctx.shadowBlur = 16 + comboBoost * 1.5;
+        ctx.shadowColor = comboBoost >= 6 ? "#e879f9" : "#22d3ee";
         const g = ctx.createLinearGradient(barXRef.current, BAR_Y, barXRef.current + BAR_W, BAR_Y);
-        g.addColorStop(0, "#22d3ee");
-        g.addColorStop(1, "#0891b2");
+        if (comboBoost >= 6) {
+          g.addColorStop(0, "#e879f9");
+          g.addColorStop(1, "#a21caf");
+        } else {
+          g.addColorStop(0, "#22d3ee");
+          g.addColorStop(1, "#0891b2");
+        }
         ctx.fillStyle = g;
         ctx.fillRect(barXRef.current, BAR_Y, BAR_W, BAR_H);
         ctx.restore();
+
+        // difficulty meter (top)
+        const meterW = 120;
+        const meterX = (W - meterW) / 2;
+        ctx.fillStyle = "rgba(255,255,255,0.12)";
+        ctx.fillRect(meterX, 10, meterW, 6);
+        const prog = Math.min(1, (elapsedRef.current % 18000) / 18000);
+        ctx.fillStyle = "#22d3ee";
+        ctx.fillRect(meterX, 10, meterW * prog, 6);
+        ctx.fillStyle = "rgba(255,255,255,0.55)";
+        ctx.font = "10px system-ui";
+        ctx.textAlign = "center";
+        ctx.fillText(`Lv ${difficultyLevel}`, W / 2, 28);
 
         // miss vignette
         if (missFlashRef.current > 0) {
@@ -342,14 +397,12 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           ctx.fillStyle = "rgba(255,255,255,0.7)";
           ctx.fillText(es ? "Espacio para reiniciar" : "Space to restart", W / 2, H / 2 + 34);
         }
-
-        // idle start hint (only when not running yet — drawn outside this loop when !running)
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [running, paused, gameOver, es]);
+  }, [running, paused, gameOver, es, difficultyLevel]);
 
   // idle canvas when not running
   useEffect(() => {
@@ -367,7 +420,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
     ctx.fillStyle = "#fff";
     ctx.font = "bold 18px system-ui";
     ctx.textAlign = "center";
-    ctx.fillText(es ? "Pulse Catch Arena" : "Pulse Catch Arena", W / 2, H / 2 - 12);
+    ctx.fillText("Pulse Catch Arena", W / 2, H / 2 - 12);
     ctx.font = "13px system-ui";
     ctx.fillStyle = "rgba(255,255,255,0.7)";
     ctx.fillText(es ? "Tocá Jugar para empezar" : "Tap Play to start", W / 2, H / 2 + 16);
@@ -437,10 +490,34 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         className="touch-none rounded-xl border border-cyan-500/20 bg-black shadow-[0_0_0_1px_rgba(34,211,238,0.2),0_16px_40px_rgba(0,0,0,0.45)]"
         style={{ width: "100%", maxWidth: W, height: "auto", aspectRatio: `${W}/${H}` }}
       />
+      {running && !gameOver && (
+        <div className="flex w-full max-w-[360px] justify-between gap-3 px-1">
+          <button
+            type="button"
+            className="flex-1 rounded-lg border border-cyan-500/30 bg-cyan-950/40 py-2 text-sm font-semibold text-cyan-100 active:bg-cyan-800/50"
+            onPointerDown={() => { holdLeftRef.current = true; }}
+            onPointerUp={() => { holdLeftRef.current = false; }}
+            onPointerLeave={() => { holdLeftRef.current = false; }}
+            onPointerCancel={() => { holdLeftRef.current = false; }}
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            className="flex-1 rounded-lg border border-cyan-500/30 bg-cyan-950/40 py-2 text-sm font-semibold text-cyan-100 active:bg-cyan-800/50"
+            onPointerDown={() => { holdRightRef.current = true; }}
+            onPointerUp={() => { holdRightRef.current = false; }}
+            onPointerLeave={() => { holdRightRef.current = false; }}
+            onPointerCancel={() => { holdRightRef.current = false; }}
+          >
+            →
+          </button>
+        </div>
+      )}
       <p className="text-center text-[11px] text-white/50">
         {es
-          ? "Arrastrá o ←→ / A D para mover la barra. Atrapá los pulsos. Combos suben puntos. 3 vidas."
-          : "Drag or ←→ / A D to move the bar. Catch pulses. Combos boost score. 3 lives."}
+          ? "Arrastrá, botones o ←→ / A D. Atrapá pulsos. Verdes dan +1 vida (máx 5). Combos suben puntos."
+          : "Drag, buttons or ←→ / A D. Catch pulses. Green ones give +1 life (max 5). Combos boost score."}
       </p>
     </div>
   );
