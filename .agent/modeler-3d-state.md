@@ -7,9 +7,9 @@ slug: modelador-3d
 path_entry: src/components/general/Modeler3D.tsx
 modules: modeler3d-studio, modeler3d-core, modeler3d-three-init, modeler3d-helpers, modeler3d-align, modeler3d-scenes
 style: Tinkercad-like primitives studio (not house realism)
-last_mode: UI/MOBILE
+last_mode: GRAPHICS
 last_date: 2026-10-17
-note: Larger mobile touch targets on left palette (shapes size-10, colors size-7, mats py-2). Desktop sm+ unchanged. Deploy pending.
+note: Lighter FogExp2 (0.028) + higher grid opacity (0.72) and slightly brighter secondary color for clearer orientation and distant shape readability. Deploy pending check.
 ```
 
 Update `last_mode` / `last_date` / short note after each MODELADOR-3D run.
