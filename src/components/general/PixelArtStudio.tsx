@@ -202,7 +202,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   const t = useMemo(() => ({
     undo: es ? "Deshacer" : "Undo", redo: es ? "Rehacer" : "Redo",
-    export: "PNG", import: es ? "Importar" : "Import", json: "JSON", copy: es ? "Copiar" : "Copy", share: es ? "Enlace" : "Link",
+    export: "PNG", import: es ? "Importar" : "Import", json: "JSON", sheet: es ? "Hoja" : "Sheet", copy: es ? "Copiar" : "Copy", share: es ? "Enlace" : "Link",
     size: es ? "Tamaño" : "Size", zoom: "Zoom", brush: es ? "Grosor" : "Brush", color: es ? "Color" : "Color", palette: es ? "Paleta" : "Palette", addColor: es ? "+ color" : "+ color",
     layers: es ? "Capas" : "Layers", opacity: es ? "Opacidad" : "Opacity", add: es ? "Añadir" : "Add", clear: es ? "Limpiar" : "Clear",
     sym: es ? "Simetría" : "Symmetry", none: es ? "No" : "None",
@@ -605,6 +605,36 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
     setStatus("JSON");
   };
 
+  /* spritesheet-v1 */
+  const exportSpritesheet = () => {
+    const s = Math.max(1, Math.min(32, exportScale));
+    const frames = layers.length ? layers : [emptyLayer(size)];
+    const cols = frames.length;
+    const off = document.createElement("canvas");
+    off.width = size * s * cols;
+    off.height = size * s;
+    const ctx = off.getContext("2d");
+    if (!ctx) return;
+    ctx.imageSmoothingEnabled = false;
+    for (let fi = 0; fi < frames.length; fi++) {
+      const layer = frames[fi];
+      const ox = fi * size * s;
+      for (let i = 0; i < size * size; i++) {
+        const c = layer[i];
+        if (!c) continue;
+        ctx.fillStyle = c;
+        const x = ox + (i % size) * s;
+        const y = Math.floor(i / size) * s;
+        ctx.fillRect(x, y, s, s);
+      }
+    }
+    const a = document.createElement("a");
+    a.href = off.toDataURL("image/png");
+    a.download = `pixelihub-${size}-sheet-${cols}f-${s}x.png`;
+    a.click();
+    setStatus(es ? `Hoja ${cols}f ${s}×` : `Sheet ${cols}f ${s}×`);
+  };
+
   const importJson = async (file: File) => {
     try {
       const text = await file.text();
@@ -722,6 +752,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
         <button type="button" onClick={() => exportPng(true)} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">{t.copy}</button>
         <button type="button" onClick={() => void shareProject()} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↗ {t.share}</button>
         <button type="button" onClick={exportJson} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↓ {t.json}</button>
+        <button type="button" onClick={exportSpritesheet} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">▦ {t.sheet}</button>
         <button type="button" onClick={() => jsonInputRef.current?.click()} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↑ {t.json}</button>
         <input
           ref={jsonInputRef}
