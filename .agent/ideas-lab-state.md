@@ -59,18 +59,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Cookie Policy pages (EN+ES) for Adsense trust: detail cookies used (analytics via Vercel, advertising via Adsterra and partners), local storage preferences, opt-out methods, third-party processors. Link from privacy page and site footer. No removal of Adsterra. Lightweight static pages only.
-id: cookie-policy
-path_en: /cookies
-path_es: /es/cookies
-domain: adsense-prep
-runs_total: 1
-runs_remaining: 0
-acceptance: done
+status: active
+idea: Original SEO guide (EN+ES) on Canvas and WebGL performance for interactive web experiences. Cover techniques for maintaining smooth 60fps in particle systems, physics sims, and playgrounds: requestAnimationFrame best practices, off-main-thread work, object pooling, devicePixelRatio handling, reduced motion, mobile budgets, and measuring with Performance API. Link from relevant playgrounds/simulators without bloating home. Lightweight static pages, original text, no thin AI content.
+id: canvas-webgl-performance-guide
+path_en: /guides/canvas-webgl-performance
+path_es: /es/guides/canvas-webgl-performance
+domain: search-magnets
+runs_total: 3
+runs_remaining: 3
+acceptance: pending
 share: n/a
 next_step_required: no
-notes: EXECUTE shipped static Cookie Policy EN+ES, linked from privacy pages and footers. Adsterra untouched. adsense-prep_runs → 3. Ready for next IDEATE.
+notes: IDEATE roll U=0.308→GROWTH, U_g=0.049→FIXED→search-magnets. Complements recent particle/pendulum work. Adsterra untouched.
 adsense-prep_runs: 3
 ```
 
