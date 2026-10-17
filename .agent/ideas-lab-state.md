@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: search-magnets
-last_closed_id: compound-interest-guide
+last_closed_domain: simulators
+last_closed_id: double-pendulum-chaos
 p_fixed: 0.35
 
 weights_core:
@@ -42,6 +42,7 @@ adsense-prep_runs: 2
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-16 | simulators | double-pendulum-chaos | Double Pendulum Chaos Lab (EN+ES)
 - 2026-10-16 | search-magnets | compound-interest-guide | Compound Interest SEO Guide (EN+ES)
 - 2026-10-16 | adsense-prep | terms-of-use | Terms of Use pages (EN+ES)
 - 2026-10-16 | search-magnets | particle-physics-guide | Particle Physics SEO Guide (EN+ES)
@@ -51,7 +52,6 @@ adsense-prep_runs: 2
 - 2026-10-15 | games | pulse-catch | Pulse Catch
 - 2026-10-1x | playgrounds | gravity-particles | Gravity Particles (prior)
 - 2026-10-1x | growth-surfaces | postcard | Particle Postcard (prior)
-- 2026-10-1x | studio-composition | neon-sign | Neon Signature Studio (prior)
 ```
 
 ---
@@ -59,18 +59,18 @@ adsense-prep_runs: 2
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: done
 idea: Double Pendulum Chaos Lab — interactive canvas simulator of a classic double pendulum. Users adjust initial angles, rod lengths and masses; watch the second bob draw a fading trail while the system evolves. Optional damping and gravity slider. Pause / reset / slight-perturbation button to show sensitive dependence. Lightweight HTML canvas, no new heavy deps, EN+ES routes under simulators catalog.
 id: double-pendulum-chaos
 path_en: /simulators/double-pendulum
 path_es: /es/simuladores/pendulo-doble
 domain: simulators
 runs_total: 6
-runs_remaining: 1
-acceptance: pending
+runs_remaining: 0
+acceptance: done
 share: both
 next_step_required: no
-notes: IDEATE roll U=0.63 → CORE; cumulative weight sample R≈11/20 → simulators. Set simulators=1, other CORE +1. last_closed=search-magnets (different catalog) no re-roll. Adsterra kept. CWV: lazy route + modest canvas. EXECUTE 1/6: DoublePendulumSim.tsx + catalog entry (slug double-pendulum / pendulo-doble) + registry lazy + SIM_JOURNEYS links. Physics RK-style step, trail on tip, drag-to-set, perturb button. EXECUTE 2/6: energy HUD (θ1/θ2/E), PNG share download, refined trail fade + glow, aspect-ratio for CLS. EXECUTE 3/6: speed scale (0.25–2×), presets (Classic/Butterfly/Low energy), ω HUD, tip-speed colored trail (HSL + width). EXECUTE 4/6: twin chaos overlay (violet ghost with Δθ₁≈0.0015) + toggle to visualize sensitive dependence live; trails for both. EXECUTE 5/6: Δ tip divergence HUD (live tip separation in m, violet box) + Clear trail button; responsive 3/6-col HUD. Deploy tip prior ERROR fixed; free deploy quota previously RATE_LIMITED.
+notes: IDEATE roll U=0.63 → CORE; cumulative weight sample R≈11/20 → simulators. Set simulators=1, other CORE +1. last_closed=search-magnets (different catalog) no re-roll. Adsterra kept. CWV: lazy route + modest canvas. EXECUTE 1/6: DoublePendulumSim.tsx + catalog entry (slug double-pendulum / pendulo-doble) + registry lazy + SIM_JOURNEYS links. Physics RK-style step, trail on tip, drag-to-set, perturb button. EXECUTE 2/6: energy HUD (θ1/θ2/E), PNG share download, refined trail fade + glow, aspect-ratio for CLS. EXECUTE 3/6: speed scale (0.25–2×), presets (Classic/Butterfly/Low energy), ω HUD, tip-speed colored trail (HSL + width). EXECUTE 4/6: twin chaos overlay (violet ghost with Δθ₁≈0.0015) + toggle to visualize sensitive dependence live; trails for both. EXECUTE 5/6: Δ tip divergence HUD (live tip separation in m, violet box) + Clear trail button; responsive 3/6-col HUD. EXECUTE 6/6: keyboard shortcuts (Space pause, R reset, P perturb, T twin, C clear, 1/2/3 presets), normalized θ HUD to -180..180, dashed twin rods, updated help text. Project complete. Deploy READY prior.
 adsense-prep_runs: 2
 ```
 
