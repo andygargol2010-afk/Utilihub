@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""Restore PixelArtStudio from blob 1b87a106 and add brush size 1-8."""
+"""Restore PixelArtStudio from commit 5e8e910 and add brush size 1-8."""
 from pathlib import Path
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGET = ROOT / "src/components/general/PixelArtStudio.tsx"
-BLOB = "1b87a106d9edd1b81316bc80abb5e4c82a7cd031"
+# Commit that introduced Pixilart UI (full component, not PLACEHOLDER)
+COMMIT = "5e8e91071aa676c90f915d960e016e76b640cdd1"
 
-subprocess.check_call(
-    ["git", "show", f"{BLOB}:src/components/general/PixelArtStudio.tsx"],
+out = subprocess.check_output(
+    ["git", "show", f"{COMMIT}:src/components/general/PixelArtStudio.tsx"],
     cwd=ROOT,
-    stdout=open(TARGET, "w"),
 )
+TARGET.write_bytes(out)
 t = TARGET.read_text()
 if "PIXELIHUB" not in t:
     raise SystemExit("restore failed: no PIXELIHUB")
