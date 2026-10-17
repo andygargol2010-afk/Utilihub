@@ -642,6 +642,24 @@ function paintWallMasonry(ctx: CanvasRenderingContext2D, size: number) {
     ctx.lineTo(size, y);
     ctx.stroke();
   }
+  // Soft lichen patches and surface chips so ashlar reads as weathered outdoor masonry.
+  for (let i = 0; i < 14; i++) {
+    if (hash2(i, 17.3) < 0.55) continue;
+    const x = hash2(i, 2.8) * size;
+    const y = hash2(i, 6.4) * size;
+    const r = 3 + hash2(i, 9.1) * 7;
+    const lichen = hash2(i, 4.2);
+    ctx.fillStyle = `rgba(${88 + Math.floor(lichen * 30)}, ${112 + Math.floor(lichen * 40)}, ${72 + Math.floor(lichen * 25)}, ${0.12 + lichen * 0.1})`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * 0.65, hash2(i, 1.1) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  for (let i = 0; i < 8; i++) {
+    const x = hash2(i + 30, 3.7) * size;
+    const y = hash2(i + 30, 8.2) * size;
+    ctx.fillStyle = "rgba(120,108,92,0.35)";
+    ctx.fillRect(x, y, 2 + hash2(i, 5) * 4, 1.2);
+  }
 }
 
 function paintWallMasonryBump(ctx: CanvasRenderingContext2D, size: number) {
