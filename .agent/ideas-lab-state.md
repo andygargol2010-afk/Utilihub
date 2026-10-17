@@ -66,11 +66,11 @@ path_en: /guides/canvas-webgl-performance
 path_es: /es/guides/canvas-webgl-performance
 domain: search-magnets
 runs_total: 3
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: IDEATE roll U=0.308→GROWTH, U_g=0.049→FIXED→search-magnets. Complements recent particle/pendulum work. Adsterra untouched.
+notes: IDEATE roll U=0.308→GROWTH, U_g=0.049→FIXED→search-magnets. Complements recent particle/pendulum work. Adsterra untouched. EXECUTE: created static EN+ES pages + sitemap entry. Next: add lightweight links from relevant playgrounds/simulators.
 adsense-prep_runs: 3
 ```
 
