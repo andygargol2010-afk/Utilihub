@@ -1515,7 +1515,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   }
   ctx.restore();
   // Extra fine grit scatter for denser outdoor path read
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 60; i++) {
     const x = hash2(i + 600, 1.3) * size;
     const y = hash2(i + 600, 4.7) * size;
     const r = 0.4 + hash2(i, 8.8) * 1.1;
@@ -1526,7 +1526,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Occasional leaf litter and darker damp spots so the gravel path reads as used outdoor surface, not freshly spread.
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 9; i++) {
     const x = hash2(i + 800, 2.9) * size;
     const y = hash2(i + 800, 5.1) * size;
     const r = 2.5 + hash2(i, 7.4) * 5;
