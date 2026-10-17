@@ -18,6 +18,7 @@ If truncated: re-fetch; section reads; do not guess MODE.
 | games | Rules / score | Pulse catch style | Fake game form |
 | simulators | Evolving systems | Physics, live viz | Spreadsheet only |
 | kits | Multi-tool paths | Coherent kit UX | Random tool pile |
+| **quality-lift** | Raise bar on one existing playground / game / simulator | Compare 3; elevate the weak or high-headroom one | New from-scratch idea; parity-only polish |
 
 ### GROWTH
 
@@ -32,6 +33,33 @@ If truncated: re-fetch; section reads; do not guess MODE.
 | traffic-diagnosis | Measure A/B/C | Not a product idea |
 | adsense-prep | Trust gaps (temporary) | Max 5 runs; never remove Adsterra |
 | **seo-locales** | New `/{lang}/` route trees for high-spoken languages; SEO-only (no EN/ES nav) | Registry + hreflang; quality translation; **retire domain at 5 active** |
+
+---
+
+## QUALITY-LIFT (procedure when domain rolls)
+
+Not a new product. Goal = **raise the quality standard** of one *existing* interactive experience so the bar moves permanently.
+
+### Hard rules
+
+1. **runs_total must be 5–10** (inclusive). Never 1–4. This is a deep upgrade, not a quick polish pass.
+2. **Forbidden — parity polish:** Do not ship a “make it about as good as the other two” upgrade. The chosen experience must end **notably above** the quality of the two peers used in the comparison (interaction depth, visual delight, mobile feel, feature completeness, or a distinctive capability they lack). Future quality-lift selections that include a previously “acceptable” peer must then be forced to climb further.
+3. Keep existing routes/ids when possible; do not invent a parallel clone. EN+ES stay in sync. Never remove Adsterra. Guard Core Web Vitals (lazy route, modest mobile cost).
+4. next-step: if the surface is under playgrounds|journeys|studio-composition|games, ensure next-step is present/updated before AdsterraBanner.
+
+### IDEATE steps
+
+1. **Decide family:** pick one of `playgrounds` | `games` | `simulators` (not kits/journeys unless the target is clearly that family). Prefer the family with enough shipped candidates.
+2. **Sample three existing** shipped experiences in that family (paths live on site / in repo). If fewer than three exist in-family, pull the closest from the other two families and note it.
+3. **Compare** them on: visual polish, interaction depth, mobile UX, feature completeness, delight, CWV cost. Write a short comparison in `notes`.
+4. **Choose target:**
+   - If one is **notably weaker** than the other two → that is the target (raise it *past* the peers, not merely level with them).
+   - If all are similar → pick the one with most headroom for a distinctive elevated standard (new interaction mode, stronger visual system, better onboarding, richer controls, etc.).
+5. Define in `idea` + `notes` the **elevated standard** being set (what the peers still lack after this project). Set `runs_total` 5–10, `runs_remaining` same, `id` = existing experience id, paths = existing paths, `domain: quality-lift`.
+
+### EXECUTE
+
+One primary outcome per run toward that elevated standard. Smoke EN+ES. On close: document in notes that the bar moved; peers may no longer count as “good enough” in a future three-way comparison.
 
 ---
 
@@ -80,6 +108,8 @@ Measure 7d vs prior; thresholds −15% site / −25% route / 2× errors. A/B/C. 
 
 Product ideas: interactive, ≠ RECENT_CLOSED, ≤6–8 runs, visual payoff, EN+ES, next-step when required.
 
+**quality-lift** exception: runs_total **5–10** required; target is an *existing* playground|game|simulator; must set an elevated standard above the two comparison peers (no parity-only work).
+
 **seo-locales** exempt from canvas quality bar; must be real translated pages + registry update + no EN/ES nav pollution.
 
 adsense-prep / traffic-diagnosis: as their sections.
@@ -107,12 +137,12 @@ path_en: /... or n/a
 path_es: /es/... or n/a
 path_seo: /{code}/...   # when seo-locales
 domain: <rolled>
-runs_total: <1..15>
+runs_total: <1..15>   # quality-lift: MUST be 5–10
 runs_remaining: <same at IDEATE>
 acceptance: pending
 share: url | png | both | n/a
 next_step_required: yes | no
-notes: <roll math + locale if seo-locales>
+notes: <roll math + locale if seo-locales; quality-lift: list the 3 compared + elevated standard>
 adsense-prep_runs: <n>
 ```
 
@@ -139,7 +169,7 @@ Weight sampling: CORE cumulative; GROWTH two-urn (seo-locales in FLEX only; **sk
 
 ## Spanish summary template
 
-Deploy; smoke; outcome; ACTIVE PROJECT; locale/registry if seo-locales (N/5 active); commits; Adsterra; next step.
+Deploy; smoke; outcome; ACTIVE PROJECT; locale/registry if seo-locales (N/5 active); quality-lift peers + elevated bar if quality-lift; commits; Adsterra; next step.
 
 ---
 
@@ -147,6 +177,6 @@ Deploy; smoke; outcome; ACTIVE PROJECT; locale/registry if seo-locales (N/5 acti
 
 - Guard Core Web Vitals on every ship (lazy routes, no home bloat, modest mobile cost).
 
-Spanish summary; correct identity; quality > novelty; one outcome; next-step when required; never remove Adsterra; files win over automation prompt; two-urn GROWTH; truncation → re-read not invent; seo-locales → registry sync + no EN/ES nav links; **retire seo-locales domain at 5 active**.
+Spanish summary; correct identity; quality > novelty; one outcome; next-step when required; never remove Adsterra; files win over automation prompt; two-urn GROWTH; truncation → re-read not invent; seo-locales → registry sync + no EN/ES nav links; **retire seo-locales domain at 5 active**; **quality-lift → compare 3, elevate above peers, 5–10 runs, no parity polish**.
 
 <!-- end:ideas-lab-ops.md -->
