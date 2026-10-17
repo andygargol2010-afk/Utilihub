@@ -66,11 +66,11 @@ path_en: /simulators/boids-flocking-lab
 path_es: /es/simuladores/boids-flocking-lab
 domain: simulators
 runs_total: 6
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: url
 next_step_required: no
-notes: DOMAIN ROLL U=0.543 → CORE. Weighted r=14.01/23 → simulators. last_closed games (CORE) — no re-roll. Weights: simulators→1, other CORE +1. Idea selected for evolving physics visualization. IDEATE: set ACTIVE. EXECUTE 1/6: shipped canvas component + registry + catalog (EN+ES routes). Adsterra kept. Next: polish or smoke if needed.
+notes: DOMAIN ROLL U=0.543 → CORE. Weighted r=14.01/23 → simulators. last_closed games (CORE) — no re-roll. Weights: simulators→1, other CORE +1. Idea selected for evolving physics visualization. IDEATE: set ACTIVE. EXECUTE 1/6: shipped canvas component + registry + catalog (EN+ES routes). EXECUTE 2/6: polish — presets (school/scatter/tight/free), boundary wrap/bounce, optional neighbor links, mobile lower initial count, mouse attractor ring. Adsterra kept. Next: further polish or smoke.
 adsense-prep_runs: 3
 ```
 
