@@ -17,11 +17,11 @@ const MAX_BOIDS = 140;
 const TRAIL_MAX = 18;
 
 const PRESETS = [
-  { id: "school", en: "School", es: "Cardumen", sep: 1.2, align: 1.4, coh: 1.3, speed: 1.1, perc: 85 },
-  { id: "scatter", en: "Scatter", es: "Dispersar", sep: 2.0, align: 0.4, coh: 0.3, speed: 1.0, perc: 60 },
-  { id: "tight", en: "Tight", es: "Compacto", sep: 0.8, align: 1.1, coh: 1.6, speed: 0.8, perc: 45 },
-  { id: "free", en: "Free", es: "Libre", sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70 },
-  { id: "swirl", en: "Swirl", es: "Remolino", sep: 0.9, align: 1.6, coh: 0.7, speed: 1.3, perc: 95 },
+  { id: "school", en: "School", es: "Cardumen", sep: 1.2, align: 1.4, coh: 1.3, speed: 1.1, perc: 85, wander: 0.3 },
+  { id: "scatter", en: "Scatter", es: "Dispersar", sep: 2.0, align: 0.4, coh: 0.3, speed: 1.0, perc: 60, wander: 0.8 },
+  { id: "tight", en: "Tight", es: "Compacto", sep: 0.8, align: 1.1, coh: 1.6, speed: 0.8, perc: 45, wander: 0.2 },
+  { id: "free", en: "Free", es: "Libre", sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70, wander: 0.5 },
+  { id: "swirl", en: "Swirl", es: "Remolino", sep: 0.9, align: 1.6, coh: 0.7, speed: 1.3, perc: 95, wander: 0.4 },
 ];
 
 function makeBoid(x?: number, y?: number): Boid {
@@ -47,6 +47,7 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
   const [coh, setCoh] = useState(1.0);
   const [speed, setSpeed] = useState(1.0);
   const [perception, setPerception] = useState(70);
+  const [wander, setWander] = useState(0.4);
   const [trails, setTrails] = useState(true);
   const [mouseAttract, setMouseAttract] = useState(true);
   const [colorMode, setColorMode] = useState<"velocity" | "neighbors">("velocity");
@@ -58,7 +59,7 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
   const boids = useRef<Boid[]>([]);
   const runningRef = useRef(true);
   const paramsRef = useRef({
-    sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70, trails: true, mouse: true,
+    sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70, wander: 0.4, trails: true, mouse: true,
     color: "velocity" as const, boundary: "wrap" as const, links: false, scatter: true,
   });
   const mouse = useRef({ x: W / 2, y: H / 2, active: false });
@@ -72,7 +73,7 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
 
   runningRef.current = running;
   paramsRef.current = {
-    sep, align, coh, speed, perc: perception, trails, mouse: mouseAttract,
+    sep, align, coh, speed, perc: perception, wander, trails, mouse: mouseAttract,
     color: colorMode, boundary, links: showLinks, scatter: clickScatter,
   };
 
@@ -94,6 +95,7 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
     setCoh(p.coh);
     setSpeed(p.speed);
     setPerception(p.perc);
+    setWander(p.wander);
   }, []);
 
   useEffect(() => {
@@ -160,6 +162,14 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
             ay += (cy / cl) * p.coh * 0.55;
           }
 
+          // wander / noise for organic motion
+          if (p.wander > 0) {
+            const wa = Math.random() * Math.PI * 2;
+            const ws = p.wander * 0.35;
+            ax += Math.cos(wa) * ws;
+            ay += Math.sin(wa) * ws;
+          }
+
           if (p.mouse && mouse.current.active) {
             const mdx = mouse.current.x - b.x;
             const mdy = mouse.current.y - b.y;
@@ -218,7 +228,7 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
           if (p.trails) {
             b.trail.push({ x: b.x, y: b.y, a: 1 });
             if (b.trail.length > TRAIL_MAX) b.trail.shift();
-            for (const t of b.trail) t.a *= 0.92;
+            for (const t of b.trail) t.a *= 0.94;
           } else {
             b.trail.length = 0;
           }
@@ -272,8 +282,8 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
             const a = b.trail[k]!;
             const prev = b.trail[k - 1]!;
             ctx.beginPath();
-            ctx.strokeStyle = `hsla(${b.hue}, 80%, 65%, ${a.a * 0.45})`;
-            ctx.lineWidth = 1.4;
+            ctx.strokeStyle = `hsla(${b.hue}, 80%, 65%, ${a.a * 0.5})`;
+            ctx.lineWidth = 1.6;
             ctx.moveTo(prev.x, prev.y);
             ctx.lineTo(a.x, a.y);
             ctx.stroke();
@@ -281,21 +291,23 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
         }
 
         const ang = Math.atan2(b.vy, b.vx);
+        const sp = Math.hypot(b.vx, b.vy);
+        const size = 5.5 + Math.min(3.5, sp * 1.1);
         ctx.save();
         ctx.translate(b.x, b.y);
         ctx.rotate(ang);
         ctx.beginPath();
         ctx.fillStyle = `hsl(${b.hue}, 85%, 62%)`;
-        ctx.moveTo(7, 0);
-        ctx.lineTo(-4.2, 3.4);
-        ctx.lineTo(-3.2, 0);
-        ctx.lineTo(-4.2, -3.4);
+        ctx.moveTo(size, 0);
+        ctx.lineTo(-size * 0.6, size * 0.48);
+        ctx.lineTo(-size * 0.45, 0);
+        ctx.lineTo(-size * 0.6, -size * 0.48);
         ctx.closePath();
         ctx.fill();
-        // small highlight
+        // highlight
         ctx.beginPath();
-        ctx.fillStyle = `hsla(${b.hue}, 90%, 80%, 0.55)`;
-        ctx.arc(2.2, -0.6, 1.1, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${b.hue}, 90%, 80%, 0.6)`;
+        ctx.arc(size * 0.3, -size * 0.08, size * 0.16, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       }
@@ -438,6 +450,13 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
           </span>
           <input type="range" min={30} max={140} value={perception} onChange={(e) => setPerception(Number(e.target.value))} className="h-2 w-full cursor-pointer accent-teal-400" />
         </label>
+        <label className="flex flex-col gap-1">
+          <span className="flex justify-between font-semibold">
+            <span>{es ? "Errabundo" : "Wander"}</span>
+            <span className="tabular-nums text-teal-300">{wander.toFixed(2)}</span>
+          </span>
+          <input type="range" min={0} max={100} value={Math.round(wander * 100)} onChange={(e) => setWander(Number(e.target.value) / 100)} className="h-2 w-full cursor-pointer accent-teal-400" />
+        </label>
         <div className="flex items-center justify-between">
           <span className="font-semibold">{es ? "Color por" : "Color by"}</span>
           <div className="flex gap-2">
@@ -468,8 +487,8 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
 
       <p className="text-center text-[11px] text-teal-200/50">
         {es
-          ? "Reglas clásicas de Craig Reynolds · canvas ligero · presets · envolver/rebotar · atrae con el ratón · clic para dispersar."
-          : "Classic Craig Reynolds rules · lightweight canvas · presets · wrap/bounce · attract with mouse · click to scatter."}
+          ? "Reglas clásicas de Craig Reynolds · canvas ligero · presets · envolver/rebotar · atrae con el ratón · clic para dispersar · errabundo orgánico."
+          : "Classic Craig Reynolds rules · lightweight canvas · presets · wrap/bounce · attract with mouse · click to scatter · organic wander."}
       </p>
     </div>
   );
