@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 167
+runs_done: 168
 runs_max: 500
 ```
 
@@ -44,7 +44,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 ```
 path: src/components/general/HouseModeler3D.tsx
 approx_bytes: 331131
-last_known_good_hint: 4590372 (~331131 bytes, verified 2026-10-17)
+last_known_good_hint: 06d6c285e8bcb8b5eced234f4a164d03d517f734 (~331131 bytes, verified 2026-10-17 META)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: MODELADOR-3D
+last_mode: META
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: READY on SHA 2b51a49 (url utilihub-8dhk5rwfa-financialproyects.vercel.app)
-note: Roll 2 → MODELADOR-3D. Larger mobile touch targets on Tinkercad palette (shapes size-10 / colors size-7 / mats py-2 under sm). Desktop density unchanged. House monolith untouched. Deploy READY.
+deploy: READY (prior) / BUILDING|QUEUED on latest SHA ca2dd979
+note: Roll 10 → META (truncation risk for PRODUCT full rewrite). Monolith verified 331131 bytes / 7490 lines; paint helpers present; door conditional =1. No product change. Prefer local-clone surgical when auth available.
 ```
 
 Refresh after each run.
@@ -76,6 +76,7 @@ FORCE FOCUS mobile UI: done (remaining_runs 0).
 Surgical PRODUCT succeeded via local git clone + edit + push (prior runs) — sandbox push still needs auth; prefer META when risk high.
 Next runs: normal roll (META/PRODUCT); prefer local-clone surgical when PRODUCT if auth available.
 Unrelated catalog ERROR on older deploys does not block this surface.
+Monolith SHA blob 06d6c285 verified intact this META.
 ```
 
 <!-- end:house-modeler-state.md -->
