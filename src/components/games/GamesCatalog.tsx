@@ -19,7 +19,7 @@ const FILTERS: { id: Filter; en: string; es: string }[] = [
   { id: "board", en: "Board", es: "Tablero" },
 ];
 
-const NEW_SLUGS = new Set(["tetris", "pacman"]);
+const NEW_SLUGS = new Set(["tetris", "pacman", "pulse-catch-arena"]);
 
 /** Soft background per game — large centered emoji only */
 const PREVIEW_BG: Record<string, string> = {
@@ -33,11 +33,12 @@ const PREVIEW_BG: Record<string, string> = {
   sudoku: "from-teal-50 to-cyan-100",
   pacman: "from-indigo-950 to-blue-950",
   tetris: "from-slate-900 to-cyan-950",
+  "pulse-catch-arena": "from-slate-950 to-cyan-950",
 };
 
 function GamePreview({ game }: { game: GameDef }) {
   const bg = PREVIEW_BG[game.slug] ?? "from-emerald-50 to-teal-100";
-  const dark = ["pong", "pacman", "tetris"].includes(game.slug);
+  const dark = ["pong", "pacman", "tetris", "pulse-catch-arena"].includes(game.slug);
   return (
     <div
       className={`relative flex h-32 w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${bg}`}
