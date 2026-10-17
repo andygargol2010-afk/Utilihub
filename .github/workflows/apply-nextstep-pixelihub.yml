@@ -1,0 +1,35 @@
+name: Apply PixeliHub next-step
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/apply-nextstep-pixelihub.py"
+      - ".github/workflows/apply-nextstep-pixelihub.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 20
+
+      - name: Patch next-step
+        run: python3 scripts/apply-nextstep-pixelihub.py
+
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/lib/discovery.ts src/components/general/PixelArtStudio.tsx
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "feat(pixelihub): next-step journey + in-studio CTA (roadmap item 20)"
+          git push
