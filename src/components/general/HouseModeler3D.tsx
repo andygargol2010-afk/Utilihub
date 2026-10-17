@@ -920,6 +920,18 @@ function paintTimber(ctx: CanvasRenderingContext2D, size: number) {
         ctx.fill();
       }
     }
+    // Fine check cracks so outdoor timber reads as seasoned rather than mill-fresh.
+    if (hash2(i, 44) > 0.68) {
+      const crackY = y0 + (y1 - y0) * (0.3 + hash2(i, 45) * 0.4);
+      ctx.strokeStyle = "rgba(28,16,8,0.42)";
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(size * 0.12, crackY);
+      for (let x = size * 0.12; x < size * 0.88; x += 8) {
+        ctx.lineTo(x, crackY + Math.sin(x * 0.08 + i) * 1.4);
+      }
+      ctx.stroke();
+    }
   }
 }
 
