@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 168
+runs_done: 169
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331131
-last_known_good_hint: 06d6c285e8bcb8b5eced234f4a164d03d517f734 (~331131 bytes, verified 2026-10-17 META)
+approx_bytes: 331551
+last_known_good_hint: 5c7080f88017af7fabc1fb83a9f780ac72fa38b8 (~331551 bytes, verified 2026-10-17 PRODUCT)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: READY (prior) / BUILDING|QUEUED on latest SHA ca2dd979
-note: Roll 10 → META (truncation risk for PRODUCT full rewrite). Monolith verified 331131 bytes / 7490 lines; paint helpers present; door conditional =1. No product change. Prefer local-clone surgical when auth available.
+deploy: pending force (402 limit) / BUILDING on prior SHA; check for 5c7080f
+note: Roll 3 → PRODUCT task 1 POLISH DEFAULT TEXTURES (gravel path). Local-clone surgical: added fine grit scatter to paintGravel. Monolith 331551 bytes intact; paint helpers + door conditional=1. Deploy force hit daily limit; webhook may lag.
 ```
 
 Refresh after each run.
@@ -73,7 +73,7 @@ Refresh after each run.
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI: done (remaining_runs 0).
-Surgical PRODUCT succeeded via local git clone + edit + push (prior runs) — sandbox push still needs auth; prefer META when risk high.
+Surgical PRODUCT succeeded via local git clone + edit + push (this run and prior) — credential helper allowed push after rebase. Prefer local-clone surgical when PRODUCT.
 Next runs: normal roll (META/PRODUCT); prefer local-clone surgical when PRODUCT if auth available.
 Unrelated catalog ERROR on older deploys does not block this surface.
 Monolith SHA blob 06d6c285 verified intact this META.
