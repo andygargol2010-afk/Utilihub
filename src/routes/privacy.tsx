@@ -30,7 +30,7 @@ function PrivacyPage() {
         <p>
           This policy explains how <strong>{SITE_NAME}</strong> handles information that may be collected when you
           browse or use the site. {SITE_NAME} is aimed at an international audience and its operator is based in
-          Argentina.
+          Argentina. For details on cookies and similar technologies, see our <a href="/cookies">Cookie Policy</a>.
         </p>
         <h2>Information we may process</h2>
         <p>
