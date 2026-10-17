@@ -47,7 +47,7 @@ export function useModelerThreeInit(d: ThreeDeps) {
         const w = mount.clientWidth || 640, h = mount.clientHeight || 400;
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0a0610);
-        scene.fog = new THREE.FogExp2(0x0a0610, 0.045);
+        scene.fog = new THREE.FogExp2(0x0a0610, 0.028);
         const camera = new THREE.PerspectiveCamera(46, w / h, 0.08, 120);
         camera.position.set(3.8, 2.9, 4.8);
         const isTouch = typeof window !== "undefined" && ("ontouchstart" in window || (navigator.maxTouchPoints ?? 0) > 0);
@@ -104,8 +104,8 @@ export function useModelerThreeInit(d: ThreeDeps) {
         ring.position.y = -0.002;
         scene.add(ring);
 
-        const grid = new THREE.GridHelper(10, 20, 0xf43f5e, 0x3a2030);
-        (grid.material as any).opacity = 0.55;
+        const grid = new THREE.GridHelper(10, 20, 0xf43f5e, 0x4a3040);
+        (grid.material as any).opacity = 0.72;
         (grid.material as any).transparent = true;
         scene.add(grid); gridRef.current = grid;
 
