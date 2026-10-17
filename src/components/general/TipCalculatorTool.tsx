@@ -13,8 +13,8 @@ export function TipCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
   const [people, setPeople] = useState("1");
   const [copied, setCopied] = useState(false);
 
-  const billNum = parseFloat(bill) || 0;
-  const percentNum = parseFloat(percent) || 0;
+  const billNum = Math.max(0, parseFloat(bill) || 0);
+  const percentNum = Math.max(0, parseFloat(percent) || 0);
   const peopleNum = Math.max(1, parseInt(people) || 1);
 
   const tip = billNum * (percentNum / 100);
@@ -23,8 +23,8 @@ export function TipCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
 
   async function copy() {
     const text = es
-      ? `Propina: $${tip.toFixed(2)}\nTotal: $${total.toFixed(2)}\nPor persona: $${perPerson.toFixed(2)}`
-      : `Tip: $${tip.toFixed(2)}\nTotal: $${total.toFixed(2)}\nPer person: $${perPerson.toFixed(2)}`;
+      ? `Propina: ${tip.toFixed(2)}\nTotal: ${total.toFixed(2)}\nPor persona: ${perPerson.toFixed(2)}`
+      : `Tip: ${tip.toFixed(2)}\nTotal: ${total.toFixed(2)}\nPer person: ${perPerson.toFixed(2)}`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
