@@ -1,6 +1,9 @@
 name: Restore PixelArtStudio and add brush size
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/restore-and-brush-pixelihub.yml"
 permissions:
   contents: write
 jobs:
@@ -10,11 +13,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: fix/spanish-complete
-          fetch-depth: 50
+          fetch-depth: 80
       - name: Restore good blob and apply brush
         run: |
           set -euo pipefail
-          # Restore last known good UI (before SEE_FILE)
           git show 1b87a106d9edd1b81316bc80abb5e4c82a7cd031:src/components/general/PixelArtStudio.tsx > src/components/general/PixelArtStudio.tsx
           test -s src/components/general/PixelArtStudio.tsx
           grep -q PIXELIHUB src/components/general/PixelArtStudio.tsx
@@ -22,16 +24,18 @@ jobs:
           from pathlib import Path
           p = Path("src/components/general/PixelArtStudio.tsx")
           t = p.read_text()
-          if "brushSize" not in t:
+          if "brushSize" in t:
+              print("already has brush")
+          else:
               t = t.replace(
-                  '  const [zoom, setZoom] = useState(12);\n',
-                  '  const [zoom, setZoom] = useState(12);\n  const [brushSize, setBrushSize] = useState(1);\n',
+                  "  const [zoom, setZoom] = useState(12);\n",
+                  "  const [zoom, setZoom] = useState(12);\n  const [brushSize, setBrushSize] = useState(1);\n",
               )
               t = t.replace(
                   '    size: es ? "Tamaño" : "Size", zoom: "Zoom", color: es ? "Color" : "Color",\n',
                   '    size: es ? "Tamaño" : "Size", zoom: "Zoom", brush: es ? "Grosor" : "Brush", color: es ? "Color" : "Color",\n',
               )
-              old_paint = '''  const paintAt = (data: string[], x: number, y: number, col: string) => {
+              old_paint = """  const paintAt = (data: string[], x: number, y: number, col: string) => {
     if (x < 0 || y < 0 || x >= size || y >= size) return;
     data[y * size + x] = col;
     const mir = (mx: number, my: number) => {
@@ -40,8 +44,8 @@ jobs:
     if (symmetry === "x" || symmetry === "xy") mir(size - 1 - x, y);
     if (symmetry === "y" || symmetry === "xy") mir(x, size - 1 - y);
     if (symmetry === "xy") mir(size - 1 - x, size - 1 - y);
-  };'''
-              new_paint = '''  const putPixel = (data: string[], x: number, y: number, col: string) => {
+  };"""
+              new_paint = """  const putPixel = (data: string[], x: number, y: number, col: string) => {
     if (x < 0 || y < 0 || x >= size || y >= size) return;
     data[y * size + x] = col;
     const mir = (mx: number, my: number) => {
@@ -59,7 +63,7 @@ jobs:
         putPixel(data, x - half + ox, y - half + oy, col);
       }
     }
-  };'''
+  };"""
               if old_paint not in t:
                   raise SystemExit("paintAt block not found")
               t = t.replace(old_paint, new_paint)
@@ -67,49 +71,47 @@ jobs:
                   "const plot = (px: number, py: number) => paintAt(data, px, py, col);",
                   "const plot = (px: number, py: number) => putPixel(data, px, py, col);",
               )
-              old_ui = '''            <label className="mt-2 flex items-center gap-2 text-[10px] text-zinc-500">
+              old_ui = """            <label className=\"mt-2 flex items-center gap-2 text-[10px] text-zinc-500\">
               {t.zoom}
-              <input type="range" min={4} max={32} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className="h-1 flex-1 accent-rose-500" />
-              <span className="w-6 font-mono text-zinc-400">{zoom}</span>
+              <input type=\"range\" min={4} max={32} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className=\"h-1 flex-1 accent-rose-500\" />
+              <span className=\"w-6 font-mono text-zinc-400\">{zoom}</span>
             </label>
-          </div>'''
-              new_ui = '''            <label className="mt-2 flex items-center gap-2 text-[10px] text-zinc-500">
+          </div>"""
+              new_ui = """            <label className=\"mt-2 flex items-center gap-2 text-[10px] text-zinc-500\">
               {t.zoom}
-              <input type="range" min={4} max={32} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className="h-1 flex-1 accent-rose-500" />
-              <span className="w-6 font-mono text-zinc-400">{zoom}</span>
+              <input type=\"range\" min={4} max={32} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className=\"h-1 flex-1 accent-rose-500\" />
+              <span className=\"w-6 font-mono text-zinc-400\">{zoom}</span>
             </label>
-            <label className="mt-2 flex items-center gap-2 text-[10px] text-zinc-500">
+            <label className=\"mt-2 flex items-center gap-2 text-[10px] text-zinc-500\">
               {t.brush}
-              <input type="range" min={1} max={8} value={brushSize} onChange={(e) => setBrushSize(Number(e.target.value))} className="h-1 flex-1 accent-rose-500" />
-              <span className="w-6 font-mono text-zinc-400">{brushSize}px</span>
+              <input type=\"range\" min={1} max={8} value={brushSize} onChange={(e) => setBrushSize(Number(e.target.value))} className=\"h-1 flex-1 accent-rose-500\" />
+              <span className=\"w-6 font-mono text-zinc-400\">{brushSize}px</span>
             </label>
-            <div className="mt-1 flex flex-wrap gap-1">
+            <div className=\"mt-1 flex flex-wrap gap-1\">
               {[1, 2, 3, 4, 6, 8].map((n) => (
                 <button
                   key={n}
-                  type="button"
+                  type=\"button\"
                   onClick={() => setBrushSize(n)}
-                  className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${brushSize === n ? "bg-rose-500 text-white" : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"}`}
+                  className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${brushSize === n ? \"bg-rose-500 text-white\" : \"bg-zinc-800 text-zinc-400 hover:bg-zinc-700\"}`}
                 >
                   {n}
                 </button>
               ))}
             </div>
-          </div>'''
+          </div>"""
               if old_ui not in t:
-                  raise SystemExit("ui block not found")
+                  raise SystemExit("ui block not found: " + repr(t[t.find("t.zoom")-20:t.find("t.zoom")+200]))
               t = t.replace(old_ui, new_ui)
               p.write_text(t)
               print("patched", len(t))
-          else:
-              print("already has brush")
-          assert "brushSize" in p.read_text()
-          assert "PIXELIHUB" in p.read_text()
+          assert "brushSize" in p.read_text() and "PIXELIHUB" in p.read_text()
           PY
       - name: Commit
         run: |
           git config user.name "andygargol2010-afk"
           git config user.email "andygargol2010@gmail.com"
           git add src/components/general/PixelArtStudio.tsx
-          git commit -m "feat(pixelihub): brush size 1–8px for pencil and eraser (roadmap item 4)" || exit 0
+          if git diff --cached --quiet; then echo none; exit 0; fi
+          git commit -m "feat(pixelihub): brush size 1–8px for pencil and eraser (roadmap item 4)"
           git push
