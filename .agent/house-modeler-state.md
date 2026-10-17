@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 174
+runs_done: 175
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 334842
-last_known_good_hint: 1146d4d (~334842 bytes, verified 2026-10-17 PRODUCT gravel litter)
+approx_bytes: 334913
+last_known_good_hint: 3d99929 (~334913 bytes, verified 2026-10-17 PRODUCT rim light)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: READY https://utilihub-sa074o6ei-financialproyects.vercel.app
-note: Roll 8 → PRODUCT task 1 POLISH DEFAULT TEXTURES (gravel). Local-clone surgical: added leaf litter and damp spots to paintGravel. Monolith 334842 bytes intact; paint helpers + door conditional=1.
+deploy: READY (pending post-push check)
+note: Roll 6 → PRODUCT task 2 IMPROVE GRAPHICS. Local-clone surgical: raised golden rim light intensity 0.38→0.42 for clearer eave/column edge definition. Monolith 334913 bytes intact; paint helpers + door conditional=1.
 ```
 
 Refresh after each run.
