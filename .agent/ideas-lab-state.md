@@ -66,11 +66,11 @@ path_en: /playgrounds/particle-magnets
 path_es: /es/playgrounds/imanes-particulas
 domain: playgrounds
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE roll U=0.5517 → CORE; cumulative R≈19.15/21 → playgrounds. Set playgrounds=1, other CORE +1. last_closed=simulators (different) no re-roll. Next-step required for playgrounds. Adsterra kept. CWV: lazy route + modest particle budget on mobile. EXECUTE 1/4: core component + EN/ES routes + next-step + catalog cards shipped.
+notes: IDEATE roll U=0.5517 → CORE; cumulative R≈19.15/21 → playgrounds. Set playgrounds=1, other CORE +1. last_closed=simulators (different) no re-roll. Next-step required for playgrounds. Adsterra kept. CWV: lazy route + modest particle budget on mobile. EXECUTE 1/4: core component + EN/ES routes + next-step + catalog cards shipped. EXECUTE 2/4: URL param restore for shares, long-press/right-click polarity toggle + selected highlight, larger min-h-11 touch targets, modest particle budget on mobile. 
 adsense-prep_runs: 2
 ```
 
