@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: MODELADOR-3D
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: READY on SHA 4590372 (url utilihub-dnirj85xk-financialproyects.vercel.app)
-note: Roll 6 → META (abort PRODUCT: no safe surgical path without full-rewrite risk on >300KB). Monolith health OK 331131 B / 7490 lines, paint helpers present, door conditional =1, no PLACEHOLDER. Local clone verified. FORCE remains done.
+deploy: READY on SHA 2b51a49 (url utilihub-8dhk5rwfa-financialproyects.vercel.app)
+note: Roll 2 → MODELADOR-3D. Larger mobile touch targets on Tinkercad palette (shapes size-10 / colors size-7 / mats py-2 under sm). Desktop density unchanged. House monolith untouched. Deploy READY.
 ```
 
 Refresh after each run.
