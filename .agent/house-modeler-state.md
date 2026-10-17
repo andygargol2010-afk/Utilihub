@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 173
+runs_done: 174
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 334243
-last_known_good_hint: 3aef1d7 (~334243 bytes, verified 2026-10-17 PRODUCT timber cracks)
+approx_bytes: 334842
+last_known_good_hint: 1146d4d (~334842 bytes, verified 2026-10-17 PRODUCT gravel litter)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: READY https://utilihub-2rbp6kmi6-financialproyects.vercel.app (forced)
-note: Roll 4 → PRODUCT task 1 POLISH DEFAULT TEXTURES (timber). Local-clone surgical: added fine check cracks to paintTimber. Monolith 334243 bytes intact; paint helpers + door conditional=1.
+deploy: READY https://utilihub-sa074o6ei-financialproyects.vercel.app
+note: Roll 8 → PRODUCT task 1 POLISH DEFAULT TEXTURES (gravel). Local-clone surgical: added leaf litter and damp spots to paintGravel. Monolith 334842 bytes intact; paint helpers + door conditional=1.
 ```
 
 Refresh after each run.
