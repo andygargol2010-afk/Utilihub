@@ -1474,6 +1474,17 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
     ctx.stroke();
   }
   ctx.restore();
+  // Extra fine grit scatter for denser outdoor path read
+  for (let i = 0; i < 40; i++) {
+    const x = hash2(i + 600, 1.3) * size;
+    const y = hash2(i + 600, 4.7) * size;
+    const r = 0.4 + hash2(i, 8.8) * 1.1;
+    const tone = 140 + Math.floor(hash2(i, 3.5) * 40);
+    ctx.fillStyle = `rgba(${tone}, ${tone - 8}, ${tone - 18}, 0.35)`;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
