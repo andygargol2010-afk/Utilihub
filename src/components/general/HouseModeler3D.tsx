@@ -1538,6 +1538,16 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
     ctx.ellipse(x, y, r, r * (0.4 + hash2(i, 9.3) * 0.3), hash2(i, 6.1) * Math.PI, 0, Math.PI * 2);
     ctx.fill();
   }
+  // Soft contact shadows under larger stones so gravel reads as stacked pebbles, not flat stamps.
+  for (let i = 0; i < 10; i++) {
+    const x = hash2(i + 200, 3.3) * size;
+    const y = hash2(i + 200, 5.7) * size;
+    const r = 3.5 + hash2(i, 11) * 4.2;
+    ctx.fillStyle = "rgba(40,32,24,0.22)";
+    ctx.beginPath();
+    ctx.ellipse(x + r * 0.15, y + r * 0.25, r * 0.7, r * 0.28, hash2(i, 4.4) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
