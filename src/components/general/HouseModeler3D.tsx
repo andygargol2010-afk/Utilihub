@@ -1553,6 +1553,33 @@ function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
     ctx.ellipse(wx, wy, wr, wr * 0.7, hash2(w, 3.2) * Math.PI, 0, Math.PI * 2);
     ctx.fill();
   }
+  // Occasional clover and wildflower flecks so the lawn reads as natural meadow turf, not uniform sod.
+  for (let f = 0; f < 14; f++) {
+    if (hash2(f, 33.1) > 0.55) continue;
+    const fx = hash2(f, 15.6) * size;
+    const fy = hash2(f, 7.2) * size;
+    const isFlower = hash2(f, 22.8) > 0.6;
+    if (isFlower) {
+      const hue = hash2(f, 4.4);
+      const fr = 3 + Math.floor(hue * 4);
+      const fg = 120 + Math.floor(hue * 60);
+      const fb = 40 + Math.floor(hue * 40);
+      ctx.fillStyle = `rgba(${fr},${fg},${fb},0.55)`;
+      ctx.beginPath();
+      ctx.arc(fx, fy, 1.4, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      // Clover cluster
+      ctx.fillStyle = "rgba(48, 92, 36, 0.48)";
+      for (let c = 0; c < 3; c++) {
+        const ox = (hash2(f, c + 1) - 0.5) * 3.2;
+        const oy = (hash2(f, c + 5) - 0.5) * 2.4;
+        ctx.beginPath();
+        ctx.ellipse(fx + ox, fy + oy, 1.6, 1.1, hash2(f, c) * Math.PI, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
 }
 
 /** Blade clumps as height so the field catches the key light instead of reading as a flat disc. */
