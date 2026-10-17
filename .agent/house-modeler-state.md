@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 180
+runs_done: 181
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 335731
-last_known_good_hint: afb7f96 (~335731 bytes, verified 2026-10-17 PRODUCT foundation polish)
+approx_bytes: 336392
+last_known_good_hint: 8726998 (~336392 bytes, verified 2026-10-17 PRODUCT chimney brick polish)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
 deploy: pending check
-note: Roll ~7 → PRODUCT task 1 POLISH TEXTURES (foundation board-formed). Denser air bubbles + micro-pits. Monolith SHA afb7f96 ~335731 bytes.
+note: Roll 4 → PRODUCT task 1 POLISH TEXTURES (chimney brick). Denser micro-pits + weathered flecks. Monolith SHA 8726998 ~336392 bytes.
 ```
 
 Refresh after each run.
@@ -75,7 +75,7 @@ Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI: done (remaining_runs 0).
 Surgical PRODUCT succeeded via local git clone + edit + push (prior runs) — credential helper allowed push after rebase. Prefer local-clone surgical when PRODUCT.
 Next runs: normal roll (META/PRODUCT); prefer local-clone surgical when PRODUCT if auth available.
-Monolith SHA afb7f96 after foundation polish (PRODUCT run 180).
+Monolith SHA 8726998 after chimney brick polish (PRODUCT run 181).
 Unrelated catalog ERROR on older deploys does not block this surface.
 ```
 
