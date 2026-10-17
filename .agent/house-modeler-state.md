@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 185
+runs_done: 186
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: MODELADOR-3D
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: READY (clay SHA 6817fdc) + BUILDING (prior state)
-note: Roll 7 → intended PRODUCT denser plaster flecks/pits (local clone + surgical edit + commit 63af736 prepared). git push https failed (no credential this session). Avoided full-file create_or_update_file risk. META: recorded prepared change; next run retry PRODUCT plaster or masonry when auth available.
+deploy: READY (prior) — check new SHA e39e932
+note: Roll 2 → MODELADOR-3D GRAPHICS: lighter FogExp2 0.028 + grid opacity 0.72 / brighter secondary for clearer Tinkercad orientation and distant shapes. House monolith untouched.
 ```
 
 Refresh after each run.
@@ -74,8 +74,9 @@ Bootstrap automation only points here — expand rules in house-modeler.md / ops
 Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI: done (remaining_runs 0).
 Surgical PRODUCT succeeded via local git clone + edit + push (prior runs) — credential helper allowed push after rebase. Prefer local-clone surgical when PRODUCT if auth available.
-This run: local clone + gates OK; git push https failed (no credential). Avoided create_or_update_file full rewrite of ~330KB. Prepared plaster densify (flecks 22→36, pits 48→72) at local SHA 63af736 — not pushed.
+Prior: plaster densify prepared locally (not pushed) at 63af736.
 Monolith SHA 6817fdc after clay polish (PRODUCT run 183) — READY.
+This run: MODELADOR-3D only; no house monolith edit.
 Unrelated catalog ERROR on older deploys does not block this surface.
 ```
 
