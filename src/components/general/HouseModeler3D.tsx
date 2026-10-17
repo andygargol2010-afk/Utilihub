@@ -3775,7 +3775,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       scene.add(bounce);
       scene.add(new THREE.AmbientLight(0xfff6ea, 0.08));
       // Low golden rim along the sun azimuth. No shadow map — eaves and columns pick up an edge.
-      const rim = new THREE.DirectionalLight(0xffb56a, 0.38);
+      const rim = new THREE.DirectionalLight(0xffb56a, 0.42); // slightly stronger golden rim for better eave/column edge definition
       rim.position.set(sun.x * 18, 2.6, sun.z * 18);
       scene.add(rim);
       scene.add(rim.target);
