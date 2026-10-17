@@ -1,0 +1,32 @@
+name: Restore PixelArtStudio component
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 30
+      - name: Restore from last known good
+        run: |
+          set -euo pipefail
+          # Prefer commit before SEE_FILE placeholders
+          git checkout 6c8a627e0d2fd769f4040530b8166d28346efc1e -- src/components/general/PixelArtStudio.tsx
+          wc -c src/components/general/PixelArtStudio.tsx
+          head -c 80 src/components/general/PixelArtStudio.tsx
+          grep -q PixelArtStudio src/components/general/PixelArtStudio.tsx
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/PixelArtStudio.tsx
+          if git diff --cached --quiet; then echo none; exit 0; fi
+          git commit -m "fix(pixelihub): restore PixelArtStudio from 6c8a627 (undo SEE_FILE truncate)"
+          git push
