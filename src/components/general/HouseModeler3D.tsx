@@ -716,6 +716,20 @@ function paintChimneyBrick(ctx: CanvasRenderingContext2D, size: number) {
         ctx.fillStyle = `rgba(${tone - 20}, ${tone - 30}, ${tone - 34}, 0.35)`;
         ctx.fillRect(x + 4, y0 + rh * 0.4, w * 0.35, 2);
       }
+      // Denser micro-pits and weathered flecks so brick faces read as fired clay with natural porosity.
+      if (hash2(c + 5, r + 12) > 0.65) {
+        const pit = hash2(c + 9, r + 17);
+        const px = x + 3 + pit * (w - 6);
+        const py = y0 + mortar + 2 + pit * (rh - mortar * 2 - 4);
+        ctx.fillStyle = `rgba(${tone - 28}, ${tone - 36}, ${tone - 40}, ${0.25 + pit * 0.2})`;
+        ctx.beginPath();
+        ctx.arc(px, py, 0.6 + pit * 0.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (hash2(c + 11, r + 3) > 0.88) {
+        ctx.fillStyle = "rgba(90, 60, 48, 0.4)";
+        ctx.fillRect(x + w * 0.6, y0 + rh * 0.55, 1.5, 1.5);
+      }
     }
   }
   ctx.strokeStyle = "rgba(186, 170, 154, 0.55)";
