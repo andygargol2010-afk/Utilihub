@@ -4,8 +4,6 @@ import { DeferredFinanceJourney } from "@/components/DeferredFinanceJourney";
 import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { DeferredFinanceSeo } from "@/components/DeferredFinanceSeo";
-import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
-import { toolByEnglishSlug, englishToolPath } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, webApplicationSchema } from "@/lib/seo";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 
@@ -18,13 +16,18 @@ type FinanceSeoLite = {
 
 export const Route = createFileRoute("/finance/$slug")({
   loader: async ({ params }) => {
+    // Catalog stays off the route shell chunk.
+    const { FINANCIAL_TOOLS } = await import("@/lib/financial-tools");
+    const { toolByEnglishSlug, englishToolPath } = await import("@/lib/route-slugs");
     const tool = toolByEnglishSlug(FINANCIAL_TOOLS, params.slug);
     if (!tool) throw notFound();
     // Keep the SEO barrel off the route shell chunk.
     const { financeSeo } = await import("@/lib/finance-seo-content");
     const seo = financeSeo(tool.slug);
+    const enPath = englishToolPath(tool);
     return {
       tool,
+      enPath,
       seo: {
         metaTitle: seo?.metaTitle,
         metaDescription: seo?.metaDescription,
@@ -42,10 +45,10 @@ export const Route = createFileRoute("/finance/$slug")({
         ],
       };
     }
-    const { tool, seo } = loaderData;
+    const { tool, seo, enPath } = loaderData;
     const title = seo.metaTitle ?? `${tool.name} calculator | UtiliHub`;
     const description = cleanDescription(seo.metaDescription ?? tool.description);
-    const url = absoluteUrl(englishToolPath(tool));
+    const url = absoluteUrl(enPath);
     const esUrl = absoluteUrl(`/es/finanzas/${tool.slug}`);
     return {
       meta: [
