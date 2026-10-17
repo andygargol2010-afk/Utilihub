@@ -194,13 +194,15 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /* import-v1 */
   const fileInputRef = useRef<HTMLInputElement>(null);
+  /* json-v1 */
+  const jsonInputRef = useRef<HTMLInputElement>(null);
   const drawing = useRef(false);
   const startCell = useRef<{ x: number; y: number } | null>(null);
   const snapshot = useRef<string[][] | null>(null);
 
   const t = useMemo(() => ({
     undo: es ? "Deshacer" : "Undo", redo: es ? "Rehacer" : "Redo",
-    export: "PNG", import: es ? "Importar" : "Import", copy: es ? "Copiar" : "Copy", share: es ? "Enlace" : "Link",
+    export: "PNG", import: es ? "Importar" : "Import", json: "JSON", copy: es ? "Copiar" : "Copy", share: es ? "Enlace" : "Link",
     size: es ? "Tamaño" : "Size", zoom: "Zoom", brush: es ? "Grosor" : "Brush", color: es ? "Color" : "Color", palette: es ? "Paleta" : "Palette", addColor: es ? "+ color" : "+ color",
     layers: es ? "Capas" : "Layers", opacity: es ? "Opacidad" : "Opacity", add: es ? "Añadir" : "Add", clear: es ? "Limpiar" : "Clear",
     sym: es ? "Simetría" : "Symmetry", none: es ? "No" : "None",
@@ -584,6 +586,75 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
     img.src = url;
   };
 
+  const exportJson = () => {
+    const payload = {
+      v: 1,
+      app: "pixelihub",
+      size,
+      layers,
+      layerVisible: layerVisible.slice(0, layers.length),
+      layerOpacity: layerOpacity.slice(0, layers.length),
+      activeLayer,
+    };
+    const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `pixelihub-${size}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    setStatus("JSON");
+  };
+
+  const importJson = async (file: File) => {
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text) as {
+        v?: number;
+        size?: number;
+        layers?: string[][];
+        layerVisible?: boolean[];
+        layerOpacity?: number[];
+        activeLayer?: number;
+      };
+      if (!data || data.v !== 1 || !data.size || !Array.isArray(data.layers) || !data.layers.length) {
+        setStatus(es ? "JSON inválido" : "Invalid JSON");
+        return;
+      }
+      const sizeN = data.size;
+      if (![8, 16, 32, 64, 128, 256].includes(sizeN)) {
+        setStatus(es ? "Tamaño inválido" : "Invalid size");
+        return;
+      }
+      const nextLayers = data.layers.slice(0, 4).map((layer) => {
+        const out = emptyLayer(sizeN);
+        if (!Array.isArray(layer)) return out;
+        const n = Math.min(layer.length, sizeN * sizeN);
+        for (let i = 0; i < n; i++) {
+          const c = layer[i];
+          if (typeof c === "string" && (c === "" || /^#[0-9a-fA-F]{6}$/.test(c))) out[i] = c;
+        }
+        return out;
+      });
+      pushHistory(layers);
+      setSize(sizeN);
+      setLayers(nextLayers);
+      setLayerVisible(() => {
+        const vis = (data.layerVisible ?? []).slice(0, nextLayers.length);
+        while (vis.length < MAX_LAYERS) vis.push(true);
+        return vis.map(Boolean);
+      });
+      setLayerOpacity(() => {
+        const op = (data.layerOpacity ?? []).slice(0, nextLayers.length);
+        while (op.length < MAX_LAYERS) op.push(100);
+        return op.map((n) => Math.max(0, Math.min(100, Number(n) || 100)));
+      });
+      setActiveLayer(Math.max(0, Math.min(nextLayers.length - 1, data.activeLayer ?? 0)));
+      setStatus(es ? "JSON cargado" : "JSON loaded");
+    } catch {
+      setStatus(es ? "JSON inválido" : "Invalid JSON");
+    }
+  };
+
   const shareProject = async () => {
     try {
       const encoded = encodeSharePayload(size, layers);
@@ -650,6 +721,19 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
         />
         <button type="button" onClick={() => exportPng(true)} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">{t.copy}</button>
         <button type="button" onClick={() => void shareProject()} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↗ {t.share}</button>
+        <button type="button" onClick={exportJson} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↓ {t.json}</button>
+        <button type="button" onClick={() => jsonInputRef.current?.click()} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↑ {t.json}</button>
+        <input
+          ref={jsonInputRef}
+          type="file"
+          accept="application/json,.json"
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void importJson(f);
+            e.target.value = "";
+          }}
+        />
         <div className="ml-auto flex items-center gap-2">
           <span className="font-mono text-[10px] text-zinc-500">{hoverCell ? `X:${hoverCell.x} Y:${hoverCell.y}` : "—"}</span>
           <span className="font-mono text-[10px] text-zinc-500">{size}×{size}</span>
