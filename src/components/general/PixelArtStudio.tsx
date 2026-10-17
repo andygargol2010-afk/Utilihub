@@ -8,6 +8,8 @@ type Symmetry = "none" | "x" | "y" | "xy";
 const SIZES = [8, 16, 32, 64, 128, 256] as const;
 const MAX_LAYERS = 4;
 const STORAGE_KEY = "utilihub-pixelihub-v1";
+/* onboarding-v1 */
+const ONBOARD_KEY = "utilihub-pixelihub-onboard-v1";
 /* palettes-v1 */
 const PALETTE_PRESETS: { id: string; labelEn: string; labelEs: string; colors: string[] }[] = [
   {
@@ -190,6 +192,10 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [history, setHistory] = useState<string[][][]>([]);
   const [future, setFuture] = useState<string[][][]>([]);
   const [status, setStatus] = useState("");
+  const [showOnboard, setShowOnboard] = useState(() => {
+    try { return localStorage.getItem(ONBOARD_KEY) !== "1"; } catch { return true; }
+  });
+  const [onboardStep, setOnboardStep] = useState(0);
   const [hoverCell, setHoverCell] = useState<{ x: number; y: number } | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /* import-v1 */
@@ -209,6 +215,11 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
     layers: es ? "Capas" : "Layers", opacity: es ? "Opacidad" : "Opacity", add: es ? "Añadir" : "Add", clear: es ? "Limpiar" : "Clear",
     sym: es ? "Simetría" : "Symmetry", none: es ? "No" : "None",
     tip: es ? "Clic/arrastrá · rueda = zoom · B/E/I/G · [ ] grosor · Ctrl+Z" : "Click/drag · wheel = zoom · B/E/I/G · [ ] brush · Ctrl+Z",
+    help: es ? "Ayuda" : "Help",
+    skip: es ? "Saltar" : "Skip",
+    next: es ? "Siguiente" : "Next",
+    done: es ? "Listo" : "Done",
+    onboardTitle: es ? "Bienvenido a PixeliHub" : "Welcome to PixeliHub",
   }), [es]);
 
   const pushHistory = useCallback((next: string[][]) => {
@@ -739,10 +750,37 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
     { id: "circle", icon: "○", label: "Circle" },
   ];
 
+  const finishOnboard = () => {
+    setShowOnboard(false);
+    try { localStorage.setItem(ONBOARD_KEY, "1"); } catch { /* ignore */ }
+  };
+
+  const onboardSteps = es
+    ? [
+        { title: "Dibujá", body: "Elegí una herramienta abajo (o a la izquierda en PC) y pintá en el canvas. Pellizcá o usá la rueda para zoom." },
+        { title: "Capas y color", body: "Sumá capas, cambiá opacidad y usá las paletas. El gotero (◎) toma color del dibujo." },
+        { title: "Exportar y compartir", body: "PNG a 1×–16×, hoja de sprites, JSON del proyecto o enlace #ph para compartir." },
+        { title: "Atajos", body: "B lápiz · E goma · G relleno · Ctrl+Z deshacer. Tocá ? cuando quieras ver esta guía otra vez." },
+      ]
+    : [
+        { title: "Draw", body: "Pick a tool (bottom on mobile, left on desktop) and paint on the canvas. Wheel or pinch area for zoom." },
+        { title: "Layers & color", body: "Add layers, tweak opacity, switch palettes. The dropper (◎) samples from your art." },
+        { title: "Export & share", body: "PNG at 1×–16×, spritesheet, project JSON, or a #ph share link." },
+        { title: "Shortcuts", body: "B pencil · E eraser · G fill · Ctrl+Z undo. Tap ? anytime to reopen this guide." },
+      ];
+
   return (
-    <div className="/* sticky-mobile-v1 */ -m-1 overflow-x-hidden rounded-xl border border-zinc-700/80 bg-[#1a1a1f] text-zinc-100 shadow-inner sm:-m-2">
+    <div className="/* sticky-mobile-v1 */ relative -m-1 overflow-x-hidden rounded-xl border border-zinc-700/80 bg-[#1a1a1f] text-zinc-100 shadow-inner sm:-m-2">
       <div className="sticky top-0 z-30 flex flex-wrap items-center gap-1 border-b border-zinc-700/80 bg-[#121216]/95 px-2 py-1.5 backdrop-blur-sm supports-[backdrop-filter]:bg-[#121216]/80">
         <span className="mr-1 text-[11px] font-black tracking-[0.18em] text-rose-400">PIXELIHUB</span>
+        <button
+          type="button"
+          title={t.help}
+          onClick={() => { setOnboardStep(0); setShowOnboard(true); }}
+          className="rounded px-1.5 py-0.5 text-[11px] font-bold text-zinc-400 hover:bg-zinc-800 hover:text-rose-300"
+        >
+          ?
+        </button>
         <div className="mx-1 h-4 w-px bg-zinc-700" />
         <button type="button" onClick={undo} disabled={!history.length} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800 disabled:opacity-30">↶ {t.undo}</button>
         <button type="button" onClick={redo} disabled={!future.length} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800 disabled:opacity-30">↷ {t.redo}</button>
@@ -1045,6 +1083,55 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
           </div>
         </aside>
       </div>
+
+      {showOnboard ? (
+        <div className="absolute inset-0 z-50 flex items-end justify-center bg-black/60 p-3 backdrop-blur-[2px] sm:items-center">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={t.onboardTitle}
+            className="w-full max-w-sm rounded-2xl border border-zinc-600/80 bg-[#16161c] p-4 shadow-2xl"
+          >
+            <p className="text-[10px] font-bold uppercase tracking-wider text-rose-400">{t.onboardTitle}</p>
+            <p className="mt-2 text-sm font-semibold text-zinc-100">{onboardSteps[onboardStep]?.title}</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-zinc-400">{onboardSteps[onboardStep]?.body}</p>
+            <div className="mt-3 flex items-center gap-1.5">
+              {onboardSteps.map((_, i) => (
+                <span
+                  key={i}
+                  className={`h-1.5 flex-1 rounded-full ${i === onboardStep ? "bg-rose-500" : i < onboardStep ? "bg-rose-500/40" : "bg-zinc-700"}`}
+                />
+              ))}
+            </div>
+            <div className="mt-4 flex items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={finishOnboard}
+                className="rounded-lg px-3 py-2 text-[12px] font-semibold text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+              >
+                {t.skip}
+              </button>
+              {onboardStep < onboardSteps.length - 1 ? (
+                <button
+                  type="button"
+                  onClick={() => setOnboardStep((s) => s + 1)}
+                  className="rounded-lg bg-rose-500 px-4 py-2 text-[12px] font-bold text-white hover:bg-rose-400"
+                >
+                  {t.next}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={finishOnboard}
+                  className="rounded-lg bg-rose-500 px-4 py-2 text-[12px] font-bold text-white hover:bg-rose-400"
+                >
+                  {t.done}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
