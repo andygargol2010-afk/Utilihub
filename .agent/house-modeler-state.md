@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 176
+runs_done: 177
 runs_max: 500
 ```
 
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
 deploy: READY (pending post-push check)
-note: Roll 4 → PRODUCT task 1 POLISH DEFAULT TEXTURES. Local-clone surgical: denser fine grit 40→60 + leaf litter 6→9 on paintGravel. Monolith 334913 bytes intact.
+note: Roll 10 → PRODUCT task 1 POLISH DEFAULT TEXTURES. Local-clone surgical: denser lime-wash patches 14→18 + micro-pits 36→48 on paintPlaster. Monolith 334913 bytes intact.
 ```
 
 Refresh after each run.
@@ -77,7 +77,7 @@ Surgical PRODUCT succeeded via local git clone + edit + push (this run and prior
 Next runs: normal roll (META/PRODUCT); prefer local-clone surgical when PRODUCT if auth available.
 Monolith SHA blob updated after denser gravel PRODUCT.
 Unrelated catalog ERROR on older deploys does not block this surface.
-Monolith SHA blob a1a556d verified intact this PRODUCT.
+Monolith SHA blob fa3d24e verified intact this PRODUCT.
 ```
 
 <!-- end:house-modeler-state.md -->
