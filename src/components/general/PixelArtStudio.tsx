@@ -122,7 +122,36 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
         if (c) { ctx.fillStyle = c; ctx.fillRect(x * px, y * px, px, px); }
       }
     }
-  }, [size, zoom, compositeColor]);
+    /* cursor-preview-v1 */
+    if (hoverCell && tool !== "eyedropper") {
+      const hx = hoverCell.x;
+      const hy = hoverCell.y;
+      if (tool === "pencil" || tool === "eraser") {
+        const half = Math.floor((brushSize - 1) / 2);
+        ctx.save();
+        ctx.globalAlpha = tool === "eraser" ? 0.35 : 0.45;
+        ctx.fillStyle = tool === "eraser" ? "#ffffff" : color;
+        ctx.strokeStyle = tool === "eraser" ? "#f43f5e" : "#ffffff";
+        ctx.lineWidth = Math.max(1, px * 0.12);
+        for (let oy = 0; oy < brushSize; oy++) {
+          for (let ox = 0; ox < brushSize; ox++) {
+            const cx = hx - half + ox;
+            const cy = hy - half + oy;
+            if (cx < 0 || cy < 0 || cx >= size || cy >= size) continue;
+            ctx.fillRect(cx * px, cy * px, px, px);
+            ctx.strokeRect(cx * px + 0.5, cy * px + 0.5, px - 1, px - 1);
+          }
+        }
+        ctx.restore();
+      } else {
+        ctx.save();
+        ctx.strokeStyle = "#f43f5e";
+        ctx.lineWidth = Math.max(1, px * 0.15);
+        ctx.strokeRect(hx * px + 0.5, hy * px + 0.5, px - 1, px - 1);
+        ctx.restore();
+      }
+    }
+  }, [size, zoom, compositeColor, hoverCell, tool, brushSize, color]);
 
   useEffect(() => { redraw(); }, [redraw]);
 
@@ -320,7 +349,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
         <div className="relative min-w-0 flex-1 bg-[#0e0e12]">
           <div className="flex h-full min-h-[280px] items-center justify-center overflow-auto p-3"
             onWheel={(e) => { e.preventDefault(); setZoom((z) => Math.min(32, Math.max(4, z + (e.deltaY > 0 ? -1 : 1)))); }}>
-            <canvas ref={canvasRef} className="touch-none cursor-crosshair rounded-sm"
+            <canvas ref={canvasRef} className={`touch-none rounded-sm ${tool === "eyedropper" ? "cursor-copy" : tool === "fill" ? "cursor-cell" : "cursor-none"}`}
               style={{ imageRendering: "pixelated" }}
               onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
               onPointerLeave={() => { onPointerUp(); setHoverCell(null); }} />
