@@ -512,11 +512,11 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
         </div>
         <div className="rounded-xl border border-sky-500/20 bg-black/30 px-1 py-2">
           <p className="font-bold text-sky-200/70">ω1</p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.w1.toFixed(1)}</p>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.w1.toFixed(2)}</p>
         </div>
         <div className="rounded-xl border border-sky-500/20 bg-black/30 px-1 py-2">
           <p className="font-bold text-sky-200/70">ω2</p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.w2.toFixed(1)}</p>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-sky-100">{hud.w2.toFixed(2)}</p>
         </div>
         <div className="rounded-xl border border-sky-500/20 bg-black/30 px-1 py-2">
           <p className="font-bold text-sky-200/70">E</p>
@@ -575,6 +575,11 @@ export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
         {es
           ? "Sistema clásico no lineal. El gemelo muestra dependencia sensible: diferencias iniciales minúsculas divergen rápidamente. Δ punta cuantifica la separación. Energía se conserva sin amortiguación."
           : "Classic nonlinear system. The twin shows sensitive dependence: tiny initial differences diverge rapidly. Δ tip quantifies the separation. Energy is conserved without damping."}
+      </p>
+      <p className="text-center text-[11px] text-sky-200/60">
+        <a href={es ? "/es/guias/rendimiento-canvas-webgl" : "/guides/canvas-webgl-performance"} className="underline hover:text-sky-100">
+          {es ? "Guía: rendimiento de Canvas y WebGL" : "Guide: Canvas & WebGL performance"}
+        </a>
       </p>
     </div>
   );
