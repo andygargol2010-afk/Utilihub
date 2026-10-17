@@ -212,7 +212,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
     undo: es ? "Deshacer" : "Undo", redo: es ? "Rehacer" : "Redo",
     export: "PNG", import: es ? "Importar" : "Import", json: "JSON", sheet: es ? "Hoja" : "Sheet", copy: es ? "Copiar" : "Copy", share: es ? "Enlace" : "Link",
     size: es ? "Tamaño" : "Size", zoom: "Zoom", brush: es ? "Grosor" : "Brush", color: es ? "Color" : "Color", palette: es ? "Paleta" : "Palette", addColor: es ? "+ color" : "+ color",
-    layers: es ? "Capas" : "Layers", opacity: es ? "Opacidad" : "Opacity", add: es ? "Añadir" : "Add", clear: es ? "Limpiar" : "Clear",
+    layers: es ? "Capas" : "Layers", opacity: es ? "Opacidad" : "Opacity", add: es ? "Añadir" : "Add", clear: es ? "Limpiar capa" : "Clear layer", clearAll: es ? "Limpiar todo" : "Clear all",
     sym: es ? "Simetría" : "Symmetry", none: es ? "No" : "None",
     tip: es ? "Clic/arrastrá · rueda = zoom · B/E/I/G · [ ] grosor · Ctrl+Z" : "Click/drag · wheel = zoom · B/E/I/G · [ ] brush · Ctrl+Z",
     help: es ? "Ayuda" : "Help",
@@ -750,6 +750,36 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
     { id: "circle", icon: "○", label: "Circle" },
   ];
 
+  /* clear-v1 */
+  const layerHasPixels = (layer: string[] | undefined) =>
+    !!layer && layer.some((c) => typeof c === "string" && c.length > 0);
+
+  const clearActiveLayer = () => {
+    const layer = layers[activeLayer];
+    if (layerHasPixels(layer)) {
+      const ok = window.confirm(es ? "¿Limpiar la capa activa?" : "Clear the active layer?");
+      if (!ok) return;
+    }
+    pushHistory(layers);
+    setLayers((L) => {
+      const n = cloneLayers(L);
+      n[activeLayer] = emptyLayer(size);
+      return n;
+    });
+    setStatus(es ? "Capa limpia" : "Layer cleared");
+  };
+
+  const clearAllLayers = () => {
+    const any = layers.some(layerHasPixels);
+    if (any) {
+      const ok = window.confirm(es ? "¿Limpiar todas las capas?" : "Clear all layers?");
+      if (!ok) return;
+    }
+    pushHistory(layers);
+    setLayers((L) => L.map(() => emptyLayer(size)));
+    setStatus(es ? "Todo limpio" : "All cleared");
+  };
+
   const finishOnboard = () => {
     setShowOnboard(false);
     try { localStorage.setItem(ONBOARD_KEY, "1"); } catch { /* ignore */ }
@@ -1062,8 +1092,22 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
               />
               <span className="w-8 font-mono text-zinc-400">{layerOpacity[activeLayer] ?? 100}%</span>
             </label>
-            <button type="button" className="mt-1 w-full rounded py-1 text-[11px] text-zinc-500"
-              onClick={() => { pushHistory(layers); setLayers((L) => { const n = cloneLayers(L); n[activeLayer] = emptyLayer(size); return n; }); }}>{t.clear}</button>
+            <div className="mt-1 flex gap-1">
+              <button
+                type="button"
+                className="flex-1 rounded bg-zinc-800/80 py-1.5 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-700 hover:text-white"
+                onClick={clearActiveLayer}
+              >
+                {t.clear}
+              </button>
+              <button
+                type="button"
+                className="flex-1 rounded bg-zinc-800/80 py-1.5 text-[11px] font-semibold text-zinc-400 hover:bg-rose-500/20 hover:text-rose-300"
+                onClick={clearAllLayers}
+              >
+                {t.clearAll}
+              </button>
+            </div>
           </div>
           <div className="p-2">
             <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-500">{t.sym}</p>
