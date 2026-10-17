@@ -28,6 +28,14 @@ type Particle = {
   size: number;
 };
 
+type Floater = {
+  x: number;
+  y: number;
+  text: string;
+  life: number;
+  hue: number;
+};
+
 export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -42,6 +50,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
 
   const pulsesRef = useRef<Pulse[]>([]);
   const particlesRef = useRef<Particle[]>([]);
+  const floatersRef = useRef<Floater[]>([]);
   const barXRef = useRef(W / 2 - BAR_W / 2);
   const keysRef = useRef({ left: false, right: false });
   const spawnTimerRef = useRef(0);
@@ -51,6 +60,8 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
   const scoreRef = useRef(0);
   const runningRef = useRef(false);
   const gameOverRef = useRef(false);
+  const missFlashRef = useRef(0);
+  const comboFlashRef = useRef(0);
 
   useEffect(() => {
     setBest(readBestScore("pulse-catch-arena"));
@@ -67,9 +78,12 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
   const hardReset = useCallback(() => {
     pulsesRef.current = [];
     particlesRef.current = [];
+    floatersRef.current = [];
     barXRef.current = W / 2 - BAR_W / 2;
     spawnTimerRef.current = 0;
     elapsedRef.current = 0;
+    missFlashRef.current = 0;
+    comboFlashRef.current = 0;
     setScore(0);
     setCombo(1);
     setLives(3);
@@ -157,6 +171,14 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             const nextC = Math.min(c + 1, 20);
             setCombo(nextC);
             comboRef.current = nextC;
+            if (nextC >= 3) comboFlashRef.current = 18;
+            floatersRef.current.push({
+              x: p.x,
+              y: p.y - 8,
+              text: `+${pts}${nextC > 1 ? ` x${nextC}` : ""}`,
+              life: 40,
+              hue: p.hue,
+            });
             // particles
             const n = p.rare ? 22 : 14;
             for (let i = 0; i < n; i++) {
@@ -187,6 +209,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             });
             setCombo(1);
             comboRef.current = 1;
+            missFlashRef.current = 14;
             return false;
           }
           return true;
@@ -200,6 +223,16 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           pt.life -= 1;
           return pt.life > 0;
         });
+
+        // floaters
+        floatersRef.current = floatersRef.current.filter((f) => {
+          f.y -= 0.7;
+          f.life -= 1;
+          return f.life > 0;
+        });
+
+        if (missFlashRef.current > 0) missFlashRef.current -= 1;
+        if (comboFlashRef.current > 0) comboFlashRef.current -= 1;
       }
 
       // draw
@@ -247,6 +280,16 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         }
         ctx.globalAlpha = 1;
 
+        // floaters (+pts)
+        for (const f of floatersRef.current) {
+          ctx.globalAlpha = Math.min(1, f.life / 20);
+          ctx.fillStyle = `hsl(${f.hue},100%,75%)`;
+          ctx.font = "bold 13px system-ui";
+          ctx.textAlign = "center";
+          ctx.fillText(f.text, f.x, f.y);
+        }
+        ctx.globalAlpha = 1;
+
         // bar
         ctx.save();
         ctx.shadowBlur = 16;
@@ -258,22 +301,77 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         ctx.fillRect(barXRef.current, BAR_Y, BAR_W, BAR_H);
         ctx.restore();
 
-        if (gameOver) {
-          ctx.fillStyle = "rgba(0,0,0,0.6)";
+        // miss vignette
+        if (missFlashRef.current > 0) {
+          ctx.fillStyle = `rgba(244,63,94,${0.22 * (missFlashRef.current / 14)})`;
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // combo flash ring
+        if (comboFlashRef.current > 0) {
+          ctx.strokeStyle = `rgba(232,121,249,${0.45 * (comboFlashRef.current / 18)})`;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(W / 2, H / 2, 40 + (18 - comboFlashRef.current) * 3, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        // pause overlay
+        if (paused && !gameOver) {
+          ctx.fillStyle = "rgba(0,0,0,0.55)";
           ctx.fillRect(0, 0, W, H);
           ctx.fillStyle = "#fff";
           ctx.font = "bold 22px system-ui";
           ctx.textAlign = "center";
-          ctx.fillText(es ? "Fin del juego" : "Game Over", W / 2, H / 2 - 10);
-          ctx.font = "14px system-ui";
-          ctx.fillText(`${es ? "Puntos" : "Score"}: ${scoreRef.current}`, W / 2, H / 2 + 16);
+          ctx.fillText(es ? "Pausa" : "Paused", W / 2, H / 2 - 6);
+          ctx.font = "13px system-ui";
+          ctx.fillStyle = "rgba(255,255,255,0.75)";
+          ctx.fillText(es ? "Espacio / P para seguir" : "Space / P to resume", W / 2, H / 2 + 20);
         }
+
+        if (gameOver) {
+          ctx.fillStyle = "rgba(0,0,0,0.65)";
+          ctx.fillRect(0, 0, W, H);
+          ctx.fillStyle = "#fff";
+          ctx.font = "bold 22px system-ui";
+          ctx.textAlign = "center";
+          ctx.fillText(es ? "Fin del juego" : "Game Over", W / 2, H / 2 - 18);
+          ctx.font = "15px system-ui";
+          ctx.fillText(`${es ? "Puntos" : "Score"}: ${scoreRef.current}`, W / 2, H / 2 + 10);
+          ctx.font = "12px system-ui";
+          ctx.fillStyle = "rgba(255,255,255,0.7)";
+          ctx.fillText(es ? "Espacio para reiniciar" : "Space to restart", W / 2, H / 2 + 34);
+        }
+
+        // idle start hint (only when not running yet — drawn outside this loop when !running)
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [running, paused, gameOver, es]);
+
+  // idle canvas when not running
+  useEffect(() => {
+    if (running) return;
+    const ctx = canvasRef.current?.getContext("2d");
+    if (!ctx) return;
+    ctx.fillStyle = "#05050a";
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "rgba(125,211,252,0.12)";
+    for (let i = 0; i < 20; i++) {
+      ctx.beginPath();
+      ctx.arc((i * 53) % W, (i * 37) % H, 1.2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 18px system-ui";
+    ctx.textAlign = "center";
+    ctx.fillText(es ? "Pulse Catch Arena" : "Pulse Catch Arena", W / 2, H / 2 - 12);
+    ctx.font = "13px system-ui";
+    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.fillText(es ? "Tocá Jugar para empezar" : "Tap Play to start", W / 2, H / 2 + 16);
+  }, [running, es]);
 
   const onPointerMove = (e: ReactPointerEvent<HTMLCanvasElement>) => {
     if (!running || paused || gameOver) return;
@@ -312,7 +410,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           Combo: <span className="text-fuchsia-300">x{combo}</span>
         </span>
         <span>
-          {es ? "Vidas" : "Lives"}: <span className="text-rose-300">{"❤".repeat(lives)}</span>
+          {es ? "Vidas" : "Lives"}: <span className="text-rose-300">{"❤".repeat(Math.max(0, lives))}</span>
         </span>
         <span>
           {es ? "Mejor" : "Best"}: <span className="text-amber-300">{best}</span>
@@ -337,7 +435,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         height={H}
         onPointerMove={onPointerMove}
         className="touch-none rounded-xl border border-cyan-500/20 bg-black shadow-[0_0_0_1px_rgba(34,211,238,0.2),0_16px_40px_rgba(0,0,0,0.45)]"
-        style={{ width: "100%", maxWidth: W, height: "auto" }}
+        style={{ width: "100%", maxWidth: W, height: "auto", aspectRatio: `${W}/${H}` }}
       />
       <p className="text-center text-[11px] text-white/50">
         {es
