@@ -68,6 +68,8 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [layers, setLayers] = useState(() => [emptyLayer(32), emptyLayer(32)]);
   const [activeLayer, setActiveLayer] = useState(0);
   const [layerVisible, setLayerVisible] = useState([true, true, true, true]);
+  /* opacity-v1 */
+  const [layerOpacity, setLayerOpacity] = useState([100, 100, 100, 100]);
   const [tool, setTool] = useState<ToolId>("pencil");
   const [color, setColor] = useState("#e94560");
   const [symmetry, setSymmetry] = useState<Symmetry>("none");
@@ -86,7 +88,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
     undo: es ? "Deshacer" : "Undo", redo: es ? "Rehacer" : "Redo",
     export: "PNG", copy: es ? "Copiar" : "Copy", share: es ? "Enlace" : "Link",
     size: es ? "Tamaño" : "Size", zoom: "Zoom", brush: es ? "Grosor" : "Brush", color: es ? "Color" : "Color",
-    layers: es ? "Capas" : "Layers", add: es ? "Añadir" : "Add", clear: es ? "Limpiar" : "Clear",
+    layers: es ? "Capas" : "Layers", opacity: es ? "Opacidad" : "Opacity", add: es ? "Añadir" : "Add", clear: es ? "Limpiar" : "Clear",
     sym: es ? "Simetría" : "Symmetry", none: es ? "No" : "None",
     tip: es ? "Clic/arrastrá · rueda = zoom · B/E/I/G · [ ] grosor · Ctrl+Z" : "Click/drag · wheel = zoom · B/E/I/G · [ ] brush · Ctrl+Z",
   }), [es]);
@@ -97,13 +99,28 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, []);
 
   const compositeColor = useCallback((i: number) => {
-    for (let li = layers.length - 1; li >= 0; li--) {
+    let r = 0, g = 0, b = 0, a = 0;
+    for (let li = 0; li < layers.length; li++) {
       if (!layerVisible[li]) continue;
       const c = layers[li]?.[i];
-      if (c) return c;
+      if (!c) continue;
+      const oa = Math.max(0, Math.min(1, (layerOpacity[li] ?? 100) / 100));
+      if (oa <= 0) continue;
+      const m = /^#?([0-9a-fA-F]{6})$/.exec(c.trim());
+      if (!m) continue;
+      const n = parseInt(m[1], 16);
+      const cr = (n >> 16) & 255, cg = (n >> 8) & 255, cb = n & 255;
+      const outA = oa + a * (1 - oa);
+      if (outA > 0) {
+        r = (cr * oa + r * a * (1 - oa)) / outA;
+        g = (cg * oa + g * a * (1 - oa)) / outA;
+        b = (cb * oa + b * a * (1 - oa)) / outA;
+      }
+      a = outA;
     }
-    return "";
-  }, [layers, layerVisible]);
+    if (a <= 0.001) return "";
+    return `rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},${a})`;
+  }, [layers, layerVisible, layerOpacity]);
 
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -206,8 +223,11 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (!data) return prev;
       const col = tool === "eraser" ? "" : color;
       if (tool === "eyedropper") {
-        const c = compositeColor(y * size + x);
-        if (c) setColor(c);
+        for (let li = layers.length - 1; li >= 0; li--) {
+          if (!layerVisible[li]) continue;
+          const c = layers[li]?.[y * size + x];
+          if (c) { setColor(c); break; }
+        }
         return prev;
       }
       if (tool === "fill") { /* stroke-undo-v1 */ floodFill(data, size, x, y, data[y * size + x] ?? "", col); pushHistory(prev); return next; }
@@ -488,6 +508,11 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
                       [n[i - 1], n[i]] = [n[i], n[i - 1]];
                       return n;
                     });
+                    setLayerOpacity((v) => {
+                      const n = v.slice();
+                      [n[i - 1], n[i]] = [n[i], n[i - 1]];
+                      return n;
+                    });
                     setActiveLayer((a) => (a === i ? i - 1 : a === i - 1 ? i : a));
                   }}>↑</button>
                 <button type="button" title="Down" disabled={i >= layers.length - 1}
@@ -501,6 +526,11 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
                       return n;
                     });
                     setLayerVisible((v) => {
+                      const n = v.slice();
+                      [n[i + 1], n[i]] = [n[i], n[i + 1]];
+                      return n;
+                    });
+                    setLayerOpacity((v) => {
                       const n = v.slice();
                       [n[i + 1], n[i]] = [n[i], n[i + 1]];
                       return n;
@@ -519,6 +549,12 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
                       while (n.length < MAX_LAYERS) n.push(true);
                       return n;
                     });
+                    setLayerOpacity((v) => {
+                      const n = v.slice();
+                      n.splice(i, 1);
+                      while (n.length < MAX_LAYERS) n.push(100);
+                      return n;
+                    });
                     setActiveLayer((a) => {
                       if (a > i) return a - 1;
                       if (a === i) return Math.max(0, i - 1);
@@ -531,6 +567,26 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
               <button type="button" className="mt-1 w-full rounded bg-zinc-800 py-1 text-[11px] text-zinc-300"
                 onClick={() => { pushHistory(layers); setLayers((L) => [...L, emptyLayer(size)]); }}>+ {t.add}</button>
             ) : null}
+            <label className="mt-2 flex items-center gap-2 text-[10px] text-zinc-500">
+              {t.opacity}
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={layerOpacity[activeLayer] ?? 100}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  setLayerOpacity((op) => {
+                    const n = op.slice();
+                    while (n.length < MAX_LAYERS) n.push(100);
+                    n[activeLayer] = val;
+                    return n;
+                  });
+                }}
+                className="h-1 flex-1 accent-rose-500"
+              />
+              <span className="w-8 font-mono text-zinc-400">{layerOpacity[activeLayer] ?? 100}%</span>
+            </label>
             <button type="button" className="mt-1 w-full rounded py-1 text-[11px] text-zinc-500"
               onClick={() => { pushHistory(layers); setLayers((L) => { const n = cloneLayers(L); n[activeLayer] = emptyLayer(size); return n; }); }}>{t.clear}</button>
           </div>
