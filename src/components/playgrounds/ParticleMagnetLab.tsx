@@ -37,10 +37,13 @@ const labels = {
     sharePng: "Download PNG",
     shareUrl: "Copy share link",
     copied: "Copied!",
-    help: "Click/tap to place magnets. Drag to move. Double-click/tap removes nearest. Right-click or long-press toggles polarity of nearest magnet. Particles stream and leave fading trails that show the field.",
+    help: "Click/tap to place magnets. Drag to move. Double-click/tap removes nearest. Right-click or long-press toggles polarity of nearest magnet. Particles stream and leave fading trails that show the field. Use pause to inspect the field.",
     magnets: "Magnets",
     selected: "Selected",
     none: "none",
+    pause: "Pause",
+    resume: "Resume",
+    random: "Random magnets",
   },
   es: {
     count: "Cantidad de partículas",
@@ -56,10 +59,13 @@ const labels = {
     sharePng: "Descargar PNG",
     shareUrl: "Copiar enlace",
     copied: "¡Copiado!",
-    help: "Clic/toque para colocar imanes. Arrastrá para mover. Doble clic/toque elimina el más cercano. Clic derecho o pulsación larga alterna la polaridad del imán más cercano. Las partículas fluyen y dejan estelas que visualizan el campo.",
+    help: "Clic/toque para colocar imanes. Arrastrá para mover. Doble clic/toque elimina el más cercano. Clic derecho o pulsación larga alterna la polaridad del imán más cercano. Las partículas fluyen y dejan estelas que visualizan el campo. Usá pausa para inspeccionar el campo.",
     magnets: "Imanes",
     selected: "Seleccionado",
     none: "ninguno",
+    pause: "Pausar",
+    resume: "Reanudar",
+    random: "Imanes aleatorios",
   },
 };
 
@@ -90,6 +96,7 @@ export function ParticleMagnetLab({ locale }: { locale: Locale }) {
   const [copied, setCopied] = useState(false);
   const [magnetCount, setMagnetCount] = useState(0);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     paramsRef.current = { count, strength, defaultPolarity, colorMode };
@@ -287,7 +294,7 @@ export function ParticleMagnetLab({ locale }: { locale: Locale }) {
       const ps = particlesRef.current;
 
       // Fading trails
-      ctx.fillStyle = "rgba(6, 10, 22, 0.12)";
+      ctx.fillStyle = "rgba(6, 10, 22, 0.08)";
       ctx.fillRect(0, 0, w, h);
 
       // Draw magnets
@@ -322,31 +329,39 @@ export function ParticleMagnetLab({ locale }: { locale: Locale }) {
       }
 
       for (const p of ps) {
-        let ax = 0;
-        let ay = 0;
         let field = 0;
-        for (const m of mags) {
-          const dx = m.x - p.x;
-          const dy = m.y - p.y;
-          const dist2 = dx * dx + dy * dy;
-          const dist = Math.sqrt(dist2) || 1;
-          const force = (m.strength * m.polarity * g) / (dist2 * 0.008 + 40);
-          ax += (dx / dist) * force;
-          ay += (dy / dist) * force;
-          field += Math.abs(force);
+        if (!paused) {
+          let ax = 0;
+          let ay = 0;
+          for (const m of mags) {
+            const dx = m.x - p.x;
+            const dy = m.y - p.y;
+            const dist2 = dx * dx + dy * dy;
+            const dist = Math.sqrt(dist2) || 1;
+            const force = (m.strength * m.polarity * g) / (dist2 * 0.008 + 40);
+            ax += (dx / dist) * force;
+            ay += (dy / dist) * force;
+            field += Math.abs(force);
+          }
+          p.vx += ax;
+          p.vy += ay;
+          p.vx *= 0.992;
+          p.vy *= 0.992;
+          const maxV = 8;
+          const sp = Math.hypot(p.vx, p.vy);
+          if (sp > maxV) {
+            p.vx = (p.vx / sp) * maxV;
+            p.vy = (p.vy / sp) * maxV;
+          }
+
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0) p.x = w;
+          if (p.x > w) p.x = 0;
+          if (p.y < 0) p.y = h;
+          if (p.y > h) p.y = 0;
         }
-        p.vx += ax;
-        p.vy += ay;
-        p.vx *= 0.992;
-        p.vy *= 0.992;
-
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0) p.x = w;
-        if (p.x > w) p.x = 0;
-        if (p.y < 0) p.y = h;
-        if (p.y > h) p.y = 0;
 
         const speed = Math.hypot(p.vx, p.vy);
         let hue = p.hue;
@@ -385,6 +400,24 @@ export function ParticleMagnetLab({ locale }: { locale: Locale }) {
       initParticles(count, rect.width, rect.height);
     }
   }, [count, initParticles]);
+
+  const addRandomMagnets = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const n = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < n; i++) {
+      magnetsRef.current.push({
+        x: 40 + Math.random() * (rect.width - 80),
+        y: 40 + Math.random() * (rect.height - 80),
+        id: nextId.current++,
+        polarity: Math.random() > 0.5 ? 1 : -1,
+        strength: paramsRef.current.strength,
+      });
+    }
+    setMagnetCount(magnetsRef.current.length);
+    setSelectedId(null);
+  };
 
   const clearMagnets = () => {
     magnetsRef.current = [];
@@ -544,6 +577,20 @@ export function ParticleMagnetLab({ locale }: { locale: Locale }) {
             className="min-h-11 rounded-lg border border-border bg-background px-3 py-2 text-xs font-semibold"
           >
             {locale === "es" ? "Alternar seleccionado" : "Toggle selected"}
+          </button>
+          <button
+            type="button"
+            onClick={addRandomMagnets}
+            className="min-h-11 rounded-lg border border-border bg-background px-3 py-2 text-xs font-semibold"
+          >
+            {t.random}
+          </button>
+          <button
+            type="button"
+            onClick={() => setPaused((p) => !p)}
+            className="min-h-11 rounded-lg border border-border bg-background px-3 py-2 text-xs font-semibold"
+          >
+            {paused ? t.resume : t.pause}
           </button>
           <button
             type="button"
