@@ -59,7 +59,7 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: pending check
+deploy: READY https://utilihub-ofq3qv5u0-financialproyects.vercel.app
 note: Roll 5 → PRODUCT task 1 POLISH TEXTURES (timber). Denser micro-fibers + surface flecks. Monolith SHA 7b4495a ~337004 bytes.
 ```
 
