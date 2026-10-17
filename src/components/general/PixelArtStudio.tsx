@@ -181,7 +181,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
         if (c) setColor(c);
         return prev;
       }
-      if (tool === "fill") { floodFill(data, size, x, y, data[y * size + x] ?? "", col); pushHistory(next); return next; }
+      if (tool === "fill") { /* stroke-undo-v1 */ floodFill(data, size, x, y, data[y * size + x] ?? "", col); pushHistory(prev); return next; }
       if (tool === "pencil" || tool === "eraser") { paintAt(data, x, y, col); return next; }
       if (startCell.current && endX !== undefined && endY !== undefined) {
         const sx = startCell.current.x, sy = startCell.current.y;
@@ -217,7 +217,10 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   const onPointerUp = () => {
     if (!drawing.current) return;
     drawing.current = false;
-    if (tool !== "eyedropper") setLayers((curr) => { pushHistory(curr); return curr; });
+    // One stroke = one undo: store state from before the stroke began.
+    if (tool !== "eyedropper" && tool !== "fill" && snapshot.current) {
+      pushHistory(snapshot.current);
+    }
     startCell.current = null;
     snapshot.current = null;
   };
