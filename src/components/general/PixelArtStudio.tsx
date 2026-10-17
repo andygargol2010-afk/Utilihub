@@ -139,6 +139,8 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [symmetry, setSymmetry] = useState<Symmetry>("none");
   const [zoom, setZoom] = useState(12);
   const [brushSize, setBrushSize] = useState(1);
+  /* export-nx-v1 */
+  const [exportScale, setExportScale] = useState(4);
   const [history, setHistory] = useState<string[][][]>([]);
   const [future, setFuture] = useState<string[][][]>([]);
   const [status, setStatus] = useState("");
@@ -437,31 +439,36 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   }, [undo, redo]);
 
   const exportPng = async (copy: boolean) => {
+    const s = Math.max(1, Math.min(32, exportScale));
     const off = document.createElement("canvas");
-    off.width = size; off.height = size;
+    off.width = size * s;
+    off.height = size * s;
     const ctx = off.getContext("2d");
     if (!ctx) return;
+    ctx.imageSmoothingEnabled = false;
     for (let i = 0; i < size * size; i++) {
       const c = compositeColor(i);
       if (!c) continue;
       ctx.fillStyle = c;
-      ctx.fillRect(i % size, Math.floor(i / size), 1, 1);
+      const x = (i % size) * s;
+      const y = Math.floor(i / size) * s;
+      ctx.fillRect(x, y, s, s);
     }
     if (copy) {
       try {
         const blob = await new Promise<Blob | null>((res) => off.toBlob(res, "image/png"));
         if (blob) {
           await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-          setStatus(es ? "Copiado" : "Copied");
+          setStatus(es ? `Copiado ${s}×` : `Copied ${s}×`);
         }
       } catch { setStatus("Error"); }
       return;
     }
     const a = document.createElement("a");
     a.href = off.toDataURL("image/png");
-    a.download = `pixelihub-${size}.png`;
+    a.download = `pixelihub-${size}-${s}x.png`;
     a.click();
-    setStatus("PNG");
+    setStatus(`PNG ${s}×`);
   };
 
   const importImage = (file: File) => {
@@ -537,6 +544,19 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
         <button type="button" onClick={undo} disabled={!history.length} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800 disabled:opacity-30">↶ {t.undo}</button>
         <button type="button" onClick={redo} disabled={!future.length} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800 disabled:opacity-30">↷ {t.redo}</button>
         <div className="mx-1 h-4 w-px bg-zinc-700" />
+        <div className="flex items-center gap-0.5 rounded bg-zinc-800/80 p-0.5">
+          {[1, 2, 4, 8, 16].map((n) => (
+            <button
+              key={n}
+              type="button"
+              title={`${n}×`}
+              onClick={() => setExportScale(n)}
+              className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${exportScale === n ? "bg-rose-500 text-white" : "text-zinc-400 hover:text-zinc-200"}`}
+            >
+              {n}×
+            </button>
+          ))}
+        </div>
         <button type="button" onClick={() => exportPng(false)} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↓ {t.export}</button>
         <button type="button" onClick={() => fileInputRef.current?.click()} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↑ {t.import}</button>
         <input
