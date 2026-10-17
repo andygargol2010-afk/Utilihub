@@ -54,7 +54,7 @@ export function FuelEfficiencyTool({ locale = "en" }: { tool?: GeneralTool; loca
         <p className="text-3xl font-semibold">
           {lPer100 !== null ? `${lPer100.toFixed(2)} L/100km` : "—"}
         </p>
-        {kmPerL !== null && <p className="text-sm text-muted-foreground">{kmPerL.toFixed(2)} km/L · {mpg?.toFixed(2)} MPG</p>}
+        {lPer100 !== null && <p className="text-sm text-muted-foreground">{kmPerL?.toFixed(2)} km/L · {mpg?.toFixed(2)} MPG</p>}
         {(d <= 0 || f <= 0) && <p className="text-sm text-amber-600">{es ? "Distancia y combustible deben ser positivos" : "Distance and fuel must be positive"}</p>}
       </div>
 
