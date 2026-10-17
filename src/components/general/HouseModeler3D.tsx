@@ -870,8 +870,8 @@ function paintTimber(ctx: CanvasRenderingContext2D, size: number) {
       ctx.stroke();
     }
     // Extra micro-fibers for richer longitudinal grain on the sawn face.
-    for (let g = 0; g < 4; g++) {
-      const gy = y0 + 2 + g * ((y1 - y0) / 5);
+    for (let g = 0; g < 7; g++) {
+      const gy = y0 + 2 + g * ((y1 - y0) / 8);
       const grainTone = 55 + Math.floor(hash2(i, g + 50) * 25);
       ctx.strokeStyle = `rgba(${grainTone + 15}, ${grainTone - 5}, ${grainTone - 15}, 0.18)`;
       ctx.lineWidth = 0.5;
@@ -881,6 +881,18 @@ function paintTimber(ctx: CanvasRenderingContext2D, size: number) {
         ctx.lineTo(x, gy + Math.sin(x * 0.18 + i * 2.1 + g) * 0.7);
       }
       ctx.stroke();
+    }
+    // Denser fine surface flecks so sawn timber reads with natural porosity and mill variation.
+    for (let f = 0; f < 6; f++) {
+      if (hash2(i, f + 60) > 0.55) {
+        const fx = hash2(i, f + 61) * size;
+        const fy = y0 + hash2(i, f + 62) * (y1 - y0);
+        const fr = 0.4 + hash2(i, f + 63) * 1.1;
+        ctx.fillStyle = `rgba(${90 + Math.floor(hash2(i, f + 64) * 40)},${60 + Math.floor(hash2(i, f + 65) * 20)},${40 + Math.floor(hash2(i, f + 66) * 15)},${0.14 + hash2(i, f + 67) * 0.18})`;
+        ctx.beginPath();
+        ctx.arc(fx, fy, fr, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
     // Occasional darker fiber streaks.
     if (hash2(i, 19) > 0.55) {
