@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import type { GeneralTool } from "@/lib/general/types";
 
 type Locale = "en" | "es";
@@ -1126,6 +1127,36 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
             </p>
           </div>
         </aside>
+      </div>
+
+      {/* nextstep-studio-v1 */}
+      <div className="border-t border-zinc-700/80 bg-[#121216] px-3 py-2.5">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-rose-400/90">
+          {es ? "Siguiente paso" : "Next step"}
+        </p>
+        <div className="mt-1.5 flex flex-wrap gap-1.5">
+          <Link
+            to={es ? "/es/herramientas/$slug" : "/tools/$slug"}
+            params={{ slug: es ? "generador-paleta" : "palette-generator" }}
+            className="rounded-md bg-zinc-800 px-2.5 py-1.5 text-[11px] font-semibold text-zinc-200 hover:bg-rose-500/20 hover:text-rose-200"
+          >
+            {es ? "Generador de paleta" : "Palette generator"}
+          </Link>
+          <Link
+            to={es ? "/es/herramientas/$slug" : "/tools/$slug"}
+            params={{ slug: es ? "selector-color" : "color-picker" }}
+            className="rounded-md bg-zinc-800 px-2.5 py-1.5 text-[11px] font-semibold text-zinc-200 hover:bg-rose-500/20 hover:text-rose-200"
+          >
+            {es ? "Selector de color" : "Color picker"}
+          </Link>
+          <Link
+            to={es ? "/es/herramientas/$slug" : "/tools/$slug"}
+            params={{ slug: es ? "mezclador-de-colores" : "color-mixer" }}
+            className="rounded-md bg-zinc-800 px-2.5 py-1.5 text-[11px] font-semibold text-zinc-200 hover:bg-rose-500/20 hover:text-rose-200"
+          >
+            {es ? "Mezclador de colores" : "Color mixer"}
+          </Link>
+        </div>
       </div>
 
       {showOnboard ? (

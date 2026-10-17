@@ -33,7 +33,8 @@ export const TOOL_JOURNEYS: Record<string, string[]> = {
   "generador-nombres-archivos": ["limpiar-texto", "contador-de-palabras", "tiempo-lectura", "contador-de-caracteres"],
   "modelador-3d": ["modelador-casas-3d", "pixelihub", "relacion-aspecto", "mezclador-de-colores"],
   "modelador-casas-3d": ["modelador-3d", "pintura-superficie", "relacion-aspecto", "ppi-pantalla"],
-  "pixelihub": ["modelador-3d", "generador-paleta", "selector-color", "mezclador-de-colores"],
+  /* pixelihub-nextstep-v1 */
+  "pixelihub": ["generador-paleta", "selector-color", "mezclador-de-colores", "modelador-3d"],
 
   "base64-encode": ["base64-decode", "url-encode", "html-encode", "json-formatter"],
   "base64-decode": ["base64-encode", "url-decode", "html-decode", "json-formatter"],
@@ -128,7 +129,12 @@ export function journeyLabel(
       ? "Seguí con el texto: tiempo de lectura y limpieza"
       : "Keep going with your text: reading time and cleanup";
   }
-  if (current.slug === "modelador-3d" || current.slug === "modelador-casas-3d" || current.slug === "pixelihub") {
+  if (current.slug === "pixelihub") {
+    return es
+      ? "Armá una paleta y seguí diseñando sprites"
+      : "Build a palette and keep designing sprites";
+  }
+  if (current.slug === "modelador-3d" || current.slug === "modelador-casas-3d") {
     return es
       ? "Seguí en el estudio o pasá a diseño y color"
       : "Stay in the studio or move to design and color";
