@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 175
+runs_done: 176
 runs_max: 500
 ```
 
@@ -44,7 +44,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 ```
 path: src/components/general/HouseModeler3D.tsx
 approx_bytes: 334913
-last_known_good_hint: 3d99929 (~334913 bytes, verified 2026-10-17 PRODUCT rim light)
+last_known_good_hint: a1a556d (~334913 bytes, verified 2026-10-17 PRODUCT denser gravel)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
 deploy: READY (pending post-push check)
-note: Roll 6 → PRODUCT task 2 IMPROVE GRAPHICS. Local-clone surgical: raised golden rim light intensity 0.38→0.42 for clearer eave/column edge definition. Monolith 334913 bytes intact; paint helpers + door conditional=1.
+note: Roll 4 → PRODUCT task 1 POLISH DEFAULT TEXTURES. Local-clone surgical: denser fine grit 40→60 + leaf litter 6→9 on paintGravel. Monolith 334913 bytes intact.
 ```
 
 Refresh after each run.
@@ -75,9 +75,9 @@ Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI: done (remaining_runs 0).
 Surgical PRODUCT succeeded via local git clone + edit + push (this run and prior) — credential helper allowed push after rebase. Prefer local-clone surgical when PRODUCT.
 Next runs: normal roll (META/PRODUCT); prefer local-clone surgical when PRODUCT if auth available.
-Monolith SHA blob updated after timber cracks PRODUCT.
+Monolith SHA blob updated after denser gravel PRODUCT.
 Unrelated catalog ERROR on older deploys does not block this surface.
-Monolith SHA blob 06d6c285 verified intact this META.
+Monolith SHA blob a1a556d verified intact this PRODUCT.
 ```
 
 <!-- end:house-modeler-state.md -->
