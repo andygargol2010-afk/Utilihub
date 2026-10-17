@@ -567,6 +567,16 @@ function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
   silt.addColorStop(1, "rgba(58,50,40,0.42)");
   ctx.fillStyle = silt;
   ctx.fillRect(0, size * 0.68, size, size * 0.32);
+  // Extra fine form-release grit and small air bubbles so the board-formed concrete reads as site-poured, not a clean digital surface.
+  for (let b = 0; b < 28; b++) {
+    const bx = hash2(b, 15.7) * size;
+    const by = hash2(b, 4.8) * size;
+    const br = 0.4 + hash2(b, 2.1) * 1.1;
+    ctx.fillStyle = `rgba(140,130,116,${0.12 + hash2(b, 9.5) * 0.18})`;
+    ctx.beginPath();
+    ctx.arc(bx, by, br, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 /** Height for board joints and form-tie cones. Shared; do not dispose per part. */
