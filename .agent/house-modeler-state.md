@@ -59,7 +59,7 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: pending check for d8d0968
+deploy: READY https://utilihub-x8btr0wvr-financialproyects.vercel.app (forced)
 note: Roll 3 → PRODUCT task 1 POLISH DEFAULT TEXTURES (grass/ground). Local-clone surgical: added clover clusters and wildflower flecks to paintGrass. Monolith 333771 bytes intact; paint helpers + door conditional=1.
 ```
 
