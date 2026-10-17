@@ -255,13 +255,13 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
         </div>
 
         {/* Left: design toolbar — shapes, color, material */}
-        <div className="pointer-events-none absolute bottom-16 left-1.5 top-12 z-10 flex max-h-[calc(100%-5rem)] w-[5.5rem] flex-col sm:left-2.5 sm:top-14 sm:w-[6.25rem]">
+        <div className="pointer-events-none absolute bottom-16 left-1.5 top-12 z-10 flex max-h-[calc(100%-5rem)] w-[6.75rem] flex-col sm:left-2.5 sm:top-14 sm:w-[6.25rem]">
           <div className="pointer-events-auto flex max-h-full flex-col gap-2 overflow-y-auto rounded-xl border border-white/10 bg-black/85 p-1.5 shadow-lg backdrop-blur-md">
             <div className="flex flex-col items-center gap-1">
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Formas" : "Shapes"}</span>
               <div className="grid grid-cols-2 gap-1">
                 {shapeList(es).map((s) => (
-                  <button key={s.kind} type="button" onClick={() => addShape(s.kind)} title={s.label} className="flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-sm font-semibold text-rose-50 hover:bg-rose-500/30 sm:size-9">
+                  <button key={s.kind} type="button" onClick={() => addShape(s.kind)} title={s.label} className="flex size-10 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-base font-semibold text-rose-50 hover:bg-rose-500/30 sm:size-9 sm:text-sm">
                     <span>{s.icon}</span>
                   </button>
                 ))}
@@ -272,9 +272,9 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Color" : "Color"}</span>
               <div className="grid grid-cols-3 gap-1">
                 {COLORS.map((c) => (
-                  <button key={c} type="button" title={c} onClick={() => applyColor(c)} className={`size-5 rounded-full border-2 transition sm:size-6 ${color.toLowerCase() === c.toLowerCase() ? "scale-110 border-white ring-2 ring-white/30" : "border-black/30 hover:scale-105"}`} style={{ backgroundColor: c }} />
+                  <button key={c} type="button" title={c} onClick={() => applyColor(c)} className={`size-7 rounded-full border-2 transition sm:size-6 ${color.toLowerCase() === c.toLowerCase() ? "scale-110 border-white ring-2 ring-white/30" : "border-black/30 hover:scale-105"}`} style={{ backgroundColor: c }} />
                 ))}
-                <label title={es ? "Color personalizado" : "Custom color"} className="relative flex size-5 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-white/40 bg-white/10 hover:border-white/70 sm:size-6">
+                <label title={es ? "Color personalizado" : "Custom color"} className="relative flex size-7 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-white/40 bg-white/10 hover:border-white/70 sm:size-6">
                   <span className="pointer-events-none text-[10px] font-bold text-rose-50">+</span>
                   <input type="color" value={/^#[0-9a-fA-F]{6}$/.test(color) ? color : "#a78bfa"} onChange={(e) => applyColor(e.target.value)} className="absolute inset-0 cursor-pointer opacity-0" />
                 </label>
@@ -285,7 +285,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Material" : "Material"}</span>
               <div className="flex w-full flex-col gap-1">
                 {matPresetList(es).map((p) => (
-                  <button key={p.id} type="button" onClick={() => applyMatPreset(p.id)} className={`w-full rounded-lg border px-1 py-1 text-[10px] font-semibold ${matPreset === p.id ? "border-rose-400 bg-rose-500/30 text-rose-50" : "border-white/10 bg-white/10 text-rose-100/80 hover:bg-white/15"}`}>{p.label}</button>
+                  <button key={p.id} type="button" onClick={() => applyMatPreset(p.id)} className={`w-full rounded-lg border px-1 py-2 text-[11px] font-semibold sm:py-1 sm:text-[10px] ${matPreset === p.id ? "border-rose-400 bg-rose-500/30 text-rose-50" : "border-white/10 bg-white/10 text-rose-100/80 hover:bg-white/15"}`}>{p.label}</button>
                 ))}
               </div>
             </div>
@@ -384,3 +384,4 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     </div>
   );
 }
+
