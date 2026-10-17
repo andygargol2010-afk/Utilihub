@@ -18,6 +18,7 @@ type Pulse = {
   vy: number;
   hue: number;
   kind: PulseKind;
+  trail: { x: number; y: number }[];
 };
 
 type Particle = {
@@ -67,6 +68,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
   const comboFlashRef = useRef(0);
   const holdLeftRef = useRef(false);
   const holdRightRef = useRef(false);
+  const shakeRef = useRef(0);
 
   useEffect(() => {
     setBest(readBestScore("pulse-catch-arena"));
@@ -91,6 +93,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
     comboFlashRef.current = 0;
     holdLeftRef.current = false;
     holdRightRef.current = false;
+    shakeRef.current = 0;
     setScore(0);
     setCombo(1);
     setLives(3);
@@ -155,6 +158,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             vy: (1.55 + Math.random() * 1.3) * difficulty * (kind === "life" ? 0.9 : 1),
             hue: kind === "life" ? 140 + Math.random() * 20 : kind === "rare" ? 40 + Math.random() * 25 : 160 + Math.random() * 160,
             kind,
+            trail: [],
           });
         }
 
@@ -165,6 +169,8 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
 
         // update pulses
         pulsesRef.current = pulsesRef.current.filter((p) => {
+          p.trail.push({ x: p.x, y: p.y });
+          if (p.trail.length > 8) p.trail.shift();
           p.y += p.vy;
           // catch
           if (
@@ -173,6 +179,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             p.x >= barXRef.current - 4 &&
             p.x <= barXRef.current + BAR_W + 4
           ) {
+            shakeRef.current = 8;
             if (p.kind === "life") {
               setLives((l) => {
                 const next = Math.min(5, l + 1);
@@ -263,13 +270,17 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
 
         if (missFlashRef.current > 0) missFlashRef.current -= 1;
         if (comboFlashRef.current > 0) comboFlashRef.current -= 1;
+        if (shakeRef.current > 0) shakeRef.current -= 1;
       }
 
       // draw
       const ctx = canvasRef.current?.getContext("2d");
       if (ctx) {
+        const shake = shakeRef.current > 0 ? (Math.random() - 0.5) * shakeRef.current * 1.4 : 0;
+        ctx.save();
+        ctx.translate(shake, shake * 0.6);
         ctx.fillStyle = "#05050a";
-        ctx.fillRect(0, 0, W, H);
+        ctx.fillRect(-4, -4, W + 8, H + 8);
 
         // ambient
         ctx.globalAlpha = 0.15;
@@ -280,6 +291,20 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           ctx.beginPath();
           ctx.arc(ax, ay, 1, 0, Math.PI * 2);
           ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
+        // pulse trails
+        for (const p of pulsesRef.current) {
+          for (let i = 0; i < p.trail.length; i++) {
+            const t = p.trail[i];
+            const a = (i / p.trail.length) * 0.35;
+            ctx.globalAlpha = a;
+            ctx.fillStyle = `hsl(${p.hue},100%,60%)`;
+            ctx.beginPath();
+            ctx.arc(t.x, t.y, p.r * (0.35 + (i / p.trail.length) * 0.4), 0, Math.PI * 2);
+            ctx.fill();
+          }
         }
         ctx.globalAlpha = 1;
 
@@ -302,6 +327,13 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             ctx.font = "bold 11px system-ui";
             ctx.textAlign = "center";
             ctx.fillText("+", p.x, p.y + 4);
+          }
+          if (p.kind === "rare") {
+            ctx.strokeStyle = "#fef3c7";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r + 3, 0, Math.PI * 2);
+            ctx.stroke();
           }
           ctx.restore();
         }
@@ -342,6 +374,14 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         ctx.fillStyle = g;
         ctx.fillRect(barXRef.current, BAR_Y, BAR_W, BAR_H);
         ctx.restore();
+
+        // combo meter (left)
+        const comboMax = 12;
+        const cProg = Math.min(1, comboRef.current / comboMax);
+        ctx.fillStyle = "rgba(255,255,255,0.1)";
+        ctx.fillRect(8, H - 80, 6, 60);
+        ctx.fillStyle = comboBoost >= 6 ? "#e879f9" : "#22d3ee";
+        ctx.fillRect(8, H - 80 + 60 * (1 - cProg), 6, 60 * cProg);
 
         // difficulty meter (top)
         const meterW = 120;
@@ -397,6 +437,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           ctx.fillStyle = "rgba(255,255,255,0.7)";
           ctx.fillText(es ? "Espacio para reiniciar" : "Space to restart", W / 2, H / 2 + 34);
         }
+        ctx.restore();
       }
       raf = requestAnimationFrame(tick);
     };
@@ -423,7 +464,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
     ctx.fillText("Pulse Catch Arena", W / 2, H / 2 - 12);
     ctx.font = "13px system-ui";
     ctx.fillStyle = "rgba(255,255,255,0.7)";
-    ctx.fillText(es ? "Tocá Jugar para empezar" : "Tap Play to start", W / 2, H / 2 + 16);
+    ctx.fillText(es ? "Toc\u00e1 Jugar para empezar" : "Tap Play to start", W / 2, H / 2 + 16);
   }, [running, es]);
 
   const onPointerMove = (e: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -435,7 +476,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
 
   const share = async () => {
     const text = es
-      ? `Hice ${best} puntos en Pulse Catch Arena en UtiliHub! ¿Podés superarme? https://utilihub.net/es/juegos/pulse-catch-arena`
+      ? `Hice ${best} puntos en Pulse Catch Arena en UtiliHub! \u00bfPod\u00e9s superarme? https://utilihub.net/es/juegos/pulse-catch-arena`
       : `I scored ${best} in Pulse Catch Arena on UtiliHub! Can you beat it? https://utilihub.net/games/pulse-catch-arena`;
     try {
       if (navigator.share) await navigator.share({ title: "Pulse Catch Arena", text });
@@ -463,7 +504,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           Combo: <span className="text-fuchsia-300">x{combo}</span>
         </span>
         <span>
-          {es ? "Vidas" : "Lives"}: <span className="text-rose-300">{"❤".repeat(Math.max(0, lives))}</span>
+          {es ? "Vidas" : "Lives"}: <span className="text-rose-300">{"\u2764".repeat(Math.max(0, lives))}</span>
         </span>
         <span>
           {es ? "Mejor" : "Best"}: <span className="text-amber-300">{best}</span>
@@ -479,7 +520,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           </>
         )}
         {best > 0 && (
-          <GameSecondaryButton onClick={share}>{shared ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}</GameSecondaryButton>
+          <GameSecondaryButton onClick={share}>{shared ? (es ? "\u00a1Copiado!" : "Copied!") : es ? "Compartir" : "Share"}</GameSecondaryButton>
         )}
       </div>
       <canvas
@@ -500,7 +541,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             onPointerLeave={() => { holdLeftRef.current = false; }}
             onPointerCancel={() => { holdLeftRef.current = false; }}
           >
-            ←
+            \u2190
           </button>
           <button
             type="button"
@@ -510,14 +551,14 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             onPointerLeave={() => { holdRightRef.current = false; }}
             onPointerCancel={() => { holdRightRef.current = false; }}
           >
-            →
+            \u2192
           </button>
         </div>
       )}
       <p className="text-center text-[11px] text-white/50">
         {es
-          ? "Arrastrá, botones o ←→ / A D. Atrapá pulsos. Verdes dan +1 vida (máx 5). Combos suben puntos."
-          : "Drag, buttons or ←→ / A D. Catch pulses. Green ones give +1 life (max 5). Combos boost score."}
+          ? "Arrastr\u00e1, botones o \u2190\u2192 / A D. Atrap\u00e1 pulsos. Verdes dan +1 vida (m\u00e1x 5). Combos suben puntos."
+          : "Drag, buttons or \u2190\u2192 / A D. Catch pulses. Green ones give +1 life (max 5). Combos boost score."}
       </p>
     </div>
   );
