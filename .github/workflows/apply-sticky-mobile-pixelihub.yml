@@ -1,0 +1,35 @@
+name: Apply PixeliHub sticky mobile
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/apply-sticky-mobile-pixelihub.py"
+      - ".github/workflows/apply-sticky-mobile-pixelihub.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 20
+
+      - name: Patch sticky mobile
+        run: python3 scripts/apply-sticky-mobile-pixelihub.py
+
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/PixelArtStudio.tsx
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "feat(pixelihub): sticky toolbar + tools on mobile (roadmap item 16)"
+          git push
