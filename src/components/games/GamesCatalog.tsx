@@ -81,7 +81,7 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
 
         <div
           className="mt-6 flex flex-wrap gap-2"
-          role="tablist"
+          role="group"
           aria-label={es ? "Filtrar por tipo" : "Filter by type"}
         >
           {FILTERS.map((f) => {
@@ -90,8 +90,7 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
               <button
                 key={f.id}
                 type="button"
-                role="tab"
-                aria-selected={active}
+                aria-pressed={active}
                 onClick={() => setFilter(f.id)}
                 className={
                   active
