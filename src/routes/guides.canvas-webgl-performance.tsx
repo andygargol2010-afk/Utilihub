@@ -25,7 +25,7 @@ export const Route = createFileRoute("/guides/canvas-webgl-performance")({
     ],
     links: [
       { rel: "canonical", href: absoluteUrl("/guides/canvas-webgl-performance") },
-      ...hreflangLinks("/guides/canvas-webgl-performance", "/es/guides/canvas-webgl-performance"),
+      ...hreflangLinks("/guides/canvas-webgl-performance", "/es/guias/rendimiento-canvas-webgl"),
     ],
   }),
   component: CanvasWebGLPerformanceGuideEn,
