@@ -179,7 +179,10 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             p.x >= barXRef.current - 4 &&
             p.x <= barXRef.current + BAR_W + 4
           ) {
-            shakeRef.current = 8;
+            shakeRef.current = 6;
+            const barCenter = barXRef.current + BAR_W / 2;
+            const dist = Math.abs(p.x - barCenter);
+            const perfect = dist < BAR_W * 0.22;
             if (p.kind === "life") {
               setLives((l) => {
                 const next = Math.min(5, l + 1);
@@ -196,7 +199,8 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             } else {
               const c = comboRef.current;
               const base = p.kind === "rare" ? 18 : 8;
-              const pts = Math.round(base * c);
+              const mult = perfect ? 1.6 : 1;
+              const pts = Math.round(base * c * mult);
               setScore((s) => {
                 const next = s + pts;
                 setBest((b) => writeBestScore("pulse-catch-arena", Math.max(b, next)));
@@ -209,9 +213,11 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
               floatersRef.current.push({
                 x: p.x,
                 y: p.y - 8,
-                text: `+${pts}${nextC > 1 ? ` x${nextC}` : ""}`,
-                life: 40,
-                hue: p.hue,
+                text: perfect
+                  ? `${es ? "PERFECTO" : "PERFECT"} +${pts}${nextC > 1 ? ` x${nextC}` : ""}`
+                  : `+${pts}${nextC > 1 ? ` x${nextC}` : ""}`,
+                life: perfect ? 52 : 40,
+                hue: perfect ? 55 : p.hue,
               });
             }
             // particles
@@ -282,15 +288,16 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         ctx.fillStyle = "#05050a";
         ctx.fillRect(-4, -4, W + 8, H + 8);
 
-        // ambient
-        ctx.globalAlpha = 0.15;
-        ctx.fillStyle = "#7dd3fc";
-        for (let i = 0; i < 28; i++) {
-          const ax = (i * 73 + elapsedRef.current * 0.04) % W;
-          const ay = (i * 41 + elapsedRef.current * 0.03) % H;
+        // ambient grid that intensifies with combo
+        const comboBoost = Math.min(comboRef.current, 12);
+        ctx.globalAlpha = 0.04 + comboBoost * 0.012;
+        ctx.strokeStyle = comboBoost >= 6 ? "#e879f9" : "#22d3ee";
+        ctx.lineWidth = 0.6;
+        for (let gy = 40; gy < H; gy += 40) {
           ctx.beginPath();
-          ctx.arc(ax, ay, 1, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.moveTo(0, gy);
+          ctx.lineTo(W, gy);
+          ctx.stroke();
         }
         ctx.globalAlpha = 1;
 
@@ -360,7 +367,6 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
 
         // bar (combo reactive)
         ctx.save();
-        const comboBoost = Math.min(comboRef.current, 12);
         ctx.shadowBlur = 16 + comboBoost * 1.5;
         ctx.shadowColor = comboBoost >= 6 ? "#e879f9" : "#22d3ee";
         const g = ctx.createLinearGradient(barXRef.current, BAR_Y, barXRef.current + BAR_W, BAR_Y);
@@ -557,8 +563,8 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
       )}
       <p className="text-center text-[11px] text-white/50">
         {es
-          ? "Arrastr\u00e1, botones o \u2190\u2192 / A D. Atrap\u00e1 pulsos. Verdes dan +1 vida (m\u00e1x 5). Combos suben puntos."
-          : "Drag, buttons or \u2190\u2192 / A D. Catch pulses. Green ones give +1 life (max 5). Combos boost score."}
+          ? "Arrastr\u00e1, botones o \u2190\u2192 / A D. Atrap\u00e1 cerca del centro para PERFECTO. Verdes dan +1 vida (m\u00e1x 5). Combos suben puntos."
+          : "Drag, buttons or \u2190\u2192 / A D. Catch near the center for PERFECT. Green ones give +1 life (max 5). Combos boost score."}
       </p>
     </div>
   );
