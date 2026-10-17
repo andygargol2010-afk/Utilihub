@@ -275,6 +275,7 @@ const EXACT_NAMES: Record<string, string> = {
   "json-a-typescript": "JSON a TypeScript",
   "modelador-3d": "Modelador 3D",
   "modelador-casas-3d": "Modelador de casas 3D",
+  "pixelihub": "PixeliHub",
   "asignacion-de-cartera": "Asignación de cartera",
   "rebalanceo-de-cartera": "Rebalanceo de cartera",
   "optimizacion-de-cartera": "Optimización de cartera",
