@@ -1,0 +1,52 @@
+name: Patch PixeliHub i18n ES name
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add pixelihub to EXACT_NAMES if missing
+        run: |
+          set -euo pipefail
+          F=src/lib/i18n/es.ts
+          if grep -q '"pixelihub"' "$F"; then
+            echo "Already present"
+            exit 0
+          fi
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("src/lib/i18n/es.ts")
+          t = p.read_text()
+          needle = '"modelador-casas-3d": "Modelador de casas 3D",'
+          insert = needle + '\n  "pixelihub": "PixeliHub",'
+          if needle not in t:
+              raise SystemExit("needle not found")
+          if '"pixelihub"' in t:
+              print("already")
+          else:
+              p.write_text(t.replace(needle, insert, 1))
+              print("patched", p.stat().st_size)
+          PY
+
+      - name: Commit and push
+        run: |
+          set -euo pipefail
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/lib/i18n/es.ts
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "i18n(es): add PixeliHub exact name (roadmap item 2)"
+          git push origin HEAD:fix/spanish-complete
