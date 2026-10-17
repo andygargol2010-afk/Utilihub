@@ -16,12 +16,12 @@ last_closed_id: canvas-webgl-performance-guide
 p_fixed: 0.35
 
 weights_core:
-  kits: 7
-  journeys: 3
-  games: 5
-  simulators: 2
-  studio-composition: 4
-  playgrounds: 1
+  kits: 8
+  journeys: 4
+  games: 1
+  simulators: 3
+  studio-composition: 5
+  playgrounds: 2
 
 weights_growth:
   traffic-bets: 3
@@ -59,18 +59,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed canvas-webgl-performance-guide. Lightweight links added from GravityParticlesPlayground, ParticleMagnetLab, DoublePendulumSim (EN+ES paths). Adsterra untouched. Next run IDEATE.
+status: active
+idea: Interactive canvas game Pulse Catch Arena: falling neon pulses of varying colors and speeds that the player must catch with a movable bar (mouse or keyboard). Scoring with combos for consecutive catches, lives for misses, increasing difficulty. Visual particle effects on catch. Pure game loop with rules and score — not a calculator. EN+ES routes with lazy-loaded canvas. Visual payoff and shareable score.
+id: pulse-catch-arena
+path_en: /games/pulse-catch-arena
+path_es: /es/games/pulse-catch-arena
+domain: games
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: url
+next_step_required: yes
+notes: DOMAIN ROLL U=0.858 → CORE. Weighted r=12.17/22 → games. last_closed search-magnets (GROWTH) — no re-roll. Weights: games→1, other CORE +1. Idea selected for rules/score visual game.
 adsense-prep_runs: 3
 ```
 
