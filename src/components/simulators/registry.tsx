@@ -14,6 +14,7 @@ const MarketSim = lazy(() => import("./MarketSim").then((m) => ({ default: m.Mar
 const StandingWaveSim = lazy(() => import("./StandingWaveSim").then((m) => ({ default: m.StandingWaveSim })));
 const WaveInterferenceSim = lazy(() => import("./WaveInterferenceSim").then((m) => ({ default: m.WaveInterferenceSim })));
 const GaltonBoardSim = lazy(() => import("./GaltonBoardSim").then((m) => ({ default: m.GaltonBoardSim })));
+const BoidsFlockingLab = lazy(() => import("./BoidsFlockingLab").then((m) => ({ default: m.BoidsFlockingLab })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -42,6 +43,7 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "interferencia-ondas": WaveInterferenceSim,
   "galton-board": GaltonBoardSim,
   "tablero-galton": GaltonBoardSim,
+  "boids-flocking-lab": BoidsFlockingLab,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
