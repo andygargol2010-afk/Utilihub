@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: adsense-prep
-last_closed_id: cookie-policy
+last_closed_domain: search-magnets
+last_closed_id: canvas-webgl-performance-guide
 p_fixed: 0.35
 
 weights_core:
@@ -25,7 +25,7 @@ weights_core:
 
 weights_growth:
   traffic-bets: 3
-  search-magnets: 3
+  search-magnets: 1
   growth-surfaces: 3
   share-hooks: 3
   retention-loops: 3
@@ -42,6 +42,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-17 | search-magnets | canvas-webgl-performance-guide | Canvas & WebGL Performance Guide (EN+ES)
 - 2026-10-17 | adsense-prep | cookie-policy | Cookie Policy pages (EN+ES)
 - 2026-10-17 | playgrounds | particle-magnet-lab | Particle Magnet Lab (EN+ES)
 - 2026-10-16 | simulators | double-pendulum-chaos | Double Pendulum Chaos Lab (EN+ES)
@@ -51,7 +52,6 @@ adsense-prep_runs: 3
 - 2026-10-16 | traffic-bets | traffic-events | Traffic Events Instrumentation
 - 2026-10-15 | journeys | river-light | River of Light Journey
 - 2026-10-15 | studio-composition | glow-trail | Glow Trail Composer
-- 2026-10-15 | games | pulse-catch | Pulse Catch
 ```
 
 ---
@@ -59,18 +59,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Original SEO guide (EN+ES) on Canvas and WebGL performance for interactive web experiences. Cover techniques for maintaining smooth 60fps in particle systems, physics sims, and playgrounds: requestAnimationFrame best practices, off-main-thread work, object pooling, devicePixelRatio handling, reduced motion, mobile budgets, and measuring with Performance API. Link from relevant playgrounds/simulators without bloating home. Lightweight static pages, original text, no thin AI content.
-id: canvas-webgl-performance-guide
-path_en: /guides/canvas-webgl-performance
-path_es: /es/guias/rendimiento-canvas-webgl
-domain: search-magnets
-runs_total: 3
-runs_remaining: 1
-acceptance: pending
+status: none
+idea: n/a
+id: n/a
+path_en: n/a
+path_es: n/a
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
 share: n/a
 next_step_required: no
-notes: IDEATE roll U=0.308→GROWTH, U_g=0.049→FIXED→search-magnets. Complements recent particle/pendulum work. Adsterra untouched. EXECUTE: EN page existed; added full ES page + fixed EN hreflang to /es/guias/rendimiento-canvas-webgl. Next run: add lightweight links from relevant playgrounds/simulators (gravity-particles, particle-magnets, double-pendulum).
+notes: Closed canvas-webgl-performance-guide. Lightweight links added from GravityParticlesPlayground, ParticleMagnetLab, DoublePendulumSim (EN+ES paths). Adsterra untouched. Next run IDEATE.
 adsense-prep_runs: 3
 ```
 
