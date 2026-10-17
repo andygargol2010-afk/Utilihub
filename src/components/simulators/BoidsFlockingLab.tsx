@@ -16,6 +16,13 @@ const H = 380;
 const MAX_BOIDS = 140;
 const TRAIL_MAX = 18;
 
+const PRESETS = [
+  { id: "school", en: "School", es: "Cardumen", sep: 1.2, align: 1.4, coh: 1.3, speed: 1.1, perc: 85 },
+  { id: "scatter", en: "Scatter", es: "Dispersar", sep: 2.0, align: 0.4, coh: 0.3, speed: 1.0, perc: 60 },
+  { id: "tight", en: "Tight", es: "Compacto", sep: 0.8, align: 1.1, coh: 1.6, speed: 0.8, perc: 45 },
+  { id: "free", en: "Free", es: "Libre", sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70 },
+];
+
 function makeBoid(x?: number, y?: number): Boid {
   const ang = Math.random() * Math.PI * 2;
   const sp = 1.2 + Math.random() * 1.4;
@@ -42,19 +49,23 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
   const [trails, setTrails] = useState(true);
   const [mouseAttract, setMouseAttract] = useState(true);
   const [colorMode, setColorMode] = useState<"velocity" | "neighbors">("velocity");
+  const [boundary, setBoundary] = useState<"wrap" | "bounce">("wrap");
+  const [showLinks, setShowLinks] = useState(false);
   const [count, setCount] = useState(90);
 
   const boids = useRef<Boid[]>([]);
   const runningRef = useRef(true);
-  const paramsRef = useRef({ sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70, trails: true, mouse: true, color: "velocity" as const });
+  const paramsRef = useRef({ sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70, trails: true, mouse: true, color: "velocity" as const, boundary: "wrap" as const, links: false });
   const mouse = useRef({ x: W / 2, y: H / 2, active: false });
 
   if (boids.current.length === 0) {
-    for (let i = 0; i < 90; i++) boids.current.push(makeBoid());
+    const initial = typeof window !== "undefined" && window.innerWidth < 640 ? 60 : 90;
+    for (let i = 0; i < initial; i++) boids.current.push(makeBoid());
+    setCount(initial);
   }
 
   runningRef.current = running;
-  paramsRef.current = { sep, align, coh, speed, perc: perception, trails, mouse: mouseAttract, color: colorMode };
+  paramsRef.current = { sep, align, coh, speed, perc: perception, trails, mouse: mouseAttract, color: colorMode, boundary, links: showLinks };
 
   const reset = useCallback(() => {
     boids.current = [];
@@ -66,6 +77,14 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
     const next = Math.min(MAX_BOIDS, boids.current.length + n);
     while (boids.current.length < next) boids.current.push(makeBoid());
     setCount(boids.current.length);
+  }, []);
+
+  const applyPreset = useCallback((p: typeof PRESETS[0]) => {
+    setSep(p.sep);
+    setAlign(p.align);
+    setCoh(p.coh);
+    setSpeed(p.speed);
+    setPerception(p.perc);
   }, []);
 
   useEffect(() => {
@@ -159,10 +178,17 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
           b.x += b.vx * dt * 60 * p.speed;
           b.y += b.vy * dt * 60 * p.speed;
 
-          if (b.x < 0) b.x += W;
-          if (b.x > W) b.x -= W;
-          if (b.y < 0) b.y += H;
-          if (b.y > H) b.y -= H;
+          if (p.boundary === "wrap") {
+            if (b.x < 0) b.x += W;
+            if (b.x > W) b.x -= W;
+            if (b.y < 0) b.y += H;
+            if (b.y > H) b.y -= H;
+          } else {
+            if (b.x < 0) { b.x = 0; b.vx = Math.abs(b.vx); }
+            if (b.x > W) { b.x = W; b.vx = -Math.abs(b.vx); }
+            if (b.y < 0) { b.y = 0; b.vy = Math.abs(b.vy); }
+            if (b.y > H) { b.y = H; b.vy = -Math.abs(b.vy); }
+          }
 
           if (p.color === "velocity") {
             b.hue = 200 + Math.min(80, sp * 18);
@@ -201,6 +227,26 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
         ctx.stroke();
       }
 
+      if (p.links) {
+        ctx.lineWidth = 0.6;
+        for (let i = 0; i < n; i++) {
+          const b = list[i]!;
+          for (let j = i + 1; j < n; j++) {
+            const o = list[j]!;
+            const dx = o.x - b.x;
+            const dy = o.y - b.y;
+            const d = Math.hypot(dx, dy);
+            if (d > 0 && d < p.perc * 0.6) {
+              ctx.beginPath();
+              ctx.strokeStyle = `hsla(${(b.hue + o.hue) / 2}, 70%, 60%, ${0.25 * (1 - d / (p.perc * 0.6))})`;
+              ctx.moveTo(b.x, b.y);
+              ctx.lineTo(o.x, o.y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
       for (const b of list) {
         if (b.trail.length > 1) {
           for (let k = 1; k < b.trail.length; k++) {
@@ -227,6 +273,14 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
         ctx.closePath();
         ctx.fill();
         ctx.restore();
+      }
+
+      if (mouse.current.active && p.mouse) {
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(45,212,191,0.35)";
+        ctx.lineWidth = 1.5;
+        ctx.arc(mouse.current.x, mouse.current.y, 18, 0, Math.PI * 2);
+        ctx.stroke();
       }
 
       if (!runningRef.current) {
@@ -276,6 +330,24 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
           <SimSecondaryButton theme="lab" active={mouseAttract} onClick={() => setMouseAttract((m) => !m)}>
             {es ? (mouseAttract ? "Ratón ✓" : "Ratón") : mouseAttract ? "Mouse ✓" : "Mouse"}
           </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" active={showLinks} onClick={() => setShowLinks((l) => !l)}>
+            {es ? (showLinks ? "Enlaces ✓" : "Enlaces") : showLinks ? "Links ✓" : "Links"}
+          </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" active={boundary === "bounce"} onClick={() => setBoundary((b) => (b === "wrap" ? "bounce" : "wrap"))}>
+            {boundary === "wrap" ? (es ? "Envolver" : "Wrap") : es ? "Rebotar" : "Bounce"}
+          </SimSecondaryButton>
+        </div>
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5">
+          {PRESETS.map((pr) => (
+            <button
+              key={pr.id}
+              type="button"
+              onClick={() => applyPreset(pr)}
+              className="rounded-lg border border-teal-400/30 bg-teal-900/40 px-2 py-0.5 text-[10px] font-semibold text-teal-100/90 hover:bg-teal-800/50"
+            >
+              {es ? pr.es : pr.en}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -342,8 +414,8 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
 
       <p className="text-center text-[11px] text-teal-200/50">
         {es
-          ? "Reglas clásicas de Craig Reynolds · canvas ligero · atrae con el ratón."
-          : "Classic Craig Reynolds rules · lightweight canvas · attract with mouse."}
+          ? "Reglas clásicas de Craig Reynolds · canvas ligero · presets · envolver/rebotar · atrae con el ratón."
+          : "Classic Craig Reynolds rules · lightweight canvas · presets · wrap/bounce · attract with mouse."}
       </p>
     </div>
   );
