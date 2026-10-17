@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const TARGET = join(ROOT, "src/components/general/PixelArtStudio.tsx");
-const parts = [1, 2, 3].map((i) =>
+const parts = [1, 2, 3, 4].map((i) =>
   join(ROOT, `.agent/backups/PixelArtStudio.part${i}.tsx.txt`)
 );
 for (const p of parts) {
