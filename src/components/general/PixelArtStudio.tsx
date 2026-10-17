@@ -199,6 +199,8 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   const drawing = useRef(false);
   const startCell = useRef<{ x: number; y: number } | null>(null);
   const snapshot = useRef<string[][] | null>(null);
+  /* touch-v1 */
+  const lastPaintCell = useRef<{ x: number; y: number } | null>(null);
 
   const t = useMemo(() => ({
     undo: es ? "Deshacer" : "Undo", redo: es ? "Rehacer" : "Redo",
@@ -383,33 +385,55 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === "touch") e.preventDefault();
     const cell = cellFromEvent(e);
     if (!cell) return;
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
     drawing.current = true;
     startCell.current = cell;
+    lastPaintCell.current = cell;
     snapshot.current = cloneLayers(layers);
     if (tool === "pencil" || tool === "eraser" || tool === "fill" || tool === "eyedropper") applyTool(cell.x, cell.y);
     else applyTool(cell.x, cell.y, cell.x, cell.y);
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
+    if (drawing.current && e.pointerType === "touch") e.preventDefault();
     const cell = cellFromEvent(e);
     setHoverCell(cell);
     if (!drawing.current || !cell) return;
-    if (tool === "pencil" || tool === "eraser") applyTool(cell.x, cell.y);
-    else if (tool === "line" || tool === "rect" || tool === "circle") applyTool(cell.x, cell.y, cell.x, cell.y);
+    if (tool === "pencil" || tool === "eraser") {
+      const prev = lastPaintCell.current;
+      if (prev && (prev.x !== cell.x || prev.y !== cell.y)) {
+        setLayers((prevLayers) => {
+          const next = cloneLayers(prevLayers);
+          const data = next[activeLayer];
+          if (!data) return prevLayers;
+          const col = tool === "eraser" ? "" : color;
+          plotLine(prev.x, prev.y, cell.x, cell.y, (px, py) => paintAt(data, px, py, col));
+          return next;
+        });
+      } else {
+        applyTool(cell.x, cell.y);
+      }
+      lastPaintCell.current = cell;
+    } else if (tool === "line" || tool === "rect" || tool === "circle") {
+      applyTool(cell.x, cell.y, cell.x, cell.y);
+    }
   };
 
-  const onPointerUp = () => {
+  const onPointerUp = (e?: React.PointerEvent) => {
+    if (e && drawing.current) {
+      try { (e.target as HTMLElement).releasePointerCapture?.(e.pointerId); } catch { /* ignore */ }
+    }
     if (!drawing.current) return;
     drawing.current = false;
-    // One stroke = one undo: store state from before the stroke began.
     if (tool !== "eyedropper" && tool !== "fill" && snapshot.current) {
       pushHistory(snapshot.current);
     }
     startCell.current = null;
     snapshot.current = null;
+    lastPaintCell.current = null;
   };
 
   const changeSize = (n: number) => {
@@ -775,7 +799,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
         <div className="order-2 flex shrink-0 flex-row gap-0.5 overflow-x-auto border-t border-zinc-700/80 bg-[#141418]/95 p-1.5 backdrop-blur-sm sticky bottom-0 z-20 md:order-none md:static md:bottom-auto md:w-12 md:flex-col md:border-b-0 md:border-t-0 md:border-r md:bg-[#141418] md:backdrop-blur-none">
           {tools.map((tb) => (
             <button key={tb.id} type="button" title={tb.label} onClick={() => setTool(tb.id)}
-              className={`flex size-9 shrink-0 items-center justify-center rounded-md text-base ${tool === tb.id ? "bg-rose-500/90 text-white shadow" : "text-zinc-400 hover:bg-zinc-800"}`}>
+              className={`flex size-10 shrink-0 items-center justify-center rounded-md text-base md:size-9 ${tool === tb.id ? "bg-rose-500/90 text-white shadow" : "text-zinc-400 hover:bg-zinc-800"}`}>
               <span aria-hidden>{tb.icon}</span>
             </button>
           ))}
@@ -783,12 +807,22 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
         </div>
 
         <div className="relative order-1 min-w-0 flex-1 bg-[#0e0e12] md:order-none">
-          <div className="flex h-full min-h-[280px] items-center justify-center overflow-auto p-3"
-            onWheel={(e) => { e.preventDefault(); setZoom((z) => Math.min(32, Math.max(4, z + (e.deltaY > 0 ? -1 : 1)))); }}>
-            <canvas ref={canvasRef} className={`touch-none rounded-sm ${tool === "eyedropper" ? "cursor-copy" : tool === "fill" ? "cursor-cell" : "cursor-none"}`}
-              style={{ imageRendering: "pixelated" }}
-              onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
-              onPointerLeave={() => { onPointerUp(); setHoverCell(null); }} />
+          <div
+            className="flex h-full min-h-[280px] items-center justify-center overflow-auto p-3 touch-pan-y md:touch-auto"
+            style={{ WebkitUserSelect: "none", userSelect: "none" }}
+            onWheel={(e) => { e.preventDefault(); setZoom((z) => Math.min(32, Math.max(4, z + (e.deltaY > 0 ? -1 : 1)))); }}
+          >
+            <canvas
+              ref={canvasRef}
+              className={`touch-none select-none rounded-sm ${tool === "eyedropper" ? "cursor-copy" : tool === "fill" ? "cursor-cell" : "cursor-none"}`}
+              style={{ imageRendering: "pixelated", touchAction: "none", WebkitUserSelect: "none", userSelect: "none" }}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerCancel={onPointerUp}
+              onContextMenu={(e) => e.preventDefault()}
+              onPointerLeave={() => { onPointerUp(); setHoverCell(null); }}
+            />
           </div>
           {status ? <p className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-black/70 px-3 py-1 text-[11px] text-rose-300">{status}</p> : null}
         </div>
