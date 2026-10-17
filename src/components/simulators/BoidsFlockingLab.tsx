@@ -55,15 +55,17 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
   const [showLinks, setShowLinks] = useState(false);
   const [count, setCount] = useState(90);
   const [clickScatter, setClickScatter] = useState(true);
+  const [predator, setPredator] = useState(false);
 
   const boids = useRef<Boid[]>([]);
   const runningRef = useRef(true);
   const paramsRef = useRef({
     sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70, wander: 0.4, trails: true, mouse: true,
-    color: "velocity" as const, boundary: "wrap" as const, links: false, scatter: true,
+    color: "velocity" as const, boundary: "wrap" as const, links: false, scatter: true, predator: false,
   });
   const mouse = useRef({ x: W / 2, y: H / 2, active: false });
   const scatterBurst = useRef<{ x: number; y: number; until: number } | null>(null);
+  const predatorRef = useRef({ x: W / 2, y: H / 2, vx: 0.55, vy: 0.35 });
 
   if (boids.current.length === 0) {
     const initial = typeof window !== "undefined" && window.innerWidth < 640 ? 60 : 90;
@@ -74,7 +76,7 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
   runningRef.current = running;
   paramsRef.current = {
     sep, align, coh, speed, perc: perception, wander, trails, mouse: mouseAttract,
-    color: colorMode, boundary, links: showLinks, scatter: clickScatter,
+    color: colorMode, boundary, links: showLinks, scatter: clickScatter, predator,
   };
 
   const reset = useCallback(() => {
@@ -180,6 +182,18 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
             }
           }
 
+          if (p.predator) {
+            const pred = predatorRef.current;
+            const pdx = b.x - pred.x;
+            const pdy = b.y - pred.y;
+            const pd = Math.hypot(pdx, pdy);
+            if (pd > 0 && pd < 110) {
+              const force = (1 - pd / 110) * 4.5;
+              ax += (pdx / pd) * force;
+              ay += (pdy / pd) * force;
+            }
+          }
+
           if (p.scatter && scatterBurst.current && now < scatterBurst.current.until) {
             const sdx = b.x - scatterBurst.current.x;
             const sdy = b.y - scatterBurst.current.y;
@@ -231,6 +245,23 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
             for (const t of b.trail) t.a *= 0.94;
           } else {
             b.trail.length = 0;
+          }
+        }
+
+        // move predator
+        if (p.predator) {
+          const pred = predatorRef.current;
+          pred.x += pred.vx * dt * 60;
+          pred.y += pred.vy * dt * 60;
+          if (pred.x < 20 || pred.x > W - 20) pred.vx *= -1;
+          if (pred.y < 20 || pred.y > H - 20) pred.vy *= -1;
+          // mild random turn
+          if (Math.random() < 0.02) {
+            const turn = (Math.random() - 0.5) * 0.4;
+            const sp = Math.hypot(pred.vx, pred.vy);
+            const ang = Math.atan2(pred.vy, pred.vx) + turn;
+            pred.vx = Math.cos(ang) * sp;
+            pred.vy = Math.sin(ang) * sp;
           }
         }
       }
@@ -320,6 +351,26 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
         ctx.stroke();
       }
 
+      if (p.predator) {
+        const pred = predatorRef.current;
+        const pulse = 0.6 + 0.4 * Math.sin(now / 180);
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,70,70,${0.35 * pulse})`;
+        ctx.arc(pred.x, pred.y, 14 + 4 * pulse, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(255,100,100,${0.8 * pulse})`;
+        ctx.lineWidth = 2;
+        ctx.arc(pred.x, pred.y, 22, 0, Math.PI * 2);
+        ctx.stroke();
+        // eyes
+        ctx.fillStyle = "rgba(255,220,220,0.9)";
+        ctx.beginPath();
+        ctx.arc(pred.x - 4, pred.y - 3, 2.2, 0, Math.PI * 2);
+        ctx.arc(pred.x + 4, pred.y - 3, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
       if (scatterBurst.current && now < scatterBurst.current.until) {
         const life = (scatterBurst.current.until - now) / 700;
         ctx.beginPath();
@@ -398,6 +449,9 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
           </SimSecondaryButton>
           <SimSecondaryButton theme="lab" active={clickScatter} onClick={() => setClickScatter((s) => !s)}>
             {es ? (clickScatter ? "Clic dispersa ✓" : "Clic dispersa") : clickScatter ? "Click scatter ✓" : "Click scatter"}
+          </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" active={predator} onClick={() => setPredator((pr) => !pr)}>
+            {es ? (predator ? "Depredador ✓" : "Depredador") : predator ? "Predator ✓" : "Predator"}
           </SimSecondaryButton>
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5">
@@ -487,8 +541,8 @@ export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
 
       <p className="text-center text-[11px] text-teal-200/50">
         {es
-          ? "Reglas clásicas de Craig Reynolds · canvas ligero · presets · envolver/rebotar · atrae con el ratón · clic para dispersar · errabundo orgánico."
-          : "Classic Craig Reynolds rules · lightweight canvas · presets · wrap/bounce · attract with mouse · click to scatter · organic wander."}
+          ? "Reglas clásicas de Craig Reynolds · canvas ligero · presets · envolver/rebotar · atrae con el ratón · clic para dispersar · errabundo orgánico · depredador opcional."
+          : "Classic Craig Reynolds rules · lightweight canvas · presets · wrap/bounce · attract with mouse · click to scatter · organic wander · optional predator."}
       </p>
     </div>
   );
