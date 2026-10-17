@@ -1,0 +1,38 @@
+name: Write PixeliHub UI from b64 parts
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".agent/backups/px-ui.b64.1"
+      - ".agent/backups/px-ui.b64.2"
+      - ".agent/backups/px-ui.b64.3"
+      - ".agent/backups/px-ui.b64.4"
+      - ".agent/backups/px-ui.b64.5"
+permissions:
+  contents: write
+jobs:
+  write:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+      - name: Decode
+        run: |
+          python3 - <<'PY'
+          import base64
+          from pathlib import Path
+          parts = [Path(f".agent/backups/px-ui.b64.{i}").read_text().strip() for i in range(1, 6)]
+          data = base64.b64decode("".join(parts))
+          assert b"PIXELIHUB" in data
+          Path("src/components/general/PixelArtStudio.tsx").write_bytes(data)
+          print("wrote", len(data))
+          PY
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/PixelArtStudio.tsx
+          if git diff --cached --quiet; then echo none; exit 0; fi
+          git commit -m "feat(pixelihub): Pixilart-inspired dark studio UI (contained)"
+          git push
