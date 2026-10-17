@@ -1525,6 +1525,19 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
   }
+  // Occasional leaf litter and darker damp spots so the gravel path reads as used outdoor surface, not freshly spread.
+  for (let i = 0; i < 6; i++) {
+    const x = hash2(i + 800, 2.9) * size;
+    const y = hash2(i + 800, 5.1) * size;
+    const r = 2.5 + hash2(i, 7.4) * 5;
+    const damp = hash2(i, 1.6) > 0.45;
+    ctx.fillStyle = damp
+      ? `rgba(62, 52, 40, ${0.16 + hash2(i, 3.2) * 0.14})`
+      : `rgba(92, 68, 42, ${0.12 + hash2(i, 4.8) * 0.12})`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * (0.4 + hash2(i, 9.3) * 0.3), hash2(i, 6.1) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
