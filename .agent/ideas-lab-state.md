@@ -22,6 +22,7 @@ weights_core:
   simulators: 2
   studio-composition: 7
   playgrounds: 4
+  quality-lift: 3
 
 weights_growth:
   traffic-bets: 3
@@ -70,7 +71,7 @@ runs_remaining: 6
 acceptance: pending
 share: url
 next_step_required: yes
-notes: DOMAIN ROLL U=0.839 → CORE. Weighted r=7.40/26 → kits. last_closed simulators — no re-roll. Weights: kits→1, other CORE +1. Idea selected for coherent multi-tool renovation planning path with interactive board UX.
+notes: DOMAIN ROLL U=0.839 → CORE. Weighted r=7.40/26 → kits. last_closed simulators — no re-roll. Weights: kits→1, other CORE +1. Idea selected for coherent multi-tool renovation planning path with interactive board UX. quality-lift domain added to CORE with weight 3 (meta, not this project).
 adsense-prep_runs: 3
 ```
 
