@@ -16,12 +16,12 @@ last_closed_id: boids-flocking-lab
 p_fixed: 0.35
 
 weights_core:
-  kits: 9
-  journeys: 5
-  games: 2
-  simulators: 1
-  studio-composition: 6
-  playgrounds: 3
+  kits: 1
+  journeys: 6
+  games: 3
+  simulators: 2
+  studio-composition: 7
+  playgrounds: 4
 
 weights_growth:
   traffic-bets: 3
@@ -59,18 +59,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: Interactive canvas Boids Flocking Lab: a live flock of colored particles (boids) that follow classic separation, alignment, and cohesion rules. User-adjustable sliders for each rule strength, speed, and perception radius. Visual trails, color by velocity or neighbor count, mild attraction to mouse cursor. Pure evolving system visualization with parameters — not a calculator. EN+ES routes with lazy-loaded canvas. Visual payoff of emergent flocking behavior.
-id: boids-flocking-lab
-path_en: /simulators/boids-flocking-lab
-path_es: /es/simuladores/boids-flocking-lab
-domain: simulators
+status: active
+idea: Interactive Home Renovation Kit: a multi-step local workspace for planning a room renovation. Shared board (browser-only) with ordered steps — measure dimensions, calculate materials (flooring/paint), estimate costs, set timeline. Live progress checklist, visual summary of pasted results, focus timer, copy-slip for progress URL. Links to relevant existing tools but the kit page itself is the cohesive interactive experience with next-step guidance. Visual payoff of a living renovation plan. EN+ES routes. Not a single calculator.
+id: home-renovation-kit
+path_en: /kits/home-renovation-kit
+path_es: /es/kits/kit-renovacion-hogar
+domain: kits
 runs_total: 6
-runs_remaining: 0
-acceptance: done
+runs_remaining: 6
+acceptance: pending
 share: url
-next_step_required: no
-notes: DOMAIN ROLL U=0.543 → CORE. Weighted r=14.01/23 → simulators. last_closed games (CORE) — no re-roll. Weights: simulators→1, other CORE +1. Idea selected for evolving physics visualization. IDEATE: set ACTIVE. EXECUTE 1/6: shipped canvas component + registry + catalog (EN+ES routes). EXECUTE 2/6: polish — presets (school/scatter/tight/free), boundary wrap/bounce, optional neighbor links, mobile lower initial count, mouse attractor ring. EXECUTE 3/6: click-to-scatter burst, swirl preset, live count badge, sharper boid shapes with highlight, canvas width/height attrs. EXECUTE 4/6: wander strength slider + presets, boid size scales with speed, softer trail fade. Adsterra kept. EXECUTE 5/6: optional predator that wanders and scares the flock (flee force + red visual), button toggle. EXECUTE 6/6: smoke EN+ES solid (canvas, controls, next-step, ads present). Closed.
+next_step_required: yes
+notes: DOMAIN ROLL U=0.839 → CORE. Weighted r=7.40/26 → kits. last_closed simulators — no re-roll. Weights: kits→1, other CORE +1. Idea selected for coherent multi-tool renovation planning path with interactive board UX.
 adsense-prep_runs: 3
 ```
 
