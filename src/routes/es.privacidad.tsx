@@ -25,7 +25,7 @@ function PrivacidadPage() {
         <p>
           Esta política explica cómo <strong>{SITE_NAME}</strong> trata la información que puede recopilarse al
           navegar o usar el sitio. {SITE_NAME} está dirigido a un público internacional y su operador está basado
-          en Argentina.
+          en Argentina. Para detalles sobre cookies y tecnologías similares, consulta nuestra <a href="/es/cookies">Política de Cookies</a>.
         </p>
         <h2>Información que podemos tratar</h2>
         <p>
