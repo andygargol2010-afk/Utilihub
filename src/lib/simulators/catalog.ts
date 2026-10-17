@@ -218,6 +218,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Las bolas caen por clavos, se bifurcan al azar a izquierda o derecha y forman una campana de Gauss. Ajustá filas, velocidad, soltá lotes y mirá la distribución en vivo.",
   },
+  {
+    slug: "boids-flocking-lab",
+    slugEs: "boids-flocking-lab",
+    nameEn: "Boids Flocking Lab",
+    nameEs: "Lab de bandada Boids",
+    tag: "physics",
+    theme: "lab",
+    emoji: "🐦",
+    badgeEn: "Emergent flocking",
+    badgeEs: "Bandada emergente",
+    summaryEn:
+      "Live flock of colored particles following separation, alignment and cohesion. Adjust rule strengths, speed and perception radius. Trails, color by velocity or neighbors, mild mouse attraction. Pure evolving system visualization.",
+    summaryEs:
+      "Bandada en vivo de partículas coloreadas que siguen separación, alineación y cohesión. Ajustá fuerza de cada regla, velocidad y radio de percepción. Estelas, color por velocidad o vecinos, atracción suave al ratón. Visualización de sistema evolutivo.",
+  },
 ] as const;
 
 /** Next-step sims for bounce reduction (first = primary). Keys = EN slug. */
@@ -235,6 +250,7 @@ export const SIM_JOURNEYS: Record<string, string[]> = {
   "sir-epidemic": ["ecosystem", "galton-board", "market-equilibrium", "molecular-motion"],
   "market-equilibrium": ["galton-board", "sir-epidemic", "ecosystem", "gravity-sandbox"],
   "galton-board": ["market-equilibrium", "sir-epidemic", "ecosystem", "pendulum"],
+  "boids-flocking-lab": ["gravity-sandbox", "molecular-motion", "double-pendulum", "wave-interference"],
 };
 
 export function relatedSims(current: Pick<SimDef, "slug">): SimDef[] {
