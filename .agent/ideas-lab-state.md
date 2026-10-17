@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: simulators
-last_closed_id: double-pendulum-chaos
+last_closed_domain: playgrounds
+last_closed_id: particle-magnet-lab
 p_fixed: 0.35
 
 weights_core:
@@ -26,13 +26,13 @@ weights_core:
 weights_growth:
   traffic-bets: 3
   search-magnets: 3
-  growth-surfaces: 2
-  share-hooks: 2
-  retention-loops: 2
-  conversion-paths: 2
-  traffic-diagnosis: 2
+  growth-surfaces: 3
+  share-hooks: 3
+  retention-loops: 3
+  conversion-paths: 3
+  traffic-diagnosis: 3
   adsense-prep: 1
-  seo-locales: 2   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  seo-locales: 3   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 2
 ```
@@ -42,6 +42,7 @@ adsense-prep_runs: 2
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-17 | playgrounds | particle-magnet-lab | Particle Magnet Lab (EN+ES)
 - 2026-10-16 | simulators | double-pendulum-chaos | Double Pendulum Chaos Lab (EN+ES)
 - 2026-10-16 | search-magnets | compound-interest-guide | Compound Interest SEO Guide (EN+ES)
 - 2026-10-16 | adsense-prep | terms-of-use | Terms of Use pages (EN+ES)
@@ -51,7 +52,6 @@ adsense-prep_runs: 2
 - 2026-10-15 | studio-composition | glow-trail | Glow Trail Composer
 - 2026-10-15 | games | pulse-catch | Pulse Catch
 - 2026-10-1x | playgrounds | gravity-particles | Gravity Particles (prior)
-- 2026-10-1x | growth-surfaces | postcard | Particle Postcard (prior)
 ```
 
 ---
@@ -60,17 +60,17 @@ adsense-prep_runs: 2
 
 ```
 status: active
-idea: Particle Magnet Lab — open canvas playground where users place attract/repel magnets; free particles stream and leave fading trails that visualize the field. Drag magnets, strength and polarity toggles, particle count slider, color modes (speed/field), clear/reset, PNG share. Lightweight HTML canvas only, no heavy deps, EN+ES under playgrounds catalog. Visual payoff of organic flow lines.
-id: particle-magnet-lab
-path_en: /playgrounds/particle-magnets
-path_es: /es/playgrounds/imanes-particulas
-domain: playgrounds
-runs_total: 4
-runs_remaining: 0
+idea: Cookie Policy pages (EN+ES) for Adsense trust: detail cookies used (analytics via Vercel, advertising via Adsterra and partners), local storage preferences, opt-out methods, third-party processors. Link from privacy page and site footer. No removal of Adsterra. Lightweight static pages only.
+id: cookie-policy
+path_en: /cookies
+path_es: /es/cookies
+domain: adsense-prep
+runs_total: 1
+runs_remaining: 1
 acceptance: pending
-share: both
-next_step_required: yes
-notes: IDEATE roll U=0.5517 → CORE; cumulative R≈19.15/21 → playgrounds. Set playgrounds=1, other CORE +1. last_closed=simulators (different) no re-roll. Next-step required for playgrounds. Adsterra kept. CWV: lazy route + modest particle budget on mobile. EXECUTE 1/4: core component + EN/ES routes + next-step + catalog cards shipped. EXECUTE 2/4: URL param restore for shares, long-press/right-click polarity toggle + selected highlight, larger min-h-11 touch targets, modest particle budget on mobile. EXECUTE 3/4: pause/resume, random magnets button, velocity clamp, longer trails (fade 0.08), help text update. EXECUTE 4/4: field arrows overlay toggle (coarse grid force directions), URL param fa=1, help text updated. Ready for close/next IDEATE.
+share: n/a
+next_step_required: no
+notes: IDEATE roll U=0.0998 → GROWTH; U_g=0.6245 > p_fixed 0.35 → FLEX; R≈10.93/13 → adsense-prep. Set adsense-prep=1, other FLEX +1. last_closed=playgrounds (different) no re-roll. adsense-prep_runs currently 2; will increment on close. Ready for EXECUTE next run.
 adsense-prep_runs: 2
 ```
 
