@@ -68,6 +68,7 @@ Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation fiel
 2026-10-16 FIX-BUILD: no deploy for restore commit; small docs trigger for Vercel.
 2026-10-16 PRODUCT: shipped calculadora-tiempo-viaje (viajes) + calculadora-fuerza (ciencia). Clusters distinct. Registry surgical OK.
 2026-10-17 PRODUCT run: deploy READY on latest; anti-dupe check showed high-demand candidates already covered (password gen, lorem, random color, BMI, etc.). Cluster watch saturated. No new tools to preserve quality and avoid dupes. Registry intact.
+2026-10-17 PRODUCT run (this): deploy READY. Roll PRODUCT. Clusters saturated (all recent), high-demand covered. No candidates met gap + demand + quality without risking mediocre. Shipped 0. Registry OK.
 ```
 
 ---
@@ -76,7 +77,7 @@ Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation fiel
 
 ```
 last_mode: PRODUCT
-last_slugs: none (anti-dupe)
+last_slugs: none (anti-dupe + saturation)
 last_deploy: READY
 ```
 
