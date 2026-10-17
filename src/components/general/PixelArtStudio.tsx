@@ -461,17 +461,70 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
               className="mt-2 h-6 w-10 cursor-pointer rounded border border-zinc-600 bg-transparent" />
           </div>
           <div className="border-b border-zinc-700/60 p-2">
+            {/* layers-reorder-v1 */}
             <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-500">{t.layers}</p>
             {layers.map((_, i) => (
-              <div key={i} className="mb-1 flex items-center gap-1">
+              <div key={i} className="mb-1 flex items-center gap-0.5">
                 <button type="button" onClick={() => setActiveLayer(i)}
-                  className={`flex-1 rounded px-2 py-1 text-left text-[11px] font-semibold ${activeLayer === i ? "bg-rose-500/20 text-rose-300" : "bg-zinc-800 text-zinc-400"}`}>
+                  className={`min-w-0 flex-1 rounded px-1.5 py-1 text-left text-[11px] font-semibold ${activeLayer === i ? "bg-rose-500/20 text-rose-300" : "bg-zinc-800 text-zinc-400"}`}>
                   {es ? `Capa ${i + 1}` : `Layer ${i + 1}`}
                 </button>
-                <button type="button" className="px-1 text-[11px] text-zinc-500"
+                <button type="button" title={es ? "Visible" : "Visible"} className="px-1 text-[11px] text-zinc-500"
                   onClick={() => setLayerVisible((v) => { const n = v.slice(); n[i] = !n[i]; return n; })}>
                   {layerVisible[i] ? "◉" : "○"}
                 </button>
+                <button type="button" title="Up" disabled={i === 0}
+                  className="px-0.5 text-[10px] text-zinc-500 hover:text-zinc-200 disabled:opacity-25"
+                  onClick={() => {
+                    if (i === 0) return;
+                    pushHistory(layers);
+                    setLayers((L) => {
+                      const n = cloneLayers(L);
+                      [n[i - 1], n[i]] = [n[i], n[i - 1]];
+                      return n;
+                    });
+                    setLayerVisible((v) => {
+                      const n = v.slice();
+                      [n[i - 1], n[i]] = [n[i], n[i - 1]];
+                      return n;
+                    });
+                    setActiveLayer((a) => (a === i ? i - 1 : a === i - 1 ? i : a));
+                  }}>↑</button>
+                <button type="button" title="Down" disabled={i >= layers.length - 1}
+                  className="px-0.5 text-[10px] text-zinc-500 hover:text-zinc-200 disabled:opacity-25"
+                  onClick={() => {
+                    if (i >= layers.length - 1) return;
+                    pushHistory(layers);
+                    setLayers((L) => {
+                      const n = cloneLayers(L);
+                      [n[i + 1], n[i]] = [n[i], n[i + 1]];
+                      return n;
+                    });
+                    setLayerVisible((v) => {
+                      const n = v.slice();
+                      [n[i + 1], n[i]] = [n[i], n[i + 1]];
+                      return n;
+                    });
+                    setActiveLayer((a) => (a === i ? i + 1 : a === i + 1 ? i : a));
+                  }}>↓</button>
+                <button type="button" title={es ? "Eliminar" : "Delete"} disabled={layers.length <= 1}
+                  className="px-0.5 text-[11px] text-zinc-500 hover:text-rose-400 disabled:opacity-25"
+                  onClick={() => {
+                    if (layers.length <= 1) return;
+                    pushHistory(layers);
+                    setLayers((L) => L.filter((_, j) => j !== i));
+                    setLayerVisible((v) => {
+                      const n = v.slice();
+                      n.splice(i, 1);
+                      while (n.length < MAX_LAYERS) n.push(true);
+                      return n;
+                    });
+                    setActiveLayer((a) => {
+                      if (a > i) return a - 1;
+                      if (a === i) return Math.max(0, i - 1);
+                      return a;
+                    });
+                  }}>×</button>
               </div>
             ))}
             {layers.length < MAX_LAYERS ? (
