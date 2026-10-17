@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 183
+runs_done: 184
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 337004
-last_known_good_hint: 7b4495a (~337004 bytes, verified 2026-10-17 PRODUCT timber polish; READY on Vercel)
+approx_bytes: 337721
+last_known_good_hint: 6817fdc (~337721 bytes, verified 2026-10-17 PRODUCT clay denser flecks; BUILDING on Vercel)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: READY (timber SHA 7b4495a) + BUILDING (state 1798b92)
-note: Roll 10 → switched to META (push auth for large monolith unavailable this session). Verified gates + deploy health. Next PRODUCT candidate: clay tiles denser flecks (prepared pattern ready).
+deploy: BUILDING (clay SHA 6817fdc)
+note: Roll 5 → PRODUCT denser clay tiles surface flecks/chips (thresholds lowered + extra fleck loop). Local clone surgical + push OK. Next candidate: perhaps masonry or plaster denser.
 ```
 
 Refresh after each run.
