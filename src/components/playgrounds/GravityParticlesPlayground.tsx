@@ -461,6 +461,14 @@ export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
         <p className="text-xs text-muted-foreground sm:col-span-2 lg:col-span-4">
           {t.help}
         </p>
+        <p className="text-xs text-muted-foreground sm:col-span-2 lg:col-span-4">
+          <a
+            href={locale === "es" ? "/es/guias/rendimiento-canvas-webgl" : "/guides/canvas-webgl-performance"}
+            className="underline hover:text-primary"
+          >
+            {locale === "es" ? "Guía: rendimiento de Canvas y WebGL" : "Guide: Canvas & WebGL performance"}
+          </a>
+        </p>
       </div>
     </div>
   );
