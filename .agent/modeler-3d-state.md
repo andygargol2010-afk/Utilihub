@@ -7,9 +7,9 @@ slug: modelador-3d
 path_entry: src/components/general/Modeler3D.tsx
 modules: modeler3d-studio, modeler3d-core, modeler3d-three-init, modeler3d-helpers, modeler3d-align, modeler3d-scenes
 style: Tinkercad-like primitives studio (not house realism)
-last_mode: none
-last_date: 2026-10-16
-note: Driven by house-modeler automation ~10% rolls (MODE MODELADOR-3D)
+last_mode: UI/MOBILE
+last_date: 2026-10-17
+note: Larger mobile touch targets on left palette (shapes size-10, colors size-7, mats py-2). Desktop sm+ unchanged. Deploy pending.
 ```
 
 Update `last_mode` / `last_date` / short note after each MODELADOR-3D run.

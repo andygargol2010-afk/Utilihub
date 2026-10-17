@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 166
+runs_done: 167
 runs_max: 500
 ```
 
@@ -56,7 +56,7 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: MODELADOR-3D
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
 deploy: READY on SHA 4590372 (url utilihub-dnirj85xk-financialproyects.vercel.app)
