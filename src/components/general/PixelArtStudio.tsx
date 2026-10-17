@@ -144,13 +144,15 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   const [status, setStatus] = useState("");
   const [hoverCell, setHoverCell] = useState<{ x: number; y: number } | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  /* import-v1 */
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const drawing = useRef(false);
   const startCell = useRef<{ x: number; y: number } | null>(null);
   const snapshot = useRef<string[][] | null>(null);
 
   const t = useMemo(() => ({
     undo: es ? "Deshacer" : "Undo", redo: es ? "Rehacer" : "Redo",
-    export: "PNG", copy: es ? "Copiar" : "Copy", share: es ? "Enlace" : "Link",
+    export: "PNG", import: es ? "Importar" : "Import", copy: es ? "Copiar" : "Copy", share: es ? "Enlace" : "Link",
     size: es ? "Tamaño" : "Size", zoom: "Zoom", brush: es ? "Grosor" : "Brush", color: es ? "Color" : "Color", palette: es ? "Paleta" : "Palette", addColor: es ? "+ color" : "+ color",
     layers: es ? "Capas" : "Layers", opacity: es ? "Opacidad" : "Opacity", add: es ? "Añadir" : "Add", clear: es ? "Limpiar" : "Clear",
     sym: es ? "Simetría" : "Symmetry", none: es ? "No" : "None",
@@ -462,6 +464,61 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
     setStatus("PNG");
   };
 
+  const importImage = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      setStatus(es ? "No es imagen" : "Not an image");
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const off = document.createElement("canvas");
+        off.width = size;
+        off.height = size;
+        const ctx = off.getContext("2d");
+        if (!ctx) return;
+        ctx.imageSmoothingEnabled = false;
+        // Cover-fit: scale to fill canvas, center crop
+        const scale = Math.max(size / img.width, size / img.height);
+        const dw = img.width * scale;
+        const dh = img.height * scale;
+        const dx = (size - dw) / 2;
+        const dy = (size - dh) / 2;
+        ctx.clearRect(0, 0, size, size);
+        ctx.drawImage(img, dx, dy, dw, dh);
+        const data = ctx.getImageData(0, 0, size, size).data;
+        const layer = emptyLayer(size);
+        for (let y = 0; y < size; y++) {
+          for (let x = 0; x < size; x++) {
+            const i = (y * size + x) * 4;
+            const a = data[i + 3];
+            if (a < 16) continue;
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            const hex = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+            layer[y * size + x] = hex;
+          }
+        }
+        pushHistory(layers);
+        setLayers((L) => {
+          const next = cloneLayers(L);
+          next[activeLayer] = layer;
+          return next;
+        });
+        setStatus(es ? "Importado" : "Imported");
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      setStatus("Error");
+    };
+    img.src = url;
+  };
+
   const tools: { id: ToolId; icon: string; label: string }[] = [
     { id: "pencil", icon: "✎", label: "Pencil" },
     { id: "eraser", icon: "⌫", label: "Eraser" },
@@ -481,6 +538,18 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
         <button type="button" onClick={redo} disabled={!future.length} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800 disabled:opacity-30">↷ {t.redo}</button>
         <div className="mx-1 h-4 w-px bg-zinc-700" />
         <button type="button" onClick={() => exportPng(false)} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↓ {t.export}</button>
+        <button type="button" onClick={() => fileInputRef.current?.click()} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">↑ {t.import}</button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/gif"
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) importImage(f);
+            e.target.value = "";
+          }}
+        />
         <button type="button" onClick={() => exportPng(true)} className="rounded px-2 py-1 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-800">{t.copy}</button>
         <div className="ml-auto flex items-center gap-2">
           <span className="font-mono text-[10px] text-zinc-500">{hoverCell ? `X:${hoverCell.x} Y:${hoverCell.y}` : "—"}</span>
