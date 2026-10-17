@@ -1,0 +1,350 @@
+import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import type { SimLocale } from "@/lib/simulators/catalog";
+import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
+
+type Boid = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  hue: number;
+  trail: { x: number; y: number; a: number }[];
+};
+
+const W = 520;
+const H = 380;
+const MAX_BOIDS = 140;
+const TRAIL_MAX = 18;
+
+function makeBoid(x?: number, y?: number): Boid {
+  const ang = Math.random() * Math.PI * 2;
+  const sp = 1.2 + Math.random() * 1.4;
+  return {
+    x: x ?? Math.random() * W,
+    y: y ?? Math.random() * H,
+    vx: Math.cos(ang) * sp,
+    vy: Math.sin(ang) * sp,
+    hue: 180 + Math.random() * 80,
+    trail: [],
+  };
+}
+
+export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
+  const es = locale === "es";
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const [running, setRunning] = useState(true);
+  const [sep, setSep] = useState(1.4);
+  const [align, setAlign] = useState(1.0);
+  const [coh, setCoh] = useState(1.0);
+  const [speed, setSpeed] = useState(1.0);
+  const [perception, setPerception] = useState(70);
+  const [trails, setTrails] = useState(true);
+  const [mouseAttract, setMouseAttract] = useState(true);
+  const [colorMode, setColorMode] = useState<"velocity" | "neighbors">("velocity");
+  const [count, setCount] = useState(90);
+
+  const boids = useRef<Boid[]>([]);
+  const runningRef = useRef(true);
+  const paramsRef = useRef({ sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70, trails: true, mouse: true, color: "velocity" as const });
+  const mouse = useRef({ x: W / 2, y: H / 2, active: false });
+
+  if (boids.current.length === 0) {
+    for (let i = 0; i < 90; i++) boids.current.push(makeBoid());
+  }
+
+  runningRef.current = running;
+  paramsRef.current = { sep, align, coh, speed, perc: perception, trails, mouse: mouseAttract, color: colorMode };
+
+  const reset = useCallback(() => {
+    boids.current = [];
+    for (let i = 0; i < count; i++) boids.current.push(makeBoid());
+    setRunning(true);
+  }, [count]);
+
+  const addBoids = useCallback((n: number) => {
+    const next = Math.min(MAX_BOIDS, boids.current.length + n);
+    while (boids.current.length < next) boids.current.push(makeBoid());
+    setCount(boids.current.length);
+  }, []);
+
+  useEffect(() => {
+    let raf = 0;
+    let last = performance.now();
+
+    const tick = (now: number) => {
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext("2d");
+      if (!ctx) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+
+      const dt = Math.min(0.033, (now - last) / 1000);
+      last = now;
+      const p = paramsRef.current;
+      const list = boids.current;
+      const n = list.length;
+
+      if (runningRef.current) {
+        for (let i = 0; i < n; i++) {
+          const b = list[i]!;
+          let sepX = 0, sepY = 0, sepC = 0;
+          let aliX = 0, aliY = 0, aliC = 0;
+          let cohX = 0, cohY = 0, cohC = 0;
+
+          for (let j = 0; j < n; j++) {
+            if (i === j) continue;
+            const o = list[j]!;
+            const dx = o.x - b.x;
+            const dy = o.y - b.y;
+            const d2 = dx * dx + dy * dy;
+            const d = Math.sqrt(d2);
+            if (d > 0 && d < p.perc) {
+              if (d < p.perc * 0.45) {
+                sepX -= dx / d;
+                sepY -= dy / d;
+                sepC++;
+              }
+              aliX += o.vx;
+              aliY += o.vy;
+              aliC++;
+              cohX += o.x;
+              cohY += o.y;
+              cohC++;
+            }
+          }
+
+          let ax = 0, ay = 0;
+          if (sepC) {
+            ax += (sepX / sepC) * p.sep * 1.8;
+            ay += (sepY / sepC) * p.sep * 1.8;
+          }
+          if (aliC) {
+            ax += (aliX / aliC - b.vx) * p.align * 0.9;
+            ay += (aliY / aliC - b.vy) * p.align * 0.9;
+          }
+          if (cohC) {
+            const cx = cohX / cohC - b.x;
+            const cy = cohY / cohC - b.y;
+            const cl = Math.hypot(cx, cy) || 1;
+            ax += (cx / cl) * p.coh * 0.55;
+            ay += (cy / cl) * p.coh * 0.55;
+          }
+
+          if (p.mouse && mouse.current.active) {
+            const mdx = mouse.current.x - b.x;
+            const mdy = mouse.current.y - b.y;
+            const md = Math.hypot(mdx, mdy);
+            if (md > 8 && md < 180) {
+              ax += (mdx / md) * 0.9;
+              ay += (mdy / md) * 0.9;
+            }
+          }
+
+          b.vx += ax * dt * 60 * 0.08;
+          b.vy += ay * dt * 60 * 0.08;
+
+          const sp = Math.hypot(b.vx, b.vy);
+          const maxSp = 2.2 + p.speed * 1.6;
+          const minSp = 0.6;
+          if (sp > maxSp) {
+            b.vx = (b.vx / sp) * maxSp;
+            b.vy = (b.vy / sp) * maxSp;
+          } else if (sp < minSp && sp > 0) {
+            b.vx = (b.vx / sp) * minSp;
+            b.vy = (b.vy / sp) * minSp;
+          }
+
+          b.x += b.vx * dt * 60 * p.speed;
+          b.y += b.vy * dt * 60 * p.speed;
+
+          if (b.x < 0) b.x += W;
+          if (b.x > W) b.x -= W;
+          if (b.y < 0) b.y += H;
+          if (b.y > H) b.y -= H;
+
+          if (p.color === "velocity") {
+            b.hue = 200 + Math.min(80, sp * 18);
+          } else {
+            b.hue = 160 + Math.min(100, (sepC + aliC + cohC) * 4);
+          }
+
+          if (p.trails) {
+            b.trail.push({ x: b.x, y: b.y, a: 1 });
+            if (b.trail.length > TRAIL_MAX) b.trail.shift();
+            for (const t of b.trail) t.a *= 0.92;
+          } else {
+            b.trail.length = 0;
+          }
+        }
+      }
+
+      const bg = ctx.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, "#071018");
+      bg.addColorStop(1, "#03070c");
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.strokeStyle = "rgba(45,212,191,0.06)";
+      ctx.lineWidth = 1;
+      for (let x = 0; x < W; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+      }
+      for (let y = 0; y < H; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+
+      for (const b of list) {
+        if (b.trail.length > 1) {
+          for (let k = 1; k < b.trail.length; k++) {
+            const a = b.trail[k]!;
+            const prev = b.trail[k - 1]!;
+            ctx.beginPath();
+            ctx.strokeStyle = `hsla(${b.hue}, 80%, 65%, ${a.a * 0.45})`;
+            ctx.lineWidth = 1.4;
+            ctx.moveTo(prev.x, prev.y);
+            ctx.lineTo(a.x, a.y);
+            ctx.stroke();
+          }
+        }
+
+        const ang = Math.atan2(b.vy, b.vx);
+        ctx.save();
+        ctx.translate(b.x, b.y);
+        ctx.rotate(ang);
+        ctx.beginPath();
+        ctx.fillStyle = `hsl(${b.hue}, 85%, 62%)`;
+        ctx.moveTo(6.5, 0);
+        ctx.lineTo(-4.5, 3.2);
+        ctx.lineTo(-4.5, -3.2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      if (!runningRef.current) {
+        ctx.fillStyle = "rgba(3,7,12,0.5)";
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.9)";
+        ctx.font = "bold 16px ui-sans-serif,system-ui,sans-serif";
+        ctx.fillText(es ? "Pausado" : "Paused", W / 2 - 32, H / 2);
+      }
+
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [es]);
+
+  const onPointerMove = (e: ReactPointerEvent<HTMLCanvasElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouse.current.x = ((e.clientX - rect.left) / rect.width) * W;
+    mouse.current.y = ((e.clientY - rect.top) / rect.height) * H;
+    mouse.current.active = true;
+  };
+  const onPointerLeave = () => {
+    mouse.current.active = false;
+  };
+
+  return (
+    <div className="mx-auto flex max-w-xl flex-col items-center gap-4">
+      <div className="w-full rounded-2xl border border-teal-400/25 bg-teal-950/40 p-3 backdrop-blur-sm">
+        <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-teal-300/85">
+          {es ? "Lab de bandada — Boids" : "Flocking lab — Boids"}
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <SimPrimaryButton theme="lab" onClick={() => setRunning((r) => !r)}>
+            {running ? (es ? "Pausa" : "Pause") : es ? "Seguir" : "Resume"}
+          </SimPrimaryButton>
+          <SimSecondaryButton theme="lab" onClick={reset}>
+            {es ? "Reiniciar" : "Reset"}
+          </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" onClick={() => addBoids(15)}>
+            {es ? "+ Boids" : "+ Boids"}
+          </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" active={trails} onClick={() => setTrails((t) => !t)}>
+            {es ? (trails ? "Estelas ✓" : "Estelas") : trails ? "Trails ✓" : "Trails"}
+          </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" active={mouseAttract} onClick={() => setMouseAttract((m) => !m)}>
+            {es ? (mouseAttract ? "Ratón ✓" : "Ratón") : mouseAttract ? "Mouse ✓" : "Mouse"}
+          </SimSecondaryButton>
+        </div>
+      </div>
+
+      <div className="grid w-full max-w-md gap-2 text-xs text-teal-100/85">
+        <label className="flex flex-col gap-1">
+          <span className="flex justify-between font-semibold">
+            <span>{es ? "Separación" : "Separation"}</span>
+            <span className="tabular-nums text-teal-300">{sep.toFixed(2)}</span>
+          </span>
+          <input type="range" min={0} max={250} value={Math.round(sep * 100)} onChange={(e) => setSep(Number(e.target.value) / 100)} className="h-2 w-full cursor-pointer accent-teal-400" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="flex justify-between font-semibold">
+            <span>{es ? "Alineación" : "Alignment"}</span>
+            <span className="tabular-nums text-teal-300">{align.toFixed(2)}</span>
+          </span>
+          <input type="range" min={0} max={200} value={Math.round(align * 100)} onChange={(e) => setAlign(Number(e.target.value) / 100)} className="h-2 w-full cursor-pointer accent-teal-400" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="flex justify-between font-semibold">
+            <span>{es ? "Cohesión" : "Cohesion"}</span>
+            <span className="tabular-nums text-teal-300">{coh.toFixed(2)}</span>
+          </span>
+          <input type="range" min={0} max={200} value={Math.round(coh * 100)} onChange={(e) => setCoh(Number(e.target.value) / 100)} className="h-2 w-full cursor-pointer accent-teal-400" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="flex justify-between font-semibold">
+            <span>{es ? "Velocidad" : "Speed"}</span>
+            <span className="tabular-nums text-teal-300">{speed.toFixed(2)}×</span>
+          </span>
+          <input type="range" min={30} max={180} value={Math.round(speed * 100)} onChange={(e) => setSpeed(Number(e.target.value) / 100)} className="h-2 w-full cursor-pointer accent-teal-400" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="flex justify-between font-semibold">
+            <span>{es ? "Radio de percepción" : "Perception radius"}</span>
+            <span className="tabular-nums text-teal-300">{perception}px</span>
+          </span>
+          <input type="range" min={30} max={140} value={perception} onChange={(e) => setPerception(Number(e.target.value))} className="h-2 w-full cursor-pointer accent-teal-400" />
+        </label>
+        <div className="flex items-center justify-between">
+          <span className="font-semibold">{es ? "Color por" : "Color by"}</span>
+          <div className="flex gap-2">
+            <SimSecondaryButton theme="lab" active={colorMode === "velocity"} onClick={() => setColorMode("velocity")}>
+              {es ? "Velocidad" : "Velocity"}
+            </SimSecondaryButton>
+            <SimSecondaryButton theme="lab" active={colorMode === "neighbors"} onClick={() => setColorMode("neighbors")}>
+              {es ? "Vecinos" : "Neighbors"}
+            </SimSecondaryButton>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative w-full max-w-[520px]">
+        <canvas
+          ref={canvasRef}
+          onPointerMove={onPointerMove}
+          onPointerLeave={onPointerLeave}
+          role="img"
+          aria-label={es ? "Laboratorio de bandada Boids" : "Boids flocking lab"}
+          className="w-full cursor-crosshair touch-none rounded-2xl border border-teal-400/30 bg-[#03070c]"
+          style={{ width: "100%", maxWidth: W, height: "auto", aspectRatio: `${W} / ${H}` }}
+        />
+      </div>
+
+      <p className="text-center text-[11px] text-teal-200/50">
+        {es
+          ? "Reglas clásicas de Craig Reynolds · canvas ligero · atrae con el ratón."
+          : "Classic Craig Reynolds rules · lightweight canvas · attract with mouse."}
+      </p>
+    </div>
+  );
+}
