@@ -25,7 +25,7 @@ weights_core:
 
 weights_growth:
   traffic-bets: 3
-  search-magnets: 1
+  search-magnets: 3
   growth-surfaces: 3
   share-hooks: 3
   retention-loops: 3
