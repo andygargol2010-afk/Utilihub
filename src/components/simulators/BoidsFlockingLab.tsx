@@ -1,1 +1,0 @@
-$(cat /tmp/boids/BoidsFlockingLab.tsx)
