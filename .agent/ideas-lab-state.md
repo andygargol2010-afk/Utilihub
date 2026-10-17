@@ -66,11 +66,11 @@ path_en: /games/pulse-catch-arena
 path_es: /es/juegos/pulse-catch-arena
 domain: games
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: url
 next_step_required: yes
-notes: DOMAIN ROLL U=0.858 → CORE. Weighted r=12.17/22 → games. last_closed search-magnets (GROWTH) — no re-roll. Weights: games→1, other CORE +1. Idea selected for rules/score visual game. EXECUTE 1/6: game shipped under existing games catalog + lazy GamePlayer. Paths corrected to /es/juegos/.... Next-step via relatedGames + GameShell. Adsterra kept. CWV: lazy route, fixed canvas, modest particles. EXECUTE 2/6: polish — pause/game-over overlays, +pts floaters, miss vignette, combo ring flash, idle start hint, aspect-ratio canvas, New badge + dark preview in catalog. Adsterra kept.
+notes: DOMAIN ROLL U=0.858 → CORE. Weighted r=12.17/22 → games. last_closed search-magnets (GROWTH) — no re-roll. Weights: games→1, other CORE +1. Idea selected for rules/score visual game. EXECUTE 1/6: game shipped under existing games catalog + lazy GamePlayer. Paths corrected to /es/juegos/.... Next-step via relatedGames + GameShell. Adsterra kept. CWV: lazy route, fixed canvas, modest particles. EXECUTE 2/6: polish — pause/game-over overlays, +pts floaters, miss vignette, combo ring flash, idle start hint, aspect-ratio canvas, New badge + dark preview in catalog. Adsterra kept. EXECUTE 3/6: life power-ups (green +1 vida, max 5), combo-reactive bar color/glow, difficulty level meter + Lv display, on-screen ← → hold buttons for mobile. Misses ignore life pulses. Adsterra kept.
 adsense-prep_runs: 3
 ```
 
