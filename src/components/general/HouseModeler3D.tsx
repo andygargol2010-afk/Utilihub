@@ -1023,8 +1023,8 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
       ctx.stroke();
       ctx.strokeStyle = "rgba(48,22,16,0.5)";
       ctx.stroke();
-      // Subtle weathering: a few chips and dust flecks so the tile course reads as aged clay rather than a uniform stamp.
-      if (hash2(c + 7, r + 19) > 0.72) {
+      // Subtle weathering: denser chips and dust flecks so the tile course reads as aged clay with natural surface variation.
+      if (hash2(c + 7, r + 19) > 0.58) {
         const chip = hash2(c + 13, r + 5);
         ctx.fillStyle = `rgba(${60 + Math.floor(chip * 40)},${28 + Math.floor(chip * 18)},${18 + Math.floor(chip * 10)},0.55)`;
         const cx = x + cw * (0.25 + chip * 0.5);
@@ -1033,12 +1033,24 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
         ctx.ellipse(cx, cy, cw * 0.08, rh * 0.06, chip * Math.PI, 0, Math.PI * 2);
         ctx.fill();
       }
-      if (hash2(c + 2, r + 31) > 0.85) {
+      // Extra fine surface flecks for denser clay porosity and mill variation.
+      for (let f = 0; f < 3; f++) {
+        if (hash2(c + 40 + f, r + 50) > 0.62) {
+          const fx = x + cw * (0.1 + hash2(c + 41 + f, r + 51) * 0.8);
+          const fy = y + rh * (0.15 + hash2(c + 42 + f, r + 52) * 0.7);
+          const fr = 0.5 + hash2(c + 43 + f, r + 53) * 1.2;
+          ctx.fillStyle = `rgba(${150 + Math.floor(hash2(c + 44 + f, r + 54) * 50)},${110 + Math.floor(hash2(c + 45 + f, r + 55) * 30)},${80 + Math.floor(hash2(c + 46 + f, r + 56) * 20)},${0.12 + hash2(c + 47 + f, r + 57) * 0.2})`;
+          ctx.beginPath();
+          ctx.arc(fx, fy, fr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      if (hash2(c + 2, r + 31) > 0.72) {
         ctx.fillStyle = "rgba(180,140,110,0.35)";
         ctx.fillRect(x + cw * 0.15, y + rh * 0.2, 2, 2);
       }
       // Soft moss patches in lower courses so the clay roof reads as weathered outdoor tile, not factory-fresh.
-      if (hash2(c + 17, r + 41) > 0.78 && r > 2) {
+      if (hash2(c + 17, r + 41) > 0.68 && r > 2) {
         const moss = hash2(c + 23, r + 9);
         const mx = x + cw * (0.2 + moss * 0.6);
         const my = y + rh * (0.55 + moss * 0.3);
