@@ -17,6 +17,16 @@ function currentSize() {
   return readFileSync(TARGET).length;
 }
 
+function ensurePixelihub(text) {
+  if (text.includes('"pixelihub"')) return { text, changed: false };
+  const needle = '"modelador-casas-3d": "Modelador de casas 3D",';
+  if (!text.includes(needle)) return { text, changed: false };
+  return {
+    text: text.replace(needle, needle + '\n  "pixelihub": "PixeliHub",'),
+    changed: true,
+  };
+}
+
 function restore() {
   if (!existsSync(P1) || !existsSync(P2)) {
     console.error("Missing backup parts");
@@ -33,15 +43,31 @@ function restore() {
     console.error("Backup too small", content.length);
     process.exit(1);
   }
-  const text = content.toString("utf8");
+  let text = content.toString("utf8");
   for (const sym of ["spanishCategoryName", "spanishToolName", "spanishToolPath", "spanishFinancialText", "ES_COPY"]) {
     if (!text.includes(sym)) {
       console.error("Missing", sym);
       process.exit(1);
     }
   }
-  writeFileSync(TARGET, content);
-  console.log("Restored", TARGET, content.length, createHash("sha256").update(content).digest("hex"));
+  const inj = ensurePixelihub(text);
+  text = inj.text;
+  writeFileSync(TARGET, text);
+  console.log("Restored", TARGET, text.length, createHash("sha256").update(text).digest("hex"), "pixelihub_injected", inj.changed);
+}
+
+function injectOnly() {
+  if (!existsSync(TARGET)) return false;
+  const text = readFileSync(TARGET, "utf8");
+  if (text.length < MIN_BYTES) return false;
+  const inj = ensurePixelihub(text);
+  if (!inj.changed) {
+    console.log("pixelihub already present");
+    return false;
+  }
+  writeFileSync(TARGET, inj.text);
+  console.log("Injected pixelihub", inj.text.length);
+  return true;
 }
 
 const size = currentSize();
@@ -49,5 +75,6 @@ if (process.argv.includes("--force") || size < MIN_BYTES) {
   console.log(`es.ts size=${size} -> restoring`);
   restore();
 } else {
-  console.log(`es.ts OK size=${size}`);
+  const changed = injectOnly();
+  if (!changed) console.log(`es.ts OK size=${size}`);
 }
