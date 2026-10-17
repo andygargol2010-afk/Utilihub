@@ -63,14 +63,14 @@ status: active
 idea: Interactive canvas game Pulse Catch Arena: falling neon pulses of varying colors and speeds that the player must catch with a movable bar (mouse or keyboard). Scoring with combos for consecutive catches, lives for misses, increasing difficulty. Visual particle effects on catch. Pure game loop with rules and score — not a calculator. EN+ES routes with lazy-loaded canvas. Visual payoff and shareable score.
 id: pulse-catch-arena
 path_en: /games/pulse-catch-arena
-path_es: /es/games/pulse-catch-arena
+path_es: /es/juegos/pulse-catch-arena
 domain: games
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: url
 next_step_required: yes
-notes: DOMAIN ROLL U=0.858 → CORE. Weighted r=12.17/22 → games. last_closed search-magnets (GROWTH) — no re-roll. Weights: games→1, other CORE +1. Idea selected for rules/score visual game.
+notes: DOMAIN ROLL U=0.858 → CORE. Weighted r=12.17/22 → games. last_closed search-magnets (GROWTH) — no re-roll. Weights: games→1, other CORE +1. Idea selected for rules/score visual game. EXECUTE 1/6: game shipped under existing games catalog + lazy GamePlayer. Paths corrected to /es/juegos/.... Next-step via relatedGames + GameShell. Adsterra kept. CWV: lazy route, fixed canvas, modest particles.
 adsense-prep_runs: 3
 ```
 

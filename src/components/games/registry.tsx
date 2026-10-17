@@ -30,6 +30,9 @@ const LightsOutGame = lazy(() => import("./LightsOutGame").then((m) => ({ defaul
 const MagneticLetterCatcherGame = lazy(() =>
   import("./MagneticLetterCatcherGame").then((m) => ({ default: m.MagneticLetterCatcherGame })),
 );
+const PulseCatchArenaGame = lazy(() =>
+  import("./PulseCatchArenaGame").then((m) => ({ default: m.PulseCatchArenaGame })),
+);
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -60,6 +63,7 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "luces-fuera": LightsOutGame,
   "magnetic-letter-catcher": MagneticLetterCatcherGame,
   "atrapa-letras-magneticas": MagneticLetterCatcherGame,
+  "pulse-catch-arena": PulseCatchArenaGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {

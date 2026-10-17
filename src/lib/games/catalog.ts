@@ -101,7 +101,7 @@ export const GAMES: readonly GameDef[] = [
     nameEn: "Sudoku",
     nameEs: "Sudoku",
     tag: "puzzle",
-    emoji: "9️⃣",
+    emoji: "🔹",
     summaryEn: "Fill the grid: no repeats in row, column, or box.",
     summaryEs: "Completá la grilla sin repetir en fila, columna o bloque.",
     hasScore: true,
@@ -205,6 +205,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Atrapá las letras flotantes de tu nombre en orden con el atractor magnético. Combos, modos y PNG compartible.",
     hasScore: true,
   },
+  {
+    slug: "pulse-catch-arena",
+    slugEs: "pulse-catch-arena",
+    nameEn: "Pulse Catch Arena",
+    nameEs: "Pulse Catch Arena",
+    tag: "arcade",
+    emoji: "⚡",
+    summaryEn: "Catch falling neon pulses with your bar. Build combos, lose lives on misses, rising difficulty. Particle bursts on every catch.",
+    summaryEs: "Atrapá pulsos neón que caen con tu barra. Construí combos, perdes vidas si fallás, dificultad creciente. Explosiones de partículas en cada captura.",
+    hasScore: true,
+  },
 ] as const;
 
 /** Next-step games for retention (first = primary). Keys = EN slug. */
@@ -226,6 +237,7 @@ export const GAME_JOURNEYS: Record<string, string[]> = {
   "refraction-challenge": ["pathfinder", "pong", "snake", "lights-out"],
   "lights-out": ["sudoku", "minesweeper", "memory", "pathfinder"],
   "magnetic-letter-catcher": ["snake", "pacman", "tetris", "code-type-race"],
+  "pulse-catch-arena": ["pong", "snake", "tetris", "magnetic-letter-catcher"],
 };
 
 export function relatedGames(current: Pick<GameDef, "slug" | "tag">): GameDef[] {

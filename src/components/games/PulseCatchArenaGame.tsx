@@ -1,0 +1,349 @@
+import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import type { GameLocale } from "@/lib/games/catalog";
+import { readBestScore, writeBestScore } from "@/lib/games/scores";
+import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
+
+const W = 360;
+const H = 480;
+const BAR_W = 72;
+const BAR_H = 12;
+const BAR_Y = H - 36;
+
+type Pulse = {
+  x: number;
+  y: number;
+  r: number;
+  vy: number;
+  hue: number;
+  rare?: boolean;
+};
+
+type Particle = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  hue: number;
+  size: number;
+};
+
+export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) {
+  const es = locale === "es";
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [running, setRunning] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [score, setScore] = useState(0);
+  const [combo, setCombo] = useState(1);
+  const [lives, setLives] = useState(3);
+  const [best, setBest] = useState(0);
+  const [shared, setShared] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+
+  const pulsesRef = useRef<Pulse[]>([]);
+  const particlesRef = useRef<Particle[]>([]);
+  const barXRef = useRef(W / 2 - BAR_W / 2);
+  const keysRef = useRef({ left: false, right: false });
+  const spawnTimerRef = useRef(0);
+  const elapsedRef = useRef(0);
+  const comboRef = useRef(1);
+  const livesRef = useRef(3);
+  const scoreRef = useRef(0);
+  const runningRef = useRef(false);
+  const gameOverRef = useRef(false);
+
+  useEffect(() => {
+    setBest(readBestScore("pulse-catch-arena"));
+  }, []);
+
+  useEffect(() => {
+    comboRef.current = combo;
+    livesRef.current = lives;
+    scoreRef.current = score;
+    runningRef.current = running;
+    gameOverRef.current = gameOver;
+  }, [combo, lives, score, running, gameOver]);
+
+  const hardReset = useCallback(() => {
+    pulsesRef.current = [];
+    particlesRef.current = [];
+    barXRef.current = W / 2 - BAR_W / 2;
+    spawnTimerRef.current = 0;
+    elapsedRef.current = 0;
+    setScore(0);
+    setCombo(1);
+    setLives(3);
+    setGameOver(false);
+    setPaused(false);
+    setRunning(true);
+    comboRef.current = 1;
+    livesRef.current = 3;
+    scoreRef.current = 0;
+    runningRef.current = true;
+    gameOverRef.current = false;
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
+        e.preventDefault();
+        keysRef.current.left = e.type === "keydown";
+      }
+      if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
+        e.preventDefault();
+        keysRef.current.right = e.type === "keydown";
+      }
+      if ((e.key === " " || e.key === "p" || e.key === "P") && e.type === "keydown") {
+        e.preventDefault();
+        if (gameOverRef.current || !runningRef.current) {
+          hardReset();
+        } else {
+          setPaused((p) => !p);
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("keyup", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("keyup", onKey);
+    };
+  }, [hardReset]);
+
+  useEffect(() => {
+    if (!running) return;
+    let raf = 0;
+    const tick = () => {
+      if (!paused && !gameOver) {
+        elapsedRef.current += 16;
+        const difficulty = 1 + elapsedRef.current / 25000;
+        spawnTimerRef.current += 16;
+        const spawnInterval = Math.max(280, 900 - difficulty * 120);
+        if (spawnTimerRef.current >= spawnInterval) {
+          spawnTimerRef.current = 0;
+          const rare = Math.random() < 0.07;
+          pulsesRef.current.push({
+            x: 20 + Math.random() * (W - 40),
+            y: -10,
+            r: rare ? 14 : 9 + Math.random() * 4,
+            vy: (1.6 + Math.random() * 1.2) * difficulty * (rare ? 0.85 : 1),
+            hue: rare ? 40 + Math.random() * 20 : 160 + Math.random() * 160,
+            rare,
+          });
+        }
+
+        // move bar
+        const speed = 5.5;
+        if (keysRef.current.left) barXRef.current = Math.max(0, barXRef.current - speed);
+        if (keysRef.current.right) barXRef.current = Math.min(W - BAR_W, barXRef.current + speed);
+
+        // update pulses
+        pulsesRef.current = pulsesRef.current.filter((p) => {
+          p.y += p.vy;
+          // catch
+          if (
+            p.y + p.r >= BAR_Y &&
+            p.y - p.r <= BAR_Y + BAR_H &&
+            p.x >= barXRef.current - 4 &&
+            p.x <= barXRef.current + BAR_W + 4
+          ) {
+            const c = comboRef.current;
+            const pts = Math.round((p.rare ? 18 : 8) * c);
+            setScore((s) => {
+              const next = s + pts;
+              setBest((b) => writeBestScore("pulse-catch-arena", Math.max(b, next)));
+              return next;
+            });
+            const nextC = Math.min(c + 1, 20);
+            setCombo(nextC);
+            comboRef.current = nextC;
+            // particles
+            const n = p.rare ? 22 : 14;
+            for (let i = 0; i < n; i++) {
+              particlesRef.current.push({
+                x: p.x,
+                y: p.y,
+                vx: (Math.random() - 0.5) * 6,
+                vy: (Math.random() - 0.5) * 6 - 1,
+                life: 28,
+                hue: p.hue + (Math.random() - 0.5) * 40,
+                size: p.rare ? 3 : 2.2,
+              });
+            }
+            return false;
+          }
+          // miss
+          if (p.y - p.r > H) {
+            setLives((l) => {
+              const next = l - 1;
+              livesRef.current = next;
+              if (next <= 0) {
+                setGameOver(true);
+                gameOverRef.current = true;
+                setRunning(false);
+                runningRef.current = false;
+              }
+              return next;
+            });
+            setCombo(1);
+            comboRef.current = 1;
+            return false;
+          }
+          return true;
+        });
+
+        // particles
+        particlesRef.current = particlesRef.current.filter((pt) => {
+          pt.x += pt.vx;
+          pt.y += pt.vy;
+          pt.vy += 0.08;
+          pt.life -= 1;
+          return pt.life > 0;
+        });
+      }
+
+      // draw
+      const ctx = canvasRef.current?.getContext("2d");
+      if (ctx) {
+        ctx.fillStyle = "#05050a";
+        ctx.fillRect(0, 0, W, H);
+
+        // ambient
+        ctx.globalAlpha = 0.15;
+        ctx.fillStyle = "#7dd3fc";
+        for (let i = 0; i < 28; i++) {
+          const ax = (i * 73 + elapsedRef.current * 0.04) % W;
+          const ay = (i * 41 + elapsedRef.current * 0.03) % H;
+          ctx.beginPath();
+          ctx.arc(ax, ay, 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
+        // pulses
+        for (const p of pulsesRef.current) {
+          ctx.save();
+          ctx.shadowBlur = p.rare ? 28 : 18;
+          ctx.shadowColor = `hsl(${p.hue},100%,65%)`;
+          ctx.fillStyle = `hsl(${p.hue},100%,${p.rare ? 60 : 70}%)`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = p.rare ? "#fef3c7" : "#fff";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 0.38, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        // particles
+        for (const pt of particlesRef.current) {
+          ctx.globalAlpha = pt.life / 28;
+          ctx.fillStyle = `hsl(${pt.hue},100%,70%)`;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
+        // bar
+        ctx.save();
+        ctx.shadowBlur = 16;
+        ctx.shadowColor = "#22d3ee";
+        const g = ctx.createLinearGradient(barXRef.current, BAR_Y, barXRef.current + BAR_W, BAR_Y);
+        g.addColorStop(0, "#22d3ee");
+        g.addColorStop(1, "#0891b2");
+        ctx.fillStyle = g;
+        ctx.fillRect(barXRef.current, BAR_Y, BAR_W, BAR_H);
+        ctx.restore();
+
+        if (gameOver) {
+          ctx.fillStyle = "rgba(0,0,0,0.6)";
+          ctx.fillRect(0, 0, W, H);
+          ctx.fillStyle = "#fff";
+          ctx.font = "bold 22px system-ui";
+          ctx.textAlign = "center";
+          ctx.fillText(es ? "Fin del juego" : "Game Over", W / 2, H / 2 - 10);
+          ctx.font = "14px system-ui";
+          ctx.fillText(`${es ? "Puntos" : "Score"}: ${scoreRef.current}`, W / 2, H / 2 + 16);
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [running, paused, gameOver, es]);
+
+  const onPointerMove = (e: ReactPointerEvent<HTMLCanvasElement>) => {
+    if (!running || paused || gameOver) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * W;
+    barXRef.current = Math.max(0, Math.min(W - BAR_W, x - BAR_W / 2));
+  };
+
+  const share = async () => {
+    const text = es
+      ? `Hice ${best} puntos en Pulse Catch Arena en UtiliHub! ¿Podés superarme? https://utilihub.net/es/juegos/pulse-catch-arena`
+      : `I scored ${best} in Pulse Catch Arena on UtiliHub! Can you beat it? https://utilihub.net/games/pulse-catch-arena`;
+    try {
+      if (navigator.share) await navigator.share({ title: "Pulse Catch Arena", text });
+      else {
+        await navigator.clipboard.writeText(text);
+        setShared(true);
+        setTimeout(() => setShared(false), 1600);
+      }
+    } catch {
+      try {
+        await navigator.clipboard.writeText(text);
+        setShared(true);
+        setTimeout(() => setShared(false), 1600);
+      } catch {}
+    }
+  };
+
+  return (
+    <div className="mx-auto flex max-w-md flex-col items-center gap-3">
+      <div className="flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-emerald-100/90">
+        <span>
+          {es ? "Puntos" : "Score"}: <span className="text-cyan-300">{score}</span>
+        </span>
+        <span>
+          Combo: <span className="text-fuchsia-300">x{combo}</span>
+        </span>
+        <span>
+          {es ? "Vidas" : "Lives"}: <span className="text-rose-300">{"❤".repeat(lives)}</span>
+        </span>
+        <span>
+          {es ? "Mejor" : "Best"}: <span className="text-amber-300">{best}</span>
+        </span>
+        {!running || gameOver ? (
+          <GamePrimaryButton onClick={hardReset}>{es ? "Jugar" : "Play"}</GamePrimaryButton>
+        ) : (
+          <>
+            <GameSecondaryButton onClick={() => setPaused((p) => !p)} active={paused}>
+              {paused ? (es ? "Seguir" : "Resume") : es ? "Pausa" : "Pause"}
+            </GameSecondaryButton>
+            <GamePrimaryButton onClick={hardReset}>{es ? "Reiniciar" : "Restart"}</GamePrimaryButton>
+          </>
+        )}
+        {best > 0 && (
+          <GameSecondaryButton onClick={share}>{shared ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}</GameSecondaryButton>
+        )}
+      </div>
+      <canvas
+        ref={canvasRef}
+        width={W}
+        height={H}
+        onPointerMove={onPointerMove}
+        className="touch-none rounded-xl border border-cyan-500/20 bg-black shadow-[0_0_0_1px_rgba(34,211,238,0.2),0_16px_40px_rgba(0,0,0,0.45)]"
+        style={{ width: "100%", maxWidth: W, height: "auto" }}
+      />
+      <p className="text-center text-[11px] text-white/50">
+        {es
+          ? "Arrastrá o ←→ / A D para mover la barra. Atrapá los pulsos. Combos suben puntos. 3 vidas."
+          : "Drag or ←→ / A D to move the bar. Catch pulses. Combos boost score. 3 lives."}
+      </p>
+    </div>
+  );
+}
