@@ -63,14 +63,14 @@ status: active
 idea: Original SEO guide (EN+ES) on Canvas and WebGL performance for interactive web experiences. Cover techniques for maintaining smooth 60fps in particle systems, physics sims, and playgrounds: requestAnimationFrame best practices, off-main-thread work, object pooling, devicePixelRatio handling, reduced motion, mobile budgets, and measuring with Performance API. Link from relevant playgrounds/simulators without bloating home. Lightweight static pages, original text, no thin AI content.
 id: canvas-webgl-performance-guide
 path_en: /guides/canvas-webgl-performance
-path_es: /es/guides/canvas-webgl-performance
+path_es: /es/guias/rendimiento-canvas-webgl
 domain: search-magnets
 runs_total: 3
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: IDEATE roll U=0.308→GROWTH, U_g=0.049→FIXED→search-magnets. Complements recent particle/pendulum work. Adsterra untouched. EXECUTE: created static EN+ES pages + sitemap entry. Next: add lightweight links from relevant playgrounds/simulators.
+notes: IDEATE roll U=0.308→GROWTH, U_g=0.049→FIXED→search-magnets. Complements recent particle/pendulum work. Adsterra untouched. EXECUTE: EN page existed; added full ES page + fixed EN hreflang to /es/guias/rendimiento-canvas-webgl. Next run: add lightweight links from relevant playgrounds/simulators (gravity-particles, particle-magnets, double-pendulum).
 adsense-prep_runs: 3
 ```
 
