@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 171
+runs_done: 172
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 332780
-last_known_good_hint: 898cc2d (~332780 bytes, verified 2026-10-17 PRODUCT masonry lichen)
+approx_bytes: 333771
+last_known_good_hint: d8d0968 (~333771 bytes, verified 2026-10-17 PRODUCT grass flecks)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-17
 SEO_LOCALES_ACTIVE: none
-deploy: pending check for 898cc2d
-note: Roll 6 → PRODUCT task 1 POLISH DEFAULT TEXTURES (ashlar masonry walls). Local-clone surgical: added lichen patches and surface chips to paintWallMasonry. Monolith 332780 bytes intact; paint helpers + door conditional=1.
+deploy: pending check for d8d0968
+note: Roll 3 → PRODUCT task 1 POLISH DEFAULT TEXTURES (grass/ground). Local-clone surgical: added clover clusters and wildflower flecks to paintGrass. Monolith 333771 bytes intact; paint helpers + door conditional=1.
 ```
 
 Refresh after each run.
