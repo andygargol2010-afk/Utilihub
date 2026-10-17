@@ -1,0 +1,35 @@
+name: Apply PixeliHub share
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/apply-share-pixelihub.py"
+      - ".github/workflows/apply-share-pixelihub.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 20
+
+      - name: Patch share
+        run: python3 scripts/apply-share-pixelihub.py
+
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/PixelArtStudio.tsx
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "feat(pixelihub): share artwork via URL hash (roadmap item 13)"
+          git push
