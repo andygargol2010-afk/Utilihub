@@ -11,17 +11,17 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: search-magnets
-last_closed_id: canvas-webgl-performance-guide
+last_closed_domain: games
+last_closed_id: pulse-catch-arena
 p_fixed: 0.35
 
 weights_core:
-  kits: 8
-  journeys: 4
-  games: 1
-  simulators: 3
-  studio-composition: 5
-  playgrounds: 2
+  kits: 9
+  journeys: 5
+  games: 2
+  simulators: 1
+  studio-composition: 6
+  playgrounds: 3
 
 weights_growth:
   traffic-bets: 3
@@ -42,6 +42,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-17 | games | pulse-catch-arena | Pulse Catch Arena (EN+ES)
 - 2026-10-17 | search-magnets | canvas-webgl-performance-guide | Canvas & WebGL Performance Guide (EN+ES)
 - 2026-10-17 | adsense-prep | cookie-policy | Cookie Policy pages (EN+ES)
 - 2026-10-17 | playgrounds | particle-magnet-lab | Particle Magnet Lab (EN+ES)
@@ -51,7 +52,6 @@ adsense-prep_runs: 3
 - 2026-10-16 | search-magnets | particle-physics-guide | Particle Physics SEO Guide (EN+ES)
 - 2026-10-16 | traffic-bets | traffic-events | Traffic Events Instrumentation
 - 2026-10-15 | journeys | river-light | River of Light Journey
-- 2026-10-15 | studio-composition | glow-trail | Glow Trail Composer
 ```
 
 ---
@@ -60,17 +60,17 @@ adsense-prep_runs: 3
 
 ```
 status: active
-idea: Interactive canvas game Pulse Catch Arena: falling neon pulses of varying colors and speeds that the player must catch with a movable bar (mouse or keyboard). Scoring with combos for consecutive catches, lives for misses, increasing difficulty. Visual particle effects on catch. Pure game loop with rules and score — not a calculator. EN+ES routes with lazy-loaded canvas. Visual payoff and shareable score.
-id: pulse-catch-arena
-path_en: /games/pulse-catch-arena
-path_es: /es/juegos/pulse-catch-arena
-domain: games
+idea: Interactive canvas Boids Flocking Lab: a live flock of colored particles (boids) that follow classic separation, alignment, and cohesion rules. User-adjustable sliders for each rule strength, speed, and perception radius. Visual trails, color by velocity or neighbor count, mild attraction to mouse cursor. Pure evolving system visualization with parameters — not a calculator. EN+ES routes with lazy-loaded canvas. Visual payoff of emergent flocking behavior.
+id: boids-flocking-lab
+path_en: /simulators/boids-flocking-lab
+path_es: /es/simuladores/boids-flocking-lab
+domain: simulators
 runs_total: 6
-runs_remaining: 0
+runs_remaining: 6
 acceptance: pending
 share: url
-next_step_required: yes
-notes: DOMAIN ROLL U=0.858 → CORE. Weighted r=12.17/22 → games. last_closed search-magnets (GROWTH) — no re-roll. Weights: games→1, other CORE +1. Idea selected for rules/score visual game. EXECUTE 1/6: game shipped under existing games catalog + lazy GamePlayer. Paths corrected to /es/juegos/.... Next-step via relatedGames + GameShell. Adsterra kept. CWV: lazy route, fixed canvas, modest particles. EXECUTE 2/6: polish — pause/game-over overlays, +pts floaters, miss vignette, combo ring flash, idle start hint, aspect-ratio canvas, New badge + dark preview in catalog. Adsterra kept. EXECUTE 3/6: life power-ups (green +1 vida, max 5), combo-reactive bar color/glow, difficulty level meter + Lv display, on-screen ← → hold buttons for mobile. Misses ignore life pulses. Adsterra kept. EXECUTE 4/6: visual polish — pulse trails, mild catch shake, rare outer ring, vertical combo meter. Adsterra kept. CWV: no new deps, modest extra draws. EXECUTE 5/6: perfect-center catch bonus (1.6× + PERFECT floater) + intensifying horizontal combo grid. Adsterra kept. CWV: no new deps, modest grid draws. EXECUTE 6/6: fever mode (combo≥8 faster bar + purple ambient) + NEW BEST! floater + extra particles on perfect. Adsterra kept. CWV: no new deps, modest extra draws.
+next_step_required: no
+notes: DOMAIN ROLL U=0.543 → CORE. Weighted r=14.01/23 → simulators. last_closed games (CORE) — no re-roll. Weights: simulators→1, other CORE +1. Idea selected for evolving physics visualization. IDEATE: set ACTIVE. Next EXECUTE ships the canvas experience.
 adsense-prep_runs: 3
 ```
 
