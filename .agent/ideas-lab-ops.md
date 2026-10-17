@@ -49,8 +49,12 @@ Not a new product. Goal = **raise the quality standard** of one *existing* inter
 
 ### IDEATE steps
 
-1. **Decide family:** pick one of `playgrounds` | `games` | `simulators` (not kits/journeys unless the target is clearly that family). Prefer the family with enough shipped candidates.
-2. **Sample three existing** shipped experiences in that family (paths live on site / in repo). If fewer than three exist in-family, pull the closest from the other two families and note it.
+1. **Decide family (mandatory random):** draw U_f ~ Uniform(0,1). Map equally:
+   - U_f < 1/3 → `playgrounds`
+   - 1/3 ≤ U_f < 2/3 → `games`
+   - U_f ≥ 2/3 → `simulators`
+   **Forbidden:** choosing the family because it has “more material”, more recent closes, or feels safer. Catalog size must not bias the roll. Record `U_f` and the chosen family in `notes`.
+2. **Sample three existing** shipped experiences in that family (paths live on site / in repo). If fewer than three exist in-family, fill the shortfall from the other two families and note the mix — still do not re-roll the family just because the catalog is thin.
 3. **Compare** them on: visual polish, interaction depth, mobile UX, feature completeness, delight, CWV cost. Write a short comparison in `notes`.
 4. **Choose target:**
    - If one is **notably weaker** than the other two → that is the target (raise it *past* the peers, not merely level with them).
@@ -142,7 +146,7 @@ runs_remaining: <same at IDEATE>
 acceptance: pending
 share: url | png | both | n/a
 next_step_required: yes | no
-notes: <roll math + locale if seo-locales; quality-lift: list the 3 compared + elevated standard>
+notes: <roll math + locale if seo-locales; quality-lift: U_f + family + the 3 compared + elevated standard>
 adsense-prep_runs: <n>
 ```
 
@@ -169,7 +173,7 @@ Weight sampling: CORE cumulative; GROWTH two-urn (seo-locales in FLEX only; **sk
 
 ## Spanish summary template
 
-Deploy; smoke; outcome; ACTIVE PROJECT; locale/registry if seo-locales (N/5 active); quality-lift peers + elevated bar if quality-lift; commits; Adsterra; next step.
+Deploy; smoke; outcome; ACTIVE PROJECT; locale/registry if seo-locales (N/5 active); quality-lift U_f/family/peers + elevated bar if quality-lift; commits; Adsterra; next step.
 
 ---
 
@@ -177,6 +181,6 @@ Deploy; smoke; outcome; ACTIVE PROJECT; locale/registry if seo-locales (N/5 acti
 
 - Guard Core Web Vitals on every ship (lazy routes, no home bloat, modest mobile cost).
 
-Spanish summary; correct identity; quality > novelty; one outcome; next-step when required; never remove Adsterra; files win over automation prompt; two-urn GROWTH; truncation → re-read not invent; seo-locales → registry sync + no EN/ES nav links; **retire seo-locales domain at 5 active**; **quality-lift → compare 3, elevate above peers, 5–10 runs, no parity polish**.
+Spanish summary; correct identity; quality > novelty; one outcome; next-step when required; never remove Adsterra; files win over automation prompt; two-urn GROWTH; truncation → re-read not invent; seo-locales → registry sync + no EN/ES nav links; **retire seo-locales domain at 5 active**; **quality-lift → U_f uniform family, compare 3, elevate above peers, 5–10 runs, no parity polish**.
 
 <!-- end:ideas-lab-ops.md -->
