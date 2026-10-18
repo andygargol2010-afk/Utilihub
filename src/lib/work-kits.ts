@@ -85,6 +85,15 @@ export const WORK_KITS: WorkKit[] = [
     outcome: "A ready packing list with weight under control, right in the browser.",
     toolSlugs: [],
   },
+  {
+    slug: "kit-renovacion-hogar",
+    englishSlug: "home-renovation-kit",
+    name: "Home renovation kit",
+    eyebrow: "Plan a room refresh",
+    description: "Interactive multi-step board to measure a room, estimate flooring and paint, track costs, checklist progress, and focus timer. A living renovation plan in the browser.",
+    outcome: "A clear renovation plan with live calculations and progress, ready to copy or share.",
+    toolSlugs: [],
+  },
 ];
 
 export function kitTools(kit: WorkKit): CatalogTool[] {
