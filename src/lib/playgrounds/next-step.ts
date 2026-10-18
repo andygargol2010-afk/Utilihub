@@ -235,6 +235,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     pathEs: "/es/rio-luz",
     emoji: "🌊",
   },
+  {
+    id: "waypoint-river-composer",
+    nameEn: "Waypoint River Composer",
+    nameEs: "Compositor Río de Waypoints",
+    blurbEn: "Place sequential waypoints to compose a flowing light-river journey with stage gradients.",
+    blurbEs: "Colocá waypoints secuenciales para componer un viaje de río de luz con degradados por etapa.",
+    pathEn: "/journeys/waypoint-river-composer",
+    pathEs: "/es/viajes/compositor-rio-waypoints",
+    emoji: "🌊",
+  },
 ] as const;
 
 /** First id = primary next step. */
@@ -261,6 +271,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "pulse-catch": ["firework", "particles", "gravity-particles", "neon-sign"],
   "glow-trail": ["gravity-ribbon-canvas", "kaleidoscope-mandala", "neon-sign", "particle-signature"],
   "river-light": ["glow-trail", "aurora", "neon-sign", "particles"],
+  "waypoint-river-composer": ["river-light", "glow-trail", "aurora", "neon-signature-composer"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
