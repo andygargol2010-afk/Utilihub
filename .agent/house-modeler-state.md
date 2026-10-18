@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 198
+runs_done: 199
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 337848
-last_known_good_hint: 7410e8a (~337848 bytes, foundation densify; previous Sky 2ca3a66)
+approx_bytes: 337852
+last_known_good_hint: df0b233 (~337852 bytes, gravel densify; previous foundation 7410e8a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: READY for 7410e8a (foundation densify) and subsequent perf commits on fix/spanish-complete
-note: META verified monolith intact (large blob, paint helpers present), deploys READY, no ERROR. No product change.
+deploy: READY for df0b233 (gravel densify) on fix/spanish-complete
+note: PRODUCT densified path gravel texture (more pebbles/grit/litter/shadows); monolith intact, deploy READY.
 ```
 
 Refresh after each run.
@@ -83,6 +83,7 @@ Monolith SHA 7410e8a after PRODUCT run 197 (foundation densify).
 Unrelated catalog ERROR fixed; surface intact.
 MODELADOR-3D plastic preset at 5b2a3af / cb5c0b7.
 META run 198: confirmed READY deploys post-7410e8a; monolith size healthy; SEO locales none.
+Monolith SHA df0b233 after PRODUCT run 199 (gravel densify).
 ```
 
 <!-- end:house-modeler-state.md -->
