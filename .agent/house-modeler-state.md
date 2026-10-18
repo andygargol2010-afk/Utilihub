@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 203
+runs_done: 204
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 340335
-last_known_good_hint: fa241f92 (~340335 bytes, door metal densify; previous chimney 298f51d)
+approx_bytes: 340798
+last_known_good_hint: 484b4d9 (~340798 bytes, window timber sash densify; previous door metal fa241f92)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: MODELADOR-3D
+last_mode: PRODUCT
 last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: pending for 976dcd0d (rubber preset) on fix/spanish-complete
-note: MODELADOR-3D added rubber MatPreset (soft high-roughness matte) with EN/ES; house monolith untouched.
+deploy: pending for 484b4d9 (window sash densify) on fix/spanish-complete
+note: PRODUCT densified paintJoinery for richer cream enamel variation on window timber sash; metal alternate unchanged.
 ```
 
 Refresh after each run.
@@ -88,6 +88,7 @@ Monolith SHA 63335a3 after PRODUCT run 200 (ashlar masonry densify).
 Monolith SHA 298f51d after PRODUCT run 201 (chimney brick densify).
 Monolith SHA fa241f92 after PRODUCT run 202 (door metal densify).
 MODELADOR-3D rubber preset at 976dcd0d.
+Monolith SHA 484b4d9 after PRODUCT run 204 (window timber sash densify).
 ```
 
 <!-- end:house-modeler-state.md -->
