@@ -200,6 +200,8 @@ import { TRIP_TIME_TOOLS } from "./trip-time-tool";
 import { FORCE_CALCULATOR_TOOLS } from "./force-calculator-tool";
 import { BAC_CALCULATOR_TOOLS } from "./bac-calculator-tool";
 import { TIP_TAX_CALCULATOR_TOOLS } from "./tip-tax-calculator-tool";
+import { SPHERE_VOLUME_CALCULATOR_TOOLS } from "./sphere-volume-calculator-tool";
+import { SENTENCE_COUNTER_TOOLS } from "./sentence-counter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -405,4 +407,6 @@ export const GENERAL_TOOLS = [
   ...FORCE_CALCULATOR_TOOLS,
   ...BAC_CALCULATOR_TOOLS,
   ...TIP_TAX_CALCULATOR_TOOLS,
+  ...SPHERE_VOLUME_CALCULATOR_TOOLS,
+  ...SENTENCE_COUNTER_TOOLS,
 ];
