@@ -214,6 +214,8 @@ import { PROFIT_MARGIN_CALCULATOR_TOOLS } from "./profit-margin-calculator-tool"
 import { WEIGHTED_AVERAGE_CALCULATOR_TOOLS } from "./weighted-average-calculator-tool";
 import { CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS } from "./circle-circumference-calculator-tool";
 import { RECTANGLE_PERIMETER_CALCULATOR_TOOLS } from "./rectangle-perimeter-calculator-tool";
+import { PRESSURE_CONVERTER_TOOLS } from "./pressure-converter-tool";
+import { CALORIES_BURNED_CALCULATOR_TOOLS } from "./calories-burned-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -433,4 +435,6 @@ export const GENERAL_TOOLS = [
   ...WEIGHTED_AVERAGE_CALCULATOR_TOOLS,
   ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
   ...RECTANGLE_PERIMETER_CALCULATOR_TOOLS,
+  ...PRESSURE_CONVERTER_TOOLS,
+  ...CALORIES_BURNED_CALCULATOR_TOOLS,
 ];
