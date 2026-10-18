@@ -37,7 +37,7 @@ const labels = {
     clear: "Clear ribbons",
     reset: "Reset particles",
     undo: "Undo last ribbon",
-    help: "Draw freeform ribbons. Each ribbon has its own thickness and hue. Particles are pulled toward them and stream along the path with glowing additive trails that form temporary signatures. Multiple ribbons interact. Themes color both ribbons and particles.",
+    help: "Draw freeform ribbons. Each ribbon has its own thickness and hue. Particles are pulled toward them, stream along the path, and emit proximity sparkles when close, leaving glowing additive trails that form temporary signatures. Ribbons render with smooth curves. Multiple ribbons interact. Themes color both ribbons and particles.",
     ribbons: "Ribbons",
   },
   es: {
@@ -52,7 +52,7 @@ const labels = {
     clear: "Limpiar cintas",
     reset: "Reiniciar part\u00edculas",
     undo: "Deshacer \u00faltima cinta",
-    help: "Dibuj\u00e1 cintas libres. Cada cinta tiene su propio grosor y tono. Las part\u00edculas se atraen hacia ellas y fluyen a lo largo del camino dejando estelas brillantes aditivas que forman firmas temporales. Varias cintas interact\u00faan. Los temas colorean cintas y part\u00edculas.",
+    help: "Dibuj\u00e1 cintas libres. Cada cinta tiene su propio grosor y tono. Las part\u00edculas se atraen hacia ellas, fluyen a lo largo del camino y emiten destellos de proximidad cuando se acercan, dejando estelas brillantes aditivas que forman firmas temporales. Las cintas se renderizan con curvas suaves. Varias cintas interact\u00faan. Los temas colorean cintas y part\u00edculas.",
     ribbons: "Cintas",
   },
 };
@@ -216,8 +216,15 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
         const pts = ribbon.points;
         ctx.beginPath();
         ctx.moveTo(pts[0].x, pts[0].y);
-        for (let i = 1; i < pts.length; i++) {
-          ctx.lineTo(pts[i].x, pts[i].y);
+        if (pts.length === 2) {
+          ctx.lineTo(pts[1].x, pts[1].y);
+        } else {
+          for (let i = 1; i < pts.length - 1; i++) {
+            const xc = (pts[i].x + pts[i + 1].x) / 2;
+            const yc = (pts[i].y + pts[i + 1].y) / 2;
+            ctx.quadraticCurveTo(pts[i].x, pts[i].y, xc, yc);
+          }
+          ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y);
         }
         const baseHue = ribbon.hue;
         ctx.strokeStyle = `hsla(${baseHue}, 80%, 70%, 0.18)`;
@@ -324,6 +331,16 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `hsl(${hue}, 94%, 72%)`;
         ctx.fill();
+
+        // Proximity sparkles for higher visual payoff
+        if (bestDist < 32 && Math.random() < 0.35) {
+          const sparkAlpha = Math.min(0.55, (32 - bestDist) / 32 * 0.7 * gl);
+          const sparkSize = p.size * (2.2 + Math.random() * 1.4);
+          ctx.beginPath();
+          ctx.arc(p.x + (Math.random()-0.5)*4, p.y + (Math.random()-0.5)*4, sparkSize, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${(hue + 40) % 360}, 100%, 80%, ${sparkAlpha})`;
+          ctx.fill();
+        }
       }
 
       ctx.globalCompositeOperation = "source-over";
