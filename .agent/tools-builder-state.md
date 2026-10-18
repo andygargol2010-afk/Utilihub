@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-18 | texto | contador-consonantes | ConsonantCounterTool
+- 2026-10-18 | ciencia | calculadora-area-rectangulo | RectangleAreaCalculatorTool
 - 2026-10-18 | texto | contador-vocales | VowelCounterTool
 - 2026-10-18 | ciencia | calculadora-area-circulo | CircleAreaCalculatorTool
 - 2026-10-18 | texto | contador-frecuencia-palabras | WordFrequencyCounterTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-18 | ciencia | calculadora-volumen-esfera | SphereVolumeCalculatorTool
 - 2026-10-18 | finanzas | calculadora-propina-impuesto | TipTaxCalculatorTool
 - 2026-10-18 | salud | calculadora-bac | BacCalculatorTool
-- 2026-10-16 | viajes | calculadora-tiempo-viaje | TripTimeTool
-- 2026-10-16 | ciencia | calculadora-fuerza | ForceCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo)
 finanzas simples: recent (regla-72, propina-impuesto)
 hogar/construcción: recent
 % / math básica: recent (proporcion)
@@ -51,7 +51,7 @@ cocina: recent
 educacion: recent
 diseno: recent
 viajes: recent (tiempo-viaje)
-texto: recent (oraciones, parrafos, frecuencia, vocales)
+texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -73,6 +73,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-18 PRODUCT: shipped 2 (calculadora-volumen-cilindro ciencia + contador-parrafos texto). Saturation escape; distinct clusters. Anti-dupe OK. Registry surgical OK.
 2026-10-18 PRODUCT: shipped 2 (calculadora-densidad ciencia + contador-frecuencia-palabras texto). Saturation escape; distinct clusters. Anti-dupe OK (no existing density or word frequency). Registry surgical OK.
 2026-10-18 PRODUCT: shipped 2 (calculadora-area-circulo ciencia + contador-vocales texto). Saturation escape; distinct clusters. Anti-dupe OK (no existing dedicated circle area or vowel counter). Registry surgical OK.
+2026-10-18 PRODUCT: shipped 2 (calculadora-area-rectangulo ciencia + contador-consonantes texto). Saturation escape used; distinct clusters. Anti-dupe OK (no existing rectangle area or consonant counter). Registry surgical OK.
 ```
 
 ---
@@ -81,7 +82,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-area-circulo, contador-vocales
+last_slugs: calculadora-area-rectangulo, contador-consonantes
 last_deploy: pending verification
 ```
 
