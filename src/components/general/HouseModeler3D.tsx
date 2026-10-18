@@ -1703,31 +1703,48 @@ function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Occasional clover and wildflower flecks so the lawn reads as natural meadow turf, not uniform sod.
-  for (let f = 0; f < 14; f++) {
-    if (hash2(f, 33.1) > 0.55) continue;
+  for (let f = 0; f < 22; f++) { // denser flecks for richer meadow variation
+    if (hash2(f, 33.1) > 0.48) continue;
     const fx = hash2(f, 15.6) * size;
     const fy = hash2(f, 7.2) * size;
-    const isFlower = hash2(f, 22.8) > 0.6;
+    const isFlower = hash2(f, 22.8) > 0.55;
     if (isFlower) {
       const hue = hash2(f, 4.4);
-      const fr = 3 + Math.floor(hue * 4);
-      const fg = 120 + Math.floor(hue * 60);
-      const fb = 40 + Math.floor(hue * 40);
-      ctx.fillStyle = `rgba(${fr},${fg},${fb},0.55)`;
+      const fr = 3 + Math.floor(hue * 5);
+      const fg = 110 + Math.floor(hue * 70);
+      const fb = 35 + Math.floor(hue * 50);
+      ctx.fillStyle = `rgba(${fr},${fg},${fb},0.62)`;
       ctx.beginPath();
-      ctx.arc(fx, fy, 1.4, 0, Math.PI * 2);
+      ctx.arc(fx, fy, 1.6, 0, Math.PI * 2);
+      ctx.fill();
+      // Tiny petal hint
+      ctx.fillStyle = `rgba(${fr + 20},${fg + 15},${fb + 10},0.35)`;
+      ctx.beginPath();
+      ctx.arc(fx + 0.8, fy - 0.4, 0.7, 0, Math.PI * 2);
       ctx.fill();
     } else {
-      // Clover cluster
-      ctx.fillStyle = "rgba(48, 92, 36, 0.48)";
-      for (let c = 0; c < 3; c++) {
-        const ox = (hash2(f, c + 1) - 0.5) * 3.2;
-        const oy = (hash2(f, c + 5) - 0.5) * 2.4;
+      // Clover cluster denser
+      ctx.fillStyle = "rgba(42, 98, 32, 0.55)";
+      for (let c = 0; c < 4; c++) {
+        const ox = (hash2(f, c + 1) - 0.5) * 3.6;
+        const oy = (hash2(f, c + 5) - 0.5) * 2.8;
         ctx.beginPath();
-        ctx.ellipse(fx + ox, fy + oy, 1.6, 1.1, hash2(f, c) * Math.PI, 0, Math.PI * 2);
+        ctx.ellipse(fx + ox, fy + oy, 1.8, 1.2, hash2(f, c) * Math.PI, 0, Math.PI * 2);
         ctx.fill();
       }
     }
+  }
+  // Fine blade micro-variation so the field catches light with more depth.
+  for (let b = 0; b < 28; b++) {
+    const bx = hash2(b, 18.3) * size;
+    const by = hash2(b, 11.7) * size;
+    const blen = 3 + hash2(b, 6.4) * 5;
+    ctx.strokeStyle = `rgba(${70 + Math.floor(hash2(b, 2.1)*30)}, ${110 + Math.floor(hash2(b, 3.9)*40)}, 40, 0.32)`;
+    ctx.lineWidth = 0.7;
+    ctx.beginPath();
+    ctx.moveTo(bx, by);
+    ctx.lineTo(bx + (hash2(b, 4.2)-0.5)*2, by - blen);
+    ctx.stroke();
   }
 }
 
