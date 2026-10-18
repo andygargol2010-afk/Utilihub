@@ -204,6 +204,8 @@ import { SPHERE_VOLUME_CALCULATOR_TOOLS } from "./sphere-volume-calculator-tool"
 import { SENTENCE_COUNTER_TOOLS } from "./sentence-counter-tool";
 import { CYLINDER_VOLUME_CALCULATOR_TOOLS } from "./cylinder-volume-calculator-tool";
 import { PARAGRAPH_COUNTER_TOOLS } from "./paragraph-counter-tool";
+import { DENSITY_CALCULATOR_TOOLS } from "./density-calculator-tool";
+import { WORD_FREQUENCY_COUNTER_TOOLS } from "./word-frequency-counter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -413,4 +415,6 @@ export const GENERAL_TOOLS = [
   ...SENTENCE_COUNTER_TOOLS,
   ...CYLINDER_VOLUME_CALCULATOR_TOOLS,
   ...PARAGRAPH_COUNTER_TOOLS,
+  ...DENSITY_CALCULATOR_TOOLS,
+  ...WORD_FREQUENCY_COUNTER_TOOLS,
 ];
