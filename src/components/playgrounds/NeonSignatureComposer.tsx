@@ -86,8 +86,9 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       undo: "Undo stroke",
       clear: "Clear all",
       share: "Share URL",
+      download: "Download PNG",
       copied: "Copied!",
-      hint: "Draw freehand neon signatures. Multi-layer gradients, flowing glow, touch-friendly. Share via URL.",
+      hint: "Draw freehand neon signatures. Multi-layer gradients, flowing glow, touch-friendly. Share via URL or PNG.",
       layers: "Layers",
       up: "Up",
       down: "Down",
@@ -103,8 +104,9 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       undo: "Deshacer trazo",
       clear: "Limpiar todo",
       share: "Compartir URL",
+      download: "Descargar PNG",
       copied: "¡Copiado!",
-      hint: "Dibujá firmas de neón a mano alzada. Gradientes multicapa, brillo fluido, compatible con tacto. Compartí por URL.",
+      hint: "Dibujá firmas de neón a mano alzada. Gradientes multicapa, brillo fluido, compatible con tacto. Compartí por URL o PNG.",
       layers: "Capas",
       up: "Subir",
       down: "Bajar",
@@ -404,6 +406,15 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
     }).catch(() => {});
   };
 
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const link = document.createElement("a");
+    link.download = "neon-signature.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3 text-sm">
@@ -551,6 +562,13 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
           className="min-h-[44px] rounded-full bg-fuchsia-600 px-4 py-2 text-sm font-bold text-white hover:bg-fuchsia-500"
         >
           {copied ? labels.copied : labels.share}
+        </button>
+        <button
+          type="button"
+          onClick={downloadPng}
+          className="min-h-[44px] rounded-full bg-fuchsia-600 px-4 py-2 text-sm font-bold text-white hover:bg-fuchsia-500"
+        >
+          {labels.download}
         </button>
       </div>
 
