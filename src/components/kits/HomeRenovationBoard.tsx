@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Calculator, Clock, Copy, Ruler, CheckCircle2, Timer } from "lucide-react";
+import { Calculator, Clock, Copy, Ruler, CheckCircle2, Timer, Calendar } from "lucide-react";
 
 const STEPS = [
   { id: "measure", en: "Measure room", es: "Medir habitación" },
@@ -21,6 +21,8 @@ type State = {
   paintPrice: number;
   coverage: number;
   completed: string[];
+  startDate: string;
+  days: number;
 };
 
 const DEFAULT: State = {
@@ -31,6 +33,8 @@ const DEFAULT: State = {
   paintPrice: 12,
   coverage: 10,
   completed: [],
+  startDate: new Date().toISOString().slice(0, 10),
+  days: 14,
 };
 
 export function HomeRenovationBoard({ locale = "en" }: Props) {
@@ -77,7 +81,13 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
   const totalCost = floorCost + paintCost;
   const progress = (state.completed.length / STEPS.length) * 100;
 
-  function update(key: keyof State, value: number | string[]) {
+  const endDate = useMemo(() => {
+    const d = new Date(state.startDate);
+    d.setDate(d.getDate() + state.days);
+    return d.toISOString().slice(0, 10);
+  }, [state.startDate, state.days]);
+
+  function update(key: keyof State, value: number | string | string[]) {
     setState((prev) => ({ ...prev, [key]: value }));
   }
 
@@ -90,8 +100,8 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
 
   function copySlip() {
     const text = es
-      ? `Plan de renovación: ${floorArea.toFixed(1)} m² piso, ${paintLiters.toFixed(1)} L pintura, ~$${totalCost.toFixed(0)} total.`
-      : `Renovation plan: ${floorArea.toFixed(1)} m² floor, ${paintLiters.toFixed(1)} L paint, ~$${totalCost.toFixed(0)} total.`;
+      ? `Plan de renovación: ${floorArea.toFixed(1)} m² piso, ${paintLiters.toFixed(1)} L pintura, ~$${totalCost.toFixed(0)} total. Cronograma: ${state.startDate} a ${endDate} (${state.days} días).`
+      : `Renovation plan: ${floorArea.toFixed(1)} m² floor, ${paintLiters.toFixed(1)} L paint, ~$${totalCost.toFixed(0)} total. Timeline: ${state.startDate} to ${endDate} (${state.days} days).`;
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -100,6 +110,15 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
 
   const mins = Math.floor(timer / 60);
   const secs = timer % 60;
+
+  // Simple SVG room sketch (top-down, scaled)
+  const svgW = 200;
+  const svgH = 140;
+  const scale = Math.min(svgW / Math.max(state.length, 1), svgH / Math.max(state.width, 1)) * 0.8;
+  const roomW = state.length * scale;
+  const roomH = state.width * scale;
+  const offsetX = (svgW - roomW) / 2;
+  const offsetY = (svgH - roomH) / 2;
 
   return (
     <section className="mt-8 rounded-2xl border border-border/70 bg-surface/55 p-4 sm:p-5" aria-labelledby="renovation-board">
@@ -118,8 +137,8 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
       </div>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
         {es
-          ? "Medí dimensiones, calculá materiales y costos en vivo, marcá el checklist y usá el temporizador de foco. Todo local en el navegador."
-          : "Enter dimensions, see live material and cost estimates, check off steps, and use the focus timer. All local in the browser."}
+          ? "Medí dimensiones, calculá materiales y costos en vivo, marcá el checklist, definí el cronograma y usá el temporizador de foco. Todo local en el navegador."
+          : "Enter dimensions, see live material and cost estimates, check off steps, set a timeline, and use the focus timer. All local in the browser."}
       </p>
 
       <div className="mt-5 grid gap-6 lg:grid-cols-2">
@@ -143,6 +162,14 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
                   />
                 </label>
               ))}
+            </div>
+            {/* Visual room sketch */}
+            <div className="mt-4 flex justify-center">
+              <svg width={svgW} height={svgH} className="rounded border border-border/50 bg-muted/30" aria-label={es ? "Esquema de la habitación" : "Room sketch"}>
+                <rect x={offsetX} y={offsetY} width={roomW} height={roomH} fill="hsl(var(--primary)/0.15)" stroke="hsl(var(--primary))" strokeWidth="2" />
+                <text x={svgW / 2} y={offsetY - 4} textAnchor="middle" fontSize="10" fill="currentColor">{state.length.toFixed(1)} m</text>
+                <text x={offsetX - 4} y={svgH / 2} textAnchor="end" fontSize="10" fill="currentColor" transform={`rotate(-90 ${offsetX - 4} ${svgH / 2})`}>{state.width.toFixed(1)} m</text>
+              </svg>
             </div>
           </div>
 
@@ -196,6 +223,26 @@ done ? "text-primary" : "text-muted-foreground"}`} />
             <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
               <div className="h-full bg-primary transition-all" style={{ width: `${progress}%` }} />
             </div>
+          </div>
+
+          <div className="rounded-xl border border-border/70 bg-card p-4">
+            <div className="flex items-center gap-2 text-sm font-bold">
+              <Calendar className="size-4 text-primary" />
+              {es ? "Cronograma" : "Timeline"}
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+              <label>
+                {es ? "Inicio" : "Start"}
+                <input type="date" value={state.startDate} onChange={(e) => update("startDate", e.target.value)} className="mt-1 w-full rounded border px-2 py-1" />
+              </label>
+              <label>
+                {es ? "Días" : "Days"}
+                <input type="number" min="1" value={state.days} onChange={(e) => update("days", parseInt(e.target.value) || 1)} className="mt-1 w-full rounded border px-2 py-1" />
+              </label>
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {es ? `Fin estimado: ${endDate}` : `Est. end: ${endDate}`}
+            </p>
           </div>
 
           <div className="rounded-xl border border-border/70 bg-card p-4">
