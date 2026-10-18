@@ -64,7 +64,7 @@ status: active
 idea: Interactive Waypoint River Composer. Users place sequential waypoints on a canvas that connect into a flowing river path with animated light particles traveling along the progression, color gradients by journey stage, optional branching side paths, and waypoint markers with glow. Controls for flow speed, particle density, color themes, path smoothing, undo, and clear. Touch-friendly placement and drag. Goal is visual composition of a progressive light-river journey with high visual payoff and sense of forward motion, not a calculator.
 id: waypoint-river-composer
 path_en: /journeys/waypoint-river-composer
-path_es: /es/journeys/compositor-rio-waypoints
+path_es: /es/viajes/compositor-rio-waypoints
 domain: journeys
 runs_total: 6
 runs_remaining: 5
