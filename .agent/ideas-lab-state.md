@@ -67,13 +67,14 @@ path_en: /studio/neon-signature-composer
 path_es: /es/studio/compositor-firma-neon
 domain: studio-composition
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: url
 next_step_required: yes
 notes: IDEATE. Roll: U=0.609 → CORE; sample 20.81/34 → studio-composition (cumulative 19-28). last_closed kits ≠ studio-composition, no re-roll. Weights: selected→1, other CORE +1. Avoided recent particle/ribbon playgrounds. next-step required before Adsterra. Adsterra untouched. New composition-focused neon signature canvas.
 EXECUTE run 1/6: shipped NeonSignatureComposer component (freehand multi-layer strokes, persistent neon glow paths, brush/glow/opacity controls, color themes, layers, undo/clear, optional sparkles, touch-friendly). EN+ES routes at /studio/neon-signature-composer and /es/studio/compositor-firma-neon. Registered in next-step.ts (journeys to neon-sign, glow-trail etc.). PlaygroundNextStep before AdsterraBanner. Core Web Vitals: lazy route, fixed aspect canvas, modest particles. Share URL for controls planned next.
 EXECUTE run 2/6: added per-stroke linear color gradients (theme start→end colors, toggleable), layer reordering (up/down), synced gradient flag to layers. Visual payoff elevated with flowing color transitions along freehand neon paths. EN+ES labels updated. Adsterra untouched. CWV preserved (no new deps, modest canvas).
+EXECUTE run 3/6: added share URL via location.hash (serialize/deserialize layers with rounded points, btoa). Share button copies full URL; clear resets hash. Load-from-hash on mount restores composition + controls. EN+ES labels. Adsterra untouched. CWV preserved (no new deps).
 adsense-prep_runs: 3
 ```
 
