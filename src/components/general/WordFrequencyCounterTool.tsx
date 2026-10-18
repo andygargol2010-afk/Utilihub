@@ -60,7 +60,7 @@ export function WordFrequencyCounterTool({ locale = "en" }: { tool?: GeneralTool
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? ""hola hola mundo" → hola:2, mundo:1" : ""hello hello world" → hello:2, world:1"}</p>
+        <p>{es ? '"hola hola mundo" → hola:2, mundo:1' : '"hello hello world" → hello:2, world:1'}</p>
         <p>{es ? "Texto vacío → sin resultado" : "Empty text → no result"}</p>
       </div>
 
