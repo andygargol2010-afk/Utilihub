@@ -1024,7 +1024,7 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
       ctx.strokeStyle = "rgba(48,22,16,0.5)";
       ctx.stroke();
       // Subtle weathering: denser chips and dust flecks so the tile course reads as aged clay with natural surface variation.
-      if (hash2(c + 7, r + 19) > 0.58) {
+      if (hash2(c + 7, r + 19) > 0.48) {
         const chip = hash2(c + 13, r + 5);
         ctx.fillStyle = `rgba(${60 + Math.floor(chip * 40)},${28 + Math.floor(chip * 18)},${18 + Math.floor(chip * 10)},0.55)`;
         const cx = x + cw * (0.25 + chip * 0.5);
@@ -1034,7 +1034,7 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
         ctx.fill();
       }
       // Extra fine surface flecks for denser clay porosity and mill variation.
-      for (let f = 0; f < 3; f++) {
+      for (let f = 0; f < 6; f++) {
         if (hash2(c + 40 + f, r + 50) > 0.62) {
           const fx = x + cw * (0.1 + hash2(c + 41 + f, r + 51) * 0.8);
           const fy = y + rh * (0.15 + hash2(c + 42 + f, r + 52) * 0.7);
