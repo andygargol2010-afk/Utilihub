@@ -67,7 +67,7 @@ path_en: /studio/neon-signature-composer
 path_es: /es/studio/compositor-firma-neon
 domain: studio-composition
 runs_total: 6
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: url
 next_step_required: yes
@@ -76,6 +76,7 @@ EXECUTE run 1/6: shipped NeonSignatureComposer component (freehand multi-layer s
 EXECUTE run 2/6: added per-stroke linear color gradients (theme start→end colors, toggleable), layer reordering (up/down), synced gradient flag to layers. Visual payoff elevated with flowing color transitions along freehand neon paths. EN+ES labels updated. Adsterra untouched. CWV preserved (no new deps, modest canvas).
 EXECUTE run 3/6: added share URL via location.hash (serialize/deserialize layers with rounded points, btoa). Share button copies full URL; clear resets hash. Load-from-hash on mount restores composition + controls. EN+ES labels. Adsterra untouched. CWV preserved (no new deps).
 EXECUTE run 4/6: added PNG export button (canvas.toDataURL download as neon-signature.png). Share options now URL + image. EN+ES labels updated (download + hint). Adsterra untouched. CWV preserved (no new deps).
+EXECUTE run 5/6: added quadratic curve smoothing for fluid freehand neon strokes (quadraticCurveTo midpoint interpolation) and optional pulse glow animation (sinusoidal shadowBlur modulation via pulseTimeRef). Visual payoff elevated with smoother flowing paths and living glow. EN+ES labels for pulse toggle + updated hint. Adsterra untouched. CWV preserved (no new deps, modest animation).
 adsense-prep_runs: 3
 ```
 
