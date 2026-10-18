@@ -67,11 +67,11 @@ path_en: /playgrounds/gravity-ribbon-canvas
 path_es: /es/playgrounds/lienzo-cintas-gravedad
 domain: playgrounds
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: url
 next_step_required: yes
-notes: IDEATE. Roll: U=0.538 → CORE; sample 24.85/32 → playgrounds (cumulative 23-28). last_closed kits ≠ playgrounds, no re-roll. Weights: selected→1, other CORE +1. Avoided recent particle-magnet, constellation, firma-particulas. next-step required before Adsterra. Adsterra untouched. EXECUTE 1/6: core canvas (draw ribbons as attractors, particles + persistent trails, controls, mobile cap), EN+ES routes, next-step registration, hub cards. EXECUTE 2/6: theme-aware ribbon/particle colors, stronger glow trails with fading alpha, undo last ribbon, refined physics. Adsterra kept after next-step.
+notes: IDEATE. Roll: U=0.538 → CORE; sample 24.85/32 → playgrounds (cumulative 23-28). last_closed kits ≠ playgrounds, no re-roll. Weights: selected→1, other CORE +1. Avoided recent particle-magnet, constellation, firma-particulas. next-step required before Adsterra. Adsterra untouched. EXECUTE 1/6: core canvas (draw ribbons as attractors, particles + persistent trails, controls, mobile cap), EN+ES routes, next-step registration, hub cards. EXECUTE 2/6: theme-aware ribbon/particle colors, stronger glow trails with fading alpha, undo last ribbon, refined physics. EXECUTE 3/6: tangential flow bias along nearest ribbon segment + flow strength control so particles stream along paths (stronger flowing visual). Adsterra kept after next-step.
 adsense-prep_runs: 3
 ```
 
