@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 201
+runs_done: 202
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 338825
-last_known_good_hint: 298f51d (~338825 bytes, chimney brick densify; previous ashlar 63335a3)
+approx_bytes: 340335
+last_known_good_hint: fa241f92 (~340335 bytes, door metal densify; previous chimney 298f51d)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: READY for 298f51d (chimney brick densify) on fix/spanish-complete
-note: PRODUCT densified chimney brick texture (more micro-pits/grit/contact detail); monolith intact.
+deploy: pending for fa241f92 (door metal densify) on fix/spanish-complete
+note: PRODUCT densified door sheet-metal texture (more micro-scratches/grit/base weathering); monolith intact.
 ```
 
 Refresh after each run.
@@ -86,6 +86,7 @@ META run 198: confirmed READY deploys post-7410e8a; monolith size healthy; SEO l
 Monolith SHA df0b233 after PRODUCT run 199 (gravel densify).
 Monolith SHA 63335a3 after PRODUCT run 200 (ashlar masonry densify).
 Monolith SHA 298f51d after PRODUCT run 201 (chimney brick densify).
+Monolith SHA fa241f92 after PRODUCT run 202 (door metal densify).
 ```
 
 <!-- end:house-modeler-state.md -->
