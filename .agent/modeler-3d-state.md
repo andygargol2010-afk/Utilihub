@@ -9,7 +9,7 @@ modules: modeler3d-studio, modeler3d-core, modeler3d-three-init, modeler3d-helpe
 style: Tinkercad-like primitives studio (not house realism)
 last_mode: MATERIALS
 last_date: 2026-10-18
-note: Added plastic MatPreset (glossy clearcoat plastic look) with EN/ES labels. Surgical helpers edit.
+note: Added rubber MatPreset (soft high-roughness matte) with EN/ES labels. Surgical helpers edit.
 ```
 
 Update `last_mode` / `last_date` / short note after each MODELADOR-3D run.
