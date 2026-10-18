@@ -110,18 +110,39 @@ Touch only what the monorepo requires: catalog data, route-slugs, i18n, nav/site
    - If a cluster already has ≥3 in that window → **forbid** another from that cluster.
    - The **two tools of this run must be different clusters** from each other.
    - Watched clusters: hogar/construcción, fechas/tiempo, %/math básica, generadores de texto, conversiones genéricas, finanzas simples, salud/BMI-family, ciencia/física one-shot.
+   - **Saturation escape:** If *every* watched cluster is marked `recent` / saturated, you may still pick tools from clusters that are *least* represented in RECENT_TOOLS (oldest or lowest count), as long as the two tools of this run remain different clusters. Document the escape in NOTES.
 
 3. **TYPE mix**
    - Types: `calculadora` | `conversor` | `generador` | `validador` | `studio`.
    - Prefer not both the same type if the last 5 catalog tools were numeric calculators.
 
-4. **DEMAND selection (before any code)**
+4. **DEMAND selection + expansion loop (before any code)**
+
+   **Initial batch**
    - Propose **≥4 candidates** (≥2 per slot) with explicit EN query and ES query when relevant.
    - Do **not** invent search volumes or “high demand” without a concrete query phrase.
    - Drop candidates already covered by own catalog.
    - Prefer differentiation: inputs, outputs, or use-cases that justify a dedicated page.
-   - Pick 2 that best combine: clear query, gap in catalog, implementable quality this run, distinct clusters.
    - Reject “slug is free” as the only reason.
+
+   **If fewer than 2 candidates pass anti-dupe + cluster + type + demand + quality-feasibility → EXPAND (mandatory)**
+
+   - Run up to **3 expansion rounds**. Each round:
+     1. Generate **≥4 new ideas** that were *not* in previous batches.
+     2. Angles to force variety (pick different ones each round):
+        - Niche calculators people actually search (payroll withholdings, overtime premium, split rent, tip + tax combined, paint cans, tile count, concrete volume, sleep cycles, ovulation window, blood alcohol estimate, etc.)
+        - Converters with a distinct unit pair or domain not already covered
+        - Generators / validators (UUID v4, strong password policy checker, slug from title, CSV column extractor, regex explainer-lite, color contrast ratio)
+        - Education / productivity / cooking / travel niches not in RECENT_TOOLS
+        - Tools that combine 2 related inputs into one clear output (not a clone of an existing single-input tool)
+     3. Re-run the full filter stack (anti-dupe, cluster, type, demand query, implementable quality this run).
+     4. Keep any that pass; discard the rest.
+   - Stop expansion early once you have **2 passing candidates** (or 1 if the 2nd still fails quality after 3 rounds — then use the 1-tool escape hatch).
+   - **Forbidden:** concluding “clusters saturated / high-demand covered → shipped 0” after only the first batch of 4. You must document the expansion rounds and the ideas tried.
+   - Only after **3 full expansion rounds** with still <2 passers may you ship 0 — and the Spanish summary + state NOTES must list every candidate attempted and the exact filter that rejected it.
+
+   **Pick**
+   - From the final passers, choose the 2 that best combine: clear query, real gap, implementable quality this run, distinct clusters.
 
 5. **Design + SEO per tool**
    - UI on design system; EN+ES; 2 examples; edges.
@@ -131,7 +152,7 @@ Touch only what the monorepo requires: catalog data, route-slugs, i18n, nav/site
 6. **Pre-push checklist (each tool)**
    - Category + cluster + type
    - Anti-dupe done
-   - Candidates + queries recorded
+   - Candidates + queries recorded (including expansion rounds if any)
    - 2 examples + edges
    - SEO title/H1
    - Registry plan (import + pickComponent branch)
@@ -173,7 +194,8 @@ Forbidden:
 
 ```
 Modo: PRODUCT|META|NEW-CATEGORY|FIX-BUILD (roll N)
-Candidatos: …
+Candidatos iniciales: …
+Rondas de expansión (0–3): ideas nuevas + filtro que rechazó / pasó
 Elegidas (1 o 2) y por qué: …
 Clusters / categorías: …
 Slugs EN+ES: …
@@ -197,6 +219,7 @@ Pasos de prueba manual: …
 - Quality > speed. Deploy ERROR > new feature.
 - Two solid tools expand the catalog more than two weak ones.
 - Never sacrifice a complete registry for volume.
+- **Do not stop at the first failed batch of candidates** — expand up to 3 rounds before shipping 0.
 - `.agent/` files are the full source of truth; this ops file is part of it.
 - Truncation → re-read, never invent.
 - End every run with an honest Spanish summary.
