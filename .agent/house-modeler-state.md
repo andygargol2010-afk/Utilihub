@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 195
+runs_done: 196
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 337821
-last_known_good_hint: c673fe0 (~337821 bytes, clay densify; previous timber 33c73a7)
+approx_bytes: 337848
+last_known_good_hint: 2ca3a66 (~337848 bytes, Sky enrich; previous clay c673fe0)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: pending for c673fe0 (clay densify)
-note: PRODUCT densified clay tile flecks (6) and chip density for richer aged roof/floor texture. Monolith intact.
+deploy: pending for 2ca3a66 (Sky enrich)
+note: PRODUCT enriched Sky turbidity/rayleigh/Mie for richer late-day atmospheric depth. Monolith intact.
 ```
 
 Refresh after each run.
@@ -78,6 +78,7 @@ Plaster densify now pushed at 2923d49.
 Monolith SHA e9bd8ec after PRODUCT run 193 (plaster densify). Previous gravel ffe82f8 / catalog 25026e8.
 Monolith SHA 33c73a7 after PRODUCT run 194 (timber densify).
 Monolith SHA c673fe0 after PRODUCT run 195 (clay densify).
+Monolith SHA 2ca3a66 after PRODUCT run 196 (Sky enrich).
 Unrelated catalog ERROR fixed; surface intact.
 MODELADOR-3D plastic preset at 5b2a3af / cb5c0b7.
 ```
