@@ -5,7 +5,7 @@ import { trackEvent } from "@/lib/analytics";
 
 type Locale = "en" | "es";
 type Point = { x: number; y: number };
-type Ribbon = Point[];
+type Ribbon = { points: Point[]; thickness: number; hue: number };
 
 interface Particle {
   x: number;
@@ -32,11 +32,12 @@ const labels = {
     speed: "Flow speed",
     trail: "Trail length",
     glow: "Trail glow",
+    thickness: "Ribbon thickness",
     theme: "Color theme",
     clear: "Clear ribbons",
     reset: "Reset particles",
     undo: "Undo last ribbon",
-    help: "Draw freeform ribbons. Particles are pulled toward them and stream along the path with glowing additive trails that form temporary signatures. Multiple ribbons interact. Themes color both ribbons and particles.",
+    help: "Draw freeform ribbons. Each ribbon has its own thickness and hue. Particles are pulled toward them and stream along the path with glowing additive trails that form temporary signatures. Multiple ribbons interact. Themes color both ribbons and particles.",
     ribbons: "Ribbons",
   },
   es: {
@@ -46,11 +47,12 @@ const labels = {
     speed: "Velocidad de flujo",
     trail: "Longitud de estela",
     glow: "Brillo de estela",
+    thickness: "Grosor de cinta",
     theme: "Tema de color",
     clear: "Limpiar cintas",
     reset: "Reiniciar part\u00edculas",
     undo: "Deshacer \u00faltima cinta",
-    help: "Dibuj\u00e1 cintas libres. Las part\u00edculas se atraen hacia ellas y fluyen a lo largo del camino dejando estelas brillantes aditivas que forman firmas temporales. Varias cintas interact\u00faan. Los temas colorean cintas y part\u00edculas.",
+    help: "Dibuj\u00e1 cintas libres. Cada cinta tiene su propio grosor y tono. Las part\u00edculas se atraen hacia ellas y fluyen a lo largo del camino dejando estelas brillantes aditivas que forman firmas temporales. Varias cintas interact\u00faan. Los temas colorean cintas y part\u00edculas.",
     ribbons: "Cintas",
   },
 };
@@ -72,6 +74,7 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
     speed: 1,
     trailLen: 18,
     glow: 1,
+    thickness: 3.5,
     theme: "aurora" as keyof typeof THEMES,
   });
 
@@ -81,6 +84,7 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
   const [speed, setSpeed] = useState(1);
   const [trailLen, setTrailLen] = useState(18);
   const [glow, setGlow] = useState(1);
+  const [thickness, setThickness] = useState(3.5);
   const [theme, setTheme] = useState<keyof typeof THEMES>("aurora");
   const [ribbonCount, setRibbonCount] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -102,9 +106,10 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
       speed,
       trailLen,
       glow,
+      thickness,
       theme,
     };
-  }, [count, strength, flow, speed, trailLen, glow, theme, isMobile]);
+  }, [count, strength, flow, speed, trailLen, glow, thickness, theme, isMobile]);
 
   const initParticles = useCallback((n: number, w: number, h: number) => {
     const ps: Particle[] = [];
@@ -170,7 +175,14 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
 
     const onPointerUp = (e: PointerEvent) => {
       if (drawingRef.current && drawingRef.current.length > 3) {
-        ribbonsRef.current.push(drawingRef.current);
+        const th = paramsRef.current.thickness;
+        const themeData = THEMES[paramsRef.current.theme];
+        const hue = themeData.hues[ribbonsRef.current.length % themeData.hues.length] + (Math.random() * 30 - 15);
+        ribbonsRef.current.push({
+          points: drawingRef.current,
+          thickness: th,
+          hue,
+        });
         setRibbonCount(ribbonsRef.current.length);
       }
       drawingRef.current = null;
@@ -200,17 +212,19 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       for (const ribbon of ribbons) {
-        if (ribbon.length < 2) continue;
+        if (ribbon.points.length < 2) continue;
+        const pts = ribbon.points;
         ctx.beginPath();
-        ctx.moveTo(ribbon[0].x, ribbon[0].y);
-        for (let i = 1; i < ribbon.length; i++) {
-          ctx.lineTo(ribbon[i].x, ribbon[i].y);
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i < pts.length; i++) {
+          ctx.lineTo(pts[i].x, pts[i].y);
         }
-        ctx.strokeStyle = themeData.ribbon.replace("0.5", "0.16").replace("0.55", "0.18");
-        ctx.lineWidth = 16;
+        const baseHue = ribbon.hue;
+        ctx.strokeStyle = `hsla(${baseHue}, 80%, 70%, 0.18)`;
+        ctx.lineWidth = ribbon.thickness * 4.5;
         ctx.stroke();
-        ctx.strokeStyle = themeData.ribbon;
-        ctx.lineWidth = 3.5;
+        ctx.strokeStyle = `hsla(${baseHue}, 85%, 65%, 0.75)`;
+        ctx.lineWidth = ribbon.thickness;
         ctx.stroke();
       }
 
@@ -219,7 +233,7 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
         ctx.moveTo(drawingRef.current[0].x, drawingRef.current[0].y);
         for (const p of drawingRef.current) ctx.lineTo(p.x, p.y);
         ctx.strokeStyle = "rgba(255,255,255,0.75)";
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = paramsRef.current.thickness;
         ctx.stroke();
       }
 
@@ -235,10 +249,11 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
         let bestTy = 0;
 
         for (const ribbon of ribbons) {
-          const step = Math.max(1, Math.floor(ribbon.length / 12));
-          for (let i = 0; i < ribbon.length - 1; i += step) {
-            const a = ribbon[i];
-            const b = ribbon[Math.min(i + step, ribbon.length - 1)];
+          const pts = ribbon.points;
+          const step = Math.max(1, Math.floor(pts.length / 12));
+          for (let i = 0; i < pts.length - 1; i += step) {
+            const a = pts[i];
+            const b = pts[Math.min(i + step, pts.length - 1)];
             const dx = b.x - a.x;
             const dy = b.y - a.y;
             const len2 = dx * dx + dy * dy || 1;
@@ -446,6 +461,19 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
             step={0.05}
             value={glow}
             onChange={(e) => setGlow(Number(e.target.value))}
+            className="accent-primary"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="font-medium">{t.thickness} ({thickness.toFixed(1)})</span>
+          <input
+            type="range"
+            min={1.5}
+            max={8}
+            step={0.5}
+            value={thickness}
+            onChange={(e) => setThickness(Number(e.target.value))}
             className="accent-primary"
           />
         </label>
