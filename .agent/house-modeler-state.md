@@ -59,7 +59,7 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: pending for 298f51d (chimney brick densify) on fix/spanish-complete
+deploy: READY for 298f51d (chimney brick densify) on fix/spanish-complete
 note: PRODUCT densified chimney brick texture (more micro-pits/grit/contact detail); monolith intact.
 ```
 
