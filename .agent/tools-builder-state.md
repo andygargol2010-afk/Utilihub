@@ -63,21 +63,9 @@ After shipping, bump the relevant lines (e.g. `recent` / count in notes).
 PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 excellent.
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
-Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation field).
-2026-10-16 FIX-BUILD: restored LEGACY_CATEGORY_REDIRECTS + SECONDARY_CATEGORY_MAP in category-catalog.ts (wiped by pixelihub). No new tools this run.
-2026-10-16 FIX-BUILD: no deploy for restore commit; small docs trigger for Vercel.
-2026-10-16 PRODUCT: shipped calculadora-tiempo-viaje (viajes) + calculadora-fuerza (ciencia). Clusters distinct. Registry surgical OK.
-2026-10-17 PRODUCT run: deploy READY on latest; anti-dupe check showed high-demand candidates already covered (password gen, lorem, random color, BMI, etc.). Cluster watch saturated. No new tools to preserve quality and avoid dupes. Registry intact.
-2026-10-17 PRODUCT run: deploy READY. Roll PRODUCT. Clusters saturated (all recent), high-demand covered. No candidates met gap + demand + quality without risking mediocre. Shipped 0. Registry OK.
-2026-10-17 PRODUCT run (this, roll ~7): deploy READY on ac86b587. Anti-dupe + cluster watch fully saturated. High-demand queries (tip, discount, age, BMI, password, lorem, binary, etc.) already have dedicated tools. No new candidates met quality + distinct cluster + gap bar. Shipped 0 to avoid mediocre tools. Registry intact (SHA 774775ef verified full).
-2026-10-17 PRODUCT run (roll ~12): deploy READY (latest SHA d1dbc4e). Clusters fully saturated (all recent in watch). High-demand (tip, discount, BMI, password gen, lorem, age, etc.) already covered in catalog. No candidates passed demand + gap + distinct cluster + quality bar without mediocrity risk. Shipped 0. Registry OK (full, SHA 774775ef).
-2026-10-17 PRODUCT run (roll 20): deploy READY (latest SHA 81a7767d). Clusters fully saturated. Catalog already covers tip, discount, BMI, password gen, lorem, age, binary, etc. No candidates met demand + gap + distinct cluster + quality bar. Shipped 0. Registry OK (SHA 774775ef).
-2026-10-17 PRODUCT run (roll 19): deploy READY. Clusters fully saturated (all recent). High-demand queries covered (tip, BMI, password, lorem, age, discount, etc.). No candidates passed demand + own-gap + distinct cluster + full quality bar without mediocrity risk. Shipped 0. Registry OK (SHA 774775ef full, exports verified).
-2026-10-17 PRODUCT run (roll 15): deploy READY (SHA 6164167c). Clusters fully saturated (all recent). High-demand queries (tip calculator, discount, BMI, password generator, lorem ipsum, age calculator, binary converter, etc.) already covered. Proposed candidates (e.g. sales tax, timesheet) either fit recent clusters or lack strong unique gap/demand justification without risking mediocrity or anti-dupe. Shipped 0. Registry OK (SHA 774775ef full).
-2026-10-17 PRODUCT run (roll 13): deploy BUILDING/QUEUED on latest commits (PixeliHub touch). Avoided aggressive PRODUCT. Clusters fully saturated. High-demand already covered. No candidates met quality + distinct cluster + gap without mediocrity risk. Shipped 0. Registry OK (SHA 774775ef full).
-2026-10-17 PRODUCT run (roll 8): deploy BUILDING on recent PixeliHub commits; latest tip-calculator fix SHA c13dab pending. Clusters fully saturated (all recent). High-demand queries already covered. No candidates met demand + gap + distinct cluster + quality bar without mediocrity risk. Shipped 0. Registry OK (SHA 774775ef full).
-2026-10-17 PRODUCT run (roll 17): deploy READY on prior (SHA 9eff072); no deploy yet for latest HEAD 6836633 (PixeliHub/simulators). Clusters fully saturated (all recent). High-demand queries (tip, discount, BMI, password gen, lorem, age, binary, etc.) already covered. Proposed candidates (sales tax, timesheet, paint coverage, sleep cycle) fit recent clusters or lack strong unique gap/demand without mediocrity/anti-dupe risk. Shipped 0. Registry OK (SHA 774775ef full, exports verified).
-2026-10-17 PRODUCT run (roll 14): deploy READY (latest relevant SHA 116698d9 and prior). Clusters fully saturated (all recent in watch). Catalog covers tip, discount, BMI, password gen, lorem, age, sleep cycle, paint, overtime pay, binary, etc. No candidates met demand + own-gap + distinct cluster + full quality bar without mediocrity or anti-dupe risk. Shipped 0. Registry OK (SHA 774775ef full, exports verified).
+POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-16 PRODUCT: shipped calculadora-tiempo-viaje (viajes) + calculadora-fuerza (ciencia).
+2026-10-17 PRODUCT runs (multiple rolls): shipped 0 under old policy (first-batch saturation + anti-dupe). Expansion loop now required.
 ```
 
 ---
@@ -86,7 +74,7 @@ Last bootstrap expansion: 2026-10-15 (invariants + flow A–H in automation fiel
 
 ```
 last_mode: PRODUCT
-last_slugs: none (saturation + anti-dupe)
+last_slugs: none (pre-expansion-policy)
 last_deploy: READY
 ```
 
