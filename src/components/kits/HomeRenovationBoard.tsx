@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Calculator, Clock, Copy, Ruler, CheckCircle2, Timer, Calendar, StickyNote, Trash2 } from "lucide-react";
+import { Calculator, Clock, Copy, Ruler, CheckCircle2, Timer, Calendar, StickyNote, Trash2, Palette } from "lucide-react";
 
 const STEPS = [
   { id: "measure", en: "Measure room", es: "Medir habitación" },
@@ -25,6 +25,8 @@ type State = {
   startDate: string;
   days: number;
   notes: string[];
+  floorColor: string;
+  wallColor: string;
 };
 
 const DEFAULT: State = {
@@ -39,6 +41,8 @@ const DEFAULT: State = {
   startDate: new Date().toISOString().slice(0, 10),
   days: 14,
   notes: [],
+  floorColor: "#a8a29e",
+  wallColor: "#e7e5e4",
 };
 
 export function HomeRenovationBoard({ locale = "en" }: Props) {
@@ -125,9 +129,12 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
     const notesLine = state.notes.length
       ? (es ? ` Notas: ${state.notes.length}.` : ` Notes: ${state.notes.length}.`)
       : "";
+    const colorLine = es
+      ? ` Colores: piso ${state.floorColor}, paredes ${state.wallColor}.`
+      : ` Colors: floor ${state.floorColor}, walls ${state.wallColor}.`;
     const text = es
-      ? `Plan de renovación: ${floorArea.toFixed(1)} m² piso (+${state.wastePct}% desperdicio → ${floorWithWaste.toFixed(1)} m²), ${paintLiters.toFixed(1)} L pintura, ~$${totalCost.toFixed(0)} total. Cronograma: ${state.startDate} a ${endDate} (${state.days} días).${notesLine}`
-      : `Renovation plan: ${floorArea.toFixed(1)} m² floor (+${state.wastePct}% waste → ${floorWithWaste.toFixed(1)} m²), ${paintLiters.toFixed(1)} L paint, ~$${totalCost.toFixed(0)} total. Timeline: ${state.startDate} to ${endDate} (${state.days} days).${notesLine}`;
+      ? `Plan de renovación: ${floorArea.toFixed(1)} m² piso (+${state.wastePct}% desperdicio → ${floorWithWaste.toFixed(1)} m²), ${paintLiters.toFixed(1)} L pintura, ~$${totalCost.toFixed(0)} total. Cronograma: ${state.startDate} a ${endDate} (${state.days} días).${colorLine}${notesLine}`
+      : `Renovation plan: ${floorArea.toFixed(1)} m² floor (+${state.wastePct}% waste → ${floorWithWaste.toFixed(1)} m²), ${paintLiters.toFixed(1)} L paint, ~$${totalCost.toFixed(0)} total. Timeline: ${state.startDate} to ${endDate} (${state.days} days).${colorLine}${notesLine}`;
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -162,8 +169,8 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
       </div>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
         {es
-          ? "Medí dimensiones, calculá materiales (con desperdicio), costos en vivo, pegá resultados de otras herramientas, marcá el checklist, definí el cronograma y usá el temporizador de foco. Todo local."
-          : "Enter dimensions, see live materials (with waste), costs, paste results from other tools, check off steps, set a timeline, and use the focus timer. All local."}
+          ? "Medí dimensiones, calculá materiales (con desperdicio), costos en vivo, elegí colores visuales, pegá resultados de otras herramientas, marcá el checklist, definí el cronograma y usá el temporizador de foco. Todo local."
+          : "Enter dimensions, see live materials (with waste), costs, pick visual colors, paste results from other tools, check off steps, set a timeline, and use the focus timer. All local."}
       </p>
 
       <div className="mt-5 grid gap-6 lg:grid-cols-2">
@@ -190,12 +197,24 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
             </div>
             <div className="mt-4 flex justify-center">
               <svg width={svgW} height={svgH} className="rounded border border-border/50 bg-muted/30" aria-label={es ? "Esquema de la habitación" : "Room sketch"}>
-                <rect x={offsetX} y={offsetY} width={roomW} height={roomH} fill="hsl(var(--primary)/0.15)" stroke="hsl(var(--primary))" strokeWidth="2" />
-                <rect x={offsetX + roomW * 0.35} y={offsetY + roomH - 8} width={roomW * 0.3} height={8} fill="hsl(var(--primary)/0.4)" />
+                <rect x={offsetX} y={offsetY} width={roomW} height={roomH} fill={state.floorColor} stroke="hsl(var(--primary))" strokeWidth="2" />
+                <rect x={offsetX + roomW * 0.35} y={offsetY + roomH - 8} width={roomW * 0.3} height={8} fill={state.wallColor} />
                 <text x={svgW / 2} y={offsetY - 4} textAnchor="middle" fontSize="10" fill="currentColor">{state.length.toFixed(1)} m</text>
                 <text x={offsetX - 4} y={svgH / 2} textAnchor="end" fontSize="10" fill="currentColor" transform={`rotate(-90 ${offsetX - 4} ${svgH / 2})`}>{state.width.toFixed(1)} m</text>
                 <text x={svgW / 2} y={offsetY + roomH / 2} textAnchor="middle" fontSize="9" fill="currentColor">{state.height.toFixed(1)} m alt</text>
               </svg>
+            </div>
+            <div className="mt-3 flex items-center gap-4 text-xs">
+              <label className="flex items-center gap-1.5">
+                <Palette className="size-3.5" />
+                {es ? "Piso" : "Floor"}
+                <input type="color" value={state.floorColor} onChange={(e) => update("floorColor", e.target.value)} className="h-6 w-10 cursor-pointer rounded border" />
+              </label>
+              <label className="flex items-center gap-1.5">
+                <Palette className="size-3.5" />
+                {es ? "Paredes" : "Walls"}
+                <input type="color" value={state.wallColor} onChange={(e) => update("wallColor", e.target.value)} className="h-6 w-10 cursor-pointer rounded border" />
+              </label>
             </div>
           </div>
 
