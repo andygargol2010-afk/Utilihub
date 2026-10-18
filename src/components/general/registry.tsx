@@ -44,7 +44,7 @@ const BodyFatCalculatorTool = lazy(() => import("./BodyFatCalculatorTool").then(
 const KineticEnergyTool = lazy(() => import("./KineticEnergyTool").then((m) => ({ default: m.KineticEnergyTool })));
 const TimezoneTool = lazy(() => import("./TimezoneTool").then((m) => ({ default: m.TimezoneTool })));
 const PercentageOfTool = lazy(() => import("./PercentageOfTool").then((m) => ({ default: m.PercentageOfTool })));
-const <PRIVATE_ADDRESS>SlugGeneratorTool = lazy(() => import("./SlugGeneratorTool").then((m) => ({ default: m.SlugGeneratorTool })));
+const SlugGeneratorTool = lazy(() => import("./SlugGeneratorTool").then((m) => ({ default: m.SlugGeneratorTool })));
 const BillSplitTool = lazy(() => import("./BillSplitTool").then((m) => ({ default: m.BillSplitTool })));
 const CurrencyConverterTool = lazy(() => import("./CurrencyConverterTool").then((m) => ({ default: m.CurrencyConverterTool })));
 const WaterIntakeTool = lazy(() => import("./WaterIntakeTool").then((m) => ({ default: m.WaterIntakeTool })));
