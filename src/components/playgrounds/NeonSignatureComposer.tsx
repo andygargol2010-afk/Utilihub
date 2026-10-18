@@ -27,6 +27,33 @@ function uid() {
   return Math.random().toString(36).slice(2, 9);
 }
 
+function roundPt(p: Point): Point {
+  return { x: Math.round(p.x * 1000) / 1000, y: Math.round(p.y * 1000) / 1000 };
+}
+
+function serializeLayers(layers: Layer[]): string {
+  try {
+    const slim = layers.map((l) => ({
+      ...l,
+      strokes: l.strokes.map((s) => s.map(roundPt)),
+    }));
+    return btoa(unescape(encodeURIComponent(JSON.stringify(slim))));
+  } catch {
+    return "";
+  }
+}
+
+function deserializeLayers(data: string): Layer[] | null {
+  try {
+    const json = decodeURIComponent(escape(atob(data)));
+    const parsed = JSON.parse(json);
+    if (!Array.isArray(parsed)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
 export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" }) {
   useEffect(() => {
     trackEvent("playground_open", { id: "neon-signature-composer", locale });
@@ -43,6 +70,7 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
   const [sparkles, setSparkles] = useState(true);
   const [useGradient, setUseGradient] = useState(true);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [copied, setCopied] = useState(false);
   const animRef = useRef<number>(0);
   const sparklesRef = useRef<{ x: number; y: number; life: number; maxLife: number; size: number }[]>([]);
 
@@ -57,7 +85,9 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       newLayer: "New layer",
       undo: "Undo stroke",
       clear: "Clear all",
-      hint: "Draw freehand neon signatures. Multi-layer gradients, flowing glow, touch-friendly.",
+      share: "Share URL",
+      copied: "Copied!",
+      hint: "Draw freehand neon signatures. Multi-layer gradients, flowing glow, touch-friendly. Share via URL.",
       layers: "Layers",
       up: "Up",
       down: "Down",
@@ -72,14 +102,39 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       newLayer: "Nueva capa",
       undo: "Deshacer trazo",
       clear: "Limpiar todo",
-      hint: "Dibujá firmas de neón a mano alzada. Gradientes multicapa, brillo fluido, compatible con tacto.",
+      share: "Compartir URL",
+      copied: "¡Copiado!",
+      hint: "Dibujá firmas de neón a mano alzada. Gradientes multicapa, brillo fluido, compatible con tacto. Compartí por URL.",
       layers: "Capas",
       up: "Subir",
       down: "Bajar",
     },
   }[locale];
 
-  // Init first layer
+  // Load from hash if present
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const loaded = deserializeLayers(hash);
+      if (loaded && loaded.length) {
+        layersRef.current = loaded;
+        setLayers(loaded);
+        setCurrentLayerIdx(0);
+        const first = loaded[0];
+        if (first) {
+          setBrushWidth(first.width);
+          setGlowStrength(first.glow);
+          setLayerOpacity(first.opacity);
+          setUseGradient(first.gradient);
+          const th = THEMES.find((t) => t.color === first.color) || THEMES[0];
+          setTheme(th);
+        }
+      }
+    }
+  }, []);
+
+  // Init first layer if empty
   useEffect(() => {
     if (layersRef.current.length === 0) {
       const initial: Layer = {
@@ -313,6 +368,7 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
     setLayers([...layersRef.current]);
     setCurrentLayerIdx(0);
     sparklesRef.current = [];
+    if (typeof window !== "undefined") window.location.hash = "";
   };
 
   const selectLayer = (idx: number) => {
@@ -336,6 +392,16 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
     [arr[from], arr[to]] = [arr[to], arr[from]];
     setLayers([...arr]);
     setCurrentLayerIdx(to);
+  };
+
+  const shareUrl = () => {
+    const data = serializeLayers(layersRef.current);
+    if (!data || typeof window === "undefined") return;
+    window.location.hash = data;
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    }).catch(() => {});
   };
 
   return (
@@ -478,6 +544,13 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
           className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80"
         >
           {labels.clear}
+        </button>
+        <button
+          type="button"
+          onClick={shareUrl}
+          className="min-h-[44px] rounded-full bg-fuchsia-600 px-4 py-2 text-sm font-bold text-white hover:bg-fuchsia-500"
+        >
+          {copied ? labels.copied : labels.share}
         </button>
       </div>
 
