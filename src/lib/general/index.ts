@@ -206,6 +206,8 @@ import { CYLINDER_VOLUME_CALCULATOR_TOOLS } from "./cylinder-volume-calculator-t
 import { PARAGRAPH_COUNTER_TOOLS } from "./paragraph-counter-tool";
 import { DENSITY_CALCULATOR_TOOLS } from "./density-calculator-tool";
 import { WORD_FREQUENCY_COUNTER_TOOLS } from "./word-frequency-counter-tool";
+import { CIRCLE_AREA_CALCULATOR_TOOLS } from "./circle-area-calculator-tool";
+import { VOWEL_COUNTER_TOOLS } from "./vowel-counter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -417,4 +419,6 @@ export const GENERAL_TOOLS = [
   ...PARAGRAPH_COUNTER_TOOLS,
   ...DENSITY_CALCULATOR_TOOLS,
   ...WORD_FREQUENCY_COUNTER_TOOLS,
+  ...CIRCLE_AREA_CALCULATOR_TOOLS,
+  ...VOWEL_COUNTER_TOOLS,
 ];
