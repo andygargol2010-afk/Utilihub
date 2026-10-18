@@ -377,7 +377,7 @@ function noiseFill(
 function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [214, 204, 188], 16);
   // Lime-wash patches: walls read as troweled plaster, not uniform noise.
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 24; i++) {
     const x = hash2(i, 2.1) * size;
     const y = hash2(i, 5.4) * size;
     const rx = 18 + hash2(i, 8) * 40;
@@ -663,7 +663,7 @@ function paintWallMasonry(ctx: CanvasRenderingContext2D, size: number) {
     ctx.ellipse(x, y, r, r * 0.65, hash2(i, 1.1) * Math.PI, 0, Math.PI * 2);
     ctx.fill();
   }
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 11; i++) {
     const x = hash2(i + 30, 3.7) * size;
     const y = hash2(i + 30, 8.2) * size;
     ctx.fillStyle = "rgba(120,108,92,0.35)";
@@ -1378,7 +1378,7 @@ function paintJoinery(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [214, 206, 190], 10);
   ctx.fillStyle = "#d9d0c0";
   ctx.fillRect(0, 0, size, size);
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < 14; i++) {
     const y0 = Math.floor((i / 9) * size);
     const h = Math.floor(size / 9);
     const tone = 206 + Math.floor(hash2(i, 2.8) * 22);
@@ -1504,7 +1504,7 @@ function paintFasciaBump(ctx: CanvasRenderingContext2D, size: number) {
 function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [158, 148, 132], 28);
   // Base pebbles
-  for (let i = 0; i < 160; i++) { // denser base pebbles for richer outdoor path
+  for (let i = 0; i < 200; i++) { // denser base pebbles for richer outdoor path
     const x = hash2(i, 1.7) * size;
     const y = hash2(i, 4.1) * size;
     const r = 0.8 + hash2(i, 9) * 2.8;
@@ -1516,7 +1516,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Occasional larger stones for outdoor path character
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 24; i++) {
     const x = hash2(i + 200, 3.3) * size;
     const y = hash2(i + 200, 5.7) * size;
     const r = 3.5 + hash2(i, 11) * 4.2;
@@ -1539,7 +1539,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, size, size);
   // Soft mossy patches in depressions for weathered outdoor look
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 11; i++) {
     const x = hash2(i + 400, 2.1) * size;
     const y = hash2(i + 400, 6.9) * size;
     const r = 6 + hash2(i, 13) * 12;
@@ -1562,7 +1562,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   }
   ctx.restore();
   // Extra fine grit scatter for denser outdoor path read
-  for (let i = 0; i < 120; i++) { // denser grit scatter for richer outdoor path
+  for (let i = 0; i < 160; i++) { // denser grit scatter for richer outdoor path
     const x = hash2(i + 600, 1.3) * size;
     const y = hash2(i + 600, 4.7) * size;
     const r = 0.4 + hash2(i, 8.8) * 1.1;
@@ -1573,7 +1573,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Occasional leaf litter and darker damp spots so the gravel path reads as used outdoor surface, not freshly spread.
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < 14; i++) {
     const x = hash2(i + 800, 2.9) * size;
     const y = hash2(i + 800, 5.1) * size;
     const r = 2.5 + hash2(i, 7.4) * 5;
@@ -1586,7 +1586,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Soft contact shadows under larger stones so gravel reads as stacked pebbles, not flat stamps.
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 14; i++) {
     const x = hash2(i + 200, 3.3) * size;
     const y = hash2(i + 200, 5.7) * size;
     const r = 3.5 + hash2(i, 11) * 4.2;
