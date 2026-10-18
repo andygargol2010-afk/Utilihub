@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-18 | salud | calculadora-bac | BacCalculatorTool
 - 2026-10-16 | viajes | calculadora-tiempo-viaje | TripTimeTool
 - 2026-10-16 | ciencia | calculadora-fuerza | ForceCalculatorTool
 - 2026-10-16 | productividad | contador-caracteres | CharacterCounterTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-16 | finanzas | calculadora-regla-72 | RuleOf72Tool
 - 2026-10-16 | hogar | calculadora-area-habitacion | RoomAreaTool
 - 2026-10-16 | fechas | calculadora-diferencia-fechas | DateDifferenceTool
-- 2026-10-16 | cocina | escalador-receta | RecipeScalerTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -45,7 +45,7 @@ hogar/construcción: recent
 % / math básica: recent (proporcion)
 generadores texto: watch
 conversiones genéricas: recent
-salud / body-metrics: recent (deficit)
+salud / body-metrics: recent (bac, deficit)
 productividad: recent (caracteres)
 cocina: recent
 educacion: recent
@@ -66,6 +66,7 @@ Bootstrap automation prompt only points here — expand rules in tools-builder.m
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
 2026-10-16 PRODUCT: shipped calculadora-tiempo-viaje (viajes) + calculadora-fuerza (ciencia).
 2026-10-17 PRODUCT runs (multiple rolls): shipped 0 under old policy (first-batch saturation + anti-dupe). Expansion loop now required.
+2026-10-18 PRODUCT: shipped 1 (calculadora-bac, salud) — second (tip+tax) prepared but registry/index update for two considered fragile after accidental placeholder; stopped at 1 excellent. Tip+tax files left for next run.
 ```
 
 ---
@@ -74,8 +75,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: none (pre-expansion-policy)
-last_deploy: READY
+last_slugs: calculadora-bac
+last_deploy: pending verification
 ```
 
 <!-- end:tools-builder-state.md -->
