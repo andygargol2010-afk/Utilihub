@@ -3756,9 +3756,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       scene.add(sky);
       const skyUniforms = sky.material.uniforms;
       // A touch more Mie so cirrus banks read against the shell, not a flat wash.
-      skyUniforms["turbidity"].value = 7.1;
-      skyUniforms["rayleigh"].value = 1.04;
-      skyUniforms["mieCoefficient"].value = 0.0054;
+      skyUniforms["turbidity"].value = 7.4; // richer atmospheric depth
+      skyUniforms["rayleigh"].value = 1.08;
+      skyUniforms["mieCoefficient"].value = 0.006;
       skyUniforms["mieDirectionalG"].value = 0.8;
       const sun = new THREE.Vector3();
       // Lower sun (closer to horizon) so walls cast longer, readable shadows on the pad.
