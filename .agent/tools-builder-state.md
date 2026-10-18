@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-18 | ciencia | calculadora-circunferencia | CircleCircumferenceCalculatorTool
+- 2026-10-18 | matematicas | calculadora-perimetro-rectangulo | RectanglePerimeterCalculatorTool
 - 2026-10-18 | finanzas | calculadora-margen-beneficio | ProfitMarginCalculatorTool
 - 2026-10-18 | educacion | calculadora-promedio-ponderado | WeightedAverageCalculatorTool
 - 2026-10-18 | texto | contador-consonantes | ConsonantCounterTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-18 | ciencia | calculadora-densidad | DensityCalculatorTool
 - 2026-10-18 | texto | contador-parrafos | ParagraphCounterTool
 - 2026-10-18 | ciencia | calculadora-volumen-cilindro | CylinderVolumeCalculatorTool
-- 2026-10-18 | texto | contador-oraciones | SentenceCounterTool
-- 2026-10-18 | ciencia | calculadora-volumen-esfera | SphereVolumeCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,10 +39,10 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia)
 finanzas simples: recent (regla-72, propina-impuesto, margen-beneficio)
 hogar/construcción: recent
-% / math básica: recent (proporcion)
+% / math básica: recent (proporcion, perimetro-rectangulo)
 generadores texto: watch
 conversiones genéricas: recent
 salud / body-metrics: recent (bac, deficit)
@@ -75,6 +75,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-18 PRODUCT: shipped 2 (calculadora-area-circulo ciencia + contador-vocales texto). Saturation escape; distinct clusters. Anti-dupe OK (no existing dedicated circle area or vowel counter). Registry surgical OK.
 2026-10-18 PRODUCT: shipped 2 (calculadora-area-rectangulo ciencia + contador-consonantes texto). Saturation escape used; distinct clusters. Anti-dupe OK (no existing rectangle area or consonant counter). Registry surgical OK.
 2026-10-18 PRODUCT: shipped 2 (calculadora-margen-beneficio finanzas + calculadora-promedio-ponderado educacion). Distinct clusters (not texto/ciencia). Anti-dupe OK. Registry surgical OK after typo fix.
+2026-10-18 PRODUCT: shipped 2 (calculadora-circunferencia ciencia + calculadora-perimetro-rectangulo matematicas). Distinct clusters. Anti-dupe OK (no existing dedicated circumference or rectangle perimeter). Registry surgical OK.
 ```
 
 ---
@@ -83,7 +84,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-margen-beneficio, calculadora-promedio-ponderado
+last_slugs: calculadora-circunferencia, calculadora-perimetro-rectangulo
 last_deploy: pending verification
 ```
 
