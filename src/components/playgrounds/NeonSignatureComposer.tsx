@@ -70,6 +70,7 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
   const [sparkles, setSparkles] = useState(true);
   const [useGradient, setUseGradient] = useState(true);
   const [pulseGlow, setPulseGlow] = useState(false);
+  const [mirror, setMirror] = useState(false);
   const [isDrawing, setIsDrawing] = useState(false);
   const [copied, setCopied] = useState(false);
   const animRef = useRef<number>(0);
@@ -85,13 +86,14 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       sparkles: "Sparkles",
       gradient: "Stroke gradient",
       pulse: "Pulse glow",
+      mirror: "Mirror",
       newLayer: "New layer",
       undo: "Undo stroke",
       clear: "Clear all",
       share: "Share URL",
       download: "Download PNG",
       copied: "Copied!",
-      hint: "Draw freehand neon signatures. Multi-layer gradients, smooth flowing glow, optional pulse. Touch-friendly. Share via URL or PNG.",
+      hint: "Draw freehand neon signatures. Multi-layer gradients, smooth flowing glow, optional pulse and mirror. Touch-friendly. Share via URL or PNG.",
       layers: "Layers",
       up: "Up",
       down: "Down",
@@ -104,13 +106,14 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       sparkles: "Chispas",
       gradient: "Gradiente en trazo",
       pulse: "Brillo pulsante",
+      mirror: "Espejo",
       newLayer: "Nueva capa",
       undo: "Deshacer trazo",
       clear: "Limpiar todo",
       share: "Compartir URL",
       download: "Descargar PNG",
       copied: "¡Copiado!",
-      hint: "Dibujá firmas de neón a mano alzada. Gradientes multicapa, brillo fluido suave, pulso opcional. Compatible con tacto. Compartí por URL o PNG.",
+      hint: "Dibujá firmas de neón a mano alzada. Gradientes multicapa, brillo fluido suave, pulso y espejo opcionales. Compatible con tacto. Compartí por URL o PNG.",
       layers: "Capas",
       up: "Subir",
       down: "Bajar",
@@ -183,6 +186,50 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
     ctx.fillStyle = "#06060c";
     ctx.fillRect(0, 0, w, h);
 
+    const drawOneStroke = (stroke: Point[], layer: Layer) => {
+      if (stroke.length < 2) return;
+      const sx = stroke[0].x * w;
+      const sy = stroke[0].y * h;
+      const ex = stroke[stroke.length - 1].x * w;
+      const ey = stroke[stroke.length - 1].y * h;
+
+      let strokeStyle: string | CanvasGradient = layer.color;
+      if (layer.gradient) {
+        const grad = ctx.createLinearGradient(sx, sy, ex, ey);
+        grad.addColorStop(0, layer.color);
+        grad.addColorStop(1, layer.endColor);
+        strokeStyle = grad;
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      for (let i = 1; i < stroke.length - 1; i++) {
+        const xc = (stroke[i].x + stroke[i + 1].x) / 2 * w;
+        const yc = (stroke[i].y + stroke[i + 1].y) / 2 * h;
+        ctx.quadraticCurveTo(stroke[i].x * w, stroke[i].y * h, xc, yc);
+      }
+      if (stroke.length > 1) {
+        ctx.lineTo(stroke[stroke.length - 1].x * w, stroke[stroke.length - 1].y * h);
+      }
+      // Glow layers
+      ctx.strokeStyle = strokeStyle;
+      ctx.shadowColor = layer.color;
+      const pulse = pulseGlow ? (0.7 + 0.3 * Math.sin(pulseTimeRef.current * 0.05)) : 1;
+      ctx.shadowBlur = layer.glow * pulse;
+      ctx.lineWidth = layer.width;
+      ctx.stroke();
+      ctx.shadowBlur = layer.glow * 0.4 * pulse;
+      ctx.lineWidth = layer.width * 0.45;
+      ctx.stroke();
+      // Core
+      ctx.shadowBlur = 0;
+      ctx.lineWidth = Math.max(1, layer.width * 0.25);
+      ctx.strokeStyle = "#ffffff";
+      ctx.globalAlpha = layer.opacity * 0.7;
+      ctx.stroke();
+      ctx.globalAlpha = layer.opacity;
+    };
+
     // Draw all layers
     layersRef.current.forEach((layer) => {
       if (layer.strokes.length === 0) return;
@@ -191,47 +238,11 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       layer.strokes.forEach((stroke) => {
-        if (stroke.length < 2) return;
-        const sx = stroke[0].x * w;
-        const sy = stroke[0].y * h;
-        const ex = stroke[stroke.length - 1].x * w;
-        const ey = stroke[stroke.length - 1].y * h;
-
-        let strokeStyle: string | CanvasGradient = layer.color;
-        if (layer.gradient) {
-          const grad = ctx.createLinearGradient(sx, sy, ex, ey);
-          grad.addColorStop(0, layer.color);
-          grad.addColorStop(1, layer.endColor);
-          strokeStyle = grad;
+        drawOneStroke(stroke, layer);
+        if (mirror) {
+          const mirrored = stroke.map((p) => ({ x: 1 - p.x, y: p.y }));
+          drawOneStroke(mirrored, layer);
         }
-
-        ctx.beginPath();
-        ctx.moveTo(sx, sy);
-        for (let i = 1; i < stroke.length - 1; i++) {
-          const xc = (stroke[i].x + stroke[i + 1].x) / 2 * w;
-          const yc = (stroke[i].y + stroke[i + 1].y) / 2 * h;
-          ctx.quadraticCurveTo(stroke[i].x * w, stroke[i].y * h, xc, yc);
-        }
-        if (stroke.length > 1) {
-          ctx.lineTo(stroke[stroke.length - 1].x * w, stroke[stroke.length - 1].y * h);
-        }
-        // Glow layers
-        ctx.strokeStyle = strokeStyle;
-        ctx.shadowColor = layer.color;
-        const pulse = pulseGlow ? (0.7 + 0.3 * Math.sin(pulseTimeRef.current * 0.05)) : 1;
-        ctx.shadowBlur = layer.glow * pulse;
-        ctx.lineWidth = layer.width;
-        ctx.stroke();
-        ctx.shadowBlur = layer.glow * 0.4 * pulse;
-        ctx.lineWidth = layer.width * 0.45;
-        ctx.stroke();
-        // Core
-        ctx.shadowBlur = 0;
-        ctx.lineWidth = Math.max(1, layer.width * 0.25);
-        ctx.strokeStyle = "#ffffff";
-        ctx.globalAlpha = layer.opacity * 0.7;
-        ctx.stroke();
-        ctx.globalAlpha = layer.opacity;
       });
       ctx.restore();
     });
@@ -247,11 +258,16 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
         ctx.beginPath();
         ctx.arc(s.x * w, s.y * h, s.size * a, 0, Math.PI * 2);
         ctx.fill();
+        if (mirror) {
+          ctx.beginPath();
+          ctx.arc((1 - s.x) * w, s.y * h, s.size * a, 0, Math.PI * 2);
+          ctx.fill();
+        }
       });
       ctx.globalAlpha = 1;
       ctx.shadowBlur = 0;
     }
-  }, [sparkles, pulseGlow]);
+  }, [sparkles, pulseGlow, mirror]);
 
   useEffect(() => {
     const loop = () => {
@@ -497,6 +513,16 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
             className="accent-fuchsia-500"
           />
           {labels.pulse}
+        </label>
+
+        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          <input
+            type="checkbox"
+            checked={mirror}
+            onChange={(e) => setMirror(e.target.checked)}
+            className="accent-fuchsia-500"
+          />
+          {labels.mirror}
         </label>
       </div>
 
