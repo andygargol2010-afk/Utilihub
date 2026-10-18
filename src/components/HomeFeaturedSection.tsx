@@ -81,15 +81,27 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
               const name = es ? spanishToolName(tool) : tool.name;
               const href = es ? spanishToolPath(tool) : undefined;
               const enSlug = englishToolSlug(tool);
+              /* pixelihub-card-v1 */
+              const isPixel = tool.slug === "pixelihub";
               const body = (
                 <>
-                  <span className="text-[10px] font-bold uppercase tracking-wide text-primary">{copy.studioBadge}</span>
-                  <h3 className="mt-1 font-bold group-hover:text-primary">{name}</h3>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className={`text-[10px] font-bold uppercase tracking-wide ${isPixel ? "text-rose-500" : "text-primary"}`}>
+                      {isPixel ? (es ? "Pixel art" : "Pixel art") : copy.studioBadge}
+                    </span>
+                    {isPixel ? (
+                      <span className="font-mono text-[9px] text-rose-400/80" aria-hidden>
+                        ▦ 32×32
+                      </span>
+                    ) : null}
+                  </div>
+                  <h3 className={`mt-1 font-bold group-hover:text-primary ${isPixel ? "group-hover:text-rose-500" : ""}`}>{name}</h3>
                   <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{tool.summary}</p>
                 </>
               );
-              const className =
-                "card-hover group block rounded-xl border border-border/60 bg-background/80 p-3.5 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md";
+              const className = isPixel
+                ? "card-hover group block rounded-xl border border-rose-500/35 bg-gradient-to-br from-rose-500/10 via-background/90 to-background/80 p-3.5 hover:-translate-y-0.5 hover:border-rose-500/50 hover:shadow-md"
+                : "card-hover group block rounded-xl border border-border/60 bg-background/80 p-3.5 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md";
               if (es) {
                 return (
                   <Link key={tool.slug} to={href as never} className={className}>

@@ -189,6 +189,17 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
   "coste-km": { badge: "Travel", badgeEs: "Viajes", tagline: "Work out cost per kilometer from total trip cost and distance.", taglineEs: "Obtené el coste por kilómetro a partir del total del viaje y la distancia.", fromLabel: "$", toLabel: "/KM", accent: "cyan" },
   "distancia-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Plan trip distance from average speed and expected travel time.", taglineEs: "Planificá la distancia del viaje con velocidad media y tiempo estimado.", fromLabel: "SPEED", toLabel: "KM", accent: "blue" },
   "combustible-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Fuel cost estimate for a trip with distance, MPG/L/100km, and price.", taglineEs: "Estimación de combustible del viaje: distancia, consumo y precio.", fromLabel: "TRIP", toLabel: "COST", accent: "violet" },
+
+  // —— Advanced studio: PixeliHub ——
+  "pixelihub": {
+    badge: "Pixel art",
+    badgeEs: "Pixel art",
+    tagline: "Free browser pixel-art studio: layers, palettes, Nx PNG export, spritesheets, and shareable links.",
+    taglineEs: "Estudio de pixel art gratis en el navegador: capas, paletas, export PNG Nx, spritesheets y enlaces para compartir.",
+    fromLabel: "8×8",
+    toLabel: "256",
+    accent: "rose",
+  },
 };
 
 export function getToolShowcase(slug: string): ToolShowcase | undefined {

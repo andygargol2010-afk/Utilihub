@@ -151,6 +151,7 @@ export const SHOWCASE_SLUGS: ReadonlySet<string> = new Set([
   "coste-km",
   "distancia-viaje",
   "combustible-viaje",
+  "pixelihub",
 ]);
 
 export function hasToolShowcase(slug: string) {
