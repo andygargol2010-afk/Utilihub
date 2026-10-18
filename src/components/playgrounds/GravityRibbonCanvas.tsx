@@ -28,25 +28,27 @@ const labels = {
   en: {
     count: "Particle count",
     strength: "Attraction strength",
+    flow: "Flow along ribbons",
     speed: "Flow speed",
     trail: "Trail length",
     theme: "Color theme",
     clear: "Clear ribbons",
     reset: "Reset particles",
     undo: "Undo last ribbon",
-    help: "Draw freeform ribbons. Particles are pulled toward them and leave glowing trails that form temporary signatures. Multiple ribbons interact. Themes color both ribbons and particles.",
+    help: "Draw freeform ribbons. Particles are pulled toward them and now stream along the path with glowing trails that form temporary signatures. Multiple ribbons interact. Themes color both ribbons and particles.",
     ribbons: "Ribbons",
   },
   es: {
     count: "Cantidad de partículas",
     strength: "Fuerza de atracción",
+    flow: "Flujo a lo largo de cintas",
     speed: "Velocidad de flujo",
     trail: "Longitud de estela",
     theme: "Tema de color",
     clear: "Limpiar cintas",
     reset: "Reiniciar partículas",
     undo: "Deshacer última cinta",
-    help: "Dibujá cintas libres. Las partículas se atraen hacia ellas y dejan estelas brillantes que forman firmas temporales. Varias cintas interactúan. Los temas colorean cintas y partículas.",
+    help: "Dibujá cintas libres. Las partículas se atraen hacia ellas y ahora fluyen a lo largo del camino dejando estelas brillantes que forman firmas temporales. Varias cintas interactúan. Los temas colorean cintas y partículas.",
     ribbons: "Cintas",
   },
 };
@@ -64,6 +66,7 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
   const paramsRef = useRef({
     count: 180,
     strength: 1.2,
+    flow: 0.8,
     speed: 1,
     trailLen: 18,
     theme: "aurora" as keyof typeof THEMES,
@@ -71,6 +74,7 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
 
   const [count, setCount] = useState(180);
   const [strength, setStrength] = useState(1.2);
+  const [flow, setFlow] = useState(0.8);
   const [speed, setSpeed] = useState(1);
   const [trailLen, setTrailLen] = useState(18);
   const [theme, setTheme] = useState<keyof typeof THEMES>("aurora");
@@ -90,15 +94,15 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
     paramsRef.current = {
       count: Math.min(count, mobileCap),
       strength,
+      flow,
       speed,
       trailLen,
       theme,
     };
-  }, [count, strength, speed, trailLen, theme, isMobile]);
+  }, [count, strength, flow, speed, trailLen, theme, isMobile]);
 
   const initParticles = useCallback((n: number, w: number, h: number) => {
     const ps: Particle[] = [];
-    const themeData = THEMES[paramsRef.current.theme];
     for (let i = 0; i < n; i++) {
       ps.push({
         x: Math.random() * w,
@@ -179,16 +183,14 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
       const rect = canvas.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
-      const { strength: str, speed: spd, trailLen: tl, theme: th } = paramsRef.current;
+      const { strength: str, flow: flw, speed: spd, trailLen: tl, theme: th } = paramsRef.current;
       const themeData = THEMES[th];
       const ribbons = ribbonsRef.current;
       const ps = particlesRef.current;
 
-      // Fade trail (theme bg with slight persistence)
       ctx.fillStyle = themeData.bg + "d0";
       ctx.fillRect(0, 0, w, h);
 
-      // Draw ribbons with theme color + glow
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       for (const ribbon of ribbons) {
@@ -198,17 +200,14 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
         for (let i = 1; i < ribbon.length; i++) {
           ctx.lineTo(ribbon[i].x, ribbon[i].y);
         }
-        // Glow
         ctx.strokeStyle = themeData.ribbon.replace("0.5", "0.18").replace("0.55", "0.2");
         ctx.lineWidth = 14;
         ctx.stroke();
-        // Core
         ctx.strokeStyle = themeData.ribbon;
         ctx.lineWidth = 3.5;
         ctx.stroke();
       }
 
-      // Current drawing
       if (drawingRef.current && drawingRef.current.length > 1) {
         ctx.beginPath();
         ctx.moveTo(drawingRef.current[0].x, drawingRef.current[0].y);
@@ -218,27 +217,54 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
         ctx.stroke();
       }
 
-      // Physics + particles
       for (const p of ps) {
         let ax = 0;
         let ay = 0;
+        let fx = 0;
+        let fy = 0;
+        let bestDist = Infinity;
+        let bestTx = 0;
+        let bestTy = 0;
+
         for (const ribbon of ribbons) {
-          const step = Math.max(1, Math.floor(ribbon.length / 10));
-          for (let i = 0; i < ribbon.length; i += step) {
-            const pt = ribbon[i];
-            const dx = pt.x - p.x;
-            const dy = pt.y - p.y;
-            const dist2 = dx * dx + dy * dy;
+          const step = Math.max(1, Math.floor(ribbon.length / 12));
+          for (let i = 0; i < ribbon.length - 1; i += step) {
+            const a = ribbon[i];
+            const b = ribbon[Math.min(i + step, ribbon.length - 1)];
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const len2 = dx * dx + dy * dy || 1;
+            const t = Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / len2));
+            const cx = a.x + t * dx;
+            const cy = a.y + t * dy;
+            const ddx = cx - p.x;
+            const ddy = cy - p.y;
+            const dist2 = ddx * ddx + ddy * ddy;
             const dist = Math.sqrt(dist2) || 1;
-            const force = (str * 90) / (dist2 * 0.007 + 100);
-            ax += (dx / dist) * force;
-            ay += (dy / dist) * force;
+
+            const force = (str * 110) / (dist2 * 0.006 + 80);
+            ax += (ddx / dist) * force;
+            ay += (ddy / dist) * force;
+
+            if (dist < bestDist) {
+              bestDist = dist;
+              const segLen = Math.sqrt(len2);
+              bestTx = dx / segLen;
+              bestTy = dy / segLen;
+            }
           }
         }
-        p.vx += ax * 0.015 * spd;
-        p.vy += ay * 0.015 * spd;
-        p.vx *= 0.982;
-        p.vy *= 0.982;
+
+        if (bestDist < 140 && flw > 0) {
+          const flowForce = flw * 1.8 * Math.max(0, 1 - bestDist / 140);
+          fx += bestTx * flowForce;
+          fy += bestTy * flowForce;
+        }
+
+        p.vx += (ax * 0.014 + fx * 0.02) * spd;
+        p.vy += (ay * 0.014 + fy * 0.02) * spd;
+        p.vx *= 0.98;
+        p.vy *= 0.98;
 
         p.x += p.vx * spd;
         p.y += p.vy * spd;
@@ -255,7 +281,6 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
         const baseHue = themeData.hues[Math.floor((p.x / w) * themeData.hues.length) % themeData.hues.length];
         const hue = (baseHue + p.hueOffset + speedMag * 3) % 360;
 
-        // Trail with fading glow
         if (p.trail.length > 2) {
           for (let i = 1; i < p.trail.length; i++) {
             const alpha = (i / p.trail.length) * 0.55;
@@ -268,7 +293,6 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
           }
         }
 
-        // Particle core + soft glow
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * 1.8, 0, Math.PI * 2);
         ctx.fillStyle = `hsla(${hue}, 90%, 70%, 0.25)`;
@@ -360,6 +384,19 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
             step={0.05}
             value={strength}
             onChange={(e) => setStrength(Number(e.target.value))}
+            className="accent-primary"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="font-medium">{t.flow} ({flow.toFixed(2)})</span>
+          <input
+            type="range"
+            min={0}
+            max={2}
+            step={0.05}
+            value={flow}
+            onChange={(e) => setFlow(Number(e.target.value))}
             className="accent-primary"
           />
         </label>
