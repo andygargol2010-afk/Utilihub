@@ -46,6 +46,15 @@ function ViajesIndex() {
           <p className="mt-2 text-sm text-muted-foreground">Planificá ocasión, invitados, presupuesto, lista de tareas y tarjeta de invitación en vivo. Estado compartible.</p>
           <span className="mt-4 inline-block text-sm font-bold text-primary">Empezar viaje →</span>
         </Link>
+        <Link
+          to="/es/viajes/compositor-rio-waypoints"
+          className="surface-card group block p-6 hover:-translate-y-0.5 hover:border-primary/40"
+        >
+          <p className="text-xs font-bold uppercase tracking-wider text-primary">Progresión</p>
+          <h2 className="mt-1 text-xl font-black group-hover:text-primary">Compositor Río de Waypoints</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Colocá waypoints secuenciales. Las partículas fluyen un río de luz con degradados de color por etapa.</p>
+          <span className="mt-4 inline-block text-sm font-bold text-primary">Empezar viaje →</span>
+        </Link>
       </section>
     </main>
   );
