@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 188
+runs_done: 189
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
-last_date: 2026-10-17
+last_mode: MODELADOR-3D
+last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: pending (2923d49)
-note: Roll 5 → PRODUCT: densified wall plaster texture (flecks 22→32, micro-pits 48→72) for richer hand-troweled look. Surgical local edit.
+deploy: pending (5b2a3af)
+note: Roll 2 → MODELADOR-3D MATERIALS: added plastic MatPreset (glossy clearcoat) + EN/ES labels in helpers. No house monolith touch.
 ```
 
 Refresh after each run.
@@ -77,6 +77,7 @@ Surgical PRODUCT succeeded via local git clone + edit + push. Prefer local-clone
 Plaster densify now pushed at 2923d49.
 Monolith SHA 2923d49 after PRODUCT run 188.
 Unrelated catalog ERROR on older deploys does not block this surface.
+MODELADOR-3D plastic preset at 5b2a3af / cb5c0b7.
 ```
 
 <!-- end:house-modeler-state.md -->
