@@ -1,0 +1,227 @@
+import { useEffect, useMemo, useState } from "react";
+import { Calculator, Clock, Copy, Ruler, CheckCircle2, Timer } from "lucide-react";
+
+const STEPS = [
+  { id: "measure", en: "Measure room", es: "Medir habitación" },
+  { id: "materials", en: "Calculate materials", es: "Calcular materiales" },
+  { id: "costs", en: "Estimate costs", es: "Estimar costos" },
+  { id: "timeline", en: "Set timeline", es: "Definir cronograma" },
+  { id: "review", en: "Review plan", es: "Revisar plan" },
+] as const;
+
+const STORAGE_KEY = "utilihub-kit-home-renovation";
+
+type Props = { locale?: "en" | "es" };
+
+type State = {
+  length: number;
+  width: number;
+  height: number;
+  floorPrice: number;
+  paintPrice: number;
+  coverage: number;
+  completed: string[];
+};
+
+const DEFAULT: State = {
+  length: 4,
+  width: 3.5,
+  height: 2.5,
+  floorPrice: 25,
+  paintPrice: 12,
+  coverage: 10,
+  completed: [],
+};
+
+export function HomeRenovationBoard({ locale = "en" }: Props) {
+  const es = locale === "es";
+  const [state, setState] = useState<State>(DEFAULT);
+  const [ready, setReady] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as Partial<State>;
+        setState({ ...DEFAULT, ...parsed, completed: Array.isArray(parsed.completed) ? parsed.completed : [] });
+      }
+    } catch {
+      /* ignore */
+    }
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      /* private */
+    }
+  }, [state, ready]);
+
+  useEffect(() => {
+    if (!running) return;
+    const id = setInterval(() => setTimer((t) => t + 1), 1000);
+    return () => clearInterval(id);
+  }, [running]);
+
+  const floorArea = state.length * state.width;
+  const wallArea = 2 * (state.length + state.width) * state.height;
+  const paintLiters = wallArea / Math.max(state.coverage, 1);
+  const floorCost = floorArea * state.floorPrice;
+  const paintCost = paintLiters * state.paintPrice;
+  const totalCost = floorCost + paintCost;
+  const progress = (state.completed.length / STEPS.length) * 100;
+
+  function update(key: keyof State, value: number | string[]) {
+    setState((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function toggleStep(id: string) {
+    setState((prev) => ({
+      ...prev,
+      completed: prev.completed.includes(id) ? prev.completed.filter((x) => x !== id) : [...prev.completed, id],
+    }));
+  }
+
+  function copySlip() {
+    const text = es
+      ? `Plan de renovación: ${floorArea.toFixed(1)} m² piso, ${paintLiters.toFixed(1)} L pintura, ~$${totalCost.toFixed(0)} total.`
+      : `Renovation plan: ${floorArea.toFixed(1)} m² floor, ${paintLiters.toFixed(1)} L paint, ~$${totalCost.toFixed(0)} total.`;
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
+  const mins = Math.floor(timer / 60);
+  const secs = timer % 60;
+
+  return (
+    <section className="mt-8 rounded-2xl border border-border/70 bg-surface/55 p-4 sm:p-5" aria-labelledby="renovation-board">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">
+            {es ? "Tablero de renovación" : "Renovation board"}
+          </p>
+          <h2 id="renovation-board" className="mt-1 text-lg font-black">
+            {es ? "Plan de habitación interactivo" : "Interactive room plan"}
+          </h2>
+        </div>
+        <p className="text-sm font-semibold text-muted-foreground">
+          {state.completed.length}/{STEPS.length} {es ? "pasos" : "steps"}
+        </p>
+      </div>
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
+        {es
+          ? "Medí dimensiones, calculá materiales y costos en vivo, marcá el checklist y usá el temporizador de foco. Todo local en el navegador."
+          : "Enter dimensions, see live material and cost estimates, check off steps, and use the focus timer. All local in the browser."}
+      </p>
+
+      <div className="mt-5 grid gap-6 lg:grid-cols-2">
+        <div className="space-y-4">
+          <div className="rounded-xl border border-border/70 bg-card p-4">
+            <div className="flex items-center gap-2 text-sm font-bold">
+              <Ruler className="size-4 text-primary" />
+              {es ? "Dimensiones (m)" : "Dimensions (m)"}
+            </div>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              {(["length", "width", "height"] as const).map((key) => (
+                <label key={key} className="text-xs">
+                  <span className="font-medium">{es ? { length: "Largo", width: "Ancho", height: "Alto" }[key] : { length: "Length", width: "Width", height: "Height" }[key]}</span>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0.5"
+                    value={state[key]}
+                    onChange={(e) => update(key, parseFloat(e.target.value) || 0)}
+                    className="mt-1 w-full rounded border border-border bg-background px-2 py-1 text-sm"
+                  />
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border/70 bg-card p-4">
+            <div className="flex items-center gap-2 text-sm font-bold">
+              <Calculator className="size-4 text-primary" />
+              {es ? "Materiales y costos" : "Materials & costs"}
+            </div>
+            <div className="mt-3 space-y-2 text-sm">
+              <div className="flex justify-between"><span>{es ? "Área piso" : "Floor area"}</span><span className="font-semibold tabular-nums">{floorArea.toFixed(1)} m²</span></div>
+              <div className="flex justify-between"><span>{es ? "Área paredes" : "Wall area"}</span><span className="font-semibold tabular-nums">{wallArea.toFixed(1)} m²</span></div>
+              <div className="flex justify-between"><span>{es ? "Pintura (est.)" : "Paint (est.)"}</span><span className="font-semibold tabular-nums">{paintLiters.toFixed(1)} L</span></div>
+              <div className="flex justify-between border-t border-border/50 pt-2"><span>{es ? "Costo total est." : "Est. total cost"}</span><span className="font-black tabular-nums">${totalCost.toFixed(0)}</span></div>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+              <label>
+                {es ? "$/m² piso" : "$ / m² floor"}
+                <input type="number" value={state.floorPrice} onChange={(e) => update("floorPrice", parseFloat(e.target.value) || 0)} className="mt-1 w-full rounded border px-2 py-1" />
+              </label>
+              <label>
+                {es ? "$/L pintura" : "$ / L paint"}
+                <input type="number" value={state.paintPrice} onChange={(e) => update("paintPrice", parseFloat(e.target.value) || 0)} className="mt-1 w-full rounded border px-2 py-1" />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="rounded-xl border border-border/70 bg-card p-4">
+            <div className="text-sm font-bold">{es ? "Checklist de progreso" : "Progress checklist"}</div>
+            <div className="mt-3 space-y-2">
+              {STEPS.map((step) => {
+                const done = state.completed.includes(step.id);
+                return (
+                  <button
+                    key={step.id}
+                    type="button"
+                    onClick={() => toggleStep(step.id)}
+                    className={`flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm ${
+                      done ? "border-primary bg-primary/10" : "border-border/70"
+                    }`}
+                    aria-pressed={done}
+                  >
+                    <CheckCircle2 className={`size-4 ${
+done ? "text-primary" : "text-muted-foreground"}`} />
+                    {es ? step.es : step.en}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
+              <div className="h-full bg-primary transition-all" style={{ width: `${progress}%` }} />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border/70 bg-card p-4">
+            <div className="flex items-center gap-2 text-sm font-bold">
+              <Timer className="size-4 text-primary" />
+              {es ? "Temporizador de foco" : "Focus timer"}
+            </div>
+            <div className="mt-2 text-2xl font-black tabular-nums">
+              {mins.toString().padStart(2, "0")}:{secs.toString().padStart(2, "0")}
+            </div>
+            <div className="mt-3 flex gap-2">
+              <button type="button" onClick={() => setRunning((r) => !r)} className="rounded-full bg-primary px-3 py-1 text-sm font-bold text-primary-foreground">
+                {running ? (es ? "Pausa" : "Pause") : (es ? "Iniciar" : "Start")}
+              </button>
+              <button type="button" onClick={() => { setRunning(false); setTimer(0); }} className="rounded-full border px-3 py-1 text-sm font-bold">
+                {es ? "Reset" : "Reset"}
+              </button>
+            </div>
+          </div>
+
+          <button type="button" onClick={copySlip} className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-bold">
+            <Copy className="size-4" />
+            {copied ? (es ? "¡Copiado!" : "Copied!") : (es ? "Copiar resumen" : "Copy summary")}
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
