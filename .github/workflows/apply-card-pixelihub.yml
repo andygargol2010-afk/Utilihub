@@ -1,0 +1,35 @@
+name: Apply PixeliHub card
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/apply-card-pixelihub.py"
+      - ".github/workflows/apply-card-pixelihub.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 20
+
+      - name: Patch card
+        run: python3 scripts/apply-card-pixelihub.py
+
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/lib/tool-showcase.ts src/lib/showcase-slugs.ts src/components/HomeFeaturedSection.tsx
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "feat(pixelihub): showcase hero + home featured card (roadmap item 21)"
+          git push
