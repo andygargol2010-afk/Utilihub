@@ -72,8 +72,8 @@ export function NatoTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale
         <p className="mt-2 break-words text-base font-medium">{result.line || (es ? "Nada para deletrear." : "Nothing to spell.")}</p>
         <p className="mt-2 text-sm text-muted-foreground">
           {es
-            ? `${result.tokens.length} palabras · ${result.skipped} omitidos`
-            : `${result.tokens.length} words · ${result.skipped} skipped`}
+            ? `${result.tokens.length} ${result.tokens.length === 1 ? "palabra" : "palabras"} · ${result.skipped} ${result.skipped === 1 ? "omitido" : "omitidos"}`
+            : `${result.tokens.length} ${result.tokens.length === 1 ? "word" : "words"} · ${result.skipped} skipped`}
         </p>
         <button type="button" className={`${buttonClass} mt-3`} onClick={copyResult} disabled={!result.line}>
           {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar" : "Copy"}
