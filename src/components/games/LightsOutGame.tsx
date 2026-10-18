@@ -115,15 +115,19 @@ export function LightsOutGame({ locale = "en" }: { locale?: GameLocale }) {
         <div
           className="grid gap-2.5"
           style={{ gridTemplateColumns: `repeat(${SIZE}, minmax(0, 1fr))` }}
-          role="grid"
-          aria-label="Lights Out"
+          role="group"
+          aria-label={es ? "Tablero de Lights Out" : "Lights Out board"}
         >
           {board.map((on, i) => (
             <button
               key={i}
               type="button"
-              role="gridcell"
               aria-pressed={on}
+              aria-label={
+                es
+                  ? `Casilla fila ${Math.floor(i / SIZE) + 1}, columna ${(i % SIZE) + 1}`
+                  : `Cell row ${Math.floor(i / SIZE) + 1}, column ${(i % SIZE) + 1}`
+              }
               disabled={won}
               onClick={() => play(i)}
               className={`aspect-square h-12 w-12 rounded-xl border transition duration-150 active:scale-95 sm:h-14 sm:w-14 ${
