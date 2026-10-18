@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: kits
-last_closed_id: home-renovation-kit
+last_closed_domain: studio-composition
+last_closed_id: neon-signature-composer
 p_fixed: 0.35
 
 weights_core:
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-18 | studio-composition | neon-signature-composer | Interactive Neon Signature Composer (EN+ES)
 - 2026-10-18 | kits | home-renovation-kit | Interactive Home Renovation Kit (EN+ES)
 - 2026-10-17 | simulators | boids-flocking-lab | Boids Flocking Lab (EN+ES)
 - 2026-10-17 | games | pulse-catch-arena | Pulse Catch Arena (EN+ES)
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-16 | simulators | double-pendulum-chaos | Double Pendulum Chaos Lab (EN+ES)
 - 2026-10-16 | search-magnets | compound-interest-guide | Compound Interest SEO Guide (EN+ES)
 - 2026-10-16 | adsense-prep | terms-of-use | Terms of Use pages (EN+ES)
-- 2026-10-16 | search-magnets | particle-physics-guide | Particle Physics SEO Guide (EN+ES)
 ```
 
 ---
@@ -60,16 +60,16 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: done
 idea: Interactive Neon Signature Composer. Users draw freehand multi-layer strokes that become persistent neon paths with flowing glow, adjustable intensity, color gradients along the stroke, and optional particle sparkles. Layers can be blended and rearranged. Controls for brush width, glow strength, layer opacity, color themes, undo, and clear. Touch-friendly drawing. Goal is visual composition of temporary light signatures with high visual payoff, not a calculator.
 id: neon-signature-composer
 path_en: /studio/neon-signature-composer
 path_es: /es/studio/compositor-firma-neon
 domain: studio-composition
 runs_total: 6
-runs_remaining: 1
-acceptance: pending
-share: url
+runs_remaining: 0
+acceptance: done
+share: both
 next_step_required: yes
 notes: IDEATE. Roll: U=0.609 → CORE; sample 20.81/34 → studio-composition (cumulative 19-28). last_closed kits ≠ studio-composition, no re-roll. Weights: selected→1, other CORE +1. Avoided recent particle/ribbon playgrounds. next-step required before Adsterra. Adsterra untouched. New composition-focused neon signature canvas.
 EXECUTE run 1/6: shipped NeonSignatureComposer component (freehand multi-layer strokes, persistent neon glow paths, brush/glow/opacity controls, color themes, layers, undo/clear, optional sparkles, touch-friendly). EN+ES routes at /studio/neon-signature-composer and /es/studio/compositor-firma-neon. Registered in next-step.ts (journeys to neon-sign, glow-trail etc.). PlaygroundNextStep before AdsterraBanner. Core Web Vitals: lazy route, fixed aspect canvas, modest particles. Share URL for controls planned next.
@@ -77,6 +77,7 @@ EXECUTE run 2/6: added per-stroke linear color gradients (theme start→end colo
 EXECUTE run 3/6: added share URL via location.hash (serialize/deserialize layers with rounded points, btoa). Share button copies full URL; clear resets hash. Load-from-hash on mount restores composition + controls. EN+ES labels. Adsterra untouched. CWV preserved (no new deps).
 EXECUTE run 4/6: added PNG export button (canvas.toDataURL download as neon-signature.png). Share options now URL + image. EN+ES labels updated (download + hint). Adsterra untouched. CWV preserved (no new deps).
 EXECUTE run 5/6: added quadratic curve smoothing for fluid freehand neon strokes (quadraticCurveTo midpoint interpolation) and optional pulse glow animation (sinusoidal shadowBlur modulation via pulseTimeRef). Visual payoff elevated with smoother flowing paths and living glow. EN+ES labels for pulse toggle + updated hint. Adsterra untouched. CWV preserved (no new deps, modest animation).
+EXECUTE run 6/6: added optional horizontal mirror mode (toggle reflects strokes and sparkles across vertical axis in redraw for symmetric neon compositions). Visual payoff elevated with living symmetry. EN+ES labels + updated hint. Adsterra untouched. CWV preserved (no new deps). Project closed.
 adsense-prep_runs: 3
 ```
 
