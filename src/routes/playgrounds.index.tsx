@@ -40,6 +40,21 @@ function PlaygroundsHubEn() {
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <Link
+          to="/playgrounds/gravity-ribbon-canvas"
+          className="group flex flex-col rounded-3xl border border-sky-900/15 bg-gradient-to-br from-sky-50 via-white to-indigo-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-sky-500/50 hover:shadow-lg"
+        >
+          <span className="text-4xl" aria-hidden>
+            🌊
+          </span>
+          <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">Physics</span>
+          <span className="mt-1 text-xl font-bold text-slate-900">Gravity Ribbon Canvas</span>
+          <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+            Sketch freeform ribbons. Particles follow with glowing trails that form temporary signatures. Multiple ribbons interact.
+          </span>
+          <span className="mt-5 text-sm font-bold text-sky-700">Open playground →</span>
+        </Link>
+
+        <Link
           to="/playgrounds/kaleidoscope-mandala"
           className="group flex flex-col rounded-3xl border border-fuchsia-900/15 bg-gradient-to-br from-fuchsia-50 via-white to-pink-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-fuchsia-500/50 hover:shadow-lg"
         >
