@@ -202,6 +202,8 @@ import { BAC_CALCULATOR_TOOLS } from "./bac-calculator-tool";
 import { TIP_TAX_CALCULATOR_TOOLS } from "./tip-tax-calculator-tool";
 import { SPHERE_VOLUME_CALCULATOR_TOOLS } from "./sphere-volume-calculator-tool";
 import { SENTENCE_COUNTER_TOOLS } from "./sentence-counter-tool";
+import { CYLINDER_VOLUME_CALCULATOR_TOOLS } from "./cylinder-volume-calculator-tool";
+import { PARAGRAPH_COUNTER_TOOLS } from "./paragraph-counter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -409,4 +411,6 @@ export const GENERAL_TOOLS = [
   ...TIP_TAX_CALCULATOR_TOOLS,
   ...SPHERE_VOLUME_CALCULATOR_TOOLS,
   ...SENTENCE_COUNTER_TOOLS,
+  ...CYLINDER_VOLUME_CALCULATOR_TOOLS,
+  ...PARAGRAPH_COUNTER_TOOLS,
 ];
