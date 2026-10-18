@@ -7,18 +7,20 @@ type Layer = {
   id: string;
   strokes: Stroke[];
   color: string;
+  endColor: string;
   width: number;
   opacity: number;
   glow: number;
+  gradient: boolean;
 };
 
 const THEMES = [
-  { id: "cyan", color: "#00f5ff", labelEn: "Cyan", labelEs: "Cian" },
-  { id: "pink", color: "#ff2d95", labelEn: "Hot Pink", labelEs: "Rosa intenso" },
-  { id: "lime", color: "#7cff6b", labelEn: "Lime", labelEs: "Lima" },
-  { id: "gold", color: "#ffd700", labelEn: "Gold", labelEs: "Oro" },
-  { id: "purple", color: "#b388ff", labelEn: "Purple", labelEs: "Púrpura" },
-  { id: "white", color: "#ffffff", labelEn: "White", labelEs: "Blanco" },
+  { id: "cyan", color: "#00f5ff", end: "#ff2d95", labelEn: "Cyan", labelEs: "Cian" },
+  { id: "pink", color: "#ff2d95", end: "#00f5ff", labelEn: "Hot Pink", labelEs: "Rosa intenso" },
+  { id: "lime", color: "#7cff6b", end: "#ffd700", labelEn: "Lime", labelEs: "Lima" },
+  { id: "gold", color: "#ffd700", end: "#ff2d95", labelEn: "Gold", labelEs: "Oro" },
+  { id: "purple", color: "#b388ff", end: "#00f5ff", labelEn: "Purple", labelEs: "Púrpura" },
+  { id: "white", color: "#ffffff", end: "#b388ff", labelEn: "White", labelEs: "Blanco" },
 ];
 
 function uid() {
@@ -39,6 +41,7 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
   const [layerOpacity, setLayerOpacity] = useState(0.9);
   const [theme, setTheme] = useState(THEMES[0]);
   const [sparkles, setSparkles] = useState(true);
+  const [useGradient, setUseGradient] = useState(true);
   const [isDrawing, setIsDrawing] = useState(false);
   const animRef = useRef<number>(0);
   const sparklesRef = useRef<{ x: number; y: number; life: number; maxLife: number; size: number }[]>([]);
@@ -50,11 +53,14 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       opacity: "Layer opacity",
       theme: "Color theme",
       sparkles: "Sparkles",
+      gradient: "Stroke gradient",
       newLayer: "New layer",
       undo: "Undo stroke",
       clear: "Clear all",
-      hint: "Draw freehand neon signatures. Multi-layer, flowing glow, touch-friendly.",
+      hint: "Draw freehand neon signatures. Multi-layer gradients, flowing glow, touch-friendly.",
       layers: "Layers",
+      up: "Up",
+      down: "Down",
     },
     es: {
       width: "Grosor pincel",
@@ -62,11 +68,14 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       opacity: "Opacidad de capa",
       theme: "Tema de color",
       sparkles: "Chispas",
+      gradient: "Gradiente en trazo",
       newLayer: "Nueva capa",
       undo: "Deshacer trazo",
       clear: "Limpiar todo",
-      hint: "Dibujá firmas de neón a mano alzada. Multicapa, brillo fluido, compatible con tacto.",
+      hint: "Dibujá firmas de neón a mano alzada. Gradientes multicapa, brillo fluido, compatible con tacto.",
       layers: "Capas",
+      up: "Subir",
+      down: "Bajar",
     },
   }[locale];
 
@@ -77,9 +86,11 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
         id: uid(),
         strokes: [],
         color: theme.color,
+        endColor: theme.end,
         width: brushWidth,
         opacity: layerOpacity,
         glow: glowStrength,
+        gradient: useGradient,
       };
       layersRef.current = [initial];
       setLayers([initial]);
@@ -91,12 +102,14 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
     const layers = layersRef.current;
     if (layers[currentLayerIdx]) {
       layers[currentLayerIdx].color = theme.color;
+      layers[currentLayerIdx].endColor = theme.end;
       layers[currentLayerIdx].width = brushWidth;
       layers[currentLayerIdx].opacity = layerOpacity;
       layers[currentLayerIdx].glow = glowStrength;
+      layers[currentLayerIdx].gradient = useGradient;
       setLayers([...layers]);
     }
-  }, [theme, brushWidth, layerOpacity, glowStrength, currentLayerIdx]);
+  }, [theme, brushWidth, layerOpacity, glowStrength, useGradient, currentLayerIdx]);
 
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -118,13 +131,26 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       ctx.lineJoin = "round";
       layer.strokes.forEach((stroke) => {
         if (stroke.length < 2) return;
+        const sx = stroke[0].x * w;
+        const sy = stroke[0].y * h;
+        const ex = stroke[stroke.length - 1].x * w;
+        const ey = stroke[stroke.length - 1].y * h;
+
+        let strokeStyle: string | CanvasGradient = layer.color;
+        if (layer.gradient) {
+          const grad = ctx.createLinearGradient(sx, sy, ex, ey);
+          grad.addColorStop(0, layer.color);
+          grad.addColorStop(1, layer.endColor);
+          strokeStyle = grad;
+        }
+
         ctx.beginPath();
-        ctx.moveTo(stroke[0].x * w, stroke[0].y * h);
+        ctx.moveTo(sx, sy);
         for (let i = 1; i < stroke.length; i++) {
           ctx.lineTo(stroke[i].x * w, stroke[i].y * h);
         }
         // Glow layers
-        ctx.strokeStyle = layer.color;
+        ctx.strokeStyle = strokeStyle;
         ctx.shadowColor = layer.color;
         ctx.shadowBlur = layer.glow;
         ctx.lineWidth = layer.width;
@@ -252,9 +278,11 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       id: uid(),
       strokes: [],
       color: theme.color,
+      endColor: theme.end,
       width: brushWidth,
       opacity: layerOpacity,
       glow: glowStrength,
+      gradient: useGradient,
     };
     layersRef.current.push(nl);
     setLayers([...layersRef.current]);
@@ -275,9 +303,11 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
         id: uid(),
         strokes: [],
         color: theme.color,
+        endColor: theme.end,
         width: brushWidth,
         opacity: layerOpacity,
         glow: glowStrength,
+        gradient: useGradient,
       },
     ];
     setLayers([...layersRef.current]);
@@ -292,9 +322,20 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
       setBrushWidth(layer.width);
       setGlowStrength(layer.glow);
       setLayerOpacity(layer.opacity);
+      setUseGradient(layer.gradient);
       const th = THEMES.find((t) => t.color === layer.color) || THEMES[0];
       setTheme(th);
     }
+  };
+
+  const moveLayer = (dir: -1 | 1) => {
+    const from = currentLayerIdx;
+    const to = from + dir;
+    if (to < 0 || to >= layersRef.current.length) return;
+    const arr = layersRef.current;
+    [arr[from], arr[to]] = [arr[to], arr[from]];
+    setLayers([...arr]);
+    setCurrentLayerIdx(to);
   };
 
   return (
@@ -349,6 +390,16 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
           />
           {labels.sparkles}
         </label>
+
+        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          <input
+            type="checkbox"
+            checked={useGradient}
+            onChange={(e) => setUseGradient(e.target.checked)}
+            className="accent-fuchsia-500"
+          />
+          {labels.gradient}
+        </label>
       </div>
 
       <div>
@@ -394,6 +445,22 @@ export function NeonSignatureComposer({ locale = "en" }: { locale?: "en" | "es" 
           className="min-h-[36px] rounded-full bg-fuchsia-600 px-3 py-1 text-xs font-bold text-white hover:bg-fuchsia-500"
         >
           {labels.newLayer}
+        </button>
+        <button
+          type="button"
+          onClick={() => moveLayer(-1)}
+          disabled={currentLayerIdx === 0}
+          className="min-h-[36px] rounded-full bg-muted px-3 py-1 text-xs font-medium disabled:opacity-40"
+        >
+          {labels.up}
+        </button>
+        <button
+          type="button"
+          onClick={() => moveLayer(1)}
+          disabled={currentLayerIdx === layers.length - 1}
+          className="min-h-[36px] rounded-full bg-muted px-3 py-1 text-xs font-medium disabled:opacity-40"
+        >
+          {labels.down}
         </button>
       </div>
 
