@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 190
+runs_done: 191
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 337768
-last_known_good_hint: 067e339 (~337768 bytes, gravel densified; ready for deploy check)
+approx_bytes: 337816
+last_known_good_hint: ffe82f8 (~337816 bytes, gravel densified further; ready for deploy check)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: pending (067e339)
-note: Roll 7 → PRODUCT POLISH TEXTURES: densified gravel grit scatter (60→90) for richer outdoor path. Monolith intact.
+deploy: ERROR (ffe82f8, unrelated catalog import in general/index.ts; surface intact)
+note: Roll 4 → PRODUCT POLISH TEXTURES: densified gravel base pebbles (120→160) + grit (90→120) for richer outdoor path. Monolith intact.
 ```
 
 Refresh after each run.
@@ -75,7 +75,7 @@ Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI: done (remaining_runs 0).
 Surgical PRODUCT succeeded via local git clone + edit + push. Prefer local-clone surgical when PRODUCT if auth available.
 Plaster densify now pushed at 2923d49.
-Monolith SHA 067e339 after PRODUCT run 190.
+Monolith SHA ffe82f8 after PRODUCT run 191.
 Unrelated catalog ERROR on older deploys does not block this surface.
 MODELADOR-3D plastic preset at 5b2a3af / cb5c0b7.
 ```
