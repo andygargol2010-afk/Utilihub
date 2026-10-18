@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-18 | conversiones | conversor-presion | PressureConverterTool
+- 2026-10-18 | salud | calculadora-calorias-quemadas | CaloriesBurnedCalculatorTool
 - 2026-10-18 | ciencia | calculadora-circunferencia | CircleCircumferenceCalculatorTool
 - 2026-10-18 | matematicas | calculadora-perimetro-rectangulo | RectanglePerimeterCalculatorTool
 - 2026-10-18 | finanzas | calculadora-margen-beneficio | ProfitMarginCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-18 | ciencia | calculadora-area-circulo | CircleAreaCalculatorTool
 - 2026-10-18 | texto | contador-frecuencia-palabras | WordFrequencyCounterTool
 - 2026-10-18 | ciencia | calculadora-densidad | DensityCalculatorTool
-- 2026-10-18 | texto | contador-parrafos | ParagraphCounterTool
-- 2026-10-18 | ciencia | calculadora-volumen-cilindro | CylinderVolumeCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -44,8 +44,8 @@ finanzas simples: recent (regla-72, propina-impuesto, margen-beneficio)
 hogar/construcción: recent
 % / math básica: recent (proporcion, perimetro-rectangulo)
 generadores texto: watch
-conversiones genéricas: recent
-salud / body-metrics: recent (bac, deficit)
+conversiones genéricas: recent (presion)
+salud / body-metrics: recent (bac, deficit, calorias-quemadas)
 productividad: recent (caracteres)
 cocina: recent
 educacion: recent (promedio-ponderado, nota-final)
@@ -76,6 +76,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-18 PRODUCT: shipped 2 (calculadora-area-rectangulo ciencia + contador-consonantes texto). Saturation escape used; distinct clusters. Anti-dupe OK (no existing rectangle area or consonant counter). Registry surgical OK.
 2026-10-18 PRODUCT: shipped 2 (calculadora-margen-beneficio finanzas + calculadora-promedio-ponderado educacion). Distinct clusters (not texto/ciencia). Anti-dupe OK. Registry surgical OK after typo fix.
 2026-10-18 PRODUCT: shipped 2 (calculadora-circunferencia ciencia + calculadora-perimetro-rectangulo matematicas). Distinct clusters. Anti-dupe OK (no existing dedicated circumference or rectangle perimeter). Registry surgical OK.
+2026-10-18 PRODUCT: shipped 2 (conversor-presion conversiones + calculadora-calorias-quemadas salud). Distinct clusters. Anti-dupe OK. Registry restored after brief accidental wipe then full correct write OK.
 ```
 
 ---
@@ -84,7 +85,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-circunferencia, calculadora-perimetro-rectangulo
+last_slugs: conversor-presion, calculadora-calorias-quemadas
 last_deploy: pending verification
 ```
 
