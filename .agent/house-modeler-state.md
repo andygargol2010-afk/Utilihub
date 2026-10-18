@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 194
+runs_done: 195
 runs_max: 500
 ```
 
@@ -44,7 +44,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 ```
 path: src/components/general/HouseModeler3D.tsx
 approx_bytes: 337821
-last_known_good_hint: 33c73a7 (~337821 bytes, timber densify; previous plaster e9bd8ec)
+last_known_good_hint: c673fe0 (~337821 bytes, clay densify; previous timber 33c73a7)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: pending for 33c73a7 (timber densify)
-note: PRODUCT densified timber grain (10), micro-fibers (12) and flecks (10) for richer sawn face. Monolith intact.
+deploy: pending for c673fe0 (clay densify)
+note: PRODUCT densified clay tile flecks (6) and chip density for richer aged roof/floor texture. Monolith intact.
 ```
 
 Refresh after each run.
@@ -77,6 +77,7 @@ Surgical PRODUCT succeeded via local git clone + edit + push. Prefer local-clone
 Plaster densify now pushed at 2923d49.
 Monolith SHA e9bd8ec after PRODUCT run 193 (plaster densify). Previous gravel ffe82f8 / catalog 25026e8.
 Monolith SHA 33c73a7 after PRODUCT run 194 (timber densify).
+Monolith SHA c673fe0 after PRODUCT run 195 (clay densify).
 Unrelated catalog ERROR fixed; surface intact.
 MODELADOR-3D plastic preset at 5b2a3af / cb5c0b7.
 ```
