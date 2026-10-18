@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 202
+runs_done: 203
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: MODELADOR-3D
 last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: pending for fa241f92 (door metal densify) on fix/spanish-complete
-note: PRODUCT densified door sheet-metal texture (more micro-scratches/grit/base weathering); monolith intact.
+deploy: pending for 976dcd0d (rubber preset) on fix/spanish-complete
+note: MODELADOR-3D added rubber MatPreset (soft high-roughness matte) with EN/ES; house monolith untouched.
 ```
 
 Refresh after each run.
@@ -87,6 +87,7 @@ Monolith SHA df0b233 after PRODUCT run 199 (gravel densify).
 Monolith SHA 63335a3 after PRODUCT run 200 (ashlar masonry densify).
 Monolith SHA 298f51d after PRODUCT run 201 (chimney brick densify).
 Monolith SHA fa241f92 after PRODUCT run 202 (door metal densify).
+MODELADOR-3D rubber preset at 976dcd0d.
 ```
 
 <!-- end:house-modeler-state.md -->
