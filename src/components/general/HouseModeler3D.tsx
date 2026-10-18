@@ -669,6 +669,25 @@ function paintWallMasonry(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fillStyle = "rgba(120,108,92,0.35)";
     ctx.fillRect(x, y, 2 + hash2(i, 5) * 4, 1.2);
   }
+  // Denser micro-pits, grit and contact shadows so ashlar faces read as weathered outdoor stone with natural porosity.
+  for (let i = 0; i < 28; i++) {
+    const pit = hash2(i + 40, 11.2);
+    if (pit < 0.42) continue;
+    const x = hash2(i + 40, 2.1) * size;
+    const y = hash2(i + 40, 7.5) * size;
+    const pr = 0.7 + pit * 1.4;
+    ctx.fillStyle = `rgba(90, 78, 64, ${0.18 + pit * 0.22})`;
+    ctx.beginPath();
+    ctx.arc(x, y, pr, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  for (let i = 0; i < 14; i++) {
+    const g = hash2(i + 60, 4.8);
+    const x = hash2(i + 60, 1.3) * size;
+    const y = hash2(i + 60, 9.7) * size;
+    ctx.fillStyle = `rgba(140, 128, 110, ${0.12 + g * 0.15})`;
+    ctx.fillRect(x, y, 1.2 + g * 2, 0.8);
+  }
 }
 
 function paintWallMasonryBump(ctx: CanvasRenderingContext2D, size: number) {
