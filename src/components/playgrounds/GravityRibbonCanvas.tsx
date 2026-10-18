@@ -31,24 +31,26 @@ const labels = {
     flow: "Flow along ribbons",
     speed: "Flow speed",
     trail: "Trail length",
+    glow: "Trail glow",
     theme: "Color theme",
     clear: "Clear ribbons",
     reset: "Reset particles",
     undo: "Undo last ribbon",
-    help: "Draw freeform ribbons. Particles are pulled toward them and now stream along the path with glowing trails that form temporary signatures. Multiple ribbons interact. Themes color both ribbons and particles.",
+    help: "Draw freeform ribbons. Particles are pulled toward them and stream along the path with glowing additive trails that form temporary signatures. Multiple ribbons interact. Themes color both ribbons and particles.",
     ribbons: "Ribbons",
   },
   es: {
-    count: "Cantidad de partículas",
-    strength: "Fuerza de atracción",
+    count: "Cantidad de part\u00edculas",
+    strength: "Fuerza de atracci\u00f3n",
     flow: "Flujo a lo largo de cintas",
     speed: "Velocidad de flujo",
     trail: "Longitud de estela",
+    glow: "Brillo de estela",
     theme: "Tema de color",
     clear: "Limpiar cintas",
-    reset: "Reiniciar partículas",
-    undo: "Deshacer última cinta",
-    help: "Dibujá cintas libres. Las partículas se atraen hacia ellas y ahora fluyen a lo largo del camino dejando estelas brillantes que forman firmas temporales. Varias cintas interactúan. Los temas colorean cintas y partículas.",
+    reset: "Reiniciar part\u00edculas",
+    undo: "Deshacer \u00faltima cinta",
+    help: "Dibuj\u00e1 cintas libres. Las part\u00edculas se atraen hacia ellas y fluyen a lo largo del camino dejando estelas brillantes aditivas que forman firmas temporales. Varias cintas interact\u00faan. Los temas colorean cintas y part\u00edculas.",
     ribbons: "Cintas",
   },
 };
@@ -69,6 +71,7 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
     flow: 0.8,
     speed: 1,
     trailLen: 18,
+    glow: 1,
     theme: "aurora" as keyof typeof THEMES,
   });
 
@@ -77,6 +80,7 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
   const [flow, setFlow] = useState(0.8);
   const [speed, setSpeed] = useState(1);
   const [trailLen, setTrailLen] = useState(18);
+  const [glow, setGlow] = useState(1);
   const [theme, setTheme] = useState<keyof typeof THEMES>("aurora");
   const [ribbonCount, setRibbonCount] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -97,9 +101,10 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
       flow,
       speed,
       trailLen,
+      glow,
       theme,
     };
-  }, [count, strength, flow, speed, trailLen, theme, isMobile]);
+  }, [count, strength, flow, speed, trailLen, glow, theme, isMobile]);
 
   const initParticles = useCallback((n: number, w: number, h: number) => {
     const ps: Particle[] = [];
@@ -183,12 +188,13 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
       const rect = canvas.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
-      const { strength: str, flow: flw, speed: spd, trailLen: tl, theme: th } = paramsRef.current;
+      const { strength: str, flow: flw, speed: spd, trailLen: tl, glow: gl, theme: th } = paramsRef.current;
       const themeData = THEMES[th];
       const ribbons = ribbonsRef.current;
       const ps = particlesRef.current;
 
-      ctx.fillStyle = themeData.bg + "d0";
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = themeData.bg + "c8";
       ctx.fillRect(0, 0, w, h);
 
       ctx.lineCap = "round";
@@ -200,8 +206,8 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
         for (let i = 1; i < ribbon.length; i++) {
           ctx.lineTo(ribbon[i].x, ribbon[i].y);
         }
-        ctx.strokeStyle = themeData.ribbon.replace("0.5", "0.18").replace("0.55", "0.2");
-        ctx.lineWidth = 14;
+        ctx.strokeStyle = themeData.ribbon.replace("0.5", "0.16").replace("0.55", "0.18");
+        ctx.lineWidth = 16;
         ctx.stroke();
         ctx.strokeStyle = themeData.ribbon;
         ctx.lineWidth = 3.5;
@@ -216,6 +222,8 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
         ctx.lineWidth = 2.5;
         ctx.stroke();
       }
+
+      ctx.globalCompositeOperation = "lighter";
 
       for (const p of ps) {
         let ax = 0;
@@ -283,25 +291,27 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
 
         if (p.trail.length > 2) {
           for (let i = 1; i < p.trail.length; i++) {
-            const alpha = (i / p.trail.length) * 0.55;
+            const alpha = (i / p.trail.length) * 0.7 * gl;
             ctx.beginPath();
             ctx.moveTo(p.trail[i - 1].x, p.trail[i - 1].y);
             ctx.lineTo(p.trail[i].x, p.trail[i].y);
-            ctx.strokeStyle = `hsla(${hue}, 88%, 62%, ${alpha})`;
-            ctx.lineWidth = p.size * (0.6 + alpha * 0.8);
+            ctx.strokeStyle = `hsla(${hue}, 92%, 68%, ${Math.min(1, alpha)})`;
+            ctx.lineWidth = p.size * (0.7 + alpha * 1.1);
             ctx.stroke();
           }
         }
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * 1.8, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${hue}, 90%, 70%, 0.25)`;
+        ctx.arc(p.x, p.y, p.size * (1.6 + gl * 0.8), 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${hue}, 95%, 75%, ${Math.min(0.45, 0.18 * gl)})`;
         ctx.fill();
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsl(${hue}, 92%, 68%)`;
+        ctx.fillStyle = `hsl(${hue}, 94%, 72%)`;
         ctx.fill();
       }
+
+      ctx.globalCompositeOperation = "source-over";
 
       raf = requestAnimationFrame(loop);
     };
@@ -423,6 +433,19 @@ export function GravityRibbonCanvas({ locale }: { locale: Locale }) {
             step={1}
             value={trailLen}
             onChange={(e) => setTrailLen(Number(e.target.value))}
+            className="accent-primary"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="font-medium">{t.glow} ({glow.toFixed(2)})</span>
+          <input
+            type="range"
+            min={0.3}
+            max={1.8}
+            step={0.05}
+            value={glow}
+            onChange={(e) => setGlow(Number(e.target.value))}
             className="accent-primary"
           />
         </label>
