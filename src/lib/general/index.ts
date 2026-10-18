@@ -212,6 +212,8 @@ import { RECTANGLE_AREA_CALCULATOR_TOOLS } from "./rectangle-area-calculator-too
 import { CONSONANT_COUNTER_TOOLS } from "./consonant-counter-tool";
 import { PROFIT_MARGIN_CALCULATOR_TOOLS } from "./profit-margin-calculator-tool";
 import { WEIGHTED_AVERAGE_CALCULATOR_TOOLS } from "./weighted-average-calculator-tool";
+import { CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS } from "./circle-circumference-calculator-tool";
+import { RECTANGLE_PERIMETER_CALCULATOR_TOOLS } from "./rectangle-perimeter-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -429,4 +431,6 @@ export const GENERAL_TOOLS = [
   ...CONSONANT_COUNTER_TOOLS,
   ...PROFIT_MARGIN_CALCULATOR_TOOLS,
   ...WEIGHTED_AVERAGE_CALCULATOR_TOOLS,
+  ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
+  ...RECTANGLE_PERIMETER_CALCULATOR_TOOLS,
 ];
