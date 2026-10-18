@@ -199,6 +199,7 @@ import { CALORIE_DEFICIT_TOOLS } from "./calorie-deficit-tool";
 import { TRIP_TIME_TOOLS } from "./trip-time-tool";
 import { FORCE_CALCULATOR_TOOLS } from "./force-calculator-tool";
 import { BAC_CALCULATOR_TOOLS } from "./bac-calculator-tool";
+import { TIP_TAX_CALCULATOR_TOOLS } from "./tip-tax-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -403,4 +404,5 @@ export const GENERAL_TOOLS = [
   ...TRIP_TIME_TOOLS,
   ...FORCE_CALCULATOR_TOOLS,
   ...BAC_CALCULATOR_TOOLS,
+  ...TIP_TAX_CALCULATOR_TOOLS,
 ];
