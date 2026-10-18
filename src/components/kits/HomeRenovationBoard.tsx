@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Calculator, Clock, Copy, Ruler, CheckCircle2, Timer, Calendar } from "lucide-react";
+import { Calculator, Clock, Copy, Ruler, CheckCircle2, Timer, Calendar, StickyNote, Trash2 } from "lucide-react";
 
 const STEPS = [
   { id: "measure", en: "Measure room", es: "Medir habitación" },
@@ -20,9 +20,11 @@ type State = {
   floorPrice: number;
   paintPrice: number;
   coverage: number;
+  wastePct: number;
   completed: string[];
   startDate: string;
   days: number;
+  notes: string[];
 };
 
 const DEFAULT: State = {
@@ -32,9 +34,11 @@ const DEFAULT: State = {
   floorPrice: 25,
   paintPrice: 12,
   coverage: 10,
+  wastePct: 10,
   completed: [],
   startDate: new Date().toISOString().slice(0, 10),
   days: 14,
+  notes: [],
 };
 
 export function HomeRenovationBoard({ locale = "en" }: Props) {
@@ -44,13 +48,19 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
   const [timer, setTimer] = useState(0);
   const [running, setRunning] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [noteDraft, setNoteDraft] = useState("");
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw) as Partial<State>;
-        setState({ ...DEFAULT, ...parsed, completed: Array.isArray(parsed.completed) ? parsed.completed : [] });
+        setState({
+          ...DEFAULT,
+          ...parsed,
+          completed: Array.isArray(parsed.completed) ? parsed.completed : [],
+          notes: Array.isArray(parsed.notes) ? parsed.notes : [],
+        });
       }
     } catch {
       /* ignore */
@@ -75,8 +85,10 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
 
   const floorArea = state.length * state.width;
   const wallArea = 2 * (state.length + state.width) * state.height;
-  const paintLiters = wallArea / Math.max(state.coverage, 1);
-  const floorCost = floorArea * state.floorPrice;
+  const wasteMul = 1 + state.wastePct / 100;
+  const floorWithWaste = floorArea * wasteMul;
+  const paintLiters = (wallArea / Math.max(state.coverage, 1)) * wasteMul;
+  const floorCost = floorWithWaste * state.floorPrice;
   const paintCost = paintLiters * state.paintPrice;
   const totalCost = floorCost + paintCost;
   const progress = (state.completed.length / STEPS.length) * 100;
@@ -98,10 +110,24 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
     }));
   }
 
+  function addNote() {
+    const text = noteDraft.trim();
+    if (!text) return;
+    setState((prev) => ({ ...prev, notes: [text, ...prev.notes].slice(0, 12) }));
+    setNoteDraft("");
+  }
+
+  function removeNote(index: number) {
+    setState((prev) => ({ ...prev, notes: prev.notes.filter((_, i) => i !== index) }));
+  }
+
   function copySlip() {
+    const notesLine = state.notes.length
+      ? (es ? ` Notas: ${state.notes.length}.` : ` Notes: ${state.notes.length}.`)
+      : "";
     const text = es
-      ? `Plan de renovación: ${floorArea.toFixed(1)} m² piso, ${paintLiters.toFixed(1)} L pintura, ~$${totalCost.toFixed(0)} total. Cronograma: ${state.startDate} a ${endDate} (${state.days} días).`
-      : `Renovation plan: ${floorArea.toFixed(1)} m² floor, ${paintLiters.toFixed(1)} L paint, ~$${totalCost.toFixed(0)} total. Timeline: ${state.startDate} to ${endDate} (${state.days} days).`;
+      ? `Plan de renovación: ${floorArea.toFixed(1)} m² piso (+${state.wastePct}% desperdicio → ${floorWithWaste.toFixed(1)} m²), ${paintLiters.toFixed(1)} L pintura, ~$${totalCost.toFixed(0)} total. Cronograma: ${state.startDate} a ${endDate} (${state.days} días).${notesLine}`
+      : `Renovation plan: ${floorArea.toFixed(1)} m² floor (+${state.wastePct}% waste → ${floorWithWaste.toFixed(1)} m²), ${paintLiters.toFixed(1)} L paint, ~$${totalCost.toFixed(0)} total. Timeline: ${state.startDate} to ${endDate} (${state.days} days).${notesLine}`;
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -111,7 +137,6 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
   const mins = Math.floor(timer / 60);
   const secs = timer % 60;
 
-  // Simple SVG room sketch (top-down, scaled)
   const svgW = 200;
   const svgH = 140;
   const scale = Math.min(svgW / Math.max(state.length, 1), svgH / Math.max(state.width, 1)) * 0.8;
@@ -137,8 +162,8 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
       </div>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
         {es
-          ? "Medí dimensiones, calculá materiales y costos en vivo, marcá el checklist, definí el cronograma y usá el temporizador de foco. Todo local en el navegador."
-          : "Enter dimensions, see live material and cost estimates, check off steps, set a timeline, and use the focus timer. All local in the browser."}
+          ? "Medí dimensiones, calculá materiales (con desperdicio), costos en vivo, pegá resultados de otras herramientas, marcá el checklist, definí el cronograma y usá el temporizador de foco. Todo local."
+          : "Enter dimensions, see live materials (with waste), costs, paste results from other tools, check off steps, set a timeline, and use the focus timer. All local."}
       </p>
 
       <div className="mt-5 grid gap-6 lg:grid-cols-2">
@@ -163,12 +188,13 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
                 </label>
               ))}
             </div>
-            {/* Visual room sketch */}
             <div className="mt-4 flex justify-center">
               <svg width={svgW} height={svgH} className="rounded border border-border/50 bg-muted/30" aria-label={es ? "Esquema de la habitación" : "Room sketch"}>
                 <rect x={offsetX} y={offsetY} width={roomW} height={roomH} fill="hsl(var(--primary)/0.15)" stroke="hsl(var(--primary))" strokeWidth="2" />
+                <rect x={offsetX + roomW * 0.35} y={offsetY + roomH - 8} width={roomW * 0.3} height={8} fill="hsl(var(--primary)/0.4)" />
                 <text x={svgW / 2} y={offsetY - 4} textAnchor="middle" fontSize="10" fill="currentColor">{state.length.toFixed(1)} m</text>
                 <text x={offsetX - 4} y={svgH / 2} textAnchor="end" fontSize="10" fill="currentColor" transform={`rotate(-90 ${offsetX - 4} ${svgH / 2})`}>{state.width.toFixed(1)} m</text>
+                <text x={svgW / 2} y={offsetY + roomH / 2} textAnchor="middle" fontSize="9" fill="currentColor">{state.height.toFixed(1)} m alt</text>
               </svg>
             </div>
           </div>
@@ -180,11 +206,12 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
             </div>
             <div className="mt-3 space-y-2 text-sm">
               <div className="flex justify-between"><span>{es ? "Área piso" : "Floor area"}</span><span className="font-semibold tabular-nums">{floorArea.toFixed(1)} m²</span></div>
+              <div className="flex justify-between"><span>{es ? "Piso c/ desperdicio" : "Floor w/ waste"}</span><span className="font-semibold tabular-nums">{floorWithWaste.toFixed(1)} m²</span></div>
               <div className="flex justify-between"><span>{es ? "Área paredes" : "Wall area"}</span><span className="font-semibold tabular-nums">{wallArea.toFixed(1)} m²</span></div>
-              <div className="flex justify-between"><span>{es ? "Pintura (est.)" : "Paint (est.)"}</span><span className="font-semibold tabular-nums">{paintLiters.toFixed(1)} L</span></div>
+              <div className="flex justify-between"><span>{es ? "Pintura (est. c/ desp.)" : "Paint (est. w/ waste)"}</span><span className="font-semibold tabular-nums">{paintLiters.toFixed(1)} L</span></div>
               <div className="flex justify-between border-t border-border/50 pt-2"><span>{es ? "Costo total est." : "Est. total cost"}</span><span className="font-black tabular-nums">${totalCost.toFixed(0)}</span></div>
             </div>
-            <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+            <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
               <label>
                 {es ? "$/m² piso" : "$ / m² floor"}
                 <input type="number" value={state.floorPrice} onChange={(e) => update("floorPrice", parseFloat(e.target.value) || 0)} className="mt-1 w-full rounded border px-2 py-1" />
@@ -192,6 +219,10 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
               <label>
                 {es ? "$/L pintura" : "$ / L paint"}
                 <input type="number" value={state.paintPrice} onChange={(e) => update("paintPrice", parseFloat(e.target.value) || 0)} className="mt-1 w-full rounded border px-2 py-1" />
+              </label>
+              <label>
+                {es ? "% desperdicio" : "% waste"}
+                <input type="number" min="0" max="50" value={state.wastePct} onChange={(e) => update("wastePct", parseFloat(e.target.value) || 0)} className="mt-1 w-full rounded border px-2 py-1" />
               </label>
             </div>
           </div>
@@ -213,8 +244,7 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
                     }`}
                     aria-pressed={done}
                   >
-                    <CheckCircle2 className={`size-4 ${
-done ? "text-primary" : "text-muted-foreground"}`} />
+                    <CheckCircle2 className={`size-4 ${done ? "text-primary" : "text-muted-foreground"}`} />
                     {es ? step.es : step.en}
                   </button>
                 );
@@ -260,6 +290,36 @@ done ? "text-primary" : "text-muted-foreground"}`} />
               <button type="button" onClick={() => { setRunning(false); setTimer(0); }} className="rounded-full border px-3 py-1 text-sm font-bold">
                 {es ? "Reset" : "Reset"}
               </button>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border/70 bg-card p-4">
+            <div className="flex items-center gap-2 text-sm font-bold">
+              <StickyNote className="size-4 text-primary" />
+              {es ? "Resultados pegados" : "Pasted results"}
+            </div>
+            <textarea
+              value={noteDraft}
+              onChange={(e) => setNoteDraft(e.target.value)}
+              placeholder={es ? "Pegá aquí un resultado de otra herramienta..." : "Paste a result from another tool here..."}
+              className="mt-2 w-full rounded border border-border bg-background px-2 py-1.5 text-sm"
+              rows={2}
+            />
+            <button type="button" onClick={addNote} className="mt-2 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
+              {es ? "Agregar nota" : "Add note"}
+            </button>
+            <div className="mt-3 space-y-2 max-h-40 overflow-y-auto">
+              {state.notes.map((note, i) => (
+                <div key={i} className="flex items-start gap-2 rounded border border-border/60 bg-muted/40 px-2 py-1.5 text-xs">
+                  <p className="flex-1 whitespace-pre-wrap break-words">{note}</p>
+                  <button type="button" onClick={() => removeNote(i)} className="shrink-0 text-muted-foreground hover:text-destructive" aria-label={es ? "Eliminar" : "Remove"}>
+                    <Trash2 className="size-3.5" />
+                  </button>
+                </div>
+              ))}
+              {state.notes.length === 0 && (
+                <p className="text-xs text-muted-foreground">{es ? "Sin notas aún." : "No notes yet."}</p>
+              )}
             </div>
           </div>
 
