@@ -11,18 +11,18 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: simulators
-last_closed_id: boids-flocking-lab
+last_closed_domain: kits
+last_closed_id: home-renovation-kit
 p_fixed: 0.35
 
 weights_core:
   kits: 1
-  journeys: 6
-  games: 3
-  simulators: 2
-  studio-composition: 7
-  playgrounds: 4
-  quality-lift: 3
+  journeys: 7
+  games: 4
+  simulators: 3
+  studio-composition: 8
+  playgrounds: 5
+  quality-lift: 4
 
 weights_growth:
   traffic-bets: 3
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-18 | kits | home-renovation-kit | Interactive Home Renovation Kit (EN+ES)
 - 2026-10-17 | simulators | boids-flocking-lab | Boids Flocking Lab (EN+ES)
 - 2026-10-17 | games | pulse-catch-arena | Pulse Catch Arena (EN+ES)
 - 2026-10-17 | search-magnets | canvas-webgl-performance-guide | Canvas & WebGL Performance Guide (EN+ES)
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-16 | search-magnets | compound-interest-guide | Compound Interest SEO Guide (EN+ES)
 - 2026-10-16 | adsense-prep | terms-of-use | Terms of Use pages (EN+ES)
 - 2026-10-16 | search-magnets | particle-physics-guide | Particle Physics SEO Guide (EN+ES)
-- 2026-10-16 | traffic-bets | traffic-events | Traffic Events Instrumentation
 ```
 
 ---
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive Home Renovation Kit: a multi-step local workspace for planning a room renovation. Shared board (browser-only) with ordered steps — measure dimensions, calculate materials (flooring/paint), estimate costs, set timeline. Live progress checklist, visual summary of pasted results, focus timer, copy-slip for progress URL. Links to relevant existing tools but the kit page itself is the cohesive interactive experience with next-step guidance. Visual payoff of a living renovation plan. EN+ES routes. Not a single calculator.
+status: done
+idea: Interactive Home Renovation Kit closed after 6/6 runs. Full local board with dimensions, materials+waste, costs, budget bar, shopping list, colors, notes, timeline, focus timer, completion celebration + reset.
 id: home-renovation-kit
 path_en: /kits/home-renovation-kit
 path_es: /es/kits/kit-renovacion-hogar
 domain: kits
 runs_total: 6
-runs_remaining: 1
-acceptance: pending
+runs_remaining: 0
+acceptance: shipped
 share: url
 next_step_required: yes
-notes: DOMAIN ROLL U=0.839 → CORE. Weighted r=7.40/26 → kits. last_closed simulators — no re-roll. Weights: kits→1, other CORE +1. Idea selected for coherent multi-tool renovation planning path with interactive board UX. quality-lift domain added to CORE with weight 3 (meta, not this project). EXECUTE 1/6: shipped HomeRenovationBoard with live dimensions/materials/costs, checklist, focus timer, copy summary; registered in WORK_KITS; EN+ES routes wired. EXECUTE 2/6: added SVG room sketch from dimensions + interactive timeline (start date + days, end date calc) with updated copy slip. Adsterra untouched. EXECUTE 3/6: added waste% factor (applied to floor + paint), visual pasted-results notes board (add/remove cards, persisted, included in copy slip), door+height on SVG sketch. Adsterra untouched. EXECUTE 4/6: added floor/wall color pickers that update the SVG room sketch fill in real time, included colors in copy slip. Adsterra untouched. EXECUTE 5/6: added budget target with visual progress bar (est vs budget, over-budget highlight), shopping list checkboxes for flooring & paint (quantities, persisted, included in copy slip). Adsterra untouched.
+notes: EXECUTE 6/6: added completion celebration banner + reset plan button. Adsterra untouched. Project closed. Weights updated as selected→1 others+1.
 adsense-prep_runs: 3
 ```
 
