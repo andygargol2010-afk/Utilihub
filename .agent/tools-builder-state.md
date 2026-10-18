@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-18 | texto | contador-parrafos | ParagraphCounterTool
+- 2026-10-18 | ciencia | calculadora-volumen-cilindro | CylinderVolumeCalculatorTool
 - 2026-10-18 | texto | contador-oraciones | SentenceCounterTool
 - 2026-10-18 | ciencia | calculadora-volumen-esfera | SphereVolumeCalculatorTool
 - 2026-10-18 | finanzas | calculadora-propina-impuesto | TipTaxCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-16 | salud | calculadora-deficit-calorico | CalorieDeficitTool
 - 2026-10-16 | matematicas | calculadora-proporcion | ProportionCalculatorTool
 - 2026-10-16 | diseno | generador-gradiente-css | CssGradientGeneratorTool
-- 2026-10-16 | educacion | calculadora-nota-final | FinalGradeTool
-- 2026-10-16 | conversiones | conversor-temperatura | TemperatureConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent
-ciencia/física: recent (fuerza, volumen-esfera)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro)
 finanzas simples: recent (regla-72, propina-impuesto)
 hogar/construcción: recent
 % / math básica: recent (proporcion)
@@ -51,7 +51,7 @@ cocina: recent
 educacion: recent
 diseno: recent
 viajes: recent (tiempo-viaje)
-texto: recent (oraciones)
+texto: recent (oraciones, parrafos)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -70,6 +70,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-18 PRODUCT: shipped 1 (calculadora-bac, salud) — second (tip+tax) prepared but registry/index update for two considered fragile after accidental placeholder; stopped at 1 excellent. Tip+tax files left for next run.
 2026-10-18 PRODUCT: shipped 1 (calculadora-propina-impuesto, finanzas) — files were prepared; registered surgically. Second candidate not shipped to keep quality bar and avoid any registry risk this run.
 2026-10-18 PRODUCT: shipped 2 (calculadora-volumen-esfera ciencia + contador-oraciones texto). Saturation escape used; distinct clusters. Anti-dupe passed (no existing sphere volume or sentence counter). Registry surgical OK.
+2026-10-18 PRODUCT: shipped 2 (calculadora-volumen-cilindro ciencia + contador-parrafos texto). Saturation escape; distinct clusters. Anti-dupe OK. Registry surgical OK.
 ```
 
 ---
@@ -78,7 +79,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-volumen-esfera, contador-oraciones
+last_slugs: calculadora-volumen-cilindro, contador-parrafos
 last_deploy: pending verification
 ```
 
