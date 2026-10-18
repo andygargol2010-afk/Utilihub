@@ -1,6 +1,6 @@
 export type ShapeKind = "box" | "sphere" | "cylinder" | "cone" | "plane" | "torus" | "prism" | "tube";
 
-export type MatPreset = "default" | "matte" | "metal" | "glass" | "plastic";
+export type MatPreset = "default" | "matte" | "metal" | "glass" | "plastic" | "rubber";
 
 /** 1 world unit ≈ 10 cm for measurement labels */
 export const UNIT_CM = 10;
@@ -226,6 +226,14 @@ export function makeMaterial(THREE: any, color: string, preset: MatPreset = "def
       flatShading: false,
     });
   }
+  if (preset === "rubber") {
+    return new THREE.MeshStandardMaterial({
+      color,
+      metalness: 0,
+      roughness: 0.98,
+      flatShading: false,
+    });
+  }
   // default — same look as before (color bug fix path)
   return new THREE.MeshPhysicalMaterial({
     color,
@@ -249,6 +257,7 @@ export function matPresetList(es: boolean): { id: MatPreset; label: string }[] {
     { id: "metal", label: es ? "Metal" : "Metal" },
     { id: "glass", label: es ? "Vidrio" : "Glass" },
     { id: "plastic", label: es ? "Plástico" : "Plastic" },
+    { id: "rubber", label: es ? "Goma" : "Rubber" },
   ];
 }
 
