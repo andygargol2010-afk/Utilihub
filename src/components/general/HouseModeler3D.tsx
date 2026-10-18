@@ -1429,27 +1429,39 @@ function paintDoorLeafBump(ctx: CanvasRenderingContext2D, size: number) {
 
 
 function paintJoinery(ctx: CanvasRenderingContext2D, size: number) {
-  // Painted sash: cream enamel over timber, brush drag, not the oak plate map.
-  noiseFill(ctx, size, [214, 206, 190], 10);
+  // Painted sash: cream enamel over timber, denser brush drag and subtle wear for more realistic variation.
+  noiseFill(ctx, size, [214, 206, 190], 12);
   ctx.fillStyle = "#d9d0c0";
   ctx.fillRect(0, 0, size, size);
-  for (let i = 0; i < 14; i++) {
-    const y0 = Math.floor((i / 9) * size);
-    const h = Math.floor(size / 9);
-    const tone = 206 + Math.floor(hash2(i, 2.8) * 22);
-    ctx.fillStyle = `rgb(${tone}, ${tone - 6}, ${tone - 18})`;
-    ctx.fillRect(0, y0, size, h - 1);
-    ctx.strokeStyle = "rgba(120,104,82,0.22)";
+  const bands = 18;
+  for (let i = 0; i < bands; i++) {
+    const y0 = Math.floor((i / bands) * size);
+    const h = Math.floor(size / bands) + 1;
+    const tone = 202 + Math.floor(hash2(i, 2.8) * 28);
+    ctx.fillStyle = `rgb(${tone}, ${tone - 8}, ${tone - 22})`;
+    ctx.fillRect(0, y0, size, h);
+    // Brush strokes
+    ctx.strokeStyle = "rgba(110,94,74,0.18)";
     ctx.lineWidth = 1;
-    const gy = y0 + h * 0.45;
+    const gy = y0 + h * 0.4;
     ctx.beginPath();
     ctx.moveTo(0, gy);
-    for (let x = 0; x <= size; x += 7) ctx.lineTo(x, gy + Math.sin(x * 0.05 + i) * 0.9);
+    for (let x = 0; x <= size; x += 5) ctx.lineTo(x, gy + Math.sin(x * 0.06 + i * 0.7) * 1.1);
     ctx.stroke();
+    // Occasional dust or wear speck
+    if (hash2(i, 5.2) > 0.62) {
+      const wx = Math.floor(hash2(i, 11.3) * size);
+      const ww = 4 + Math.floor(hash2(i, 3.1) * 10);
+      ctx.fillStyle = "rgba(160,148,128,0.22)";
+      ctx.fillRect(wx, y0 + 1, ww, Math.max(2, h - 2));
+    }
   }
-  ctx.fillStyle = "rgba(92,78,62,0.35)";
-  ctx.fillRect(0, size - 4, size, 4);
-  ctx.fillRect(0, 0, size, 3);
+  // Edge wear
+  ctx.fillStyle = "rgba(82,68,52,0.42)";
+  ctx.fillRect(0, size - 5, size, 5);
+  ctx.fillRect(0, 0, size, 4);
+  ctx.fillStyle = "rgba(200,192,176,0.15)";
+  ctx.fillRect(2, 2, size - 4, 2);
 }
 
 function paintJoineryBump(ctx: CanvasRenderingContext2D, size: number) {
