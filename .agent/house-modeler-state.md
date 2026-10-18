@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 205
+runs_done: 206
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 340570
-last_known_good_hint: 484b4d9 (~340798 bytes prior, window timber sash densify; current blob healthy at ~340570)
+approx_bytes: 341531
+last_known_good_hint: 525771d (~341531 bytes, grass meadow densify; prior 484b4d9 window sash)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-18
 SEO_LOCALES_ACTIVE: none
-deploy: READY (recent SHAs including 484b4d9 modeler and later catalog on fix/spanish-complete)
-note: META run 205 — verified monolith healthy (~340kB, paint helpers, door cond=1, Sky present); no truncation risk taken; deploys READY.
+deploy: pending verify for 525771d
+note: PRODUCT run 206 — densified grass meadow flecks + micro-blades for richer outdoor lawn; monolith ~341531 bytes.
 ```
 
 Refresh after each run.
@@ -90,6 +90,7 @@ Monolith SHA fa241f92 after PRODUCT run 202 (door metal densify).
 MODELADOR-3D rubber preset at 976dcd0d.
 Monolith SHA 484b4d9 after PRODUCT run 204 (window timber sash densify).
 META run 205: health check OK; current HEAD b53dd565 (catalog); monolith intact.
+PRODUCT run 206: grass densify at 525771d (~341531 bytes).
 ```
 
 <!-- end:house-modeler-state.md -->
