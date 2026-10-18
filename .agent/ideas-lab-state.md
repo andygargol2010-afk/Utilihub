@@ -67,11 +67,11 @@ path_en: /kits/home-renovation-kit
 path_es: /es/kits/kit-renovacion-hogar
 domain: kits
 runs_total: 6
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: url
 next_step_required: yes
-notes: DOMAIN ROLL U=0.839 → CORE. Weighted r=7.40/26 → kits. last_closed simulators — no re-roll. Weights: kits→1, other CORE +1. Idea selected for coherent multi-tool renovation planning path with interactive board UX. quality-lift domain added to CORE with weight 3 (meta, not this project). EXECUTE 1/6: shipped HomeRenovationBoard with live dimensions/materials/costs, checklist, focus timer, copy summary; registered in WORK_KITS; EN+ES routes wired. Adsterra untouched.
+notes: DOMAIN ROLL U=0.839 → CORE. Weighted r=7.40/26 → kits. last_closed simulators — no re-roll. Weights: kits→1, other CORE +1. Idea selected for coherent multi-tool renovation planning path with interactive board UX. quality-lift domain added to CORE with weight 3 (meta, not this project). EXECUTE 1/6: shipped HomeRenovationBoard with live dimensions/materials/costs, checklist, focus timer, copy summary; registered in WORK_KITS; EN+ES routes wired. EXECUTE 2/6: added SVG room sketch from dimensions + interactive timeline (start date + days, end date calc) with updated copy slip. Adsterra untouched.
 adsense-prep_runs: 3
 ```
 
