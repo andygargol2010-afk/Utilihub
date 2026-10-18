@@ -16,13 +16,13 @@ last_closed_id: home-renovation-kit
 p_fixed: 0.35
 
 weights_core:
-  kits: 1
-  journeys: 7
-  games: 4
-  simulators: 3
-  studio-composition: 8
-  playgrounds: 5
-  quality-lift: 4
+  kits: 2
+  journeys: 8
+  games: 5
+  simulators: 4
+  studio-composition: 9
+  playgrounds: 1
+  quality-lift: 5
 
 weights_growth:
   traffic-bets: 3
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive Home Renovation Kit closed after 6/6 runs. Full local board with dimensions, materials+waste, costs, budget bar, shopping list, colors, notes, timeline, focus timer, completion celebration + reset.
-id: home-renovation-kit
-path_en: /kits/home-renovation-kit
-path_es: /es/kits/kit-renovacion-hogar
-domain: kits
+status: active
+idea: Interactive Gravity Ribbon Canvas playground. Users sketch freeform paths that become flowing gravity ribbons. Particles are emitted and follow the ribbons with tunable attraction strength, leaving persistent glowing trails that form temporary signatures. Multiple ribbons can intersect and influence particles. Controls for particle count (modest on mobile), trail length, flow speed, color themes, and clear. Touch-friendly drawing. Goal is visual payoff and open canvas play, not a calculator.
+id: gravity-ribbon-canvas
+path_en: /playgrounds/gravity-ribbon-canvas
+path_es: /es/playgrounds/lienzo-cintas-gravedad
+domain: playgrounds
 runs_total: 6
-runs_remaining: 0
-acceptance: shipped
+runs_remaining: 6
+acceptance: pending
 share: url
 next_step_required: yes
-notes: EXECUTE 6/6: added completion celebration banner + reset plan button. Adsterra untouched. Project closed. Weights updated as selected→1 others+1.
+notes: IDEATE. Roll: U=0.538 → CORE; sample 24.85/32 → playgrounds (cumulative 23-28). last_closed kits ≠ playgrounds, no re-roll. Weights: selected→1, other CORE +1. Avoided recent particle-magnet, constellation, firma-particulas. next-step required before Adsterra. Adsterra untouched.
 adsense-prep_runs: 3
 ```
 
