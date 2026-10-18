@@ -197,6 +197,7 @@ import { CHARACTER_COUNTER_TOOLS } from "./character-counter-tool";
 import { CALORIE_DEFICIT_TOOLS } from "./calorie-deficit-tool";
 import { TRIP_TIME_TOOLS } from "./trip-time-tool";
 import { FORCE_CALCULATOR_TOOLS } from "./force-calculator-tool";
+import { BAC_CALCULATOR_TOOLS } from "./bac-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -400,4 +401,5 @@ export const GENERAL_TOOLS = [
   ...CALORIE_DEFICIT_TOOLS,
   ...TRIP_TIME_TOOLS,
   ...FORCE_CALCULATOR_TOOLS,
+  ...BAC_CALCULATOR_TOOLS,
 ];
