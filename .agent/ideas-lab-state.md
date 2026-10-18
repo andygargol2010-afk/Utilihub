@@ -16,13 +16,13 @@ last_closed_id: home-renovation-kit
 p_fixed: 0.35
 
 weights_core:
-  kits: 2
-  journeys: 8
-  games: 5
-  simulators: 4
-  studio-composition: 9
-  playgrounds: 1
-  quality-lift: 5
+  kits: 3
+  journeys: 9
+  games: 6
+  simulators: 5
+  studio-composition: 1
+  playgrounds: 2
+  quality-lift: 6
 
 weights_growth:
   traffic-bets: 3
@@ -61,17 +61,17 @@ adsense-prep_runs: 3
 
 ```
 status: active
-idea: Interactive Gravity Ribbon Canvas playground. Users sketch freeform paths that become flowing gravity ribbons. Particles are emitted and follow the ribbons with tunable attraction strength, leaving persistent glowing trails that form temporary signatures. Multiple ribbons can intersect and influence particles. Controls for particle count (modest on mobile), trail length, flow speed, color themes, and clear. Touch-friendly drawing. Goal is visual payoff and open canvas play, not a calculator.
-id: gravity-ribbon-canvas
-path_en: /playgrounds/gravity-ribbon-canvas
-path_es: /es/playgrounds/lienzo-cintas-gravedad
-domain: playgrounds
+idea: Interactive Neon Signature Composer. Users draw freehand multi-layer strokes that become persistent neon paths with flowing glow, adjustable intensity, color gradients along the stroke, and optional particle sparkles. Layers can be blended and rearranged. Controls for brush width, glow strength, layer opacity, color themes, undo, and clear. Touch-friendly drawing. Goal is visual composition of temporary light signatures with high visual payoff, not a calculator.
+id: neon-signature-composer
+path_en: /studio/neon-signature-composer
+path_es: /es/studio/compositor-firma-neon
+domain: studio-composition
 runs_total: 6
-runs_remaining: 0
+runs_remaining: 6
 acceptance: pending
 share: url
 next_step_required: yes
-notes: IDEATE. Roll: U=0.538 → CORE; sample 24.85/32 → playgrounds (cumulative 23-28). last_closed kits ≠ playgrounds, no re-roll. Weights: selected→1, other CORE +1. Avoided recent particle-magnet, constellation, firma-particulas. next-step required before Adsterra. Adsterra untouched. EXECUTE 1/6: core canvas (draw ribbons as attractors, particles + persistent trails, controls, mobile cap), EN+ES routes, next-step registration, hub cards. EXECUTE 2/6: theme-aware ribbon/particle colors, stronger glow trails with fading alpha, undo last ribbon, refined physics. EXECUTE 3/6: tangential flow bias along nearest ribbon segment + flow strength control so particles stream along paths (stronger flowing visual). EXECUTE 4/6: additive (lighter) composite for particle trails and cores + new trail glow control for higher visual payoff and temporary signatures. EXECUTE 5/6: variable ribbon thickness control + unique hue offset per ribbon for richer multi-ribbon signatures and visual variety. EXECUTE 6/6: smooth quadratic-curve ribbon rendering + proximity sparkles when particles approach ribbons (higher visual payoff, temporary energy signatures). Project complete (runs_remaining=0). Adsterra kept after next-step.
+notes: IDEATE. Roll: U=0.609 → CORE; sample 20.81/34 → studio-composition (cumulative 19-28). last_closed kits ≠ studio-composition, no re-roll. Weights: selected→1, other CORE +1. Avoided recent particle/ribbon playgrounds. next-step required before Adsterra. Adsterra untouched. New composition-focused neon signature canvas.
 adsense-prep_runs: 3
 ```
 
