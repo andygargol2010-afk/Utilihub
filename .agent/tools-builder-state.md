@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-18 | finanzas | calculadora-margen-beneficio | ProfitMarginCalculatorTool
+- 2026-10-18 | educacion | calculadora-promedio-ponderado | WeightedAverageCalculatorTool
 - 2026-10-18 | texto | contador-consonantes | ConsonantCounterTool
 - 2026-10-18 | ciencia | calculadora-area-rectangulo | RectangleAreaCalculatorTool
 - 2026-10-18 | texto | contador-vocales | VowelCounterTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-18 | ciencia | calculadora-volumen-cilindro | CylinderVolumeCalculatorTool
 - 2026-10-18 | texto | contador-oraciones | SentenceCounterTool
 - 2026-10-18 | ciencia | calculadora-volumen-esfera | SphereVolumeCalculatorTool
-- 2026-10-18 | finanzas | calculadora-propina-impuesto | TipTaxCalculatorTool
-- 2026-10-18 | salud | calculadora-bac | BacCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -40,7 +40,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 ```
 fechas/tiempo: recent
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo)
-finanzas simples: recent (regla-72, propina-impuesto)
+finanzas simples: recent (regla-72, propina-impuesto, margen-beneficio)
 hogar/construcción: recent
 % / math básica: recent (proporcion)
 generadores texto: watch
@@ -48,7 +48,7 @@ conversiones genéricas: recent
 salud / body-metrics: recent (bac, deficit)
 productividad: recent (caracteres)
 cocina: recent
-educacion: recent
+educacion: recent (promedio-ponderado, nota-final)
 diseno: recent
 viajes: recent (tiempo-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes)
@@ -74,6 +74,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-18 PRODUCT: shipped 2 (calculadora-densidad ciencia + contador-frecuencia-palabras texto). Saturation escape; distinct clusters. Anti-dupe OK (no existing density or word frequency). Registry surgical OK.
 2026-10-18 PRODUCT: shipped 2 (calculadora-area-circulo ciencia + contador-vocales texto). Saturation escape; distinct clusters. Anti-dupe OK (no existing dedicated circle area or vowel counter). Registry surgical OK.
 2026-10-18 PRODUCT: shipped 2 (calculadora-area-rectangulo ciencia + contador-consonantes texto). Saturation escape used; distinct clusters. Anti-dupe OK (no existing rectangle area or consonant counter). Registry surgical OK.
+2026-10-18 PRODUCT: shipped 2 (calculadora-margen-beneficio finanzas + calculadora-promedio-ponderado educacion). Distinct clusters (not texto/ciencia). Anti-dupe OK. Registry surgical OK after typo fix.
 ```
 
 ---
@@ -82,7 +83,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-area-rectangulo, contador-consonantes
+last_slugs: calculadora-margen-beneficio, calculadora-promedio-ponderado
 last_deploy: pending verification
 ```
 
