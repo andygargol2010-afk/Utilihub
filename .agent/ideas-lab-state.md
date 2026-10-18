@@ -16,13 +16,13 @@ last_closed_id: neon-signature-composer
 p_fixed: 0.35
 
 weights_core:
-  kits: 3
-  journeys: 9
-  games: 6
-  simulators: 5
-  studio-composition: 1
-  playgrounds: 2
-  quality-lift: 6
+  kits: 4
+  journeys: 1
+  games: 7
+  simulators: 6
+  studio-composition: 2
+  playgrounds: 3
+  quality-lift: 7
 
 weights_growth:
   traffic-bets: 3
@@ -60,24 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive Neon Signature Composer. Users draw freehand multi-layer strokes that become persistent neon paths with flowing glow, adjustable intensity, color gradients along the stroke, and optional particle sparkles. Layers can be blended and rearranged. Controls for brush width, glow strength, layer opacity, color themes, undo, and clear. Touch-friendly drawing. Goal is visual composition of temporary light signatures with high visual payoff, not a calculator.
-id: neon-signature-composer
-path_en: /studio/neon-signature-composer
-path_es: /es/studio/compositor-firma-neon
-domain: studio-composition
+status: active
+idea: Interactive Waypoint River Composer. Users place sequential waypoints on a canvas that connect into a flowing river path with animated light particles traveling along the progression, color gradients by journey stage, optional branching side paths, and waypoint markers with glow. Controls for flow speed, particle density, color themes, path smoothing, undo, and clear. Touch-friendly placement and drag. Goal is visual composition of a progressive light-river journey with high visual payoff and sense of forward motion, not a calculator.
+id: waypoint-river-composer
+path_en: /journeys/waypoint-river-composer
+path_es: /es/journeys/compositor-rio-waypoints
+domain: journeys
 runs_total: 6
-runs_remaining: 0
-acceptance: done
+runs_remaining: 6
+acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE. Roll: U=0.609 → CORE; sample 20.81/34 → studio-composition (cumulative 19-28). last_closed kits ≠ studio-composition, no re-roll. Weights: selected→1, other CORE +1. Avoided recent particle/ribbon playgrounds. next-step required before Adsterra. Adsterra untouched. New composition-focused neon signature canvas.
-EXECUTE run 1/6: shipped NeonSignatureComposer component (freehand multi-layer strokes, persistent neon glow paths, brush/glow/opacity controls, color themes, layers, undo/clear, optional sparkles, touch-friendly). EN+ES routes at /studio/neon-signature-composer and /es/studio/compositor-firma-neon. Registered in next-step.ts (journeys to neon-sign, glow-trail etc.). PlaygroundNextStep before AdsterraBanner. Core Web Vitals: lazy route, fixed aspect canvas, modest particles. Share URL for controls planned next.
-EXECUTE run 2/6: added per-stroke linear color gradients (theme start→end colors, toggleable), layer reordering (up/down), synced gradient flag to layers. Visual payoff elevated with flowing color transitions along freehand neon paths. EN+ES labels updated. Adsterra untouched. CWV preserved (no new deps, modest canvas).
-EXECUTE run 3/6: added share URL via location.hash (serialize/deserialize layers with rounded points, btoa). Share button copies full URL; clear resets hash. Load-from-hash on mount restores composition + controls. EN+ES labels. Adsterra untouched. CWV preserved (no new deps).
-EXECUTE run 4/6: added PNG export button (canvas.toDataURL download as neon-signature.png). Share options now URL + image. EN+ES labels updated (download + hint). Adsterra untouched. CWV preserved (no new deps).
-EXECUTE run 5/6: added quadratic curve smoothing for fluid freehand neon strokes (quadraticCurveTo midpoint interpolation) and optional pulse glow animation (sinusoidal shadowBlur modulation via pulseTimeRef). Visual payoff elevated with smoother flowing paths and living glow. EN+ES labels for pulse toggle + updated hint. Adsterra untouched. CWV preserved (no new deps, modest animation).
-EXECUTE run 6/6: added optional horizontal mirror mode (toggle reflects strokes and sparkles across vertical axis in redraw for symmetric neon compositions). Visual payoff elevated with living symmetry. EN+ES labels + updated hint. Adsterra untouched. CWV preserved (no new deps). Project closed.
+notes: IDEATE. Roll: U=0.7999 → CORE; weighted sample r=10.22/32 → journeys (cumul. kits 0-3, journeys 3-12). last_closed_domain studio-composition ≠ journeys, no re-roll. Weights: selected→1, other CORE +1. Avoided recent closed (neon studio, kits, boids, pulse, particle). New progression-focused waypoint river canvas. next-step required before Adsterra. Adsterra untouched.
 adsense-prep_runs: 3
 ```
 
