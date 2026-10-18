@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { KitCarryBoard } from "@/components/kits/KitCarryBoard";
 import { MarketStallBoard } from "@/components/kits/MarketStallBoard";
 import { TravelPackingBoard } from "@/components/kits/TravelPackingBoard";
+import { HomeRenovationBoard } from "@/components/kits/HomeRenovationBoard";
 import { ToolCard } from "@/components/ToolCard";
 import { kitBySlug, kitTools, kitEnglishPath, kitSpanishPath } from "@/lib/work-kits";
 import { englishToolSlug } from "@/lib/route-slugs";
@@ -72,6 +73,7 @@ function KitPage() {
   const { kit, tools } = Route.useLoaderData();
   const isMarketStall = kit.slug === "puesto-de-feria";
   const isTravelPacking = kit.slug === "packing-viaje";
+  const isHomeRenovation = kit.slug === "kit-renovacion-hogar";
   return (
     <main className="container-page py-6 sm:py-8">
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Work kits", to: "/kits" }, { label: kit.name }]} />
@@ -87,6 +89,8 @@ function KitPage() {
         <MarketStallBoard locale="en" />
       ) : isTravelPacking ? (
         <TravelPackingBoard locale="en" />
+      ) : isHomeRenovation ? (
+        <HomeRenovationBoard locale="en" />
       ) : (
         <>
           <KitCarryBoard kitSlug={kit.slug} steps={tools.map((tool) => ({ slug: tool.slug, label: tool.name }))} />
