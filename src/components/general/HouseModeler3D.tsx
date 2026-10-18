@@ -1504,7 +1504,7 @@ function paintFasciaBump(ctx: CanvasRenderingContext2D, size: number) {
 function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [158, 148, 132], 28);
   // Base pebbles
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 160; i++) { // denser base pebbles for richer outdoor path
     const x = hash2(i, 1.7) * size;
     const y = hash2(i, 4.1) * size;
     const r = 0.8 + hash2(i, 9) * 2.8;
@@ -1562,7 +1562,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   }
   ctx.restore();
   // Extra fine grit scatter for denser outdoor path read
-  for (let i = 0; i < 90; i++) { // denser grit scatter for richer outdoor path
+  for (let i = 0; i < 120; i++) { // denser grit scatter for richer outdoor path
     const x = hash2(i + 600, 1.3) * size;
     const y = hash2(i + 600, 4.7) * size;
     const r = 0.4 + hash2(i, 8.8) * 1.1;
