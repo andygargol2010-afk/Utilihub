@@ -389,7 +389,7 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Small flecks and edge wear so the plaster reads as hand-troweled, not a flat wash.
-  for (let f = 0; f < 32; f++) {
+  for (let f = 0; f < 48; f++) {
     const x = hash2(f, 11.3) * size;
     const y = hash2(f, 6.7) * size;
     const r = 1.2 + hash2(f, 4.1) * 3.4;
@@ -444,7 +444,7 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Fine micro-pits and lime bloom so the plaster surface reads as hand-troweled rather than machine-flat.
-  for (let p = 0; p < 72; p++) {
+  for (let p = 0; p < 96; p++) {
     const px = hash2(p, 17.4) * size;
     const py = hash2(p, 8.9) * size;
     const pr = 0.6 + hash2(p, 2.3) * 1.8;
