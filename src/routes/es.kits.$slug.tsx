@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { KitCarryBoard } from "@/components/kits/KitCarryBoard";
 import { MarketStallBoard } from "@/components/kits/MarketStallBoard";
 import { TravelPackingBoard } from "@/components/kits/TravelPackingBoard";
+import { HomeRenovationBoard } from "@/components/kits/HomeRenovationBoard";
 import { ToolCard } from "@/components/ToolCard";
 import { spanishToolName } from "@/lib/i18n/es";
 import { kitBySlug, kitTools, kitEnglishPath } from "@/lib/work-kits";
@@ -58,6 +59,12 @@ const KIT_ES: Record<string, { name: string; eyebrow: string; description: strin
     description: "Maleta visual interactiva: hacé clic en ítems para agregar o quitar, barras live de peso y progreso, feedback inmediato.",
     outcome: "Lista de packing lista con el peso bajo control, directo en el navegador.",
   },
+  "kit-renovacion-hogar": {
+    name: "Kit de renovación del hogar",
+    eyebrow: "Planificá un refresh de habitación",
+    description: "Tablero multi-paso interactivo para medir una habitación, estimar piso y pintura, seguir costos, checklist de progreso y temporizador de foco. Un plan de renovación vivo en el navegador.",
+    outcome: "Un plan de renovación claro con cálculos en vivo y progreso, listo para copiar o compartir.",
+  },
 };
 
 export const Route = createFileRoute("/es/kits/$slug")({
@@ -102,6 +109,7 @@ function SpanishKitPage() {
   const esMeta = KIT_ES[kit.slug] ?? { name: kit.name, eyebrow: kit.eyebrow, description: kit.description, outcome: kit.outcome };
   const isMarketStall = kit.slug === "puesto-de-feria";
   const isTravelPacking = kit.slug === "packing-viaje";
+  const isHomeRenovation = kit.slug === "kit-renovacion-hogar";
   return (
     <main className="container-page py-6 sm:py-8">
       <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Kits", to: "/es/kits" }, { label: esMeta.name }]} />
@@ -117,6 +125,8 @@ function SpanishKitPage() {
         <MarketStallBoard locale="es" />
       ) : isTravelPacking ? (
         <TravelPackingBoard locale="es" />
+      ) : isHomeRenovation ? (
+        <HomeRenovationBoard locale="es" />
       ) : (
         <>
           <KitCarryBoard
