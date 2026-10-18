@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-18 | finanzas | calculadora-propina-impuesto | TipTaxCalculatorTool
 - 2026-10-18 | salud | calculadora-bac | BacCalculatorTool
 - 2026-10-16 | viajes | calculadora-tiempo-viaje | TripTimeTool
 - 2026-10-16 | ciencia | calculadora-fuerza | ForceCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-16 | conversiones | conversor-temperatura | TemperatureConverterTool
 - 2026-10-16 | finanzas | calculadora-regla-72 | RuleOf72Tool
 - 2026-10-16 | hogar | calculadora-area-habitacion | RoomAreaTool
-- 2026-10-16 | fechas | calculadora-diferencia-fechas | DateDifferenceTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -40,7 +40,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 ```
 fechas/tiempo: recent
 ciencia/física: recent (fuerza)
-finanzas simples: recent
+finanzas simples: recent (regla-72, propina-impuesto)
 hogar/construcción: recent
 % / math básica: recent (proporcion)
 generadores texto: watch
@@ -67,6 +67,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-16 PRODUCT: shipped calculadora-tiempo-viaje (viajes) + calculadora-fuerza (ciencia).
 2026-10-17 PRODUCT runs (multiple rolls): shipped 0 under old policy (first-batch saturation + anti-dupe). Expansion loop now required.
 2026-10-18 PRODUCT: shipped 1 (calculadora-bac, salud) — second (tip+tax) prepared but registry/index update for two considered fragile after accidental placeholder; stopped at 1 excellent. Tip+tax files left for next run.
+2026-10-18 PRODUCT: shipped 1 (calculadora-propina-impuesto, finanzas) — files were prepared; registered surgically. Second candidate not shipped to keep quality bar and avoid any registry risk this run.
 ```
 
 ---
@@ -75,7 +76,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-bac
+last_slugs: calculadora-propina-impuesto
 last_deploy: pending verification
 ```
 
