@@ -45,6 +45,15 @@ function JourneysIndex() {
           <p className="mt-2 text-sm text-muted-foreground">Plan occasion, guests, budget, checklist, and a live invite card. Shareable URL state.</p>
           <span className="mt-4 inline-block text-sm font-bold text-primary">Start journey →</span>
         </Link>
+        <Link
+          to="/journeys/waypoint-river-composer"
+          className="surface-card group block p-6 hover:-translate-y-0.5 hover:border-primary/40"
+        >
+          <p className="text-xs font-bold uppercase tracking-wider text-primary">Progression</p>
+          <h2 className="mt-1 text-xl font-black group-hover:text-primary">Waypoint River Composer</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Place sequential waypoints. Particles flow a light-river with stage color gradients.</p>
+          <span className="mt-4 inline-block text-sm font-bold text-primary">Start journey →</span>
+        </Link>
       </section>
     </main>
   );
