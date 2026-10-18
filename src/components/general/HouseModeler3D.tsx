@@ -1293,9 +1293,40 @@ function paintDoorMetal(ctx: CanvasRenderingContext2D, size: number) {
       ctx.arc(x0 + (x1 - x0) * 0.35 - 0.6, y - 0.6, 0.8, 0, Math.PI * 2);
       ctx.fill();
     }
+    // Denser micro-scratches, grit and contact weathering so sheet metal reads as outdoor zinc/steel with natural wear.
+    for (let s = 0; s < 8; s++) {
+      if (hash2(i + 20 + s, 41) > 0.45) {
+        const sx = x0 + hash2(i + 21 + s, 42) * (x1 - x0);
+        const sy = hash2(i + 22 + s, 43) * size;
+        const sl = 4 + hash2(i + 23 + s, 44) * 12;
+        ctx.strokeStyle = `rgba(90,98,104,${0.18 + hash2(i + 24 + s, 45) * 0.22})`;
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(sx + (hash2(i + 25 + s, 46) - 0.5) * sl, sy + hash2(i + 26 + s, 47) * 3);
+        ctx.stroke();
+      }
+    }
+    for (let g = 0; g < 10; g++) {
+      if (hash2(i + 50 + g, 61) > 0.55) {
+        const gx = x0 + 4 + hash2(i + 51 + g, 62) * (x1 - x0 - 8);
+        const gy = hash2(i + 52 + g, 63) * size;
+        const gr = 0.4 + hash2(i + 53 + g, 64) * 1.1;
+        ctx.fillStyle = `rgba(${140 + Math.floor(hash2(i + 54 + g, 65) * 40)},${148 + Math.floor(hash2(i + 55 + g, 66) * 30)},${152 + Math.floor(hash2(i + 56 + g, 67) * 20)},${0.14 + hash2(i + 57 + g, 68) * 0.2})`;
+        ctx.beginPath();
+        ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
   }
   ctx.fillStyle = "rgba(92,100,106,0.35)";
   ctx.fillRect(0, Math.floor(size * 0.62), size, 3);
+  // Soft base weathering band for outdoor sheet-metal door.
+  const base = ctx.createLinearGradient(0, size * 0.72, 0, size);
+  base.addColorStop(0, "rgba(70,78,84,0)");
+  base.addColorStop(1, "rgba(48,54,58,0.28)");
+  ctx.fillStyle = base;
+  ctx.fillRect(0, size * 0.72, size, size * 0.28);
 }
 
 function paintDoorMetalBump(ctx: CanvasRenderingContext2D, size: number) {
