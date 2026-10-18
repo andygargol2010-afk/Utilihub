@@ -735,19 +735,24 @@ function paintChimneyBrick(ctx: CanvasRenderingContext2D, size: number) {
         ctx.fillStyle = `rgba(${tone - 20}, ${tone - 30}, ${tone - 34}, 0.35)`;
         ctx.fillRect(x + 4, y0 + rh * 0.4, w * 0.35, 2);
       }
-      // Denser micro-pits and weathered flecks so brick faces read as fired clay with natural porosity.
-      if (hash2(c + 5, r + 12) > 0.65) {
+      // Denser micro-pits, grit flecks and contact detail so brick faces read as weathered fired clay with natural porosity and kiln variation.
+      if (hash2(c + 5, r + 12) > 0.55) {
         const pit = hash2(c + 9, r + 17);
-        const px = x + 3 + pit * (w - 6);
-        const py = y0 + mortar + 2 + pit * (rh - mortar * 2 - 4);
-        ctx.fillStyle = `rgba(${tone - 28}, ${tone - 36}, ${tone - 40}, ${0.25 + pit * 0.2})`;
+        const px = x + 2 + pit * (w - 5);
+        const py = y0 + mortar + 1 + pit * (rh - mortar * 2 - 3);
+        ctx.fillStyle = `rgba(${tone - 32}, ${tone - 40}, ${tone - 44}, ${0.28 + pit * 0.22})`;
         ctx.beginPath();
-        ctx.arc(px, py, 0.6 + pit * 0.8, 0, Math.PI * 2);
+        ctx.arc(px, py, 0.5 + pit * 1.0, 0, Math.PI * 2);
         ctx.fill();
+        // Extra grit contact
+        if (pit > 0.6) {
+          ctx.fillStyle = `rgba(${tone - 18}, ${tone - 22}, ${tone - 26}, 0.18)`;
+          ctx.fillRect(px - 1, py + 1, 2.2, 1.2);
+        }
       }
-      if (hash2(c + 11, r + 3) > 0.88) {
-        ctx.fillStyle = "rgba(90, 60, 48, 0.4)";
-        ctx.fillRect(x + w * 0.6, y0 + rh * 0.55, 1.5, 1.5);
+      if (hash2(c + 11, r + 3) > 0.82) {
+        ctx.fillStyle = "rgba(80, 52, 40, 0.45)";
+        ctx.fillRect(x + w * 0.55, y0 + rh * 0.5, 1.8, 1.6);
       }
     }
   }
