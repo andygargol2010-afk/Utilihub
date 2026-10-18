@@ -67,11 +67,11 @@ path_en: /kits/home-renovation-kit
 path_es: /es/kits/kit-renovacion-hogar
 domain: kits
 runs_total: 6
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: url
 next_step_required: yes
-notes: DOMAIN ROLL U=0.839 → CORE. Weighted r=7.40/26 → kits. last_closed simulators — no re-roll. Weights: kits→1, other CORE +1. Idea selected for coherent multi-tool renovation planning path with interactive board UX. quality-lift domain added to CORE with weight 3 (meta, not this project). EXECUTE 1/6: shipped HomeRenovationBoard with live dimensions/materials/costs, checklist, focus timer, copy summary; registered in WORK_KITS; EN+ES routes wired. EXECUTE 2/6: added SVG room sketch from dimensions + interactive timeline (start date + days, end date calc) with updated copy slip. Adsterra untouched. EXECUTE 3/6: added waste% factor (applied to floor + paint), visual pasted-results notes board (add/remove cards, persisted, included in copy slip), door+height on SVG sketch. Adsterra untouched.
+notes: DOMAIN ROLL U=0.839 → CORE. Weighted r=7.40/26 → kits. last_closed simulators — no re-roll. Weights: kits→1, other CORE +1. Idea selected for coherent multi-tool renovation planning path with interactive board UX. quality-lift domain added to CORE with weight 3 (meta, not this project). EXECUTE 1/6: shipped HomeRenovationBoard with live dimensions/materials/costs, checklist, focus timer, copy summary; registered in WORK_KITS; EN+ES routes wired. EXECUTE 2/6: added SVG room sketch from dimensions + interactive timeline (start date + days, end date calc) with updated copy slip. Adsterra untouched. EXECUTE 3/6: added waste% factor (applied to floor + paint), visual pasted-results notes board (add/remove cards, persisted, included in copy slip), door+height on SVG sketch. Adsterra untouched. EXECUTE 4/6: added floor/wall color pickers that update the SVG room sketch fill in real time, included colors in copy slip. Adsterra untouched.
 adsense-prep_runs: 3
 ```
 
