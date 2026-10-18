@@ -210,6 +210,8 @@ import { CIRCLE_AREA_CALCULATOR_TOOLS } from "./circle-area-calculator-tool";
 import { VOWEL_COUNTER_TOOLS } from "./vowel-counter-tool";
 import { RECTANGLE_AREA_CALCULATOR_TOOLS } from "./rectangle-area-calculator-tool";
 import { CONSONANT_COUNTER_TOOLS } from "./consonant-counter-tool";
+import { PROFIT_MARGIN_CALCULATOR_TOOLS } from "./profit-margin-calculator-tool";
+import { WEIGHTED_AVERAGE_CALCULATOR_TOOLS } from "./weighted-average-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -425,4 +427,6 @@ export const GENERAL_TOOLS = [
   ...VOWEL_COUNTER_TOOLS,
   ...RECTANGLE_AREA_CALCULATOR_TOOLS,
   ...CONSONANT_COUNTER_TOOLS,
+  ...PROFIT_MARGIN_CALCULATOR_TOOLS,
+  ...WEIGHTED_AVERAGE_CALCULATOR_TOOLS,
 ];
