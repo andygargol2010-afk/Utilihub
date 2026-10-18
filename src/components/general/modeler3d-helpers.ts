@@ -1,6 +1,6 @@
 export type ShapeKind = "box" | "sphere" | "cylinder" | "cone" | "plane" | "torus" | "prism" | "tube";
 
-export type MatPreset = "default" | "matte" | "metal" | "glass";
+export type MatPreset = "default" | "matte" | "metal" | "glass" | "plastic";
 
 /** 1 world unit ≈ 10 cm for measurement labels */
 export const UNIT_CM = 10;
@@ -129,8 +129,8 @@ export const BASE_SIZE: Record<ShapeKind, [number, number, number]> = {
   cylinder: [0.9, 1.1, 0.9],
   cone: [1, 1.1, 1],
   plane: [1.4, 0.06, 1.4],
-  torus: [1.5, 0.4, 1.5],
   prism: [1.1, 1.1, 1.1],
+  torus: [1.5, 0.4, 1.5],
   tube: [0.56, 1.2, 0.56],
 };
 export const COLORS = [
@@ -211,6 +211,21 @@ export function makeMaterial(THREE: any, color: string, preset: MatPreset = "def
       flatShading: false,
     });
   }
+  if (preset === "plastic") {
+    return new THREE.MeshPhysicalMaterial({
+      color,
+      metalness: 0.05,
+      roughness: 0.35,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.08,
+      reflectivity: 0.45,
+      sheen: 0.08,
+      sheenRoughness: 0.35,
+      sheenColor: 0xffffff,
+      envMapIntensity: 0.75,
+      flatShading: false,
+    });
+  }
   // default — same look as before (color bug fix path)
   return new THREE.MeshPhysicalMaterial({
     color,
@@ -233,6 +248,7 @@ export function matPresetList(es: boolean): { id: MatPreset; label: string }[] {
     { id: "matte", label: es ? "Mate" : "Matte" },
     { id: "metal", label: es ? "Metal" : "Metal" },
     { id: "glass", label: es ? "Vidrio" : "Glass" },
+    { id: "plastic", label: es ? "Plástico" : "Plastic" },
   ];
 }
 
