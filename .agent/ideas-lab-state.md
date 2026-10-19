@@ -67,11 +67,11 @@ path_en: /games/orbit-defender-arcade
 path_es: /es/juegos/arcade-defensor-orbita
 domain: games
 runs_total: 6
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 1/6. Core canvas game shipped (planet defense, aim/fire, waves, power-ups, particles, score). Registered in catalog + lazy registry + GAME_JOURNEYS for next-step. EN+ES via locale prop. Adsterra kept on routes. next runs: polish visuals, mobile feel, share PNG, extra power-ups.
+notes: EXECUTE 2/6. Visual polish: irregular asteroid shapes, stronger particle bursts, better planet gradient/glow. Share now exports canvas PNG (navigator.share files or download) with score. Mobile touch-action:none. EN+ES parity. next: extra power-ups, mobile feel polish, smoke.
 adsense-prep_runs: 3
 ```
 
