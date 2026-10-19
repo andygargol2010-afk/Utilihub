@@ -109,23 +109,48 @@ Protected file: `src/components/general/HouseModeler3D.tsx` (historically ~330�
 
 ---
 
-## QUALITY BAR (every PRODUCT)
+## QUALITY BAR (implementations)
 
-1. **User-visible:** the change must be observable in preview (texture detail, control clarity, bug gone, new kind placeable).
-2. **Realism:** materials respond like real surfaces; no pink missing textures; UV stretch avoided.
-3. **Dispose / leaks:** geometries/materials cleaned where the pattern already disposes.
-4. **EN + ES** for every new user-facing string.
-5. **Core Web Vitals:** do not load HouseModeler3D on routes that do not need it; no extra shadow maps / post stacks without clear visual win; protect mid-mobile FPS.
-6. **Acceptance:** one-line test of what the user must see/do — verified in summary.
+Every PRODUCT change must be **user-visible and correct**, not a drive-by tweak.
 
----
+### Before coding
 
-## Core Web Vitals (modeler)
+1. **Read a working neighbor:** open an existing similar PartKind / texture / UI block in `HouseModeler3D.tsx` and match its patterns (naming, mesh scale, material setup, label keys).
+2. **Name the acceptance test** in one line (e.g. “select wall → new timber finish appears in swatch and applies without pink/missing texture”).
+3. **Scope one outcome:** if the change needs more than one conceptual feature, cut scope — ship the highest-value slice only.
+4. **Risk check:** if the diff cannot be expressed surgically (high chance of full-file rewrite / truncation) → META, not a low-quality partial write.
 
-- Keep the modeler on its own route / lazy boundary; never import the monolith into home or catalog list chunks.
-- Prefer procedural textures ≤512px; avoid new heavy deps.
-- FPS first on mid mobile when adding lights/shadows; document tradeoffs.
-- Do not remove Sky or soft shadows solely “for FPS” without before/after evidence.
+### During coding
+
+5. **Match realism:** new materials should look like concrete/timber/clay under current lights (no unlit neon, no pure white plastic unless intentional finish).
+6. **No regressions:** do not remove or gut unrelated systems (Sky, locks, layers, other PartKinds) to make the new bit work.
+7. **Dispose / leaks:** any new textures, geometries, or materials created at runtime must follow existing dispose patterns when parts are removed or finishes swap.
+8. **Labels:** every new user-facing string has EN and ES; no hardcoded single-language UI.
+9. **Mobile-aware:** UI changes must remain usable on narrow viewports (touch targets, no critical control only on hover).
+
+### After coding (definition of done)
+
+10. **Monolith gates** (anti-wipe table) still pass.
+11. **Acceptance test** from step 2 is described in the Spanish summary as steps a human can run in preview.
+12. **Deploy READY** (or FIX-BUILD exhausted honestly) — do not mark success on ERROR.
+13. Prefer a **small, correct** diff over a large, half-wired feature.
+
+### Core Web Vitals / runtime cost
+
+The modeler is inherently heavier than a calculator. Still:
+
+1. **Do not** import `HouseModeler3D` into home, catalog lists, or unrelated tool routes — keep existing lazy boundaries.
+2. Prefer procedural textures ≤512px; avoid new heavy npm deps for cosmetics.
+3. Protect mid-mobile FPS; document tradeoffs when adding lights/shadows.
+4. Do not claim FPS win after dropping Sky/shadows without evidence; prefer not loading the modeler until the tool route mounts.
+
+### Anti-patterns (reject)
+
+- “Polish” that only renames variables or reorders imports with no visual/behavior change.
+- New PartKind without swatch, labels, or placement path (dead code).
+- Texture that is solid color / broken UV / missing map when neighbors have procedural detail.
+- Claiming FPS win after removing Sky/shadows without numbers.
+- Shipping under truncation: incomplete file body.
 
 ---
 
