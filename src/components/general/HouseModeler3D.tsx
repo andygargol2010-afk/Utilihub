@@ -1688,15 +1688,16 @@ function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
     ctx.lineTo(x + (hash2(i, 2) - 0.5) * 6, y - 4 - hash2(i, 8) * 6);
     ctx.stroke();
   }
-  // Soft worn patches so the lawn reads as lived-in turf rather than uniform sod.
-  for (let w = 0; w < 6; w++) {
+  // Soft worn patches so the lawn reads as lived-in turf rather than uniform sod. Densified for more visible earth showing through.
+  for (let w = 0; w < 9; w++) {
     const wx = hash2(w, 21.4) * size;
     const wy = hash2(w, 9.8) * size;
-    const wr = 14 + hash2(w, 4.5) * 28;
+    const wr = 12 + hash2(w, 4.5) * 32;
     const wear = ctx.createRadialGradient(wx, wy, 0, wx, wy, wr);
-    wear.addColorStop(0, "rgba(98,86,58,0.32)");
-    wear.addColorStop(0.65, "rgba(86,74,48,0.12)");
-    wear.addColorStop(1, "rgba(86,74,48,0)");
+    const base = hash2(w, 1.7) > 0.5 ? '98,86,58' : '108,78,46';
+    wear.addColorStop(0, `rgba(${base},0.38)`);
+    wear.addColorStop(0.65, `rgba(${base},0.14)`);
+    wear.addColorStop(1, `rgba(${base},0)`);
     ctx.fillStyle = wear;
     ctx.beginPath();
     ctx.ellipse(wx, wy, wr, wr * 0.7, hash2(w, 3.2) * Math.PI, 0, Math.PI * 2);
