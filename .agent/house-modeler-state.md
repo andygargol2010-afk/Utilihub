@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 208
+runs_done: 209
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 341531
-last_known_good_hint: 26805be018567f80e854a9950ad48a5f30cdf14b (~341531–354964 bytes)
+approx_bytes: 341643
+last_known_good_hint: ce9fcf932254 (~341643 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
-deploy: READY / BUILDING (latest META commit building; prior READY utilihub-an5vf8t77…)
-note: META run 208 — health check OK; monolith intact ~341531 bytes (curl) / SHA 26805be0; paint helpers + Sky + door conditional=1 present; SEO locales none. Roll 7 was PRODUCT but skipped full rewrite (auth + truncation risk); local densify of paintWornEarth prepared (~343k). Prefer local-clone push next PRODUCT when credentials available.
+deploy: ERROR (unrelated missing pyramid-volume-calculator-tool from other surface; prior READY)
+note: PRODUCT run 209 — densify lawn worn-earth patches (9 patches, varied tones) via local clone + push. Monolith ~341643 bytes blob ce9fcf93; gates OK (paint helpers, Sky, door=1). Build ERROR not caused by this change.
 ```
 
 Refresh after each run.
