@@ -28,6 +28,8 @@ import { UTILITY_EXTRA_TOOLS } from "./utility-extra";
 import { CUBE_VOLUME_CALCULATOR_TOOLS } from "./cube-volume-calculator-tool";
 import { SYLLABLE_COUNTER_TOOLS } from "./syllable-counter-tool";
 import { PAINT_CALCULATOR_TOOLS } from "./paint-calculator-tool";
+import { TRIANGLE_AREA_CALCULATOR_TOOLS } from "./triangle-area-calculator-tool";
+import { SIMPLE_INTEREST_CALCULATOR_TOOLS } from "./simple-interest-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -61,4 +63,6 @@ export const GENERAL_TOOLS = [
   ...CUBE_VOLUME_CALCULATOR_TOOLS,
   ...SYLLABLE_COUNTER_TOOLS,
   ...PAINT_CALCULATOR_TOOLS,
+  ...TRIANGLE_AREA_CALCULATOR_TOOLS,
+  ...SIMPLE_INTEREST_CALCULATOR_TOOLS,
 ];
