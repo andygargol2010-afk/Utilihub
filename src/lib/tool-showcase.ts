@@ -1,204 +1,119 @@
-/** Premium presentation config (plan days 1–10). */
+/** Premium presentation config for high-traffic tools (Day 1: image suite).
+ *  Redeploy trigger: ensure hero + MediaTool premium UI are on production.
+ */
 
 export type ToolShowcase = {
   badge: string;
   badgeEs: string;
+  titleHighlight?: string;
   tagline: string;
   taglineEs: string;
   fromLabel?: string;
   toLabel?: string;
   accent: "blue" | "violet" | "emerald" | "amber" | "rose" | "cyan";
+  visual: "convert" | "compress" | "resize" | "crop" | "rotate" | "filter" | "favicon";
 };
 
 export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
-  // —— Day 1: Image ——
-  "png-a-jpg": { badge: "Converter", badgeEs: "Conversor", tagline: "Convert PNG images to JPG locally. Fast, easy and free — no installation required.", taglineEs: "Convierte imágenes PNG a JPG en tu navegador. Rápido, fácil y gratis.", fromLabel: "PNG", toLabel: "JPG", accent: "blue" },
-  "jpg-a-png": { badge: "Converter", badgeEs: "Conversor", tagline: "Convert JPG images to PNG locally with transparency support.", taglineEs: "Convierte imágenes JPG a PNG en local, con soporte de transparencia.", fromLabel: "JPG", toLabel: "PNG", accent: "violet" },
-  "jpg-a-webp": { badge: "Converter", badgeEs: "Conversor", tagline: "Convert JPG to modern WebP for smaller files and the same quality.", taglineEs: "Convierte JPG a WebP moderno: menos peso, misma calidad.", fromLabel: "JPG", toLabel: "WebP", accent: "emerald" },
-  "webp-a-jpg": { badge: "Converter", badgeEs: "Conversor", tagline: "Convert WebP images back to JPG for maximum compatibility.", taglineEs: "Convierte WebP a JPG para máxima compatibilidad.", fromLabel: "WebP", toLabel: "JPG", accent: "cyan" },
-  "comprimir-imagen": { badge: "Optimizer", badgeEs: "Optimizador", tagline: "Compress images in your browser. Control quality and download instantly.", taglineEs: "Comprime imágenes en el navegador. Controlá la calidad y descargá al instante.", fromLabel: "IMG", toLabel: "ZIP", accent: "amber" },
-  "redimensionar-imagen": { badge: "Editor", badgeEs: "Editor", tagline: "Resize images to exact pixel dimensions without uploading them.", taglineEs: "Redimensioná imágenes a píxeles exactos sin subirlas a un servidor.", fromLabel: "W×H", toLabel: "NEW", accent: "blue" },
-  "recortar-imagen": { badge: "Editor", badgeEs: "Editor", tagline: "Crop images to the size you need, fully local and private.", taglineEs: "Recortá imágenes al tamaño que necesitás, 100% local y privado.", fromLabel: "FULL", toLabel: "CROP", accent: "rose" },
-  "rotar-imagen": { badge: "Editor", badgeEs: "Editor", tagline: "Rotate photos by any angle without uploading them — everything stays on your device.", taglineEs: "Rotá fotos en cualquier ángulo. Todo ocurre en tu dispositivo.", fromLabel: "0°", toLabel: "90°", accent: "violet" },
-  "escala-grises": { badge: "Filter", badgeEs: "Filtro", tagline: "Convert any image to clean grayscale in one click.", taglineEs: "Convertí cualquier imagen a escala de grises en un clic.", fromLabel: "COLOR", toLabel: "B&W", accent: "cyan" },
-  favicon: { badge: "Generator", badgeEs: "Generador", tagline: "Create a favicon from your logo or image — ready for any site.", taglineEs: "Creá un favicon desde tu logo o imagen, listo para cualquier sitio.", fromLabel: "IMG", toLabel: "ICO", accent: "emerald" },
-
-  // —— Day 2: PDF ——
-  "unir-pdf": { badge: "PDF", badgeEs: "PDF", tagline: "Merge multiple PDF files into one ordered document — fully local in your browser.", taglineEs: "Uní varios PDF en un solo documento ordenado. Todo ocurre en tu navegador.", fromLabel: "PDFs", toLabel: "ONE", accent: "rose" },
-  "dividir-pdf": { badge: "PDF", badgeEs: "PDF", tagline: "Extract a specific page from a PDF without uploading the file.", taglineEs: "Extraé una página concreta de un PDF sin subir el archivo.", fromLabel: "PDF", toLabel: "PAGE", accent: "amber" },
-  "imagenes-a-pdf": { badge: "PDF", badgeEs: "PDF", tagline: "Combine images into a clean PDF ready to share or print.", taglineEs: "Combiná imágenes en un PDF limpio, listo para compartir o imprimir.", fromLabel: "IMG", toLabel: "PDF", accent: "blue" },
-  "pdf-a-imagenes": { badge: "PDF", badgeEs: "PDF", tagline: "Turn each PDF page into a high-quality image for previews or publishing.", taglineEs: "Convertí cada página del PDF en una imagen de alta calidad.", fromLabel: "PDF", toLabel: "PNG", accent: "violet" },
-  "rotar-pdf": { badge: "PDF", badgeEs: "PDF", tagline: "Rotate selected pages in a PDF when a scan lands the wrong way up.", taglineEs: "Rotá páginas de un PDF cuando el escaneo quedó al revés.", fromLabel: "PDF", toLabel: "90°", accent: "cyan" },
-  "reordenar-pdf": { badge: "PDF", badgeEs: "PDF", tagline: "Reorder PDF pages with a simple list — no desktop software needed.", taglineEs: "Reordená las páginas de un PDF con una lista simple. Sin software de escritorio.", fromLabel: "1-2-3", toLabel: "3-1-2", accent: "emerald" },
-  "extraer-texto-pdf": { badge: "PDF", badgeEs: "PDF", tagline: "Pull selectable text out of a PDF to reuse or review it locally.", taglineEs: "Extraé el texto seleccionable de un PDF para reutilizarlo o revisarlo.", fromLabel: "PDF", toLabel: "TXT", accent: "amber" },
-  "inspector-metadatos-pdf": { badge: "PDF", badgeEs: "PDF", tagline: "Inspect pages, title, author and size before you share a PDF.", taglineEs: "Revisá páginas, título, autor y tamaño antes de compartir un PDF.", fromLabel: "PDF", toLabel: "INFO", accent: "violet" },
-  "limpiar-texto": { badge: "Text", badgeEs: "Texto", tagline: "Normalize spaces, quotes and line breaks before pasting into a document.", taglineEs: "Normalizá espacios, comillas y saltos de línea antes de pegar en un documento.", fromLabel: "RAW", toLabel: "CLEAN", accent: "blue" },
-  "contador-de-palabras": { badge: "Text", badgeEs: "Texto", tagline: "Count words, characters, sentences and reading time as you type.", taglineEs: "Contá palabras, caracteres, oraciones y tiempo de lectura mientras escribís.", fromLabel: "TEXT", toLabel: "STATS", accent: "emerald" },
-
-  // —— Text · generators · developer ——
-  mayusculas: { badge: "Text", badgeEs: "Texto", tagline: "Convert any text to UPPERCASE instantly — perfect for titles and shout-outs.", taglineEs: "Convertí cualquier texto a MAYÚSCULAS al instante. Ideal para títulos y énfasis.", fromLabel: "abc", toLabel: "ABC", accent: "blue" },
-  minusculas: { badge: "Text", badgeEs: "Texto", tagline: "Turn mixed or shouty text into clean lowercase in one click.", taglineEs: "Pasá texto mixto o en mayúsculas a minúsculas limpias en un clic.", fromLabel: "ABC", toLabel: "abc", accent: "violet" },
-  capitalizar: { badge: "Text", badgeEs: "Texto", tagline: "Capitalize sentences properly so your copy looks polished and readable.", taglineEs: "Capitalizá oraciones para que tu texto se vea profesional y legible.", fromLabel: "raw", toLabel: "Title", accent: "emerald" },
-  "buscar-reemplazar": { badge: "Text", badgeEs: "Texto", tagline: "Find and replace text locally — bulk edits without uploading anything.", taglineEs: "Buscá y reemplazá texto en local. Ediciones masivas sin subir nada.", fromLabel: "FIND", toLabel: "SWAP", accent: "amber" },
-  "lorem-ipsum": { badge: "Generator", badgeEs: "Generador", tagline: "Generate classic Lorem Ipsum placeholder text for layouts and mockups.", taglineEs: "Generá texto Lorem Ipsum clásico para maquetas y mockups.", fromLabel: "—", toLabel: "IPSUM", accent: "cyan" },
-  "generador-de-contrasenas": { badge: "Security", badgeEs: "Seguridad", tagline: "Create strong random passwords with length, symbols and entropy you control.", taglineEs: "Creá contraseñas fuertes al azar, con longitud, símbolos y entropía a tu medida.", fromLabel: "WEAK", toLabel: "STRONG", accent: "rose" },
-  "uuid-generator": { badge: "Dev", badgeEs: "Dev", tagline: "Generate cryptographically random UUID v4 identifiers for APIs and databases.", taglineEs: "Generá identificadores UUID v4 con aleatoriedad criptográfica para APIs y bases de datos.", fromLabel: "—", toLabel: "UUID", accent: "violet" },
-  "base64-encode": { badge: "Encode", badgeEs: "Codificar", tagline: "Encode text to Base64 for tokens, data URLs and safe transport.", taglineEs: "Codificá texto a Base64 para tokens, data URLs y transporte seguro.", fromLabel: "TEXT", toLabel: "B64", accent: "blue" },
-  "json-formatter": { badge: "Dev", badgeEs: "Dev", tagline: "Pretty-print messy JSON so you can read and debug it in seconds.", taglineEs: "Formateá JSON desordenado para leerlo y depurarlo en segundos.", fromLabel: "{…}", toLabel: "PRETTY", accent: "emerald" },
-  "rgb-hex": { badge: "Color", badgeEs: "Color", tagline: "Convert RGB values to HEX for CSS, design tools and brand kits.", taglineEs: "Convertí valores RGB a HEX para CSS, herramientas de diseño y kits de marca.", fromLabel: "RGB", toLabel: "HEX", accent: "amber" },
-
-  // —— Math · units ——
-  porcentaje: { badge: "Math", badgeEs: "Mate", tagline: "Calculate percentages, discounts and increases without a spreadsheet.", taglineEs: "Calculá porcentajes, descuentos y aumentos sin una planilla.", fromLabel: "100", toLabel: "%", accent: "blue" },
-  "regla-de-tres": { badge: "Math", badgeEs: "Mate", tagline: "Solve direct proportions in seconds — classic rule of three, fully local.", taglineEs: "Resolvé proporciones directas en segundos. Regla de tres clásica, 100% local.", fromLabel: "A", toLabel: "X", accent: "violet" },
-  "calculadora-de-porcentajes": { badge: "Math", badgeEs: "Mate", tagline: "Find % of an amount, what share it represents, or percent change.", taglineEs: "Calculá el % de una cantidad, qué proporción representa o el cambio porcentual.", fromLabel: "%", toLabel: "RESULT", accent: "emerald" },
-  "conversor-de-temperatura": { badge: "Units", badgeEs: "Unidades", tagline: "Convert °C, °F and Kelvin instantly for cooking, weather or science.", taglineEs: "Convertí °C, °F y Kelvin al instante para cocina, clima o ciencia.", fromLabel: "°C", toLabel: "°F", accent: "rose" },
-  "conversor-de-longitud": { badge: "Units", badgeEs: "Unidades", tagline: "Switch between meters, feet, inches, km and miles without leaving the browser.", taglineEs: "Pasá de metros a pies, pulgadas, km o millas sin salir del navegador.", fromLabel: "m", toLabel: "ft", accent: "cyan" },
-  "conversor-de-peso": { badge: "Units", badgeEs: "Unidades", tagline: "Convert kg, lb, oz and grams for recipes, shipping or the gym.", taglineEs: "Convertí kg, lb, oz y gramos para recetas, envíos o el gym.", fromLabel: "kg", toLabel: "lb", accent: "amber" },
-  promedio: { badge: "Stats", badgeEs: "Estad.", tagline: "Get the arithmetic mean of any list of numbers — paste and calculate.", taglineEs: "Obtené el promedio de cualquier lista de números. Pegá y calculá.", fromLabel: "LIST", toLabel: "AVG", accent: "blue" },
-  "edad-exacta": { badge: "Dates", badgeEs: "Fechas", tagline: "Calculate exact age in years, months and days from a birth date.", taglineEs: "Calculá la edad exacta en años, meses y días desde la fecha de nacimiento.", fromLabel: "BORN", toLabel: "AGE", accent: "violet" },
-  "hex-rgb": { badge: "Color", badgeEs: "Color", tagline: "Convert HEX colors to RGB values ready for design systems and CSS.", taglineEs: "Convertí colores HEX a RGB listos para sistemas de diseño y CSS.", fromLabel: "HEX", toLabel: "RGB", accent: "emerald" },
-  "base64-decode": { badge: "Encode", badgeEs: "Codificar", tagline: "Decode Base64 back to plain text for tokens, payloads and data URLs.", taglineEs: "Decodificá Base64 a texto plano para tokens, payloads y data URLs.", fromLabel: "B64", toLabel: "TEXT", accent: "cyan" },
-
-  // —— Case · URL ——
-  "camel-case": { badge: "Text", badgeEs: "Texto", tagline: "Turn any phrase into camelCase for variables, props and API fields.", taglineEs: "Convertí cualquier frase a camelCase para variables, props y campos de API.", fromLabel: "my text", toLabel: "myText", accent: "blue" },
-  "snake-case": { badge: "Text", badgeEs: "Texto", tagline: "Convert titles and phrases to snake_case for databases and Python style.", taglineEs: "Pasá títulos y frases a snake_case para bases de datos y estilo Python.", fromLabel: "my text", toLabel: "my_text", accent: "violet" },
-  "kebab-case": { badge: "Text", badgeEs: "Texto", tagline: "Build kebab-case strings for CSS classes, URLs and file names.", taglineEs: "Generá kebab-case para clases CSS, URLs y nombres de archivo.", fromLabel: "my text", toLabel: "my-text", accent: "emerald" },
-  "quitar-espacios": { badge: "Text", badgeEs: "Texto", tagline: "Strip extra spaces and messy line breaks so paste stays clean.", taglineEs: "Eliminá espacios de más y saltos de línea sucios para pegar texto limpio.", fromLabel: "A  B", toLabel: "A B", accent: "amber" },
-  "url-encode": { badge: "Encode", badgeEs: "Codificar", tagline: "Percent-encode text for query strings, redirects and safe URLs.", taglineEs: "Codificá texto para query strings, redirects y URLs seguras.", fromLabel: "a b", toLabel: "a%20b", accent: "cyan" },
-  "url-decode": { badge: "Encode", badgeEs: "Codificar", tagline: "Decode percent-encoded URLs back to readable text.", taglineEs: "Decodificá URLs con %20 y similares de vuelta a texto legible.", fromLabel: "a%20b", toLabel: "a b", accent: "rose" },
-  "slug-generator": { badge: "SEO", badgeEs: "SEO", tagline: "Turn a title into a clean URL slug for posts, products and docs.", taglineEs: "Convertí un título en un slug limpio para posts, productos y docs.", fromLabel: "Title", toLabel: "slug", accent: "blue" },
-  "json-validator": { badge: "Dev", badgeEs: "Dev", tagline: "Validate JSON syntax and surface parse errors before they hit production.", taglineEs: "Validá la sintaxis JSON y detectá errores de parseo antes de producción.", fromLabel: "{…}", toLabel: "OK", accent: "violet" },
-  "conversor-datos": { badge: "Units", badgeEs: "Unidades", tagline: "Convert bits, bytes, KB, MB, GB and TB for storage and bandwidth.", taglineEs: "Convertí bits, bytes, KB, MB, GB y TB para almacenamiento y ancho de banda.", fromLabel: "MB", toLabel: "GB", accent: "emerald" },
-  "html-encode": { badge: "Encode", badgeEs: "Codificar", tagline: "Escape special characters so HTML displays text instead of executing markup.", taglineEs: "Escapá caracteres especiales para que el HTML muestre texto y no markup.", fromLabel: "<tag>", toLabel: "<", accent: "amber" },
-
-  // —— Dates · stats · productivity ——
-  cronometro: { badge: "Timer", badgeEs: "Timer", tagline: "Precise stopwatch with start, pause and reset — fully local in your browser.", taglineEs: "Cronómetro preciso con inicio, pausa y reinicio. Todo en tu navegador.", fromLabel: "0:00", toLabel: "RUN", accent: "blue" },
-  "dias-laborables": { badge: "Dates", badgeEs: "Fechas", tagline: "Count weekdays between two dates — skip weekends for real workdays.", taglineEs: "Contá días hábiles entre dos fechas, sin contar fines de semana.", fromLabel: "FROM", toLabel: "DAYS", accent: "violet" },
-  "cuenta-regresiva": { badge: "Timer", badgeEs: "Timer", tagline: "Count down to a target date for launches, exams or events.", taglineEs: "Cuenta regresiva hasta una fecha: lanzamientos, exámenes o eventos.", fromLabel: "NOW", toLabel: "ZERO", accent: "rose" },
-  "sumar-dias": { badge: "Dates", badgeEs: "Fechas", tagline: "Add any number of days to a date and see the resulting calendar day.", taglineEs: "Sumá días a una fecha y mirá el día de calendario resultante.", fromLabel: "DATE", toLabel: "+N", accent: "emerald" },
-  mediana: { badge: "Stats", badgeEs: "Estad.", tagline: "Find the median of a data set — the middle value that splits the list in half.", taglineEs: "Obtené la mediana de un conjunto de datos: el valor central de la lista.", fromLabel: "LIST", toLabel: "MED", accent: "cyan" },
-  "desviacion-estandar": { badge: "Stats", badgeEs: "Estad.", tagline: "Calculate standard deviation to measure how spread out your numbers are.", taglineEs: "Calculá la desviación estándar para medir la dispersión de tus datos.", fromLabel: "σ", toLabel: "SD", accent: "amber" },
-  factorial: { badge: "Math", badgeEs: "Mate", tagline: "Compute n! for combinations, permutations and growth problems.", taglineEs: "Calculá n! para combinaciones, permutaciones y problemas de crecimiento.", fromLabel: "n", toLabel: "n!", accent: "blue" },
-  "mcd-mcm": { badge: "Math", badgeEs: "Mate", tagline: "Greatest common divisor and least common multiple in one step.", taglineEs: "Máximo común divisor y mínimo común múltiplo en un solo paso.", fromLabel: "A,B", toLabel: "GCD", accent: "violet" },
-  propina: { badge: "Money", badgeEs: "Dinero", tagline: "Split the tip and total bill fairly — optional tip percent and party size.", taglineEs: "Dividí propina y total de la cuenta. Porcentaje y cantidad de personas.", fromLabel: "BILL", toLabel: "TIP", accent: "emerald" },
-  pomodoro: { badge: "Focus", badgeEs: "Foco", tagline: "Classic Pomodoro work/break timer to protect deep focus sessions.", taglineEs: "Timer Pomodoro clásico: trabajo y pausas para proteger el foco profundo.", fromLabel: "25m", toLabel: "5m", accent: "rose" },
-
-  // —— Design & color ——
-  "hex-a-hsl-avanzado": { badge: "Color", badgeEs: "Color", tagline: "Convert any HEX color into precise HSL and RGB values for design systems.", taglineEs: "Convertí cualquier color HEX a HSL y RGB precisos para sistemas de diseño.", fromLabel: "HEX", toLabel: "HSL", accent: "violet" },
-  "paleta-complementaria": { badge: "Palette", badgeEs: "Paleta", tagline: "Generate the complementary color and a split complementary pair from any HEX.", taglineEs: "Generá el color complementario y un par split desde cualquier HEX.", fromLabel: "BASE", toLabel: "COMP", accent: "rose" },
-  "paleta-monocromatica": { badge: "Palette", badgeEs: "Paleta", tagline: "Build light and dark monochrome shades from a single base color.", taglineEs: "Creá tonos monocromáticos claros y oscuros desde un solo color base.", fromLabel: "BASE", toLabel: "SHADES", accent: "cyan" },
-  "generador-paleta": { badge: "Palette", badgeEs: "Paleta", tagline: "Generate a ready-to-use color palette from one base HEX color.", taglineEs: "Generá una paleta lista para usar a partir de un color HEX base.", fromLabel: "HEX", toLabel: "PALETTE", accent: "emerald" },
-  "mezclador-de-colores": { badge: "Color", badgeEs: "Color", tagline: "Mix two HEX colors and get the intermediate blend for UI and branding.", taglineEs: "Mezclá dos colores HEX y obtené el tono intermedio para UI y marca.", fromLabel: "A+B", toLabel: "MIX", accent: "amber" },
-  "generador-gradiente": { badge: "CSS", badgeEs: "CSS", tagline: "Create linear CSS gradients with live-ready code for backgrounds and buttons.", taglineEs: "Creá gradientes CSS lineales con código listo para fondos y botones.", fromLabel: "FROM", toLabel: "TO", accent: "blue" },
-  "contraste-wcag": { badge: "A11y", badgeEs: "A11y", tagline: "Check WCAG contrast ratios between two colors for accessible text and UI.", taglineEs: "Revisá el contraste WCAG entre dos colores para texto e UI accesibles.", fromLabel: "FG", toLabel: "BG", accent: "violet" },
-  "selector-color": { badge: "Color", badgeEs: "Color", tagline: "Explore any color and read HEX, RGB, and related values in one place.", taglineEs: "Explorá cualquier color y leé HEX, RGB y valores relacionados en un solo lugar.", fromLabel: "PICK", toLabel: "HEX", accent: "rose" },
-  "generador-sombra-css": { badge: "CSS", badgeEs: "CSS", tagline: "Generate box-shadow CSS for cards, buttons, and elevation levels.", taglineEs: "Generá box-shadow CSS para cards, botones y niveles de elevación.", fromLabel: "DEPTH", toLabel: "CSS", accent: "cyan" },
-  horno: { badge: "Units", badgeEs: "Unidades", tagline: "Convert oven temperatures between °C and °F for recipes and baking.", taglineEs: "Convertí temperaturas de horno entre °C y °F para recetas y cocina.", fromLabel: "°C", toLabel: "°F", accent: "amber" },
-
-  // —— Time ——
-  "dias-entre-fechas": { badge: "Dates", badgeEs: "Fechas", tagline: "Count the exact number of days between any two calendar dates.", taglineEs: "Contá la cantidad exacta de días entre dos fechas de calendario.", fromLabel: "FROM", toLabel: "DAYS", accent: "blue" },
-  "diferencia-fechas": { badge: "Dates", badgeEs: "Fechas", tagline: "Get the full difference between two dates in years, months, and days.", taglineEs: "Obtené la diferencia completa entre dos fechas en años, meses y días.", fromLabel: "START", toLabel: "DIFF", accent: "violet" },
-  "zona-horaria": { badge: "Time", badgeEs: "Tiempo", tagline: "Compare time zones with offsets so meetings and flights stay aligned.", taglineEs: "Compará zonas horarias con offsets para alinear reuniones y vuelos.", fromLabel: "TZ1", toLabel: "TZ2", accent: "cyan" },
-  "restar-dias": { badge: "Dates", badgeEs: "Fechas", tagline: "Subtract any number of days from a date and see the resulting day.", taglineEs: "Restá días a una fecha y mirá el día de calendario resultante.", fromLabel: "DATE", toLabel: "-N", accent: "amber" },
-  "numero-semana": { badge: "Dates", badgeEs: "Fechas", tagline: "Get the ISO week number of any date for planning and reporting.", taglineEs: "Obtené el número de semana ISO de cualquier fecha para planificar e informar.", fromLabel: "DATE", toLabel: "WEEK", accent: "emerald" },
-  "semana-del-ano": { badge: "Dates", badgeEs: "Fechas", tagline: "Find which ISO week of the year a date falls into.", taglineEs: "Averiguá en qué semana ISO del año cae una fecha.", fromLabel: "DATE", toLabel: "W##", accent: "blue" },
-  "dia-semana": { badge: "Dates", badgeEs: "Fechas", tagline: "Discover the weekday of any date — Monday through Sunday.", taglineEs: "Descubrí el día de la semana de cualquier fecha.", fromLabel: "DATE", toLabel: "DAY", accent: "rose" },
-  "semanas-entre-fechas": { badge: "Dates", badgeEs: "Fechas", tagline: "Calculate how many full weeks separate two dates.", taglineEs: "Calculá cuántas semanas completas separan dos fechas.", fromLabel: "FROM", toLabel: "WEEKS", accent: "violet" },
-  "horas-entre-fechas": { badge: "Time", badgeEs: "Tiempo", tagline: "Measure hours and minutes between two date-times.", taglineEs: "Medí horas y minutos entre dos fechas-hora.", fromLabel: "A", toLabel: "B", accent: "cyan" },
-  "duracion-horas": { badge: "Time", badgeEs: "Tiempo", tagline: "Calculate the duration between two times of day.", taglineEs: "Calculá la duración entre dos horas del día.", fromLabel: "START", toLabel: "END", accent: "amber" },
-  "fecha-dias-laborables": { badge: "Dates", badgeEs: "Fechas", tagline: "Find the calendar date after N business days, skipping weekends.", taglineEs: "Encontrá la fecha tras N días hábiles, sin contar fines de semana.", fromLabel: "START", toLabel: "+BD", accent: "emerald" },
-  "cuenta-regresiva-fecha": { badge: "Timer", badgeEs: "Timer", tagline: "See how many days remain until a target date from today or a reference day.", taglineEs: "Mirá cuántos días faltan hasta una fecha objetivo desde hoy o una referencia.", fromLabel: "NOW", toLabel: "TARGET", accent: "rose" },
-
-  // —— Plan Day 3: Finance ——
-  "pago-prestamo": { badge: "Finance", badgeEs: "Finanzas", tagline: "Calculate the fixed monthly payment for any loan from principal, rate, and term.", taglineEs: "Calculá la cuota mensual fija de un préstamo con capital, tasa y plazo.", fromLabel: "LOAN", toLabel: "PMT", accent: "emerald" },
-  "amortizacion-prestamo": { badge: "Finance", badgeEs: "Finanzas", tagline: "See total interest and payments over the full amortization schedule summary.", taglineEs: "Mirá el interés total y los pagos en el resumen de amortización.", fromLabel: "LOAN", toLabel: "TABLE", accent: "blue" },
-  "interes-compuesto": { badge: "Finance", badgeEs: "Finanzas", tagline: "Project future value with compound interest at any compounding frequency.", taglineEs: "Proyectá el valor futuro con interés compuesto y la frecuencia que elijas.", fromLabel: "P", toLabel: "FV", accent: "violet" },
-  "pago-anticipado-prestamo": { badge: "Finance", badgeEs: "Finanzas", tagline: "Estimate remaining balance after you have already made a number of payments.", taglineEs: "Estimá el saldo restante después de haber pagado cierta cantidad de cuotas.", fromLabel: "PAID", toLabel: "LEFT", accent: "amber" },
-  roi: { badge: "Finance", badgeEs: "Finanzas", tagline: "Measure return on investment from cost and final value in one step.", taglineEs: "Medí el retorno de inversión desde el costo y el valor final en un paso.", fromLabel: "COST", toLabel: "ROI", accent: "rose" },
-  cagr: { badge: "Finance", badgeEs: "Finanzas", tagline: "Compute compound annual growth rate between a start and end value over years.", taglineEs: "Calculá la tasa de crecimiento anual compuesto entre dos valores en el tiempo.", fromLabel: "START", toLabel: "CAGR", accent: "cyan" },
-  "meta-ahorro": { badge: "Finance", badgeEs: "Finanzas", tagline: "Find the monthly deposit needed to hit a savings goal at a given rate.", taglineEs: "Encontrá el depósito mensual para alcanzar una meta de ahorro a una tasa dada.", fromLabel: "GOAL", toLabel: "SAVE", accent: "emerald" },
-  "inflacion-poder-compra": { badge: "Finance", badgeEs: "Finanzas", tagline: "See how inflation erodes purchasing power over a number of years.", taglineEs: "Mirá cómo la inflación reduce el poder de compra a lo largo de los años.", fromLabel: "NOW", toLabel: "REAL", accent: "amber" },
-  "asignacion-portafolio": { badge: "Finance", badgeEs: "Finanzas", tagline: "Split total capital across three portfolio weights and get dollar amounts.", taglineEs: "Dividí el capital total en tres pesos de portafolio y obtené montos.", fromLabel: "TOTAL", toLabel: "SPLIT", accent: "violet" },
-  wacc: { badge: "Finance", badgeEs: "Finanzas", tagline: "Estimate weighted average cost of capital from equity, debt, and tax rate.", taglineEs: "Estimá el costo promedio ponderado de capital con equity, deuda e impuestos.", fromLabel: "E+D", toLabel: "WACC", accent: "blue" },
-
-  // —— Plan Day 4: Core calculators ——
-  "calculadora-basica": { badge: "Calc", badgeEs: "Calc", tagline: "Quick four-operation calculator — add, subtract, multiply, and divide in the browser.", taglineEs: "Calculadora rápida de cuatro operaciones: sumar, restar, multiplicar y dividir.", fromLabel: "A", toLabel: "B", accent: "blue" },
-  "cambio-porcentual": { badge: "Math", badgeEs: "Mate", tagline: "Calculate the percentage change between an initial and a final value.", taglineEs: "Calculá el cambio porcentual entre un valor inicial y uno final.", fromLabel: "FROM", toLabel: "%Δ", accent: "violet" },
-  "precio-con-descuento": { badge: "Money", badgeEs: "Dinero", tagline: "Apply a discount percentage and see the final amount to pay.", taglineEs: "Aplicá un porcentaje de descuento y mirá el precio final al instante.", fromLabel: "PRICE", toLabel: "SALE", accent: "emerald" },
-  "reparto-proporcional": { badge: "Money", badgeEs: "Dinero", tagline: "Split a total by proportion — expense sharing without a spreadsheet.", taglineEs: "Dividí un total en proporción. Reparto de gastos sin planilla.", fromLabel: "TOTAL", toLabel: "SHARE", accent: "amber" },
-  "regla-50-30-20": { badge: "Budget", badgeEs: "Presup.", tagline: "Split income with the 50/30/20 rule across needs, wants, and savings.", taglineEs: "Dividí ingresos con la regla 50/30/20: necesidades, deseos y ahorro.", fromLabel: "INCOME", toLabel: "SPLIT", accent: "cyan" },
-  "propina-y-cuenta-compartida": { badge: "Money", badgeEs: "Dinero", tagline: "Calculate tip, total bill, and equal split per person in one step.", taglineEs: "Calculá propina, total y cuánto paga cada uno en un solo paso.", fromLabel: "BILL", toLabel: "EACH", accent: "rose" },
-  "propina-dividida": { badge: "Money", badgeEs: "Dinero", tagline: "Split the tip and the bill fairly among any number of people.", taglineEs: "Dividí la propina y la cuenta de forma justa entre varias personas.", fromLabel: "BILL", toLabel: "SPLIT", accent: "violet" },
-  "tarifa-hora": { badge: "Money", badgeEs: "Dinero", tagline: "Turn total pay and hours worked into a clear hourly rate.", taglineEs: "Convertí el pago total y las horas trabajadas en una tarifa por hora clara.", fromLabel: "PAY", toLabel: "/H", accent: "emerald" },
-
-  // —— Plan Day 5: Text tools ——
-  "pascal-case": { badge: "Text", badgeEs: "Texto", tagline: "Convert any phrase into PascalCase for types, components, and class names.", taglineEs: "Convertí cualquier frase a PascalCase para tipos, componentes y clases.", fromLabel: "my text", toLabel: "MyText", accent: "rose" },
-  "lineas-unicas": { badge: "Text", badgeEs: "Texto", tagline: "Remove duplicate lines and keep a clean unique list.", taglineEs: "Eliminá líneas duplicadas y quedate con una lista única y limpia.", fromLabel: "DUP", toLabel: "UNIQUE", accent: "cyan" },
-  "diferencia-textos": { badge: "Text", badgeEs: "Texto", tagline: "Compare two texts and highlight what changed between them.", taglineEs: "Compará dos textos y mirá qué cambió entre uno y otro.", fromLabel: "A", toLabel: "B", accent: "amber" },
-  "markdown-a-html": { badge: "Text", badgeEs: "Texto", tagline: "Convert Markdown to HTML for previews, CMS paste, and docs.", taglineEs: "Convertí Markdown a HTML para previews, CMS y documentación.", fromLabel: "MD", toLabel: "HTML", accent: "violet" },
-  "html-a-texto": { badge: "Text", badgeEs: "Texto", tagline: "Strip HTML tags and recover readable plain text.", taglineEs: "Quitá etiquetas HTML y recuperá texto plano legible.", fromLabel: "HTML", toLabel: "TEXT", accent: "blue" },
-  "ordenar-lineas": { badge: "Text", badgeEs: "Texto", tagline: "Sort lines alphabetically for lists, logs, and clean exports.", taglineEs: "Ordená líneas alfabéticamente para listas, logs y exportaciones.", fromLabel: "LINES", toLabel: "A→Z", accent: "emerald" },
-  "invertir-texto": { badge: "Text", badgeEs: "Texto", tagline: "Reverse any string character by character in one click.", taglineEs: "Invertí cualquier texto carácter por carácter en un clic.", fromLabel: "ABC", toLabel: "CBA", accent: "rose" },
-  "contador-de-lineas": { badge: "Text", badgeEs: "Texto", tagline: "Count lines in pasted text for scripts, logs, and documents.", taglineEs: "Contá líneas de un texto pegado: scripts, logs y documentos.", fromLabel: "TEXT", toLabel: "LINES", accent: "cyan" },
-
-  // —— Plan Day 6: Developer ——
-  "json-minifier": { badge: "Dev", badgeEs: "Dev", tagline: "Strip whitespace and minify JSON for compact payloads and APIs.", taglineEs: "Minificá JSON quitando espacios para payloads y APIs más livianos.", fromLabel: "PRETTY", toLabel: "MIN", accent: "violet" },
-  "json-a-csv": { badge: "Dev", badgeEs: "Dev", tagline: "Turn a JSON array of objects into CSV ready for spreadsheets.", taglineEs: "Convertí un array JSON de objetos a CSV listo para planillas.", fromLabel: "JSON", toLabel: "CSV", accent: "emerald" },
-  "json-a-yaml": { badge: "Dev", badgeEs: "Dev", tagline: "Convert JSON structures into readable YAML for configs and docs.", taglineEs: "Pasá estructuras JSON a YAML legible para configs y documentación.", fromLabel: "JSON", toLabel: "YAML", accent: "cyan" },
-  "html-decode": { badge: "Encode", badgeEs: "Codificar", tagline: "Decode HTML entities back to plain characters for clean text.", taglineEs: "Decodificá entidades HTML a caracteres normales para texto limpio.", fromLabel: "<", toLabel: "<", accent: "blue" },
-  "random-id-generator": { badge: "Dev", badgeEs: "Dev", tagline: "Generate short random IDs in the browser for tests and prototypes.", taglineEs: "Generá IDs cortos al azar en el navegador para tests y prototipos.", fromLabel: "—", toLabel: "ID", accent: "amber" },
-  "timestamp-generator": { badge: "Dev", badgeEs: "Dev", tagline: "Convert any date and time into a Unix timestamp in seconds.", taglineEs: "Convertí fecha y hora a un timestamp Unix en segundos.", fromLabel: "DATE", toLabel: "UNIX", accent: "rose" },
-  "timestamp-to-date": { badge: "Dev", badgeEs: "Dev", tagline: "Turn a Unix timestamp into a human-readable date and time.", taglineEs: "Pasá un timestamp Unix a una fecha y hora legibles.", fromLabel: "UNIX", toLabel: "DATE", accent: "violet" },
-  "regex-tester": { badge: "Dev", badgeEs: "Dev", tagline: "Test regular expressions against sample text fully offline.", taglineEs: "Probá expresiones regulares contra un texto, 100% offline.", fromLabel: "REGEX", toLabel: "MATCH", accent: "emerald" },
-  "regex-escape": { badge: "Dev", badgeEs: "Dev", tagline: "Escape special regex characters so literal strings match safely.", taglineEs: "Escapá caracteres especiales de regex para buscar texto literal.", fromLabel: "a.b", toLabel: "a\\.b", accent: "cyan" },
-  "http-status": { badge: "Dev", badgeEs: "Dev", tagline: "Look up what any HTTP status code means in plain language.", taglineEs: "Consultá qué significa cualquier código de estado HTTP.", fromLabel: "404", toLabel: "MEANING", accent: "amber" },
-  "mime-types": { badge: "Dev", badgeEs: "Dev", tagline: "Look up common MIME types for files, APIs, and Content-Type headers.", taglineEs: "Consultá tipos MIME comunes para archivos, APIs y headers Content-Type.", fromLabel: ".png", toLabel: "MIME", accent: "blue" },
-  "html-minifier": { badge: "Dev", badgeEs: "Dev", tagline: "Minify simple HTML by removing extra whitespace locally.", taglineEs: "Minificá HTML simple quitando espacios de más, en local.", fromLabel: "HTML", toLabel: "MIN", accent: "rose" },
-  "css-minifier": { badge: "Dev", badgeEs: "Dev", tagline: "Minify basic CSS in the browser before shipping stylesheets.", taglineEs: "Minificá CSS básico en el navegador antes de publicar estilos.", fromLabel: "CSS", toLabel: "MIN", accent: "violet" },
-  "javascript-minifier": { badge: "Dev", badgeEs: "Dev", tagline: "Reduce spaces and simple comments in JavaScript snippets locally.", taglineEs: "Reducí espacios y comentarios simples en snippets de JavaScript.", fromLabel: "JS", toLabel: "MIN", accent: "emerald" },
-
-  // —— Plan Day 7: Security ——
-  "hash-sha256": { badge: "Security", badgeEs: "Seguridad", tagline: "Compute a SHA-256 hash of any text locally with Web Crypto.", taglineEs: "Calculá el hash SHA-256 de cualquier texto en local con Web Crypto.", fromLabel: "TEXT", toLabel: "SHA256", accent: "rose" },
-  "hash-sha512": { badge: "Security", badgeEs: "Seguridad", tagline: "Generate a SHA-512 digest for integrity checks and fingerprints.", taglineEs: "Generá un digest SHA-512 para integridad y huellas digitales.", fromLabel: "TEXT", toLabel: "SHA512", accent: "violet" },
-  "hash-sha384": { badge: "Security", badgeEs: "Seguridad", tagline: "Compute SHA-384 hashes for high-strength integrity verification.", taglineEs: "Calculá hashes SHA-384 para verificación de integridad fuerte.", fromLabel: "TEXT", toLabel: "SHA384", accent: "cyan" },
-  "hash-sha1": { badge: "Security", badgeEs: "Seguridad", tagline: "SHA-1 hash for legacy compatibility checks (not for new security).", taglineEs: "Hash SHA-1 para compatibilidad legada (no usar en seguridad nueva).", fromLabel: "TEXT", toLabel: "SHA1", accent: "amber" },
-  "hmac-sha256": { badge: "Security", badgeEs: "Seguridad", tagline: "Sign data with HMAC-SHA-256 using a secret key — fully local.", taglineEs: "Firmá datos con HMAC-SHA-256 y una clave secreta. Todo en local.", fromLabel: "DATA", toLabel: "HMAC", accent: "rose" },
-  "password-strength": { badge: "Security", badgeEs: "Seguridad", tagline: "Estimate password strength and approximate entropy in bits.", taglineEs: "Estimá la fuerza de una contraseña y su entropía aproximada en bits.", fromLabel: "PASS", toLabel: "SCORE", accent: "emerald" },
-  "analizador-entropia": { badge: "Security", badgeEs: "Seguridad", tagline: "Measure string entropy to judge randomness and password quality.", taglineEs: "Medí la entropía de un texto para juzgar aleatoriedad y calidad.", fromLabel: "INPUT", toLabel: "BITS", accent: "blue" },
-  "comparador-hashes": { badge: "Security", badgeEs: "Seguridad", tagline: "Compare text against an expected SHA-256 hash without uploading files.", taglineEs: "Compará texto contra un hash SHA-256 esperado sin subir archivos.", fromLabel: "TEXT", toLabel: "MATCH?", accent: "violet" },
-  "verificador-hash-multi": { badge: "Security", badgeEs: "Seguridad", tagline: "Compute SHA-256 and SHA-512 of the same input in one step.", taglineEs: "Calculá SHA-256 y SHA-512 del mismo input en un solo paso.", fromLabel: "TEXT", toLabel: "HASHES", accent: "cyan" },
-  "generador-claves-api": { badge: "Security", badgeEs: "Seguridad", tagline: "Generate high-entropy API keys with a clear prefix for apps and backends.", taglineEs: "Generá API keys de alta entropía con prefijo claro para apps y backends.", fromLabel: "—", toLabel: "KEY", accent: "amber" },
-  "token-seguro": { badge: "Security", badgeEs: "Seguridad", tagline: "Create a cryptographically random token for sessions and secrets.", taglineEs: "Creá un token criptográficamente aleatorio para sesiones y secretos.", fromLabel: "—", toLabel: "TOKEN", accent: "rose" },
-  "passphrase": { badge: "Security", badgeEs: "Seguridad", tagline: "Build a memorable multi-word passphrase with local randomness.", taglineEs: "Armá una passphrase memorable de varias palabras con aleatoriedad local.", fromLabel: "WORDS", toLabel: "PHRASE", accent: "emerald" },
-  "checksum": { badge: "Security", badgeEs: "Seguridad", tagline: "Quick SHA-256 checksum of any string for integrity checks.", taglineEs: "Checksum SHA-256 rápido de cualquier texto para integridad.", fromLabel: "DATA", toLabel: "CHECK", accent: "blue" },
-
-  // —— Plan Day 10: Units, travel, home ——
-  "millas-kilometros-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Convert miles to kilometers and back for road trips and maps.", taglineEs: "Convertí millas a kilómetros y viceversa para viajes y mapas.", fromLabel: "mi", toLabel: "km", accent: "cyan" },
-  "tiempo-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Estimate travel time from distance and average speed.", taglineEs: "Estimá el tiempo de viaje a partir de la distancia y la velocidad media.", fromLabel: "DIST", toLabel: "TIME", accent: "blue" },
-  "distancia-viaje-calculadora": { badge: "Travel", badgeEs: "Viajes", tagline: "Calculate distance from speed and duration for trip planning.", taglineEs: "Calculá la distancia a partir de velocidad y duración para planificar viajes.", fromLabel: "SPEED", toLabel: "DIST", accent: "violet" },
-  "consumo-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Estimate fuel used on a trip from distance and consumption rate.", taglineEs: "Estimá el combustible de un viaje según distancia y consumo.", fromLabel: "KM", toLabel: "FUEL", accent: "amber" },
-  "combustible-necesario": { badge: "Travel", badgeEs: "Viajes", tagline: "How much fuel you need for a given distance and tank efficiency.", taglineEs: "Cuánto combustible necesitás para una distancia y eficiencia dadas.", fromLabel: "TRIP", toLabel: "LITERS", accent: "emerald" },
-  "coste-combustible-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Trip fuel cost from distance, consumption, and price per liter/gallon.", taglineEs: "Coste de combustible del viaje: distancia, consumo y precio por litro.", fromLabel: "FUEL", toLabel: "$", accent: "rose" },
-  "coste-km-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Cost per kilometer for budgeting road trips and deliveries.", taglineEs: "Coste por kilómetro para presupuestos de viajes y entregas.", fromLabel: "TOTAL", toLabel: "/KM", accent: "cyan" },
-  "division-gastos-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Split shared travel expenses fairly among the group.", taglineEs: "Dividí gastos compartidos del viaje de forma justa entre el grupo.", fromLabel: "TOTAL", toLabel: "EACH", accent: "blue" },
-  "coste-electricidad": { badge: "Home", badgeEs: "Hogar", tagline: "Estimate electricity cost from kWh usage and your local rate.", taglineEs: "Estimá el coste de electricidad según kWh y tu tarifa local.", fromLabel: "kWh", toLabel: "$", accent: "amber" },
-  "division-alquiler": { badge: "Home", badgeEs: "Hogar", tagline: "Split rent and shared housing costs by roommates or share percent.", taglineEs: "Dividí alquiler y gastos de vivienda entre roommates o por porcentaje.", fromLabel: "RENT", toLabel: "SHARE", accent: "violet" },
-  "descuento-compra": { badge: "Home", badgeEs: "Hogar", tagline: "Apply a purchase discount and see the final amount to pay.", taglineEs: "Aplicá un descuento de compra y mirá el importe final a pagar.", fromLabel: "PRICE", toLabel: "SALE", accent: "emerald" },
-  "escalador-recetas": { badge: "Kitchen", badgeEs: "Cocina", tagline: "Scale any recipe up or down by servings without breaking ratios.", taglineEs: "Escalá cualquier receta por porciones sin romper las proporciones.", fromLabel: "1×", toLabel: "N×", accent: "rose" },
-  "consumo-combustible": { badge: "Travel", badgeEs: "Viajes", tagline: "Calculate fuel consumption rate from distance driven and liters used.", taglineEs: "Calculá el consumo de combustible a partir de kilómetros y litros usados.", fromLabel: "KM", toLabel: "L/100", accent: "amber" },
-  "coste-km": { badge: "Travel", badgeEs: "Viajes", tagline: "Work out cost per kilometer from total trip cost and distance.", taglineEs: "Obtené el coste por kilómetro a partir del total del viaje y la distancia.", fromLabel: "$", toLabel: "/KM", accent: "cyan" },
-  "distancia-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Plan trip distance from average speed and expected travel time.", taglineEs: "Planificá la distancia del viaje con velocidad media y tiempo estimado.", fromLabel: "SPEED", toLabel: "KM", accent: "blue" },
-  "combustible-viaje": { badge: "Travel", badgeEs: "Viajes", tagline: "Fuel cost estimate for a trip with distance, MPG/L/100km, and price.", taglineEs: "Estimación de combustible del viaje: distancia, consumo y precio.", fromLabel: "TRIP", toLabel: "COST", accent: "violet" },
-
-  // —— Advanced studio: PixeliHub ——
-  "pixelihub": {
-    badge: "Pixel art",
-    badgeEs: "Pixel art",
-    tagline: "Free browser pixel-art studio: layers, palettes, Nx PNG export, spritesheets, and shareable links.",
-    taglineEs: "Estudio de pixel art gratis en el navegador: capas, paletas, export PNG Nx, spritesheets y enlaces para compartir.",
-    fromLabel: "8×8",
-    toLabel: "256",
+  "png-a-jpg": {
+    badge: "Converter",
+    badgeEs: "Conversor",
+    tagline: "Convert PNG images to JPG locally. Fast, easy and free — no installation required.",
+    taglineEs: "Convierte imágenes PNG a JPG en tu navegador. Rápido, fácil y gratis.",
+    fromLabel: "PNG",
+    toLabel: "JPG",
+    accent: "blue",
+    visual: "convert",
+  },
+  "jpg-a-png": {
+    badge: "Converter",
+    badgeEs: "Conversor",
+    tagline: "Convert JPG images to PNG locally with transparency support.",
+    taglineEs: "Convierte imágenes JPG a PNG en local, con soporte de transparencia.",
+    fromLabel: "JPG",
+    toLabel: "PNG",
+    accent: "violet",
+    visual: "convert",
+  },
+  "jpg-a-webp": {
+    badge: "Converter",
+    badgeEs: "Conversor",
+    tagline: "Convert JPG to modern WebP for smaller files and the same quality.",
+    taglineEs: "Convierte JPG a WebP moderno: menos peso, misma calidad.",
+    fromLabel: "JPG",
+    toLabel: "WebP",
+    accent: "emerald",
+    visual: "convert",
+  },
+  "webp-a-jpg": {
+    badge: "Converter",
+    badgeEs: "Conversor",
+    tagline: "Convert WebP images back to JPG for maximum compatibility.",
+    taglineEs: "Convierte WebP a JPG para máxima compatibilidad.",
+    fromLabel: "WebP",
+    toLabel: "JPG",
+    accent: "cyan",
+    visual: "convert",
+  },
+  "comprimir-imagen": {
+    badge: "Optimizer",
+    badgeEs: "Optimizador",
+    tagline: "Compress images in your browser. Control quality and download instantly.",
+    taglineEs: "Comprime imágenes en el navegador. Controla la calidad y descarga al instante.",
+    fromLabel: "IMG",
+    toLabel: "ZIP",
+    accent: "amber",
+    visual: "compress",
+  },
+  "redimensionar-imagen": {
+    badge: "Editor",
+    badgeEs: "Editor",
+    tagline: "Resize images to exact pixel dimensions without uploading them.",
+    taglineEs: "Redimensiona imágenes a píxeles exactos sin subirlas a un servidor.",
+    fromLabel: "W×H",
+    toLabel: "NEW",
+    accent: "blue",
+    visual: "resize",
+  },
+  "recortar-imagen": {
+    badge: "Editor",
+    badgeEs: "Editor",
+    tagline: "Crop images to the size you need, fully local and private.",
+    taglineEs: "Recorta imágenes al tamaño que necesitas, 100% local y privado.",
+    fromLabel: "FULL",
+    toLabel: "CROP",
     accent: "rose",
+    visual: "crop",
+  },
+  "rotar-imagen": {
+    badge: "Editor",
+    badgeEs: "Editor",
+    tagline: "Rotate photos by any angle without uploading them — everything stays on your device.",
+    taglineEs: "Rota fotos en cualquier ángulo. Todo ocurre en tu dispositivo.",
+    fromLabel: "0°",
+    toLabel: "90°",
+    accent: "violet",
+    visual: "rotate",
+  },
+  "escala-grises": {
+    badge: "Filter",
+    badgeEs: "Filtro",
+    tagline: "Convert any image to clean grayscale in one click.",
+    taglineEs: "Convierte cualquier imagen a escala de grises en un clic.",
+    fromLabel: "COLOR",
+    toLabel: "B&W",
+    accent: "cyan",
+    visual: "filter",
+  },
+  favicon: {
+    badge: "Generator",
+    badgeEs: "Generador",
+    tagline: "Create a favicon from your logo or image — ready for any site.",
+    taglineEs: "Crea un favicon desde tu logo o imagen, listo para cualquier sitio.",
+    fromLabel: "IMG",
+    toLabel: "ICO",
+    accent: "emerald",
+    visual: "favicon",
   },
 };
 
@@ -206,15 +121,6 @@ export function getToolShowcase(slug: string): ToolShowcase | undefined {
   return TOOL_SHOWCASE[slug];
 }
 
-/** Dev-only drift check. Routes import showcase-slugs, not this module. */
-if (import.meta.env?.DEV) {
-  void import("./showcase-slugs").then(({ SHOWCASE_SLUGS }) => {
-    const keys = Object.keys(TOOL_SHOWCASE);
-    const missing = keys.filter((slug) => !SHOWCASE_SLUGS.has(slug));
-    const extra = [...SHOWCASE_SLUGS].filter((slug) => !(slug in TOOL_SHOWCASE));
-    if (missing.length || extra.length) {
-      console.warn("UtiliHub showcase slug drift", { missing, extra });
-    }
-  });
+export function isShowcaseTool(slug: string): boolean {
+  return slug in TOOL_SHOWCASE;
 }
-
