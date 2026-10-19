@@ -72,6 +72,35 @@ A single truncated registry write wipes the entire catalog UI for every tool. Vo
 
 ---
 
+## CATALOG / RUNTIME 500 GUARD (immutable — critical)
+
+Runtime symptom to prevent: `{"status":500,"unhandled":true,"message":"HTTPError"}` on tool routes or catalog pages (and related «Tool not available»).
+
+Root causes seen in production-preview:
+
+1. **Duplicate slug** registered in more than one catalog data module (e.g. same slug in a generic `converters.ts` list **and** a dedicated `*-tool.ts`).
+2. **Registry import of a missing file** (import path or export name does not exist after a partial commit).
+3. **Dangling import/branch** left after deleting or renaming a tool (registry points at dead code).
+4. **Partial multi-file PRODUCT**: data committed without component, or registry without data — route loads and throws.
+
+### Mandatory before every PRODUCT push
+
+A. **Slug uniqueness (repo-wide):** grep the candidate slug(s) across `src/` (catalog data, route-slugs, registry, i18n). **Zero** prior hits for a new slug. If a richer dedicated tool already owns the slug, do **not** also add a thin entry in a generic converter/list file — keep one owner only.
+B. **One owner per slug:** never ship “generic list entry + dedicated tool” for the same slug. Prefer the dedicated tool; remove or never add the duplicate list entry.
+C. **Registry ↔ files:** every new `import()` / `pickComponent` branch targets a file that exists **in the same commit** and exports what the registry expects.
+D. **No dangling paths:** if you remove or rename a tool, clean registry import + branch + catalog data + route-slugs in that same commit.
+E. **Same-commit integrity:** data + component + registry (+ i18n) land together (see DEPLOY BUDGET). A half-landed tool is a 500 risk.
+F. **Verify:** after deploy READY, open EN and ES routes for each new slug — must not 500 and must not show «Tool not available».
+
+### On FIX-BUILD when you see HTTPError / 500
+
+1. Read Vercel runtime/build logs for the failing module or slug.
+2. Search duplicate slug occurrences and missing imports first — do not add features.
+3. Minimal fix: dedupe slug, restore missing file, or remove dangling registry branch.
+4. Re-check both EN and ES routes after fix.
+
+---
+
 ## Core Web Vitals (when writing code)
 
 Ship tools that do **not** regress LCP / INP / CLS / JS weight:
@@ -89,7 +118,7 @@ Ship tools that do **not** regress LCP / INP / CLS / JS weight:
 - Follow existing `makeTool` + category patterns.
 - EN + ES for every user-visible string.
 - SEO title with query intent; FAQ only if useful (0–3).
-- After ship: verify EN and ES routes do not show «Tool not available».
+- After ship: verify EN and ES routes do not show «Tool not available» or HTTP 500.
 
 ---
 
