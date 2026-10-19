@@ -67,11 +67,11 @@ path_en: /games/orbit-defender-arcade
 path_es: /es/juegos/arcade-defensor-orbita
 domain: games
 runs_total: 6
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 3/6. Added spread power-up (triple shots at slight angles, gold color). Mobile aim smoothing (lerp 0.35/0.65). HUD shows active spread. EN+ES parity. next: more mobile polish / extra juice / smoke.
+notes: EXECUTE 4/6. Added combo system (x1-x12, 0.25 mult per stack, 900ms window, floating COMBO text + bigger particle bursts). EN+ES parity. next: mobile polish / smoke / final juice.
 adsense-prep_runs: 3
 ```
 
