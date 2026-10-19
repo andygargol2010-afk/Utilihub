@@ -27,6 +27,7 @@ import { PRACTICAL_ADVANCED_TOOLS } from "./practical-advanced";
 import { UTILITY_EXTRA_TOOLS } from "./utility-extra";
 import { CUBE_VOLUME_CALCULATOR_TOOLS } from "./cube-volume-calculator-tool";
 import { SYLLABLE_COUNTER_TOOLS } from "./syllable-counter-tool";
+import { PAINT_CALCULATOR_TOOLS } from "./paint-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -59,4 +60,5 @@ export const GENERAL_TOOLS = [
   ...UTILITY_EXTRA_TOOLS,
   ...CUBE_VOLUME_CALCULATOR_TOOLS,
   ...SYLLABLE_COUNTER_TOOLS,
+  ...PAINT_CALCULATOR_TOOLS,
 ];
