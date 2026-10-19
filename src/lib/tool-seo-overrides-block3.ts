@@ -69,7 +69,7 @@ export const TOOL_SEO_OVERRIDES_BLOCK3: Record<string, ToolSeoOverrideBlock3> = 
     metaDescription:
       "Validate JSON syntax in your browser. Catch trailing commas, bad quotes, and parse errors before production.",
     metaDescriptionEs:
-      "Validá la sintaxis JSON en el navegador. Detectá comas finales, comillas mal y errores de parseo antes de producción.",
+      "Validá la sintaxis JSON en el navegador. Detectá comas finales, comillas incorrectas y errores de parseo antes de producción.",
     about: [
       "A JSON validator parses your document with strict rules: double-quoted keys and strings, no trailing commas, and valid structure.",
       "Use it when an API rejects a body, a config file fails to load, or a minified blob looks suspicious. Feedback should point to where parsing stopped.",
