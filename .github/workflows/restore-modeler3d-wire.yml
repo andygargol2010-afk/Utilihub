@@ -1,0 +1,31 @@
+name: Restore Modeler3D wire to HouseModeler3D
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 20
+
+      - name: Wire Modeler3D → HouseModeler3D
+        run: python3 scripts/restore-modeler3d-wire.py
+
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/modeler3d-app.tsx src/components/general/Modeler3D.tsx
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "fix(modeler3d): wire entry to complete HouseModeler3D (drop broken modeler3d-core)"
+          git push origin fix/spanish-complete
