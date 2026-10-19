@@ -88,12 +88,12 @@ function HomePage() {
               >
                 Explore advanced tools <ArrowRight className="size-4" />
               </a>
-              <Link
-                to="/games"
+              <a
+                href="/games"
                 className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-violet-500/40 bg-card px-5 py-3 text-sm font-bold text-violet-800 hover:border-violet-500/60 hover:bg-violet-500/10 dark:text-violet-200"
               >
                 Play games
-              </Link>
+              </a>
               <Link
                 to="/tools"
                 className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold hover:border-primary/40 hover:bg-accent"
@@ -136,12 +136,12 @@ function HomePage() {
                 >
                   Advanced
                 </a>
-                <Link
-                  to="/games"
+                <a
+                  href="/games"
                   className="rounded-lg border border-violet-500/30 bg-violet-500/5 px-3 py-2.5 hover:border-violet-500/50 hover:bg-violet-500/10"
                 >
                   Games
-                </Link>
+                </a>
                 <Link to="/category/math" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
                   Math
                 </Link>
