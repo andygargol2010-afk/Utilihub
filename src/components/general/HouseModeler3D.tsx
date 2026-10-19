@@ -1277,18 +1277,18 @@ function paintDoorLeaf(ctx: CanvasRenderingContext2D, size: number) {
     ctx.strokeStyle = "rgba(176,124,78,0.35)";
     ctx.lineWidth = 1;
     ctx.strokeRect(x + 10, y + 10, w - 20, h - 20);
-    for (let g = 0; g < 4; g++) {
-      const gy = y + 14 + g * (h / 5);
-      ctx.strokeStyle = "rgba(70,40,22,0.28)";
+    for (let g = 0; g < 7; g++) {
+      const gy = y + 12 + g * (h / 8);
+      ctx.strokeStyle = "rgba(70,40,22,0.32)";
       ctx.beginPath();
       ctx.moveTo(x + 12, gy);
-      for (let px = x + 12; px < x + w - 12; px += 8) {
-        ctx.lineTo(px, gy + Math.sin(px * 0.06 + f) * 1.1);
+      for (let px = x + 12; px < x + w - 12; px += 6) {
+        ctx.lineTo(px, gy + Math.sin(px * 0.07 + f + g * 0.3) * 1.4);
       }
       ctx.stroke();
     }
-    // Subtle edge wear and panel dust so the raised fields read as used timber, not fresh millwork.
-    for (let wear = 0; wear < 6; wear++) {
+    // Denser grain, edge wear and panel dust so the raised fields read as used timber, not fresh millwork.
+    for (let wear = 0; wear < 11; wear++) {
       const wx = x + 10 + hash2(f, wear + 50) * (w - 20);
       const wy = y + 10 + hash2(f, wear + 51) * (h - 20);
       const wr = 1.1 + hash2(f, wear + 52) * 2.2;
