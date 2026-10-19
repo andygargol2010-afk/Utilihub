@@ -61,17 +61,17 @@ adsense-prep_runs: 3
 
 ```
 status: active
-idea: Interactive Orbit Defender Arcade. Defend a central glowing planet from waves of incoming asteroids and debris. Aim and fire interceptors with mouse or touch, build score combos, unlock temporary power-ups (shield, rapid fire, slow-mo), and survive escalating difficulty. Lightweight 2D canvas game with particle effects, EN+ES parity, shareable high-score screenshots.
+idea: Interactive Orbit Defender Arcade. Defend a central glowing planet from waves of incoming asteroids and debris. Aim and fire interceptors with mouse or touch, build score combos, unlock temporary power-ups (shield, rapid fire, slow-mo, spread), and survive escalating difficulty. Lightweight 2D canvas game with particle effects, EN+ES parity, shareable high-score screenshots.
 id: orbit-defender-arcade
 path_en: /games/orbit-defender-arcade
 path_es: /es/juegos/arcade-defensor-orbita
 domain: games
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 2/6. Visual polish: irregular asteroid shapes, stronger particle bursts, better planet gradient/glow. Share now exports canvas PNG (navigator.share files or download) with score. Mobile touch-action:none. EN+ES parity. next: extra power-ups, mobile feel polish, smoke.
+notes: EXECUTE 3/6. Added spread power-up (triple shots at slight angles, gold color). Mobile aim smoothing (lerp 0.35/0.65). HUD shows active spread. EN+ES parity. next: more mobile polish / extra juice / smoke.
 adsense-prep_runs: 3
 ```
 
