@@ -8,6 +8,7 @@ type Particle = {
   size: number;
   stage: number;
   path: number; // -1 main, >=0 branch index
+  trail: Point[]; // recent positions for flowing trail
 };
 type Branch = { fromIndex: number; points: Point[] };
 
@@ -19,6 +20,8 @@ const THEMES: Record<Theme, { start: string; end: string; bg: string }> = {
   forest: { start: "#16a34a", end: "#eab308", bg: "#0a1a0f" },
   ocean: { start: "#1e40af", end: "#06b6d4", bg: "#021a24" },
 };
+
+const TRAIL_LEN = 8;
 
 function lerpColor(a: string, b: string, t: number): string {
   const pa = parseInt(a.slice(1), 16);
@@ -68,7 +71,7 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       demo: "Load demo",
       branch: "Start branch",
       finishBranch: "Finish branch",
-      hint: "Tap to place main path, drag markers. Start branch for side rivers — some particles divert. Smooth flow with stage gradients.",
+      hint: "Tap to place main path, drag markers. Start branch for side rivers — some particles divert. Trails reinforce the flowing journey.",
     },
     es: {
       speed: "Velocidad",
@@ -80,7 +83,7 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       demo: "Cargar demo",
       branch: "Iniciar rama",
       finishBranch: "Terminar rama",
-      hint: "Tocá para el camino principal, arrastrá marcadores. Iniciá rama para ríos laterales — algunas partículas se desvían. Flujo suavizado con degradados.",
+      hint: "Tocá para el camino principal, arrastrá marcadores. Iniciá rama para ríos laterales — algunas partículas se desvían. Las estelas refuerzan el viaje fluido.",
     },
   }[locale];
 
@@ -146,6 +149,7 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
         size: 1.8 + Math.random() * 2.8,
         stage: i / n,
         path,
+        trail: [],
       };
     });
   }, [density, speed]);
@@ -241,6 +245,7 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       });
     });
 
+    // Particles + trails
     particlesRef.current.forEach((p) => {
       let pos: Point | null = null;
       if (p.path < 0) {
@@ -250,6 +255,29 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
         if (br) pos = sampleBranch(br, p.t);
       }
       if (!pos) return;
+
+      // Draw fading trail (older → newer)
+      if (p.trail.length >= 2) {
+        for (let ti = 0; ti < p.trail.length - 1; ti++) {
+          const a = p.trail[ti];
+          const b = p.trail[ti + 1];
+          const fade = (ti + 1) / p.trail.length;
+          const c = lerpColor(th.start, th.end, p.t);
+          ctx.beginPath();
+          ctx.moveTo(a.x * w, a.y * h);
+          ctx.lineTo(b.x * w, b.y * h);
+          ctx.strokeStyle = c;
+          ctx.globalAlpha = 0.12 + fade * 0.35;
+          ctx.lineWidth = p.size * (0.4 + fade * 0.9);
+          ctx.lineCap = "round";
+          ctx.shadowColor = c;
+          ctx.shadowBlur = 6 * fade;
+          ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+      }
+
       const px = pos.x * w;
       const py = pos.y * h;
       const c = lerpColor(th.start, th.end, p.t);
@@ -276,7 +304,21 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
         particlesRef.current = particlesRef.current.map((p) => {
           let nt = p.t + p.speed;
           if (nt > 1) nt = 0;
-          return { ...p, t: nt };
+          let pos: Point | null = null;
+          if (p.path < 0) {
+            pos = sampleMain(nt);
+          } else {
+            const br = branchesRef.current[p.path];
+            if (br) pos = sampleBranch(br, nt);
+          }
+          const trail = pos
+            ? [...p.trail, pos].slice(-TRAIL_LEN)
+            : p.trail;
+          // Reset trail on wrap to avoid long jump streaks
+          if (nt < p.t) {
+            return { ...p, t: nt, trail: pos ? [pos] : [] };
+          }
+          return { ...p, t: nt, trail };
         });
       }
       redraw();
@@ -284,7 +326,7 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
     };
     animRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animRef.current);
-  }, [redraw]);
+  }, [redraw, sampleMain, sampleBranch]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
