@@ -45,13 +45,14 @@ Even when the target is **2 tools**, each tool must pass the same bar as a solo-
 
 ## FIX-BUILD
 
-When deploy is ERROR or a new tool page is broken:
+When deploy is ERROR or a new tool page is broken (including runtime `{"status":500,"unhandled":true,"message":"HTTPError"}`):
 
 1. Read build / runtime logs (Vercel).
-2. Minimal fix only (typo, missing export, bad import, registry branch).
-3. Push → re-check deploy. Max **2** attempts per run.
-4. No new product tools while fixing.
-5. If root cause is wiped registry → restore known-good SHA first (rules file), then re-add only safe surgical entries.
+2. **First** check duplicate slugs and missing registry imports (see rules CATALOG / RUNTIME 500 GUARD).
+3. Minimal fix only (typo, missing export, bad import, registry branch, dedupe slug).
+4. Push → re-check deploy. Max **2** attempts per run.
+5. No new product tools while fixing.
+6. If root cause is wiped registry → restore known-good SHA first (rules file), then re-add only safe surgical entries.
 
 ---
 
@@ -65,6 +66,7 @@ After every product push:
    - Open EN: `/tools/<slug>`
    - Open ES: `/es/herramientas/<slug>`
    - Must **not** show «Tool not available» / «Herramienta no disponible»
+   - Must **not** return HTTP 500 / `HTTPError` JSON
    - Title / H1 must reflect the SEO intent
    - Any failure → FIX-BUILD; do **not** claim success
 4. Spanish summary must include: deploy state, preview URL if available, per-slug pass/fail.
@@ -85,7 +87,7 @@ Commit message: `feat(catalog): add <category-slug> + <seed-tool>`.
 
 ### Mandatory order
 
-1. **ANTI-DUPE** — grep each slug; check sister tools; skip same user intent.
+1. **ANTI-DUPE + 500 guard** — grep each candidate slug **repo-wide** under `src/` (catalog lists, dedicated `*-tool.ts`, registry, route-slugs, i18n). Zero hits for a new slug. Never add the same slug to a generic list (e.g. converters) if a dedicated tool already owns it (historical cause of `HTTPError` 500). Check sister tools; skip same user intent.
 2. **CLUSTER diversity** — if a cluster has ≥3 in last ~8 shipped → forbid another from that cluster.
 3. **Demand** — prefer real search-intent queries; clear gap; implementable quality this run.
 4. **Expansion** — if <2 passers after first batch, expand up to 3 rounds; document; only ship 0 after 3 full rounds.
@@ -99,7 +101,11 @@ Commit message: `feat(catalog): add <category-slug> + <seed-tool>`.
    - Prefer `push_files` / multi-file update in one commit over sequential `create_or_update_file` that each auto-commit.
    - Max 2 build-fix attempts (still one logical outcome; fix commits only if build broke).
    - Then POST-PUSH verification for **both** slugs on that single SHA.
-8. **Safety stop** — if after the first tool the deploy or registry looks fragile → stop at 1; document; do not force the second.
+8. **500 / HTTPError preflight**
+   - Confirm each new slug appears **once** in catalog data modules.
+   - Confirm registry import paths resolve to files included in this commit.
+   - No dangling imports from tools removed earlier in the same session.
+9. **Safety stop** — if after the first tool the deploy or registry looks fragile → stop at 1; document; do not force the second.
 
 ---
 
@@ -115,7 +121,7 @@ Allowed:
 
 Forbidden:
 
-- Weaken IMMUTABLE / ANTI-WIPE / identity.
+- Weaken IMMUTABLE / ANTI-WIPE / identity / CATALOG 500 GUARD.
 - Touch other automations.
 - Raise implicit volume above 2 or remove the “1 excellent tool” escape hatch.
 - Extra commits that only touch `.agent/*` docs without a real rule change (burns deploy quota). Prefer zero push on no-op META.
@@ -129,8 +135,9 @@ Modo: PRODUCT|META|NEW-CATEGORY|FIX-BUILD (roll N)
 Candidatos iniciales: …
 Rondas de expansión (0–3): …
 Elegidas (1 o 2) y por qué: …
+Anti-dupe / slug único: OK|fallo
 Commits: un solo SHA de PRODUCT (o escape 1 tool)
-Deploy: READY|ERROR|… verificación EN/ES por slug
+Deploy: READY|ERROR|… verificación EN/ES por slug (no 500)
 SEO locales: none|…
 ```
 
