@@ -67,11 +67,11 @@ path_en: /journeys/waypoint-river-composer
 path_es: /es/viajes/compositor-rio-waypoints
 domain: journeys
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE. Roll: U=0.7999 → CORE; weighted sample r=10.22/32 → journeys (cumul. kits 0-3, journeys 3-12). last_closed_domain studio-composition ≠ journeys, no re-roll. Weights: selected→1, other CORE +1. Avoided recent closed (neon studio, kits, boids, pulse, particle). New progression-focused waypoint river canvas. next-step required before Adsterra. Adsterra untouched. EXECUTE 1/6: core canvas + sequential waypoint placement + stage-gradient particle flow + themes/speed/density/undo/demo shipped. EN+ES routes, index cards, next-step registered. Adsterra kept. EXECUTE 2/6: path smoothing (Catmull-Rom blend + control) + drag-to-reposition waypoints for organic river composition. Particles follow smooth path. Touch-friendly. Adsterra kept.
+notes: IDEATE. Roll: U=0.7999 → CORE; weighted sample r=10.22/32 → journeys (cumul. kits 0-3, journeys 3-12). last_closed_domain studio-composition ≠ journeys, no re-roll. Weights: selected→1, other CORE +1. Avoided recent closed (neon studio, kits, boids, pulse, particle). New progression-focused waypoint river canvas. next-step required before Adsterra. Adsterra untouched. EXECUTE 1/6: core canvas + sequential waypoint placement + stage-gradient particle flow + themes/speed/density/undo/demo shipped. EN+ES routes, index cards, next-step registered. Adsterra kept. EXECUTE 2/6: path smoothing (Catmull-Rom blend + control) + drag-to-reposition waypoints for organic river composition. Particles follow smooth path. Touch-friendly. Adsterra kept. EXECUTE 3/6: optional branching side paths — start branch from current end, place side waypoints, particles split (~35% divert) across main + branches, side rivers drawn with lower alpha/thinner glow. Demo includes branch. Touch-friendly. Adsterra kept.
 adsense-prep_runs: 3
 ```
 
