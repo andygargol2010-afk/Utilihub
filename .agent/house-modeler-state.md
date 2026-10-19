@@ -10,6 +10,8 @@ PRODUCT run 221: roof metal densify (seams 7→9, oxide streaks + dust specks) v
 
 META run 222: health check OK (monolith ~345964B SHA 76762862..., deploys READY, SEO none).
 
+MODELADOR-3D run 223: added wood MatPreset (roughness 0.68) in helpers. Surgical.
+
 <!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -27,7 +29,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 222
+runs_done: 223
 runs_max: 500
 ```
 
@@ -66,11 +68,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: MODELADOR-3D
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
-deploy: READY (latest on 6f0d6ef and prior PRODUCT 73e541d)
-note: META run 222 — health check. Monolith ~345964B SHA 76762862..., gates OK (no PLACEHOLDER, paints/Sky/finishes present). Deploys READY. SEO none.
+deploy: READY (prior)
+note: MODELADOR-3D run 223 — wood MatPreset added. Monolith intact. SEO none.
 ```
 
 Refresh after each run.
@@ -124,5 +126,7 @@ PRODUCT run 220: glazing densify (streaks 5→8 denser + vertical dust streaks +
 PRODUCT run 221: roof metal densify (seams 7→9, oxide streaks + dust specks) via local clone surgical.
 
 META run 222: health check OK (monolith ~345964B SHA 76762862..., gates OK, deploys READY, SEO none).
+
+MODELADOR-3D run 223: added wood MatPreset (roughness 0.68) in helpers. Surgical.
 
 <!-- end:house-modeler-state.md -->
