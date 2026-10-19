@@ -52,6 +52,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
   const isSpanish = useIsSpanish();
   useEffect(() => console.error(error), [error]);
+  const msg = error?.message?.slice(0, 280) || "";
+  const stackLine = (error?.stack || "")
+    .split("\n")
+    .map((l) => l.trim())
+    .find((l) => l.includes("/") || l.includes(".tsx") || l.includes(".ts") || l.includes(".js"));
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
@@ -63,6 +68,12 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             ? "Ocurrió un error. Puedes intentarlo de nuevo o volver al inicio."
             : "An error occurred. You can try again or go back home."}
         </p>
+        {msg ? (
+          <pre className="mt-4 max-h-32 overflow-auto rounded-lg border border-border bg-muted/40 px-3 py-2 text-left text-[11px] leading-snug text-muted-foreground">
+            {msg}
+            {stackLine ? `\n${stackLine}` : ""}
+          </pre>
+        ) : null}
         <div className="mt-6 flex justify-center gap-2">
           <button
             className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
