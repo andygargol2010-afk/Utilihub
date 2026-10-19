@@ -138,22 +138,22 @@ function HomePage() {
                 </a>
                 <a
                   href="/games"
-                  className="rounded-lg border border-violet-500/30 bg-violet-500/5 px-3 py-2.5 hover:border-violet-500/50 hover:bg-violet-500/10"
+                  className="rounded-lg border border-violet-500/30 bg-violet-500/5 px-3 py-2.5 hover:border-primary/50 hover:bg-violet-500/10"
                 >
                   Games
                 </a>
-                <Link to="/category/math" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                <a href="/category/math" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
                   Math
-                </Link>
-                <Link to="/finance" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                </a>
+                <a href="/finance" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
                   Finance
-                </Link>
-                <Link to="/category/text" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                </a>
+                <a href="/category/text" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
                   Text
-                </Link>
-                <Link to="/category/converters" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                </a>
+                <a href="/category/converters" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
                   Converters
-                </Link>
+                </a>
               </div>
             </div>
           </div>
