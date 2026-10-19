@@ -77,6 +77,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-18 PRODUCT: shipped 2 (calculadora-margen-beneficio finanzas + calculadora-promedio-ponderado educacion). Distinct clusters (not texto/ciencia). Anti-dupe OK. Registry surgical OK after typo fix.
 2026-10-18 PRODUCT: shipped 2 (calculadora-circunferencia ciencia + calculadora-perimetro-rectangulo matematicas). Distinct clusters. Anti-dupe OK (no existing dedicated circumference or rectangle perimeter). Registry surgical OK.
 2026-10-18 PRODUCT: shipped 2 (conversor-presion conversiones + calculadora-calorias-quemadas salud). Distinct clusters. Anti-dupe OK. Registry restored after brief accidental wipe then full correct write OK.
+2026-10-19 PRODUCT: prepared calculadora-volumen-piramide (ciencia) + calculadora-area-trapecio (matematicas) — components and data files committed. Index.ts and registry.tsx update considered fragile due to large file size and truncation risk in tool calls; stopped without registering to avoid breaking the catalog. Files left for next run. Saturation escape used.
 ```
 
 ---
@@ -85,8 +86,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: conversor-presion, calculadora-calorias-quemadas
-last_deploy: pending verification
+last_slugs: (prepared but not registered) calculadora-volumen-piramide, calculadora-area-trapecio
+last_deploy: not pushed for registration
 ```
 
 <!-- end:tools-builder-state.md -->
