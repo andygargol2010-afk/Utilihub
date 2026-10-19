@@ -85,6 +85,9 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
   const slowUntilRef = useRef(0);
   const spreadUntilRef = useRef(0);
   const shakeRef = useRef(0);
+  const comboRef = useRef(0);
+  const lastHitRef = useRef(0);
+  const comboFlashRef = useRef(0);
 
   useEffect(() => {
     setBest(readBestScore("orbit-defender-arcade"));
@@ -110,6 +113,9 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
     slowUntilRef.current = 0;
     spreadUntilRef.current = 0;
     shakeRef.current = 0;
+    comboRef.current = 0;
+    lastHitRef.current = 0;
+    comboFlashRef.current = 0;
     setScore(0);
     setWave(1);
     setShield(0);
@@ -256,7 +262,16 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
               a.hp -= 1;
               shakeRef.current = 4;
               if (a.hp <= 0) {
-                const pts = Math.round(10 * (1 + difficulty * 0.3));
+                const nowHit = performance.now();
+                if (nowHit - lastHitRef.current < 900) {
+                  comboRef.current = Math.min(12, comboRef.current + 1);
+                } else {
+                  comboRef.current = 1;
+                }
+                lastHitRef.current = nowHit;
+                comboFlashRef.current = 18;
+                const mult = 1 + (comboRef.current - 1) * 0.25;
+                const pts = Math.round(10 * (1 + difficulty * 0.3) * mult);
                 setScore((sc) => {
                   const next = sc + pts;
                   setBest((b) => {
@@ -265,15 +280,16 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
                   });
                   return next;
                 });
-                for (let j = 0; j < 20; j++) {
+                const burst = 12 + comboRef.current * 2;
+                for (let j = 0; j < burst; j++) {
                   particlesRef.current.push({
                     x: a.x,
                     y: a.y,
-                    vx: (Math.random() - 0.5) * 6,
-                    vy: (Math.random() - 0.5) * 6,
-                    life: 28,
-                    hue: a.hue + (Math.random() - 0.5) * 36,
-                    size: 1.8 + Math.random() * 1.8,
+                    vx: (Math.random() - 0.5) * (5 + comboRef.current * 0.4),
+                    vy: (Math.random() - 0.5) * (5 + comboRef.current * 0.4),
+                    life: 24 + comboRef.current,
+                    hue: a.hue + (Math.random() - 0.5) * 40,
+                    size: 1.6 + Math.random() * 1.6,
                   });
                 }
                 return false;
@@ -309,6 +325,8 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         });
 
         if (shakeRef.current > 0) shakeRef.current -= 1;
+        if (comboFlashRef.current > 0) comboFlashRef.current -= 1;
+        if (performance.now() - lastHitRef.current > 1100) comboRef.current = 0;
       }
 
       // draw
@@ -422,6 +440,12 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         ctx.fillText(`${es ? "Escudo" : "Shield"}: ${"\u25cf".repeat(shieldRef.current)}`, 10, 52);
         if (spreadUntilRef.current > performance.now()) {
           ctx.fillText(es ? "Spread activo" : "Spread active", 10, 68);
+        }
+        if (comboRef.current > 1 && comboFlashRef.current > 0) {
+          ctx.fillStyle = `rgba(254,240,138,${Math.min(1, comboFlashRef.current / 12)})`;
+          ctx.font = "bold 16px system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(`${es ? "COMBO" : "COMBO"} x${comboRef.current}`, W / 2, 28);
         }
 
         if (paused && !gameOver) {
