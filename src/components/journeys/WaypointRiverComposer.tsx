@@ -57,6 +57,7 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
   const [density, setDensity] = useState(60);
   const [smoothing, setSmoothing] = useState(0.65);
   const [theme, setTheme] = useState<Theme>("dawn");
+  const [reverse, setReverse] = useState(false);
   const animRef = useRef<number>(0);
   const dragIndex = useRef<number | null>(null);
 
@@ -72,7 +73,8 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       branch: "Start branch",
       finishBranch: "Finish branch",
       share: "Save PNG",
-      hint: "Tap to place main path, drag markers. Start branch for side rivers — some particles divert. Trails reinforce the flowing journey. Save PNG to share.",
+      reverse: "Reverse flow",
+      hint: "Tap to place main path, drag markers. Start branch for side rivers — some particles divert. Trails reinforce the flowing journey. Save PNG to share. Toggle reverse for bidirectional journeys.",
     },
     es: {
       speed: "Velocidad",
@@ -85,7 +87,8 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       branch: "Iniciar rama",
       finishBranch: "Terminar rama",
       share: "Guardar PNG",
-      hint: "Tocá para el camino principal, arrastrá marcadores. Iniciá rama para ríos laterales — algunas partículas se desvían. Las estelas refuerzan el viaje fluido. Guardá PNG para compartir.",
+      reverse: "Flujo inverso",
+      hint: "Tocá para el camino principal, arrastrá marcadores. Iniciá rama para ríos laterales — algunas partículas se desvían. Las estelas refuerzan el viaje fluido. Guardá PNG para compartir. Activá flujo inverso para viajes bidireccionales.",
     },
   }[locale];
 
@@ -304,8 +307,10 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
     const loop = () => {
       if (waypointsRef.current.length >= 2 || branchesRef.current.some(b => b.points.length > 0)) {
         particlesRef.current = particlesRef.current.map((p) => {
-          let nt = p.t + p.speed;
+          const dir = reverse ? -1 : 1;
+          let nt = p.t + p.speed * dir;
           if (nt > 1) nt = 0;
+          if (nt < 0) nt = 1;
           let pos: Point | null = null;
           if (p.path < 0) {
             pos = sampleMain(nt);
@@ -328,7 +333,7 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
     };
     animRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animRef.current);
-  }, [redraw, sampleMain, sampleBranch]);
+  }, [redraw, sampleMain, sampleBranch, reverse]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -490,6 +495,10 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
           {labels.speed}
           <input type="range" min={0.3} max={2.2} step={0.1} value={speed} onChange={(e) => setSpeed(Number(e.target.value))} className="w-24 accent-primary" />
           <span className="w-8 text-right">{speed.toFixed(1)}</span>
+        </label>
+        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          {labels.reverse}
+          <input type="checkbox" checked={reverse} onChange={(e) => setReverse(e.target.checked)} className="accent-primary" />
         </label>
         <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
           {labels.density}
