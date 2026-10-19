@@ -1,1 +1,1 @@
-PLACEHOLDER_STATE
+$(cat /tmp/tools-builder-state.md)

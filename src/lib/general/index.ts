@@ -1,1 +1,1 @@
-PLACEHOLDER_INDEX
+$(cat /tmp/index.ts)

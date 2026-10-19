@@ -1,1 +1,1 @@
-PLACEHOLDER_REG
+$(cat /tmp/registry.tsx)
