@@ -13,15 +13,14 @@ jobs:
           fetch-depth: 0
       - name: Restore full house-modeler.md + DEPLOY BUDGET
         run: |
-          set -e
-          # Original full rules blob (pre-wipe)
-          git cat-file -p 968315aba08192494a2d59089687e641d57397c2 > .agent/house-modeler.md
-          python3 << 'PY'
-          from pathlib import Path
-          p = Path('.agent/house-modeler.md')
-          text = p.read_text()
-          marker = '<!-- end:house-modeler.md -->'
-          section = '''
+          set -euo pipefail
+          git show 9d3b9b1baf9ab64e1e085a85b7e22738cb71c271:.agent/house-modeler.md > .agent/house-modeler.md
+          python3 -c '
+from pathlib import Path
+p = Path(".agent/house-modeler.md")
+text = p.read_text()
+marker = "<!-- end:house-modeler.md -->"
+section = """
 ---
 
 ## DEPLOY BUDGET (Hobby ~100 deploys/day — mandatory)
@@ -31,22 +30,20 @@ jobs:
 3. META with no file changes → **do not push**.
 4. Ops file must end with `<!-- end:house-modeler-ops.md -->`. If wiped/truncated, re-fetch; do not invent MODE steps.
 
-'''
-          old_line = 'When state changes (especially `runs_done`): edit **house-modeler-state.md** and commit on `fix/spanish-complete` with identity `andygargol2010-afk` / `andygargol2010@gmail.com`.'
-          new_line = 'When state changes (especially `runs_done`): edit **house-modeler-state.md** **in the same commit** as the code change on `fix/spanish-complete`. Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`. Never a second deploy-only commit for the counter.'
-          if old_line in text:
-              text = text.replace(old_line, new_line)
-          if '## DEPLOY BUDGET' in text:
-              text = text.split('## DEPLOY BUDGET')[0].rstrip() + '\n'
-          if marker in text:
-              text = text.split(marker)[0].rstrip() + '\n'
-          text = text + '\n' + section + marker + '\n'
-          p.write_text(text)
-          assert 'DEPLOY BUDGET' in text
-          assert 'ANTI-WIPE' in text
-          assert 'RUN LIFETIME' in text
-          print('house-modeler.md bytes', len(text.encode()))
-          PY
+"""
+old_line = "When state changes (especially `runs_done`): edit **house-modeler-state.md** and commit on `fix/spanish-complete` with identity `andygargol2010-afk` / `andygargol2010@gmail.com`."
+new_line = "When state changes (especially `runs_done`): edit **house-modeler-state.md** **in the same commit** as the code change on `fix/spanish-complete`. Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`. Never a second deploy-only commit for the counter."
+if old_line in text:
+    text = text.replace(old_line, new_line)
+if "## DEPLOY BUDGET" in text:
+    text = text.split("## DEPLOY BUDGET")[0].rstrip() + "\n"
+if marker in text:
+    text = text.split(marker)[0].rstrip() + "\n"
+text = text + "\n" + section + marker + "\n"
+p.write_text(text)
+assert "DEPLOY BUDGET" in text and "ANTI-WIPE" in text and "RUN LIFETIME" in text
+print("house-modeler.md bytes", len(text.encode()))
+'
       - name: Commit and push
         run: |
           git config user.name "andygargol2010-afk"
