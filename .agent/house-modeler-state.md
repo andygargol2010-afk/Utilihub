@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 213
+runs_done: 214
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 342609
+approx_bytes: 342688
 last_known_good_hint: (post worn-earth densify ~342609 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
 deploy: (pending check)
-note: PRODUCT run 213 — densify grass flecks 22→28 + blades 28→36 for richer meadow. Surgical via local clone.
+note: PRODUCT run 214 — densify clay tiles flecks 6→9 + more moss for richer weathered roof. Surgical via local clone.
 ```
 
 Refresh after each run.
@@ -99,6 +99,7 @@ PRODUCT run 210: gravel path densify (moss + leaf litter).
 META run 212: verified READY deploys, monolith gates OK (342609B, 7750 lines, paints present). Grass densify (flecks 22→28, blades 28→36) prepared in local clone but not pushed due to tool-channel truncation risk for full rewrite. Prefer authenticated local push next.
 
 PRODUCT run 213: grass densify (flecks 28, blades 36) via local clone surgical.
+PRODUCT run 214: clay tiles densify (flecks 6→9, moss threshold lower) via local clone surgical.
 ```
 
 <!-- end:house-modeler-state.md -->
