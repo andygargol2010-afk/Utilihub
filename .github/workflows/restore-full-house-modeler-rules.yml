@@ -1,0 +1,53 @@
+name: restore-full-house-modeler-rules
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 0
+      - name: Restore full house-modeler.md + DEPLOY BUDGET
+        run: |
+          set -e
+          git cat-file -p 968315aba08192494a2d59089687e641d57397c2 > .agent/house-modeler.md
+          python3 << 'PY'
+          from pathlib import Path
+          p = Path('.agent/house-modeler.md')
+          text = p.read_text()
+          marker = '<!-- end:house-modeler.md -->'
+          section = '''
+---
+
+## DEPLOY BUDGET (Hobby ~100 deploys/day — mandatory)
+
+1. **PRODUCT + `runs_done` in the same commit.** Update `.agent/house-modeler-state.md` together with the code change. Never a follow-up `docs(agent)`-only commit for the counter.
+2. **Forbidden:** separate META/docs push after PRODUCT solely to bump `runs_done` (doubles deploys).
+3. META with no file changes → **do not push**.
+4. Ops file must end with `<!-- end:house-modeler-ops.md -->`. If wiped/truncated, re-fetch; do not invent MODE steps.
+
+'''
+          old_line = 'When state changes (especially `runs_done`): edit **house-modeler-state.md** and commit on `fix/spanish-complete` with identity `andygargol2010-afk` / `andygargol2010@gmail.com`.'
+          new_line = 'When state changes (especially `runs_done`): edit **house-modeler-state.md** **in the same commit** as the code change on `fix/spanish-complete`. Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`. Never a second deploy-only commit for the counter.'
+          if old_line in text:
+              text = text.replace(old_line, new_line)
+          if '## DEPLOY BUDGET' in text:
+              text = text.split('## DEPLOY BUDGET')[0].rstrip() + '\n'
+          if marker in text:
+              text = text.split(marker)[0].rstrip() + '\n'
+          text = text + '\n' + section + marker + '\n'
+          p.write_text(text)
+          assert 'DEPLOY BUDGET' in text and 'ANTI-WIPE' in text and 'RUN LIFETIME' in text
+          print('house-modeler.md bytes', len(text.encode()))
+          PY
+      - name: Commit and push
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add .agent/house-modeler.md
+          git commit -m "fix(agent): restore full house-modeler.md + DEPLOY BUDGET"
+          git push origin HEAD:fix/spanish-complete
