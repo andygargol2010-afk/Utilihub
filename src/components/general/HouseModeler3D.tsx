@@ -1538,14 +1538,33 @@ function paintGlazing(ctx: CanvasRenderingContext2D, size: number) {
   sky.addColorStop(1, "rgba(148,168,176,0.35)");
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, size, size);
-  for (let i = 0; i < 5; i++) {
-    const y = (0.12 + hash2(i, 3.1) * 0.7) * size;
-    ctx.strokeStyle = `rgba(255,255,255,${0.18 + hash2(i, 6) * 0.22})`;
-    ctx.lineWidth = 2 + hash2(i, 1.4) * 3;
+  for (let i = 0; i < 8; i++) {
+    const y = (0.10 + hash2(i, 3.1) * 0.75) * size;
+    ctx.strokeStyle = `rgba(255,255,255,${0.16 + hash2(i, 6) * 0.26})`;
+    ctx.lineWidth = 1.6 + hash2(i, 1.4) * 3.2;
     ctx.beginPath();
     ctx.moveTo(0, y);
-    for (let x = 0; x <= size; x += 10) ctx.lineTo(x, y + Math.sin(x * 0.03 + i) * 4);
+    for (let x = 0; x <= size; x += 8) ctx.lineTo(x, y + Math.sin(x * 0.028 + i * 0.7) * 4.5);
     ctx.stroke();
+  }
+  // Extra vertical dust streaks and soft condensation so glazing reads as outdoor glass, not sterile pane.
+  for (let v = 0; v < 6; v++) {
+    const x = (0.15 + hash2(v, 9.2) * 0.7) * size;
+    ctx.strokeStyle = `rgba(210,220,226,${0.12 + hash2(v, 4.4) * 0.18})`;
+    ctx.lineWidth = 1.2 + hash2(v, 2.1) * 1.8;
+    ctx.beginPath();
+    ctx.moveTo(x, 8);
+    for (let y = 8; y <= size - 8; y += 12) ctx.lineTo(x + Math.sin(y * 0.05 + v) * 2.2, y);
+    ctx.stroke();
+  }
+  for (let d = 0; d < 14; d++) {
+    const dx = 12 + hash2(d, 11.5) * (size - 24);
+    const dy = 12 + hash2(d, 6.8) * (size - 24);
+    const dr = 0.8 + hash2(d, 3.3) * 1.6;
+    ctx.fillStyle = `rgba(160,152,140,${0.10 + hash2(d, 7.7) * 0.16})`;
+    ctx.beginPath();
+    ctx.arc(dx, dy, dr, 0, Math.PI * 2);
+    ctx.fill();
   }
   ctx.strokeStyle = "rgba(72,64,54,0.28)";
   ctx.lineWidth = 8;
