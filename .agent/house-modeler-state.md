@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 212
+runs_done: 213
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
 deploy: (pending check)
-note: META run 212 — health check OK; monolith 342609 bytes intact; SEO none. PRODUCT densify grass prepared locally but deferred (no push auth; tool-channel full rewrite >300KB risk).
+note: PRODUCT run 213 — densify grass flecks 22→28 + blades 28→36 for richer meadow. Surgical via local clone.
 ```
 
 Refresh after each run.
@@ -97,6 +97,8 @@ META run 208: roll 7 → PRODUCT candidate (worn-earth densify prepared locally)
 PRODUCT run 210: gravel path densify (moss + leaf litter).
 
 META run 212: verified READY deploys, monolith gates OK (342609B, 7750 lines, paints present). Grass densify (flecks 22→28, blades 28→36) prepared in local clone but not pushed due to tool-channel truncation risk for full rewrite. Prefer authenticated local push next.
+
+PRODUCT run 213: grass densify (flecks 28, blades 36) via local clone surgical.
 ```
 
 <!-- end:house-modeler-state.md -->

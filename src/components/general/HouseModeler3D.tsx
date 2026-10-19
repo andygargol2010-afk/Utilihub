@@ -1704,7 +1704,7 @@ function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Occasional clover and wildflower flecks so the lawn reads as natural meadow turf, not uniform sod.
-  for (let f = 0; f < 22; f++) { // denser flecks for richer meadow variation
+  for (let f = 0; f < 28; f++) { // denser flecks for richer meadow variation
     if (hash2(f, 33.1) > 0.48) continue;
     const fx = hash2(f, 15.6) * size;
     const fy = hash2(f, 7.2) * size;
@@ -1736,7 +1736,7 @@ function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
     }
   }
   // Fine blade micro-variation so the field catches light with more depth.
-  for (let b = 0; b < 28; b++) {
+  for (let b = 0; b < 36; b++) {
     const bx = hash2(b, 18.3) * size;
     const by = hash2(b, 11.7) * size;
     const blen = 3 + hash2(b, 6.4) * 5;
