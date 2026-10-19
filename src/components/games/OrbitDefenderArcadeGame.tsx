@@ -42,7 +42,7 @@ type Particle = {
 type PowerUp = {
   x: number;
   y: number;
-  kind: "shield" | "rapid" | "slow";
+  kind: "shield" | "rapid" | "slow" | "spread";
   life: number;
 };
 
@@ -83,6 +83,7 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
   const gameOverRef = useRef(false);
   const rapidUntilRef = useRef(0);
   const slowUntilRef = useRef(0);
+  const spreadUntilRef = useRef(0);
   const shakeRef = useRef(0);
 
   useEffect(() => {
@@ -107,6 +108,7 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
     elapsedRef.current = 0;
     rapidUntilRef.current = 0;
     slowUntilRef.current = 0;
+    spreadUntilRef.current = 0;
     shakeRef.current = 0;
     setScore(0);
     setWave(1);
@@ -148,6 +150,7 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
 
         const slow = slowUntilRef.current > now;
         const rapid = rapidUntilRef.current > now;
+        const spread = spreadUntilRef.current > now;
         const timeScale = slow ? 0.55 : 1;
 
         // spawn asteroids
@@ -172,10 +175,11 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
           });
           // occasional power-up
           if (Math.random() < 0.09) {
+            const kinds: PowerUp["kind"][] = ["shield", "rapid", "slow", "spread"];
             powerUpsRef.current.push({
               x: PLANET_X + Math.cos(angle) * (dist * 0.7),
               y: PLANET_Y + Math.sin(angle) * (dist * 0.7),
-              kind: Math.random() < 0.4 ? "shield" : Math.random() < 0.5 ? "rapid" : "slow",
+              kind: kinds[Math.floor(Math.random() * kinds.length)],
               life: 280,
             });
           }
@@ -188,13 +192,17 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
           const dy = aimRef.current.y - PLANET_Y;
           const len = Math.hypot(dx, dy) || 1;
           const shotSpeed = 5.6;
-          shotsRef.current.push({
-            x: PLANET_X + (dx / len) * (PLANET_R + 6),
-            y: PLANET_Y + (dy / len) * (PLANET_R + 6),
-            vx: (dx / len) * shotSpeed,
-            vy: (dy / len) * shotSpeed,
-            life: 72,
-          });
+          const baseAngle = Math.atan2(dy, dx);
+          const angles = spread ? [baseAngle - 0.22, baseAngle, baseAngle + 0.22] : [baseAngle];
+          for (const ang of angles) {
+            shotsRef.current.push({
+              x: PLANET_X + Math.cos(ang) * (PLANET_R + 6),
+              y: PLANET_Y + Math.sin(ang) * (PLANET_R + 6),
+              vx: Math.cos(ang) * shotSpeed,
+              vy: Math.sin(ang) * shotSpeed,
+              life: 72,
+            });
+          }
           lastShotRef.current = now;
         }
 
@@ -285,6 +293,7 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
             if (p.kind === "shield") setShield((s) => Math.min(3, s + 1));
             if (p.kind === "rapid") rapidUntilRef.current = now + 5200;
             if (p.kind === "slow") slowUntilRef.current = now + 4600;
+            if (p.kind === "spread") spreadUntilRef.current = now + 4800;
             return false;
           }
           return p.life > 0;
@@ -371,8 +380,12 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         for (const p of powerUpsRef.current) {
           ctx.save();
           ctx.shadowBlur = 10;
-          ctx.shadowColor = p.kind === "shield" ? "#22d3ee" : p.kind === "rapid" ? "#f472b6" : "#a78bfa";
-          ctx.fillStyle = p.kind === "shield" ? "#22d3ee" : p.kind === "rapid" ? "#f472b6" : "#a78bfa";
+          let color = "#22d3ee";
+          if (p.kind === "rapid") color = "#f472b6";
+          else if (p.kind === "slow") color = "#a78bfa";
+          else if (p.kind === "spread") color = "#fbbf24";
+          ctx.shadowColor = color;
+          ctx.fillStyle = color;
           ctx.beginPath();
           ctx.arc(p.x, p.y, 7.5, 0, Math.PI * 2);
           ctx.fill();
@@ -407,6 +420,9 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         ctx.fillText(`${es ? "Puntos" : "Score"}: ${scoreRef.current}`, 10, 20);
         ctx.fillText(`${es ? "Ola" : "Wave"}: ${wave}`, 10, 36);
         ctx.fillText(`${es ? "Escudo" : "Shield"}: ${"\u25cf".repeat(shieldRef.current)}`, 10, 52);
+        if (spreadUntilRef.current > performance.now()) {
+          ctx.fillText(es ? "Spread activo" : "Spread active", 10, 68);
+        }
 
         if (paused && !gameOver) {
           ctx.fillStyle = "rgba(0,0,0,0.55)";
@@ -455,7 +471,12 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * W;
     const y = ((e.clientY - rect.top) / rect.height) * H;
-    aimRef.current = { x, y };
+    // Slight smoothing for mobile feel
+    const prev = aimRef.current;
+    aimRef.current = {
+      x: prev.x * 0.35 + x * 0.65,
+      y: prev.y * 0.35 + y * 0.65,
+    };
   };
 
   const sharePng = async () => {
