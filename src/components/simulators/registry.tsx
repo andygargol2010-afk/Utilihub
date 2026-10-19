@@ -15,6 +15,7 @@ const StandingWaveSim = lazy(() => import("./StandingWaveSim").then((m) => ({ de
 const WaveInterferenceSim = lazy(() => import("./WaveInterferenceSim").then((m) => ({ default: m.WaveInterferenceSim })));
 const GaltonBoardSim = lazy(() => import("./GaltonBoardSim").then((m) => ({ default: m.GaltonBoardSim })));
 const BoidsFlockingLab = lazy(() => import("./BoidsFlockingLab").then((m) => ({ default: m.BoidsFlockingLab })));
+const ReactionDiffusionLab = lazy(() => import("./ReactionDiffusionLab").then((m) => ({ default: m.ReactionDiffusionLab })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -44,6 +45,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "galton-board": GaltonBoardSim,
   "tablero-galton": GaltonBoardSim,
   "boids-flocking-lab": BoidsFlockingLab,
+  "reaction-diffusion-lab": ReactionDiffusionLab,
+  "lab-reaccion-difusion": ReactionDiffusionLab,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
