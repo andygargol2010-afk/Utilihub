@@ -15,6 +15,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-19 | hogar | calculadora-azulejos | TileCalculatorTool
+- 2026-10-19 | matematicas | calculadora-area-cuadrado | SquareAreaCalculatorTool
 - 2026-10-19 | matematicas | calculadora-area-triangulo | TriangleAreaCalculatorTool
 - 2026-10-19 | finanzas | calculadora-interes-simple | SimpleInterestCalculatorTool
 - 2026-10-19 | ciencia | calculadora-volumen-cubo | CubeVolumeCalculatorTool
@@ -25,8 +27,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-19 | matematicas | calculadora-area-trapecio | TrapezoidAreaCalculatorTool
 - 2026-10-18 | conversiones | conversor-presion | PressureConverterTool
 - 2026-10-18 | salud | calculadora-calorias-quemadas | CaloriesBurnedCalculatorTool
-- 2026-10-18 | ciencia | calculadora-circunferencia | CircleCircumferenceCalculatorTool
-- 2026-10-18 | matematicas | calculadora-perimetro-rectangulo | RectanglePerimeterCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -42,7 +42,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 fechas/tiempo: recent
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo)
 finanzas simples: recent (regla-72, propina-impuesto, margen-beneficio)
-hogar/co
+hogar: recent (azulejos)
 viajes: recent (tiempo-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas)
 ```
@@ -84,6 +84,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-19 PRODUCT (roll 15): shipped 2 (calculadora-area-triangulo matematicas + calculadora-interes-simple finanzas). Distinct clusters. Anti-dupe OK (no existing dedicated triangle area or simple interest). Registry surgical OK. Saturation escape used.
 
 2026-10-19 FIX-BUILD: deploy ERROR on validator — slug duplicado calculadora-pintura en paint-calculator-tool.ts y paint-calculator.ts. Eliminé paint-calculator.ts (el genérico no importado), restauré paint-calculator-tool.ts como único owner, y lo importé en index.ts. Commit abfa210a. Esperando deploy READY. No tools nuevas.
+
+2026-10-19 PRODUCT (roll 8): shipped 2 (calculadora-azulejos hogar + calculadora-area-cuadrado matematicas). Saturation escape used. Distinct clusters. Anti-dupe OK. Registry surgical OK after accidental placeholder restore.
 ```
 
 ---
@@ -92,8 +94,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-area-triangulo, calculadora-interes-simple
-last_deploy: pending new tools
+last_slugs: calculadora-azulejos, calculadora-area-cuadrado
+last_deploy: pending
 ```
 
 
