@@ -1461,31 +1461,47 @@ function paintDoorLeafBump(ctx: CanvasRenderingContext2D, size: number) {
 
 
 function paintJoinery(ctx: CanvasRenderingContext2D, size: number) {
-  // Painted sash: cream enamel over timber, denser brush drag and subtle wear for more realistic variation.
+  // Painted sash: cream enamel over timber, denser brush drag, more specks and rare mottling for realistic variation.
   noiseFill(ctx, size, [214, 206, 190], 12);
   ctx.fillStyle = "#d9d0c0";
   ctx.fillRect(0, 0, size, size);
-  const bands = 18;
+  const bands = 22;
   for (let i = 0; i < bands; i++) {
     const y0 = Math.floor((i / bands) * size);
     const h = Math.floor(size / bands) + 1;
     const tone = 202 + Math.floor(hash2(i, 2.8) * 28);
     ctx.fillStyle = `rgb(${tone}, ${tone - 8}, ${tone - 22})`;
     ctx.fillRect(0, y0, size, h);
-    // Brush strokes
-    ctx.strokeStyle = "rgba(110,94,74,0.18)";
+    // Denser brush strokes
+    ctx.strokeStyle = "rgba(110,94,74,0.22)";
     ctx.lineWidth = 1;
-    const gy = y0 + h * 0.4;
+    const gy = y0 + h * 0.35;
     ctx.beginPath();
     ctx.moveTo(0, gy);
-    for (let x = 0; x <= size; x += 5) ctx.lineTo(x, gy + Math.sin(x * 0.06 + i * 0.7) * 1.1);
+    for (let x = 0; x <= size; x += 4) ctx.lineTo(x, gy + Math.sin(x * 0.07 + i * 0.8) * 1.4);
     ctx.stroke();
-    // Occasional dust or wear speck
-    if (hash2(i, 5.2) > 0.62) {
+    // Secondary faint stroke
+    if (hash2(i, 7.1) > 0.4) {
+      const gy2 = y0 + h * 0.65;
+      ctx.strokeStyle = "rgba(100,86,68,0.12)";
+      ctx.beginPath();
+      ctx.moveTo(0, gy2);
+      for (let x = 0; x <= size; x += 6) ctx.lineTo(x, gy2 + Math.sin(x * 0.05 + i * 1.1) * 0.9);
+      ctx.stroke();
+    }
+    // More frequent dust or wear specks
+    if (hash2(i, 5.2) > 0.48) {
       const wx = Math.floor(hash2(i, 11.3) * size);
-      const ww = 4 + Math.floor(hash2(i, 3.1) * 10);
-      ctx.fillStyle = "rgba(160,148,128,0.22)";
+      const ww = 3 + Math.floor(hash2(i, 3.1) * 12);
+      ctx.fillStyle = "rgba(160,148,128,0.28)";
       ctx.fillRect(wx, y0 + 1, ww, Math.max(2, h - 2));
+    }
+    // Rare mottling
+    if (hash2(i, 9.4) > 0.82) {
+      const mx = Math.floor(hash2(i, 13.7) * size * 0.8);
+      const mw = 8 + Math.floor(hash2(i, 4.2) * 18);
+      ctx.fillStyle = "rgba(180,168,150,0.15)";
+      ctx.fillRect(mx, y0, mw, h);
     }
   }
   // Edge wear

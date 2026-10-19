@@ -1,6 +1,8 @@
 # UtiliHub House Modeler — State (3/3)
 
-**Part 3 of 3 — runtime state only.** End marker: `<!-- end:house-modeler-state.md -->`.
+**Part 3 of 3 — runtime state only.** End marker: `PRODUCT run 218: joinery densify (bands 22, denser strokes, more specks, rare mottling) via local clone surgical.
+
+<!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
 
@@ -17,7 +19,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 217
+runs_done: 218
 runs_max: 500
 ```
 
@@ -43,7 +45,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 343999
+approx_bytes: 344588
 last_known_good_hint: (post fascia densify ~343999 bytes, SHA 532b590bee1915e769fec5e8dcfc4451c2adf193)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -56,11 +58,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
-deploy: READY (latest dpl_AqKyrKvYbRktJFzjBvpiX4UjmnLN and previous READY on fix/spanish-complete)
-note: META run 217 — roll 6 PRODUCT candidate (paintJoinery densify: bands 18→22, denser strokes, more specks, rare mottling) deferred again due to no local git push auth and tool-channel full-rewrite truncation risk on >300KB monolith. Monolith gates OK (343999B, 7783 lines, paint helpers + Sky present). Prefer authenticated local clone + push next.
+deploy: pending post-push check
+note: PRODUCT run 218 — paintJoinery densify (bands 18→22, denser dual strokes, more frequent specks, rare mottling). Monolith 344588B / 7798 lines. Surgical via local clone.
 ```
 
 Refresh after each run.
@@ -104,5 +106,7 @@ PRODUCT run 215: fascia densify (extra grain lines, knots, sun-bleach) via local
 META run 216: joinery densify prepared locally (bands 18→22, denser strokes, more specks, rare mottling) but not pushed (no auth / truncation risk). Prefer authenticated local clone + push next.
 META run 217: same joinery densify deferred again (roll 6 → PRODUCT aborted for safety). Monolith confirmed 343999 bytes / 7783 lines, SHA 532b590b..., gates OK, deploys READY, SEO none.
 ```
+
+PRODUCT run 218: joinery densify (bands 22, denser strokes, more specks, rare mottling) via local clone surgical.
 
 <!-- end:house-modeler-state.md -->
