@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 215
+runs_done: 216
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: META
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
 deploy: (pending check)
-note: PRODUCT run 215 — densify fascia grain/knots/bleach for richer timber edge. Surgical via local clone.
+note: META run 216 — joinery densify (bands 18→22, denser strokes, more specks, rare mottling) prepared in local clone but not pushed (no git push auth; avoid tool-channel full rewrite of >300KB). Next PRODUCT should use authenticated local clone + push for paintJoinery.
 ```
 
 Refresh after each run.
@@ -100,8 +100,8 @@ META run 212: verified READY deploys, monolith gates OK (342609B, 7750 lines, pa
 
 PRODUCT run 213: grass densify (flecks 28, blades 36) via local clone surgical.
 PRODUCT run 214: clay tiles densify (flecks 6→9, moss threshold lower) via local clone surgical.
-```
-
 PRODUCT run 215: fascia densify (extra grain lines, knots, sun-bleach) via local clone surgical.
+META run 216: joinery densify prepared locally (bands 18→22, denser strokes, more specks, rare mottling) but not pushed (no auth / truncation risk). Prefer authenticated local clone + push next.
+```
 
 <!-- end:house-modeler-state.md -->
