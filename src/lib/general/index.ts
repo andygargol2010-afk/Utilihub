@@ -30,6 +30,8 @@ import { SYLLABLE_COUNTER_TOOLS } from "./syllable-counter-tool";
 import { PAINT_CALCULATOR_TOOLS } from "./paint-calculator-tool";
 import { TRIANGLE_AREA_CALCULATOR_TOOLS } from "./triangle-area-calculator-tool";
 import { SIMPLE_INTEREST_CALCULATOR_TOOLS } from "./simple-interest-calculator-tool";
+import { TILE_CALCULATOR_TOOLS } from "./tile-calculator-tool";
+import { SQUARE_AREA_CALCULATOR_TOOLS } from "./square-area-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -65,4 +67,6 @@ export const GENERAL_TOOLS = [
   ...PAINT_CALCULATOR_TOOLS,
   ...TRIANGLE_AREA_CALCULATOR_TOOLS,
   ...SIMPLE_INTEREST_CALCULATOR_TOOLS,
+  ...TILE_CALCULATOR_TOOLS,
+  ...SQUARE_AREA_CALCULATOR_TOOLS,
 ];
