@@ -24,6 +24,8 @@ const PRESETS: Preset[] = [
   { id: "worms", en: "Worms", es: "Gusanos", f: 0.058, k: 0.065, du: 0.16, dv: 0.08 },
   { id: "coral", en: "Coral", es: "Coral", f: 0.0545, k: 0.062, du: 0.16, dv: 0.08 },
   { id: "mitosis", en: "Mitosis", es: "Mitosis", f: 0.0367, k: 0.0649, du: 0.16, dv: 0.08 },
+  { id: "solitons", en: "Solitons", es: "Solitones", f: 0.03, k: 0.055, du: 0.14, dv: 0.06 },
+  { id: "labyrinth", en: "Labyrinth", es: "Laberinto+", f: 0.026, k: 0.053, du: 0.18, dv: 0.07 },
 ];
 
 type BrushMode = "seed" | "clear" | "noise";
@@ -122,7 +124,6 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
   }, []);
 
   const randomizeParams = useCallback(() => {
-    // Explore interesting Gray-Scott space
     setF(0.01 + Math.random() * 0.06);
     setK(0.04 + Math.random() * 0.035);
     setDu(0.08 + Math.random() * 0.18);
@@ -176,7 +177,6 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
             u[i] = 1;
             v[i] = 0;
           } else {
-            // noise
             v[i] = Math.min(1, v[i] + Math.random() * 0.3);
             u[i] = Math.max(0, u[i] - Math.random() * 0.15);
           }
@@ -188,11 +188,26 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
   const exportPng = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    // Create a slightly taller canvas to burn in params caption
+    const out = document.createElement("canvas");
+    out.width = W;
+    out.height = H + 36;
+    const octx = out.getContext("2d");
+    if (!octx) return;
+    octx.fillStyle = "#0a1f1c";
+    octx.fillRect(0, 0, out.width, out.height);
+    octx.drawImage(canvas, 0, 0);
+    octx.fillStyle = "rgba(20, 80, 70, 0.85)";
+    octx.fillRect(0, H, W, 36);
+    octx.fillStyle = "#a7f3d0";
+    octx.font = "11px ui-monospace, monospace";
+    const caption = `F=${f.toFixed(4)} k=${k.toFixed(4)} Du=${du.toFixed(3)} Dv=${dv.toFixed(3)} | ${vizMode.toUpperCase()} | ${colorMap}`;
+    octx.fillText(caption, 8, H + 22);
     const a = document.createElement("a");
-    a.href = canvas.toDataURL("image/png");
+    a.href = out.toDataURL("image/png");
     a.download = `reaction-diffusion-${Date.now()}.png`;
     a.click();
-  }, []);
+  }, [f, k, du, dv, vizMode, colorMap]);
 
   const requestStep = useCallback(() => {
     stepOnce.current = true;
@@ -257,7 +272,7 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
           sumU += u[i];
           if (v[i] > maxV) maxV = v[i];
           let val = v[i];
-          if (p.viz === "u") val = 1 - u[i]; // invert substrate so high = interesting
+          if (p.viz === "u") val = 1 - u[i];
           else if (p.viz === "diff") val = Math.abs(u[i] - v[i]);
           let r = 0, g = 0, b = 0;
           if (p.color === "heat") {
@@ -297,7 +312,6 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
         }
       }
       ctx.putImageData(img, 0, 0);
-      // update stats sparingly
       if (Math.random() < 0.05) {
         setStats({ avgV: sumV / (GRID * GRID), maxV, avgU: sumU / (GRID * GRID) });
       }
@@ -502,14 +516,14 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
                 <p><strong>F</strong> (alimentación): tasa a la que se añade sustrato. Valores bajos → patrones más densos.</p>
                 <p><strong>k</strong> (muerte): tasa de eliminación del activador. Controla el tamaño y estabilidad de las estructuras.</p>
                 <p><strong>Du / Dv</strong>: coeficientes de difusión. Mayor Du respecto a Dv favorece manchas; menor favorece rayas y laberintos.</p>
-                <p>Pinta con el pincel para sembrar, borrar o añadir ruido y observa cómo emergen patrones orgánicos. Usa params aleatorios para explorar.</p>
+                <p>Pinta con el pincel para sembrar, borrar o añadir ruido y observa cómo emergen patrones orgánicos. Usa params aleatorios para explorar. El PNG incluye los parámetros actuales.</p>
               </>
             ) : (
               <>
                 <p><strong>F</strong> (feed): rate at which substrate is added. Lower values tend to produce denser patterns.</p>
                 <p><strong>k</strong> (kill): rate of activator removal. Controls structure size and stability.</p>
                 <p><strong>Du / Dv</strong>: diffusion coefficients. Higher Du relative to Dv favors spots; lower favors stripes and mazes.</p>
-                <p>Paint with the brush to seed, clear, or add noise and watch organic patterns emerge. Use random params to explore.</p>
+                <p>Paint with the brush to seed, clear, or add noise and watch organic patterns emerge. Use random params to explore. PNG export embeds current parameters.</p>
               </>
             )}
           </div>
