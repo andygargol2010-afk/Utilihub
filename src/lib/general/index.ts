@@ -216,6 +216,8 @@ import { CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS } from "./circle-circumference-ca
 import { RECTANGLE_PERIMETER_CALCULATOR_TOOLS } from "./rectangle-perimeter-calculator-tool";
 import { PRESSURE_CONVERTER_TOOLS } from "./pressure-converter-tool";
 import { CALORIES_BURNED_CALCULATOR_TOOLS } from "./calories-burned-tool";
+import { PYRAMID_VOLUME_CALCULATOR_TOOLS } from "./pyramid-volume-calculator-tool";
+import { TRAPEZOID_AREA_CALCULATOR_TOOLS } from "./trapezoid-area-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -437,4 +439,6 @@ export const GENERAL_TOOLS = [
   ...RECTANGLE_PERIMETER_CALCULATOR_TOOLS,
   ...PRESSURE_CONVERTER_TOOLS,
   ...CALORIES_BURNED_CALCULATOR_TOOLS,
+  ...PYRAMID_VOLUME_CALCULATOR_TOOLS,
+  ...TRAPEZOID_AREA_CALCULATOR_TOOLS,
 ];
