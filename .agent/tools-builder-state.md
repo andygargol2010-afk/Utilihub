@@ -1,5 +1,6 @@
 # UtiliHub Tools Builder — State (3/3)
 
+
 **Part 3 of 3 — runtime state only.** End marker: `<!-- end:tools-builder-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -14,6 +15,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-19 | matematicas | calculadora-area-triangulo | TriangleAreaCalculatorTool
+- 2026-10-19 | finanzas | calculadora-interes-simple | SimpleInterestCalculatorTool
 - 2026-10-19 | ciencia | calculadora-volumen-cubo | CubeVolumeCalculatorTool
 - 2026-10-19 | texto | contador-silabas | SyllableCounterTool
 - 2026-10-19 | matematicas | calculadora-area-paralelogramo | ParallelogramAreaCalculatorTool
@@ -24,8 +27,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-18 | salud | calculadora-calorias-quemadas | CaloriesBurnedCalculatorTool
 - 2026-10-18 | ciencia | calculadora-circunferencia | CircleCircumferenceCalculatorTool
 - 2026-10-18 | matematicas | calculadora-perimetro-rectangulo | RectanglePerimeterCalculatorTool
-- 2026-10-18 | finanzas | calculadora-margen-beneficio | ProfitMarginCalculatorTool
-- 2026-10-18 | educacion | calculadora-promedio-ponderado | WeightedAverageCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -80,6 +81,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-19 PRODUCT: prepared calculadora-volumen-cubo (ciencia) + contador-silabas (texto). Defs and components committed in separate commits. Index.ts and registry.tsx update deferred due to large file size and previous truncation risks in tool responses; to avoid any registry wipe. Files left for next run to register surgically. Saturation escape used; distinct clusters. Anti-dupe OK.
 
 2026-10-19 PRODUCT (roll 14): shipped 2 (calculadora-volumen-cubo ciencia + contador-silabas texto). Prepared files from previous run registered surgically. Distinct clusters. Anti-dupe OK. Registry surgical OK after brief accidental empty write restored immediately. Saturation escape used.
+2026-10-19 PRODUCT (roll 15): shipped 2 (calculadora-area-triangulo matematicas + calculadora-interes-simple finanzas). Distinct clusters. Anti-dupe OK (no existing dedicated triangle area or simple interest). Registry surgical OK. Saturation escape used.
 
 2026-10-19 FIX-BUILD: deploy ERROR on validator — slug duplicado calculadora-pintura en paint-calculator-tool.ts y paint-calculator.ts. Eliminé paint-calculator.ts (el genérico no importado), restauré paint-calculator-tool.ts como único owner, y lo importé en index.ts. Commit abfa210a. Esperando deploy READY. No tools nuevas.
 ```
@@ -89,9 +91,10 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: FIX-BUILD
-last_slugs: (ninguna nueva)
-last_deploy: pending (fix paint duplicate)
+last_mode: PRODUCT
+last_slugs: calculadora-area-triangulo, calculadora-interes-simple
+last_deploy: pending new tools
 ```
+
 
 <!-- end:tools-builder-state.md -->
