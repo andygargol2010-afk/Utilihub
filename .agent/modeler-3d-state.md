@@ -8,8 +8,8 @@ path_entry: src/components/general/Modeler3D.tsx
 modules: modeler3d-studio, modeler3d-core, modeler3d-three-init, modeler3d-helpers, modeler3d-align, modeler3d-scenes
 style: Tinkercad-like primitives studio (not house realism)
 last_mode: MATERIALS
-last_date: 2026-10-18
-note: Added rubber MatPreset (soft high-roughness matte) with EN/ES labels. Surgical helpers edit.
+last_date: 2026-10-19
+note: Added wood MatPreset (medium roughness 0.68, low metalness) with EN/ES labels. Surgical helpers edit.
 ```
 
 Update `last_mode` / `last_date` / short note after each MODELADOR-3D run.
