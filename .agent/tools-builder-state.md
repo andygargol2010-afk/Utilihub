@@ -1,1 +1,1 @@
-$(cat /tmp/tools-builder-state.md)
+PLACEHOLDER_WILL_REPLACE
