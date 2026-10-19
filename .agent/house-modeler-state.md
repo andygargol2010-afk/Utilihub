@@ -12,6 +12,8 @@ META run 222: health check OK (monolith ~345964B SHA 76762862..., deploys READY,
 
 MODELADOR-3D run 223: added wood MatPreset (roughness 0.68) in helpers. Surgical.
 
+
+PRODUCT run 224: plinth densify (extra chips on courses, denser mortar stroke, fine grit + rare lichen flecks) via local clone surgical.
 <!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -29,7 +31,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 223
+runs_done: 224
 runs_max: 500
 ```
 
@@ -68,11 +70,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: MODELADOR-3D
+last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
 deploy: READY (prior)
-note: MODELADOR-3D run 223 — wood MatPreset added. Monolith intact. SEO none.
+note: PRODUCT run 224 — plinth densify (extra chips, denser mortar, grit + rare lichen). Monolith intact. SEO none.
 ```
 
 Refresh after each run.
@@ -129,4 +131,6 @@ META run 222: health check OK (monolith ~345964B SHA 76762862..., gates OK, depl
 
 MODELADOR-3D run 223: added wood MatPreset (roughness 0.68) in helpers. Surgical.
 
+
+PRODUCT run 224: plinth densify (extra chips on courses, denser mortar stroke, fine grit + rare lichen flecks) via local clone surgical.
 <!-- end:house-modeler-state.md -->

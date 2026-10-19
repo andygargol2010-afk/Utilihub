@@ -491,19 +491,42 @@ function paintPlinth(ctx: CanvasRenderingContext2D, size: number) {
       const x = c * (size / cols) + shift + mortar;
       const w = size / cols - mortar * 1.4;
       ctx.fillRect(x, y0 + mortar, w, rh - mortar * 1.6);
-      // Chipped top edge so the course is not a perfect grid.
+      // Chipped top edge so the course is not a perfect grid (denser chips).
       ctx.fillStyle = `rgba(${tone - 28}, ${tone - 34}, ${tone - 40}, 0.45)`;
       ctx.fillRect(x + vary * 6, y0 + mortar, 4 + vary * 8, 2);
+      if (vary > 0.62) {
+        ctx.fillRect(x + vary * 4 + 6, y0 + mortar + 1, 3 + vary * 5, 1.5);
+      }
     }
   }
-  ctx.strokeStyle = "rgba(72,60,48,0.55)";
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = "rgba(72,60,48,0.62)";
+  ctx.lineWidth = 1.2;
   for (let r = 0; r <= rows; r++) {
     const y = (r / rows) * size;
     ctx.beginPath();
     ctx.moveTo(0, y);
     ctx.lineTo(size, y);
     ctx.stroke();
+  }
+  // Extra fine grit and occasional lichen flecks on the stone courses.
+  for (let g = 0; g < 42; g++) {
+    const gx = hash2(g, 3.7) * size;
+    const gy = hash2(g, 6.2) * size;
+    const gr = 0.4 + hash2(g, 1.8) * 1.1;
+    ctx.fillStyle = `rgba(140,128,112,${0.12 + hash2(g, 4.5) * 0.18})`;
+    ctx.beginPath();
+    ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  for (let l = 0; l < 6; l++) {
+    if (hash2(l, 9.1) > 0.55) {
+      const lx = hash2(l, 2.4) * size;
+      const ly = hash2(l, 7.8) * size;
+      ctx.fillStyle = `rgba(86,102,72,${0.08 + hash2(l, 5.3) * 0.12})`;
+      ctx.beginPath();
+      ctx.ellipse(lx, ly, 3 + hash2(l, 1.2) * 4, 1.2, hash2(l, 8.6) * 0.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 }
 
