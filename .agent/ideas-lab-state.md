@@ -67,11 +67,11 @@ path_en: /games/orbit-defender-arcade
 path_es: /es/juegos/arcade-defensor-orbita
 domain: games
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE CORE. U=0.62 ≥0.50 → CORE. Weighted sample total=31, r=13.0 selected games (cumul 7-15). Updated weights_core (games→1, others +1). Distinct from RECENT_CLOSED (pulse-catch-arena) and existing games. Visual arcade with physics-lite interception and high score retention. next-step required.
+notes: EXECUTE 1/6. Core canvas game shipped (planet defense, aim/fire, waves, power-ups, particles, score). Registered in catalog + lazy registry + GAME_JOURNEYS for next-step. EN+ES via locale prop. Adsterra kept on routes. next runs: polish visuals, mobile feel, share PNG, extra power-ups.
 adsense-prep_runs: 3
 ```
 
