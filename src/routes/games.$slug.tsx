@@ -4,6 +4,7 @@ import { GamePlayer } from "@/components/games/registry";
 import { gameBySlug, gameName, gameSummary } from "@/lib/games/catalog";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
 export const Route = createFileRoute("/games/$slug")({
   loader: ({ params }) => {
@@ -48,6 +49,9 @@ function GamePageEn() {
       <GameShell game={game} locale="en">
         <GamePlayer game={game} locale="en" />
       </GameShell>
+      <div className="container-page pb-6">
+        <PlaygroundNextStep currentId={game.slug} locale="en" />
+      </div>
       <div className="container-page pb-10">
         <AdsterraBanner />
       </div>
