@@ -7,7 +7,9 @@ type Particle = {
   speed: number;
   size: number;
   stage: number;
+  path: number; // -1 main, >=0 branch index
 };
+type Branch = { fromIndex: number; points: Point[] };
 
 type Theme = "dawn" | "neon" | "forest" | "ocean";
 
@@ -43,8 +45,11 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const waypointsRef = useRef<Point[]>([]);
+  const branchesRef = useRef<Branch[]>([]);
   const particlesRef = useRef<Particle[]>([]);
   const [waypoints, setWaypoints] = useState<Point[]>([]);
+  const [branches, setBranches] = useState<Branch[]>([]);
+  const [isBranching, setIsBranching] = useState(false);
   const [speed, setSpeed] = useState(0.9);
   const [density, setDensity] = useState(60);
   const [smoothing, setSmoothing] = useState(0.65);
@@ -61,7 +66,9 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       clear: "Clear",
       undo: "Undo",
       demo: "Load demo",
-      hint: "Tap to place, drag markers to reshape. Particles flow the smoothed river with stage gradients.",
+      branch: "Start branch",
+      finishBranch: "Finish branch",
+      hint: "Tap to place main path, drag markers. Start branch for side rivers — some particles divert. Smooth flow with stage gradients.",
     },
     es: {
       speed: "Velocidad",
@@ -71,18 +78,18 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       clear: "Limpiar",
       undo: "Deshacer",
       demo: "Cargar demo",
-      hint: "Tocá para colocar, arrastrá los marcadores para remodelar. Las partículas fluyen por el río suavizado con degradados.",
+      branch: "Iniciar rama",
+      finishBranch: "Terminar rama",
+      hint: "Tocá para el camino principal, arrastrá marcadores. Iniciá rama para ríos laterales — algunas partículas se desvían. Flujo suavizado con degradados.",
     },
   }[locale];
 
   const th = THEMES[theme];
 
-  const sampleSmoothPath = useCallback((t: number): Point | null => {
-    const pts = waypointsRef.current;
+  const sampleSmoothPath = useCallback((pts: Point[], t: number): Point | null => {
     if (pts.length < 2) return pts[0] || null;
     if (smoothing < 0.05 || pts.length < 3) {
-      // fallback linear
-      const total = getPathLength();
+      const total = pts.reduce((acc, p, i) => i === 0 ? 0 : acc + Math.hypot(p.x - pts[i-1].x, p.y - pts[i-1].y), 0);
       if (total <= 0) return pts[0];
       let target = Math.max(0, Math.min(1, t)) * total;
       let acc = 0;
@@ -98,7 +105,6 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       }
       return pts[pts.length - 1];
     }
-    // Catmull-Rom sampling
     const segments = pts.length - 1;
     const segT = t * segments;
     const i = Math.min(Math.floor(segT), segments - 1);
@@ -119,33 +125,34 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
     };
   }, [smoothing]);
 
-  const getPathLength = useCallback(() => {
-    const pts = waypointsRef.current;
-    if (pts.length < 2) return 0;
-    let len = 0;
-    for (let i = 0; i < pts.length - 1; i++) {
-      len += Math.hypot(pts[i + 1].x - pts[i].x, pts[i + 1].y - pts[i].y);
-    }
-    return len;
-  }, []);
+  const sampleMain = useCallback((t: number) => sampleSmoothPath(waypointsRef.current, t), [sampleSmoothPath]);
 
-  const pointAt = useCallback((t: number): Point | null => {
-    return sampleSmoothPath(t);
+  const sampleBranch = useCallback((branch: Branch, t: number) => {
+    const from = waypointsRef.current[branch.fromIndex];
+    if (!from) return null;
+    const pts = [from, ...branch.points];
+    return sampleSmoothPath(pts, t);
   }, [sampleSmoothPath]);
 
   const spawn = useCallback(() => {
     const n = Math.max(12, Math.min(100, density));
-    particlesRef.current = Array.from({ length: n }, (_, i) => ({
-      t: i / n,
-      speed: 0.0012 * speed * (0.6 + Math.random() * 0.8),
-      size: 1.8 + Math.random() * 2.8,
-      stage: i / n,
-    }));
+    const br = branchesRef.current;
+    particlesRef.current = Array.from({ length: n }, (_, i) => {
+      const useBranch = br.length > 0 && Math.random() < 0.35;
+      const path = useBranch ? Math.floor(Math.random() * br.length) : -1;
+      return {
+        t: i / n,
+        speed: 0.0012 * speed * (0.6 + Math.random() * 0.8),
+        size: 1.8 + Math.random() * 2.8,
+        stage: i / n,
+        path,
+      };
+    });
   }, [density, speed]);
 
   useEffect(() => {
     spawn();
-  }, [spawn, waypoints.length]);
+  }, [spawn, waypoints.length, branches.length]);
 
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -158,16 +165,13 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
     ctx.fillStyle = th.bg;
     ctx.fillRect(0, 0, w, h);
 
-    const pts = waypointsRef.current;
-    if (pts.length >= 2) {
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      // Draw smoothed river
+    const drawPath = (pts: Point[], alpha = 0.35, width = 16, isBranch = false) => {
+      if (pts.length < 2) return;
       ctx.beginPath();
-      const samples = Math.max(40, pts.length * 12);
+      const samples = Math.max(30, pts.length * 10);
       for (let s = 0; s <= samples; s++) {
         const t = s / samples;
-        const p = sampleSmoothPath(t);
+        const p = sampleSmoothPath(pts, t);
         if (!p) continue;
         const px = p.x * w;
         const py = p.y * h;
@@ -178,18 +182,28 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       grad.addColorStop(0, th.start);
       grad.addColorStop(1, th.end);
       ctx.strokeStyle = grad;
-      ctx.globalAlpha = 0.35;
-      ctx.lineWidth = 16;
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = width;
       ctx.shadowColor = th.end;
-      ctx.shadowBlur = 18;
+      ctx.shadowBlur = isBranch ? 8 : 18;
       ctx.stroke();
-      ctx.globalAlpha = 0.9;
-      ctx.lineWidth = 4;
+      ctx.globalAlpha = isBranch ? 0.7 : 0.9;
+      ctx.lineWidth = isBranch ? 2.5 : 4;
       ctx.stroke();
       ctx.globalAlpha = 1;
       ctx.shadowBlur = 0;
-    }
+    };
 
+    const pts = waypointsRef.current;
+    if (pts.length >= 2) drawPath(pts);
+
+    branchesRef.current.forEach((br) => {
+      const from = pts[br.fromIndex];
+      if (!from || br.points.length === 0) return;
+      drawPath([from, ...br.points], 0.22, 10, true);
+    });
+
+    // Main waypoints
     pts.forEach((p, i) => {
       const px = p.x * w;
       const py = p.y * h;
@@ -212,8 +226,29 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       ctx.fillText(String(i + 1), px, py - 16);
     });
 
+    // Branch points (smaller)
+    branchesRef.current.forEach((br) => {
+      br.points.forEach((p) => {
+        const px = p.x * w;
+        const py = p.y * h;
+        ctx.beginPath();
+        ctx.arc(px, py, 5, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffffaa";
+        ctx.shadowColor = th.end;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+    });
+
     particlesRef.current.forEach((p) => {
-      const pos = pointAt(p.t);
+      let pos: Point | null = null;
+      if (p.path < 0) {
+        pos = sampleMain(p.t);
+      } else {
+        const br = branchesRef.current[p.path];
+        if (br) pos = sampleBranch(br, p.t);
+      }
       if (!pos) return;
       const px = pos.x * w;
       const py = pos.y * h;
@@ -233,11 +268,11 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
     });
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
-  }, [th, pointAt, sampleSmoothPath]);
+  }, [th, sampleSmoothPath, sampleMain, sampleBranch]);
 
   useEffect(() => {
     const loop = () => {
-      if (waypointsRef.current.length >= 2) {
+      if (waypointsRef.current.length >= 2 || branchesRef.current.some(b => b.points.length > 0)) {
         particlesRef.current = particlesRef.current.map((p) => {
           let nt = p.t + p.speed;
           if (nt > 1) nt = 0;
@@ -295,9 +330,18 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
     e.preventDefault();
     const p = getPos(e);
     const hit = hitWaypoint(p);
-    if (hit !== null) {
+    if (hit !== null && !isBranching) {
       dragIndex.current = hit;
       (e.target as Element).setPointerCapture?.(e.pointerId);
+      return;
+    }
+    if (isBranching) {
+      const last = branchesRef.current[branchesRef.current.length - 1];
+      if (last) {
+        last.points.push(p);
+        branchesRef.current = [...branchesRef.current];
+        setBranches([...branchesRef.current]);
+      }
       return;
     }
     const next = [...waypointsRef.current, p];
@@ -321,15 +365,39 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
 
   const clear = () => {
     waypointsRef.current = [];
+    branchesRef.current = [];
     setWaypoints([]);
+    setBranches([]);
     particlesRef.current = [];
     dragIndex.current = null;
+    setIsBranching(false);
   };
 
   const undo = () => {
+    if (isBranching && branchesRef.current.length) {
+      const last = branchesRef.current[branchesRef.current.length - 1];
+      if (last.points.length) {
+        last.points.pop();
+        branchesRef.current = [...branchesRef.current];
+        setBranches([...branchesRef.current]);
+        return;
+      }
+    }
     const next = waypointsRef.current.slice(0, -1);
     waypointsRef.current = next;
     setWaypoints(next);
+  };
+
+  const startBranch = () => {
+    if (waypointsRef.current.length === 0) return;
+    const from = waypointsRef.current.length - 1;
+    branchesRef.current = [...branchesRef.current, { fromIndex: from, points: [] }];
+    setBranches([...branchesRef.current]);
+    setIsBranching(true);
+  };
+
+  const finishBranch = () => {
+    setIsBranching(false);
   };
 
   const loadDemo = () => {
@@ -340,12 +408,22 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       { x: 0.66, y: 0.35 },
       { x: 0.84, y: 0.62 },
     ];
+    const demoBranch: Branch = {
+      fromIndex: 2,
+      points: [
+        { x: 0.55, y: 0.78 },
+        { x: 0.72, y: 0.82 },
+      ],
+    };
     waypointsRef.current = demo;
+    branchesRef.current = [demoBranch];
     setWaypoints(demo);
+    setBranches([demoBranch]);
     setTheme("neon");
     setDensity(70);
     setSpeed(1.05);
     setSmoothing(0.75);
+    setIsBranching(false);
   };
 
   return (
@@ -378,11 +456,17 @@ export function WaypointRiverComposer({ locale = "en" }: { locale?: "en" | "es" 
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button type="button" onClick={undo} disabled={waypoints.length === 0} className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 disabled:opacity-40">
+        <button type="button" onClick={undo} disabled={waypoints.length === 0 && branches.every(b => b.points.length === 0)} className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 disabled:opacity-40">
           {labels.undo}
         </button>
         <button type="button" onClick={clear} className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80">
           {labels.clear}
+        </button>
+        <button type="button" onClick={startBranch} disabled={waypoints.length === 0 || isBranching} className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 disabled:opacity-40">
+          {labels.branch}
+        </button>
+        <button type="button" onClick={finishBranch} disabled={!isBranching} className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80 disabled:opacity-40">
+          {labels.finishBranch}
         </button>
         <button type="button" onClick={loadDemo} className="min-h-[44px] rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90">
           {labels.demo}
