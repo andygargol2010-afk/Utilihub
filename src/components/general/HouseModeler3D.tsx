@@ -1203,6 +1203,32 @@ function paintFascia(ctx: CanvasRenderingContext2D, size: number) {
     const tone = 102 + Math.floor(hash2(i, 4.4) * 32);
     ctx.fillStyle = `rgb(${tone + 22}, ${tone - 8}, ${tone - 30})`;
     ctx.fillRect(1, y0 + 1, size - 2, h);
+    // Extra grain lines for richer sawn fascia face.
+    for (let g = 0; g < 4; g++) {
+      const gy = y0 + 4 + g * (h / 5);
+      const grainTone = 70 + Math.floor(hash2(i, g + 10) * 25);
+      ctx.strokeStyle = `rgba(${grainTone + 15}, ${grainTone}, ${grainTone - 18}, 0.32)`;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      for (let x = 0; x <= size; x += 6) {
+        ctx.lineTo(x, gy + Math.sin(x * 0.09 + i * 1.1 + g) * 1.1);
+      }
+      ctx.stroke();
+    }
+    // Occasional small knots for natural timber variation.
+    if (hash2(i, 22) > 0.65) {
+      const kx = 12 + hash2(i, 23) * (size - 24);
+      const ky = y0 + h * (0.3 + hash2(i, 24) * 0.4);
+      const kr = 2.5 + hash2(i, 25) * 2;
+      const kg = ctx.createRadialGradient(kx, ky, 0.3, kx, ky, kr);
+      kg.addColorStop(0, "rgba(52,28,14,0.75)");
+      kg.addColorStop(1, "rgba(90,55,30,0)");
+      ctx.fillStyle = kg;
+      ctx.beginPath();
+      ctx.ellipse(kx, ky, kr, kr * 0.65, 0.25, 0, Math.PI * 2);
+      ctx.fill();
+    }
     ctx.strokeStyle = "rgba(70,42,22,0.4)";
     ctx.lineWidth = 1;
     const gy = y0 + h * 0.45;
@@ -1214,6 +1240,12 @@ function paintFascia(ctx: CanvasRenderingContext2D, size: number) {
   // Weathered drip line along the lower edge.
   ctx.fillStyle = "rgba(42,26,16,0.55)";
   ctx.fillRect(0, size - 6, size, 6);
+  // Soft sun-bleach wash on upper boards.
+  const bleach = ctx.createLinearGradient(0, 0, 0, size * 0.4);
+  bleach.addColorStop(0, "rgba(210,180,140,0.1)");
+  bleach.addColorStop(1, "rgba(210,180,140,0)");
+  ctx.fillStyle = bleach;
+  ctx.fillRect(0, 0, size, size * 0.4);
 }
 
 function paintDoorLeaf(ctx: CanvasRenderingContext2D, size: number) {
