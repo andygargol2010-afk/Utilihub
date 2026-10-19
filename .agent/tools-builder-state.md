@@ -80,6 +80,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-19 PRODUCT: prepared calculadora-volumen-cubo (ciencia) + contador-silabas (texto). Defs and components committed in separate commits. Index.ts and registry.tsx update deferred due to large file size and previous truncation risks in tool responses; to avoid any registry wipe. Files left for next run to register surgically. Saturation escape used; distinct clusters. Anti-dupe OK.
 
 2026-10-19 PRODUCT (roll 14): shipped 2 (calculadora-volumen-cubo ciencia + contador-silabas texto). Prepared files from previous run registered surgically. Distinct clusters. Anti-dupe OK. Registry surgical OK after brief accidental empty write restored immediately. Saturation escape used.
+
+2026-10-19 FIX-BUILD: deploy ERROR on validator — slug duplicado calculadora-pintura en paint-calculator-tool.ts y paint-calculator.ts. Eliminé paint-calculator.ts (el genérico no importado), restauré paint-calculator-tool.ts como único owner, y lo importé en index.ts. Commit abfa210a. Esperando deploy READY. No tools nuevas.
 ```
 
 ---
@@ -87,9 +89,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: calculadora-volumen-cubo, contador-silabas
-last_deploy: pending verification
+last_mode: FIX-BUILD
+last_slugs: (ninguna nueva)
+last_deploy: pending (fix paint duplicate)
 ```
 
 <!-- end:tools-builder-state.md -->
