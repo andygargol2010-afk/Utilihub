@@ -16,13 +16,13 @@ last_closed_id: orbit-defender-arcade
 p_fixed: 0.35
 
 weights_core:
-  kits: 7
-  journeys: 4
-  games: 1
-  simulators: 3
-  studio-composition: 5
-  playgrounds: 6
-  quality-lift: 10
+  kits: 8
+  journeys: 5
+  games: 2
+  simulators: 4
+  studio-composition: 6
+  playgrounds: 7
+  quality-lift: 1
 
 weights_growth:
   traffic-bets: 3
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: Interactive Orbit Defender Arcade. Defend a central glowing planet from waves of incoming asteroids and debris. Aim and fire interceptors with mouse or touch, build score combos, unlock temporary power-ups (shield, rapid fire, slow-mo, spread), and survive escalating difficulty. Lightweight 2D canvas game with particle effects, EN+ES parity, shareable high-score screenshots.
-id: orbit-defender-arcade
-path_en: /games/orbit-defender-arcade
-path_es: /es/juegos/arcade-defensor-orbita
-domain: games
-runs_total: 6
-runs_remaining: 0
-acceptance: shipped
+status: active
+idea: Elevate Pulse Catch Arena (existing game) to a higher quality bar than peers. Add temporary power-ups (magnet, slow-mo, score multiplier), enhanced particle bursts and screen juice on catches/combos, mobile-optimized touch controls, wave/combo announcements, and a polished shareable high-score card. Keep lightweight 2D canvas, EN+ES parity.
+id: pulse-catch-arena
+path_en: /games/pulse-catch-arena
+path_es: /es/juegos/pulse-catch-arena
+domain: quality-lift
+runs_total: 7
+runs_remaining: 7
+acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 6/6 closed. Final juice: screen flash on power-up/high combo, wave announcement overlay, subtle orbit ring, enhanced particle bursts on collect and game over. Next-step registered in routes before Adsterra. EN+ES parity. Mobile aim remains snappy.
+notes: Roll U=0.68 → CORE. Weighted sample selected quality-lift (set to 1, other CORE +1). U_f=0.45 → games family. Compared: pulse-catch-arena, orbit-defender-arcade, snake. Target pulse-catch-arena for headroom. Elevated standard: power-up system + stronger visual juice and mobile feel that the two peers still lack.
 adsense-prep_runs: 3
 ```
 
