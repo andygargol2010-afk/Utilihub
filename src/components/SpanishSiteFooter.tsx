@@ -1,45 +1,71 @@
-import { Link } from "@tanstack/react-router";
+/** Spanish footer — plain anchors only (same hydration rule as SiteFooter). */
+const FEATURED = [
+  { href: "/es/finanzas", label: "Finanzas" },
+  { href: "/es/categoria/texto", label: "Texto" },
+  { href: "/es/categoria/diseno", label: "Diseño y color" },
+  { href: "/es/categoria/seguridad", label: "Seguridad" },
+] as const;
+
+const INFO = [
+  { href: "/es/herramientas", label: "Todas las herramientas" },
+  { href: "/es/juegos", label: "Juegos" },
+  { href: "/es/simuladores", label: "Simuladores" },
+  { href: "/es/kits", label: "Kits por objetivo" },
+  { href: "/es/hubs/documentos-y-archivos", label: "Documentos y archivos" },
+  { href: "/es/acerca", label: "Acerca de" },
+  { href: "/es/aviso-legal", label: "Aviso legal" },
+  { href: "/es/privacidad", label: "Privacidad" },
+  { href: "/es/cookies", label: "Política de Cookies" },
+  { href: "/es/terminos", label: "Términos de Uso" },
+  { href: "/es/contacto", label: "Contacto" },
+  { href: "/", label: "Versión en inglés" },
+] as const;
 
 export function SpanishSiteFooter() {
   return (
     <footer className="mt-16 border-t border-border/70 bg-surface/55">
       <div className="container-page grid gap-10 py-10 sm:grid-cols-[1.4fr_1fr_1fr] sm:py-12">
         <div>
-          <Link to="/es" className="flex min-h-11 items-center gap-2 font-extrabold tracking-tight">
-            <img src="/page-logo-96.webp" alt="" width={32} height={32} loading="lazy" decoding="async" fetchPriority="low" className="brand-mark size-8" />
+          <a href="/es" className="flex min-h-11 items-center gap-2 font-extrabold tracking-tight">
+            <img
+              src="/page-logo-96.webp"
+              alt=""
+              width={32}
+              height={32}
+              loading="lazy"
+              decoding="async"
+              fetchPriority="low"
+              className="brand-mark size-8"
+            />
             UtiliHub
-          </Link>
+          </a>
           <p className="mt-3 max-w-sm text-sm leading-6 text-muted-foreground">
             Herramientas online gratuitas para calcular, convertir y resolver tareas sin complicaciones.
           </p>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-[.16em] text-primary">Sin registro · Privacidad local</p>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-[.16em] text-primary">
+            Sin registro · Privacidad local
+          </p>
         </div>
 
         <div>
           <p className="text-xs font-bold uppercase tracking-[.16em] text-muted-foreground">Explorar</p>
           <nav aria-label="Explorar" className="mt-3 grid gap-2">
-            <Link to="/es/finanzas" className="w-fit text-sm font-semibold hover:text-primary">Finanzas</Link>
-            <Link to="/es/categoria/$slug" params={{ slug: "texto" }} className="w-fit text-sm font-semibold hover:text-primary">Texto</Link>
-            <Link to="/es/categoria/$slug" params={{ slug: "diseno" }} className="w-fit text-sm font-semibold hover:text-primary">Diseño y color</Link>
-            <Link to="/es/categoria/$slug" params={{ slug: "seguridad" }} className="w-fit text-sm font-semibold hover:text-primary">Seguridad</Link>
+            {FEATURED.map((item) => (
+              <a key={item.href} href={item.href} className="w-fit text-sm font-semibold hover:text-primary">
+                {item.label}
+              </a>
+            ))}
           </nav>
         </div>
 
         <div>
           <p className="text-xs font-bold uppercase tracking-[.16em] text-muted-foreground">UtiliHub</p>
           <nav aria-label="Información" className="mt-3 grid gap-2">
-            <Link to="/es/herramientas" className="w-fit text-sm font-semibold hover:text-primary">Todas las herramientas</Link>
-            <Link to="/es/juegos" className="w-fit text-sm font-semibold hover:text-primary">Juegos</Link>
-            <Link to="/es/simuladores" className="w-fit text-sm font-semibold hover:text-primary">Simuladores</Link>
-            <Link to="/es/kits" className="w-fit text-sm font-semibold hover:text-primary">Kits por objetivo</Link>
-            <Link to="/es/hubs/documentos-y-archivos" className="w-fit text-sm font-semibold hover:text-primary">Documentos y archivos</Link>
-            <Link to="/es/acerca" className="w-fit text-sm font-semibold hover:text-primary">Acerca de</Link>
-            <Link to="/es/aviso-legal" className="w-fit text-sm font-semibold hover:text-primary">Aviso legal</Link>
-            <Link to="/es/privacidad" className="w-fit text-sm font-semibold hover:text-primary">Privacidad</Link>
-            <Link to="/es/cookies" className="w-fit text-sm font-semibold hover:text-primary">Política de Cookies</Link>
-            <Link to="/es/terminos" className="w-fit text-sm font-semibold hover:text-primary">Términos de Uso</Link>
-            <Link to="/es/contacto" className="w-fit text-sm font-semibold hover:text-primary">Contacto</Link>
-            <Link to="/" className="w-fit text-sm font-semibold hover:text-primary">Versión en inglés</Link>
+            {INFO.map((item) => (
+              <a key={item.href} href={item.href} className="w-fit text-sm font-semibold hover:text-primary">
+                {item.label}
+              </a>
+            ))}
           </nav>
         </div>
       </div>
