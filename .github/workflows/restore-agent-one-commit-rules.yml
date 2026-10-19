@@ -1,0 +1,85 @@
+name: restore-agent-one-commit-rules
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 0
+      - name: Restore ops from last good commits and patch
+        run: |
+          set -e
+          git show 0df2bdc3166c23e1d50bb5ca2fad1d73bf1c5f89:.agent/tools-builder-ops.md > .agent/tools-builder-ops.md
+          git show 769a13b1f9817d5199d47b88d37fc22f7572261b:.agent/house-modeler-ops.md > .agent/house-modeler-ops.md
+          python3 << 'PY'
+          from pathlib import Path
+          p = Path('.agent/tools-builder-ops.md')
+          text = p.read_text()
+          old = """7. **Implement**
+   - Two components + two surgical registry entries.
+   - One or two clear commits: `feat(cat): add <slug>` …
+   - Max 2 build-fix attempts.
+   - Then POST-PUSH verification for **both** slugs."""
+          new = """7. **Implement — ONE commit per run (deploy budget)**
+   - Two components + two surgical registry entries (or 1 tool if escape hatch).
+   - **Exactly one git commit** for the whole PRODUCT run. Batch data + component(s) + registry + i18n in that single commit.
+   - Commit message may list both slugs: `feat(cat): add <slug-a> + <slug-b>`.
+   - **Forbidden:** separate pushes for tool data then component then register — each push triggers a Vercel deploy and burns Hobby daily quota (~100/day).
+   - Prefer push_files / multi-file update in one commit over sequential create_or_update_file that each auto-commit.
+   - Max 2 build-fix attempts (still one logical outcome; fix commits only if build broke).
+   - Then POST-PUSH verification for both slugs on that single SHA."""
+          if old not in text:
+              raise SystemExit('tools implement block not found')
+          text = text.replace(old, new)
+          old_meta = """Forbidden:
+
+- Weaken IMMUTABLE / ANTI-WIPE / identity.
+- Touch other automations.
+- Raise implicit volume above 2 or remove the “1 excellent tool” escape hatch."""
+          new_meta = """Forbidden:
+
+- Weaken IMMUTABLE / ANTI-WIPE / identity.
+- Touch other automations.
+- Raise implicit volume above 2 or remove the “1 excellent tool” escape hatch.
+- Extra commits that only touch `.agent/*` docs without a real rule change (burns deploy quota). Prefer zero push on no-op META."""
+          if old_meta not in text:
+              raise SystemExit('tools meta forbidden not found')
+          text = text.replace(old_meta, new_meta)
+          p.write_text(text)
+          print('tools-builder-ops patched', len(text))
+          p = Path('.agent/house-modeler-ops.md')
+          text = p.read_text()
+          old = """7. Commit: `feat(house-modeler): …` or `fix(house-modeler): …` with fixed identity. Message states the user-visible outcome.
+8. POST-PUSH: wait ~60–90s; list deploy for SHA. If no deploy → force `create_deployment` for that SHA on fix/spanish-complete.
+9. On READY (or after FIX-BUILD success): bump `runs_done` +1 in state + commit.
+10. Spanish summary: acceptance steps, what was verified, monolith health, multi-locale line."""
+          new = """7. **ONE commit for PRODUCT + state (deploy budget):**
+   - Bump `runs_done` +1 in `.agent/house-modeler-state.md` **in the same commit** as the product code change.
+   - Message: `feat(house-modeler): …` or `fix(house-modeler): …` with fixed identity; may note `runs_done=N` in body.
+   - **Forbidden:** a second commit only for docs(agent) / runs_done / META notes after PRODUCT — that doubles Vercel deploys (~100/day Hobby cap).
+8. POST-PUSH: wait ~60–90s; list deploy for **that single** SHA. If no deploy → force `create_deployment` for that SHA on fix/spanish-complete.
+9. Spanish summary: acceptance steps, what was verified, monolith health, multi-locale line, runs_done."""
+          if old not in text:
+              raise SystemExit('house product procedure not found')
+          text = text.replace(old, new)
+          old2 = 'After META that did real work (state/docs commit or verified health check worth counting): bump `runs_done` +1.'
+          new2 = 'After META that did real work worth counting: bump `runs_done` +1 **in the same commit** as the META file change (never a follow-up docs(agent)-only commit). If META is a pure no-op health read with no file change → **do not push** (no deploy).'
+          if old2 not in text:
+              raise SystemExit('house meta bump not found')
+          text = text.replace(old2, new2)
+          p.write_text(text)
+          print('house-modeler-ops patched', len(text))
+          PY
+      - name: Commit and push
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add .agent/tools-builder-ops.md .agent/house-modeler-ops.md
+          git status
+          git commit -m "fix(agent): one commit per tools PRODUCT; house-modeler runs_done in same PRODUCT commit"
+          git push origin HEAD:fix/spanish-complete
