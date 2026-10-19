@@ -213,7 +213,7 @@ export const GAMES: readonly GameDef[] = [
     tag: "arcade",
     emoji: "\u26a1",
     summaryEn: "Catch falling neon pulses with your bar. Build combos, lose lives on misses, rising difficulty. Particle bursts on every catch.",
-    summaryEs: "Atrap\u00e1 pulsos ne\u00f3n que caen con tu barra. Constru\u00ed combos, perdes vidas si fall\u00e1s, dificultad creciente. Explosiones de part\u00edculas en cada captura.",
+    summaryEs: "Atrap\u00e1 pulsos ne\u00f3n que caen con tu barra. Constru\u00ed combos, perd\u00e9s vidas si fall\u00e1s, dificultad creciente. Explosiones de part\u00edculas en cada captura.",
     hasScore: true,
   },
   {
