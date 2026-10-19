@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-19 | ciencia | calculadora-volumen-piramide | PyramidVolumeCalculatorTool
+- 2026-10-19 | matematicas | calculadora-area-trapecio | TrapezoidAreaCalculatorTool
 - 2026-10-18 | conversiones | conversor-presion | PressureConverterTool
 - 2026-10-18 | salud | calculadora-calorias-quemadas | CaloriesBurnedCalculatorTool
 - 2026-10-18 | ciencia | calculadora-circunferencia | CircleCircumferenceCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-18 | ciencia | calculadora-area-rectangulo | RectangleAreaCalculatorTool
 - 2026-10-18 | texto | contador-vocales | VowelCounterTool
 - 2026-10-18 | ciencia | calculadora-area-circulo | CircleAreaCalculatorTool
-- 2026-10-18 | texto | contador-frecuencia-palabras | WordFrequencyCounterTool
-- 2026-10-18 | ciencia | calculadora-densidad | DensityCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -78,6 +78,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-18 PRODUCT: shipped 2 (calculadora-circunferencia ciencia + calculadora-perimetro-rectangulo matematicas). Distinct clusters. Anti-dupe OK (no existing dedicated circumference or rectangle perimeter). Registry surgical OK.
 2026-10-18 PRODUCT: shipped 2 (conversor-presion conversiones + calculadora-calorias-quemadas salud). Distinct clusters. Anti-dupe OK. Registry restored after brief accidental wipe then full correct write OK.
 2026-10-19 PRODUCT: prepared calculadora-volumen-piramide (ciencia) + calculadora-area-trapecio (matematicas) — components and data files committed. Index.ts and registry.tsx update considered fragile due to large file size and truncation risk in tool calls; stopped without registering to avoid breaking the catalog. Files left for next run. Saturation escape used.
+
+2026-10-19 PRODUCT: shipped 2 (calculadora-volumen-piramide ciencia + calculadora-area-trapecio matematicas). Components and data were prepared previous run; registered surgically after restoring good index.ts. Distinct clusters. Anti-dupe OK. Registry surgical OK. Saturation escape used.
 ```
 
 ---
@@ -86,8 +88,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: (prepared but not registered) calculadora-volumen-piramide, calculadora-area-trapecio
-last_deploy: not pushed for registration
+last_slugs: calculadora-volumen-piramide, calculadora-area-trapecio
+last_deploy: pending post-push
 ```
 
 <!-- end:tools-builder-state.md -->

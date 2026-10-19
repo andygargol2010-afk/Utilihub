@@ -2,7 +2,7 @@ import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
-/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter + business days + text normalizer + budget 503020 + uuid generator + date difference + recipe scaler + rule of 72 + room area + final grade + temperature converter + proportion calculator + css gradient generator + character counter + calorie deficit + trip time + force + bac + tip tax + sphere volume + sentence counter + cylinder volume + paragraph counter + density + word frequency + circle area + vowel counter + rectangle area + consonant counter + profit margin + weighted average + circle circumference + rectangle perimeter + pressure converter + calories burned. */
+/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter + business days + text normalizer + budget 503020 + uuid generator + date difference + recipe scaler + rule of 72 + room area + final grade + temperature converter + proportion calculator + css gradient generator + character counter + calorie deficit + trip time + force + bac + tip tax + sphere volume + sentence counter + cylinder volume + paragraph counter + density + word frequency + circle area + vowel counter + rectangle area + consonant counter + profit margin + weighted average + circle circumference + rectangle perimeter + pressure converter + calories burned + pyramid volume + trapezoid area. */
 
 const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
 const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
@@ -93,6 +93,8 @@ const CircleCircumferenceCalculatorTool = lazy(() => import("./CircleCircumferen
 const RectanglePerimeterCalculatorTool = lazy(() => import("./RectanglePerimeterCalculatorTool").then((m) => ({ default: m.RectanglePerimeterCalculatorTool })));
 const PressureConverterTool = lazy(() => import("./PressureConverterTool").then((m) => ({ default: m.PressureConverterTool })));
 const CaloriesBurnedCalculatorTool = lazy(() => import("./CaloriesBurnedCalculatorTool").then((m) => ({ default: m.CaloriesBurnedCalculatorTool })));
+const PyramidVolumeCalculatorTool = lazy(() => import("./PyramidVolumeCalculatorTool").then((m) => ({ default: m.PyramidVolumeCalculatorTool })));
+const TrapezoidAreaCalculatorTool = lazy(() => import("./TrapezoidAreaCalculatorTool").then((m) => ({ default: m.TrapezoidAreaCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -167,6 +169,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-perimetro-rectangulo") return RectanglePerimeterCalculatorTool as ToolComp;
   if (tool.slug === "conversor-presion") return PressureConverterTool as ToolComp;
   if (tool.slug === "calculadora-calorias-quemadas") return CaloriesBurnedCalculatorTool as ToolComp;
+if (tool.slug === "calculadora-volumen-piramide") return PyramidVolumeCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-area-trapecio") return TrapezoidAreaCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-fecha-avanzada") return AdvancedDateTool as ToolComp;
   if (tool.config?.mode === "advanced-calculator") return AdvancedCalculatorTool as ToolComp;
   if (tool.config?.mode === "advanced" && tool.config?.operation) return AdvancedCalculatorTool as ToolComp;
