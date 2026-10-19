@@ -67,11 +67,11 @@ path_en: /games/pulse-catch-arena
 path_es: /es/juegos/pulse-catch-arena
 domain: quality-lift
 runs_total: 7
-runs_remaining: 7
+runs_remaining: 6
 acceptance: pending
 share: both
 next_step_required: yes
-notes: Roll U=0.68 → CORE. Weighted sample selected quality-lift (set to 1, other CORE +1). U_f=0.45 → games family. Compared: pulse-catch-arena, orbit-defender-arcade, snake. Target pulse-catch-arena for headroom. Elevated standard: power-up system + stronger visual juice and mobile feel that the two peers still lack.
+notes: Roll U=0.68 → CORE. Weighted sample selected quality-lift (set to 1, other CORE +1). U_f=0.45 → games family. Compared: pulse-catch-arena, orbit-defender-arcade, snake. Target pulse-catch-arena for headroom. Elevated standard: power-up system + stronger visual juice and mobile feel that the two peers still lack. EXECUTE 1/7: added temporary power-ups (magnet pull, slow-mo, x2 multi) with timers, HUD indicators, special spawn/catch particles and floaters. Peers still lack this system.
 adsense-prep_runs: 3
 ```
 
