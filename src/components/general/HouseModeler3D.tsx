@@ -1779,19 +1779,46 @@ function paintGrassRelief(ctx: CanvasRenderingContext2D, size: number) {
 /** Packed earth for the access path and apron: worn center, pebble rim. */
 function paintWornEarth(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [138, 118, 92], 22);
-  for (let i = 0; i < 64; i++) {
+  // Fine grit and small pebbles
+  for (let i = 0; i < 96; i++) {
     const x = hash2(i, 3.1) * size;
     const y = hash2(i, 6.6) * size;
-    const r = 1 + hash2(i, 8) * 2.8;
-    const tone = 108 + Math.floor(hash2(i, 2.2) * 62);
-    ctx.fillStyle = `rgba(${tone + 8}, ${tone - 4}, ${tone - 18}, 0.5)`;
+    const r = 0.6 + hash2(i, 8) * 2.2;
+    const tone = 98 + Math.floor(hash2(i, 2.2) * 70);
+    ctx.fillStyle = `rgba(${tone + 10}, ${tone - 2}, ${tone - 16}, 0.42)`;
     ctx.beginPath();
-    ctx.ellipse(x, y, r, r * 0.72, hash2(i, 4) * Math.PI, 0, Math.PI * 2);
+    ctx.ellipse(x, y, r, r * 0.68, hash2(i, 4) * Math.PI, 0, Math.PI * 2);
     ctx.fill();
   }
+  // Sparse damp patches
+  for (let i = 0; i < 12; i++) {
+    const x = hash2(i + 40, 1.7) * size;
+    const y = hash2(i + 40, 5.3) * size;
+    const rx = 6 + hash2(i, 2.8) * 14;
+    const ry = 4 + hash2(i, 7.1) * 8;
+    const g = ctx.createRadialGradient(x, y, 1, x, y, rx);
+    g.addColorStop(0, "rgba(72,58,40,0.38)");
+    g.addColorStop(0.6, "rgba(88,70,48,0.14)");
+    g.addColorStop(1, "rgba(88,70,48,0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(x, y, rx, ry, hash2(i, 3.4) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // Hairline cracks
+  ctx.strokeStyle = "rgba(62,48,34,0.22)";
+  ctx.lineWidth = 0.7;
+  for (let i = 0; i < 8; i++) {
+    const x = hash2(i + 80, 4.2) * size;
+    const y = hash2(i + 80, 8.9) * size;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + (hash2(i, 1.1) - 0.5) * 18, y + (hash2(i, 6.4) - 0.5) * 14);
+    ctx.stroke();
+  }
   const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.05, size / 2, size / 2, size * 0.48);
-  g.addColorStop(0, "rgba(62,48,34,0.28)");
-  g.addColorStop(0.55, "rgba(92,74,52,0.08)");
+  g.addColorStop(0, "rgba(62,48,34,0.32)");
+  g.addColorStop(0.55, "rgba(92,74,52,0.1)");
   g.addColorStop(1, "rgba(92,74,52,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, size, size);

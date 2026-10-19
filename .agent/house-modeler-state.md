@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 210
+runs_done: 211
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 341679
-last_known_good_hint: (post densify ~341679 bytes)
+approx_bytes: 342609
+last_known_good_hint: (post worn-earth densify ~342609 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
 deploy: (pending check)
-note: PRODUCT run 210 — densify gravel path mossy patches (16) and leaf litter/damp spots (18) for more lived-in outdoor path. Monolith ~341679 bytes; gates OK.
+note: PRODUCT run 211 — densify worn-earth ground patches (pebbles, damp spots, hairline cracks) for more lived-in lawn variation. Monolith ~342609 bytes; gates OK.
 ```
 
 Refresh after each run.
@@ -70,7 +70,7 @@ Refresh after each run.
 ## NOTES
 
 ```
-PRODUCT run 210: gravel path densify (moss + leaf litter).
+PRODUCT run 211: worn-earth densify (grit, damp, cracks).
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI: done (remaining_runs 0).
@@ -94,6 +94,7 @@ META run 205: health check OK; current HEAD b53dd565 (catalog); monolith intact.
 PRODUCT run 206: grass densify at 525771d (~341531 bytes).
 META run 207: verified monolith ~354964 bytes SHA 26805be0 intact (paint helpers, Sky, finishes present); deploys READY; SEO none.
 META run 208: roll 7 → PRODUCT candidate (worn-earth densify prepared locally); deferred to META for safety (no git push auth in sandbox; avoid tool-channel full rewrite of >300KB). Next PRODUCT should use authenticated local clone + push for paintWornEarth densify.
+PRODUCT run 210: gravel path densify (moss + leaf litter).
 ```
 
 <!-- end:house-modeler-state.md -->
