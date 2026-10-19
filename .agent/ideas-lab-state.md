@@ -16,13 +16,13 @@ last_closed_id: waypoint-river-composer
 p_fixed: 0.35
 
 weights_core:
-  kits: 4
-  journeys: 1
-  games: 7
-  simulators: 6
-  studio-composition: 2
-  playgrounds: 3
-  quality-lift: 7
+  kits: 5
+  journeys: 2
+  games: 8
+  simulators: 1
+  studio-composition: 3
+  playgrounds: 4
+  quality-lift: 8
 
 weights_growth:
   traffic-bets: 3
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
+status: active
+idea: Interactive Reaction-Diffusion Lab (Gray-Scott style Turing patterns). Adjust feed and kill rates, diffusion coefficients, and color maps. Presets for spots, stripes, mazes, and labyrinths. Live evolving canvas with seed brush to paint activator, pause/reset, and visual organic patterns that emerge over time. Lightweight 2D grid simulation for browser, EN+ES parity.
+id: reaction-diffusion-lab
+path_en: /simulators/reaction-diffusion-lab
+path_es: /es/simuladores/lab-reaccion-difusion
+domain: simulators
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: png
 next_step_required: no
-notes: Closed waypoint-river-composer after EXECUTE 6/6 (reverse flow toggle for bidirectional journeys + visual payoff). Ready for next IDEATE. Adsterra kept. Next-step present.
+notes: IDEATE CORE. U=0.5345 ≥0.50 → CORE. Weighted sample r=15.25/30 selected simulators. Updated weights_core (selected→1, others +1). Distinct from RECENT_CLOSED (boids, double-pendulum) and existing GravitySandbox. Visual evolving chemical system with high organic delight.
 adsense-prep_runs: 3
 ```
 
