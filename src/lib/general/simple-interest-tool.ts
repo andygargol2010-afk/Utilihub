@@ -2,7 +2,7 @@ import { makeTool } from "./types";
 
 export const SIMPLE_INTEREST_TOOLS = [
   makeTool(
-    "calculadora-interes-simple",
+    "calculadora-interes-simple-alt",
     "Simple Interest Calculator",
     "utilidades",
     "calculator",

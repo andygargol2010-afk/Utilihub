@@ -1,7 +1,7 @@
 import { makeTool, faq } from "./types";
 
 const tool = makeTool(
-  "calculadora-area-triangulo",
+  "calculadora-area-triangulo-alt",
   "Triangle Area Calculator",
   "matematicas",
   "calculator",
