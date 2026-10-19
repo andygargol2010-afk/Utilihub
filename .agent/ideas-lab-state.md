@@ -67,11 +67,11 @@ path_en: /games/orbit-defender-arcade
 path_es: /es/juegos/arcade-defensor-orbita
 domain: games
 runs_total: 6
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 4/6. Added combo system (x1-x12, 0.25 mult per stack, 900ms window, floating COMBO text + bigger particle bursts). EN+ES parity. next: mobile polish / smoke / final juice.
+notes: EXECUTE 5/6. Mobile polish: snappier aim (0.2/0.8), visual crosshair, floating score popups with combo, larger bold HUD. EN+ES parity. next: final juice / smoke / close.
 adsense-prep_runs: 3
 ```
 
