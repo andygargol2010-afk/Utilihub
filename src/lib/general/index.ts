@@ -218,6 +218,8 @@ import { PRESSURE_CONVERTER_TOOLS } from "./pressure-converter-tool";
 import { CALORIES_BURNED_CALCULATOR_TOOLS } from "./calories-burned-tool";
 import { PYRAMID_VOLUME_CALCULATOR_TOOLS } from "./pyramid-volume-calculator-tool";
 import { TRAPEZOID_AREA_CALCULATOR_TOOLS } from "./trapezoid-area-calculator-tool";
+import { PARALLELOGRAM_AREA_CALCULATOR_TOOLS } from "./parallelogram-area-calculator-tool";
+import { RECTANGULAR_PRISM_VOLUME_CALCULATOR_TOOLS } from "./rectangular-prism-volume-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -441,4 +443,6 @@ export const GENERAL_TOOLS = [
   ...CALORIES_BURNED_CALCULATOR_TOOLS,
   ...PYRAMID_VOLUME_CALCULATOR_TOOLS,
   ...TRAPEZOID_AREA_CALCULATOR_TOOLS,
+  ...PARALLELOGRAM_AREA_CALCULATOR_TOOLS,
+  ...RECTANGULAR_PRISM_VOLUME_CALCULATOR_TOOLS,
 ];
