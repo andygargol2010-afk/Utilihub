@@ -17,6 +17,8 @@ type Asteroid = {
   r: number;
   hue: number;
   hp: number;
+  rot: number;
+  points: number[];
 };
 
 type Shot = {
@@ -43,6 +45,17 @@ type PowerUp = {
   kind: "shield" | "rapid" | "slow";
   life: number;
 };
+
+function makeAsteroidShape(r: number) {
+  const pts: number[] = [];
+  const n = 7 + Math.floor(Math.random() * 4);
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2;
+    const rr = r * (0.72 + Math.random() * 0.5);
+    pts.push(Math.cos(a) * rr, Math.sin(a) * rr);
+  }
+  return pts;
+}
 
 export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
@@ -145,17 +158,20 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
           const angle = Math.random() * Math.PI * 2;
           const dist = 280 + Math.random() * 40;
           const speed = (0.6 + Math.random() * 0.8) * difficulty * timeScale;
+          const r = 8 + Math.random() * 10;
           asteroidsRef.current.push({
             x: PLANET_X + Math.cos(angle) * dist,
             y: PLANET_Y + Math.sin(angle) * dist,
             vx: -Math.cos(angle) * speed,
             vy: -Math.sin(angle) * speed,
-            r: 8 + Math.random() * 10,
-            hue: 20 + Math.random() * 40,
+            r,
+            hue: 18 + Math.random() * 42,
             hp: Math.random() < 0.15 ? 2 : 1,
+            rot: Math.random() * Math.PI * 2,
+            points: makeAsteroidShape(r),
           });
           // occasional power-up
-          if (Math.random() < 0.08) {
+          if (Math.random() < 0.09) {
             powerUpsRef.current.push({
               x: PLANET_X + Math.cos(angle) * (dist * 0.7),
               y: PLANET_Y + Math.sin(angle) * (dist * 0.7),
@@ -166,18 +182,18 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         }
 
         // auto fire toward aim
-        const fireRate = rapid ? 90 : 180;
+        const fireRate = rapid ? 85 : 175;
         if (now - lastShotRef.current > fireRate) {
           const dx = aimRef.current.x - PLANET_X;
           const dy = aimRef.current.y - PLANET_Y;
           const len = Math.hypot(dx, dy) || 1;
-          const shotSpeed = 5.5;
+          const shotSpeed = 5.6;
           shotsRef.current.push({
             x: PLANET_X + (dx / len) * (PLANET_R + 6),
             y: PLANET_Y + (dy / len) * (PLANET_R + 6),
             vx: (dx / len) * shotSpeed,
             vy: (dy / len) * shotSpeed,
-            life: 70,
+            life: 72,
           });
           lastShotRef.current = now;
         }
@@ -194,6 +210,7 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         asteroidsRef.current = asteroidsRef.current.filter((a) => {
           a.x += a.vx * timeScale;
           a.y += a.vy * timeScale;
+          a.rot += 0.012 * timeScale;
 
           // hit planet
           const dx = a.x - PLANET_X;
@@ -209,16 +226,15 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
               setRunning(false);
               runningRef.current = false;
             }
-            // explosion
-            for (let i = 0; i < 16; i++) {
+            for (let i = 0; i < 22; i++) {
               particlesRef.current.push({
                 x: a.x,
                 y: a.y,
-                vx: (Math.random() - 0.5) * 4,
-                vy: (Math.random() - 0.5) * 4,
-                life: 30,
+                vx: (Math.random() - 0.5) * 5.2,
+                vy: (Math.random() - 0.5) * 5.2,
+                life: 34,
                 hue: a.hue,
-                size: 2.5,
+                size: 2.2 + Math.random() * 1.6,
               });
             }
             return false;
@@ -241,15 +257,15 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
                   });
                   return next;
                 });
-                for (let j = 0; j < 14; j++) {
+                for (let j = 0; j < 20; j++) {
                   particlesRef.current.push({
                     x: a.x,
                     y: a.y,
-                    vx: (Math.random() - 0.5) * 5,
-                    vy: (Math.random() - 0.5) * 5,
-                    life: 26,
-                    hue: a.hue + (Math.random() - 0.5) * 30,
-                    size: 2.2,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6,
+                    life: 28,
+                    hue: a.hue + (Math.random() - 0.5) * 36,
+                    size: 1.8 + Math.random() * 1.8,
                   });
                 }
                 return false;
@@ -267,8 +283,8 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
           const dy = p.y - PLANET_Y;
           if (Math.hypot(dx, dy) < PLANET_R + 12) {
             if (p.kind === "shield") setShield((s) => Math.min(3, s + 1));
-            if (p.kind === "rapid") rapidUntilRef.current = now + 5000;
-            if (p.kind === "slow") slowUntilRef.current = now + 4500;
+            if (p.kind === "rapid") rapidUntilRef.current = now + 5200;
+            if (p.kind === "slow") slowUntilRef.current = now + 4600;
             return false;
           }
           return p.life > 0;
@@ -278,7 +294,7 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         particlesRef.current = particlesRef.current.filter((pt) => {
           pt.x += pt.vx;
           pt.y += pt.vy;
-          pt.vy += 0.04;
+          pt.vy += 0.035;
           pt.life -= 1;
           return pt.life > 0;
         });
@@ -292,31 +308,32 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         const shake = shakeRef.current > 0 ? (Math.random() - 0.5) * shakeRef.current : 0;
         ctx.save();
         ctx.translate(shake, shake * 0.5);
-        ctx.fillStyle = "#05070f";
+        ctx.fillStyle = "#04060d";
         ctx.fillRect(-4, -4, W + 8, H + 8);
 
         // stars
-        ctx.fillStyle = "rgba(180,200,255,0.4)";
-        for (let i = 0; i < 40; i++) {
-          ctx.fillRect((i * 47) % W, (i * 31) % H, 1, 1);
+        ctx.fillStyle = "rgba(190,210,255,0.45)";
+        for (let i = 0; i < 48; i++) {
+          ctx.fillRect((i * 53) % W, (i * 29) % H, i % 7 === 0 ? 1.5 : 1, i % 7 === 0 ? 1.5 : 1);
         }
 
         // planet
         ctx.save();
-        ctx.shadowBlur = 24;
+        ctx.shadowBlur = 28;
         ctx.shadowColor = "#34d399";
-        const pg = ctx.createRadialGradient(PLANET_X - 6, PLANET_Y - 6, 4, PLANET_X, PLANET_Y, PLANET_R);
-        pg.addColorStop(0, "#6ee7b7");
-        pg.addColorStop(1, "#059669");
+        const pg = ctx.createRadialGradient(PLANET_X - 8, PLANET_Y - 8, 3, PLANET_X, PLANET_Y, PLANET_R);
+        pg.addColorStop(0, "#86efac");
+        pg.addColorStop(0.55, "#34d399");
+        pg.addColorStop(1, "#047857");
         ctx.fillStyle = pg;
         ctx.beginPath();
         ctx.arc(PLANET_X, PLANET_Y, PLANET_R, 0, Math.PI * 2);
         ctx.fill();
         if (shieldRef.current > 0) {
-          ctx.strokeStyle = `rgba(34,211,238,${0.4 + shieldRef.current * 0.15})`;
-          ctx.lineWidth = 3;
+          ctx.strokeStyle = `rgba(34,211,238,${0.45 + shieldRef.current * 0.14})`;
+          ctx.lineWidth = 3.2;
           ctx.beginPath();
-          ctx.arc(PLANET_X, PLANET_Y, PLANET_R + 8, 0, Math.PI * 2);
+          ctx.arc(PLANET_X, PLANET_Y, PLANET_R + 9, 0, Math.PI * 2);
           ctx.stroke();
         }
         ctx.restore();
@@ -324,11 +341,17 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         // asteroids
         for (const a of asteroidsRef.current) {
           ctx.save();
-          ctx.shadowBlur = 12;
-          ctx.shadowColor = `hsl(${a.hue},80%,50%)`;
-          ctx.fillStyle = `hsl(${a.hue},70%,45%)`;
+          ctx.translate(a.x, a.y);
+          ctx.rotate(a.rot);
+          ctx.shadowBlur = 14;
+          ctx.shadowColor = `hsl(${a.hue},85%,52%)`;
+          ctx.fillStyle = `hsl(${a.hue},68%,42%)`;
           ctx.beginPath();
-          ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+          ctx.moveTo(a.points[0], a.points[1]);
+          for (let i = 2; i < a.points.length; i += 2) {
+            ctx.lineTo(a.points[i], a.points[i + 1]);
+          }
+          ctx.closePath();
           ctx.fill();
           ctx.restore();
         }
@@ -336,26 +359,30 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         // shots
         for (const s of shotsRef.current) {
           ctx.fillStyle = "#fef08a";
-          ctx.shadowBlur = 8;
+          ctx.shadowBlur = 9;
           ctx.shadowColor = "#fef08a";
           ctx.beginPath();
-          ctx.arc(s.x, s.y, 2.4, 0, Math.PI * 2);
+          ctx.arc(s.x, s.y, 2.5, 0, Math.PI * 2);
           ctx.fill();
           ctx.shadowBlur = 0;
         }
 
         // power-ups
         for (const p of powerUpsRef.current) {
+          ctx.save();
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = p.kind === "shield" ? "#22d3ee" : p.kind === "rapid" ? "#f472b6" : "#a78bfa";
           ctx.fillStyle = p.kind === "shield" ? "#22d3ee" : p.kind === "rapid" ? "#f472b6" : "#a78bfa";
           ctx.beginPath();
-          ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, 7.5, 0, Math.PI * 2);
           ctx.fill();
+          ctx.restore();
         }
 
         // particles
         for (const pt of particlesRef.current) {
-          ctx.globalAlpha = pt.life / 26;
-          ctx.fillStyle = `hsl(${pt.hue},100%,65%)`;
+          ctx.globalAlpha = Math.max(0, pt.life / 28);
+          ctx.fillStyle = `hsl(${pt.hue},100%,66%)`;
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
           ctx.fill();
@@ -364,8 +391,8 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
 
         // aim line
         if (running && !paused && !gameOver) {
-          ctx.strokeStyle = "rgba(255,255,255,0.25)";
-          ctx.setLineDash([4, 4]);
+          ctx.strokeStyle = "rgba(255,255,255,0.28)";
+          ctx.setLineDash([5, 5]);
           ctx.beginPath();
           ctx.moveTo(PLANET_X, PLANET_Y);
           ctx.lineTo(aimRef.current.x, aimRef.current.y);
@@ -374,30 +401,30 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         }
 
         // HUD
-        ctx.fillStyle = "rgba(255,255,255,0.85)";
-        ctx.font = "12px system-ui";
+        ctx.fillStyle = "rgba(255,255,255,0.88)";
+        ctx.font = "12px system-ui, sans-serif";
         ctx.textAlign = "left";
         ctx.fillText(`${es ? "Puntos" : "Score"}: ${scoreRef.current}`, 10, 20);
         ctx.fillText(`${es ? "Ola" : "Wave"}: ${wave}`, 10, 36);
-        ctx.fillText(`${es ? "Escudo" : "Shield"}: ${"●".repeat(shieldRef.current)}`, 10, 52);
+        ctx.fillText(`${es ? "Escudo" : "Shield"}: ${"\u25cf".repeat(shieldRef.current)}`, 10, 52);
 
         if (paused && !gameOver) {
           ctx.fillStyle = "rgba(0,0,0,0.55)";
           ctx.fillRect(0, 0, W, H);
           ctx.fillStyle = "#fff";
-          ctx.font = "bold 22px system-ui";
+          ctx.font = "bold 22px system-ui, sans-serif";
           ctx.textAlign = "center";
           ctx.fillText(es ? "Pausa" : "Paused", W / 2, H / 2);
         }
 
         if (gameOver) {
-          ctx.fillStyle = "rgba(0,0,0,0.7)";
+          ctx.fillStyle = "rgba(0,0,0,0.72)";
           ctx.fillRect(0, 0, W, H);
           ctx.fillStyle = "#fff";
-          ctx.font = "bold 22px system-ui";
+          ctx.font = "bold 22px system-ui, sans-serif";
           ctx.textAlign = "center";
           ctx.fillText(es ? "Planeta destruido" : "Planet destroyed", W / 2, H / 2 - 10);
-          ctx.font = "15px system-ui";
+          ctx.font = "15px system-ui, sans-serif";
           ctx.fillText(`${es ? "Puntos" : "Score"}: ${scoreRef.current}`, W / 2, H / 2 + 16);
         }
         ctx.restore();
@@ -412,13 +439,13 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
     if (running) return;
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "#05070f";
+    ctx.fillStyle = "#04060d";
     ctx.fillRect(0, 0, W, H);
     ctx.fillStyle = "#fff";
-    ctx.font = "bold 18px system-ui";
+    ctx.font = "bold 18px system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.fillText(es ? "Arcade Defensor Órbita" : "Orbit Defender Arcade", W / 2, H / 2 - 10);
-    ctx.font = "13px system-ui";
+    ctx.font = "13px system-ui, sans-serif";
     ctx.fillStyle = "rgba(255,255,255,0.7)";
     ctx.fillText(es ? "Tocá Jugar para empezar" : "Tap Play to start", W / 2, H / 2 + 16);
   }, [running, es]);
@@ -431,17 +458,29 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
     aimRef.current = { x, y };
   };
 
-  const share = async () => {
+  const sharePng = async () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
     const text = es
       ? `Defendí el planeta y hice ${best} puntos en Orbit Defender Arcade en UtiliHub! https://utilihub.net/es/juegos/arcade-defensor-orbita`
       : `I defended the planet and scored ${best} in Orbit Defender Arcade on UtiliHub! https://utilihub.net/games/orbit-defender-arcade`;
     try {
-      if (navigator.share) await navigator.share({ title: "Orbit Defender Arcade", text });
-      else {
-        await navigator.clipboard.writeText(text);
-        setShared(true);
-        setTimeout(() => setShared(false), 1600);
+      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+      if (!blob) throw new Error("no blob");
+      const file = new File([blob], "orbit-defender-score.png", { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ title: "Orbit Defender Arcade", text, files: [file] });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "orbit-defender-score.png";
+        a.click();
+        URL.revokeObjectURL(url);
+        await navigator.clipboard.writeText(text).catch(() => {});
       }
+      setShared(true);
+      setTimeout(() => setShared(false), 1800);
     } catch {
       try {
         await navigator.clipboard.writeText(text);
@@ -472,6 +511,7 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         width={W}
         height={H}
         className="w-full max-w-[360px] touch-none rounded-2xl border border-emerald-500/20 bg-black shadow-lg"
+        style={{ touchAction: "none" }}
         onPointerMove={onPointerMove}
         onPointerDown={onPointerMove}
       />
@@ -482,7 +522,7 @@ export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale
         <GameSecondaryButton onClick={() => setPaused((p) => !p)} active={paused}>
           {paused ? (es ? "Seguir" : "Resume") : es ? "Pausa" : "Pause"}
         </GameSecondaryButton>
-        <GameSecondaryButton onClick={share}>{shared ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}</GameSecondaryButton>
+        <GameSecondaryButton onClick={sharePng}>{shared ? (es ? "¡Listo!" : "Ready!") : es ? "Compartir PNG" : "Share PNG"}</GameSecondaryButton>
       </div>
     </div>
   );
