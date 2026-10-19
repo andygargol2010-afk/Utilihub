@@ -67,11 +67,11 @@ path_en: /simulators/reaction-diffusion-lab
 path_es: /es/simuladores/lab-reaccion-difusion
 domain: simulators
 runs_total: 6
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: png
 next_step_required: no
-notes: IDEATE CORE. U=0.5345 ≥0.50 → CORE. Weighted sample r=15.25/30 selected simulators. Updated weights_core (selected→1, others +1). Distinct from RECENT_CLOSED (boids, double-pendulum) and existing GravitySandbox. Visual evolving chemical system with high organic delight. EXECUTE 1/6: shipped core Gray-Scott 2D grid (160x160), presets (spots/stripes/maze/worms/coral/mitosis), seed brush, F/k/Du/Dv sliders, color maps, pause/reset. Catalog + registry wired. EN+ES paths live. Adsterra kept.
+notes: IDEATE CORE. U=0.5345 ≥0.50 → CORE. Weighted sample r=15.25/30 selected simulators. Updated weights_core (selected→1, others +1). Distinct from RECENT_CLOSED (boids, double-pendulum) and existing GravitySandbox. Visual evolving chemical system with high organic delight. EXECUTE 1/6: shipped core Gray-Scott 2D grid (160x160), presets (spots/stripes/maze/worms/coral/mitosis), seed brush, F/k/Du/Dv sliders, color maps, pause/reset. Catalog + registry wired. EN+ES paths live. Adsterra kept. EXECUTE 2/6: PNG export button, adjustable brush radius (2-12), speed control (1-8 steps/frame), plasma color map, Clear V button. Shareable patterns ready.
 adsense-prep_runs: 3
 ```
 
