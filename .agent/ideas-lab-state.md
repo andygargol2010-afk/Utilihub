@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: studio-composition
-last_closed_id: neon-signature-composer
+last_closed_domain: journeys
+last_closed_id: waypoint-river-composer
 p_fixed: 0.35
 
 weights_core:
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-19 | journeys | waypoint-river-composer | Interactive Waypoint River Composer (EN+ES)
 - 2026-10-18 | studio-composition | neon-signature-composer | Interactive Neon Signature Composer (EN+ES)
 - 2026-10-18 | kits | home-renovation-kit | Interactive Home Renovation Kit (EN+ES)
 - 2026-10-17 | simulators | boids-flocking-lab | Boids Flocking Lab (EN+ES)
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-17 | playgrounds | particle-magnet-lab | Particle Magnet Lab (EN+ES)
 - 2026-10-16 | simulators | double-pendulum-chaos | Double Pendulum Chaos Lab (EN+ES)
 - 2026-10-16 | search-magnets | compound-interest-guide | Compound Interest SEO Guide (EN+ES)
-- 2026-10-16 | adsense-prep | terms-of-use | Terms of Use pages (EN+ES)
 ```
 
 ---
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive Waypoint River Composer. Users place sequential waypoints on a canvas that connect into a flowing river path with animated light particles traveling along the progression, color gradients by journey stage, optional branching side paths, and waypoint markers with glow. Controls for flow speed, particle density, color themes, path smoothing, undo, and clear. Touch-friendly placement and drag. Goal is visual composition of a progressive light-river journey with high visual payoff and sense of forward motion, not a calculator.
-id: waypoint-river-composer
-path_en: /journeys/waypoint-river-composer
-path_es: /es/viajes/compositor-rio-waypoints
-domain: journeys
-runs_total: 6
-runs_remaining: 1
-acceptance: pending
-share: both
-next_step_required: yes
-notes: IDEATE. Roll: U=0.7999 → CORE; weighted sample r=10.22/32 → journeys (cumul. kits 0-3, journeys 3-12). last_closed_domain studio-composition ≠ journeys, no re-roll. Weights: selected→1, other CORE +1. Avoided recent closed (neon studio, kits, boids, pulse, particle). New progression-focused waypoint river canvas. next-step required before Adsterra. Adsterra untouched. EXECUTE 1/6: core canvas + sequential waypoint placement + stage-gradient particle flow + themes/speed/density/undo/demo shipped. EN+ES routes, index cards, next-step registered. Adsterra kept. EXECUTE 2/6: path smoothing (Catmull-Rom blend + control) + drag-to-reposition waypoints for organic river composition. Particles follow smooth path. Touch-friendly. Adsterra kept. EXECUTE 3/6: optional branching side paths — start branch from current end, place side waypoints, particles split (~35% divert) across main + branches, side rivers drawn with lower alpha/thinner glow. Demo includes branch. Touch-friendly. Adsterra kept. EXECUTE 4/6: particle trails (short fading history per particle, reset on wrap) for continuous flowing-river visual payoff; EN+ES hints updated. Adsterra kept. EXECUTE 5/6: PNG share button (toDataURL download, EN/ES filenames) + longer glowing trails (TRAIL_LEN 12, stronger bloom) for shareability and continuous river payoff. Adsterra kept.
+status: closed
+idea: n/a
+id: n/a
+path_en: n/a
+path_es: n/a
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
+share: n/a
+next_step_required: no
+notes: Closed waypoint-river-composer after EXECUTE 6/6 (reverse flow toggle for bidirectional journeys + visual payoff). Ready for next IDEATE. Adsterra kept. Next-step present.
 adsense-prep_runs: 3
 ```
 
