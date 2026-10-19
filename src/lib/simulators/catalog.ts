@@ -233,6 +233,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Bandada en vivo de partículas coloreadas que siguen separación, alineación y cohesión. Ajustá fuerza de cada regla, velocidad y radio de percepción. Estelas, color por velocidad o vecinos, atracción suave al ratón. Visualización de sistema evolutivo.",
   },
+  {
+    slug: "reaction-diffusion-lab",
+    slugEs: "lab-reaccion-difusion",
+    nameEn: "Reaction-Diffusion Lab",
+    nameEs: "Lab de reacción-difusión",
+    tag: "chemistry",
+    theme: "lab",
+    emoji: "🧬",
+    badgeEn: "Turing patterns",
+    badgeEs: "Patrones de Turing",
+    summaryEn:
+      "Interactive Gray-Scott reaction-diffusion lab. Adjust feed and kill rates, diffusion coefficients, and color maps. Presets for spots, stripes, mazes, and labyrinths. Live evolving canvas with seed brush to paint activator, pause/reset, and visual organic patterns that emerge over time. Lightweight 2D grid simulation for browser, EN+ES parity.",
+    summaryEs:
+      "Laboratorio interactivo de reacción-difusión Gray-Scott. Ajustá tasas de alimentación y muerte, coeficientes de difusión y mapas de color. Presets de manchas, rayas, laberintos. Canvas en vivo con pincel para sembrar activador, pausa/reinicio, y patrones orgánicos que emergen con el tiempo. Simulación de grilla 2D ligera, paridad EN+ES.",
+  },
 ] as const;
 
 /** Next-step sims for bounce reduction (first = primary). Keys = EN slug. */
@@ -251,6 +266,7 @@ export const SIM_JOURNEYS: Record<string, string[]> = {
   "market-equilibrium": ["galton-board", "sir-epidemic", "ecosystem", "gravity-sandbox"],
   "galton-board": ["market-equilibrium", "sir-epidemic", "ecosystem", "pendulum"],
   "boids-flocking-lab": ["gravity-sandbox", "molecular-motion", "double-pendulum", "wave-interference"],
+  "reaction-diffusion-lab": ["boids-flocking-lab", "molecular-motion", "ecosystem", "wave-interference"],
 };
 
 export function relatedSims(current: Pick<SimDef, "slug">): SimDef[] {
