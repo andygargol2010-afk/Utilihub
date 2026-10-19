@@ -64,20 +64,26 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
   const [k, setK] = useState(0.062);
   const [du, setDu] = useState(0.16);
   const [dv, setDv] = useState(0.08);
-  const [colorMap, setColorMap] = useState<"heat" | "ocean" | "mono">("heat");
+  const [colorMap, setColorMap] = useState<"heat" | "ocean" | "mono" | "plasma">("heat");
   const [brush, setBrush] = useState(true);
+  const [brushRadius, setBrushRadius] = useState(5);
+  const [stepsPerFrame, setStepsPerFrame] = useState(4);
 
   const grids = useRef(makeGrid());
   const runningRef = useRef(true);
-  const paramsRef = useRef({ f: 0.03, k: 0.062, du: 0.16, dv: 0.08, color: "heat" as const });
+  const paramsRef = useRef({ f: 0.03, k: 0.062, du: 0.16, dv: 0.08, color: "heat" as const, steps: 4 });
   const painting = useRef(false);
 
   runningRef.current = running;
-  paramsRef.current = { f, k, du, dv, color: colorMap };
+  paramsRef.current = { f, k, du, dv, color: colorMap, steps: stepsPerFrame };
 
   const reset = useCallback(() => {
     grids.current = makeGrid();
     setRunning(true);
+  }, []);
+
+  const clearActivator = useCallback(() => {
+    grids.current.v.fill(0);
   }, []);
 
   const applyPreset = useCallback((p: Preset) => {
@@ -87,7 +93,7 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
     setDv(p.dv);
   }, []);
 
-  const seedAt = useCallback((gx: number, gy: number, radius = 4) => {
+  const seedAt = useCallback((gx: number, gy: number, radius: number) => {
     const { u, v } = grids.current;
     for (let dy = -radius; dy <= radius; dy++) {
       for (let dx = -radius; dx <= radius; dx++) {
@@ -100,6 +106,15 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
         }
       }
     }
+  }, []);
+
+  const exportPng = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = `reaction-diffusion-${Date.now()}.png`;
+    a.click();
   }, []);
 
   useEffect(() => {
@@ -118,8 +133,8 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
       const nv = new Float32Array(v);
 
       if (runningRef.current) {
-        // multiple steps per frame for speed
-        for (let step = 0; step < 4; step++) {
+        const steps = Math.max(1, Math.min(8, p.steps));
+        for (let step = 0; step < steps; step++) {
           for (let y = 0; y < GRID; y++) {
             for (let x = 0; x < GRID; x++) {
               const i = idx(x, y);
@@ -164,6 +179,10 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
             r = Math.min(255, val * 60);
             g = Math.min(255, 40 + val * 180);
             b = Math.min(255, 80 + val * 160);
+          } else if (p.color === "plasma") {
+            r = Math.min(255, val * 220 + 20);
+            g = Math.min(255, Math.max(0, (val - 0.3) * 300));
+            b = Math.min(255, (1 - val) * 200);
           } else {
             const gray = Math.min(255, val * 255);
             r = g = b = gray;
@@ -212,7 +231,7 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
     const rect = e.currentTarget.getBoundingClientRect();
     const gx = Math.floor(((e.clientX - rect.left) / rect.width) * GRID);
     const gy = Math.floor(((e.clientY - rect.top) / rect.height) * GRID);
-    seedAt(gx, gy, 5);
+    seedAt(gx, gy, brushRadius);
   };
 
   return (
@@ -228,8 +247,14 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
           <SimSecondaryButton theme="lab" onClick={reset}>
             {es ? "Reiniciar" : "Reset"}
           </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" onClick={clearActivator}>
+            {es ? "Limpiar V" : "Clear V"}
+          </SimSecondaryButton>
           <SimSecondaryButton theme="lab" active={brush} onClick={() => setBrush((b) => !b)}>
             {es ? (brush ? "Pincel ✓" : "Pincel") : brush ? "Brush ✓" : "Brush"}
+          </SimSecondaryButton>
+          <SimSecondaryButton theme="lab" onClick={exportPng}>
+            {es ? "PNG" : "PNG"}
           </SimSecondaryButton>
         </div>
         <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5">
@@ -287,9 +312,23 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
           </span>
           <input type="range" min={0.02} max={0.15} step={0.005} value={dv} onChange={(e) => setDv(Number(e.target.value))} className="h-2 w-full cursor-pointer accent-teal-400" />
         </label>
+        <label className="flex flex-col gap-1">
+          <span className="flex justify-between font-semibold">
+            <span>{es ? "Radio pincel" : "Brush radius"}</span>
+            <span className="tabular-nums text-teal-300">{brushRadius}</span>
+          </span>
+          <input type="range" min={2} max={12} step={1} value={brushRadius} onChange={(e) => setBrushRadius(Number(e.target.value))} className="h-2 w-full cursor-pointer accent-teal-400" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="flex justify-between font-semibold">
+            <span>{es ? "Velocidad (pasos)" : "Speed (steps)"}</span>
+            <span className="tabular-nums text-teal-300">{stepsPerFrame}</span>
+          </span>
+          <input type="range" min={1} max={8} step={1} value={stepsPerFrame} onChange={(e) => setStepsPerFrame(Number(e.target.value))} className="h-2 w-full cursor-pointer accent-teal-400" />
+        </label>
         <div className="flex items-center justify-center gap-2 pt-1">
           <span className="font-semibold">{es ? "Mapa de color" : "Color map"}</span>
-          {(["heat", "ocean", "mono"] as const).map((c) => (
+          {(["heat", "ocean", "mono", "plasma"] as const).map((c) => (
             <button
               key={c}
               type="button"
