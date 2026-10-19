@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 211
+runs_done: 212
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: META
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
 deploy: (pending check)
-note: PRODUCT run 211 — densify worn-earth ground patches (pebbles, damp spots, hairline cracks) for more lived-in lawn variation. Monolith ~342609 bytes; gates OK.
+note: META run 212 — health check OK; monolith 342609 bytes intact; SEO none. PRODUCT densify grass prepared locally but deferred (no push auth; tool-channel full rewrite >300KB risk).
 ```
 
 Refresh after each run.
@@ -95,6 +95,8 @@ PRODUCT run 206: grass densify at 525771d (~341531 bytes).
 META run 207: verified monolith ~354964 bytes SHA 26805be0 intact (paint helpers, Sky, finishes present); deploys READY; SEO none.
 META run 208: roll 7 → PRODUCT candidate (worn-earth densify prepared locally); deferred to META for safety (no git push auth in sandbox; avoid tool-channel full rewrite of >300KB). Next PRODUCT should use authenticated local clone + push for paintWornEarth densify.
 PRODUCT run 210: gravel path densify (moss + leaf litter).
+
+META run 212: verified READY deploys, monolith gates OK (342609B, 7750 lines, paints present). Grass densify (flecks 22→28, blades 28→36) prepared in local clone but not pushed due to tool-channel truncation risk for full rewrite. Prefer authenticated local push next.
 ```
 
 <!-- end:house-modeler-state.md -->
