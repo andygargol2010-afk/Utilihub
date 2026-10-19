@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo prepared)
 finanzas simples: recent (regla-72, propina-impuesto, margen-beneficio)
 hogar/construcción: recent
 % / math básica: recent (proporcion, perimetro-rectangulo, area-trapecio, area-paralelogramo)
@@ -51,7 +51,7 @@ cocina: recent
 educacion: recent (promedio-ponderado, nota-final)
 diseno: recent
 viajes: recent (tiempo-viaje)
-texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes)
+texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas prepared)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -84,6 +84,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-19 FIX-BUILD: deploy ERROR due to missing ./pyramid-volume-calculator-tool and trapezoid definitions in lib/general (dangling imports). Created the two tool definition files matching the existing component quality bar, then re-added the imports to index.ts. Registry already had the lazy + pickComponent entries. Build should be clean once new deploy processes.
 
 2026-10-19 PRODUCT (roll 20): shipped 2 (calculadora-area-paralelogramo matematicas + calculadora-volumen-prisma-rectangular ciencia). Saturation escape used (ciencia/matematicas heavy but distinct clusters). Anti-dupe OK. Brief accidental placeholder in registry write → immediately restored full body with both new entries + prior tools. Registry anti-wipe recovered OK.
+
+2026-10-19 PRODUCT: prepared calculadora-volumen-cubo (ciencia) + contador-silabas (texto). Defs and components committed in separate commits. Index.ts and registry.tsx update deferred due to large file size and previous truncation risks in tool responses; to avoid any registry wipe. Files left for next run to register surgically. Saturation escape used; distinct clusters. Anti-dupe OK.
 ```
 
 ---
@@ -92,8 +94,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-area-paralelogramo, calculadora-volumen-prisma-rectangular
-last_deploy: pending post-push
+last_slugs: prepared calculadora-volumen-cubo, contador-silabas
+last_deploy: components pushed, registration pending
 ```
 
 <!-- end:tools-builder-state.md -->
