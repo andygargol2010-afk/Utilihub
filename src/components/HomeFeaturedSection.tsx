@@ -155,9 +155,9 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
                 </>
               );
               return (
-                <Link key={game.slug} to={href as never} className="card-hover group block rounded-xl border border-border/60 bg-background/80 p-3.5 hover:-translate-y-0.5 hover:border-violet-500/30 hover:shadow-md">
+                <a key={game.slug} href={href} className="card-hover group block rounded-xl border border-border/60 bg-background/80 p-3.5 hover:-translate-y-0.5 hover:border-violet-500/30 hover:shadow-md">
                   {body}
-                </Link>
+                </a>
               );
             })}
           </div>
