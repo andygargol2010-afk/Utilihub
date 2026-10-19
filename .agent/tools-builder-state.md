@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-19 | matematicas | calculadora-area-paralelogramo | ParallelogramAreaCalculatorTool
+- 2026-10-19 | ciencia | calculadora-volumen-prisma-rectangular | RectangularPrismVolumeCalculatorTool
 - 2026-10-19 | ciencia | calculadora-volumen-piramide | PyramidVolumeCalculatorTool
 - 2026-10-19 | matematicas | calculadora-area-trapecio | TrapezoidAreaCalculatorTool
 - 2026-10-18 | conversiones | conversor-presion | PressureConverterTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-18 | educacion | calculadora-promedio-ponderado | WeightedAverageCalculatorTool
 - 2026-10-18 | texto | contador-consonantes | ConsonantCounterTool
 - 2026-10-18 | ciencia | calculadora-area-rectangulo | RectangleAreaCalculatorTool
-- 2026-10-18 | texto | contador-vocales | VowelCounterTool
-- 2026-10-18 | ciencia | calculadora-area-circulo | CircleAreaCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,10 +39,10 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular)
 finanzas simples: recent (regla-72, propina-impuesto, margen-beneficio)
 hogar/construcción: recent
-% / math básica: recent (proporcion, perimetro-rectangulo, area-trapecio)
+% / math básica: recent (proporcion, perimetro-rectangulo, area-trapecio, area-paralelogramo)
 generadores texto: watch
 conversiones genéricas: recent (presion)
 salud / body-metrics: recent (bac, deficit, calorias-quemadas)
@@ -82,6 +82,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-19 PRODUCT: shipped 2 (calculadora-volumen-piramide ciencia + calculadora-area-trapecio matematicas). Components and data were prepared previous run; registered surgically after restoring good index.ts. Distinct clusters. Anti-dupe OK. Registry surgical OK. Saturation escape used.
 
 2026-10-19 FIX-BUILD: deploy ERROR due to missing ./pyramid-volume-calculator-tool and trapezoid definitions in lib/general (dangling imports). Created the two tool definition files matching the existing component quality bar, then re-added the imports to index.ts. Registry already had the lazy + pickComponent entries. Build should be clean once new deploy processes.
+
+2026-10-19 PRODUCT (roll 20): shipped 2 (calculadora-area-paralelogramo matematicas + calculadora-volumen-prisma-rectangular ciencia). Saturation escape used (ciencia/matematicas heavy but distinct clusters). Anti-dupe OK. Brief accidental placeholder in registry write → immediately restored full body with both new entries + prior tools. Registry anti-wipe recovered OK.
 ```
 
 ---
@@ -89,9 +91,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: FIX-BUILD
-last_slugs: calculadora-volumen-piramide, calculadora-area-trapecio
-last_deploy: pending (index re-add commit fe7308be)
+last_mode: PRODUCT
+last_slugs: calculadora-area-paralelogramo, calculadora-volumen-prisma-rectangular
+last_deploy: pending post-push
 ```
 
 <!-- end:tools-builder-state.md -->
