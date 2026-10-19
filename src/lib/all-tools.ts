@@ -40,9 +40,23 @@ const duplicateSlugs = Array.from(
   .filter(([, count]) => count > 1)
   .map(([slug]) => slug);
 export const CATALOG_DUPLICATE_SLUGS = duplicateSlugs;
-if (duplicateSlugs.length) throw new Error(`UtiliHub catalog integrity error: duplicate tool slugs: ${duplicateSlugs.join(", ")}`);
 
-export const ALL_TOOLS: CatalogTool[] = catalogSources;
+// Soft-fail: never take down the whole site (home / tools) for a catalog data bug.
+// Historical production-preview symptom: {"status":500,"unhandled":true,"message":"HTTPError"}
+// from `throw` on duplicate tool slugs (e.g. conversor-presion in converters + dedicated tool).
+if (duplicateSlugs.length && typeof console !== "undefined") {
+  console.error(
+    `UtiliHub catalog integrity: duplicate tool slugs (keeping first occurrence): ${duplicateSlugs.join(", ")}`,
+  );
+}
+
+/** First occurrence wins when a slug appears more than once. */
+const seenSlugs = new Set<string>();
+export const ALL_TOOLS: CatalogTool[] = catalogSources.filter((tool) => {
+  if (seenSlugs.has(tool.slug)) return false;
+  seenSlugs.add(tool.slug);
+  return true;
+});
 
 /** O(1) slug → tool index (built once at module load). */
 const TOOL_BY_SLUG = new Map<string, CatalogTool>(ALL_TOOLS.map((tool) => [tool.slug, tool]));
@@ -59,8 +73,10 @@ const CATEGORY_BY_SLUG = new Map(ALL_CATEGORIES.map((c) => [c.slug, c]));
 const LEGACY_CATEGORY_BY_SLUG = new Map(CATEGORIES.map((c) => [c.slug, c]));
 
 const unknownSecondaryTools = Object.keys(SECONDARY_CATEGORY_MAP).filter((slug) => !TOOL_BY_SLUG.has(slug));
-if (unknownSecondaryTools.length) {
-  throw new Error(`UtiliHub catalog integrity error: unknown secondary category tools: ${unknownSecondaryTools.join(", ")}`);
+if (unknownSecondaryTools.length && typeof console !== "undefined") {
+  console.error(
+    `UtiliHub catalog integrity: unknown secondary category tools (ignored): ${unknownSecondaryTools.join(", ")}`,
+  );
 }
 
 export const allToolBySlug = (slug: string) => TOOL_BY_SLUG.get(slug);
