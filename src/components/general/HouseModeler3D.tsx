@@ -1269,6 +1269,34 @@ function paintFascia(ctx: CanvasRenderingContext2D, size: number) {
   bleach.addColorStop(1, "rgba(210,180,140,0)");
   ctx.fillStyle = bleach;
   ctx.fillRect(0, 0, size, size * 0.4);
+  // Denser micro-grain fibers and rare check cracks so fascia boards read as seasoned outdoor timber.
+  for (let i = 0; i < 7; i++) {
+    const y0 = Math.floor((i / 7) * size);
+    const h = Math.floor(size / 7) - 2;
+    for (let g = 0; g < 6; g++) {
+      const gy = y0 + 3 + g * (h / 7);
+      const grainTone = 62 + Math.floor(hash2(i, g + 60) * 22);
+      ctx.strokeStyle = `rgba(${grainTone + 12}, ${grainTone}, ${grainTone - 16}, 0.22)`;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      for (let x = 0; x <= size; x += 5) {
+        ctx.lineTo(x, gy + Math.sin(x * 0.13 + i * 0.9 + g) * 0.8);
+      }
+      ctx.stroke();
+    }
+    if (hash2(i, 71) > 0.78) {
+      const crackY = y0 + h * (0.35 + hash2(i, 72) * 0.3);
+      ctx.strokeStyle = "rgba(30,18,10,0.38)";
+      ctx.lineWidth = 0.55;
+      ctx.beginPath();
+      ctx.moveTo(size * 0.1, crackY);
+      for (let x = size * 0.1; x < size * 0.9; x += 7) {
+        ctx.lineTo(x, crackY + Math.sin(x * 0.07 + i) * 1.1);
+      }
+      ctx.stroke();
+    }
+  }
 }
 
 function paintDoorLeaf(ctx: CanvasRenderingContext2D, size: number) {
