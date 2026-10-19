@@ -1377,7 +1377,7 @@ function paintDoorMetalBump(ctx: CanvasRenderingContext2D, size: number) {
 /** Standing-seam zinc roof. Ports the door sheet-metal ribs onto a covering, without rivet rows. */
 function paintRoofMetal(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [158, 166, 170], 10);
-  const seams = 7;
+  const seams = 9; // denser standing seams for richer metal roof
   for (let i = 0; i < seams; i++) {
     const x0 = Math.floor((i / seams) * size);
     const x1 = Math.floor(((i + 1) / seams) * size);
@@ -1393,13 +1393,29 @@ function paintRoofMetal(ctx: CanvasRenderingContext2D, size: number) {
     const streak = 0.12 + hash2(i, 2.7) * 0.7;
     ctx.fillStyle = "rgba(92,86,74,0.16)";
     ctx.fillRect(x0 + 8, Math.floor(streak * size), Math.max(4, (x1 - x0) * 0.28), size);
+    // Extra soft oxide and dust streaks for denser standing-seam metal weathering.
+    if (hash2(i, 5.1) > 0.4) {
+      const ox = 0.05 + hash2(i, 6.2) * 0.6;
+      ctx.fillStyle = "rgba(110,90,70,0.12)";
+      ctx.fillRect(x0 + 6, Math.floor(ox * size), Math.max(3, (x1 - x0) * 0.18), Math.floor(size * 0.4));
+    }
+    for (let d = 0; d < 3; d++) {
+      if (hash2(i + d, 9.3) > 0.55) {
+        const dx = x0 + (x1 - x0) * (0.15 + hash2(i, 10 + d) * 0.7);
+        const dy = hash2(i + 1, 11 + d) * size;
+        ctx.fillStyle = "rgba(180,170,160,0.18)";
+        ctx.beginPath();
+        ctx.arc(dx, dy, 1.5 + hash2(i, 12 + d), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
   }
 }
 
 function paintRoofMetalBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "#8a8a8a";
   ctx.fillRect(0, 0, size, size);
-  const seams = 7;
+  const seams = 9; // denser standing seams for richer metal roof
   for (let i = 1; i < seams; i++) {
     const x = Math.floor((i / seams) * size);
     ctx.fillStyle = "#ececec";

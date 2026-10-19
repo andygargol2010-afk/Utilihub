@@ -6,6 +6,8 @@ PRODUCT run 219: door leaf densify (grain 4→7 denser, wear 6→11, tighter spa
 
 PRODUCT run 220: glazing densify (streaks 5→8 denser + vertical dust streaks + soft specks) via local clone surgical.
 
+PRODUCT run 221: roof metal densify (seams 7→9, oxide streaks + dust specks) via local clone surgical.
+
 <!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -23,7 +25,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 220
+runs_done: 221
 runs_max: 500
 ```
 
@@ -49,7 +51,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 345417
+approx_bytes: 346192
 last_known_good_hint: (post fascia densify ~343999 bytes, SHA 532b590bee1915e769fec5e8dcfc4451c2adf193)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -66,7 +68,7 @@ last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
 deploy: pending post-push check
-note: PRODUCT run 220 — paintGlazing densify (reflection streaks 5→8, added vertical dust streaks + 14 soft dust specks). Monolith ~345417B. Surgical via local clone.
+note: PRODUCT run 221 — paintRoofMetal densify (seams 7→9, added oxide streaks + dust specks). Monolith ~346192B. Surgical via local clone.
 ```
 
 Refresh after each run.
@@ -116,5 +118,7 @@ PRODUCT run 218: joinery densify (bands 22, denser strokes, more specks, rare mo
 PRODUCT run 219: door leaf densify (grain 4→7 denser, wear 6→11, tighter spacing) via local clone surgical.
 
 PRODUCT run 220: glazing densify (streaks 5→8 denser + vertical dust streaks + soft specks) via local clone surgical.
+
+PRODUCT run 221: roof metal densify (seams 7→9, oxide streaks + dust specks) via local clone surgical.
 
 <!-- end:house-modeler-state.md -->
