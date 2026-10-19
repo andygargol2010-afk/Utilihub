@@ -39,10 +39,10 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide)
 finanzas simples: recent (regla-72, propina-impuesto, margen-beneficio)
 hogar/construcción: recent
-% / math básica: recent (proporcion, perimetro-rectangulo)
+% / math básica: recent (proporcion, perimetro-rectangulo, area-trapecio)
 generadores texto: watch
 conversiones genéricas: recent (presion)
 salud / body-metrics: recent (bac, deficit, calorias-quemadas)
@@ -80,6 +80,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-19 PRODUCT: prepared calculadora-volumen-piramide (ciencia) + calculadora-area-trapecio (matematicas) — components and data files committed. Index.ts and registry.tsx update considered fragile due to large file size and truncation risk in tool calls; stopped without registering to avoid breaking the catalog. Files left for next run. Saturation escape used.
 
 2026-10-19 PRODUCT: shipped 2 (calculadora-volumen-piramide ciencia + calculadora-area-trapecio matematicas). Components and data were prepared previous run; registered surgically after restoring good index.ts. Distinct clusters. Anti-dupe OK. Registry surgical OK. Saturation escape used.
+
+2026-10-19 FIX-BUILD: deploy ERROR due to missing ./pyramid-volume-calculator-tool and trapezoid definitions in lib/general (dangling imports). Created the two tool definition files matching the existing component quality bar, then re-added the imports to index.ts. Registry already had the lazy + pickComponent entries. Build should be clean once new deploy processes.
 ```
 
 ---
@@ -87,9 +89,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
+last_mode: FIX-BUILD
 last_slugs: calculadora-volumen-piramide, calculadora-area-trapecio
-last_deploy: pending post-push
+last_deploy: pending (index re-add commit fe7308be)
 ```
 
 <!-- end:tools-builder-state.md -->
