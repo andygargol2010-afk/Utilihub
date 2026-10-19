@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 216
+runs_done: 217
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 343998
-last_known_good_hint: (post fascia densify ~343998 bytes)
+approx_bytes: 343999
+last_known_good_hint: (post fascia densify ~343999 bytes, SHA 532b590bee1915e769fec5e8dcfc4451c2adf193)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: META
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
-deploy: (pending check)
-note: META run 216 — joinery densify (bands 18→22, denser strokes, more specks, rare mottling) prepared in local clone but not pushed (no git push auth; avoid tool-channel full rewrite of >300KB). Next PRODUCT should use authenticated local clone + push for paintJoinery.
+deploy: READY (latest dpl_AqKyrKvYbRktJFzjBvpiX4UjmnLN and previous READY on fix/spanish-complete)
+note: META run 217 — roll 6 PRODUCT candidate (paintJoinery densify: bands 18→22, denser strokes, more specks, rare mottling) deferred again due to no local git push auth and tool-channel full-rewrite truncation risk on >300KB monolith. Monolith gates OK (343999B, 7783 lines, paint helpers + Sky present). Prefer authenticated local clone + push next.
 ```
 
 Refresh after each run.
@@ -102,6 +102,7 @@ PRODUCT run 213: grass densify (flecks 28, blades 36) via local clone surgical.
 PRODUCT run 214: clay tiles densify (flecks 6→9, moss threshold lower) via local clone surgical.
 PRODUCT run 215: fascia densify (extra grain lines, knots, sun-bleach) via local clone surgical.
 META run 216: joinery densify prepared locally (bands 18→22, denser strokes, more specks, rare mottling) but not pushed (no auth / truncation risk). Prefer authenticated local clone + push next.
+META run 217: same joinery densify deferred again (roll 6 → PRODUCT aborted for safety). Monolith confirmed 343999 bytes / 7783 lines, SHA 532b590b..., gates OK, deploys READY, SEO none.
 ```
 
 <!-- end:house-modeler-state.md -->
