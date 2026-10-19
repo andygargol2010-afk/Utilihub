@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 209
+runs_done: 210
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 341643
-last_known_good_hint: ce9fcf932254 (~341643 bytes)
+approx_bytes: 341679
+last_known_good_hint: (post densify ~341679 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
-deploy: ERROR (unrelated missing pyramid-volume-calculator-tool from other surface; prior READY)
-note: PRODUCT run 209 — densify lawn worn-earth patches (9 patches, varied tones) via local clone + push. Monolith ~341643 bytes blob ce9fcf93; gates OK (paint helpers, Sky, door=1). Build ERROR not caused by this change.
+deploy: (pending check)
+note: PRODUCT run 210 — densify gravel path mossy patches (16) and leaf litter/damp spots (18) for more lived-in outdoor path. Monolith ~341679 bytes; gates OK.
 ```
 
 Refresh after each run.
@@ -70,6 +70,7 @@ Refresh after each run.
 ## NOTES
 
 ```
+PRODUCT run 210: gravel path densify (moss + leaf litter).
 Bootstrap automation only points here — expand rules in house-modeler.md / ops.
 Counter source of truth: this file (not the automation prompt field).
 FORCE FOCUS mobile UI: done (remaining_runs 0).

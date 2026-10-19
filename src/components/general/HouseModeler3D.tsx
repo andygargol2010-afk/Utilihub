@@ -1605,8 +1605,8 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   g.addColorStop(1, "rgba(70,60,48,0)");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, size, size);
-  // Soft mossy patches in depressions for weathered outdoor look
-  for (let i = 0; i < 11; i++) {
+  // Soft mossy patches in depressions for weathered outdoor look (denser for lived-in path)
+  for (let i = 0; i < 16; i++) {
     const x = hash2(i + 400, 2.1) * size;
     const y = hash2(i + 400, 6.9) * size;
     const r = 6 + hash2(i, 13) * 12;
@@ -1639,8 +1639,8 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
   }
-  // Occasional leaf litter and darker damp spots so the gravel path reads as used outdoor surface, not freshly spread.
-  for (let i = 0; i < 14; i++) {
+  // Occasional leaf litter and darker damp spots so the gravel path reads as used outdoor surface, not freshly spread. (denser)
+  for (let i = 0; i < 18; i++) {
     const x = hash2(i + 800, 2.9) * size;
     const y = hash2(i + 800, 5.1) * size;
     const r = 2.5 + hash2(i, 7.4) * 5;
