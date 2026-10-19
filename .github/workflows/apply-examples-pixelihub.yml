@@ -1,0 +1,35 @@
+name: Apply PixeliHub examples
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/apply-examples-pixelihub.py"
+      - ".github/workflows/apply-examples-pixelihub.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 80
+
+      - name: Apply examples patch
+        run: python3 scripts/apply-examples-pixelihub.py
+
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/PixelArtStudio.tsx
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "feat(pixelihub): starter example sprites (roadmap item 22)"
+          git push origin fix/spanish-complete
