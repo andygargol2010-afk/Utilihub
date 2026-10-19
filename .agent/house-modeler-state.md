@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 207
+runs_done: 208
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 354964
-last_known_good_hint: 26805be018567f80e854a9950ad48a5f30cdf14b (~354964 bytes)
+approx_bytes: 341531
+last_known_good_hint: 26805be018567f80e854a9950ad48a5f30cdf14b (~341531–354964 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -57,10 +57,10 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 
 ```
 last_mode: META
-last_date: 2026-10-18
+last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
-deploy: READY (utilihub-an5vf8t77-financialproyects.vercel.app recent; prior modeler-related READY)
-note: META run 207 — health check OK; monolith intact ~354964 bytes SHA 26805be0; SEO locales none; no ERROR deploys on surface.
+deploy: READY / BUILDING (latest META commit building; prior READY utilihub-an5vf8t77…)
+note: META run 208 — health check OK; monolith intact ~341531 bytes (curl) / SHA 26805be0; paint helpers + Sky + door conditional=1 present; SEO locales none. Roll 7 was PRODUCT but skipped full rewrite (auth + truncation risk); local densify of paintWornEarth prepared (~343k). Prefer local-clone push next PRODUCT when credentials available.
 ```
 
 Refresh after each run.
@@ -92,6 +92,7 @@ Monolith SHA 484b4d9 after PRODUCT run 204 (window timber sash densify).
 META run 205: health check OK; current HEAD b53dd565 (catalog); monolith intact.
 PRODUCT run 206: grass densify at 525771d (~341531 bytes).
 META run 207: verified monolith ~354964 bytes SHA 26805be0 intact (paint helpers, Sky, finishes present); deploys READY; SEO none.
+META run 208: roll 7 → PRODUCT candidate (worn-earth densify prepared locally); deferred to META for safety (no git push auth in sandbox; avoid tool-channel full rewrite of >300KB). Next PRODUCT should use authenticated local clone + push for paintWornEarth densify.
 ```
 
 <!-- end:house-modeler-state.md -->
