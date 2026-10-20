@@ -18,6 +18,8 @@ PRODUCT run 224: plinth densify (extra chips on courses, denser mortar stroke, f
 PRODUCT run 225: fascia densify (extra micro-grain fibers + rare check cracks) via local clone surgical.
 
 PRODUCT run 226: worn-earth densify (grit 96→128 denser + leaf flecks, damp 12→16, cracks 8→12) via local clone surgical.
+
+PRODUCT run 227: timber densify (grain 10→14, micro-fibers 12→16, flecks 10→14 denser) via local clone surgical.
 <!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -35,7 +37,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 226
+runs_done: 227
 runs_max: 500
 ```
 
@@ -78,7 +80,7 @@ last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
 deploy: pending
-note: PRODUCT run 226 — worn-earth densify (grit 96→128, damp 12→16 + leaf flecks, cracks 8→12). Monolith intact. SEO none.
+note: PRODUCT run 227 — timber densify (grain 10→14, micro-fibers 12→16, flecks 10→14 denser). Monolith intact. SEO none.
 ```
 
 Refresh after each run.
@@ -141,4 +143,6 @@ PRODUCT run 224: plinth densify (extra chips on courses, denser mortar stroke, f
 PRODUCT run 225: fascia densify (extra micro-grain fibers + rare check cracks) via local clone surgical.
 
 PRODUCT run 226: worn-earth densify (grit 96→128 denser + leaf flecks, damp 12→16, cracks 8→12) via local clone surgical.
+
+PRODUCT run 227: timber densify (grain 10→14, micro-fibers 12→16, flecks 10→14 denser) via local clone surgical.
 <!-- end:house-modeler-state.md -->
