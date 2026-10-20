@@ -33,10 +33,9 @@ export const SEO_LOCALE_PRIORITY: readonly string[] = [
 
 /**
  * Active SEO locales (shipped route trees).
- * Empty until the first seo-locales Ideas Lab run lands pages.
  */
 export const SEO_LOCALES_ACTIVE: readonly SeoLocale[] = [
-  // e.g. { code: "pt", bcp47: "pt-BR", dir: "ltr", labelEn: "Portuguese", status: "active" },
+  { code: "pt", bcp47: "pt-BR", dir: "ltr", labelEn: "Portuguese", status: "active" },
 ] as const;
 
 export function seoLocaleByCode(code: string): SeoLocale | undefined {
