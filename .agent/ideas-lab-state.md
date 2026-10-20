@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: games
-last_closed_id: orbit-defender-arcade
+last_closed_domain: seo-locales
+last_closed_id: pt
 p_fixed: 0.35
 
 weights_core:
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-20 | seo-locales | pt | Portuguese (pt-BR) beachhead complete: /pt home + pulse-catch + orbit-defender + snake + pong (1/5 active)
 - 2026-10-20 | quality-lift | pulse-catch-arena | Elevated Pulse Catch Arena with perfect-catch system + combo fire + fever (EN+ES)
 - 2026-10-19 | games | orbit-defender-arcade | Interactive Orbit Defender Arcade (EN+ES)
 - 2026-10-19 | simulators | reaction-diffusion-lab | Interactive Reaction-Diffusion Lab (EN+ES)
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-17 | simulators | boids-flocking-lab | Boids Flocking Lab (EN+ES)
 - 2026-10-17 | games | pulse-catch-arena | Pulse Catch Arena (EN+ES)
 - 2026-10-17 | search-magnets | canvas-webgl-performance-guide | Canvas & WebGL Performance Guide (EN+ES)
-- 2026-10-17 | adsense-prep | cookie-policy | Cookie Policy pages (EN+ES)
 ```
 
 ---
@@ -60,7 +60,7 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: done
 idea: Activate Portuguese (pt-BR bias) as first SEO locale. Ship a complete /pt home page with real translated copy (title, description, intro, links to available experiences where possible) plus one high-value experience page (prefer a lightweight playground equivalent or simplified interactive if feasible; otherwise a high-traffic tool page with full translation). Wire hreflang/alternates to EN+ES counterparts, update registry + seo-locales.ts, keep no primary-nav links from EN or ES. Guard CWV, keep Adsterra. EN+ES remain untouched.
 id: pt
 path_en: n/a
@@ -68,11 +68,11 @@ path_es: n/a
 path_seo: /pt
 domain: seo-locales
 runs_total: 4
-runs_remaining: 1
-acceptance: pending
+runs_remaining: 0
+acceptance: shipped
 share: n/a
 next_step_required: no
-notes: EXECUTE 2026-10-20: added /pt/snake (SnakeGame locale=pt full string support + complete PT page + hreflang). Updated /pt home with third link + list item. Registry pages_done now includes the new path (1/5 active). Adsterra kept. EN+ES untouched. Next: deepen further or close.
+notes: EXECUTE 2026-10-20 final: added /pt/pong (PongGame locale=pt full string support + complete PT page + hreflang). Updated /pt home with fourth link + list item. Registry pages_done updated. Beachhead closed (1/5 active). Adsterra kept. EN+ES untouched.
 adsense-prep_runs: 3
 ```
 
