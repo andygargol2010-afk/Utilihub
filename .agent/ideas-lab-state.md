@@ -16,13 +16,13 @@ last_closed_id: return-streak-board
 p_fixed: 0.35
 
 weights_core:
-  kits: 8
-  journeys: 5
-  games: 2
-  simulators: 4
-  studio-composition: 6
-  playgrounds: 7
-  quality-lift: 1
+  kits: 9
+  journeys: 6
+  games: 3
+  simulators: 5
+  studio-composition: 7
+  playgrounds: 1
+  quality-lift: 2
 
 weights_growth:
   traffic-bets: 3
@@ -60,25 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive Return Streak Board — lightweight visual board (animated nodes + pulse rings) that tracks visit streaks and last-played playgrounds/games via localStorage only (no accounts). Shows “due to return” highlights, one-tap resume, and a suggested next experience. Visual payoff, EN+ES, route-isolated, Adsterra kept. Creates a return/retention loop without server state.
-id: return-streak-board
-path_en: /return-streak-board
-path_es: /es/return-streak-board
+status: active
+idea: Interactive Aurora Particle Playground — open Canvas 2D playground where users place and drag magnetic attractors/emitters. Particles form glowing aurora-like flowing ribbons with persistent trails that respond to attractors in real time. Controls for density, speed, hue shift, and turbulence. Visual payoff with animated glowing particles, route-isolated, EN+ES, next-step before Adsterra. Lightweight (no new deps, modest particle count on mobile). Creates a shareable visual canvas experience.
+id: aurora-particle-playground
+path_en: /aurora-particle-playground
+path_es: /es/aurora-particle-playground
 path_seo: n/a
-domain: retention-loops
-runs_total: 6
-runs_remaining: 0
-acceptance: complete
-share: n/a
-next_step_required: no
-notes: IDEATE 2026-10-20: U=0.32996 GROWTH; U_g=0.9855 FLEX; weighted FLEX → retention-loops (not last_closed). Weights: selected→1, other non-FIXED FLEX +1. FIXED untouched. seo-locales still 1/5 active.
-EXECUTE 2026-10-20 (1/6): shipped MVP visual board with localStorage daily streak, animated due-nodes from popular playgrounds, one-tap links, EN+ES routes. Adsterra kept. Next runs deepen tracking/visuals.
-EXECUTE 2026-10-20 (2/6): deepened visuals + tracking — longestStreak, visual pulse chain, sorted overdue nodes with dual-ring animations, days-ago labels, unique visits count. EN+ES. Adsterra kept. Lightweight CSS only.
-EXECUTE 2026-10-20 (3/6): milestones (3/7/14/30) with progress bar, totalVisits tracking, prominent suggested-next hero card for most overdue, expanded grid to 10 nodes. EN+ES. Adsterra kept. Lightweight CSS only.
-EXECUTE 2026-10-20 (4/6): week streak calendar strip (7-day active markers + today highlight) + streak-at-risk note if not visited today. EN+ES. Adsterra kept. Lightweight CSS only.
-EXECUTE 2026-10-20 (5/6): accurate 7-day calendar via visitDates tracking, flame-pulse animation on streak number, resume-bonus labels on due nodes. EN+ES. Adsterra kept. Lightweight CSS only.
-EXECUTE 2026-10-20 (6/6): added share streak button (Web Share API + clipboard fallback). Project complete. EN+ES. Adsterra kept. Lightweight only.
+domain: playgrounds
+runs_total: 7
+runs_remaining: 7
+acceptance: pending
+share: both
+next_step_required: yes
+notes: IDEATE 2026-10-20: U=0.8088 CORE; weighted sample 29.31/33 → playgrounds (not last_closed). Weights: selected→1, other CORE +1. FIXED untouched. Deploy READY. seo-locales still 1/5 active.
 adsense-prep_runs: 3
 ```
 
