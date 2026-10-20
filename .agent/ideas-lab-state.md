@@ -68,11 +68,12 @@ path_es: /es/return-streak-board
 path_seo: n/a
 domain: retention-loops
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: n/a
 next_step_required: no
 notes: IDEATE 2026-10-20: U=0.32996 GROWTH; U_g=0.9855 FLEX; weighted FLEX → retention-loops (not last_closed). Weights: selected→1, other non-FIXED FLEX +1. FIXED untouched. seo-locales still 1/5 active.
+EXECUTE 2026-10-20 (1/6): shipped MVP visual board with localStorage daily streak, animated due-nodes from popular playgrounds, one-tap links, EN+ES routes. Adsterra kept. Next runs deepen tracking/visuals.
 adsense-prep_runs: 3
 ```
 
