@@ -68,11 +68,11 @@ path_es: n/a
 path_seo: /pt
 domain: seo-locales
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: EXECUTE 2026-10-20: shipped /pt home (translated title/desc/intro + link to experience) and /pt/pulse-catch (reused PulseCatch with pt strings). Updated SEO_LOCALES_ACTIVE + registry (1/5 active). Hreflang on PT pages to EN+ES. Minimal shell for /pt (no EN/ES nav). Sitemap entries added. Adsterra kept. EN+ES untouched. Next runs can deepen PT pages or add more experiences.
+notes: EXECUTE 2026-10-20: added /pt/orbit-defender-arcade (OrbitDefenderArcadeGame locale=pt support + full PT page + hreflang). Updated /pt home with second link + list. Registry pages_done now includes the new path (1/5 active). Adsterra kept. EN+ES untouched. Next: deepen further or add one more experience.
 adsense-prep_runs: 3
 ```
 

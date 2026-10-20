@@ -60,6 +60,12 @@ function PortugueseHome() {
             >
               Jogar Pulse Catch
             </Link>
+            <Link
+              to="/pt/orbit-defender-arcade"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-primary/30 bg-card px-5 py-3 text-sm font-bold text-primary hover:bg-primary/5"
+            >
+              Orbit Defender Arcade
+            </Link>
           </div>
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
             <span>Sem cadastro</span>
@@ -72,15 +78,23 @@ function PortugueseHome() {
       <div className="container-page py-10">
         <h2 className="text-2xl font-bold">Experiências disponíveis</h2>
         <p className="mt-2 text-muted-foreground">
-          Comece com o jogo de reação Pulse Catch. Mais páginas em português chegarão em breve.
+          Jogos interativos em português. Mais páginas chegarão em breve.
         </p>
-        <ul className="mt-6 space-y-3">
+        <ul className="mt-6 space-y-4">
           <li>
             <Link to="/pt/pulse-catch" className="font-semibold text-primary hover:underline">
               Pulse Catch — jogo de reação rápida
             </Link>
             <p className="text-sm text-muted-foreground">
               Toque nas faíscas brilhantes antes que se apaguem. Construa combos e registre sua melhor pontuação.
+            </p>
+          </li>
+          <li>
+            <Link to="/pt/orbit-defender-arcade" className="font-semibold text-primary hover:underline">
+              Orbit Defender Arcade — defenda o planeta
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              Aponte interceptores contra ondas de asteroides. Combos, power-ups e dificuldade crescente.
             </p>
           </li>
         </ul>
