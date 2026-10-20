@@ -1,40 +1,6 @@
 # UtiliHub House Modeler — State (3/3)
 
-**Part 3 of 3 — runtime state only.** End marker: `PRODUCT run 218: joinery densify (bands 22, denser strokes, more specks, rare mottling) via local clone surgical.
-
-PRODUCT run 219: door leaf densify (grain 4→7 denser, wear 6→11, tighter spacing) via local clone surgical.
-
-PRODUCT run 220: glazing densify (streaks 5→8 denser + vertical dust streaks + soft specks) via local clone surgical.
-
-PRODUCT run 221: roof metal densify (seams 7→9, oxide streaks + dust specks) via local clone surgical.
-
-META run 222: health check OK (monolith ~345964B SHA 76762862..., deploys READY, SEO none).
-
-MODELADOR-3D run 223: added wood MatPreset (roughness 0.68) in helpers. Surgical.
-
-
-PRODUCT run 224: plinth densify (extra chips on courses, denser mortar stroke, fine grit + rare lichen flecks) via local clone surgical.
-
-PRODUCT run 225: fascia densify (extra micro-grain fibers + rare check cracks) via local clone surgical.
-
-PRODUCT run 226: worn-earth densify (grit 96→128 denser + leaf flecks, damp 12→16, cracks 8→12) via local clone surgical.
-
-PRODUCT run 227: timber densify (grain 10→14, micro-fibers 12→16, flecks 10→14 denser) via local clone surgical.
-
-
-PRODUCT run 228: nosing densify (rings 3→5 denser, boards 5→6, micro-checks + rare knots + dust flecks) via local clone surgical.
-
-PRODUCT run 229: plate densify (grain 5→8 denser + rare check cracks) via local clone surgical.
-
-PRODUCT run 230: railing metal densify (flutes 10→12, denser oxide streaks + dust specks) via local clone surgical.
-
-PRODUCT run 231: grass densify (flecks 28→36, blades 36→48, worn patches 9→11) via local clone surgical.
-PRODUCT run 232: board-formed densify (grit 68→84, micro-pits 28→36) via local clone surgical.
-
-PRODUCT run 233: plaster densify (patches 24→32, flecks 48→64, trowel 10→14 / 8→12, dirt 10→14, micro-pits 96→128) via local clone surgical.
-
-PRODUCT run 234: clay tiles densify (flecks 9→12, moss denser) via local clone surgical.
-<!-- end:house-modeler-state.md -->`.
+**Part 3 of 3 — runtime state only.** End marker: `<!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
 
@@ -51,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 234
+runs_done: 235
 runs_max: 500
 ```
 
@@ -78,7 +44,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 ```
 path: src/components/general/HouseModeler3D.tsx
 approx_bytes: 351076
-last_known_good_hint: (post nosing densify ~349786 bytes)
+last_known_good_hint: (post clay tiles densify ~351076 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -90,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: META
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: pending
-note: PRODUCT run 234 — clay tiles densify (flecks 9→12, moss denser threshold 0.62→0.55 and r>1). Monolith intact. SEO pt active, deferred for monolith.
+deploy: BUILDING→READY expected for 234
+note: META run 235 — health check OK. Monolith 351076B / 7946 lines, gates OK (paint helpers + Sky present). Latest deploy BUILDING at start. No sandbox git push auth; chimney crown densify (courses 4→5 + soot/flecks/lime) prepared locally but deferred to avoid tool-channel truncation. Prefer authenticated local clone + push next. SEO pt active, deferred for monolith.
 ```
 
 Refresh after each run.
@@ -104,71 +70,9 @@ Refresh after each run.
 ## NOTES
 
 ```
-PRODUCT run 211: worn-earth densify (grit, damp, cracks).
-Bootstrap automation only points here — expand rules in house-modeler.md / ops.
-Counter source of truth: this file (not the automation prompt field).
-FORCE FOCUS mobile UI: done (remaining_runs 0).
-Surgical PRODUCT succeeded via local git clone + edit + push. Prefer local-clone surgical when PRODUCT if auth available.
-Plaster densify now pushed at 2923d49.
-Monolith SHA e9bd8ec after PRODUCT run 193 (plaster densify). Previous gravel ffe82f8 / catalog 25026e8.
-Monolith SHA 33c73a7 after PRODUCT run 194 (timber densify).
-Monolith SHA c673fe0 after PRODUCT run 195 (clay densify).
-Monolith SHA 2ca3a66 after PRODUCT run 196 (Sky enrich).
-Monolith SHA 7410e8a after PRODUCT run 197 (foundation densify).
-Unrelated catalog ERROR fixed; surface intact.
-MODELADOR-3D plastic preset at 5b2a3af / cb5c0b7.
-META run 198: confirmed READY deploys post-7410e8a; monolith size healthy; SEO locales none.
-Monolith SHA df0b233 after PRODUCT run 199 (gravel densify).
-Monolith SHA 63335a3 after PRODUCT run 200 (ashlar masonry densify).
-Monolith SHA 298f51d after PRODUCT run 201 (chimney brick densify).
-Monolith SHA fa241f92 after PRODUCT run 202 (door metal densify).
-MODELADOR-3D rubber preset at 976dcd0d.
-Monolith SHA 484b4d9 after PRODUCT run 204 (window timber sash densify).
-META run 205: health check OK; current HEAD b53dd565 (catalog); monolith intact.
-PRODUCT run 206: grass densify at 525771d (~341531 bytes).
-META run 207: verified monolith ~354964 bytes SHA 26805be0 intact (paint helpers, Sky, finishes present); deploys READY; SEO none.
-META run 208: roll 7 → PRODUCT candidate (worn-earth densify prepared locally); deferred to META for safety (no git push auth in sandbox; avoid tool-channel full rewrite of >300KB). Next PRODUCT should use authenticated local clone + push for paintWornEarth densify.
-PRODUCT run 210: gravel path densify (moss + leaf litter).
-
-META run 212: verified READY deploys, monolith gates OK (342609B, 7750 lines, paints present). Grass densify (flecks 22→28, blades 28→36) prepared in local clone but not pushed due to tool-channel truncation risk for full rewrite. Prefer authenticated local push next.
-
-PRODUCT run 213: grass densify (flecks 28, blades 36) via local clone surgical.
-PRODUCT run 214: clay tiles densify (flecks 6→9, moss threshold lower) via local clone surgical.
-PRODUCT run 215: fascia densify (extra grain lines, knots, sun-bleach) via local clone surgical.
-META run 216: joinery densify prepared locally (bands 18→22, denser strokes, more specks, rare mottling) but not pushed (no auth / truncation risk). Prefer authenticated local clone + push next.
-META run 217: same joinery densify deferred again (roll 6 → PRODUCT aborted for safety). Monolith confirmed 343999 bytes / 7783 lines, SHA 532b590b..., gates OK, deploys READY, SEO none.
+Prefer local-clone surgical PRODUCT when auth available. Prefer META if only path is full rewrite >300KB via tool channel.
+PRODUCT run 234: clay tiles densify (flecks 9→12, moss denser) via local clone surgical.
+META run 235: health check + deferred chimney-crown densify due to no git push auth.
 ```
 
-PRODUCT run 218: joinery densify (bands 22, denser strokes, more specks, rare mottling) via local clone surgical.
-
-PRODUCT run 219: door leaf densify (grain 4→7 denser, wear 6→11, tighter spacing) via local clone surgical.
-
-PRODUCT run 220: glazing densify (streaks 5→8 denser + vertical dust streaks + soft specks) via local clone surgical.
-
-PRODUCT run 221: roof metal densify (seams 7→9, oxide streaks + dust specks) via local clone surgical.
-
-META run 222: health check OK (monolith ~345964B SHA 76762862..., gates OK, deploys READY, SEO none).
-
-MODELADOR-3D run 223: added wood MatPreset (roughness 0.68) in helpers. Surgical.
-
-
-PRODUCT run 224: plinth densify (extra chips on courses, denser mortar stroke, fine grit + rare lichen flecks) via local clone surgical.
-
-PRODUCT run 225: fascia densify (extra micro-grain fibers + rare check cracks) via local clone surgical.
-
-PRODUCT run 226: worn-earth densify (grit 96→128 denser + leaf flecks, damp 12→16, cracks 8→12) via local clone surgical.
-
-PRODUCT run 227: timber densify (grain 10→14, micro-fibers 12→16, flecks 10→14 denser) via local clone surgical.
-
-
-PRODUCT run 228: nosing densify (rings 3→5 denser, boards 5→6, micro-checks + rare knots + dust flecks) via local clone surgical.
-
-PRODUCT run 229: plate densify (grain 5→8 denser + rare check cracks) via local clone surgical.
-
-PRODUCT run 230: railing metal densify (flutes 10→12, denser oxide streaks + dust specks) via local clone surgical.
-
-PRODUCT run 231: grass densify (flecks 28→36, blades 36→48, worn patches 9→11) via local clone surgical.
-PRODUCT run 232: board-formed densify (grit 68→84, micro-pits 28→36) via local clone surgical.
-
-PRODUCT run 233: plaster densify (patches 24→32, flecks 48→64, trowel 10→14 / 8→12, dirt 10→14, micro-pits 96→128) via local clone surgical.
 <!-- end:house-modeler-state.md -->
