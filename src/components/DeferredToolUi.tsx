@@ -50,7 +50,11 @@ async function loadRenderer(slug: string, locale: Locale): Promise<() => ReactNo
   const { GENERAL_TOOL_UI, GENERAL_TOOL_UI_ES } = await import("@/components/general/registry");
   const general = locale === "es" ? GENERAL_TOOL_UI_ES : GENERAL_TOOL_UI;
   const render = general[slug];
-  if (render) return render;
+  if (render) {
+    // general/registry must return () => ReactNode; tolerate legacy element shape
+    if (typeof render === "function") return render as () => ReactNode;
+    return () => render as ReactNode;
+  }
 
   try {
     const { allToolBySlug } = await import("@/lib/all-tools");
@@ -81,7 +85,8 @@ export function DeferredToolUi({ slug, locale }: { slug: string; locale: Locale 
         const render = await loadRenderer(slug, locale);
         return {
           default: function LoadedToolUi() {
-            return <>{render()}</>;
+            const node = typeof render === "function" ? render() : render;
+            return <>{node}</>;
           },
         };
       }),
