@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "scripts/restore-and-apply-examples-pixelihub.py"
+      - "scripts/apply-touch-draw-v2.py"
       - ".github/workflows/restore-and-apply-examples-pixelihub.yml"
 
 permissions:
@@ -22,6 +23,9 @@ jobs:
       - name: Restore studio + apply examples
         run: python3 scripts/restore-and-apply-examples-pixelihub.py
 
+      - name: Apply touch-draw-v2 (stop mobile bounce)
+        run: python3 scripts/apply-touch-draw-v2.py
+
       - name: Commit
         run: |
           git config user.name "andygargol2010-afk"
@@ -31,5 +35,5 @@ jobs:
             echo "No changes"
             exit 0
           fi
-          git commit -m "feat(pixelihub): starter example sprites (roadmap item 22)"
+          git commit -m "fix(pixelihub): touch-draw-v2 stop page bounce while drawing on mobile"
           git push origin HEAD:fix/spanish-complete
