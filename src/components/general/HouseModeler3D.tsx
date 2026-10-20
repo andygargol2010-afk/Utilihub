@@ -1081,7 +1081,7 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
         ctx.fill();
       }
       // Extra fine surface flecks for denser clay porosity and mill variation.
-      for (let f = 0; f < 9; f++) { // denser fine flecks for richer clay porosity
+      for (let f = 0; f < 12; f++) { // denser fine flecks for richer clay porosity (PRODUCT densify)
         if (hash2(c + 40 + f, r + 50) > 0.62) {
           const fx = x + cw * (0.1 + hash2(c + 41 + f, r + 51) * 0.8);
           const fy = y + rh * (0.15 + hash2(c + 42 + f, r + 52) * 0.7);
@@ -1097,7 +1097,7 @@ function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
         ctx.fillRect(x + cw * 0.15, y + rh * 0.2, 2, 2);
       }
       // Soft moss patches in lower courses so the clay roof reads as weathered outdoor tile, not factory-fresh.
-      if (hash2(c + 17, r + 41) > 0.62 && r > 2) { // more moss for weathered look
+      if (hash2(c + 17, r + 41) > 0.55 && r > 1) { // denser moss for weathered look (PRODUCT densify)
         const moss = hash2(c + 23, r + 9);
         const mx = x + cw * (0.2 + moss * 0.6);
         const my = y + rh * (0.55 + moss * 0.3);
