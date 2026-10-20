@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 238
+runs_done: 239
 runs_max: 500
 ```
 
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: META
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: READY (restore SHA 06f436ec → utilihub-m6s98fl5w-financialproyects.vercel.app)
-note: META run 238 — health after restore. Monolith 351478B / 7956 lines, gates OK. Door-metal densify (scratches 8→12, grit 10→14 + rust) deferred; requires local-clone surgical.
+deploy: READY (latest preview utilihub-regfc0d1w-financialproyects.vercel.app / SHA c17af9fa; restore still healthy at 06f436ec)
+note: META run 239 — health after restore + nav commits. Monolith 351478B / ~7956 lines, gates OK. Door-metal densify (scratches 8→12, grit 10→14 + rust) still deferred; requires local-clone surgical (tool channel full rewrite risk).
 ```
 
 Refresh after each run.
@@ -77,6 +77,7 @@ PRODUCT run 236: chimney crown densify (courses 4→5 + soot/flecks/lime) via lo
 PRODUCT run 237: worn-earth densify (grit/damp/leaf/cracks) via local clone surgical.
 RESTORE 2026-10-20: failed PRODUCT push truncated to PLACEHOLDER; restored via Actions (06f436ec).
 META run 238: confirmed READY deploy + monolith health; door-metal densify still queued for authenticated local push.
+META run 239: reconfirmed monolith health (~351kB, no PLACEHOLDER), deploy READY, door densify deferred.
 ```
 
 <!-- end:house-modeler-state.md -->
