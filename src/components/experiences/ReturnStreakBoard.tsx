@@ -12,18 +12,24 @@ type StreakData = {
   longestStreak: number;
   totalVisits: number;
   visits: Record<string, number>; // id -> last timestamp
+  visitDates: string[]; // YYYY-MM-DD, recent days
 };
 
 const POPULAR = PLAYGROUNDS.slice(0, 10);
 
 const MILESTONES = [3, 7, 14, 30] as const;
 
+function todayKey(): string {
+  const d = new Date();
+  return d.toISOString().slice(0, 10);
+}
+
 function loadData(): StreakData {
   if (typeof window === "undefined")
-    return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {} };
+    return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {}, visitDates: [] };
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {} };
+    if (!raw) return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {}, visitDates: [] };
     const parsed = JSON.parse(raw);
     return {
       lastVisit: parsed.lastVisit ?? 0,
@@ -31,9 +37,10 @@ function loadData(): StreakData {
       longestStreak: parsed.longestStreak ?? parsed.streak ?? 0,
       totalVisits: parsed.totalVisits ?? 0,
       visits: parsed.visits ?? {},
+      visitDates: Array.isArray(parsed.visitDates) ? parsed.visitDates : [],
     };
   } catch {
-    return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {} };
+    return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {}, visitDates: [] };
   }
 }
 
@@ -82,6 +89,7 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
     longestStreak: 0,
     totalVisits: 0,
     visits: {},
+    visitDates: [],
   });
   const es = locale === "es";
 
@@ -97,6 +105,10 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
     }
     const longestStreak = Math.max(prev.longestStreak, streak);
     const totalVisits = (prev.totalVisits ?? 0) + 1;
+    const today = todayKey();
+    const visitDates = prev.visitDates.includes(today)
+      ? prev.visitDates
+      : [...prev.visitDates, today].slice(-30); // keep last 30
     const next: StreakData = {
       ...prev,
       lastVisit: now,
@@ -104,6 +116,7 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
       longestStreak,
       totalVisits,
       visits: { ...prev.visits, "return-streak-board": now },
+      visitDates,
     };
     saveData(next);
     setData(next);
@@ -135,6 +148,7 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
 
   const weekDays = getWeekDays();
   const visitedToday = data.lastVisit > 0 && isSameDay(data.lastVisit, Date.now());
+  const dateSet = new Set(data.visitDates);
 
   return (
     <div className="space-y-6">
@@ -142,26 +156,34 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
           {es ? "Racha de retorno" : "Return streak"}
         </p>
-        <h2 className="mt-1 text-2xl font-black">
-          {data.streak} {es ? "días seguidos" : "day streak"}
-        </h2>
+        <div className="mt-1 flex items-center gap-3">
+          <h2 className="text-2xl font-black">
+            {data.streak} {es ? "días seguidos" : "day streak"}
+          </h2>
+          <span
+            className="relative text-2xl"
+            style={{ filter: "drop-shadow(0 0 6px rgba(34,211,238,0.6))" }}
+          >
+            🔥
+            <span className="absolute inset-0 animate-ping opacity-40">🔥</span>
+          </span>
+        </div>
         <p className="mt-1 text-sm text-muted-foreground">
           {es
             ? `Mejor: ${data.longestStreak} días · Visitas totales: ${data.totalVisits}. Todo en tu navegador.`
             : `Best: ${data.longestStreak} days · Total visits: ${data.totalVisits}. Everything stays in your browser.`}
         </p>
 
-        {/* Week streak calendar */}
+        {/* Week streak calendar - accurate */}
         <div className="mt-4">
           <p className="mb-2 text-xs font-semibold text-muted-foreground">
             {es ? "Esta semana" : "This week"}
           </p>
           <div className="flex justify-between gap-1">
             {weekDays.map((d, i) => {
+              const key = d.toISOString().slice(0, 10);
               const isToday = isSameDay(d.getTime(), Date.now());
-              // Approximate activity: within current streak window ending today
-              const dayOffset = 6 - i;
-              const active = data.streak > dayOffset && (visitedToday || !isToday);
+              const active = dateSet.has(key);
               return (
                 <div key={i} className="flex flex-1 flex-col items-center gap-1">
                   <span className="text-[10px] uppercase text-muted-foreground">
@@ -330,6 +352,11 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
                       ? "Reciente"
                       : "Recent"}
                 </p>
+                {due && (
+                  <p className="mt-1 text-[10px] font-semibold text-amber-600 dark:text-amber-400">
+                    {es ? "Bonus de retorno" : "Resume bonus"}
+                  </p>
+                )}
               </div>
             </Link>
           );
