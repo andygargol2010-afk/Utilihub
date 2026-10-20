@@ -68,11 +68,11 @@ path_es: n/a
 path_seo: /pt
 domain: seo-locales
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: Roll U=0.37 → GROWTH (<0.50). U_g=0.55 > p_fixed=0.35 → FLEX urn. Weighted sample selected seo-locales (was 3; now 1). Other FLEX +1; FIXED untouched. Active SEO locales = 0/5. Priority queue first = pt. Elevated/quality not applicable. Next EXECUTE ships the beachhead pages.
+notes: EXECUTE 2026-10-20: shipped /pt home (translated title/desc/intro + link to experience) and /pt/pulse-catch (reused PulseCatch with pt strings). Updated SEO_LOCALES_ACTIVE + registry (1/5 active). Hreflang on PT pages to EN+ES. Minimal shell for /pt (no EN/ES nav). Sitemap entries added. Adsterra kept. EN+ES untouched. Next runs can deepen PT pages or add more experiences.
 adsense-prep_runs: 3
 ```
 
