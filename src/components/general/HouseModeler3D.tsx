@@ -1208,35 +1208,48 @@ function paintDoorMetalBump(ctx: CanvasRenderingContext2D, size: number) {
 /** Standing-seam zinc roof. Ports the door sheet-metal ribs onto a covering, without rivet rows. */
 function paintRoofMetal(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [158, 166, 170], 10);
-  const seams = 7;
+  const seams = 9;
   for (let i = 0; i < seams; i++) {
     const x0 = Math.floor((i / seams) * size);
     const x1 = Math.floor(((i + 1) / seams) * size);
-    const tone = 150 + Math.floor(hash2(i, 8.4) * 20);
+    const tone = 148 + Math.floor(hash2(i, 8.4) * 22);
     ctx.fillStyle = `rgb(${tone - 4}, ${tone + 2}, ${tone + 6})`;
     ctx.fillRect(x0, 0, x1 - x0, size);
-    ctx.fillStyle = "rgba(236,240,242,0.34)";
-    ctx.fillRect(x0 + 3, 0, 2, size);
-    ctx.fillStyle = "rgba(36,42,46,0.78)";
-    ctx.fillRect(x1 - 5, 0, 5, size);
-    ctx.fillStyle = "rgba(214,220,224,0.22)";
-    ctx.fillRect(x1 - 7, 0, 2, size);
-    const streak = 0.12 + hash2(i, 2.7) * 0.7;
-    ctx.fillStyle = "rgba(92,86,74,0.16)";
-    ctx.fillRect(x0 + 8, Math.floor(streak * size), Math.max(4, (x1 - x0) * 0.28), size);
+    ctx.fillStyle = "rgba(236,240,242,0.38)";
+    ctx.fillRect(x0 + 2, 0, 2, size);
+    ctx.fillStyle = "rgba(36,42,46,0.82)";
+    ctx.fillRect(x1 - 4, 0, 4, size);
+    ctx.fillStyle = "rgba(214,220,224,0.26)";
+    ctx.fillRect(x1 - 6, 0, 2, size);
+    // denser weathering streaks
+    const streak = 0.1 + hash2(i, 2.7) * 0.75;
+    ctx.fillStyle = "rgba(92,86,74,0.18)";
+    ctx.fillRect(x0 + 6, Math.floor(streak * size), Math.max(3, (x1 - x0) * 0.32), Math.floor(size * 0.55));
+    // subtle standing-seam fastener dots along the rib
+    for (let f = 0; f < 5; f++) {
+      const fy = (0.12 + f * 0.18) * size;
+      ctx.fillStyle = "rgba(48,54,58,0.65)";
+      ctx.beginPath();
+      ctx.arc(x0 + (x1 - x0) * 0.18, fy, 1.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(220,224,228,0.45)";
+      ctx.beginPath();
+      ctx.arc(x0 + (x1 - x0) * 0.18 - 0.3, fy - 0.3, 0.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 }
 
 function paintRoofMetalBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "#8a8a8a";
   ctx.fillRect(0, 0, size, size);
-  const seams = 7;
+  const seams = 9;
   for (let i = 1; i < seams; i++) {
     const x = Math.floor((i / seams) * size);
     ctx.fillStyle = "#ececec";
-    ctx.fillRect(x - 3, 0, 3, size);
+    ctx.fillRect(x - 2, 0, 3, size);
     ctx.fillStyle = "#2e2e2e";
-    ctx.fillRect(x, 0, 3, size);
+    ctx.fillRect(x, 0, 2, size);
   }
 }
 

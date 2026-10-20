@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 242
+runs_done: 243
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 330743
+approx_bytes: 331247
 last_known_good_hint: (post PRODUCT densify door-metal SHA pending ~330kB)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: pending
-note: Door-metal densify (seams 5→7, rivets 6→9 + weathering streaks) via local surgical. Monolith ~330743 bytes.
+note: Roof-metal densify (seams 7→9 + fastener dots + denser streaks) via local surgical. Monolith ~331247 bytes.
 ```
 
 Refresh after each run.
@@ -82,6 +82,7 @@ MODELADOR-3D run 240: concrete MatPreset added surgically in helpers.
 RESTORE 2026-10-20: push_files literalized content; monolith restored via Actions (aa9dbdb7). Door densify still deferred.
 META run 241: confirmed tip READY, monolith intact (~330kB SHA aa9dbdb7), door densify deferred due to truncation risk.
 PRODUCT run 242: door sheet-metal densify (seams 5→7, rivets 6→9 + weathering) via local clone surgical. runs_done=242.
+PRODUCT run 243: roof-metal densify (seams 7→9 + fastener dots + denser weathering) via local clone surgical. runs_done=243.
 ```
 
 <!-- end:house-modeler-state.md -->
