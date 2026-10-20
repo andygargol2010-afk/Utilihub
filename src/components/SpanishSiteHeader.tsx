@@ -58,9 +58,9 @@ export function SpanishSiteHeader() {
           <Link to="/es/herramientas" className={navLink} activeProps={activeNav}>
             Herramientas
           </Link>
-          <a href="/es/categoria/herramientas-avanzadas" className={navLink}>
+          <Link to="/es/categoria/herramientas-avanzadas" className={navLink} activeProps={activeNav}>
             Avanzadas
-          </a>
+          </Link>
           <Link to="/es/kits" className={navLink} activeProps={activeNav}>
             Kits
           </Link>
@@ -143,9 +143,9 @@ export function SpanishSiteHeader() {
             <Link to="/es/herramientas" onClick={() => setOpen(false)} className={mobileLink}>
               Herramientas
             </Link>
-            <a href="/es/categoria/herramientas-avanzadas" onClick={() => setOpen(false)} className={mobileLink}>
+            <Link to="/es/categoria/herramientas-avanzadas" onClick={() => setOpen(false)} className={mobileLink}>
               Herramientas avanzadas
-            </a>
+            </Link>
             <Link to="/es/kits" onClick={() => setOpen(false)} className={mobileLink}>
               Kits
             </Link>
