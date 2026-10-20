@@ -116,6 +116,30 @@ export const Route = createFileRoute("/sitemap.xml")({
           return pair(enPath, esPath, toolPriority(tool));
         });
 
+        // SEO locales (pt beachhead) — include hreflang to EN+ES counterparts where they exist
+        const seoLocaleEntries: SitemapEntry[] = [
+          {
+            path: "/pt",
+            priority: "0.9",
+            alternates: [
+              { lang: "pt", path: "/pt" },
+              { lang: "es", path: "/es" },
+              { lang: "en", path: "/" },
+              { lang: "x-default", path: "/" },
+            ],
+          },
+          {
+            path: "/pt/pulse-catch",
+            priority: "0.8",
+            alternates: [
+              { lang: "pt", path: "/pt/pulse-catch" },
+              { lang: "es", path: "/es/pulse-catch" },
+              { lang: "en", path: "/pulse-catch" },
+              { lang: "x-default", path: "/pulse-catch" },
+            ],
+          },
+        ];
+
         const paths = [
           ...hubPairs,
           ...guidePairs,
@@ -125,6 +149,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...gamePairs,
           ...simPairs,
           ...toolEntries,
+          ...seoLocaleEntries,
         ];
 
         const xml =
