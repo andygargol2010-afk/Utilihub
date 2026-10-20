@@ -16,14 +16,17 @@ export function PercentageChangeTool({ locale = "en" }: { tool?: GeneralTool; lo
   const newNum = parseFloat(newValue) || 0;
 
   const absChange = newNum - origNum;
-  const percentChange = origNum !== 0 ? (absChange / Math.abs(origNum)) * 100 : 0;
+  const percentChange = origNum !== 0 ? (absChange / Math.abs(origNum)) * 100 : null;
   const isIncrease = absChange > 0;
   const isDecrease = absChange < 0;
+  const undefinedLabel = es ? "no definido (valor original 0)" : "undefined (original value is 0)";
 
   async function copy() {
     const text = es
-      ? `Cambio absoluto: ${absChange.toFixed(2)}\nCambio porcentual: ${percentChange.toFixed(2)}%`
-      : `Absolute change: ${absChange.toFixed(2)}\nPercentage change: ${percentChange.toFixed(2)}%`;
+      ? `Cambio absoluto: ${absChange.toFixed(2)}
+Cambio porcentual: ${percentChange === null ? undefinedLabel : percentChange.toFixed(2) + "%"}`
+      : `Absolute change: ${absChange.toFixed(2)}
+Percentage change: ${percentChange === null ? undefinedLabel : percentChange.toFixed(2) + "%"}`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -47,8 +50,9 @@ export function PercentageChangeTool({ locale = "en" }: { tool?: GeneralTool; lo
           {es ? "Cambio absoluto" : "Absolute change"}: {absChange.toFixed(2)}
         </p>
         <p className="text-lg font-medium">
-          {es ? "Cambio porcentual" : "Percentage change"}: {percentChange.toFixed(2)}%
-          {isIncrease ? (es ? " (aumento)" : " (increase)") : isDecrease ? (es ? " (disminuci\u00f3n)" : " (decrease)") : ""}
+          {es ? "Cambio porcentual" : "Percentage change"}:{" "}
+          {percentChange === null ? undefinedLabel : `${percentChange.toFixed(2)}%`}
+          {percentChange !== null && isIncrease ? (es ? " (aumento)" : " (increase)") : percentChange !== null && isDecrease ? (es ? " (disminuci\u00f3n)" : " (decrease)") : ""}
         </p>
       </div>
 
