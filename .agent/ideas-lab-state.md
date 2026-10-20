@@ -68,11 +68,11 @@ path_es: /es/aurora-particle-playground
 path_seo: n/a
 domain: playgrounds
 runs_total: 7
-runs_remaining: 7
+runs_remaining: 6
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE 2026-10-20: U=0.8088 CORE; weighted sample 29.31/33 → playgrounds (not last_closed). Weights: selected→1, other CORE +1. FIXED untouched. Deploy READY. seo-locales still 1/5 active.
+notes: IDEATE 2026-10-20: U=0.8088 CORE; weighted sample 29.31/33 → playgrounds (not last_closed). Weights: selected→1, other CORE +1. FIXED untouched. Deploy READY. seo-locales still 1/5 active. EXECUTE 1/7 2026-10-20: core Canvas 2D shipped (attractors place/drag, aurora ribbons + persistent trails, density/speed/hue/turbulence, URL+PNG share, next-step registered, EN+ES routes, Adsterra kept). Lightweight mobile budget.
 adsense-prep_runs: 3
 ```
 
