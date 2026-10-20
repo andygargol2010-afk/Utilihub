@@ -43,6 +43,7 @@ import { MAX_HEART_RATE_CALCULATOR_TOOLS } from "./max-heart-rate-calculator-too
 import { ELLIPSE_AREA_CALCULATOR_TOOLS } from "./ellipse-area-calculator-tool";
 import { PASSWORD_GENERATOR_TOOLS } from "./password-generator-tool";
 import { LOREM_IPSUM_GENERATOR_TOOLS } from "./lorem-ipsum-generator-tool";
+import { PENTAGON_AREA_CALCULATOR_TOOLS } from "./pentagon-area-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -90,4 +91,5 @@ export const GENERAL_TOOLS = [
   ...ELLIPSE_AREA_CALCULATOR_TOOLS,
   ...PASSWORD_GENERATOR_TOOLS,
   ...LOREM_IPSUM_GENERATOR_TOOLS,
+  ...PENTAGON_AREA_CALCULATOR_TOOLS,
 ];
