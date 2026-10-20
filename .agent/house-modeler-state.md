@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 243
+runs_done: 244
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: META
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: pending
-note: Roof-metal densify (seams 7→9 + fastener dots + denser streaks) via local surgical. Monolith ~331247 bytes.
+deploy: READY
+note: Health check OK. Monolith 331247 bytes, no PLACEHOLDER, Sky present, deploy READY (d76122a). Railing densify deferred (no sandbox push auth; tool-channel full rewrite risk).
 ```
 
 Refresh after each run.
@@ -83,6 +83,7 @@ RESTORE 2026-10-20: push_files literalized content; monolith restored via Action
 META run 241: confirmed tip READY, monolith intact (~330kB SHA aa9dbdb7), door densify deferred due to truncation risk.
 PRODUCT run 242: door sheet-metal densify (seams 5→7, rivets 6→9 + weathering) via local clone surgical. runs_done=242.
 PRODUCT run 243: roof-metal densify (seams 7→9 + fastener dots + denser weathering) via local clone surgical. runs_done=243.
+META run 244: confirmed READY deploy + monolith health (331247 B); railing-metal densify deferred (no push auth / truncation risk).
 ```
 
 <!-- end:house-modeler-state.md -->
