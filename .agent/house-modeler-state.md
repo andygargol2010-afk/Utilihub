@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 236
+runs_done: 237
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 351478
-last_known_good_hint: (post chimney crown densify ~351478 bytes)
+approx_bytes: 351530
+last_known_good_hint: (post worn-earth densify ~351530 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: expected READY after push
-note: PRODUCT run 236 — densified paintChimneyCrown (courses 4→5, denser soot/flecks/lime bloom). Surgical local clone. Monolith 351478B / 7956 lines, gates OK. SEO pt deferred.
+note: PRODUCT run 237 — densified paintWornEarth (grit 128→160, damp 16→22, leaf 7→12, cracks 12→16). Surgical local clone. Monolith 351530B / 7956 lines, gates OK. SEO pt deferred.
 ```
 
 Refresh after each run.
@@ -72,8 +72,9 @@ Refresh after each run.
 ```
 Prefer local-clone surgical PRODUCT when auth available. Prefer META if only path is full rewrite >300KB via tool channel.
 PRODUCT run 234: clay tiles densify (flecks 9→12, moss denser) via local clone surgical.
-META run 235: health check + deferred chimney-crown densify due to no git push auth.
+META run 235: health check + deferred chimney-crown densify due to no sandbox push auth.
 PRODUCT run 236: chimney crown densify (courses 4→5 + soot/flecks/lime) via local clone surgical.
+PRODUCT run 237: worn-earth densify (grit/damp/leaf/cracks) via local clone surgical.
 ```
 
 <!-- end:house-modeler-state.md -->
