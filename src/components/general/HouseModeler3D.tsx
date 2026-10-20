@@ -1160,7 +1160,7 @@ function paintDoorLeaf(ctx: CanvasRenderingContext2D, size: number) {
 /** Standing-seam galvanized leaf. Ports the board-formed joint idea onto a door skin. */
 function paintDoorMetal(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [176, 184, 188], 12);
-  const seams = 5;
+  const seams = 7;
   for (let i = 0; i < seams; i++) {
     const x0 = Math.floor((i / seams) * size);
     const x1 = Math.floor(((i + 1) / seams) * size);
@@ -1171,17 +1171,22 @@ function paintDoorMetal(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fillRect(x0 + 2, 0, 3, size);
     ctx.fillStyle = "rgba(48,56,62,0.72)";
     ctx.fillRect(x1 - 4, 0, 4, size);
-    for (let r = 0; r < 6; r++) {
-      const y = (0.1 + r * 0.14) * size;
+    // denser rivets
+    for (let r = 0; r < 9; r++) {
+      const y = (0.06 + r * 0.1) * size;
       ctx.fillStyle = "rgba(42,48,54,0.8)";
       ctx.beginPath();
-      ctx.arc(x0 + (x1 - x0) * 0.35, y, 2.4, 0, Math.PI * 2);
+      ctx.arc(x0 + (x1 - x0) * 0.35, y, 2.2, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = "rgba(230,234,236,0.55)";
       ctx.beginPath();
-      ctx.arc(x0 + (x1 - x0) * 0.35 - 0.6, y - 0.6, 0.8, 0, Math.PI * 2);
+      ctx.arc(x0 + (x1 - x0) * 0.35 - 0.5, y - 0.5, 0.7, 0, Math.PI * 2);
       ctx.fill();
     }
+    // light weathering streaks
+    const streak = 0.15 + hash2(i, 3.1) * 0.65;
+    ctx.fillStyle = "rgba(110,98,82,0.18)";
+    ctx.fillRect(x0 + 4, Math.floor(streak * size), Math.max(3, (x1 - x0) * 0.32), Math.floor(size * 0.18));
   }
   ctx.fillStyle = "rgba(92,100,106,0.35)";
   ctx.fillRect(0, Math.floor(size * 0.62), size, 3);
@@ -1190,7 +1195,7 @@ function paintDoorMetal(ctx: CanvasRenderingContext2D, size: number) {
 function paintDoorMetalBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "#8e8e8e";
   ctx.fillRect(0, 0, size, size);
-  const seams = 5;
+  const seams = 7;
   ctx.fillStyle = "#d8d8d8";
   for (let i = 1; i < seams; i++) {
     const x = Math.floor((i / seams) * size);
