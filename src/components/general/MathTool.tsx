@@ -3,9 +3,10 @@ import type { GeneralTool } from "@/lib/general/types";
 import { getToolShowcase } from "@/lib/tool-showcase";
 import { showcaseUi } from "@/lib/showcase-ui";
 
+/** Split on commas, semicolons, newlines, or any whitespace (spaces/tabs). */
 const values = (s: string) =>
   s
-    .split(/[\n,;]+/)
+    .split(/[\n,;\s]+/)
     .map((x) => Number(x.trim().replace(",", ".")))
     .filter(Number.isFinite);
 const median = (xs: number[]) => {
@@ -86,6 +87,38 @@ function calculate(slug: string, raw: string, rawB: string, es: boolean): string
         throw new Error(es ? "La correlación requiere variación en ambas series." : "Correlation requires variation in both series.");
       return `${es ? "Correlación de Pearson" : "Pearson correlation"}: ${cov / (sdX * sdY)}`;
     }
+    case "error-absoluto": {
+      // measured, reference (order does not matter for absolute difference)
+      if (xs.length !== 2)
+        throw new Error(
+          es
+            ? "Introduce exactamente dos valores: medido y de referencia (ej. 65 78 o 65, 78)."
+            : "Enter exactly two values: measured and reference (e.g. 65 78 or 65, 78).",
+        );
+      return `${es ? "Error absoluto" : "Absolute error"}: ${Math.abs(xs[0] - xs[1])}`;
+    }
+    case "error-relativo": {
+      if (xs.length !== 2)
+        throw new Error(
+          es
+            ? "Introduce exactamente dos valores: medido y de referencia (ej. 65 78)."
+            : "Enter exactly two values: measured and reference (e.g. 65 78).",
+        );
+      if (xs[1] === 0)
+        throw new Error(es ? "El valor de referencia no puede ser 0." : "The reference value cannot be 0.");
+      return `${es ? "Error relativo" : "Relative error"}: ${Math.abs(xs[0] - xs[1]) / Math.abs(xs[1])}`;
+    }
+    case "error-porcentual": {
+      if (xs.length !== 2)
+        throw new Error(
+          es
+            ? "Introduce exactamente dos valores: medido y de referencia (ej. 65 78)."
+            : "Enter exactly two values: measured and reference (e.g. 65 78).",
+        );
+      if (xs[1] === 0)
+        throw new Error(es ? "El valor de referencia no puede ser 0." : "The reference value cannot be 0.");
+      return `${es ? "Error porcentual" : "Percent error"}: ${(Math.abs(xs[0] - xs[1]) / Math.abs(xs[1])) * 100}%`;
+    }
     default:
       throw new Error(es ? `Herramienta estadística no implementada: ${slug}` : `Statistical tool not implemented: ${slug}`);
   }
@@ -164,11 +197,13 @@ export function MathTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: 
           id={`stats-input-${tool.slug}`}
           value={raw}
           onChange={(e) => setRaw(e.target.value)}
-          placeholder={es ? "p. ej., 5, 10, 15, 20" : "e.g. 5, 10, 15, 20"}
+          placeholder={es ? "p. ej., 5 10 15 20 o 5, 10, 15, 20" : "e.g. 5 10 15 20 or 5, 10, 15, 20"}
           className={fieldClass}
         />
         <p className="mt-2 text-xs text-muted-foreground">
-          {es ? "Separa los valores con comas, punto y coma o saltos de línea." : "Separate values with commas, semicolons, or line breaks."}
+          {es
+            ? "Separa los valores con espacios, comas, punto y coma o saltos de línea."
+            : "Separate values with spaces, commas, semicolons, or line breaks."}
         </p>
       </div>
       {needsSecond && (
@@ -193,8 +228,8 @@ export function MathTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: 
             placeholder={
               ["correlacion", "covarianza"].includes(tool.slug)
                 ? es
-                  ? "p. ej., 2, 4, 6, 8"
-                  : "e.g. 2, 4, 6, 8"
+                  ? "p. ej., 2 4 6 8"
+                  : "e.g. 2 4 6 8"
                 : tool.slug === "percentil"
                   ? es
                     ? "p. ej., 75"
