@@ -1193,26 +1193,55 @@ function paintPlateBump(ctx: CanvasRenderingContext2D, size: number) {
 }
 
 function paintNosing(ctx: CanvasRenderingContext2D, size: number) {
-  // Board edge / end grain so the slab reads as timber, not a flat tile.
-  noiseFill(ctx, size, [96, 62, 36], 16);
-  const boards = 5;
+  // Board edge / end grain so the slab reads as timber, not a flat tile. Densified: denser rings, micro-checks, dust flecks.
+  noiseFill(ctx, size, [96, 62, 36], 18);
+  const boards = 6; // denser boards
   for (let i = 0; i < boards; i++) {
     const x0 = Math.floor((i / boards) * size);
     const x1 = Math.floor(((i + 1) / boards) * size);
-    const tone = 92 + Math.floor(hash2(i, 6.1) * 30);
-    ctx.fillStyle = `rgb(${tone + 28}, ${tone - 4}, ${tone - 28})`;
+    const tone = 88 + Math.floor(hash2(i, 6.1) * 36);
+    ctx.fillStyle = `rgb(${tone + 30}, ${tone - 2}, ${tone - 30})`;
     ctx.fillRect(x0, 0, x1 - x0, size);
     const cx = (x0 + x1) / 2;
-    const cy = size * (0.35 + hash2(i, 2) * 0.3);
-    for (let ring = 3; ring >= 1; ring--) {
-      ctx.strokeStyle = `rgba(54,30,14,${0.18 + ring * 0.12})`;
-      ctx.lineWidth = 1.2;
+    const cy = size * (0.32 + hash2(i, 2) * 0.36);
+    for (let ring = 5; ring >= 1; ring--) { // denser rings 3→5
+      ctx.strokeStyle = `rgba(54,30,14,${0.16 + ring * 0.10})`;
+      ctx.lineWidth = 1.1;
       ctx.beginPath();
-      ctx.ellipse(cx, cy, (x1 - x0) * 0.28 * ring / 3, size * 0.18 * ring / 3, 0.2, 0, Math.PI * 2);
+      ctx.ellipse(cx, cy, (x1 - x0) * 0.32 * ring / 5, size * 0.20 * ring / 5, 0.15 + hash2(i, ring)*0.1, 0, Math.PI * 2);
       ctx.stroke();
     }
-    ctx.fillStyle = "rgba(42,24,12,0.8)";
+    // Micro-checks and fine end-grain fibers
+    for (let g = 0; g < 4; g++) {
+      const gy = 4 + g * (size / 5);
+      ctx.strokeStyle = `rgba(42,24,12,${0.22 + hash2(i, g+1)*0.15})`;
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(x0 + 2, gy);
+      ctx.lineTo(x1 - 2, gy + Math.sin(i + g)*0.8);
+      ctx.stroke();
+    }
+    // Rare small checks / knots
+    if (hash2(i, 9.2) > 0.62) {
+      const kx = x0 + (x1 - x0) * (0.3 + hash2(i, 4)*0.4);
+      const ky = size * (0.4 + hash2(i, 5)*0.2);
+      ctx.fillStyle = "rgba(36,18,8,0.65)";
+      ctx.beginPath();
+      ctx.ellipse(kx, ky, 2.2, 1.4, hash2(i,6)*Math.PI, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.fillStyle = "rgba(42,24,12,0.82)";
     ctx.fillRect(x1 - 2, 0, 2, size);
+  }
+  // Soft dust flecks and fine grit so end grain reads as sawn and handled, not clean render.
+  for (let d = 0; d < 42; d++) {
+    const dx = hash2(d, 11.3) * size;
+    const dy = hash2(d, 7.8) * size;
+    const dr = 0.4 + hash2(d, 2.4)*1.1;
+    ctx.fillStyle = `rgba(110,78,48,${0.12 + hash2(d, 5.1)*0.18})`;
+    ctx.beginPath();
+    ctx.arc(dx, dy, dr, 0, Math.PI*2);
+    ctx.fill();
   }
 }
 

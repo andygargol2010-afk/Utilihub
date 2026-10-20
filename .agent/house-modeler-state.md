@@ -20,6 +20,9 @@ PRODUCT run 225: fascia densify (extra micro-grain fibers + rare check cracks) v
 PRODUCT run 226: worn-earth densify (grit 96→128 denser + leaf flecks, damp 12→16, cracks 8→12) via local clone surgical.
 
 PRODUCT run 227: timber densify (grain 10→14, micro-fibers 12→16, flecks 10→14 denser) via local clone surgical.
+
+
+PRODUCT run 228: nosing densify (rings 3→5 denser, boards 5→6, micro-checks + rare knots + dust flecks) via local clone surgical.
 <!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -37,7 +40,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 227
+runs_done: 228
 runs_max: 500
 ```
 
@@ -63,8 +66,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 345964
-last_known_good_hint: (post roof metal densify ~345964 bytes, SHA 76762862732dce6b190da20a5a2438d41c7edcef)
+approx_bytes: 349786
+last_known_good_hint: (post nosing densify ~349786 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -80,7 +83,7 @@ last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
 deploy: pending
-note: PRODUCT run 227 — timber densify (grain 10→14, micro-fibers 12→16, flecks 10→14 denser). Monolith intact. SEO none.
+note: PRODUCT run 228 — nosing densify (rings 3→5, boards 5→6, micro-checks + dust flecks). Monolith intact. SEO none.
 ```
 
 Refresh after each run.
@@ -145,4 +148,7 @@ PRODUCT run 225: fascia densify (extra micro-grain fibers + rare check cracks) v
 PRODUCT run 226: worn-earth densify (grit 96→128 denser + leaf flecks, damp 12→16, cracks 8→12) via local clone surgical.
 
 PRODUCT run 227: timber densify (grain 10→14, micro-fibers 12→16, flecks 10→14 denser) via local clone surgical.
+
+
+PRODUCT run 228: nosing densify (rings 3→5 denser, boards 5→6, micro-checks + rare knots + dust flecks) via local clone surgical.
 <!-- end:house-modeler-state.md -->
