@@ -10,25 +10,30 @@ type StreakData = {
   lastVisit: number;
   streak: number;
   longestStreak: number;
+  totalVisits: number;
   visits: Record<string, number>; // id -> last timestamp
 };
 
-const POPULAR = PLAYGROUNDS.slice(0, 8);
+const POPULAR = PLAYGROUNDS.slice(0, 10);
+
+const MILESTONES = [3, 7, 14, 30] as const;
 
 function loadData(): StreakData {
-  if (typeof window === "undefined") return { lastVisit: 0, streak: 0, longestStreak: 0, visits: {} };
+  if (typeof window === "undefined")
+    return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {} };
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { lastVisit: 0, streak: 0, longestStreak: 0, visits: {} };
+    if (!raw) return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {} };
     const parsed = JSON.parse(raw);
     return {
       lastVisit: parsed.lastVisit ?? 0,
       streak: parsed.streak ?? 0,
       longestStreak: parsed.longestStreak ?? parsed.streak ?? 0,
+      totalVisits: parsed.totalVisits ?? 0,
       visits: parsed.visits ?? {},
     };
   } catch {
-    return { lastVisit: 0, streak: 0, longestStreak: 0, visits: {} };
+    return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {} };
   }
 }
 
@@ -51,8 +56,21 @@ function daysBetween(a: number, b: number) {
   return Math.floor(Math.abs(a - b) / 86400000);
 }
 
+function nextMilestone(streak: number): number | null {
+  for (const m of MILESTONES) {
+    if (streak < m) return m;
+  }
+  return null;
+}
+
 export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale }) {
-  const [data, setData] = useState<StreakData>({ lastVisit: 0, streak: 0, longestStreak: 0, visits: {} });
+  const [data, setData] = useState<StreakData>({
+    lastVisit: 0,
+    streak: 0,
+    longestStreak: 0,
+    totalVisits: 0,
+    visits: {},
+  });
   const es = locale === "es";
 
   useEffect(() => {
@@ -66,11 +84,13 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
       streak = gap === 1 ? prev.streak + 1 : 1;
     }
     const longestStreak = Math.max(prev.longestStreak, streak);
+    const totalVisits = (prev.totalVisits ?? 0) + 1;
     const next: StreakData = {
       ...prev,
       lastVisit: now,
       streak,
       longestStreak,
+      totalVisits,
       visits: { ...prev.visits, "return-streak-board": now },
     };
     saveData(next);
@@ -90,6 +110,16 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
   }, [data.visits]);
 
   const uniqueVisited = Object.keys(data.visits).length;
+  const suggested = sortedPopular[0];
+  const target = nextMilestone(data.streak);
+  const prevMilestone =
+    target === null
+      ? MILESTONES[MILESTONES.length - 1]
+      : MILESTONES[MILESTONES.indexOf(target as (typeof MILESTONES)[number]) - 1] ?? 0;
+  const progressPct =
+    target === null
+      ? 100
+      : Math.min(100, Math.round(((data.streak - prevMilestone) / (target - prevMilestone)) * 100));
 
   return (
     <div className="space-y-6">
@@ -102,9 +132,11 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
           {es
-            ? `Mejor: ${data.longestStreak} días. Volvé cada día. Todo en tu navegador.`
-            : `Best: ${data.longestStreak} days. Return daily. Everything stays in your browser.`}
+            ? `Mejor: ${data.longestStreak} días · Visitas totales: ${data.totalVisits}. Todo en tu navegador.`
+            : `Best: ${data.longestStreak} days · Total visits: ${data.totalVisits}. Everything stays in your browser.`}
         </p>
+
+        {/* Streak pulse chain */}
         <div className="mt-3 flex flex-wrap gap-1.5">
           {Array.from({ length: Math.min(data.streak, 14) }).map((_, i) => (
             <span
@@ -117,26 +149,101 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
             <span className="text-xs text-muted-foreground">+{data.streak - 14}</span>
           )}
         </div>
+
+        {/* Milestone progress */}
+        <div className="mt-4">
+          <div className="mb-1.5 flex items-center justify-between text-xs text-muted-foreground">
+            <span>
+              {target === null
+                ? es
+                  ? "Todos los hitos alcanzados"
+                  : "All milestones reached"
+                : es
+                  ? `Próximo hito: ${target} días`
+                  : `Next milestone: ${target} days`}
+            </span>
+            <span>{progressPct}%</span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-border/40">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-amber-400 transition-all duration-500"
+              style={{ width: `${progressPct}%` }}
+            />
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {MILESTONES.map((m) => {
+              const unlocked = data.streak >= m || data.longestStreak >= m;
+              return (
+                <span
+                  key={m}
+                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                    unlocked
+                      ? "bg-amber-500/15 text-amber-600 dark:text-amber-400"
+                      : "bg-border/30 text-muted-foreground"
+                  }`}
+                >
+                  {unlocked ? "★" : "○"} {m}d
+                </span>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
+      {/* Suggested next hero */}
+      {suggested && (
+        <Link
+          to={playgroundPath(suggested, locale)}
+          className="group relative flex items-center gap-4 overflow-hidden rounded-2xl border border-amber-500/40 bg-amber-500/5 p-4 transition hover:border-amber-500/70 sm:p-5"
+        >
+          <div
+            className="pointer-events-none absolute -inset-4 rounded-full bg-amber-400/20 opacity-50 animate-ping"
+            style={{ animationDuration: "2s" }}
+          />
+          <span className="relative text-3xl">{suggested.emoji}</span>
+          <div className="relative min-w-0 flex-1">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600 dark:text-amber-400">
+              {es ? "Sugerido para volver" : "Suggested next"}
+            </p>
+            <h3 className="truncate text-base font-bold sm:text-lg">{playgroundName(suggested, locale)}</h3>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {(() => {
+                const last = data.visits[suggested.id] ?? 0;
+                const daysAgo = last === 0 ? null : daysBetween(last, Date.now());
+                if (es) {
+                  return daysAgo === null ? "Nunca visitado — tocá para empezar" : `Hace ${daysAgo}d — tocá para retomar`;
+                }
+                return daysAgo === null ? "Never visited — tap to start" : `${daysAgo}d ago — tap to resume`;
+              })()}
+            </p>
+          </div>
+          <span className="relative shrink-0 text-sm font-semibold text-amber-600 group-hover:translate-x-0.5 dark:text-amber-400">
+            →
+          </span>
+        </Link>
+      )}
+
       <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <span>{es ? "Experiencias visitadas" : "Experiences visited"}: {uniqueVisited}</span>
+        <span>
+          {es ? "Experiencias visitadas" : "Experiences visited"}: {uniqueVisited}
+        </span>
         <span>{es ? "Ordenadas por urgencia" : "Sorted by urgency"}</span>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {sortedPopular.map((p) => {
           const last = data.visits[p.id] ?? 0;
           const due = last === 0 || daysBetween(last, Date.now()) >= dueThreshold;
           const href = playgroundPath(p, locale);
           const daysAgo = last === 0 ? null : daysBetween(last, Date.now());
+          const isSuggested = suggested?.id === p.id;
           return (
             <Link
               key={p.id}
               to={href}
               className={`group relative overflow-hidden rounded-2xl border p-4 transition hover:border-primary/50 ${
                 due ? "border-amber-500/50 bg-amber-500/5" : "border-border/60 bg-surface/30"
-              }`}
+              } ${isSuggested ? "ring-1 ring-amber-400/40" : ""}`}
             >
               <div
                 className={`pointer-events-none absolute -inset-2 rounded-full opacity-40 ${
