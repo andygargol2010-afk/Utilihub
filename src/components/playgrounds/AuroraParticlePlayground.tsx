@@ -18,7 +18,7 @@ interface Attractor {
   x: number;
   y: number;
   id: number;
-  strength: number;
+  polarity: 1 | -1;
 }
 
 const labels = {
@@ -29,19 +29,22 @@ const labels = {
     turbulence: "Turbulence",
     trailFade: "Trail fade",
     particleSize: "Particle size",
-    strength: "Attractor strength",
-    clear: "Clear attractors",
+    strength: "Field strength",
+    clear: "Clear fields",
     reset: "Reset particles",
     sharePng: "Download PNG",
     shareUrl: "Copy share link",
     copied: "Copied!",
-    help: "Click/tap to place magnetic attractors. Drag to move them. Right-click (or long-press) to delete the nearest. Particles form flowing aurora ribbons with persistent glowing trails that respond in real time. Tune density, speed, hue, turbulence, trail persistence, size and attractor strength. Try a color preset.",
-    attractors: "Attractors",
+    help: "Click/tap to place magnetic fields. Drag to move them. Right-click (or long-press) to delete the nearest. Switch mode to place attractors (blue, pull) or repellers (orange, push). Particles form glowing aurora ribbons with persistent trails that stream toward or away from fields in real time. Tune density, speed, hue, turbulence, trail, size and strength. Try a color preset.",
+    attractors: "Fields",
     presets: "Color presets",
     aurora: "Aurora",
     neon: "Neon",
     sunset: "Sunset",
     ice: "Ice",
+    mode: "Place mode",
+    attract: "Attractor",
+    repel: "Repeller",
   },
   es: {
     density: "Densidad",
@@ -50,19 +53,22 @@ const labels = {
     turbulence: "Turbulencia",
     trailFade: "Desvanecimiento de estela",
     particleSize: "Tamaño de partícula",
-    strength: "Fuerza de atractores",
-    clear: "Limpiar atractores",
+    strength: "Fuerza del campo",
+    clear: "Limpiar campos",
     reset: "Reiniciar partículas",
     sharePng: "Descargar PNG",
     shareUrl: "Copiar enlace",
     copied: "¡Copiado!",
-    help: "Clic/toque para colocar atractores magnéticos. Arrastrá para moverlos. Clic derecho (o pulsación larga) para borrar el más cercano. Las partículas forman cintas de aurora fluidas con estelas brillantes persistentes que responden en tiempo real. Ajustá densidad, velocidad, tono, turbulencia, persistencia de estela, tamaño y fuerza de atractores. Probá un preset de color.",
-    attractors: "Atractores",
+    help: "Clic/toque para colocar campos magnéticos. Arrastrá para moverlos. Clic derecho (o pulsación larga) para borrar el más cercano. Cambiá el modo para colocar atractores (azul, atraen) o repulsores (naranja, empujan). Las partículas forman cintas de aurora fluidas con estelas brillantes persistentes que fluyen hacia o lejos de los campos en tiempo real. Ajustá densidad, velocidad, tono, turbulencia, estela, tamaño y fuerza. Probá un preset de color.",
+    attractors: "Campos",
     presets: "Presets de color",
     aurora: "Aurora",
     neon: "Neón",
     sunset: "Atardecer",
     ice: "Hielo",
+    mode: "Modo de colocación",
+    attract: "Atractor",
+    repel: "Repulsor",
   },
 };
 
@@ -101,6 +107,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
   const [trailFade, setTrailFade] = useState(0.06);
   const [particleSize, setParticleSize] = useState(1.6);
   const [strength, setStrength] = useState(1.2);
+  const [placeMode, setPlaceMode] = useState<"attract" | "repel">("attract");
   const [copied, setCopied] = useState(false);
   const [attractorCount, setAttractorCount] = useState(0);
 
@@ -130,11 +137,12 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
       const parts = aStr.split(";").filter(Boolean);
       const loaded: Attractor[] = [];
       for (const part of parts) {
-        const [xs, ys] = part.split(",");
-        const x = Number(xs);
-        const y = Number(ys);
+        const bits = part.split(",");
+        const x = Number(bits[0]);
+        const y = Number(bits[1]);
+        const pol = bits[2] === "-1" ? -1 : 1;
         if (Number.isFinite(x) && Number.isFinite(y)) {
-          loaded.push({ x, y, id: nextId.current++, strength: 1 });
+          loaded.push({ x, y, id: nextId.current++, polarity: pol as 1 | -1 });
         }
       }
       if (loaded.length) {
@@ -210,11 +218,12 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
         dragId.current = nearest.id;
         (e.target as HTMLElement).setPointerCapture(e.pointerId);
       } else {
+        const polarity: 1 | -1 = placeMode === "repel" ? -1 : 1;
         attractorsRef.current.push({
           x,
           y,
           id: nextId.current++,
-          strength: 1,
+          polarity,
         });
         setAttractorCount(attractorsRef.current.length);
       }
@@ -265,12 +274,18 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
       ctx.fillStyle = `rgba(4, 8, 18, ${tf})`;
       ctx.fillRect(0, 0, w, h);
 
-      // Draw attractors as soft magnetic wells
+      // Draw fields as soft magnetic wells (blue attract, orange repel)
       for (const a of atts) {
         const rad = 48;
+        const isRepel = a.polarity < 0;
         const grad = ctx.createRadialGradient(a.x, a.y, 0, a.x, a.y, rad);
-        grad.addColorStop(0, "rgba(140, 220, 255, 0.55)");
-        grad.addColorStop(0.4, "rgba(80, 180, 255, 0.25)");
+        if (isRepel) {
+          grad.addColorStop(0, "rgba(255, 160, 80, 0.55)");
+          grad.addColorStop(0.4, "rgba(255, 100, 40, 0.25)");
+        } else {
+          grad.addColorStop(0, "rgba(140, 220, 255, 0.55)");
+          grad.addColorStop(0.4, "rgba(80, 180, 255, 0.25)");
+        }
         grad.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = grad;
         ctx.beginPath();
@@ -278,7 +293,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
         ctx.fill();
         ctx.beginPath();
         ctx.arc(a.x, a.y, 7, 0, Math.PI * 2);
-        ctx.fillStyle = "#e0f2fe";
+        ctx.fillStyle = isRepel ? "#fed7aa" : "#e0f2fe";
         ctx.fill();
       }
 
@@ -290,7 +305,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
           const dy = a.y - p.y;
           const dist2 = dx * dx + dy * dy;
           const dist = Math.sqrt(dist2) || 1;
-          const force = (a.strength * st * 1.8) / (dist2 * 0.004 + 80);
+          const force = (a.polarity * st * 1.8) / (dist2 * 0.004 + 80);
           ax += (dx / dist) * force;
           ay += (dy / dist) * force;
         }
@@ -348,7 +363,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
       canvas.removeEventListener("pointercancel", onPointerUp);
       canvas.removeEventListener("contextmenu", onContextMenu);
     };
-  }, [initParticles]);
+  }, [initParticles, placeMode]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -398,7 +413,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     params.set("ps", particleSize.toFixed(1));
     params.set("st", strength.toFixed(2));
     if (attractorsRef.current.length) {
-      const aStr = attractorsRef.current.map((a) => `${Math.round(a.x)},${Math.round(a.y)}`).join(";");
+      const aStr = attractorsRef.current.map((a) => `${Math.round(a.x)},${Math.round(a.y)},${a.polarity}`).join(";");
       params.set("a", aStr);
     }
     const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
@@ -425,6 +440,24 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
       </div>
 
       <p className="text-sm text-muted-foreground">{t.help}</p>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm font-medium text-muted-foreground">{t.mode}:</span>
+        <button
+          type="button"
+          onClick={() => setPlaceMode("attract")}
+          className={`rounded-lg border px-3 py-1.5 text-xs font-medium ${placeMode === "attract" ? "border-primary bg-primary/15 text-primary" : "border-border bg-background hover:bg-accent"}`}
+        >
+          {t.attract}
+        </button>
+        <button
+          type="button"
+          onClick={() => setPlaceMode("repel")}
+          className={`rounded-lg border px-3 py-1.5 text-xs font-medium ${placeMode === "repel" ? "border-orange-400 bg-orange-400/15 text-orange-300" : "border-border bg-background hover:bg-accent"}`}
+        >
+          {t.repel}
+        </button>
+      </div>
 
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-sm font-medium text-muted-foreground">{t.presets}:</span>
