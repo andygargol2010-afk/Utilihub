@@ -63,6 +63,18 @@ function nextMilestone(streak: number): number | null {
   return null;
 }
 
+function getWeekDays(): Date[] {
+  const days: Date[] = [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    days.push(d);
+  }
+  return days;
+}
+
 export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale }) {
   const [data, setData] = useState<StreakData>({
     lastVisit: 0,
@@ -121,6 +133,9 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
       ? 100
       : Math.min(100, Math.round(((data.streak - prevMilestone) / (target - prevMilestone)) * 100));
 
+  const weekDays = getWeekDays();
+  const visitedToday = data.lastVisit > 0 && isSameDay(data.lastVisit, Date.now());
+
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-6">
@@ -135,6 +150,48 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
             ? `Mejor: ${data.longestStreak} días · Visitas totales: ${data.totalVisits}. Todo en tu navegador.`
             : `Best: ${data.longestStreak} days · Total visits: ${data.totalVisits}. Everything stays in your browser.`}
         </p>
+
+        {/* Week streak calendar */}
+        <div className="mt-4">
+          <p className="mb-2 text-xs font-semibold text-muted-foreground">
+            {es ? "Esta semana" : "This week"}
+          </p>
+          <div className="flex justify-between gap-1">
+            {weekDays.map((d, i) => {
+              const isToday = isSameDay(d.getTime(), Date.now());
+              // Approximate activity: within current streak window ending today
+              const dayOffset = 6 - i;
+              const active = data.streak > dayOffset && (visitedToday || !isToday);
+              return (
+                <div key={i} className="flex flex-1 flex-col items-center gap-1">
+                  <span className="text-[10px] uppercase text-muted-foreground">
+                    {d.toLocaleDateString(es ? "es" : "en", { weekday: "narrow" })}
+                  </span>
+                  <div
+                    className={`h-8 w-full max-w-[2.5rem] rounded-lg border transition ${
+                      isToday
+                        ? "border-cyan-500 bg-cyan-500/20 ring-1 ring-cyan-400/50"
+                        : active
+                          ? "border-cyan-400/60 bg-cyan-400/15"
+                          : "border-border/40 bg-border/10"
+                    }`}
+                  >
+                    {active && (
+                      <div className="mx-auto mt-2 h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {!visitedToday && data.streak > 0 && (
+            <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">
+              {es
+                ? "Racha en riesgo — visitá hoy para mantenerla."
+                : "Streak at risk — visit today to keep it."}
+            </p>
+          )}
+        </div>
 
         {/* Streak pulse chain */}
         <div className="mt-3 flex flex-wrap gap-1.5">
