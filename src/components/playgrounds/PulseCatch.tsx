@@ -39,7 +39,7 @@ type Ring = {
   hue: number;
 };
 
-export function PulseCatch({ locale }: { locale: "en" | "es" }) {
+export function PulseCatch({ locale }: { locale: "en" | "es" | "pt" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(1);
@@ -63,16 +63,20 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
   const audioRef = useRef<AudioContext | null>(null);
 
   const t = {
-    start: locale === "es" ? "Empezar" : "Start",
-    score: locale === "es" ? "Puntos" : "Score",
-    combo: locale === "es" ? "Combo" : "Combo",
-    best: locale === "es" ? "Mejor" : "Best",
-    share: locale === "es" ? "Compartir" : "Share",
-    shared: locale === "es" ? "¡Copiado!" : "Copied!",
+    start: locale === "es" ? "Empezar" : locale === "pt" ? "Começar" : "Start",
+    score: locale === "es" ? "Puntos" : locale === "pt" ? "Pontos" : "Score",
+    combo: "Combo",
+    best: locale === "es" ? "Mejor" : locale === "pt" ? "Melhor" : "Best",
+    share: locale === "es" ? "Compartir" : locale === "pt" ? "Compartilhar" : "Share",
+    shared: locale === "es" ? "¡Copiado!" : locale === "pt" ? "Copiado!" : "Copied!",
     tip:
       locale === "es"
         ? "Tocá las chispas antes de que se apaguen. ¡Mantené el combo! Doradas = más puntos."
-        : "Tap sparks before they fade. Keep the combo! Golden = more points.",
+        : locale === "pt"
+          ? "Toque nas faíscas antes que se apaguem. Mantenha o combo! Douradas = mais pontos."
+          : "Tap sparks before they fade. Keep the combo! Golden = more points.",
+    pause: locale === "es" ? "Pausa" : locale === "pt" ? "Pausa" : "Pause",
+    newBest: locale === "es" ? "¡NUEVO MEJOR!" : locale === "pt" ? "NOVO MELHOR!" : "NEW BEST!",
   };
 
   const playTone = (freq: number, duration = 0.08, type: OscillatorType = "sine", vol = 0.12) => {
@@ -370,7 +374,7 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
             floatersRef.current.push({
               x: s.x,
               y: s.y - 28,
-              text: locale === "es" ? "¡NUEVO MEJOR!" : "NEW BEST!",
+              text: t.newBest,
               life: 50,
               maxLife: 50,
               hue: 45,
@@ -434,7 +438,9 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
     const text =
       locale === "es"
         ? `\u00a1Hice ${best} puntos en Pulse Catch en UtiliHub! \u00bfPod\u00e9s superarme? https://utilihub.net/es/pulse-catch`
-        : `I scored ${best} in Pulse Catch on UtiliHub! Can you beat it? https://utilihub.net/pulse-catch`;
+        : locale === "pt"
+          ? `Fiz ${best} pontos no Pulse Catch no UtiliHub! Você consegue superar? https://www.utilihub.net/pt/pulse-catch`
+          : `I scored ${best} in Pulse Catch on UtiliHub! Can you beat it? https://utilihub.net/pulse-catch`;
     try {
       if (navigator.share) {
         await navigator.share({ title: "Pulse Catch", text });
@@ -495,7 +501,7 @@ export function PulseCatch({ locale }: { locale: "en" | "es" }) {
             onClick={() => setRunning(false)}
             className="rounded-full border border-white/20 px-4 py-1.5 hover:bg-white/5"
           >
-            {locale === "es" ? "Pausa" : "Pause"}
+            {t.pause}
           </button>
         )}
         {best > 0 && (
