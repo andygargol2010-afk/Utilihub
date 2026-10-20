@@ -27,13 +27,13 @@ weights_core:
 weights_growth:
   traffic-bets: 3
   search-magnets: 3
-  growth-surfaces: 4
-  share-hooks: 4
-  retention-loops: 4
-  conversion-paths: 4
-  traffic-diagnosis: 4
-  adsense-prep: 2
-  seo-locales: 1   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  growth-surfaces: 5
+  share-hooks: 5
+  retention-loops: 1
+  conversion-paths: 5
+  traffic-diagnosis: 5
+  adsense-prep: 3
+  seo-locales: 2   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 3
 ```
@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Activate Portuguese (pt-BR bias) as first SEO locale. Ship a complete /pt home page with real translated copy (title, description, intro, links to available experiences where possible) plus one high-value experience page (prefer a lightweight playground equivalent or simplified interactive if feasible; otherwise a high-traffic tool page with full translation). Wire hreflang/alternates to EN+ES counterparts, update registry + seo-locales.ts, keep no primary-nav links from EN or ES. Guard CWV, keep Adsterra. EN+ES remain untouched.
-id: pt
-path_en: n/a
-path_es: n/a
-path_seo: /pt
-domain: seo-locales
-runs_total: 4
-runs_remaining: 0
-acceptance: shipped
+status: active
+idea: Interactive Return Streak Board — lightweight visual board (animated nodes + pulse rings) that tracks visit streaks and last-played playgrounds/games via localStorage only (no accounts). Shows “due to return” highlights, one-tap resume, and a suggested next experience. Visual payoff, EN+ES, route-isolated, Adsterra kept. Creates a return/retention loop without server state.
+id: return-streak-board
+path_en: /return-streak-board
+path_es: /es/return-streak-board
+path_seo: n/a
+domain: retention-loops
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
 share: n/a
 next_step_required: no
-notes: EXECUTE 2026-10-20 final: added /pt/pong (PongGame locale=pt full string support + complete PT page + hreflang). Updated /pt home with fourth link + list item. Registry pages_done updated. Beachhead closed (1/5 active). Adsterra kept. EN+ES untouched.
+notes: IDEATE 2026-10-20: U=0.32996 GROWTH; U_g=0.9855 FLEX; weighted FLEX → retention-loops (not last_closed). Weights: selected→1, other non-FIXED FLEX +1. FIXED untouched. seo-locales still 1/5 active.
 adsense-prep_runs: 3
 ```
 
