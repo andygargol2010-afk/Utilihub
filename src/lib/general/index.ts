@@ -39,6 +39,8 @@ import { COFFEE_RATIO_CALCULATOR_TOOLS } from "./coffee-ratio-calculator-tool";
 import { RHOMBUS_AREA_CALCULATOR_TOOLS } from "./rhombus-area-calculator-tool";
 import { COLOR_CONTRAST_CALCULATOR_TOOLS } from "./color-contrast-calculator-tool";
 import { WEIGHT_CONVERTER_TOOLS } from "./weight-converter-tool";
+import { MAX_HEART_RATE_CALCULATOR_TOOLS } from "./max-heart-rate-calculator-tool";
+import { ELLIPSE_AREA_CALCULATOR_TOOLS } from "./ellipse-area-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -82,4 +84,6 @@ export const GENERAL_TOOLS = [
   ...RHOMBUS_AREA_CALCULATOR_TOOLS,
   ...COLOR_CONTRAST_CALCULATOR_TOOLS,
   ...WEIGHT_CONVERTER_TOOLS,
+...MAX_HEART_RATE_CALCULATOR_TOOLS,
+  ...ELLIPSE_AREA_CALCULATOR_TOOLS,
 ];

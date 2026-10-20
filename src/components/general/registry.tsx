@@ -109,6 +109,8 @@ const CoffeeRatioCalculatorTool = lazy(() => import("./CoffeeRatioCalculatorTool
 const RhombusAreaCalculatorTool = lazy(() => import("./RhombusAreaCalculatorTool").then((m) => ({ default: m.RhombusAreaCalculatorTool })));
 const ColorContrastCalculatorTool = lazy(() => import("./ColorContrastCalculatorTool").then((m) => ({ default: m.ColorContrastCalculatorTool })));
 const WeightConverterTool = lazy(() => import("./WeightConverterTool").then((m) => ({ default: m.WeightConverterTool })));
+const MaxHeartRateCalculatorTool = lazy(() => import("./MaxHeartRateCalculatorTool").then((m) => ({ default: m.MaxHeartRateCalculatorTool })));
+const EllipseAreaCalculatorTool = lazy(() => import("./EllipseAreaCalculatorTool").then((m) => ({ default: m.EllipseAreaCalculatorTool })));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
@@ -199,6 +201,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (tool.slug === "calculadora-area-rombo") return RhombusAreaCalculatorTool as ToolComp;
   if (tool.slug === "calculadora-contraste-color") return ColorContrastCalculatorTool as ToolComp;
   if (tool.slug === "conversor-peso") return WeightConverterTool as ToolComp;
+if (tool.slug === "calculadora-frecuencia-cardiaca-maxima") return MaxHeartRateCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-area-elipse") return EllipseAreaCalculatorTool as ToolComp;
   if (tool.category === "math" || tool.category === "matematicas") return MathTool as ToolComp;
   if (tool.category === "science" || tool.category === "ciencia") return ScienceTool as ToolComp;
   if (tool.category === "formula") return FormulaTool as ToolComp;

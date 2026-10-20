@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-20 | salud | calculadora-frecuencia-cardiaca-maxima | MaxHeartRateCalculatorTool
+- 2026-10-20 | matematicas | calculadora-area-elipse | EllipseAreaCalculatorTool
 - 2026-10-20 | diseno | calculadora-contraste-color | ColorContrastCalculatorTool
 - 2026-10-20 | conversiones | conversor-peso | WeightConverterTool
 - 2026-10-20 | hogar | calculadora-ratio-cafe | CoffeeRatioCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-19 | finanzas | calculadora-interes-simple | SimpleInterestCalculatorTool
 - 2026-10-19 | ciencia | calculadora-volumen-cubo | CubeVolumeCalculatorTool
 - 2026-10-19 | texto | contador-silabas | SyllableCounterTool
-- 2026-10-19 | matematicas | calculadora-area-paralelogramo | ParallelogramAreaCalculatorTool
-- 2026-10-19 | ciencia | calculadora-volumen-prisma-rectangular | RectangularPrismVolumeCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -61,7 +61,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-20 PRODUCT (roll 14): shipped 2 (calculadora-contraste-color diseno + conversor-peso conversiones). Distinct clusters. Anti-dupe OK. Registry surgical OK.
+2026-10-20 PRODUCT (roll 17): shipped 2 (calculadora-frecuencia-cardiaca-maxima salud + calculadora-area-elipse matematicas). Distinct clusters. Anti-dupe OK. Registry surgical OK.
 ```
 
 ---
@@ -70,7 +70,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-contraste-color, conversor-peso
+last_slugs: calculadora-frecuencia-cardiaca-maxima, calculadora-area-elipse
 last_deploy: pending
 ```
 
