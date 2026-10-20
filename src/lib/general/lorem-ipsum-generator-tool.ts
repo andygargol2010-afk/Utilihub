@@ -1,0 +1,1 @@
+$(cat /tmp/lorem-ipsum-generator-tool.ts)
