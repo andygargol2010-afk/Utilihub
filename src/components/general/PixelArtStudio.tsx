@@ -284,6 +284,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   const snapshot = useRef<string[][] | null>(null);
   /* touch-v1 */
   const lastPaintCell = useRef<{ x: number; y: number } | null>(null);
+  const bodyScrollLock = useRef(0);
 
   const t = useMemo(() => ({
     undo: es ? "Deshacer" : "Undo", redo: es ? "Rehacer" : "Redo",
@@ -888,7 +889,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
       ];
 
   return (
-    <div className="/* sticky-mobile-v1 */ relative -m-1 overflow-x-hidden rounded-xl border border-zinc-700/80 bg-[#1a1a1f] text-zinc-100 shadow-inner sm:-m-2">
+    <div className="/* sticky-mobile-v1 touch-draw-v2 */ relative -m-1 overflow-x-hidden overscroll-none rounded-xl border border-zinc-700/80 bg-[#1a1a1f] text-zinc-100 shadow-inner sm:-m-2" style={{ overscrollBehavior: "none" }}>
       <div className="sticky top-0 z-30 flex flex-wrap items-center gap-1 border-b border-zinc-700/80 bg-[#121216]/95 px-2 py-1.5 backdrop-blur-sm supports-[backdrop-filter]:bg-[#121216]/80">
         <span className="mr-1 text-[11px] font-black tracking-[0.18em] text-rose-400">PIXELIHUB</span>
         <button
@@ -964,8 +965,8 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
 
         <div className="relative order-1 min-w-0 flex-1 bg-[#0e0e12] md:order-none">
           <div
-            className="flex h-full min-h-[280px] items-center justify-center overflow-auto p-3 touch-pan-y md:touch-auto"
-            style={{ WebkitUserSelect: "none", userSelect: "none" }}
+            className="flex h-full min-h-[280px] items-center justify-center overflow-auto p-3 touch-none overscroll-none"
+            style={{ WebkitUserSelect: "none", userSelect: "none", touchAction: "none", overscrollBehavior: "none" }}
             onWheel={(e) => { e.preventDefault(); setZoom((z) => Math.min(32, Math.max(4, z + (e.deltaY > 0 ? -1 : 1)))); }}
           >
             <canvas
