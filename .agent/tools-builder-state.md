@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-20 | diseno | calculadora-contraste-color | ColorContrastCalculatorTool
+- 2026-10-20 | conversiones | conversor-peso | WeightConverterTool
 - 2026-10-20 | hogar | calculadora-ratio-cafe | CoffeeRatioCalculatorTool
 - 2026-10-20 | matematicas | calculadora-area-rombo | RhombusAreaCalculatorTool
 - 2026-10-20 | viajes | calculadora-costo-combustible | FuelCostCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-19 | texto | contador-silabas | SyllableCounterTool
 - 2026-10-19 | matematicas | calculadora-area-paralelogramo | ParallelogramAreaCalculatorTool
 - 2026-10-19 | ciencia | calculadora-volumen-prisma-rectangular | RectangularPrismVolumeCalculatorTool
-- 2026-10-19 | ciencia | calculadora-volumen-piramide | PyramidVolumeCalculatorTool
-- 2026-10-19 | matematicas | calculadora-area-trapecio | TrapezoidAreaCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -46,6 +46,8 @@ viajes: recent (tiempo-viaje, costo-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas)
 productividad: recent (tiempo-lectura)
 matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo)
+diseno: recent (contraste-color)
+conversiones: recent (peso)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -59,13 +61,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-19 PRODUCT (roll 15): shipped 2 (calculadora-area-triangulo matematicas + calculadora-interes-simple finanzas). Distinct clusters. Anti-dupe OK. Registry surgical OK.
-2026-10-19 FIX-BUILD: deploy ERROR slug duplicado calculadora-pintura. Eliminé paint-calculator.ts, sole owner paint-calculator-tool.ts.
-2026-10-20 PRODUCT: shipped 2 (calculadora-costo-combustible viajes + calculadora-tiempo-lectura productividad) but deploy ERROR due to duplicate slug files (fuel-cost-tool.ts + reading-time-tool.ts vs *-calculator-tool.ts).
-2026-10-20 FIX-BUILD: deleted fuel-cost-tool.ts and reading-time-tool.ts (sole owners remain the calculator-tool files already in index.ts). Restored this state file from placeholder wipe.
-2026-10-20 PRODUCT (roll 12): shipped 2 (calculadora-ratio-cafe hogar + calculadora-area-rombo matematicas). Distinct clusters. Anti-dupe OK. Registry surgical OK (after accidental placeholder restore).
-2026-10-20 FIX-BUILD: deploy ERROR on SHA 9ea089e (PRODUCT commit wrote PLACEHOLDER to registry/index/components). Tip already has full restored registry + components + index. This docs commit triggers re-deploy of good tree. No new tools.
-2026-10-20 FIX-BUILD: latest deploy ERROR on house-modeler densify SHA 42c0d8ff (HouseModeler3D not exported — monolith wiped temporarily by other agent). Tip (08398c7b + restores) has full monolith restored. This docs commit re-triggers deploy of good tree. No new tools. Never touch HouseModeler3D.tsx.
+2026-10-20 PRODUCT (roll 14): shipped 2 (calculadora-contraste-color diseno + conversor-peso conversiones). Distinct clusters. Anti-dupe OK. Registry surgical OK.
 ```
 
 ---
@@ -73,9 +69,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: FIX-BUILD
-last_slugs: none (deploy ERROR on intermediate house-modeler; tip restored)
-last_deploy: ERROR on 42c0d8ff; tip good; this commit to re-trigger READY
+last_mode: PRODUCT
+last_slugs: calculadora-contraste-color, conversor-peso
+last_deploy: pending
 ```
 
 <!-- end:tools-builder-state.md -->

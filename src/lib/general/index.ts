@@ -37,6 +37,8 @@ import { FUEL_COST_CALCULATOR_TOOLS } from "./fuel-cost-calculator-tool";
 import { READING_TIME_CALCULATOR_TOOLS } from "./reading-time-calculator-tool";
 import { COFFEE_RATIO_CALCULATOR_TOOLS } from "./coffee-ratio-calculator-tool";
 import { RHOMBUS_AREA_CALCULATOR_TOOLS } from "./rhombus-area-calculator-tool";
+import { COLOR_CONTRAST_CALCULATOR_TOOLS } from "./color-contrast-calculator-tool";
+import { WEIGHT_CONVERTER_TOOLS } from "./weight-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -78,4 +80,6 @@ export const GENERAL_TOOLS = [
   ...READING_TIME_CALCULATOR_TOOLS,
   ...COFFEE_RATIO_CALCULATOR_TOOLS,
   ...RHOMBUS_AREA_CALCULATOR_TOOLS,
+  ...COLOR_CONTRAST_CALCULATOR_TOOLS,
+  ...WEIGHT_CONVERTER_TOOLS,
 ];
