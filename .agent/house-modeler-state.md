@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 240
+runs_done: 241
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 343670
-last_known_good_hint: (post RESTORE 2026-10-20 SHA aa9dbdb7 ~343kB)
+approx_bytes: 330489
+last_known_good_hint: (post RESTORE 2026-10-20 SHA aa9dbdb7 ~330kB)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: RESTORE
+last_mode: META
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: READY (pending check)
-note: Failed PRODUCT push wiped monolith to literal; restored via Actions. Door-metal densify deferred. runs_done not bumped.
+deploy: READY
+note: Tip READY (SHA 3e6f396). Monolith intact ~330kB SHA aa9dbdb7, no PLACEHOLDER. Door-metal densify deferred (tool-channel full-rewrite truncation risk).
 ```
 
 Refresh after each run.
@@ -80,6 +80,7 @@ META run 238: confirmed READY deploy + monolith health; door-metal densify still
 META run 239: reconfirmed monolith health (~351kB, no PLACEHOLDER), deploy READY, door densify deferred.
 MODELADOR-3D run 240: concrete MatPreset added surgically in helpers.
 RESTORE 2026-10-20: push_files literalized content; monolith restored via Actions (aa9dbdb7). Door densify still deferred.
+META run 241: confirmed tip READY, monolith intact (~330kB SHA aa9dbdb7), door densify deferred due to truncation risk.
 ```
 
 <!-- end:house-modeler-state.md -->
