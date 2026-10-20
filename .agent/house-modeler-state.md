@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 237
+runs_done: 238
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 351530
-last_known_good_hint: (post worn-earth densify ~351530 bytes)
+approx_bytes: 351478
+last_known_good_hint: (post CI restore ~351478 bytes / 7956 lines, HEAD 06f436ec)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: RESTORE
+last_mode: META
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: pending after restore
-note: PRODUCT attempt 238 aborted — tool channel truncated push to PLACEHOLDER; RESTORE workflow 375758025 triggered on main, monolith recovered. runs_done held at 237. No product change.
+deploy: READY (restore SHA 06f436ec → utilihub-m6s98fl5w-financialproyects.vercel.app)
+note: META run 238 — health after restore. Monolith 351478B / 7956 lines, gates OK. Door-metal densify (scratches 8→12, grit 10→14 + rust) deferred; requires local-clone surgical.
 ```
 
 Refresh after each run.
@@ -75,7 +75,8 @@ PRODUCT run 234: clay tiles densify (flecks 9→12, moss denser) via local clone
 META run 235: health check + deferred chimney-crown densify due to no sandbox push auth.
 PRODUCT run 236: chimney crown densify (courses 4→5 + soot/flecks/lime) via local clone surgical.
 PRODUCT run 237: worn-earth densify (grit/damp/leaf/cracks) via local clone surgical.
-RESTORE 2026-10-20: failed PRODUCT push truncated to PLACEHOLDER; restored via Actions.
+RESTORE 2026-10-20: failed PRODUCT push truncated to PLACEHOLDER; restored via Actions (06f436ec).
+META run 238: confirmed READY deploy + monolith health; door-metal densify still queued for authenticated local push.
 ```
 
 <!-- end:house-modeler-state.md -->
