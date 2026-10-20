@@ -68,11 +68,11 @@ path_es: n/a
 path_seo: /pt
 domain: seo-locales
 runs_total: 4
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: EXECUTE 2026-10-20: added /pt/orbit-defender-arcade (OrbitDefenderArcadeGame locale=pt support + full PT page + hreflang). Updated /pt home with second link + list. Registry pages_done now includes the new path (1/5 active). Adsterra kept. EN+ES untouched. Next: deepen further or add one more experience.
+notes: EXECUTE 2026-10-20: added /pt/snake (SnakeGame locale=pt full string support + complete PT page + hreflang). Updated /pt home with third link + list item. Registry pages_done now includes the new path (1/5 active). Adsterra kept. EN+ES untouched. Next: deepen further or close.
 adsense-prep_runs: 3
 ```
 
