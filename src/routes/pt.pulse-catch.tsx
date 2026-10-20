@@ -1,8 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PulseCatch } from "@/components/playgrounds/PulseCatch";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
-import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
 const title = "Pulse Catch | UtiliHub";
 const description = cleanDescription(
@@ -47,7 +46,11 @@ function PulseCatchPagePt() {
       </header>
       <PulseCatch locale="pt" />
 
-      <PlaygroundNextStep currentId="pulse-catch" locale="pt" />
+      <div className="mt-8">
+        <Link to="/pt" className="text-sm font-semibold text-primary hover:underline">
+          ← Voltar ao início em português
+        </Link>
+      </div>
       <div className="mt-10">
         <AdsterraBanner />
       </div>
