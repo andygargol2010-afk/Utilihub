@@ -67,11 +67,11 @@ path_en: /games/pulse-catch-arena
 path_es: /es/juegos/pulse-catch-arena
 domain: quality-lift
 runs_total: 7
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: both
 next_step_required: yes
-notes: Roll U=0.68 → CORE. Weighted sample selected quality-lift (set to 1, other CORE +1). U_f=0.45 → games family. Compared: pulse-catch-arena, orbit-defender-arcade, snake. Target pulse-catch-arena for headroom. Elevated standard: power-up system + stronger visual juice and mobile feel that the two peers still lack. EXECUTE 1/7: added temporary power-ups (magnet pull, slow-mo, x2 multi) with timers, HUD indicators, special spawn/catch particles and floaters. Peers still lack this system. EXECUTE 2/7: enhanced particle bursts (multi-layer sparks, color-coded by kind) + screen shake and flash juice on catches/combos; improved pointer tracking for mobile. Still elevating above orbit-defender and snake.
+notes: Roll U=0.68 → CORE. Weighted sample selected quality-lift (set to 1, other CORE +1). U_f=0.45 → games family. Compared: pulse-catch-arena, orbit-defender-arcade, snake. Target pulse-catch-arena for headroom. Elevated standard: power-up system + stronger visual juice and mobile feel that the two peers still lack. EXECUTE 1/7: added temporary power-ups (magnet pull, slow-mo, x2 multi) with timers, HUD indicators, special spawn/catch particles and floaters. Peers still lack this system. EXECUTE 2/7: enhanced particle bursts (multi-layer sparks, color-coded by kind) + screen shake and flash juice on catches/combos; improved pointer tracking for mobile. Still elevating above orbit-defender and snake. EXECUTE 3/7: full elevated implementation with wave/combo announcements (big centered text), polished shareable high-score PNG card, refined particle juice, magnet attraction, and mobile-optimized pointer bar control. Bar moved further above peers.
 adsense-prep_runs: 3
 ```
 
