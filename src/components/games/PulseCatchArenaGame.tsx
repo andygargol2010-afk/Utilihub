@@ -18,6 +18,7 @@ type Pulse = {
   r: number;
   kind: PulseKind;
   hue: number;
+  trail: { x: number; y: number }[];
 };
 
 type Particle = {
@@ -146,6 +147,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             r: kind === "rare" ? 14 : 11,
             kind,
             hue,
+            trail: [],
           });
         }
 
@@ -156,6 +158,8 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
             p.x += dx * 0.08;
           }
           p.y += p.vy;
+          p.trail.push({ x: p.x, y: p.y });
+          if (p.trail.length > 6) p.trail.shift();
 
           // catch
           if (p.y + p.r > BAR_Y && p.y - p.r < BAR_Y + BAR_H && p.x > barXRef.current - 8 && p.x < barXRef.current + BAR_W + 8) {
@@ -294,8 +298,23 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           ctx.fillRect(0, 0, W, H);
         }
 
-        // pulses
+        // pulses with trails
         for (const p of pulsesRef.current) {
+          // trail
+          if (p.trail.length > 1) {
+            ctx.save();
+            ctx.globalAlpha = 0.45;
+            ctx.strokeStyle = `hsl(${p.hue},90%,60%)`;
+            ctx.lineWidth = 3;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(p.trail[0].x, p.trail[0].y);
+            for (let i = 1; i < p.trail.length; i++) {
+              ctx.lineTo(p.trail[i].x, p.trail[i].y);
+            }
+            ctx.stroke();
+            ctx.restore();
+          }
           ctx.save();
           ctx.shadowBlur = 12;
           ctx.shadowColor = `hsl(${p.hue},90%,60%)`;
@@ -342,6 +361,10 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           ctx.font = "bold 16px system-ui, sans-serif";
           ctx.textAlign = "right";
           ctx.fillText(`x${comboRef.current}`, W - 12, 24);
+          // combo meter glow
+          const meterW = Math.min(80, comboRef.current * 5);
+          ctx.fillStyle = `rgba(244,114,182,${0.4 + comboRef.current * 0.04})`;
+          ctx.fillRect(W - 12 - meterW, 32, meterW, 6);
         }
 
         // power indicators
