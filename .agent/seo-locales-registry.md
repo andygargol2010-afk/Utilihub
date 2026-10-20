@@ -15,7 +15,7 @@ When shipping a **new** playground / high-traffic page later: check `active` loc
 
 Order = preferred pick when domain rolls and no forced locale in ACTIVE PROJECT:
 
-1. `pt` — Portuguese (pt-BR bias for copy)
+1. `pt` — Portuguese (pt-BR bias for copy) — **now active**
 2. `fr` — French
 3. `de` — German
 4. `ar` — Arabic (`dir=rtl` required)
@@ -34,14 +34,7 @@ Do **not** add EN (`/` or bare) or ES (`/es`) here — those are first-class pro
 
 | code | BCP-47 | dir | status | prefix | pages_done (paths) | notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| *(none yet)* | | | | | | First `seo-locales` run should activate one from the priority queue. |
-
-Example row after first ship:
-
-```
-| pt | pt-BR | ltr | active | /pt | /pt, /pt/river-light | hreflang wired; no nav from EN/ES |
-```
-
+| pt | pt-BR | ltr | active | /pt | /pt, /pt/pulse-catch | hreflang wired to EN+ES; no nav from EN/ES; minimal shell |
 
 ---
 
