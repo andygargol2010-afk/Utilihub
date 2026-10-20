@@ -27,6 +27,8 @@ PRODUCT run 228: nosing densify (rings 3→5 denser, boards 5→6, micro-checks 
 PRODUCT run 229: plate densify (grain 5→8 denser + rare check cracks) via local clone surgical.
 
 PRODUCT run 230: railing metal densify (flutes 10→12, denser oxide streaks + dust specks) via local clone surgical.
+
+PRODUCT run 231: grass densify (flecks 28→36, blades 36→48, worn patches 9→11) via local clone surgical.
 <!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -44,7 +46,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 230
+runs_done: 231
 runs_max: 500
 ```
 
@@ -70,7 +72,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 350742
+approx_bytes: 350743
 last_known_good_hint: (post nosing densify ~349786 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -87,7 +89,7 @@ last_mode: PRODUCT
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: none
 deploy: pending
-note: PRODUCT run 230 — railing metal densify (flutes 10→12, denser oxide streaks + dust specks). Monolith intact. SEO none.
+note: PRODUCT run 231 — grass densify (flecks 28→36, blades 36→48, worn patches 9→11). Monolith intact. SEO none.
 ```
 
 Refresh after each run.
@@ -159,4 +161,6 @@ PRODUCT run 228: nosing densify (rings 3→5 denser, boards 5→6, micro-checks 
 PRODUCT run 229: plate densify (grain 5→8 denser + rare check cracks) via local clone surgical.
 
 PRODUCT run 230: railing metal densify (flutes 10→12, denser oxide streaks + dust specks) via local clone surgical.
+
+PRODUCT run 231: grass densify (flecks 28→36, blades 36→48, worn patches 9→11) via local clone surgical.
 <!-- end:house-modeler-state.md -->
