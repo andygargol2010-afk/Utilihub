@@ -1,3 +1,4 @@
+// Catalog index — exports GENERAL_CATEGORIES + GENERAL_TOOLS (anti-wipe restore 2026-10-20)
 import { INNOVATOR_TOOLS } from "./innovator-tools";
 import { GENERAL_CATEGORIES } from "./catalog";
 import { MATH_TOOLS } from "./math";
