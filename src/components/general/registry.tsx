@@ -1,1 +1,1 @@
-$(cat /tmp/registry.tsx)
+$(cat /tmp/registry-good.tsx)
