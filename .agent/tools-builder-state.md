@@ -65,6 +65,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-20 FIX-BUILD: deleted fuel-cost-tool.ts and reading-time-tool.ts (sole owners remain the calculator-tool files already in index.ts). Restored this state file from placeholder wipe.
 2026-10-20 PRODUCT (roll 12): shipped 2 (calculadora-ratio-cafe hogar + calculadora-area-rombo matematicas). Distinct clusters. Anti-dupe OK. Registry surgical OK (after accidental placeholder restore).
 2026-10-20 FIX-BUILD: deploy ERROR on SHA 9ea089e (PRODUCT commit wrote PLACEHOLDER to registry/index/components). Tip already has full restored registry + components + index. This docs commit triggers re-deploy of good tree. No new tools.
+2026-10-20 FIX-BUILD: latest deploy ERROR on house-modeler densify SHA 42c0d8ff (HouseModeler3D not exported — monolith wiped temporarily by other agent). Tip (08398c7b + restores) has full monolith restored. This docs commit re-triggers deploy of good tree. No new tools. Never touch HouseModeler3D.tsx.
 ```
 
 ---
@@ -73,8 +74,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: FIX-BUILD
-last_slugs: calculadora-ratio-cafe, calculadora-area-rombo (verification pending after re-deploy)
-last_deploy: ERROR on bad PRODUCT SHA; tip restored; this commit to re-trigger READY
+last_slugs: none (deploy ERROR on intermediate house-modeler; tip restored)
+last_deploy: ERROR on 42c0d8ff; tip good; this commit to re-trigger READY
 ```
 
 <!-- end:tools-builder-state.md -->
