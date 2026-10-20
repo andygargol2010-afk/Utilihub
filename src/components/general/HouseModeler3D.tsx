@@ -377,7 +377,7 @@ function noiseFill(
 function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [214, 204, 188], 16);
   // Lime-wash patches: walls read as troweled plaster, not uniform noise.
-  for (let i = 0; i < 24; i++) {
+  for (let i = 0; i < 32; i++) { // denser lime-wash patches
     const x = hash2(i, 2.1) * size;
     const y = hash2(i, 5.4) * size;
     const rx = 18 + hash2(i, 8) * 40;
@@ -389,7 +389,7 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Small flecks and edge wear so the plaster reads as hand-troweled, not a flat wash.
-  for (let f = 0; f < 48; f++) {
+  for (let f = 0; f < 64; f++) { // denser flecks and edge wear
     const x = hash2(f, 11.3) * size;
     const y = hash2(f, 6.7) * size;
     const r = 1.2 + hash2(f, 4.1) * 3.4;
@@ -403,7 +403,7 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
   }
   ctx.strokeStyle = "rgba(148,136,120,0.22)";
   ctx.lineWidth = 1;
-  for (let s = 0; s < 10; s++) {
+  for (let s = 0; s < 14; s++) { // denser horizontal trowel strokes
     const y = hash2(s, 4.2) * size;
     ctx.beginPath();
     ctx.moveTo(0, y);
@@ -415,7 +415,7 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
   // Subtle vertical trowel drag marks so the plaster reads as hand-finished, not machine-smooth.
   ctx.strokeStyle = "rgba(160,150,134,0.18)";
   ctx.lineWidth = 0.8;
-  for (let v = 0; v < 8; v++) {
+  for (let v = 0; v < 12; v++) { // denser vertical drag marks
     const x = hash2(v, 7.3) * size;
     ctx.beginPath();
     ctx.moveTo(x, 0);
@@ -431,7 +431,7 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
   base.addColorStop(1, "rgba(92,80,66,0.22)");
   ctx.fillStyle = base;
   ctx.fillRect(0, size * 0.78, size, size * 0.22);
-  for (let d = 0; d < 10; d++) {
+  for (let d = 0; d < 14; d++) { // denser base dirt weathering
     const dx = hash2(d, 14.2) * size;
     const dy = size * 0.82 + hash2(d, 3.6) * size * 0.16;
     const dr = 4 + hash2(d, 9.1) * 9;
@@ -444,7 +444,7 @@ function paintPlaster(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Fine micro-pits and lime bloom so the plaster surface reads as hand-troweled rather than machine-flat.
-  for (let p = 0; p < 96; p++) {
+  for (let p = 0; p < 128; p++) { // denser micro-pits and lime bloom
     const px = hash2(p, 17.4) * size;
     const py = hash2(p, 8.9) * size;
     const pr = 0.6 + hash2(p, 2.3) * 1.8;

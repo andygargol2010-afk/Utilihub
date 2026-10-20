@@ -30,6 +30,8 @@ PRODUCT run 230: railing metal densify (flutes 10→12, denser oxide streaks + d
 
 PRODUCT run 231: grass densify (flecks 28→36, blades 36→48, worn patches 9→11) via local clone surgical.
 PRODUCT run 232: board-formed densify (grit 68→84, micro-pits 28→36) via local clone surgical.
+
+PRODUCT run 233: plaster densify (patches 24→32, flecks 48→64, trowel 10→14 / 8→12, dirt 10→14, micro-pits 96→128) via local clone surgical.
 <!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -47,7 +49,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 232
+runs_done: 233
 runs_max: 500
 ```
 
@@ -73,7 +75,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 350843
+approx_bytes: 351037
 last_known_good_hint: (post nosing densify ~349786 bytes)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -90,7 +92,7 @@ last_mode: PRODUCT
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: pending
-note: PRODUCT run 232 — board-formed densify (grit 68→84, micro-pits 28→36). Monolith intact. SEO pt active, deferred for monolith.
+note: PRODUCT run 233 — plaster densify (patches 24→32, flecks 48→64, trowel strokes denser, micro-pits 96→128). Monolith intact. SEO pt active, deferred for monolith.
 ```
 
 Refresh after each run.
@@ -165,4 +167,6 @@ PRODUCT run 230: railing metal densify (flutes 10→12, denser oxide streaks + d
 
 PRODUCT run 231: grass densify (flecks 28→36, blades 36→48, worn patches 9→11) via local clone surgical.
 PRODUCT run 232: board-formed densify (grit 68→84, micro-pits 28→36) via local clone surgical.
+
+PRODUCT run 233: plaster densify (patches 24→32, flecks 48→64, trowel 10→14 / 8→12, dirt 10→14, micro-pits 96→128) via local clone surgical.
 <!-- end:house-modeler-state.md -->
