@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: seo-locales
-last_closed_id: pt
+last_closed_domain: retention-loops
+last_closed_id: return-streak-board
 p_fixed: 0.35
 
 weights_core:
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-20 | retention-loops | return-streak-board | Interactive Return Streak Board complete with share (EN+ES)
 - 2026-10-20 | seo-locales | pt | Portuguese (pt-BR) beachhead complete: /pt home + pulse-catch + orbit-defender + snake + pong (1/5 active)
 - 2026-10-20 | quality-lift | pulse-catch-arena | Elevated Pulse Catch Arena with perfect-catch system + combo fire + fever (EN+ES)
 - 2026-10-19 | games | orbit-defender-arcade | Interactive Orbit Defender Arcade (EN+ES)
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-18 | kits | home-renovation-kit | Interactive Home Renovation Kit (EN+ES)
 - 2026-10-17 | simulators | boids-flocking-lab | Boids Flocking Lab (EN+ES)
 - 2026-10-17 | games | pulse-catch-arena | Pulse Catch Arena (EN+ES)
-- 2026-10-17 | search-magnets | canvas-webgl-performance-guide | Canvas & WebGL Performance Guide (EN+ES)
 ```
 
 ---
@@ -60,7 +60,7 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: done
 idea: Interactive Return Streak Board — lightweight visual board (animated nodes + pulse rings) that tracks visit streaks and last-played playgrounds/games via localStorage only (no accounts). Shows “due to return” highlights, one-tap resume, and a suggested next experience. Visual payoff, EN+ES, route-isolated, Adsterra kept. Creates a return/retention loop without server state.
 id: return-streak-board
 path_en: /return-streak-board
@@ -68,8 +68,8 @@ path_es: /es/return-streak-board
 path_seo: n/a
 domain: retention-loops
 runs_total: 6
-runs_remaining: 1
-acceptance: pending
+runs_remaining: 0
+acceptance: complete
 share: n/a
 next_step_required: no
 notes: IDEATE 2026-10-20: U=0.32996 GROWTH; U_g=0.9855 FLEX; weighted FLEX → retention-loops (not last_closed). Weights: selected→1, other non-FIXED FLEX +1. FIXED untouched. seo-locales still 1/5 active.
@@ -78,6 +78,7 @@ EXECUTE 2026-10-20 (2/6): deepened visuals + tracking — longestStreak, visual 
 EXECUTE 2026-10-20 (3/6): milestones (3/7/14/30) with progress bar, totalVisits tracking, prominent suggested-next hero card for most overdue, expanded grid to 10 nodes. EN+ES. Adsterra kept. Lightweight CSS only.
 EXECUTE 2026-10-20 (4/6): week streak calendar strip (7-day active markers + today highlight) + streak-at-risk note if not visited today. EN+ES. Adsterra kept. Lightweight CSS only.
 EXECUTE 2026-10-20 (5/6): accurate 7-day calendar via visitDates tracking, flame-pulse animation on streak number, resume-bonus labels on due nodes. EN+ES. Adsterra kept. Lightweight CSS only.
+EXECUTE 2026-10-20 (6/6): added share streak button (Web Share API + clipboard fallback). Project complete. EN+ES. Adsterra kept. Lightweight only.
 adsense-prep_runs: 3
 ```
 
