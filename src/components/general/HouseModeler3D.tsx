@@ -1518,7 +1518,7 @@ function paintRoofMetalBump(ctx: CanvasRenderingContext2D, size: number) {
 /** Painted bar stock. Ports door-sheet ribs onto a rail: vertical flutes, oxide, no rivet rows. */
 function paintRailingMetal(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [78, 82, 86], 11);
-  const flutes = 10;
+  const flutes = 12; // denser flutes for finer bar stock reading
   for (let i = 0; i < flutes; i++) {
     const x0 = Math.floor((i / flutes) * size);
     const x1 = Math.floor(((i + 1) / flutes) * size);
@@ -1529,9 +1529,22 @@ function paintRailingMetal(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fillRect(x0 + 1, 0, 2, size);
     ctx.fillStyle = "rgba(28,30,32,0.7)";
     ctx.fillRect(x1 - 3, 0, 3, size);
-    const streak = 0.08 + hash2(i, 9.1) * 0.75;
-    ctx.fillStyle = "rgba(122,78,48,0.18)";
-    ctx.fillRect(x0 + 3, Math.floor(streak * size), Math.max(3, (x1 - x0) * 0.35), Math.floor(size * 0.22));
+    // Denser oxide streaks and dust for weathered wrought-iron look
+    for (let s = 0; s < 3; s++) {
+      const streak = 0.05 + hash2(i + s * 2, 9.1) * 0.8;
+      const ox = 100 + Math.floor(hash2(i, 12 + s) * 40);
+      ctx.fillStyle = `rgba(${ox},${Math.floor(ox * 0.55)},${Math.floor(ox * 0.35)},${0.12 + hash2(i, s) * 0.15})`;
+      ctx.fillRect(x0 + 2 + s * 1.5, Math.floor(streak * size), Math.max(2, (x1 - x0) * 0.28), Math.floor(size * 0.18));
+    }
+    // Fine dust specks
+    if (hash2(i, 21.4) > 0.45) {
+      const dx = x0 + hash2(i, 3.2) * (x1 - x0);
+      const dy = hash2(i, 7.8) * size;
+      ctx.fillStyle = "rgba(160,150,140,0.25)";
+      ctx.beginPath();
+      ctx.arc(dx, dy, 0.6 + hash2(i, 5) * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 }
 
