@@ -5,8 +5,8 @@ import { GAMES, gameName, gamePath, gameSummary } from "@/lib/games/catalog";
 import { englishToolSlug } from "@/lib/route-slugs";
 import { spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 
-/** Hero product picks — advanced studios + browser games. pixelihub-promote-v1: lead with pixel studio. */
-const FEATURED_ADVANCED_SLUGS = ["pixelihub", "modelador-casas-3d", "modelador-3d"] as const;
+/** Hero product picks — advanced studios + browser games. House modeler leads; PixeliHub second. */
+const FEATURED_ADVANCED_SLUGS = ["modelador-casas-3d", "pixelihub", "modelador-3d"] as const;
 const FEATURED_GAME_COUNT = 3;
 
 type Locale = "en" | "es";
@@ -22,7 +22,7 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
     ? {
         kicker: "Destacados",
         title: "Studios avanzados y juegos",
-        blurb: "Más que calculadoras: pixel art, modelado 3D y juegos gratis en el navegador — sin instalar nada.",
+        blurb: "Más que calculadoras: modelado 3D, pixel art y juegos gratis en el navegador — sin instalar nada.",
         studioBadge: "Studio",
         playBadge: "Jugar",
         allAdvanced: "Ver herramientas avanzadas",
@@ -33,7 +33,7 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
     : {
         kicker: "Featured",
         title: "Advanced studios and games",
-        blurb: "Beyond calculators: pixel art, browser 3D modeling and free games — no install, no signup.",
+        blurb: "Beyond calculators: browser 3D modeling, pixel art and free games — no install, no signup.",
         studioBadge: "Studio",
         playBadge: "Play",
         allAdvanced: "Browse advanced tools",
