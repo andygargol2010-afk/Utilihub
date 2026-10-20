@@ -31,11 +31,41 @@ type Particle = {
   size: number;
 };
 
+type ScorePopup = {
+  x: number;
+  y: number;
+  text: string;
+  life: number;
+  color: string;
+};
+
 type Announcement = {
   text: string;
   life: number;
   color: string;
 };
+
+type Star = {
+  x: number;
+  y: number;
+  size: number;
+  phase: number;
+  speed: number;
+};
+
+function makeStars(n: number): Star[] {
+  const out: Star[] = [];
+  for (let i = 0; i < n; i++) {
+    out.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      size: 0.6 + Math.random() * 1.4,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.02 + Math.random() * 0.04,
+    });
+  }
+  return out;
+}
 
 export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
@@ -53,6 +83,8 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
 
   const pulsesRef = useRef<Pulse[]>([]);
   const particlesRef = useRef<Particle[]>([]);
+  const popupsRef = useRef<ScorePopup[]>([]);
+  const starsRef = useRef<Star[]>(makeStars(48));
   const barXRef = useRef(W / 2 - BAR_W / 2);
   const magnetUntilRef = useRef(0);
   const slowUntilRef = useRef(0);
@@ -67,6 +99,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
   const comboRef = useRef(0);
   const lastCatchRef = useRef(0);
   const announcementRef = useRef<Announcement | null>(null);
+  const frameRef = useRef(0);
 
   useEffect(() => {
     setBest(readBestScore("pulse-catch-arena"));
@@ -89,6 +122,8 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
   const hardReset = useCallback(() => {
     pulsesRef.current = [];
     particlesRef.current = [];
+    popupsRef.current = [];
+    starsRef.current = makeStars(48);
     barXRef.current = W / 2 - BAR_W / 2;
     magnetUntilRef.current = 0;
     slowUntilRef.current = 0;
@@ -98,6 +133,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
     waveTimerRef.current = 0;
     comboRef.current = 0;
     lastCatchRef.current = 0;
+    frameRef.current = 0;
     setScore(0);
     setLives(3);
     setWave(1);
@@ -119,6 +155,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
     if (!running) return;
     let raf = 0;
     const tick = () => {
+      frameRef.current += 1;
       if (!paused && !gameOver) {
         const now = performance.now();
         const slow = slowUntilRef.current > now;
@@ -154,7 +191,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         // update pulses
         pulsesRef.current = pulsesRef.current.filter((p) => {
           if (magnet && p.y > H * 0.4) {
-            const dx = (barXRef.current + BAR_W / 2) - p.x;
+            const dx = barXRef.current + BAR_W / 2 - p.x;
             p.x += dx * 0.08;
           }
           p.y += p.vy;
@@ -181,10 +218,44 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
               setLives((l) => Math.min(5, l + 1));
               livesRef.current = Math.min(5, livesRef.current + 1);
               pts = 0;
+              popupsRef.current.push({
+                x: p.x,
+                y: p.y - 10,
+                text: es ? "+vida" : "+life",
+                life: 50,
+                color: "#86efac",
+              });
             }
-            if (p.kind === "power-magnet") magnetUntilRef.current = now + 6000;
-            if (p.kind === "power-slow") slowUntilRef.current = now + 5000;
-            if (p.kind === "power-multi") multiUntilRef.current = now + 7000;
+            if (p.kind === "power-magnet") {
+              magnetUntilRef.current = now + 6000;
+              popupsRef.current.push({
+                x: p.x,
+                y: p.y - 10,
+                text: es ? "Imán!" : "Magnet!",
+                life: 55,
+                color: "#c084fc",
+              });
+            }
+            if (p.kind === "power-slow") {
+              slowUntilRef.current = now + 5000;
+              popupsRef.current.push({
+                x: p.x,
+                y: p.y - 10,
+                text: es ? "Lento!" : "Slow!",
+                life: 55,
+                color: "#67e8f9",
+              });
+            }
+            if (p.kind === "power-multi") {
+              multiUntilRef.current = now + 7000;
+              popupsRef.current.push({
+                x: p.x,
+                y: p.y - 10,
+                text: "×2!",
+                life: 55,
+                color: "#fbbf24",
+              });
+            }
 
             if (pts > 0) {
               const mult = multi ? 2 : 1;
@@ -194,6 +265,13 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
                 const next = s + pts;
                 setBest((b) => writeBestScore("pulse-catch-arena", Math.max(b, next)));
                 return next;
+              });
+              popupsRef.current.push({
+                x: p.x,
+                y: p.y - 8,
+                text: `+${pts}`,
+                life: 48,
+                color: comboRef.current >= 5 ? "#f472b6" : "#fef08a",
               });
             }
 
@@ -245,6 +323,13 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
           return pt.life > 0;
         });
 
+        // score popups
+        popupsRef.current = popupsRef.current.filter((sp) => {
+          sp.y -= 0.9;
+          sp.life -= 1;
+          return sp.life > 0;
+        });
+
         if (shakeRef.current > 0) shakeRef.current -= 0.5;
         if (flashRef.current > 0) flashRef.current -= 1;
 
@@ -282,6 +367,19 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         ctx.fillStyle = "#0a0a12";
         ctx.fillRect(-4, -4, W + 8, H + 8);
 
+        // reactive starfield (twinkle speed scales with combo)
+        const comboBoost = 1 + comboRef.current * 0.12;
+        for (const s of starsRef.current) {
+          s.phase += s.speed * comboBoost;
+          const a = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(s.phase));
+          ctx.globalAlpha = a;
+          ctx.fillStyle = comboRef.current >= 5 ? "#f9a8d4" : "#e0e7ff";
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
         // subtle grid
         ctx.strokeStyle = "rgba(255,255,255,0.04)";
         ctx.lineWidth = 1;
@@ -296,6 +394,25 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         if (flashRef.current > 0) {
           ctx.fillStyle = `rgba(254,240,138,${flashRef.current / 40})`;
           ctx.fillRect(0, 0, W, H);
+        }
+
+        // power residual edge auras
+        const nowHud = performance.now();
+        if (magnetUntilRef.current > nowHud) {
+          const t = (magnetUntilRef.current - nowHud) / 6000;
+          ctx.fillStyle = `rgba(192,132,252,${0.08 + 0.06 * t})`;
+          ctx.fillRect(0, 0, 18, H);
+          ctx.fillRect(W - 18, 0, 18, H);
+        }
+        if (slowUntilRef.current > nowHud) {
+          const t = (slowUntilRef.current - nowHud) / 5000;
+          ctx.fillStyle = `rgba(103,232,249,${0.06 + 0.05 * t})`;
+          ctx.fillRect(0, 0, W, 14);
+        }
+        if (multiUntilRef.current > nowHud) {
+          const t = (multiUntilRef.current - nowHud) / 7000;
+          ctx.fillStyle = `rgba(251,191,36,${0.07 + 0.05 * t})`;
+          ctx.fillRect(0, H - 20, W, 20);
         }
 
         // pulses with trails
@@ -341,12 +458,29 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         }
         ctx.globalAlpha = 1;
 
+        // score popups
+        for (const sp of popupsRef.current) {
+          ctx.save();
+          ctx.globalAlpha = Math.min(1, sp.life / 20);
+          ctx.fillStyle = sp.color;
+          ctx.font = "bold 15px system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = sp.color;
+          ctx.fillText(sp.text, sp.x, sp.y);
+          ctx.restore();
+        }
+
         // bar
         const magnetActive = magnetUntilRef.current > performance.now();
-        ctx.fillStyle = magnetActive ? "#c084fc" : "#38bdf8";
-        ctx.shadowBlur = magnetActive ? 16 : 8;
-        ctx.shadowColor = magnetActive ? "#c084fc" : "#38bdf8";
+        const multiActive = multiUntilRef.current > performance.now();
+        ctx.fillStyle = magnetActive ? "#c084fc" : multiActive ? "#fbbf24" : "#38bdf8";
+        ctx.shadowBlur = magnetActive || multiActive ? 18 : 8;
+        ctx.shadowColor = magnetActive ? "#c084fc" : multiActive ? "#fbbf24" : "#38bdf8";
         ctx.fillRect(barXRef.current, BAR_Y, BAR_W, BAR_H);
+        // bar inner highlight
+        ctx.fillStyle = "rgba(255,255,255,0.35)";
+        ctx.fillRect(barXRef.current + 4, BAR_Y + 2, BAR_W - 8, 3);
         ctx.shadowBlur = 0;
 
         // HUD
@@ -368,7 +502,6 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         }
 
         // power indicators
-        const nowHud = performance.now();
         let hudY = 84;
         if (magnetUntilRef.current > nowHud) {
           ctx.fillStyle = "#c084fc";
@@ -434,6 +567,15 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
     if (!ctx) return;
     ctx.fillStyle = "#0a0a12";
     ctx.fillRect(0, 0, W, H);
+    // idle stars
+    for (const s of starsRef.current) {
+      ctx.globalAlpha = 0.35 + 0.3 * Math.sin(s.phase);
+      ctx.fillStyle = "#e0e7ff";
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
     ctx.fillStyle = "#fff";
     ctx.font = "bold 20px system-ui, sans-serif";
     ctx.textAlign = "center";
@@ -498,7 +640,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         )}
         {running && !gameOver && (
           <GameSecondaryButton onClick={() => setPaused((p) => !p)}>
-            {paused ? (es ? "Continuar" : "Resume") : (es ? "Pausa" : "Pause")}
+            {paused ? (es ? "Continuar" : "Resume") : es ? "Pausa" : "Pause"}
           </GameSecondaryButton>
         )}
         {(gameOver || !running) && (
@@ -506,7 +648,7 @@ export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) 
         )}
         {(gameOver || best > 0) && (
           <GameSecondaryButton onClick={shareCard}>
-            {shared ? (es ? "¡Compartido!" : "Shared!") : (es ? "Tarjeta de récord" : "Score card")}
+            {shared ? (es ? "¡Compartido!" : "Shared!") : es ? "Tarjeta de récord" : "Score card"}
           </GameSecondaryButton>
         )}
       </div>
