@@ -68,7 +68,7 @@ path_es: /es/return-streak-board
 path_seo: n/a
 domain: retention-loops
 runs_total: 6
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: n/a
 next_step_required: no
@@ -77,6 +77,7 @@ EXECUTE 2026-10-20 (1/6): shipped MVP visual board with localStorage daily strea
 EXECUTE 2026-10-20 (2/6): deepened visuals + tracking — longestStreak, visual pulse chain, sorted overdue nodes with dual-ring animations, days-ago labels, unique visits count. EN+ES. Adsterra kept. Lightweight CSS only.
 EXECUTE 2026-10-20 (3/6): milestones (3/7/14/30) with progress bar, totalVisits tracking, prominent suggested-next hero card for most overdue, expanded grid to 10 nodes. EN+ES. Adsterra kept. Lightweight CSS only.
 EXECUTE 2026-10-20 (4/6): week streak calendar strip (7-day active markers + today highlight) + streak-at-risk note if not visited today. EN+ES. Adsterra kept. Lightweight CSS only.
+EXECUTE 2026-10-20 (5/6): accurate 7-day calendar via visitDates tracking, flame-pulse animation on streak number, resume-bonus labels on due nodes. EN+ES. Adsterra kept. Lightweight CSS only.
 adsense-prep_runs: 3
 ```
 
