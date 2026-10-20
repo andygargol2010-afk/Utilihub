@@ -9,7 +9,9 @@ import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 import { englishCategorySlug, englishToolSlug } from "@/lib/route-slugs";
 
+/* pixelihub-promote-v1: studio in quick links for discovery */
 const QUICK_TOOL_SLUGS = [
+  "pixelihub",
   "calculadora",
   "calculadora-de-porcentajes",
   "regla-de-tres",
@@ -17,7 +19,6 @@ const QUICK_TOOL_SLUGS = [
   "contador-de-palabras",
   "generador-de-contrasenas",
   "conversor-de-temperatura",
-  "conversor-de-unidades",
 ];
 
 /** Short ES blurbs for home category cards (catalog descriptions are English-only). */
@@ -30,7 +31,7 @@ const CATEGORY_BLURB_ES: Record<string, string> = {
   fechas: "Diferencias de fechas, edades y temporizadores.",
   generadores: "Contraseñas, UUID, QR y datos aleatorios.",
   diseno: "Colores, contraste, paletas y modelado.",
-  "herramientas-avanzadas": "Modeladores 3D y utilidades avanzadas.",
+  "herramientas-avanzadas": "PixeliHub, modeladores 3D y utilidades avanzadas.",
   seguridad: "Contraseñas, hashes y validadores.",
   ciencia: "Física, química y simulaciones.",
   productividad: "Temporizadores, fechas y organización.",
@@ -88,21 +89,32 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" }) {
             </Link>
           </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {tools.map((tool) => (
-              <Link
-                key={tool.slug}
-                to={spanishToolPath(tool) as never}
-                className="card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
-              >
-                <span className="text-xs font-bold uppercase tracking-wide text-primary">
-                  {spanishCategoryName(tool.category)}
-                </span>
-                <h3 className="mt-2 font-bold group-hover:text-primary">{spanishToolName(tool)}</h3>
-                <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
-                  {CATEGORY_BLURB_ES[tool.category] ?? "Herramienta gratuita en el navegador."}
-                </p>
-              </Link>
-            ))}
+            {tools.map((tool) => {
+              const isPixel = tool.slug === "pixelihub";
+              return (
+                <Link
+                  key={tool.slug}
+                  to={spanishToolPath(tool) as never}
+                  className={
+                    isPixel
+                      ? "card-hover group rounded-xl border border-rose-500/35 bg-gradient-to-br from-rose-500/10 via-card to-card p-4 hover:-translate-y-0.5 hover:border-rose-500/50 hover:shadow-lift"
+                      : "card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
+                  }
+                >
+                  <span className={`text-xs font-bold uppercase tracking-wide ${isPixel ? "text-rose-500" : "text-primary"}`}>
+                    {isPixel ? "Pixel art" : spanishCategoryName(tool.category)}
+                  </span>
+                  <h3 className={`mt-2 font-bold ${isPixel ? "group-hover:text-rose-500" : "group-hover:text-primary"}`}>
+                    {spanishToolName(tool)}
+                  </h3>
+                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                    {isPixel
+                      ? "Estudio de pixel art en el navegador: capas, paletas y PNG."
+                      : (CATEGORY_BLURB_ES[tool.category] ?? "Herramienta gratuita en el navegador.")}
+                  </p>
+                </Link>
+              );
+            })}
           </div>
         </section>
         <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="es-explore-categories">
@@ -177,18 +189,33 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" }) {
           </Link>
         </div>
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {tools.map((tool) => (
-            <Link
-              key={tool.slug}
-              to={tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug"}
-              params={{ slug: englishToolSlug(tool) }}
-              className="card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
-            >
-              <span className="text-xs font-bold uppercase tracking-wide text-primary">{tool.category}</span>
-              <h3 className="mt-2 font-bold group-hover:text-primary">{tool.name}</h3>
-              <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{tool.summary}</p>
-            </Link>
-          ))}
+          {tools.map((tool) => {
+            const isPixel = tool.slug === "pixelihub";
+            return (
+              <Link
+                key={tool.slug}
+                to={tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug"}
+                params={{ slug: englishToolSlug(tool) }}
+                className={
+                  isPixel
+                    ? "card-hover group rounded-xl border border-rose-500/35 bg-gradient-to-br from-rose-500/10 via-card to-card p-4 hover:-translate-y-0.5 hover:border-rose-500/50 hover:shadow-lift"
+                    : "card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
+                }
+              >
+                <span className={`text-xs font-bold uppercase tracking-wide ${isPixel ? "text-rose-500" : "text-primary"}`}>
+                  {isPixel ? "Pixel art" : tool.category}
+                </span>
+                <h3 className={`mt-2 font-bold ${isPixel ? "group-hover:text-rose-500" : "group-hover:text-primary"}`}>
+                  {tool.name}
+                </h3>
+                <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                  {isPixel
+                    ? "Browser pixel-art studio: layers, palettes, and PNG export."
+                    : tool.summary}
+                </p>
+              </Link>
+            );
+          })}
         </div>
       </section>
       <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="explore-categories">
