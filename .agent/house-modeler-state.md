@@ -16,6 +16,8 @@ MODELADOR-3D run 223: added wood MatPreset (roughness 0.68) in helpers. Surgical
 PRODUCT run 224: plinth densify (extra chips on courses, denser mortar stroke, fine grit + rare lichen flecks) via local clone surgical.
 
 PRODUCT run 225: fascia densify (extra micro-grain fibers + rare check cracks) via local clone surgical.
+
+PRODUCT run 226: worn-earth densify (grit 96→128 denser + leaf flecks, damp 12→16, cracks 8→12) via local clone surgical.
 <!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -33,7 +35,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 225
+runs_done: 226
 runs_max: 500
 ```
 
@@ -75,8 +77,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-19
 SEO_LOCALES_ACTIVE: none
-deploy: READY (prior)
-note: PRODUCT run 225 — fascia densify (extra micro-grain fibers + rare check cracks). Monolith intact. SEO none.
+deploy: pending
+note: PRODUCT run 226 — worn-earth densify (grit 96→128, damp 12→16 + leaf flecks, cracks 8→12). Monolith intact. SEO none.
 ```
 
 Refresh after each run.
@@ -137,4 +139,6 @@ MODELADOR-3D run 223: added wood MatPreset (roughness 0.68) in helpers. Surgical
 PRODUCT run 224: plinth densify (extra chips on courses, denser mortar stroke, fine grit + rare lichen flecks) via local clone surgical.
 
 PRODUCT run 225: fascia densify (extra micro-grain fibers + rare check cracks) via local clone surgical.
+
+PRODUCT run 226: worn-earth densify (grit 96→128 denser + leaf flecks, damp 12→16, cracks 8→12) via local clone surgical.
 <!-- end:house-modeler-state.md -->
