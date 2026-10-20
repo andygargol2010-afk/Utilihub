@@ -29,12 +29,13 @@ const labels = {
     turbulence: "Turbulence",
     trailFade: "Trail fade",
     particleSize: "Particle size",
+    strength: "Attractor strength",
     clear: "Clear attractors",
     reset: "Reset particles",
     sharePng: "Download PNG",
     shareUrl: "Copy share link",
     copied: "Copied!",
-    help: "Click/tap to place magnetic attractors. Drag to move them. Particles form flowing aurora ribbons with persistent glowing trails that respond in real time. Tune density, speed, hue, turbulence, trail persistence and size. Try a color preset.",
+    help: "Click/tap to place magnetic attractors. Drag to move them. Right-click (or long-press) to delete the nearest. Particles form flowing aurora ribbons with persistent glowing trails that respond in real time. Tune density, speed, hue, turbulence, trail persistence, size and attractor strength. Try a color preset.",
     attractors: "Attractors",
     presets: "Color presets",
     aurora: "Aurora",
@@ -49,12 +50,13 @@ const labels = {
     turbulence: "Turbulencia",
     trailFade: "Desvanecimiento de estela",
     particleSize: "Tamaño de partícula",
+    strength: "Fuerza de atractores",
     clear: "Limpiar atractores",
     reset: "Reiniciar partículas",
     sharePng: "Descargar PNG",
     shareUrl: "Copiar enlace",
     copied: "¡Copiado!",
-    help: "Clic/toque para colocar atractores magnéticos. Arrastrá para moverlos. Las partículas forman cintas de aurora fluidas con estelas brillantes persistentes que responden en tiempo real. Ajustá densidad, velocidad, tono, turbulencia, persistencia de estela y tamaño. Probá un preset de color.",
+    help: "Clic/toque para colocar atractores magnéticos. Arrastrá para moverlos. Clic derecho (o pulsación larga) para borrar el más cercano. Las partículas forman cintas de aurora fluidas con estelas brillantes persistentes que responden en tiempo real. Ajustá densidad, velocidad, tono, turbulencia, persistencia de estela, tamaño y fuerza de atractores. Probá un preset de color.",
     attractors: "Atractores",
     presets: "Presets de color",
     aurora: "Aurora",
@@ -88,6 +90,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     turbulence: 0.3,
     trailFade: 0.06,
     particleSize: 1.6,
+    strength: 1.2,
   });
   const dragId = useRef<number | null>(null);
 
@@ -97,12 +100,13 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
   const [turbulence, setTurbulence] = useState(0.3);
   const [trailFade, setTrailFade] = useState(0.06);
   const [particleSize, setParticleSize] = useState(1.6);
+  const [strength, setStrength] = useState(1.2);
   const [copied, setCopied] = useState(false);
   const [attractorCount, setAttractorCount] = useState(0);
 
   useEffect(() => {
-    paramsRef.current = { density, speed, hueShift, turbulence, trailFade, particleSize };
-  }, [density, speed, hueShift, turbulence, trailFade, particleSize]);
+    paramsRef.current = { density, speed, hueShift, turbulence, trailFade, particleSize, strength };
+  }, [density, speed, hueShift, turbulence, trailFade, particleSize, strength]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -119,6 +123,8 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     if (tf >= 0.02 && tf <= 0.15) setTrailFade(tf);
     const ps = Number(qs.get("ps"));
     if (ps >= 0.8 && ps <= 3) setParticleSize(ps);
+    const st = Number(qs.get("st"));
+    if (st >= 0.3 && st <= 3) setStrength(st);
     const aStr = qs.get("a");
     if (aStr) {
       const parts = aStr.split(";").filter(Boolean);
@@ -128,7 +134,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
         const x = Number(xs);
         const y = Number(ys);
         if (Number.isFinite(x) && Number.isFinite(y)) {
-          loaded.push({ x, y, id: nextId.current++, strength: 1.2 });
+          loaded.push({ x, y, id: nextId.current++, strength: 1 });
         }
       }
       if (loaded.length) {
@@ -191,7 +197,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     resize();
     window.addEventListener("resize", resize);
 
-    const getPos = (e: PointerEvent) => {
+    const getPos = (e: PointerEvent | MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       return { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
@@ -208,7 +214,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
           x,
           y,
           id: nextId.current++,
-          strength: 1.4,
+          strength: 1,
         });
         setAttractorCount(attractorsRef.current.length);
       }
@@ -231,16 +237,27 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
       } catch {}
     };
 
+    const onContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+      const { x, y } = getPos(e);
+      const nearest = findNearest(x, y, 60);
+      if (nearest) {
+        attractorsRef.current = attractorsRef.current.filter((a) => a.id !== nearest.id);
+        setAttractorCount(attractorsRef.current.length);
+      }
+    };
+
     canvas.addEventListener("pointerdown", onPointerDown);
     canvas.addEventListener("pointermove", onPointerMove);
     canvas.addEventListener("pointerup", onPointerUp);
     canvas.addEventListener("pointercancel", onPointerUp);
+    canvas.addEventListener("contextmenu", onContextMenu);
 
     const loop = () => {
       const rect = canvas.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
-      const { speed: sp, hueShift: hs, turbulence: tb, trailFade: tf, particleSize: psz } = paramsRef.current;
+      const { speed: sp, hueShift: hs, turbulence: tb, trailFade: tf, particleSize: psz, strength: st } = paramsRef.current;
       const atts = attractorsRef.current;
       const ps = particlesRef.current;
 
@@ -273,7 +290,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
           const dy = a.y - p.y;
           const dist2 = dx * dx + dy * dy;
           const dist = Math.sqrt(dist2) || 1;
-          const force = (a.strength * 1.8) / (dist2 * 0.004 + 80);
+          const force = (a.strength * st * 1.8) / (dist2 * 0.004 + 80);
           ax += (dx / dist) * force;
           ay += (dy / dist) * force;
         }
@@ -329,6 +346,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("pointerup", onPointerUp);
       canvas.removeEventListener("pointercancel", onPointerUp);
+      canvas.removeEventListener("contextmenu", onContextMenu);
     };
   }, [initParticles]);
 
@@ -378,6 +396,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     params.set("tb", turbulence.toFixed(2));
     params.set("tf", trailFade.toFixed(3));
     params.set("ps", particleSize.toFixed(1));
+    params.set("st", strength.toFixed(2));
     if (attractorsRef.current.length) {
       const aStr = attractorsRef.current.map((a) => `${Math.round(a.x)},${Math.round(a.y)}`).join(";");
       params.set("a", aStr);
@@ -496,6 +515,19 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
             step={0.1}
             value={particleSize}
             onChange={(e) => setParticleSize(Number(e.target.value))}
+            className="accent-primary min-h-11"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1 text-sm">
+          <span className="font-medium">{t.strength} ({strength.toFixed(2)})</span>
+          <input
+            type="range"
+            min={0.3}
+            max={3}
+            step={0.1}
+            value={strength}
+            onChange={(e) => setStrength(Number(e.target.value))}
             className="accent-primary min-h-11"
           />
         </label>
