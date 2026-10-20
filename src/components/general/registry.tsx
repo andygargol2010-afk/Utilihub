@@ -1,1 +1,1 @@
-$(cat /tmp/registry.tsx)
+PLACEHOLDER_WILL_REPLACE
