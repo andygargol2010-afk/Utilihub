@@ -17,10 +17,20 @@ function useIsSpanish() {
   return pathname === "/es" || pathname.startsWith("/es/");
 }
 
+function useIsPortuguese() {
+  const { pathname } = useLocation();
+  return pathname === "/pt" || pathname.startsWith("/pt/");
+}
+
 function NotFound() {
   const isSpanish = useIsSpanish();
+  const isPortuguese = useIsPortuguese();
   useEffect(() => {
-    document.title = isSpanish ? "Página no encontrada | UtiliHub" : "Page not found | UtiliHub";
+    document.title = isSpanish
+      ? "Página no encontrada | UtiliHub"
+      : isPortuguese
+        ? "Página não encontrada | UtiliHub"
+        : "Page not found | UtiliHub";
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) {
       robots = document.createElement("meta");
@@ -28,20 +38,24 @@ function NotFound() {
       document.head.appendChild(robots);
     }
     robots.setAttribute("content", "noindex, nofollow");
-  }, [isSpanish]);
+  }, [isSpanish, isPortuguese]);
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <p className="text-sm font-semibold text-primary">UTILIHUB</p>
         <h1 className="mt-2 text-6xl font-bold">404</h1>
         <p className="mt-4 text-muted-foreground">
-          {isSpanish ? "No encontramos esta página." : "We could not find this page."}
+          {isSpanish
+            ? "No encontramos esta página."
+            : isPortuguese
+              ? "Não encontramos esta página."
+              : "We could not find this page."}
         </p>
         <a
-          href={isSpanish ? "/es" : "/"}
+          href={isSpanish ? "/es" : isPortuguese ? "/pt" : "/"}
           className="mt-6 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
         >
-          {isSpanish ? "Ir al inicio" : "Go home"}
+          {isSpanish ? "Ir al inicio" : isPortuguese ? "Ir para o início" : "Go home"}
         </a>
       </div>
     </div>
@@ -51,6 +65,7 @@ function NotFound() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
   const isSpanish = useIsSpanish();
+  const isPortuguese = useIsPortuguese();
   useEffect(() => console.error(error), [error]);
   const msg = error?.message?.slice(0, 280) || "";
   const stackLine = (error?.stack || "")
@@ -61,12 +76,18 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold">
-          {isSpanish ? "No pudimos cargar esta página" : "We could not load this page"}
+          {isSpanish
+            ? "No pudimos cargar esta página"
+            : isPortuguese
+              ? "Não conseguimos carregar esta página"
+              : "We could not load this page"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           {isSpanish
             ? "Ocurrió un error. Puedes intentarlo de nuevo o volver al inicio."
-            : "An error occurred. You can try again or go back home."}
+            : isPortuguese
+              ? "Ocorreu um erro. Você pode tentar novamente ou voltar ao início."
+              : "An error occurred. You can try again or go back home."}
         </p>
         {msg ? (
           <pre className="mt-4 max-h-32 overflow-auto rounded-lg border border-border bg-muted/40 px-3 py-2 text-left text-[11px] leading-snug text-muted-foreground">
@@ -82,10 +103,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               reset();
             }}
           >
-            {isSpanish ? "Reintentar" : "Try again"}
+            {isSpanish ? "Reintentar" : isPortuguese ? "Tentar novamente" : "Try again"}
           </button>
-          <a href={isSpanish ? "/es" : "/"} className="rounded-lg border border-input px-4 py-2 text-sm font-semibold">
-            {isSpanish ? "Inicio" : "Home"}
+          <a href={isSpanish ? "/es" : isPortuguese ? "/pt" : "/"} className="rounded-lg border border-input px-4 py-2 text-sm font-semibold">
+            {isSpanish ? "Inicio" : isPortuguese ? "Início" : "Home"}
           </a>
         </div>
       </div>
@@ -137,8 +158,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
+  const lang = pathname === "/es" || pathname.startsWith("/es/") ? "es" : pathname === "/pt" || pathname.startsWith("/pt/") ? "pt" : "en";
   return (
-    <html lang={pathname === "/es" || pathname.startsWith("/es/") ? "es" : "en"}>
+    <html lang={lang}>
       <head>
         <link
           rel="preload"
@@ -191,18 +213,51 @@ function DeferredInsights() {
   );
 }
 
+function PortugueseMinimalHeader() {
+  return (
+    <header className="border-b border-border/70 bg-background/95">
+      <div className="container-page flex h-14 items-center">
+        <a href="/pt" className="text-lg font-black tracking-tight">
+          UtiliHub
+        </a>
+      </div>
+    </header>
+  );
+}
+
+function PortugueseMinimalFooter() {
+  return (
+    <footer className="border-t border-border/70 py-6 text-center text-xs text-muted-foreground">
+      UtiliHub · Português (pt-BR) · SEO locale
+    </footer>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const isSpanish = useIsSpanish();
+  const isPortuguese = useIsPortuguese();
 
   return (
     <QueryClientProvider client={queryClient}>
       <FavoritesProvider>
-        {isSpanish ? <SpanishSiteHeader /> : <SiteHeader />}
+        {isPortuguese ? (
+          <PortugueseMinimalHeader />
+        ) : isSpanish ? (
+          <SpanishSiteHeader />
+        ) : (
+          <SiteHeader />
+        )}
         <main id="main-content">
           <Outlet />
         </main>
-        {isSpanish ? <SpanishSiteFooter /> : <SiteFooter />}
+        {isPortuguese ? (
+          <PortugueseMinimalFooter />
+        ) : isSpanish ? (
+          <SpanishSiteFooter />
+        ) : (
+          <SiteFooter />
+        )}
         <DeferredInsights />
       </FavoritesProvider>
     </QueryClientProvider>
