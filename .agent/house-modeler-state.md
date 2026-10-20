@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 239
+runs_done: 240
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: MODELADOR-3D
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: READY (latest preview utilihub-regfc0d1w-financialproyects.vercel.app / SHA c17af9fa; restore still healthy at 06f436ec)
-note: META run 239 — health after restore + nav commits. Monolith 351478B / ~7956 lines, gates OK. Door-metal densify (scratches 8→12, grit 10→14 + rust) still deferred; requires local-clone surgical (tool channel full rewrite risk).
+deploy: READY (pending post-push check)
+note: MODELADOR-3D run 240 — added concrete MatPreset (rough 0.88 / metal 0) EN+ES. Monolith untouched / healthy. Door-metal densify still deferred.
 ```
 
 Refresh after each run.
@@ -78,6 +78,7 @@ PRODUCT run 237: worn-earth densify (grit/damp/leaf/cracks) via local clone surg
 RESTORE 2026-10-20: failed PRODUCT push truncated to PLACEHOLDER; restored via Actions (06f436ec).
 META run 238: confirmed READY deploy + monolith health; door-metal densify still queued for authenticated local push.
 META run 239: reconfirmed monolith health (~351kB, no PLACEHOLDER), deploy READY, door densify deferred.
+MODELADOR-3D run 240: concrete MatPreset added surgically in helpers.
 ```
 
 <!-- end:house-modeler-state.md -->
