@@ -591,7 +591,7 @@ function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = silt;
   ctx.fillRect(0, size * 0.68, size, size * 0.32);
   // Extra fine form-release grit and small air bubbles so the board-formed concrete reads as site-poured, not a clean digital surface.
-  for (let b = 0; b < 68; b++) {
+  for (let b = 0; b < 84; b++) { // denser form-release grit for richer site-poured concrete
     const bx = hash2(b, 15.7) * size;
     const by = hash2(b, 4.8) * size;
     const br = 0.35 + hash2(b, 2.1) * 1.2;
@@ -601,7 +601,7 @@ function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Soft micro-pits along board joints for denser site-poured texture.
-  for (let p = 0; p < 28; p++) {
+  for (let p = 0; p < 36; p++) { // denser micro-pits along board joints
     const px = hash2(p, 18.3) * size;
     const py = (0.22 + hash2(p, 5.6) * 0.56) * size;
     ctx.fillStyle = `rgba(118,108,94,${0.16 + hash2(p, 3.4) * 0.14})`;
