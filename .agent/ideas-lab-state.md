@@ -68,11 +68,11 @@ path_es: /es/aurora-particle-playground
 path_seo: n/a
 domain: playgrounds
 runs_total: 7
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE 2026-10-20: U=0.8088 CORE; weighted sample 29.31/33 → playgrounds (not last_closed). Weights: selected→1, other CORE +1. FIXED untouched. Deploy READY. seo-locales still 1/5 active. EXECUTE 1/7 2026-10-20: core Canvas 2D shipped (attractors place/drag, aurora ribbons + persistent trails, density/speed/hue/turbulence, URL+PNG share, next-step registered, EN+ES routes, Adsterra kept). Lightweight mobile budget. EXECUTE 2/7 2026-10-20: added color presets (Aurora/Neon/Sunset/Ice), trail fade + particle size sliders, share URL extended. Visual control richer, still lightweight. EXECUTE 3/7 2026-10-20: global attractor strength slider + right-click/long-press to delete nearest attractor. Share URL includes strength. Deeper interaction, lightweight. FIX-BUILD 2026-10-20: removed duplicate src/lib/general/lorem-ipsum-tool.ts (same slug generador-lorem-ipsum as generator file) to fix catalog validator ERROR on Vercel. Adsterra kept. Awaiting new deploy READY.
+notes: IDEATE 2026-10-20: U=0.8088 CORE; weighted sample 29.31/33 → playgrounds (not last_closed). Weights: selected→1, other CORE +1. FIXED untouched. Deploy READY. seo-locales still 1/5 active. EXECUTE 1/7 2026-10-20: core Canvas 2D shipped (attractors place/drag, aurora ribbons + persistent trails, density/speed/hue/turbulence, URL+PNG share, next-step registered, EN+ES routes, Adsterra kept). Lightweight mobile budget. EXECUTE 2/7 2026-10-20: added color presets (Aurora/Neon/Sunset/Ice), trail fade + particle size sliders, share URL extended. Visual control richer, still lightweight. EXECUTE 3/7 2026-10-20: global attractor strength slider + right-click/long-press to delete nearest attractor. Share URL includes strength. Deeper interaction, lightweight. FIX-BUILD 2026-10-20: removed duplicate src/lib/general/lorem-ipsum-tool.ts (same slug generador-lorem-ipsum as generator file) to fix catalog validator ERROR on Vercel. Adsterra kept. Awaiting new deploy READY. EXECUTE 4/7 2026-10-20: repeller mode (place attractors blue/pull or repellers orange/push). Polarity in force + share URL (a=x,y,±1). Help EN+ES updated. Color-coded wells. Lightweight, next-step+Adsterra kept. Deploy check next.
 adsense-prep_runs: 3
 ```
 
