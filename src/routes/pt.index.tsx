@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
 
-const titlePt = "UtiliHub · Ferramentas online grátis, studios 3D e jogos";
+const titlePt = "UtiliHub \u00b7 Ferramentas online gr\u00e1tis, studios 3D e jogos";
 const descriptionPt =
-  "Ferramentas online gratuitas, modelador de casas 3D e jogos no navegador. Calcule, converta, desenhe e jogue — sem cadastro.";
+  "Ferramentas online gratuitas, modelador de casas 3D e jogos no navegador. Calcule, converta, desenhe e jogue \u2014 sem cadastro.";
 
 export const Route = createFileRoute("/pt/")({
   head: () => ({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/pt/")({
       {
         name: "keywords",
         content:
-          "ferramentas online, modelador casas 3D, jogos grátis navegador, calculadoras, UtiliHub, português",
+          "ferramentas online, modelador casas 3D, jogos gr\u00e1tis navegador, calculadoras, UtiliHub, portugu\u00eas",
       },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { property: "og:title", content: titlePt },
@@ -48,10 +48,10 @@ function PortugueseHome() {
             Ferramentas, studios e jogos
           </div>
           <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-            Ferramentas online grátis para resolver em segundos.
+            Ferramentas online gr\u00e1tis para resolver em segundos.
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-            Calcule e converta tarefas do dia a dia — mais studios 3D avançados e jogos grátis no navegador. Sem cadastro. Versão em português (pt-BR).
+            Calcule e converta tarefas do dia a dia \u2014 mais studios 3D avan\u00e7ados e jogos gr\u00e1tis no navegador. Sem cadastro. Vers\u00e3o em portugu\u00eas (pt-BR).
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
@@ -66,35 +66,49 @@ function PortugueseHome() {
             >
               Orbit Defender Arcade
             </Link>
+            <Link
+              to="/pt/snake"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-primary/30 bg-card px-5 py-3 text-sm font-bold text-primary hover:bg-primary/5"
+            >
+              Snake
+            </Link>
           </div>
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
             <span>Sem cadastro</span>
-            <span>Grátis</span>
+            <span>Gr\u00e1tis</span>
             <span>Privacidade local</span>
           </div>
         </div>
       </section>
 
       <div className="container-page py-10">
-        <h2 className="text-2xl font-bold">Experiências disponíveis</h2>
+        <h2 className="text-2xl font-bold">Experi\u00eancias dispon\u00edveis</h2>
         <p className="mt-2 text-muted-foreground">
-          Jogos interativos em português. Mais páginas chegarão em breve.
+          Jogos interativos em portugu\u00eas. Mais p\u00e1ginas chegar\u00e3o em breve.
         </p>
         <ul className="mt-6 space-y-4">
           <li>
             <Link to="/pt/pulse-catch" className="font-semibold text-primary hover:underline">
-              Pulse Catch — jogo de reação rápida
+              Pulse Catch \u2014 jogo de rea\u00e7\u00e3o r\u00e1pida
             </Link>
             <p className="text-sm text-muted-foreground">
-              Toque nas faíscas brilhantes antes que se apaguem. Construa combos e registre sua melhor pontuação.
+              Toque nas fa\u00edscas brilhantes antes que se apaguem. Construa combos e registre sua melhor pontua\u00e7\u00e3o.
             </p>
           </li>
           <li>
             <Link to="/pt/orbit-defender-arcade" className="font-semibold text-primary hover:underline">
-              Orbit Defender Arcade — defenda o planeta
+              Orbit Defender Arcade \u2014 defenda o planeta
             </Link>
             <p className="text-sm text-muted-foreground">
               Aponte interceptores contra ondas de asteroides. Combos, power-ups e dificuldade crescente.
+            </p>
+          </li>
+          <li>
+            <Link to="/pt/snake" className="font-semibold text-primary hover:underline">
+              Snake \u2014 o cl\u00e1ssico da cobra
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              Coma, cres\u00e7a e evite as paredes. Controles suaves, pontua\u00e7\u00e3o local e visual limpo.
             </p>
           </li>
         </ul>
