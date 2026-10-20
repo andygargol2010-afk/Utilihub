@@ -1,5 +1,6 @@
 /** Premium presentation config for high-traffic tools (Day 1: image suite).
  *  Redeploy trigger: ensure hero + MediaTool premium UI are on production.
+ *  pixelihub-promote-v1: studio showcase for discovery.
  */
 
 export type ToolShowcase = {
@@ -11,7 +12,7 @@ export type ToolShowcase = {
   fromLabel?: string;
   toLabel?: string;
   accent: "blue" | "violet" | "emerald" | "amber" | "rose" | "cyan";
-  visual: "convert" | "compress" | "resize" | "crop" | "rotate" | "filter" | "favicon";
+  visual: "convert" | "compress" | "resize" | "crop" | "rotate" | "filter" | "favicon" | "pixel";
 };
 
 export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
@@ -114,6 +115,19 @@ export const TOOL_SHOWCASE: Record<string, ToolShowcase> = {
     toLabel: "ICO",
     accent: "emerald",
     visual: "favicon",
+  },
+  /* pixelihub-promote-v1 */
+  pixelihub: {
+    badge: "Studio",
+    badgeEs: "Studio",
+    tagline:
+      "Draw pixel art in your browser — layers, brush sizes, palettes, PNG export and share links. Free, local, no install.",
+    taglineEs:
+      "Dibujá pixel art en el navegador — capas, pinceles, paletas, exportá PNG y compartí enlaces. Gratis, local, sin instalar.",
+    fromLabel: "32×32",
+    toLabel: "PNG",
+    accent: "rose",
+    visual: "pixel",
   },
 };
 
