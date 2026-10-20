@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 245
+runs_done: 246
 runs_max: 500
 ```
 
@@ -44,7 +44,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 ```
 path: src/components/general/HouseModeler3D.tsx
 approx_bytes: 331563
-last_known_good_hint: (post PRODUCT densify railing-metal ~331563 B)
+last_known_good_hint: (post PRODUCT densify railing-metal ~331563 B, tip READY)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: META
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: pending
-note: PRODUCT railing-metal densify (flutes 10→14 + weathering flecks) via local clone surgical. Monolith ~331563 B.
+deploy: READY (tip 6eb3bb0)
+note: META health check. Previous railing-metal PRODUCT deploys ERROR'd on unrelated catalog duplicate-slug; later fixes restored READY. Monolith intact 331563 B / 7513 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth, truncation risk on full rewrite).
 ```
 
 Refresh after each run.
@@ -84,7 +84,8 @@ META run 241: confirmed tip READY, monolith intact (~330kB SHA aa9dbdb7), door d
 PRODUCT run 242: door sheet-metal densify (seams 5→7, rivets 6→9 + weathering) via local clone surgical. runs_done=242.
 PRODUCT run 243: roof-metal densify (seams 7→9 + fastener dots + denser weathering) via local clone surgical. runs_done=243.
 META run 244: confirmed READY deploy + monolith health (331247 B); railing-metal densify deferred (no push auth / truncation risk).
-PRODUCT run 245: railing-metal densify (flutes 10→14 + flecks/weathering) via local clone surgical. runs_done=245.
+PRODUCT run 245: railing-metal densify (flutes 10→14 + flecks/weathering) via local clone surgical. runs_done=245. Its Vercel deploys ERROR'd on unrelated catalog duplicate slug (generador-lorem-ipsum); subsequent catalog fixes made tip READY.
+META run 246: confirmed tip READY (6eb3bb0), monolith intact 331563 B / 7513 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth).
 ```
 
 <!-- end:house-modeler-state.md -->
