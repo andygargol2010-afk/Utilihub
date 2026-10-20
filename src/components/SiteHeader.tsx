@@ -61,24 +61,24 @@ export function SiteHeader() {
           <Link to="/tools" className={linkClass} activeProps={activeClass}>
             Tools
           </Link>
-          <a href="/category/advanced-tools" className={linkClass}>
+          <Link to="/category/advanced-tools" className={linkClass} activeProps={activeClass}>
             Advanced
-          </a>
+          </Link>
           <Link to="/kits" className={linkClass} activeProps={activeClass}>
             Kits
           </Link>
-          <a href="/simulators" className={linkClass}>
+          <Link to="/simulators" className={linkClass} activeProps={activeClass}>
             Simulators
-          </a>
-          <a href="/playgrounds" className={linkClass}>
+          </Link>
+          <Link to="/playgrounds" className={linkClass} activeProps={activeClass}>
             Playgrounds
-          </a>
-          <a href="/experiences" className={linkClass}>
+          </Link>
+          <Link to="/experiences" className={linkClass} activeProps={activeClass}>
             Experiences
-          </a>
-          <a href="/games" className={linkClass}>
+          </Link>
+          <Link to="/games" className={linkClass} activeProps={activeClass}>
             Games
-          </a>
+          </Link>
 
           <div className="relative" ref={browseRef}>
             <button
@@ -146,24 +146,24 @@ export function SiteHeader() {
             <Link to="/tools" onClick={() => setOpen(false)} className={mobileLink}>
               Tools
             </Link>
-            <a href="/category/advanced-tools" onClick={() => setOpen(false)} className={mobileLink}>
+            <Link to="/category/advanced-tools" onClick={() => setOpen(false)} className={mobileLink}>
               Advanced tools
-            </a>
+            </Link>
             <Link to="/kits" onClick={() => setOpen(false)} className={mobileLink}>
               Kits
             </Link>
-            <a href="/simulators" onClick={() => setOpen(false)} className={mobileLink}>
+            <Link to="/simulators" onClick={() => setOpen(false)} className={mobileLink}>
               Simulators
-            </a>
-            <a href="/playgrounds" onClick={() => setOpen(false)} className={mobileLink}>
+            </Link>
+            <Link to="/playgrounds" onClick={() => setOpen(false)} className={mobileLink}>
               Playgrounds
-            </a>
-            <a href="/experiences" onClick={() => setOpen(false)} className={mobileLink}>
+            </Link>
+            <Link to="/experiences" onClick={() => setOpen(false)} className={mobileLink}>
               Experiences
-            </a>
-            <a href="/games" onClick={() => setOpen(false)} className={mobileLink}>
+            </Link>
+            <Link to="/games" onClick={() => setOpen(false)} className={mobileLink}>
               Games
-            </a>
+            </Link>
             <p className="mt-2 px-3 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Categories
             </p>
