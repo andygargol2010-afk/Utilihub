@@ -1253,30 +1253,37 @@ function paintRoofMetalBump(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
-/** Painted bar stock. Ports door-sheet ribs onto a rail: vertical flutes, oxide, no rivet rows. */
+/** Painted bar stock. Ports door-sheet ribs onto a rail: vertical flutes, oxide, no rivet rows. Densified: more flutes + extra weathering flecks. */
 function paintRailingMetal(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [78, 82, 86], 11);
-  const flutes = 10;
+  const flutes = 14;
   for (let i = 0; i < flutes; i++) {
     const x0 = Math.floor((i / flutes) * size);
     const x1 = Math.floor(((i + 1) / flutes) * size);
-    const tone = 70 + Math.floor(hash2(i, 4.8) * 18);
+    const tone = 68 + Math.floor(hash2(i, 4.8) * 22);
     ctx.fillStyle = `rgb(${tone}, ${tone + 2}, ${tone + 4})`;
     ctx.fillRect(x0, 0, x1 - x0, size);
-    ctx.fillStyle = "rgba(196,202,206,0.28)";
+    ctx.fillStyle = "rgba(196,202,206,0.32)";
     ctx.fillRect(x0 + 1, 0, 2, size);
-    ctx.fillStyle = "rgba(28,30,32,0.7)";
+    ctx.fillStyle = "rgba(28,30,32,0.75)";
     ctx.fillRect(x1 - 3, 0, 3, size);
-    const streak = 0.08 + hash2(i, 9.1) * 0.75;
-    ctx.fillStyle = "rgba(122,78,48,0.18)";
-    ctx.fillRect(x0 + 3, Math.floor(streak * size), Math.max(3, (x1 - x0) * 0.35), Math.floor(size * 0.22));
+    const streak = 0.06 + hash2(i, 9.1) * 0.8;
+    ctx.fillStyle = "rgba(122,78,48,0.22)";
+    ctx.fillRect(x0 + 2, Math.floor(streak * size), Math.max(2, (x1 - x0) * 0.4), Math.floor(size * 0.25));
+    // extra densify flecks
+    for (let f = 0; f < 3; f++) {
+      const fx = x0 + Math.floor(hash2(i, f + 2.1) * (x1 - x0));
+      const fy = Math.floor(hash2(i, f + 5.3) * size);
+      ctx.fillStyle = "rgba(90,60,40,0.35)";
+      ctx.fillRect(fx, fy, 2, 2);
+    }
   }
 }
 
 function paintRailingMetalBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "#8a8a8a";
   ctx.fillRect(0, 0, size, size);
-  const flutes = 10;
+  const flutes = 14;
   for (let i = 1; i < flutes; i++) {
     const x = Math.floor((i / flutes) * size);
     ctx.fillStyle = "#e2e2e2";
