@@ -1148,7 +1148,7 @@ function paintTileBump(ctx: CanvasRenderingContext2D, size: number) {
 }
 
 function paintPlate(ctx: CanvasRenderingContext2D, size: number) {
-  // Wall head plate: sawn oak with checks, not a second plaster map.
+  // Wall head plate: sawn oak with checks, not a second plaster map. Densified: more grain lines + rare checks.
   noiseFill(ctx, size, [132, 86, 48], 18);
   const beams = 2;
   for (let i = 0; i < beams; i++) {
@@ -1159,13 +1159,23 @@ function paintPlate(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fillRect(0, y0, size, y1 - y0);
     ctx.strokeStyle = "rgba(62,34,16,0.55)";
     ctx.lineWidth = 1;
-    for (let g = 0; g < 5; g++) {
-      const gy = y0 + 6 + g * ((y1 - y0) / 6);
+    for (let g = 0; g < 8; g++) { // denser grain 5→8
+      const gy = y0 + 4 + g * ((y1 - y0) / 9);
       ctx.beginPath();
       ctx.moveTo(0, gy);
-      for (let x = 0; x <= size; x += 6) {
-        ctx.lineTo(x, gy + Math.sin(x * 0.04 + i) * 1.1);
+      for (let x = 0; x <= size; x += 5) {
+        ctx.lineTo(x, gy + Math.sin(x * 0.045 + i) * 1.2);
       }
+      ctx.stroke();
+    }
+    // rare check cracks
+    if (hash2(i, 7.1) > 0.7) {
+      ctx.strokeStyle = "rgba(40,22,10,0.6)";
+      ctx.lineWidth = 0.8;
+      const cx = hash2(i, 2.2) * size;
+      ctx.beginPath();
+      ctx.moveTo(cx, y0 + 8);
+      ctx.lineTo(cx + 4, y1 - 6);
       ctx.stroke();
     }
     const split = (0.3 + hash2(i, 9) * 0.4) * size;
