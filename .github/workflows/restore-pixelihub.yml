@@ -1,0 +1,27 @@
+name: Restore PixelArtStudio from good commit
+on:
+  workflow_dispatch:
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 0
+      - name: Restore PixelArtStudio from commit 26c6c396
+        run: |
+          set -e
+          git show 26c6c3968e2c968a02fbac178b523216565e740f:src/components/general/PixelArtStudio.tsx > src/components/general/PixelArtStudio.tsx
+          wc -c src/components/general/PixelArtStudio.tsx
+          head -c 80 src/components/general/PixelArtStudio.tsx
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/components/general/PixelArtStudio.tsx
+          git status
+          git commit -m "fix(pixelihub): restore PixelArtStudio from good commit (undo stub)"
+          git push
