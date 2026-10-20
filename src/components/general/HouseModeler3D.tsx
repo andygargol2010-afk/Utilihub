@@ -822,34 +822,44 @@ function paintChimneyBrickBump(ctx: CanvasRenderingContext2D, size: number) {
 /** Crown and flue pots: weathered clay cap, not a second roof-tile map. */
 function paintChimneyCrown(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [148, 78, 52], 16);
-  const courses = 4;
+  const courses = 5;
   for (let r = 0; r < courses; r++) {
     const y0 = Math.floor((r / courses) * size);
     const y1 = Math.floor(((r + 1) / courses) * size);
     const tone = 128 + Math.floor(hash2(r, 4.4) * 36);
     ctx.fillStyle = `rgb(${tone + 22}, ${tone - 18}, ${tone - 42})`;
     ctx.fillRect(0, y0, size, y1 - y0);
-    ctx.fillStyle = "rgba(214, 186, 160, 0.55)";
-    ctx.fillRect(0, y1 - 3, size, 3);
+    ctx.fillStyle = "rgba(214, 186, 160, 0.62)";
+    ctx.fillRect(0, y1 - 2, size, 2);
   }
-  // Soot ring under the flue opening, lighter lime bloom on the drip edge.
-  const soot = ctx.createRadialGradient(size * 0.5, size * 0.42, size * 0.06, size * 0.5, size * 0.42, size * 0.46);
-  soot.addColorStop(0, "rgba(36, 30, 26, 0.55)");
-  soot.addColorStop(0.45, "rgba(48, 36, 30, 0.22)");
+  // Denser soot ring under the flue opening + micro flecks, lighter denser lime bloom on the drip edge.
+  const soot = ctx.createRadialGradient(size * 0.5, size * 0.42, size * 0.05, size * 0.5, size * 0.42, size * 0.48);
+  soot.addColorStop(0, "rgba(32, 26, 22, 0.68)");
+  soot.addColorStop(0.4, "rgba(44, 32, 26, 0.32)");
   soot.addColorStop(1, "rgba(48, 36, 30, 0)");
   ctx.fillStyle = soot;
   ctx.fillRect(0, 0, size, size);
-  ctx.fillStyle = "rgba(186, 168, 142, 0.28)";
-  ctx.fillRect(0, size - 8, size, 8);
-  ctx.fillStyle = "rgba(62, 34, 22, 0.35)";
-  ctx.fillRect(0, 0, 4, size);
-  ctx.fillRect(size - 4, 0, 4, size);
+  // Extra soot flecks and lime blooms for denser weathering.
+  for (let i = 0; i < 8; i++) {
+    const fx = hash2(i, 2.1) * size;
+    const fy = hash2(i + 3, 7.7) * size * 0.7;
+    const fr = 1.2 + hash2(i, 5) * 2.4;
+    ctx.fillStyle = `rgba(28, 22, 18, ${0.25 + hash2(i, 1.3) * 0.35})`;
+    ctx.beginPath();
+    ctx.arc(fx, fy, fr, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.fillStyle = "rgba(196, 178, 152, 0.42)";
+  ctx.fillRect(0, size - 10, size, 10);
+  ctx.fillStyle = "rgba(62, 34, 22, 0.42)";
+  ctx.fillRect(0, 0, 5, size);
+  ctx.fillRect(size - 5, 0, 5, size);
 }
 
 function paintChimneyCrownBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "#a8a8a8";
   ctx.fillRect(0, 0, size, size);
-  const courses = 4;
+  const courses = 5;
   ctx.fillStyle = "#ececec";
   for (let r = 1; r <= courses; r++) {
     const y = Math.floor((r / courses) * size);
