@@ -63,7 +63,7 @@ Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
 2026-10-20 PRODUCT (roll 17): shipped 2 (calculadora-frecuencia-cardiaca-maxima salud + calculadora-area-elipse matematicas). Distinct clusters. Anti-dupe OK. Registry surgical OK.
-2026-10-20 FIX-BUILD: state.md was placeholder wipe ($(cat /tmp/...)); restored from 7b86c93 content. Recent deploys ERROR due to prior duplicate slug generador-lorem-ipsum (fixed in restores). Tip 9a74b5f restored full registry. No new tools this run.
+2026-10-20 FIX-BUILD: registry.tsx was placeholder wipe ($(cat /tmp/...)); restored from known-good a908098 (full GENERAL_TOOL_UI / pickComponent). No new tools this run. SHA 7c6cbf5.
 ```
 
 ---
@@ -72,8 +72,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: FIX-BUILD
-last_slugs: none (registry/state restore)
-last_deploy: ERROR on prior; awaiting clean tip
+last_slugs: none (registry restore only)
+last_deploy: restored tip; check next run
 ```
 
 <!-- end:tools-builder-state.md -->
