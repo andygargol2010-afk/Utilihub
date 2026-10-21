@@ -3,129 +3,165 @@ import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 
 /** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter + business days + text normalizer + budget 503020 + uuid generator + date difference + recipe scaler + rule of 72 + room area + final grade + temperature converter + proportion calculator + css gradient generator + character counter + calorie deficit + trip time + force + bac + tip tax + sphere volume + sentence counter + cylinder volume + paragraph counter + density + word frequency + circle area + vowel counter + rectangle area + consonant counter + profit margin + weighted average + circle circumference + rectangle perimeter + pressure converter + calories burned + pyramid volume + trapezoid area + parallelogram area + rectangular prism volume + cube volume + syllable counter + triangle area + simple interest + tile + square area + fuel cost + reading time + coffee ratio + rhombus area. */
+const TOOL_BY_SLUG = new Map(
+  GENERAL_TOOLS.map((t) => [t.slug, t] as const)
+);
+
 function buildLazyRegistry(locale: "en" | "es") {
-  const registry = new Map<string, ComponentType<{ tool: GeneralTool }>>();
+  const cache = new Map<
+    string,
+    ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>
+  >();
 
-  // Auto-register every tool that has a matching component under components/general
-  // The actual lazy imports are generated / maintained below.
-  const entries: Array<[string, () => Promise<{ default: ComponentType<{ tool: GeneralTool }> }>>] = [
-    ["absolute-error", () => import("./AbsoluteErrorCalculator")],
-    ["absolute-temperature", () => import("./AbsoluteTemperatureConverter")],
-    ["absolute-value", () => import("./AbsoluteValueCalculator")],
-    ["acceleration", () => import("./AccelerationCalculator")],
-    ["add-days-to-date", () => import("./AddDaysToDate")],
-    ["advanced-hex-to-hsl", () => import("./AdvancedHexToHsl")],
-    ["advanced-markdown-to-html", () => import("./AdvancedMarkdownToHtml")],
-    ["amount-per-person", () => import("./AmountPerPerson")],
-    ["area-converter", () => import("./AreaConverter")],
-    ["arithmetic-mean-calculator", () => import("./ArithmeticMeanCalculator")],
-    ["aspect-ratio", () => import("./AspectRatioCalculator")],
-    ["average", () => import("./AverageCalculator")],
-    ["average-of-two-values", () => import("./AverageOfTwoValues")],
-    ["average-purchase-price", () => import("./AveragePurchasePrice")],
-    ["average-speed", () => import("./AverageSpeedCalculator")],
-    ["baking-time-adjustment", () => import("./BakingTimeAdjustment")],
-    ["base64-encode", () => import("./Base64Encode")],
-    ["batch-file-names", () => import("./BatchFileNames")],
-    ["bill-split", () => import("./BillSplitCalculator")],
-    ["binary-to-decimal", () => import("./BinaryToDecimal")],
-    ["body-fat", () => import("./BodyFatCalculator")],
-    ["border-radius-generator", () => import("./BorderRadiusGenerator")],
-    ["box-shadow-generator", () => import("./BoxShadowGenerator")],
-    ["bread-hydration", () => import("./BreadHydration")],
-    ["budget-50-30-20", () => import("./Budget503020")],
-    ["business-days", () => import("./BusinessDaysCalculator")],
-    ["calorie-deficit", () => import("./CalorieDeficitCalculator")],
-    ["calories-burned", () => import("./CaloriesBurnedCalculator")],
-    ["celsius-to-kelvin", () => import("./CelsiusToKelvin")],
-    ["centimeters-to-inches", () => import("./CentimetersToInches")],
-    ["centimeters-to-meters", () => import("./CentimetersToMeters")],
-    ["character-counter", () => import("./CharacterCounter")],
-    ["circle-area", () => import("./CircleAreaCalculator")],
-    ["circle-circumference", () => import("./CircleCircumferenceCalculator")],
-    ["coffee-ratio", () => import("./CoffeeRatioCalculator")],
-    ["color-contrast-calculator", () => import("./ColorContrastCalculator")],
-    ["color-mixer", () => import("./ColorMixer")],
-    ["color-picker", () => import("./ColorPicker")],
-    ["compress-image", () => import("./CompressImage")],
-    ["consonant-counter", () => import("./ConsonantCounter")],
-    ["css-gradient-generator", () => import("./CssGradientGenerator")],
-    ["csv-to-json", () => import("./CsvToJson")],
-    ["cube-volume", () => import("./CubeVolumeCalculator")],
-    ["currency-converter", () => import("./CurrencyConverter")],
-    ["cylinder-volume", () => import("./CylinderVolumeCalculator")],
-    ["date-difference", () => import("./DateDifferenceCalculator")],
-    ["density", () => import("./DensityCalculator")],
-    ["download-time", () => import("./DownloadTimeCalculator")],
-    ["electricity-cost", () => import("./ElectricityCostCalculator")],
-    ["email-validator", () => import("./EmailValidator")],
-    ["fee-calculator", () => import("./FeeCalculator")],
-    ["final-grade", () => import("./FinalGradeCalculator")],
-    ["fire-calculator", () => import("./FireCalculator")],
-    ["force", () => import("./ForceCalculator")],
-    ["fuel-cost", () => import("./FuelCostCalculator")],
-    ["fuel-efficiency", () => import("./FuelEfficiencyCalculator")],
-    ["gpa-calculator", () => import("./GpaCalculator")],
-    ["heart-rate-zones", () => import("./HeartRateZonesCalculator")],
-    ["hex-color-converter", () => import("./HexColorConverter")],
-    ["hourly-rate", () => import("./HourlyRateCalculator")],
-    ["inflation-and-purchasing-power", () => import("./InflationAndPurchasingPower")],
-    ["investment-break-even", () => import("./InvestmentBreakEven")],
-    ["kinetic-energy", () => import("./KineticEnergyCalculator")],
-    ["line-sorter", () => import("./LineSorter")],
-    ["loan-payment", () => import("./LoanPaymentCalculator")],
-    ["ohms-law", () => import("./OhmsLawCalculator")],
-    ["oven-celsius-to-fahrenheit", () => import("./OvenCelsiusToFahrenheit")],
-    ["oven-fahrenheit-to-celsius", () => import("./OvenFahrenheitToCelsius")],
-    ["paragraph-counter", () => import("./ParagraphCounter")],
-    ["password-strength", () => import("./PasswordStrength")],
-    ["percentage-error", () => import("./PercentageErrorCalculator")],
-    ["percentage-of", () => import("./PercentageOfCalculator")],
-    ["pomodoro-timer", () => import("./PomodoroTimer")],
-    ["pressure-converter", () => import("./PressureConverter")],
-    ["profit-margin", () => import("./ProfitMarginCalculator")],
-    ["proportion-calculator", () => import("./ProportionCalculator")],
-    ["pyramid-volume", () => import("./PyramidVolumeCalculator")],
-    ["reading-time", () => import("./ReadingTimeCalculator")],
-    ["recipe-cost", () => import("./RecipeCostCalculator")],
-    ["recipe-scaler", () => import("./RecipeScaler")],
-    ["rectangle-area", () => import("./RectangleAreaCalculator")],
-    ["rectangle-perimeter", () => import("./RectanglePerimeterCalculator")],
-    ["rectangular-prism-volume", () => import("./RectangularPrismVolumeCalculator")],
-    ["rhombus-area", () => import("./RhombusAreaCalculator")],
-    ["room-area", () => import("./RoomAreaCalculator")],
-    ["rule-of-72", () => import("./RuleOf72Calculator")],
-    ["savings-goal", () => import("./SavingsGoalCalculator")],
-    ["sentence-counter", () => import("./SentenceCounter")],
-    ["simple-interest", () => import("./SimpleInterestCalculator")],
-    ["slug-generator", () => import("./SlugGenerator")],
-    ["sphere-volume", () => import("./SphereVolumeCalculator")],
-    ["square-area", () => import("./SquareAreaCalculator")],
-    ["syllable-counter", () => import("./SyllableCounter")],
-    ["temperature-converter", () => import("./TemperatureConverter")],
-    ["text-normalizer", () => import("./TextNormalizer")],
-    ["tile", () => import("./TileCalculator")],
-    ["timezone", () => import("./TimezoneConverter")],
-    ["tip-tax", () => import("./TipTaxCalculator")],
-    ["trapezoid-area", () => import("./TrapezoidAreaCalculator")],
-    ["triangle-area", () => import("./TriangleAreaCalculator")],
-    ["trip-time", () => import("./TripTimeCalculator")],
-    ["unit-price", () => import("./UnitPriceCalculator")],
-    ["uuid-generator", () => import("./UuidGenerator")],
-    ["vowel-counter", () => import("./VowelCounter")],
-    ["water-intake", () => import("./WaterIntakeCalculator")],
-    ["wcag-contrast", () => import("./WcagContrast")],
-    ["weighted-average", () => import("./WeightedAverageCalculator")],
-    ["word-counter", () => import("./WordCounter")],
-    ["word-frequency", () => import("./WordFrequencyCounter")],
-    ["xml-to-json", () => import("./XmlToJson")],
-  ];
+  return new Proxy({} as Record<string, ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>>, {
+    get(_target, prop) {
+      if (typeof prop !== "string") return undefined;
+      if (cache.has(prop)) return cache.get(prop);
 
-  for (const [slug, loader] of entries) {
-    registry.set(slug, lazy(loader));
-  }
+      const tool = TOOL_BY_SLUG.get(prop);
+      if (!tool) return undefined;
 
-  return registry;
+      // Map slug → component file. Most follow PascalCase of the slug.
+      // Special cases that differ from simple slug-to-Pascal are listed explicitly.
+      const special: Record<string, string> = {
+        "absolute-error": "AbsoluteErrorCalculator",
+        "absolute-temperature": "AbsoluteTemperatureConverter",
+        "absolute-value": "AbsoluteValueCalculator",
+        "acceleration": "AccelerationCalculator",
+        "add-days-to-date": "AddDaysToDate",
+        "advanced-hex-to-hsl": "AdvancedHexToHsl",
+        "advanced-markdown-to-html": "AdvancedMarkdownToHtml",
+        "amount-per-person": "AmountPerPerson",
+        "area-converter": "AreaConverter",
+        "arithmetic-mean-calculator": "ArithmeticMeanCalculator",
+        "aspect-ratio": "AspectRatioCalculator",
+        "average": "AverageCalculator",
+        "average-of-two-values": "AverageOfTwoValues",
+        "average-purchase-price": "AveragePurchasePrice",
+        "average-speed": "AverageSpeedCalculator",
+        "baking-time-adjustment": "BakingTimeAdjustment",
+        "base64-encode": "Base64Encode",
+        "batch-file-names": "BatchFileNames",
+        "bill-split": "BillSplitCalculator",
+        "binary-to-decimal": "BinaryToDecimal",
+        "body-fat": "BodyFatCalculator",
+        "border-radius-generator": "BorderRadiusGenerator",
+        "box-shadow-generator": "BoxShadowGenerator",
+        "bread-hydration": "BreadHydration",
+        "budget-50-30-20": "Budget503020",
+        "business-days": "BusinessDaysCalculator",
+        "calorie-deficit": "CalorieDeficitCalculator",
+        "calories-burned": "CaloriesBurnedCalculator",
+        "celsius-to-kelvin": "CelsiusToKelvin",
+        "centimeters-to-inches": "CentimetersToInches",
+        "centimeters-to-meters": "CentimetersToMeters",
+        "character-counter": "CharacterCounter",
+        "circle-area": "CircleAreaCalculator",
+        "circle-circumference": "CircleCircumferenceCalculator",
+        "coffee-ratio": "CoffeeRatioCalculator",
+        "color-contrast-calculator": "ColorContrastCalculator",
+        "color-mixer": "ColorMixer",
+        "color-picker": "ColorPicker",
+        "compress-image": "CompressImage",
+        "consonant-counter": "ConsonantCounter",
+        "css-gradient-generator": "CssGradientGenerator",
+        "csv-to-json": "CsvToJson",
+        "cube-volume": "CubeVolumeCalculator",
+        "currency-converter": "CurrencyConverter",
+        "cylinder-volume": "CylinderVolumeCalculator",
+        "date-difference": "DateDifferenceCalculator",
+        "density": "DensityCalculator",
+        "download-time": "DownloadTimeCalculator",
+        "electricity-cost": "ElectricityCostCalculator",
+        "email-validator": "EmailValidator",
+        "fee-calculator": "FeeCalculator",
+        "final-grade": "FinalGradeCalculator",
+        "fire-calculator": "FireCalculator",
+        "force": "ForceCalculator",
+        "fuel-cost": "FuelCostCalculator",
+        "fuel-efficiency": "FuelEfficiencyCalculator",
+        "gpa-calculator": "GpaCalculator",
+        "heart-rate-zones": "HeartRateZonesCalculator",
+        "hex-color-converter": "HexColorConverter",
+        "hourly-rate": "HourlyRateCalculator",
+        "inflation-and-purchasing-power": "InflationAndPurchasingPower",
+        "investment-break-even": "InvestmentBreakEven",
+        "kinetic-energy": "KineticEnergyCalculator",
+        "line-sorter": "LineSorter",
+        "loan-payment": "LoanPaymentCalculator",
+        "ohms-law": "OhmsLawCalculator",
+        "oven-celsius-to-fahrenheit": "OvenCelsiusToFahrenheit",
+        "oven-fahrenheit-to-celsius": "OvenFahrenheitToCelsius",
+        "paragraph-counter": "ParagraphCounter",
+        "password-strength": "PasswordStrength",
+        "percentage-error": "PercentageErrorCalculator",
+        "percentage-of": "PercentageOfCalculator",
+        "pomodoro-timer": "PomodoroTimer",
+        "pressure-converter": "PressureConverter",
+        "profit-margin": "ProfitMarginCalculator",
+        "proportion-calculator": "ProportionCalculator",
+        "pyramid-volume": "PyramidVolumeCalculator",
+        "reading-time": "ReadingTimeCalculator",
+        "recipe-cost": "RecipeCostCalculator",
+        "recipe-scaler": "RecipeScaler",
+        "rectangle-area": "RectangleAreaCalculator",
+        "rectangle-perimeter": "RectanglePerimeterCalculator",
+        "rectangular-prism-volume": "RectangularPrismVolumeCalculator",
+        "rhombus-area": "RhombusAreaCalculator",
+        "room-area": "RoomAreaCalculator",
+        "rule-of-72": "RuleOf72Calculator",
+        "savings-goal": "SavingsGoalCalculator",
+        "sentence-counter": "SentenceCounter",
+        "simple-interest": "SimpleInterestCalculator",
+        "slug-generator": "SlugGenerator",
+        "sphere-volume": "SphereVolumeCalculator",
+        "square-area": "SquareAreaCalculator",
+        "syllable-counter": "SyllableCounter",
+        "temperature-converter": "TemperatureConverter",
+        "text-normalizer": "TextNormalizer",
+        "tile": "TileCalculator",
+        "timezone": "TimezoneConverter",
+        "tip-tax": "TipTaxCalculator",
+        "trapezoid-area": "TrapezoidAreaCalculator",
+        "triangle-area": "TriangleAreaCalculator",
+        "trip-time": "TripTimeCalculator",
+        "unit-price": "UnitPriceCalculator",
+        "uuid-generator": "UuidGenerator",
+        "vowel-counter": "VowelCounter",
+        "water-intake": "WaterIntakeCalculator",
+        "wcag-contrast": "WcagContrast",
+        "weighted-average": "WeightedAverageCalculator",
+        "word-counter": "WordCounter",
+        "word-frequency": "WordFrequencyCounter",
+        "xml-to-json": "XmlToJson",
+        // PixeliHub and advanced tools live elsewhere or use DeferredToolUi
+      };
+
+      const componentName =
+        special[prop] ??
+        prop
+          .split("-")
+          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+          .join("");
+
+      const LazyComp = lazy(() =>
+        import(`./${componentName}`).catch(() =>
+          import("./ToolFallback").then((m) => ({
+            default: m.default ?? (() => null),
+          }))
+        )
+      );
+
+      const render = (props: { tool: GeneralTool; locale?: "en" | "es" }) => (
+        <LazyComp {...props} locale={locale} />
+      );
+      cache.set(prop, render);
+      return render;
+    },
+    has(_target, prop) {
+      return typeof prop === "string" && TOOL_BY_SLUG.has(prop);
+    },
+  });
 }
 
 export const GENERAL_TOOL_UI = buildLazyRegistry("en");
