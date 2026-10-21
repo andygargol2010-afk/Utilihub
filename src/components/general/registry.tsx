@@ -1,1 +1,237 @@
-PLACEHOLDER_TO_REPLACE
+import { lazy, type ComponentType, type ReactNode } from "react";
+import { GENERAL_TOOLS } from "@/lib/general";
+import type { GeneralTool } from "@/lib/general/types";
+
+/** Full general tool UI registry — restore 2026-10-13 anti-wipe + email validator + ohms law + password strength + hex color converter + aspect ratio + csv to json + xml to json + base64 + gpa + pomodoro + box shadow + download time + unit price + body fat + kinetic energy + timezone + percentage of + slug generator + bill split + currency converter + water intake + recipe cost + electricity cost + word counter + loan payment + average speed + acceleration + fuel efficiency + heart rate zones + savings goal + hourly rate + line sorter + business days + text normalizer + budget 503020 + uuid generator + date difference + recipe scaler + rule of 72 + room area + final grade + temperature converter + proportion calculator + css gradient generator + character counter + calorie deficit + trip time + force + bac + tip tax + sphere volume + sentence counter + cylinder volume + paragraph counter + density + word frequency + circle area + vowel counter + rectangle area + consonant counter + profit margin + weighted average + circle circumference + rectangle perimeter + pressure converter + calories burned + pyramid volume + trapezoid area + parallelogram area + rectangular prism volume + cube volume + syllable counter + triangle area + simple interest + tile + square area + fuel cost + reading time + coffee ratio + rhombus area. */
+
+const GeneralToolUi = lazy(() => import("./GeneralTool").then((m) => ({ default: m.GeneralTool })));
+const ConfiguredTool = lazy(() => import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })));
+const AdvancedCalculatorTool = lazy(() =>
+  import("./AdvancedCalculatorTool").then((m) => ({ default: m.AdvancedCalculatorTool })),
+);
+const AdvancedDateTool = lazy(() => import("./AdvancedDateTool").then((m) => ({ default: m.AdvancedDateTool })));
+const MathTool = lazy(() => import("./MathTool").then((m) => ({ default: m.MathTool })));
+const DesignTool = lazy(() => import("./DesignTool").then((m) => ({ default: m.DesignTool })));
+const SecurityTool = lazy(() => import("./SecurityTool").then((m) => ({ default: m.SecurityTool })));
+const TimeTool = lazy(() => import("./TimeTool").then((m) => ({ default: m.TimeTool })));
+const ConverterTool = lazy(() => import("./ConverterTool").then((m) => ({ default: m.ConverterTool })));
+const ScienceTool = lazy(() => import("./ScienceTool").then((m) => ({ default: m.ScienceTool })));
+const FormulaTool = lazy(() => import("./FormulaTool").then((m) => ({ default: m.FormulaTool })));
+const FinanceTool = lazy(() => import("./FinanceTool").then((m) => ({ default: m.FinanceTool })));
+const EducationTool = lazy(() => import("./EducationTool").then((m) => ({ default: m.EducationTool })));
+const GeneratorTool = lazy(() => import("./GeneratorTool").then((m) => ({ default: m.GeneratorTool })));
+const TextTool = lazy(() => import("./TextTool").then((m) => ({ default: m.TextTool })));
+const DevTool = lazy(() => import("./DevTool").then((m) => ({ default: m.DevTool })));
+const MediaTool = lazy(() => import("./MediaTool").then((m) => ({ default: m.MediaTool })));
+const PercentageChangeTool = lazy(() => import("./PercentageChangeTool").then((m) => ({ default: m.PercentageChangeTool })));
+const MacroCalculatorTool = lazy(() => import("./MacroCalculatorTool").then((m) => ({ default: m.MacroCalculatorTool })));
+const IdealWeightCalculatorTool = lazy(() => import("./IdealWeightCalculatorTool").then((m) => ({ default: m.IdealWeightCalculatorTool })));
+const CompanyNameGeneratorTool = lazy(() => import("./CompanyNameGeneratorTool").then((m) => ({ default: m.CompanyNameGeneratorTool })));
+const EmailValidatorTool = lazy(() => import("./EmailValidatorTool").then((m) => ({ default: m.EmailValidatorTool })));
+const OhmsLawTool = lazy(() => import("./OhmsLawTool").then((m) => ({ default: m.OhmsLawTool })));
+const PasswordStrengthTool = lazy(() => import("./PasswordStrengthTool").then((m) => ({ default: m.PasswordStrengthTool })));
+const HexColorConverterTool = lazy(() => import("./HexColorConverterTool").then((m) => ({ default: m.HexColorConverterTool })));
+const AspectRatioTool = lazy(() => import("./AspectRatioTool").then((m) => ({ default: m.AspectRatioTool })));
+const CsvToJsonTool = lazy(() => import("./CsvToJsonTool").then((m) => ({ default: m.CsvToJsonTool })));
+const XmlToJsonTool = lazy(() => import("./XmlToJsonTool").then((m) => ({ default: m.XmlToJsonTool })));
+const Base64Tool = lazy(() => import("./Base64Tool").then((m) => ({ default: m.Base64Tool })));
+const GpaCalculatorTool = lazy(() => import("./GpaCalculatorTool").then((m) => ({ default: m.GpaCalculatorTool })));
+const PomodoroTimerTool = lazy(() => import("./PomodoroTimerTool").then((m) => ({ default: m.PomodoroTimerTool })));
+const BoxShadowTool = lazy(() => import("./BoxShadowTool").then((m) => ({ default: m.BoxShadowTool })));
+const DownloadTimeTool = lazy(() => import("./DownloadTimeTool").then((m) => ({ default: m.DownloadTimeTool })));
+const UnitPriceTool = lazy(() => import("./UnitPriceTool").then((m) => ({ default: m.UnitPriceTool })));
+const BodyFatCalculatorTool = lazy(() => import("./BodyFatCalculatorTool").then((m) => ({ default: m.BodyFatCalculatorTool })));
+const KineticEnergyTool = lazy(() => import("./KineticEnergyTool").then((m) => ({ default: m.KineticEnergyTool })));
+const TimezoneTool = lazy(() => import("./TimezoneTool").then((m) => ({ default: m.TimezoneTool })));
+const PercentageOfTool = lazy(() => import("./PercentageOfTool").then((m) => ({ default: m.PercentageOfTool })));
+const SlugGeneratorTool = lazy(() => import("./SlugGeneratorTool").then((m) => ({ default: m.SlugGeneratorTool })));
+const BillSplitTool = lazy(() => import("./BillSplitTool").then((m) => ({ default: m.BillSplitTool })));
+const CurrencyConverterTool = lazy(() => import("./CurrencyConverterTool").then((m) => ({ default: m.CurrencyConverterTool })));
+const WaterIntakeTool = lazy(() => import("./WaterIntakeTool").then((m) => ({ default: m.WaterIntakeTool })));
+const RecipeCostCalculatorTool = lazy(() => import("./RecipeCostCalculatorTool").then((m) => ({ default: m.RecipeCostCalculatorTool })));
+const ElectricityCostTool = lazy(() => import("./ElectricityCostTool").then((m) => ({ default: m.ElectricityCostTool })));
+const WordCounterTool = lazy(() => import("./WordCounterTool").then((m) => ({ default: m.WordCounterTool })));
+const LoanPaymentTool = lazy(() => import("./LoanPaymentTool").then((m) => ({ default: m.LoanPaymentTool })));
+const AverageSpeedTool = lazy(() => import("./AverageSpeedTool").then((m) => ({ default: m.AverageSpeedTool })));
+const AccelerationTool = lazy(() => import("./AccelerationTool").then((m) => ({ default: m.AccelerationTool })));
+const FuelEfficiencyTool = lazy(() => import("./FuelEfficiencyTool").then((m) => ({ default: m.FuelEfficiencyTool })));
+const HeartRateZoneTool = lazy(() => import("./HeartRateZoneTool").then((m) => ({ default: m.HeartRateZoneTool })));
+const SavingsGoalTool = lazy(() => import("./SavingsGoalTool").then((m) => ({ default: m.SavingsGoalTool })));
+const HourlyRateTool = lazy(() => import("./HourlyRateTool").then((m) => ({ default: m.HourlyRateTool })));
+const LineSorterTool = lazy(() => import("./LineSorterTool").then((m) => ({ default: m.LineSorterTool })));
+const BusinessDaysTool = lazy(() => import("./BusinessDaysTool").then((m) => ({ default: m.BusinessDaysTool })));
+const TextNormalizerTool = lazy(() => import("./TextNormalizerTool").then((m) => ({ default: m.TextNormalizerTool })));
+const Budget503020Tool = lazy(() => import("./Budget503020Tool").then((m) => ({ default: m.Budget503020Tool })));
+const UuidGeneratorTool = lazy(() => import("./UuidGeneratorTool").then((m) => ({ default: m.UuidGeneratorTool })));
+const DateDifferenceTool = lazy(() => import("./DateDifferenceTool").then((m) => ({ default: m.DateDifferenceTool })));
+const RecipeScalerTool = lazy(() => import("./RecipeScalerTool").then((m) => ({ default: m.RecipeScalerTool })));
+const RuleOf72Tool = lazy(() => import("./RuleOf72Tool").then((m) => ({ default: m.RuleOf72Tool })));
+const RoomAreaTool = lazy(() => import("./RoomAreaTool").then((m) => ({ default: m.RoomAreaTool })));
+const FinalGradeTool = lazy(() => import("./FinalGradeTool").then((m) => ({ default: m.FinalGradeTool })));
+const TemperatureConverterTool = lazy(() => import("./TemperatureConverterTool").then((m) => ({ default: m.TemperatureConverterTool })));
+const ProportionCalculatorTool = lazy(() => import("./ProportionCalculatorTool").then((m) => ({ default: m.ProportionCalculatorTool })));
+const CssGradientGeneratorTool = lazy(() => import("./CssGradientGeneratorTool").then((m) => ({ default: m.CssGradientGeneratorTool })));
+const CharacterCounterTool = lazy(() => import("./CharacterCounterTool").then((m) => ({ default: m.CharacterCounterTool })));
+const CalorieDeficitTool = lazy(() => import("./CalorieDeficitTool").then((m) => ({ default: m.CalorieDeficitTool })));
+const TripTimeTool = lazy(() => import("./TripTimeTool").then((m) => ({ default: m.TripTimeTool })));
+const ForceCalculatorTool = lazy(() => import("./ForceCalculatorTool").then((m) => ({ default: m.ForceCalculatorTool })));
+const BacCalculatorTool = lazy(() => import("./BacCalculatorTool").then((m) => ({ default: m.BacCalculatorTool })));
+const TipTaxCalculatorTool = lazy(() => import("./TipTaxCalculatorTool").then((m) => ({ default: m.TipTaxCalculatorTool })));
+const SphereVolumeCalculatorTool = lazy(() => import("./SphereVolumeCalculatorTool").then((m) => ({ default: m.SphereVolumeCalculatorTool })));
+const SentenceCounterTool = lazy(() => import("./SentenceCounterTool").then((m) => ({ default: m.SentenceCounterTool })));
+const CylinderVolumeCalculatorTool = lazy(() => import("./CylinderVolumeCalculatorTool").then((m) => ({ default: m.CylinderVolumeCalculatorTool })));
+const ParagraphCounterTool = lazy(() => import("./ParagraphCounterTool").then((m) => ({ default: m.ParagraphCounterTool })));
+const DensityCalculatorTool = lazy(() => import("./DensityCalculatorTool").then((m) => ({ default: m.DensityCalculatorTool })));
+const WordFrequencyCounterTool = lazy(() => import("./WordFrequencyCounterTool").then((m) => ({ default: m.WordFrequencyCounterTool })));
+const CircleAreaCalculatorTool = lazy(() => import("./CircleAreaCalculatorTool").then((m) => ({ default: m.CircleAreaCalculatorTool })));
+const VowelCounterTool = lazy(() => import("./VowelCounterTool").then((m) => ({ default: m.VowelCounterTool })));
+const RectangleAreaCalculatorTool = lazy(() => import("./RectangleAreaCalculatorTool").then((m) => ({ default: m.RectangleAreaCalculatorTool })));
+const ConsonantCounterTool = lazy(() => import("./ConsonantCounterTool").then((m) => ({ default: m.ConsonantCounterTool })));
+const ProfitMarginCalculatorTool = lazy(() => import("./ProfitMarginCalculatorTool").then((m) => ({ default: m.ProfitMarginCalculatorTool })));
+const WeightedAverageCalculatorTool = lazy(() => import("./WeightedAverageCalculatorTool").then((m) => ({ default: m.WeightedAverageCalculatorTool })));
+const CircleCircumferenceCalculatorTool = lazy(() => import("./CircleCircumferenceCalculatorTool").then((m) => ({ default: m.CircleCircumferenceCalculatorTool })));
+const RectanglePerimeterCalculatorTool = lazy(() => import("./RectanglePerimeterCalculatorTool").then((m) => ({ default: m.RectanglePerimeterCalculatorTool })));
+const PressureConverterTool = lazy(() => import("./PressureConverterTool").then((m) => ({ default: m.PressureConverterTool })));
+const CaloriesBurnedCalculatorTool = lazy(() => import("./CaloriesBurnedCalculatorTool").then((m) => ({ default: m.CaloriesBurnedCalculatorTool })));
+const PyramidVolumeCalculatorTool = lazy(() => import("./PyramidVolumeCalculatorTool").then((m) => ({ default: m.PyramidVolumeCalculatorTool })));
+const TrapezoidAreaCalculatorTool = lazy(() => import("./TrapezoidAreaCalculatorTool").then((m) => ({ default: m.TrapezoidAreaCalculatorTool })));
+const ParallelogramAreaCalculatorTool = lazy(() => import("./ParallelogramAreaCalculatorTool").then((m) => ({ default: m.ParallelogramAreaCalculatorTool })));
+const RectangularPrismVolumeCalculatorTool = lazy(() => import("./RectangularPrismVolumeCalculatorTool").then((m) => ({ default: m.RectangularPrismVolumeCalculatorTool })));
+const CubeVolumeCalculatorTool = lazy(() => import("./CubeVolumeCalculatorTool").then((m) => ({ default: m.CubeVolumeCalculatorTool })));
+const SyllableCounterTool = lazy(() => import("./SyllableCounterTool").then((m) => ({ default: m.SyllableCounterTool })));
+const TriangleAreaCalculatorTool = lazy(() => import("./TriangleAreaCalculatorTool").then((m) => ({ default: m.TriangleAreaCalculatorTool })));
+const SimpleInterestCalculatorTool = lazy(() => import("./SimpleInterestCalculatorTool").then((m) => ({ default: m.SimpleInterestCalculatorTool })));
+const TileCalculatorTool = lazy(() => import("./TileCalculatorTool").then((m) => ({ default: m.TileCalculatorTool })));
+const SquareAreaCalculatorTool = lazy(() => import("./SquareAreaCalculatorTool").then((m) => ({ default: m.SquareAreaCalculatorTool })));
+const FuelCostCalculatorTool = lazy(() => import("./FuelCostCalculatorTool").then((m) => ({ default: m.FuelCostCalculatorTool })));
+const ReadingTimeCalculatorTool = lazy(() => import("./ReadingTimeCalculatorTool").then((m) => ({ default: m.ReadingTimeCalculatorTool })));
+const CoffeeRatioCalculatorTool = lazy(() => import("./CoffeeRatioCalculatorTool").then((m) => ({ default: m.CoffeeRatioCalculatorTool })));
+const RhombusAreaCalculatorTool = lazy(() => import("./RhombusAreaCalculatorTool").then((m) => ({ default: m.RhombusAreaCalculatorTool })));
+const ColorContrastCalculatorTool = lazy(() => import("./ColorContrastCalculatorTool").then((m) => ({ default: m.ColorContrastCalculatorTool })));
+const WeightConverterTool = lazy(() => import("./WeightConverterTool").then((m) => ({ default: m.WeightConverterTool })));
+const MaxHeartRateCalculatorTool = lazy(() => import("./MaxHeartRateCalculatorTool").then((m) => ({ default: m.MaxHeartRateCalculatorTool })));
+const EllipseAreaCalculatorTool = lazy(() => import("./EllipseAreaCalculatorTool").then((m) => ({ default: m.EllipseAreaCalculatorTool })));
+const PentagonAreaCalculatorTool = lazy(() => import("./PentagonAreaCalculatorTool").then((m) => ({ default: m.PentagonAreaCalculatorTool })));
+const HexagonAreaCalculatorTool = lazy(() => import("./HexagonAreaCalculatorTool").then((m) => ({ default: m.HexagonAreaCalculatorTool })));
+const ArithmeticMeanCalculatorTool = lazy(() => import("./ArithmeticMeanCalculatorTool").then((m) => ({ default: m.ArithmeticMeanCalculatorTool })));
+
+type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
+
+function pickComponent(tool: GeneralTool): ToolComp {
+  if (tool.slug === "calculadora-cambio-porcentaje") return PercentageChangeTool as ToolComp;
+  if (tool.slug === "calculadora-macros") return MacroCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-peso-ideal") return IdealWeightCalculatorTool as ToolComp;
+  if (tool.slug === "generador-nombres-empresa") return CompanyNameGeneratorTool as ToolComp;
+  if (tool.slug === "validador-email") return EmailValidatorTool as ToolComp;
+  if (tool.slug === "calculadora-ley-ohm") return OhmsLawTool as ToolComp;
+  if (tool.slug === "password-strength") return PasswordStrengthTool as ToolComp;
+  if (tool.slug === "conversor-color-hex") return HexColorConverterTool as ToolComp;
+  if (tool.slug === "calculadora-relacion-aspecto") return AspectRatioTool as ToolComp;
+  if (tool.slug === "conversor-csv-json") return CsvToJsonTool as ToolComp;
+  if (tool.slug === "conversor-xml-json") return XmlToJsonTool as ToolComp;
+  if (tool.slug === "base64-encoder-decoder") return Base64Tool as ToolComp;
+  if (tool.slug === "calculadora-gpa") return GpaCalculatorTool as ToolComp;
+  if (tool.slug === "temporizador-pomodoro") return PomodoroTimerTool as ToolComp;
+  if (tool.slug === "generador-sombra-css") return BoxShadowTool as ToolComp;
+  if (tool.slug === "calculadora-tiempo-descarga") return DownloadTimeTool as ToolComp;
+  if (tool.slug === "calculadora-precio-unitario") return UnitPriceTool as ToolComp;
+  if (tool.slug === "calculadora-grasa-corporal") return BodyFatCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-energia-cinetica") return KineticEnergyTool as ToolComp;
+  if (tool.slug === "conversor-zona-horaria") return TimezoneTool as ToolComp;
+  if (tool.slug === "calculadora-porcentaje-de") return PercentageOfTool as ToolComp;
+  if (tool.slug === "generador-slug") return SlugGeneratorTool as ToolComp;
+  if (tool.slug === "dividir-cuenta") return BillSplitTool as ToolComp;
+  if (tool.slug === "conversor-divisas") return CurrencyConverterTool as ToolComp;
+  if (tool.slug === "calculadora-ingesta-agua") return WaterIntakeTool as ToolComp;
+  if (tool.slug === "calculadora-costo-receta") return RecipeCostCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-costo-electricidad") return ElectricityCostTool as ToolComp;
+  if (tool.slug === "contador-palabras") return WordCounterTool as ToolComp;
+  if (tool.slug === "calculadora-cuota-prestamo") return LoanPaymentTool as ToolComp;
+  if (tool.slug === "calculadora-velocidad-media") return AverageSpeedTool as ToolComp;
+  if (tool.slug === "calculadora-aceleracion") return AccelerationTool as ToolComp;
+  if (tool.slug === "calculadora-eficiencia-combustible") return FuelEfficiencyTool as ToolComp;
+  if (tool.slug === "calculadora-zonas-frecuencia-cardiaca") return HeartRateZoneTool as ToolComp;
+  if (tool.slug === "calculadora-meta-ahorro") return SavingsGoalTool as ToolComp;
+  if (tool.slug === "calculadora-tarifa-horaria") return HourlyRateTool as ToolComp;
+  if (tool.slug === "ordenador-lineas-texto") return LineSorterTool as ToolComp;
+  if (tool.slug === "calculadora-dias-habiles") return BusinessDaysTool as ToolComp;
+  if (tool.slug === "normalizador-texto") return TextNormalizerTool as ToolComp;
+  if (tool.slug === "calculadora-presupuesto-503020") return Budget503020Tool as ToolComp;
+  if (tool.slug === "generador-uuid") return UuidGeneratorTool as ToolComp;
+  if (tool.slug === "calculadora-diferencia-fechas") return DateDifferenceTool as ToolComp;
+  if (tool.slug === "escalador-receta") return RecipeScalerTool as ToolComp;
+  if (tool.slug === "calculadora-regla-72") return RuleOf72Tool as ToolComp;
+  if (tool.slug === "calculadora-area-habitacion") return RoomAreaTool as ToolComp;
+  if (tool.slug === "calculadora-nota-final") return FinalGradeTool as ToolComp;
+  if (tool.slug === "conversor-temperatura") return TemperatureConverterTool as ToolComp;
+  if (tool.slug === "calculadora-proporcion") return ProportionCalculatorTool as ToolComp;
+  if (tool.slug === "generador-gradiente-css") return CssGradientGeneratorTool as ToolComp;
+  if (tool.slug === "contador-caracteres") return CharacterCounterTool as ToolComp;
+  if (tool.slug === "calculadora-deficit-calorico") return CalorieDeficitTool as ToolComp;
+  if (tool.slug === "calculadora-tiempo-viaje") return TripTimeTool as ToolComp;
+  if (tool.slug === "calculadora-fuerza") return ForceCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-bac") return BacCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-propina-impuesto") return TipTaxCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-volumen-esfera") return SphereVolumeCalculatorTool as ToolComp;
+  if (tool.slug === "contador-oraciones") return SentenceCounterTool as ToolComp;
+  if (tool.slug === "calculadora-volumen-cilindro") return CylinderVolumeCalculatorTool as ToolComp;
+  if (tool.slug === "contador-parrafos") return ParagraphCounterTool as ToolComp;
+  if (tool.slug === "calculadora-densidad") return DensityCalculatorTool as ToolComp;
+  if (tool.slug === "contador-frecuencia-palabras") return WordFrequencyCounterTool as ToolComp;
+  if (tool.slug === "calculadora-area-circulo") return CircleAreaCalculatorTool as ToolComp;
+  if (tool.slug === "contador-vocales") return VowelCounterTool as ToolComp;
+  if (tool.slug === "calculadora-area-rectangulo") return RectangleAreaCalculatorTool as ToolComp;
+  if (tool.slug === "contador-consonantes") return ConsonantCounterTool as ToolComp;
+  if (tool.slug === "calculadora-margen-beneficio") return ProfitMarginCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-promedio-ponderado") return WeightedAverageCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-circunferencia-circulo") return CircleCircumferenceCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-perimetro-rectangulo") return RectanglePerimeterCalculatorTool as ToolComp;
+  if (tool.slug === "conversor-presion") return PressureConverterTool as ToolComp;
+  if (tool.slug === "calculadora-calorias-quemadas") return CaloriesBurnedCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-volumen-piramide") return PyramidVolumeCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-area-trapecio") return TrapezoidAreaCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-area-paralelogramo") return ParallelogramAreaCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-volumen-prisma-rectangular") return RectangularPrismVolumeCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-volumen-cubo") return CubeVolumeCalculatorTool as ToolComp;
+  if (tool.slug === "contador-silabas") return SyllableCounterTool as ToolComp;
+  if (tool.slug === "calculadora-area-triangulo") return TriangleAreaCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-interes-simple") return SimpleInterestCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-azulejos") return TileCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-area-cuadrado") return SquareAreaCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-costo-combustible") return FuelCostCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-tiempo-lectura") return ReadingTimeCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-ratio-cafe") return CoffeeRatioCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-area-rombo") return RhombusAreaCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-contraste-color") return ColorContrastCalculatorTool as ToolComp;
+  if (tool.slug === "conversor-peso") return WeightConverterTool as ToolComp;
+  if (tool.slug === "calculadora-frecuencia-cardiaca-maxima") return MaxHeartRateCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-area-elipse") return EllipseAreaCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-area-pentagono") return PentagonAreaCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-area-hexagono") return HexagonAreaCalculatorTool as ToolComp;
+  if (tool.slug === "calculadora-media-aritmetica") return ArithmeticMeanCalculatorTool as ToolComp;
+  return GeneralToolUi as ToolComp;
+}
+
+const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((t) => [t.slug, t]));
+
+function buildLazyRegistry(locale: "en" | "es"): Record<string, React.LazyExoticComponent<ToolComp>> {
+  const registry: Record<string, React.LazyExoticComponent<ToolComp>> = {};
+  for (const tool of GENERAL_TOOLS) {
+    const Comp = pickComponent(tool);
+    registry[tool.slug] = lazy(() => Promise.resolve({ default: (props: { tool: GeneralTool; locale?: "en" | "es" }) => <Comp tool={tool} locale={locale} {...props} /> }));
+  }
+  return new Proxy(registry, {
+    get(target, prop) {
+      if (typeof prop === "string" && TOOL_BY_SLUG.has(prop)) {
+        return target[prop];
+      }
+      return undefined;
+    },
+    has(_target, prop) {
+      return typeof prop === "string" && TOOL_BY_SLUG.has(prop);
+    },
+  });
+}
+
+export const GENERAL_TOOL_UI = buildLazyRegistry("en");
+export const GENERAL_TOOL_UI_ES = buildLazyRegistry("es");
