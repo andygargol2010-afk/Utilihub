@@ -70,4 +70,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-energia-potencial", name: "PotentialEnergyCalculatorTool", path: "./PotentialEnergyCalculatorTool", export: "PotentialEnergyCalculatorTool" },
   { slug: "calculadora-dias-hasta-fecha", name: "DaysUntilDateCalculatorTool", path: "./DaysUntilDateCalculatorTool", export: "DaysUntilDateCalculatorTool" },
   { slug: "contador-palabras-unicas", name: "UniqueWordsCounterTool", path: "./UniqueWordsCounterTool", export: "UniqueWordsCounterTool" },
+  { slug: "calculadora-presupuesto-viaje", name: "TravelBudgetCalculatorTool", path: "./TravelBudgetCalculatorTool", export: "TravelBudgetCalculatorTool" },
+  { slug: "calculadora-porcentaje-completado", name: "PercentageCompleteCalculatorTool", path: "./PercentageCompleteCalculatorTool", export: "PercentageCompleteCalculatorTool" },
 ] as const;
