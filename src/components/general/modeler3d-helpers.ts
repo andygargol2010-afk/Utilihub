@@ -1,4 +1,4 @@
-export type ShapeKind = "box" | "sphere" | "cylinder" | "cone" | "plane" | "torus" | "prism" | "tube";
+export type ShapeKind = "box" | "sphere" | "cylinder" | "cone" | "plane" | "torus" | "prism" | "tube" | "pyramid";
 
 export type MatPreset = "default" | "matte" | "metal" | "glass" | "plastic" | "rubber" | "wood" | "concrete";
 
@@ -122,6 +122,7 @@ export const NAME_PAIR: Record<ShapeKind, [string, string]> = {
   torus: ["Torus", "Toro"],
   prism: ["Prism", "Prisma"],
   tube: ["Tube", "Tubo"],
+  pyramid: ["Pyramid", "Pirámide"],
 };
 export const BASE_SIZE: Record<ShapeKind, [number, number, number]> = {
   box: [1, 1, 1],
@@ -132,6 +133,7 @@ export const BASE_SIZE: Record<ShapeKind, [number, number, number]> = {
   prism: [1.1, 1.1, 1.1],
   torus: [1.5, 0.4, 1.5],
   tube: [0.56, 1.2, 0.56],
+  pyramid: [1.1, 1.1, 1.1],
 };
 export const COLORS = [
   // Brand / vivid
@@ -170,6 +172,7 @@ export function makeGeometry(THREE: any, kind: ShapeKind) {
     case "torus": return new THREE.TorusGeometry(0.55, 0.2, 32, 64);
     case "prism": return new THREE.CylinderGeometry(0.55, 0.55, 1.1, 3);
     case "tube": return new THREE.CylinderGeometry(0.28, 0.28, 1.2, 40);
+    case "pyramid": return new THREE.ConeGeometry(0.55, 1.1, 4);
     default: return new THREE.BoxGeometry(1, 1, 1);
   }
 }
@@ -289,5 +292,6 @@ export function shapeList(es: boolean): { kind: ShapeKind; label: string; icon: 
     { kind: "torus", label: es ? "Toro" : "Torus", icon: "◎" },
     { kind: "prism", label: es ? "Prisma" : "Prism", icon: "△" },
     { kind: "tube", label: es ? "Tubo" : "Tube", icon: "◯" },
+    { kind: "pyramid", label: es ? "Pirámide" : "Pyramid", icon: "△" },
   ];
 }
