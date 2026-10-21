@@ -72,7 +72,7 @@ runs_remaining: 6
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE 2026-10-20: U=0.444 <0.50 GROWTH; U_g=0.347 <0.35 FIXED urn → search-magnets (equal weights 3/3). No weight updates (FIXED). last_closed=playgrounds no re-roll. seo-locales still 1/5 active. Original text + interactive scale viz for SEO depth. FIX-BUILD 2026-10-21: removed unresolved HealthTool etc. from registry-generics (bf4fcf29). EXECUTE 2026-10-21 run 1/7: shipped SolarSystemScaleExplorer.tsx + EN/ES routes with original educational copy, scale modes, drag/zoom, next-step registered. Adsterra kept. Deploy READY post-fix.
+notes: IDEATE 2026-10-20 search-magnets. EXECUTE 2026-10-21: elevated SolarSystemScaleExplorer — Kepler-ish orbital anim, drag planets + pan bg, focus auto-pan, trail fade + speed, Earth moon, Saturn ring, glow, share URL/PNG, reset. next-step registered. EN+ES routes + educational copy. Adsterra kept. Commit bf567b3.
 adsense-prep_runs: 3
 ```
 
