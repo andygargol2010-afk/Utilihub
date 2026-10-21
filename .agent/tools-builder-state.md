@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-21 | productividad | calculadora-porcentaje-completado | PercentageCompleteCalculatorTool
+- 2026-10-21 | viajes | calculadora-presupuesto-viaje | TravelBudgetCalculatorTool
 - 2026-10-21 | fechas | calculadora-dias-hasta-fecha | DaysUntilDateCalculatorTool
 - 2026-10-21 | texto | contador-palabras-unicas | UniqueWordsCounterTool
 - 2026-10-21 | ciencia | calculadora-energia-potencial | PotentialEnergyCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-20 | matematicas | calculadora-area-elipse | EllipseAreaCalculatorTool
 - 2026-10-20 | diseno | calculadora-contraste-color | ColorContrastCalculatorTool
 - 2026-10-20 | conversiones | conversor-peso | WeightConverterTool
-- 2026-10-20 | hogar | calculadora-ratio-cafe | CoffeeRatioCalculatorTool
-- 2026-10-20 | matematicas | calculadora-area-rombo | RhombusAreaCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -42,9 +42,9 @@ fechas/tiempo: recent (dias-hasta-fecha)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial)
 finanzas simples: recent (regla-72, propina-impuesto, margen-beneficio, interes-simple, cambio-porcentaje)
 hogar/cocina: recent (ratio-cafe)
-viajes: recent (tiempo-viaje, costo-combustible)
+viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas)
-productividad: recent (tiempo-lectura)
+productividad: recent (tiempo-lectura, porcentaje-completado)
 matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono)
 diseno: recent (contraste-color)
 conversiones: recent (peso)
@@ -63,6 +63,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-21 PRODUCT (roll 13): shipped 2 (calculadora-presupuesto-viaje viajes + calculadora-porcentaje-completado productividad). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 10): shipped 2 (calculadora-cambio-porcentaje finanzas + calculadora-energia-potencial ciencia). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 10): shipped 2 (calculadora-dias-hasta-fecha fechas + contador-palabras-unicas texto). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 FIX-BUILD: resolved duplicate slug calculadora-cambio-porcentaje by deleting leftover percentage-change-tool.ts. Deploy of fix SHA READY.
@@ -73,9 +74,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: FIX-BUILD
-last_slugs: (none new)
-last_deploy: READY (e102ac18)
+last_mode: PRODUCT
+last_slugs: calculadora-presupuesto-viaje, calculadora-porcentaje-completado
+last_deploy: pending verification
 ```
 
 <!-- end:tools-builder-state.md -->
