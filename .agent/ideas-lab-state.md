@@ -68,11 +68,11 @@ path_es: /es/color-cascade-fusion
 path_seo: n/a
 domain: games
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: png
 next_step_required: yes
-notes: IDEATE roll: U=0.7475 (>0.50 → CORE). Weighted sample from weights_core selected games (prev weight 3). last_closed_domain=retention-loops ≠ games, no re-roll. Weights updated: games=1, all other CORE +1. New game distinct from orbit-defender and pulse-catch. EXECUTE run 1/6: core fusion loop (adjacent same-color click, fuse to larger orb, particles, levels, score/best) + EN/ES routes + next-step registration. Adsterra kept. Deploy check READY on previous commit; new commits pending deploy. EXECUTE run 2/6: power-orbs (bomb clears nearby same-color, freeze slows gravity, multi ×2 score) spawn from level 2 with visual rings/labels + PNG share of score overlay. Adsterra kept.
+notes: IDEATE roll: U=0.7475 (>0.50 → CORE). Weighted sample from weights_core selected games (prev weight 3). last_closed_domain=retention-loops ≠ games, no re-roll. Weights updated: games=1, all other CORE +1. New game distinct from orbit-defender and pulse-catch. EXECUTE run 1/6: core fusion loop (adjacent same-color click, fuse to larger orb, particles, levels, score/best) + EN/ES routes + next-step registration. Adsterra kept. Deploy check READY on previous commit; new commits pending deploy. EXECUTE run 2/6: power-orbs (bomb clears nearby same-color, freeze slows gravity, multi ×2 score) spawn from level 2 with visual rings/labels + PNG share of score overlay. Adsterra kept. EXECUTE run 3/6: combo streak system — successive fusions within 2.8s raise combo (x1.5…x5 cap), floating score popups on canvas (+pts / +pts xN), combo badge, bigger particle burst on high combo, UI combo indicator, help text updated EN+ES. Adsterra kept.
 adsense-prep_runs: 3
 ```
 
