@@ -1,4 +1,4 @@
-import { lazy, type ComponentType } from "react";
+import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
 import { REGISTRY_ENTRIES } from "./registry-entries";
@@ -15,21 +15,29 @@ import { GeneralToolUi } from "./registry-generics";
 
 const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((t) => [t.slug, t]));
 
-// Pre-build lazy components from pure data entries (static-ish paths).
-const SPECIAL_LAZY: Record<string, ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>> = {};
+type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
+
+// Pre-build lazy components; missing modules fall back to GeneralToolUi at render time.
+const SPECIAL_LAZY: Record<string, ToolComp> = {};
 for (const e of REGISTRY_ENTRIES) {
   const { slug, path, export: exportName } = e;
   SPECIAL_LAZY[slug] = lazy(() =>
-    import(/* @vite-ignore */ path).then((m) => ({
-      default: (m as any)[exportName] as ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>,
-    })),
+    import(/* @vite-ignore */ path)
+      .then((m) => {
+        const Comp = (m as any)[exportName] as ToolComp | undefined;
+        if (!Comp) {
+          return { default: GeneralToolUi as ToolComp };
+        }
+        return { default: Comp };
+      })
+      .catch(() => ({ default: GeneralToolUi as ToolComp })),
   );
 }
 
 function buildLazyRegistry(locale: "en" | "es") {
-  const cache = new Map<string, () => React.ReactNode>();
+  const cache = new Map<string, () => ReactNode>();
 
-  return new Proxy({} as Record<string, () => React.ReactNode>, {
+  return new Proxy({} as Record<string, () => ReactNode>, {
     get(_target, prop) {
       if (typeof prop !== "string") return undefined;
       if (cache.has(prop)) return cache.get(prop);
