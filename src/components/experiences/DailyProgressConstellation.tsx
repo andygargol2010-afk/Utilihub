@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { PLAYGROUNDS, playgroundPath, playgroundName, type PlaygroundLocale } from "@/lib/playgrounds/next-step";
+import { type PlaygroundLocale } from "@/lib/playgrounds/next-step";
 
 const STORAGE_KEY = "utilihub-daily-constellation-v1";
 
@@ -10,6 +10,7 @@ type ConstellationData = {
   stars: Star[];
   lastVisit: number;
   totalDays: number;
+  name?: string;
 };
 
 function loadData(): ConstellationData {
@@ -36,13 +37,22 @@ function isSameDay(a: number, b: number) {
   return da.getFullYear() === db.getFullYear() && da.getMonth() === db.getMonth() && da.getDate() === db.getDate();
 }
 
+function suggestName(days: number, es: boolean): string {
+  if (days >= 21) return es ? "Constelación del Habitante" : "Habitant's Constellation";
+  if (days >= 14) return es ? "Constelación del Viajero" : "Traveler's Constellation";
+  if (days >= 7) return es ? "Constelación de la Semana" : "Week's Constellation";
+  if (days >= 3) return es ? "Constelación Naciente" : "Rising Constellation";
+  return es ? "Mi Constelación" : "My Constellation";
+}
+
 export function DailyProgressConstellation({ locale = "en" }: { locale?: PlaygroundLocale }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [data, setData] = useState<ConstellationData>({ stars: [], lastVisit: 0, totalDays: 0 });
   const [shareMsg, setShareMsg] = useState("");
   const [hover, setHover] = useState<{ star: Star; x: number; y: number } | null>(null);
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState("");
   const animRef = useRef<number>(0);
-  const mouseRef = useRef<{ x: number; y: number } | null>(null);
   const es = locale === "es";
 
   useEffect(() => {
@@ -58,14 +68,20 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
         litAt: now,
       };
       prev = {
+        ...prev,
         stars: [...prev.stars, newStar].slice(-48),
         lastVisit: now,
         totalDays: prev.totalDays + 1,
       };
       saveData(prev);
     }
+    if (!prev.name) {
+      prev = { ...prev, name: suggestName(prev.totalDays, es) };
+      saveData(prev);
+    }
     setData(prev);
-  }, []);
+    setNameInput(prev.name || "");
+  }, [es]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -86,14 +102,12 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
       const h = canvas.clientHeight;
       if (!w || !h) return;
       ctx.clearRect(0, 0, w, h);
-      // deep sky
       const g = ctx.createLinearGradient(0, 0, 0, h);
       g.addColorStop(0, "#050814");
       g.addColorStop(1, "#0c1224");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
 
-      // faint background stars
       ctx.fillStyle = "rgba(255,255,255,0.25)";
       for (let i = 0; i < 40; i++) {
         const px = ((i * 97) % 100) / 100 * w;
@@ -103,7 +117,6 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
         ctx.fill();
       }
 
-      // connecting lines
       ctx.strokeStyle = "rgba(34, 211, 238, 0.35)";
       ctx.lineWidth = 1.2;
       for (let i = 1; i < data.stars.length; i++) {
@@ -115,7 +128,6 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
         ctx.stroke();
       }
 
-      // stars with twinkle
       const phase = time * 0.002;
       const newestId = data.stars.length ? data.stars[data.stars.length - 1].id : -1;
       data.stars.forEach((s, idx) => {
@@ -135,7 +147,6 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
           ctx.shadowBlur = (isNewest ? 18 : 12) * twinkle;
           ctx.fill();
           ctx.shadowBlur = 0;
-          // cross flare
           ctx.strokeStyle = `rgba(103,232,249,${(isNewest ? 0.7 : 0.4) * twinkle})`;
           ctx.lineWidth = isNewest ? 1.5 : 1;
           ctx.beginPath();
@@ -153,31 +164,35 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
       animRef.current = requestAnimationFrame(loop);
     };
 
-    const onMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-      mouseRef.current = { x: mx, y: my };
+    const hitTest = (mx: number, my: number): Star | null => {
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
-      let found: Star | null = null;
       for (let i = data.stars.length - 1; i >= 0; i--) {
         const s = data.stars[i];
         const sx = s.x * w;
         const sy = s.y * h;
         const dist = Math.hypot(mx - sx, my - sy);
-        if (dist < (s.size ?? 3) * 4 + 8) {
-          found = s;
-          break;
+        if (dist < (s.size ?? 3) * 5 + 10) {
+          return s;
         }
       }
+      return null;
+    };
+
+    const onPointer = (clientX: number, clientY: number) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = clientX - rect.left;
+      const my = clientY - rect.top;
+      const found = hitTest(mx, my);
       setHover(found ? { star: found, x: mx, y: my } : null);
     };
 
-    const onMouseLeave = () => {
-      mouseRef.current = null;
-      setHover(null);
+    const onMouseMove = (e: MouseEvent) => onPointer(e.clientX, e.clientY);
+    const onMouseLeave = () => setHover(null);
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length) onPointer(e.touches[0].clientX, e.touches[0].clientY);
     };
+    const onTouchEnd = () => setTimeout(() => setHover(null), 1800);
 
     resize();
     animRef.current = requestAnimationFrame(loop);
@@ -188,22 +203,36 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
     window.addEventListener("resize", onResize);
     canvas.addEventListener("mousemove", onMouseMove);
     canvas.addEventListener("mouseleave", onMouseLeave);
+    canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+    canvas.addEventListener("touchend", onTouchEnd);
     return () => {
       cancelAnimationFrame(animRef.current);
       window.removeEventListener("resize", onResize);
       canvas.removeEventListener("mousemove", onMouseMove);
       canvas.removeEventListener("mouseleave", onMouseLeave);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchend", onTouchEnd);
     };
   }, [data]);
 
+  function updateName(newName: string) {
+    const trimmed = newName.trim().slice(0, 40) || suggestName(data.totalDays, es);
+    const next = { ...data, name: trimmed };
+    saveData(next);
+    setData(next);
+    setNameInput(trimmed);
+    setEditingName(false);
+  }
+
   async function shareText() {
+    const name = data.name || suggestName(data.totalDays, es);
     const text = es
-      ? `Mi constelación de progreso diario en UtiliHub: ${data.totalDays} estrellas ✨`
-      : `My daily progress constellation on UtiliHub: ${data.totalDays} stars ✨`;
+      ? `${name}: ${data.totalDays} estrellas en mi constelación de progreso UtiliHub ✨`
+      : `${name}: ${data.totalDays} stars in my UtiliHub progress constellation ✨`;
     const url = window.location.href;
     if (navigator.share) {
       try {
-        await navigator.share({ title: es ? "Mi constelación" : "My constellation", text, url });
+        await navigator.share({ title: name, text, url });
         setShareMsg(es ? "¡Compartido!" : "Shared!");
       } catch {
         setShareMsg(es ? "Cancelado" : "Cancelled");
@@ -223,7 +252,7 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `constellation-${data.totalDays}-stars.png`;
+      a.download = `constellation-${(data.name || "progress").replace(/\s+/g, "-").toLowerCase()}-${data.totalDays}.png`;
       a.click();
       URL.revokeObjectURL(url);
       setShareMsg(es ? "PNG descargado" : "PNG downloaded");
@@ -239,19 +268,44 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
     ? new Date(hover.star.litAt).toLocaleDateString(es ? "es" : "en", { year: "numeric", month: "short", day: "numeric" })
     : es ? "fecha no guardada" : "date not stored";
 
+  const displayName = data.name || suggestName(data.totalDays, es);
+
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-6">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
           {es ? "Constelación de progreso" : "Progress constellation"}
         </p>
-        <h2 className="mt-1 text-2xl font-black">
-          {data.totalDays} {es ? "estrellas" : "stars"}
-        </h2>
+        <div className="mt-1 flex flex-wrap items-center gap-2">
+          {editingName ? (
+            <input
+              autoFocus
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              onBlur={() => updateName(nameInput)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") updateName(nameInput);
+                if (e.key === "Escape") setEditingName(false);
+              }}
+              className="rounded border border-cyan-500/40 bg-background px-2 py-0.5 text-2xl font-black outline-none focus:ring-1 focus:ring-cyan-500"
+              maxLength={40}
+            />
+          ) : (
+            <h2 className="text-2xl font-black">{displayName}</h2>
+          )}
+          <button
+            type="button"
+            onClick={() => {
+              setNameInput(displayName);
+              setEditingName(true);
+            }}
+            className="text-xs text-cyan-500 hover:underline"
+          >
+            {es ? "editar" : "edit"}
+          </button>
+        </div>
         <p className="mt-1 text-sm text-muted-foreground">
-          {es
-            ? "Cada visita diaria enciende una nueva estrella. Conectá tu progreso personal."
-            : "Each daily visit lights a new star. Build your personal progress constellation."}
+          {data.totalDays} {es ? "estrellas" : "stars"} · {es ? "Cada visita diaria enciende una nueva." : "Each daily visit lights a new one."}
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
           {es ? "Última visita:" : "Last visit:"} {lastStr}
@@ -275,12 +329,12 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
         </div>
       </div>
       <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/60 bg-black">
-        <canvas ref={canvasRef} className="h-full w-full" />
+        <canvas ref={canvasRef} className="h-full w-full touch-manipulation" />
         {hover && (
           <div
             className="pointer-events-none absolute z-10 rounded-md border border-cyan-500/40 bg-black/80 px-2 py-1 text-[11px] font-medium text-cyan-100 shadow-lg"
             style={{
-              left: Math.min(hover.x + 10, (canvasRef.current?.clientWidth ?? 200) - 120),
+              left: Math.min(hover.x + 10, (canvasRef.current?.clientWidth ?? 200) - 140),
               top: Math.max(hover.y - 28, 4),
             }}
           >
@@ -291,8 +345,8 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
       </div>
       <p className="text-xs text-muted-foreground">
         {es
-          ? "Las estrellas se guardan localmente. Pasá el mouse sobre una estrella para ver su fecha. Volvé mañana para encender otra."
-          : "Stars are stored locally. Hover a star to see its date. Return tomorrow to light another."}
+          ? "Las estrellas se guardan localmente. Tocá o pasá el mouse sobre una estrella para ver su fecha. Volvé mañana para encender otra."
+          : "Stars are stored locally. Tap or hover a star to see its date. Return tomorrow to light another."}
       </p>
     </div>
   );
