@@ -34,6 +34,7 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
   const multiUntilRef = useRef(0);
   const comboRef = useRef(0);
   const lastFusionAtRef = useRef(0);
+  const levelFlashUntilRef = useRef(0);
 
   useEffect(() => setBest(readBestScore("color-cascade-fusion")), []);
   useEffect(() => {
@@ -46,7 +47,8 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
   const spawnOrb = useCallback(() => {
     const col = Math.floor(Math.random() * COLORS.length);
     let power: Power = "none";
-    if (levelRef.current >= 2 && Math.random() < 0.09) {
+    const powerChance = Math.min(0.18, 0.06 + levelRef.current * 0.015);
+    if (levelRef.current >= 2 && Math.random() < powerChance) {
       const powers: Power[] = ["bomb", "freeze", "multi"];
       power = powers[Math.floor(Math.random() * powers.length)];
     }
@@ -54,7 +56,7 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
       id: nextId.current++,
       x: 30 + Math.random() * (W - 60),
       y: -ORB_R * 2,
-      vy: 1.2 + levelRef.current * 0.15 + Math.random() * 0.5,
+      vy: 1.1 + levelRef.current * 0.18 + Math.random() * 0.6,
       color: COLORS[col],
       size: 1,
       fused: false,
@@ -71,6 +73,7 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
     multiUntilRef.current = 0;
     comboRef.current = 0;
     lastFusionAtRef.current = 0;
+    levelFlashUntilRef.current = 0;
     setScore(0);
     setLevel(1);
     setGameOver(false);
@@ -92,7 +95,7 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
         const frozen = freezeUntilRef.current > now;
         const timeScale = frozen ? 0.35 : 1;
         spawnAcc += 16 * timeScale;
-        if (spawnAcc > Math.max(400, 900 - levelRef.current * 40)) {
+        if (spawnAcc > Math.max(320, 850 - levelRef.current * 45)) {
           spawnAcc = 0;
           spawnOrb();
         }
@@ -115,7 +118,6 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
           p.life -= 1;
           return p.life > 0;
         });
-        // Combo timeout
         if (comboRef.current > 0 && now - lastFusionAtRef.current > COMBO_WINDOW_MS) {
           comboRef.current = 0;
           setCombo(0);
@@ -132,9 +134,15 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
       if (ctx) {
         ctx.fillStyle = "#0f0f1a";
         ctx.fillRect(0, 0, W, H);
-        const frozen = freezeUntilRef.current > performance.now();
+        const now = performance.now();
+        const frozen = freezeUntilRef.current > now;
         if (frozen) {
           ctx.fillStyle = "rgba(103,232,249,0.12)";
+          ctx.fillRect(0, 0, W, H);
+        }
+        if (levelFlashUntilRef.current > now) {
+          const t = (levelFlashUntilRef.current - now) / 900;
+          ctx.fillStyle = `rgba(34,211,238,${0.22 * t})`;
           ctx.fillRect(0, 0, W, H);
         }
         for (const p of particlesRef.current) {
@@ -171,7 +179,6 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
             ctx.fillText(label, o.x, o.y);
           }
         }
-        // Floating score popups
         for (const p of popupsRef.current) {
           ctx.globalAlpha = Math.min(1, p.life / 20);
           ctx.fillStyle = p.color;
@@ -180,7 +187,6 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
           ctx.fillText(p.text, p.x, p.y);
         }
         ctx.globalAlpha = 1;
-        // Combo badge
         if (comboRef.current >= 2) {
           const cx = W - 52;
           const cy = 36;
@@ -230,7 +236,6 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
     if (group.size < 2) return;
 
     const now = performance.now();
-    // Combo: within window → increment, else reset to 1
     if (now - lastFusionAtRef.current <= COMBO_WINDOW_MS && comboRef.current > 0) {
       comboRef.current += 1;
     } else {
@@ -238,7 +243,7 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
     }
     lastFusionAtRef.current = now;
     setCombo(comboRef.current);
-    const comboMul = Math.min(5, 1 + (comboRef.current - 1) * 0.5); // 1, 1.5, 2, 2.5, 3… cap 5
+    const comboMul = Math.min(5, 1 + (comboRef.current - 1) * 0.5);
 
     const fusedSize = Math.min(3, 1 + Math.log2(group.size));
     const avgX = [...group].reduce((s, o) => s + o.x, 0) / group.size;
@@ -246,6 +251,7 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
     const hasBomb = [...group].some((o) => o.power === "bomb");
     const hasFreeze = [...group].some((o) => o.power === "freeze");
     const hasMulti = [...group].some((o) => o.power === "multi");
+    const isMega = group.size >= 4;
     orbsRef.current = orbsRef.current.filter((o) => !group.has(o));
     if (hasBomb) {
       const toClear = orbsRef.current.filter((o) => o.color === hit.color && Math.hypot(o.x - avgX, o.y - avgY) < 120);
@@ -277,30 +283,49 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
 
     let pts = Math.round(group.size * 15 * levelRef.current * comboMul);
     if (multiUntilRef.current > performance.now()) pts *= 2;
+    if (isMega) pts = Math.round(pts * 1.6);
 
-    const popupColor = comboRef.current >= 3 ? "#fbbf24" : hit.color;
+    const popupColor = isMega ? "#22d3ee" : comboRef.current >= 3 ? "#fbbf24" : hit.color;
     const popupText =
-      comboRef.current >= 2
+      isMega
+        ? `MEGA +${pts}`
+        : comboRef.current >= 2
         ? `+${pts} x${comboRef.current}`
         : `+${pts}`;
-    popupsRef.current.push({ x: avgX, y: avgY - 10, text: popupText, life: 50, color: popupColor });
+    popupsRef.current.push({ x: avgX, y: avgY - 10, text: popupText, life: isMega ? 70 : 50, color: popupColor });
 
     setScore((s) => {
       const next = s + pts;
+      const prevLevel = levelRef.current;
+      const newLevel = Math.floor(next / 220) + 1;
+      if (newLevel > prevLevel) {
+        setLevel(newLevel);
+        levelRef.current = newLevel;
+        levelFlashUntilRef.current = performance.now() + 900;
+        freezeUntilRef.current = Math.max(freezeUntilRef.current, performance.now() + 1800);
+        for (let i = 0; i < 24; i++)
+          particlesRef.current.push({
+            x: W / 2,
+            y: H / 2,
+            vx: (Math.random() - 0.5) * 10,
+            vy: (Math.random() - 0.5) * 10,
+            life: 40,
+            color: "#22d3ee",
+          });
+      }
       setBest((b) => writeBestScore("color-cascade-fusion", Math.max(b, next)));
       return next;
     });
-    const burst = group.size * 6 + (comboRef.current >= 3 ? 12 : 0);
+    const burst = group.size * 6 + (comboRef.current >= 3 ? 12 : 0) + (isMega ? 20 : 0);
     for (let i = 0; i < burst; i++)
       particlesRef.current.push({
         x: avgX,
         y: avgY,
-        vx: (Math.random() - 0.5) * 6,
-        vy: (Math.random() - 0.5) * 6 - 2,
+        vx: (Math.random() - 0.5) * (isMega ? 9 : 6),
+        vy: (Math.random() - 0.5) * (isMega ? 9 : 6) - 2,
         life: 30 + Math.random() * 20,
-        color: hit.color,
+        color: isMega ? "#22d3ee" : hit.color,
       });
-    if (scoreRef.current + pts > levelRef.current * 200) setLevel((l) => l + 1);
   };
 
   const sharePng = () => {
@@ -364,8 +389,8 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
       </div>
       <p className="max-w-sm text-center text-xs text-muted-foreground">
         {es
-          ? "Haz clic en orbes del mismo color adyacentes para fusionarlos. Encaden\u00e1 fusiones r\u00e1pidas para subir el combo (x1.5…x5). Orbes especiales (B bomba, F congelar, \u00d7 multi) desde el nivel 2. \u00a1No dejes que se amontonen!"
-          : "Click adjacent matching-color orbs to fuse them. Chain fusions quickly to raise combo (x1.5…x5). Special orbs (B bomb, F freeze, \u00d7 multi) from level 2. Don\u2019t let them pile up!"}
+          ? "Haz clic en orbes del mismo color adyacentes para fusionarlos. Encaden\u00e1 fusiones r\u00e1pidas para subir el combo (x1.5\u2026x5). 4+ orbes = MEGA (bonus + anillo). Subir de nivel da flash cian y breve ralentizaci\u00f3n. Orbes especiales desde nivel 2. \u00a1No dejes que se amontonen!"
+          : "Click adjacent matching-color orbs to fuse them. Chain fusions quickly to raise combo (x1.5\u2026x5). 4+ orbs = MEGA (bonus + ring). Level-up gives cyan flash and brief slowdown. Special orbs from level 2. Don\u2019t let them pile up!"}
       </p>
     </div>
   );
