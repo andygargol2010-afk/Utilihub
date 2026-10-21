@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-21 | matematicas | calculadora-teorema-pitagoras | PythagoreanCalculatorTool
+- 2026-10-21 | conversiones | conversor-velocidad | SpeedConverterTool
 - 2026-10-21 | matematicas | calculadora-factorial | FactorialCalculatorTool
 - 2026-10-21 | hogar | calculadora-consumo-agua | WaterConsumptionCalculatorTool
 - 2026-10-21 | productividad | calculadora-porcentaje-completado | PercentageCompleteCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-21 | finanzas | calculadora-cambio-porcentaje | PercentageChangeCalculatorTool
 - 2026-10-20 | educacion | calculadora-media-aritmetica | ArithmeticMeanCalculatorTool
 - 2026-10-20 | matematicas | calculadora-area-hexagono | HexagonAreaCalculatorTool
-- 2026-10-20 | salud | calculadora-frecuencia-cardiaca-maxima | MaxHeartRateCalculatorTool
-- 2026-10-20 | matematicas | calculadora-area-elipse | EllipseAreaCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -45,9 +45,9 @@ hogar/cocina: recent (ratio-cafe, consumo-agua)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas)
 productividad: recent (tiempo-lectura, porcentaje-completado)
-matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial)
+matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras)
 diseno: recent (contraste-color)
-conversiones: recent (peso)
+conversiones: recent (peso, velocidad)
 salud: recent (frecuencia-cardiaca-maxima)
 educacion: recent (media-aritmetica)
 ```
@@ -63,6 +63,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-21 PRODUCT (roll 15): shipped 2 (calculadora-teorema-pitagoras matematicas + conversor-velocidad conversiones). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 12): shipped 2 (calculadora-factorial matematicas + calculadora-consumo-agua hogar). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 13): shipped 2 (calculadora-presupuesto-viaje viajes + calculadora-porcentaje-completado productividad). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 10): shipped 2 (calculadora-cambio-porcentaje finanzas + calculadora-energia-potencial ciencia). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
@@ -76,7 +77,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-factorial, calculadora-consumo-agua
+last_slugs: calculadora-teorema-pitagoras, conversor-velocidad
 last_deploy: pending verification
 ```
 

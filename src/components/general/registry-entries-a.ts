@@ -74,4 +74,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-porcentaje-completado", name: "PercentageCompleteCalculatorTool", path: "./PercentageCompleteCalculatorTool", export: "PercentageCompleteCalculatorTool" },
   { slug: "calculadora-factorial", name: "FactorialCalculatorTool", path: "./FactorialCalculatorTool", export: "FactorialCalculatorTool" },
   { slug: "calculadora-consumo-agua", name: "WaterConsumptionCalculatorTool", path: "./WaterConsumptionCalculatorTool", export: "WaterConsumptionCalculatorTool" },
+  { slug: "calculadora-teorema-pitagoras", name: "PythagoreanCalculatorTool", path: "./PythagoreanCalculatorTool", export: "PythagoreanCalculatorTool" },
+  { slug: "conversor-velocidad", name: "SpeedConverterTool", path: "./SpeedConverterTool", export: "SpeedConverterTool" },
 ] as const;

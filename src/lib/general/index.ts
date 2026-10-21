@@ -56,6 +56,8 @@ import { TRAVEL_BUDGET_CALCULATOR_TOOLS } from "./travel-budget-calculator-tool"
 import { PERCENTAGE_COMPLETE_CALCULATOR_TOOLS } from "./percentage-complete-calculator-tool";
 import { FACTORIAL_CALCULATOR_TOOLS } from "./factorial-calculator-tool";
 import { WATER_CONSUMPTION_CALCULATOR_TOOLS } from "./water-consumption-calculator-tool";
+import { PYTHAGOREAN_CALCULATOR_TOOLS } from "./pythagorean-calculator-tool";
+import { SPEED_CONVERTER_TOOLS } from "./speed-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -116,4 +118,6 @@ export const GENERAL_TOOLS = [
   ...PERCENTAGE_COMPLETE_CALCULATOR_TOOLS,
   ...FACTORIAL_CALCULATOR_TOOLS,
   ...WATER_CONSUMPTION_CALCULATOR_TOOLS,
+  ...PYTHAGOREAN_CALCULATOR_TOOLS,
+  ...SPEED_CONVERTER_TOOLS,
 ];
