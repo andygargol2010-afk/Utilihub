@@ -45,30 +45,32 @@ Reply in **Spanish** at the end of every run (template in tools-builder-ops.md).
 
 ## ANTI-WIPE REGISTRY (immutable — critical)
 
-Protected file: `src/components/general/registry.tsx`
+**New architecture (2026-10-21):** the old monolithic `registry.tsx` was split to stop truncation wipes.
 
-Historical root cause of «Tool not available» / «Herramienta no disponible»: PLACEHOLDER body, stub, truncated write, or missing `pickComponent` branch / lazy import.
+Protected files:
+- `src/components/general/registry.tsx` — **thin** (~2 KB). Almost never edit.
+- `src/components/general/registry-entries-a.ts` + `registry-entries-b.ts` — pure data. **This is what you edit.**
+- `src/components/general/registry-entries.ts` — re-export only.
+- `src/components/general/registry-generics.tsx` — shared category components. Rarely edit.
 
-### Hard rules
+Historical root cause of «Tool not available» / «Herramienta no disponible»: PLACEHOLDER body, stub, truncated write on the old large registry.
 
-A. NEVER write PLACEHOLDER, REPLACE_ME, «minimal registry», incomplete stub, or a few-line fake registry.
-B. BEFORE any edit: read the **full** file and note SHA/size. If the file is short (< ~8 KB) or missing `GENERAL_TOOL_UI` / `GENERAL_TOOL_UI_ES` / `buildLazyRegistry` / `pickComponent` → **RESTORE-ONLY** from last known-good SHA on this branch. Do **not** add new tools in that run.
-C. Surgical edit only:
-   - Per new tool: **+1** lazy import + **+1** branch in `pickComponent` (and matching map entry if the pattern requires it).
-   - Two tools in one run → exactly two imports + two branches.
-   - Avoid full-file rewrite unless the payload is the complete verified source.
-D. AFTER `create_or_update_file` (or push): verify the body still contains:
-   - `export const GENERAL_TOOL_UI` and `GENERAL_TOOL_UI_ES`
-   - `function pickComponent` and `function buildLazyRegistry`
-   - no PLACEHOLDER / stub language
-   - size on the order of the previous full file
-   If verification fails → restore good SHA immediately and report in Spanish. Do not leave production-preview broken.
-E. If an import points at a missing component: remove only that import/branch or map the slug to an existing generic (`MathTool` / `ConfiguredTool`). Never “fix” by deleting half the registry.
-F. Forbidden commit messages implying a wipe: «minimal registry», «stub registry», «temp registry».
+### Hard rules (updated)
+
+A. NEVER write PLACEHOLDER, REPLACE_ME, «minimal registry», incomplete stub, or a few-line fake registry into any of the files above.
+B. To add a tool: append **exactly one object** to `registry-entries-a.ts` or `registry-entries-b.ts`:
+   ```ts
+   { slug: "mi-nueva-tool", name: "MiNuevaTool", path: "./MiNuevaTool", export: "MiNuevaTool" },
+   ```
+   Prefer the smaller of the two parts. Never rewrite the whole array.
+C. Do **not** edit `registry.tsx` unless you are fixing a proven bug in the thin loader. Size must stay under ~3 KB.
+D. BEFORE any registry-related edit: read the target file and note size. If `registry.tsx` is < 800 bytes or contains PLACEHOLDER → stop and report; use the GitHub Action `restore-registry` or restore from a known-good commit. Do not add tools in that run.
+E. AFTER push: verify `registry.tsx` still exports `GENERAL_TOOL_UI` / `GENERAL_TOOL_UI_ES` and is not PLACEHOLDER.
+F. Forbidden commit messages: «minimal registry», «stub registry», «temp registry».
 
 ### Why this exists
 
-A single truncated registry write wipes the entire catalog UI for every tool. Volume (2 tools/run) never justifies risking the registry. Prefer one safe tool over two if the second write would be a full rewrite under truncation risk.
+A single truncated write on a large registry wiped the entire catalog UI. Splitting into pure-data entry files + a thin stable loader makes accidental wipes much harder. Prefer one safe tool over two if the second write risks truncation.
 
 ---
 
@@ -87,16 +89,16 @@ Root causes seen in production-preview:
 
 A. **Slug uniqueness (repo-wide):** grep the candidate slug(s) across `src/` (catalog data, route-slugs, registry, i18n). **Zero** prior hits for a new slug. If a richer dedicated tool already owns the slug, do **not** also add a thin entry in a generic converter/list file — keep one owner only.
 B. **One owner per slug:** never ship “generic list entry + dedicated tool” for the same slug. Prefer the dedicated tool; remove or never add the duplicate list entry.
-C. **Registry ↔ files:** every new `import()` / `pickComponent` branch targets a file that exists **in the same commit** and exports what the registry expects.
-D. **No dangling paths:** if you remove or rename a tool, clean registry import + branch + catalog data + route-slugs in that same commit.
-E. **Same-commit integrity:** data + component + registry (+ i18n) land together (see DEPLOY BUDGET). A half-landed tool is a 500 risk.
+C. **Registry ↔ files:** every new entry in `registry-entries-*.ts` points at a component file that exists **in the same commit** and exports the expected name.
+D. **No dangling paths:** if you remove or rename a tool, clean the corresponding entry in `registry-entries-a/b.ts` + catalog data + route-slugs in that same commit.
+E. **Same-commit integrity:** data + component + registry entry (+ i18n) land together (see DEPLOY BUDGET). A half-landed tool is a 500 risk.
 F. **Verify:** after deploy READY, open EN and ES routes for each new slug — must not 500 and must not show «Tool not available».
 
 ### On FIX-BUILD when you see HTTPError / 500
 
 1. Read Vercel runtime/build logs for the failing module or slug.
 2. Search duplicate slug occurrences and missing imports first — do not add features.
-3. Minimal fix: dedupe slug, restore missing file, or remove dangling registry branch.
+3. Minimal fix: dedupe slug, restore missing file, or remove dangling registry entry.
 4. Re-check both EN and ES routes after fix.
 
 ---
@@ -119,6 +121,7 @@ Ship tools that do **not** regress LCP / INP / CLS / JS weight:
 - EN + ES for every user-visible string.
 - SEO title with query intent; FAQ only if useful (0–3).
 - After ship: verify EN and ES routes do not show «Tool not available» or HTTP 500.
+- New tools: append one line to `registry-entries-a.ts` or `registry-entries-b.ts` only.
 
 ---
 
@@ -140,8 +143,8 @@ Additionally, before closing a PRODUCT run, **review SEO locales**:
 
 ## DEPLOY BUDGET (Hobby ~100 deploys/day — mandatory)
 
-1. **Exactly one git commit per PRODUCT run.** Bundle both tools' data + components + registry + i18n in a single commit (`feat(cat): add <slug-a> + <slug-b>`).
-2. **Forbidden:** sequential pushes (data then component then register) — each push burns a Vercel deploy.
+1. **Exactly one git commit per PRODUCT run.** Bundle both tools' data + components + registry entry + i18n in a single commit (`feat(cat): add <slug-a> + <slug-b>`).
+2. **Forbidden:** sequential pushes (data then component then register) — each push triggers a Vercel deploy and burns Hobby daily quota.
 3. Prefer `push_files` / multi-file one commit over multiple `create_or_update_file` auto-commits.
 4. META / pure `.agent/*` notes: **do not push** if nothing product-relevant changed.
 5. Ops file (tools-builder-ops.md) must end with `<!-- end:tools-builder-ops.md -->`. If truncated or wiped, re-fetch or stop; do not invent PRODUCT steps.
