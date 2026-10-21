@@ -50,6 +50,8 @@ import { MEDIAN_CALCULATOR_TOOLS } from "./median-calculator-tool";
 import { LENGTH_CONVERTER_TOOLS } from "./length-converter-tool";
 import { PERCENTAGE_CHANGE_CALCULATOR_TOOLS } from "./percentage-change-calculator-tool";
 import { POTENTIAL_ENERGY_CALCULATOR_TOOLS } from "./potential-energy-calculator-tool";
+import { DAYS_UNTIL_DATE_CALCULATOR_TOOLS } from "./days-until-date-calculator-tool";
+import { UNIQUE_WORDS_COUNTER_TOOLS } from "./unique-words-counter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -104,4 +106,6 @@ export const GENERAL_TOOLS = [
   ...LENGTH_CONVERTER_TOOLS,
   ...PERCENTAGE_CHANGE_CALCULATOR_TOOLS,
   ...POTENTIAL_ENERGY_CALCULATOR_TOOLS,
+  ...DAYS_UNTIL_DATE_CALCULATOR_TOOLS,
+  ...UNIQUE_WORDS_COUNTER_TOOLS,
 ];
