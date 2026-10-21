@@ -68,11 +68,11 @@ path_es: /es/solar-system-scale-explorer
 path_seo: n/a
 domain: search-magnets
 runs_total: 7
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE 2026-10-20 search-magnets. EXECUTE 2026-10-21: elevated SolarSystemScaleExplorer — Kepler-ish orbital anim, drag planets + pan bg, focus auto-pan, trail fade + speed, Earth moon, Saturn ring, glow, share URL/PNG, reset. next-step registered. EN+ES routes + educational copy. Adsterra kept. Commit bf567b3. EXECUTE 2026-10-21 run 2/7: added dynamic educational info panel (diameter vs Earth, AU, orbital period, bilingual fact) on focus + subtle asteroid belt hint between Mars/Jupiter. Adsterra kept.
+notes: IDEATE 2026-10-20 search-magnets. EXECUTE 2026-10-21: elevated SolarSystemScaleExplorer — Kepler-ish orbital anim, drag planets + pan bg, focus auto-pan, trail fade + speed, Earth moon, Saturn ring, glow, share URL/PNG, reset. next-step registered. EN+ES routes + educational copy. Adsterra kept. Commit bf567b3. EXECUTE 2026-10-21 run 2/7: added dynamic educational info panel (diameter vs Earth, AU, orbital period, bilingual fact) on focus + subtle asteroid belt hint between Mars/Jupiter. Adsterra kept. EXECUTE 2026-10-21 run 3/7: Galilean moons (Io/Europa/Ganymede/Callisto) + Titan/Rhea, subtle starfield, scattered asteroid belt points, diameter visual bar + mass ratio in focus panel. Commit 70935aa. Adsterra kept.
 adsense-prep_runs: 3
 ```
 
