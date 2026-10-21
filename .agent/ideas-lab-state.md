@@ -68,11 +68,11 @@ path_es: /es/daily-progress-constellation
 path_seo: n/a
 domain: retention-loops
 runs_total: 5
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: both
 next_step_required: yes
-notes: Roll U=0.102 → GROWTH; U_g=0.941 → FLEX → retention-loops (selected weight 2→1; other FLEX +1). Avoided recent return-streak-board. Goal: visual constellation progress that feels like building something personal across visits. Run 1: created component (canvas stars + lines + localStorage daily light), EN+ES routes with next-step before Adsterra, registered in next-step catalog. Run 2: twinkle animation + gradient sky + PNG snapshot download + last-visit label; share text+PNG.
+notes: Roll U=0.102 → GROWTH; U_g=0.941 → FLEX → retention-loops (selected weight 2→1; other FLEX +1). Avoided recent return-streak-board. Goal: visual constellation progress that feels like building something personal across visits. Run 1: created component (canvas stars + lines + localStorage daily light), EN+ES routes with next-step before Adsterra, registered in next-step catalog. Run 2: twinkle animation + gradient sky + PNG snapshot download + last-visit label; share text+PNG. Run 3: per-star litAt dates + mouse hover tooltips showing date/# + stronger pulse/glow on newest star.
 adsense-prep_runs: 3
 ```
 

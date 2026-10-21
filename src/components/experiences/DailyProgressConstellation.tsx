@@ -5,7 +5,7 @@ import { PLAYGROUNDS, playgroundPath, playgroundName, type PlaygroundLocale } fr
 
 const STORAGE_KEY = "utilihub-daily-constellation-v1";
 
-type Star = { x: number; y: number; lit: boolean; id: number; size?: number };
+type Star = { x: number; y: number; lit: boolean; id: number; size?: number; litAt?: number };
 type ConstellationData = {
   stars: Star[];
   lastVisit: number;
@@ -40,7 +40,9 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [data, setData] = useState<ConstellationData>({ stars: [], lastVisit: 0, totalDays: 0 });
   const [shareMsg, setShareMsg] = useState("");
+  const [hover, setHover] = useState<{ star: Star; x: number; y: number } | null>(null);
   const animRef = useRef<number>(0);
+  const mouseRef = useRef<{ x: number; y: number } | null>(null);
   const es = locale === "es";
 
   useEffect(() => {
@@ -53,6 +55,7 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
         lit: true,
         id: prev.stars.length,
         size: 2.5 + Math.random() * 2.5,
+        litAt: now,
       };
       prev = {
         stars: [...prev.stars, newStar].slice(-48),
@@ -70,7 +73,6 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let t0 = performance.now();
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const rect = canvas.getBoundingClientRect();
@@ -115,29 +117,32 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
 
       // stars with twinkle
       const phase = time * 0.002;
+      const newestId = data.stars.length ? data.stars[data.stars.length - 1].id : -1;
       data.stars.forEach((s, idx) => {
         const sx = s.x * w;
         const sy = s.y * h;
         const base = s.size ?? 3;
+        const isNewest = s.id === newestId;
         const twinkle = s.lit ? 0.75 + 0.25 * Math.sin(phase + idx * 0.7) : 0.4;
-        const r = base * twinkle;
+        const pulse = isNewest ? 1 + 0.35 * Math.sin(phase * 1.6) : 1;
+        const r = base * twinkle * pulse;
         ctx.beginPath();
         ctx.arc(sx, sy, r, 0, Math.PI * 2);
         ctx.fillStyle = s.lit ? "#67e8f9" : "#94a3b8";
         ctx.fill();
         if (s.lit) {
           ctx.shadowColor = "#22d3ee";
-          ctx.shadowBlur = 12 * twinkle;
+          ctx.shadowBlur = (isNewest ? 18 : 12) * twinkle;
           ctx.fill();
           ctx.shadowBlur = 0;
           // cross flare
-          ctx.strokeStyle = `rgba(103,232,249,${0.4 * twinkle})`;
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = `rgba(103,232,249,${(isNewest ? 0.7 : 0.4) * twinkle})`;
+          ctx.lineWidth = isNewest ? 1.5 : 1;
           ctx.beginPath();
-          ctx.moveTo(sx - r * 2.2, sy);
-          ctx.lineTo(sx + r * 2.2, sy);
-          ctx.moveTo(sx, sy - r * 2.2);
-          ctx.lineTo(sx, sy + r * 2.2);
+          ctx.moveTo(sx - r * 2.4, sy);
+          ctx.lineTo(sx + r * 2.4, sy);
+          ctx.moveTo(sx, sy - r * 2.4);
+          ctx.lineTo(sx, sy + r * 2.4);
           ctx.stroke();
         }
       });
@@ -148,6 +153,32 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
       animRef.current = requestAnimationFrame(loop);
     };
 
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      mouseRef.current = { x: mx, y: my };
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      let found: Star | null = null;
+      for (let i = data.stars.length - 1; i >= 0; i--) {
+        const s = data.stars[i];
+        const sx = s.x * w;
+        const sy = s.y * h;
+        const dist = Math.hypot(mx - sx, my - sy);
+        if (dist < (s.size ?? 3) * 4 + 8) {
+          found = s;
+          break;
+        }
+      }
+      setHover(found ? { star: found, x: mx, y: my } : null);
+    };
+
+    const onMouseLeave = () => {
+      mouseRef.current = null;
+      setHover(null);
+    };
+
     resize();
     animRef.current = requestAnimationFrame(loop);
     const onResize = () => {
@@ -155,9 +186,13 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
       draw(performance.now());
     };
     window.addEventListener("resize", onResize);
+    canvas.addEventListener("mousemove", onMouseMove);
+    canvas.addEventListener("mouseleave", onMouseLeave);
     return () => {
       cancelAnimationFrame(animRef.current);
       window.removeEventListener("resize", onResize);
+      canvas.removeEventListener("mousemove", onMouseMove);
+      canvas.removeEventListener("mouseleave", onMouseLeave);
     };
   }, [data]);
 
@@ -200,6 +235,10 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
     ? new Date(data.lastVisit).toLocaleDateString(es ? "es" : "en", { month: "short", day: "numeric" })
     : "—";
 
+  const hoverDate = hover?.star.litAt
+    ? new Date(hover.star.litAt).toLocaleDateString(es ? "es" : "en", { year: "numeric", month: "short", day: "numeric" })
+    : es ? "fecha no guardada" : "date not stored";
+
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-6">
@@ -235,13 +274,25 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
           {shareMsg && <span className="self-center text-[11px] text-cyan-500">{shareMsg}</span>}
         </div>
       </div>
-      <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/60 bg-black">
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/60 bg-black">
         <canvas ref={canvasRef} className="h-full w-full" />
+        {hover && (
+          <div
+            className="pointer-events-none absolute z-10 rounded-md border border-cyan-500/40 bg-black/80 px-2 py-1 text-[11px] font-medium text-cyan-100 shadow-lg"
+            style={{
+              left: Math.min(hover.x + 10, (canvasRef.current?.clientWidth ?? 200) - 120),
+              top: Math.max(hover.y - 28, 4),
+            }}
+          >
+            {es ? "Encendida" : "Lit"}: {hoverDate}
+            <span className="ml-1 opacity-70">#{hover.star.id + 1}</span>
+          </div>
+        )}
       </div>
       <p className="text-xs text-muted-foreground">
         {es
-          ? "Las estrellas se guardan localmente. Volvé mañana para encender otra. Las estrellas parpadean suavemente."
-          : "Stars are stored locally. Return tomorrow to light another. Stars gently twinkle."}
+          ? "Las estrellas se guardan localmente. Pasá el mouse sobre una estrella para ver su fecha. Volvé mañana para encender otra."
+          : "Stars are stored locally. Hover a star to see its date. Return tomorrow to light another."}
       </p>
     </div>
   );
