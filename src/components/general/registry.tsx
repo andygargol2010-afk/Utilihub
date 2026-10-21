@@ -13,9 +13,7 @@ import type { GeneralTool } from "@/lib/general/types";
  *   - kind image/pdf → MediaTool (file upload, canvas, PDF)
  *   - kind design/color → DesignTool
  *   - tool.config.operation → ConfiguredTool
- *   - else → GeneralTool (generic calculator / text)
- *
- * Individual specialized components can be added later via static lazy map.
+ *   - else → category tool or GeneralTool
  */
 
 const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((t) => [t.slug, t]));
@@ -43,9 +41,6 @@ const TextToolUi = lazy(() =>
 const MathToolUi = lazy(() =>
   import("./MathTool").then((m) => ({ default: m.MathTool })),
 );
-const HealthToolUi = lazy(() =>
-  import("./HealthTool").then((m) => ({ default: m.HealthTool })),
-);
 const FinanceToolUi = lazy(() =>
   import("./FinanceTool").then((m) => ({ default: m.FinanceTool })),
 );
@@ -58,17 +53,8 @@ const TimeToolUi = lazy(() =>
 const EducationToolUi = lazy(() =>
   import("./EducationTool").then((m) => ({ default: m.EducationTool })),
 );
-const GeometryToolUi = lazy(() =>
-  import("./GeometryTool").then((m) => ({ default: m.GeometryTool })),
-);
-const CookingToolUi = lazy(() =>
-  import("./CookingTool").then((m) => ({ default: m.CookingTool })),
-);
 const SecurityToolUi = lazy(() =>
   import("./SecurityTool").then((m) => ({ default: m.SecurityTool })),
-);
-const DeveloperToolUi = lazy(() =>
-  import("./DeveloperTool").then((m) => ({ default: m.DeveloperTool })),
 );
 
 function pickComponent(tool: GeneralTool): ToolComp {
@@ -100,19 +86,15 @@ function pickComponent(tool: GeneralTool): ToolComp {
     return ConfiguredToolUi;
   }
 
-  // Kind-based category UIs
+  // Kind-based category UIs (only components that exist in repo)
   if (kind === "converter" || kind === "conversion" || kind === "unit") return ConverterToolUi;
   if (kind === "text" || kind === "code" || kind === "encode") return TextToolUi;
   if (kind === "math" || kind === "stats" || kind === "calculator") return MathToolUi;
-  if (kind === "health" || kind === "fitness") return HealthToolUi;
   if (kind === "finance" || kind === "money") return FinanceToolUi;
   if (kind === "science" || kind === "physics") return ScienceToolUi;
   if (kind === "time" || kind === "date") return TimeToolUi;
   if (kind === "education" || kind === "school") return EducationToolUi;
-  if (kind === "geometry") return GeometryToolUi;
-  if (kind === "cooking" || kind === "food") return CookingToolUi;
   if (kind === "security" || kind === "password") return SecurityToolUi;
-  if (kind === "developer" || kind === "dev") return DeveloperToolUi;
 
   return GeneralToolUi;
 }
