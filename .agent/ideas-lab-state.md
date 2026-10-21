@@ -27,13 +27,13 @@ weights_core:
 weights_growth:
   traffic-bets: 3
   search-magnets: 1
-  growth-surfaces: 6
-  share-hooks: 6
-  retention-loops: 2
-  conversion-paths: 6
-  traffic-diagnosis: 6
-  adsense-prep: 4
-  seo-locales: 3   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  growth-surfaces: 7
+  share-hooks: 7
+  retention-loops: 1
+  conversion-paths: 7
+  traffic-diagnosis: 7
+  adsense-prep: 5
+  seo-locales: 4   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 3
 ```
@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive Daily Progress Constellation — a return-visit canvas where users connect stars representing completed playground sessions or daily visits. Each return lights a new star, builds constellations over time, and unlocks shareable snapshots. Encourages coming back without a simple streak counter. EN+ES, next-step before Adsterra.
+id: daily-progress-constellation
+path_en: /daily-progress-constellation
+path_es: /es/daily-progress-constellation
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: done
-share: n/a
-next_step_required: no
-notes: Closed solar-system-scale-explorer after EXECUTE 7/7. Added light-travel times from Sun, live px/AU scale readout, dashed focus ring. All previous features retained. Adsterra kept. next-step present. EN+ES.
+domain: retention-loops
+runs_total: 5
+runs_remaining: 5
+acceptance: pending
+share: both
+next_step_required: yes
+notes: Roll U=0.102 → GROWTH; U_g=0.941 → FLEX → retention-loops (selected weight 2→1; other FLEX +1). Avoided recent return-streak-board. Goal: visual constellation progress that feels like building something personal across visits.
 adsense-prep_runs: 3
 ```
 
