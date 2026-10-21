@@ -93,7 +93,7 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     blurbEs: "Una marca visual compartible a partir de tu texto.",
     pathEn: "/visual-signature",
     pathEs: "/es/firma-visual",
-    emoji: "🖋️",
+    emoji: "🪻",
   },
   {
     id: "particles",
@@ -236,6 +236,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     emoji: "✨",
   },
   {
+    id: "prism-trail-composer",
+    nameEn: "Prism Trail Composer",
+    nameEs: "Compositor de Estela Prisma",
+    blurbEn: "Freehand paths that split into rainbow refraction beams with live bloom and particle afterglow.",
+    blurbEs: "Trayectorias a mano alzada que se dividen en haces de refracción arcoíris con bloom en vivo y resplandor de partículas.",
+    pathEn: "/studio/prism-trail-composer",
+    pathEs: "/es/studio/compositor-estela-prisma",
+    emoji: "🌈",
+  },
+  {
     id: "river-light",
     nameEn: "River of Light Journey",
     nameEs: "Río de Luz · Viaje",
@@ -311,6 +321,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "neon-signature-composer": ["neon-sign", "glow-trail", "kaleidoscope-mandala", "particle-signature"],
   "pulse-catch": ["firework", "particles", "gravity-particles", "neon-sign"],
   "glow-trail": ["gravity-ribbon-canvas", "kaleidoscope-mandala", "neon-sign", "particle-signature"],
+  "prism-trail-composer": ["glow-trail", "neon-signature-composer", "kaleidoscope-mandala", "particle-signature"],
   "river-light": ["glow-trail", "aurora", "neon-sign", "particles"],
   "waypoint-river-composer": ["river-light", "glow-trail", "aurora", "neon-signature-composer"],
   "solar-system-scale-explorer": ["constellation-studio", "aurora", "gravity-particles", "particle-magnet-lab"],
