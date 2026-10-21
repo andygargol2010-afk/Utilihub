@@ -9,11 +9,13 @@ import type { GeneralTool } from "@/lib/general/types";
  *   GENERAL_TOOL_UI[slug] must be a zero-arg function () => ReactNode
  *   that already closes over the tool + locale.
  *
- * Routing:
- *   - kind image/pdf → MediaTool (file upload, canvas, PDF)
- *   - kind design/color → DesignTool
- *   - tool.config.operation → ConfiguredTool
- *   - else → category tool or GeneralTool
+ * Routing priority:
+ *   1. kind image/pdf/media → MediaTool
+ *   2. kind document → DocumentTool (must beat config.operation)
+ *   3. design/color (kind or slug) → DesignTool
+ *   4. config.operation (numeric) → ConfiguredTool
+ *   5. other kinds → category tools
+ *   6. else → GeneralTool
  */
 
 const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((t) => [t.slug, t]));
@@ -31,6 +33,9 @@ const MediaToolUi = lazy(() =>
 );
 const DesignToolUi = lazy(() =>
   import("./DesignTool").then((m) => ({ default: m.DesignTool })),
+);
+const DocumentToolUi = lazy(() =>
+  import("./DocumentTool").then((m) => ({ default: m.DocumentTool })),
 );
 const ConverterToolUi = lazy(() =>
   import("./ConverterTool").then((m) => ({ default: m.ConverterTool })),
@@ -57,42 +62,90 @@ const SecurityToolUi = lazy(() =>
   import("./SecurityTool").then((m) => ({ default: m.SecurityTool })),
 );
 
+const IMAGE_SLUG_HINTS = [
+  "imagen",
+  "image",
+  "png",
+  "jpg",
+  "jpeg",
+  "webp",
+  "favicon",
+  "comprimir",
+  "redimensionar",
+  "recortar",
+  "rotar-imagen",
+  "escala-grises",
+  "color-dominante",
+];
+const PDF_SLUG_HINTS = ["pdf", "unir-pdf", "dividir-pdf", "reordenar-pdf"];
+const DESIGN_SLUG_HINTS = [
+  "color",
+  "contraste",
+  "paleta",
+  "gradiente",
+  "sombra",
+  "border-radius",
+  "rgb",
+  "hsl",
+  "hex",
+  "css-",
+  "mezclador",
+  "selector-color",
+  "tipografica",
+  "espaciado",
+  "clamp",
+  "filter",
+  "grid-generator",
+];
+
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
-  const slug = tool.slug || "";
+  const slug = (tool.slug || "").toLowerCase();
 
-  // File / media tools (PNG→JPG, compress, PDF, etc.)
+  // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") {
     return MediaToolUi;
   }
+  if (IMAGE_SLUG_HINTS.some((h) => slug.includes(h)) || PDF_SLUG_HINTS.some((h) => slug.includes(h))) {
+    return MediaToolUi;
+  }
 
-  // Design / color tools
-  if (
-    kind === "design" ||
-    kind === "color" ||
-    slug.includes("color") ||
-    slug.includes("contraste") ||
-    slug.includes("paleta") ||
-    slug.includes("gradiente") ||
-    slug.includes("sombra") ||
-    slug.includes("border-radius") ||
-    slug.startsWith("css-")
-  ) {
+  // 2) Document tools (must run BEFORE config.operation — they also carry operation)
+  if (kind === "document") {
+    return DocumentToolUi;
+  }
+
+  // 3) Design / color tools
+  if (kind === "design" || kind === "color") {
+    return DesignToolUi;
+  }
+  if (DESIGN_SLUG_HINTS.some((h) => slug.includes(h))) {
     return DesignToolUi;
   }
 
-  // Config-driven numeric tools
+  // 4) Config-driven numeric tools only (ConfiguredTool supports math ops, not document ops)
   if (tool.config && typeof tool.config === "object" && "operation" in tool.config) {
+    const op = String((tool.config as { operation?: string }).operation || "");
+    // Document-style operations that slipped through without kind=document
+    if (
+      op === "pdf-metadata" ||
+      op === "text-diff" ||
+      op === "csv-inspector" ||
+      op === "markdown-html" ||
+      op === "file-name-batch"
+    ) {
+      return DocumentToolUi;
+    }
     return ConfiguredToolUi;
   }
 
-  // Kind-based category UIs (only components that exist in repo)
+  // 5) Kind-based category UIs
   if (kind === "converter" || kind === "conversion" || kind === "unit") return ConverterToolUi;
   if (kind === "text" || kind === "code" || kind === "encode") return TextToolUi;
   if (kind === "math" || kind === "stats" || kind === "calculator") return MathToolUi;
   if (kind === "finance" || kind === "money") return FinanceToolUi;
   if (kind === "science" || kind === "physics") return ScienceToolUi;
-  if (kind === "time" || kind === "date") return TimeToolUi;
+  if (kind === "time" || kind === "date" || kind === "timer") return TimeToolUi;
   if (kind === "education" || kind === "school") return EducationToolUi;
   if (kind === "security" || kind === "password") return SecurityToolUi;
 
