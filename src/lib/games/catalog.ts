@@ -114,7 +114,7 @@ export const GAMES: readonly GameDef[] = [
     tag: "arcade",
     emoji: "🟡",
     summaryEn: "Classic maze chase: eat every pellet, dodge ghosts, grab power pellets.",
-    summaryEs: "Laberinto clásico: comé todos los puntos, evitá fantasmas y agarrá power pellets.",
+    summaryEs: "Laberinto clásico: comé todos los puntos, esquivá fantasmas y agarrá las píldoras de poder.",
     hasScore: true,
   },
   {
@@ -125,7 +125,7 @@ export const GAMES: readonly GameDef[] = [
     tag: "arcade",
     emoji: "🧱",
     summaryEn: "Stack tetrominoes, clear lines, chase a high score.",
-    summaryEs: "Apilá tetrominós, limpiá líneas y buscá el high score.",
+    summaryEs: "Apilá tetrominós, limpiá líneas y buscate el récord.",
     hasScore: true,
   },
   {
