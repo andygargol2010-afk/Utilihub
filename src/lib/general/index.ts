@@ -58,6 +58,8 @@ import { FACTORIAL_CALCULATOR_TOOLS } from "./factorial-calculator-tool";
 import { WATER_CONSUMPTION_CALCULATOR_TOOLS } from "./water-consumption-calculator-tool";
 import { PYTHAGOREAN_CALCULATOR_TOOLS } from "./pythagorean-calculator-tool";
 import { SPEED_CONVERTER_TOOLS } from "./speed-converter-tool";
+import { WEIGHTED_MEAN_CALCULATOR_TOOLS } from "./weighted-mean-calculator-tool";
+import { DISCOUNT_PERCENTAGE_CALCULATOR_TOOLS } from "./discount-percentage-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -120,4 +122,6 @@ export const GENERAL_TOOLS = [
   ...WATER_CONSUMPTION_CALCULATOR_TOOLS,
   ...PYTHAGOREAN_CALCULATOR_TOOLS,
   ...SPEED_CONVERTER_TOOLS,
+  ...WEIGHTED_MEAN_CALCULATOR_TOOLS,
+  ...DISCOUNT_PERCENTAGE_CALCULATOR_TOOLS,
 ];
