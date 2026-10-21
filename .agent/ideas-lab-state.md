@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: playgrounds
-last_closed_id: aurora-particle-playground
+last_closed_domain: search-magnets
+last_closed_id: solar-system-scale-explorer
 p_fixed: 0.35
 
 weights_core:
@@ -26,14 +26,14 @@ weights_core:
 
 weights_growth:
   traffic-bets: 3
-  search-magnets: 3
-  growth-surfaces: 5
-  share-hooks: 5
-  retention-loops: 1
-  conversion-paths: 5
-  traffic-diagnosis: 5
-  adsense-prep: 3
-  seo-locales: 2   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  search-magnets: 1
+  growth-surfaces: 6
+  share-hooks: 6
+  retention-loops: 2
+  conversion-paths: 6
+  traffic-diagnosis: 6
+  adsense-prep: 4
+  seo-locales: 3   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 3
 ```
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-21 | search-magnets | solar-system-scale-explorer | Interactive Solar System Scale Explorer complete with light-travel times, live scale, focus ring, presets, moons, Pluto (EN+ES)
 - 2026-10-20 | playgrounds | aurora-particle-playground | Interactive Aurora Particle Playground complete with bloom intensity + share (EN+ES)
 - 2026-10-20 | retention-loops | return-streak-board | Interactive Return Streak Board complete with share (EN+ES)
 - 2026-10-20 | seo-locales | pt | Portuguese (pt-BR) beachhead complete: /pt home + pulse-catch + orbit-defender + snake + pong (1/5 active)
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-19 | journeys | waypoint-river-composer | Interactive Waypoint River Composer (EN+ES)
 - 2026-10-18 | studio-composition | neon-signature-composer | Interactive Neon Signature Composer (EN+ES)
 - 2026-10-18 | kits | home-renovation-kit | Interactive Home Renovation Kit (EN+ES)
-- 2026-10-17 | simulators | boids-flocking-lab | Boids Flocking Lab (EN+ES)
 ```
 
 ---
@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive Solar System Scale Explorer — open Canvas 2D experience where users zoom, pan, and drag planets (and moons) to feel the true relative sizes and distances of the solar system. Planets rendered with accurate scale modes (size-only vs distance-only vs both), orbital trails, and toggleable labels. Original educational copy targeting search intent around "solar system scale", "planet size comparison", "how far is Neptune". Controls for zoom level, focus planet, trail fade, and animation speed. Visual payoff with glowing scale visualization, route-isolated, EN+ES, next-step before Adsterra. Lightweight (no new deps, modest elements on mobile). Creates a shareable educational canvas.
-id: solar-system-scale-explorer
-path_en: /solar-system-scale-explorer
-path_es: /es/solar-system-scale-explorer
+status: closed
+idea: n/a
+id: n/a
+path_en: n/a
+path_es: n/a
 path_seo: n/a
-domain: search-magnets
-runs_total: 7
-runs_remaining: 1
-acceptance: pending
-share: both
-next_step_required: yes
-notes: IDEATE 2026-10-20 search-magnets. EXECUTE 2026-10-21: elevated SolarSystemScaleExplorer — Kepler-ish orbital anim, drag planets + pan bg, focus auto-pan, trail fade + speed, Earth moon, Saturn ring, glow, share URL/PNG, reset. next-step registered. EN+ES routes + educational copy. Adsterra kept. Commit bf567b3. EXECUTE 2026-10-21 run 2/7: added dynamic educational info panel (diameter vs Earth, AU, orbital period, bilingual fact) on focus + subtle asteroid belt hint between Mars/Jupiter. Adsterra kept. EXECUTE 2026-10-21 run 3/7: Galilean moons (Io/Europa/Ganymede/Callisto) + Titan/Rhea, subtle starfield, scattered asteroid belt points, diameter visual bar + mass ratio in focus panel. Commit 70935aa. Adsterra kept. EXECUTE 2026-10-21 run 4/7: optional Pluto (dwarf planet toggle), denser asteroid belt (48 pts), visual size comparison strip of all planets vs Earth, denser starfield (100). Commit 6bb1dd9. Adsterra kept. EXECUTE 2026-10-21 run 5/7: restored full component from placeholder + added live approx AU scale indicator (px/AU at current zoom). Adsterra kept. Commit 13f53a8. EXECUTE 2026-10-21 run 6/7: educational view presets (Inner system / Gas giants / Full view) that set mode+focus+zoom + focus panel diameter vs Sun (Sun ≈ 109× Earth). Adsterra kept. Commits a991a77 (placeholder fix) + 57f18d0.
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: done
+share: n/a
+next_step_required: no
+notes: Closed solar-system-scale-explorer after EXECUTE 7/7. Added light-travel times from Sun, live px/AU scale readout, dashed focus ring. All previous features retained. Adsterra kept. next-step present. EN+ES.
 adsense-prep_runs: 3
 ```
 
