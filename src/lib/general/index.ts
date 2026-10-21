@@ -60,6 +60,8 @@ import { PYTHAGOREAN_CALCULATOR_TOOLS } from "./pythagorean-calculator-tool";
 import { SPEED_CONVERTER_TOOLS } from "./speed-converter-tool";
 import { WEIGHTED_MEAN_CALCULATOR_TOOLS } from "./weighted-mean-calculator-tool";
 import { DISCOUNT_PERCENTAGE_CALCULATOR_TOOLS } from "./discount-percentage-calculator-tool";
+import { TMB_CALCULATOR_TOOLS } from "./tmb-calculator-tool";
+import { RGB_HEX_CONVERTER_TOOLS } from "./rgb-hex-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -124,4 +126,6 @@ export const GENERAL_TOOLS = [
   ...SPEED_CONVERTER_TOOLS,
   ...WEIGHTED_MEAN_CALCULATOR_TOOLS,
   ...DISCOUNT_PERCENTAGE_CALCULATOR_TOOLS,
+  ...TMB_CALCULATOR_TOOLS,
+  ...RGB_HEX_CONVERTER_TOOLS,
 ];

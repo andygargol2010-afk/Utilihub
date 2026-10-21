@@ -64,4 +64,6 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "word-counter", name: "WordCounterTool", path: "./WordCounterTool", export: "WordCounterTool" },
   { slug: "word-frequency", name: "WordFrequencyCounterTool", path: "./WordFrequencyCounterTool", export: "WordFrequencyCounterTool" },
   { slug: "xml-to-json", name: "XmlToJsonTool", path: "./XmlToJsonTool", export: "XmlToJsonTool" },
+  { slug: "calculadora-tmb", name: "TmbCalculatorTool", path: "./TmbCalculatorTool", export: "TmbCalculatorTool" },
+  { slug: "conversor-rgb-hex", name: "RgbHexConverterTool", path: "./RgbHexConverterTool", export: "RgbHexConverterTool" },
 ] as const;
