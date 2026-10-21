@@ -16,6 +16,8 @@ const tool = makeTool(
   {
     title: "BMR Calculator — Tasa Metabólica Basal | UtiliHub",
     description: "Free BMR calculator. Enter age, weight, height and sex to get your basal metabolic rate in kcal/day. Instant, no signup.",
+    operation: "tmb",
+    fields: ["Age (years)", "Weight (kg)", "Height (cm)", "Sex (1=male, 0=female)"],
   },
 );
 tool.faq.push(faq("What is BMR?", "Basal Metabolic Rate is the number of calories your body needs at rest to maintain basic functions."));

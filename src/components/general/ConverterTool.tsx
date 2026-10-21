@@ -138,7 +138,7 @@ export function ConverterTool({ tool, locale = "en" }: { tool: GeneralTool; loca
       );
       return;
     }
-    if (tool.slug === "rgb-hex") {
+    if (tool.slug === "rgb-hex" || tool.slug === "conversor-rgb-hex") {
       const p = raw.split(/[,; ]+/).map(Number);
       if (p.length !== 3 || p.some((x) => !Number.isInteger(x) || x < 0 || x > 255)) {
         setOut(msg("Enter R, G and B between 0 and 255.", "Introduce R, G y B entre 0 y 255."));
@@ -193,7 +193,7 @@ export function ConverterTool({ tool, locale = "en" }: { tool: GeneralTool; loca
           value={value}
           onChange={(e) => setValue(e.target.value)}
           className={inputClass}
-          placeholder={tool.slug.includes("rgb") ? "255, 99, 71" : "100"}
+          placeholder={tool.slug.includes("rgb") || tool.slug === "conversor-rgb-hex" ? "255, 99, 71" : "100"}
         />
       </label>
       {(options.length > 1 || tool.slug === "conversor-angulos" || tool.slug === "grados-radianes") && (
