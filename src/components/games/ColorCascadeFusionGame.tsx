@@ -34,6 +34,7 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
   const [best, setBest] = useState(0);
   const [level, setLevel] = useState(1);
   const [gameOver, setGameOver] = useState(false);
+  const [newBest, setNewBest] = useState(false);
   const [multiUntil, setMultiUntil] = useState(0);
   const [combo, setCombo] = useState(0);
   const [soundOn, setSoundOn] = useState(true);
@@ -51,6 +52,7 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
   const levelFlashUntilRef = useRef(0);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const soundOnRef = useRef(true);
+  const newBestRef = useRef(false);
 
   useEffect(() => setBest(readBestScore("color-cascade-fusion")), []);
   useEffect(() => {
@@ -59,7 +61,8 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
     gameOverRef.current = gameOver;
     comboRef.current = combo;
     soundOnRef.current = soundOn;
-  }, [score, level, gameOver, combo, soundOn]);
+    newBestRef.current = newBest;
+  }, [score, level, gameOver, combo, soundOn, newBest]);
 
   const ensureAudio = useCallback(() => {
     if (!audioCtxRef.current) {
@@ -134,12 +137,14 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
     setScore(0);
     setLevel(1);
     setGameOver(false);
+    setNewBest(false);
     setRunning(true);
     setMultiUntil(0);
     setCombo(0);
     scoreRef.current = 0;
     levelRef.current = 1;
     gameOverRef.current = false;
+    newBestRef.current = false;
     ensureAudio();
   }, [ensureAudio]);
 
@@ -181,6 +186,21 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
           setCombo(0);
         }
         if (orbsRef.current.some((o) => o.y < 40 && o.vy === 0)) {
+          const finalScore = scoreRef.current;
+          const isNew = finalScore > best;
+          setNewBest(isNew);
+          newBestRef.current = isNew;
+          if (isNew) {
+            for (let i = 0; i < 40; i++)
+              particlesRef.current.push({
+                x: W / 2,
+                y: H / 2,
+                vx: (Math.random() - 0.5) * 12,
+                vy: (Math.random() - 0.5) * 12,
+                life: 50,
+                color: "#fbbf24",
+              });
+          }
           setGameOver(true);
           gameOverRef.current = true;
           setRunning(false);
@@ -267,12 +287,28 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
           ctx.textAlign = "center";
           ctx.fillText(es ? "\u00d72 ACTIVO" : "\u00d72 ACTIVE", W / 2, H - 12);
         }
+        if (gameOverRef.current) {
+          ctx.fillStyle = "rgba(0,0,0,0.65)";
+          ctx.fillRect(0, 0, W, H);
+          ctx.fillStyle = "#fff";
+          ctx.font = "bold 28px system-ui";
+          ctx.textAlign = "center";
+          ctx.fillText(es ? "Fin de partida" : "Game Over", W / 2, H / 2 - 40);
+          ctx.font = "bold 20px system-ui";
+          ctx.fillText(`${es ? "Puntuaci\u00f3n" : "Score"}: ${scoreRef.current}`, W / 2, H / 2);
+          ctx.fillText(`${es ? "Mejor" : "Best"}: ${best}`, W / 2, H / 2 + 30);
+          if (newBestRef.current) {
+            ctx.fillStyle = "#fbbf24";
+            ctx.font = "bold 22px system-ui";
+            ctx.fillText(es ? "\u00a1Nuevo r\u00e9cord!" : "New Best!", W / 2, H / 2 + 70);
+          }
+        }
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [running, spawnOrb, es, multiUntil, playGameOver]);
+  }, [running, spawnOrb, es, multiUntil, playGameOver, best]);
 
   const handleClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!running || gameOver) return;
@@ -395,21 +431,27 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
     if (!canvas) return;
     const off = document.createElement("canvas");
     off.width = W;
-    off.height = H + 60;
+    off.height = H + 80;
     const ctx = off.getContext("2d");
     if (!ctx) return;
     ctx.fillStyle = "#0f0f1a";
-    ctx.fillRect(0, 0, W, H + 60);
+    ctx.fillRect(0, 0, W, H + 80);
     ctx.drawImage(canvas, 0, 0);
     ctx.fillStyle = "#fff";
     ctx.font = "bold 18px system-ui";
     ctx.textAlign = "center";
     ctx.fillText(es ? `Puntuaci\u00f3n: ${score}  Mejor: ${best}` : `Score: ${score}  Best: ${best}`, W / 2, H + 28);
+    if (newBest) {
+      ctx.fillStyle = "#fbbf24";
+      ctx.font = "bold 16px system-ui";
+      ctx.fillText(es ? "\u00a1NUEVO R\u00c9CORD!" : "NEW BEST!", W / 2, H + 52);
+    }
+    ctx.fillStyle = "#aaa";
     ctx.font = "12px system-ui";
-    ctx.fillText("utilihub \u2014 Color Cascade Fusion", W / 2, H + 48);
+    ctx.fillText("utilihub \u2014 Color Cascade Fusion", W / 2, H + 68);
     const a = document.createElement("a");
     a.href = off.toDataURL("image/png");
-    a.download = `color-cascade-fusion-${score}.png`;
+    a.download = `color-cascade-fusion-${score}${newBest ? "-best" : ""}.png`;
     a.click();
   };
 
@@ -454,8 +496,8 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
       </div>
       <p className="max-w-sm text-center text-xs text-muted-foreground">
         {es
-          ? "Haz clic en orbes del mismo color adyacentes para fusionarlos. Encaden\u00e1 fusiones r\u00e1pidas para subir el combo (x1.5\u2026x5). 4+ orbes = MEGA (bonus + anillo). Subir de nivel da flash cian y breve ralentizaci\u00f3n. Orbes especiales desde nivel 2. Sonidos de fusi\u00f3n/nivel/fin (se pueden silenciar). \u00a1No dejes que se amontonen!"
-          : "Click adjacent matching-color orbs to fuse them. Chain fusions quickly to raise combo (x1.5\u2026x5). 4+ orbs = MEGA (bonus + ring). Level-up gives cyan flash and brief slowdown. Special orbs from level 2. Fusion/level/game-over sounds (mute available). Don\u2019t let them pile up!"}
+          ? "Haz clic en orbes del mismo color adyacentes para fusionarlos. Encaden\u00e1 fusiones r\u00e1pidas para subir el combo (x1.5\u2026x5). 4+ orbes = MEGA (bonus + anillo). Subir de nivel da flash cian y breve ralentizaci\u00f3n. Orbes especiales desde nivel 2. Sonidos de fusi\u00f3n/nivel/fin (se pueden silenciar). Al terminar, overlay con puntuaci\u00f3n y celebraci\u00f3n de nuevo r\u00e9cord. \u00a1No dejes que se amontonen!"
+          : "Click adjacent matching-color orbs to fuse them. Chain fusions quickly to raise combo (x1.5\u2026x5). 4+ orbs = MEGA (bonus + ring). Level-up gives cyan flash and brief slowdown. Special orbs from level 2. Fusion/level/game-over sounds (mute available). On end, overlay with score and new-best celebration. Don\u2019t let them pile up!"}
       </p>
     </div>
   );
