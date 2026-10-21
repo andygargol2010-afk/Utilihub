@@ -16,13 +16,13 @@ last_closed_id: color-cascade-fusion
 p_fixed: 0.35
 
 weights_core:
-  kits: 10
-  journeys: 7
-  games: 1
-  simulators: 6
-  studio-composition: 8
-  playgrounds: 2
-  quality-lift: 3
+  kits: 11
+  journeys: 8
+  games: 2
+  simulators: 7
+  studio-composition: 1
+  playgrounds: 3
+  quality-lift: 4
 
 weights_growth:
   traffic-bets: 3
@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive Color Cascade Fusion — a rules-based arcade game where colored orbs fall under gravity. Click adjacent matching colors to fuse them into larger orbs, triggering chain reactions and combo multipliers. Score climbs with fusion size and chains; levels increase speed and introduce special power-orbs (bomb, freeze, multiplier). Visual particle bursts on fusion, progressive difficulty, high-score share via PNG. EN+ES full routes with next-step.
-id: color-cascade-fusion
-path_en: /color-cascade-fusion
-path_es: /es/color-cascade-fusion
+status: active
+idea: Interactive Prism Trail Composer — freehand multi-layer light-prism trails. Draw paths that split into rainbow refraction beams with live bloom, adjustable dispersion and speed; trails persist with particle afterglow. Export shareable PNG of the composition. EN+ES full routes + next-step.
+id: prism-trail-composer
+path_en: /studio/prism-trail-composer
+path_es: /es/studio/compositor-estela-prisma
 path_seo: n/a
-domain: games
+domain: studio-composition
 runs_total: 6
-runs_remaining: 0
-acceptance: accepted
+runs_remaining: 6
+acceptance: pending
 share: png
 next_step_required: yes
-notes: IDEATE roll: U=0.7475 (>0.50 → CORE). Weighted sample from weights_core selected games (prev weight 3). last_closed_domain=retention-loops ≠ games, no re-roll. Weights updated: games=1, all other CORE +1. New game distinct from orbit-defender and pulse-catch. EXECUTE run 1/6: core fusion loop (adjacent same-color click, fuse to larger orb, particles, levels, score/best) + EN/ES routes + next-step registration. Adsterra kept. Deploy check READY on previous commit; new commits pending deploy. EXECUTE run 2/6: power-orbs (bomb clears nearby same-color, freeze slows gravity, multi ×2 score) spawn from level 2 with visual rings/labels + PNG share of score overlay. Adsterra kept. EXECUTE run 3/6: combo streak system — successive fusions within 2.8s raise combo (x1.5…x5 cap), floating score popups on canvas (+pts / +pts xN), combo badge, bigger particle burst on high combo, UI combo indicator, help text updated EN+ES. Adsterra kept. EXECUTE run 4/6: progressive difficulty refined — higher power-orb chance with level, faster spawn/gravity, level-up cyan flash overlay + brief slowdown reward + center particle burst, MEGA fusion (4+ orbs) gives 1.6× score bonus + cyan particles/popup. Help text updated EN+ES. Adsterra kept. EXECUTE run 5/6: Web Audio sound effects — fusion beep, higher for combo≥3, dual tones for MEGA, ascending arpeggio on level-up, descending on game-over; Sound ON/OFF toggle (default on, resumes AudioContext). Help text updated EN+ES. Adsterra kept. EXECUTE run 6/6: game-over canvas overlay (semi-transparent, score/best, gold "New Best!" / "¡Nuevo récord!" with particle burst) + refined PNG share including new-best badge and taller footer. Help text updated EN+ES. Adsterra kept. Project complete.
+notes: IDEATE roll: U=0.612 (>0.50 → CORE). Weighted sample from weights_core selected studio-composition (prev weight 8). last_closed_domain=games ≠ studio-composition, no re-roll. Weights updated: studio-composition=1, all other CORE +1. Distinct from neon-signature-composer and glow-trail (refraction prism split + dispersion controls).
 adsense-prep_runs: 3
 ```
 
