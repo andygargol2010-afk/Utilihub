@@ -1,8 +1,6 @@
 # UtiliHub House Modeler — State (3/3)
 
-**Part 3 of 3 — runtime state only.** End marker: `
-META run 252: confirmed tip READY + monolith health (331568 B / 7513 lines, no PLACEHOLDER). Wall-masonry densify deferred (no sandbox push auth / truncation risk). runs_done=252.
-<!-- end:house-modeler-state.md -->`.
+**Part 3 of 3 — runtime state only.** End marker: `<!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
 
@@ -19,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 255
+runs_done: 256
 runs_max: 500
 ```
 
@@ -45,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331598
-last_known_good_hint: (post PRODUCT 255 timber densify ~331598 B / 7519 lines, no PLACEHOLDER)
+approx_bytes: 331827
+last_known_good_hint: (post META 256 health ~331827 B / 7520 lines, no PLACEHOLDER)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -58,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: META
 last_date: 2026-10-21
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: pending push
-note: PRODUCT timber densify (mottling/grain/fibers). Monolith ~331598 B / 7519 lines, no PLACEHOLDER.
+deploy: READY (e77002ac timber densify)
+note: META health confirmation. Monolith ~331827 B / 7520 lines, no PLACEHOLDER. Tip READY.
 ```
 
 Refresh after each run.
@@ -97,6 +95,7 @@ META run 252: confirmed tip READY + monolith health (331568 B / 7513 lines, no P
 PRODUCT run 253: wall-masonry densify (cols 4→5, rows 7→8 + denser flecks/weathering) via local clone surgical. runs_done=253.
 PRODUCT run 254: plaster densify (flecks/trowel/dirt/micro-pits) via local clone surgical. runs_done=254.
 PRODUCT run 255: timber densify (mottling 18→26, grain 7→10, micro-fibers 4→6) via local clone surgical. runs_done=255.
+META run 256: confirmed tip READY + monolith health (331827 B / 7520 lines, no PLACEHOLDER). runs_done=256.
 ```
 
 <!-- end:house-modeler-state.md -->
