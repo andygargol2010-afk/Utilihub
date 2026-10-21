@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 260
+runs_done: 261
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 345046
-last_known_good_hint: (post META 260 health ~345kB, no PLACEHOLDER, SHA de1e458a)
+approx_bytes: 331826
+last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: META
 last_date: 2026-10-21
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: READY (tip eb56ea51)
-note: META health confirm tip READY + monolith ~345kB / no PLACEHOLDER / SHA de1e458a. Chimney-brick densify deferred (tool-channel truncation risk on >300kB rewrite). runs_done=260.
+deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
+note: META health confirm monolith 331826 B / 7519 lines / SHA de1e458a / no PLACEHOLDER. Chimney-brick densify deferred (tool-channel truncation risk on >300kB rewrite). runs_done=261.
 ```
 
 Refresh after each run.
@@ -72,7 +72,7 @@ Refresh after each run.
 ```
 Prefer local-clone surgical PRODUCT when auth available. Prefer META if only path is full rewrite >300KB via tool channel.
 PRODUCT run 234: clay tiles densify (flecks 9→12, moss denser) via local clone surgical.
-META run 235: health check + deferred chimney-crown densify due to no sandbox push auth.
+PRODUCT run 235: health check + deferred chimney-crown densify due to no sandbox push auth.
 PRODUCT run 236: chimney crown densify (courses 4→5 + soot/flecks/lime) via local clone surgical.
 PRODUCT run 237: worn-earth densify (grit/damp/leaf/cracks) via local clone surgical.
 RESTORE 2026-10-20: failed PRODUCT push truncated to PLACEHOLDER; restored via Actions (06f436ec).
@@ -100,6 +100,7 @@ META run 257: confirmed tip READY + monolith health (~345kB, SHA de1e458a, no PL
 MODELADOR-3D run 258: added pyramid ShapeKind (ConeGeometry 4 sides) fully wired in modeler3d-helpers (type/geometry/size/labels/list). Surgical. No HouseModeler3D touch. runs_done=258.
 META run 259: confirmed tip READY + monolith health (331826 B, no PLACEHOLDER, SHA de1e458a). Chimney-brick densify deferred due to tool-channel truncation risk. runs_done=259.
 META run 260: confirmed tip READY (eb56ea51) + monolith health (~345kB, SHA de1e458a, no PLACEHOLDER). Chimney-brick densify deferred (tool-channel truncation risk on >300kB rewrite). runs_done=260.
+META run 261: confirmed monolith health 331826 B / 7519 lines / SHA de1e458a / no PLACEHOLDER. Recent catalog tip ERROR unrelated. Chimney-brick densify deferred (tool-channel truncation risk). runs_done=261.
 ```
 
 <!-- end:house-modeler-state.md -->
