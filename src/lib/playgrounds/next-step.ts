@@ -265,6 +265,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     pathEs: "/es/solar-system-scale-explorer",
     emoji: "🔭",
   },
+  {
+    id: "daily-progress-constellation",
+    nameEn: "Daily Progress Constellation",
+    nameEs: "Constelación de Progreso Diario",
+    blurbEn: "Each daily visit lights a new star and builds your personal constellation.",
+    blurbEs: "Cada visita diaria enciende una nueva estrella y construye tu constelación personal.",
+    pathEn: "/daily-progress-constellation",
+    pathEs: "/es/daily-progress-constellation",
+    emoji: "✨",
+  },
 ] as const;
 
 /** First id = primary next step. */
@@ -294,6 +304,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "river-light": ["glow-trail", "aurora", "neon-sign", "particles"],
   "waypoint-river-composer": ["river-light", "glow-trail", "aurora", "neon-signature-composer"],
   "solar-system-scale-explorer": ["constellation-studio", "aurora", "gravity-particles", "particle-magnet-lab"],
+  "daily-progress-constellation": ["constellation-studio", "constellation-name", "aurora", "return-streak-board"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
