@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { PLAYGROUNDS, playgroundPath, playgroundName, type PlaygroundLocale } from "@/lib/playgrounds/next-step";
 
 const STORAGE_KEY = "utilihub-daily-constellation-v1";
 
-type Star = { x: number; y: number; lit: boolean; id: number };
+type Star = { x: number; y: number; lit: boolean; id: number; size?: number };
 type ConstellationData = {
   stars: Star[];
   lastVisit: number;
@@ -41,6 +40,7 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [data, setData] = useState<ConstellationData>({ stars: [], lastVisit: 0, totalDays: 0 });
   const [shareMsg, setShareMsg] = useState("");
+  const animRef = useRef<number>(0);
   const es = locale === "es";
 
   useEffect(() => {
@@ -48,13 +48,14 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
     let prev = loadData();
     if (prev.lastVisit === 0 || !isSameDay(prev.lastVisit, now)) {
       const newStar: Star = {
-        x: 0.15 + Math.random() * 0.7,
-        y: 0.15 + Math.random() * 0.7,
+        x: 0.12 + Math.random() * 0.76,
+        y: 0.12 + Math.random() * 0.76,
         lit: true,
         id: prev.stars.length,
+        size: 2.5 + Math.random() * 2.5,
       };
       prev = {
-        stars: [...prev.stars, newStar].slice(-40),
+        stars: [...prev.stars, newStar].slice(-48),
         lastVisit: now,
         totalDays: prev.totalDays + 1,
       };
@@ -68,22 +69,41 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
+    let t0 = performance.now();
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = canvas.clientWidth * dpr;
-      canvas.height = canvas.clientHeight * dpr;
-      ctx.scale(dpr, dpr);
-      draw();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
-    const draw = () => {
+
+    const draw = (time: number) => {
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
+      if (!w || !h) return;
       ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "#0a0e1a";
+      // deep sky
+      const g = ctx.createLinearGradient(0, 0, 0, h);
+      g.addColorStop(0, "#050814");
+      g.addColorStop(1, "#0c1224");
+      ctx.fillStyle = g;
       ctx.fillRect(0, 0, w, h);
-      // lines
-      ctx.strokeStyle = "rgba(34, 211, 238, 0.4)";
-      ctx.lineWidth = 1;
+
+      // faint background stars
+      ctx.fillStyle = "rgba(255,255,255,0.25)";
+      for (let i = 0; i < 40; i++) {
+        const px = ((i * 97) % 100) / 100 * w;
+        const py = ((i * 53) % 100) / 100 * h;
+        ctx.beginPath();
+        ctx.arc(px, py, 0.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // connecting lines
+      ctx.strokeStyle = "rgba(34, 211, 238, 0.35)";
+      ctx.lineWidth = 1.2;
       for (let i = 1; i < data.stars.length; i++) {
         const a = data.stars[i - 1];
         const b = data.stars[i];
@@ -92,26 +112,56 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
         ctx.lineTo(b.x * w, b.y * h);
         ctx.stroke();
       }
-      // stars
-      data.stars.forEach((s) => {
+
+      // stars with twinkle
+      const phase = time * 0.002;
+      data.stars.forEach((s, idx) => {
+        const sx = s.x * w;
+        const sy = s.y * h;
+        const base = s.size ?? 3;
+        const twinkle = s.lit ? 0.75 + 0.25 * Math.sin(phase + idx * 0.7) : 0.4;
+        const r = base * twinkle;
         ctx.beginPath();
-        ctx.arc(s.x * w, s.y * h, s.lit ? 4 : 2, 0, Math.PI * 2);
-        ctx.fillStyle = s.lit ? "#22d3ee" : "#64748b";
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        ctx.fillStyle = s.lit ? "#67e8f9" : "#94a3b8";
         ctx.fill();
         if (s.lit) {
           ctx.shadowColor = "#22d3ee";
-          ctx.shadowBlur = 8;
+          ctx.shadowBlur = 12 * twinkle;
           ctx.fill();
           ctx.shadowBlur = 0;
+          // cross flare
+          ctx.strokeStyle = `rgba(103,232,249,${0.4 * twinkle})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(sx - r * 2.2, sy);
+          ctx.lineTo(sx + r * 2.2, sy);
+          ctx.moveTo(sx, sy - r * 2.2);
+          ctx.lineTo(sx, sy + r * 2.2);
+          ctx.stroke();
         }
       });
     };
+
+    const loop = (time: number) => {
+      draw(time);
+      animRef.current = requestAnimationFrame(loop);
+    };
+
     resize();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
+    animRef.current = requestAnimationFrame(loop);
+    const onResize = () => {
+      resize();
+      draw(performance.now());
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(animRef.current);
+      window.removeEventListener("resize", onResize);
+    };
   }, [data]);
 
-  async function share() {
+  async function shareText() {
     const text = es
       ? `Mi constelación de progreso diario en UtiliHub: ${data.totalDays} estrellas ✨`
       : `My daily progress constellation on UtiliHub: ${data.totalDays} stars ✨`;
@@ -127,8 +177,28 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
       await navigator.clipboard.writeText(`${text} ${url}`);
       setShareMsg(es ? "Copiado" : "Copied");
     }
-    setTimeout(() => setShareMsg(""), 2000);
+    setTimeout(() => setShareMsg(""), 2200);
   }
+
+  function sharePng() {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `constellation-${data.totalDays}-stars.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+      setShareMsg(es ? "PNG descargado" : "PNG downloaded");
+      setTimeout(() => setShareMsg(""), 2200);
+    }, "image/png");
+  }
+
+  const lastStr = data.lastVisit
+    ? new Date(data.lastVisit).toLocaleDateString(es ? "es" : "en", { month: "short", day: "numeric" })
+    : "—";
 
   return (
     <div className="space-y-6">
@@ -144,22 +214,34 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
             ? "Cada visita diaria enciende una nueva estrella. Conectá tu progreso personal."
             : "Each daily visit lights a new star. Build your personal progress constellation."}
         </p>
-        <button
-          type="button"
-          onClick={share}
-          className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-3 py-1.5 text-xs font-semibold text-cyan-600 hover:bg-cyan-500/20 dark:text-cyan-400"
-        >
-          {es ? "Compartir constelación" : "Share constellation"}
-          {shareMsg && <span className="ml-1 text-[10px]">{shareMsg}</span>}
-        </button>
+        <p className="mt-1 text-xs text-muted-foreground">
+          {es ? "Última visita:" : "Last visit:"} {lastStr}
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={shareText}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-3 py-1.5 text-xs font-semibold text-cyan-600 hover:bg-cyan-500/20 dark:text-cyan-400"
+          >
+            {es ? "Compartir texto" : "Share text"}
+          </button>
+          <button
+            type="button"
+            onClick={sharePng}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-3 py-1.5 text-xs font-semibold text-cyan-600 hover:bg-cyan-500/20 dark:text-cyan-400"
+          >
+            {es ? "Descargar PNG" : "Download PNG"}
+          </button>
+          {shareMsg && <span className="self-center text-[11px] text-cyan-500">{shareMsg}</span>}
+        </div>
       </div>
       <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/60 bg-black">
         <canvas ref={canvasRef} className="h-full w-full" />
       </div>
       <p className="text-xs text-muted-foreground">
         {es
-          ? "Las estrellas se guardan localmente. Volvé mañana para encender otra."
-          : "Stars are stored locally. Return tomorrow to light another."}
+          ? "Las estrellas se guardan localmente. Volvé mañana para encender otra. Las estrellas parpadean suavemente."
+          : "Stars are stored locally. Return tomorrow to light another. Stars gently twinkle."}
       </p>
     </div>
   );
