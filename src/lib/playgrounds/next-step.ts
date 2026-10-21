@@ -275,6 +275,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     pathEs: "/es/daily-progress-constellation",
     emoji: "✨",
   },
+  {
+    id: "color-cascade-fusion",
+    nameEn: "Color Cascade Fusion",
+    nameEs: "Fusión Cascada de Color",
+    blurbEn: "Fuse falling colored orbs by clicking adjacent matches. Chain reactions and rising levels.",
+    blurbEs: "Fusioná orbes de colores que caen haciendo clic en coincidencias adyacentes. Reacciones en cadena y niveles crecientes.",
+    pathEn: "/color-cascade-fusion",
+    pathEs: "/es/color-cascade-fusion",
+    emoji: "🌊",
+  },
 ] as const;
 
 /** First id = primary next step. */
@@ -305,6 +315,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "waypoint-river-composer": ["river-light", "glow-trail", "aurora", "neon-signature-composer"],
   "solar-system-scale-explorer": ["constellation-studio", "aurora", "gravity-particles", "particle-magnet-lab"],
   "daily-progress-constellation": ["constellation-studio", "constellation-name", "aurora", "solar-system-scale-explorer"],
+  "color-cascade-fusion": ["pulse-catch", "firework", "particles", "aurora"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
