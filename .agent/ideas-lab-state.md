@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: search-magnets
-last_closed_id: solar-system-scale-explorer
+last_closed_domain: retention-loops
+last_closed_id: daily-progress-constellation
 p_fixed: 0.35
 
 weights_core:
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-21 | retention-loops | daily-progress-constellation | Interactive Daily Progress Constellation complete: canvas stars + lines + name baked in PNG + milestones + reset + hover tooltips + editable name (EN+ES)
 - 2026-10-21 | search-magnets | solar-system-scale-explorer | Interactive Solar System Scale Explorer complete with light-travel times, live scale, focus ring, presets, moons, Pluto (EN+ES)
 - 2026-10-20 | playgrounds | aurora-particle-playground | Interactive Aurora Particle Playground complete with bloom intensity + share (EN+ES)
 - 2026-10-20 | retention-loops | return-streak-board | Interactive Return Streak Board complete with share (EN+ES)
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-19 | simulators | reaction-diffusion-lab | Interactive Reaction-Diffusion Lab (EN+ES)
 - 2026-10-19 | journeys | waypoint-river-composer | Interactive Waypoint River Composer (EN+ES)
 - 2026-10-18 | studio-composition | neon-signature-composer | Interactive Neon Signature Composer (EN+ES)
-- 2026-10-18 | kits | home-renovation-kit | Interactive Home Renovation Kit (EN+ES)
 ```
 
 ---
@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive Daily Progress Constellation — a return-visit canvas where users connect stars representing completed playground sessions or daily visits. Each return lights a new star, builds constellations over time, and unlocks shareable snapshots. Encourages coming back without a simple streak counter. EN+ES, next-step before Adsterra.
-id: daily-progress-constellation
-path_en: /daily-progress-constellation
-path_es: /es/daily-progress-constellation
+status: idle
+idea: n/a
+id: n/a
+path_en: n/a
+path_es: n/a
 path_seo: n/a
-domain: retention-loops
-runs_total: 5
-runs_remaining: 1
-acceptance: pending
-share: both
-next_step_required: yes
-notes: Roll U=0.102 → GROWTH; U_g=0.941 → FLEX → retention-loops (selected weight 2→1; other FLEX +1). Avoided recent return-streak-board. Goal: visual constellation progress that feels like building something personal across visits. Run 1: created component (canvas stars + lines + localStorage daily light), EN+ES routes with next-step before Adsterra, registered in next-step catalog. Run 2: twinkle animation + gradient sky + PNG snapshot download + last-visit label; share text+PNG. Run 3: per-star litAt dates + mouse hover tooltips showing date/# + stronger pulse/glow on newest star. Run 4: editable personal constellation name (suggested by milestones, stored localStorage) + touch tap tooltips (mobile) + share text/PNG include name.
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
+share: n/a
+next_step_required: n/a
+notes: Previous project daily-progress-constellation closed after 5 runs. Ready for IDEATE.
 adsense-prep_runs: 3
 ```
 
