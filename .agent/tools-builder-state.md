@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-21 | conversiones | conversor-rgb-hex | RgbHexConverterTool
+- 2026-10-21 | salud | calculadora-tmb | TmbCalculatorTool
 - 2026-10-21 | finanzas | calculadora-descuento-porcentaje | DiscountPercentageCalculatorTool
 - 2026-10-21 | educacion | calculadora-media-ponderada | WeightedMeanCalculatorTool
 - 2026-10-21 | matematicas | calculadora-teorema-pitagoras | PythagoreanCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-21 | viajes | calculadora-presupuesto-viaje | TravelBudgetCalculatorTool
 - 2026-10-21 | fechas | calculadora-dias-hasta-fecha | DaysUntilDateCalculatorTool
 - 2026-10-21 | texto | contador-palabras-unicas | UniqueWordsCounterTool
-- 2026-10-21 | ciencia | calculadora-energia-potencial | PotentialEnergyCalculatorTool
-- 2026-10-21 | finanzas | calculadora-cambio-porcentaje | PercentageChangeCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -47,8 +47,8 @@ texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, p
 productividad: recent (tiempo-lectura, porcentaje-completado)
 matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras)
 diseno: recent (contraste-color)
-conversiones: recent (peso, velocidad)
-salud: recent (frecuencia-cardiaca-maxima)
+conversiones: recent (peso, velocidad, rgb-hex)
+salud: recent (frecuencia-cardiaca-maxima, tmb)
 educacion: recent (media-aritmetica, media-ponderada)
 ```
 
@@ -63,6 +63,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-21 PRODUCT (roll 7): shipped 2 (calculadora-tmb salud + conversor-rgb-hex conversiones). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy ERROR (unrelated ColorCascadeFusionGame export issue in build). SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 8): shipped 2 (calculadora-media-ponderada educacion + calculadora-descuento-porcentaje finanzas). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 15): shipped 2 (calculadora-teorema-pitagoras matematicas + conversor-velocidad conversiones). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 12): shipped 2 (calculadora-factorial matematicas + calculadora-consumo-agua hogar). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
@@ -78,8 +79,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-media-ponderada, calculadora-descuento-porcentaje
-last_deploy: pending verification
+last_slugs: calculadora-tmb, conversor-rgb-hex
+last_deploy: ERROR (game export)
 ```
 
 <!-- end:tools-builder-state.md -->
