@@ -1,1 +1,1 @@
-$(cat /tmp/solar-edit.tsx)
+PLACEHOLDER_WILL_REPLACE
