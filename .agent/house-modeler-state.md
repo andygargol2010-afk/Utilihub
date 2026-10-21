@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 249
+runs_done: 250
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331563
-last_known_good_hint: (post PRODUCT 249 grass densify ~331563 B / 7513 lines, no PLACEHOLDER)
+approx_bytes: 331568
+last_known_good_hint: (post PRODUCT 250 gravel densify ~331568 B / 7513 lines, no PLACEHOLDER)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -57,10 +57,10 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 
 ```
 last_mode: PRODUCT
-last_date: 2026-10-20
+last_date: 2026-10-21
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: pending this push (tip was ERROR from other agents)
-note: PRODUCT grass densify (clumps 48→64, blades 30→42, wear 6→8; relief 70→90 / 46→60) via local clone surgical. Monolith 331563 B / 7513 lines, no PLACEHOLDER.
+deploy: pending this push (tip ERROR from catalog registry-generics)
+note: PRODUCT gravel densify (pebbles 120→160, stones 18→24, moss 8→12, rake lines 7→10) via local clone surgical. Monolith 331568 B / 7513 lines, no PLACEHOLDER.
 ```
 
 Refresh after each run.
@@ -91,4 +91,6 @@ META run 248: confirmed monolith intact 331335 B / 7514 lines, no PLACEHOLDER. G
 PRODUCT run 249: grass densify (clumps 48→64, blades 30→42, wear 6→8; relief clumps 70→90, blades 46→60) via local clone surgical. runs_done=249.
 ```
 
+
+PRODUCT run 250: gravel densify (pebbles 120→160, larger stones 18→24, moss patches 8→12, rake lines 7→10) via local clone surgical. runs_done=250.
 <!-- end:house-modeler-state.md -->

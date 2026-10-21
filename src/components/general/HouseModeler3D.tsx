@@ -1086,7 +1086,7 @@ function paintFascia(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [108, 78, 52], 14);
   ctx.fillStyle = "#6d4a30";
   ctx.fillRect(0, 0, size, size);
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 10; i++) {
     const y0 = Math.floor((i / 7) * size);
     const h = Math.floor(size / 7) - 2;
     const tone = 102 + Math.floor(hash2(i, 4.4) * 32);
@@ -1373,7 +1373,7 @@ function paintGlazing(ctx: CanvasRenderingContext2D, size: number) {
   ctx.strokeStyle = "rgba(72,64,54,0.28)";
   ctx.lineWidth = 8;
   ctx.strokeRect(4, 4, size - 8, size - 8);
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 24; i++) {
     const x = hash2(i, 8.2) * size;
     const y = hash2(i, 1.9) * size;
     if (x > 18 && x < size - 18 && y > 18 && y < size - 18 && hash2(i, 4) > 0.35) continue;
@@ -1442,7 +1442,7 @@ function paintFasciaBump(ctx: CanvasRenderingContext2D, size: number) {
 function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [158, 148, 132], 28);
   // Base pebbles
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 160; i++) {
     const x = hash2(i, 1.7) * size;
     const y = hash2(i, 4.1) * size;
     const r = 0.8 + hash2(i, 9) * 2.8;
@@ -1454,7 +1454,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Occasional larger stones for outdoor path character
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 24; i++) {
     const x = hash2(i + 200, 3.3) * size;
     const y = hash2(i + 200, 5.7) * size;
     const r = 3.5 + hash2(i, 11) * 4.2;
@@ -1477,7 +1477,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, size, size);
   // Soft mossy patches in depressions for weathered outdoor look
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 12; i++) {
     const x = hash2(i + 400, 2.1) * size;
     const y = hash2(i + 400, 6.9) * size;
     const r = 6 + hash2(i, 13) * 12;
@@ -1491,7 +1491,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   ctx.globalAlpha = 0.14;
   ctx.strokeStyle = "rgba(90, 78, 62, 0.55)";
   ctx.lineWidth = 1.1;
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 10; i++) {
     const y = size * (0.22 + i * 0.09);
     ctx.beginPath();
     ctx.moveTo(size * 0.08, y);
@@ -1662,7 +1662,7 @@ function paintSunHorizon(ctx: CanvasRenderingContext2D, size: number) {
 /** Cloud shade on the far lawn. Soft ovals, clear rim, opposite the sun bank. */
 function paintLawnDapple(ctx: CanvasRenderingContext2D, size: number) {
   ctx.clearRect(0, 0, size, size);
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 10; i++) {
     const x = size * (0.18 + hash2(i, 2.2) * 0.64);
     const y = size * (0.18 + hash2(i, 5.1) * 0.64);
     const rx = 18 + hash2(i, 1.4) * 28;
@@ -1706,7 +1706,7 @@ function paintHedgerow(ctx: CanvasRenderingContext2D, size: number) {
 /** Late-day cirrus streaks. Transparent edges so banks sit in the sky shell, not as cards. */
 function paintCirrus(ctx: CanvasRenderingContext2D, size: number) {
   ctx.clearRect(0, 0, size, size);
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 12; i++) {
     const y = size * (0.22 + hash2(i, 2.4) * 0.5);
     const x = size * (0.08 + hash2(i, 6.1) * 0.78);
     const rx = 46 + hash2(i, 1.7) * 78;
