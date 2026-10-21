@@ -7,53 +7,47 @@ import { GeneralToolUi } from "./registry-generics";
 /**
  * Thin registry — agents should almost never edit this file.
  * To add a tool: append ONE entry to registry-entries-a.ts or registry-entries-b.ts only.
- * This file is intentionally small and stable (anti-wipe).
  *
- * Size target: keep under ~3 KB so agent tool responses never truncate it.
+ * Contract with DeferredToolUi:
+ *   GENERAL_TOOL_UI[slug] must be a zero-arg function () => ReactNode
+ *   that already closes over the tool + locale.
  */
 
 const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((t) => [t.slug, t]));
 
-// Build lazy map once from pure data entries
-const SPECIAL_LAZY: Record<string, ComponentType<any>> = {};
+// Pre-build lazy components from pure data entries (static-ish paths).
+const SPECIAL_LAZY: Record<string, ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>> = {};
 for (const e of REGISTRY_ENTRIES) {
   const { slug, path, export: exportName } = e;
   SPECIAL_LAZY[slug] = lazy(() =>
     import(/* @vite-ignore */ path).then((m) => ({
-      default: (m as any)[exportName],
+      default: (m as any)[exportName] as ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>,
     })),
   );
 }
 
 function buildLazyRegistry(locale: "en" | "es") {
-  const cache = new Map<
-    string,
-    ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>
-  >();
+  const cache = new Map<string, () => React.ReactNode>();
 
-  return new Proxy(
-    {} as Record<string, ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>>,
-    {
-      get(_target, prop) {
-        if (typeof prop !== "string") return undefined;
-        if (cache.has(prop)) return cache.get(prop);
+  return new Proxy({} as Record<string, () => React.ReactNode>, {
+    get(_target, prop) {
+      if (typeof prop !== "string") return undefined;
+      if (cache.has(prop)) return cache.get(prop);
 
-        const tool = TOOL_BY_SLUG.get(prop);
-        if (!tool) return undefined;
+      const tool = TOOL_BY_SLUG.get(prop);
+      if (!tool) return undefined;
 
-        const Comp = SPECIAL_LAZY[prop] ?? GeneralToolUi;
+      const Comp = SPECIAL_LAZY[prop] ?? GeneralToolUi;
 
-        const render = (props: { tool: GeneralTool; locale?: "en" | "es" }) => (
-          <Comp {...props} locale={locale} />
-        );
-        cache.set(prop, render);
-        return render;
-      },
-      has(_target, prop) {
-        return typeof prop === "string" && TOOL_BY_SLUG.has(prop);
-      },
+      // Zero-arg renderer — DeferredToolUi calls render() with no props.
+      const render = () => <Comp tool={tool} locale={locale} />;
+      cache.set(prop, render);
+      return render;
     },
-  );
+    has(_target, prop) {
+      return typeof prop === "string" && TOOL_BY_SLUG.has(prop);
+    },
+  });
 }
 
 export const GENERAL_TOOL_UI = buildLazyRegistry("en");
