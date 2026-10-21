@@ -1,0 +1,73 @@
+name: Restore / Verify Registry (anti-wipe)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "verify | report"
+        required: true
+        default: "verify"
+        type: choice
+        options:
+          - verify
+          - report
+
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check registry files
+        id: check
+        run: |
+          set -e
+          echo "=== registry.tsx ==="
+          if [ -f src/components/general/registry.tsx ]; then
+            SIZE=$(wc -c < src/components/general/registry.tsx)
+            echo "size=$SIZE"
+            if grep -q PLACEHOLDER src/components/general/registry.tsx; then
+              echo "status=PLACEHOLDER"
+              echo "bad=1" >> $GITHUB_OUTPUT
+            elif [ "$SIZE" -lt 800 ]; then
+              echo "status=TOO_SMALL"
+              echo "bad=1" >> $GITHUB_OUTPUT
+            else
+              echo "status=OK"
+              echo "bad=0" >> $GITHUB_OUTPUT
+            fi
+            head -8 src/components/general/registry.tsx
+          else
+            echo "status=MISSING"
+            echo "bad=1" >> $GITHUB_OUTPUT
+          fi
+
+          echo ""
+          echo "=== registry-entries.ts / a / b ==="
+          for f in registry-entries.ts registry-entries-a.ts registry-entries-b.ts registry-generics.tsx; do
+            if [ -f "src/components/general/$f" ]; then
+              echo "$f: $(wc -c < src/components/general/$f) bytes"
+            else
+              echo "$f: MISSING"
+              echo "bad=1" >> $GITHUB_OUTPUT
+            fi
+          done
+
+          ENTRIES=$(grep -c 'slug:' src/components/general/registry-entries-a.ts src/components/general/registry-entries-b.ts 2>/dev/null | awk -F: '{s+=$2} END {print s+0}')
+          echo "approx entries=$ENTRIES"
+          echo "entries=$ENTRIES" >> $GITHUB_OUTPUT
+
+      - name: Report
+        if: inputs.mode == 'report' || inputs.mode == 'verify'
+        run: |
+          echo "Registry health check finished."
+          echo "Thin registry + split entries design is active."
+
+      - name: Fail if bad (verify mode)
+        if: inputs.mode == 'verify' && steps.check.outputs.bad == '1'
+        run: |
+          echo "::error::registry is PLACEHOLDER, too small, or missing parts."
+          exit 1
