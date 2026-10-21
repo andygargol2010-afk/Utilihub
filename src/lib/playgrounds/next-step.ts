@@ -304,7 +304,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "river-light": ["glow-trail", "aurora", "neon-sign", "particles"],
   "waypoint-river-composer": ["river-light", "glow-trail", "aurora", "neon-signature-composer"],
   "solar-system-scale-explorer": ["constellation-studio", "aurora", "gravity-particles", "particle-magnet-lab"],
-  "daily-progress-constellation": ["constellation-studio", "constellation-name", "aurora", "return-streak-board"],
+  "daily-progress-constellation": ["constellation-studio", "constellation-name", "aurora", "solar-system-scale-explorer"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
