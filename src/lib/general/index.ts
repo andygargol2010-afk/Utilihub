@@ -48,6 +48,8 @@ import { HEXAGON_AREA_CALCULATOR_TOOLS } from "./hexagon-area-calculator-tool";
 import { ARITHMETIC_MEAN_CALCULATOR_TOOLS } from "./arithmetic-mean-calculator-tool";
 import { MEDIAN_CALCULATOR_TOOLS } from "./median-calculator-tool";
 import { LENGTH_CONVERTER_TOOLS } from "./length-converter-tool";
+import { PERCENTAGE_CHANGE_CALCULATOR_TOOLS } from "./percentage-change-calculator-tool";
+import { POTENTIAL_ENERGY_CALCULATOR_TOOLS } from "./potential-energy-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -100,4 +102,6 @@ export const GENERAL_TOOLS = [
   ...ARITHMETIC_MEAN_CALCULATOR_TOOLS,
   ...MEDIAN_CALCULATOR_TOOLS,
   ...LENGTH_CONVERTER_TOOLS,
+  ...PERCENTAGE_CHANGE_CALCULATOR_TOOLS,
+  ...POTENTIAL_ENERGY_CALCULATOR_TOOLS,
 ];
