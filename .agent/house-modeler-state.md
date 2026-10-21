@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 256
+runs_done: 257
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331827
-last_known_good_hint: (post META 256 health ~331827 B / 7520 lines, no PLACEHOLDER)
+approx_bytes: 345000
+last_known_good_hint: (post META 257 health ~345kB, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: META
 last_date: 2026-10-21
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: READY (e77002ac timber densify)
-note: META health confirmation. Monolith ~331827 B / 7520 lines, no PLACEHOLDER. Tip READY.
+deploy: READY (tip 3881c5b2)
+note: META health confirmation. Monolith intact (~345kB, no PLACEHOLDER). Tip READY. Next PRODUCT densify deferred (truncation risk).
 ```
 
 Refresh after each run.
@@ -96,6 +96,7 @@ PRODUCT run 253: wall-masonry densify (cols 4→5, rows 7→8 + denser flecks/we
 PRODUCT run 254: plaster densify (flecks/trowel/dirt/micro-pits) via local clone surgical. runs_done=254.
 PRODUCT run 255: timber densify (mottling 18→26, grain 7→10, micro-fibers 4→6) via local clone surgical. runs_done=255.
 META run 256: confirmed tip READY + monolith health (331827 B / 7520 lines, no PLACEHOLDER). runs_done=256.
+META run 257: confirmed tip READY + monolith health (~345kB, SHA de1e458a, no PLACEHOLDER). Next densify deferred (truncation risk). runs_done=257.
 ```
 
 <!-- end:house-modeler-state.md -->
