@@ -72,7 +72,7 @@ runs_remaining: 7
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE 2026-10-20: U=0.444 <0.50 GROWTH; U_g=0.347 <0.35 FIXED urn → search-magnets (equal weights 3/3). No weight updates (FIXED). last_closed=playgrounds no re-roll. Deploy READY (latest 4738b29). seo-locales still 1/5 active. Original text + interactive scale viz for SEO depth. FIX-BUILD 2026-10-20: corrected DeveloperTool import in registry-generics.tsx (was missing, pointed to DevTool.tsx). Commit 9d78368. Deploy check pending new build (prior ERROR).
+notes: IDEATE 2026-10-20: U=0.444 <0.50 GROWTH; U_g=0.347 <0.35 FIXED urn → search-magnets (equal weights 3/3). No weight updates (FIXED). last_closed=playgrounds no re-roll. Deploy READY (latest 4738b29). seo-locales still 1/5 active. Original text + interactive scale viz for SEO depth. FIX-BUILD 2026-10-20: corrected DeveloperTool import in registry-generics.tsx (was missing, pointed to DevTool.tsx). Commit 9d78368. FIX-BUILD 2026-10-21: removed unresolved HealthTool/CookingTool/etc. lazy imports (no matching files) from registry-generics.tsx; kept existing ones only. Commit bf4fcf29. Deploy check pending.
 adsense-prep_runs: 3
 ```
 
