@@ -1,10 +1,10 @@
 import type { GeneralTool } from "@/lib/general/types";
-import { HouseModeler3D } from "./HouseModeler3D";
+import { Modeler3DStudio } from "./modeler3d-studio";
 
 /**
- * Full 3D modeler entry — uses the complete HouseModeler3D implementation.
- * (modeler3d-studio depended on missing modeler3d-core; this restores a working path.)
+ * Generic 3D modeler entry (shapes, materials, export).
+ * House modeling lives on modelador-casas-3d → HouseModeler3D via registry-3d.
  */
 export function Modeler3DApp(props: { tool: GeneralTool; locale?: "en" | "es" }) {
-  return <HouseModeler3D {...props} />;
+  return <Modeler3DStudio {...props} />;
 }
