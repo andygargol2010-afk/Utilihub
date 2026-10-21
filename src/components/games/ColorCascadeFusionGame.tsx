@@ -6,10 +6,12 @@ const W = 360;
 const H = 520;
 const COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e", "#3b82f6", "#a855f7"];
 const ORB_R = 18;
+const COMBO_WINDOW_MS = 2800;
 
 type Power = "none" | "bomb" | "freeze" | "multi";
 type Orb = { id: number; x: number; y: number; vy: number; color: string; size: number; fused: boolean; power: Power };
 type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string };
+type ScorePopup = { x: number; y: number; text: string; life: number; color: string };
 
 export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
@@ -20,17 +22,26 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
   const [level, setLevel] = useState(1);
   const [gameOver, setGameOver] = useState(false);
   const [multiUntil, setMultiUntil] = useState(0);
+  const [combo, setCombo] = useState(0);
   const orbsRef = useRef<Orb[]>([]);
   const particlesRef = useRef<Particle[]>([]);
+  const popupsRef = useRef<ScorePopup[]>([]);
   const nextId = useRef(1);
   const scoreRef = useRef(0);
   const levelRef = useRef(1);
   const gameOverRef = useRef(false);
   const freezeUntilRef = useRef(0);
   const multiUntilRef = useRef(0);
+  const comboRef = useRef(0);
+  const lastFusionAtRef = useRef(0);
 
   useEffect(() => setBest(readBestScore("color-cascade-fusion")), []);
-  useEffect(() => { scoreRef.current = score; levelRef.current = level; gameOverRef.current = gameOver; }, [score, level, gameOver]);
+  useEffect(() => {
+    scoreRef.current = score;
+    levelRef.current = level;
+    gameOverRef.current = gameOver;
+    comboRef.current = combo;
+  }, [score, level, gameOver, combo]);
 
   const spawnOrb = useCallback(() => {
     const col = Math.floor(Math.random() * COLORS.length);
@@ -52,51 +63,106 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
   }, []);
 
   const hardReset = useCallback(() => {
-    orbsRef.current = []; particlesRef.current = []; nextId.current = 1;
-    freezeUntilRef.current = 0; multiUntilRef.current = 0;
-    setScore(0); setLevel(1); setGameOver(false); setRunning(true); setMultiUntil(0);
-    scoreRef.current = 0; levelRef.current = 1; gameOverRef.current = false;
+    orbsRef.current = [];
+    particlesRef.current = [];
+    popupsRef.current = [];
+    nextId.current = 1;
+    freezeUntilRef.current = 0;
+    multiUntilRef.current = 0;
+    comboRef.current = 0;
+    lastFusionAtRef.current = 0;
+    setScore(0);
+    setLevel(1);
+    setGameOver(false);
+    setRunning(true);
+    setMultiUntil(0);
+    setCombo(0);
+    scoreRef.current = 0;
+    levelRef.current = 1;
+    gameOverRef.current = false;
   }, []);
 
   useEffect(() => {
     if (!running) return;
-    let raf = 0; let spawnAcc = 0;
+    let raf = 0;
+    let spawnAcc = 0;
     const tick = () => {
       if (!gameOverRef.current) {
         const now = performance.now();
         const frozen = freezeUntilRef.current > now;
         const timeScale = frozen ? 0.35 : 1;
         spawnAcc += 16 * timeScale;
-        if (spawnAcc > Math.max(400, 900 - levelRef.current * 40)) { spawnAcc = 0; spawnOrb(); }
+        if (spawnAcc > Math.max(400, 900 - levelRef.current * 40)) {
+          spawnAcc = 0;
+          spawnOrb();
+        }
         for (const o of orbsRef.current) {
           o.y += o.vy * timeScale;
-          if (o.y > H - ORB_R * o.size - 10) { o.y = H - ORB_R * o.size - 10; o.vy = 0; }
+          if (o.y > H - ORB_R * o.size - 10) {
+            o.y = H - ORB_R * o.size - 10;
+            o.vy = 0;
+          }
         }
-        particlesRef.current = particlesRef.current.filter(p => { p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.life -= 1; return p.life > 0; });
-        if (orbsRef.current.some(o => o.y < 40 && o.vy === 0)) { setGameOver(true); gameOverRef.current = true; setRunning(false); }
+        particlesRef.current = particlesRef.current.filter((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.12;
+          p.life -= 1;
+          return p.life > 0;
+        });
+        popupsRef.current = popupsRef.current.filter((p) => {
+          p.y -= 0.7;
+          p.life -= 1;
+          return p.life > 0;
+        });
+        // Combo timeout
+        if (comboRef.current > 0 && now - lastFusionAtRef.current > COMBO_WINDOW_MS) {
+          comboRef.current = 0;
+          setCombo(0);
+        }
+        if (orbsRef.current.some((o) => o.y < 40 && o.vy === 0)) {
+          setGameOver(true);
+          gameOverRef.current = true;
+          setRunning(false);
+        }
         if (multiUntilRef.current > now) setMultiUntil(multiUntilRef.current);
         else setMultiUntil(0);
       }
       const ctx = canvasRef.current?.getContext("2d");
       if (ctx) {
-        ctx.fillStyle = "#0f0f1a"; ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = "#0f0f1a";
+        ctx.fillRect(0, 0, W, H);
         const frozen = freezeUntilRef.current > performance.now();
         if (frozen) {
           ctx.fillStyle = "rgba(103,232,249,0.12)";
           ctx.fillRect(0, 0, W, H);
         }
-        for (const p of particlesRef.current) { ctx.globalAlpha = p.life / 40; ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill(); }
+        for (const p of particlesRef.current) {
+          ctx.globalAlpha = p.life / 40;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
         ctx.globalAlpha = 1;
         for (const o of orbsRef.current) {
-          ctx.shadowBlur = 14; ctx.shadowColor = o.color; ctx.fillStyle = o.color;
-          ctx.beginPath(); ctx.arc(o.x, o.y, ORB_R * o.size, 0, Math.PI * 2); ctx.fill();
+          ctx.shadowBlur = 14;
+          ctx.shadowColor = o.color;
+          ctx.fillStyle = o.color;
+          ctx.beginPath();
+          ctx.arc(o.x, o.y, ORB_R * o.size, 0, Math.PI * 2);
+          ctx.fill();
           ctx.shadowBlur = 0;
           ctx.fillStyle = "rgba(255,255,255,0.3)";
-          ctx.beginPath(); ctx.arc(o.x - ORB_R * o.size * 0.3, o.y - ORB_R * o.size * 0.3, ORB_R * o.size * 0.25, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath();
+          ctx.arc(o.x - ORB_R * o.size * 0.3, o.y - ORB_R * o.size * 0.3, ORB_R * o.size * 0.25, 0, Math.PI * 2);
+          ctx.fill();
           if (o.power !== "none") {
             ctx.strokeStyle = o.power === "bomb" ? "#f87171" : o.power === "freeze" ? "#67e8f9" : "#fbbf24";
             ctx.lineWidth = 3;
-            ctx.beginPath(); ctx.arc(o.x, o.y, ORB_R * o.size + 4, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(o.x, o.y, ORB_R * o.size + 4, 0, Math.PI * 2);
+            ctx.stroke();
             ctx.fillStyle = "#fff";
             ctx.font = "bold 11px system-ui";
             ctx.textAlign = "center";
@@ -104,6 +170,29 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
             const label = o.power === "bomb" ? "B" : o.power === "freeze" ? "F" : "\u00d7";
             ctx.fillText(label, o.x, o.y);
           }
+        }
+        // Floating score popups
+        for (const p of popupsRef.current) {
+          ctx.globalAlpha = Math.min(1, p.life / 20);
+          ctx.fillStyle = p.color;
+          ctx.font = "bold 14px system-ui";
+          ctx.textAlign = "center";
+          ctx.fillText(p.text, p.x, p.y);
+        }
+        ctx.globalAlpha = 1;
+        // Combo badge
+        if (comboRef.current >= 2) {
+          const cx = W - 52;
+          const cy = 36;
+          ctx.fillStyle = "rgba(251,191,36,0.2)";
+          ctx.beginPath();
+          ctx.roundRect(cx - 40, cy - 16, 80, 32, 8);
+          ctx.fill();
+          ctx.fillStyle = "#fbbf24";
+          ctx.font = "bold 13px system-ui";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(`x${comboRef.current} COMBO`, cx, cy);
         }
         if (multiUntil > 0) {
           ctx.fillStyle = "rgba(251,191,36,0.15)";
@@ -125,7 +214,7 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
     const rect = canvasRef.current!.getBoundingClientRect();
     const mx = (e.clientX - rect.left) * (W / rect.width);
     const my = (e.clientY - rect.top) * (H / rect.height);
-    const hit = orbsRef.current.find(o => Math.hypot(o.x - mx, o.y - my) < ORB_R * o.size + 8);
+    const hit = orbsRef.current.find((o) => Math.hypot(o.x - mx, o.y - my) < ORB_R * o.size + 8);
     if (!hit) return;
     const group = new Set<Orb>();
     const queue = [hit];
@@ -134,39 +223,92 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
       if (group.has(cur)) continue;
       group.add(cur);
       for (const o of orbsRef.current) {
-        if (o.color === cur.color && !group.has(o) && Math.hypot(o.x - cur.x, o.y - cur.y) < ORB_R * (o.size + cur.size) * 1.3) queue.push(o);
+        if (o.color === cur.color && !group.has(o) && Math.hypot(o.x - cur.x, o.y - cur.y) < ORB_R * (o.size + cur.size) * 1.3)
+          queue.push(o);
       }
     }
     if (group.size < 2) return;
+
+    const now = performance.now();
+    // Combo: within window → increment, else reset to 1
+    if (now - lastFusionAtRef.current <= COMBO_WINDOW_MS && comboRef.current > 0) {
+      comboRef.current += 1;
+    } else {
+      comboRef.current = 1;
+    }
+    lastFusionAtRef.current = now;
+    setCombo(comboRef.current);
+    const comboMul = Math.min(5, 1 + (comboRef.current - 1) * 0.5); // 1, 1.5, 2, 2.5, 3… cap 5
+
     const fusedSize = Math.min(3, 1 + Math.log2(group.size));
     const avgX = [...group].reduce((s, o) => s + o.x, 0) / group.size;
     const avgY = [...group].reduce((s, o) => s + o.y, 0) / group.size;
-    const hasBomb = [...group].some(o => o.power === "bomb");
-    const hasFreeze = [...group].some(o => o.power === "freeze");
-    const hasMulti = [...group].some(o => o.power === "multi");
-    orbsRef.current = orbsRef.current.filter(o => !group.has(o));
+    const hasBomb = [...group].some((o) => o.power === "bomb");
+    const hasFreeze = [...group].some((o) => o.power === "freeze");
+    const hasMulti = [...group].some((o) => o.power === "multi");
+    orbsRef.current = orbsRef.current.filter((o) => !group.has(o));
     if (hasBomb) {
-      const toClear = orbsRef.current.filter(o => o.color === hit.color && Math.hypot(o.x - avgX, o.y - avgY) < 120);
-      orbsRef.current = orbsRef.current.filter(o => !toClear.includes(o));
+      const toClear = orbsRef.current.filter((o) => o.color === hit.color && Math.hypot(o.x - avgX, o.y - avgY) < 120);
+      orbsRef.current = orbsRef.current.filter((o) => !toClear.includes(o));
       for (const o of toClear) {
-        for (let i = 0; i < 8; i++) particlesRef.current.push({ x: o.x, y: o.y, vx: (Math.random()-0.5)*8, vy: (Math.random()-0.5)*8, life: 25, color: o.color });
+        for (let i = 0; i < 8; i++)
+          particlesRef.current.push({
+            x: o.x,
+            y: o.y,
+            vx: (Math.random() - 0.5) * 8,
+            vy: (Math.random() - 0.5) * 8,
+            life: 25,
+            color: o.color,
+          });
       }
     }
     if (hasFreeze) freezeUntilRef.current = performance.now() + 4500;
     if (hasMulti) multiUntilRef.current = performance.now() + 6000;
-    orbsRef.current.push({ id: nextId.current++, x: avgX, y: avgY, vy: 0.5, color: hit.color, size: fusedSize, fused: true, power: "none" });
-    let pts = group.size * 15 * levelRef.current;
+    orbsRef.current.push({
+      id: nextId.current++,
+      x: avgX,
+      y: avgY,
+      vy: 0.5,
+      color: hit.color,
+      size: fusedSize,
+      fused: true,
+      power: "none",
+    });
+
+    let pts = Math.round(group.size * 15 * levelRef.current * comboMul);
     if (multiUntilRef.current > performance.now()) pts *= 2;
-    setScore(s => { const next = s + pts; setBest(b => writeBestScore("color-cascade-fusion", Math.max(b, next))); return next; });
-    for (let i = 0; i < group.size * 6; i++) particlesRef.current.push({ x: avgX, y: avgY, vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.5) * 6 - 2, life: 30 + Math.random() * 20, color: hit.color });
-    if (scoreRef.current + pts > levelRef.current * 200) setLevel(l => l + 1);
+
+    const popupColor = comboRef.current >= 3 ? "#fbbf24" : hit.color;
+    const popupText =
+      comboRef.current >= 2
+        ? `+${pts} x${comboRef.current}`
+        : `+${pts}`;
+    popupsRef.current.push({ x: avgX, y: avgY - 10, text: popupText, life: 50, color: popupColor });
+
+    setScore((s) => {
+      const next = s + pts;
+      setBest((b) => writeBestScore("color-cascade-fusion", Math.max(b, next)));
+      return next;
+    });
+    const burst = group.size * 6 + (comboRef.current >= 3 ? 12 : 0);
+    for (let i = 0; i < burst; i++)
+      particlesRef.current.push({
+        x: avgX,
+        y: avgY,
+        vx: (Math.random() - 0.5) * 6,
+        vy: (Math.random() - 0.5) * 6 - 2,
+        life: 30 + Math.random() * 20,
+        color: hit.color,
+      });
+    if (scoreRef.current + pts > levelRef.current * 200) setLevel((l) => l + 1);
   };
 
   const sharePng = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const off = document.createElement("canvas");
-    off.width = W; off.height = H + 60;
+    off.width = W;
+    off.height = H + 60;
     const ctx = off.getContext("2d");
     if (!ctx) return;
     ctx.fillStyle = "#0f0f1a";
@@ -186,19 +328,45 @@ export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale 
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="flex gap-6 text-sm font-medium">
+      <div className="flex gap-6 text-sm font-medium flex-wrap justify-center">
         <span>{es ? "Puntuaci\u00f3n" : "Score"}: {score}</span>
         <span>{es ? "Mejor" : "Best"}: {best}</span>
         <span>{es ? "Nivel" : "Level"}: {level}</span>
+        {combo >= 2 && <span className="text-amber-400 font-bold">Combo x{combo}</span>}
       </div>
-      <canvas ref={canvasRef} width={W} height={H} className="rounded-xl border border-white/10 shadow-lg cursor-pointer bg-black max-w-full" onClick={handleClick} style={{ aspectRatio: `${W}/${H}` }} />
+      <canvas
+        ref={canvasRef}
+        width={W}
+        height={H}
+        className="rounded-xl border border-white/10 shadow-lg cursor-pointer bg-black max-w-full"
+        onClick={handleClick}
+        style={{ aspectRatio: `${W}/${H}` }}
+      />
       <div className="flex gap-3 flex-wrap justify-center">
-        {!running && !gameOver && <button onClick={hardReset} className="rounded-lg bg-cyan-600 px-5 py-2 font-semibold text-white">{es ? "Empezar" : "Start"}</button>}
-        {gameOver && <button onClick={hardReset} className="rounded-lg bg-emerald-600 px-5 py-2 font-semibold text-white">{es ? "Reintentar" : "Retry"}</button>}
-        {running && <button onClick={() => setRunning(false)} className="rounded-lg bg-zinc-700 px-5 py-2 font-semibold text-white">{es ? "Pausa" : "Pause"}</button>}
-        <button onClick={sharePng} className="rounded-lg bg-violet-600 px-5 py-2 font-semibold text-white">{es ? "Compartir PNG" : "Share PNG"}</button>
+        {!running && !gameOver && (
+          <button onClick={hardReset} className="rounded-lg bg-cyan-600 px-5 py-2 font-semibold text-white">
+            {es ? "Empezar" : "Start"}
+          </button>
+        )}
+        {gameOver && (
+          <button onClick={hardReset} className="rounded-lg bg-emerald-600 px-5 py-2 font-semibold text-white">
+            {es ? "Reintentar" : "Retry"}
+          </button>
+        )}
+        {running && (
+          <button onClick={() => setRunning(false)} className="rounded-lg bg-zinc-700 px-5 py-2 font-semibold text-white">
+            {es ? "Pausa" : "Pause"}
+          </button>
+        )}
+        <button onClick={sharePng} className="rounded-lg bg-violet-600 px-5 py-2 font-semibold text-white">
+          {es ? "Compartir PNG" : "Share PNG"}
+        </button>
       </div>
-      <p className="max-w-sm text-center text-xs text-muted-foreground">{es ? "Haz clic en orbes del mismo color adyacentes para fusionarlos. Orbes especiales (B bomba, F congelar, \u00d7 multi) aparecen desde el nivel 2. \u00a1No dejes que se amontonen!" : "Click adjacent matching-color orbs to fuse them. Special orbs (B bomb, F freeze, \u00d7 multi) appear from level 2. Don\u2019t let them pile up!"}</p>
+      <p className="max-w-sm text-center text-xs text-muted-foreground">
+        {es
+          ? "Haz clic en orbes del mismo color adyacentes para fusionarlos. Encaden\u00e1 fusiones r\u00e1pidas para subir el combo (x1.5…x5). Orbes especiales (B bomba, F congelar, \u00d7 multi) desde el nivel 2. \u00a1No dejes que se amontonen!"
+          : "Click adjacent matching-color orbs to fuse them. Chain fusions quickly to raise combo (x1.5…x5). Special orbs (B bomb, F freeze, \u00d7 multi) from level 2. Don\u2019t let them pile up!"}
+      </p>
     </div>
   );
 }
