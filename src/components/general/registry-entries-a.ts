@@ -76,4 +76,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-consumo-agua", name: "WaterConsumptionCalculatorTool", path: "./WaterConsumptionCalculatorTool", export: "WaterConsumptionCalculatorTool" },
   { slug: "calculadora-teorema-pitagoras", name: "PythagoreanCalculatorTool", path: "./PythagoreanCalculatorTool", export: "PythagoreanCalculatorTool" },
   { slug: "conversor-velocidad", name: "SpeedConverterTool", path: "./SpeedConverterTool", export: "SpeedConverterTool" },
+  { slug: "calculadora-media-ponderada", name: "WeightedMeanCalculatorTool", path: "./WeightedMeanCalculatorTool", export: "WeightedMeanCalculatorTool" },
+  { slug: "calculadora-descuento-porcentaje", name: "DiscountPercentageCalculatorTool", path: "./DiscountPercentageCalculatorTool", export: "DiscountPercentageCalculatorTool" },
 ] as const;
