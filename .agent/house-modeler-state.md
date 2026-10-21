@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 247
+runs_done: 248
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331564
-last_known_good_hint: (post META 247 confirmed ~331564 B / 7514 lines, no PLACEHOLDER, tip e34109a)
+approx_bytes: 331335
+last_known_good_hint: (post META 248 confirmed ~331335 B / 7514 lines, no PLACEHOLDER)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -59,8 +59,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: META
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: ERROR on recent tip (e34109a / registry+playgrounds from other agents; previous house-modeler tip READY)
-note: META health check. Monolith intact 331564 B / 7514 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth, truncation risk on full rewrite). Recent ERROR deploys unrelated to this surface.
+deploy: recent tip ERROR from other agents (playgrounds); previous house-modeler READY
+note: META health check. Monolith intact 331335 B / 7514 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth, truncation risk on full rewrite). Recent ERROR deploys unrelated to this surface.
 ```
 
 Refresh after each run.
@@ -87,6 +87,7 @@ META run 244: confirmed READY deploy + monolith health (331247 B); railing-metal
 PRODUCT run 245: railing-metal densify (flutes 10→14 + flecks/weathering) via local clone surgical. runs_done=245. Its Vercel deploys ERROR'd on unrelated catalog duplicate slug (generador-lorem-ipsum); subsequent catalog fixes made tip READY.
 META run 246: confirmed tip READY (6eb3bb0), monolith intact 331563 B / 7513 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth).
 META run 247: confirmed monolith intact 331564 B / 7514 lines, no PLACEHOLDER. Tip e34109a has ERROR deploy from other agents (registry restore + playgrounds). Grass densify deferred again (truncation risk). runs_done=247.
+META run 248: confirmed monolith intact 331335 B / 7514 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth / truncation risk on full rewrite). Recent tip ERROR from playgrounds (unrelated). runs_done=248.
 ```
 
 <!-- end:house-modeler-state.md -->
