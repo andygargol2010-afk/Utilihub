@@ -7,25 +7,33 @@ type Planet = {
   radiusKm: number;
   distanceAu: number;
   color: string;
+  diameterEarth: number;
+  periodYears: number;
+  factEn: string;
+  factEs: string;
   moons?: Moon[];
 };
 
 const PLANETS: Planet[] = [
-  { name: "Mercury", nameEs: "Mercurio", radiusKm: 2439.7, distanceAu: 0.387, color: "#9a8b7a" },
-  { name: "Venus", nameEs: "Venus", radiusKm: 6051.8, distanceAu: 0.723, color: "#e8c07a" },
+  { name: "Mercury", nameEs: "Mercurio", radiusKm: 2439.7, distanceAu: 0.387, color: "#9a8b7a", diameterEarth: 0.38, periodYears: 0.24, factEn: "Closest planet to the Sun; extreme temperature swings.", factEs: "Planeta más cercano al Sol; cambios extremos de temperatura." },
+  { name: "Venus", nameEs: "Venus", radiusKm: 6051.8, distanceAu: 0.723, color: "#e8c07a", diameterEarth: 0.95, periodYears: 0.62, factEn: "Hottest planet due to thick CO₂ atmosphere.", factEs: "Planeta más caliente por su densa atmósfera de CO₂." },
   {
     name: "Earth",
     nameEs: "Tierra",
     radiusKm: 6371,
     distanceAu: 1,
     color: "#4a9be0",
+    diameterEarth: 1,
+    periodYears: 1,
+    factEn: "Only known planet with liquid water and life.",
+    factEs: "Único planeta conocido con agua líquida y vida.",
     moons: [{ name: "Moon", nameEs: "Luna", radiusKm: 1737.4, distanceKm: 384400, color: "#c8c8c8" }],
   },
-  { name: "Mars", nameEs: "Marte", radiusKm: 3389.5, distanceAu: 1.524, color: "#c1440e" },
-  { name: "Jupiter", nameEs: "Júpiter", radiusKm: 69911, distanceAu: 5.203, color: "#d4a574" },
-  { name: "Saturn", nameEs: "Saturno", radiusKm: 58232, distanceAu: 9.537, color: "#e8d5a3" },
-  { name: "Uranus", nameEs: "Urano", radiusKm: 25362, distanceAu: 19.191, color: "#7ec8e3" },
-  { name: "Neptune", nameEs: "Neptuno", radiusKm: 24622, distanceAu: 30.069, color: "#4169e1" },
+  { name: "Mars", nameEs: "Marte", radiusKm: 3389.5, distanceAu: 1.524, color: "#c1440e", diameterEarth: 0.53, periodYears: 1.88, factEn: "Red planet with the tallest volcano in the solar system.", factEs: "Planeta rojo con el volcán más alto del sistema solar." },
+  { name: "Jupiter", nameEs: "Júpiter", radiusKm: 69911, distanceAu: 5.203, color: "#d4a574", diameterEarth: 11.2, periodYears: 11.86, factEn: "Largest planet; Great Red Spot is a centuries-old storm.", factEs: "Planeta más grande; la Gran Mancha Roja es una tormenta de siglos." },
+  { name: "Saturn", nameEs: "Saturno", radiusKm: 58232, distanceAu: 9.537, color: "#e8d5a3", diameterEarth: 9.4, periodYears: 29.46, factEn: "Famous for its spectacular ring system.", factEs: "Famoso por su espectacular sistema de anillos." },
+  { name: "Uranus", nameEs: "Urano", radiusKm: 25362, distanceAu: 19.191, color: "#7ec8e3", diameterEarth: 4.0, periodYears: 84.01, factEn: "Rotates on its side with a 98° axial tilt.", factEs: "Rota de lado con una inclinación axial de 98°." },
+  { name: "Neptune", nameEs: "Neptuno", radiusKm: 24622, distanceAu: 30.069, color: "#4169e1", diameterEarth: 3.9, periodYears: 164.8, factEn: "Farthest planet; winds reach over 2,000 km/h.", factEs: "Planeta más lejano; vientos de más de 2.000 km/h." },
 ];
 
 type ScaleMode = "size" | "distance" | "both";
@@ -165,6 +173,16 @@ export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
         ctx.lineWidth = 1 / zoom;
         ctx.stroke();
       });
+
+      // asteroid belt hint (between Mars ~1.5 AU and Jupiter ~5.2 AU)
+      if (mode !== "size") {
+        const beltR = 28 + 2.8 * 11;
+        ctx.beginPath();
+        ctx.arc(0, 0, beltR, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(180,160,120,0.25)";
+        ctx.lineWidth = 6 / zoom;
+        ctx.stroke();
+      }
 
       // Sun glow
       const sunR = mode === "distance" ? 10 : 14;
@@ -327,6 +345,8 @@ export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
   const btn = (active: boolean) =>
     `px-3 py-1.5 rounded-lg text-sm font-medium transition ${active ? "bg-primary text-primary-foreground" : "bg-muted hover:bg-muted/80"}`;
 
+  const focused = focusIdx !== null ? PLANETS[focusIdx] : null;
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
@@ -417,10 +437,22 @@ export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
         />
       </div>
 
+      {focused && (
+        <div className="rounded-xl border border-primary/30 bg-accent/20 p-4 text-sm">
+          <h3 className="font-semibold text-primary">{es ? focused.nameEs : focused.name}</h3>
+          <ul className="mt-2 space-y-1 text-muted-foreground">
+            <li>{es ? "Diámetro vs Tierra" : "Diameter vs Earth"}: {focused.diameterEarth.toFixed(1)}×</li>
+            <li>{es ? "Distancia" : "Distance"}: {focused.distanceAu.toFixed(2)} AU</li>
+            <li>{es ? "Período orbital" : "Orbital period"}: {focused.periodYears.toFixed(1)} {es ? "años" : "years"}</li>
+            <li className="pt-1 italic">{es ? focused.factEs : focused.factEn}</li>
+          </ul>
+        </div>
+      )}
+
       <p className="text-xs text-muted-foreground leading-relaxed">
         {es
-          ? "Arrastrá planetas para reposicionarlos; arrastrá el fondo para hacer pan; rueda para zoom. El Sol está en el centro. Escalas aproximadas: Júpiter ~11× el diámetro de la Tierra; Neptuno ~30 UA. La Luna aparece junto a la Tierra en modos de tamaño."
-          : "Drag planets to reposition; drag the background to pan; scroll to zoom. The Sun is at the center. Approximate scales: Jupiter ~11× Earth diameter; Neptune ~30 AU. Earth's Moon appears in size modes."}
+          ? "Arrastrá planetas para reposicionarlos; arrastrá el fondo para hacer pan; rueda para zoom. El Sol está en el centro. Escalas aproximadas: Júpiter ~11× el diámetro de la Tierra; Neptuno ~30 UA. La Luna aparece junto a la Tierra en modos de tamaño. El cinturón de asteroides se sugiere entre Marte y Júpiter."
+          : "Drag planets to reposition; drag the background to pan; scroll to zoom. The Sun is at the center. Approximate scales: Jupiter ~11× Earth diameter; Neptune ~30 AU. Earth's Moon appears in size modes. An asteroid belt hint appears between Mars and Jupiter."}
       </p>
     </div>
   );
