@@ -134,7 +134,7 @@ export const TOOL_SEO_OVERRIDES_GAP: Record<string, ToolSeoOverride> = {
       { q: "¿Roma y Amor?", a: "Sí — el par clásico de anagramas." },
     ],
   },
-  palindromo: {
+  "validador-palindromo": {
     metaTitle: "Palindrome Checker — Words & Phrases | UtiliHub",
     metaTitleEs: "Verificador de palíndromos — Palabras y frases | UtiliHub",
     metaDescription: "Check if a word or phrase reads the same forwards and backwards. Free, local, no signup.",
