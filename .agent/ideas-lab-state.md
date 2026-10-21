@@ -68,11 +68,11 @@ path_es: /es/color-cascade-fusion
 path_seo: n/a
 domain: games
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: png
 next_step_required: yes
-notes: IDEATE roll: U=0.7475 (>0.50 → CORE). Weighted sample from weights_core selected games (prev weight 3). last_closed_domain=retention-loops ≠ games, no re-roll. Weights updated: games=1, all other CORE +1. New game distinct from orbit-defender and pulse-catch.
+notes: IDEATE roll: U=0.7475 (>0.50 → CORE). Weighted sample from weights_core selected games (prev weight 3). last_closed_domain=retention-loops ≠ games, no re-roll. Weights updated: games=1, all other CORE +1. New game distinct from orbit-defender and pulse-catch. EXECUTE run 1/6: core fusion loop (adjacent same-color click, fuse to larger orb, particles, levels, score/best) + EN/ES routes + next-step registration. Adsterra kept. Deploy check READY on previous commit; new commits pending deploy.
 adsense-prep_runs: 3
 ```
 
