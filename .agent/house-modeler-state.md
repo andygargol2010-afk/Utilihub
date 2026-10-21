@@ -1,7 +1,7 @@
 # UtiliHub House Modeler — State (3/3)
 
 **Part 3 of 3 — runtime state only.** End marker: `
-PRODUCT run 251: foundation board-formed densify (boards 4→5 + denser dust/stains) via local clone surgical. runs_done=251.
+META run 252: confirmed tip READY + monolith health (331568 B / 7513 lines, no PLACEHOLDER). Wall-masonry densify deferred (no sandbox push auth / truncation risk). runs_done=252.
 <!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
@@ -19,7 +19,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 251
+runs_done: 252
 runs_max: 500
 ```
 
@@ -46,7 +46,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 ```
 path: src/components/general/HouseModeler3D.tsx
 approx_bytes: 331568
-last_known_good_hint: (post PRODUCT 250 gravel densify ~331568 B / 7513 lines, no PLACEHOLDER)
+last_known_good_hint: (post PRODUCT 251 foundation board-formed densify ~331568 B / 7513 lines, no PLACEHOLDER)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -58,11 +58,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: META
 last_date: 2026-10-21
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: pending this push
-note: PRODUCT foundation board-formed densify (boards 4→5, dust 18→26, water stains 5→7) via local clone surgical. Monolith intact, no PLACEHOLDER.
+deploy: READY (tip 1f6ceda)
+note: META health check after foundation densify. Monolith intact 331568 B / 7513 lines, no PLACEHOLDER. Tip READY. Wall-masonry densify deferred (truncation risk / no local push auth).
 ```
 
 Refresh after each run.
@@ -91,10 +91,9 @@ META run 246: confirmed tip READY (6eb3bb0), monolith intact 331563 B / 7513 lin
 META run 247: confirmed monolith intact 331564 B / 7514 lines, no PLACEHOLDER. Tip e34109a has ERROR deploy from other agents (registry restore + playgrounds). Grass densify deferred again (truncation risk). runs_done=247.
 META run 248: confirmed monolith intact 331335 B / 7514 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth / truncation risk on full rewrite). Recent tip ERROR from playgrounds (unrelated). runs_done=248.
 PRODUCT run 249: grass densify (clumps 48→64, blades 30→42, wear 6→8; relief clumps 70→90, blades 46→60) via local clone surgical. runs_done=249.
+PRODUCT run 250: gravel densify (pebbles 120→160, larger stones 18→24, moss patches 8→12, rake lines 7→10) via local clone surgical. runs_done=250.
+PRODUCT run 251: foundation board-formed densify (boards 4→5 + denser dust/stains) via local clone surgical. runs_done=251.
+META run 252: confirmed tip READY + monolith health (331568 B / 7513 lines, no PLACEHOLDER). Wall-masonry densify deferred (no sandbox push auth / truncation risk). runs_done=252.
 ```
 
-
-PRODUCT run 250: gravel densify (pebbles 120→160, larger stones 18→24, moss patches 8→12, rake lines 7→10) via local clone surgical. runs_done=250.
-
-PRODUCT run 251: foundation board-formed densify (boards 4→5 + denser dust/stains) via local clone surgical. runs_done=251.
 <!-- end:house-modeler-state.md -->
