@@ -255,6 +255,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     pathEs: "/es/viajes/compositor-rio-waypoints",
     emoji: "🌊",
   },
+  {
+    id: "solar-system-scale-explorer",
+    nameEn: "Solar System Scale Explorer",
+    nameEs: "Explorador de Escala del Sistema Solar",
+    blurbEn: "Zoom, pan and drag planets to feel true relative sizes and distances of the solar system.",
+    blurbEs: "Hacé zoom, pan y arrastrá planetas para sentir los tamaños y distancias relativos reales del sistema solar.",
+    pathEn: "/solar-system-scale-explorer",
+    pathEs: "/es/solar-system-scale-explorer",
+    emoji: "🔭",
+  },
 ] as const;
 
 /** First id = primary next step. */
@@ -283,6 +293,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "glow-trail": ["gravity-ribbon-canvas", "kaleidoscope-mandala", "neon-sign", "particle-signature"],
   "river-light": ["glow-trail", "aurora", "neon-sign", "particles"],
   "waypoint-river-composer": ["river-light", "glow-trail", "aurora", "neon-signature-composer"],
+  "solar-system-scale-explorer": ["constellation-studio", "aurora", "gravity-particles", "particle-magnet-lab"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
