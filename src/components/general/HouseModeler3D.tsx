@@ -1503,7 +1503,7 @@ function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
 
 function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [86, 112, 58], 26);
-  for (let i = 0; i < 48; i++) {
+  for (let i = 0; i < 64; i++) {
     const x = hash2(i, 2.2) * size;
     const y = hash2(i, 8.4) * size;
     const rx = 5 + hash2(i, 5) * 16;
@@ -1517,7 +1517,7 @@ function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
   }
   ctx.strokeStyle = "rgba(50,70,32,0.18)";
   ctx.lineWidth = 1;
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 42; i++) {
     const x = hash2(i, 12) * size;
     const y = hash2(i, 19) * size;
     ctx.beginPath();
@@ -1526,7 +1526,7 @@ function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
     ctx.stroke();
   }
   // Soft worn patches so the lawn reads as lived-in turf rather than uniform sod.
-  for (let w = 0; w < 6; w++) {
+  for (let w = 0; w < 8; w++) {
     const wx = hash2(w, 21.4) * size;
     const wy = hash2(w, 9.8) * size;
     const wr = 14 + hash2(w, 4.5) * 28;
@@ -1545,7 +1545,7 @@ function paintGrass(ctx: CanvasRenderingContext2D, size: number) {
 function paintGrassRelief(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "#7a7a7a";
   ctx.fillRect(0, 0, size, size);
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 90; i++) {
     const x = hash2(i, 2.2) * size;
     const y = hash2(i, 8.4) * size;
     const rx = 4 + hash2(i, 5) * 14;
@@ -1557,7 +1557,7 @@ function paintGrassRelief(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   ctx.lineWidth = 1;
-  for (let i = 0; i < 46; i++) {
+  for (let i = 0; i < 60; i++) {
     const x = hash2(i, 12) * size;
     const y = hash2(i, 19) * size;
     ctx.strokeStyle = hash2(i, 1.4) > 0.5 ? "rgba(255,255,255,0.45)" : "rgba(20,20,20,0.35)";

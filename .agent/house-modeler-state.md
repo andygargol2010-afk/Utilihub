@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 248
+runs_done: 249
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331335
-last_known_good_hint: (post META 248 confirmed ~331335 B / 7514 lines, no PLACEHOLDER)
+approx_bytes: 331563
+last_known_good_hint: (post PRODUCT 249 grass densify ~331563 B / 7513 lines, no PLACEHOLDER)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-20
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: recent tip ERROR from other agents (playgrounds); previous house-modeler READY
-note: META health check. Monolith intact 331335 B / 7514 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth, truncation risk on full rewrite). Recent ERROR deploys unrelated to this surface.
+deploy: pending this push (tip was ERROR from other agents)
+note: PRODUCT grass densify (clumps 48→64, blades 30→42, wear 6→8; relief 70→90 / 46→60) via local clone surgical. Monolith 331563 B / 7513 lines, no PLACEHOLDER.
 ```
 
 Refresh after each run.
@@ -88,6 +88,7 @@ PRODUCT run 245: railing-metal densify (flutes 10→14 + flecks/weathering) via 
 META run 246: confirmed tip READY (6eb3bb0), monolith intact 331563 B / 7513 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth).
 META run 247: confirmed monolith intact 331564 B / 7514 lines, no PLACEHOLDER. Tip e34109a has ERROR deploy from other agents (registry restore + playgrounds). Grass densify deferred again (truncation risk). runs_done=247.
 META run 248: confirmed monolith intact 331335 B / 7514 lines, no PLACEHOLDER. Grass densify deferred (no sandbox push auth / truncation risk on full rewrite). Recent tip ERROR from playgrounds (unrelated). runs_done=248.
+PRODUCT run 249: grass densify (clumps 48→64, blades 30→42, wear 6→8; relief clumps 70→90, blades 46→60) via local clone surgical. runs_done=249.
 ```
 
 <!-- end:house-modeler-state.md -->
