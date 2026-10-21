@@ -15,7 +15,7 @@ export const ConverterTool = lazy(() => import("./ConverterTool").then((m) => ({
 export const ScienceTool = lazy(() => import("./ScienceTool").then((m) => ({ default: m.ScienceTool })));
 export const FinanceTool = lazy(() => import("./FinanceTool").then((m) => ({ default: m.FinanceTool })));
 export const TextTool = lazy(() => import("./TextTool").then((m) => ({ default: m.TextTool })));
-export const DeveloperTool = lazy(() => import("./DeveloperTool").then((m) => ({ default: m.DeveloperTool })));
+export const DeveloperTool = lazy(() => import("./DevTool").then((m) => ({ default: m.DevTool })));
 export const HealthTool = lazy(() => import("./HealthTool").then((m) => ({ default: m.HealthTool })));
 export const CookingTool = lazy(() => import("./CookingTool").then((m) => ({ default: m.CookingTool })));
 export const EducationTool = lazy(() => import("./EducationTool").then((m) => ({ default: m.EducationTool })));
