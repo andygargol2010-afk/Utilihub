@@ -1,21 +1,19 @@
 import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
+import { SPECIAL_A } from "./registry-special-a";
+import { SPECIAL_B } from "./registry-special-b";
+
+const SPECIAL_BY_SLUG: Record<string, ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>> = {
+  ...SPECIAL_A,
+  ...SPECIAL_B,
+};
 
 /**
- * Thin registry — agents should almost never edit this file.
+ * Thin registry — add specialized tools in registry-special-a/b.tsx.
  *
  * Contract with DeferredToolUi:
- *   GENERAL_TOOL_UI[slug] must be a zero-arg function () => ReactNode
- *   that already closes over the tool + locale.
- *
- * Routing priority:
- *   1. kind image/pdf/media → MediaTool
- *   2. kind document → DocumentTool (must beat config.operation)
- *   3. design/color (kind or slug) → DesignTool
- *   4. config.operation (numeric) → ConfiguredTool
- *   5. other kinds → category tools
- *   6. else → GeneralTool
+ *   GENERAL_TOOL_UI[slug] must be () => ReactNode closing over tool + locale.
  */
 
 const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((t) => [t.slug, t]));
@@ -61,72 +59,57 @@ const EducationToolUi = lazy(() =>
 const SecurityToolUi = lazy(() =>
   import("./SecurityTool").then((m) => ({ default: m.SecurityTool })),
 );
-
-const IMAGE_SLUG_HINTS = [
-  "imagen",
-  "image",
-  "png",
-  "jpg",
-  "jpeg",
-  "webp",
-  "favicon",
-  "comprimir",
-  "redimensionar",
-  "recortar",
-  "rotar-imagen",
-  "escala-grises",
-  "color-dominante",
-];
-const PDF_SLUG_HINTS = ["pdf", "unir-pdf", "dividir-pdf", "reordenar-pdf"];
-const DESIGN_SLUG_HINTS = [
-  "color",
-  "contraste",
-  "paleta",
-  "gradiente",
-  "sombra",
-  "border-radius",
-  "rgb",
-  "hsl",
-  "hex",
-  "css-",
-  "mezclador",
-  "selector-color",
-  "tipografica",
-  "espaciado",
-  "clamp",
-  "filter",
-  "grid-generator",
-];
+const FormulaToolUi = lazy(() =>
+  import("./FormulaTool").then((m) => ({ default: m.FormulaTool })),
+);
+const GeneratorToolUi = lazy(() =>
+  import("./GeneratorTool").then((m) => ({ default: m.GeneratorTool })),
+);
+const DevToolUi = lazy(() =>
+  import("./DevTool").then((m) => ({ default: m.DevTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
   const slug = (tool.slug || "").toLowerCase();
+  const category = (tool.category || "").toLowerCase();
 
-  // 1) File / media tools
-  if (kind === "image" || kind === "pdf" || kind === "media") {
+  const special = SPECIAL_BY_SLUG[tool.slug];
+  if (special) return special;
+
+  if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
+  if (
+    slug.includes("imagen") ||
+    slug.includes("png") ||
+    slug.includes("jpg") ||
+    slug.includes("webp") ||
+    slug.includes("favicon") ||
+    slug.includes("comprimir") ||
+    slug.includes("redimensionar") ||
+    slug.includes("recortar") ||
+    slug.includes("pdf")
+  ) {
     return MediaToolUi;
   }
-  if (IMAGE_SLUG_HINTS.some((h) => slug.includes(h)) || PDF_SLUG_HINTS.some((h) => slug.includes(h))) {
-    return MediaToolUi;
-  }
 
-  // 2) Document tools (must run BEFORE config.operation — they also carry operation)
-  if (kind === "document") {
-    return DocumentToolUi;
-  }
+  if (kind === "document") return DocumentToolUi;
 
-  // 3) Design / color tools
-  if (kind === "design" || kind === "color") {
+  if (kind === "design" || kind === "color") return DesignToolUi;
+  if (
+    slug.includes("color") ||
+    slug.includes("contraste") ||
+    slug.includes("paleta") ||
+    slug.includes("gradiente") ||
+    slug.includes("rgb") ||
+    slug.includes("hsl") ||
+    slug.includes("hex") ||
+    slug.startsWith("css-")
+  ) {
     return DesignToolUi;
   }
-  if (DESIGN_SLUG_HINTS.some((h) => slug.includes(h))) {
-    return DesignToolUi;
-  }
 
-  // 4) Config-driven numeric tools only (ConfiguredTool supports math ops, not document ops)
   if (tool.config && typeof tool.config === "object" && "operation" in tool.config) {
     const op = String((tool.config as { operation?: string }).operation || "");
-    // Document-style operations that slipped through without kind=document
     if (
       op === "pdf-metadata" ||
       op === "text-diff" ||
@@ -139,7 +122,6 @@ function pickComponent(tool: GeneralTool): ToolComp {
     return ConfiguredToolUi;
   }
 
-  // 5) Kind-based category UIs
   if (kind === "converter" || kind === "conversion" || kind === "unit") return ConverterToolUi;
   if (kind === "text" || kind === "code" || kind === "encode") return TextToolUi;
   if (kind === "math" || kind === "stats" || kind === "calculator") return MathToolUi;
@@ -148,6 +130,22 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (kind === "time" || kind === "date" || kind === "timer") return TimeToolUi;
   if (kind === "education" || kind === "school") return EducationToolUi;
   if (kind === "security" || kind === "password") return SecurityToolUi;
+  if (kind === "generator") return GeneratorToolUi;
+  if (kind === "dev" || kind === "developer") return DevToolUi;
+
+  if (category === "math" || category === "matematicas") return MathToolUi;
+  if (category === "science" || category === "ciencia") return ScienceToolUi;
+  if (category === "formula") return FormulaToolUi;
+  if (category === "finance" || category === "finanzas") return FinanceToolUi;
+  if (category === "education" || category === "educacion") return EducationToolUi;
+  if (category === "generator" || category === "generadores") return GeneratorToolUi;
+  if (category === "text" || category === "texto") return TextToolUi;
+  if (category === "dev" || category === "desarrollo") return DevToolUi;
+  if (category === "media") return MediaToolUi;
+  if (category === "design" || category === "diseno") return DesignToolUi;
+  if (category === "security" || category === "seguridad") return SecurityToolUi;
+  if (category === "time" || category === "fechas") return TimeToolUi;
+  if (category === "converter" || category === "conversiones") return ConverterToolUi;
 
   return GeneralToolUi;
 }
@@ -164,8 +162,6 @@ function buildLazyRegistry(locale: "en" | "es") {
       if (!tool) return undefined;
 
       const Comp = pickComponent(tool);
-
-      // Zero-arg renderer — DeferredToolUi calls render() with no props.
       const render = () => <Comp tool={tool} locale={locale} />;
       cache.set(prop, render);
       return render;
