@@ -8,6 +8,7 @@ type Planet = {
   distanceAu: number;
   color: string;
   diameterEarth: number;
+  massEarth: number;
   periodYears: number;
   factEn: string;
   factEs: string;
@@ -15,8 +16,8 @@ type Planet = {
 };
 
 const PLANETS: Planet[] = [
-  { name: "Mercury", nameEs: "Mercurio", radiusKm: 2439.7, distanceAu: 0.387, color: "#9a8b7a", diameterEarth: 0.38, periodYears: 0.24, factEn: "Closest planet to the Sun; extreme temperature swings.", factEs: "Planeta más cercano al Sol; cambios extremos de temperatura." },
-  { name: "Venus", nameEs: "Venus", radiusKm: 6051.8, distanceAu: 0.723, color: "#e8c07a", diameterEarth: 0.95, periodYears: 0.62, factEn: "Hottest planet due to thick CO₂ atmosphere.", factEs: "Planeta más caliente por su densa atmósfera de CO₂." },
+  { name: "Mercury", nameEs: "Mercurio", radiusKm: 2439.7, distanceAu: 0.387, color: "#9a8b7a", diameterEarth: 0.38, massEarth: 0.055, periodYears: 0.24, factEn: "Closest planet to the Sun; extreme temperature swings.", factEs: "Planeta más cercano al Sol; cambios extremos de temperatura." },
+  { name: "Venus", nameEs: "Venus", radiusKm: 6051.8, distanceAu: 0.723, color: "#e8c07a", diameterEarth: 0.95, massEarth: 0.815, periodYears: 0.62, factEn: "Hottest planet due to thick CO₂ atmosphere.", factEs: "Planeta más caliente por su densa atmósfera de CO₂." },
   {
     name: "Earth",
     nameEs: "Tierra",
@@ -24,16 +25,49 @@ const PLANETS: Planet[] = [
     distanceAu: 1,
     color: "#4a9be0",
     diameterEarth: 1,
+    massEarth: 1,
     periodYears: 1,
     factEn: "Only known planet with liquid water and life.",
     factEs: "Único planeta conocido con agua líquida y vida.",
     moons: [{ name: "Moon", nameEs: "Luna", radiusKm: 1737.4, distanceKm: 384400, color: "#c8c8c8" }],
   },
-  { name: "Mars", nameEs: "Marte", radiusKm: 3389.5, distanceAu: 1.524, color: "#c1440e", diameterEarth: 0.53, periodYears: 1.88, factEn: "Red planet with the tallest volcano in the solar system.", factEs: "Planeta rojo con el volcán más alto del sistema solar." },
-  { name: "Jupiter", nameEs: "Júpiter", radiusKm: 69911, distanceAu: 5.203, color: "#d4a574", diameterEarth: 11.2, periodYears: 11.86, factEn: "Largest planet; Great Red Spot is a centuries-old storm.", factEs: "Planeta más grande; la Gran Mancha Roja es una tormenta de siglos." },
-  { name: "Saturn", nameEs: "Saturno", radiusKm: 58232, distanceAu: 9.537, color: "#e8d5a3", diameterEarth: 9.4, periodYears: 29.46, factEn: "Famous for its spectacular ring system.", factEs: "Famoso por su espectacular sistema de anillos." },
-  { name: "Uranus", nameEs: "Urano", radiusKm: 25362, distanceAu: 19.191, color: "#7ec8e3", diameterEarth: 4.0, periodYears: 84.01, factEn: "Rotates on its side with a 98° axial tilt.", factEs: "Rota de lado con una inclinación axial de 98°." },
-  { name: "Neptune", nameEs: "Neptuno", radiusKm: 24622, distanceAu: 30.069, color: "#4169e1", diameterEarth: 3.9, periodYears: 164.8, factEn: "Farthest planet; winds reach over 2,000 km/h.", factEs: "Planeta más lejano; vientos de más de 2.000 km/h." },
+  { name: "Mars", nameEs: "Marte", radiusKm: 3389.5, distanceAu: 1.524, color: "#c1440e", diameterEarth: 0.53, massEarth: 0.107, periodYears: 1.88, factEn: "Red planet with the tallest volcano in the solar system.", factEs: "Planeta rojo con el volcán más alto del sistema solar." },
+  {
+    name: "Jupiter",
+    nameEs: "Júpiter",
+    radiusKm: 69911,
+    distanceAu: 5.203,
+    color: "#d4a574",
+    diameterEarth: 11.2,
+    massEarth: 317.8,
+    periodYears: 11.86,
+    factEn: "Largest planet; Great Red Spot is a centuries-old storm.",
+    factEs: "Planeta más grande; la Gran Mancha Roja es una tormenta de siglos.",
+    moons: [
+      { name: "Io", nameEs: "Ío", radiusKm: 1821.6, distanceKm: 421700, color: "#f4d03f" },
+      { name: "Europa", nameEs: "Europa", radiusKm: 1560.8, distanceKm: 671100, color: "#aed6f1" },
+      { name: "Ganymede", nameEs: "Ganimedes", radiusKm: 2634.1, distanceKm: 1070400, color: "#b0bec5" },
+      { name: "Callisto", nameEs: "Calisto", radiusKm: 2410.3, distanceKm: 1882700, color: "#7f8c8d" },
+    ],
+  },
+  {
+    name: "Saturn",
+    nameEs: "Saturno",
+    radiusKm: 58232,
+    distanceAu: 9.537,
+    color: "#e8d5a3",
+    diameterEarth: 9.4,
+    massEarth: 95.2,
+    periodYears: 29.46,
+    factEn: "Famous for its spectacular ring system.",
+    factEs: "Famoso por su espectacular sistema de anillos.",
+    moons: [
+      { name: "Titan", nameEs: "Titán", radiusKm: 2574.7, distanceKm: 1221870, color: "#d4a017" },
+      { name: "Rhea", nameEs: "Rea", radiusKm: 763.8, distanceKm: 527040, color: "#d5d8dc" },
+    ],
+  },
+  { name: "Uranus", nameEs: "Urano", radiusKm: 25362, distanceAu: 19.191, color: "#7ec8e3", diameterEarth: 4.0, massEarth: 14.5, periodYears: 84.01, factEn: "Rotates on its side with a 98° axial tilt.", factEs: "Rota de lado con una inclinación axial de 98°." },
+  { name: "Neptune", nameEs: "Neptuno", radiusKm: 24622, distanceAu: 30.069, color: "#4169e1", diameterEarth: 3.9, massEarth: 17.1, periodYears: 164.8, factEn: "Farthest planet; winds reach over 2,000 km/h.", factEs: "Planeta más lejano; vientos de más de 2.000 km/h." },
 ];
 
 type ScaleMode = "size" | "distance" | "both";
@@ -51,6 +85,14 @@ function orbitRadius(p: Planet, mode: ScaleMode, i: number): number {
   // AU-based spread; Neptune at ~30 AU
   return 28 + p.distanceAu * 11;
 }
+
+// Subtle static starfield (generated once)
+const STARS = Array.from({ length: 80 }, () => ({
+  x: Math.random() * 1000 - 500,
+  y: Math.random() * 600 - 300,
+  r: Math.random() * 1.2 + 0.3,
+  a: Math.random() * 0.5 + 0.3,
+}));
 
 export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -161,10 +203,18 @@ export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
       ctx.clearRect(0, 0, w, h);
       ctx.drawImage(trail, 0, 0);
 
-      // orbit rings
+      // starfield (static relative to canvas, subtle)
       ctx.save();
       ctx.translate(cx, cy);
       ctx.scale(zoom, zoom);
+      STARS.forEach((s) => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.a * 0.6})`;
+        ctx.fill();
+      });
+
+      // orbit rings
       PLANETS.forEach((p, i) => {
         const r = orbitRadius(p, mode, i);
         ctx.beginPath();
@@ -174,14 +224,19 @@ export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
         ctx.stroke();
       });
 
-      // asteroid belt hint (between Mars ~1.5 AU and Jupiter ~5.2 AU)
+      // asteroid belt hint (scattered points between Mars and Jupiter)
       if (mode !== "size") {
         const beltR = 28 + 2.8 * 11;
-        ctx.beginPath();
-        ctx.arc(0, 0, beltR, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(180,160,120,0.25)";
-        ctx.lineWidth = 6 / zoom;
-        ctx.stroke();
+        for (let k = 0; k < 24; k++) {
+          const ang = (k / 24) * Math.PI * 2 + 0.3;
+          const rr = beltR + (Math.sin(k * 1.7) * 4);
+          const bx = Math.cos(ang) * rr;
+          const by = Math.sin(ang) * rr;
+          ctx.beginPath();
+          ctx.arc(bx, by, 1.1 / zoom, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(180,160,120,0.55)";
+          ctx.fill();
+        }
       }
 
       // Sun glow
@@ -233,18 +288,19 @@ export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
           ctx.stroke();
         }
 
-        // Moon (Earth)
+        // Moons (size/both modes)
         if (p.moons && (mode === "size" || mode === "both")) {
-          const m = p.moons[0];
-          const mr = Math.max(1.5, Math.log10(m.radiusKm) * 1.6);
-          const md = pr + 8;
-          const ma = a * 8;
-          const mx = x + Math.cos(ma) * md;
-          const my = y + Math.sin(ma) * md;
-          ctx.beginPath();
-          ctx.arc(mx, my, mr, 0, Math.PI * 2);
-          ctx.fillStyle = m.color;
-          ctx.fill();
+          p.moons.forEach((m, mi) => {
+            const mr = Math.max(1.2, Math.log10(m.radiusKm) * 1.4);
+            const md = pr + 6 + mi * 5.5;
+            const ma = a * (6 + mi * 1.2) + mi * 0.8;
+            const mx = x + Math.cos(ma) * md;
+            const my = y + Math.sin(ma) * md;
+            ctx.beginPath();
+            ctx.arc(mx, my, mr, 0, Math.PI * 2);
+            ctx.fillStyle = m.color;
+            ctx.fill();
+          });
         }
 
         if (showLabels) {
@@ -441,7 +497,16 @@ export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
         <div className="rounded-xl border border-primary/30 bg-accent/20 p-4 text-sm">
           <h3 className="font-semibold text-primary">{es ? focused.nameEs : focused.name}</h3>
           <ul className="mt-2 space-y-1 text-muted-foreground">
-            <li>{es ? "Diámetro vs Tierra" : "Diameter vs Earth"}: {focused.diameterEarth.toFixed(1)}×</li>
+            <li>
+              {es ? "Diámetro vs Tierra" : "Diameter vs Earth"}: {focused.diameterEarth.toFixed(1)}×
+              <div className="mt-1 h-2 w-full max-w-xs overflow-hidden rounded-full bg-muted">
+                <div
+                  className="h-full rounded-full bg-primary/80"
+                  style={{ width: `${Math.min(100, focused.diameterEarth * 8)}%` }}
+                />
+              </div>
+            </li>
+            <li>{es ? "Masa vs Tierra" : "Mass vs Earth"}: {focused.massEarth.toFixed(focused.massEarth < 1 ? 2 : 0)}×</li>
             <li>{es ? "Distancia" : "Distance"}: {focused.distanceAu.toFixed(2)} AU</li>
             <li>{es ? "Período orbital" : "Orbital period"}: {focused.periodYears.toFixed(1)} {es ? "años" : "years"}</li>
             <li className="pt-1 italic">{es ? focused.factEs : focused.factEn}</li>
@@ -451,8 +516,8 @@ export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
 
       <p className="text-xs text-muted-foreground leading-relaxed">
         {es
-          ? "Arrastrá planetas para reposicionarlos; arrastrá el fondo para hacer pan; rueda para zoom. El Sol está en el centro. Escalas aproximadas: Júpiter ~11× el diámetro de la Tierra; Neptuno ~30 UA. La Luna aparece junto a la Tierra en modos de tamaño. El cinturón de asteroides se sugiere entre Marte y Júpiter."
-          : "Drag planets to reposition; drag the background to pan; scroll to zoom. The Sun is at the center. Approximate scales: Jupiter ~11× Earth diameter; Neptune ~30 AU. Earth's Moon appears in size modes. An asteroid belt hint appears between Mars and Jupiter."}
+          ? "Arrastrá planetas para reposicionarlos; arrastrá el fondo para hacer pan; rueda para zoom. El Sol está en el centro. Escalas aproximadas: Júpiter ~11× el diámetro de la Tierra; Neptuno ~30 UA. Lunas (incluida la Luna, Galileanas y Titán) aparecen en modos de tamaño. Cinturón de asteroides sugerido entre Marte y Júpiter."
+          : "Drag planets to reposition; drag the background to pan; scroll to zoom. The Sun is at the center. Approximate scales: Jupiter ~11× Earth diameter; Neptune ~30 AU. Moons (including Earth's Moon, Galileans and Titan) appear in size modes. Asteroid belt hint between Mars and Jupiter."}
       </p>
     </div>
   );
