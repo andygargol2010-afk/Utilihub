@@ -16,13 +16,13 @@ last_closed_id: daily-progress-constellation
 p_fixed: 0.35
 
 weights_core:
-  kits: 9
-  journeys: 6
-  games: 3
-  simulators: 5
-  studio-composition: 7
-  playgrounds: 1
-  quality-lift: 2
+  kits: 10
+  journeys: 7
+  games: 1
+  simulators: 6
+  studio-composition: 8
+  playgrounds: 2
+  quality-lift: 3
 
 weights_growth:
   traffic-bets: 3
@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: idle
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive Color Cascade Fusion — a rules-based arcade game where colored orbs fall under gravity. Click adjacent matching colors to fuse them into larger orbs, triggering chain reactions and combo multipliers. Score climbs with fusion size and chains; levels increase speed and introduce special power-orbs (bomb, freeze, multiplier). Visual particle bursts on fusion, progressive difficulty, high-score share via PNG. EN+ES full routes with next-step.
+id: color-cascade-fusion
+path_en: /color-cascade-fusion
+path_es: /es/color-cascade-fusion
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: n/a
-notes: Previous project daily-progress-constellation closed after 5 runs. Ready for IDEATE.
+domain: games
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: png
+next_step_required: yes
+notes: IDEATE roll: U=0.7475 (>0.50 → CORE). Weighted sample from weights_core selected games (prev weight 3). last_closed_domain=retention-loops ≠ games, no re-roll. Weights updated: games=1, all other CORE +1. New game distinct from orbit-defender and pulse-catch.
 adsense-prep_runs: 3
 ```
 
