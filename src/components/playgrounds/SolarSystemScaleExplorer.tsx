@@ -1,178 +1,426 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
+type Moon = { name: string; nameEs: string; radiusKm: number; distanceKm: number; color: string };
 type Planet = {
   name: string;
   nameEs: string;
   radiusKm: number;
   distanceAu: number;
   color: string;
-  moons?: { name: string; radiusKm: number; distanceKm: number; color: string }[];
+  moons?: Moon[];
 };
 
 const PLANETS: Planet[] = [
-  { name: "Mercury", nameEs: "Mercurio", radiusKm: 2439.7, distanceAu: 0.39, color: "#8c7a6b" },
-  { name: "Venus", nameEs: "Venus", radiusKm: 6051.8, distanceAu: 0.72, color: "#e6c07b" },
-  { name: "Earth", nameEs: "Tierra", radiusKm: 6371, distanceAu: 1, color: "#4a90d9", moons: [{ name: "Moon", radiusKm: 1737.4, distanceKm: 384400, color: "#ccc" }] },
-  { name: "Mars", nameEs: "Marte", radiusKm: 3389.5, distanceAu: 1.52, color: "#c1440e" },
-  { name: "Jupiter", nameEs: "Júpiter", radiusKm: 69911, distanceAu: 5.2, color: "#d4a574" },
-  { name: "Saturn", nameEs: "Saturno", radiusKm: 58232, distanceAu: 9.58, color: "#e8d5a3" },
-  { name: "Uranus", nameEs: "Urano", radiusKm: 25362, distanceAu: 19.22, color: "#7ec8e3" },
-  { name: "Neptune", nameEs: "Neptuno", radiusKm: 24622, distanceAu: 30.05, color: "#4169e1" },
+  { name: "Mercury", nameEs: "Mercurio", radiusKm: 2439.7, distanceAu: 0.387, color: "#9a8b7a" },
+  { name: "Venus", nameEs: "Venus", radiusKm: 6051.8, distanceAu: 0.723, color: "#e8c07a" },
+  {
+    name: "Earth",
+    nameEs: "Tierra",
+    radiusKm: 6371,
+    distanceAu: 1,
+    color: "#4a9be0",
+    moons: [{ name: "Moon", nameEs: "Luna", radiusKm: 1737.4, distanceKm: 384400, color: "#c8c8c8" }],
+  },
+  { name: "Mars", nameEs: "Marte", radiusKm: 3389.5, distanceAu: 1.524, color: "#c1440e" },
+  { name: "Jupiter", nameEs: "Júpiter", radiusKm: 69911, distanceAu: 5.203, color: "#d4a574" },
+  { name: "Saturn", nameEs: "Saturno", radiusKm: 58232, distanceAu: 9.537, color: "#e8d5a3" },
+  { name: "Uranus", nameEs: "Urano", radiusKm: 25362, distanceAu: 19.191, color: "#7ec8e3" },
+  { name: "Neptune", nameEs: "Neptuno", radiusKm: 24622, distanceAu: 30.069, color: "#4169e1" },
 ];
 
 type ScaleMode = "size" | "distance" | "both";
 
 type Props = { locale?: "en" | "es" };
 
+function planetRadius(p: Planet, mode: ScaleMode): number {
+  if (mode === "distance") return 6;
+  // log scale so Jupiter is clearly larger than Earth without swallowing the canvas
+  return Math.max(3.5, Math.log10(p.radiusKm) * 2.8);
+}
+
+function orbitRadius(p: Planet, mode: ScaleMode, i: number): number {
+  if (mode === "size") return 36 + i * 28;
+  // AU-based spread; Neptune at ~30 AU
+  return 28 + p.distanceAu * 11;
+}
+
 export function SolarSystemScaleExplorer({ locale = "en" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<ScaleMode>("both");
   const [showLabels, setShowLabels] = useState(true);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [focusIdx, setFocusIdx] = useState<number | null>(null);
+  const [animSpeed, setAnimSpeed] = useState(1);
+  const [trailFade, setTrailFade] = useState(0.92);
   const [dragging, setDragging] = useState<number | null>(null);
-  const [positions, setPositions] = useState<{ x: number; y: number }[]>([]);
+  const [panning, setPanning] = useState(false);
+  const lastPtr = useRef({ x: 0, y: 0 });
+  const anglesRef = useRef<number[]>(PLANETS.map((_, i) => (i / PLANETS.length) * Math.PI * 2));
+  const overridesRef = useRef<(null | { x: number; y: number })[]>(PLANETS.map(() => null));
+  const trailCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const es = locale === "es";
+
+  const resetOrbits = useCallback(() => {
+    overridesRef.current = PLANETS.map(() => null);
+    anglesRef.current = PLANETS.map((_, i) => (i / PLANETS.length) * Math.PI * 2);
+    setPan({ x: 0, y: 0 });
+    setZoom(1);
+    setFocusIdx(null);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    let trail = trailCanvasRef.current;
+    if (!trail) {
+      trail = document.createElement("canvas");
+      trailCanvasRef.current = trail;
+    }
+    const tctx = trail.getContext("2d");
+    if (!tctx) return;
+
     const resize = () => {
-      const rect = canvas.parentElement?.getBoundingClientRect();
-      if (rect) {
-        canvas.width = rect.width;
-        canvas.height = Math.min(rect.width * 0.6, 500);
-      }
+      const rect = container.getBoundingClientRect();
+      const w = Math.floor(rect.width);
+      const h = Math.min(Math.floor(rect.width * 0.58), 520);
+      canvas.width = w;
+      canvas.height = h;
+      trail!.width = w;
+      trail!.height = h;
+      tctx.clearRect(0, 0, w, h);
     };
     resize();
-    window.addEventListener("resize", resize);
+    const ro = new ResizeObserver(resize);
+    ro.observe(container);
 
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
+    let raf = 0;
+    let last = performance.now();
 
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const draw = (now: number) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      const w = canvas.width;
+      const h = canvas.height;
+      const cx = w / 2 + pan.x;
+      const cy = h / 2 + pan.y;
+
+      // fade trails
+      tctx.fillStyle = `rgba(2,6,23,${1 - trailFade})`;
+      tctx.fillRect(0, 0, w, h);
+
+      // advance angles (Kepler-ish: closer = faster)
+      PLANETS.forEach((p, i) => {
+        if (overridesRef.current[i]) return;
+        const period = Math.pow(p.distanceAu, 1.5);
+        anglesRef.current[i] += (dt * animSpeed * 0.35) / Math.max(0.2, period);
+      });
+
+      // focus auto-pan toward selected planet
+      if (focusIdx !== null && !dragging && !panning) {
+        const p = PLANETS[focusIdx];
+        const r = orbitRadius(p, mode, focusIdx);
+        const a = anglesRef.current[focusIdx];
+        const ov = overridesRef.current[focusIdx];
+        const px = ov ? ov.x : Math.cos(a) * r;
+        const py = ov ? ov.y : Math.sin(a) * r;
+        const targetX = -px * zoom;
+        const targetY = -py * zoom;
+        setPan((prev) => ({
+          x: prev.x + (targetX - prev.x) * 0.06,
+          y: prev.y + (targetY - prev.y) * 0.06,
+        }));
+      }
+
+      // trails
+      PLANETS.forEach((p, i) => {
+        const r = orbitRadius(p, mode, i);
+        const a = anglesRef.current[i];
+        const ov = overridesRef.current[i];
+        const x = cx + (ov ? ov.x : Math.cos(a) * r) * zoom;
+        const y = cy + (ov ? ov.y : Math.sin(a) * r) * zoom;
+        tctx.beginPath();
+        tctx.arc(x, y, 1.2, 0, Math.PI * 2);
+        tctx.fillStyle = p.color + "aa";
+        tctx.fill();
+      });
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(trail, 0, 0);
+
+      // orbit rings
       ctx.save();
-      ctx.translate(centerX + pan.x, centerY + pan.y);
+      ctx.translate(cx, cy);
       ctx.scale(zoom, zoom);
+      PLANETS.forEach((p, i) => {
+        const r = orbitRadius(p, mode, i);
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(255,255,255,0.08)";
+        ctx.lineWidth = 1 / zoom;
+        ctx.stroke();
+      });
 
-      // Sun
+      // Sun glow
+      const sunR = mode === "distance" ? 10 : 14;
+      const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, sunR * 2.5);
+      grd.addColorStop(0, "#fff8c0");
+      grd.addColorStop(0.4, "#f9d71c");
+      grd.addColorStop(1, "rgba(249,215,28,0)");
       ctx.beginPath();
-      ctx.arc(0, 0, 20, 0, Math.PI * 2);
+      ctx.arc(0, 0, sunR * 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(0, 0, sunR, 0, Math.PI * 2);
       ctx.fillStyle = "#f9d71c";
       ctx.fill();
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 1;
-      ctx.stroke();
 
       PLANETS.forEach((p, i) => {
-        let r = 8;
-        let dist = 40 + i * 30;
-        if (mode === "size" || mode === "both") {
-          r = Math.max(4, Math.log10(p.radiusKm) * 3);
-        }
-        if (mode === "distance" || mode === "both") {
-          dist = 30 + p.distanceAu * 12;
-        }
-        const pos = positions[i] || { x: dist, y: 0 };
-        const x = pos.x;
-        const y = pos.y;
+        const rOrb = orbitRadius(p, mode, i);
+        const a = anglesRef.current[i];
+        const ov = overridesRef.current[i];
+        const x = ov ? ov.x : Math.cos(a) * rOrb;
+        const y = ov ? ov.y : Math.sin(a) * rOrb;
+        const pr = planetRadius(p, mode);
 
-        // Trail
+        // planet glow
+        const pg = ctx.createRadialGradient(x, y, 0, x, y, pr * 2);
+        pg.addColorStop(0, p.color);
+        pg.addColorStop(1, "transparent");
         ctx.beginPath();
-        ctx.arc(0, 0, Math.hypot(x, y), 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(255,255,255,0.15)";
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        ctx.arc(x, y, pr * 2, 0, Math.PI * 2);
+        ctx.fillStyle = pg;
+        ctx.fill();
 
-        // Planet
         ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.arc(x, y, pr, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.fill();
-        ctx.strokeStyle = "#fff";
+        ctx.strokeStyle = "rgba(255,255,255,0.55)";
+        ctx.lineWidth = 1 / zoom;
         ctx.stroke();
 
+        // Saturn ring hint
+        if (p.name === "Saturn") {
+          ctx.beginPath();
+          ctx.ellipse(x, y, pr * 1.9, pr * 0.55, -0.3, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(232,213,163,0.7)";
+          ctx.lineWidth = 1.5 / zoom;
+          ctx.stroke();
+        }
+
+        // Moon (Earth)
+        if (p.moons && (mode === "size" || mode === "both")) {
+          const m = p.moons[0];
+          const mr = Math.max(1.5, Math.log10(m.radiusKm) * 1.6);
+          const md = pr + 8;
+          const ma = a * 8;
+          const mx = x + Math.cos(ma) * md;
+          const my = y + Math.sin(ma) * md;
+          ctx.beginPath();
+          ctx.arc(mx, my, mr, 0, Math.PI * 2);
+          ctx.fillStyle = m.color;
+          ctx.fill();
+        }
+
         if (showLabels) {
-          ctx.fillStyle = "#fff";
-          ctx.font = "12px sans-serif";
-          ctx.fillText(es ? p.nameEs : p.name, x + r + 4, y);
+          ctx.fillStyle = focusIdx === i ? "#fff" : "rgba(255,255,255,0.85)";
+          ctx.font = `${Math.max(10, 11 / zoom)}px system-ui,sans-serif`;
+          ctx.fillText(es ? p.nameEs : p.name, x + pr + 4, y + 3);
         }
       });
 
       ctx.restore();
+      raf = requestAnimationFrame(draw);
     };
 
-    let anim = requestAnimationFrame(function loop() {
-      draw();
-      anim = requestAnimationFrame(loop);
-    });
-
+    raf = requestAnimationFrame(draw);
     return () => {
-      cancelAnimationFrame(anim);
-      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(raf);
+      ro.disconnect();
     };
-  }, [mode, showLabels, zoom, pan, positions, es]);
+  }, [mode, showLabels, zoom, pan, animSpeed, trailFade, focusIdx, dragging, panning, es]);
+
+  const hitTest = (clientX: number, clientY: number): number | null => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    const mx = (clientX - rect.left - canvas.width / 2 - pan.x) / zoom;
+    const my = (clientY - rect.top - canvas.height / 2 - pan.y) / zoom;
+    for (let i = PLANETS.length - 1; i >= 0; i--) {
+      const p = PLANETS[i];
+      const rOrb = orbitRadius(p, mode, i);
+      const a = anglesRef.current[i];
+      const ov = overridesRef.current[i];
+      const x = ov ? ov.x : Math.cos(a) * rOrb;
+      const y = ov ? ov.y : Math.sin(a) * rOrb;
+      const pr = planetRadius(p, mode);
+      if (Math.hypot(mx - x, my - y) < Math.max(pr + 8, 14)) return i;
+    }
+    return null;
+  };
 
   const onPointerDown = (e: React.PointerEvent) => {
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const mx = e.clientX - rect.left - rect.width / 2 - pan.x;
-    const my = e.clientY - rect.top - rect.height / 2 - pan.y;
-    // simple hit
-    for (let i = PLANETS.length - 1; i >= 0; i--) {
-      const p = positions[i] || { x: 40 + i * 30, y: 0 };
-      const dist = Math.hypot(mx - p.x * zoom, my - p.y * zoom);
-      if (dist < 20) {
-        setDragging(i);
-        return;
-      }
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    lastPtr.current = { x: e.clientX, y: e.clientY };
+    const hit = hitTest(e.clientX, e.clientY);
+    if (hit !== null) {
+      setDragging(hit);
+      setFocusIdx(hit);
+    } else {
+      setPanning(true);
     }
-    setDragging(null);
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
-    if (dragging === null) return;
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const mx = (e.clientX - rect.left - rect.width / 2 - pan.x) / zoom;
-    const my = (e.clientY - rect.top - rect.height / 2 - pan.y) / zoom;
-    setPositions((prev) => {
-      const next = [...prev];
-      next[dragging] = { x: mx, y: my };
-      return next;
-    });
+    if (dragging !== null) {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const mx = (e.clientX - rect.left - canvas.width / 2 - pan.x) / zoom;
+      const my = (e.clientY - rect.top - canvas.height / 2 - pan.y) / zoom;
+      overridesRef.current[dragging] = { x: mx, y: my };
+      return;
+    }
+    if (panning) {
+      const dx = e.clientX - lastPtr.current.x;
+      const dy = e.clientY - lastPtr.current.y;
+      lastPtr.current = { x: e.clientX, y: e.clientY };
+      setPan((prev) => ({ x: prev.x + dx, y: prev.y + dy }));
+    }
   };
 
-  const onPointerUp = () => setDragging(null);
+  const onPointerUp = () => {
+    setDragging(null);
+    setPanning(false);
+  };
+
+  const onWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    setZoom((z) => Math.min(4, Math.max(0.25, z * (e.deltaY > 0 ? 0.92 : 1.08))));
+  };
+
+  const shareUrl = () => {
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    if (navigator.share) {
+      navigator.share({ title: es ? "Escala del Sistema Solar" : "Solar System Scale", url }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+    }
+  };
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const a = document.createElement("a");
+    a.download = "solar-system-scale.png";
+    a.href = canvas.toDataURL("image/png");
+    a.click();
+  };
+
+  const btn = (active: boolean) =>
+    `px-3 py-1.5 rounded-lg text-sm font-medium transition ${active ? "bg-primary text-primary-foreground" : "bg-muted hover:bg-muted/80"}`;
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-2 text-sm">
-        <button onClick={() => setMode("size")} className={`px-3 py-1 rounded ${mode === "size" ? "bg-primary text-primary-foreground" : "bg-muted"}`}>{es ? "Solo tamaño" : "Size only"}</button>
-        <button onClick={() => setMode("distance")} className={`px-3 py-1 rounded ${mode === "distance" ? "bg-primary text-primary-foreground" : "bg-muted"}`}>{es ? "Solo distancia" : "Distance only"}</button>
-        <button onClick={() => setMode("both")} className={`px-3 py-1 rounded ${mode === "both" ? "bg-primary text-primary-foreground" : "bg-muted"}`}>{es ? "Ambos" : "Both"}</button>
-        <button onClick={() => setShowLabels(!showLabels)} className="px-3 py-1 rounded bg-muted">{showLabels ? (es ? "Ocultar etiquetas" : "Hide labels") : (es ? "Mostrar etiquetas" : "Show labels")}</button>
-        <button onClick={() => setZoom((z) => Math.min(3, z + 0.2))} className="px-3 py-1 rounded bg-muted">+</button>
-        <button onClick={() => setZoom((z) => Math.max(0.3, z - 0.2))} className="px-3 py-1 rounded bg-muted">−</button>
+      <div className="flex flex-wrap gap-2">
+        <button type="button" onClick={() => setMode("size")} className={btn(mode === "size")}>
+          {es ? "Solo tamaño" : "Size only"}
+        </button>
+        <button type="button" onClick={() => setMode("distance")} className={btn(mode === "distance")}>
+          {es ? "Solo distancia" : "Distance only"}
+        </button>
+        <button type="button" onClick={() => setMode("both")} className={btn(mode === "both")}>
+          {es ? "Ambos" : "Both"}
+        </button>
+        <button type="button" onClick={() => setShowLabels((v) => !v)} className={btn(false)}>
+          {showLabels ? (es ? "Ocultar etiquetas" : "Hide labels") : es ? "Mostrar etiquetas" : "Show labels"}
+        </button>
+        <button type="button" onClick={() => setZoom((z) => Math.min(4, z + 0.25))} className={btn(false)}>
+          +
+        </button>
+        <button type="button" onClick={() => setZoom((z) => Math.max(0.25, z - 0.25))} className={btn(false)}>
+          −
+        </button>
+        <button type="button" onClick={resetOrbits} className={btn(false)}>
+          {es ? "Reiniciar" : "Reset"}
+        </button>
+        <button type="button" onClick={shareUrl} className={btn(false)}>
+          {es ? "Compartir" : "Share"}
+        </button>
+        <button type="button" onClick={downloadPng} className={btn(false)}>
+          PNG
+        </button>
       </div>
-      <div className="relative w-full rounded-xl border bg-slate-950 overflow-hidden" style={{ aspectRatio: "16/9", maxHeight: "500px" }}>
+
+      <div className="flex flex-wrap items-center gap-3 text-sm">
+        <label className="flex items-center gap-2">
+          <span className="text-muted-foreground">{es ? "Velocidad" : "Speed"}</span>
+          <input
+            type="range"
+            min={0}
+            max={3}
+            step={0.1}
+            value={animSpeed}
+            onChange={(e) => setAnimSpeed(Number(e.target.value))}
+            className="w-24"
+          />
+        </label>
+        <label className="flex items-center gap-2">
+          <span className="text-muted-foreground">{es ? "Estela" : "Trail"}</span>
+          <input
+            type="range"
+            min={0.7}
+            max={0.98}
+            step={0.01}
+            value={trailFade}
+            onChange={(e) => setTrailFade(Number(e.target.value))}
+            className="w-24"
+          />
+        </label>
+        <label className="flex items-center gap-2">
+          <span className="text-muted-foreground">{es ? "Foco" : "Focus"}</span>
+          <select
+            className="rounded-md border bg-background px-2 py-1"
+            value={focusIdx === null ? "" : String(focusIdx)}
+            onChange={(e) => setFocusIdx(e.target.value === "" ? null : Number(e.target.value))}
+          >
+            <option value="">{es ? "Ninguno" : "None"}</option>
+            {PLANETS.map((p, i) => (
+              <option key={p.name} value={i}>
+                {es ? p.nameEs : p.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div
+        ref={containerRef}
+        className="relative w-full overflow-hidden rounded-xl border border-border/60 bg-slate-950"
+        style={{ aspectRatio: "16 / 9", maxHeight: 520 }}
+      >
         <canvas
           ref={canvasRef}
-          className="w-full h-full touch-none"
+          className="h-full w-full touch-none cursor-grab active:cursor-grabbing"
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerLeave={onPointerUp}
+          onWheel={onWheel}
         />
       </div>
-      <p className="text-xs text-muted-foreground">
+
+      <p className="text-xs text-muted-foreground leading-relaxed">
         {es
-          ? "Arrastrá planetas para reposicionarlos. El Sol está en el centro. Las escalas son aproximadas para visualizar diferencias reales (Júpiter es ~11× la Tierra; Neptuno está a ~30 UA)."
-          : "Drag planets to reposition them. The Sun is at the center. Scales are approximate to visualize real differences (Jupiter is ~11× Earth; Neptune is ~30 AU away)."}
+          ? "Arrastrá planetas para reposicionarlos; arrastrá el fondo para hacer pan; rueda para zoom. El Sol está en el centro. Escalas aproximadas: Júpiter ~11× el diámetro de la Tierra; Neptuno ~30 UA. La Luna aparece junto a la Tierra en modos de tamaño."
+          : "Drag planets to reposition; drag the background to pan; scroll to zoom. The Sun is at the center. Approximate scales: Jupiter ~11× Earth diameter; Neptune ~30 AU. Earth's Moon appears in size modes."}
       </p>
     </div>
   );
