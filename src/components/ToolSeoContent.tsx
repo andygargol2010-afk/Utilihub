@@ -12,7 +12,7 @@ function spanishGuideFallback(
   faq: { q: string; a: string }[];
 } {
   const kind = (tool.kind || "").toLowerCase();
-  const slug = tool.slug || "";
+  const slug = (tool.slug || "").toLowerCase();
   const summary =
     typeof tool.summary === "string" && tool.summary.trim()
       ? tool.summary.trim()
@@ -67,6 +67,28 @@ function spanishGuideFallback(
         {
           q: "¿Mi PDF se sube a un servidor?",
           a: "No en las operaciones compatibles: se procesan en tu navegador y el resultado se descarga localmente.",
+        },
+        {
+          q: "¿Necesito crear una cuenta?",
+          a: "No. Podés usar la herramienta de inmediato, sin registro.",
+        },
+      ],
+    };
+  }
+
+  // Document tools (metadata, CSV, markdown, text-diff, batch names)
+  if (kind === "document") {
+    return {
+      about: baseAbout,
+      steps: [
+        "Cargá el archivo o pegá el texto / CSV / Markdown que quieras analizar.",
+        "Ejecutá el proceso: la herramienta lee o transforma el contenido en tu navegador.",
+        "Revisá el resultado (metadatos, diferencias, HTML, nombres normalizados) y copialo si lo necesitás.",
+      ],
+      faq: [
+        {
+          q: "¿Se sube mi archivo o texto a un servidor?",
+          a: "No en las operaciones compatibles. El análisis se hace en tu dispositivo.",
         },
         {
           q: "¿Necesito crear una cuenta?",
