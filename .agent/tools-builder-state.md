@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-21 | matematicas | calculadora-factorial | FactorialCalculatorTool
+- 2026-10-21 | hogar | calculadora-consumo-agua | WaterConsumptionCalculatorTool
 - 2026-10-21 | productividad | calculadora-porcentaje-completado | PercentageCompleteCalculatorTool
 - 2026-10-21 | viajes | calculadora-presupuesto-viaje | TravelBudgetCalculatorTool
 - 2026-10-21 | fechas | calculadora-dias-hasta-fecha | DaysUntilDateCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-20 | matematicas | calculadora-area-hexagono | HexagonAreaCalculatorTool
 - 2026-10-20 | salud | calculadora-frecuencia-cardiaca-maxima | MaxHeartRateCalculatorTool
 - 2026-10-20 | matematicas | calculadora-area-elipse | EllipseAreaCalculatorTool
-- 2026-10-20 | diseno | calculadora-contraste-color | ColorContrastCalculatorTool
-- 2026-10-20 | conversiones | conversor-peso | WeightConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -41,11 +41,11 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 fechas/tiempo: recent (dias-hasta-fecha)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial)
 finanzas simples: recent (regla-72, propina-impuesto, margen-beneficio, interes-simple, cambio-porcentaje)
-hogar/cocina: recent (ratio-cafe)
+hogar/cocina: recent (ratio-cafe, consumo-agua)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas)
 productividad: recent (tiempo-lectura, porcentaje-completado)
-matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono)
+matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial)
 diseno: recent (contraste-color)
 conversiones: recent (peso)
 salud: recent (frecuencia-cardiaca-maxima)
@@ -63,6 +63,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-21 PRODUCT (roll 12): shipped 2 (calculadora-factorial matematicas + calculadora-consumo-agua hogar). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 13): shipped 2 (calculadora-presupuesto-viaje viajes + calculadora-porcentaje-completado productividad). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 10): shipped 2 (calculadora-cambio-porcentaje finanzas + calculadora-energia-potencial ciencia). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 10): shipped 2 (calculadora-dias-hasta-fecha fechas + contador-palabras-unicas texto). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
@@ -75,7 +76,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-presupuesto-viaje, calculadora-porcentaje-completado
+last_slugs: calculadora-factorial, calculadora-consumo-agua
 last_deploy: pending verification
 ```
 

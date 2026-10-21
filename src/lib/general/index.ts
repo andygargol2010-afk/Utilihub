@@ -54,6 +54,8 @@ import { DAYS_UNTIL_DATE_CALCULATOR_TOOLS } from "./days-until-date-calculator-t
 import { UNIQUE_WORDS_COUNTER_TOOLS } from "./unique-words-counter-tool";
 import { TRAVEL_BUDGET_CALCULATOR_TOOLS } from "./travel-budget-calculator-tool";
 import { PERCENTAGE_COMPLETE_CALCULATOR_TOOLS } from "./percentage-complete-calculator-tool";
+import { FACTORIAL_CALCULATOR_TOOLS } from "./factorial-calculator-tool";
+import { WATER_CONSUMPTION_CALCULATOR_TOOLS } from "./water-consumption-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -112,4 +114,6 @@ export const GENERAL_TOOLS = [
   ...UNIQUE_WORDS_COUNTER_TOOLS,
   ...TRAVEL_BUDGET_CALCULATOR_TOOLS,
   ...PERCENTAGE_COMPLETE_CALCULATOR_TOOLS,
+  ...FACTORIAL_CALCULATOR_TOOLS,
+  ...WATER_CONSUMPTION_CALCULATOR_TOOLS,
 ];

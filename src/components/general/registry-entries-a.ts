@@ -72,4 +72,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "contador-palabras-unicas", name: "UniqueWordsCounterTool", path: "./UniqueWordsCounterTool", export: "UniqueWordsCounterTool" },
   { slug: "calculadora-presupuesto-viaje", name: "TravelBudgetCalculatorTool", path: "./TravelBudgetCalculatorTool", export: "TravelBudgetCalculatorTool" },
   { slug: "calculadora-porcentaje-completado", name: "PercentageCompleteCalculatorTool", path: "./PercentageCompleteCalculatorTool", export: "PercentageCompleteCalculatorTool" },
+  { slug: "calculadora-factorial", name: "FactorialCalculatorTool", path: "./FactorialCalculatorTool", export: "FactorialCalculatorTool" },
+  { slug: "calculadora-consumo-agua", name: "WaterConsumptionCalculatorTool", path: "./WaterConsumptionCalculatorTool", export: "WaterConsumptionCalculatorTool" },
 ] as const;
