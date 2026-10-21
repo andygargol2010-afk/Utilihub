@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 257
+runs_done: 258
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: MODELADOR-3D
 last_date: 2026-10-21
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: READY (tip 3881c5b2)
-note: META health confirmation. Monolith intact (~345kB, no PLACEHOLDER). Tip READY. Next PRODUCT densify deferred (truncation risk).
+deploy: (pending check after push)
+note: MODELADOR-3D SHAPES: added pyramid primitive (4-sided ConeGeometry) fully wired in modeler3d-helpers. No house monolith touch. runs_done=258.
 ```
 
 Refresh after each run.
@@ -97,6 +97,7 @@ PRODUCT run 254: plaster densify (flecks/trowel/dirt/micro-pits) via local clone
 PRODUCT run 255: timber densify (mottling 18→26, grain 7→10, micro-fibers 4→6) via local clone surgical. runs_done=255.
 META run 256: confirmed tip READY + monolith health (331827 B / 7520 lines, no PLACEHOLDER). runs_done=256.
 META run 257: confirmed tip READY + monolith health (~345kB, SHA de1e458a, no PLACEHOLDER). Next densify deferred (truncation risk). runs_done=257.
+MODELADOR-3D run 258: added pyramid ShapeKind (ConeGeometry 4 sides) fully wired in modeler3d-helpers (type/geometry/size/labels/list). Surgical. No HouseModeler3D touch. runs_done=258.
 ```
 
 <!-- end:house-modeler-state.md -->
