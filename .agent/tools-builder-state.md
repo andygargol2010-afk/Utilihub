@@ -65,6 +65,7 @@ Bootstrap automation prompt only points here — expand rules in tools-builder.m
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
 2026-10-21 PRODUCT (roll 10): shipped 2 (calculadora-cambio-porcentaje finanzas + calculadora-energia-potencial ciencia). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 10): shipped 2 (calculadora-dias-hasta-fecha fechas + contador-palabras-unicas texto). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
+2026-10-21 FIX-BUILD: resolved duplicate slug calculadora-cambio-porcentaje by deleting leftover percentage-change-tool.ts. Deploy of fix SHA READY.
 ```
 
 ---
@@ -72,9 +73,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: calculadora-dias-hasta-fecha, contador-palabras-unicas
-last_deploy: pending verify
+last_mode: FIX-BUILD
+last_slugs: (none new)
+last_deploy: READY (e102ac18)
 ```
 
 <!-- end:tools-builder-state.md -->
