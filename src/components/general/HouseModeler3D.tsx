@@ -600,31 +600,37 @@ function paintBoardFormedBump(ctx: CanvasRenderingContext2D, size: number) {
 
 /** Running-bond ashlar for wall faces. Port of the plinth course, scaled for a 2.6 m bay. */
 function paintWallMasonry(ctx: CanvasRenderingContext2D, size: number) {
-  noiseFill(ctx, size, [176, 164, 146], 12);
-  const cols = 4;
-  const rows = 7;
-  const mortar = 4;
+  noiseFill(ctx, size, [176, 164, 146], 14);
+  const cols = 5;
+  const rows = 8;
+  const mortar = 3;
   for (let r = 0; r < rows; r++) {
     const y0 = (r / rows) * size;
     const rh = size / rows;
     const shift = r % 2 === 0 ? 0 : size / cols / 2;
     for (let c = -1; c < cols + 1; c++) {
       const vary = hash2(c + 4.2, r + 1.7);
-      const tone = 158 + Math.floor(vary * 42);
-      ctx.fillStyle = `rgb(${tone + 14}, ${tone}, ${tone - 18})`;
+      const tone = 152 + Math.floor(vary * 48);
+      ctx.fillStyle = `rgb(${tone + 16}, ${tone + 2}, ${tone - 20})`;
       const x = c * (size / cols) + shift + mortar;
-      const w = size / cols - mortar * 1.6;
-      ctx.fillRect(x, y0 + mortar, w, rh - mortar * 1.7);
-      ctx.fillStyle = `rgba(${tone + 28}, ${tone + 16}, ${tone - 4}, 0.28)`;
-      ctx.fillRect(x + 3, y0 + mortar + 2, w * 0.55, 2);
-      if (vary > 0.62) {
-        ctx.fillStyle = `rgba(${tone - 36}, ${tone - 42}, ${tone - 48}, 0.4)`;
-        ctx.fillRect(x + vary * 8, y0 + rh * 0.45, 6 + vary * 10, 2);
+      const w = size / cols - mortar * 1.5;
+      ctx.fillRect(x, y0 + mortar, w, rh - mortar * 1.6);
+      // highlight edge
+      ctx.fillStyle = `rgba(${tone + 32}, ${tone + 18}, ${tone - 2}, 0.32)`;
+      ctx.fillRect(x + 2, y0 + mortar + 1, w * 0.62, 2);
+      // flecks / weathering
+      if (vary > 0.55) {
+        ctx.fillStyle = `rgba(${tone - 40}, ${tone - 46}, ${tone - 52}, 0.45)`;
+        ctx.fillRect(x + vary * 7, y0 + rh * 0.38, 5 + vary * 12, 2);
+      }
+      if (vary > 0.78) {
+        ctx.fillStyle = `rgba(${tone - 28}, ${tone - 22}, ${tone - 18}, 0.35)`;
+        ctx.fillRect(x + 4 + vary * 6, y0 + rh * 0.62, 4, 3);
       }
     }
   }
-  ctx.strokeStyle = "rgba(78,66,52,0.62)";
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgba(78,66,52,0.68)";
+  ctx.lineWidth = 1.5;
   for (let r = 0; r <= rows; r++) {
     const y = (r / rows) * size;
     ctx.beginPath();

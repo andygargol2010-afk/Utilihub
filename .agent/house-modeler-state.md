@@ -19,7 +19,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 252
+runs_done: 253
 runs_max: 500
 ```
 
@@ -45,8 +45,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331568
-last_known_good_hint: (post PRODUCT 251 foundation board-formed densify ~331568 B / 7513 lines, no PLACEHOLDER)
+approx_bytes: 331803
+last_known_good_hint: (post PRODUCT 253 wall-masonry densify ~331803 B / 7519 lines, no PLACEHOLDER)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -58,11 +58,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
+last_mode: PRODUCT
 last_date: 2026-10-21
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: READY (tip 1f6ceda)
-note: META health check after foundation densify. Monolith intact 331568 B / 7513 lines, no PLACEHOLDER. Tip READY. Wall-masonry densify deferred (truncation risk / no local push auth).
+deploy: pending push
+note: PRODUCT wall-masonry densify (cols 4→5, rows 7→8, denser flecks/weathering). Monolith 331803 B / 7519 lines, no PLACEHOLDER.
 ```
 
 Refresh after each run.
@@ -94,6 +94,7 @@ PRODUCT run 249: grass densify (clumps 48→64, blades 30→42, wear 6→8; reli
 PRODUCT run 250: gravel densify (pebbles 120→160, larger stones 18→24, moss patches 8→12, rake lines 7→10) via local clone surgical. runs_done=250.
 PRODUCT run 251: foundation board-formed densify (boards 4→5 + denser dust/stains) via local clone surgical. runs_done=251.
 META run 252: confirmed tip READY + monolith health (331568 B / 7513 lines, no PLACEHOLDER). Wall-masonry densify deferred (no sandbox push auth / truncation risk). runs_done=252.
+PRODUCT run 253: wall-masonry densify (cols 4→5, rows 7→8 + denser flecks/weathering) via local clone surgical. runs_done=253.
 ```
 
 <!-- end:house-modeler-state.md -->
