@@ -52,6 +52,8 @@ import { PERCENTAGE_CHANGE_CALCULATOR_TOOLS } from "./percentage-change-calculat
 import { POTENTIAL_ENERGY_CALCULATOR_TOOLS } from "./potential-energy-calculator-tool";
 import { DAYS_UNTIL_DATE_CALCULATOR_TOOLS } from "./days-until-date-calculator-tool";
 import { UNIQUE_WORDS_COUNTER_TOOLS } from "./unique-words-counter-tool";
+import { TRAVEL_BUDGET_CALCULATOR_TOOLS } from "./travel-budget-calculator-tool";
+import { PERCENTAGE_COMPLETE_CALCULATOR_TOOLS } from "./percentage-complete-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -108,4 +110,6 @@ export const GENERAL_TOOLS = [
   ...POTENTIAL_ENERGY_CALCULATOR_TOOLS,
   ...DAYS_UNTIL_DATE_CALCULATOR_TOOLS,
   ...UNIQUE_WORDS_COUNTER_TOOLS,
+  ...TRAVEL_BUDGET_CALCULATOR_TOOLS,
+  ...PERCENTAGE_COMPLETE_CALCULATOR_TOOLS,
 ];
