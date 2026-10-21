@@ -510,7 +510,7 @@ function paintPlinth(ctx: CanvasRenderingContext2D, size: number) {
 /** Board-formed warm concrete for strip footings. Shared catalog map; do not dispose per part. */
 function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [168, 158, 144], 14);
-  const boards = 4;
+  const boards = 5;
   for (let i = 0; i < boards; i++) {
     const y0 = Math.floor((i / boards) * size);
     const y1 = Math.floor(((i + 1) / boards) * size);
@@ -540,7 +540,7 @@ function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "rgba(72,64,54,0.48)";
   ctx.fillRect(Math.floor(size * 0.5) - 1, 0, 2, size);
   // Subtle form-release dust and edge silt so the board-formed strip reads as poured on site, not a clean render.
-  for (let d = 0; d < 18; d++) {
+  for (let d = 0; d < 26; d++) {
     const dx = hash2(d, 7.1) * size;
     const dy = hash2(d, 8.4) * size;
     const r = 0.8 + hash2(d, 9.2) * 1.6;
@@ -550,7 +550,7 @@ function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fill();
   }
   // Faint vertical water stains from form-tie weep so the default footing reads as weather-aged rather than freshly poured.
-  for (let w = 0; w < 5; w++) {
+  for (let w = 0; w < 7; w++) {
     const wx = (0.12 + hash2(w, 11.3) * 0.76) * size;
     const stain = ctx.createLinearGradient(wx, 0, wx, size);
     stain.addColorStop(0, "rgba(96,88,76,0)");

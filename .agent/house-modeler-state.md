@@ -1,6 +1,8 @@
 # UtiliHub House Modeler — State (3/3)
 
-**Part 3 of 3 — runtime state only.** End marker: `<!-- end:house-modeler-state.md -->`.
+**Part 3 of 3 — runtime state only.** End marker: `
+PRODUCT run 251: foundation board-formed densify (boards 4→5 + denser dust/stains) via local clone surgical. runs_done=251.
+<!-- end:house-modeler-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file **small** so it always loads complete.
 
@@ -17,7 +19,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 250
+runs_done: 251
 runs_max: 500
 ```
 
@@ -59,8 +61,8 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 last_mode: PRODUCT
 last_date: 2026-10-21
 SEO_LOCALES_ACTIVE: pt (defer)
-deploy: pending this push (tip ERROR from catalog registry-generics)
-note: PRODUCT gravel densify (pebbles 120→160, stones 18→24, moss 8→12, rake lines 7→10) via local clone surgical. Monolith 331568 B / 7513 lines, no PLACEHOLDER.
+deploy: pending this push
+note: PRODUCT foundation board-formed densify (boards 4→5, dust 18→26, water stains 5→7) via local clone surgical. Monolith intact, no PLACEHOLDER.
 ```
 
 Refresh after each run.
@@ -93,4 +95,6 @@ PRODUCT run 249: grass densify (clumps 48→64, blades 30→42, wear 6→8; reli
 
 
 PRODUCT run 250: gravel densify (pebbles 120→160, larger stones 18→24, moss patches 8→12, rake lines 7→10) via local clone surgical. runs_done=250.
+
+PRODUCT run 251: foundation board-formed densify (boards 4→5 + denser dust/stains) via local clone surgical. runs_done=251.
 <!-- end:house-modeler-state.md -->
