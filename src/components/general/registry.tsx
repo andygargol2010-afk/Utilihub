@@ -1,37 +1,120 @@
 import { lazy, type ComponentType, type ReactNode } from "react";
 import { GENERAL_TOOLS } from "@/lib/general";
 import type { GeneralTool } from "@/lib/general/types";
-import { REGISTRY_ENTRIES } from "./registry-entries";
-import { GeneralToolUi } from "./registry-generics";
 
 /**
  * Thin registry — agents should almost never edit this file.
- * To add a tool: append ONE entry to registry-entries-a.ts or registry-entries-b.ts only.
  *
  * Contract with DeferredToolUi:
  *   GENERAL_TOOL_UI[slug] must be a zero-arg function () => ReactNode
  *   that already closes over the tool + locale.
+ *
+ * Routing:
+ *   - kind image/pdf → MediaTool (file upload, canvas, PDF)
+ *   - kind design/color → DesignTool
+ *   - tool.config.operation → ConfiguredTool
+ *   - else → GeneralTool (generic calculator / text)
+ *
+ * Individual specialized components can be added later via static lazy map.
  */
 
 const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((t) => [t.slug, t]));
 
 type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
 
-// Pre-build lazy components; missing modules fall back to GeneralToolUi at render time.
-const SPECIAL_LAZY: Record<string, ToolComp> = {};
-for (const e of REGISTRY_ENTRIES) {
-  const { slug, path, export: exportName } = e;
-  SPECIAL_LAZY[slug] = lazy(() =>
-    import(/* @vite-ignore */ path)
-      .then((m) => {
-        const Comp = (m as any)[exportName] as ToolComp | undefined;
-        if (!Comp) {
-          return { default: GeneralToolUi as ToolComp };
-        }
-        return { default: Comp };
-      })
-      .catch(() => ({ default: GeneralToolUi as ToolComp })),
-  );
+const GeneralToolUi = lazy(() =>
+  import("./GeneralTool").then((m) => ({ default: m.GeneralTool })),
+);
+const ConfiguredToolUi = lazy(() =>
+  import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })),
+);
+const MediaToolUi = lazy(() =>
+  import("./MediaTool").then((m) => ({ default: m.MediaTool })),
+);
+const DesignToolUi = lazy(() =>
+  import("./DesignTool").then((m) => ({ default: m.DesignTool })),
+);
+const ConverterToolUi = lazy(() =>
+  import("./ConverterTool").then((m) => ({ default: m.ConverterTool })),
+);
+const TextToolUi = lazy(() =>
+  import("./TextTool").then((m) => ({ default: m.TextTool })),
+);
+const MathToolUi = lazy(() =>
+  import("./MathTool").then((m) => ({ default: m.MathTool })),
+);
+const HealthToolUi = lazy(() =>
+  import("./HealthTool").then((m) => ({ default: m.HealthTool })),
+);
+const FinanceToolUi = lazy(() =>
+  import("./FinanceTool").then((m) => ({ default: m.FinanceTool })),
+);
+const ScienceToolUi = lazy(() =>
+  import("./ScienceTool").then((m) => ({ default: m.ScienceTool })),
+);
+const TimeToolUi = lazy(() =>
+  import("./TimeTool").then((m) => ({ default: m.TimeTool })),
+);
+const EducationToolUi = lazy(() =>
+  import("./EducationTool").then((m) => ({ default: m.EducationTool })),
+);
+const GeometryToolUi = lazy(() =>
+  import("./GeometryTool").then((m) => ({ default: m.GeometryTool })),
+);
+const CookingToolUi = lazy(() =>
+  import("./CookingTool").then((m) => ({ default: m.CookingTool })),
+);
+const SecurityToolUi = lazy(() =>
+  import("./SecurityTool").then((m) => ({ default: m.SecurityTool })),
+);
+const DeveloperToolUi = lazy(() =>
+  import("./DeveloperTool").then((m) => ({ default: m.DeveloperTool })),
+);
+
+function pickComponent(tool: GeneralTool): ToolComp {
+  const kind = (tool.kind || "").toLowerCase();
+  const slug = tool.slug || "";
+
+  // File / media tools (PNG→JPG, compress, PDF, etc.)
+  if (kind === "image" || kind === "pdf" || kind === "media") {
+    return MediaToolUi;
+  }
+
+  // Design / color tools
+  if (
+    kind === "design" ||
+    kind === "color" ||
+    slug.includes("color") ||
+    slug.includes("contraste") ||
+    slug.includes("paleta") ||
+    slug.includes("gradiente") ||
+    slug.includes("sombra") ||
+    slug.includes("border-radius") ||
+    slug.startsWith("css-")
+  ) {
+    return DesignToolUi;
+  }
+
+  // Config-driven numeric tools
+  if (tool.config && typeof tool.config === "object" && "operation" in tool.config) {
+    return ConfiguredToolUi;
+  }
+
+  // Kind-based category UIs
+  if (kind === "converter" || kind === "conversion" || kind === "unit") return ConverterToolUi;
+  if (kind === "text" || kind === "code" || kind === "encode") return TextToolUi;
+  if (kind === "math" || kind === "stats" || kind === "calculator") return MathToolUi;
+  if (kind === "health" || kind === "fitness") return HealthToolUi;
+  if (kind === "finance" || kind === "money") return FinanceToolUi;
+  if (kind === "science" || kind === "physics") return ScienceToolUi;
+  if (kind === "time" || kind === "date") return TimeToolUi;
+  if (kind === "education" || kind === "school") return EducationToolUi;
+  if (kind === "geometry") return GeometryToolUi;
+  if (kind === "cooking" || kind === "food") return CookingToolUi;
+  if (kind === "security" || kind === "password") return SecurityToolUi;
+  if (kind === "developer" || kind === "dev") return DeveloperToolUi;
+
+  return GeneralToolUi;
 }
 
 function buildLazyRegistry(locale: "en" | "es") {
@@ -45,7 +128,7 @@ function buildLazyRegistry(locale: "en" | "es") {
       const tool = TOOL_BY_SLUG.get(prop);
       if (!tool) return undefined;
 
-      const Comp = SPECIAL_LAZY[prop] ?? GeneralToolUi;
+      const Comp = pickComponent(tool);
 
       // Zero-arg renderer — DeferredToolUi calls render() with no props.
       const render = () => <Comp tool={tool} locale={locale} />;
