@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 258
+runs_done: 259
 runs_max: 500
 ```
 
@@ -43,8 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 345000
-last_known_good_hint: (post META 257 health ~345kB, no PLACEHOLDER, SHA de1e458a)
+approx_bytes: 331826
+last_known_good_hint: (post META 259 health 331826 B, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
 ```
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: MODELADOR-3D
+last_mode: META
 last_date: 2026-10-21
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: (pending check after push)
-note: MODELADOR-3D SHAPES: added pyramid primitive (4-sided ConeGeometry) fully wired in modeler3d-helpers. No house monolith touch. runs_done=258.
+note: META health confirm tip READY + monolith 331826 B / no PLACEHOLDER. Chimney-brick densify deferred (tool-channel truncation risk on >300kB rewrite). runs_done=259.
 ```
 
 Refresh after each run.
@@ -98,6 +98,7 @@ PRODUCT run 255: timber densify (mottling 18→26, grain 7→10, micro-fibers 4�
 META run 256: confirmed tip READY + monolith health (331827 B / 7520 lines, no PLACEHOLDER). runs_done=256.
 META run 257: confirmed tip READY + monolith health (~345kB, SHA de1e458a, no PLACEHOLDER). Next densify deferred (truncation risk). runs_done=257.
 MODELADOR-3D run 258: added pyramid ShapeKind (ConeGeometry 4 sides) fully wired in modeler3d-helpers (type/geometry/size/labels/list). Surgical. No HouseModeler3D touch. runs_done=258.
+META run 259: confirmed tip READY + monolith health (331826 B, no PLACEHOLDER, SHA de1e458a). Chimney-brick densify deferred due to tool-channel truncation risk. runs_done=259.
 ```
 
 <!-- end:house-modeler-state.md -->
