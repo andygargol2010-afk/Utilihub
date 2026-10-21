@@ -46,6 +46,8 @@ import { LOREM_IPSUM_GENERATOR_TOOLS } from "./lorem-ipsum-generator-tool";
 import { PENTAGON_AREA_CALCULATOR_TOOLS } from "./pentagon-area-calculator-tool";
 import { HEXAGON_AREA_CALCULATOR_TOOLS } from "./hexagon-area-calculator-tool";
 import { ARITHMETIC_MEAN_CALCULATOR_TOOLS } from "./arithmetic-mean-calculator-tool";
+import { MEDIAN_CALCULATOR_TOOLS } from "./median-calculator-tool";
+import { LENGTH_CONVERTER_TOOLS } from "./length-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -96,4 +98,6 @@ export const GENERAL_TOOLS = [
   ...PENTAGON_AREA_CALCULATOR_TOOLS,
   ...HEXAGON_AREA_CALCULATOR_TOOLS,
   ...ARITHMETIC_MEAN_CALCULATOR_TOOLS,
+  ...MEDIAN_CALCULATOR_TOOLS,
+  ...LENGTH_CONVERTER_TOOLS,
 ];
