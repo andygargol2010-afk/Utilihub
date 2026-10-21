@@ -71,6 +71,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-21 PRODUCT (roll 10): shipped 2 (calculadora-cambio-porcentaje finanzas + calculadora-energia-potencial ciencia). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 PRODUCT (roll 10): shipped 2 (calculadora-dias-hasta-fecha fechas + contador-palabras-unicas texto). Distinct clusters. Anti-dupe OK. Registry surgical OK. SEO locales: pt active, deferred.
 2026-10-21 FIX-BUILD: resolved duplicate slug calculadora-cambio-porcentaje by deleting leftover percentage-change-tool.ts. Deploy of fix SHA READY.
+2026-10-21 FIX-BUILD: catalog validator failed on operation "tmb" (missing case in ConfiguredTool switch). Fixed by adding case"tmb" in switch. Deploy of SHA b5429cc READY. Previews protected; verification limited.
 ```
 
 ---
@@ -78,9 +79,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: calculadora-tmb, conversor-rgb-hex
-last_deploy: ERROR (game export)
+last_mode: FIX-BUILD
+last_slugs: (none new)
+last_deploy: READY (tmb validator fix)
 ```
 
 <!-- end:tools-builder-state.md -->
