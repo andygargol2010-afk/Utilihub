@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-22
-- mode: known smoke + discovery (deploy ERROR prioritized)
-- deploy: ERROR en SHA 4a0830cfd74e5d965e80613a3d416b9a7b704a23 (missing spanishToolSummary export); fix ya en HEAD a7672b461c0f3b5d3c88bf3970a4544c2218986f (deploy pendiente al momento de la corrida)
-- known_smoke: E001-E006 code-ok (registry full no PLACEHOLDER, kind routing prioritario, homes sin $(cat), imports DeferredHomeReviews resuelven; MediaTool implementa upload)
-- new_findings: E007 build ERROR por import de spanishToolSummary desde es.ts (no exportado); corregido en a7672b46 moviendo import a es-summaries en SpanishToolSearch.tsx (otros archivos ya estaban OK)
-- fixes: 0 en esta corrida (el fix de E007 ya estaba committed antes de la actualización de catalog)
+- mode: known smoke + discovery (sampling dedicated tool UIs + routes)
+- deploy: latest READY on b96d5f92 (Aura Card routes); no current ERROR/BUILDING on HEAD at check time
+- known_smoke: E001–E007 code-ok (registry full, no PLACEHOLDER, kind routing, homes clean, i18n imports OK)
+- new_findings: E008 — ElectricalPowerCalculatorTool.tsx y FlightTimeCalculatorTool.tsx eran literal PLACEHOLDER → crash al abrir tools; corregido con implementaciones reales
+- fixes: 2 (9675c9de ElectricalPower, 3dedd6a3 FlightTime)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E007 (i18n export) + E002 kind routing brief
+- last_known_focus: E008 (dedicated tool stubs) + brief E001 registry
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
