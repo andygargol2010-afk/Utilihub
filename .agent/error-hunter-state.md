@@ -13,13 +13,13 @@ repo: andygargol2010-afk/Utilihub
 ## Last run
 - date: 2026-10-22
 - mode: known smoke + discovery
-- deploy: READY (SHA 4205f25420416f2743e6e0359769e965b34567d6, branch preview protected)
-- known_smoke: E001-E006 code-ok (registry sin PLACEHOLDER y exports presentes; homes sin $(cat) e imports reales; kind routing prioritario; no patrones de error conocidos)
-- new_findings: none (sampled games.index, es.juegos.index, playgrounds.index, routes listing; no PLACEHOLDER/$(cat)/"Tool not available"/import fantasma)
+- deploy: READY (SHA b4de6817e6348777283ee09168580ee5dbc41fe5, branch preview)
+- known_smoke: E001-E006 code-ok (registry completo sin PLACEHOLDER, kind routing prioritario image/pdf/media → MediaTool; homes sin $(cat) e imports reales DeferredHomeReviews/HomeCatalogSlot; no patrones PLACEHOLDER/$(cat)/"Tool not available")
+- new_findings: none (sampled registry, index/es.index, OuncesToGramsConverterTool, IdealWeightCalculatorTool, general components tree; patterns clean)
 - fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E005 (homes verified intact)
+- last_known_focus: E001 (registry verified)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 

@@ -16,7 +16,7 @@ Formato por entrada:
 
 ## E001 — Registry PLACEHOLDER / tool page crash
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (code smoke: no PLACEHOLDER, exports GENERAL_TOOL_UI / pickComponent presentes)
+- **last_seen**: 2026-10-22 (code smoke: no PLACEHOLDER, exports GENERAL_TOOL_UI / pickComponent presentes, kind routing prioritario)
 - **symptom**: "We could not load this page" · `Cannot read properties of undefined (reading 'kind')` en GeneralTool bundle
 - **root_cause**: `src/components/general/registry.tsx` reemplazado por PLACEHOLDER o sin `GENERAL_TOOL_UI` / `buildLazyRegistry` / `pickComponent`
 - **check**: leer registry completo; tamaño razonable; exports presentes; abrir 1–2 tools del catálogo
@@ -25,6 +25,7 @@ Formato por entrada:
 
 ## E002 — Image/PDF tools muestran calculadora numérica
 - **status**: fixed (vigilar regresión)
+- **last_seen**: 2026-10-22 (kind-first routing en pickComponent)
 - **symptom**: PNG a JPG / Comprimir imagen piden "Primer valor / Segundo valor / Calcular" en vez de subir archivo
 - **root_cause**: routing por kind incorrecto; tools `image`/`pdf` no van a MediaTool/DocumentTool
 - **check**: kind de slugs image/pdf en catalog; pickComponent / DeferredToolUi prioriza kind Media/Document
@@ -33,6 +34,7 @@ Formato por entrada:
 
 ## E003 — SEO / guía genérica que no nombra la tool
 - **status**: fixed (vigilar regresión)
+- **last_seen**: 2026-10-22 (no evidencia de fallback genérico en smoke)
 - **symptom**: pasos/FAQ genéricos ("Primer valor…") sin mencionar la herramienta real
 - **root_cause**: `spanishGuideFallback` / defaults de `makeTool` no branch por kind
 - **check**: ToolSeoContent + about/steps/faq de 2 tools distintas (image vs calc)
@@ -41,6 +43,7 @@ Formato por entrada:
 
 ## E004 — modelador-3d carga House Modeler
 - **status**: fixed (vigilar regresión)
+- **last_seen**: 2026-10-22 (no evidencia de reexport incorrecto en búsqueda)
 - **symptom**: página "Modelador 3D" muestra UI de casas (paredes, terreno, "Modelador de casas 3D")
 - **root_cause**: `modeler3d-app.tsx` reexportaba `HouseModeler3D` en vez de `Modeler3DStudio`
 - **check**: `modeler3d-app` → Modeler3DStudio; `registry-3d` slug `modelador-casas-3d` → House; `modelador-3d` → Modeler3D
@@ -49,6 +52,7 @@ Formato por entrada:
 
 ## E005 — Home 404 por routes corruptas
 - **status**: fixed (vigilar regresión)
+- **last_seen**: 2026-10-22 (index.tsx y es.index.tsx empiezan con import, createFileRoute, sin $(cat))
 - **symptom**: `/` o `/es` → "We could not find this page" / 404 UtiliHub
 - **root_cause**: `src/routes/index.tsx` y `es.index.tsx` contenían literal `$(cat /tmp/…)` (stub de shell)
 - **check**: ambos archivos empiezan con `import` y exportan `createFileRoute`; **no** contienen `$(cat`
@@ -57,6 +61,7 @@ Formato por entrada:
 
 ## E006 — Build ERROR por import fantasma en home
 - **status**: fixed (vigilar regresión)
+- **last_seen**: 2026-10-22 (imports DeferredHomeReviews, HomeCatalogSlot resuelven)
 - **symptom**: deploy Vercel ERROR; log: cannot resolve `@/components/DeferredReviews`
 - **root_cause**: import inventado al restaurar home; el componente real es `DeferredHomeReviews`
 - **check**: imports de index/es.index resuelven a archivos existentes bajo `src/components`
