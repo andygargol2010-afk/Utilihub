@@ -66,4 +66,6 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "xml-to-json", name: "XmlToJsonTool", path: "./XmlToJsonTool", export: "XmlToJsonTool" },
   { slug: "calculadora-tmb", name: "TmbCalculatorTool", path: "./TmbCalculatorTool", export: "TmbCalculatorTool" },
   { slug: "conversor-rgb-hex", name: "RgbHexConverterTool", path: "./RgbHexConverterTool", export: "RgbHexConverterTool" },
+  { slug: "calculadora-regla-de-tres", name: "RuleOfThreeCalculatorTool", path: "./RuleOfThreeCalculatorTool", export: "RuleOfThreeCalculatorTool" },
+  { slug: "calculadora-horas-extras", name: "OvertimeCalculatorTool", path: "./OvertimeCalculatorTool", export: "OvertimeCalculatorTool" },
 ] as const;
