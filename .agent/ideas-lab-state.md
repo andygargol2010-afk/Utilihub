@@ -26,14 +26,14 @@ weights_core:
 
 weights_growth:
   traffic-bets: 3
-  search-magnets: 1
-  growth-surfaces: 8
-  share-hooks: 8
-  retention-loops: 2
-  conversion-paths: 8
-  traffic-diagnosis: 1
-  adsense-prep: 6
-  seo-locales: 5   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  search-magnets: 3
+  growth-surfaces: 9
+  share-hooks: 1
+  retention-loops: 3
+  conversion-paths: 9
+  traffic-diagnosis: 2
+  adsense-prep: 7
+  seo-locales: 6   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 3
 ```
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Diagnóstico de tráfico semanal: comparar pageviews y visitors de los últimos 7 días vs los 7 anteriores en Vercel Web Analytics. Aplicar umbrales -15% sitio / -25% ruta / 2× errores. Reportar A/B/C en español. Nunca tocar Adsterra.
-id: weekly-analytics-review-2026-10-22
-path_en: n/a
-path_es: n/a
-domain: traffic-diagnosis
-runs_total: 1
-runs_remaining: 0
-acceptance: done
-share: n/a
-next_step_required: no
-notes: U=0.221 <0.50 → GROWTH. U_g=0.819 >0.35 → FLEX. Weighted sample → traffic-diagnosis (no match last_closed). Pesos FLEX actualizados: selected→1, otros +1. Medición: pageviews 161 (15-22) vs 166 (8-15) = -3%. Visitors 41 vs 60 = -32%. Home / : 28 pv. Eventos custom no disponibles (plan). No umbral de sitio alcanzado en pageviews. Posible causa: menos visitantes únicos, mismas o más vistas por usuario. Recomendación A: continuar monitoreo; B: no cambio de producto ahora; C: si persiste, correlacionar con cambios recientes (botón random, etc.). Cerrado en este run.
+status: active
+idea: Interactive Shareable Aura Card Composer: users design a personal aura card with selectable color schemes, particle density, bloom, background gradients, and custom quote or name. Generates a high-quality PNG with baked title and a short unique share ID for optional URL deep-link. Visual delight + shareability. EN+ES routes. next-step before Adsterra. CWV-safe lazy route.
+id: aura-card-share
+path_en: /aura-card
+path_es: /es/aura-card
+domain: share-hooks
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: both
+next_step_required: yes
+notes: U=0.472 <0.50 → GROWTH. U_g=0.974 >0.35 → FLEX. Weighted sample → share-hooks (no match last_closed). Pesos FLEX actualizados: selected→1, otros +1. FIXED intactos. Idea nueva, no overlap con prism-trail ni aurora-particle. runs 6 para composición + share PNG/URL + next-step + polish.
 adsense-prep_runs: 3
 ```
 
