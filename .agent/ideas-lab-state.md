@@ -71,7 +71,7 @@ runs_remaining: 5
 acceptance: pending
 share: both
 next_step_required: yes
-notes: U=0.472 <0.50 → GROWTH. U_g=0.974 >0.35 → FLEX. Weighted sample → share-hooks (no match last_closed). Pesos FLEX actualizados: selected→1, otros +1. FIXED intactos. Idea nueva, no overlap con prism-trail ni aurora-particle. runs 6 para composición + share PNG/URL + next-step + polish. EXECUTE run 1: core AuraCardComposer + EN/ES routes + next-step registered + PNG share. Próximos: share ID deep-link, polish visual, randomize, CWV audit.
+notes: U=0.472 <0.50 → GROWTH. U_g=0.974 >0.35 → FLEX. Weighted sample → share-hooks. EXECUTE 1/6: core + EN/ES routes + next-step + PNG. EXECUTE polish: URL deep-link (c/d/b/g/q/id), particle cap CWV, aura halo. Próximos: randomize, visual polish, smoke, close.
 adsense-prep_runs: 3
 ```
 
