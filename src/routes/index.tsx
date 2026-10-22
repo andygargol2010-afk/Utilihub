@@ -63,7 +63,7 @@ function HomePage() {
     <div className="pb-12">
       <style>{
         /* Critical CSS so home LCP (h1) paints before the full styles.css */
-        `.hero-gradient{background-image:linear-gradient(to right,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),radial-gradient(70% 80% at 8% 0%,color-mix(in oklab,var(--color-primary) 20%,transparent),transparent 70%),radial-gradient(60% 70% at 95% 10%,color-mix(in oklab,var(--color-highlight) 18%,transparenttransparent),transparent 65%),linear-gradient(180deg,oklch(.99 .008 255),var(--color-background));background-size:36px 36px,36px 36px,auto,auto,auto}` +
+        `.hero-gradient{background-image:linear-gradient(to right,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),radial-gradient(70% 80% at 8% 0%,color-mix(in oklab,var(--color-primary) 20%,transparent),transparent 70%),radial-gradient(60% 70% at 95% 10%,color-mix(in oklab,var(--color-highlight) 18%,transparent),transparent 65%),linear-gradient(180deg,oklch(.99 .008 255),var(--color-background));background-size:36px 36px,36px 36px,auto,auto,auto}` +
         `.container-page{width:100%;margin-inline:auto;max-width:84rem;padding-inline:clamp(1rem,3vw,2rem)}` +
         `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1.03}` +
         `.shadow-lift{box-shadow:0 20px 46px -26px rgba(41,50,110,.38)}` +
