@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-22
-- mode: known smoke + discovery (sampling dedicated tool UIs + routes)
-- deploy: latest READY on b96d5f92 (Aura Card routes); no current ERROR/BUILDING on HEAD at check time
-- known_smoke: E001–E007 code-ok (registry full, no PLACEHOLDER, kind routing, homes clean, i18n imports OK)
-- new_findings: E008 — ElectricalPowerCalculatorTool.tsx y FlightTimeCalculatorTool.tsx eran literal PLACEHOLDER → crash al abrir tools; corregido con implementaciones reales
-- fixes: 2 (9675c9de ElectricalPower, 3dedd6a3 FlightTime)
+- date: 2026-10-22 (late)
+- mode: known smoke + discovery (games registry + routes + dedicated tools + SEO fallback + modeler)
+- deploy: latest READY on 8e9c95732abf0a51fcc99845f61a3aa3b434bfcf (no ERROR/BUILDING)
+- known_smoke: E001–E008 code-ok (registry full with kind-first + dedicated UIs, homes clean no $(cat, modeler3d-app → Modeler3DStudio, SEO fallback kind-aware, dedicated Electrical/Flight tools real components)
+- new_findings: ninguno (games registry complete, no PLACEHOLDER, no $(cat, no broken imports visibles en sample)
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E008 (dedicated tool stubs) + brief E001 registry
+- last_known_focus: E004 modeler + E003 SEO + brief E001/E008
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
