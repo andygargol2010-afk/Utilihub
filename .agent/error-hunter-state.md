@@ -13,13 +13,13 @@ repo: andygargol2010-afk/Utilihub
 ## Last run
 - date: 2026-10-22
 - mode: known smoke + discovery
-- deploy: READY (SHA b4de6817e6348777283ee09168580ee5dbc41fe5, branch preview)
-- known_smoke: E001-E006 code-ok (registry completo sin PLACEHOLDER, kind routing prioritario image/pdf/media → MediaTool; homes sin $(cat) e imports reales DeferredHomeReviews/HomeCatalogSlot; no patrones PLACEHOLDER/$(cat)/"Tool not available")
-- new_findings: none (sampled registry, index/es.index, OuncesToGramsConverterTool, IdealWeightCalculatorTool, general components tree; patterns clean)
+- deploy: READY (SHA f221e760cf597af052c6d1849f034a8c1a4cc170, branch preview utilihub-8762pqaez-financialproyects.vercel.app)
+- known_smoke: E001-E006 code-ok (rotated focus E005 homes: index.tsx + es.index.tsx start with import/createFileRoute, no $(cat), imports DeferredHomeReviews/HomeCatalogSlot resolve; E002 kind routing in registry prioritizes image/pdf/media → MediaTool; registry full no PLACEHOLDER; patterns PLACEHOLDER/$(cat)/"Tool not available" absent)
+- new_findings: none (sampled registry.tsx, MediaTool.tsx, index/es.index, code search for broken patterns and recent tools; live preview protected by Vercel auth but deploy READY, no ERROR logs)
 - fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E001 (registry verified)
+- last_known_focus: E005 (homes verified)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
