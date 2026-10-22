@@ -64,6 +64,8 @@ import { TMB_CALCULATOR_TOOLS } from "./tmb-calculator-tool";
 import { RGB_HEX_CONVERTER_TOOLS } from "./rgb-hex-converter-tool";
 import { COMPLEMENTARY_PALETTE_TOOLS } from "./complementary-palette-tool";
 import { ELECTRICITY_CONSUMPTION_TOOLS } from "./electricity-consumption-tool";
+import { LETTER_FREQUENCY_CALCULATOR_TOOLS } from "./letter-frequency-calculator-tool";
+import { WORK_CALCULATOR_TOOLS } from "./work-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -132,4 +134,6 @@ export const GENERAL_TOOLS = [
   ...RGB_HEX_CONVERTER_TOOLS,
   ...COMPLEMENTARY_PALETTE_TOOLS,
   ...ELECTRICITY_CONSUMPTION_TOOLS,
+  ...LETTER_FREQUENCY_CALCULATOR_TOOLS,
+  ...WORK_CALCULATOR_TOOLS,
 ];

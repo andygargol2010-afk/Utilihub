@@ -80,4 +80,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-descuento-porcentaje", name: "DiscountPercentageCalculatorTool", path: "./DiscountPercentageCalculatorTool", export: "DiscountPercentageCalculatorTool" },
   { slug: "generador-paleta-complementaria", name: "ComplementaryPaletteTool", path: "./ComplementaryPaletteTool", export: "ComplementaryPaletteTool" },
   { slug: "calculadora-consumo-electricidad", name: "ElectricityConsumptionTool", path: "./ElectricityConsumptionTool", export: "ElectricityConsumptionTool" },
+  { slug: "calculadora-frecuencia-letras", name: "LetterFrequencyCalculatorTool", path: "./LetterFrequencyCalculatorTool", export: "LetterFrequencyCalculatorTool" },
+  { slug: "calculadora-trabajo", name: "WorkCalculatorTool", path: "./WorkCalculatorTool", export: "WorkCalculatorTool" },
 ] as const;
