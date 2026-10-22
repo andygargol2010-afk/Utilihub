@@ -15,7 +15,8 @@ Formato por entrada:
 <!-- end:header -->
 
 ## E001 — Registry PLACEHOLDER / tool page crash
-- **status**: recurring
+- **status**: fixed (vigilar regresión)
+- **last_seen**: 2026-10-22 (code smoke: no PLACEHOLDER, exports GENERAL_TOOL_UI / pickComponent presentes)
 - **symptom**: "We could not load this page" · `Cannot read properties of undefined (reading 'kind')` en GeneralTool bundle
 - **root_cause**: `src/components/general/registry.tsx` reemplazado por PLACEHOLDER o sin `GENERAL_TOOL_UI` / `buildLazyRegistry` / `pickComponent`
 - **check**: leer registry completo; tamaño razonable; exports presentes; abrir 1–2 tools del catálogo
