@@ -295,6 +295,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     pathEs: "/es/color-cascade-fusion",
     emoji: "🌊",
   },
+  {
+    id: "aura-card-share",
+    nameEn: "Aura Card Composer",
+    nameEs: "Compositor de Tarjeta de Aura",
+    blurbEn: "Design a personal aura card with particles, bloom, gradients and custom text baked into a PNG.",
+    blurbEs: "Diseñá una tarjeta de aura personal con partículas, bloom, degradados y texto personalizado horneado en PNG.",
+    pathEn: "/aura-card",
+    pathEs: "/es/aura-card",
+    emoji: "✨",
+  },
 ] as const;
 
 /** First id = primary next step. */
@@ -327,6 +337,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "solar-system-scale-explorer": ["constellation-studio", "aurora", "gravity-particles", "particle-magnet-lab"],
   "daily-progress-constellation": ["constellation-studio", "constellation-name", "aurora", "solar-system-scale-explorer"],
   "color-cascade-fusion": ["pulse-catch", "firework", "particles", "aurora"],
+  "aura-card-share": ["aurora-particle-playground", "prism-trail-composer", "neon-signature-composer", "postcard"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
