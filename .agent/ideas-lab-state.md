@@ -60,7 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Apuesta de crecimiento medible: añadir un botón prominente "Experiencia aleatoria" en la home (EN+ES) que redirige a un playground/juego/simulador/studio aleatorio de la lista existente. Aumenta profundidad de sesión y descubrimiento sin nuevo contenido pesado. Medible via analytics de clicks y bounce en futuro.
+id: random-experience-entry
+path_en: /
+path_es: /es/
+domain: traffic-bets
+runs_total: 3
+runs_remaining: 3
+acceptance: pending
+share: n/a
+next_step_required: no
+notes: U=0.096 <0.50 → GROWTH. U_g=0.096 <0.35 → FIXED urn (traffic-bets/search-magnets). Seleccionado traffic-bets. No weight updates (FIXED). No match last_closed. Idea concreta de entrada aleatoria para bet de tráfico/exploración.
+adsense-prep_runs: 3
 ```
 
 <!-- end:ideas-lab-state.md -->
