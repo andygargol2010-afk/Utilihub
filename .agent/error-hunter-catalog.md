@@ -25,7 +25,7 @@ Formato por entrada:
 
 ## E002 — Image/PDF tools muestran calculadora numérica
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (kind-first routing en pickComponent)
+- **last_seen**: 2026-10-22 (kind-first routing en pickComponent; MediaTool.tsx implementa upload/process para image/pdf)
 - **symptom**: PNG a JPG / Comprimir imagen piden "Primer valor / Segundo valor / Calcular" en vez de subir archivo
 - **root_cause**: routing por kind incorrecto; tools `image`/`pdf` no van a MediaTool/DocumentTool
 - **check**: kind de slugs image/pdf en catalog; pickComponent / DeferredToolUi prioriza kind Media/Document
@@ -52,7 +52,7 @@ Formato por entrada:
 
 ## E005 — Home 404 por routes corruptas
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (index.tsx y es.index.tsx empiezan con import, createFileRoute, sin $(cat))
+- **last_seen**: 2026-10-22 (index.tsx y es.index.tsx empiezan con import, createFileRoute, sin $(cat); imports DeferredHomeReviews/HomeCatalogSlot OK)
 - **symptom**: `/` o `/es` → "We could not find this page" / 404 UtiliHub
 - **root_cause**: `src/routes/index.tsx` y `es.index.tsx` contenían literal `$(cat /tmp/…)` (stub de shell)
 - **check**: ambos archivos empiezan con `import` y exportan `createFileRoute`; **no** contienen `$(cat`
