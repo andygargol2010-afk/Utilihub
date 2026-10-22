@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-22 | matematicas | calculadora-regla-de-tres | RuleOfThreeCalculatorTool
+- 2026-10-22 | productividad | calculadora-horas-extras | OvertimeCalculatorTool
 - 2026-10-22 | texto | calculadora-frecuencia-letras | LetterFrequencyCalculatorTool
 - 2026-10-22 | ciencia | calculadora-trabajo | WorkCalculatorTool
 - 2026-10-22 | hogar | calculadora-consumo-electricidad | ElectricityConsumptionTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-21 | educacion | calculadora-media-ponderada | WeightedMeanCalculatorTool
 - 2026-10-21 | matematicas | calculadora-teorema-pitagoras | PythagoreanCalculatorTool
 - 2026-10-21 | conversiones | conversor-velocidad | SpeedConverterTool
-- 2026-10-21 | matematicas | calculadora-factorial | FactorialCalculatorTool
-- 2026-10-21 | hogar | calculadora-consumo-agua | WaterConsumptionCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -43,8 +43,8 @@ ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, are
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras)
-productividad: recent (tiempo-lectura, porcentaje-completado)
-matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras)
+productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras)
+matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres)
 diseno: recent (contraste-color, paleta-complementaria)
 conversiones: recent (peso, velocidad, rgb-hex)
 salud: recent (frecuencia-cardiaca-maxima, tmb)
@@ -62,6 +62,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-22 PRODUCT (roll 20): shipped 2 (calculadora-regla-de-tres matematicas + calculadora-horas-extras productividad). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy pending. SEO locales: pt active, deferred.
 2026-10-22 PRODUCT (roll 11): shipped 2 (calculadora-frecuencia-letras texto + calculadora-trabajo ciencia). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy READY (SHA 953d758). SEO locales: pt active, deferred. Previews protected; verification limited.
 2026-10-22 PRODUCT (roll 14): shipped 2 (generador-paleta-complementaria diseno + calculadora-consumo-electricidad hogar). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy READY (SHA 39e16184). SEO locales: pt active, deferred. Previews protected.
 2026-10-22 META/NEW-CATEGORY gate note: roll 2 but "salud" already used in tool data (category field) though missing from GENERAL_CATEGORIES + ENGLISH_CATEGORY_SLUGS → not a clean NEW-CATEGORY; deferred formalization. No product tools this run.
@@ -82,9 +83,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-frecuencia-letras, calculadora-trabajo
-last_deploy: READY
-last_sha: 953d758322e2346e015f446592cf837bd19cd19b
+last_slugs: calculadora-regla-de-tres, calculadora-horas-extras
+last_deploy: pending
+last_sha: 2b7131048772b5ed8a8172a9bb180abfc9ec9afd
 ```
 
 <!-- end:tools-builder-state.md -->
