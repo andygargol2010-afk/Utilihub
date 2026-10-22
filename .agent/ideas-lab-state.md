@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: games
-last_closed_id: color-cascade-fusion
+last_closed_domain: studio-composition
+last_closed_id: prism-trail-composer
 p_fixed: 0.35
 
 weights_core:
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-22 | studio-composition | prism-trail-composer | Interactive Prism Trail Composer complete: freehand multi-layer rainbow prism trails, bloom, schemes, mirrors, gravity, fade, backgrounds, smooth, title overlay baked in PNG + randomize controls, PNG share (EN+ES)
 - 2026-10-21 | games | color-cascade-fusion | Interactive Color Cascade Fusion complete: adjacent fusion, power-orbs, combo streaks, progressive difficulty, Web Audio sounds, game-over overlay with new-best celebration + PNG share (EN+ES)
 - 2026-10-21 | retention-loops | daily-progress-constellation | Interactive Daily Progress Constellation complete: canvas stars + lines + name baked in PNG + milestones + reset + hover tooltips + editable name (EN+ES)
 - 2026-10-21 | search-magnets | solar-system-scale-explorer | Interactive Solar System Scale Explorer complete with light-travel times, live scale, focus ring, presets, moons, Pluto (EN+ES)
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-20 | quality-lift | pulse-catch-arena | Elevated Pulse Catch Arena with perfect-catch system + combo fire + fever (EN+ES)
 - 2026-10-19 | games | orbit-defender-arcade | Interactive Orbit Defender Arcade (EN+ES)
 - 2026-10-19 | simulators | reaction-diffusion-lab | Interactive Reaction-Diffusion Lab (EN+ES)
-- 2026-10-19 | journeys | waypoint-river-composer | Interactive Waypoint River Composer (EN+ES)
 ```
 
 ---
@@ -60,20 +60,7 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive Prism Trail Composer — freehand multi-layer light-prism trails. Draw paths that split into rainbow refraction beams with live bloom, adjustable dispersion and speed; trails persist with particle afterglow. Export shareable PNG of the composition. EN+ES full routes + next-step.
-id: prism-trail-composer
-path_en: /studio/prism-trail-composer
-path_es: /es/studio/compositor-estela-prisma
-path_seo: n/a
-domain: studio-composition
-runs_total: 6
-runs_remaining: 1
-acceptance: pending
-share: png
-next_step_required: yes
-notes: IDEATE roll: U=0.612 (>0.50 → CORE). Weighted sample from weights_core selected studio-composition (prev weight 8). last_closed_domain=games ≠ studio-composition, no re-roll. Weights updated: studio-composition=1, all other CORE +1. Distinct from neon-signature-composer and glow-trail (refraction prism split + dispersion controls). EXECUTE run 1/6: shipped core freehand multi-layer rainbow prism trails with live bloom, adjustable dispersion/speed, particle afterglow, PNG export + share, EN+ES routes, next-step registration. Adsterra preserved. CWV-safe (canvas isolated). EXECUTE run 2/6: added bloom intensity, stroke width, prism angle (rotated dispersion offset), undo last stroke; URL params synced. EN+ES labels updated. Adsterra preserved. CWV-safe. EXECUTE run 3/6: added color schemes (rainbow/neon/pastel/fire), particle density control, horizontal mirror mode; URL params c/dens/m; particle cap for mobile CWV; EN+ES labels. Adsterra preserved. EXECUTE run 4/6: added particle gravity (0-2), trail fade rate (0=persistent), vertical mirror (+ combo 4-way); trails now timestamped for fade; URL params g/f/vm; EN+ES labels. Adsterra preserved. CWV-safe (particle cap kept). EXECUTE run 5/6: background presets (void/nebula/grid/midnight) + smooth trails toggle; URL params bg/sm; EN+ES labels. Adsterra preserved. CWV-safe.
-adsense-prep_runs: 3
+status: none
 ```
 
 <!-- end:ideas-lab-state.md -->
