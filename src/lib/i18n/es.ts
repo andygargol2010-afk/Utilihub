@@ -309,6 +309,7 @@ const EXACT_NAMES: Record<string, string> = {
   "punto-medio": "Punto medio",
   "area-poligono-regular": "Área de polígono regular",
   "area-elipse": "Área de elipse",
+  "calculadora-volumen-piramide": "Calculadora de volumen de pirámide",
   "factorizacion-prima": "Factorización prima",
   "es-primo": "¿Es primo? / siguiente primo",
   "raiz-cubica": "Raíz cúbica",
