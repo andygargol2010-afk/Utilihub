@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-22 | finanzas | calculadora-roi | RoiCalculatorTool
+- 2026-10-22 | diseno | calculadora-dpi | DpiCalculatorTool
 - 2026-10-22 | ciencia | calculadora-potencia-electrica | ElectricalPowerCalculatorTool
 - 2026-10-22 | viajes | calculadora-tiempo-vuelo | FlightTimeCalculatorTool
 - 2026-10-22 | conversiones | conversor-litros-galones | LitersToGallonsConverterTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-22 | conversiones | conversor-onzas-gramos | OuncesToGramsConverterTool
 - 2026-10-22 | finanzas | calculadora-ahorro-mensual | MonthlySavingsCalculatorTool
 - 2026-10-22 | conversiones | conversor-kg-libras | KgToLbsConverterTool
-- 2026-10-22 | matematicas | calculadora-regla-de-tres | RuleOfThreeCalculatorTool
-- 2026-10-22 | productividad | calculadora-horas-extras | OvertimeCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -45,11 +45,11 @@ viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras)
 productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria)
 matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres)
-diseno: recent (contraste-color, paleta-complementaria)
+diseno: recent (contraste-color, paleta-complementaria, dpi)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria)
-finanzas: recent (descuento-porcentaje, ahorro-mensual)
+finanzas: recent (descuento-porcentaje, ahorro-mensual, roi)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -63,9 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-22 META (this run): restored registry-entries-a.ts from PLACEHOLDER_FIX_LATER to valid empty array (exports REGISTRY_ENTRIES_A = []). Thin registry.tsx remains intact with dedicated ifs. No new tools (META). Deploy prior was READY.
-Previous META restored state.md from wipe. PRODUCT shipped potencia-electrica + tiempo-vuelo.
-Previous notes preserved from 63133ddf.
+2026-10-22 PRODUCT: calculadora-roi (finanzas) + calculadora-dpi (diseno). Distinct clusters. Registry A populated surgically.
+Previous META restored registry-entries-a.ts from PLACEHOLDER.
 ```
 
 ---
@@ -73,10 +72,10 @@ Previous notes preserved from 63133ddf.
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: META
-last_slugs: none (registry restore only)
-last_deploy: READY (prior SHA)
-last_sha: c046443ab6c3db22fa3bb7275e11f97a2e5ef178
+last_mode: PRODUCT
+last_slugs: calculadora-roi, calculadora-dpi
+last_deploy: pending verification
+last_sha: (see commits)
 ```
 
 <!-- end:tools-builder-state.md -->

@@ -78,6 +78,8 @@ import { LITERS_TO_GALLONS_CONVERTER_TOOLS } from "./liters-to-gallons-converter
 import { DAILY_AVERAGE_SPEED_CALCULATOR_TOOLS } from "./daily-average-speed-calculator-tool";
 import { ELECTRICAL_POWER_CALCULATOR_TOOLS } from "./electrical-power-calculator-tool";
 import { FLIGHT_TIME_CALCULATOR_TOOLS } from "./flight-time-calculator-tool";
+import { ROI_CALCULATOR_TOOLS } from "./roi-calculator-tool";
+import { DPI_CALCULATOR_TOOLS } from "./dpi-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -160,4 +162,6 @@ export const GENERAL_TOOLS = [
   ...DAILY_AVERAGE_SPEED_CALCULATOR_TOOLS,
   ...ELECTRICAL_POWER_CALCULATOR_TOOLS,
   ...FLIGHT_TIME_CALCULATOR_TOOLS,
+  ...ROI_CALCULATOR_TOOLS,
+  ...DPI_CALCULATOR_TOOLS,
 ];

@@ -9,4 +9,7 @@ export type RegistryEntry = {
   export: string;
 };
 
-export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [] as const;
+export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
+  { slug: "calculadora-roi", name: "RoiCalculatorTool", path: "./RoiCalculatorTool", export: "RoiCalculatorTool" },
+  { slug: "calculadora-dpi", name: "DpiCalculatorTool", path: "./DpiCalculatorTool", export: "DpiCalculatorTool" },
+] as const;
