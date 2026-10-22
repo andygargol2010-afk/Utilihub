@@ -24,6 +24,9 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
   const trailsRef = useRef<Point[][]>([]);
   const [dispersion, setDispersion] = useState(12);
   const [speed, setSpeed] = useState(1);
+  const [bloom, setBloom] = useState(18);
+  const [strokeWidth, setStrokeWidth] = useState(6);
+  const [prismAngle, setPrismAngle] = useState(90);
   const [isDrawing, setIsDrawing] = useState(false);
   const [exporting, setExporting] = useState(false);
   const animRef = useRef<number>(0);
@@ -32,18 +35,26 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
     en: {
       dispersion: "Dispersion",
       speed: "Particle speed",
+      bloom: "Bloom",
+      width: "Stroke width",
+      angle: "Prism angle",
       clear: "Clear",
+      undo: "Undo",
       export: "Snapshot PNG",
       share: "Share",
-      hint: "Draw freehand — paths split into rainbow prism beams with bloom and particle afterglow",
+      hint: "Draw freehand — paths split into rainbow prism beams with live bloom, adjustable angle, dispersion and particle afterglow",
     },
     es: {
       dispersion: "Dispersión",
       speed: "Velocidad partículas",
+      bloom: "Bloom",
+      width: "Grosor trazo",
+      angle: "Ángulo prisma",
       clear: "Limpiar",
+      undo: "Deshacer",
       export: "Captura PNG",
       share: "Compartir",
-      hint: "Dibujá a mano alzada — las trayectorias se dividen en haces de prisma arcoíris con bloom y resplandor de partículas",
+      hint: "Dibujá a mano alzada — las trayectorias se dividen en haces de prisma arcoíris con bloom en vivo, ángulo ajustable, dispersión y resplandor de partículas",
     },
   }[locale];
 
@@ -52,8 +63,14 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
       const params = new URLSearchParams(window.location.search);
       const d = params.get("d");
       const s = params.get("s");
+      const b = params.get("b");
+      const w = params.get("w");
+      const a = params.get("a");
       if (d && !isNaN(Number(d))) setDispersion(Math.max(0, Math.min(40, Number(d))));
       if (s && !isNaN(Number(s))) setSpeed(Math.max(0.2, Math.min(3, Number(s))));
+      if (b && !isNaN(Number(b))) setBloom(Math.max(0, Math.min(40, Number(b))));
+      if (w && !isNaN(Number(w))) setStrokeWidth(Math.max(2, Math.min(16, Number(w))));
+      if (a && !isNaN(Number(a))) setPrismAngle(Math.max(0, Math.min(180, Number(a))));
     } catch {}
   }, []);
 
@@ -61,11 +78,14 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
     const params = new URLSearchParams(window.location.search);
     params.set("d", String(dispersion));
     params.set("s", String(speed));
+    params.set("b", String(bloom));
+    params.set("w", String(strokeWidth));
+    params.set("a", String(prismAngle));
     const next = `${window.location.pathname}?${params.toString()}`;
     if (next !== window.location.pathname + window.location.search) {
       window.history.replaceState(null, "", next);
     }
-  }, [dispersion, speed]);
+  }, [dispersion, speed, bloom, strokeWidth, prismAngle]);
 
   const spawnParticles = useCallback((x: number, y: number, n = 5) => {
     for (let i = 0; i < n; i++) {
@@ -91,6 +111,7 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
     if (!ctx) return;
     const w = canvas.width;
     const h = canvas.height;
+    const angleRad = (prismAngle * Math.PI) / 180;
 
     ctx.fillStyle = "#050510";
     ctx.fillRect(0, 0, w, h);
@@ -105,15 +126,17 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
         const offset = (li - (layers - 1) / 2) * (dispersion / 100);
         ctx.beginPath();
         const first = trail[0];
-        // Simple perpendicular offset approximation
         let dx = 0, dy = 0;
         if (trail.length > 1) {
           const next = trail[1];
-          dx = -(next.y - first.y);
-          dy = next.x - first.x;
-          const len = Math.hypot(dx, dy) || 1;
-          dx = (dx / len) * offset;
-          dy = (dy / len) * offset;
+          const tx = next.x - first.x;
+          const ty = next.y - first.y;
+          const len = Math.hypot(tx, ty) || 1;
+          // Rotate perpendicular by prism angle
+          const px = -ty / len;
+          const py = tx / len;
+          dx = (px * Math.cos(angleRad) - py * Math.sin(angleRad)) * offset;
+          dy = (px * Math.sin(angleRad) + py * Math.cos(angleRad)) * offset;
         }
         ctx.moveTo((first.x + dx) * w, (first.y + dy) * h);
         for (let i = 1; i < trail.length; i++) {
@@ -123,16 +146,18 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
             const nx = trail[i + 1].x - trail[i - 1].x;
             const ny = trail[i + 1].y - trail[i - 1].y;
             const len = Math.hypot(nx, ny) || 1;
-            odx = (-ny / len) * offset;
-            ody = (nx / len) * offset;
+            const px = -ny / len;
+            const py = nx / len;
+            odx = (px * Math.cos(angleRad) - py * Math.sin(angleRad)) * offset;
+            ody = (px * Math.sin(angleRad) + py * Math.cos(angleRad)) * offset;
           }
           ctx.lineTo((p.x + odx) * w, (p.y + ody) * h);
         }
         ctx.strokeStyle = RAINBOW[li];
-        ctx.lineWidth = 6 - li * 0.4;
+        ctx.lineWidth = Math.max(1.5, strokeWidth - li * 0.35);
         ctx.shadowColor = RAINBOW[li];
-        ctx.shadowBlur = 18 + dispersion * 0.3;
-        ctx.globalAlpha = 0.85;
+        ctx.shadowBlur = bloom + dispersion * 0.25;
+        ctx.globalAlpha = 0.82;
         ctx.stroke();
       }
     });
@@ -146,14 +171,14 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
       ctx.globalAlpha = alpha * 0.75;
       ctx.fillStyle = p.color;
       ctx.shadowColor = p.color;
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = Math.min(24, bloom * 0.6);
       ctx.beginPath();
       ctx.arc(p.x * w, p.y * h, p.size * alpha * 1.4, 0, Math.PI * 2);
       ctx.fill();
     });
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
-  }, [dispersion]);
+  }, [dispersion, bloom, strokeWidth, prismAngle]);
 
   useEffect(() => {
     const loop = () => {
@@ -224,6 +249,12 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
     particlesRef.current = [];
   };
 
+  const undo = () => {
+    if (trailsRef.current.length > 0) {
+      trailsRef.current.pop();
+    }
+  };
+
   const exportPng = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -273,7 +304,7 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
             max={40}
             value={dispersion}
             onChange={(e) => setDispersion(Number(e.target.value))}
-            className="w-28 accent-violet-500"
+            className="w-24 accent-violet-500"
           />
           <span className="w-6 text-right">{dispersion}</span>
         </label>
@@ -286,13 +317,52 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
             step={0.1}
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
-            className="w-28 accent-cyan-500"
+            className="w-24 accent-cyan-500"
           />
           <span className="w-8 text-right">{speed.toFixed(1)}</span>
+        </label>
+        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          {labels.bloom}
+          <input
+            type="range"
+            min={0}
+            max={40}
+            value={bloom}
+            onChange={(e) => setBloom(Number(e.target.value))}
+            className="w-24 accent-pink-500"
+          />
+          <span className="w-6 text-right">{bloom}</span>
+        </label>
+        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          {labels.width}
+          <input
+            type="range"
+            min={2}
+            max={16}
+            value={strokeWidth}
+            onChange={(e) => setStrokeWidth(Number(e.target.value))}
+            className="w-24 accent-amber-500"
+          />
+          <span className="w-6 text-right">{strokeWidth}</span>
+        </label>
+        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          {labels.angle}
+          <input
+            type="range"
+            min={0}
+            max={180}
+            value={prismAngle}
+            onChange={(e) => setPrismAngle(Number(e.target.value))}
+            className="w-24 accent-emerald-500"
+          />
+          <span className="w-8 text-right">{prismAngle}°</span>
         </label>
       </div>
 
       <div className="flex flex-wrap gap-2">
+        <button type="button" onClick={undo} className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80">
+          {labels.undo}
+        </button>
         <button type="button" onClick={clear} className="min-h-[44px] rounded-full bg-muted px-4 py-2 text-sm font-medium hover:bg-muted/80">
           {labels.clear}
         </button>
