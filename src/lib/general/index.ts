@@ -66,6 +66,8 @@ import { COMPLEMENTARY_PALETTE_TOOLS } from "./complementary-palette-tool";
 import { ELECTRICITY_CONSUMPTION_TOOLS } from "./electricity-consumption-tool";
 import { LETTER_FREQUENCY_CALCULATOR_TOOLS } from "./letter-frequency-calculator-tool";
 import { WORK_CALCULATOR_TOOLS } from "./work-calculator-tool";
+import { RULE_OF_THREE_CALCULATOR_TOOLS } from "./rule-of-three-calculator-tool";
+import { OVERTIME_CALCULATOR_TOOLS } from "./overtime-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -136,4 +138,6 @@ export const GENERAL_TOOLS = [
   ...ELECTRICITY_CONSUMPTION_TOOLS,
   ...LETTER_FREQUENCY_CALCULATOR_TOOLS,
   ...WORK_CALCULATOR_TOOLS,
+  ...RULE_OF_THREE_CALCULATOR_TOOLS,
+  ...OVERTIME_CALCULATOR_TOOLS,
 ];
