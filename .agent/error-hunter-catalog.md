@@ -68,4 +68,14 @@ Formato por entrada:
 - **fix_hint**: alinear con componentes reales (DeferredHomeReviews, HomeCatalogSlot, home-catalog)
 - **files**: `src/routes/index.tsx`, `src/routes/es.index.tsx`
 
+## E007 — Build ERROR por spanishToolSummary no exportado desde es.ts
+- **status**: fixed (vigilar regresión)
+- **last_seen**: 2026-10-22 (deploy ERROR en 4a0830cf: "spanishToolSummary" is not exported by "src/lib/i18n/es.ts" from SpanishToolSearch.tsx:9)
+- **fixed_at**: 2026-10-22 (SHA a7672b461c0f3b5d3c88bf3970a4544c2218986f corrige import a @/lib/i18n/es-summaries)
+- **symptom**: deploy Vercel ERROR; build falla en rollup con missing export spanishToolSummary
+- **root_cause**: spanishToolSummary se movió a es-summaries.ts; algunos archivos aún importaban desde es.ts
+- **check**: grep imports de spanishToolSummary; deben venir de es-summaries.ts; es.ts no lo exporta
+- **fix_hint**: cambiar import a `@/lib/i18n/es-summaries`; no re-exportar si se quiere mantener separado
+- **files**: `src/components/SpanishToolSearch.tsx`, `src/components/HomeFeaturedSection.tsx`, `src/components/CompactToolRow.tsx`, `src/lib/i18n/es-summaries.ts`, `src/lib/i18n/es.ts`
+
 <!-- end:catalog -->
