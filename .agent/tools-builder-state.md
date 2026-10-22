@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-22 | educacion | calculadora-nota-necesaria | GradeNeededCalculatorTool
+- 2026-10-22 | fechas | calculadora-semanas-entre-fechas | WeeksBetweenDatesCalculatorTool
 - 2026-10-22 | salud | calculadora-peso-saludable | IdealWeightCalculatorTool
 - 2026-10-22 | conversiones | conversor-onzas-gramos | OuncesToGramsConverterTool
 - 2026-10-22 | finanzas | calculadora-ahorro-mensual | MonthlySavingsCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-22 | ciencia | calculadora-trabajo | WorkCalculatorTool
 - 2026-10-22 | hogar | calculadora-consumo-electricidad | ElectricityConsumptionTool
 - 2026-10-22 | diseno | generador-paleta-complementaria | ComplementaryPaletteTool
-- 2026-10-21 | conversiones | conversor-rgb-hex | RgbHexConverterTool
-- 2026-10-21 | salud | calculadora-tmb | TmbCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -38,7 +38,7 @@ Use with PRODUCT diversity rules (ops). Prefer under-represented clusters.
 Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
-fechas/tiempo: recent (dias-hasta-fecha)
+fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje)
@@ -48,7 +48,7 @@ matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rom
 diseno: recent (contraste-color, paleta-complementaria)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable)
-educacion: recent (media-aritmetica, media-ponderada)
+educacion: recent (media-aritmetica, media-ponderada, nota-necesaria)
 finanzas: recent (descuento-porcentaje, ahorro-mensual)
 ```
 
@@ -63,6 +63,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-22 PRODUCT (roll 8): shipped 2 (calculadora-nota-necesaria educacion + calculadora-semanas-entre-fechas fechas). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy pending. SEO locales: pt active, deferred.
 2026-10-22 PRODUCT (roll 12): shipped 2 (conversor-onzas-gramos conversiones + calculadora-peso-saludable salud). Distinct clusters. Anti-dupe OK. Registry surgical + dedicated ifs OK. Deploy READY (SHA 5bb4644). SEO locales: pt active, deferred. Previews protected; verification limited.
 2026-10-22 PRODUCT (roll 15): shipped 2 (calculadora-ahorro-mensual finanzas + conversor-kg-libras conversiones). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy pending. SEO locales: pt active, deferred.
 2026-10-22 PRODUCT (roll 20): shipped 2 (calculadora-regla-de-tres matematicas + calculadora-horas-extras productividad). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy pending. SEO locales: pt active, deferred.
@@ -86,9 +87,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: conversor-onzas-gramos, calculadora-peso-saludable
-last_deploy: READY
-last_sha: 5bb4644e626615dd18c10fbc63ede02fee4fdb9d
+last_slugs: calculadora-nota-necesaria, calculadora-semanas-entre-fechas
+last_deploy: pending
+last_sha: 62cb2d09143e315f9576811cbe2430faecfafb23
 ```
 
 <!-- end:tools-builder-state.md -->
