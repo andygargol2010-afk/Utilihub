@@ -21,6 +21,26 @@ const SCHEMES: Record<ColorScheme, string[]> = {
   cosmic: ["#9d4edd", "#c77dff", "#e0aaff", "#7b2cbf", "#5a189a"],
 };
 
+const RANDOM_QUOTES_EN = [
+  "My personal aura",
+  "Radiate your light",
+  "Stay curious",
+  "Create joy",
+  "Glow on",
+  "Breathe magic",
+  "Own your vibe",
+];
+
+const RANDOM_QUOTES_ES = [
+  "Mi aura personal",
+  "Irradiá tu luz",
+  "Mantené la curiosidad",
+  "Creá alegría",
+  "Seguí brillando",
+  "Respirá magia",
+  "Apropiate de tu vibra",
+];
+
 function shortId(seed: string): string {
   let h = 0;
   for (let i = 0; i < seed.length; i++) h = (Math.imul(31, h) + seed.charCodeAt(i)) | 0;
@@ -53,6 +73,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
       quote: "Quote or name",
       export: "Download PNG",
       share: "Share",
+      randomize: "Randomize",
       hint: "Design your aura card — particles swirl around your text with bloom and gradients. URL is shareable.",
       schemes: { aurora: "Aurora", neon: "Neon", sunset: "Sunset", cosmic: "Cosmic" } as Record<ColorScheme, string>,
     },
@@ -64,6 +85,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
       quote: "Cita o nombre",
       export: "Descargar PNG",
       share: "Compartir",
+      randomize: "Aleatorizar",
       hint: "Diseñá tu tarjeta de aura — las partículas giran alrededor de tu texto con bloom y degradados. La URL es compartible.",
       schemes: { aurora: "Aurora", neon: "Neón", sunset: "Atardecer", cosmic: "Cósmico" } as Record<ColorScheme, string>,
     },
@@ -106,15 +128,15 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     particlesRef.current = [];
     for (let i = 0; i < count; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const radius = 0.25 + Math.random() * 0.25;
+      const radius = 0.22 + Math.random() * 0.28;
       particlesRef.current.push({
         x: 0.5 + Math.cos(angle) * radius,
         y: 0.5 + Math.sin(angle) * radius,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
         life: 1,
-        maxLife: 2 + Math.random() * 3,
-        size: 1.5 + Math.random() * 3.5,
+        maxLife: 2.5 + Math.random() * 3.5,
+        size: 1.8 + Math.random() * 4,
         color: colors[Math.floor(Math.random() * colors.length)],
       });
     }
@@ -135,27 +157,27 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     // Background gradient
     const g = ctx.createLinearGradient(0, 0, w, h);
     const hue = (bgGradient * 60 + 200) % 360;
-    g.addColorStop(0, `hsl(${hue}, 40%, 8%)`);
-    g.addColorStop(1, `hsl(${(hue + 40) % 360}, 30%, 4%)`);
+    g.addColorStop(0, `hsl(${hue}, 45%, 9%)`);
+    g.addColorStop(1, `hsl(${(hue + 50) % 360}, 35%, 5%)`);
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, w, h);
 
     // Soft aura halo
-    const halo = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.4);
-    halo.addColorStop(0, colors[0] + "33");
-    halo.addColorStop(0.6, colors[1] + "12");
+    const halo = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.45);
+    halo.addColorStop(0, colors[0] + "44");
+    halo.addColorStop(0.5, colors[1] + "18");
     halo.addColorStop(1, "transparent");
     ctx.fillStyle = halo;
     ctx.fillRect(0, 0, w, h);
 
     // Card area
-    ctx.fillStyle = "rgba(0,0,0,0.35)";
-    ctx.fillRect(w * 0.15, h * 0.2, w * 0.7, h * 0.6);
+    ctx.fillStyle = "rgba(0,0,0,0.4)";
+    ctx.fillRect(w * 0.12, h * 0.18, w * 0.76, h * 0.64);
 
     // Particles
     particlesRef.current.forEach((p) => {
       const alpha = Math.max(0, p.life / p.maxLife);
-      ctx.globalAlpha = alpha * 0.8;
+      ctx.globalAlpha = alpha * 0.85;
       ctx.fillStyle = p.color;
       ctx.shadowColor = p.color;
       ctx.shadowBlur = bloom;
@@ -168,15 +190,15 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
 
     // Text overlay baked in
     ctx.fillStyle = "#ffffff";
-    ctx.font = `bold ${Math.min(w, h) * 0.06}px system-ui, sans-serif`;
+    ctx.font = `bold ${Math.min(w, h) * 0.055}px system-ui, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.shadowColor = "rgba(0,0,0,0.6)";
-    ctx.shadowBlur = 8;
+    ctx.shadowColor = "rgba(0,0,0,0.7)";
+    ctx.shadowBlur = 10;
     const lines = quote.split("\n").slice(0, 3);
-    const lineH = Math.min(w, h) * 0.08;
+    const lineH = Math.min(w, h) * 0.075;
     lines.forEach((line, i) => {
-      ctx.fillText(line.slice(0, 40), w / 2, h / 2 + (i - (lines.length - 1) / 2) * lineH);
+      ctx.fillText(line.slice(0, 42), w / 2, h / 2 + (i - (lines.length - 1) / 2) * lineH);
     });
     ctx.shadowBlur = 0;
   }, [bloom, bgGradient, quote, colors]);
@@ -185,29 +207,30 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     const loop = () => {
       particlesRef.current = particlesRef.current
         .map((p) => {
-          let nx = p.x + p.vx * 0.003;
-          let ny = p.y + p.vy * 0.003;
+          let nx = p.x + p.vx * 0.004;
+          let ny = p.y + p.vy * 0.004;
           const dx = 0.5 - nx;
           const dy = 0.5 - ny;
-          p.vx += dx * 0.02;
-          p.vy += dy * 0.02;
-          p.vx *= 0.98;
-          p.vy *= 0.98;
+          const dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+          p.vx += (dx / dist) * 0.018;
+          p.vy += (dy / dist) * 0.018;
+          p.vx *= 0.975;
+          p.vy *= 0.975;
           return {
             ...p,
-            x: Math.max(0.05, Math.min(0.95, nx)),
-            y: Math.max(0.05, Math.min(0.95, ny)),
-            life: p.life - 0.004,
+            x: Math.max(0.04, Math.min(0.96, nx)),
+            y: Math.max(0.04, Math.min(0.96, ny)),
+            life: p.life - 0.0035,
           };
         })
         .filter((p) => p.life > 0);
 
-      if (particlesRef.current.length < density * 0.6) {
+      if (particlesRef.current.length < density * 0.55) {
         spawnParticles();
       }
       // Cap for mobile CWV
-      if (particlesRef.current.length > 120) {
-        particlesRef.current = particlesRef.current.slice(-100);
+      if (particlesRef.current.length > 110) {
+        particlesRef.current = particlesRef.current.slice(-95);
       }
 
       redraw();
@@ -233,6 +256,17 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
   }, [redraw]);
+
+  const randomize = () => {
+    const schemes = Object.keys(SCHEMES) as ColorScheme[];
+    setScheme(schemes[Math.floor(Math.random() * schemes.length)]);
+    setDensity(15 + Math.floor(Math.random() * 60));
+    setBloom(4 + Math.floor(Math.random() * 24));
+    setBgGradient(Math.floor(Math.random() * 11));
+    const quotes = locale === "es" ? RANDOM_QUOTES_ES : RANDOM_QUOTES_EN;
+    setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
+    trackEvent("randomize_click", { id: "aura-card-share", locale });
+  };
 
   const exportPng = async () => {
     const canvas = canvasRef.current;
@@ -325,6 +359,13 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
             className="w-24 accent-violet-500"
           />
         </label>
+        <button
+          type="button"
+          onClick={randomize}
+          className="min-h-[36px] rounded-md border border-primary/50 bg-primary/10 px-3 py-1 text-xs font-bold text-primary hover:bg-primary/20"
+        >
+          {labels.randomize}
+        </button>
       </div>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
         <label className="flex-1 text-xs font-bold uppercase tracking-wide text-muted-foreground">
