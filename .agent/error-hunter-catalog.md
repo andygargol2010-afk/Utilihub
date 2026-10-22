@@ -78,4 +78,14 @@ Formato por entrada:
 - **fix_hint**: cambiar import a `@/lib/i18n/es-summaries`; no re-exportar si se quiere mantener separado
 - **files**: `src/components/SpanishToolSearch.tsx`, `src/components/HomeFeaturedSection.tsx`, `src/components/CompactToolRow.tsx`, `src/lib/i18n/es-summaries.ts`, `src/lib/i18n/es.ts`
 
+## E008 — Dedicated tool UI files contienen literal PLACEHOLDER
+- **status**: fixed
+- **last_seen**: 2026-10-22 (ElectricalPowerCalculatorTool.tsx y FlightTimeCalculatorTool.tsx eran el string "PLACEHOLDER"; crash al cargar /herramientas/calculadora-potencia-electrica y calculadora-tiempo-vuelo)
+- **fixed_at**: 2026-10-22 (SHAs 9675c9de y 3dedd6a3 implementan componentes reales con inputs/resultados)
+- **symptom**: página de tool crashea o muestra error de módulo al intentar cargar la UI dedicada
+- **root_cause**: archivos de UI dedicados creados como stubs PLACEHOLDER en vez de componentes React exportados
+- **check**: leer ElectricalPowerCalculatorTool.tsx y FlightTimeCalculatorTool.tsx; deben exportar función componente, no solo PLACEHOLDER
+- **fix_hint**: implementar UI similar a otros *CalculatorTool.tsx (useState + useMemo + copy/reset)
+- **files**: `src/components/general/ElectricalPowerCalculatorTool.tsx`, `src/components/general/FlightTimeCalculatorTool.tsx`, `registry.tsx` (lazy imports)
+
 <!-- end:catalog -->
