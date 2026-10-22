@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-22 META (this run): restored tools-builder-state.md from PLACEHOLDER wipe (size 11). Added recent potencia-electrica (ciencia) + tiempo-vuelo (viajes). registry-entries-a.ts currently PLACEHOLDER_FIX_LATER — thin registry.tsx has dedicated ifs for recent tools and is intact. No new tools this run to avoid risk. Deploy was READY on previous SHA.
-2026-10-22 PRODUCT: shipped calculadora-potencia-electrica + calculadora-tiempo-vuelo (fixed from PLACEHOLDER components).
+2026-10-22 META (this run): restored registry-entries-a.ts from PLACEHOLDER_FIX_LATER to valid empty array (exports REGISTRY_ENTRIES_A = []). Thin registry.tsx remains intact with dedicated ifs. No new tools (META). Deploy prior was READY.
+Previous META restored state.md from wipe. PRODUCT shipped potencia-electrica + tiempo-vuelo.
 Previous notes preserved from 63133ddf.
 ```
 
@@ -74,9 +74,9 @@ Previous notes preserved from 63133ddf.
 
 ```
 last_mode: META
-last_slugs: none (restore only)
-last_deploy: READY (prior)
-last_sha: c6c7aa778989d8d97047458dffe7e5c5e0ab1809
+last_slugs: none (registry restore only)
+last_deploy: READY (prior SHA)
+last_sha: c046443ab6c3db22fa3bb7275e11f97a2e5ef178
 ```
 
 <!-- end:tools-builder-state.md -->
