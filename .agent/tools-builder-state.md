@@ -62,7 +62,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-22 PRODUCT (roll 11): shipped 2 (calculadora-frecuencia-letras texto + calculadora-trabajo ciencia). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy pending verification. SEO locales: pt active, deferred.
+2026-10-22 PRODUCT (roll 11): shipped 2 (calculadora-frecuencia-letras texto + calculadora-trabajo ciencia). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy READY (SHA 953d758). SEO locales: pt active, deferred. Previews protected; verification limited.
 2026-10-22 PRODUCT (roll 14): shipped 2 (generador-paleta-complementaria diseno + calculadora-consumo-electricidad hogar). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy READY (SHA 39e16184). SEO locales: pt active, deferred. Previews protected.
 2026-10-22 META/NEW-CATEGORY gate note: roll 2 but "salud" already used in tool data (category field) though missing from GENERAL_CATEGORIES + ENGLISH_CATEGORY_SLUGS → not a clean NEW-CATEGORY; deferred formalization. No product tools this run.
 2026-10-21 PRODUCT (roll 7): shipped 2 (calculadora-tmb salud + conversor-rgb-hex conversiones). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy ERROR (unrelated ColorCascadeFusionGame export issue in build). SEO locales: pt active, deferred.
@@ -83,8 +83,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ```
 last_mode: PRODUCT
 last_slugs: calculadora-frecuencia-letras, calculadora-trabajo
-last_deploy: pending
-last_sha: pending
+last_deploy: READY
+last_sha: 953d758322e2346e015f446592cf837bd19cd19b
 ```
 
 <!-- end:tools-builder-state.md -->
