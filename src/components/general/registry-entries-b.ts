@@ -68,4 +68,6 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "conversor-rgb-hex", name: "RgbHexConverterTool", path: "./RgbHexConverterTool", export: "RgbHexConverterTool" },
   { slug: "calculadora-regla-de-tres", name: "RuleOfThreeCalculatorTool", path: "./RuleOfThreeCalculatorTool", export: "RuleOfThreeCalculatorTool" },
   { slug: "calculadora-horas-extras", name: "OvertimeCalculatorTool", path: "./OvertimeCalculatorTool", export: "OvertimeCalculatorTool" },
+  { slug: "calculadora-nota-necesaria", name: "GradeNeededCalculatorTool", path: "./GradeNeededCalculatorTool", export: "GradeNeededCalculatorTool" },
+  { slug: "calculadora-semanas-entre-fechas", name: "WeeksBetweenDatesCalculatorTool", path: "./WeeksBetweenDatesCalculatorTool", export: "WeeksBetweenDatesCalculatorTool" },
 ] as const;
