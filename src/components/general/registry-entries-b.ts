@@ -70,4 +70,6 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "calculadora-horas-extras", name: "OvertimeCalculatorTool", path: "./OvertimeCalculatorTool", export: "OvertimeCalculatorTool" },
   { slug: "calculadora-nota-necesaria", name: "GradeNeededCalculatorTool", path: "./GradeNeededCalculatorTool", export: "GradeNeededCalculatorTool" },
   { slug: "calculadora-semanas-entre-fechas", name: "WeeksBetweenDatesCalculatorTool", path: "./WeeksBetweenDatesCalculatorTool", export: "WeeksBetweenDatesCalculatorTool" },
+  { slug: "conversor-litros-galones", name: "LitersToGallonsConverterTool", path: "./LitersToGallonsConverterTool", export: "LitersToGallonsConverterTool" },
+  { slug: "calculadora-velocidad-promedio-diaria", name: "DailyAverageSpeedCalculatorTool", path: "./DailyAverageSpeedCalculatorTool", export: "DailyAverageSpeedCalculatorTool" },
 ] as const;

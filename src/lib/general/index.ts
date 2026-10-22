@@ -74,6 +74,8 @@ import { OUNCES_TO_GRAMS_CONVERTER_TOOLS } from "./ounces-to-grams-converter-too
 import { IDEAL_WEIGHT_CALCULATOR_TOOLS } from "./ideal-weight-calculator-tool";
 import { GRADE_NEEDED_CALCULATOR_TOOLS } from "./grade-needed-calculator-tool";
 import { WEEKS_BETWEEN_DATES_CALCULATOR_TOOLS } from "./weeks-between-dates-calculator-tool";
+import { LITERS_TO_GALLONS_CONVERTER_TOOLS } from "./liters-to-gallons-converter-tool";
+import { DAILY_AVERAGE_SPEED_CALCULATOR_TOOLS } from "./daily-average-speed-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -152,4 +154,6 @@ export const GENERAL_TOOLS = [
   ...IDEAL_WEIGHT_CALCULATOR_TOOLS,
   ...GRADE_NEEDED_CALCULATOR_TOOLS,
   ...WEEKS_BETWEEN_DATES_CALCULATOR_TOOLS,
+  ...LITERS_TO_GALLONS_CONVERTER_TOOLS,
+  ...DAILY_AVERAGE_SPEED_CALCULATOR_TOOLS,
 ];
