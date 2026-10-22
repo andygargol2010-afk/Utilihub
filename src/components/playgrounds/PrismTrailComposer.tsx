@@ -13,6 +13,8 @@ type Particle = {
   color: string;
 };
 
+type Trail = { points: Point[]; created: number };
+
 type ColorScheme = "rainbow" | "neon" | "pastel" | "fire";
 
 const SCHEMES: Record<ColorScheme, string[]> = {
@@ -28,7 +30,7 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
   }, [locale]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
-  const trailsRef = useRef<Point[][]>([]);
+  const trailsRef = useRef<Trail[]>([]);
   const [dispersion, setDispersion] = useState(12);
   const [speed, setSpeed] = useState(1);
   const [bloom, setBloom] = useState(18);
@@ -37,6 +39,9 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
   const [scheme, setScheme] = useState<ColorScheme>("rainbow");
   const [density, setDensity] = useState(5);
   const [mirror, setMirror] = useState(false);
+  const [vMirror, setVMirror] = useState(false);
+  const [gravity, setGravity] = useState(0.4);
+  const [fade, setFade] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
   const [exporting, setExporting] = useState(false);
   const animRef = useRef<number>(0);
@@ -52,12 +57,15 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
       angle: "Prism angle",
       scheme: "Color scheme",
       density: "Particle density",
-      mirror: "Mirror",
+      mirror: "H-Mirror",
+      vMirror: "V-Mirror",
+      gravity: "Gravity",
+      fade: "Trail fade",
       clear: "Clear",
       undo: "Undo",
       export: "Snapshot PNG",
       share: "Share",
-      hint: "Draw freehand — paths split into prism beams with live bloom, color schemes, mirror and particle afterglow",
+      hint: "Draw freehand — paths split into prism beams with live bloom, color schemes, mirrors, gravity and particle afterglow",
       schemes: { rainbow: "Rainbow", neon: "Neon", pastel: "Pastel", fire: "Fire" } as Record<ColorScheme, string>,
     },
     es: {
@@ -68,12 +76,15 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
       angle: "Ángulo prisma",
       scheme: "Esquema de color",
       density: "Densidad partículas",
-      mirror: "Espejo",
+      mirror: "Espejo H",
+      vMirror: "Espejo V",
+      gravity: "Gravedad",
+      fade: "Desvanecimiento",
       clear: "Limpiar",
       undo: "Deshacer",
       export: "Captura PNG",
       share: "Compartir",
-      hint: "Dibujá a mano alzada — trayectorias en haces de prisma con bloom, esquemas de color, espejo y resplandor de partículas",
+      hint: "Dibujá a mano alzada — trayectorias en haces de prisma con bloom, esquemas de color, espejos, gravedad y resplandor de partículas",
       schemes: { rainbow: "Arcoíris", neon: "Neón", pastel: "Pastel", fire: "Fuego" } as Record<ColorScheme, string>,
     },
   }[locale];
@@ -89,6 +100,9 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
       const c = params.get("c") as ColorScheme | null;
       const dens = params.get("dens");
       const m = params.get("m");
+      const vm = params.get("vm");
+      const g = params.get("g");
+      const f = params.get("f");
       if (d && !isNaN(Number(d))) setDispersion(Math.max(0, Math.min(40, Number(d))));
       if (s && !isNaN(Number(s))) setSpeed(Math.max(0.2, Math.min(3, Number(s))));
       if (b && !isNaN(Number(b))) setBloom(Math.max(0, Math.min(40, Number(b))));
@@ -97,6 +111,9 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
       if (c && SCHEMES[c]) setScheme(c);
       if (dens && !isNaN(Number(dens))) setDensity(Math.max(1, Math.min(12, Number(dens))));
       if (m === "1") setMirror(true);
+      if (vm === "1") setVMirror(true);
+      if (g && !isNaN(Number(g))) setGravity(Math.max(0, Math.min(2, Number(g))));
+      if (f && !isNaN(Number(f))) setFade(Math.max(0, Math.min(10, Number(f))));
     } catch {}
   }, []);
 
@@ -110,11 +127,14 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
     params.set("c", scheme);
     params.set("dens", String(density));
     params.set("m", mirror ? "1" : "0");
+    params.set("vm", vMirror ? "1" : "0");
+    params.set("g", String(gravity));
+    params.set("f", String(fade));
     const next = `${window.location.pathname}?${params.toString()}`;
     if (next !== window.location.pathname + window.location.search) {
       window.history.replaceState(null, "", next);
     }
-  }, [dispersion, speed, bloom, strokeWidth, prismAngle, scheme, density, mirror]);
+  }, [dispersion, speed, bloom, strokeWidth, prismAngle, scheme, density, mirror, vMirror, gravity, fade]);
 
   const spawnParticles = useCallback(
     (x: number, y: number, n = 5) => {
@@ -138,8 +158,8 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
   );
 
   const drawTrail = useCallback(
-    (ctx: CanvasRenderingContext2D, trail: Point[], w: number, h: number, flipX: boolean) => {
-      if (trail.length < 2) return;
+    (ctx: CanvasRenderingContext2D, trail: Point[], w: number, h: number, flipX: boolean, flipY: boolean, alpha: number) => {
+      if (trail.length < 2 || alpha <= 0) return;
       const angleRad = (prismAngle * Math.PI) / 180;
       const layers = colors.length;
       for (let li = 0; li < layers; li++) {
@@ -159,7 +179,8 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
           dy = (px * Math.sin(angleRad) + py * Math.cos(angleRad)) * offset;
         }
         const fx = flipX ? 1 - (first.x + dx) : first.x + dx;
-        ctx.moveTo(fx * w, (first.y + dy) * h);
+        const fy = flipY ? 1 - (first.y + dy) : first.y + dy;
+        ctx.moveTo(fx * w, fy * h);
         for (let i = 1; i < trail.length; i++) {
           const p = trail[i];
           let odx = 0,
@@ -174,13 +195,14 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
             ody = (px * Math.sin(angleRad) + py * Math.cos(angleRad)) * offset;
           }
           const px = flipX ? 1 - (p.x + odx) : p.x + odx;
-          ctx.lineTo(px * w, (p.y + ody) * h);
+          const py = flipY ? 1 - (p.y + ody) : p.y + ody;
+          ctx.lineTo(px * w, py * h);
         }
         ctx.strokeStyle = colors[li];
         ctx.lineWidth = Math.max(1.5, strokeWidth - li * 0.35);
         ctx.shadowColor = colors[li];
         ctx.shadowBlur = bloom + dispersion * 0.25;
-        ctx.globalAlpha = 0.82;
+        ctx.globalAlpha = 0.82 * alpha;
         ctx.stroke();
       }
     },
@@ -201,9 +223,16 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
-    trailsRef.current.forEach((trail) => {
-      drawTrail(ctx, trail, w, h, false);
-      if (mirror) drawTrail(ctx, trail, w, h, true);
+    const now = Date.now();
+    trailsRef.current.forEach((t) => {
+      const ageSec = (now - t.created) / 1000;
+      const alpha = fade > 0 ? Math.max(0, 1 - ageSec * fade * 0.15) : 1;
+      if (alpha <= 0) return;
+      const pts = t.points;
+      drawTrail(ctx, pts, w, h, false, false, alpha);
+      if (mirror) drawTrail(ctx, pts, w, h, true, false, alpha);
+      if (vMirror) drawTrail(ctx, pts, w, h, false, true, alpha);
+      if (mirror && vMirror) drawTrail(ctx, pts, w, h, true, true, alpha);
     });
 
     ctx.globalAlpha = 1;
@@ -224,10 +253,20 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
         ctx.arc((1 - p.x) * w, p.y * h, p.size * alpha * 1.4, 0, Math.PI * 2);
         ctx.fill();
       }
+      if (vMirror) {
+        ctx.beginPath();
+        ctx.arc(p.x * w, (1 - p.y) * h, p.size * alpha * 1.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (mirror && vMirror) {
+        ctx.beginPath();
+        ctx.arc((1 - p.x) * w, (1 - p.y) * h, p.size * alpha * 1.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
     });
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
-  }, [bloom, mirror, drawTrail]);
+  }, [bloom, mirror, vMirror, fade, drawTrail]);
 
   useEffect(() => {
     const loop = () => {
@@ -236,6 +275,7 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
           ...p,
           x: p.x + p.vx * 0.0025 * speed,
           y: p.y + p.vy * 0.0025 * speed,
+          vy: p.vy + gravity * 0.004,
           life: p.life - 0.014,
           size: p.size * 0.992,
         }))
@@ -244,12 +284,20 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
       if (particlesRef.current.length > 400) {
         particlesRef.current = particlesRef.current.slice(-300);
       }
+      // Fade out old trails
+      if (fade > 0) {
+        const now = Date.now();
+        trailsRef.current = trailsRef.current.filter((t) => {
+          const ageSec = (now - t.created) / 1000;
+          return ageSec * fade * 0.15 < 1.1;
+        });
+      }
       redraw();
       animRef.current = requestAnimationFrame(loop);
     };
     animRef.current = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animRef.current);
-  }, [redraw, speed]);
+  }, [redraw, speed, gravity, fade]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -282,7 +330,7 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
     setIsDrawing(true);
     const p = getPos(e);
-    trailsRef.current.push([p]);
+    trailsRef.current.push({ points: [p], created: Date.now() });
     spawnParticles(p.x, p.y, 10);
   };
 
@@ -291,7 +339,7 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
     e.preventDefault();
     const p = getPos(e);
     const last = trailsRef.current[trailsRef.current.length - 1];
-    if (last) last.push(p);
+    if (last) last.points.push(p);
     spawnParticles(p.x, p.y, 3);
   };
 
@@ -422,6 +470,32 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
           />
           <span className="w-6 text-right">{density}</span>
         </label>
+        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          {labels.gravity}
+          <input
+            type="range"
+            min={0}
+            max={2}
+            step={0.1}
+            value={gravity}
+            onChange={(e) => setGravity(Number(e.target.value))}
+            className="w-24 accent-orange-500"
+          />
+          <span className="w-8 text-right">{gravity.toFixed(1)}</span>
+        </label>
+        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          {labels.fade}
+          <input
+            type="range"
+            min={0}
+            max={10}
+            step={0.5}
+            value={fade}
+            onChange={(e) => setFade(Number(e.target.value))}
+            className="w-24 accent-rose-500"
+          />
+          <span className="w-6 text-right">{fade}</span>
+        </label>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
@@ -447,6 +521,15 @@ export function PrismTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) 
             className="h-4 w-4 accent-violet-500"
           />
           {labels.mirror}
+        </label>
+        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          <input
+            type="checkbox"
+            checked={vMirror}
+            onChange={(e) => setVMirror(e.target.checked)}
+            className="h-4 w-4 accent-violet-500"
+          />
+          {labels.vMirror}
         </label>
       </div>
 
