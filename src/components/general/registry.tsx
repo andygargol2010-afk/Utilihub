@@ -93,6 +93,12 @@ const TriangleAreaCalculatorToolUi = lazy(() =>
 const CircleAreaCalculatorToolUi = lazy(() =>
   import("./CircleAreaCalculatorTool").then((m) => ({ default: m.CircleAreaCalculatorTool })),
 );
+const OuncesToGramsConverterToolUi = lazy(() =>
+  import("./OuncesToGramsConverterTool").then((m) => ({ default: m.OuncesToGramsConverterTool })),
+);
+const IdealWeightCalculatorToolUi = lazy(() =>
+  import("./IdealWeightCalculatorTool").then((m) => ({ default: m.IdealWeightCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -107,6 +113,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-volumen-cubo") return CubeVolumeCalculatorToolUi;
   if (slug === "calculadora-area-triangulo") return TriangleAreaCalculatorToolUi;
   if (slug === "calculadora-area-circulo") return CircleAreaCalculatorToolUi;
+  if (slug === "conversor-onzas-gramos") return OuncesToGramsConverterToolUi;
+  if (slug === "calculadora-peso-ideal") return IdealWeightCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;

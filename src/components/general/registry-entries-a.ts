@@ -84,4 +84,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-trabajo", name: "WorkCalculatorTool", path: "./WorkCalculatorTool", export: "WorkCalculatorTool" },
   { slug: "calculadora-ahorro-mensual", name: "MonthlySavingsCalculatorTool", path: "./MonthlySavingsCalculatorTool", export: "MonthlySavingsCalculatorTool" },
   { slug: "conversor-kg-libras", name: "KgToLbsConverterTool", path: "./KgToLbsConverterTool", export: "KgToLbsConverterTool" },
+  { slug: "conversor-onzas-gramos", name: "OuncesToGramsConverterTool", path: "./OuncesToGramsConverterTool", export: "OuncesToGramsConverterTool" },
+  { slug: "calculadora-peso-ideal", name: "IdealWeightCalculatorTool", path: "./IdealWeightCalculatorTool", export: "IdealWeightCalculatorTool" },
 ] as const;
