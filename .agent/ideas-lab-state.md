@@ -67,11 +67,11 @@ path_en: /
 path_es: /es/
 domain: traffic-bets
 runs_total: 3
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: U=0.096 <0.50 → GROWTH. U_g=0.096 <0.35 → FIXED urn (traffic-bets/search-magnets). Seleccionado traffic-bets. No weight updates (FIXED). No match last_closed. Idea concreta de entrada aleatoria para bet de tráfico/exploración. EXECUTE 1/3 completado (botón shipped). Estado restaurado tras corrupción accidental.
+notes: U=0.096 <0.50 → GROWTH. U_g=0.096 <0.35 → FIXED urn (traffic-bets/search-magnets). Seleccionado traffic-bets. No weight updates (FIXED). No match last_closed. Idea concreta de entrada aleatoria para bet de tráfico/exploración. EXECUTE 1/3 completado (botón shipped). Estado restaurado tras corrupción accidental. EXECUTE 2/3: botón prominente Random Experience / Experiencia aleatoria re-shipped en home EN+ES (lista curada de 7 experiencias interactivas, data-event="random-experience-click" para futura medición). Adsterra intacto. CWV: onClick ligero, sin bloat en critical path.
 adsense-prep_runs: 3
 ```
 
