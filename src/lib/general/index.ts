@@ -68,6 +68,8 @@ import { LETTER_FREQUENCY_CALCULATOR_TOOLS } from "./letter-frequency-calculator
 import { WORK_CALCULATOR_TOOLS } from "./work-calculator-tool";
 import { RULE_OF_THREE_CALCULATOR_TOOLS } from "./rule-of-three-calculator-tool";
 import { OVERTIME_CALCULATOR_TOOLS } from "./overtime-calculator-tool";
+import { MONTHLY_SAVINGS_CALCULATOR_TOOLS } from "./monthly-savings-calculator-tool";
+import { KG_TO_LBS_CONVERTER_TOOLS } from "./kg-to-lbs-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -140,4 +142,6 @@ export const GENERAL_TOOLS = [
   ...WORK_CALCULATOR_TOOLS,
   ...RULE_OF_THREE_CALCULATOR_TOOLS,
   ...OVERTIME_CALCULATOR_TOOLS,
+  ...MONTHLY_SAVINGS_CALCULATOR_TOOLS,
+  ...KG_TO_LBS_CONVERTER_TOOLS,
 ];

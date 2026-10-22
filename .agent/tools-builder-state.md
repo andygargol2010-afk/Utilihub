@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-22 | finanzas | calculadora-ahorro-mensual | MonthlySavingsCalculatorTool
+- 2026-10-22 | conversiones | conversor-kg-libras | KgToLbsConverterTool
 - 2026-10-22 | matematicas | calculadora-regla-de-tres | RuleOfThreeCalculatorTool
 - 2026-10-22 | productividad | calculadora-horas-extras | OvertimeCalculatorTool
 - 2026-10-22 | texto | calculadora-frecuencia-letras | LetterFrequencyCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-21 | salud | calculadora-tmb | TmbCalculatorTool
 - 2026-10-21 | finanzas | calculadora-descuento-porcentaje | DiscountPercentageCalculatorTool
 - 2026-10-21 | educacion | calculadora-media-ponderada | WeightedMeanCalculatorTool
-- 2026-10-21 | matematicas | calculadora-teorema-pitagoras | PythagoreanCalculatorTool
-- 2026-10-21 | conversiones | conversor-velocidad | SpeedConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -46,9 +46,10 @@ texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, p
 productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras)
 matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres)
 diseno: recent (contraste-color, paleta-complementaria)
-conversiones: recent (peso, velocidad, rgb-hex)
+conversiones: recent (peso, velocidad, rgb-hex, kg-libras)
 salud: recent (frecuencia-cardiaca-maxima, tmb)
 educacion: recent (media-aritmetica, media-ponderada)
+finanzas: recent (descuento-porcentaje, ahorro-mensual)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -62,6 +63,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-22 PRODUCT (roll 15): shipped 2 (calculadora-ahorro-mensual finanzas + conversor-kg-libras conversiones). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy pending. SEO locales: pt active, deferred.
 2026-10-22 PRODUCT (roll 20): shipped 2 (calculadora-regla-de-tres matematicas + calculadora-horas-extras productividad). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy pending. SEO locales: pt active, deferred.
 2026-10-22 PRODUCT (roll 11): shipped 2 (calculadora-frecuencia-letras texto + calculadora-trabajo ciencia). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy READY (SHA 953d758). SEO locales: pt active, deferred. Previews protected; verification limited.
 2026-10-22 PRODUCT (roll 14): shipped 2 (generador-paleta-complementaria diseno + calculadora-consumo-electricidad hogar). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy READY (SHA 39e16184). SEO locales: pt active, deferred. Previews protected.
@@ -83,9 +85,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-regla-de-tres, calculadora-horas-extras
+last_slugs: calculadora-ahorro-mensual, conversor-kg-libras
 last_deploy: pending
-last_sha: 2b7131048772b5ed8a8172a9bb180abfc9ec9afd
+last_sha: pending
 ```
 
 <!-- end:tools-builder-state.md -->

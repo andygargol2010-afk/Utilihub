@@ -82,4 +82,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-consumo-electricidad", name: "ElectricityConsumptionTool", path: "./ElectricityConsumptionTool", export: "ElectricityConsumptionTool" },
   { slug: "calculadora-frecuencia-letras", name: "LetterFrequencyCalculatorTool", path: "./LetterFrequencyCalculatorTool", export: "LetterFrequencyCalculatorTool" },
   { slug: "calculadora-trabajo", name: "WorkCalculatorTool", path: "./WorkCalculatorTool", export: "WorkCalculatorTool" },
+  { slug: "calculadora-ahorro-mensual", name: "MonthlySavingsCalculatorTool", path: "./MonthlySavingsCalculatorTool", export: "MonthlySavingsCalculatorTool" },
+  { slug: "conversor-kg-libras", name: "KgToLbsConverterTool", path: "./KgToLbsConverterTool", export: "KgToLbsConverterTool" },
 ] as const;
