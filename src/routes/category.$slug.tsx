@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
 import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
@@ -143,11 +143,18 @@ function CategoryPage() {
     tools: CatalogTool[];
     neighboring: Neighbor[];
   };
-  const browseItems = tools.map((t) => ({
-    ...t,
-    id: t.slug,
-    searchText: `${t.summary} ${t.description ?? ""} ${(t.keywords ?? []).join(" ")}`,
-  }));
+  // Memoize so the string-concat + map does not re-run on every render/hydration.
+  // Categories with dozens of tools otherwise spend main-thread time building searchText
+  // before the lazy list even paints.
+  const browseItems = useMemo(
+    () =>
+      tools.map((t) => ({
+        ...t,
+        id: t.slug,
+        searchText: `${t.summary} ${t.description ?? ""} ${(t.keywords ?? []).join(" ")}`,
+      })),
+    [tools],
+  );
 
   return (
     <div className="container-page py-6 sm:py-8">

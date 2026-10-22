@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { spanishCategoryName } from "@/lib/i18n/es";
@@ -122,11 +122,18 @@ function SpanishCategoryPage() {
     neighboring: Neighbor[];
   };
   const name = spanishCategoryName(category.slug);
-  const browseItems = tools.map((t) => ({
-    ...t,
-    id: t.slug,
-    searchText: `${t.summary} ${t.description ?? ""} ${(t.keywords ?? []).join(" ")}`,
-  }));
+  // Memoize so the string-concat + map does not re-run on every render/hydration.
+  // Categories with dozens of tools otherwise spend main-thread time building searchText
+  // before the lazy list even paints.
+  const browseItems = useMemo(
+    () =>
+      tools.map((t) => ({
+        ...t,
+        id: t.slug,
+        searchText: `${t.summary} ${t.description ?? ""} ${(t.keywords ?? []).join(" ")}`,
+      })),
+    [tools],
+  );
 
   return (
     <div className="container-page py-6 sm:py-8">
