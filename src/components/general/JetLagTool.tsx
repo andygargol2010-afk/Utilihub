@@ -59,7 +59,7 @@ export function JetLagTool({ locale = "en" }: { tool: GeneralTool; locale?: Loca
       ? es ? "Los días previos no pueden ser negativos." : "Days before the flight cannot be negative."
       : plan.error === "range"
         ? es ? "Offsets entre −12 y +14. La hora es HH:MM. El tope diario es 0–4 h." : "Offsets must be −12 to +14. Time is HH:MM. Daily cap is 0–4 h."
-        : es ? "Completá números válidos. Vacío o NaN no arma el plan." : "Enter valid numbers. Empty or NaN does not build a plan."
+        : es ? "Introduce números válidos. Los campos vacíos o inválidos no permiten crear el plan." : "Enter valid numbers. Empty or invalid fields do not build a plan."
     : "";
 
   return (
