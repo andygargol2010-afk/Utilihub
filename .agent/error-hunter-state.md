@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-22
-- mode: known smoke + discovery
-- deploy: READY (SHA f221e760cf597af052c6d1849f034a8c1a4cc170, branch preview utilihub-8762pqaez-financialproyects.vercel.app)
-- known_smoke: E001-E006 code-ok (rotated focus E005 homes: index.tsx + es.index.tsx start with import/createFileRoute, no $(cat), imports DeferredHomeReviews/HomeCatalogSlot resolve; E002 kind routing in registry prioritizes image/pdf/media → MediaTool; registry full no PLACEHOLDER; patterns PLACEHOLDER/$(cat)/"Tool not available" absent)
-- new_findings: none (sampled registry.tsx, MediaTool.tsx, index/es.index, code search for broken patterns and recent tools; live preview protected by Vercel auth but deploy READY, no ERROR logs)
-- fixes: 0 (checks OK)
+- mode: known smoke + discovery (deploy ERROR prioritized)
+- deploy: ERROR en SHA 4a0830cfd74e5d965e80613a3d416b9a7b704a23 (missing spanishToolSummary export); fix ya en HEAD a7672b461c0f3b5d3c88bf3970a4544c2218986f (deploy pendiente al momento de la corrida)
+- known_smoke: E001-E006 code-ok (registry full no PLACEHOLDER, kind routing prioritario, homes sin $(cat), imports DeferredHomeReviews resuelven; MediaTool implementa upload)
+- new_findings: E007 build ERROR por import de spanishToolSummary desde es.ts (no exportado); corregido en a7672b46 moviendo import a es-summaries en SpanishToolSearch.tsx (otros archivos ya estaban OK)
+- fixes: 0 en esta corrida (el fix de E007 ya estaba committed antes de la actualización de catalog)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E005 (homes verified)
+- last_known_focus: E007 (i18n export) + E002 kind routing brief
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
