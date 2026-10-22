@@ -179,7 +179,7 @@ function SpanishHome() {
       </section>
 
       <div className="container-page">
-        <Suspense fallback={<HomeHomeCatalogSlot />}>
+        <Suspense fallback={<HomeCatalogSlot />}>
           <HomeCatalogRest locale="es" />
         </Suspense>
         <DeferredHomeReviews locale="es" />
