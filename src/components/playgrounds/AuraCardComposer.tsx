@@ -12,13 +12,15 @@ type Particle = {
   color: string;
 };
 
-type ColorScheme = "aurora" | "neon" | "sunset" | "cosmic";
+type ColorScheme = "aurora" | "neon" | "sunset" | "cosmic" | "ocean" | "magma";
 
 const SCHEMES: Record<ColorScheme, string[]> = {
   aurora: ["#00ffcc", "#66ffcc", "#00ccff", "#99ffee", "#33aaff"],
   neon: ["#ff00ff", "#00ffff", "#ff073a", "#39ff14", "#bc13fe"],
   sunset: ["#ff6b35", "#f7c59f", "#ef476f", "#ffd166", "#06d6a0"],
   cosmic: ["#9d4edd", "#c77dff", "#e0aaff", "#7b2cbf", "#5a189a"],
+  ocean: ["#0077be", "#00a8e8", "#00c9ff", "#48cae4", "#90e0ef"],
+  magma: ["#ff4500", "#ff6b35", "#f7b801", "#ff8c42", "#d00000"],
 };
 
 const RANDOM_QUOTES_EN = [
@@ -29,6 +31,8 @@ const RANDOM_QUOTES_EN = [
   "Glow on",
   "Breathe magic",
   "Own your vibe",
+  "Shine bright",
+  "Feel the energy",
 ];
 
 const RANDOM_QUOTES_ES = [
@@ -39,6 +43,8 @@ const RANDOM_QUOTES_ES = [
   "Seguí brillando",
   "Respirá magia",
   "Apropiate de tu vibra",
+  "Brillá fuerte",
+  "Sentí la energía",
 ];
 
 function shortId(seed: string): string {
@@ -75,7 +81,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
       share: "Share",
       randomize: "Randomize",
       hint: "Design your aura card — particles swirl around your text with bloom and gradients. URL is shareable.",
-      schemes: { aurora: "Aurora", neon: "Neon", sunset: "Sunset", cosmic: "Cosmic" } as Record<ColorScheme, string>,
+      schemes: { aurora: "Aurora", neon: "Neon", sunset: "Sunset", cosmic: "Cosmic", ocean: "Ocean", magma: "Magma" } as Record<ColorScheme, string>,
     },
     es: {
       scheme: "Esquema de color",
@@ -87,7 +93,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
       share: "Compartir",
       randomize: "Aleatorizar",
       hint: "Diseñá tu tarjeta de aura — las partículas giran alrededor de tu texto con bloom y degradados. La URL es compartible.",
-      schemes: { aurora: "Aurora", neon: "Neón", sunset: "Atardecer", cosmic: "Cósmico" } as Record<ColorScheme, string>,
+      schemes: { aurora: "Aurora", neon: "Neón", sunset: "Atardecer", cosmic: "Cósmico", ocean: "Océano", magma: "Magma" } as Record<ColorScheme, string>,
     },
   }[locale];
 
@@ -153,6 +159,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     if (!ctx) return;
     const w = canvas.width;
     const h = canvas.height;
+    const t = Date.now() / 1000;
 
     // Background gradient
     const g = ctx.createLinearGradient(0, 0, w, h);
@@ -162,39 +169,41 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, w, h);
 
-    // Soft aura halo
-    const halo = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.45);
-    halo.addColorStop(0, colors[0] + "44");
-    halo.addColorStop(0.5, colors[1] + "18");
+    // Pulsing soft aura halo
+    const pulse = 0.75 + Math.sin(t * 1.8) * 0.25;
+    const halo = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.48);
+    halo.addColorStop(0, colors[0] + Math.round(0x44 * pulse).toString(16).padStart(2, "0"));
+    halo.addColorStop(0.4, colors[1] + "22");
+    halo.addColorStop(0.7, colors[2] + "10");
     halo.addColorStop(1, "transparent");
     ctx.fillStyle = halo;
     ctx.fillRect(0, 0, w, h);
 
     // Card area
-    ctx.fillStyle = "rgba(0,0,0,0.4)";
+    ctx.fillStyle = "rgba(0,0,0,0.38)";
     ctx.fillRect(w * 0.12, h * 0.18, w * 0.76, h * 0.64);
 
-    // Particles
+    // Particles with bloom
     particlesRef.current.forEach((p) => {
       const alpha = Math.max(0, p.life / p.maxLife);
-      ctx.globalAlpha = alpha * 0.85;
+      ctx.globalAlpha = alpha * 0.9;
       ctx.fillStyle = p.color;
       ctx.shadowColor = p.color;
-      ctx.shadowBlur = bloom;
+      ctx.shadowBlur = bloom * pulse;
       ctx.beginPath();
-      ctx.arc(p.x * w, p.y * h, p.size * alpha, 0, Math.PI * 2);
+      ctx.arc(p.x * w, p.y * h, p.size * alpha * 1.05, 0, Math.PI * 2);
       ctx.fill();
     });
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
 
-    // Text overlay baked in
+    // Text overlay with scheme glow
     ctx.fillStyle = "#ffffff";
     ctx.font = `bold ${Math.min(w, h) * 0.055}px system-ui, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.shadowColor = "rgba(0,0,0,0.7)";
-    ctx.shadowBlur = 10;
+    ctx.shadowColor = colors[0];
+    ctx.shadowBlur = 14 * pulse;
     const lines = quote.split("\n").slice(0, 3);
     const lineH = Math.min(w, h) * 0.075;
     lines.forEach((line, i) => {
@@ -212,10 +221,13 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
           const dx = 0.5 - nx;
           const dy = 0.5 - ny;
           const dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
-          p.vx += (dx / dist) * 0.018;
-          p.vy += (dy / dist) * 0.018;
-          p.vx *= 0.975;
-          p.vy *= 0.975;
+          // Attraction + tangential swirl
+          p.vx += (dx / dist) * 0.016;
+          p.vy += (dy / dist) * 0.016;
+          p.vx += (-dy / dist) * 0.012;
+          p.vy += (dx / dist) * 0.012;
+          p.vx *= 0.972;
+          p.vy *= 0.972;
           return {
             ...p,
             x: Math.max(0.04, Math.min(0.96, nx)),
