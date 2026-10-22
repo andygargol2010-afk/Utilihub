@@ -11,6 +11,21 @@ const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.Hom
 const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
 const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
 
+const RANDOM_EXPERIENCES = [
+  "/aurora-particle-playground",
+  "/pulse-catch",
+  "/studio/prism-trail-composer",
+  "/color-cascade-fusion",
+  "/solar-system-scale-explorer",
+  "/daily-progress-constellation",
+  "/return-streak-board",
+];
+
+function goRandomExperience() {
+  const path = RANDOM_EXPERIENCES[Math.floor(Math.random() * RANDOM_EXPERIENCES.length)];
+  window.location.href = path;
+}
+
 const title = "UtiliHub · Free online tools, 3D studios & games";
 const description = cleanDescription(
   "Free online tools, advanced 3D house modeler, and browser games. Calculate, convert, build, and play — no signup.",
@@ -82,6 +97,14 @@ function HomePage() {
               Calculate and convert everyday tasks — plus advanced 3D studios and free browser games. No signup.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={goRandomExperience}
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-bold text-white shadow-lift hover:-translate-y-0.5 hover:opacity-95"
+                data-event="random-experience-click"
+              >
+                🎲 Random Experience
+              </button>
               <a
                 href="/category/advanced-tools"
                 className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:opacity-95"
