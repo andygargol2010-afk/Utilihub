@@ -21,6 +21,12 @@ const SCHEMES: Record<ColorScheme, string[]> = {
   cosmic: ["#9d4edd", "#c77dff", "#e0aaff", "#7b2cbf", "#5a189a"],
 };
 
+function shortId(seed: string): string {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (Math.imul(31, h) + seed.charCodeAt(i)) | 0;
+  return Math.abs(h).toString(36).slice(0, 8);
+}
+
 export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
   useEffect(() => {
     trackEvent("playground_open", { id: "aura-card-share", locale });
@@ -47,7 +53,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
       quote: "Quote or name",
       export: "Download PNG",
       share: "Share",
-      hint: "Design your aura card — particles swirl around your text with bloom and gradients",
+      hint: "Design your aura card — particles swirl around your text with bloom and gradients. URL is shareable.",
       schemes: { aurora: "Aurora", neon: "Neon", sunset: "Sunset", cosmic: "Cosmic" } as Record<ColorScheme, string>,
     },
     es: {
@@ -58,10 +64,42 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
       quote: "Cita o nombre",
       export: "Descargar PNG",
       share: "Compartir",
-      hint: "Diseñá tu tarjeta de aura — las partículas giran alrededor de tu texto con bloom y degradados",
+      hint: "Diseñá tu tarjeta de aura — las partículas giran alrededor de tu texto con bloom y degradados. La URL es compartible.",
       schemes: { aurora: "Aurora", neon: "Neón", sunset: "Atardecer", cosmic: "Cósmico" } as Record<ColorScheme, string>,
     },
   }[locale];
+
+  // Restore from URL deep-link
+  useEffect(() => {
+    try {
+      const p = new URLSearchParams(window.location.search);
+      const c = p.get("c") as ColorScheme | null;
+      const d = p.get("d");
+      const b = p.get("b");
+      const g = p.get("g");
+      const q = p.get("q");
+      if (c && SCHEMES[c]) setScheme(c);
+      if (d && !isNaN(Number(d))) setDensity(Math.max(10, Math.min(80, Number(d))));
+      if (b && !isNaN(Number(b))) setBloom(Math.max(0, Math.min(30, Number(b))));
+      if (g && !isNaN(Number(g))) setBgGradient(Math.max(0, Math.min(10, Number(g))));
+      if (q) setQuote(decodeURIComponent(q).slice(0, 120));
+    } catch {}
+  }, []);
+
+  // Persist to URL (shareable deep-link + short id)
+  useEffect(() => {
+    const p = new URLSearchParams();
+    p.set("c", scheme);
+    p.set("d", String(density));
+    p.set("b", String(bloom));
+    p.set("g", String(bgGradient));
+    if (quote.trim()) p.set("q", encodeURIComponent(quote.trim().slice(0, 120)));
+    p.set("id", shortId(`${scheme}${density}${bloom}${bgGradient}${quote}`));
+    const next = `${window.location.pathname}?${p.toString()}`;
+    if (next !== window.location.pathname + window.location.search) {
+      window.history.replaceState(null, "", next);
+    }
+  }, [scheme, density, bloom, bgGradient, quote]);
 
   const spawnParticles = useCallback(() => {
     const count = Math.round(density * 0.8);
@@ -102,6 +140,14 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, w, h);
 
+    // Soft aura halo
+    const halo = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.4);
+    halo.addColorStop(0, colors[0] + "33");
+    halo.addColorStop(0.6, colors[1] + "12");
+    halo.addColorStop(1, "transparent");
+    ctx.fillStyle = halo;
+    ctx.fillRect(0, 0, w, h);
+
     // Card area
     ctx.fillStyle = "rgba(0,0,0,0.35)";
     ctx.fillRect(w * 0.15, h * 0.2, w * 0.7, h * 0.6);
@@ -137,27 +183,31 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
 
   useEffect(() => {
     const loop = () => {
-      particlesRef.current = particlesRef.current.map((p) => {
-        let nx = p.x + p.vx * 0.003;
-        let ny = p.y + p.vy * 0.003;
-        // Soft attract to center for aura swirl
-        const dx = 0.5 - nx;
-        const dy = 0.5 - ny;
-        p.vx += dx * 0.02;
-        p.vy += dy * 0.02;
-        p.vx *= 0.98;
-        p.vy *= 0.98;
-        return {
-          ...p,
-          x: Math.max(0.05, Math.min(0.95, nx)),
-          y: Math.max(0.05, Math.min(0.95, ny)),
-          life: p.life - 0.004,
-        };
-      }).filter((p) => p.life > 0);
+      particlesRef.current = particlesRef.current
+        .map((p) => {
+          let nx = p.x + p.vx * 0.003;
+          let ny = p.y + p.vy * 0.003;
+          const dx = 0.5 - nx;
+          const dy = 0.5 - ny;
+          p.vx += dx * 0.02;
+          p.vy += dy * 0.02;
+          p.vx *= 0.98;
+          p.vy *= 0.98;
+          return {
+            ...p,
+            x: Math.max(0.05, Math.min(0.95, nx)),
+            y: Math.max(0.05, Math.min(0.95, ny)),
+            life: p.life - 0.004,
+          };
+        })
+        .filter((p) => p.life > 0);
 
-      // Respawn to maintain density
       if (particlesRef.current.length < density * 0.6) {
         spawnParticles();
+      }
+      // Cap for mobile CWV
+      if (particlesRef.current.length > 120) {
+        particlesRef.current = particlesRef.current.slice(-100);
       }
 
       redraw();
@@ -234,7 +284,9 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
             className="rounded border bg-background px-2 py-1 text-foreground"
           >
             {Object.entries(labels.schemes).map(([k, v]) => (
-              <option key={k} value={k}>{v}</option>
+              <option key={k} value={k}>
+                {v}
+              </option>
             ))}
           </select>
         </label>
@@ -291,25 +343,21 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
             type="button"
             onClick={exportPng}
             disabled={exporting}
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-bold text-primary-foreground hover:opacity-90 disabled:opacity-50"
+            className="min-h-[44px] rounded-lg bg-primary px-4 py-2 text-sm font-bold text-primary-foreground hover:opacity-90 disabled:opacity-50"
           >
             {labels.export}
           </button>
           <button
             type="button"
             onClick={share}
-            className="rounded-lg border border-primary px-4 py-2 text-sm font-bold text-primary hover:bg-primary/10"
+            className="min-h-[44px] rounded-lg border border-primary px-4 py-2 text-sm font-bold text-primary hover:bg-primary/10"
           >
             {labels.share}
           </button>
         </div>
       </div>
       <div className="relative aspect-[4/3] w-full max-w-2xl overflow-hidden rounded-2xl border border-border/60 bg-black">
-        <canvas
-          ref={canvasRef}
-          className="h-full w-full touch-none"
-          aria-label={labels.hint}
-        />
+        <canvas ref={canvasRef} className="h-full w-full touch-none" aria-label={labels.hint} />
       </div>
       <p className="text-xs text-muted-foreground">{labels.hint}</p>
     </div>
