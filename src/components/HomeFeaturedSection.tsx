@@ -3,7 +3,8 @@ import { ArrowRight, Gamepad2, Sparkles } from "lucide-react";
 import { ALL_TOOLS } from "@/lib/all-tools";
 import { GAMES, gameName, gamePath, gameSummary } from "@/lib/games/catalog";
 import { englishToolSlug } from "@/lib/route-slugs";
-import { spanishToolName, spanishToolPath, spanishToolSummary } from "@/lib/i18n/es";
+import { spanishToolName, spanishToolPath } from "@/lib/i18n/es";
+import { spanishToolSummary } from "@/lib/i18n/es-summaries";
 
 type Locale = "en" | "es";
 
@@ -72,7 +73,7 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
                       }
                     >
                       <span className={`text-[10px] font-bold uppercase tracking-wide ${isPixel ? "text-rose-500" : "text-primary"}`}>
-                        {isPixel ? "Pixel art" : es ? "Studio" : "Studio"}
+                        {isPixel ? "Pixel art" : "Studio"}
                       </span>
                       <p className="mt-1 font-bold group-hover:text-primary">{name}</p>
                       <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{es ? spanishToolSummary(tool) : tool.summary}</p>
