@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { Search, Star, Tag } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Search, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
 import { ToolCard } from "@/components/ToolCard";
 import { useFavorites } from "@/hooks/use-favorites";
-import { spanishCategoryName, spanishToolName, spanishToolPath, spanishToolSummary } from "@/lib/i18n/es";
-import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
+import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
+import { spanishToolSummary } from "@/lib/i18n/es-summaries";
+import { toolMatchesTag } from "@/lib/tool-tags";
 
 function normalize(s: string) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
@@ -65,12 +65,8 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
 
   const results = useMemo(() => {
     let list = index;
-    if (category !== "all") {
-      list = list.filter((x) => x.tool.category === category);
-    }
-    if (tag !== "all") {
-      list = list.filter((x) => toolMatchesTag(x.tool, tag));
-    }
+    if (category !== "all") list = list.filter((x) => x.tool.category === category);
+    if (tag !== "all") list = list.filter((x) => toolMatchesTag(x.tool, tag));
     const q = normalize(debouncedQuery);
     if (!q) return list.map((x) => x.tool);
     const tokens = q.split(/\s+/).filter((t) => t && !STOP.has(t));
@@ -96,8 +92,6 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
     if (category !== "all") list = list.filter((t) => t.category === category);
     return list.slice(0, PAGE_SIZE);
   }, [category]);
-
-  const facets = useMemo(() => facetsWithCounts(ALL_TOOLS), []);
 
   if (compactHome) {
     return (
