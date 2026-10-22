@@ -3,7 +3,8 @@ import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { ALL_CATEGORIES, type CatalogTool } from "@/lib/all-tools";
 import { englishToolSlug } from "@/lib/route-slugs";
-import { spanishCategoryName, spanishToolName, spanishToolSummary } from "@/lib/i18n/es";
+import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
+import { spanishToolSummary } from "@/lib/i18n/es-summaries";
 import { useFavorites } from "@/hooks/use-favorites";
 import { INTENT_TAGS, tagsForTool } from "@/lib/tool-tags";
 
