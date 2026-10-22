@@ -10,6 +10,21 @@ const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.Hom
 const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
 const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
 
+const RANDOM_EXPERIENCES_ES = [
+  "/es/aurora-particle-playground",
+  "/es/pulse-catch",
+  "/es/studio/compositor-estela-prisma",
+  "/es/color-cascade-fusion",
+  "/es/solar-system-scale-explorer",
+  "/es/daily-progress-constellation",
+  "/es/return-streak-board",
+];
+
+function goRandomExperienceEs() {
+  const path = RANDOM_EXPERIENCES_ES[Math.floor(Math.random() * RANDOM_EXPERIENCES_ES.length)];
+  window.location.href = path;
+}
+
 const titleEs = "UtiliHub · Herramientas online, studios 3D y juegos";
 const descriptionEs =
   "Herramientas online gratis, modelador de casas 3D y juegos en el navegador. Calculá, convertí, diseñá y jugá — sin registro.";
@@ -82,6 +97,14 @@ function SpanishHome() {
               registro.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={goRandomExperienceEs}
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-bold text-white shadow-lift hover:-translate-y-0.5 hover:opacity-95"
+                data-event="random-experience-click"
+              >
+                🎲 Experiencia aleatoria
+              </button>
               <Link
                 to="/es/categoria/$slug"
                 params={{ slug: "herramientas-avanzadas" }}
