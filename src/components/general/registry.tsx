@@ -71,10 +71,30 @@ const DevToolUi = lazy(() =>
   import("./DevTool").then((m) => ({ default: m.DevTool })),
 );
 
+// Dedicated UIs for tools whose general category fallback does not implement the formula
+const LetterFrequencyCalculatorToolUi = lazy(() =>
+  import("./LetterFrequencyCalculatorTool").then((m) => ({ default: m.LetterFrequencyCalculatorTool })),
+);
+const WorkCalculatorToolUi = lazy(() =>
+  import("./WorkCalculatorTool").then((m) => ({ default: m.WorkCalculatorTool })),
+);
+const RuleOfThreeCalculatorToolUi = lazy(() =>
+  import("./RuleOfThreeCalculatorTool").then((m) => ({ default: m.RuleOfThreeCalculatorTool })),
+);
+const OvertimeCalculatorToolUi = lazy(() =>
+  import("./OvertimeCalculatorTool").then((m) => ({ default: m.OvertimeCalculatorTool })),
+);
+
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
   const slug = (tool.slug || "").toLowerCase();
   const category = (tool.category || "").toLowerCase();
+
+  // Dedicated calculator / text tools that must not fall into generic Math/Text/ScienceTool
+  if (slug === "calculadora-frecuencia-letras") return LetterFrequencyCalculatorToolUi;
+  if (slug === "calculadora-trabajo") return WorkCalculatorToolUi;
+  if (slug === "calculadora-regla-de-tres") return RuleOfThreeCalculatorToolUi;
+  if (slug === "calculadora-horas-extras") return OvertimeCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
