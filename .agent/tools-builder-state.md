@@ -63,6 +63,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-22 FIX-BUILD: latest deploy ERROR on SHA 4a0830c (spanishToolSummary not exported from es.ts in SpanishToolSearch). Fixed in tree by importing from es-summaries (SHA a7672b46+). Triggering redeploy of fixed HEAD via this docs commit. No new tools. SEO locales: pt active, deferred.
 2026-10-22 PRODUCT (roll 17): shipped 2 (conversor-litros-galones conversiones + calculadora-velocidad-promedio-diaria productividad). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy pending. SEO locales: pt active, deferred.
 2026-10-22 PRODUCT (roll 8): shipped 2 (calculadora-nota-necesaria educacion + calculadora-semanas-entre-fechas fechas). Distinct clusters. Anti-dupe OK. Registry surgical OK. Deploy pending. SEO locales: pt active, deferred.
 2026-10-22 PRODUCT (roll 12): shipped 2 (conversor-onzas-gramos conversiones + calculadora-peso-saludable salud). Distinct clusters. Anti-dupe OK. Registry surgical + dedicated ifs OK. Deploy READY (SHA 5bb4644). SEO locales: pt active, deferred. Previews protected; verification limited.
@@ -87,10 +88,10 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: conversor-litros-galones, calculadora-velocidad-promedio-diaria
-last_deploy: pending
-last_sha: 1f54938cd86ab33a964fb67e2f2d3d11811c1064
+last_mode: FIX-BUILD
+last_slugs: none (build fix only)
+last_deploy: ERROR on 4a0830c; fixed tree pending redeploy
+last_sha: pending (this docs commit)
 ```
 
 <!-- end:tools-builder-state.md -->
