@@ -114,7 +114,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-area-triangulo") return TriangleAreaCalculatorToolUi;
   if (slug === "calculadora-area-circulo") return CircleAreaCalculatorToolUi;
   if (slug === "conversor-onzas-gramos") return OuncesToGramsConverterToolUi;
-  if (slug === "calculadora-peso-ideal") return IdealWeightCalculatorToolUi;
+  if (slug === "calculadora-peso-saludable") return IdealWeightCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;

@@ -1,7 +1,7 @@
 import { makeTool, faq } from "./types";
 
 const tool = makeTool(
-  "calculadora-peso-ideal",
+  "calculadora-peso-saludable",
   "Ideal Weight Calculator",
   "salud",
   "calculator",
@@ -12,6 +12,7 @@ const tool = makeTool(
     "calculadora peso ideal",
     "peso ideal segun altura",
     "devine formula",
+    "calculadora peso saludable",
   ],
   {
     title: "Ideal Weight Calculator — Devine Formula | UtiliHub",
