@@ -11,21 +11,6 @@ const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.Hom
 const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
 const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
 
-const RANDOM_EXPERIENCES_EN = [
-  "/aurora-particle-playground",
-  "/pulse-catch",
-  "/studio/prism-trail-composer",
-  "/color-cascade-fusion",
-  "/solar-system-scale-explorer",
-  "/daily-progress-constellation",
-  "/return-streak-board",
-];
-
-function goRandomExperience() {
-  const path = RANDOM_EXPERIENCES_EN[Math.floor(Math.random() * RANDOM_EXPERIENCES_EN.length)];
-  window.location.href = path;
-}
-
 const title = "UtiliHub · Free online tools, 3D studios & games";
 const description = cleanDescription(
   "Free online tools, advanced 3D house modeler, and browser games. Calculate, convert, build, and play — no signup.",
@@ -78,7 +63,7 @@ function HomePage() {
     <div className="pb-12">
       <style>{
         /* Critical CSS so home LCP (h1) paints before the full styles.css */
-        `.hero-gradient{background-image:linear-gradient(to right,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),radial-gradient(70% 80% at 8% 0%,color-mix(in oklab,var(--color-primary) 20%,transparent),transparent 70%),radial-gradient(60% 70% at 95% 10%,color-mix(in oklab,var(--color-highlight) 18%,transparent),transparent 65%),linear-gradient(180deg,oklch(.99 .008 255),var(--color-background));background-size:36px 36px,36px 36px,auto,auto,auto}` +
+        `.hero-gradient{background-image:linear-gradient(to right,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),radial-gradient(70% 80% at 8% 0%,color-mix(in oklab,var(--color-primary) 20%,transparent),transparent 70%),radial-gradient(60% 70% at 95% 10%,color-mix(in oklab,var(--color-highlight) 18%,transparenttransparent),transparent 65%),linear-gradient(180deg,oklch(.99 .008 255),var(--color-background));background-size:36px 36px,36px 36px,auto,auto,auto}` +
         `.container-page{width:100%;margin-inline:auto;max-width:84rem;padding-inline:clamp(1rem,3vw,2rem)}` +
         `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1.03}` +
         `.shadow-lift{box-shadow:0 20px 46px -26px rgba(41,50,110,.38)}` +
@@ -96,93 +81,89 @@ function HomePage() {
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
               Calculate and convert everyday tasks — plus advanced 3D studios and free browser games. No signup.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <button
-                type="button"
-                onClick={goRandomExperience}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-semibold text-white shadow-lift transition hover:opacity-95"
-                data-event="random-experience-click"
-              >
-                🎲 Random Experience
-              </button>
+            <div className="mt-7 flex flex-wrap gap-3">
               <a
                 href="/category/advanced-tools"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lift transition hover:opacity-95"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:opacity-95"
               >
                 Explore advanced tools <ArrowRight className="size-4" />
               </a>
               <a
                 href="/games"
-                className="inline-flex items-center justify-center rounded-full border border-border bg-card px-5 py-3 text-sm font-semibold transition hover:bg-accent"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-violet-500/40 bg-card px-5 py-3 text-sm font-bold text-violet-800 hover:border-violet-500/60 hover:bg-violet-500/10 dark:text-violet-200"
               >
                 Play games
               </a>
               <Link
                 to="/tools"
-                className="inline-flex items-center justify-center rounded-full border border-border bg-card px-5 py-3 text-sm font-semibold transition hover:bg-accent"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold hover:border-primary/40 hover:bg-accent"
               >
                 Full catalog
               </Link>
             </div>
-            <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-              <li className="inline-flex items-center gap-1.5">
-                <Check className="size-4 text-emerald-600" aria-hidden /> No signup
-              </li>
-              <li className="inline-flex items-center gap-1.5">
-                <Check className="size-4 text-emerald-600" aria-hidden /> Free
-              </li>
-              <li className="inline-flex items-center gap-1.5">
-                <Check className="size-4 text-emerald-600" aria-hidden /> Local privacy
-              </li>
-            </ul>
+            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <Check className="size-3.5 text-primary" /> No signup
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="size-3.5 text-primary" /> Free
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="size-3.5 text-primary" /> Local privacy
+              </span>
+            </div>
           </div>
-          <div className="surface-card p-4 sm:p-6">
-            <div className="mb-3 flex items-center justify-between gap-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary">Quick access</p>
-              <Suspense fallback={<span className="text-xs text-muted-foreground">…</span>}>
-                <HomeToolCount locale="en" />
-              </Suspense>
-            </div>
-            <h2 className="text-xl font-bold sm:text-2xl">What do you want to solve?</h2>
-            <div className="mt-4">
-              <Suspense fallback={<div className="h-12 rounded-xl bg-muted" />}>
-                <HomeSearch locale="en" />
-              </Suspense>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
-              <a href="/category/advanced-tools" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
-                Advanced
-              </a>
-              <a href="/games" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
-                Games
-              </a>
-              <a href="/category/math" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
-                Math
-              </a>
-              <a href="/finance" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
-                Finance
-              </a>
-              <a href="/category/text" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
-                Text
-              </a>
-              <a href="/category/converters" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
-                Converters
-              </a>
+          <div className="surface-card bg-card/80 p-3 shadow-lift sm:p-4">
+            <div className="rounded-xl border border-border/70 bg-background p-4 sm:p-5">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Quick access</p>
+                  <h2 className="mt-1 text-xl font-black">What do you want to solve?</h2>
+                </div>
+                <Suspense fallback={<span className="inline-block h-6 w-16 rounded-full bg-accent" />}>
+                  <HomeToolCount locale="en" />
+                </Suspense>
+              </div>
+              <div className="mt-4 min-h-24">
+                <Suspense fallback={<div className="h-11 animate-pulse rounded-xl bg-accent/70" />}>
+                  <HomeSearch locale="en" />
+                </Suspense>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
+                <a
+                  href="/category/advanced-tools"
+                  className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-2.5 hover:border-primary/50 hover:bg-primary/10"
+                >
+                  Advanced
+                </a>
+                <a
+                  href="/games"
+                  className="rounded-lg border border-violet-500/30 bg-violet-500/5 px-3 py-2.5 hover:border-primary/50 hover:bg-violet-500/10"
+                >
+                  Games
+                </a>
+                <a href="/category/math" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                  Math
+                </a>
+                <a href="/finance" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                  Finance
+                </a>
+                <a href="/category/text" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                  Text
+                </a>
+                <a href="/category/converters" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                  Converters
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
-      <section className="container-page py-10 sm:py-14">
-        <HomeCatalogSlot>
-          <Suspense fallback={<div className="min-h-[192px] rounded-xl bg-muted/40" aria-hidden />}>
-            <HomeCatalogRest locale="en" />
-          </Suspense>
-        </HomeCatalogSlot>
-      </section>
-
-      <div className="container-page pb-8">
-        <AdBanner />
+      <AdBanner />
+      <div className="container-page">
+        <Suspense fallback={<HomeCatalogSlot />}>
+          <HomeCatalogRest locale="en" />
+        </Suspense>
         <DeferredHomeReviews locale="en" />
       </div>
     </div>
