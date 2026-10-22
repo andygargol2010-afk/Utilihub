@@ -13,13 +13,13 @@ repo: andygargol2010-afk/Utilihub
 ## Last run
 - date: 2026-10-22
 - mode: known smoke + discovery
-- deploy: READY (SHA a53b4432f829fef561feb856caeffc4e25b59bdc, branch preview protected)
-- known_smoke: E001 code-ok (no PLACEHOLDER, exports present); E002-E006 code-ok (homes restored, kind routing present, modeler3d-app → Studio, no $(cat)
-- new_findings: none (sampled registry-3d, DeferredToolUi, new tools calculadora-ahorro-mensual + conversor-kg-libras registered, no PLACEHOLDER/$(cat)/Tool not available patterns)
+- deploy: READY (SHA 4205f25420416f2743e6e0359769e965b34567d6, branch preview protected)
+- known_smoke: E001-E006 code-ok (registry sin PLACEHOLDER y exports presentes; homes sin $(cat) e imports reales; kind routing prioritario; no patrones de error conocidos)
+- new_findings: none (sampled games.index, es.juegos.index, playgrounds.index, routes listing; no PLACEHOLDER/$(cat)/"Tool not available"/import fantasma)
 - fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E001 (deepened code verification)
+- last_known_focus: E005 (homes verified intact)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
