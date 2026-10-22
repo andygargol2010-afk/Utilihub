@@ -67,11 +67,11 @@ path_en: /aura-card
 path_es: /es/aura-card
 domain: share-hooks
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: both
 next_step_required: yes
-notes: U=0.472 <0.50 → GROWTH. U_g=0.974 >0.35 → FLEX. Weighted sample → share-hooks. EXECUTE 1/6: core + EN/ES routes + next-step + PNG. EXECUTE polish: URL deep-link (c/d/b/g/q/id), particle cap CWV, aura halo. EXECUTE: Randomize button (schemes/density/bloom/bg/quote) + swirl/halo polish. Próximos: smoke, more visual, close.
+notes: U=0.472 <0.50 → GROWTH. U_g=0.974 >0.35 → FLEX. Weighted sample → share-hooks. EXECUTE 1/6: core + EN/ES routes + next-step + PNG. EXECUTE polish: URL deep-link (c/d/b/g/q/id), particle cap CWV, aura halo. EXECUTE: Randomize button (schemes/density/bloom/bg/quote) + swirl/halo polish. EXECUTE: visual polish — added ocean+magma schemes, pulsing multi-stop halo, stronger tangential swirl, scheme-colored text glow, extra quotes. Próximos: smoke, more visual if needed, close.
 adsense-prep_runs: 3
 ```
 
