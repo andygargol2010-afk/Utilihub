@@ -78,4 +78,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "conversor-velocidad", name: "SpeedConverterTool", path: "./SpeedConverterTool", export: "SpeedConverterTool" },
   { slug: "calculadora-media-ponderada", name: "WeightedMeanCalculatorTool", path: "./WeightedMeanCalculatorTool", export: "WeightedMeanCalculatorTool" },
   { slug: "calculadora-descuento-porcentaje", name: "DiscountPercentageCalculatorTool", path: "./DiscountPercentageCalculatorTool", export: "DiscountPercentageCalculatorTool" },
+  { slug: "generador-paleta-complementaria", name: "ComplementaryPaletteTool", path: "./ComplementaryPaletteTool", export: "ComplementaryPaletteTool" },
+  { slug: "calculadora-consumo-electricidad", name: "ElectricityConsumptionTool", path: "./ElectricityConsumptionTool", export: "ElectricityConsumptionTool" },
 ] as const;

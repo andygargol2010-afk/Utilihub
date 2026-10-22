@@ -62,6 +62,8 @@ import { WEIGHTED_MEAN_CALCULATOR_TOOLS } from "./weighted-mean-calculator-tool"
 import { DISCOUNT_PERCENTAGE_CALCULATOR_TOOLS } from "./discount-percentage-calculator-tool";
 import { TMB_CALCULATOR_TOOLS } from "./tmb-calculator-tool";
 import { RGB_HEX_CONVERTER_TOOLS } from "./rgb-hex-converter-tool";
+import { COMPLEMENTARY_PALETTE_TOOLS } from "./complementary-palette-tool";
+import { ELECTRICITY_CONSUMPTION_TOOLS } from "./electricity-consumption-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -128,4 +130,6 @@ export const GENERAL_TOOLS = [
   ...DISCOUNT_PERCENTAGE_CALCULATOR_TOOLS,
   ...TMB_CALCULATOR_TOOLS,
   ...RGB_HEX_CONVERTER_TOOLS,
+  ...COMPLEMENTARY_PALETTE_TOOLS,
+  ...ELECTRICITY_CONSUMPTION_TOOLS,
 ];
