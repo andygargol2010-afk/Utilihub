@@ -68,11 +68,11 @@ path_es: /es/studio/compositor-estela-prisma
 path_seo: n/a
 domain: studio-composition
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: png
 next_step_required: yes
-notes: IDEATE roll: U=0.612 (>0.50 → CORE). Weighted sample from weights_core selected studio-composition (prev weight 8). last_closed_domain=games ≠ studio-composition, no re-roll. Weights updated: studio-composition=1, all other CORE +1. Distinct from neon-signature-composer and glow-trail (refraction prism split + dispersion controls). EXECUTE run 1/6: shipped core freehand multi-layer rainbow prism trails with live bloom, adjustable dispersion/speed, particle afterglow, PNG export + share, EN+ES routes, next-step registration. Adsterra preserved. CWV-safe (canvas isolated). EXECUTE run 2/6: added bloom intensity, stroke width, prism angle (rotated dispersion offset), undo last stroke; URL params synced. EN+ES labels updated. Adsterra preserved. CWV-safe.
+notes: IDEATE roll: U=0.612 (>0.50 → CORE). Weighted sample from weights_core selected studio-composition (prev weight 8). last_closed_domain=games ≠ studio-composition, no re-roll. Weights updated: studio-composition=1, all other CORE +1. Distinct from neon-signature-composer and glow-trail (refraction prism split + dispersion controls). EXECUTE run 1/6: shipped core freehand multi-layer rainbow prism trails with live bloom, adjustable dispersion/speed, particle afterglow, PNG export + share, EN+ES routes, next-step registration. Adsterra preserved. CWV-safe (canvas isolated). EXECUTE run 2/6: added bloom intensity, stroke width, prism angle (rotated dispersion offset), undo last stroke; URL params synced. EN+ES labels updated. Adsterra preserved. CWV-safe. EXECUTE run 3/6: added color schemes (rainbow/neon/pastel/fire), particle density control, horizontal mirror mode; URL params c/dens/m; particle cap for mobile CWV; EN+ES labels. Adsterra preserved.
 adsense-prep_runs: 3
 ```
 
