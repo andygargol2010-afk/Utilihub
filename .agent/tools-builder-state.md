@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-23 | educacion | calculadora-desviacion-estandar | StandardDeviationCalculatorTool
+- 2026-10-23 | ciencia | calculadora-volumen-cono | ConeVolumeCalculatorTool
 - 2026-10-22 | salud | calculadora-calorias-diarias | DailyCaloriesCalculatorTool
 - 2026-10-22 | finanzas | calculadora-interes-compuesto | CompoundInterestCalculatorTool
 - 2026-10-22 | matematicas | calculadora-pendiente | SlopeCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-22 | viajes | calculadora-tiempo-vuelo | FlightTimeCalculatorTool
 - 2026-10-22 | conversiones | conversor-litros-galones | LitersToGallonsConverterTool
 - 2026-10-22 | productividad | calculadora-velocidad-promedio-diaria | DailyAverageSpeedCalculatorTool
-- 2026-10-22 | educacion | calculadora-nota-necesaria | GradeNeededCalculatorTool
-- 2026-10-22 | fechas | calculadora-semanas-entre-fechas | WeeksBetweenDatesCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas)
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas)
@@ -48,7 +48,7 @@ matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rom
 diseno: recent (contraste-color, paleta-complementaria, dpi)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias)
-educacion: recent (media-aritmetica, media-ponderada, nota-necesaria)
+educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto)
 ```
 
@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-22 PRODUCT: calculadora-interes-compuesto (finanzas) + calculadora-calorias-diarias (salud). Distinct clusters. Registry A + pickComponent updated surgically.
-Previous: calculadora-pendiente + contador-lineas.
+2026-10-23 PRODUCT: calculadora-desviacion-estandar (educacion) + calculadora-volumen-cono (ciencia). Distinct clusters. Registry A + pickComponent + dedicated lazy UIs.
+Previous: calculadora-interes-compuesto + calculadora-calorias-diarias.
 ```
 
 ---
@@ -73,9 +73,9 @@ Previous: calculadora-pendiente + contador-lineas.
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-interes-compuesto, calculadora-calorias-diarias
-last_deploy: pending verification
-last_sha: (see commits)
+last_slugs: calculadora-desviacion-estandar, calculadora-volumen-cono
+last_deploy: pending Vercel listing for SHA c4d80e0
+last_sha: c4d80e064500c6a1ea390bdc871eaa35508d320e
 ```
 
 <!-- end:tools-builder-state.md -->
