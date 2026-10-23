@@ -128,4 +128,14 @@ Formato por entrada:
 - **fix_hint**: restore full from good history SHA (e.g. c979242); never leave return null / PLACEHOLDER in playground imported by routes
 - **files**: `src/components/playgrounds/NeonLayerComposer.tsx`, `src/routes/neon-layer-composer.tsx`, `src/routes/es.neon-layer-composer.tsx`
 
+## E013 — Blank page / return null stub en TextParticlesPlayground (Firma Visual)
+- **status**: fixed
+- **last_seen**: 2026-10-23 (discovery: file was stub `export function TextParticlesPlayground() { return null; }` with brevity comment; used by /es/firma-visual)
+- **fixed_at**: 2026-10-23 (SHA 3584304b restores full text-shaped particles UI adapted from ParticlePostcard pattern: moods, density, strength, share X/WA/native/copy/PNG, locale+entryMode props)
+- **symptom**: /es/firma-visual (y visual-signature) blank; componente retorna null
+- **root_cause**: archivo quedó como stub return-null (comentarios "abbreviated for call safety"); history también tenía el stub
+- **check**: file exports `function TextParticlesPlayground({ locale, entryMode })`; body real (canvas loop, sampleTextTargets, no return null); routes importan el named export
+- **fix_hint**: implement full particle-text swarm (similar a ParticlePostcard); never leave return null in route-imported playgrounds
+- **files**: `src/components/playgrounds/TextParticlesPlayground.tsx`, `src/routes/es.firma-visual.tsx` (y ruta EN equivalente)
+
 <!-- end:catalog -->
