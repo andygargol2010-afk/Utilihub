@@ -67,11 +67,11 @@ path_en: /neon-layer-composer
 path_es: /es/neon-layer-composer
 domain: studio-composition
 runs_total: 6
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 4/6 — continuous density-aware particle emission while drawing + pointer force attract/repel (fo/po) + onDown pointer + hints EN+ES. Previous: radial, density, per-layer opacity/fade, randomize, branded PNG. CWV-safe (cap 280). Distinct from prism-trail. Adsterra kept. Next-step registered.
+notes: EXECUTE 5/6 — particle lifetime slider (pl 0.4-2.0) scales spawn/continuous particle life+maxLife for longer/shorter trails + clear particles button. URL deep-link + PNG bake include life. Previous: continuous density-aware emission + pointer force attract/repel. Distinct from prism-trail. Adsterra kept. Next-step registered. CWV-safe (cap 280).
 adsense-prep_runs: 3
 ```
 
