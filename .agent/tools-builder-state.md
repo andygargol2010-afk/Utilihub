@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-22 | salud | calculadora-calorias-diarias | DailyCaloriesCalculatorTool
+- 2026-10-22 | finanzas | calculadora-interes-compuesto | CompoundInterestCalculatorTool
 - 2026-10-22 | matematicas | calculadora-pendiente | SlopeCalculatorTool
 - 2026-10-22 | texto | contador-lineas | LineCounterTool
 - 2026-10-22 | finanzas | calculadora-roi | RoiCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-22 | productividad | calculadora-velocidad-promedio-diaria | DailyAverageSpeedCalculatorTool
 - 2026-10-22 | educacion | calculadora-nota-necesaria | GradeNeededCalculatorTool
 - 2026-10-22 | fechas | calculadora-semanas-entre-fechas | WeeksBetweenDatesCalculatorTool
-- 2026-10-22 | salud | calculadora-peso-saludable | IdealWeightCalculatorTool
-- 2026-10-22 | conversiones | conversor-onzas-gramos | OuncesToGramsConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -47,9 +47,9 @@ productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velo
 matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente)
 diseno: recent (contraste-color, paleta-complementaria, dpi)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones)
-salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable)
+salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria)
-finanzas: recent (descuento-porcentaje, ahorro-mensual, roi)
+finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-22 PRODUCT: calculadora-pendiente (matematicas) + contador-lineas (texto). Distinct clusters. Registry A + pickComponent updated surgically.
-Previous: calculadora-roi + calculadora-dpi.
+2026-10-22 PRODUCT: calculadora-interes-compuesto (finanzas) + calculadora-calorias-diarias (salud). Distinct clusters. Registry A + pickComponent updated surgically.
+Previous: calculadora-pendiente + contador-lineas.
 ```
 
 ---
@@ -73,7 +73,7 @@ Previous: calculadora-roi + calculadora-dpi.
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-pendiente, contador-lineas
+last_slugs: calculadora-interes-compuesto, calculadora-calorias-diarias
 last_deploy: pending verification
 last_sha: (see commits)
 ```

@@ -111,6 +111,12 @@ const SlopeCalculatorToolUi = lazy(() =>
 const LineCounterToolUi = lazy(() =>
   import("./LineCounterTool").then((m) => ({ default: m.LineCounterTool })),
 );
+const CompoundInterestCalculatorToolUi = lazy(() =>
+  import("./CompoundInterestCalculatorTool").then((m) => ({ default: m.CompoundInterestCalculatorTool })),
+);
+const DailyCaloriesCalculatorToolUi = lazy(() =>
+  import("./DailyCaloriesCalculatorTool").then((m) => ({ default: m.DailyCaloriesCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -131,6 +137,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-tiempo-vuelo") return FlightTimeCalculatorToolUi;
   if (slug === "calculadora-pendiente") return SlopeCalculatorToolUi;
   if (slug === "contador-lineas") return LineCounterToolUi;
+  if (slug === "calculadora-interes-compuesto") return CompoundInterestCalculatorToolUi;
+  if (slug === "calculadora-calorias-diarias") return DailyCaloriesCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;

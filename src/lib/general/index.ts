@@ -82,6 +82,8 @@ import { ROI_CALCULATOR_TOOLS } from "./roi-calculator-tool";
 import { DPI_CALCULATOR_TOOLS } from "./dpi-calculator-tool";
 import { SLOPE_CALCULATOR_TOOLS } from "./slope-calculator-tool";
 import { LINE_COUNTER_TOOLS } from "./line-counter-tool";
+import { COMPOUND_INTEREST_CALCULATOR_TOOLS } from "./compound-interest-calculator-tool";
+import { DAILY_CALORIES_CALCULATOR_TOOLS } from "./daily-calories-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -168,4 +170,6 @@ export const GENERAL_TOOLS = [
   ...DPI_CALCULATOR_TOOLS,
   ...SLOPE_CALCULATOR_TOOLS,
   ...LINE_COUNTER_TOOLS,
+  ...COMPOUND_INTEREST_CALCULATOR_TOOLS,
+  ...DAILY_CALORIES_CALCULATOR_TOOLS,
 ];
