@@ -16,13 +16,13 @@ last_closed_id: aura-card-share
 p_fixed: 0.35
 
 weights_core:
-  kits: 11
-  journeys: 8
-  games: 2
-  simulators: 7
-  studio-composition: 1
-  playgrounds: 3
-  quality-lift: 4
+  kits: 12
+  journeys: 9
+  games: 3
+  simulators: 1
+  studio-composition: 2
+  playgrounds: 4
+  quality-lift: 5
 
 weights_growth:
   traffic-bets: 3
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: Interactive Shareable Aura Card Composer: users design a personal aura card with selectable color schemes, particle density, bloom, background gradients, and custom quote or name. Generates a high-quality PNG with baked title and a short unique share ID for optional URL deep-link. Visual delight + shareability. EN+ES routes. next-step before Adsterra. CWV-safe lazy route.
-id: aura-card-share
-path_en: /aura-card
-path_es: /es/aura-card
-domain: share-hooks
-runs_total: 6
-runs_remaining: 0
-acceptance: done
+status: active
+idea: Interactive N-Body Gravity Simulator: users add celestial bodies with adjustable mass, initial velocity, color and size; watch live gravitational dynamics unfold with particle trails, soft collision handling, zoom/pan camera, time scale controls, pause/reset, and presets (binary stars, miniature solar system, chaotic cluster). Snapshot PNG share of current state + URL deep-link for initial conditions. Evolving physics system with visual payoff. EN+ES routes. CWV-safe (body cap ~20, lazy canvas route).
+id: n-body-gravity-sim
+path_en: /n-body-gravity
+path_es: /es/n-body-gravity
+domain: simulators
+runs_total: 7
+runs_remaining: 7
+acceptance: pending
 share: both
-next_step_required: yes
-notes: U=0.472 <0.50 → GROWTH. U_g=0.974 >0.35 → FLEX. Weighted sample → share-hooks. EXECUTE 1/6: core + EN/ES routes + next-step + PNG. EXECUTE polish: URL deep-link (c/d/b/g/q/id), particle cap CWV, aura halo. EXECUTE: Randomize button (schemes/density/bloom/bg/quote) + swirl/halo polish. EXECUTE: visual polish — added ocean+magma schemes, pulsing multi-stop halo, stronger tangential swirl, scheme-colored text glow, extra quotes. EXECUTE smoke: routes live in code, next-step registered in PLAYGROUNDS + JOURNEYS, Adsterra before next-step, CWV particle cap + lazy. EXECUTE: particle trails (prevX/prevY line strokes) + hint update for visual swirl lift. Production utilihub.net lags (preview protected); code complete. CLOSED 6/6. Next IDEATE.
+next_step_required: no
+notes: U=0.596 >0.50 → CORE. Weighted sample → simulators (prior weight 7 → 1). Other CORE +1. No re-roll (last_closed was GROWTH share-hooks). IDEATE complete. Next EXECUTE for core canvas + routes.
 adsense-prep_runs: 3
 ```
 
