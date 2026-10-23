@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (HEAD f9d6105b, deploy READY dpl_5fzZ48eE on 50e3d456)
-- mode: known smoke (E010 NBody export + "use client" + no PLACEHOLDER confirmed; E005 es.index.tsx starts with import/createFileRoute, DeferredHomeReviews/HomeCatalogSlot OK; E001-E009 brief code checks green) + discovery (search PLACEHOLDER in src: 0; PLACEHOLDER_FULL_CONTENT: 0; sampled es.juegos.tsx, n-body-gravity.tsx, es.index.tsx OK; no "Tool not available" or $(cat)
-- deploy: READY on SHA 50e3d456 (dpl_5fzZ48eEZpcR83jRFNEwcW1tg3Uv); prior ERROR on intermediate NBody polish resolved
-- known_smoke: all fixed/recurring green on current HEAD; E010 stable post-restore
-- new_findings: none (sampled routes outside catalog set: games layout, N-Body route, home ES; no broken imports or stubs)
+- date: 2026-10-23 (HEAD ~9fd6c4c / deploy READY on 0023bcb0)
+- mode: known smoke (E010 NBody "use client" + named export + no PLACEHOLDER; E005 index/es.index start with import/createFileRoute, DeferredHomeReviews/HomeCatalogSlot OK; E001 registry kind-first pickComponent, no PLACEHOLDER; E002-E009 brief green) + discovery (PLACEHOLDER/$(cat/"Tool not available" search in src/routes: 0; sampled n-body-gravity.tsx, pulse-catch.tsx, modeler3d-app.tsx → Modeler3DStudio OK; no stubs)
+- deploy: READY on SHA 0023bcb03702e55ba6fa1d4419ce402926616504 (dpl_CKhsyCsat6KKKxkHf6mwAQvbR6wo); prior NBody ERRORs resolved
+- known_smoke: all fixed/recurring green on current branch
+- new_findings: none (sampled routes outside catalog set: N-Body, Pulse Catch game, 3D modeler entry; no broken imports or stubs)
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E010 NBody + E005 homes + brief E001-E009
+- last_known_focus: E010 NBody + E005 homes + E001 registry + brief others
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
