@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (HEAD ~442a4b1 / 79c8079e, latest READY deploy dpl_AzGxUywGsrik7TTPyS9rDrMVAwYe on 442a4b1bc6a3317a8dc09a870720eb83cd406550)
-- mode: known smoke (brief E001 registry, E010 NBody full export, E011 Aurora export present) + discovery (search PLACEHOLDER=0, $(cat=0, return null in playgrounds=0; routes tree sampled)
-- deploy: READY on latest polish SHA 442a4b1; prior intermediate polish commits had ERROR (Aurora export missing, fixed in subsequent commit)
-- known_smoke: E001-E011 green (no regression; E010/E011 stable after prior restores)
-- new_findings: none (no broken stubs, no corrupt routes, no PLACEHOLDER)
+- date: 2026-10-23 (HEAD 3246a2168c6dcf4dfc4da75b5de2c4846d50d0cd, latest READY deploy dpl_9KFTvGYirHhshDf1qgNvC4rToGWw)
+- mode: known smoke (E001 registry kind-first + exports, E010 NBody full named export + sim body, E011 Aurora route import + component present) + discovery (PLACEHOLDER=0, $(cat=0, return null playgrounds=0; sampled NeonLayerComposer full, home index/es.index clean, routes tree present)
+- deploy: READY on 3246a216; historical ERROR deploys exist but current HEAD builds clean
+- known_smoke: E001-E011 green (no regression)
+- new_findings: none
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E011 Aurora (stable, export confirmed)
+- last_known_focus: E010 NBody + E011 Aurora (stable)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
