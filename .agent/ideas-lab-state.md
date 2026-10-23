@@ -67,11 +67,11 @@ path_en: /aurora-particle-playground
 path_es: /es/aurora-particle-playground
 domain: quality-lift
 runs_total: 7
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: both
 next_step_required: yes
-notes: U=0.717 >0.50 → CORE. Weighted sample → quality-lift (prior 5 → 1). Other CORE +1. No re-roll. U_f=0.105 <1/3 → playgrounds. Compared: AuroraParticlePlayground (broken stub, notably weaker), GravityParticlesPlayground (solid attractor orbits + trails + URL share), ParticleMagnetLab (advanced polarity, field arrows, pause, PNG+URL). Target Aurora to elevate far past peers with bloom multi-mode systems. Adsterra intact. EXECUTE 1/7: restored full multi-mode (ribbon/orb/vortex) bloom canvas, emitters (place/drag/double-remove, cap 8), palettes (aurora/neon/sunset/cosmic/ocean), density/speed/bloom/gravity/wind, pause, randomize, PNG share with baked title+utilihub.com+settings, URL deep-link. CWV-safe (cap 300, dpr<=2, lazy). Next-step present. Peers still lack multi-mode layered bloom + wind.
+notes: U=0.717 >0.50 → CORE. Weighted sample → quality-lift (prior 5 → 1). Other CORE +1. No re-roll. U_f=0.105 <1/3 → playgrounds. Compared: AuroraParticlePlayground (broken stub, notably weaker), GravityParticlesPlayground (solid attractor orbits + trails + URL share), ParticleMagnetLab (advanced polarity, field arrows, pause, PNG+URL). Target Aurora to elevate far past peers with bloom multi-mode systems. Adsterra intact. EXECUTE 1/7: restored full multi-mode (ribbon/orb/vortex) bloom canvas, emitters (place/drag/double-remove, cap 8), palettes (aurora/neon/sunset/cosmic/ocean), density/speed/bloom/gravity/wind, pause, randomize, PNG share with baked title+utilihub.com+settings, URL deep-link. CWV-safe (cap 300, dpr<=2, lazy). Next-step present. Peers still lack multi-mode layered bloom + wind. EXECUTE 2/7: added persistent fading alpha trails (TRAIL_LEN=10) especially strong for ribbon mode — continuous flowing aurora ribbons with decreasing opacity segments, slightly slower clear for trail visibility. Elevates visual delight past peers' point particles or simple trails. Help text + PNG footer updated. Adsterra intact. CWV-safe.
 adsense-prep_runs: 3
 ```
 
