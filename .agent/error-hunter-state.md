@@ -11,11 +11,11 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (post HEAD 6460d91b)
-- mode: known smoke (E001 registry kind-first/exports no PLACEHOLDER, E005/E006 homes imports no stubs, E010 NBody export present) + discovery (search PLACEHOLDER/$(cat)/"Tool not available" in src: none; sampled home index.tsx OK; N-Body routes OK)
-- deploy: latest listed ERROR (dpl_fBnFdVNK4nQg57DjQnm6SBUkSmnu on 53d08838 PLACEHOLDER); no deploy yet for HEAD 6460d91b or fix SHA d0f94984; prior READY on ca7e7118
-- known_smoke: all checked E### code-ok on HEAD (registry no PLACEHOLDER, kind-first; homes start with import + createFileRoute, DeferredHomeReviews OK; NBodyGravitySim has export function; no $(cat))
-- new_findings: transient build ERROR on N-Body polish intermediate commit 53d08838 (file was literal PLACEHOLDER, missing named export); resolved in next commit d0f94984 (export function present) and HEAD. Pattern of intermediate PLACEHOLDER on simulators. No new open issues.
+- date: 2026-10-23 (post HEAD 3f2428b)
+- mode: known smoke (E001 registry kind-first/exports no PLACEHOLDER, E005/E006 homes imports no stubs, E010 NBody export present) + discovery (search PLACEHOLDER/$(cat)/"Tool not available" in repo: none; sampled registry/homes/NBody OK)
+- deploy: latest listed ERROR (dpl_14dJg9ZBxmN6MkGqdcFq5qMVy17k on e891658d PLACEHOLDER_WILL_REPLACE missing export); no deploy yet for fix SHA dafbf66 or HEAD 3f2428b; prior READY on a254f66
+- known_smoke: all checked E### code-ok on HEAD (registry no PLACEHOLDER, kind-first routing; homes start with import + createFileRoute, DeferredHomeReviews/HomeCatalogSlot OK; NBodyGravitySim has export function NBodyGravitySim + long-press; no $(cat))
+- new_findings: another transient build ERROR on N-Body polish intermediate commit e891658d (file was literal PLACEHOLDER_WILL_REPLACE, missing named export); resolved in next commit dafbf66 (full component restored with long-press mobile remove) and HEAD. Recurring pattern of intermediate PLACEHOLDER on simulator polish. No new open issues.
 - fixes: 0 (no code change; docs only)
 
 ## Rotation (evitar sesgo)

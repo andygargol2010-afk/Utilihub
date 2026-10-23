@@ -100,8 +100,8 @@ Formato por entrada:
 
 ## E010 — Build ERROR por NBodyGravitySim no exportado
 - **status**: fixed (vigilar regresión / transient PLACEHOLDER)
-- **last_seen**: 2026-10-23 (deploy ERROR dpl_fBnFdVNK4nQg57DjQnm6SBUkSmnu on SHA 53d08838: file was literal PLACEHOLDER, missing export; fixed in subsequent SHA d0f94984 which restores export function NBodyGravitySim; HEAD 6460d91b OK)
-- **fixed_at**: 2026-10-23 (SHA d0f94984 restores named export; prior transient on 0ae48d1b also fixed earlier)
+- **last_seen**: 2026-10-23 (deploy ERROR dpl_14dJg9ZBxmN6MkGqdcFq5qMVy17k on SHA e891658d: file was literal PLACEHOLDER_WILL_REPLACE, missing named export NBodyGravitySim; fixed in subsequent SHA dafbf66 which restores full component with long-press; HEAD 3f2428b OK, export present, search PLACEHOLDER=0)
+- **fixed_at**: 2026-10-23 (SHA dafbf66 restores named export + long-press polish; prior transients on 53d08838/d0f94984 and earlier also fixed)
 - **symptom**: deploy Vercel ERROR; build falla en rollup missing named export
 - **root_cause**: polish commit intermedio escribió literal PLACEHOLDER en NBodyGravitySim.tsx en vez de componente exportado
 - **check**: `export function NBodyGravitySim` en src/components/playgrounds/NBodyGravitySim.tsx; import named en routes n-body-gravity.tsx y es.n-body-gravity.tsx; no PLACEHOLDER
