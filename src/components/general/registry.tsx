@@ -123,6 +123,12 @@ const StandardDeviationCalculatorToolUi = lazy(() =>
 const ConeVolumeCalculatorToolUi = lazy(() =>
   import("./ConeVolumeCalculatorTool").then((m) => ({ default: m.ConeVolumeCalculatorTool })),
 );
+const HoursBetweenDatesCalculatorToolUi = lazy(() =>
+  import("./HoursBetweenDatesCalculatorTool").then((m) => ({ default: m.HoursBetweenDatesCalculatorTool })),
+);
+const WordsPerMinuteCalculatorToolUi = lazy(() =>
+  import("./WordsPerMinuteCalculatorTool").then((m) => ({ default: m.WordsPerMinuteCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -147,6 +153,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-calorias-diarias") return DailyCaloriesCalculatorToolUi;
   if (slug === "calculadora-desviacion-estandar") return StandardDeviationCalculatorToolUi;
   if (slug === "calculadora-volumen-cono") return ConeVolumeCalculatorToolUi;
+  if (slug === "calculadora-horas-entre-fechas") return HoursBetweenDatesCalculatorToolUi;
+  if (slug === "calculadora-palabras-por-minuto") return WordsPerMinuteCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;

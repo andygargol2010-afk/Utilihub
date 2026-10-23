@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-23 | productividad | calculadora-palabras-por-minuto | WordsPerMinuteCalculatorTool
+- 2026-10-23 | fechas | calculadora-horas-entre-fechas | HoursBetweenDatesCalculatorTool
 - 2026-10-23 | educacion | calculadora-desviacion-estandar | StandardDeviationCalculatorTool
 - 2026-10-23 | ciencia | calculadora-volumen-cono | ConeVolumeCalculatorTool
 - 2026-10-22 | salud | calculadora-calorias-diarias | DailyCaloriesCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-22 | diseno | calculadora-dpi | DpiCalculatorTool
 - 2026-10-22 | ciencia | calculadora-potencia-electrica | ElectricalPowerCalculatorTool
 - 2026-10-22 | viajes | calculadora-tiempo-vuelo | FlightTimeCalculatorTool
-- 2026-10-22 | conversiones | conversor-litros-galones | LitersToGallonsConverterTool
-- 2026-10-22 | productividad | calculadora-velocidad-promedio-diaria | DailyAverageSpeedCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -38,12 +38,12 @@ Use with PRODUCT diversity rules (ops). Prefer under-represented clusters.
 Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
-fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas)
+fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas)
-productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria)
+productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto)
 matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente)
 diseno: recent (contraste-color, paleta-complementaria, dpi)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones)
@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-23 PRODUCT: calculadora-desviacion-estandar (educacion) + calculadora-volumen-cono (ciencia). Distinct clusters. Registry A + pickComponent + dedicated lazy UIs.
-Previous: calculadora-interes-compuesto + calculadora-calorias-diarias.
+2026-10-23 PRODUCT: calculadora-horas-entre-fechas (fechas) + calculadora-palabras-por-minuto (productividad). Distinct clusters, not in last ~8. Registry dedicated lazy + pickComponent. One logical PRODUCT (multiple commits due to size).
+Previous: calculadora-desviacion-estandar + calculadora-volumen-cono.
 ```
 
 ---
@@ -73,9 +73,9 @@ Previous: calculadora-interes-compuesto + calculadora-calorias-diarias.
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-desviacion-estandar, calculadora-volumen-cono
-last_deploy: pending Vercel listing for SHA c4d80e0
-last_sha: c4d80e064500c6a1ea390bdc871eaa35508d320e
+last_slugs: calculadora-horas-entre-fechas, calculadora-palabras-por-minuto
+last_deploy: pending Vercel listing for SHA (latest of the 3)
+last_sha:  (will update after)
 ```
 
 <!-- end:tools-builder-state.md -->
