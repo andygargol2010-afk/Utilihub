@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (HEAD after 457a9ebf)
-- mode: known smoke (E001-E010 green; E011 regression) + discovery (sampled AuroraParticlePlayground + smaller signature playgrounds)
-- deploy: prior READY on ceaac6f9; new fix pushed
-- known_smoke: E001-E010 green; E011 recurring (incomplete stub restored)
-- new_findings: E011 regression — AuroraParticlePlayground had brevity-comment stub (no animation loop/controls); restored full from 442a4b1
-- fixes: 1 (AuroraParticlePlayground.tsx restore, commit 457a9ebf)
+- date: 2026-10-23 (HEAD after 3584304b)
+- mode: known smoke (E001–E012 green / recurring OK) + discovery (sampled small playground files → TextParticlesPlayground stub)
+- deploy: prior READY on 457a9ebf; new fix pushed
+- known_smoke: E010/E011 full bodies present; registry/home clean; no PLACEHOLDER
+- new_findings: E013 — TextParticlesPlayground was return-null stub (breaking /es/firma-visual); restored full text-particle swarm + shares
+- fixes: 1 (TextParticlesPlayground.tsx restore, commit 3584304b)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E011 AuroraParticlePlayground (regression fixed)
+- last_known_focus: E013 TextParticlesPlayground (new discovery fixed)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
