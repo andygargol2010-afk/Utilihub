@@ -16,13 +16,13 @@ last_closed_id: aurora-particle-playground
 p_fixed: 0.35
 
 weights_core:
-  kits: 13
-  journeys: 10
-  games: 4
-  simulators: 2
-  studio-composition: 3
-  playgrounds: 5
-  quality-lift: 1
+  kits: 14
+  journeys: 11
+  games: 5
+  simulators: 3
+  studio-composition: 1
+  playgrounds: 6
+  quality-lift: 2
 
 weights_growth:
   traffic-bets: 3
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: (closed)
-id: 
-path_en: 
-path_es: 
-domain: 
-runs_total: 0
-runs_remaining: 0
-acceptance: closed
-share: 
-next_step_required: 
-notes: Closed quality-lift aurora-particle-playground after final EXECUTE 7/7: restored full multi-mode implementation + added adjustable trail length control (4-24) for enhanced flowing ribbon aurora delight. Elevated standard set above peers. Bar moved. Next IDEATE will roll new domain.
+status: active
+idea: Interactive Neon Layer Composer: freehand multi-layer neon drawing canvas with adjustable bloom intensity, radial/mirror/kaleidoscope symmetry modes, stroke-attached particle emitters that fade with gravity and wind, rich neon/aurora/sunset palettes, layer opacity and fade controls, title overlay baked into PNG share, URL deep-link for settings + strokes summary. EN+ES routes. next-step before Adsterra. CWV-safe (modest stroke/particle cap, lazy canvas).
+id: neon-layer-composer
+path_en: /neon-layer-composer
+path_es: /es/neon-layer-composer
+domain: studio-composition
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: both
+next_step_required: yes
+notes: IDEATE CORE roll U=0.5879 → CORE. Weighted sample r=29.16/38 selected studio-composition (weight was 3). last_closed quality-lift no match, no re-roll. New weights: selected studio-composition→1; others CORE +1. Distinct from prism-trail-composer (prism rainbow trails) by multi-layer neon with symmetry + emitter particles along strokes. Elevated visual payoff for composition. After FIX-BUILD restored Aurora export (partial implementation; full multi-mode available in history, build READY).
 adsense-prep_runs: 3
 ```
 
