@@ -99,13 +99,13 @@ Formato por entrada:
 - **files**: `src/lib/general/compound-interest-calculator-tool.ts`, `src/lib/general/compound-interest-tool.ts`, `src/lib/general/index.ts`, `scripts/validate-catalog.mjs`
 
 ## E010 — Build ERROR por NBodyGravitySim no exportado
-- **status**: fixed (vigilar regresión / transient PLACEHOLDER)
-- **last_seen**: 2026-10-23 (deploy ERROR dpl_14dJg9ZBxmN6MkGqdcFq5qMVy17k on SHA e891658d: file was literal PLACEHOLDER_WILL_REPLACE, missing named export NBodyGravitySim; fixed in subsequent SHA dafbf66 which restores full component with long-press; HEAD 3f2428b OK, export present, search PLACEHOLDER=0)
-- **fixed_at**: 2026-10-23 (SHA dafbf66 restores named export + long-press polish; prior transients on 53d08838/d0f94984 and earlier also fixed)
+- **status**: recurring (transients PLACEHOLDER en polish commits)
+- **last_seen**: 2026-10-23 (deploy ERROR dpl_2yrb3bc4 on SHA b13d8e5e / 4632ca7b: file was PLACEHOLDER_FULL_CONTENT, missing named export NBodyGravitySim; fixed in SHA 50e3d456 which restores full component with correct "use client")
+- **fixed_at**: 2026-10-23 (SHA 50e3d456 restores named export + full sim; prior also on dafbf66)
 - **symptom**: deploy Vercel ERROR; build falla en rollup missing named export
-- **root_cause**: polish commit intermedio escribió literal PLACEHOLDER en NBodyGravitySim.tsx en vez de componente exportado
-- **check**: `export function NBodyGravitySim` en src/components/playgrounds/NBodyGravitySim.tsx; import named en routes n-body-gravity.tsx y es.n-body-gravity.tsx; no PLACEHOLDER
-- **fix_hint**: asegurar named export; nunca dejar PLACEHOLDER en archivos importados por routes
+- **root_cause**: polish commits intermedios escribieron literal PLACEHOLDER en NBodyGravitySim.tsx en vez de componente exportado
+- **check**: `export function NBodyGravitySim` en src/components/playgrounds/NBodyGravitySim.tsx; import named en routes n-body-gravity.tsx y es.n-body-gravity.tsx; no PLACEHOLDER; starts with "use client"
+- **fix_hint**: asegurar named export y contenido real; nunca dejar PLACEHOLDER en archivos importados por routes
 - **files**: `src/components/playgrounds/NBodyGravitySim.tsx`, `src/routes/n-body-gravity.tsx`, `src/routes/es.n-body-gravity.tsx`
 
 <!-- end:catalog -->
