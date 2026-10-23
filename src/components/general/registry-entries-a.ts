@@ -20,4 +20,5 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-volumen-cono", name: "ConeVolumeCalculatorTool", path: "./ConeVolumeCalculatorTool", export: "ConeVolumeCalculatorTool" },
   { slug: "calculadora-horas-entre-fechas", name: "HoursBetweenDatesCalculatorTool", path: "./HoursBetweenDatesCalculatorTool", export: "HoursBetweenDatesCalculatorTool" },
   { slug: "calculadora-palabras-por-minuto", name: "WordsPerMinuteCalculatorTool", path: "./WordsPerMinuteCalculatorTool", export: "WordsPerMinuteCalculatorTool" },
+  { slug: "calculadora-area-superficie-esfera", name: "SphereSurfaceAreaCalculatorTool", path: "./SphereSurfaceAreaCalculatorTool", export: "SphereSurfaceAreaCalculatorTool" },
 ] as const;
