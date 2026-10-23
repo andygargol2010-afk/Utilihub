@@ -342,6 +342,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "pulse-catch": ["firework", "particles", "gravity-particles", "neon-sign"],
   "glow-trail": ["gravity-ribbon-canvas", "kaleidoscope-mandala", "neon-sign", "particle-signature"],
   "prism-trail-composer": ["glow-trail", "neon-signature-composer", "kaleidoscope-mandala", "particle-signature"],
+  "neon-layer-composer": ["prism-trail-composer", "neon-signature-composer", "kaleidoscope-mandala", "glow-trail"],
   "river-light": ["glow-trail", "aurora", "neon-sign", "particles"],
   "waypoint-river-composer": ["river-light", "glow-trail", "aurora", "neon-signature-composer"],
   "solar-system-scale-explorer": ["constellation-studio", "aurora", "gravity-particles", "particle-magnet-lab"],
