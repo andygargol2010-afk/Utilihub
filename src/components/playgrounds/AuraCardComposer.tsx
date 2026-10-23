@@ -4,6 +4,8 @@ import { trackEvent } from "@/lib/analytics";
 type Particle = {
   x: number;
   y: number;
+  prevX: number;
+  prevY: number;
   vx: number;
   vy: number;
   life: number;
@@ -80,7 +82,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
       export: "Download PNG",
       share: "Share",
       randomize: "Randomize",
-      hint: "Design your aura card — particles swirl around your text with bloom and gradients. URL is shareable.",
+      hint: "Design your aura card — particles swirl with trails around your text. URL is shareable.",
       schemes: { aurora: "Aurora", neon: "Neon", sunset: "Sunset", cosmic: "Cosmic", ocean: "Ocean", magma: "Magma" } as Record<ColorScheme, string>,
     },
     es: {
@@ -92,7 +94,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
       export: "Descargar PNG",
       share: "Compartir",
       randomize: "Aleatorizar",
-      hint: "Diseñá tu tarjeta de aura — las partículas giran alrededor de tu texto con bloom y degradados. La URL es compartible.",
+      hint: "Diseñá tu tarjeta de aura — las partículas giran con estelas alrededor de tu texto. La URL es compartible.",
       schemes: { aurora: "Aurora", neon: "Neón", sunset: "Atardecer", cosmic: "Cósmico", ocean: "Océano", magma: "Magma" } as Record<ColorScheme, string>,
     },
   }[locale];
@@ -135,9 +137,13 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     for (let i = 0; i < count; i++) {
       const angle = Math.random() * Math.PI * 2;
       const radius = 0.22 + Math.random() * 0.28;
+      const x = 0.5 + Math.cos(angle) * radius;
+      const y = 0.5 + Math.sin(angle) * radius;
       particlesRef.current.push({
-        x: 0.5 + Math.cos(angle) * radius,
-        y: 0.5 + Math.sin(angle) * radius,
+        x,
+        y,
+        prevX: x,
+        prevY: y,
         vx: (Math.random() - 0.5) * 0.5,
         vy: (Math.random() - 0.5) * 0.5,
         life: 1,
@@ -183,13 +189,23 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     ctx.fillStyle = "rgba(0,0,0,0.38)";
     ctx.fillRect(w * 0.12, h * 0.18, w * 0.76, h * 0.64);
 
-    // Particles with bloom
+    // Particle trails + bloom
     particlesRef.current.forEach((p) => {
       const alpha = Math.max(0, p.life / p.maxLife);
-      ctx.globalAlpha = alpha * 0.9;
+      // Trail
+      ctx.globalAlpha = alpha * 0.55;
+      ctx.strokeStyle = p.color;
+      ctx.lineWidth = Math.max(1, p.size * alpha * 0.45);
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(p.prevX * w, p.prevY * h);
+      ctx.lineTo(p.x * w, p.y * h);
+      ctx.stroke();
+      // Head
+      ctx.globalAlpha = alpha * 0.95;
       ctx.fillStyle = p.color;
       ctx.shadowColor = p.color;
-      ctx.shadowBlur = bloom * pulse;
+      ctx.shadowBlur = bloom * pulse * 0.85;
       ctx.beginPath();
       ctx.arc(p.x * w, p.y * h, p.size * alpha * 1.05, 0, Math.PI * 2);
       ctx.fill();
@@ -216,6 +232,8 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     const loop = () => {
       particlesRef.current = particlesRef.current
         .map((p) => {
+          const prevX = p.x;
+          const prevY = p.y;
           let nx = p.x + p.vx * 0.004;
           let ny = p.y + p.vy * 0.004;
           const dx = 0.5 - nx;
@@ -230,6 +248,8 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
           p.vy *= 0.972;
           return {
             ...p,
+            prevX,
+            prevY,
             x: Math.max(0.04, Math.min(0.96, nx)),
             y: Math.max(0.04, Math.min(0.96, ny)),
             life: p.life - 0.0035,
