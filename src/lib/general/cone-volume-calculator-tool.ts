@@ -5,20 +5,22 @@ const tool = makeTool(
   "Cone Volume Calculator",
   "ciencia",
   "calculator",
-  "Calculate the volume of a cone from its radius and height using V = (1/3) π r² h.",
+  "Calculate the volume of a right circular cone. Formula: V = (1/3) π r² h.",
   [
     "cone volume calculator",
-    "volume of a cone",
     "calculadora volumen cono",
+    "volume of a cone",
     "volumen de un cono",
-    "radio altura cono",
+    "cone volume formula",
   ],
   {
-    title: "Cone Volume Calculator — V = (1/3) π r² h | UtiliHub",
-    description: "Free cone volume calculator. Enter the radius and height to get the volume. Local browser calculation.",
+    title: "Cone Volume Calculator — V = (1/3)πr²h | UtiliHub",
+    description:
+      "Free cone volume calculator. Enter radius and height to get volume and base area. Runs in your browser.",
+    summaryEs: "Calcula el volumen de un cono circular recto. Fórmula: V = (1/3) π r² h.",
   },
 );
-tool.faq.push(faq("What is the formula?", "Volume = (1/3) × π × radius² × height."));
-tool.faq.push(faq("Units?", "The volume is in the cube of the radius unit (e.g., cm³ if radius in cm)."));
+tool.faq.push(faq("Formula?", "V = (1/3) × π × r² × h. Radius and height must be non-negative."));
+tool.faq.push(faq("Units?", "Any consistent length unit (cm, m, in). Result is in cubic units."));
 
 export const CONE_VOLUME_CALCULATOR_TOOLS = [tool];
