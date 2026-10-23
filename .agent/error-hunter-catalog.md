@@ -98,4 +98,14 @@ Formato por entrada:
 - **fix_hint**: eliminar o vaciar la definición no referenciada; no crear segundo makeTool del mismo slug
 - **files**: `src/lib/general/compound-interest-calculator-tool.ts`, `src/lib/general/compound-interest-tool.ts`, `src/lib/general/index.ts`, `scripts/validate-catalog.mjs`
 
+## E010 — Build ERROR por NBodyGravitySim no exportado
+- **status**: fixed
+- **last_seen**: 2026-10-23 (deploy ERROR dpl_Eo76hmL7AQ4v9bw2eEGZorzcA2Ty on SHA 0ae48d1b: "NBodyGravitySim" is not exported by NBodyGravitySim.tsx from n-body-gravity.tsx)
+- **fixed_at**: 2026-10-23 (SHAs 5c032278 / ce85f184 tienen `export function NBodyGravitySim`)
+- **symptom**: deploy Vercel ERROR; build falla en rollup missing named export
+- **root_cause**: polish commit intermedio no exportaba la función (o syntax error previo al export)
+- **check**: `export function NBodyGravitySim` en src/components/playgrounds/NBodyGravitySim.tsx; import named en routes n-body-gravity.tsx y es.n-body-gravity.tsx
+- **fix_hint**: asegurar named export; no default-only si la route importa named
+- **files**: `src/components/playgrounds/NBodyGravitySim.tsx`, `src/routes/n-body-gravity.tsx`, `src/routes/es.n-body-gravity.tsx`
+
 <!-- end:catalog -->
