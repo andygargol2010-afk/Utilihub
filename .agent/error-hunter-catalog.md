@@ -34,7 +34,7 @@ Formato por entrada:
 
 ## E003 — SEO / guía genérica que no nombra la tool
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (no evidencia de fallback genérico en smoke)
+- **last_seen**: 2026-10-23 (no evidencia de fallback genérico en smoke)
 - **symptom**: pasos/FAQ genéricos ("Primer valor…") sin mencionar la herramienta real
 - **root_cause**: `spanishGuideFallback` / defaults de `makeTool` no branch por kind
 - **check**: ToolSeoContent + about/steps/faq de 2 tools distintas (image vs calc)
@@ -43,7 +43,7 @@ Formato por entrada:
 
 ## E004 — modelador-3d carga House Modeler
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (no evidencia de reexport incorrecto en búsqueda)
+- **last_seen**: 2026-10-23 (no evidencia de reexport incorrecto en búsqueda)
 - **symptom**: página "Modelador 3D" muestra UI de casas (paredes, terreno, "Modelador de casas 3D")
 - **root_cause**: `modeler3d-app.tsx` reexportaba `HouseModeler3D` en vez de `Modeler3DStudio`
 - **check**: `modeler3d-app` → Modeler3DStudio; `registry-3d` slug `modelador-casas-3d` → House; `modelador-3d` → Modeler3D
@@ -70,7 +70,7 @@ Formato por entrada:
 
 ## E007 — Build ERROR por spanishToolSummary no exportado desde es.ts
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (deploy ERROR en 4a0830cf: "spanishToolSummary" is not exported by "src/lib/i18n/es.ts" from SpanishToolSearch.tsx:9)
+- **last_seen**: 2026-10-23 (imports desde es-summaries.ts; no export fantasma)
 - **fixed_at**: 2026-10-22 (SHA a7672b461c0f3b5d3c88bf3970a4544c2218986f corrige import a @/lib/i18n/es-summaries)
 - **symptom**: deploy Vercel ERROR; build falla en rollup con missing export spanishToolSummary
 - **root_cause**: spanishToolSummary se movió a es-summaries.ts; algunos archivos aún importaban desde es.ts
@@ -100,7 +100,7 @@ Formato por entrada:
 
 ## E010 — Build ERROR por NBodyGravitySim no exportado
 - **status**: recurring (transients PLACEHOLDER en polish commits)
-- **last_seen**: 2026-10-23 (deploy ERROR dpl_2yrb3bc4 on SHA b13d8e5e / 4632ca7b: file was PLACEHOLDER_FULL_CONTENT, missing named export NBodyGravitySim; fixed in SHA 50e3d456 which restores full component with correct "use client")
+- **last_seen**: 2026-10-23 (deploy READY on 50e3d456: export function NBodyGravitySim present, starts with "use client", no PLACEHOLDER; prior ERROR on b13d8e5e/4632ca7b resolved)
 - **fixed_at**: 2026-10-23 (SHA 50e3d456 restores named export + full sim; prior also on dafbf66)
 - **symptom**: deploy Vercel ERROR; build falla en rollup missing named export
 - **root_cause**: polish commits intermedios escribieron literal PLACEHOLDER en NBodyGravitySim.tsx en vez de componente exportado
