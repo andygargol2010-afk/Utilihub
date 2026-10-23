@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
 type Locale = "en" | "es";
@@ -18,12 +18,12 @@ interface Body {
 }
 
 const MAX_BODIES = 20;
-const TRAIL_LEN = 40;
-const G = 0.15; // gravitational constant scaled for canvas
+const TRAIL_LEN = 48;
+const G = 0.15;
 
 const labels = {
   en: {
-    help: "Click/tap canvas to add a body (mass, velocity from controls). Drag to set initial velocity. Soft collisions, trails, zoom/pan. Cap 20 bodies for performance.",
+    help: "Click/tap + drag on canvas to place a body and set its initial velocity (arrow preview). Uncheck Add mode to pan. Wheel to zoom. Right-click removes nearest body. Cap 20 for CWV.",
     add: "Add body mode",
     mass: "Mass",
     speed: "Initial speed",
@@ -31,7 +31,7 @@ const labels = {
     trails: "Trails",
     pause: "Pause",
     resume: "Resume",
-    reset: "Reset",
+    resetCam: "Reset camera",
     clear: "Clear all",
     share: "Copy share link",
     copied: "Copied!",
@@ -40,10 +40,11 @@ const labels = {
     binary: "Binary stars",
     solar: "Mini solar",
     chaotic: "Chaotic cluster",
+    figure8: "Figure-8",
     bodies: "Bodies",
   },
   es: {
-    help: "Clic/toque en el canvas para agregar un cuerpo (masa, velocidad desde controles). Arrastr\u00e1 para velocidad inicial. Colisiones suaves, estelas, zoom/pan. L\u00edmite 20 cuerpos para rendimiento.",
+    help: "Clic/toque + arrastrá en el canvas para colocar un cuerpo y fijar su velocidad inicial (flecha previa). Desmarcá Agregar para pan. Rueda para zoom. Clic derecho elimina el cuerpo más cercano. Límite 20 para CWV.",
     add: "Modo agregar",
     mass: "Masa",
     speed: "Velocidad inicial",
@@ -51,15 +52,16 @@ const labels = {
     trails: "Estelas",
     pause: "Pausar",
     resume: "Reanudar",
-    reset: "Reiniciar",
+    resetCam: "Reset cámara",
     clear: "Limpiar todo",
     share: "Copiar enlace",
-    copied: "\u00a1Copiado!",
+    copied: "¡Copiado!",
     png: "Descargar PNG",
     presets: "Preajustes",
     binary: "Estrellas binarias",
     solar: "Mini solar",
-    chaotic: "C\u00famulo ca\u00f3tico",
+    chaotic: "Cúmulo caótico",
+    figure8: "Figura-8",
     bodies: "Cuerpos",
   },
 };
@@ -79,8 +81,16 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
   const timeScaleRef = useRef(1);
   const trailsOnRef = useRef(true);
   const cameraRef = useRef({ x: 0, y: 0, scale: 1 });
-  const dragRef = useRef<{ startX: number; startY: number; body?: Body; mode: "add" | "pan" | "vel" } | null>(null);
-  const mouseDownPos = useRef({ x: 0, y: 0 });
+  const dragRef = useRef<{
+    startX: number;
+    startY: number;
+    mode: "add" | "pan";
+    previewVx?: number;
+    previewVy?: number;
+  } | null>(null);
+  const addModeRef = useRef(true);
+  const massRef = useRef(8);
+  const speedRef = useRef(1.2);
 
   const [paused, setPaused] = useState(false);
   const [timeScale, setTimeScale] = useState(1);
@@ -91,17 +101,35 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
   const [copied, setCopied] = useState(false);
   const [bodyCount, setBodyCount] = useState(0);
 
-  useEffect(() => { pausedRef.current = paused; }, [paused]);
-  useEffect(() => { timeScaleRef.current = timeScale; }, [timeScale]);
-  useEffect(() => { trailsOnRef.current = trails; }, [trails]);
+  useEffect(() => {
+    pausedRef.current = paused;
+  }, [paused]);
+  useEffect(() => {
+    timeScaleRef.current = timeScale;
+  }, [timeScale]);
+  useEffect(() => {
+    trailsOnRef.current = trails;
+  }, [trails]);
+  useEffect(() => {
+    addModeRef.current = addMode;
+  }, [addMode]);
+  useEffect(() => {
+    massRef.current = mass;
+  }, [mass]);
+  useEffect(() => {
+    speedRef.current = speed;
+  }, [speed]);
 
   const updateCount = () => setBodyCount(bodiesRef.current.length);
 
-  const addBody = (x: number, y: number, vx = 0, vy = 0, m = mass, color?: string) => {
+  const addBody = (x: number, y: number, vx = 0, vy = 0, m = massRef.current, color?: string) => {
     if (bodiesRef.current.length >= MAX_BODIES) return;
     const b: Body = {
       id: nextId.current++,
-      x, y, vx, vy,
+      x,
+      y,
+      vx,
+      vy,
       mass: m,
       radius: Math.sqrt(m) * 1.8 + 2,
       color: color || PRESET_COLORS[bodiesRef.current.length % PRESET_COLORS.length],
@@ -114,27 +142,37 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
   const loadPreset = (name: string) => {
     bodiesRef.current = [];
     nextId.current = 1;
-    const cx = 300, cy = 220;
+    cameraRef.current = { x: 0, y: 0, scale: 1 };
+    const cx = 0;
+    const cy = 0;
     if (name === "binary") {
-      addBody(cx - 60, cy, 0, 1.1, 20, "#60a5fa");
-      addBody(cx + 60, cy, 0, -1.1, 20, "#f472b6");
+      addBody(cx - 70, cy, 0, 1.05, 22, "#60a5fa");
+      addBody(cx + 70, cy, 0, -1.05, 18, "#f472b6");
     } else if (name === "solar") {
-      addBody(cx, cy, 0, 0, 40, "#fbbf24");
-      addBody(cx + 120, cy, 0, 1.6, 6, "#60a5fa");
-      addBody(cx - 90, cy, 0, -1.3, 4, "#34d399");
-      addBody(cx, cy + 160, -1.0, 0, 3, "#a78bfa");
+      addBody(cx, cy, 0, 0, 48, "#fbbf24");
+      addBody(cx + 90, cy, 0, 1.85, 3, "#a3a3a3");
+      addBody(cx + 140, cy, 0, 1.45, 7, "#60a5fa");
+      addBody(cx - 110, cy, 0, -1.55, 5, "#34d399");
+      addBody(cx, cy + 190, -1.15, 0, 4, "#a78bfa");
+      addBody(cx + 210, cy + 30, 0, 1.05, 9, "#f97316");
     } else if (name === "chaotic") {
-      for (let i = 0; i < 8; i++) {
-        const ang = (i / 8) * Math.PI * 2;
-        const r = 80 + Math.random() * 60;
+      addBody(cx, cy, 0, 0, 28, "#fbbf24");
+      for (let i = 0; i < 10; i++) {
+        const ang = (i / 10) * Math.PI * 2 + Math.random() * 0.3;
+        const r = 70 + Math.random() * 90;
         addBody(
           cx + Math.cos(ang) * r,
           cy + Math.sin(ang) * r,
-          (Math.random() - 0.5) * 2.2,
-          (Math.random() - 0.5) * 2.2,
-          4 + Math.random() * 10,
+          (Math.random() - 0.5) * 2.4,
+          (Math.random() - 0.5) * 2.4,
+          3 + Math.random() * 9,
         );
       }
+    } else if (name === "figure8") {
+      // Approximate figure-8 choreography seeds (scaled)
+      addBody(cx, cy, 0.347, 0.532, 12, "#60a5fa");
+      addBody(cx + 80, cy, -0.174, -0.266, 12, "#f472b6");
+      addBody(cx - 80, cy, -0.174, -0.266, 12, "#34d399");
     }
     updateCount();
   };
@@ -149,9 +187,13 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
       nextId.current = 1;
       parts.slice(0, MAX_BODIES).forEach((p) => {
         const [xs, ys, vxs, vys, ms, col] = p.split(",");
-        const x = parseFloat(xs), y = parseFloat(ys), vx = parseFloat(vxs), vy = parseFloat(vys), m = parseFloat(ms);
+        const x = parseFloat(xs);
+        const y = parseFloat(ys);
+        const vx = parseFloat(vxs);
+        const vy = parseFloat(vys);
+        const m = parseFloat(ms);
         if (!isNaN(x) && !isNaN(y)) {
-          addBody(x, y, vx || 0, vy || 0, m || 8, col || undefined);
+          addBody(x, y, vx || 0, vy || 0, m || 8, col ? `#${col}` : undefined);
         }
       });
     }
@@ -194,10 +236,26 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
     const onPointerDown = (e: PointerEvent) => {
       e.preventDefault();
       const { x, y } = getPos(e);
-      mouseDownPos.current = { x, y };
       const world = screenToWorld(x, y);
-      if (addMode && bodiesRef.current.length < MAX_BODIES) {
-        dragRef.current = { startX: world.x, startY: world.y, mode: "add" };
+      if (e.button === 2) {
+        // right-click remove nearest
+        let best = -1;
+        let bestD = 40 / cameraRef.current.scale;
+        bodiesRef.current.forEach((b, i) => {
+          const d = Math.hypot(b.x - world.x, b.y - world.y);
+          if (d < bestD) {
+            bestD = d;
+            best = i;
+          }
+        });
+        if (best >= 0) {
+          bodiesRef.current.splice(best, 1);
+          updateCount();
+        }
+        return;
+      }
+      if (addModeRef.current && bodiesRef.current.length < MAX_BODIES) {
+        dragRef.current = { startX: world.x, startY: world.y, mode: "add", previewVx: 0, previewVy: 0 };
       } else {
         dragRef.current = { startX: x, startY: y, mode: "pan" };
       }
@@ -215,38 +273,46 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
         cameraRef.current.y -= dy;
         d.startX = x;
         d.startY = y;
+      } else if (d.mode === "add") {
+        const world = screenToWorld(x, y);
+        const dx = world.x - d.startX;
+        const dy = world.y - d.startY;
+        const dist = Math.hypot(dx, dy);
+        if (dist > 6) {
+          const s = speedRef.current * (dist / 40);
+          d.previewVx = (dx / dist) * s;
+          d.previewVy = (dy / dist) * s;
+        } else {
+          d.previewVx = 0;
+          d.previewVy = 0;
+        }
       }
     };
 
     const onPointerUp = (e: PointerEvent) => {
       if (!dragRef.current) return;
-      const { x, y } = getPos(e);
       const d = dragRef.current;
       if (d.mode === "add") {
-        const world = screenToWorld(x, y);
-        const dx = world.x - d.startX;
-        const dy = world.y - d.startY;
-        const dist = Math.hypot(dx, dy);
-        let vx = 0, vy = 0;
-        if (dist > 8) {
-          vx = (dx / dist) * speed * (dist / 40);
-          vy = (dy / dist) * speed * (dist / 40);
-        }
-        addBody(d.startX, d.startY, vx, vy, mass);
+        addBody(d.startX, d.startY, d.previewVx || 0, d.previewVy || 0, massRef.current);
       }
       dragRef.current = null;
-      try { canvas.releasePointerCapture(e.pointerId); } catch {}
+      try {
+        canvas.releasePointerCapture(e.pointerId);
+      } catch {}
     };
+
+    const onContextMenu = (e: Event) => e.preventDefault();
 
     canvas.addEventListener("pointerdown", onPointerDown);
     canvas.addEventListener("pointermove", onPointerMove);
     canvas.addEventListener("pointerup", onPointerUp);
     canvas.addEventListener("pointercancel", onPointerUp);
+    canvas.addEventListener("contextmenu", onContextMenu);
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const factor = e.deltaY > 0 ? 0.92 : 1.08;
-      cameraRef.current.scale = Math.max(0.3, Math.min(4, cameraRef.current.scale * factor));
+      cameraRef.current.scale = Math.max(0.25, Math.min(5, cameraRef.current.scale * factor));
     };
     canvas.addEventListener("wheel", onWheel, { passive: false });
 
@@ -262,7 +328,7 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
         for (let j = i + 1; j < n; j++) {
           const dx = bs[j].x - bs[i].x;
           const dy = bs[j].y - bs[i].y;
-          const dist2 = dx * dx + dy * dy + 25; // softening
+          const dist2 = dx * dx + dy * dy + 25;
           const dist = Math.sqrt(dist2);
           const force = (G * bs[i].mass * bs[j].mass) / dist2;
           const fx = (force * dx) / dist;
@@ -281,7 +347,6 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
         b.x += b.vx * dt * 60;
         b.y += b.vy * dt * 60;
 
-        // soft collision
         for (let j = i + 1; j < n; j++) {
           const o = bs[j];
           const dx = o.x - b.x;
@@ -290,7 +355,8 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
           const minD = b.radius + o.radius;
           if (d < minD) {
             const overlap = minD - d;
-            const nx = dx / d, ny = dy / d;
+            const nx = dx / d;
+            const ny = dy / d;
             const totalM = b.mass + o.mass;
             b.x -= nx * overlap * (o.mass / totalM);
             b.y -= ny * overlap * (o.mass / totalM);
@@ -323,7 +389,7 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
       ctx.fillRect(0, 0, w, h);
 
       ctx.fillStyle = "#1e293b";
-      for (let i = 0; i < 40; i++) {
+      for (let i = 0; i < 50; i++) {
         ctx.fillRect((i * 47) % w, (i * 73) % h, 1, 1);
       }
 
@@ -341,17 +407,60 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
           for (let k = 1; k < b.trail.length; k++) {
             ctx.lineTo(b.trail[k].x, b.trail[k].y);
           }
-          ctx.strokeStyle = b.color + "88";
-          ctx.lineWidth = 1.5 / cam.scale;
+          ctx.strokeStyle = b.color + "99";
+          ctx.lineWidth = 1.8 / cam.scale;
+          ctx.lineCap = "round";
           ctx.stroke();
         }
+        // soft glow
+        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.radius * 2.2);
+        grad.addColorStop(0, b.color);
+        grad.addColorStop(0.55, b.color + "aa");
+        grad.addColorStop(1, b.color + "00");
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.radius * 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
         ctx.beginPath();
         ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
         ctx.fillStyle = b.color;
         ctx.fill();
-        ctx.strokeStyle = "#ffffff44";
-        ctx.lineWidth = 1 / cam.scale;
+        ctx.strokeStyle = "#ffffff55";
+        ctx.lineWidth = 1.2 / cam.scale;
         ctx.stroke();
+      }
+
+      // velocity preview while dragging to add
+      const d = dragRef.current;
+      if (d && d.mode === "add") {
+        ctx.beginPath();
+        ctx.arc(d.startX, d.startY, Math.sqrt(massRef.current) * 1.8 + 2, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff33";
+        ctx.fill();
+        ctx.strokeStyle = "#ffffff88";
+        ctx.lineWidth = 1.5 / cam.scale;
+        ctx.stroke();
+        if (d.previewVx || d.previewVy) {
+          const ex = d.startX + (d.previewVx || 0) * 28;
+          const ey = d.startY + (d.previewVy || 0) * 28;
+          ctx.beginPath();
+          ctx.moveTo(d.startX, d.startY);
+          ctx.lineTo(ex, ey);
+          ctx.strokeStyle = "#22d3ee";
+          ctx.lineWidth = 2 / cam.scale;
+          ctx.stroke();
+          // arrow head
+          const ang = Math.atan2(ey - d.startY, ex - d.startX);
+          const ah = 8 / cam.scale;
+          ctx.beginPath();
+          ctx.moveTo(ex, ey);
+          ctx.lineTo(ex - ah * Math.cos(ang - 0.4), ey - ah * Math.sin(ang - 0.4));
+          ctx.lineTo(ex - ah * Math.cos(ang + 0.4), ey - ah * Math.sin(ang + 0.4));
+          ctx.closePath();
+          ctx.fillStyle = "#22d3ee";
+          ctx.fill();
+        }
       }
 
       ctx.restore();
@@ -371,14 +480,16 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("pointerup", onPointerUp);
       canvas.removeEventListener("pointercancel", onPointerUp);
+      canvas.removeEventListener("contextmenu", onContextMenu);
       canvas.removeEventListener("wheel", onWheel);
     };
-  }, [addMode, mass, speed]);
+  }, []);
 
   const shareUrl = async () => {
     trackEvent("share_click", { id: "n-body-gravity-sim", locale });
-    const parts = bodiesRef.current.map((b) =>
-      `${Math.round(b.x)},${Math.round(b.y)},${b.vx.toFixed(2)},${b.vy.toFixed(2)},${b.mass.toFixed(1)},${b.color.replace("#", "")}`
+    const parts = bodiesRef.current.map(
+      (b) =>
+        `${Math.round(b.x)},${Math.round(b.y)},${b.vx.toFixed(2)},${b.vy.toFixed(2)},${b.mass.toFixed(1)},${b.color.replace("#", "")}`,
     );
     const params = new URLSearchParams();
     if (parts.length) params.set("b", parts.join("|"));
@@ -389,7 +500,7 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      prompt(locale === "es" ? "Copi\u00e1 este enlace:" : "Copy this link:", url);
+      prompt(locale === "es" ? "Copiá este enlace:" : "Copy this link:", url);
     }
   };
 
@@ -408,6 +519,10 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
     updateCount();
   };
 
+  const resetCamera = () => {
+    cameraRef.current = { x: 0, y: 0, scale: 1 };
+  };
+
   return (
     <div className="space-y-4">
       <div className="relative overflow-hidden rounded-2xl border border-border/70 bg-[#050814] shadow-inner">
@@ -423,45 +538,127 @@ export function NBodyGravitySim({ locale }: { locale: Locale }) {
 
       <div className="grid gap-3 rounded-2xl border border-border/60 bg-surface/40 p-4 sm:grid-cols-2 lg:grid-cols-4">
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={addMode} onChange={(e) => setAddMode(e.target.checked)} className="accent-primary" />
+          <input
+            type="checkbox"
+            checked={addMode}
+            onChange={(e) => setAddMode(e.target.checked)}
+            className="accent-primary"
+          />
           {t.add}
         </label>
         <label className="flex flex-col gap-1 text-sm">
-          <span>{t.mass} ({mass})</span>
-          <input type="range" min={1} max={40} step={1} value={mass} onChange={(e) => setMass(Number(e.target.value))} className="accent-primary" />
+          <span>
+            {t.mass} ({mass})
+          </span>
+          <input
+            type="range"
+            min={1}
+            max={40}
+            step={1}
+            value={mass}
+            onChange={(e) => setMass(Number(e.target.value))}
+            className="accent-primary"
+          />
         </label>
         <label className="flex flex-col gap-1 text-sm">
-          <span>{t.speed} ({speed.toFixed(1)})</span>
-          <input type="range" min={0} max={4} step={0.1} value={speed} onChange={(e) => setSpeed(Number(e.target.value))} className="accent-primary" />
+          <span>
+            {t.speed} ({speed.toFixed(1)})
+          </span>
+          <input
+            type="range"
+            min={0}
+            max={4}
+            step={0.1}
+            value={speed}
+            onChange={(e) => setSpeed(Number(e.target.value))}
+            className="accent-primary"
+          />
         </label>
         <label className="flex flex-col gap-1 text-sm">
-          <span>{t.time} ({timeScale.toFixed(1)}x)</span>
-          <input type="range" min={0.2} max={3} step={0.1} value={timeScale} onChange={(e) => setTimeScale(Number(e.target.value))} className="accent-primary" />
+          <span>
+            {t.time} ({timeScale.toFixed(1)}x)
+          </span>
+          <input
+            type="range"
+            min={0.2}
+            max={3}
+            step={0.1}
+            value={timeScale}
+            onChange={(e) => setTimeScale(Number(e.target.value))}
+            className="accent-primary"
+          />
         </label>
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={trails} onChange={(e) => setTrails(e.target.checked)} className="accent-primary" />
+          <input
+            type="checkbox"
+            checked={trails}
+            onChange={(e) => setTrails(e.target.checked)}
+            className="accent-primary"
+          />
           {t.trails}
         </label>
         <div className="flex flex-wrap gap-2 sm:col-span-2 lg:col-span-4">
-          <button type="button" onClick={() => setPaused((p) => !p)} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">
+          <button
+            type="button"
+            onClick={() => setPaused((p) => !p)}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold"
+          >
             {paused ? t.resume : t.pause}
           </button>
-          <button type="button" onClick={clearAll} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">
+          <button
+            type="button"
+            onClick={resetCamera}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold"
+          >
+            {t.resetCam}
+          </button>
+          <button
+            type="button"
+            onClick={clearAll}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold"
+          >
             {t.clear}
           </button>
-          <button type="button" onClick={() => loadPreset("binary")} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">
+          <button
+            type="button"
+            onClick={() => loadPreset("binary")}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold"
+          >
             {t.binary}
           </button>
-          <button type="button" onClick={() => loadPreset("solar")} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">
+          <button
+            type="button"
+            onClick={() => loadPreset("solar")}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold"
+          >
             {t.solar}
           </button>
-          <button type="button" onClick={() => loadPreset("chaotic")} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">
+          <button
+            type="button"
+            onClick={() => loadPreset("chaotic")}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold"
+          >
             {t.chaotic}
           </button>
-          <button type="button" onClick={shareUrl} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">
+          <button
+            type="button"
+            onClick={() => loadPreset("figure8")}
+            className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold"
+          >
+            {t.figure8}
+          </button>
+          <button
+            type="button"
+            onClick={shareUrl}
+            className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground"
+          >
             {copied ? t.copied : t.share}
           </button>
-          <button type="button" onClick={downloadPng} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">
+          <button
+            type="button"
+            onClick={downloadPng}
+            className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground"
+          >
             {t.png}
           </button>
         </div>
