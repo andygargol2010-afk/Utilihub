@@ -67,11 +67,11 @@ path_en: /n-body-gravity
 path_es: /es/n-body-gravity
 domain: simulators
 runs_total: 7
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: both
 next_step_required: no
-notes: U=0.596 >0.50 → CORE. Weighted sample → simulators (prior weight 7 → 1). Other CORE +1. No re-roll (last_closed was GROWTH share-hooks). IDEATE complete. EXECUTE1: core canvas + EN/ES routes. EXECUTE2: polish interactions (velocity arrow preview on drag-to-place, right-click remove nearest), camera reset button, deeper presets (solar 6 bodies, chaotic with central mass +10, new figure-8 seed), body glow, longer trails, help text. EXECUTE3: visual polish — fading alpha trails (per-segment), specular highlight on bodies, color picker for new bodies. CWV body cap 20. EXECUTE4: mobile feel + share UX depth — pinch-to-zoom (touch events), zoom +/- buttons, native Web Share API fallback, PNG download now bakes title overlay + utilihub.com + body count. Help text updated for pinch/long-press. Adsterra intact. Next: further mobile polish or close if solid.
+notes: U=0.596 >0.50 → CORE. Weighted sample → simulators (prior weight 7 → 1). Other CORE +1. No re-roll (last_closed was GROWTH share-hooks). IDEATE complete. EXECUTE1: core canvas + EN/ES routes. EXECUTE2: polish interactions (velocity arrow preview on drag-to-place, right-click remove nearest), camera reset button, deeper presets (solar 6 bodies, chaotic with central mass +10, new figure-8 seed), body glow, longer trails, help text. EXECUTE3: visual polish — fading alpha trails (per-segment), specular highlight on bodies, color picker for new bodies. CWV body cap 20. EXECUTE4: mobile feel + share UX depth — pinch-to-zoom (touch events), zoom +/- buttons, native Web Share API fallback, PNG download now bakes title overlay + utilihub.com + body count. Help text updated for pinch/long-press. Adsterra intact. EXECUTE5: further mobile polish — long-press (~0.6s hold) remove nearest body (cancels pending drag), help text clarified. Adsterra intact, CWV-safe. Next: more polish or close if solid.
 adsense-prep_runs: 3
 ```
 
