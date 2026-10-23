@@ -100,7 +100,7 @@ Formato por entrada:
 
 ## E010 — Build ERROR por NBodyGravitySim no exportado
 - **status**: recurring (transients PLACEHOLDER en polish commits)
-- **last_seen**: 2026-10-23 (deploy READY on 50e3d456: export function NBodyGravitySim present, starts with "use client", no PLACEHOLDER; prior ERROR on b13d8e5e/4632ca7b resolved)
+- **last_seen**: 2026-10-23 (deploy READY on ce538134: export function NBodyGravitySim present, starts with "use client", no PLACEHOLDER; full sim body)
 - **fixed_at**: 2026-10-23 (SHA 50e3d456 restores named export + full sim; prior also on dafbf66)
 - **symptom**: deploy Vercel ERROR; build falla en rollup missing named export
 - **root_cause**: polish commits intermedios escribieron literal PLACEHOLDER en NBodyGravitySim.tsx en vez de componente exportado

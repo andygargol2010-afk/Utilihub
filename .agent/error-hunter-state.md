@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (HEAD ~9fd6c4c / deploy READY on 0023bcb0)
-- mode: known smoke (E010 NBody "use client" + named export + no PLACEHOLDER; E005 index/es.index start with import/createFileRoute, DeferredHomeReviews/HomeCatalogSlot OK; E001 registry kind-first pickComponent, no PLACEHOLDER; E002-E009 brief green) + discovery (PLACEHOLDER/$(cat/"Tool not available" search in src/routes: 0; sampled n-body-gravity.tsx, pulse-catch.tsx, modeler3d-app.tsx → Modeler3DStudio OK; no stubs)
-- deploy: READY on SHA 0023bcb03702e55ba6fa1d4419ce402926616504 (dpl_CKhsyCsat6KKKxkHf6mwAQvbR6wo); prior NBody ERRORs resolved
+- date: 2026-10-23 (HEAD ce538134 / deploy READY dpl_GoAYEsa19cscaL4QDddVLauTDprY)
+- mode: known smoke (E001 registry kind-first + no PLACEHOLDER + exports OK; E005/E006 index+es.index start with import/createFileRoute, DeferredHomeReviews/HomeCatalogSlot resolve; E010 NBody "use client" + named export + full sim no PLACEHOLDER; E002-E009 brief green) + discovery (no PLACEHOLDER/$(cat/"Tool not available" in searches; sampled PulseCatch.tsx real component, pulse-catch.tsx route OK, homes clean)
+- deploy: READY on SHA ce538134ede803264fc6808adefab04b91135bcb
 - known_smoke: all fixed/recurring green on current branch
-- new_findings: none (sampled routes outside catalog set: N-Body, Pulse Catch game, 3D modeler entry; no broken imports or stubs)
+- new_findings: none (sampled outside prior focus: Pulse Catch game + route, homes, registry; no stubs or broken patterns)
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E010 NBody + E005 homes + E001 registry + brief others
+- last_known_focus: E001 registry + E005/E006 homes + E010 NBody + brief others
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
