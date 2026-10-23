@@ -16,13 +16,13 @@ last_closed_id: n-body-gravity-sim
 p_fixed: 0.35
 
 weights_core:
-  kits: 12
-  journeys: 9
-  games: 3
-  simulators: 1
-  studio-composition: 2
-  playgrounds: 4
-  quality-lift: 5
+  kits: 13
+  journeys: 10
+  games: 4
+  simulators: 2
+  studio-composition: 3
+  playgrounds: 5
+  quality-lift: 1
 
 weights_growth:
   traffic-bets: 3
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: Interactive N-Body Gravity Simulator: users add celestial bodies with adjustable mass, initial velocity, color and size; watch live gravitational dynamics unfold with particle trails, soft collision handling, zoom/pan camera, time scale controls, pause/reset, and presets (binary stars, miniature solar system, chaotic cluster). Snapshot PNG share of current state + URL deep-link for initial conditions. Evolving physics system with visual payoff. EN+ES routes. CWV-safe (body cap ~20, lazy canvas route).
-id: n-body-gravity-sim
-path_en: /n-body-gravity
-path_es: /es/n-body-gravity
-domain: simulators
+status: active
+idea: Elevate Aurora Particle Playground from broken stub to an advanced interactive aurora canvas with multi-mode particle systems (flowing ribbons, blooming orbs, swirling vortices), bloom intensity, color palettes (aurora greens/blues/purples), density/speed/gravity/wind modifiers, interactive mouse/touch emitters or attractors, PNG share with baked title + utilihub.com + settings summary + URL deep-link, randomize and pause. Sets elevated standard above GravityParticlesPlayground (basic attractor orbits) and ParticleMagnetLab (polarity + field arrows) in visual bloom delight, layered particle behaviors and interactive emission. EN+ES routes. CWV-safe (particle cap ~300, lazy canvas).
+id: aurora-particle-playground
+path_en: /aurora-particle-playground
+path_es: /es/aurora-particle-playground
+domain: quality-lift
 runs_total: 7
-runs_remaining: 0
-acceptance: accepted
+runs_remaining: 7
+acceptance: pending
 share: both
-next_step_required: no
-notes: U=0.596 >0.50 → CORE. Weighted sample → simulators (prior weight 7 → 1). Other CORE +1. No re-roll (last_closed was GROWTH share-hooks). IDEATE complete. EXECUTE1-6 as prior. EXECUTE7: final close after deploy READY on latest fix ("use client" quote). Component complete and verified in source. Production preview protected; smoke deferred to public domain. Adsterra intact, CWV-safe.
+next_step_required: yes
+notes: U=0.717 >0.50 → CORE. Weighted sample → quality-lift (prior 5 → 1). Other CORE +1. No re-roll. U_f=0.105 <1/3 → playgrounds. Compared: AuroraParticlePlayground (broken stub, notably weaker), GravityParticlesPlayground (solid attractor orbits + trails + URL share), ParticleMagnetLab (advanced polarity, field arrows, pause, PNG+URL). Target Aurora to elevate far past peers with bloom multi-mode systems. Adsterra intact.
 adsense-prep_runs: 3
 ```
 
