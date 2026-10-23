@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
 import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
@@ -143,6 +143,19 @@ function CategoryPage() {
     tools: CatalogTool[];
     neighboring: Neighbor[];
   };
+  // Defer mounting the heavy list (sort + filter + cards) until after idle so the
+  // category shell hydrates with less main-thread work (INP).
+  const [listReady, setListReady] = useState(false);
+  useEffect(() => {
+    const idle = window.requestIdleCallback;
+    if (typeof idle === "function") {
+      const id = idle(() => setListReady(true), { timeout: 800 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(() => setListReady(true), 150);
+    return () => window.clearTimeout(id);
+  }, []);
+
   // Memoize so the string-concat + map does not re-run on every render/hydration.
   // Categories with dozens of tools otherwise spend main-thread time building searchText
   // before the lazy list even paints.
@@ -170,15 +183,19 @@ function CategoryPage() {
       </div>
 
       <div className="mt-5">
-        <Suspense fallback={<CategoryListingSlot />}>
-          <ToolListBrowser
-            tools={browseItems}
-            locale="en"
-            categorySlug={category.slug}
-            searchPlaceholder={`Search in ${category.name}…`}
-            renderItem={(tool) => <ToolCard tool={tool} />}
-          />
-        </Suspense>
+        {listReady ? (
+          <Suspense fallback={<CategoryListingSlot />}>
+            <ToolListBrowser
+              tools={browseItems}
+              locale="en"
+              categorySlug={category.slug}
+              searchPlaceholder={`Search in ${category.name}…`}
+              renderItem={(tool) => <ToolCard tool={tool} />}
+            />
+          </Suspense>
+        ) : (
+          <CategoryListingSlot />
+        )}
       </div>
 
       <section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories">
