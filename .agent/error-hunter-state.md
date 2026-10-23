@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (HEAD 689750b3 / prior ERROR on 18a32f28 aurora polish)
-- mode: known smoke (E001-E011 rotation on playgrounds) + discovery (playgrounds dir sizes, search PLACEHOLDER/return null/stub comments = 0 after fix)
-- deploy: prior ERROR (aurora stub); new fix pushed, deploy pending verification
-- known_smoke: E001-E010 green; E011 regressed (stub return null) → fixed by restore
-- new_findings: none (other playgrounds real size, no PLACEHOLDER patterns)
-- fixes: 1 (AuroraParticlePlayground.tsx full restore)
+- date: 2026-10-23 (HEAD 04db344b, latest READY deploy on 689750b3)
+- mode: known smoke (brief E001 registry, E010 NBody, E011 Aurora) + discovery (playgrounds tree, new tools salary/gas, search PLACEHOLDER/$(cat = 0)
+- deploy: READY on Aurora fix SHA; no deploy yet for latest feat commit (no ERROR)
+- known_smoke: E001-E011 green (no regression)
+- new_findings: TextParticlesPlayground.tsx is stub `return null` but unused (not imported in any route); no runtime/build impact
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E011 Aurora playground (regression from polish)
+- last_known_focus: E011 Aurora (stable)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
