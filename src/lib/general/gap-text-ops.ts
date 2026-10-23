@@ -167,11 +167,12 @@ function numberToWordsEn(n: number): string {
 
 const ONES_ES = ["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve"];
 const TENS_ES = ["", "", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"];
+const VEINTI_ES = ["veintiuno", "veintidós", "veintitrés", "veinticuatro", "veinticinco", "veintiséis", "veintisiete", "veintiocho", "veintinueve"];
 const HUND_ES = ["", "ciento", "doscientos", "trescientos", "cuatrocientos", "quinientos", "seiscientos", "setecientos", "ochocientos", "novecientos"];
 function under100Es(n: number): string {
   if (n < 20) return ONES_ES[n]!;
   if (n === 20) return "veinte";
-  if (n < 30) return "veinti" + (n === 21 ? "uno" : ONES_ES[n % 10]);
+  if (n < 30) return VEINTI_ES[n - 21]!;
   const t = Math.floor(n / 10), r = n % 10;
   return r ? `${TENS_ES[t]} y ${ONES_ES[r]}` : TENS_ES[t]!;
 }
