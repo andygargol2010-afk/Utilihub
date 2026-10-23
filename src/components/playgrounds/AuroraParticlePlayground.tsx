@@ -1,1 +1,1 @@
-$(cat /tmp/AuroraParticlePlayground.new.tsx)
+PLACEHOLDER_FULL_CONTENT_FROM_LOCAL
