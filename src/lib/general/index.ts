@@ -93,6 +93,8 @@ import { SQUARE_PERIMETER_CALCULATOR_TOOLS } from "./square-perimeter-calculator
 import { MILES_TO_KM_CONVERTER_TOOLS } from "./miles-to-km-converter-tool";
 import { SALARY_RAISE_CALCULATOR_TOOLS } from "./salary-raise-calculator-tool";
 import { GAS_CONSUMPTION_CALCULATOR_TOOLS } from "./gas-consumption-calculator-tool";
+import { GOLDEN_RATIO_CALCULATOR_TOOLS } from "./golden-ratio-calculator-tool";
+import { TEXT_TO_SLUG_CONVERTER_TOOLS } from "./text-to-slug-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -190,4 +192,6 @@ export const GENERAL_TOOLS = [
   ...MILES_TO_KM_CONVERTER_TOOLS,
   ...SALARY_RAISE_CALCULATOR_TOOLS,
   ...GAS_CONSUMPTION_CALCULATOR_TOOLS,
+  ...GOLDEN_RATIO_CALCULATOR_TOOLS,
+  ...TEXT_TO_SLUG_CONVERTER_TOOLS,
 ];

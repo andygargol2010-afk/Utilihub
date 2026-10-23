@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-23 | diseno | calculadora-ratio-dorado | GoldenRatioCalculatorTool
+- 2026-10-23 | texto | conversor-texto-slug | TextToSlugConverterTool
 - 2026-10-23 | finanzas | calculadora-aumento-salarial | SalaryRaiseCalculatorTool
 - 2026-10-23 | hogar | calculadora-consumo-gas | GasConsumptionCalculatorTool
 - 2026-10-23 | conversiones | conversor-millas-km | MilesToKmConverterTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-23 | educacion | calculadora-desviacion-estandar | StandardDeviationCalculatorTool
 - 2026-10-23 | ciencia | calculadora-volumen-cono | ConeVolumeCalculatorTool
 - 2026-10-22 | salud | calculadora-calorias-diarias | DailyCaloriesCalculatorTool
-- 2026-10-22 | finanzas | calculadora-interes-compuesto | CompoundInterestCalculatorTool
-- 2026-10-22 | matematicas | calculadora-pendiente | SlopeCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -42,14 +42,14 @@ fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fecha
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo)
-texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas)
-productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto)
-matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado)
-diseno: recent (contraste-color, paleta-complementaria, dpi)
+texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug)
+diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial)
+productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto)
+matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-23 PRODUCT: calculadora-aumento-salarial (finanzas) + calculadora-consumo-gas (hogar). Two tools, distinct clusters. Registry entries added surgically to A. SEO locales: pt active but deferred (not cheap for full translation this run).
-Previous: calculadora-perimetro-cuadrado + conversor-millas-km.
+2026-10-23 PRODUCT: calculadora-ratio-dorado (diseno) + conversor-texto-slug (texto). Two tools, distinct clusters. Registry entries added surgically. SEO locales: pt active but deferred.
+Previous: calculadora-aumento-salarial + calculadora-consumo-gas.
 ```
 
 ---
@@ -73,7 +73,7 @@ Previous: calculadora-perimetro-cuadrado + conversor-millas-km.
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-aumento-salarial, calculadora-consumo-gas
+last_slugs: calculadora-ratio-dorado, conversor-texto-slug
 last_deploy: pending check after this commit
 last_sha: pending
 ```

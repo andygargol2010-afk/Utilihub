@@ -25,4 +25,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "conversor-millas-km", name: "MilesToKmConverterTool", path: "./MilesToKmConverterTool", export: "MilesToKmConverterTool" },
   { slug: "calculadora-aumento-salarial", name: "SalaryRaiseCalculatorTool", path: "./SalaryRaiseCalculatorTool", export: "SalaryRaiseCalculatorTool" },
   { slug: "calculadora-consumo-gas", name: "GasConsumptionCalculatorTool", path: "./GasConsumptionCalculatorTool", export: "GasConsumptionCalculatorTool" },
+  { slug: "calculadora-ratio-dorado", name: "GoldenRatioCalculatorTool", path: "./GoldenRatioCalculatorTool", export: "GoldenRatioCalculatorTool" },
+  { slug: "conversor-texto-slug", name: "TextToSlugConverterTool", path: "./TextToSlugConverterTool", export: "TextToSlugConverterTool" },
 ] as const;
