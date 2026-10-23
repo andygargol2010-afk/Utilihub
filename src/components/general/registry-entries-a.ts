@@ -27,4 +27,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-consumo-gas", name: "GasConsumptionCalculatorTool", path: "./GasConsumptionCalculatorTool", export: "GasConsumptionCalculatorTool" },
   { slug: "calculadora-ratio-dorado", name: "GoldenRatioCalculatorTool", path: "./GoldenRatioCalculatorTool", export: "GoldenRatioCalculatorTool" },
   { slug: "conversor-texto-slug", name: "TextToSlugConverterTool", path: "./TextToSlugConverterTool", export: "TextToSlugConverterTool" },
+  { slug: "calculadora-dias-habiles", name: "BusinessDaysCalculatorTool", path: "./BusinessDaysCalculatorTool", export: "BusinessDaysCalculatorTool" },
+  { slug: "calculadora-caudal", name: "FlowRateCalculatorTool", path: "./FlowRateCalculatorTool", export: "FlowRateCalculatorTool" },
 ] as const;

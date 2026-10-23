@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-23 | fechas | calculadora-dias-habiles | BusinessDaysCalculatorTool
+- 2026-10-23 | ciencia | calculadora-caudal | FlowRateCalculatorTool
 - 2026-10-23 | diseno | calculadora-ratio-dorado | GoldenRatioCalculatorTool
 - 2026-10-23 | texto | conversor-texto-slug | TextToSlugConverterTool
 - 2026-10-23 | finanzas | calculadora-aumento-salarial | SalaryRaiseCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-23 | productividad | calculadora-palabras-por-minuto | WordsPerMinuteCalculatorTool
 - 2026-10-23 | fechas | calculadora-horas-entre-fechas | HoursBetweenDatesCalculatorTool
 - 2026-10-23 | educacion | calculadora-desviacion-estandar | StandardDeviationCalculatorTool
-- 2026-10-23 | ciencia | calculadora-volumen-cono | ConeVolumeCalculatorTool
-- 2026-10-22 | salud | calculadora-calorias-diarias | DailyCaloriesCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -38,8 +38,8 @@ Use with PRODUCT diversity rules (ops). Prefer under-represented clusters.
 Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
-fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas)
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera)
+fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug)
@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-23 PRODUCT: calculadora-ratio-dorado (diseno) + conversor-texto-slug (texto). Two tools, distinct clusters. Registry entries added surgically. SEO locales: pt active but deferred.
-Previous: calculadora-aumento-salarial + calculadora-consumo-gas.
+2026-10-23 PRODUCT: calculadora-dias-habiles (fechas) + calculadora-caudal (ciencia). Two tools, distinct clusters. Registry entries added surgically. SEO locales: pt active but deferred.
+Previous: calculadora-ratio-dorado + conversor-texto-slug.
 ```
 
 ---
@@ -73,7 +73,7 @@ Previous: calculadora-aumento-salarial + calculadora-consumo-gas.
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-ratio-dorado, conversor-texto-slug
+last_slugs: calculadora-dias-habiles, calculadora-caudal
 last_deploy: pending check after this commit
 last_sha: pending
 ```
