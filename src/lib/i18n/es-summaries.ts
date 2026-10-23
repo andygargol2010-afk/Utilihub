@@ -1,7 +1,7 @@
 import type { CatalogTool } from "@/lib/all-tools";
 import { spanishCategoryName } from "./es";
 
-/** Exact Spanish one-liners for high-traffic / awkward tools. */
+/** Hand-written Spanish one-liners for high-traffic tools. */
 const EXACT_SUMMARIES: Record<string, string> = {
   calculadora: "Calculadora básica online. Operaciones rápidas en el navegador.",
   "calculadora-de-porcentajes": "Calculá porcentajes, aumentos y descuentos al instante.",
@@ -21,38 +21,101 @@ const EXACT_SUMMARIES: Record<string, string> = {
   "unir-pdf": "Uní varios PDF en un solo archivo desde el navegador.",
   "dividir-pdf": "Dividí un PDF por páginas o rangos.",
   imc: "Calculá tu índice de masa corporal (IMC) con peso y altura.",
-  "calculadora-imc": "Calculá tu índice de masa corporal (IMC) con peso y altura.",
+  "calculadora-imc": "Calculá tu índice de masa corporal (IMC) con peso y altura. Clasificación instantánea.",
   "modelador-3d": "Modelado 3D en el navegador para formas y escenas simples.",
   "modelador-casas-3d": "Diseñá planos y volúmenes de casas en 3D.",
   pixelihub: "Estudio de pixel art: capas, paletas y export PNG.",
-  "dividir-cuenta": "Repartí la cuenta entre varias personas, con propina opcional.",
-  "calculadora-propina": "Calculá la propina y el total a pagar.",
-  "propina-compartida": "Calculá la propina y dividí la cuenta entre varias personas.",
-  "calculadora-propina-compartida": "Calculá la propina y dividí la cuenta entre varias personas.",
-  "generador-nombres-archivos": "Normalizá títulos y generá nombres de archivo consistentes.",
-  "generador-de-nombres-de-archivos": "Normalizá títulos y generá nombres de archivo consistentes.",
+  "dividir-cuenta": "Repartí la cuenta de un restaurante o grupo de forma equitativa, con propina y redondeo opcionales.",
+  "calculadora-propina": "Calculá la propina y el total de una cuenta según el porcentaje y el número de personas.",
+  propina: "Calculá la propina y el total de una cuenta.",
+  "divisor-gastos": "Dividí un importe entre varias personas, con propina opcional.",
+  "generador-nombres-archivos": "Normalizá títulos y generá nombres de archivo consistentes para proyectos digitales.",
+  "calculadora-edad": "Calculá la edad exacta en años, meses y días a partir de la fecha de nacimiento.",
+  "calculadora-aceleracion": "Calculá la aceleración a partir de la velocidad inicial, final y el tiempo.",
+  "calculadora-media-aritmetica": "Calculá la media aritmética (promedio) de una lista de números.",
+  "calculadora-relacion-aspecto": "Calculá la relación de aspecto a partir del ancho y el alto, o la dimensión faltante.",
+  "calculadora-velocidad-media": "Calculá la velocidad media a partir de la distancia y el tiempo (km/h y mph).",
+  "base64-encoder-decoder": "Codificá texto a Base64 o decodificá Base64 a texto al instante en el navegador.",
+  "convertidor-casos-texto": "Convertí texto entre mayúsculas, minúsculas, título, oración, camelCase, snake_case y kebab-case.",
+  "traductor-braille": "Convertí texto y braille grado 1, incluyendo acentos del español, números y mayúsculas.",
+  "calculadora-dias-habiles": "Calculá los días hábiles entre dos fechas, excluyendo fines de semana y feriados opcionales.",
+  "calculadora-deficit-calorico": "Estimá el déficit o superávit calórico diario según tu TDEE y el cambio de peso objetivo.",
+  "calculadora-presupuesto-503020": "Dividí tu ingreso neto en necesidades (50%), deseos (30%) y ahorro (20%).",
 };
 
-/** Longer phrases first so they win over single-word rules. */
-const SUMMARY_PHRASES: Array<[RegExp, string]> = [
+/** Multi-word phrases first (order matters). */
+const PHRASES: Array<[RegExp, string]> = [
+  [/Calculate Body Mass Index \(BMI\) from weight and height\.?/gi, "Calculá el índice de masa corporal (IMC) a partir del peso y la altura."],
+  [/Instant classification underweight, normal, overweight or obese\.?/gi, "Clasificación instantánea: bajo peso, normal, sobrepeso u obesidad."],
+  [/Split a restaurant or group bill fairly among people,? including optional tip and rounding\.?/gi, "Repartí la cuenta de un restaurante o grupo de forma equitativa, con propina y redondeo opcionales."],
+  [/Calculate tip and total bill amount based on percentage and number of people\.?/gi, "Calculá la propina y el total de la cuenta según el porcentaje y el número de personas."],
+  [/Calculate exact age in years, months and days from birth date, plus next birthday and days lived\.?/gi, "Calculá la edad exacta en años, meses y días a partir de la fecha de nacimiento, más el próximo cumpleaños y los días vividos."],
+  [/Calculate acceleration from initial velocity, final velocity, and time\.?/gi, "Calculá la aceleración a partir de la velocidad inicial, la velocidad final y el tiempo."],
+  [/Calculate the arithmetic mean \(average\) of a list of numbers\.?/gi, "Calculá la media aritmética (promedio) de una lista de números."],
+  [/Calculate aspect ratio from width and height, or find missing dimension for a target ratio\.?/gi, "Calculá la relación de aspecto a partir del ancho y el alto, o la dimensión faltante para una proporción objetivo."],
+  [/Calculate average speed from distance and time\.?/gi, "Calculá la velocidad media a partir de la distancia y el tiempo."],
+  [/Encode text to Base64 or decode Base64 back to text instantly in the browser\.?/gi, "Codificá texto a Base64 o decodificá Base64 a texto al instante en el navegador."],
+  [/Convert text between uppercase, lowercase, title case, sentence case, camelCase, snake_case and kebab-case\.?/gi, "Convertí texto entre mayúsculas, minúsculas, título, oración, camelCase, snake_case y kebab-case."],
+  [/Calculate the number of business days \(working days\) between two dates, excluding weekends and optional holidays\.?/gi, "Calculá los días hábiles entre dos fechas, excluyendo fines de semana y feriados opcionales."],
+  [/Estimate daily calorie deficit or surplus based on your TDEE and target weight change\.?/gi, "Estimá el déficit o superávit calórico diario según tu TDEE y el cambio de peso objetivo."],
+  [/Split your after-tax income into needs \(50%\), wants \(30%\), and savings \(20%\)\.?/gi, "Dividí tu ingreso neto en necesidades (50%), deseos (30%) y ahorro (20%)."],
+  [/Normalize titles and create consistent file names for digital projects\.?/gi, "Normalizá títulos y generá nombres de archivo consistentes para proyectos digitales."],
   [/Runs fully in the browser\.?/gi, "Funciona por completo en el navegador."],
-  [/runs? locally in the browser\.?/gi, "funciona en el navegador de forma local."],
+  [/Fully in the browser\.?/gi, "Por completo en el navegador."],
+  [/Instant results in the browser\.?/gi, "Resultados al instante en el navegador."],
   [/in the browser\.?/gi, "en el navegador."],
   [/No signup\.?/gi, "Sin registro."],
-  [/no signup\.?/gi, "sin registro."],
-  [/Free,? no signup,? and with local processing when possible\.?/gi, "Gratis, sin registro y con procesamiento local cuando es posible."],
-  [/Free online tool\.?/gi, "Herramienta online gratis."],
-  [/Instant classification underweight, normal, overweight or obese\.?/gi, "Clasificación instantánea: bajo peso, normal, sobrepeso u obesidad."],
-  [/Calculate Body Mass Index \(BMI\) from weight and height\.?/gi, "Calculá el índice de masa corporal (IMC) a partir del peso y la altura."],
-  [/equal bill split among several people\.?/gi, "división equitativa de la cuenta entre varias personas."],
-  [/bill split among several people\.?/gi, "división de la cuenta entre varias personas."],
-  [/among several people\.?/gi, "entre varias personas."],
-  [/digital projects\.?/gi, "proyectos digitales."],
-  [/file names\.?/gi, "nombres de archivo"],
-  [/consistent file names\.?/gi, "nombres de archivo consistentes"],
-  [/Normalize titles\.?/gi, "Normalizá títulos"],
-  [/create consistent\.?/gi, "creá consistentes"],
-  [/Split a restaurant or group bill fairly among people,? including optional tip and rounding\.?/gi, "Repartí la cuenta de un restaurante o grupo de forma equitativa, con propina y redondeo opcionales."],
+  [/Supports km\/h and mph\.?/gi, "Compatible con km/h y mph."],
+  [/Useful for developers\.?/gi, "Útil para desarrolladores."],
+  [/Useful for\.?/gi, "Útil para"],
+];
+
+/** Single-token / short replacements (after phrases). */
+const WORDS: Array<[RegExp, string]> = [
+  [/\bCalculate\b/g, "Calculá"],
+  [/\bcalculate\b/g, "calculá"],
+  [/\bConvert\b/g, "Convertí"],
+  [/\bconvert\b/g, "convertí"],
+  [/\bGenerate\b/g, "Generá"],
+  [/\bgenerate\b/g, "generá"],
+  [/\bEstimate\b/g, "Estimá"],
+  [/\bestimate\b/g, "estimá"],
+  [/\bCount\b/g, "Contá"],
+  [/\bcount\b/g, "contá"],
+  [/\bValidate\b/g, "Validá"],
+  [/\bvalidate\b/g, "validá"],
+  [/\bFormat\b/g, "Formateá"],
+  [/\bformat\b/g, "formateá"],
+  [/\bEncode\b/g, "Codificá"],
+  [/\bencode\b/g, "codificá"],
+  [/\bDecode\b/g, "Decodificá"],
+  [/\bdecode\b/g, "decodificá"],
+  [/\bMerge\b/g, "Uní"],
+  [/\bSplit\b/g, "Dividí"],
+  [/\bsplit\b/g, "dividí"],
+  [/\bDownload\b/g, "Descargá"],
+  [/\bUpload\b/g, "Subí"],
+  [/\bEnter\b/g, "Ingresá"],
+  [/\bBuild\b/g, "Armá"],
+  [/\bbuild\b/g, "armá"],
+  [/\bOrganize\b/g, "Organizá"],
+  [/\borganize\b/g, "organizá"],
+  [/\bClassify\b/g, "Clasificá"],
+  [/\bclassify\b/g, "clasificá"],
+  [/\bNormalize\b/g, "Normalizá"],
+  [/\bnormalize\b/g, "normalizá"],
+  [/\bCreate\b/g, "Creá"],
+  [/\bcreate\b/g, "creá"],
+  [/\bFind\b/g, "Encontrá"],
+  [/\bfind\b/g, "encontrá"],
+  [/\bAdd\b/g, "Sumá"],
+  [/\badd\b/g, "sumá"],
+  [/\bSubtract\b/g, "Restá"],
+  [/\bsubtract\b/g, "restá"],
+  [/\bInstant\b/g, "Instantáneo"],
+  [/\binstantly\b/gi, "al instante"],
+  [/\bFree\b/g, "Gratis"],
+  [/\bfree\b/g, "gratis"],
   [/\bpercentages\b/gi, "porcentajes"],
   [/\bpercentage\b/gi, "porcentaje"],
   [/\bincreases\b/gi, "aumentos"],
@@ -67,19 +130,15 @@ const SUMMARY_PHRASES: Array<[RegExp, string]> = [
   [/\bproject\b/gi, "proyecto"],
   [/\bdigital\b/gi, "digitales"],
   [/\bconsistent\b/gi, "consistentes"],
-  [/\bnormalize\b/gi, "normalizá"],
-  [/\bNormalize\b/g, "Normalizá"],
-  [/\bcreate\b/gi, "creá"],
-  [/\bCreate\b/g, "Creá"],
   [/\bnames\b/gi, "nombres"],
   [/\bname\b/gi, "nombre"],
-  [/\bfiles?\b/gi, "archivos"],
-  [/\bfor\b/gi, "para"],
+  [/\bfile names\b/gi, "nombres de archivo"],
+  [/\bfiles\b/gi, "archivos"],
+  [/\bfile\b/gi, "archivo"],
   [/\btip\b/gi, "propina"],
   [/\btotal\b/gi, "total"],
   [/\bequal\b/gi, "equitativa"],
   [/\bbill\b/gi, "cuenta"],
-  [/\bsplit\b/gi, "división"],
   [/\bamong\b/gi, "entre"],
   [/\bseveral\b/gi, "varias"],
   [/\bpeople\b/gi, "personas"],
@@ -89,72 +148,95 @@ const SUMMARY_PHRASES: Array<[RegExp, string]> = [
   [/\bfairly\b/gi, "de forma equitativa"],
   [/\brestaurant\b/gi, "restaurante"],
   [/\bgroup\b/gi, "grupo"],
-  [/\bCalculate\b/g, "Calculá"],
-  [/\bcalculate\b/g, "calculá"],
-  [/\bConvert\b/g, "Convertí"],
-  [/\bconvert\b/g, "convertí"],
-  [/\bGenerate\b/g, "Generá"],
-  [/\bgenerate\b/g, "generá"],
-  [/\bCount\b/g, "Contá"],
-  [/\bcount\b/g, "contá"],
-  [/\bValidate\b/g, "Validá"],
-  [/\bvalidate\b/g, "validá"],
-  [/\bFormat\b/g, "Formateá"],
-  [/\bformat\b/g, "formateá"],
-  [/\bEncode\b/g, "Codificá"],
-  [/\bencode\b/g, "codificá"],
-  [/\bDecode\b/g, "Decodificá"],
-  [/\bdecode\b/g, "decodificá"],
-  [/\bMerge\b/g, "Uní"],
-  [/\bSplit\b/g, "Dividí"],
-  [/\bDownload\b/g, "Descargá"],
-  [/\bUpload\b/g, "Subí"],
-  [/\bEnter\b/g, "Ingresá"],
-  [/\bInstant\b/g, "Instantáneo"],
-  [/\bFree\b/g, "Gratis"],
-  [/\bfree\b/g, "gratis"],
+  [/\bweight\b/gi, "peso"],
+  [/\bheight\b/gi, "altura"],
+  [/\bwidth\b/gi, "ancho"],
+  [/\bdistance\b/gi, "distancia"],
+  [/\btime\b/gi, "tiempo"],
+  [/\bspeed\b/gi, "velocidad"],
+  [/\bvelocity\b/gi, "velocidad"],
+  [/\bacceleration\b/gi, "aceleración"],
+  [/\binitial\b/gi, "inicial"],
+  [/\bfinal\b/gi, "final"],
+  [/\baverage\b/gi, "promedio"],
+  [/\bmean\b/gi, "media"],
+  [/\blist\b/gi, "lista"],
+  [/\bnumbers\b/gi, "números"],
+  [/\bnumber\b/gi, "número"],
+  [/\btext\b/gi, "texto"],
   [/\bpassword\b/gi, "contraseña"],
   [/\bpasswords\b/gi, "contraseñas"],
-  [/\bweight\b/g, "peso"],
-  [/\bheight\b/g, "altura"],
-  [/\bfrom\b/g, "desde"],
+  [/\bimage\b/gi, "imagen"],
+  [/\bimages\b/gi, "imágenes"],
+  [/\bpage\b/gi, "página"],
+  [/\bpages\b/gi, "páginas"],
+  [/\bbrowser\b/gi, "navegador"],
+  [/\bresults\b/gi, "resultados"],
+  [/\bresult\b/gi, "resultado"],
+  [/\bamount\b/gi, "importe"],
+  [/\brate\b/gi, "tasa"],
+  [/\bbased on\b/gi, "según"],
+  [/\bbetween\b/gi, "entre"],
+  [/\bwithout\b/gi, "sin"],
+  [/\bwith\b/gi, "con"],
+  [/\bfrom\b/gi, "desde"],
+  [/\binto\b/gi, "en"],
+  [/\bfor\b/gi, "para"],
   [/\band\b/g, "y"],
   [/\bor\b/g, "o"],
-  [/\bwith\b/g, "con"],
-  [/\bwithout\b/g, "sin"],
-  [/\byour\b/g, "tu"],
+  [/\byour\b/gi, "tu"],
   [/\bthe\b/gi, ""],
   [/\ba\b/gi, ""],
   [/\ban\b/gi, ""],
   [/\bto\b/g, "a"],
   [/\bin\b/g, "en"],
   [/\bof\b/g, "de"],
+  [/\bplus\b/gi, "más"],
+  [/\bmissing\b/gi, "faltante"],
+  [/\bdimension\b/gi, "dimensión"],
+  [/\btarget\b/gi, "objetivo"],
+  [/\bratio\b/gi, "proporción"],
+  [/\baspect\b/gi, "aspecto"],
+  [/\bbirth date\b/gi, "fecha de nacimiento"],
+  [/\bnext birthday\b/gi, "próximo cumpleaños"],
+  [/\bdays lived\b/gi, "días vividos"],
+  [/\byears\b/gi, "años"],
+  [/\bmonths\b/gi, "meses"],
+  [/\bdays\b/gi, "días"],
+  [/\bhours\b/gi, "horas"],
+  [/\bminutes\b/gi, "minutos"],
+  [/\bseconds\b/gi, "segundos"],
+  [/\bweekends\b/gi, "fines de semana"],
+  [/\bholidays\b/gi, "feriados"],
+  [/\bexcluding\b/gi, "excluyendo"],
+  [/\bworking days\b/gi, "días laborables"],
+  [/\bbusiness days\b/gi, "días hábiles"],
+  [/\bneeds\b/gi, "necesidades"],
+  [/\bwants\b/gi, "deseos"],
+  [/\bsavings\b/gi, "ahorro"],
+  [/\bafter-tax income\b/gi, "ingreso neto"],
+  [/\bincome\b/gi, "ingreso"],
+  [/\bdevelopers\b/gi, "desarrolladores"],
+  [/\buseful\b/gi, "útil"],
+  [/\bsupports?\b/gi, "compatible con"],
+  [/\boptional\b/gi, "opcional"],
 ];
-
-const EN_LEFTOVER =
-  /\b(the|and|or|with|from|for|into|onto|over|under|about|between|among|each|every|using|based|simple|advanced|online|tool|tools|value|values|result|results|amount|rate|number|numbers|text|data|file|files|image|images|page|pages|user|users|account|signup|browser|device|local|instantly|quickly|easily)\b/i;
-
-function looksMostlyEnglish(text: string): boolean {
-  const words = text.split(/\s+/).filter(Boolean);
-  if (words.length < 3) return false;
-  let en = 0;
-  for (const w of words) {
-    if (EN_LEFTOVER.test(w) || /^[A-Za-z]{4,}$/.test(w)) en += 1;
-  }
-  return en / words.length >= 0.35;
-}
 
 function phraseTranslate(raw: string): string {
   let out = raw;
-  for (const [re, rep] of SUMMARY_PHRASES) {
-    out = out.replace(re, rep);
-  }
-  return out.replace(/\s{2,}/g, " ").replace(/\s+([,.])/g, "$1").trim();
+  for (const [re, rep] of PHRASES) out = out.replace(re, rep);
+  for (const [re, rep] of WORDS) out = out.replace(re, rep);
+  return out
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s+([,.])/g, "$1")
+    .replace(/\s+\./g, ".")
+    .trim();
 }
 
 /**
  * Spanish one-line summary for catalog cards, search, and home.
- * 1) Exact map  2) phrase EN→ES  3) category fallback if still mostly English.
+ * Always preserves tool-specific meaning: exact map → phrase translate of real summary.
+ * Generic category text only when the tool has no summary at all.
  */
 export function spanishToolSummary(
   tool: Pick<CatalogTool, "slug" | "name" | "summary" | "category">,
@@ -168,15 +250,10 @@ export function spanishToolSummary(
     return `Herramienta de ${cat} gratis en el navegador.`;
   }
 
-  if (/[áéíóúñ¿¡]/i.test(raw) && !looksMostlyEnglish(raw)) {
+  // Already Spanish
+  if (/[áéíóúñ¿¡]/i.test(raw) && !/\b(Calculate|Convert|Generate|from weight|in the browser)\b/.test(raw)) {
     return raw;
   }
 
-  const translated = phraseTranslate(raw);
-  if (translated && !looksMostlyEnglish(translated)) {
-    return translated;
-  }
-
-  const cat = spanishCategoryName(tool.category).toLowerCase();
-  return `Herramienta de ${cat} gratis en el navegador.`
+  return phraseTranslate(raw);
 }
