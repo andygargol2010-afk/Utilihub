@@ -88,6 +88,7 @@ import { STANDARD_DEVIATION_CALCULATOR_TOOLS } from "./standard-deviation-calcul
 import { CONE_VOLUME_CALCULATOR_TOOLS } from "./cone-volume-calculator-tool";
 import { HOURS_BETWEEN_DATES_CALCULATOR_TOOLS } from "./hours-between-dates-calculator-tool";
 import { WORDS_PER_MINUTE_CALCULATOR_TOOLS } from "./words-per-minute-calculator-tool";
+import { SPHERE_SURFACE_AREA_CALCULATOR_TOOLS } from "./sphere-surface-area-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -180,4 +181,5 @@ export const GENERAL_TOOLS = [
   ...CONE_VOLUME_CALCULATOR_TOOLS,
   ...HOURS_BETWEEN_DATES_CALCULATOR_TOOLS,
   ...WORDS_PER_MINUTE_CALCULATOR_TOOLS,
+  ...SPHERE_SURFACE_AREA_CALCULATOR_TOOLS,
 ];
