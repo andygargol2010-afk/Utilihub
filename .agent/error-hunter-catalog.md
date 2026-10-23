@@ -108,4 +108,14 @@ Formato por entrada:
 - **fix_hint**: asegurar named export y contenido real; nunca dejar PLACEHOLDER en archivos importados por routes
 - **files**: `src/components/playgrounds/NBodyGravitySim.tsx`, `src/routes/n-body-gravity.tsx`, `src/routes/es.n-body-gravity.tsx`
 
+## E011 — Build ERROR por AuroraParticlePlayground no exportado
+- **status**: fixed
+- **last_seen**: 2026-10-23 (file was literal PLACEHOLDER_FULL_CONTENT_FROM_LOCAL; route imports named AuroraParticlePlayground)
+- **fixed_at**: 2026-10-23 (SHA d3bc033 restores full component with "use client" + export function from prior good SHA e2ebb276)
+- **symptom**: deploy Vercel ERROR; rollup: "AuroraParticlePlayground" is not exported by AuroraParticlePlayground.tsx
+- **root_cause**: polish/restore commit wrote PLACEHOLDER literal instead of the real canvas playground component
+- **check**: file starts with "use client"; `export function AuroraParticlePlayground`; no PLACEHOLDER; routes aurora-particle-playground.tsx import it
+- **fix_hint**: restore full component from good history SHA; never leave PLACEHOLDER in imported playground files
+- **files**: `src/components/playgrounds/AuroraParticlePlayground.tsx`, `src/routes/aurora-particle-playground.tsx`, `src/routes/es.aurora-particle-playground.tsx`
+
 <!-- end:catalog -->
