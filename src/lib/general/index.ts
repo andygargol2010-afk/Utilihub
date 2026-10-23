@@ -80,6 +80,8 @@ import { ELECTRICAL_POWER_CALCULATOR_TOOLS } from "./electrical-power-calculator
 import { FLIGHT_TIME_CALCULATOR_TOOLS } from "./flight-time-calculator-tool";
 import { ROI_CALCULATOR_TOOLS } from "./roi-calculator-tool";
 import { DPI_CALCULATOR_TOOLS } from "./dpi-calculator-tool";
+import { SLOPE_CALCULATOR_TOOLS } from "./slope-calculator-tool";
+import { LINE_COUNTER_TOOLS } from "./line-counter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -164,4 +166,6 @@ export const GENERAL_TOOLS = [
   ...FLIGHT_TIME_CALCULATOR_TOOLS,
   ...ROI_CALCULATOR_TOOLS,
   ...DPI_CALCULATOR_TOOLS,
+  ...SLOPE_CALCULATOR_TOOLS,
+  ...LINE_COUNTER_TOOLS,
 ];

@@ -105,6 +105,12 @@ const ElectricalPowerCalculatorToolUi = lazy(() =>
 const FlightTimeCalculatorToolUi = lazy(() =>
   import("./FlightTimeCalculatorTool").then((m) => ({ default: m.FlightTimeCalculatorTool })),
 );
+const SlopeCalculatorToolUi = lazy(() =>
+  import("./SlopeCalculatorTool").then((m) => ({ default: m.SlopeCalculatorTool })),
+);
+const LineCounterToolUi = lazy(() =>
+  import("./LineCounterTool").then((m) => ({ default: m.LineCounterTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -123,6 +129,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-peso-saludable") return IdealWeightCalculatorToolUi;
   if (slug === "calculadora-potencia-electrica") return ElectricalPowerCalculatorToolUi;
   if (slug === "calculadora-tiempo-vuelo") return FlightTimeCalculatorToolUi;
+  if (slug === "calculadora-pendiente") return SlopeCalculatorToolUi;
+  if (slug === "contador-lineas") return LineCounterToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
