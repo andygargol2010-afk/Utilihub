@@ -88,4 +88,14 @@ Formato por entrada:
 - **fix_hint**: implementar UI similar a otros *CalculatorTool.tsx (useState + useMemo + copy/reset)
 - **files**: `src/components/general/ElectricalPowerCalculatorTool.tsx`, `src/components/general/FlightTimeCalculatorTool.tsx`, `registry.tsx` (lazy imports)
 
+## E009 — Build ERROR por slug duplicado calculadora-interes-compuesto
+- **status**: fixed
+- **last_seen**: 2026-10-22 (deploy ERROR en ac5559e4: Catalog validator error "slug duplicado en makeTool/wrappers: calculadora-interes-compuesto" en compound-interest-calculator-tool.ts y compound-interest-tool.ts)
+- **fixed_at**: 2026-10-22 (SHA eedbb68e3fae43a9c416c77a3a36040a978d9a39 vacía el export de compound-interest-tool.ts, no importado en index.ts)
+- **symptom**: deploy Vercel ERROR; build falla en validate-catalog con slug duplicado
+- **root_cause**: dos makeTool con el mismo slug; el de compound-interest-tool.ts no se importaba en src/lib/general/index.ts
+- **check**: grep makeTool(\"calculadora-interes-compuesto\"; solo debe quedar en compound-interest-calculator-tool.ts; compound-interest-tool.ts exporta array vacío
+- **fix_hint**: eliminar o vaciar la definición no referenciada; no crear segundo makeTool del mismo slug
+- **files**: `src/lib/general/compound-interest-calculator-tool.ts`, `src/lib/general/compound-interest-tool.ts`, `src/lib/general/index.ts`, `scripts/validate-catalog.mjs`
+
 <!-- end:catalog -->
