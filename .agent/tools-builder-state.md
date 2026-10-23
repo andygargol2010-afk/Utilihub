@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-23 | conversiones | conversor-bytes | BytesConverterTool
+- 2026-10-23 | matematicas | calculadora-perimetro-triangulo | TrianglePerimeterCalculatorTool
 - 2026-10-23 | fechas | calculadora-dias-habiles | BusinessDaysCalculatorTool
 - 2026-10-23 | ciencia | calculadora-caudal | FlowRateCalculatorTool
 - 2026-10-23 | diseno | calculadora-ratio-dorado | GoldenRatioCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-23 | matematicas | calculadora-perimetro-cuadrado | SquarePerimeterCalculatorTool
 - 2026-10-23 | ciencia | calculadora-area-superficie-esfera | SphereSurfaceAreaCalculatorTool
 - 2026-10-23 | productividad | calculadora-palabras-por-minuto | WordsPerMinuteCalculatorTool
-- 2026-10-23 | fechas | calculadora-horas-entre-fechas | HoursBetweenDatesCalculatorTool
-- 2026-10-23 | educacion | calculadora-desviacion-estandar | StandardDeviationCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -44,12 +44,12 @@ hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-ga
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado)
-conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km)
+conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial)
 productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto)
-matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado)
+matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado, perimetro-triangulo)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-23 PRODUCT: calculadora-dias-habiles (fechas) + calculadora-caudal (ciencia). Two tools, distinct clusters. Registry entries added surgically. SEO locales: pt active but deferred.
-Previous: calculadora-ratio-dorado + conversor-texto-slug.
+2026-10-23 PRODUCT: calculadora-perimetro-triangulo (matematicas) + conversor-bytes (conversiones). Two tools, distinct clusters. Registry entries added surgically. SEO locales: pt active but deferred.
+Previous: calculadora-dias-habiles + calculadora-caudal.
 ```
 
 ---
@@ -73,7 +73,7 @@ Previous: calculadora-ratio-dorado + conversor-texto-slug.
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-dias-habiles, calculadora-caudal
+last_slugs: calculadora-perimetro-triangulo, conversor-bytes
 last_deploy: pending check after this commit
 last_sha: pending
 ```

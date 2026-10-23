@@ -29,4 +29,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "conversor-texto-slug", name: "TextToSlugConverterTool", path: "./TextToSlugConverterTool", export: "TextToSlugConverterTool" },
   { slug: "calculadora-dias-habiles", name: "BusinessDaysCalculatorTool", path: "./BusinessDaysCalculatorTool", export: "BusinessDaysCalculatorTool" },
   { slug: "calculadora-caudal", name: "FlowRateCalculatorTool", path: "./FlowRateCalculatorTool", export: "FlowRateCalculatorTool" },
+  { slug: "calculadora-perimetro-triangulo", name: "TrianglePerimeterCalculatorTool", path: "./TrianglePerimeterCalculatorTool", export: "TrianglePerimeterCalculatorTool" },
+  { slug: "conversor-bytes", name: "BytesConverterTool", path: "./BytesConverterTool", export: "BytesConverterTool" },
 ] as const;
