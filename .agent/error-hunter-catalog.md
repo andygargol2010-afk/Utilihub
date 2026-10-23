@@ -16,7 +16,7 @@ Formato por entrada:
 
 ## E001 — Registry PLACEHOLDER / tool page crash
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-23 (code smoke: registry.tsx exports GENERAL_TOOL_UI / pickComponent, kind-first routing, no PLACEHOLDER)
+- **last_seen**: 2026-10-23 (code smoke on 3246a216: registry.tsx exports GENERAL_TOOL_UI / pickComponent, kind-first routing, no PLACEHOLDER)
 - **symptom**: "We could not load this page" · `Cannot read properties of undefined (reading 'kind')` en GeneralTool bundle
 - **root_cause**: `src/components/general/registry.tsx` reemplazado por PLACEHOLDER o sin `GENERAL_TOOL_UI` / `buildLazyRegistry` / `pickComponent`
 - **check**: leer registry completo; tamaño razonable; exports presentes; abrir 1–2 tools del catálogo
@@ -25,7 +25,7 @@ Formato por entrada:
 
 ## E002 — Image/PDF tools muestran calculadora numérica
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-23 (kind-first en pickComponent presente)
+- **last_seen**: 2026-10-23 (kind-first en pickComponent presente on 3246a216)
 - **symptom**: PNG a JPG / Comprimir imagen piden "Primer valor / Segundo valor / Calcular" en vez de subir archivo
 - **root_cause**: routing por kind incorrecto; tools `image`/`pdf` no van a MediaTool/DocumentTool
 - **check**: kind de slugs image/pdf en catalog; pickComponent / DeferredToolUi prioriza kind Media/Document
@@ -52,7 +52,7 @@ Formato por entrada:
 
 ## E005 — Home 404 por routes corruptas
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-23 (index.tsx y es.index.tsx empiezan con import, createFileRoute, sin $(cat); imports DeferredHomeReviews/HomeCatalogSlot OK)
+- **last_seen**: 2026-10-23 (index.tsx y es.index.tsx empiezan con import, createFileRoute, sin $(cat); imports DeferredHomeReviews/HomeCatalogSlot OK on 3246a216)
 - **symptom**: `/` o `/es` → "We could not find this page" / 404 UtiliHub
 - **root_cause**: `src/routes/index.tsx` y `es.index.tsx` contenían literal `$(cat /tmp/…)` (stub de shell)
 - **check**: ambos archivos empiezan con `import` y exportan `createFileRoute`; **no** contienen `$(cat`
@@ -80,7 +80,7 @@ Formato por entrada:
 
 ## E008 — Dedicated tool UI files contienen literal PLACEHOLDER
 - **status**: fixed
-- **last_seen**: 2026-10-23 (ElectricalPowerCalculatorTool.tsx exporta componente real con useState/useMemo, no PLACEHOLDER; search PLACEHOLDER en src: 0)
+- **last_seen**: 2026-10-23 (search PLACEHOLDER en src: 0; no stubs en playgrounds)
 - **fixed_at**: 2026-10-22 (SHAs 9675c9de y 3dedd6a3 implementan componentes reales con inputs/resultados)
 - **symptom**: página de tool crashea o muestra error de módulo al intentar cargar la UI dedicada
 - **root_cause**: archivos de UI dedicados creados como stubs PLACEHOLDER en vez de componentes React exportados
@@ -100,7 +100,7 @@ Formato por entrada:
 
 ## E010 — Build ERROR por NBodyGravitySim no exportado
 - **status**: recurring (transients PLACEHOLDER en polish commits)
-- **last_seen**: 2026-10-23 (deploy READY on ce538134: export function NBodyGravitySim present, starts with "use client", no PLACEHOLDER; full sim body)
+- **last_seen**: 2026-10-23 (on 3246a216: export function NBodyGravitySim present, starts with "use client", full sim body, no PLACEHOLDER; deploy READY)
 - **fixed_at**: 2026-10-23 (SHA 50e3d456 restores named export + full sim; prior also on dafbf66)
 - **symptom**: deploy Vercel ERROR; build falla en rollup missing named export
 - **root_cause**: polish commits intermedios escribieron literal PLACEHOLDER en NBodyGravitySim.tsx en vez de componente exportado
@@ -110,7 +110,7 @@ Formato por entrada:
 
 ## E011 — Build ERROR / blank page por AuroraParticlePlayground stub
 - **status**: fixed (vigilar regresión — polish commits pueden re-stubear)
-- **last_seen**: 2026-10-23 (HEAD tenía stub `export function AuroraParticlePlayground() { return null; }` + comentario PLACEHOLDER; route llama con locale)
+- **last_seen**: 2026-10-23 (on 3246a216: route imports AuroraParticlePlayground with locale; component file present and exported; deploy READY)
 - **fixed_at**: 2026-10-23 (SHA 689750b3 restaura componente completo con canvas, emitters, trails, controls desde d3bc033)
 - **symptom**: deploy Vercel ERROR o página blank (componente retorna null); rollup missing export si no exporta
 - **root_cause**: polish commit (18a32f28) reemplazó el componente real por stub que retorna null
