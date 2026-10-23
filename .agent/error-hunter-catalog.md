@@ -16,7 +16,7 @@ Formato por entrada:
 
 ## E001 — Registry PLACEHOLDER / tool page crash
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (code smoke: no PLACEHOLDER, exports GENERAL_TOOL_UI / pickComponent presentes, kind routing prioritario)
+- **last_seen**: 2026-10-23 (code smoke: registry.tsx exports GENERAL_TOOL_UI / pickComponent, kind-first routing, no PLACEHOLDER)
 - **symptom**: "We could not load this page" · `Cannot read properties of undefined (reading 'kind')` en GeneralTool bundle
 - **root_cause**: `src/components/general/registry.tsx` reemplazado por PLACEHOLDER o sin `GENERAL_TOOL_UI` / `buildLazyRegistry` / `pickComponent`
 - **check**: leer registry completo; tamaño razonable; exports presentes; abrir 1–2 tools del catálogo
@@ -25,7 +25,7 @@ Formato por entrada:
 
 ## E002 — Image/PDF tools muestran calculadora numérica
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (kind-first routing en pickComponent; MediaTool.tsx implementa upload/process para image/pdf)
+- **last_seen**: 2026-10-23 (kind-first en pickComponent presente)
 - **symptom**: PNG a JPG / Comprimir imagen piden "Primer valor / Segundo valor / Calcular" en vez de subir archivo
 - **root_cause**: routing por kind incorrecto; tools `image`/`pdf` no van a MediaTool/DocumentTool
 - **check**: kind de slugs image/pdf en catalog; pickComponent / DeferredToolUi prioriza kind Media/Document
@@ -52,7 +52,7 @@ Formato por entrada:
 
 ## E005 — Home 404 por routes corruptas
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (index.tsx y es.index.tsx empiezan con import, createFileRoute, sin $(cat); imports DeferredHomeReviews/HomeCatalogSlot OK)
+- **last_seen**: 2026-10-23 (index.tsx y es.index.tsx empiezan con import, createFileRoute, sin $(cat); imports DeferredHomeReviews/HomeCatalogSlot OK)
 - **symptom**: `/` o `/es` → "We could not find this page" / 404 UtiliHub
 - **root_cause**: `src/routes/index.tsx` y `es.index.tsx` contenían literal `$(cat /tmp/…)` (stub de shell)
 - **check**: ambos archivos empiezan con `import` y exportan `createFileRoute`; **no** contienen `$(cat`
@@ -61,7 +61,7 @@ Formato por entrada:
 
 ## E006 — Build ERROR por import fantasma en home
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-22 (imports DeferredHomeReviews, HomeCatalogSlot resuelven)
+- **last_seen**: 2026-10-23 (imports DeferredHomeReviews, HomeCatalogSlot resuelven)
 - **symptom**: deploy Vercel ERROR; log: cannot resolve `@/components/DeferredReviews`
 - **root_cause**: import inventado al restaurar home; el componente real es `DeferredHomeReviews`
 - **check**: imports de index/es.index resuelven a archivos existentes bajo `src/components`
@@ -80,7 +80,7 @@ Formato por entrada:
 
 ## E008 — Dedicated tool UI files contienen literal PLACEHOLDER
 - **status**: fixed
-- **last_seen**: 2026-10-22 (ElectricalPowerCalculatorTool.tsx y FlightTimeCalculatorTool.tsx eran el string "PLACEHOLDER"; crash al cargar /herramientas/calculadora-potencia-electrica y calculadora-tiempo-vuelo)
+- **last_seen**: 2026-10-23 (ElectricalPowerCalculatorTool.tsx exporta componente real con useState/useMemo, no PLACEHOLDER)
 - **fixed_at**: 2026-10-22 (SHAs 9675c9de y 3dedd6a3 implementan componentes reales con inputs/resultados)
 - **symptom**: página de tool crashea o muestra error de módulo al intentar cargar la UI dedicada
 - **root_cause**: archivos de UI dedicados creados como stubs PLACEHOLDER en vez de componentes React exportados
@@ -90,7 +90,7 @@ Formato por entrada:
 
 ## E009 — Build ERROR por slug duplicado calculadora-interes-compuesto
 - **status**: fixed
-- **last_seen**: 2026-10-22 (deploy ERROR en ac5559e4: Catalog validator error "slug duplicado en makeTool/wrappers: calculadora-interes-compuesto" en compound-interest-calculator-tool.ts y compound-interest-tool.ts)
+- **last_seen**: 2026-10-23 (compound-interest-tool.ts exporta array vacío; no importado en index.ts)
 - **fixed_at**: 2026-10-22 (SHA eedbb68e3fae43a9c416c77a3a36040a978d9a39 vacía el export de compound-interest-tool.ts, no importado en index.ts)
 - **symptom**: deploy Vercel ERROR; build falla en validate-catalog con slug duplicado
 - **root_cause**: dos makeTool con el mismo slug; el de compound-interest-tool.ts no se importaba en src/lib/general/index.ts
