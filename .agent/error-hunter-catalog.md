@@ -118,4 +118,14 @@ Formato por entrada:
 - **fix_hint**: restore full component from good history SHA; never leave stub/PLACEHOLDER in imported playground files
 - **files**: `src/components/playgrounds/AuroraParticlePlayground.tsx`, `src/routes/aurora-particle-playground.tsx`, `src/routes/es.aurora-particle-playground.tsx`
 
+## E012 — Blank page / return null stub en NeonLayerComposer
+- **status**: fixed
+- **last_seen**: 2026-10-23 (HEAD had stub return null after feat 4dc160a and incomplete fix 7ff47b46; deploy ERROR on prior for missing export)
+- **fixed_at**: 2026-10-23 (SHA 2cca9f6c restores full component from c979242: multi-layer canvas, symmetry, particles, density, randomize, PNG bake; locale prop)
+- **symptom**: página /neon-layer-composer blank (componente retorna null); build ERROR si no exporta named
+- **root_cause**: feat/polish commits escribieron stub "FULL EDITED CONTENT..." + `export function NeonLayerComposer() { return null; }` en vez de componente real
+- **check**: file exports `function NeonLayerComposer({ locale })`; body real (canvas, useEffect, no return null); routes importan con locale; no PLACEHOLDER
+- **fix_hint**: restore full from good history SHA (e.g. c979242); never leave return null / PLACEHOLDER in playground imported by routes
+- **files**: `src/components/playgrounds/NeonLayerComposer.tsx`, `src/routes/neon-layer-composer.tsx`, `src/routes/es.neon-layer-composer.tsx`
+
 <!-- end:catalog -->
