@@ -89,6 +89,8 @@ import { CONE_VOLUME_CALCULATOR_TOOLS } from "./cone-volume-calculator-tool";
 import { HOURS_BETWEEN_DATES_CALCULATOR_TOOLS } from "./hours-between-dates-calculator-tool";
 import { WORDS_PER_MINUTE_CALCULATOR_TOOLS } from "./words-per-minute-calculator-tool";
 import { SPHERE_SURFACE_AREA_CALCULATOR_TOOLS } from "./sphere-surface-area-calculator-tool";
+import { SQUARE_PERIMETER_CALCULATOR_TOOLS } from "./square-perimeter-calculator-tool";
+import { MILES_TO_KM_CONVERTER_TOOLS } from "./miles-to-km-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -182,4 +184,6 @@ export const GENERAL_TOOLS = [
   ...HOURS_BETWEEN_DATES_CALCULATOR_TOOLS,
   ...WORDS_PER_MINUTE_CALCULATOR_TOOLS,
   ...SPHERE_SURFACE_AREA_CALCULATOR_TOOLS,
+  ...SQUARE_PERIMETER_CALCULATOR_TOOLS,
+  ...MILES_TO_KM_CONVERTER_TOOLS,
 ];
