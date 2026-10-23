@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (HEAD d3bc033 / then docs 05fa207)
-- mode: known smoke (brief on E001-E010 green on prior READY) + discovery (Vercel ERROR deploys on recent SHAs for AuroraParticlePlayground missing export due to PLACEHOLDER literal)
-- deploy: ERROR on ad172c33 (and prior a5cd989/cf8c827); fixed by restoring real component in d3bc033
-- known_smoke: prior known green; new recurring-style PLACEHOLDER in playgrounds
-- new_findings: E011 — AuroraParticlePlayground.tsx was PLACEHOLDER_FULL_CONTENT_FROM_LOCAL causing rollup missing export; restored full "use client" component from good history
-- fixes: 1 (restore AuroraParticlePlayground.tsx SHA d3bc033)
+- date: 2026-10-23 (HEAD 1754bff7 / deploy READY dpl_CMAZ8AFSbTJBBhTsFmXvKDpQTCt9)
+- mode: known smoke (brief rotation on fixed E001-E011 + games/home) + discovery (runtime logs preview last 30m empty of errors; code search PLACEHOLDER/$(cat/"Tool not available" = 0; games registry solid with fallback; home index clean)
+- deploy: READY on 1754bff7 (prior ERROR for Aurora fixed earlier)
+- known_smoke: all E001-E011 green (no regressions; playgrounds real components, registry no PLACEHOLDER, routes start with import)
+- new_findings: none
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E010 NBody + new E011 Aurora playgrounds PLACEHOLDER pattern
+- last_known_focus: E001-E011 brief + games registry + home routes
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
