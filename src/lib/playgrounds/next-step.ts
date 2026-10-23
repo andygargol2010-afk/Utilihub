@@ -246,6 +246,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     emoji: "🌈",
   },
   {
+    id: "neon-layer-composer",
+    nameEn: "Neon Layer Composer",
+    nameEs: "Compositor de Capas Neón",
+    blurbEn: "Multi-layer neon drawing with symmetry modes and stroke-attached particle emitters.",
+    blurbEs: "Dibujo neón multicapa con modos de simetría y emisores de partículas en el trazo.",
+    pathEn: "/neon-layer-composer",
+    pathEs: "/es/neon-layer-composer",
+    emoji: "✨",
+  },
+  {
     id: "river-light",
     nameEn: "River of Light Journey",
     nameEs: "Río de Luz · Viaje",

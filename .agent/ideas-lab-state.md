@@ -67,11 +67,11 @@ path_en: /neon-layer-composer
 path_es: /es/neon-layer-composer
 domain: studio-composition
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: both
 next_step_required: yes
-notes: IDEATE CORE roll U=0.5879 → CORE. Weighted sample r=29.16/38 selected studio-composition (weight was 3). last_closed quality-lift no match, no re-roll. New weights: selected studio-composition→1; others CORE +1. Distinct from prism-trail-composer (prism rainbow trails) by multi-layer neon with symmetry + emitter particles along strokes. Elevated visual payoff for composition. After FIX-BUILD restored Aurora export (partial implementation; full multi-mode available in history, build READY).
+notes: EXECUTE 1/6 — shipped NeonLayerComposer component + EN/ES routes + next-step registration. Freehand multi-layer neon, mirror/kaleido symmetry, bloom, stroke-attached particles with gravity/wind, palettes, title overlay in PNG, URL deep-link. CWV-safe (particle cap 280, lazy route). Distinct from prism-trail-composer. Adsterra kept. Deploy check prior: public alias utilihub-ten.vercel.app returned DEPLOYMENT_NOT_FOUND (possible alias drift; previous runs reported READY).
 adsense-prep_runs: 3
 ```
 
