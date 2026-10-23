@@ -117,6 +117,12 @@ const CompoundInterestCalculatorToolUi = lazy(() =>
 const DailyCaloriesCalculatorToolUi = lazy(() =>
   import("./DailyCaloriesCalculatorTool").then((m) => ({ default: m.DailyCaloriesCalculatorTool })),
 );
+const StandardDeviationCalculatorToolUi = lazy(() =>
+  import("./StandardDeviationCalculatorTool").then((m) => ({ default: m.StandardDeviationCalculatorTool })),
+);
+const ConeVolumeCalculatorToolUi = lazy(() =>
+  import("./ConeVolumeCalculatorTool").then((m) => ({ default: m.ConeVolumeCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -139,6 +145,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "contador-lineas") return LineCounterToolUi;
   if (slug === "calculadora-interes-compuesto") return CompoundInterestCalculatorToolUi;
   if (slug === "calculadora-calorias-diarias") return DailyCaloriesCalculatorToolUi;
+  if (slug === "calculadora-desviacion-estandar") return StandardDeviationCalculatorToolUi;
+  if (slug === "calculadora-volumen-cono") return ConeVolumeCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
