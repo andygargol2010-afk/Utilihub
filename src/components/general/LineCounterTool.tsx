@@ -56,7 +56,7 @@ export function LineCounterTool({ locale = "en" }: { tool?: GeneralTool; locale?
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? ""Hello\\nWorld" → 2 líneas" : ""Hello\\nWorld" → 2 lines"}</p>
+        <p>{es ? "Hello + newline + World → 2 líneas" : "Hello + newline + World → 2 lines"}</p>
         <p>{es ? "Texto vacío → 1 línea" : "Empty text → 1 line"}</p>
       </div>
 
