@@ -67,11 +67,11 @@ path_en: /n-body-gravity
 path_es: /es/n-body-gravity
 domain: simulators
 runs_total: 7
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: both
 next_step_required: no
-notes: U=0.596 >0.50 → CORE. Weighted sample → simulators (prior weight 7 → 1). Other CORE +1. No re-roll (last_closed was GROWTH share-hooks). IDEATE complete. EXECUTE1: core canvas component + EN/ES routes shipped (add bodies, mutual gravity, soft collisions, trails, zoom/pan, time scale, presets, PNG + URL share). CWV-safe body cap 20. Next: polish interactions / camera / presets depth.
+notes: U=0.596 >0.50 → CORE. Weighted sample → simulators (prior weight 7 → 1). Other CORE +1. No re-roll (last_closed was GROWTH share-hooks). IDEATE complete. EXECUTE1: core canvas + EN/ES routes. EXECUTE2: polish interactions (velocity arrow preview on drag-to-place, right-click remove nearest), camera reset button, deeper presets (solar 6 bodies, chaotic with central mass +10, new figure-8 seed), body glow, longer trails, help text. CWV body cap 20. Next: more visual polish / mobile feel / share UX depth or close if solid.
 adsense-prep_runs: 3
 ```
 
