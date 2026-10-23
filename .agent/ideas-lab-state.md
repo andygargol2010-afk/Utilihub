@@ -67,11 +67,11 @@ path_en: /neon-layer-composer
 path_es: /es/neon-layer-composer
 domain: studio-composition
 runs_total: 6
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 1/6 — shipped NeonLayerComposer component + EN/ES routes + next-step registration. Freehand multi-layer neon, mirror/kaleido symmetry, bloom, stroke-attached particles with gravity/wind, palettes, title overlay in PNG, URL deep-link. CWV-safe (particle cap 280, lazy route). Distinct from prism-trail-composer. Adsterra kept. Deploy check prior: public alias utilihub-ten.vercel.app returned DEPLOYMENT_NOT_FOUND (possible alias drift; previous runs reported READY).
+notes: EXECUTE 2/6 — radial symmetry, particle density, per-layer opacity/fade list, randomize, branded PNG (utilihub.com + settings). Previous: freehand multi-layer neon, mirror/kaleido, bloom, stroke particles gravity/wind, palettes, title overlay, URL deep-link. CWV-safe (cap 280). Distinct from prism-trail. Adsterra kept. Next-step journey registered.
 adsense-prep_runs: 3
 ```
 
