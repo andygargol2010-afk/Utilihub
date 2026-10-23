@@ -14,6 +14,7 @@ interface Particle {
   hue: number;
   life: number;
   mode: "ribbon" | "orb" | "vortex";
+  trail: { x: number; y: number }[];
 }
 
 interface Emitter {
@@ -39,7 +40,7 @@ const labels = {
     sharePng: "Download PNG",
     shareLink: "Copy link",
     copied: "Copied!",
-    help: "Click/tap to place emitters (attractors). Drag to move. Double-click removes nearest. Particles form flowing ribbons, blooming orbs or swirling vortices.",
+    help: "Click/tap to place emitters (attractors). Drag to move. Double-click removes nearest. Particles form flowing ribbons with persistent fading trails, blooming orbs or swirling vortices.",
     emitters: "Emitters",
   },
   es: {
@@ -57,7 +58,7 @@ const labels = {
     sharePng: "Descargar PNG",
     shareLink: "Copiar enlace",
     copied: "¡Copiado!",
-    help: "Clic/toque para colocar emisores (atractores). Arrastrá para mover. Doble clic elimina el más cercano. Partículas forman cintas fluidas, orbes blooming o vórtices.",
+    help: "Clic/toque para colocar emisores (atractores). Arrastrá para mover. Doble clic elimina el más cercano. Partículas forman cintas fluidas con estelas persistentes que se desvanecen, orbes blooming o vórtices.",
     emitters: "Emisores",
   },
 };
@@ -69,6 +70,8 @@ const palettes = {
   cosmic: { base: 220, range: 100 },
   ocean: { base: 190, range: 50 },
 };
+
+const TRAIL_LEN = 10;
 
 export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
   const t = labels[locale];
@@ -145,15 +148,18 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     const ps: Particle[] = [];
     const pal = palettes[paramsRef.current.palette];
     for (let i = 0; i < Math.min(n, 300); i++) {
+      const x = Math.random() * w;
+      const y = Math.random() * h;
       ps.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
+        x,
+        y,
         vx: (Math.random() - 0.5) * 0.8,
         vy: (Math.random() - 0.5) * 0.8,
         size: 1.5 + Math.random() * 3,
         hue: pal.base + Math.random() * pal.range,
         life: 1,
         mode: paramsRef.current.mode,
+        trail: [{ x, y }],
       });
     }
     particlesRef.current = ps;
@@ -263,7 +269,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
       const ems = emittersRef.current;
       const ps = particlesRef.current;
 
-      ctx.fillStyle = "rgba(4, 8, 20, 0.22)";
+      ctx.fillStyle = "rgba(4, 8, 20, 0.18)";
       ctx.fillRect(0, 0, w, h);
 
       // Emitters glow
@@ -310,11 +316,33 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
         if (p.y < 0) p.y = h;
         if (p.y > h) p.y = 0;
 
+        // Update trail
+        p.trail.push({ x: p.x, y: p.y });
+        if (p.trail.length > TRAIL_LEN) p.trail.shift();
+
         const speedMag = Math.hypot(p.vx, p.vy);
         const hue = (p.hue + speedMag * 4) % 360;
         const alpha = 0.6 + bl * 0.4;
         const blur = 4 + bl * 12 + speedMag * 1.5;
 
+        // Draw fading trail (stronger visual for ribbon)
+        if (md === "ribbon" && p.trail.length > 1) {
+          ctx.shadowBlur = 0;
+          ctx.lineWidth = Math.max(1, p.size * 0.6);
+          ctx.lineCap = "round";
+          for (let i = 1; i < p.trail.length; i++) {
+            const tAlpha = (i / p.trail.length) * alpha * 0.7;
+            ctx.globalAlpha = tAlpha;
+            ctx.strokeStyle = `hsl(${hue}, 85%, 65%)`;
+            ctx.beginPath();
+            ctx.moveTo(p.trail[i - 1].x, p.trail[i - 1].y);
+            ctx.lineTo(p.trail[i].x, p.trail[i].y);
+            ctx.stroke();
+          }
+          ctx.globalAlpha = 1;
+        }
+
+        // Particle head with bloom
         ctx.shadowColor = `hsl(${hue}, 85%, 60%)`;
         ctx.shadowBlur = blur;
         ctx.globalAlpha = alpha;
@@ -412,7 +440,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     octx.font = "bold 22px system-ui, sans-serif";
     octx.fillText(locale === "es" ? "Playground de Partículas Aurora" : "Aurora Particle Playground", 16, off.height - 42);
     octx.font = "14px system-ui, sans-serif";
-    octx.fillText(`utilihub.com · ${mode} · ${palette} · ${density} particles`, 16, off.height - 18);
+    octx.fillText(`utilihub.com · ${mode} · ${palette} · trails · ${density} particles`, 16, off.height - 18);
     const a = document.createElement("a");
     a.href = off.toDataURL("image/png");
     a.download = `aurora-particle-${mode}-${palette}.png`;
