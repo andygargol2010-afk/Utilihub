@@ -37,10 +37,13 @@ const labels = {
     resume: "Resume",
     randomize: "Randomize",
     clear: "Clear emitters",
+    polarity: "Polarity",
+    attract: "Attract",
+    repel: "Repel",
     sharePng: "Download PNG",
     shareLink: "Copy link",
     copied: "Copied!",
-    help: "Click/tap to place emitters (attractors). Drag to move. Double-click removes nearest. Particles form flowing ribbons with persistent fading trails, blooming orbs or swirling vortices.",
+    help: "Click/tap to place emitters. Drag to move. Double-click removes nearest. Toggle polarity (attract/repel). Particles form flowing ribbons with persistent fading trails, blooming orbs or swirling vortices. Additive bloom for multi-layer delight.",
     emitters: "Emitters",
   },
   es: {
@@ -55,10 +58,13 @@ const labels = {
     resume: "Reanudar",
     randomize: "Aleatorio",
     clear: "Limpiar emisores",
+    polarity: "Polaridad",
+    attract: "Atraer",
+    repel: "Repeler",
     sharePng: "Descargar PNG",
     shareLink: "Copiar enlace",
     copied: "¡Copiado!",
-    help: "Clic/toque para colocar emisores (atractores). Arrastrá para mover. Doble clic elimina el más cercano. Partículas forman cintas fluidas con estelas persistentes que se desvanecen, orbes blooming o vórtices.",
+    help: "Clic/toque para colocar emisores. Arrastrá para mover. Doble clic elimina el más cercano. Alterná polaridad (atraer/repeler). Partículas forman cintas fluidas con estelas persistentes que se desvanecen, orbes blooming o vórtices. Bloom aditivo para deleite multicapa.",
     emitters: "Emisores",
   },
 };
@@ -92,6 +98,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     mode: "ribbon" as "ribbon" | "orb" | "vortex",
     palette: "aurora" as keyof typeof palettes,
     paused: false,
+    polarity: "attract" as "attract" | "repel",
   });
   const dragId = useRef<number | null>(null);
   const lastTap = useRef({ time: 0, x: 0, y: 0 });
@@ -106,6 +113,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
   const [paused, setPaused] = useState(false);
   const [copied, setCopied] = useState(false);
   const [emitterCount, setEmitterCount] = useState(0);
+  const [polarity, setPolarity] = useState<"attract" | "repel">("attract");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -116,6 +124,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     const w = parseFloat(params.get("w") || "0.2");
     const m = (params.get("m") as "ribbon" | "orb" | "vortex") || "ribbon";
     const p = (params.get("p") as keyof typeof palettes) || "aurora";
+    const pol = params.get("pol") === "r" ? "repel" : "attract";
     if (!isNaN(d) && d >= 40 && d <= 300) setDensity(d);
     if (!isNaN(s) && s >= 0.2 && s <= 3) setSpeed(s);
     if (!isNaN(b) && b >= 0 && b <= 1) setBloom(b);
@@ -123,6 +132,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     if (!isNaN(w) && w >= -1 && w <= 1) setWind(w);
     if (["ribbon", "orb", "vortex"].includes(m)) setMode(m);
     if (p in palettes) setPalette(p);
+    setPolarity(pol);
     const em = params.get("e");
     if (em) {
       const parts = em.split(";").filter(Boolean);
@@ -141,8 +151,8 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
   }, []);
 
   useEffect(() => {
-    paramsRef.current = { density, speed, bloom, gravity, wind, mode, palette, paused };
-  }, [density, speed, bloom, gravity, wind, mode, palette, paused]);
+    paramsRef.current = { density, speed, bloom, gravity, wind, mode, palette, paused, polarity };
+  }, [density, speed, bloom, gravity, wind, mode, palette, paused, polarity]);
 
   const initParticles = useCallback((n: number, w: number, h: number) => {
     const ps: Particle[] = [];
@@ -260,7 +270,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
       const rect = canvas.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
-      const { speed: spd, bloom: bl, gravity: g, wind: wn, mode: md, palette: palKey, paused: pau } = paramsRef.current;
+      const { speed: spd, bloom: bl, gravity: g, wind: wn, mode: md, palette: palKey, paused: pau, polarity: pol } = paramsRef.current;
       if (pau) {
         raf = requestAnimationFrame(loop);
         return;
@@ -275,7 +285,8 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
       // Emitters glow
       for (const em of ems) {
         const grad = ctx.createRadialGradient(em.x, em.y, 0, em.x, em.y, 42);
-        grad.addColorStop(0, `hsla(${pal.base + 20}, 90%, 70%, 0.9)`);
+        const glowHue = pol === "repel" ? 0 : pal.base + 20;
+        grad.addColorStop(0, `hsla(${glowHue}, 90%, 70%, 0.9)`);
         grad.addColorStop(0.4, `hsla(${pal.base}, 80%, 50%, 0.4)`);
         grad.addColorStop(1, "transparent");
         ctx.fillStyle = grad;
@@ -292,7 +303,8 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
           const dy = em.y - p.y;
           const dist2 = dx * dx + dy * dy;
           const dist = Math.sqrt(dist2) || 1;
-          const force = g * em.strength / (dist2 * 0.008 + 28);
+          const sign = pol === "repel" ? -1 : 1;
+          const force = sign * g * em.strength / (dist2 * 0.008 + 28);
           ax += (dx / dist) * force;
           ay += (dy / dist) * force;
         }
@@ -398,6 +410,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     setBloom(0.3 + Math.random() * 0.6);
     setGravity(0.1 + Math.random() * 1.2);
     setWind((Math.random() - 0.5) * 1.2);
+    setPolarity(Math.random() > 0.5 ? "attract" : "repel");
   };
 
   const shareLink = async () => {
@@ -410,6 +423,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     params.set("w", wind.toFixed(2));
     params.set("m", mode);
     params.set("p", palette);
+    params.set("pol", polarity === "repel" ? "r" : "a");
     if (emittersRef.current.length) {
       const eStr = emittersRef.current.map((e) => `${Math.round(e.x)},${Math.round(e.y)}`).join(";");
       params.set("e", eStr);
@@ -440,7 +454,7 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
     octx.font = "bold 22px system-ui, sans-serif";
     octx.fillText(locale === "es" ? "Playground de Partículas Aurora" : "Aurora Particle Playground", 16, off.height - 42);
     octx.font = "14px system-ui, sans-serif";
-    octx.fillText(`utilihub.com · ${mode} · ${palette} · trails · ${density} particles`, 16, off.height - 18);
+    octx.fillText(`utilihub.com · ${mode} · ${palette} · ${polarity} · trails · ${density} particles`, 16, off.height - 18);
     const a = document.createElement("a");
     a.href = off.toDataURL("image/png");
     a.download = `aurora-particle-${mode}-${palette}.png`;
@@ -497,9 +511,12 @@ export function AuroraParticlePlayground({ locale }: { locale: Locale }) {
             ))}
           </select>
         </label>
-        <div className="flex items-end">
+        <div className="flex items-end gap-2">
           <button type="button" onClick={() => setPaused((p) => !p)} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">
             {paused ? t.resume : t.pause}
+          </button>
+          <button type="button" onClick={() => setPolarity((p) => p === "attract" ? "repel" : "attract")} className={`rounded-lg border px-3 py-1.5 text-xs font-semibold ${polarity === "repel" ? "border-red-500 bg-red-950/40 text-red-200" : "border-emerald-500 bg-emerald-950/40 text-emerald-200"}`}>
+            {polarity === "repel" ? t.repel : t.attract}
           </button>
         </div>
         <div className="flex flex-wrap gap-2 sm:col-span-2 lg:col-span-4">
