@@ -1,4 +1,4 @@
-use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
