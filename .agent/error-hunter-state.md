@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-22 (night, post HEAD 6d657431)
-- mode: known smoke (E001–E008 brief: registry kind-first, homes no stubs, dedicated tools implemented, no PLACEHOLDER/$(cat)) + discovery (production homes/games/3d-modeler load; sample LineCounterTool + search for Tool not available / PLACEHOLDER)
-- deploy: latest READY on SHA 6d657431e89b9de791490fa09991901677d1af6f (no ERROR on current; prior ERROR deploys on earlier SHAs not present on HEAD)
-- known_smoke: all E001–E008 code-ok (registry exports + pickComponent kind-first present; index/es.index start with imports, DeferredHomeReviews/HomeCatalogSlot resolve; dedicated *CalculatorTool and LineCounterTool export real components; modeler path correct)
-- new_findings: ninguno. Production www.utilihub.net homes, /games, /es/juegos, /tools/3d-modeler cargan sin 404; no patrones PLACEHOLDER, $(cat, "Tool not available" en búsqueda de código.
-- fixes: 0
+- date: 2026-10-22 (night, post HEAD eedbb68e)
+- mode: known smoke (E001–E008 brief: registry kind-first, homes no stubs, dedicated tools implemented, no PLACEHOLDER/$(cat)) + discovery (Vercel ERROR logs on ac5559e4 → duplicate slug)
+- deploy: latest was ERROR on ac5559e46708e6b9b6e11615419c203ff34bd663 (catalog validator duplicate slug); fixed in eedbb68e3fae43a9c416c77a3a36040a978d9a39
+- known_smoke: all E001–E008 code-ok (registry exports + pickComponent kind-first present; index/es.index start with imports, DeferredHomeReviews/HomeCatalogSlot resolve; no PLACEHOLDER in src)
+- new_findings: E009 duplicate slug calculadora-interes-compuesto (compound-interest-tool.ts unused makeTool) → fixed by emptying export
+- fixes: 1 (src/lib/general/compound-interest-tool.ts)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E001 registry + E005 homes + E008 dedicated + games/3d sample
+- last_known_focus: E001 registry + E005 homes + E009 catalog duplicate
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
