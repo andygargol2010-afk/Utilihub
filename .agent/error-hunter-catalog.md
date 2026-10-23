@@ -109,9 +109,9 @@ Formato por entrada:
 - **files**: `src/components/playgrounds/NBodyGravitySim.tsx`, `src/routes/n-body-gravity.tsx`, `src/routes/es.n-body-gravity.tsx`
 
 ## E011 — Build ERROR / blank page por AuroraParticlePlayground stub
-- **status**: fixed (vigilar regresión — polish commits pueden re-stubear)
-- **last_seen**: 2026-10-23 (on 3246a216: route imports AuroraParticlePlayground with locale; component file present and exported; deploy READY)
-- **fixed_at**: 2026-10-23 (SHA 689750b3 restaura componente completo con canvas, emitters, trails, controls desde d3bc033)
+- **status**: recurring (regresión detectada: stub incompleto con comentario "brevity" en HEAD pre-fix; restaurado desde 442a4b1)
+- **last_seen**: 2026-10-23 (discovery: stub incompleto con comentario brevity en HEAD; restaurado full en 457a9ebf)
+- **fixed_at**: 2026-10-23 (SHA 457a9ebf restaura implementación completa multi-mode + polarity + trails + emitters + share desde 442a4b1; prior 689750b3)
 - **symptom**: deploy Vercel ERROR o página blank (componente retorna null); rollup missing export si no exporta
 - **root_cause**: polish commit (18a32f28) reemplazó el componente real por stub que retorna null
 - **check**: file starts with "use client"; `export function AuroraParticlePlayground({ locale }`; body real (canvas loop, no return null / PLACEHOLDER); routes pasan locale
