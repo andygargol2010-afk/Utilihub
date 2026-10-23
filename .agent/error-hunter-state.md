@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (post HEAD 50e3d456)
-- mode: known smoke (E010 NBody export + "use client" present after restore; E005 homes imports OK) + discovery (search PLACEHOLDER in src: 0; sampled index.tsx starts with import/createFileRoute)
-- deploy: ERROR on b13d8e5e (dpl_2yrb3bc4) and 4632ca7b due to PLACEHOLDER_FULL_CONTENT missing export; fix committed 50e3d456 (full component restored); awaiting new deploy READY
-- known_smoke: E010 code-ok on HEAD (export function NBodyGravitySim present, starts with "use client"; no PLACEHOLDER); E005 homes OK
-- new_findings: recurring transient PLACEHOLDER on N-Body polish intermediate commits (4632ca7b / b13d8e5e); resolved by restoring full component from prior good SHA. Pattern continues — ideas-lab polish must not overwrite with stubs.
-- fixes: 1 (restore NBodyGravitySim.tsx full content, SHA 50e3d456)
+- date: 2026-10-23 (HEAD f9d6105b, deploy READY dpl_5fzZ48eE on 50e3d456)
+- mode: known smoke (E010 NBody export + "use client" + no PLACEHOLDER confirmed; E005 es.index.tsx starts with import/createFileRoute, DeferredHomeReviews/HomeCatalogSlot OK; E001-E009 brief code checks green) + discovery (search PLACEHOLDER in src: 0; PLACEHOLDER_FULL_CONTENT: 0; sampled es.juegos.tsx, n-body-gravity.tsx, es.index.tsx OK; no "Tool not available" or $(cat)
+- deploy: READY on SHA 50e3d456 (dpl_5fzZ48eEZpcR83jRFNEwcW1tg3Uv); prior ERROR on intermediate NBody polish resolved
+- known_smoke: all fixed/recurring green on current HEAD; E010 stable post-restore
+- new_findings: none (sampled routes outside catalog set: games layout, N-Body route, home ES; no broken imports or stubs)
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E010 NBody + E005 homes
+- last_known_focus: E010 NBody + E005 homes + brief E001-E009
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
