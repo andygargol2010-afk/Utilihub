@@ -266,6 +266,24 @@ export function BoardFootCalculatorTool({ locale = "en" }: { tool: GeneralTool; 
     );
   }
 
+  function changeUnit(next: Unit) {
+    if (next === unit) return;
+    setRows((current) =>
+      current.map((row) => {
+        const patch: Partial<Row> = {};
+        const t = parseNum(row.thickness);
+        const w = parseNum(row.width);
+        const len = parseNum(row.length);
+        if (t != null && !Number.isNaN(t)) patch.thickness = String(Number((next === "mm" ? t * 25.4 : t / 25.4).toFixed(2)));
+        if (w != null && !Number.isNaN(w)) patch.width = String(Number((next === "mm" ? w * 25.4 : w / 25.4).toFixed(2)));
+        if (len != null && !Number.isNaN(len)) patch.length = String(Number((next === "mm" ? len / FT_PER_M : len * FT_PER_M).toFixed(2)));
+        return Object.keys(patch).length ? { ...row, ...patch } : row;
+      }),
+    );
+    setUnit(next);
+    setCopied(false);
+  }
+
   function applyPreset(id: string) {
     const preset = PRESET_ROWS[id];
     setUnit(preset.unit);
@@ -332,7 +350,7 @@ export function BoardFootCalculatorTool({ locale = "en" }: { tool: GeneralTool; 
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="grid gap-1 text-sm">
             {copy.units}
-            <select className={inputClass} value={unit} onChange={(e) => { setUnit(e.target.value as Unit); setCopied(false); }}>
+            <select className={inputClass} value={unit} onChange={(e) => changeUnit(e.target.value as Unit)}>
               <option value="in">{copy.inches}</option>
               <option value="mm">{copy.metricUnit}</option>
             </select>
