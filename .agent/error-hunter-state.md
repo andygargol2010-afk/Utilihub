@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (HEAD ce538134 / deploy READY dpl_GoAYEsa19cscaL4QDddVLauTDprY)
-- mode: known smoke (E001 registry kind-first + no PLACEHOLDER + exports OK; E005/E006 index+es.index start with import/createFileRoute, DeferredHomeReviews/HomeCatalogSlot resolve; E010 NBody "use client" + named export + full sim no PLACEHOLDER; E002-E009 brief green) + discovery (no PLACEHOLDER/$(cat/"Tool not available" in searches; sampled PulseCatch.tsx real component, pulse-catch.tsx route OK, homes clean)
-- deploy: READY on SHA ce538134ede803264fc6808adefab04b91135bcb
-- known_smoke: all fixed/recurring green on current branch
-- new_findings: none (sampled outside prior focus: Pulse Catch game + route, homes, registry; no stubs or broken patterns)
-- fixes: 0
+- date: 2026-10-23 (HEAD d3bc033 / then docs 05fa207)
+- mode: known smoke (brief on E001-E010 green on prior READY) + discovery (Vercel ERROR deploys on recent SHAs for AuroraParticlePlayground missing export due to PLACEHOLDER literal)
+- deploy: ERROR on ad172c33 (and prior a5cd989/cf8c827); fixed by restoring real component in d3bc033
+- known_smoke: prior known green; new recurring-style PLACEHOLDER in playgrounds
+- new_findings: E011 — AuroraParticlePlayground.tsx was PLACEHOLDER_FULL_CONTENT_FROM_LOCAL causing rollup missing export; restored full "use client" component from good history
+- fixes: 1 (restore AuroraParticlePlayground.tsx SHA d3bc033)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E001 registry + E005/E006 homes + E010 NBody + brief others
+- last_known_focus: E010 NBody + new E011 Aurora playgrounds PLACEHOLDER pattern
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
