@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-22 (night, post HEAD eedbb68e)
-- mode: known smoke (E001–E008 brief: registry kind-first, homes no stubs, dedicated tools implemented, no PLACEHOLDER/$(cat)) + discovery (Vercel ERROR logs on ac5559e4 → duplicate slug)
-- deploy: latest was ERROR on ac5559e46708e6b9b6e11615419c203ff34bd663 (catalog validator duplicate slug); fixed in eedbb68e3fae43a9c416c77a3a36040a978d9a39
-- known_smoke: all E001–E008 code-ok (registry exports + pickComponent kind-first present; index/es.index start with imports, DeferredHomeReviews/HomeCatalogSlot resolve; no PLACEHOLDER in src)
-- new_findings: E009 duplicate slug calculadora-interes-compuesto (compound-interest-tool.ts unused makeTool) → fixed by emptying export
-- fixes: 1 (src/lib/general/compound-interest-tool.ts)
+- date: 2026-10-23 (early, post HEAD 71817a05 / docs 9d141849)
+- mode: known smoke (E001 registry, E005/E006 homes, E008 ElectricalPowerCalculatorTool, E009 compound-interest-tool empty) + discovery (N-Body Gravity Sim routes+component real, no PLACEHOLDER/$(cat) in src, Vercel deploys READY, runtime logs clean last 30m)
+- deploy: latest READY (dpl_2C19rfz6w6FVHfqDTqFoQWXpb4jX on 33d13101); no ERROR
+- known_smoke: all checked E### code-ok (registry kind-first + exports; homes start with imports no stubs; dedicated tools implement components; compound-interest-tool.ts empty array)
+- new_findings: none (N-Body Gravity Simulator recently added looks solid: real canvas sim, EN/ES routes, no stubs)
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E001 registry + E005 homes + E009 catalog duplicate
+- last_known_focus: E001 registry + E005 homes + E008 dedicated UI + E009 slug
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
