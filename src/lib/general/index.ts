@@ -86,6 +86,8 @@ import { COMPOUND_INTEREST_CALCULATOR_TOOLS } from "./compound-interest-calculat
 import { DAILY_CALORIES_CALCULATOR_TOOLS } from "./daily-calories-calculator-tool";
 import { STANDARD_DEVIATION_CALCULATOR_TOOLS } from "./standard-deviation-calculator-tool";
 import { CONE_VOLUME_CALCULATOR_TOOLS } from "./cone-volume-calculator-tool";
+import { HOURS_BETWEEN_DATES_CALCULATOR_TOOLS } from "./hours-between-dates-calculator-tool";
+import { WORDS_PER_MINUTE_CALCULATOR_TOOLS } from "./words-per-minute-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -176,4 +178,6 @@ export const GENERAL_TOOLS = [
   ...DAILY_CALORIES_CALCULATOR_TOOLS,
   ...STANDARD_DEVIATION_CALCULATOR_TOOLS,
   ...CONE_VOLUME_CALCULATOR_TOOLS,
+  ...HOURS_BETWEEN_DATES_CALCULATOR_TOOLS,
+  ...WORDS_PER_MINUTE_CALCULATOR_TOOLS,
 ];
