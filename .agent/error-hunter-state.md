@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (HEAD 3246a2168c6dcf4dfc4da75b5de2c4846d50d0cd, latest READY deploy dpl_9KFTvGYirHhshDf1qgNvC4rToGWw)
-- mode: known smoke (E001 registry kind-first + exports, E010 NBody full named export + sim body, E011 Aurora route import + component present) + discovery (PLACEHOLDER=0, $(cat=0, return null playgrounds=0; sampled NeonLayerComposer full, home index/es.index clean, routes tree present)
-- deploy: READY on 3246a216; historical ERROR deploys exist but current HEAD builds clean
-- known_smoke: E001-E011 green (no regression)
-- new_findings: none
-- fixes: 0
+- date: 2026-10-23 (HEAD ~2cca9f6c / ceaac6f9 after restore; prior ERROR deploy on 4dc160a for missing NeonLayerComposer export)
+- mode: known smoke (E001-E011 green on prior; E010/E011 stable) + discovery (sampled NeonLayerComposer: found return-null stub after feat/polish; PLACEHOLDER search 0)
+- deploy: prior ERROR fixed by restore; current HEAD should build (monitor post-push)
+- known_smoke: E001-E011 green; E012 newly fixed
+- new_findings: E012 NeonLayerComposer stub (return null) — restored full from c979242
+- fixes: 1 (NeonLayerComposer.tsx restore, commit 2cca9f6c)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E010 NBody + E011 Aurora (stable)
+- last_known_focus: E012 NeonLayerComposer (new, fixed)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
