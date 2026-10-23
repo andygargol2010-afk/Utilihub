@@ -67,11 +67,11 @@ path_en: /neon-layer-composer
 path_es: /es/neon-layer-composer
 domain: studio-composition
 runs_total: 6
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 3/6 — pointer particle force attract/repel with polarity + strength, URL params fo/po, baked in PNG. Previous: radial symmetry, particle density, per-layer opacity/fade list, randomize, branded PNG (utilihub.com + settings). freehand multi-layer neon, mirror/kaleido, bloom, stroke particles gravity/wind, palettes, title overlay, URL deep-link. CWV-safe (cap 280). Distinct from prism-trail. Adsterra kept. Next-step journey registered.
+notes: EXECUTE 4/6 — pointer particle force attract/repel with polarity + strength, URL params fo/po, baked in PNG, damping. Previous: radial symmetry, particle density, per-layer opacity/fade list, randomize, branded PNG (utilihub.com + settings). freehand multi-layer neon, mirror/kaleido, bloom, stroke particles gravity/wind, palettes, title overlay, URL deep-link. CWV-safe (cap 280). Distinct from prism-trail. Adsterra kept. Next-step journey registered.
 adsense-prep_runs: 3
 ```
 
