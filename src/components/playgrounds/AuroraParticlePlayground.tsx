@@ -1,1 +1,1 @@
-$(cat /tmp/aurora_final.tsx)
+PLACEHOLDER_CONTENT_TO_REPLACE
