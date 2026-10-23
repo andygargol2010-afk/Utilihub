@@ -1,6 +1,29 @@
-export type GeneralCategory={slug:string;name:string;title:string;description:string;intro:string};
-export type GeneralTool={slug:string;name:string;title:string;description:string;summary:string;category:string;keywords:string[];about:string[];steps:string[];faq:{q:string;a:string}[];kind:string;config?:Record<string,unknown>};
-export const faq=(q:string,a:string)=>({q,a});
+export type GeneralCategory = {
+  slug: string;
+  name: string;
+  title: string;
+  description: string;
+  intro: string;
+};
+
+export type GeneralTool = {
+  slug: string;
+  name: string;
+  title: string;
+  description: string;
+  summary: string;
+  /** Curated Spanish one-liner for catalog / home (preferred over phrase translation). */
+  summaryEs?: string;
+  category: string;
+  keywords: string[];
+  about: string[];
+  steps: string[];
+  faq: { q: string; a: string }[];
+  kind: string;
+  config?: Record<string, unknown>;
+};
+
+export const faq = (q: string, a: string) => ({ q, a });
 
 function defaultSteps(kind: string): string[] {
   const k = (kind || "").toLowerCase();
@@ -57,13 +80,19 @@ function defaultFaq(kind: string): { q: string; a: string }[] {
   const k = (kind || "").toLowerCase();
   if (k === "image" || k === "media" || k === "pdf" || k === "document") {
     return [
-      faq("Is my file uploaded to a server?", "No for compatible operations. Processing runs in your browser and the file stays on your device."),
+      faq(
+        "Is my file uploaded to a server?",
+        "No for compatible operations. Processing runs in your browser and the file stays on your device.",
+      ),
       faq("Do I need an account?", "No. You can use the tool immediately without signing up."),
     ];
   }
   if (k === "design" || k === "color") {
     return [
-      faq("What color format should I use?", "Most tools expect a 6-digit HEX. Many also show RGB or HSL in the result."),
+      faq(
+        "What color format should I use?",
+        "Most tools expect a 6-digit HEX. Many also show RGB or HSL in the result.",
+      ),
       faq("Do I need an account?", "No. You can use the tool immediately without signing up."),
     ];
   }
@@ -73,18 +102,28 @@ function defaultFaq(kind: string): { q: string; a: string }[] {
   ];
 }
 
-export const makeTool=(slug:string,name:string,category:string,kind:string,summary:string,keywords:string[]=[],config:Record<string,unknown>={})=>{
+export const makeTool = (
+  slug: string,
+  name: string,
+  category: string,
+  kind: string,
+  summary: string,
+  keywords: string[] = [],
+  config: Record<string, unknown> = {},
+) => {
   const title = typeof config.title === "string" ? config.title : `${name} free online | UtiliHub`;
   const description =
     typeof config.description === "string"
       ? config.description
       : `${summary} Free, no signup, and with local processing when possible.`;
+  const summaryEs = typeof config.summaryEs === "string" ? config.summaryEs : undefined;
   return {
     slug,
     name,
     title,
     description,
     summary,
+    summaryEs,
     category,
     keywords,
     about: [summary, "The tool runs directly in the browser for immediate results."],
