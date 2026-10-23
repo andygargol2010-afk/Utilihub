@@ -80,7 +80,7 @@ Formato por entrada:
 
 ## E008 — Dedicated tool UI files contienen literal PLACEHOLDER
 - **status**: fixed
-- **last_seen**: 2026-10-23 (ElectricalPowerCalculatorTool.tsx exporta componente real con useState/useMemo, no PLACEHOLDER)
+- **last_seen**: 2026-10-23 (ElectricalPowerCalculatorTool.tsx exporta componente real con useState/useMemo, no PLACEHOLDER; search PLACEHOLDER en src: 0)
 - **fixed_at**: 2026-10-22 (SHAs 9675c9de y 3dedd6a3 implementan componentes reales con inputs/resultados)
 - **symptom**: página de tool crashea o muestra error de módulo al intentar cargar la UI dedicada
 - **root_cause**: archivos de UI dedicados creados como stubs PLACEHOLDER en vez de componentes React exportados
@@ -99,13 +99,13 @@ Formato por entrada:
 - **files**: `src/lib/general/compound-interest-calculator-tool.ts`, `src/lib/general/compound-interest-tool.ts`, `src/lib/general/index.ts`, `scripts/validate-catalog.mjs`
 
 ## E010 — Build ERROR por NBodyGravitySim no exportado
-- **status**: fixed
-- **last_seen**: 2026-10-23 (deploy ERROR dpl_Eo76hmL7AQ4v9bw2eEGZorzcA2Ty on SHA 0ae48d1b: "NBodyGravitySim" is not exported by NBodyGravitySim.tsx from n-body-gravity.tsx)
-- **fixed_at**: 2026-10-23 (SHAs 5c032278 / ce85f184 tienen `export function NBodyGravitySim`)
+- **status**: fixed (vigilar regresión / transient PLACEHOLDER)
+- **last_seen**: 2026-10-23 (deploy ERROR dpl_fBnFdVNK4nQg57DjQnm6SBUkSmnu on SHA 53d08838: file was literal PLACEHOLDER, missing export; fixed in subsequent SHA d0f94984 which restores export function NBodyGravitySim; HEAD 6460d91b OK)
+- **fixed_at**: 2026-10-23 (SHA d0f94984 restores named export; prior transient on 0ae48d1b also fixed earlier)
 - **symptom**: deploy Vercel ERROR; build falla en rollup missing named export
-- **root_cause**: polish commit intermedio no exportaba la función (o syntax error previo al export)
-- **check**: `export function NBodyGravitySim` en src/components/playgrounds/NBodyGravitySim.tsx; import named en routes n-body-gravity.tsx y es.n-body-gravity.tsx
-- **fix_hint**: asegurar named export; no default-only si la route importa named
+- **root_cause**: polish commit intermedio escribió literal PLACEHOLDER en NBodyGravitySim.tsx en vez de componente exportado
+- **check**: `export function NBodyGravitySim` en src/components/playgrounds/NBodyGravitySim.tsx; import named en routes n-body-gravity.tsx y es.n-body-gravity.tsx; no PLACEHOLDER
+- **fix_hint**: asegurar named export; nunca dejar PLACEHOLDER en archivos importados por routes
 - **files**: `src/components/playgrounds/NBodyGravitySim.tsx`, `src/routes/n-body-gravity.tsx`, `src/routes/es.n-body-gravity.tsx`
 
 <!-- end:catalog -->
