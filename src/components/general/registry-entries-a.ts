@@ -23,4 +23,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-area-superficie-esfera", name: "SphereSurfaceAreaCalculatorTool", path: "./SphereSurfaceAreaCalculatorTool", export: "SphereSurfaceAreaCalculatorTool" },
   { slug: "calculadora-perimetro-cuadrado", name: "SquarePerimeterCalculatorTool", path: "./SquarePerimeterCalculatorTool", export: "SquarePerimeterCalculatorTool" },
   { slug: "conversor-millas-km", name: "MilesToKmConverterTool", path: "./MilesToKmConverterTool", export: "MilesToKmConverterTool" },
+  { slug: "calculadora-aumento-salarial", name: "SalaryRaiseCalculatorTool", path: "./SalaryRaiseCalculatorTool", export: "SalaryRaiseCalculatorTool" },
+  { slug: "calculadora-consumo-gas", name: "GasConsumptionCalculatorTool", path: "./GasConsumptionCalculatorTool", export: "GasConsumptionCalculatorTool" },
 ] as const;

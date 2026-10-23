@@ -91,6 +91,8 @@ import { WORDS_PER_MINUTE_CALCULATOR_TOOLS } from "./words-per-minute-calculator
 import { SPHERE_SURFACE_AREA_CALCULATOR_TOOLS } from "./sphere-surface-area-calculator-tool";
 import { SQUARE_PERIMETER_CALCULATOR_TOOLS } from "./square-perimeter-calculator-tool";
 import { MILES_TO_KM_CONVERTER_TOOLS } from "./miles-to-km-converter-tool";
+import { SALARY_RAISE_CALCULATOR_TOOLS } from "./salary-raise-calculator-tool";
+import { GAS_CONSUMPTION_CALCULATOR_TOOLS } from "./gas-consumption-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -186,4 +188,6 @@ export const GENERAL_TOOLS = [
   ...SPHERE_SURFACE_AREA_CALCULATOR_TOOLS,
   ...SQUARE_PERIMETER_CALCULATOR_TOOLS,
   ...MILES_TO_KM_CONVERTER_TOOLS,
+  ...SALARY_RAISE_CALCULATOR_TOOLS,
+  ...GAS_CONSUMPTION_CALCULATOR_TOOLS,
 ];
