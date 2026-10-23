@@ -31,4 +31,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-caudal", name: "FlowRateCalculatorTool", path: "./FlowRateCalculatorTool", export: "FlowRateCalculatorTool" },
   { slug: "calculadora-perimetro-triangulo", name: "TrianglePerimeterCalculatorTool", path: "./TrianglePerimeterCalculatorTool", export: "TrianglePerimeterCalculatorTool" },
   { slug: "conversor-bytes", name: "BytesConverterTool", path: "./BytesConverterTool", export: "BytesConverterTool" },
+  { slug: "calculadora-moda", name: "ModeCalculatorTool", path: "./ModeCalculatorTool", export: "ModeCalculatorTool" },
+  { slug: "calculadora-horas-sueno", name: "SleepHoursCalculatorTool", path: "./SleepHoursCalculatorTool", export: "SleepHoursCalculatorTool" },
 ] as const;

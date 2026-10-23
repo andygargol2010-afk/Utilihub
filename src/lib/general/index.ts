@@ -95,6 +95,8 @@ import { SALARY_RAISE_CALCULATOR_TOOLS } from "./salary-raise-calculator-tool";
 import { GAS_CONSUMPTION_CALCULATOR_TOOLS } from "./gas-consumption-calculator-tool";
 import { GOLDEN_RATIO_CALCULATOR_TOOLS } from "./golden-ratio-calculator-tool";
 import { TEXT_TO_SLUG_CONVERTER_TOOLS } from "./text-to-slug-converter-tool";
+import { MODE_CALCULATOR_TOOLS } from "./mode-calculator-tool";
+import { SLEEP_HOURS_CALCULATOR_TOOLS } from "./sleep-hours-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -194,4 +196,6 @@ export const GENERAL_TOOLS = [
   ...GAS_CONSUMPTION_CALCULATOR_TOOLS,
   ...GOLDEN_RATIO_CALCULATOR_TOOLS,
   ...TEXT_TO_SLUG_CONVERTER_TOOLS,
+  ...MODE_CALCULATOR_TOOLS,
+  ...SLEEP_HOURS_CALCULATOR_TOOLS,
 ];
