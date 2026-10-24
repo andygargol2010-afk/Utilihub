@@ -3,6 +3,7 @@ import { AuraCardComposer } from "@/components/playgrounds/AuraCardComposer";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Compositor de Tarjeta de Aura | UtiliHub";
 const description = cleanDescription(
@@ -35,11 +36,23 @@ export const Route = createFileRoute("/es/aura-card")({
 });
 
 function AuraCardPageEs() {
+  const shareUrl = typeof window !== "undefined" ? window.location.href : absoluteUrl("/es/aura-card");
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Compartible · Aura</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Tarjeta de Aura</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Compartible · Aura</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Tarjeta de Aura</h1>
+          </div>
+          <ExperienceShareButton
+            title="Compositor de Tarjeta de Aura"
+            url={shareUrl}
+            locale="es"
+            variant="button"
+            className="shrink-0"
+          />
+        </div>
         <p className="mt-3 text-muted-foreground">
           Diseñá tu <strong className="font-semibold text-foreground">tarjeta de aura</strong> personal con esquemas de color seleccionables, densidad de partículas, bloom y degradados de fondo. Agregá una cita o nombre personalizado — luego descargá un PNG de alta calidad con el título horneado.
         </p>
