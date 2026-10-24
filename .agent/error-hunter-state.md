@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E018 green: no PLACEHOLDER/$(cat, registry/index full, home routes clean, playgrounds full, dedicated tools present) + discovery (sampled AuroraParticlePlayground full canvas, home index.tsx clean, bytes-converter tool present, no "not implemented"/PLACEHOLDER/$(cat patterns in src, tip deploy READY)
-- deploy: tip SHA 9cc3644e3080cf7e2dac99e16e436dd3225eeb1d READY; previous ERROR on 386ac087 fixed by later commits
+- mode: known smoke (E001–E018 green: no PLACEHOLDER/$(cat, registry/index full, home routes clean, playgrounds full, dedicated tools present; recurring E010-E012 verified full) + discovery (sampled new tools calculadora-ratio-trabajo-descanso + calculadora-agua-arroz: UI components full React, registry entries present, index imports ok; NeonLayerComposer full canvas+particles; home index.tsx clean; no PLACEHOLDER/$(cat/"not implemented" patterns)
+- deploy: tip SHA eb9f57dad49f329d193e7c8ee84d9413102f9c15 no deploy yet (recent feat(cat)); latest READY on 19f0dcadb9651f8318b6264b9b56f1216b53ad1c; no ERROR on tip
 - known_smoke: green (no open/recurring failures; all last_seen recent)
-- new_findings: none (patterns clean; playgrounds and catalog structured correctly)
+- new_findings: none (new tools properly wired with dedicated UIs; patterns clean)
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: playgrounds (Aurora) + home routes + catalog index (this run)
+- last_known_focus: new catalog tools + NeonLayerComposer + home routes (this run)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
