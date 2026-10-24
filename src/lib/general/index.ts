@@ -105,6 +105,8 @@ import { PERCENTAGE_OF_NUMBER_CALCULATOR_TOOLS } from "./percentage-of-number-ca
 import { CELSIUS_FAHRENHEIT_CONVERTER_TOOLS } from "./celsius-fahrenheit-converter-tool";
 import { STUDY_HOURS_CALCULATOR_TOOLS } from "./study-hours-calculator-tool";
 import { VACATION_DAYS_CALCULATOR_TOOLS } from "./vacation-days-calculator-tool";
+import { SQUARE_ROOT_CALCULATOR_TOOLS } from "./square-root-calculator-tool";
+import { HARMONIC_MEAN_CALCULATOR_TOOLS } from "./harmonic-mean-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -214,4 +216,6 @@ export const GENERAL_TOOLS = [
   ...CELSIUS_FAHRENHEIT_CONVERTER_TOOLS,
   ...STUDY_HOURS_CALCULATOR_TOOLS,
   ...VACATION_DAYS_CALCULATOR_TOOLS,
+  ...SQUARE_ROOT_CALCULATOR_TOOLS,
+  ...HARMONIC_MEAN_CALCULATOR_TOOLS,
 ];
