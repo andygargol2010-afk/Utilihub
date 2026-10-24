@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E016 green: registry kind-first no PLACEHOLDER, playgrounds NBody/Aurora/Neon full exports+canvas, home index clean, no $(cat)) + discovery (text tools: TextTool/LineCounter/WordsPerMinute/syllable-counter; cocina numeric ops; EchoWaveSignature full; TextParticles full; no stubs/PLACEHOLDER/kind issues)
-- deploy: tip READY (1da7b751 on utilihub-qssnulsjn-... and git-fix-spanish-complete alias); prior ERRORs were old E016 JSX and playground stubs
+- mode: known smoke (E001–E016 green: registry kind-first no PLACEHOLDER, playgrounds NBody/Aurora/Neon/PulseCatch full, home index/es.index clean no $(cat)/DeferredReviews, catalog index full) + discovery (games catalog + es.juegos.$slug route; cocina.ts numeric ops; PulseCatch full canvas; NeonLayer full; no stubs/PLACEHOLDER)
+- deploy: tip READY (6f330252 on utilihub-4g4oiy51m-... and git-fix-spanish-complete alias); prior ERRORs resolved
 - known_smoke: green (recurring E010–E012 passed full checks; fixed smokes brief green)
-- new_findings: none (sampled text + studio/playground routes outside catalog focus; all real components)
+- new_findings: none (sampled games + cocina + playgrounds outside previous text focus; all real components)
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: text tools + EchoWave/TextParticles (this run, green); next rotate to games or lifestyle/cocina dedicated
+- last_known_focus: games + cocina/lifestyle dedicated + PulseCatch/Neon (this run, green); next rotate to media/image tools or 3D studios/modeler
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
