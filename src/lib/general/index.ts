@@ -109,6 +109,8 @@ import { SQUARE_ROOT_CALCULATOR_TOOLS } from "./square-root-calculator-tool";
 import { HARMONIC_MEAN_CALCULATOR_TOOLS } from "./harmonic-mean-calculator-tool";
 import { CUBE_ROOT_CALCULATOR_TOOLS } from "./cube-root-calculator-tool";
 import { INCHES_TO_CM_CONVERTER_TOOLS } from "./inches-to-cm-converter-tool";
+import { WORK_BREAK_RATIO_CALCULATOR_TOOLS } from "./work-break-ratio-calculator-tool";
+import { RICE_WATER_CALCULATOR_TOOLS } from "./rice-water-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -222,4 +224,6 @@ export const GENERAL_TOOLS = [
   ...HARMONIC_MEAN_CALCULATOR_TOOLS,
   ...CUBE_ROOT_CALCULATOR_TOOLS,
   ...INCHES_TO_CM_CONVERTER_TOOLS,
+  ...WORK_BREAK_RATIO_CALCULATOR_TOOLS,
+  ...RICE_WATER_CALCULATOR_TOOLS,
 ];

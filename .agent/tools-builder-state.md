@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-24 | productividad | calculadora-ratio-trabajo-descanso | WorkBreakRatioCalculatorTool
+- 2026-10-24 | cocina | calculadora-agua-arroz | RiceWaterCalculatorTool
 - 2026-10-24 | conversiones | conversor-pulgadas-cm | InchesToCmConverterTool
 - 2026-10-24 | matematicas | calculadora-raiz-cubica | CubeRootCalculatorTool
 - 2026-10-24 | matematicas | calculadora-raiz-cuadrada | SquareRootCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-24 | viajes | calculadora-consumo-viaje | TripFuelConsumptionCalculatorTool
 - 2026-10-24 | matematicas | calculadora-porcentaje-de-numero | PercentageOfNumberCalculatorTool
 - 2026-10-24 | conversiones | conversor-celsius-a-fahrenheit | CelsiusFahrenheitConverterTool
-- 2026-10-23 | finanzas | calculadora-porcentaje-aumento | PercentageIncreaseCalculatorTool
-- 2026-10-23 | educacion | calculadora-media-geometrica | GeometricMeanCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -40,7 +40,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal)
-hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas)
+hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado)
@@ -48,7 +48,7 @@ conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento)
-productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto, calculadora-horas-estudio)
+productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto, calculadora-horas-estudio, calculadora-ratio-trabajo-descanso)
 matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado, perimetro-triangulo, calculadora-porcentaje-de-numero, calculadora-raiz-cuadrada, calculadora-raiz-cubica)
 ```
 
@@ -63,8 +63,7 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-24: restored state after incomplete WILL_READ wipe. Updated with calculadora-raiz-cubica (matematicas) + conversor-pulgadas-cm (conversiones).
-Current deploy ERROR due to concurrent journeys agent (WaypointRiverComposer not exported). No PRODUCT this run.
+2026-10-24: PRODUCT — calculadora-ratio-trabajo-descanso (productividad) + calculadora-agua-arroz (cocina). Clusters distintos, calidad alta. SEO locales: defer pt (active but not tool-critical this run).
 ```
 
 ---
@@ -72,9 +71,9 @@ Current deploy ERROR due to concurrent journeys agent (WaypointRiverComposer not
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: FIX-BUILD (state restore)
-last_slugs: none (ERROR)
-last_deploy: ERROR (journeys)
+last_mode: PRODUCT (roll ~7)
+last_slugs: calculadora-ratio-trabajo-descanso, calculadora-agua-arroz
+last_deploy: pending
 last_sha: pending
 ```
 

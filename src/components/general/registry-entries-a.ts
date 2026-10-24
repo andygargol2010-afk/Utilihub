@@ -47,4 +47,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-media-armonica", name: "HarmonicMeanCalculatorTool", path: "./HarmonicMeanCalculatorTool", export: "HarmonicMeanCalculatorTool" },
   { slug: "calculadora-raiz-cubica", name: "CubeRootCalculatorTool", path: "./CubeRootCalculatorTool", export: "CubeRootCalculatorTool" },
   { slug: "conversor-pulgadas-cm", name: "InchesToCmConverterTool", path: "./InchesToCmConverterTool", export: "InchesToCmConverterTool" },
+  { slug: "calculadora-ratio-trabajo-descanso", name: "WorkBreakRatioCalculatorTool", path: "./WorkBreakRatioCalculatorTool", export: "WorkBreakRatioCalculatorTool" },
+  { slug: "calculadora-agua-arroz", name: "RiceWaterCalculatorTool", path: "./RiceWaterCalculatorTool", export: "RiceWaterCalculatorTool" },
 ] as const;
