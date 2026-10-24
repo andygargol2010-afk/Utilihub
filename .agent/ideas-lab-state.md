@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
-idea: 
-id: 
-path_en: 
-path_es: 
-path_seo: 
-domain: 
-runs_total: 0
-runs_remaining: 0
-acceptance: 
-share: 
-next_step_required: 
-notes: Previous closed: shareable-experiences-boost (traffic-bets FIXED). Ready for next IDEATE roll.
+status: active
+idea: Original long-form SEO guide (EN+ES) on interactive N-body and multi-attractor gravity simulations in the browser. Explains Newtonian force summation, soft collisions, fading trails, body glow, presets (binary, mini-solar, chaotic, figure-8), zoom/pan, performance caps, and how the live N-Body Gravity Simulator implements them. Includes formulas, intuition, FAQs, and deep links to the experience + related playgrounds. Original explanatory text for search depth (not thin affiliate or calculator content). EN+ES routes with proper meta, hreflang, breadcrumbs. CWV-safe (static content, no heavy assets).
+id: n-body-gravity-guide
+path_en: /guides/n-body-gravity
+path_es: /es/guias/n-body-gravity
+path_seo: n/a
+domain: search-magnets
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: n/a
+next_step_required: no
+notes: U=0.1716 <0.50 GROWTH. U_g=0.146 <0.35 FIXED urn. Sampled traffic-bets (last_closed) → re-roll once → search-magnets. No weight updates (FIXED). Original text depth around existing N-Body experience for search magnets.
 adsense-prep_runs: 3
 ```
 
