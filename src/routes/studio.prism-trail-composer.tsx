@@ -3,6 +3,7 @@ import { PrismTrailComposer } from "@/components/playgrounds/PrismTrailComposer"
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Prism Trail Composer | UtiliHub";
 const description = cleanDescription(
@@ -35,11 +36,23 @@ export const Route = createFileRoute("/studio/prism-trail-composer")({
 });
 
 function PrismTrailPage() {
+  const shareUrl = typeof window !== "undefined" ? window.location.href : absoluteUrl("/studio/prism-trail-composer");
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">Studio · Composition</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Prism Trail Composer</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">Studio · Composition</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Prism Trail Composer</h1>
+          </div>
+          <ExperienceShareButton
+            title="Prism Trail Composer"
+            url={shareUrl}
+            locale="en"
+            variant="button"
+            className="shrink-0"
+          />
+        </div>
         <p className="mt-3 text-muted-foreground">
           Draw freehand paths that split into <strong className="font-semibold text-foreground">rainbow refraction beams</strong> with live bloom, adjustable dispersion and particle speed. Trails persist with colorful afterglow. Export a shareable PNG of your light composition.
         </p>
