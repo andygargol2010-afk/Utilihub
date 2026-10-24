@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E017 green: registry wired dedicateds, home index clean, playgrounds full no stub, catalog index full no PLACEHOLDER, no $(cat)) + discovery (sampled NeonLayerComposer full canvas, home route clean, general/index.ts full exports)
-- deploy: previous SHAs (aa157b85, b939e90, 39b8d2e5) ERROR by duplicate slug calculadora-descuento; fixed in 71763fa (unique calculadora-descuento-porcentaje); tip f2f2fce pending verify
-- known_smoke: green (no open/recurring failures; E010–E012 passed brief)
-- new_findings: none (discovery path clean; no new PLACEHOLDER, broken imports, or unwired dedicateds in sample)
-- fixes: 0 (checks OK this run)
+- mode: known smoke (E001–E017 green: registry, home, playgrounds, catalog index clean) + discovery (deploy ERROR logs → slug duplicado)
+- deploy: tip SHA 4107c236 READY (post-fix unique slug); previous ERROR by duplicate calculadora-descuento-porcentaje
+- known_smoke: green (no open failures)
+- new_findings: E018 — build ERROR slug duplicado calculadora-descuento-porcentaje in two dedicated tool files (validator scans all makeTool)
+- fixes: 1 (percentage-discount-calculator-tool.ts slug → calculadora-porcentaje-descuento; SHA 4107c236)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: playgrounds/home/catalog integrity (this run green); next rotate to education/dev tools or games/studio sample
+- last_known_focus: catalog validator / duplicate slugs (this run, fixed E018); next rotate to education/dev tools or games/studio sample
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
