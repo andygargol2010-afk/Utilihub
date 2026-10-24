@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeCatalogSlot } from "@/components/home-catalog-slot";
+import { ExperienceDiscoveryRail } from "@/components/ExperienceDiscoveryRail";
 import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
 
 const loadHomeCatalog = () => import("@/components/home-catalog");
@@ -200,6 +201,8 @@ function SpanishHome() {
           </div>
         </div>
       </section>
+
+      <ExperienceDiscoveryRail locale="es" />
 
       <div className="container-page">
         <Suspense fallback={<HomeCatalogSlot />}>
