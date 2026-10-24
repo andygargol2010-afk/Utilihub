@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E015 green: registry kind-first, no PLACEHOLDER/$(cat), playgrounds full, home ok) + discovery (new guide routes caused Vercel ERROR on JSX unescaped > "N > 2"; already reworded to "greater than"/"mayor que" in tip 804dc17 / 65c1e4d etc.)
-- deploy: ERROR on previous SHAs (1e0f87b and feat commits) due to E016; tip 804dc17 (fix) + this docs not yet deployed (list shows only prior ERROR/READY)
-- known_smoke: green (all fixed/recurring passed checks; registry, index, playgrounds, home)
-- new_findings: E016 — Build ERROR por > sin escapar en JSX de guía N-body (fixed already by rewording; added to catalog)
-- fixes: 0 (code already fixed; only docs updated)
+- mode: known smoke (E001–E016 green: registry kind-first no PLACEHOLDER, playgrounds NBody/Aurora/Neon full exports+canvas, home index clean, no $(cat)) + discovery (text tools: TextTool/LineCounter/WordsPerMinute/syllable-counter; cocina numeric ops; EchoWaveSignature full; TextParticles full; no stubs/PLACEHOLDER/kind issues)
+- deploy: tip READY (1da7b751 on utilihub-qssnulsjn-... and git-fix-spanish-complete alias); prior ERRORs were old E016 JSX and playground stubs
+- known_smoke: green (recurring E010–E012 passed full checks; fixed smokes brief green)
+- new_findings: none (sampled text + studio/playground routes outside catalog focus; all real components)
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: studios/3d + new guides (this run, green + E016 catalogued); next rotate to text tools or games
+- last_known_focus: text tools + EchoWave/TextParticles (this run, green); next rotate to games or lifestyle/cocina dedicated
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
