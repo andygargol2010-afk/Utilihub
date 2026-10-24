@@ -3,6 +3,7 @@ import { AuraCardComposer } from "@/components/playgrounds/AuraCardComposer";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Aura Card Composer | UtiliHub";
 const description = cleanDescription(
@@ -35,11 +36,23 @@ export const Route = createFileRoute("/aura-card")({
 });
 
 function AuraCardPage() {
+  const shareUrl = typeof window !== "undefined" ? window.location.href : absoluteUrl("/aura-card");
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Shareable · Aura</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Aura Card Composer</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Shareable · Aura</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Aura Card Composer</h1>
+          </div>
+          <ExperienceShareButton
+            title="Aura Card Composer"
+            url={shareUrl}
+            locale="en"
+            variant="button"
+            className="shrink-0"
+          />
+        </div>
         <p className="mt-3 text-muted-foreground">
           Design your personal <strong className="font-semibold text-foreground">aura card</strong> with selectable color schemes, particle density, bloom and background gradients. Add a custom quote or name — then download a high-quality PNG with the title baked in.
         </p>
