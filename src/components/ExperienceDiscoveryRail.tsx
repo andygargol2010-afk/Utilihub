@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, Sparkles, Palette, Gamepad2, Orbit } from "lucide-react";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 interface Experience {
   id: string;
@@ -256,25 +257,35 @@ export function ExperienceDiscoveryRail({ locale }: Props) {
             const desc = isEs ? exp.descEs : exp.descEn;
             const color = CATEGORY_COLORS[exp.category] || "from-primary/60 to-primary/30";
             const Icon = CATEGORY_ICONS[exp.category] || Sparkles;
+            const fullUrl = typeof window !== "undefined" ? `${window.location.origin}${path}` : path;
             return (
-              <Link
-                key={exp.id}
-                to={path}
-                className="group min-w-[220px] max-w-[240px] flex-shrink-0 snap-start overflow-hidden rounded-xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-                data-event="discovery-rail-click"
-                data-exp={exp.id}
-              >
-                <div className={`relative h-20 bg-gradient-to-br ${color} opacity-90 transition group-hover:opacity-100`}>
-                  <Icon className="absolute bottom-2 right-2 size-5 text-white/80" aria-hidden />
+              <div key={exp.id} className="relative min-w-[220px] max-w-[240px] flex-shrink-0 snap-start">
+                <Link
+                  to={path}
+                  className="group block overflow-hidden rounded-xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                  data-event="discovery-rail-click"
+                  data-exp={exp.id}
+                >
+                  <div className={`relative h-20 bg-gradient-to-br ${color} opacity-90 transition group-hover:opacity-100`}>
+                    <Icon className="absolute bottom-2 right-2 size-5 text-white/80" aria-hidden />
+                  </div>
+                  <div className="p-4 pb-10">
+                    <p className="text-xs font-bold uppercase tracking-wide text-primary">
+                      {CATEGORIES.find((c) => c.id === exp.category)?.[isEs ? "labelEs" : "labelEn"]}
+                    </p>
+                    <h3 className="mt-1 text-sm font-bold leading-snug">{title}</h3>
+                    <p className="mt-2 line-clamp-3 text-xs text-muted-foreground">{desc}</p>
+                  </div>
+                </Link>
+                <div className="absolute bottom-2 right-2 z-10">
+                  <ExperienceShareButton
+                    title={title}
+                    url={fullUrl}
+                    locale={locale}
+                    variant="icon"
+                  />
                 </div>
-                <div className="p-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-primary">
-                    {CATEGORIES.find((c) => c.id === exp.category)?.[isEs ? "labelEs" : "labelEn"]}
-                  </p>
-                  <h3 className="mt-1 text-sm font-bold leading-snug">{title}</h3>
-                  <p className="mt-2 line-clamp-3 text-xs text-muted-foreground">{desc}</p>
-                </div>
-              </Link>
+              </div>
             );
           })}
         </div>
