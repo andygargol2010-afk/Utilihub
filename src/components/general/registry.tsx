@@ -129,6 +129,15 @@ const HoursBetweenDatesCalculatorToolUi = lazy(() =>
 const WordsPerMinuteCalculatorToolUi = lazy(() =>
   import("./WordsPerMinuteCalculatorTool").then((m) => ({ default: m.WordsPerMinuteCalculatorTool })),
 );
+const SyllableCounterToolUi = lazy(() =>
+  import("./SyllableCounterTool").then((m) => ({ default: m.SyllableCounterTool })),
+);
+const RoiCalculatorToolUi = lazy(() =>
+  import("./RoiCalculatorTool").then((m) => ({ default: m.RoiCalculatorTool })),
+);
+const BmiCalculatorToolUi = lazy(() =>
+  import("./BmiCalculatorTool").then((m) => ({ default: m.BmiCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -155,6 +164,9 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-volumen-cono") return ConeVolumeCalculatorToolUi;
   if (slug === "calculadora-horas-entre-fechas") return HoursBetweenDatesCalculatorToolUi;
   if (slug === "calculadora-palabras-por-minuto") return WordsPerMinuteCalculatorToolUi;
+  if (slug === "contador-silabas") return SyllableCounterToolUi;
+  if (slug === "calculadora-roi") return RoiCalculatorToolUi;
+  if (slug === "calculadora-imc") return BmiCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
