@@ -158,4 +158,14 @@ Formato por entrada:
 - **fix_hint**: eliminar la entrada simple del array CONVERTER_TOOLS; mantener la dedicada con mejor metadata
 - **files**: `src/lib/general/converters.ts`, `src/lib/general/speed-converter-tool.ts`, `src/lib/general/index.ts`
 
+## E016 — Build ERROR por carácter > sin escapar en JSX de guía N-body
+- **status**: fixed
+- **last_seen**: 2026-10-24 (ERROR deploys on 1e0f87b due to "N > 2" in guides.n-body-gravity.tsx; fixed in subsequent commits to "greater than" / "mayor que")
+- **fixed_at**: 2026-10-24
+- **symptom**: deploy Vercel ERROR; esbuild/vite transform fails: The character ">" is not valid inside a JSX element in guides.n-body-gravity.tsx
+- **root_cause**: texto de la guía nueva contenía "N > 2" dentro de <p> sin escapar como > o reescribir
+- **check**: grep "N >" en src/routes/guides*.tsx y es.guias*.tsx; no debe haber > raw en texto JSX
+- **fix_hint**: reescribir "N > 2" como "N greater than 2" o "N mayor que 2"; nunca dejar > sin escapar en children de JSX
+- **files**: `src/routes/guides.n-body-gravity.tsx`, `src/routes/es.guias.n-body-gravity.tsx`
+
 <!-- end:catalog -->
