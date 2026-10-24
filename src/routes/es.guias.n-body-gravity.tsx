@@ -100,6 +100,17 @@ function NBodyGravityGuideEs() {
           La deriva numérica es inevitable: el preset figura-8 abandona lentamente su órbita periódica exacta tras muchos minutos. Eso es esperado y educativo — muestra por qué los códigos de astrofísica de producción usan integradores de orden superior y pasos adaptativos, mientras que los juguetes interactivos priorizan la respuesta y la claridad visual.
         </p>
 
+        <h2>Energía, estabilidad y la intuición virial</h2>
+        <p>
+          La energía mecánica total E = cinética + potencial. Para un sistema gravitatorio aislado las ecuaciones continuas verdaderas conservan E exactamente. Los esquemas numéricos solo aproximan esa conservación. El Euler semi-implícito mantiene el error acotado durante muchas órbitas, por eso las estrellas binarias y la figura-8 permanecen reconocibles durante minutos de tiempo real.
+        </p>
+        <p>
+          Una regla práctica útil es la relación virial para un sistema auto-gravitante en equilibrio aproximado: 2·KE + PE ≈ 0. Si lanzas cuerpos con demasiada velocidad el sistema no está ligado (energía total positiva) y todo se separa. Si los empiezas casi en reposo colapsan en un cúmulo compacto de alta velocidad. Los presets integrados se sitúan en el punto medio interesante donde coexisten órbitas ligadas, encuentros cercanos y eyecciones ocasionales.
+        </p>
+        <p>
+          El suavizado y las colisiones suaves alteran ligeramente el potencial, por lo que la cantidad conservada no es exactamente la energía newtoniana. Es un compromiso deliberado: la simulación permanece visualmente estable e interactiva en lugar de producir singularidades numéricas.
+        </p>
+
         <h2>Colisiones suaves</h2>
         <p>
           Las colisiones de esferas rígidas requieren detección precisa y resolución de impulsos, lo que puede ser costoso y visualmente abrupto. Las colisiones suaves aproximan el contacto añadiendo una fuerte repulsión de corto alcance (o aumentando temporalmente el suavizado) cuando la distancia entre centros cae por debajo de la suma de radios.
@@ -172,6 +183,12 @@ function NBodyGravityGuideEs() {
         </p>
         <p>
           <strong>¿Algo se ejecuta en un servidor?</strong> No. Toda la integración, el dibujo y la generación de PNG ocurren en el navegador. Compartir una URL solo comparte los parámetros.
+        </p>
+        <p>
+          <strong>¿Puedo reproducir un enlace compartido?</strong> Sí. La URL codifica las masas, posiciones, velocidades y colores iniciales. Abrir el enlace restaura la configuración de partida exacta antes de que comience la integración.
+        </p>
+        <p>
+          <strong>¿Por qué está limitado el número de cuerpos?</strong> La evaluación de fuerzas por pares es O(N²). Limitar a unos 20 cuerpos mantiene el tiempo de fotograma cómodo en móviles y aun así permite dinámicas multi-cuerpo ricas.
         </p>
 
         <h2>Experiencias relacionadas</h2>
