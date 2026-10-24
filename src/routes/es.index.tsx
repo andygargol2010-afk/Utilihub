@@ -3,7 +3,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeCatalogSlot } from "@/components/home-catalog-slot";
-import { ExperienceDiscoveryRail } from "@/components/ExperienceDiscoveryRail";
 import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
 
 const loadHomeCatalog = () => import("@/components/home-catalog");
@@ -11,7 +10,7 @@ const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.Hom
 const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
 const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
 
-const ExperienceDiscoveryRailLazy = lazy(() =>
+const ExperienceDiscoveryRail = lazy(() =>
   import("@/components/ExperienceDiscoveryRail").then((m) => ({ default: m.ExperienceDiscoveryRail })),
 );
 
@@ -207,7 +206,7 @@ function SpanishHome() {
       </section>
 
       <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden /> }>
-        <ExperienceDiscoveryRailLazy locale="es" />
+        <ExperienceDiscoveryRail locale="es" />
       </Suspense>
 
       <section className="container-page py-6">
