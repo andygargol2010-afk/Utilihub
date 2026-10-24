@@ -68,11 +68,11 @@ path_es: /es/guias/n-body-gravity
 path_seo: n/a
 domain: search-magnets
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: U=0.1716 <0.50 GROWTH. U_g=0.146 <0.35 FIXED urn. Sampled traffic-bets (last_closed) → re-roll once → search-magnets. No weight updates (FIXED). Original text depth around existing N-Body experience for search magnets. Run 1: shipped full EN+ES long-form guides with formulas, presets, soft collisions, trails/glow, camera, CWV notes, FAQs and deep links. Run 2: added numerical integration section (Euler vs semi-implicit Euler, energy drift, Verlet note) + FAQ + sitemap inclusion for both locales. Adsterra intact.
+notes: U=0.1716 <0.50 GROWTH. U_g=0.146 <0.35 FIXED urn. Sampled traffic-bets (last_closed) → re-roll once → search-magnets. No weight updates (FIXED). Original text depth around existing N-Body experience for search magnets. Run 1: shipped full EN+ES long-form guides with formulas, presets, soft collisions, trails/glow, camera, CWV notes, FAQs and deep links. Run 2: added numerical integration section (Euler vs semi-implicit Euler, energy drift, Verlet note) + FAQ + sitemap inclusion for both locales. Run 3: added energy/stability/virial intuition section + two extra FAQs (share link reproduction, body-count reason) EN+ES. Adsterra intact.
 adsense-prep_runs: 3
 ```
 
