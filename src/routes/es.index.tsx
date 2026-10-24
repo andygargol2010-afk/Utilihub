@@ -204,6 +204,22 @@ function SpanishHome() {
 
       <ExperienceDiscoveryRail locale="es" />
 
+      <section className="container-page py-6">
+        <div className="rounded-2xl border border-border/60 bg-card/50 p-4 sm:p-5">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-cyan-600">Experiencias compartibles</p>
+          <h2 className="mt-1 text-lg font-black">Creá y compartí visuales interactivos</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Deep-links listos. Usá el botón Compartir en cada una para enviar por Web Share o copiar enlace.</p>
+          <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
+            <Link to="/es/aurora-particle-playground" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Partículas Aurora</Link>
+            <Link to="/es/neon-layer-composer" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Capas Neón</Link>
+            <Link to="/es/n-body-gravity" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Gravedad N-Cuerpos</Link>
+            <Link to="/es/color-cascade-fusion" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Cascada de Color</Link>
+            <Link to="/es/studio/compositor-estela-prisma" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Estela Prisma</Link>
+            <Link to="/es/aura-card" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Tarjeta de Aura</Link>
+          </div>
+        </div>
+      </section>
+
       <div className="container-page">
         <Suspense fallback={<HomeCatalogSlot />}>
           <HomeCatalogRest locale="es" />
