@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E014 green: registry kind-first, home no $(cat), playgrounds full, no PLACEHOLDER) + discovery (runtime logs + playgrounds sample: ConstellationNameMap/FluidTypeSignature/ParticleSignature/SolarSystem real implementations; found duplicate slug via logs)
-- deploy: READY (pre-fix on recent SHAs); post-push pending verify
-- known_smoke: green (all fixed/recurring passed brief checks)
-- new_findings: E015 — duplicate tool slug conversor-velocidad (CONVERTER_TOOLS in converters.ts + SPEED_CONVERTER_TOOLS in speed-converter-tool.ts). Runtime logs showed "duplicate tool slugs (keeping first occurrence)". Fixed by removing from converters.ts, keeping dedicated with SEO/faq.
-- fixes: 1 (src/lib/general/converters.ts remove duplicate entry)
+- mode: known smoke (E001–E015 green: registry kind-first + dedicated UIs, home no $(cat)/DeferredReviews, index full no PLACEHOLDER, playgrounds NBody/Aurora/ConstellationNameMap/FluidType full canvas impls) + discovery (search PLACEHOLDER/$(cat/return null = 0; sample games layout + components dir sizes; no new stubs or duplicate patterns)
+- deploy: READY (latest dpl_AuVYCgjThZHwP8JJZ8PLrdYofw3v on 8b19a718...)
+- known_smoke: green (all fixed/recurring passed checks)
+- new_findings: none
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E015 duplicate slug (this run, from runtime logs discovery); next rotate to games/studios or other categories
+- last_known_focus: playgrounds + registry/home/catalog (this run, green); next rotate to media/image tools or games components
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
