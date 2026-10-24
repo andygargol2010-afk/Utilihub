@@ -43,7 +43,7 @@ function NBodyGravityGuideEn() {
 
         <h2>What is an N-body simulation?</h2>
         <p>
-          In an N-body problem every body exerts a gravitational force on every other body. There is no closed-form solution for N > 2, so we integrate the equations of motion numerically. Each body carries mass, position and velocity. At every time step we compute the net force on each body, convert force to acceleration, then update velocity and position.
+          In an N-body problem every body exerts a gravitational force on every other body. There is no closed-form solution for N greater than 2, so we integrate the equations of motion numerically. Each body carries mass, position and velocity. At every time step we compute the net force on each body, convert force to acceleration, then update velocity and position.
         </p>
         <p>
           Browser implementations run this loop inside requestAnimationFrame (or a fixed timestep accumulator) so the motion stays smooth and interactive. Users can add bodies, change their initial conditions, pause, zoom and share the exact starting state via URL.
