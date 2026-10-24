@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Link } from "@tanstack/react-router";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Experience {
   id: string;
@@ -137,27 +138,62 @@ interface Props {
 export function ExperienceDiscoveryRail({ locale }: Props) {
   const [category, setCategory] = useState("all");
   const [shuffleKey, setShuffleKey] = useState(0);
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
     const list = category === "all" ? EXPERIENCES : EXPERIENCES.filter((e) => e.category === category);
-    const shuffled = [...list].sort(() => Math.random() - 0.5);
+    // Deterministic shuffle from key so React doesn't re-randomize every render
+    const shuffled = [...list];
+    let seed = shuffleKey + 1;
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      seed = (seed * 16807) % 2147483647;
+      const j = seed % (i + 1);
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
     return shuffled;
   }, [category, shuffleKey]);
 
   const isEs = locale === "es";
 
+  const scrollBy = (dir: -1 | 1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const amount = Math.min(280, el.clientWidth * 0.75) * dir;
+    el.scrollBy({ left: amount, behavior: "smooth" });
+  };
+
   return (
     <section className="container-page py-6" aria-label={isEs ? "Descubre experiencias" : "Discover experiences"}>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-lg font-bold">{isEs ? "Experiencias interactivas" : "Interactive experiences"}</h2>
-        <button
-          type="button"
-          onClick={() => setShuffleKey((k) => k + 1)}
-          className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold hover:bg-accent"
-          data-event="discovery-rail-shuffle"
-        >
-          {isEs ? "Barajar" : "Shuffle"}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShuffleKey((k) => k + 1)}
+            className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold hover:bg-accent"
+            data-event="discovery-rail-shuffle"
+          >
+            {isEs ? "Barajar" : "Shuffle"}
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollBy(-1)}
+            className="hidden rounded-lg border border-border bg-card p-1.5 hover:bg-accent sm:inline-flex"
+            aria-label={isEs ? "Desplazar a la izquierda" : "Scroll left"}
+            data-event="discovery-rail-scroll-left"
+          >
+            <ChevronLeft className="size-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollBy(1)}
+            className="hidden rounded-lg border border-border bg-card p-1.5 hover:bg-accent sm:inline-flex"
+            aria-label={isEs ? "Desplazar a la derecha" : "Scroll right"}
+            data-event="discovery-rail-scroll-right"
+          >
+            <ChevronRight className="size-4" />
+          </button>
+        </div>
       </div>
       <div className="mb-4 flex flex-wrap gap-2">
         {CATEGORIES.map((c) => (
@@ -176,7 +212,11 @@ export function ExperienceDiscoveryRail({ locale }: Props) {
           </button>
         ))}
       </div>
-      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin">
+      <div
+        ref={scrollerRef}
+        className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin snap-x snap-mandatory"
+        style={{ scrollSnapType: "x mandatory" }}
+      >
         {filtered.map((exp) => {
           const path = isEs ? exp.pathEs : exp.pathEn;
           const title = isEs ? exp.titleEs : exp.titleEn;
@@ -186,7 +226,7 @@ export function ExperienceDiscoveryRail({ locale }: Props) {
             <Link
               key={exp.id}
               to={path}
-              className="group min-w-[220px] max-w-[240px] flex-shrink-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+              className="group min-w-[220px] max-w-[240px] flex-shrink-0 snap-start overflow-hidden rounded-xl border border-border bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
               data-event="discovery-rail-click"
               data-exp={exp.id}
             >
