@@ -100,6 +100,17 @@ function NBodyGravityGuideEn() {
           Numerical drift is inevitable: the figure-8 preset slowly leaves its exact periodic orbit after many minutes. That is expected and educational — it shows why production astrophysics codes use higher-order integrators and adaptive timesteps, while interactive toys prioritize responsiveness and visual clarity.
         </p>
 
+        <h2>Energy, stability and the virial intuition</h2>
+        <p>
+          Total mechanical energy E = kinetic + potential. For an isolated gravitational system the true continuous equations conserve E exactly. Numerical schemes only approximate that conservation. Semi-implicit Euler keeps the error from growing without bound for many orbits, which is why binary stars and the figure-8 stay recognisable for minutes of real time.
+        </p>
+        <p>
+          A useful rule of thumb is the virial relation for a self-gravitating system in approximate equilibrium: 2·KE + PE ≈ 0. If you launch bodies with too much speed the system is unbound (total energy positive) and everything flies apart. If you start them almost at rest they collapse into a tight, high-speed cluster. The built-in presets sit near the interesting middle ground where bound orbits, close encounters and occasional ejections coexist.
+        </p>
+        <p>
+          Softening and soft collisions slightly alter the potential, so the conserved quantity is not exactly the Newtonian energy. That is a deliberate trade-off: the simulation remains visually stable and interactive instead of producing numerical singularities.
+        </p>
+
         <h2>Soft collisions</h2>
         <p>
           Hard sphere collisions require precise detection and impulse resolution, which can be expensive and visually abrupt. Soft collisions approximate contact by adding a strong short-range repulsion (or by temporarily boosting the softening) when the distance between centers falls below the sum of radii.
@@ -172,6 +183,12 @@ function NBodyGravityGuideEn() {
         </p>
         <p>
           <strong>Does anything run on a server?</strong> No. All integration, drawing and PNG generation happen in the browser. Sharing a URL only shares the parameters.
+        </p>
+        <p>
+          <strong>Can I reproduce a shared link?</strong> Yes. The URL encodes the initial masses, positions, velocities and colors. Opening the link restores the exact starting configuration before integration begins.
+        </p>
+        <p>
+          <strong>Why is the body count limited?</strong> Pairwise force evaluation is O(N²). Capping around 20 bodies keeps the frame time comfortable on phones while still allowing rich multi-body dynamics.
         </p>
 
         <h2>Related experiences</h2>
