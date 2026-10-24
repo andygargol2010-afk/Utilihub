@@ -1,7 +1,7 @@
 import { makeTool, faq } from "./types";
 
 const tool = makeTool(
-  "calculadora-descuento-porcentaje",
+  "calculadora-porcentaje-descuento",
   "Percentage Discount Calculator",
   "finanzas",
   "calculator",
