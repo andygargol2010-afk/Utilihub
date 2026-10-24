@@ -82,6 +82,24 @@ function NBodyGravityGuideEs() {
           </Link>
         </div>
 
+        <h2>Integración numérica en el navegador</h2>
+        <p>
+          Una vez conocidas las aceleraciones, el simulador debe avanzar posiciones y velocidades. El esquema más simple es Euler hacia adelante:
+        </p>
+        <p className="text-center font-mono">
+          v ← v + a · Δt<br />
+          x ← x + v · Δt
+        </p>
+        <p>
+          Euler es fácil de programar pero puede añadir energía con el tiempo, haciendo que las órbitas espiralen hacia fuera. Una mejor elección práctica para gravedad interactiva es el Euler semi-implícito (simpléctico), que actualiza primero la velocidad y luego usa la nueva velocidad para el paso de posición. Esto conserva mejor una energía cercana y mantiene las órbitas largas más estables con casi ningún coste extra.
+        </p>
+        <p>
+          Existen Velocity Verlet y métodos de orden superior, pero para demos en tiempo real en el navegador con un límite de ~20 cuerpos el paso de Euler semi-implícito suele ser suficiente. El simulador de UtiliHub usa un paso de tiempo fijo o limitado para que la integración se mantenga estable incluso si baja la tasa de fotogramas, y aplica la repulsión de colisión suave dentro de la misma evaluación de fuerzas antes de la actualización de velocidad.
+        </p>
+        <p>
+          La deriva numérica es inevitable: el preset figura-8 abandona lentamente su órbita periódica exacta tras muchos minutos. Eso es esperado y educativo — muestra por qué los códigos de astrofísica de producción usan integradores de orden superior y pasos adaptativos, mientras que los juguetes interactivos priorizan la respuesta y la claridad visual.
+        </p>
+
         <h2>Colisiones suaves</h2>
         <p>
           Las colisiones de esferas rígidas requieren detección precisa y resolución de impulsos, lo que puede ser costoso y visualmente abrupto. Las colisiones suaves aproximan el contacto añadiendo una fuerte repulsión de corto alcance (o aumentando temporalmente el suavizado) cuando la distancia entre centros cae por debajo de la suma de radios.
@@ -135,7 +153,7 @@ function NBodyGravityGuideEs() {
         <ol>
           <li>Calcula aceleraciones gravitatorias por pares con suavizado.</li>
           <li>Añade repulsión de colisión suave cuando los cuerpos se solapan.</li>
-          <li>Integra velocidad y posición con un paso de tiempo fijo o limitado.</li>
+          <li>Integra velocidad y posición con un paso de tiempo fijo o limitado (estilo Euler semi-implícito).</li>
           <li>Aplica la transformación de cámara y dibuja rastros (clear con fade) + cuerpos brillantes con resaltes especulares.</li>
         </ol>
         <p>
@@ -148,6 +166,9 @@ function NBodyGravityGuideEs() {
         </p>
         <p>
           <strong>¿El preset figura-8 es exacto?</strong> Usa las condiciones iniciales bien conocidas de la solución figura-ocho de Chenciner–Montgomery. La integración numérica introduce una pequeña deriva a lo largo del tiempo, pero la trayectoria característica es claramente visible.
+        </p>
+        <p>
+          <strong>¿Por qué la energía crece o disminuye lentamente?</strong> La mayoría de los integradores simples no son perfectamente simplécticos. El Euler semi-implícito mantiene el error acotado durante muchas órbitas, pero a lo largo de minutos de tiempo real verás pequeñas derivas — una demostración honesta de la aproximación numérica.
         </p>
         <p>
           <strong>¿Algo se ejecuta en un servidor?</strong> No. Toda la integración, el dibujo y la generación de PNG ocurren en el navegador. Compartir una URL solo comparte los parámetros.
