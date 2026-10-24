@@ -2,10 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { NBodyGravitySim } from "@/components/playgrounds/NBodyGravitySim";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Simulador de Gravedad N-Cuerpos | UtiliHub";
 const description = cleanDescription(
-  "Simulador interactivo de gravedad N-cuerpos: agreg\u00e1 cuerpos celestes con masa, velocidad, color. Din\u00e1mica gravitacional en vivo, estelas, colisiones suaves, zoom/pan, escala de tiempo, preajustes. Compartir PNG + enlace profundo. ES.",
+  "Simulador interactivo de gravedad N-cuerpos: agregá cuerpos celestes con masa, velocidad, color. Dinámica gravitacional en vivo, estelas, colisiones suaves, zoom/pan, escala de tiempo, preajustes. Compartir PNG + enlace profundo. ES.",
 );
 
 export const Route = createFileRoute("/es/n-body-gravity")({
@@ -34,13 +35,25 @@ export const Route = createFileRoute("/es/n-body-gravity")({
 });
 
 function NBodyPageEs() {
+  const shareUrl = typeof window !== "undefined" ? window.location.href : absoluteUrl("/es/n-body-gravity");
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Simulador · Interactivo</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Simulador de Gravedad N-Cuerpos</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Simulador · Interactivo</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Simulador de Gravedad N-Cuerpos</h1>
+          </div>
+          <ExperienceShareButton
+            title="Simulador de Gravedad N-Cuerpos"
+            url={shareUrl}
+            locale="es"
+            variant="button"
+            className="shrink-0"
+          />
+        </div>
         <p className="mt-3 text-muted-foreground">
-          Agreg\u00e1 cuerpos celestes con masa, velocidad inicial, color y tama\u00f1o ajustables. Observ\u00e1 la din\u00e1mica gravitacional en vivo con estelas de part\u00edculas, manejo de colisiones suaves, c\u00e1mara zoom/pan, controles de escala de tiempo, pausa/reinicio y preajustes (estrellas binarias, mini sistema solar, c\u00famulo ca\u00f3tico). Compartir PNG + enlace profundo para condiciones iniciales.
+          Agregá cuerpos celestes con masa, velocidad inicial, color y tamaño ajustables. Observá la dinámica gravitacional en vivo con estelas de partículas, manejo de colisiones suaves, cámara zoom/pan, controles de escala de tiempo, pausa/reinicio y preajustes (estrellas binarias, mini sistema solar, cúmulo caótico). Compartir PNG + enlace profundo para condiciones iniciales.
         </p>
       </header>
       <NBodyGravitySim locale="es" />

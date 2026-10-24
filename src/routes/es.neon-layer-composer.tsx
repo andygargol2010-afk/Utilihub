@@ -3,6 +3,7 @@ import { NeonLayerComposer } from "@/components/playgrounds/NeonLayerComposer";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Compositor de Capas Neón | UtiliHub";
 const description = cleanDescription(
@@ -35,11 +36,23 @@ export const Route = createFileRoute("/es/neon-layer-composer")({
 });
 
 function CompositorCapasNeonPage() {
+  const shareUrl = typeof window !== "undefined" ? window.location.href : absoluteUrl("/es/neon-layer-composer");
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-500">Studio · Composición</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Capas Neón</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-500">Studio · Composición</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Capas Neón</h1>
+          </div>
+          <ExperienceShareButton
+            title="Compositor de Capas Neón"
+            url={shareUrl}
+            locale="es"
+            variant="button"
+            className="shrink-0"
+          />
+        </div>
         <p className="mt-3 text-muted-foreground">
           Dibujá neón multicapa a mano alzada con <strong className="font-semibold text-foreground">modos de simetría</strong>, bloom y partículas que se emiten a lo largo de tus trazos y se desvanecen con gravedad y viento. Título superpuesto en el PNG. Distinto de las estelas prisma por capas neón + emisión caleidoscópica.
         </p>

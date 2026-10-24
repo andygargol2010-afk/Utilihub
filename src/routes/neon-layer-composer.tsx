@@ -3,6 +3,7 @@ import { NeonLayerComposer } from "@/components/playgrounds/NeonLayerComposer";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Neon Layer Composer | UtiliHub";
 const description = cleanDescription(
@@ -35,11 +36,23 @@ export const Route = createFileRoute("/neon-layer-composer")({
 });
 
 function NeonLayerPage() {
+  const shareUrl = typeof window !== "undefined" ? window.location.href : absoluteUrl("/neon-layer-composer");
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-500">Studio · Composition</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Neon Layer Composer</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-500">Studio · Composition</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Neon Layer Composer</h1>
+          </div>
+          <ExperienceShareButton
+            title="Neon Layer Composer"
+            url={shareUrl}
+            locale="en"
+            variant="button"
+            className="shrink-0"
+          />
+        </div>
         <p className="mt-3 text-muted-foreground">
           Draw freehand multi-layer neon with <strong className="font-semibold text-foreground">symmetry modes</strong>, bloom, and particles that emit along your strokes then fade under gravity and wind. Title overlay baked into the PNG. Distinct from prism trails by layered neon + kaleidoscope emission.
         </p>
