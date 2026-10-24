@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23
-- mode: known smoke (E001–E013 green; E010/E011 full) + discovery (sampled GravityParticlesPlayground, ParticlePostcard, EchoWaveSignature, FireworkSignature — all full real components)
-- deploy: READY on 6233347302a8017245371057076d0f3f44cefca5
-- known_smoke: no PLACEHOLDER, no $(cat), home/index imports resolve, NBody full named export
-- new_findings: none (playgrounds outside catalog set are complete implementations)
-- fixes: 0
+- date: 2026-10-24
+- mode: known smoke (E001–E013 green on HEAD) + discovery (deploy ERROR on 24dddc71 due to PLACEHOLDER_INDEX in general/index.ts; fixed in 98b20ea)
+- deploy: ERROR on 24dddc713c4b826618ad8ee5a614b1fd1e62b935 (GENERAL_CATEGORIES not exported); triggered BUILDING on 98b20ea29dd610fd67514aee6cfe8c46b9da4d63 (fix restore); docs commit 01f72663
+- known_smoke: registry kind-first OK, home index/es.index no $(cat) + proper imports, no PLACEHOLDER in src, playgrounds no return-null stubs
+- new_findings: E014 — catalog index.ts replaced by PLACEHOLDER_INDEX by feat(cat) adding tools, causing rollup missing export (build ERROR). Already fixed by subsequent restore commit; catalog updated.
+- fixes: 0 (code already restored in 98b20ea; docs only)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E013 TextParticlesPlayground (prior)
+- last_known_focus: E014 general/index.ts PLACEHOLDER (this run)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
