@@ -158,6 +158,26 @@ function NBodyGravityGuideEs() {
           Pruébalo y luego compara con el preset de un clic. La diferencia entre “yo afiné los números” y “la biblioteca lo hizo” es exactamente el tipo de insight que esta guía pretende dar.
         </p>
 
+        <h2>Afinando G, suavizado, paso de tiempo y escala</h2>
+        <p>
+          El carácter visual de una escena N-cuerpos lo controlan un puñado de parámetros libres. Llevarlos al rango “interesante” es más arte que ciencia exacta, pero unas pocas reglas prácticas mantienen la simulación educativa en lugar de explosiva o congelada.
+        </p>
+        <p>
+          <strong>Constante gravitatoria G.</strong> En la física newtoniana pura G es minúscula (~6.67×10⁻¹¹). En una demo de navegador tratamos G como un factor de escala libre. Demasiado pequeña y los cuerpos apenas se mueven; demasiado grande y todo colapsa o se dispara fuera de pantalla en unos fotogramas. Un punto de partida práctico es elegir G para que un binario circular de las masas y separación que pretendes complete una órbita en aproximadamente 2–4 segundos de tiempo real. Los presets del simulador ya incorporan un G que produce esa cadencia.
+        </p>
+        <p>
+          <strong>Suavizado ε.</strong> El suavizado redondea la singularidad 1/r². Ajústalo comparable a una fracción del radio típico de cuerpo (o unos pocos píxeles en unidades de mundo). Demasiado pequeño y los encuentros cercanos producen picos enormes que el integrador no puede manejar; demasiado grande y la fuerza se vuelve casi constante a corto alcance, haciendo los cuerpos “pegajosos” y las órbitas excesivamente circulares. Las colisiones suaves y el suavizado trabajan juntos — la repulsión entra en acción antes de que la gravedad suavizada pura se vuelva extrema.
+        </p>
+        <p>
+          <strong>Paso de tiempo Δt.</strong> El paso de Euler semi-implícito necesita un Δt lo bastante pequeño para que el movimiento orbital o de colisión más rápido se resuelva en varios pasos. Si baja la tasa de fotogramas, el simulador limita el Δt efectivo para que la energía no explote. En la práctica un Δt fijo de 1/60 s (o ligeramente mayor cuando la escena está tranquila) es un buen valor por defecto. Los pasos adaptativos son posibles pero añaden complejidad que los juguetes interactivos suelen omitir.
+        </p>
+        <p>
+          <strong>Escala del mundo.</strong> Posiciones, velocidades y radios deben ser consistentes. Si colocas cuerpos a decenas de unidades pero les das velocidades medidas en píxeles, el movimiento se ve mal. El deep-link por URL y los presets mantienen todo en las mismas unidades internas; cuando construyes una escena a mano, mantén los números en el mismo orden de magnitud que los presets que ya te gustan.
+        </p>
+        <p>
+          Errores comunes: (1) velocidades que hacen la energía total fuertemente positiva → dispersión inmediata; (2) suavizado mucho más pequeño que los radios de cuerpo → explosiones numéricas en el primer contacto; (3) Δt demasiado grande respecto al periodo orbital → órbitas que espiralizan o precesan de forma salvaje. Los presets integrados evitan los tres, por eso cargar uno y luego ajustar es la forma más rápida de aprender los compromisos.
+        </p>
+
         <h2>Cámara: zoom, pan y pellizco</h2>
         <p>
           Una transformación mundo-a-pantalla permite explorar sistemas grandes. El zoom se aplica con la rueda del ratón o el gesto de pellizco; el pan es un arrastre. La transformación se almacena como escala y desplazamiento y se aplica tanto al proyectar posiciones de cuerpos para dibujar como al convertir coordenadas de puntero de vuelta al espacio mundo para añadir nuevos cuerpos.
