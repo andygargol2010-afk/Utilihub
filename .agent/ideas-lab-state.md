@@ -68,11 +68,11 @@ path_es: /es
 path_seo: n/a
 domain: growth-surfaces
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: Roll: U=0.37 <0.50 → GROWTH. U_g=0.48 >0.35 → FLEX urn. Weighted sample selected growth-surfaces (weight 9 / total FLEX ~37). last_closed studio-composition (CORE) no re-roll. Idea is concrete shippable discovery UI on existing home. Weights: selected→1, other non-FIXED +1. seo-locales still active (1/5 pt).
+notes: Roll: U=0.37 <0.50 → GROWTH. U_g=0.48 >0.35 → FLEX urn. Weighted sample selected growth-surfaces (weight 9 / total FLEX ~37). last_closed studio-composition (CORE) no re-roll. Idea is concrete shippable discovery UI on existing home. Weights: selected→1, other non-FIXED +1. seo-locales still active (1/5 pt). EXECUTE 1/4: ExperienceDiscoveryRail component + wired into home EN+ES after hero (before AdBanner EN). Categories chips + shuffle + horizontal cards with short desc + deep links. Lightweight CSS, no heavy assets. Adsterra spacing intact. CWV-safe.
 adsense-prep_runs: 3
 ```
 
