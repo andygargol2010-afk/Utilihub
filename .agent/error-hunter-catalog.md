@@ -168,4 +168,14 @@ Formato por entrada:
 - **fix_hint**: reescribir "N > 2" como "N greater than 2" o "N mayor que 2"; nunca dejar > sin escapar en children de JSX
 - **files**: `src/routes/guides.n-body-gravity.tsx`, `src/routes/es.guias.n-body-gravity.tsx`
 
+## E017 — Dedicated calculator/counter UIs no wired in registry (generic "not implemented")
+- **status**: fixed (partial: 3 slugs wired; more may exist)
+- **last_seen**: 2026-10-24
+- **fixed_at**: 2026-10-24
+- **symptom**: tools like contador-silabas, calculadora-roi, calculadora-imc show error "Text tool not implemented" or "Statistical tool not implemented" instead of dedicated UI
+- **root_cause**: dedicated *CalculatorTool.tsx / *CounterTool.tsx exist and export real components, but pickComponent in registry.tsx lacks the slug === check + lazy import, so falls to TextTool/MathTool switch default
+- **check**: for slug with dedicated file, verify if (slug === "...") return XxxToolUi in registry; process/calculate switch has case or dedicated is used
+- **fix_hint**: add lazy import + early slug if in pickComponent; tools-builder must update registry when adding dedicated UI
+- **files**: `src/components/general/registry.tsx`, `SyllableCounterTool.tsx`, `RoiCalculatorTool.tsx`, `BmiCalculatorTool.tsx` (and similar unlisted dedicateds)
+
 <!-- end:catalog -->
