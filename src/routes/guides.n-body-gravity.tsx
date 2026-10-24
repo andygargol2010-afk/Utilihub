@@ -82,6 +82,24 @@ function NBodyGravityGuideEn() {
           </Link>
         </div>
 
+        <h2>Numerical integration in the browser</h2>
+        <p>
+          Once accelerations are known, the simulator must advance positions and velocities. The simplest scheme is forward Euler:
+        </p>
+        <p className="text-center font-mono">
+          v ← v + a · Δt<br />
+          x ← x + v · Δt
+        </p>
+        <p>
+          Euler is easy to code but can add energy over time, making orbits spiral outward. A better practical choice for interactive gravity is semi-implicit (symplectic) Euler, which updates velocity first and then uses the new velocity for the position step. This conserves a nearby energy better and keeps long orbits more stable with almost no extra cost.
+        </p>
+        <p>
+          Velocity Verlet and higher-order methods exist, but for real-time browser demos with a body cap of ~20 the semi-implicit Euler step is usually sufficient. The UtiliHub simulator uses a fixed or clamped timestep so the integration stays stable even if the frame rate drops, and it applies the soft-collision repulsion inside the same force evaluation before the velocity update.
+        </p>
+        <p>
+          Numerical drift is inevitable: the figure-8 preset slowly leaves its exact periodic orbit after many minutes. That is expected and educational — it shows why production astrophysics codes use higher-order integrators and adaptive timesteps, while interactive toys prioritize responsiveness and visual clarity.
+        </p>
+
         <h2>Soft collisions</h2>
         <p>
           Hard sphere collisions require precise detection and impulse resolution, which can be expensive and visually abrupt. Soft collisions approximate contact by adding a strong short-range repulsion (or by temporarily boosting the softening) when the distance between centers falls below the sum of radii.
@@ -135,7 +153,7 @@ function NBodyGravityGuideEn() {
         <ol>
           <li>Computes pairwise gravitational accelerations with softening.</li>
           <li>Adds soft-collision repulsion when bodies overlap.</li>
-          <li>Integrates velocity and position with a fixed or clamped timestep.</li>
+          <li>Integrates velocity and position with a fixed or clamped timestep (semi-implicit Euler style).</li>
           <li>Applies the camera transform and draws trails (fade clear) + glowing bodies with specular highlights.</li>
         </ol>
         <p>
@@ -148,6 +166,9 @@ function NBodyGravityGuideEn() {
         </p>
         <p>
           <strong>Is the figure-8 preset exact?</strong> It uses the well-known initial conditions of the Chenciner–Montgomery figure-eight solution. Numerical integration introduces tiny drift over long times, but the characteristic path is clearly visible.
+        </p>
+        <p>
+          <strong>Why does energy slowly grow or shrink?</strong> Most simple integrators are not perfectly symplectic. Semi-implicit Euler keeps the error bounded for many orbits, but over minutes of real time you will see small drifts — an honest demonstration of numerical approximation.
         </p>
         <p>
           <strong>Does anything run on a server?</strong> No. All integration, drawing and PNG generation happen in the browser. Sharing a URL only shares the parameters.
