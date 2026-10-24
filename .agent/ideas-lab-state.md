@@ -16,13 +16,13 @@ last_closed_id: n-body-gravity-guide
 p_fixed: 0.35
 
 weights_core:
-  kits: 14
-  journeys: 11
-  games: 5
-  simulators: 3
-  studio-composition: 1
-  playgrounds: 6
-  quality-lift: 2
+  kits: 15
+  journeys: 1
+  games: 6
+  simulators: 4
+  studio-composition: 2
+  playgrounds: 7
+  quality-lift: 3
 
 weights_growth:
   traffic-bets: 3
@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive Waypoint River Journey (EN+ES): place and drag waypoints on a canvas to define a flowing river path of glowing particles or light. Adjust speed, width, bloom, particle density, gravity/wind influence, and optional attractors/repellers. Multiple layers or segments, fade trails, background modes. Pause, randomize path, keyboard shortcuts. PNG share with baked title + utilihub.com + waypoint count + URL deep-link for initial waypoints. Visual progression experience distinct from freehand composers or static sims. CWV-safe (particle cap, lazy route). Next-step before Adsterra. Adsterra spacing intact.
+id: waypoint-river-journey
+path_en: /waypoint-river-journey
+path_es: /es/waypoint-river-journey
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Previous project n-body-gravity-guide closed. Ready for next IDEATE.
+domain: journeys
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: both
+next_step_required: yes
+notes: Roll: U=0.62 ≥0.50 → CORE. Weighted sample total=42, selection in journeys range. last_closed search-magnets (GROWTH) no re-roll. Selected journeys→1, other CORE +1. Idea is concrete interactive path/progression with visual payoff, not catalog calculator. EN+ES routes planned.
 adsense-prep_runs: 3
 ```
 
