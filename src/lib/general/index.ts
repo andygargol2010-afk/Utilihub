@@ -101,6 +101,8 @@ import { BMI_CALCULATOR_TOOLS } from "./bmi-calculator-tool";
 import { METERS_TO_FEET_CONVERTER_TOOLS } from "./meters-to-feet-converter-tool";
 import { GEOMETRIC_MEAN_CALCULATOR_TOOLS } from "./geometric-mean-calculator-tool";
 import { PERCENTAGE_INCREASE_CALCULATOR_TOOLS } from "./percentage-increase-calculator-tool";
+import { PERCENTAGE_OF_NUMBER_CALCULATOR_TOOLS } from "./percentage-of-number-calculator-tool";
+import { CELSIUS_FAHRENHEIT_CONVERTER_TOOLS } from "./celsius-fahrenheit-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -206,4 +208,6 @@ export const GENERAL_TOOLS = [
   ...METERS_TO_FEET_CONVERTER_TOOLS,
   ...GEOMETRIC_MEAN_CALCULATOR_TOOLS,
   ...PERCENTAGE_INCREASE_CALCULATOR_TOOLS,
+  ...PERCENTAGE_OF_NUMBER_CALCULATOR_TOOLS,
+  ...CELSIUS_FAHRENHEIT_CONVERTER_TOOLS,
 ];
