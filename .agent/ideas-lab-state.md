@@ -68,11 +68,11 @@ path_es: /es
 path_seo: n/a
 domain: traffic-bets
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: both
 next_step_required: no
-notes: Roll GROWTH FIXED → traffic-bets (U=0.1346, U_g=0.1726, equal weights). Prefer analytics findings (visitantes ↓). Bet en shares → referrals. No weight updates (FIXED).
+notes: Roll GROWTH FIXED → traffic-bets (U=0.1346, U_g=0.1726, equal weights). Prefer analytics findings (visitantes ↓). Bet en shares → referrals. No weight updates (FIXED). EXECUTE 1/4: creado ExperienceShareButton (Web Share + clipboard + share_click), integrado en cards del ExperienceDiscoveryRail (home EN+ES) y headers de aurora-particle-playground EN+ES. Próximos: top experiences restantes (neon, n-body, color-cascade, prism/aura).
 adsense-prep_runs: 3
 ```
 
