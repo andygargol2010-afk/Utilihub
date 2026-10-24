@@ -3,10 +3,11 @@ import { ColorCascadeFusionGame } from "@/components/games/ColorCascadeFusionGam
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
-const title = "Fusi\u00f3n Cascada de Color | UtiliHub";
+const title = "Fusión Cascada de Color | UtiliHub";
 const description = cleanDescription(
-  "Arcade interactivo: fusion\u00e1 orbes de colores que caen haciendo clic en coincidencias adyacentes. Constru\u00ed cadenas, puntu\u00e1 combos y compart\u00ed tu r\u00e9cord. Sin cuentas.",
+  "Arcade interactivo: fusioná orbes de colores que caen haciendo clic en coincidencias adyacentes. Construí cadenas, puntuá combos y compartí tu récord. Sin cuentas.",
 );
 
 export const Route = createFileRoute("/es/color-cascade-fusion")({
@@ -35,13 +36,25 @@ export const Route = createFileRoute("/es/color-cascade-fusion")({
 });
 
 function ColorCascadePageEs() {
+  const shareUrl = typeof window !== "undefined" ? window.location.href : absoluteUrl("/es/color-cascade-fusion");
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Juegos · Fusi\u00f3n arcade</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Fusi\u00f3n Cascada de Color</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Juegos · Fusión arcade</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Fusión Cascada de Color</h1>
+          </div>
+          <ExperienceShareButton
+            title="Fusión Cascada de Color"
+            url={shareUrl}
+            locale="es"
+            variant="button"
+            className="shrink-0"
+          />
+        </div>
         <p className="mt-3 text-muted-foreground">
-          Orbes de colores caen por gravedad. Hac\u00e9 clic en colores iguales adyacentes para fusionarlos en orbes m\u00e1s grandes, activar reacciones en cadena y subir la puntuaci\u00f3n. Los niveles aumentan la velocidad. Compart\u00ed tu mejor marca.
+          Orbes de colores caen por gravedad. Hacé clic en colores iguales adyacentes para fusionarlos en orbes más grandes, activar reacciones en cadena y subir la puntuación. Los niveles aumentan la velocidad. Compartí tu mejor marca.
         </p>
       </header>
       <ColorCascadeFusionGame locale="es" />
