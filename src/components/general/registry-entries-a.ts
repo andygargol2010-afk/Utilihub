@@ -43,4 +43,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-consumo-viaje", name: "TripFuelConsumptionCalculatorTool", path: "./TripFuelConsumptionCalculatorTool", export: "TripFuelConsumptionCalculatorTool" },
   { slug: "calculadora-horas-estudio", name: "StudyHoursCalculatorTool", path: "./StudyHoursCalculatorTool", export: "StudyHoursCalculatorTool" },
   { slug: "calculadora-dias-vacaciones", name: "VacationDaysCalculatorTool", path: "./VacationDaysCalculatorTool", export: "VacationDaysCalculatorTool" },
+  { slug: "calculadora-raiz-cuadrada", name: "SquareRootCalculatorTool", path: "./SquareRootCalculatorTool", export: "SquareRootCalculatorTool" },
+  { slug: "calculadora-media-armonica", name: "HarmonicMeanCalculatorTool", path: "./HarmonicMeanCalculatorTool", export: "HarmonicMeanCalculatorTool" },
 ] as const;
