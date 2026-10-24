@@ -45,4 +45,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-dias-vacaciones", name: "VacationDaysCalculatorTool", path: "./VacationDaysCalculatorTool", export: "VacationDaysCalculatorTool" },
   { slug: "calculadora-raiz-cuadrada", name: "SquareRootCalculatorTool", path: "./SquareRootCalculatorTool", export: "SquareRootCalculatorTool" },
   { slug: "calculadora-media-armonica", name: "HarmonicMeanCalculatorTool", path: "./HarmonicMeanCalculatorTool", export: "HarmonicMeanCalculatorTool" },
+  { slug: "calculadora-raiz-cubica", name: "CubeRootCalculatorTool", path: "./CubeRootCalculatorTool", export: "CubeRootCalculatorTool" },
+  { slug: "conversor-pulgadas-cm", name: "InchesToCmConverterTool", path: "./InchesToCmConverterTool", export: "InchesToCmConverterTool" },
 ] as const;
