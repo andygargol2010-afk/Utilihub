@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E014 green: registry kind-first, index.ts real exports, home no $(cat), no PLACEHOLDER, playgrounds full components) + discovery (sampled geometric-mean / percentage-increase tools, SolarSystemScaleExplorer, NBodyGravitySim, es.index; searched PLACEHOLDER/return null/$(cat) → 0 hits)
-- deploy: READY on SHA 3863db12801537274b1b83f6724461d3dcfcc823 (docs after E014 restore); prior ERROR on 24dddc71 fixed by 98b20ea
-- known_smoke: all fixed entries still green; no regression detected
-- new_findings: none (clean discovery sample across tools, playgrounds, routes, patterns)
+- mode: known smoke (E001–E014 green: registry kind-first + dedicated UIs, index.ts real exports GENERAL_CATEGORIES/GENERAL_TOOLS, home/index no $(cat), no PLACEHOLDER, playgrounds full components incl. NBody/Aurora/Neon/TextParticles) + discovery (sampled SolarSystemScaleExplorer, ConstellationNameMap, NBodyGravitySim full; searched PLACEHOLDER/return null/$(cat)/Tool not available → 0 hits; routes/index real)
+- deploy: READY on SHA 87567819ba5776a4a9d099e6baed94617b539142 (docs/ideas-lab); no ERROR/BUILDING
+- known_smoke: all fixed/recurring entries still green; no regression detected
+- new_findings: none (clean discovery sample across playgrounds, catalog index, registry, home routes, pattern searches)
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E014 general/index.ts (prior); this run rotated to broad pattern + sample outside catalog set
+- last_known_focus: E014 general/index.ts + playgrounds (this run); rotated broad pattern + sample outside prior set
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
