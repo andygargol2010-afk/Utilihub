@@ -4,13 +4,16 @@ import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeCatalogSlot } from "@/components/home-catalog-slot";
 import { AdBanner } from "@/components/AdBanner";
-import { ExperienceDiscoveryRail } from "@/components/ExperienceDiscoveryRail";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
 
 const loadHomeCatalog = () => import("@/components/home-catalog");
 const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeToolCount })));
 const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
 const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
+
+const ExperienceDiscoveryRail = lazy(() =>
+  import("@/components/ExperienceDiscoveryRail").then((m) => ({ default: m.ExperienceDiscoveryRail })),
+);
 
 const RANDOM_EXPERIENCES = [
   "/aurora-particle-playground",
@@ -183,7 +186,9 @@ function HomePage() {
           </div>
         </div>
       </section>
-      <ExperienceDiscoveryRail locale="en" />
+      <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden /> }>
+        <ExperienceDiscoveryRail locale="en" />
+      </Suspense>
       <section className="container-page py-6">
         <div className="rounded-2xl border border-border/60 bg-card/50 p-4 sm:p-5">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-cyan-600">Shareable Experiences</p>
