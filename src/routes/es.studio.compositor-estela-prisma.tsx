@@ -3,6 +3,7 @@ import { PrismTrailComposer } from "@/components/playgrounds/PrismTrailComposer"
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Compositor de Estela Prisma | UtiliHub";
 const description = cleanDescription(
@@ -35,11 +36,23 @@ export const Route = createFileRoute("/es/studio/compositor-estela-prisma")({
 });
 
 function CompositorEstelaPrismaPage() {
+  const shareUrl = typeof window !== "undefined" ? window.location.href : absoluteUrl("/es/studio/compositor-estela-prisma");
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">Estudio · Composición</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Estela Prisma</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">Estudio · Composición</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Estela Prisma</h1>
+          </div>
+          <ExperienceShareButton
+            title="Compositor de Estela Prisma"
+            url={shareUrl}
+            locale="es"
+            variant="button"
+            className="shrink-0"
+          />
+        </div>
         <p className="mt-3 text-muted-foreground">
           Dibujá trayectorias a mano alzada que se dividen en <strong className="font-semibold text-foreground">haces de refracción arcoíris</strong> con bloom en vivo, dispersión ajustable y velocidad de partículas. Las estelas persisten con resplandor colorido. Exportá un PNG compartible de tu composición de luz.
         </p>
