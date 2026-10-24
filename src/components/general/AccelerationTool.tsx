@@ -19,8 +19,8 @@ export function AccelerationTool({ locale = "en" }: { tool?: GeneralTool; locale
   const time = parseFloat(t) || 0;
 
   const accel = time > 0 ? (final - initial) / time : null;
-  const accelPrimary = accel !== null ? (unit === "metric" ? accel : accel * 3.28084) : null;
-  const accelSecondary = accel !== null ? (unit === "metric" ? accel * 3.28084 : accel) : null;
+  const accelPrimary = accel;
+  const accelSecondary = accel !== null ? (unit === "metric" ? accel * 3.28084 : accel / 3.28084) : null;
   const primaryUnit = unit === "metric" ? "m/s²" : "ft/s²";
   const secondaryUnit = unit === "metric" ? "ft/s²" : "m/s²";
 
