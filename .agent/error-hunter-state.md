@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E018 green: registry kind-first + dedicated wired incl. raiz-cuadrada/media-armonica, home routes clean no $(cat, catalog index full, playgrounds full no stubs) + discovery (home EN/ES, registry.tsx, general/index.ts, sample playground ConstellationNameMap, no PLACEHOLDER/$(cat/"not implemented" in src)
-- deploy: latest listed READY on fc0e5252 (post E018); tip SHA 9bcf555 (feat registry/index for new calcs) no deployment yet listed — no ERROR on branch
-- known_smoke: green (no open failures; fixed entries last_seen recent)
-- new_findings: none (sampled home, catalog index, dedicated wiring, playgrounds; patterns clean)
+- mode: known smoke (E001–E018 green: no PLACEHOLDER/$(cat, registry/index full, home routes clean, dedicated tools present) + discovery (sampled cube-root tool, index.ts complete with new exports, home index.tsx clean, no "not implemented"/PLACEHOLDER patterns in src, build READY)
+- deploy: tip SHA 300991788037f7ceefaca7db6e855cfdd72912af READY (post fix restore index + new tools); previous ERROR on 56471ba/3ac2676 fixed by tip
+- known_smoke: green (no open/recurring failures; all last_seen recent)
+- new_findings: none (patterns clean; new tools properly exported and structured)
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: home/routes + registry/catalog index + playgrounds sample (this run)
+- last_known_focus: catalog index + home routes + new dedicated tools sample (this run)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
