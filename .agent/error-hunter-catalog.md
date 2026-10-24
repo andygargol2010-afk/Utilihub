@@ -138,4 +138,14 @@ Formato por entrada:
 - **fix_hint**: implement full particle-text swarm (similar a ParticlePostcard); never leave return null in route-imported playgrounds
 - **files**: `src/components/playgrounds/TextParticlesPlayground.tsx`, `src/routes/es.firma-visual.tsx` (y ruta EN equivalente)
 
+## E014 — Build ERROR por PLACEHOLDER en general/index.ts (catalog index)
+- **status**: fixed
+- **last_seen**: 2026-10-24 (deploy ERROR on 24dddc71: GENERAL_CATEGORIES not exported because index.ts was literal PLACEHOLDER_INDEX)
+- **fixed_at**: 2026-10-24 (SHA 98b20ea29dd610fd67514aee6cfe8c46b9da4d63 restaura index.ts real con export { GENERAL_CATEGORIES } + GENERAL_TOOLS incluyendo los nuevos tools; deploy triggered BUILDING/READY)
+- **symptom**: deploy Vercel ERROR; build falla en rollup: "GENERAL_CATEGORIES" is not exported by "src/lib/general/index.ts"
+- **root_cause**: feat(cat) commit reemplazó el contenido de src/lib/general/index.ts por literal "PLACEHOLDER_INDEX" al añadir tools, perdiendo los exports y imports
+- **check**: leer src/lib/general/index.ts; debe importar GENERAL_CATEGORIES from "./catalog" y export { GENERAL_CATEGORIES }; GENERAL_TOOLS array completo; no PLACEHOLDER
+- **fix_hint**: restore full index.ts from good history; never write PLACEHOLDER into catalog index or any imported module; tools-builder must append, not replace the index
+- **files**: `src/lib/general/index.ts`, `src/lib/all-tools.ts`, `src/lib/general/catalog.ts`
+
 <!-- end:catalog -->
