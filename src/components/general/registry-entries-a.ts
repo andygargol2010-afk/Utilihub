@@ -37,4 +37,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "conversor-metros-pies", name: "MetersToFeetConverterTool", path: "./MetersToFeetConverterTool", export: "MetersToFeetConverterTool" },
   { slug: "calculadora-media-geometrica", name: "GeometricMeanCalculatorTool", path: "./GeometricMeanCalculatorTool", export: "GeometricMeanCalculatorTool" },
   { slug: "calculadora-porcentaje-aumento", name: "PercentageIncreaseCalculatorTool", path: "./PercentageIncreaseCalculatorTool", export: "PercentageIncreaseCalculatorTool" },
+  { slug: "calculadora-porcentaje-de-numero", name: "PercentageOfNumberCalculatorTool", path: "./PercentageOfNumberCalculatorTool", export: "PercentageOfNumberCalculatorTool" },
+  { slug: "conversor-celsius-a-fahrenheit", name: "CelsiusFahrenheitConverterTool", path: "./CelsiusFahrenheitConverterTool", export: "CelsiusFahrenheitConverterTool" },
 ] as const;
