@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E017 green: registry, home, playgrounds, catalog index clean) + discovery (deploy ERROR logs → slug duplicado)
-- deploy: tip SHA 4107c236 READY (post-fix unique slug); previous ERROR by duplicate calculadora-descuento-porcentaje
-- known_smoke: green (no open failures)
-- new_findings: E018 — build ERROR slug duplicado calculadora-descuento-porcentaje in two dedicated tool files (validator scans all makeTool)
-- fixes: 1 (percentage-discount-calculator-tool.ts slug → calculadora-porcentaje-descuento; SHA 4107c236)
+- mode: known smoke (E001–E018 green: registry kind-first + dedicated wired incl. raiz-cuadrada/media-armonica, home routes clean no $(cat, catalog index full, playgrounds full no stubs) + discovery (home EN/ES, registry.tsx, general/index.ts, sample playground ConstellationNameMap, no PLACEHOLDER/$(cat/"not implemented" in src)
+- deploy: latest listed READY on fc0e5252 (post E018); tip SHA 9bcf555 (feat registry/index for new calcs) no deployment yet listed — no ERROR on branch
+- known_smoke: green (no open failures; fixed entries last_seen recent)
+- new_findings: none (sampled home, catalog index, dedicated wiring, playgrounds; patterns clean)
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: catalog validator / duplicate slugs (this run, fixed E018); next rotate to education/dev tools or games/studio sample
+- last_known_focus: home/routes + registry/catalog index + playgrounds sample (this run)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
