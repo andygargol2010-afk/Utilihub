@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E016 green: registry kind-first no PLACEHOLDER, playgrounds NBody/Aurora/Neon/PulseCatch full, home index/es.index clean no $(cat)/DeferredReviews, catalog index full) + discovery (games catalog + es.juegos.$slug route; cocina.ts numeric ops; PulseCatch full canvas; NeonLayer full; no stubs/PLACEHOLDER)
-- deploy: tip READY (6f330252 on utilihub-4g4oiy51m-... and git-fix-spanish-complete alias); prior ERRORs resolved
-- known_smoke: green (recurring E010–E012 passed full checks; fixed smokes brief green)
-- new_findings: none (sampled games + cocina + playgrounds outside previous text focus; all real components)
+- mode: known smoke (E001–E016 green: registry kind-first no PLACEHOLDER, media.ts kinds image/pdf + MediaTool file upload, modeler3d-app → Modeler3DStudio, registry-3d routes casas vs general, home index clean, playgrounds full, catalog index full) + discovery (media tools + 3D studios outside previous games/cocina focus; all real components, no stubs)
+- deploy: tip READY (3d564918 on utilihub-2dwn8t0tn-... and git-fix-spanish-complete alias); prior ERRORs resolved
+- known_smoke: green (recurring E010–E012 passed; fixed smokes brief green; E002/E004 reconfirmed on media/3D)
+- new_findings: none (sampled media image/pdf tools + modeler3d/HouseModeler separation; routing and components real)
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: games + cocina/lifestyle dedicated + PulseCatch/Neon (this run, green); next rotate to media/image tools or 3D studios/modeler
+- last_known_focus: media/image + 3D studios/modeler (this run, green); next rotate to text/code tools or finance/education dedicated
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
