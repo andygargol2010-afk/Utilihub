@@ -27,13 +27,13 @@ weights_core:
 weights_growth:
   traffic-bets: 3
   search-magnets: 3
-  growth-surfaces: 9
-  share-hooks: 1
-  retention-loops: 3
-  conversion-paths: 9
-  traffic-diagnosis: 2
-  adsense-prep: 7
-  seo-locales: 6   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  growth-surfaces: 1
+  share-hooks: 2
+  retention-loops: 4
+  conversion-paths: 10
+  traffic-diagnosis: 3
+  adsense-prep: 8
+  seo-locales: 7   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 3
 ```
@@ -60,7 +60,20 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Horizontal discovery rail on home (EN+ES) surfacing interactive experiences (playgrounds, studios, games, simulators) with category chips, hover previews or short descriptions, randomize shuffle, and deep links. Improves discovery beyond the existing Random Experience button and Featured tools/games section without adding heavy assets or new pages. Keeps Adsterra spacing intact.
+id: experience-discovery-rail
+path_en: /
+path_es: /es
+path_seo: n/a
+domain: growth-surfaces
+runs_total: 4
+runs_remaining: 4
+acceptance: pending
+share: n/a
+next_step_required: no
+notes: Roll: U=0.37 <0.50 → GROWTH. U_g=0.48 >0.35 → FLEX urn. Weighted sample selected growth-surfaces (weight 9 / total FLEX ~37). last_closed studio-composition (CORE) no re-roll. Idea is concrete shippable discovery UI on existing home. Weights: selected→1, other non-FIXED +1. seo-locales still active (1/5 pt).
+adsense-prep_runs: 3
 ```
 
 <!-- end:ideas-lab-state.md -->
