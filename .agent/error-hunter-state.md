@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E016 green: registry no PLACEHOLDER, home index clean imports, playgrounds full, catalog index full, no $(cat)/PLACEHOLDER) + discovery (text/finance/health dedicated tools: contador-silabas, calculadora-roi, calculadora-imc)
-- deploy: tip pre-fix READY; post-fix SHA 39b8d2e5 pending verify
-- known_smoke: green (E010–E012 recurring passed brief; fixed smokes ok; no open)
-- new_findings: E017 — dedicated *CalculatorTool/*CounterTool not wired in pickComponent → generic TextTool/MathTool throws "not implemented"
-- fixes: 1 (registry.tsx: +3 lazy + slug ifs for SyllableCounter, RoiCalculator, BmiCalculator; SHA 39b8d2e5)
+- mode: known smoke (E001–E017 green: registry wired dedicateds, home index clean, playgrounds full no stub, catalog index full no PLACEHOLDER, no $(cat)) + discovery (sampled NeonLayerComposer full canvas, home route clean, general/index.ts full exports)
+- deploy: previous SHAs (aa157b85, b939e90, 39b8d2e5) ERROR by duplicate slug calculadora-descuento; fixed in 71763fa (unique calculadora-descuento-porcentaje); tip f2f2fce pending verify
+- known_smoke: green (no open/recurring failures; E010–E012 passed brief)
+- new_findings: none (discovery path clean; no new PLACEHOLDER, broken imports, or unwired dedicateds in sample)
+- fixes: 0 (checks OK this run)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: text/finance/health dedicated routing (this run, fixed partial); next rotate to more unlisted dedicateds or education/dev tools
+- last_known_focus: playgrounds/home/catalog integrity (this run green); next rotate to education/dev tools or games/studio sample
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
