@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Boost de tráfico medible vía shareability de experiencias interactivas. Añadir botones prominentes de Web Share API + copiar enlace (con texto custom y data-event 'share_click') en las top 5 experiencias (playgrounds/games/sims). Teaser en home "Experiencias compartibles" con deep-links. Apuesta en aumento de tráfico referral orgánico/social. Basado en diagnóstico previo (visitantes bajos, pageviews estables). EN+ES. CWV-safe (eventos ligeros, no assets pesados). Adsterra intacto.
+id: shareable-experiences-boost
+path_en: /
+path_es: /es
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: done
-share: n/a
+domain: traffic-bets
+runs_total: 4
+runs_remaining: 4
+acceptance: pending
+share: both
 next_step_required: no
-notes: Closed experience-discovery-rail. Next run will IDEATE.
+notes: Roll GROWTH FIXED → traffic-bets (U=0.1346, U_g=0.1726, equal weights). Prefer analytics findings (visitantes ↓). Bet en shares → referrals. No weight updates (FIXED).
 adsense-prep_runs: 3
 ```
 
