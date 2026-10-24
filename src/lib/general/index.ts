@@ -111,6 +111,8 @@ import { CUBE_ROOT_CALCULATOR_TOOLS } from "./cube-root-calculator-tool";
 import { INCHES_TO_CM_CONVERTER_TOOLS } from "./inches-to-cm-converter-tool";
 import { WORK_BREAK_RATIO_CALCULATOR_TOOLS } from "./work-break-ratio-calculator-tool";
 import { RICE_WATER_CALCULATOR_TOOLS } from "./rice-water-calculator-tool";
+import { YARDS_TO_METERS_CONVERTER_TOOLS } from "./yards-to-meters-converter-tool";
+import { DAILY_SPENDING_CALCULATOR_TOOLS } from "./daily-spending-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -226,4 +228,6 @@ export const GENERAL_TOOLS = [
   ...INCHES_TO_CM_CONVERTER_TOOLS,
   ...WORK_BREAK_RATIO_CALCULATOR_TOOLS,
   ...RICE_WATER_CALCULATOR_TOOLS,
+  ...YARDS_TO_METERS_CONVERTER_TOOLS,
+  ...DAILY_SPENDING_CALCULATOR_TOOLS,
 ];

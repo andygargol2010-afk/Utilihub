@@ -49,4 +49,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "conversor-pulgadas-cm", name: "InchesToCmConverterTool", path: "./InchesToCmConverterTool", export: "InchesToCmConverterTool" },
   { slug: "calculadora-ratio-trabajo-descanso", name: "WorkBreakRatioCalculatorTool", path: "./WorkBreakRatioCalculatorTool", export: "WorkBreakRatioCalculatorTool" },
   { slug: "calculadora-agua-arroz", name: "RiceWaterCalculatorTool", path: "./RiceWaterCalculatorTool", export: "RiceWaterCalculatorTool" },
+  { slug: "conversor-yardas-metros", name: "YardsToMetersConverterTool", path: "./YardsToMetersConverterTool", export: "YardsToMetersConverterTool" },
+  { slug: "calculadora-gasto-diario", name: "DailySpendingCalculatorTool", path: "./DailySpendingCalculatorTool", export: "DailySpendingCalculatorTool" },
 ] as const;
