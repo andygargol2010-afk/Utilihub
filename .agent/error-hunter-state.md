@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E015 green: registry kind-first image/pdf/document, home no $(cat)/DeferredReviews, index full, playgrounds full canvas, no PLACEHOLDER) + discovery (media tools kind=image/pdf route to MediaTool; games registry complete with fallback; NBody full; no stubs; minor soft warning unknown secondary password-strength in category-catalog)
-- deploy: READY (latest dpl_C7myqCj8bZN8vCQJdEhX11AFUVMW on bda6eabae39000c37c6d0e0ce0cd72f6f84a08e2)
-- known_smoke: green (all fixed/recurring passed checks)
-- new_findings: minor catalog integrity soft-warning for unknown secondary category tool "password-strength" (in SECONDARY_CATEGORY_MAP but no makeTool; ignored, no user impact)
-- fixes: 0
+- mode: known smoke (E001–E015 green: registry kind-first, no PLACEHOLDER/$(cat), playgrounds full, home ok) + discovery (new guide routes caused Vercel ERROR on JSX unescaped > "N > 2"; already reworded to "greater than"/"mayor que" in tip 804dc17 / 65c1e4d etc.)
+- deploy: ERROR on previous SHAs (1e0f87b and feat commits) due to E016; tip 804dc17 (fix) + this docs not yet deployed (list shows only prior ERROR/READY)
+- known_smoke: green (all fixed/recurring passed checks; registry, index, playgrounds, home)
+- new_findings: E016 — Build ERROR por > sin escapar en JSX de guía N-body (fixed already by rewording; added to catalog)
+- fixes: 0 (code already fixed; only docs updated)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: media/image + games components (this run, green); next rotate to studios/3d or text tools
+- last_known_focus: studios/3d + new guides (this run, green + E016 catalogued); next rotate to text tools or games
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
