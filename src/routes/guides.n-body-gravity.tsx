@@ -141,6 +141,23 @@ function NBodyGravityGuideEn() {
           Each preset can be loaded instantly and then modified. The resulting state is serializable into the URL so a share link reconstructs the exact initial conditions.
         </p>
 
+        <h2>Building a circular binary by hand</h2>
+        <p>
+          A clean circular binary is a great way to understand the force balance. For two equal masses M orbiting their common center of mass at separation a (so each is at distance a/2 from the CM):
+        </p>
+        <p className="text-center font-mono">
+          v = sqrt(G · M / a)
+        </p>
+        <p>
+          Each body moves perpendicular to the line joining them, in opposite directions, with that speed. The centripetal acceleration v² / (a/2) is supplied exactly by the gravitational acceleration G·M / a².
+        </p>
+        <p>
+          In the UtiliHub simulator the Binary stars preset loads essentially this configuration (softened slightly for numerical comfort). You can recreate it manually: place two equal-mass bodies, give them equal-and-opposite tangential velocities of the right magnitude, and watch a stable orbit. If the speed is a bit low the orbit becomes elliptical; if too high the bodies fly apart. Softening and the finite timestep make the “perfect” circular speed slightly different from the pure Newtonian formula — another educational reminder of the approximations we accept for interactivity.
+        </p>
+        <p>
+          Try it, then compare with the one-click preset. The difference between “I tuned the numbers” and “the library did it” is exactly the kind of insight this guide is meant to give.
+        </p>
+
         <h2>Camera: zoom, pan and pinch</h2>
         <p>
           A world-to-screen transform lets users explore large systems. Zoom is applied with the mouse wheel or pinch gesture; pan is a drag. The transform is stored as a scale and offset and is applied both when projecting body positions for drawing and when converting pointer coordinates back to world space for adding new bodies.
@@ -189,6 +206,9 @@ function NBodyGravityGuideEn() {
         </p>
         <p>
           <strong>Why is the body count limited?</strong> Pairwise force evaluation is O(N²). Capping around 20 bodies keeps the frame time comfortable on phones while still allowing rich multi-body dynamics.
+        </p>
+        <p>
+          <strong>What does the softening parameter actually do?</strong> It replaces the true 1/r² singularity with a rounded potential that stays finite at r = 0. Small softening keeps close encounters dramatic; larger softening makes the system more “sticky” and less explosive. The simulator chooses a value that looks good with the body radii used for soft collisions.
         </p>
 
         <h2>Related experiences</h2>
