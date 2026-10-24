@@ -103,6 +103,8 @@ import { GEOMETRIC_MEAN_CALCULATOR_TOOLS } from "./geometric-mean-calculator-too
 import { PERCENTAGE_INCREASE_CALCULATOR_TOOLS } from "./percentage-increase-calculator-tool";
 import { PERCENTAGE_OF_NUMBER_CALCULATOR_TOOLS } from "./percentage-of-number-calculator-tool";
 import { CELSIUS_FAHRENHEIT_CONVERTER_TOOLS } from "./celsius-fahrenheit-converter-tool";
+import { STUDY_HOURS_CALCULATOR_TOOLS } from "./study-hours-calculator-tool";
+import { VACATION_DAYS_CALCULATOR_TOOLS } from "./vacation-days-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -210,4 +212,6 @@ export const GENERAL_TOOLS = [
   ...PERCENTAGE_INCREASE_CALCULATOR_TOOLS,
   ...PERCENTAGE_OF_NUMBER_CALCULATOR_TOOLS,
   ...CELSIUS_FAHRENHEIT_CONVERTER_TOOLS,
+  ...STUDY_HOURS_CALCULATOR_TOOLS,
+  ...VACATION_DAYS_CALCULATOR_TOOLS,
 ];

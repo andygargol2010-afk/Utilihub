@@ -41,4 +41,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "conversor-celsius-a-fahrenheit", name: "CelsiusFahrenheitConverterTool", path: "./CelsiusFahrenheitConverterTool", export: "CelsiusFahrenheitConverterTool" },
   { slug: "calculadora-descuento", name: "PercentageDiscountCalculatorTool", path: "./PercentageDiscountCalculatorTool", export: "PercentageDiscountCalculatorTool" },
   { slug: "calculadora-consumo-viaje", name: "TripFuelConsumptionCalculatorTool", path: "./TripFuelConsumptionCalculatorTool", export: "TripFuelConsumptionCalculatorTool" },
+  { slug: "calculadora-horas-estudio", name: "StudyHoursCalculatorTool", path: "./StudyHoursCalculatorTool", export: "StudyHoursCalculatorTool" },
+  { slug: "calculadora-dias-vacaciones", name: "VacationDaysCalculatorTool", path: "./VacationDaysCalculatorTool", export: "VacationDaysCalculatorTool" },
 ] as const;
