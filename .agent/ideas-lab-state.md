@@ -27,13 +27,13 @@ weights_core:
 weights_growth:
   traffic-bets: 3
   search-magnets: 3
-  growth-surfaces: 1
-  share-hooks: 3
-  retention-loops: 5
-  conversion-paths: 11
-  traffic-diagnosis: 4
-  adsense-prep: 9
-  seo-locales: 8   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  growth-surfaces: 2
+  share-hooks: 4
+  retention-loops: 6
+  conversion-paths: 1
+  traffic-diagnosis: 5
+  adsense-prep: 10
+  seo-locales: 9   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 3
 ```
@@ -60,7 +60,20 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Mejorar las rutas de conversión desde la home hacia experiencias interactivas de alto valor. Añadir una sección ligera de "Ruta de valor" / "Value Path" en home EN+ES que destaque 2-3 experiencias destacadas (basadas en discovery rail o random) con CTAs claros, micro-progress (ej. "1 de 3 exploradas" local), deep-links y data-events para medir clicks. Sin nuevos assets pesados. Objetivo: aumentar pageviews de experiencias desde home sin afectar CWV ni Adsterra.
+id: home-value-path-boost
+path_en: /
+path_es: /es/
+path_seo: n/a
+domain: conversion-paths
+runs_total: 4
+runs_remaining: 4
+acceptance: pending
+share: n/a
+next_step_required: no
+notes: Roll: U=0.47 <0.50 → GROWTH; U_g=0.71 >0.35 → FLEX urn. Selected conversion-paths (weight set to 1, other FLEX +1). Distinct from recent growth-surfaces (discovery rail) and traffic-bets (random button). Focus on conversion depth from home entry.
+adsense-prep_runs: 3
 ```
 
 <!-- end:ideas-lab-state.md -->
