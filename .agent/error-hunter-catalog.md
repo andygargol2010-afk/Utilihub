@@ -25,7 +25,7 @@ Formato por entrada:
 
 ## E002 — Image/PDF tools muestran calculadora numérica
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-24 (kind-first en pickComponent presente)
+- **last_seen**: 2026-10-24 (media.ts kind:"image"/"pdf"; MediaTool file upload + process; pickComponent kind-first MediaToolUi)
 - **symptom**: PNG a JPG / Comprimir imagen piden "Primer valor / Segundo valor / Calcular" en vez de subir archivo
 - **root_cause**: routing por kind incorrecto; tools `image`/`pdf` no van a MediaTool/DocumentTool
 - **check**: kind de slugs image/pdf en catalog; pickComponent / DeferredToolUi prioriza kind Media/Document
@@ -43,7 +43,7 @@ Formato por entrada:
 
 ## E004 — modelador-3d carga House Modeler
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-24
+- **last_seen**: 2026-10-24 (modeler3d-app.tsx → Modeler3DStudio; registry-3d.tsx slug modelador-casas-3d → HouseModeler3D else Modeler3D)
 - **symptom**: página "Modelador 3D" muestra UI de casas (paredes, terreno, "Modelador de casas 3D")
 - **root_cause**: `modeler3d-app.tsx` reexportaba `HouseModeler3D` en vez de `Modeler3DStudio`
 - **check**: `modeler3d-app` → Modeler3DStudio; `registry-3d` slug `modelador-casas-3d` → House; `modelador-3d` → Modeler3D
