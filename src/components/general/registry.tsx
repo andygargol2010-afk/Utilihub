@@ -138,6 +138,12 @@ const RoiCalculatorToolUi = lazy(() =>
 const BmiCalculatorToolUi = lazy(() =>
   import("./BmiCalculatorTool").then((m) => ({ default: m.BmiCalculatorTool })),
 );
+const SquareRootCalculatorToolUi = lazy(() =>
+  import("./SquareRootCalculatorTool").then((m) => ({ default: m.SquareRootCalculatorTool })),
+);
+const HarmonicMeanCalculatorToolUi = lazy(() =>
+  import("./HarmonicMeanCalculatorTool").then((m) => ({ default: m.HarmonicMeanCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -167,6 +173,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "contador-silabas") return SyllableCounterToolUi;
   if (slug === "calculadora-roi") return RoiCalculatorToolUi;
   if (slug === "calculadora-imc") return BmiCalculatorToolUi;
+  if (slug === "calculadora-raiz-cuadrada") return SquareRootCalculatorToolUi;
+  if (slug === "calculadora-media-armonica") return HarmonicMeanCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
