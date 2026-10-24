@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: growth-surfaces
-last_closed_id: experience-discovery-rail
+last_closed_domain: traffic-bets
+last_closed_id: shareable-experiences-boost
 p_fixed: 0.35
 
 weights_core:
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-24 | traffic-bets | shareable-experiences-boost | Shareability boost complete: ExperienceShareButton (Web Share API + clipboard + data-event share_click) on top experiences headers EN+ES (aurora, neon-layer, n-body, color-cascade, prism-trail, aura-card) + cards in ExperienceDiscoveryRail. Home teaser "Shareable Experiences" / "Experiencias compartibles" with deep-links. EN+ES. CWV-safe (light events, no heavy assets). Adsterra intact. Closed after 4 runs. Bet on referral traffic from shares.
 - 2026-10-24 | growth-surfaces | experience-discovery-rail | Horizontal discovery rail on home EN+ES complete: category chips, deterministic shuffle, horizontal snap cards with short desc + deep links, category gradient previews + icons, scroll chevrons + fade edges, keyboard (arrows/S), data-events. Surfaces 10 experiences. Lightweight CSS only, no heavy assets/deps. Improves discovery beyond Random Experience button. EN+ES. CWV-safe. Closed after 4 runs. Adsterra intact.
 - 2026-10-23 | studio-composition | neon-layer-composer | Interactive Neon Layer Composer complete: freehand multi-layer neon canvas, bloom, symmetry (mirror/radial/kaleido), continuous + stroke particle emitters with gravity/wind, pointer force attract/repel, particle lifetime + size, bg modes (void/glow/grid), layer opacity/fade, title overlay, PNG share with branding, URL deep-link, pause + keyboard (Space/C/U/R), randomize. EN+ES. CWV-safe (cap 280, lazy). Closed after 6 runs. Adsterra intact. Distinct from prism-trail.
 - 2026-10-23 | quality-lift | aurora-particle-playground | Elevated Aurora Particle Playground complete: multi-mode (ribbon/orb/vortex) bloom systems with adjustable persistent fading trails (trail length 4-24), attract/repel polarity + dynamic pointer force, additive lighter compositing, density/speed/bloom/gravity/wind, emitters (place/drag/remove, cap 8), palettes, randomize, pause, PNG share with baked title+utilihub.com+settings+trail, URL deep-link. Sets elevated standard above GravityParticlesPlayground (basic orbits) and ParticleMagnetLab (polarity/arrows) in layered multi-mode bloom delight + interactive emission + trail control. EN+ES. CWV-safe (cap 300, lazy). Closed after 7 runs. Adsterra intact. Bar moved permanently.
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-22 | traffic-bets | random-experience-entry | Prominent Random Experience / Experiencia aleatoria button on home EN+ES: redirects to random curated interactive (aurora, pulse-catch, prism-trail, color-cascade, solar-system, daily-progress, return-streak). data-event for analytics. Increases session depth without new content. Adsterra intact, CWV-safe (light onClick).
 - 2026-10-22 | studio-composition | prism-trail-composer | Interactive Prism Trail Composer complete: freehand multi-layer rainbow prism trails, bloom, schemes, mirrors, gravity, fade, backgrounds, smooth, title overlay baked in PNG + randomize controls, PNG share (EN+ES)
 - 2026-10-21 | games | color-cascade-fusion | Interactive Color Cascade Fusion complete: adjacent fusion, power-orbs, combo streaks, progressive difficulty, Web Audio sounds, game-over overlay with new-best celebration + PNG share (EN+ES)
-- 2026-10-21 | retention-loops | daily-progress-constellation | Interactive Daily Progress Constellation complete: canvas stars + lines + name baked in PNG + milestones + reset + hover tooltips + editable name (EN+ES)
 ```
 
 ---
@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Boost de tráfico medible vía shareability de experiencias interactivas. Añadir botones prominentes de Web Share API + copiar enlace (con texto custom y data-event 'share_click') en las top 5 experiencias (playgrounds/games/sims). Teaser en home "Experiencias compartibles" con deep-links. Apuesta en aumento de tráfico referral orgánico/social. Basado en diagnóstico previo (visitantes bajos, pageviews estables). EN+ES. CWV-safe (eventos ligeros, no assets pesados). Adsterra intacto.
-id: shareable-experiences-boost
-path_en: /
-path_es: /es
-path_seo: n/a
-domain: traffic-bets
-runs_total: 4
-runs_remaining: 1
-acceptance: pending
-share: both
-next_step_required: no
-notes: Roll GROWTH FIXED → traffic-bets (U=0.1346, U_g=0.1726, equal weights). Prefer analytics findings (visitantes ↓). Bet en shares → referrals. No weight updates (FIXED). EXECUTE 1/4: creado ExperienceShareButton (Web Share + clipboard + share_click), integrado en cards del ExperienceDiscoveryRail (home EN+ES) y headers de aurora-particle-playground EN+ES. EXECUTE 2/4: botones en headers de neon-layer-composer y n-body-gravity EN+ES. EXECUTE 3/4: botones en headers de color-cascade-fusion y prism-trail-composer EN+ES. Próximo: aura-card + teaser home si falta; luego close.
+status: none
+idea: 
+id: 
+path_en: 
+path_es: 
+path_seo: 
+domain: 
+runs_total: 0
+runs_remaining: 0
+acceptance: 
+share: 
+next_step_required: 
+notes: Previous closed: shareable-experiences-boost (traffic-bets FIXED). Ready for next IDEATE roll.
 adsense-prep_runs: 3
 ```
 
