@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-23 (HEAD after 3584304b)
-- mode: known smoke (E001–E012 green / recurring OK) + discovery (sampled small playground files → TextParticlesPlayground stub)
-- deploy: prior READY on 457a9ebf; new fix pushed
-- known_smoke: E010/E011 full bodies present; registry/home clean; no PLACEHOLDER
-- new_findings: E013 — TextParticlesPlayground was return-null stub (breaking /es/firma-visual); restored full text-particle swarm + shares
-- fixes: 1 (TextParticlesPlayground.tsx restore, commit 3584304b)
+- date: 2026-10-23
+- mode: known smoke (E001–E013 green; E010/E011 full) + discovery (sampled GravityParticlesPlayground, ParticlePostcard, EchoWaveSignature, FireworkSignature — all full real components)
+- deploy: READY on 6233347302a8017245371057076d0f3f44cefca5
+- known_smoke: no PLACEHOLDER, no $(cat), home/index imports resolve, NBody full named export
+- new_findings: none (playgrounds outside catalog set are complete implementations)
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E013 TextParticlesPlayground (new discovery fixed)
+- last_known_focus: E013 TextParticlesPlayground (prior)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
