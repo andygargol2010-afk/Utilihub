@@ -3,6 +3,7 @@ import { AuroraParticlePlayground } from "@/components/playgrounds/AuroraParticl
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Playground de Partículas Aurora | UtiliHub";
 const description = cleanDescription(
@@ -35,11 +36,23 @@ export const Route = createFileRoute("/es/aurora-particle-playground")({
 });
 
 function AuroraParticlePageEs() {
+  const shareUrl = typeof window !== "undefined" ? window.location.href : absoluteUrl("/es/aurora-particle-playground");
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Playground · Compartible</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Playground de Partículas Aurora</h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Playground · Compartible</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Playground de Partículas Aurora</h1>
+          </div>
+          <ExperienceShareButton
+            title="Playground de Partículas Aurora"
+            url={shareUrl}
+            locale="es"
+            variant="button"
+            className="shrink-0"
+          />
+        </div>
         <p className="mt-3 text-muted-foreground">
           Colocá y arrastrá atractores magnéticos en el canvas abierto. Las partículas forman <strong className="font-semibold text-foreground">cintas de aurora brillantes y fluidas</strong> con estelas persistentes que responden en tiempo real.
           Ajustá densidad, velocidad de flujo, desplazamiento de tono y turbulencia — luego compartí el enlace o descargá un PNG.
