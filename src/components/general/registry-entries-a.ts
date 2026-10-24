@@ -33,4 +33,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "conversor-bytes", name: "BytesConverterTool", path: "./BytesConverterTool", export: "BytesConverterTool" },
   { slug: "calculadora-moda", name: "ModeCalculatorTool", path: "./ModeCalculatorTool", export: "ModeCalculatorTool" },
   { slug: "calculadora-horas-sueno", name: "SleepHoursCalculatorTool", path: "./SleepHoursCalculatorTool", export: "SleepHoursCalculatorTool" },
+  { slug: "calculadora-imc", name: "BmiCalculatorTool", path: "./BmiCalculatorTool", export: "BmiCalculatorTool" },
+  { slug: "conversor-metros-pies", name: "MetersToFeetConverterTool", path: "./MetersToFeetConverterTool", export: "MetersToFeetConverterTool" },
 ] as const;

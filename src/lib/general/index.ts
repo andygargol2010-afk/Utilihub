@@ -97,6 +97,8 @@ import { GOLDEN_RATIO_CALCULATOR_TOOLS } from "./golden-ratio-calculator-tool";
 import { TEXT_TO_SLUG_CONVERTER_TOOLS } from "./text-to-slug-converter-tool";
 import { MODE_CALCULATOR_TOOLS } from "./mode-calculator-tool";
 import { SLEEP_HOURS_CALCULATOR_TOOLS } from "./sleep-hours-calculator-tool";
+import { BMI_CALCULATOR_TOOLS } from "./bmi-calculator-tool";
+import { METERS_TO_FEET_CONVERTER_TOOLS } from "./meters-to-feet-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -198,4 +200,6 @@ export const GENERAL_TOOLS = [
   ...TEXT_TO_SLUG_CONVERTER_TOOLS,
   ...MODE_CALCULATOR_TOOLS,
   ...SLEEP_HOURS_CALCULATOR_TOOLS,
+  ...BMI_CALCULATOR_TOOLS,
+  ...METERS_TO_FEET_CONVERTER_TOOLS,
 ];

@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-23 | conversiones | conversor-metros-pies | MetersToFeetConverterTool
+- 2026-10-23 | salud | calculadora-imc | BmiCalculatorTool
 - 2026-10-23 | educacion | calculadora-moda | ModeCalculatorTool
 - 2026-10-23 | salud | calculadora-horas-sueno | SleepHoursCalculatorTool
 - 2026-10-23 | conversiones | conversor-bytes | BytesConverterTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-23 | texto | conversor-texto-slug | TextToSlugConverterTool
 - 2026-10-23 | finanzas | calculadora-aumento-salarial | SalaryRaiseCalculatorTool
 - 2026-10-23 | hogar | calculadora-consumo-gas | GasConsumptionCalculatorTool
-- 2026-10-23 | conversiones | conversor-millas-km | MilesToKmConverterTool
-- 2026-10-23 | matematicas | calculadora-perimetro-cuadrado | SquarePerimeterCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -44,8 +44,8 @@ hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-ga
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado)
-conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes)
-salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno)
+conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies)
+salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial)
 productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto)
@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-23 PRODUCT: calculadora-moda (educacion) + calculadora-horas-sueno (salud). Two tools, distinct clusters. Registry entries added surgically. SEO locales: pt active but deferred.
-Previous: calculadora-perimetro-triangulo + conversor-bytes.
+2026-10-23 PRODUCT: calculadora-imc (salud) + conversor-metros-pies (conversiones). Two tools, distinct clusters. Registry entries added surgically. SEO locales: pt active but deferred.
+Previous: calculadora-moda + calculadora-horas-sueno.
 ```
 
 ---
@@ -73,7 +73,7 @@ Previous: calculadora-perimetro-triangulo + conversor-bytes.
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-moda, calculadora-horas-sueno
+last_slugs: calculadora-imc, conversor-metros-pies
 last_deploy: pending check after this commit
 last_sha: pending
 ```

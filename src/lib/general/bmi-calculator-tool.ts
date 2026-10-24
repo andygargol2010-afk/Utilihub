@@ -3,7 +3,7 @@ import { makeTool, faq } from "./types";
 const tool = makeTool(
   "calculadora-imc",
   "BMI Calculator",
-  "ciencia",
+  "salud",
   "calculator",
   "Calculate Body Mass Index (BMI) from weight and height. Instant classification underweight, normal, overweight or obese. Runs fully in the browser.",
   [
@@ -17,13 +17,14 @@ const tool = makeTool(
   {
     title: "BMI Calculator — Body Mass Index | UtiliHub",
     description:
-      "Free BMI calculator. Enter weight and height to get your Body Mass Index and category. Metric and imperial units. Local, private, no signup.",
+      "Free BMI calculator. Enter weight and height to get your Body Mass Index and category. Metric units. Local, private, no signup.",
+    summaryEs: "Calcula tu índice de masa corporal (IMC) a partir del peso y la altura. Clasificación instantánea.",
   },
 );
 tool.faq.push(
   faq(
     "How is BMI calculated?",
-    "BMI = weight (kg) / height (m)². With imperial units: BMI = 703 × weight (lb) / height (in)².",
+    "BMI = weight (kg) / height (m)².",
   ),
 );
 tool.faq.push(
