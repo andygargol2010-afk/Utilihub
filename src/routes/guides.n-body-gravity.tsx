@@ -158,6 +158,26 @@ function NBodyGravityGuideEn() {
           Try it, then compare with the one-click preset. The difference between “I tuned the numbers” and “the library did it” is exactly the kind of insight this guide is meant to give.
         </p>
 
+        <h2>Tuning G, softening, timestep and scale</h2>
+        <p>
+          The visual character of an N-body scene is controlled by a handful of free parameters. Getting them into the “interesting” range is more art than exact science, but a few rules of thumb keep the simulation educational rather than explosive or frozen.
+        </p>
+        <p>
+          <strong>Gravitational constant G.</strong> In pure Newtonian physics G is tiny (~6.67×10⁻¹¹). In a browser demo we treat G as a free scale factor. Too small and bodies barely move; too large and everything collapses or flings itself off-screen in a few frames. A practical starting point is to choose G so that a circular binary of the masses and separation you intend completes one orbit in roughly 2–4 seconds of real time. The simulator’s presets already embed a G that produces that cadence.
+        </p>
+        <p>
+          <strong>Softening ε.</strong> Softening rounds the 1/r² singularity. Set it comparable to a fraction of the typical body radius (or a few pixels in world units). Too small and close encounters produce huge spikes that the integrator cannot handle; too large and the force becomes almost constant at short range, making bodies “sticky” and orbits overly circular. Soft collisions and softening work together — the repulsion kicks in before the pure softened gravity becomes extreme.
+        </p>
+        <p>
+          <strong>Timestep Δt.</strong> The semi-implicit Euler step needs Δt small enough that the fastest orbital or collision motion is resolved by several steps. If the frame rate drops, the simulator clamps the effective Δt so energy does not explode. In practice a fixed Δt of 1/60 s (or slightly larger when the scene is quiet) is a good default. Adaptive timesteps are possible but add complexity that interactive toys usually skip.
+        </p>
+        <p>
+          <strong>World scale.</strong> Positions, velocities and radii must be consistent. If you place bodies tens of units apart but give them velocities measured in pixels, the motion looks wrong. The URL deep-link and presets keep everything in the same internal units; when you build a scene by hand, keep the numbers in the same ballpark as the presets you already like.
+        </p>
+        <p>
+          Common pitfalls: (1) velocities that make total energy strongly positive → immediate dispersal; (2) softening much smaller than body radii → numerical explosions on first contact; (3) Δt too large relative to orbital period → orbits spiral or precess wildly. The built-in presets avoid all three, which is why loading one and then tweaking is the fastest way to learn the trade-offs.
+        </p>
+
         <h2>Camera: zoom, pan and pinch</h2>
         <p>
           A world-to-screen transform lets users explore large systems. Zoom is applied with the mouse wheel or pinch gesture; pan is a drag. The transform is stored as a scale and offset and is applied both when projecting body positions for drawing and when converting pointer coordinates back to world space for adding new bodies.
