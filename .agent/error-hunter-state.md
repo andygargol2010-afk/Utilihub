@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-24
-- mode: known smoke (E001–E013 green on HEAD) + discovery (deploy ERROR on 24dddc71 due to PLACEHOLDER_INDEX in general/index.ts; fixed in 98b20ea)
-- deploy: ERROR on 24dddc713c4b826618ad8ee5a614b1fd1e62b935 (GENERAL_CATEGORIES not exported); triggered BUILDING on 98b20ea29dd610fd67514aee6cfe8c46b9da4d63 (fix restore); docs commit 01f72663
-- known_smoke: registry kind-first OK, home index/es.index no $(cat) + proper imports, no PLACEHOLDER in src, playgrounds no return-null stubs
-- new_findings: E014 — catalog index.ts replaced by PLACEHOLDER_INDEX by feat(cat) adding tools, causing rollup missing export (build ERROR). Already fixed by subsequent restore commit; catalog updated.
-- fixes: 0 (code already restored in 98b20ea; docs only)
+- mode: known smoke (E001–E014 green: registry kind-first, index.ts real exports, home no $(cat), no PLACEHOLDER, playgrounds full components) + discovery (sampled geometric-mean / percentage-increase tools, SolarSystemScaleExplorer, NBodyGravitySim, es.index; searched PLACEHOLDER/return null/$(cat) → 0 hits)
+- deploy: READY on SHA 3863db12801537274b1b83f6724461d3dcfcc823 (docs after E014 restore); prior ERROR on 24dddc71 fixed by 98b20ea
+- known_smoke: all fixed entries still green; no regression detected
+- new_findings: none (clean discovery sample across tools, playgrounds, routes, patterns)
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E014 general/index.ts PLACEHOLDER (this run)
+- last_known_focus: E014 general/index.ts (prior); this run rotated to broad pattern + sample outside catalog set
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
