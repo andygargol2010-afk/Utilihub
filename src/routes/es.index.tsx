@@ -11,6 +11,10 @@ const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.Hom
 const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
 const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
 
+const ExperienceDiscoveryRailLazy = lazy(() =>
+  import("@/components/ExperienceDiscoveryRail").then((m) => ({ default: m.ExperienceDiscoveryRail })),
+);
+
 const RANDOM_EXPERIENCES_ES = [
   "/es/aurora-particle-playground",
   "/es/pulse-catch",
@@ -202,7 +206,9 @@ function SpanishHome() {
         </div>
       </section>
 
-      <ExperienceDiscoveryRail locale="es" />
+      <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden /> }>
+        <ExperienceDiscoveryRailLazy locale="es" />
+      </Suspense>
 
       <section className="container-page py-6">
         <div className="rounded-2xl border border-border/60 bg-card/50 p-4 sm:p-5">
