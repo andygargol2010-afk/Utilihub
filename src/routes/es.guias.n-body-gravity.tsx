@@ -141,6 +141,23 @@ function NBodyGravityGuideEs() {
           Cada preset se puede cargar al instante y luego modificar. El estado resultante es serializable en la URL para que un enlace compartido reconstruya las condiciones iniciales exactas.
         </p>
 
+        <h2>Construir un binario circular a mano</h2>
+        <p>
+          Un binario circular limpio es una excelente forma de entender el equilibrio de fuerzas. Para dos masas iguales M orbitando su centro de masa común a una separación a (cada una a distancia a/2 del CM):
+        </p>
+        <p className="text-center font-mono">
+          v = sqrt(G · M / a)
+        </p>
+        <p>
+          Cada cuerpo se mueve perpendicular a la línea que los une, en direcciones opuestas, con esa velocidad. La aceleración centrípeta v² / (a/2) es suministrada exactamente por la aceleración gravitatoria G·M / a².
+        </p>
+        <p>
+          En el simulador de UtiliHub el preset de estrellas binarias carga esencialmente esta configuración (suavizada ligeramente para comodidad numérica). Puedes recrearlo manualmente: coloca dos cuerpos de masa igual, dales velocidades tangenciales iguales y opuestas de la magnitud correcta, y observa una órbita estable. Si la velocidad es un poco baja la órbita se vuelve elíptica; si es demasiado alta los cuerpos se separan. El suavizado y el paso de tiempo finito hacen que la velocidad circular “perfecta” sea ligeramente distinta de la fórmula newtoniana pura — otro recordatorio educativo de las aproximaciones que aceptamos por interactividad.
+        </p>
+        <p>
+          Pruébalo y luego compara con el preset de un clic. La diferencia entre “yo afiné los números” y “la biblioteca lo hizo” es exactamente el tipo de insight que esta guía pretende dar.
+        </p>
+
         <h2>Cámara: zoom, pan y pellizco</h2>
         <p>
           Una transformación mundo-a-pantalla permite explorar sistemas grandes. El zoom se aplica con la rueda del ratón o el gesto de pellizco; el pan es un arrastre. La transformación se almacena como escala y desplazamiento y se aplica tanto al proyectar posiciones de cuerpos para dibujar como al convertir coordenadas de puntero de vuelta al espacio mundo para añadir nuevos cuerpos.
@@ -189,6 +206,9 @@ function NBodyGravityGuideEs() {
         </p>
         <p>
           <strong>¿Por qué está limitado el número de cuerpos?</strong> La evaluación de fuerzas por pares es O(N²). Limitar a unos 20 cuerpos mantiene el tiempo de fotograma cómodo en móviles y aun así permite dinámicas multi-cuerpo ricas.
+        </p>
+        <p>
+          <strong>¿Qué hace realmente el parámetro de suavizado?</strong> Sustituye la verdadera singularidad 1/r² por un potencial redondeado que permanece finito en r = 0. Un suavizado pequeño mantiene los encuentros cercanos dramáticos; un suavizado mayor hace el sistema más “pegajoso” y menos explosivo. El simulador elige un valor que se ve bien con los radios de cuerpo usados para las colisiones suaves.
         </p>
 
         <h2>Experiencias relacionadas</h2>
