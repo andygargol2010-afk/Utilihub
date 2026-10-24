@@ -178,4 +178,14 @@ Formato por entrada:
 - **fix_hint**: add lazy import + early slug if in pickComponent; tools-builder must update registry when adding dedicated UI
 - **files**: `src/components/general/registry.tsx`, `SyllableCounterTool.tsx`, `RoiCalculatorTool.tsx`, `BmiCalculatorTool.tsx` (and similar unlisted dedicateds)
 
+## E018 — Build ERROR por slug duplicado calculadora-descuento-porcentaje
+- **status**: fixed
+- **last_seen**: 2026-10-24
+- **fixed_at**: 2026-10-24
+- **symptom**: deploy Vercel ERROR; Catalog validator: slug duplicado en makeTool/wrappers: calculadora-descuento-porcentaje (discount-percentage-calculator-tool.ts, percentage-discount-calculator-tool.ts)
+- **root_cause**: dos archivos de tool dedicados definían el mismo slug; el validator escanea todos los makeTool en src/lib/general aunque no estén importados en index.ts
+- **check**: grep makeTool("calculadora-descuento-porcentaje"; solo uno; el otro usa slug único (calculadora-porcentaje-descuento)
+- **fix_hint**: cambiar slug de uno de los archivos a único; nunca dos makeTool con mismo slug (incluso si uno no se importa)
+- **files**: `src/lib/general/discount-percentage-calculator-tool.ts`, `src/lib/general/percentage-discount-calculator-tool.ts`, `scripts/validate-catalog.mjs`
+
 <!-- end:catalog -->
