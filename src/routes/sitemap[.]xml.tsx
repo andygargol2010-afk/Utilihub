@@ -81,6 +81,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...pair("/guides/compound-interest", "/es/guias/interes-compuesto", "0.75"),
           ...pair("/guides/particle-physics", "/es/guias/fisica-particulas", "0.75"),
           ...pair("/guides/canvas-webgl-performance", "/es/guides/canvas-webgl-performance", "0.75"),
+          ...pair("/guides/n-body-gravity", "/es/guias/n-body-gravity", "0.75"),
         ];
 
         const categoryPairs: SitemapEntry[] = ALL_CATEGORIES.flatMap((category) => {
