@@ -4,6 +4,7 @@ import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeCatalogSlot } from "@/components/home-catalog-slot";
 import { AdBanner } from "@/components/AdBanner";
+import { ExperienceDiscoveryRail } from "@/components/ExperienceDiscoveryRail";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
 
 const loadHomeCatalog = () => import("@/components/home-catalog");
@@ -182,6 +183,7 @@ function HomePage() {
           </div>
         </div>
       </section>
+      <ExperienceDiscoveryRail locale="en" />
       <AdBanner />
       <div className="container-page">
         <Suspense fallback={<HomeCatalogSlot />}>
