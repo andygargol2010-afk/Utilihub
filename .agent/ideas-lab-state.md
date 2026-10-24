@@ -68,11 +68,11 @@ path_es: /es/viajes/compositor-rio-waypoints
 path_seo: n/a
 domain: journeys
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: both
 next_step_required: yes
-notes: Roll: U=0.62 ≥0.50 → CORE. Weighted sample total=42, selection in journeys range. last_closed search-magnets (GROWTH) no re-roll. Selected journeys→1, other CORE +1. Idea is concrete interactive path/progression with visual payoff, not catalog calculator. EN+ES routes live at /journeys/waypoint-river-composer + /es/viajes/compositor-rio-waypoints. This run (EXECUTE): added width/bloom/gravity controls, randomize button + R key, pause button + Space, URL deep-link (wp/sp/de/sm/th/rev/wi/bl/gr), PNG bake of utilihub.com + title + waypoint count + theme. CWV-safe (canvas only on route, particle density cap). Adsterra intact. Next: optional attractors or polish trails.
+notes: Roll: U=0.62 ≥0.50 → CORE. Weighted sample total=42, selection in journeys range. last_closed search-magnets (GROWTH) no re-roll. Selected journeys→1, other CORE +1. Idea is concrete interactive path/progression with visual payoff, not catalog calculator. EN+ES routes live at /journeys/waypoint-river-composer + /es/viajes/compositor-rio-waypoints. Previous: added width/bloom/gravity controls, randomize, pause, URL deep-link, PNG bake. This run (EXECUTE): added optional attractors/repellers (place mode, strength control, particle bend influence, URL at/as params, PNG bake attractor count, randomize support, clear reset). EN+ES labels. CWV-safe (density cap, canvas route only). Adsterra intact. Next: polish trails or multi-layer if remaining.
 adsense-prep_runs: 3
 ```
 
