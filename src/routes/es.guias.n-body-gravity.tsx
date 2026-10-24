@@ -43,7 +43,7 @@ function NBodyGravityGuideEs() {
 
         <h2>¿Qué es una simulación N-cuerpos?</h2>
         <p>
-          En un problema de N-cuerpos cada cuerpo ejerce una fuerza gravitatoria sobre todos los demás. No existe solución analítica cerrada para N > 2, por lo que integramos las ecuaciones de movimiento numéricamente. Cada cuerpo lleva masa, posición y velocidad. En cada paso de tiempo calculamos la fuerza neta sobre cada cuerpo, la convertimos en aceleración y actualizamos velocidad y posición.
+          En un problema de N-cuerpos cada cuerpo ejerce una fuerza gravitatoria sobre todos los demás. No existe solución analítica cerrada para N mayor que 2, por lo que integramos las ecuaciones de movimiento numéricamente. Cada cuerpo lleva masa, posición y velocidad. En cada paso de tiempo calculamos la fuerza neta sobre cada cuerpo, la convertimos en aceleración y actualizamos velocidad y posición.
         </p>
         <p>
           Las implementaciones en el navegador ejecutan este bucle dentro de requestAnimationFrame (o un acumulador de paso fijo) para que el movimiento se mantenga fluido e interactivo. Los usuarios pueden añadir cuerpos, cambiar condiciones iniciales, pausar, hacer zoom y compartir el estado inicial exacto mediante URL.
