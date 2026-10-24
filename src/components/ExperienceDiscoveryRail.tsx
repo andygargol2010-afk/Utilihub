@@ -93,6 +93,26 @@ const EXPERIENCES: Experience[] = [
     descEs: "Estrellas y líneas de canvas para hitos diarios.",
     category: "playgrounds",
   },
+  {
+    id: "aura-card-share",
+    pathEn: "/aura-card",
+    pathEs: "/es/aura-card",
+    titleEn: "Aura Card Composer",
+    titleEs: "Compositor de Carta Aura",
+    descEn: "Shareable aura cards with particles, bloom, quotes.",
+    descEs: "Cartas aura compartibles con partículas, bloom, citas.",
+    category: "studios",
+  },
+  {
+    id: "return-streak-board",
+    pathEn: "/return-streak-board",
+    pathEs: "/es/return-streak-board",
+    titleEn: "Return Streak Board",
+    titleEs: "Tablero de Racha de Retorno",
+    descEn: "Track return streaks with visual progress.",
+    descEs: "Rastrea rachas de retorno con progreso visual.",
+    category: "playgrounds",
+  },
 ];
 
 const CATEGORIES = [
@@ -102,6 +122,13 @@ const CATEGORIES = [
   { id: "games", labelEn: "Games", labelEs: "Juegos" },
   { id: "simulators", labelEn: "Simulators", labelEs: "Simuladores" },
 ];
+
+const CATEGORY_COLORS: Record<string, string> = {
+  playgrounds: "from-violet-500/80 to-fuchsia-500/60",
+  studios: "from-cyan-500/80 to-blue-500/60",
+  games: "from-orange-500/80 to-rose-500/60",
+  simulators: "from-emerald-500/80 to-teal-500/60",
+};
 
 interface Props {
   locale: "en" | "es";
@@ -113,7 +140,6 @@ export function ExperienceDiscoveryRail({ locale }: Props) {
 
   const filtered = useMemo(() => {
     const list = category === "all" ? EXPERIENCES : EXPERIENCES.filter((e) => e.category === category);
-    // Shuffle on key change
     const shuffled = [...list].sort(() => Math.random() - 0.5);
     return shuffled;
   }, [category, shuffleKey]);
@@ -155,19 +181,23 @@ export function ExperienceDiscoveryRail({ locale }: Props) {
           const path = isEs ? exp.pathEs : exp.pathEn;
           const title = isEs ? exp.titleEs : exp.titleEn;
           const desc = isEs ? exp.descEs : exp.descEn;
+          const color = CATEGORY_COLORS[exp.category] || "from-primary/60 to-primary/30";
           return (
             <Link
               key={exp.id}
               to={path}
-              className="min-w-[220px] max-w-[240px] flex-shrink-0 rounded-xl border border-border bg-card p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+              className="group min-w-[220px] max-w-[240px] flex-shrink-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
               data-event="discovery-rail-click"
               data-exp={exp.id}
             >
-              <p className="text-xs font-bold uppercase tracking-wide text-primary">
-                {CATEGORIES.find((c) => c.id === exp.category)?.[isEs ? "labelEs" : "labelEn"]}
-              </p>
-              <h3 className="mt-1 text-sm font-bold leading-snug">{title}</h3>
-              <p className="mt-2 line-clamp-3 text-xs text-muted-foreground">{desc}</p>
+              <div className={`h-16 bg-gradient-to-br ${color} opacity-90 transition group-hover:opacity-100`} />
+              <div className="p-4">
+                <p className="text-xs font-bold uppercase tracking-wide text-primary">
+                  {CATEGORIES.find((c) => c.id === exp.category)?.[isEs ? "labelEs" : "labelEn"]}
+                </p>
+                <h3 className="mt-1 text-sm font-bold leading-snug">{title}</h3>
+                <p className="mt-2 line-clamp-3 text-xs text-muted-foreground">{desc}</p>
+              </div>
             </Link>
           );
         })}
