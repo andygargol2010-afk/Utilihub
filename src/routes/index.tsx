@@ -184,6 +184,21 @@ function HomePage() {
         </div>
       </section>
       <ExperienceDiscoveryRail locale="en" />
+      <section className="container-page py-6">
+        <div className="rounded-2xl border border-border/60 bg-card/50 p-4 sm:p-5">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-cyan-600">Shareable Experiences</p>
+          <h2 className="mt-1 text-lg font-black">Create & share interactive visuals</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Deep-link ready. Use the Share button on each to send via Web Share or copy link.</p>
+          <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
+            <Link to="/aurora-particle-playground" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Aurora Particles</Link>
+            <Link to="/neon-layer-composer" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Neon Layers</Link>
+            <Link to="/n-body-gravity" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">N-Body Gravity</Link>
+            <Link to="/color-cascade-fusion" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Color Cascade</Link>
+            <Link to="/studio/prism-trail-composer" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Prism Trail</Link>
+            <Link to="/aura-card" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Aura Card</Link>
+          </div>
+        </div>
+      </section>
       <AdBanner />
       <div className="container-page">
         <Suspense fallback={<HomeCatalogSlot />}>
