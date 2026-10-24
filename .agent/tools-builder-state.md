@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-24 | matematicas | calculadora-raiz-cuadrada | SquareRootCalculatorTool
+- 2026-10-24 | educacion | calculadora-media-armonica | HarmonicMeanCalculatorTool
 - 2026-10-24 | productividad | calculadora-horas-estudio | StudyHoursCalculatorTool
 - 2026-10-24 | fechas | calculadora-dias-vacaciones | VacationDaysCalculatorTool
 - 2026-10-24 | finanzas | calculadora-descuento | PercentageDiscountCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-23 | educacion | calculadora-media-geometrica | GeometricMeanCalculatorTool
 - 2026-10-23 | conversiones | conversor-metros-pies | MetersToFeetConverterTool
 - 2026-10-23 | salud | calculadora-imc | BmiCalculatorTool
-- 2026-10-23 | educacion | calculadora-moda | ModeCalculatorTool
-- 2026-10-23 | salud | calculadora-horas-sueno | SleepHoursCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -46,10 +46,10 @@ texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, p
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc)
-educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica)
+educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento)
 productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto, calculadora-horas-estudio)
-matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado, perimetro-triangulo, calculadora-porcentaje-de-numero)
+matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado, perimetro-triangulo, calculadora-porcentaje-de-numero, calculadora-raiz-cuadrada)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -63,8 +63,8 @@ PRODUCT target: 2 tools/run; quality bar identical per tool; escape hatch → 1 
 Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
-2026-10-24 PRODUCT: calculadora-horas-estudio (productividad) + calculadora-dias-vacaciones (fechas). Two tools, distinct clusters. Registry and catalog index updated. SEO locales: deferred.
-Previous: calculadora-descuento + calculadora-consumo-viaje.
+2026-10-24 PRODUCT: calculadora-raiz-cuadrada (matematicas) + calculadora-media-armonica (educacion). Two tools, distinct clusters. Components + data + registry-entries + index + pickComponent wired. SEO locales: deferred. Deploy of SHA 3a5fe59 pending at run close.
+Previous concurrent: calculadora-horas-estudio + calculadora-dias-vacaciones.
 ```
 
 ---
@@ -73,9 +73,9 @@ Previous: calculadora-descuento + calculadora-consumo-viaje.
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-horas-estudio, calculadora-dias-vacaciones
-last_deploy: pending check
-last_sha: c2c970ec5cf48e917ee2c326e5fb08590dd7999f
+last_slugs: calculadora-raiz-cuadrada, calculadora-media-armonica
+last_deploy: pending verify
+last_sha: 3a5fe59b14458ebe29b6c46abb44b0980d0a11cd
 ```
 
 <!-- end:tools-builder-state.md -->
