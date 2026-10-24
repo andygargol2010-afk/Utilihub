@@ -148,4 +148,14 @@ Formato por entrada:
 - **fix_hint**: restore full index.ts from good history; never write PLACEHOLDER into catalog index or any imported module; tools-builder must append, not replace the index
 - **files**: `src/lib/general/index.ts`, `src/lib/all-tools.ts`, `src/lib/general/catalog.ts`
 
+## E015 — Catalog integrity warning por slug duplicado conversor-velocidad
+- **status**: fixed
+- **last_seen**: 2026-10-24 (runtime logs: duplicate tool slugs conversor-velocidad; dedicated + converters.ts)
+- **fixed_at**: 2026-10-24
+- **symptom**: runtime logs "UtiliHub catalog integrity: duplicate tool slugs (keeping first occurrence): conversor-velocidad"; potencial pérdida de SEO/faq o routing ambiguo
+- **root_cause**: makeTool("conversor-velocidad") en converters.ts (simple) y en speed-converter-tool.ts (con faq/seo); ambos importados en index.ts
+- **check**: grep slug conversor-velocidad; solo debe quedar en speed-converter-tool.ts; converters.ts no lo define
+- **fix_hint**: eliminar la entrada simple del array CONVERTER_TOOLS; mantener la dedicada con mejor metadata
+- **files**: `src/lib/general/converters.ts`, `src/lib/general/speed-converter-tool.ts`, `src/lib/general/index.ts`
+
 <!-- end:catalog -->
