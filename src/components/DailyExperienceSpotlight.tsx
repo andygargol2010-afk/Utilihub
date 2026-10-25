@@ -30,8 +30,8 @@ const POOL: SpotlightExp[] = [
   },
   {
     id: "n-body-gravity-sim",
-    pathEn: "/n-body-gravity-sim",
-    pathEs: "/es/n-body-gravity-sim",
+    pathEn: "/n-body-gravity",
+    pathEs: "/es/n-body-gravity",
     titleEn: "N-Body Gravity",
     titleEs: "Gravedad N-Cuerpos",
     teaserEn: "Live gravitational dynamics with presets and trails.",
