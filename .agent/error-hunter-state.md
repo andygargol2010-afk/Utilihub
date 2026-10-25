@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001–E026 fixed, no open/recurring) + discovery (patterns PLACEHOLDER/$(cat, truncated JSX, unwired dedicated sample, validator, playgrounds/sims/kits)
-- deploy: tip 7eb99cc7ba09621d1b965a37af7317072dd99130 READY (previous ERROR c373982a fixed in 7ea9526; docs bb9dff2)
-- known_smoke: green — registry no PLACEHOLDER + dedicated wires (incl. E025), home routes clean no $(cat, ToolSearch Button closed, modeler-3d routing correct, spanishToolSummary from es-summaries
-- new_findings: none (validator OK with warnings only; no truncated tags; sampled kits/games/experiences full)
+- mode: known smoke (E001–E026 fixed, no open/recurring) + discovery (KitchenPrepBoard kit full, patterns PLACEHOLDER/$(cat, truncated JSX, registry wires, runtime logs)
+- deploy: tip 5863987097a8f6006666a272662bbdeaa5a5e7fe READY (previous docs a06083c2 READY)
+- known_smoke: green — registry no PLACEHOLDER + dedicated wires (incl. E025/E026), home routes clean no $(cat, ToolSearch Button closed, modeler-3d routing correct
+- new_findings: none (KitchenPrepBoard.tsx complete multi-recipe selector + canvas share; no truncated tags; runtime preview error logs empty last 30m)
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: registry/dedicated wiring + JSX truncation (E026)
+- last_known_focus: kits/experiences + registry wires
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
