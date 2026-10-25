@@ -68,11 +68,11 @@ path_es: /es/
 path_seo: n/a
 domain: conversion-paths
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: EXECUTE run 1/4: Shipped HomeValuePath component (lazy on home EN+ES after discovery rail). Fixed 3 high-value steps (aurora-particle, n-body-gravity-sim, neon-layer) with numbered path, clear CTAs, localStorage micro-progress "X of 3 explored" (marks on click, persists), data-event=value-path-click + data-exp/step. Lightweight CSS/no heavy assets. CWV-safe (lazy + fallback height). Adsterra intact. Next: polish visuals/progress or add more steps/variants if needed.
+notes: EXECUTE run 2/4: Polished HomeValuePath visuals — progress bar (role=progressbar, violet	o emerald), completion banner with Sparkles when 3/3, done state shows check + "Done/Hecho" label + "Explore again" CTA, stronger hover/shadow. Still lazy on home EN+ES, localStorage, data-events intact. CWV-safe (no new deps/assets). Adsterra intact. Next: optional deeper variants or close if acceptance met.
 adsense-prep_runs: 3
 ```
 
