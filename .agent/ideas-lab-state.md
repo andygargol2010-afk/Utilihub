@@ -67,11 +67,11 @@ path_en: /modular-pattern-composer
 path_es: /es/modular-pattern-composer
 domain: studio-composition
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 2/6: multi-layer support (add/select up to 6, per-layer opacity + blend modes source-over/lighter/screen/overlay/multiply), erase mode with symmetry, diamond + star tiles. Global opacity separated. PNG includes layer count. EN+ES labels updated. CWV-safe (layer cap 6, no new deps, lazy). Adsterra intact. next-step already registered. Previous: EXECUTE 1/6 grid/anim/symmetry/PNG/URL.
+notes: EXECUTE 3/6: gradient fills (color2 linear), organic blob tile, keyboard shortcuts (Space play/pause, C clear, R randomize), randomize seeds 8 tiles on active layer. EN+ES labels/hints updated. CWV-safe (no new deps, layer cap 6, lazy canvas). Adsterra intact. next-step already registered. Previous: EXECUTE 2/6 multi-layers/blend/erase/diamond/star.
 adsense-prep_runs: 3
 ```
 
