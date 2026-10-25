@@ -1,4 +1,4 @@
-export type ShapeKind = "box" | "sphere" | "cylinder" | "cone" | "plane" | "torus" | "prism" | "tube" | "pyramid";
+export type ShapeKind = "box" | "sphere" | "cylinder" | "cone" | "plane" | "torus" | "prism" | "tube" | "pyramid" | "hemisphere";
 
 export type MatPreset = "default" | "matte" | "metal" | "glass" | "plastic" | "rubber" | "wood" | "concrete";
 
@@ -123,6 +123,7 @@ export const NAME_PAIR: Record<ShapeKind, [string, string]> = {
   prism: ["Prism", "Prisma"],
   tube: ["Tube", "Tubo"],
   pyramid: ["Pyramid", "Pirámide"],
+  hemisphere: ["Hemisphere", "Hemisferio"],
 };
 export const BASE_SIZE: Record<ShapeKind, [number, number, number]> = {
   box: [1, 1, 1],
@@ -134,6 +135,7 @@ export const BASE_SIZE: Record<ShapeKind, [number, number, number]> = {
   torus: [1.5, 0.4, 1.5],
   tube: [0.56, 1.2, 0.56],
   pyramid: [1.1, 1.1, 1.1],
+  hemisphere: [1.1, 0.55, 1.1],
 };
 export const COLORS = [
   // Brand / vivid
@@ -176,6 +178,18 @@ export function makeGeometry(THREE: any, kind: ShapeKind) {
       // Base edges aligned to the axes (square 1.1 x 1.1) so it snaps flush next to cubes.
       const g = new THREE.ConeGeometry(0.55 * Math.SQRT2, 1.1, 4);
       g.rotateY(Math.PI / 4);
+      return g;
+    }
+    case "hemisphere": {
+      // Closed dome (flat base + curved top) built by lathe, centered vertically like the other shapes.
+      const R = 0.55;
+      const pts: any[] = [new THREE.Vector2(0, 0)];
+      for (let i = 0; i <= 32; i++) {
+        const a = (i / 32) * (Math.PI / 2);
+        pts.push(new THREE.Vector2(Math.cos(a) * R, Math.sin(a) * R));
+      }
+      const g = new THREE.LatheGeometry(pts, 64);
+      g.translate(0, -R / 2, 0);
       return g;
     }
     default: return new THREE.BoxGeometry(1, 1, 1);
@@ -298,5 +312,6 @@ export function shapeList(es: boolean): { kind: ShapeKind; label: string; icon: 
     { kind: "prism", label: es ? "Prisma" : "Prism", icon: "△" },
     { kind: "tube", label: es ? "Tubo" : "Tube", icon: "◯" },
     { kind: "pyramid", label: es ? "Pirámide" : "Pyramid", icon: "◭" },
+    { kind: "hemisphere", label: es ? "Hemisferio" : "Hemisphere", icon: "◗" },
   ];
 }
