@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 275
+runs_done: 276
 runs_max: 500
 ```
 
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 275 glazing densify. runs_done=275.
+note: PRODUCT run 276 hedgerow leaf-cluster densify. runs_done=276.
 ```
 
 Refresh after each run.
@@ -115,6 +115,7 @@ PRODUCT run 272: wall head-plate densify (oak knots, drying checks, joint grime/
 MODELADOR-3D run 273: capsule ShapeKind (CapsuleGeometry) wired in helpers, tsc OK. runs_done=273.
 MODELADOR-3D run 274: brushed-metal MatPreset (Metal cepillado) in helpers. runs_done=274.
 PRODUCT run 275: glazing densify (rain droplets + run-off trails + lower-corner grime) via local clone surgical. runs_done=275.
+PRODUCT run 276: hedgerow densify (16 leaf flecks per crown: sunlit tops + dark gaps) via local clone surgical. runs_done=276.
 ```
 
 <!-- end:house-modeler-state.md -->

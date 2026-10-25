@@ -1859,6 +1859,16 @@ function paintHedgerow(ctx: CanvasRenderingContext2D, size: number) {
     ctx.beginPath();
     ctx.ellipse(x, crown + ry * 0.25, rx, ry, 0, 0, Math.PI * 2);
     ctx.fill();
+    // Leaf clusters: sunlit flecks on the crown top, dark gaps lower down.
+    for (let k = 0; k < 16; k++) {
+      const lx = x + (hash2(i * 17 + k, 3.1) - 0.5) * rx * 2;
+      const ly = crown + ry * (0.05 + hash2(i * 17 + k, 7.7) * 0.55);
+      const lit = hash2(i * 17 + k, 9.3) > 0.45 && ly < crown + ry * 0.3;
+      ctx.fillStyle = lit ? "rgba(104,122,58,0.5)" : "rgba(20,28,12,0.4)";
+      ctx.beginPath();
+      ctx.ellipse(lx, ly, size * 0.006, size * 0.004, hash2(i * 17 + k, 5.5) * Math.PI, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 }
 
