@@ -67,11 +67,11 @@ path_en: /kits/kitchen-prep
 path_es: /es/kits/preparacion-cocina
 domain: kits
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: both
 next_step_required: no
-notes: CORE roll U=0.9931338061630458 → CORE. Weighted sample r=0.9958047374252952 of 38 → kits (weight 15). last_closed_domain=traffic-bets ≠ kits, no re-roll. Interactive board elevates kits beyond static tool lists (cf. market-stall, travel-packing, home-renovation). Weights updated: kits=1, others +1. EXECUTE 1/4: KitchenPrepBoard shipped (scaler, checklist, reorder ↑↓, timer, progress bar, simple PNG canvas share, localStorage). Wired EN+ES routes. Next: polish timer ring / more recipes / mobile UX.
+notes: CORE roll U=0.9931338061630458 → CORE. Weighted sample r=0.9958047374252952 of 38 → kits (weight 15). last_closed_domain=traffic-bets ≠ kits, no re-roll. Interactive board elevates kits beyond static tool lists (cf. market-stall, travel-packing, home-renovation). Weights updated: kits=1, others +1. EXECUTE 1/4: KitchenPrepBoard shipped (scaler, checklist, reorder ↑↓, timer, progress bar, simple PNG canvas share, localStorage). Wired EN+ES routes. EXECUTE 2/4: circular SVG progress ring on timer (strokeDashoffset vs suggested duration, Time's up feedback). Next: more recipes / mobile UX polish.
 adsense-prep_runs: 3
 ```
 
