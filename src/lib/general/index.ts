@@ -125,6 +125,8 @@ import { GPA_CALCULATOR_TOOLS } from "./gpa-calculator-tool";
 import { ROOM_AREA_CALCULATOR_TOOLS } from "./room-area-calculator-tool";
 import { PX_TO_REM_CALCULATOR_TOOLS } from "./px-to-rem-calculator-tool";
 import { DAILY_TRAVEL_BUDGET_CALCULATOR_TOOLS } from "./daily-travel-budget-calculator-tool";
+import { PERCENTAGE_DIFFERENCE_CALCULATOR_TOOLS } from "./percentage-difference-calculator-tool";
+import { SPEED_DISTANCE_TIME_CALCULATOR_TOOLS } from "./speed-distance-time-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -254,4 +256,6 @@ export const GENERAL_TOOLS = [
   ...ROOM_AREA_CALCULATOR_TOOLS,
   ...PX_TO_REM_CALCULATOR_TOOLS,
   ...DAILY_TRAVEL_BUDGET_CALCULATOR_TOOLS,
+  ...PERCENTAGE_DIFFERENCE_CALCULATOR_TOOLS,
+  ...SPEED_DISTANCE_TIME_CALCULATOR_TOOLS,
 ];

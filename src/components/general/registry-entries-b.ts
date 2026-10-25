@@ -72,4 +72,6 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "calculadora-semanas-entre-fechas", name: "WeeksBetweenDatesCalculatorTool", path: "./WeeksBetweenDatesCalculatorTool", export: "WeeksBetweenDatesCalculatorTool" },
   { slug: "conversor-litros-galones", name: "LitersToGallonsConverterTool", path: "./LitersToGallonsConverterTool", export: "LitersToGallonsConverterTool" },
   { slug: "calculadora-velocidad-promedio-diaria", name: "DailyAverageSpeedCalculatorTool", path: "./DailyAverageSpeedCalculatorTool", export: "DailyAverageSpeedCalculatorTool" },
+  { slug: "calculadora-diferencia-porcentual", name: "PercentageDifferenceCalculatorTool", path: "./PercentageDifferenceCalculatorTool", export: "PercentageDifferenceCalculatorTool" },
+  { slug: "calculadora-velocidad-distancia-tiempo", name: "SpeedDistanceTimeCalculatorTool", path: "./SpeedDistanceTimeCalculatorTool", export: "SpeedDistanceTimeCalculatorTool" },
 ] as const;
