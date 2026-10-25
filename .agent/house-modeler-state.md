@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 271
+runs_done: 272
 runs_max: 500
 ```
 
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 271 stair-nosing end-grain densify. runs_done=271.
+note: PRODUCT run 272 wall head-plate oak densify. runs_done=272.
 ```
 
 Refresh after each run.
@@ -111,6 +111,7 @@ PRODUCT run 268: plinth masonry densify (grain flecks, damp splash, efflorescenc
 PRODUCT run 269: joinery (window sash) paint-wear densify (chips, stipple, sill grime) via local clone surgical. runs_done=269.
 PRODUCT run 270: door-leaf timber densify (stile grain, kick scuffs, hand-worn varnish) via local clone surgical. runs_done=270.
 PRODUCT run 271: nosing timber densify (end-grain checks, hand-worn edge, joint grime, specks) via local clone surgical. runs_done=271.
+PRODUCT run 272: wall head-plate densify (oak knots, drying checks, joint grime/dust specks) via local clone surgical. runs_done=272.
 ```
 
 <!-- end:house-modeler-state.md -->

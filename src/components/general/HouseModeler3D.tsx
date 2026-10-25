@@ -1071,9 +1071,37 @@ function paintPlate(ctx: CanvasRenderingContext2D, size: number) {
     const split = (0.3 + hash2(i, 9) * 0.4) * size;
     ctx.fillStyle = "rgba(40,22,10,0.75)";
     ctx.fillRect(split, y0 + 2, 2, y1 - y0 - 4);
+    // Sawn-oak knots: dark core with a lighter halo, stretched along the grain.
+    for (let n = 0; n < 2; n++) {
+      const kx = hash2(i, 51 + n) * size;
+      const ky = y0 + (y1 - y0) * (0.25 + hash2(i, 61 + n) * 0.5);
+      ctx.fillStyle = "rgba(190,140,92,0.22)";
+      ctx.beginPath();
+      ctx.ellipse(kx, ky, 9, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "rgba(34,18,8,0.7)";
+      ctx.beginPath();
+      ctx.ellipse(kx, ky, 4, 2, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // Drying checks: thin hairline splits running with the grain.
+    ctx.strokeStyle = "rgba(30,16,8,0.5)";
+    for (let c = 0; c < 3; c++) {
+      const cx0 = hash2(i, 71 + c) * size * 0.8;
+      const cy0 = y0 + 4 + hash2(i, 81 + c) * (y1 - y0 - 8);
+      ctx.beginPath();
+      ctx.moveTo(cx0, cy0);
+      ctx.lineTo(cx0 + 18 + hash2(i, 91 + c) * 30, cy0 + 1);
+      ctx.stroke();
+    }
   }
   ctx.fillStyle = "rgba(36,20,10,0.8)";
   ctx.fillRect(0, size / 2 - 2, size, 4);
+  // Joint grime and pale dust specks.
+  for (let k = 0; k < 28; k++) {
+    ctx.fillStyle = k % 3 === 0 ? "rgba(200,164,120,0.16)" : `rgba(26,14,7,${0.1 + hash2(k, 97) * 0.12})`;
+    ctx.fillRect(Math.floor(hash2(k, 98) * size), Math.floor(hash2(k, 99) * size), 1 + Math.floor(hash2(k, 100) * 2), 1);
+  }
 }
 
 function paintPlateBump(ctx: CanvasRenderingContext2D, size: number) {
