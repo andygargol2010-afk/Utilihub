@@ -208,4 +208,14 @@ Formato por entrada:
 - **fix_hint**: añadir lazy + early slug check en pickComponent; tools-builder debe actualizar registry al añadir dedicated UI
 - **files**: `src/components/general/registry.tsx`, `src/components/general/AverageWordLengthCalculatorTool.tsx`, `src/components/general/DailyInterestCalculatorTool.tsx`
 
+## E021 — Dedicated UIs for older catalog tools (raiz-cubica, pulgadas-cm, gasto-diario, ratio-trabajo-descanso) not wired in registry
+- **status**: fixed
+- **last_seen**: 2026-10-25
+- **fixed_at**: 2026-10-25
+- **symptom**: /calculadora-raiz-cubica, /conversor-pulgadas-cm, /calculadora-gasto-diario, /calculadora-ratio-trabajo-descanso muestran UI genérica (MathTool/ConverterTool) en vez de la dedicada
+- **root_cause**: makeTool + *CalculatorTool/*ConverterTool.tsx dedicados e import en index.ts existían, pero pickComponent en registry.tsx no tenía slug === + lazy; caían a kind routes genéricos
+- **check**: registry.tsx tiene lazy CubeRoot / InchesToCm / DailySpending / WorkBreakRatio y if slug === los cuatro; componentes exportan función real
+- **fix_hint**: añadir lazy + early slug check en pickComponent; tools-builder debe actualizar registry al añadir dedicated UI
+- **files**: `src/components/general/registry.tsx`, `CubeRootCalculatorTool.tsx`, `InchesToCmConverterTool.tsx`, `DailySpendingCalculatorTool.tsx`, `WorkBreakRatioCalculatorTool.tsx`
+
 <!-- end:catalog -->
