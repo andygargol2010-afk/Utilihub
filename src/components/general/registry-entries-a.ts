@@ -56,4 +56,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-longitud-promedio-palabra", name: "AverageWordLengthCalculatorTool", path: "./AverageWordLengthCalculatorTool", export: "AverageWordLengthCalculatorTool" },
   { slug: "calculadora-interes-diario", name: "DailyInterestCalculatorTool", path: "./DailyInterestCalculatorTool", export: "DailyInterestCalculatorTool" },
   { slug: "calculadora-ingesta-agua-diaria", name: "DailyWaterIntakeCalculatorTool", path: "./DailyWaterIntakeCalculatorTool", export: "DailyWaterIntakeCalculatorTool" },
+  { slug: "calculadora-edad", name: "AgeCalculatorTool", path: "./AgeCalculatorTool", export: "AgeCalculatorTool" },
+  { slug: "calculadora-propina", name: "TipCalculatorTool", path: "./TipCalculatorTool", export: "TipCalculatorTool" },
 ] as const;

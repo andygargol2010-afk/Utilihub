@@ -119,6 +119,8 @@ import { AVERAGE_WORD_LENGTH_CALCULATOR_TOOLS } from "./average-word-length-calc
 import { DAILY_INTEREST_CALCULATOR_TOOLS } from "./daily-interest-calculator-tool";
 import { DAILY_WATER_INTAKE_CALCULATOR_TOOLS } from "./daily-water-intake-calculator-tool";
 import { UNIT_PRICE_TOOLS } from "./unit-price-tool";
+import { AGE_CALCULATOR_TOOLS } from "./age-calculator-tool";
+import { TIP_CALCULATOR_TOOLS } from "./tip-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -242,4 +244,6 @@ export const GENERAL_TOOLS = [
   ...DAILY_INTEREST_CALCULATOR_TOOLS,
   ...DAILY_WATER_INTAKE_CALCULATOR_TOOLS,
   ...UNIT_PRICE_TOOLS,
+  ...AGE_CALCULATOR_TOOLS,
+  ...TIP_CALCULATOR_TOOLS,
 ];
