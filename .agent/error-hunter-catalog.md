@@ -1,1 +1,1 @@
-$(cat /tmp/catalog.md)
+PLACEHOLDER_CATALOG_WILL_UPDATE_NEXT
