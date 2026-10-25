@@ -225,7 +225,7 @@ Formato por entrada:
 - **symptom**: /tools/calculadora-precio-unitario y /es/herramientas/calculadora-precio-unitario → 404 "We could not find this page"
 - **root_cause**: unit-price-tool.ts exported UNIT_PRICE_TOOLS with makeTool("calculadora-precio-unitario"...) and FAQ, but was never imported nor spread into GENERAL_TOOLS in src/lib/general/index.ts; slug absent from ALL_TOOLS so route loader throws notFound
 - **check**: index.ts imports UNIT_PRICE_TOOLS from "./unit-price-tool" and spreads ...UNIT_PRICE_TOOLS in GENERAL_TOOLS array; toolByEnglishSlug resolves the slug
-- **fix_hint**: add import + spread when adding a new *tool.ts that defines a slug; tools-builder must update the catalog index
+- **fix_hint**: add import + spread when adding tool definition files
 - **files**: `src/lib/general/index.ts`, `src/lib/general/unit-price-tool.ts`
 
 ## E023 — DailyExperienceSpotlight N-Body path 404
@@ -257,5 +257,15 @@ Formato por entrada:
 - **check**: registry.tsx tiene lazy ArithmeticMeanCalculatorToolUi + MedianCalculatorToolUi + FactorialCalculatorToolUi y if (slug === "calculadora-media-aritmetica") / "calculadora-mediana" / "calculadora-factorial"; componentes exportan función real (useState + useMemo)
 - **fix_hint**: añadir lazy + early slug check en pickComponent; tools-builder debe actualizar registry al añadir dedicated UI
 - **files**: `src/components/general/registry.tsx`, `src/components/general/ArithmeticMeanCalculatorTool.tsx`, `src/components/general/MedianCalculatorTool.tsx`, `src/components/general/FactorialCalculatorTool.tsx`
+
+## E026 — Build ERROR por tag JSX truncado en ToolSearch.tsx (facets Button)
+- **status**: fixed
+- **last_seen**: 2026-10-25
+- **fixed_at**: 2026-10-25
+- **symptom**: deploy Vercel ERROR; vite/esbuild transform fails: Expected ">" but found ")" at src/components/ToolSearch.tsx:256
+- **root_cause**: closing tag of Button inside facets.map was truncated to `</Button` (missing `>`); likely partial write or truncation during edit
+- **check**: ToolSearch.tsx facets.map Button ends with `</Button>` (not truncated); no similar unclosed tags in the file; deploy of tip SHA builds READY
+- **fix_hint**: restore the missing `>` on the closing tag; scan for other truncated JSX in recent polish commits
+- **files**: `src/components/ToolSearch.tsx`
 
 <!-- end:catalog -->
