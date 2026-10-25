@@ -68,11 +68,11 @@ path_es: /es
 path_seo: n/a
 domain: traffic-bets
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: both
 next_step_required: no
-notes: Roll: U=0.2987 <0.50 → GROWTH; U_g=0.270 <0.35 → FIXED urn (traffic-bets|search-magnets equal weight 3); selected traffic-bets. last_closed=conversion-paths ≠, no re-roll. FIXED weights unchanged. Prefers analytics (visitor drop).
+notes: Roll: U=0.2987 <0.50 → GROWTH; U_g=0.270 <0.35 → FIXED urn (traffic-bets|search-magnets equal weight 3); selected traffic-bets. last_closed=conversion-paths ≠, no re-roll. FIXED weights unchanged. Prefers analytics (visitor drop). EXECUTE 1/4: DailyExperienceSpotlight component + lazy integration on home EN+ES after hero. Daily rotation by day-of-year + last-shown localStorage avoid, share button, data-events (view/click). CWV-safe (lazy, light). Adsterra intact.
 adsense-prep_runs: 3
 ```
 
