@@ -1,1 +1,1 @@
-$(cat /tmp/ModularPatternComposer.tsx)
+PLACEHOLDER_WILL_BE_REPLACED
