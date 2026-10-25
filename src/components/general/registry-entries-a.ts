@@ -55,4 +55,5 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-presion-atmosferica", name: "AtmosphericPressureCalculatorTool", path: "./AtmosphericPressureCalculatorTool", export: "AtmosphericPressureCalculatorTool" },
   { slug: "calculadora-longitud-promedio-palabra", name: "AverageWordLengthCalculatorTool", path: "./AverageWordLengthCalculatorTool", export: "AverageWordLengthCalculatorTool" },
   { slug: "calculadora-interes-diario", name: "DailyInterestCalculatorTool", path: "./DailyInterestCalculatorTool", export: "DailyInterestCalculatorTool" },
+  { slug: "calculadora-ingesta-agua-diaria", name: "DailyWaterIntakeCalculatorTool", path: "./DailyWaterIntakeCalculatorTool", export: "DailyWaterIntakeCalculatorTool" },
 ] as const;

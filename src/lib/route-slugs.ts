@@ -35,6 +35,7 @@ export const ENGLISH_CATEGORY_SLUGS: Record<string, string> = {
   viajes: "travel",
   hogar: "home",
   utilidades: "utilities",
+  salud: "health",
 };
 
 const INTERNAL_CATEGORY_BY_ENGLISH_SLUG = new Map(

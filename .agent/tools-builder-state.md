@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-25 | salud | calculadora-ingesta-agua-diaria | DailyWaterIntakeCalculatorTool
 - 2026-10-24 | texto | calculadora-longitud-promedio-palabra | AverageWordLengthCalculatorTool
 - 2026-10-24 | finanzas | calculadora-interes-diario | DailyInterestCalculatorTool
 - 2026-10-24 | ciencia | calculadora-presion-atmosferica | AtmosphericPressureCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-24 | conversiones | conversor-pulgadas-cm | InchesToCmConverterTool
 - 2026-10-24 | matematicas | calculadora-raiz-cubica | CubeRootCalculatorTool
 - 2026-10-24 | matematicas | calculadora-raiz-cuadrada | SquareRootCalculatorTool
-- 2026-10-24 | educacion | calculadora-media-armonica | HarmonicMeanCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -45,7 +45,7 @@ viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros)
-salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc)
+salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario)
 productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto, calculadora-horas-estudio, calculadora-ratio-trabajo-descanso)
@@ -66,6 +66,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-24: PRODUCT — conversor-yardas-metros (conversiones) + calculadora-gasto-diario (finanzas). Clusters distintos, calidad alta. SEO locales: defer pt.
 2026-10-24: PRODUCT — calculadora-logaritmo (matematicas) + calculadora-presion-atmosferica (ciencia). Clusters distintos, calidad alta. SEO locales: defer pt.
 2026-10-24: PRODUCT — calculadora-longitud-promedio-palabra (texto) + calculadora-interes-diario (finanzas). Clusters distintos, calidad alta. SEO locales: defer pt.
+2026-10-25: NEW-CATEGORY — salud + calculadora-ingesta-agua-diaria. Gates OK. Seed tool calidad alta. SEO locales: defer pt.
 ```
 
 ---
@@ -73,8 +74,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT (roll 15)
-last_slugs: calculadora-longitud-promedio-palabra, calculadora-interes-diario
+last_mode: NEW-CATEGORY (roll 2)
+last_slugs: calculadora-ingesta-agua-diaria
 last_deploy: pending
 last_sha: pending
 ```
