@@ -21,7 +21,8 @@ export function BacCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
     if (isNaN(d) || isNaN(w) || isNaN(h) || d < 0 || w <= 0 || h < 0) return null;
     const alcoholGrams = d * 14;
     const r = gender === "female" ? 0.55 : 0.68;
-    const bacRaw = (alcoholGrams / (w * r)) - (0.15 * h);
+    // Widmark: grams/(weight*r) gives g/L; BAC in g/dL is g/L / 10. Elimination ~0.015 g/dL per hour.
+    const bacRaw = alcoholGrams / (w * r) / 10 - 0.015 * h;
     const bac = Math.max(0, Math.round(bacRaw * 1000) / 1000);
     return { bac };
   }, [drinks, weight, gender, hours]);
@@ -82,8 +83,8 @@ export function BacCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? "2 bebidas, 70 kg hombre, 1 h → ~0.043%" : "2 drinks, 70 kg male, 1 h → ~0.043%"}</p>
-        <p>{es ? "3 bebidas, 60 kg mujer, 2 h → ~0.091%" : "3 drinks, 60 kg female, 2 h → ~0.091%"}</p>
+        <p>{es ? "2 bebidas, 70 kg hombre, 1 h → ~0.044%" : "2 drinks, 70 kg male, 1 h → ~0.044%"}</p>
+        <p>{es ? "3 bebidas, 60 kg mujer, 2 h → ~0.097%" : "3 drinks, 60 kg female, 2 h → ~0.097%"}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
