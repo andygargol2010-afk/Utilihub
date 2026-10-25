@@ -1,1 +1,1 @@
-$(cat /tmp/utilihub/catalog.md)
+$(cat /tmp/catalog.md)
