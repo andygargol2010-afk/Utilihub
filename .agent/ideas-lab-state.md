@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
+status: active
+idea: Original long-form SEO guide (EN+ES) on the Modular Pattern Composer. Explains modular tile systems on a grid, live procedural animations (flow/pulse/morph/spin), multi-layer blend/opacity, symmetry (mirror/radial), tile library (geometric/organic/particle + hex/blob), color palettes + gradients, playback controls, brush size for multi-cell place/erase, PNG share with branding, URL deep-link, localStorage auto-persist. Practical composition tips, distinction from freehand neon-layer, FAQs, and deep links to the live experience + related playgrounds. Original explanatory text for search depth. Static pages, CWV-safe.
+id: modular-pattern-composer-guide
+path_en: /guides/modular-pattern-composer
+path_es: /es/guias/modular-pattern-composer
+domain: search-magnets
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
 share: n/a
 next_step_required: no
-notes: Closed weekly traffic-diagnosis. Site -11.2% (no alert), home -42.5% (route alert). Next run IDEATE.
+notes: DOMAIN ROLL IDEATE: U=0.37 < 0.50 → GROWTH. U_g=0.28 < 0.35 → FIXED urn (traffic-bets | search-magnets, equal weights 3). Selected search-magnets. FIXED: no weight updates. last_closed_domain=traffic-diagnosis ≠ match (no re-roll). Idea leverages recently closed modular-pattern-composer for SEO depth (distinct from n-body-gravity-guide).
 adsense-prep_runs: 3
 ```
 
