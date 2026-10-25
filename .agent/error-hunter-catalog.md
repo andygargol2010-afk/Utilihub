@@ -299,14 +299,14 @@ Formato por entrada:
 - **fix_hint**: add
 - **files**: `registry.tsx`
 
-## E031 — $(cat stubs corrupten archivos (catalog, state, registry, index)
+## E031 — $(cat stubs / PLACEHOLDER corrupten archivos críticos
 - **status**: open (recurring)
-- **last_seen**: 2026-10-25 (current catalog/state/registry/index clean, no literal $(cat; pattern remains risk for future agent runs)
-- **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" en vez del contenido real; home 404 o registry roto o agente pierde memoria
-- **root_cause**: agentes escriben el comando shell como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
-- **check**: leer .agent/error-hunter-catalog.md; debe ser Markdown real con entradas E###; no una línea $(cat
-- **fix_hint**: RESTORE contenido real desde git history; nunca commitear output de cat sin expandir
-- **files**: `.agent/error-hunter-catalog.md`, `.agent/error-hunter-state.md`, `src/components/general/registry.tsx`
+- **last_seen**: 2026-10-25 (tip clean; but SHA 1a75be3 had PLACEHOLDER in summary-es.ts causing build ERROR; pattern of agent stubs remains risk)
+- **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" o "PLACEHOLDER" en vez del contenido real; home 404, registry roto, o build ERROR por missing export
+- **root_cause**: agentes escriben el comando shell o un placeholder como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
+- **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts; deben ser contenido real, no PLACEHOLDER ni $(cat
+- **fix_hint**: RESTORE contenido real desde git history; nunca commitear output de cat sin expandir ni PLACEHOLDER
+- **files**: `.agent/error-hunter-catalog.md`, `.agent/error-hunter-state.md`, `src/components/general/registry.tsx`, `src/lib/i18n/summary-es.ts`
 
 ## E032 — Build ERROR por slug duplicado calculadora-area-habitacion
 - **status**: fixed
@@ -327,5 +327,15 @@ Formato por entrada:
 - **check**: file size >10kB; exports function returning JSX with <canvas> and controls, not a single div or null
 - **fix_hint**: restore full component from good historical SHA that has Tile/Layer types, drawTile, requestAnimationFrame tick
 - **files**: `src/components/playgrounds/ModularPatternComposer.tsx`
+
+## E034 — Build ERROR por PLACEHOLDER en summary-es.ts (missing SUMMARY_ES export)
+- **status**: fixed
+- **last_seen**: 2026-10-25
+- **fixed_at**: 2026-10-25
+- **symptom**: deploy Vercel ERROR; rollup "SUMMARY_ES" is not exported by summary-es.ts
+- **root_cause**: commit 1a75be3 replaced summary-es.ts with literal PLACEHOLDER; tip c920a10 restored full curated map
+- **check**: summary-es.ts starts with export const SUMMARY_ES and is >10kB; no PLACEHOLDER
+- **fix_hint**: restore full SUMMARY_ES map from previous good commit
+- **files**: `src/lib/i18n/summary-es.ts`, `src/lib/i18n/es-summaries.ts`
 
 <!-- end:catalog -->
