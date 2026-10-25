@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 
 type Locale = "en" | "es";
@@ -8,23 +8,24 @@ const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-mu
 
 export function TipCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
-  const [bill, setBill] = useState("100");
-  const [percent, setPercent] = useState("15");
-  const [people, setPeople] = useState("1");
+  const [bill, setBill] = useState("50");
+  const [tipPercent, setTipPercent] = useState("15");
   const [copied, setCopied] = useState(false);
 
-  const billNum = Math.max(0, parseFloat(bill) || 0);
-  const percentNum = Math.max(0, parseFloat(percent) || 0);
-  const peopleNum = Math.max(1, parseInt(people) || 1);
-
-  const tip = billNum * (percentNum / 100);
-  const total = billNum + tip;
-  const perPerson = total / peopleNum;
+  const result = useMemo(() => {
+    const b = parseFloat(bill);
+    const p = parseFloat(tipPercent);
+    if (!Number.isFinite(b) || b < 0 || b > 100000 || !Number.isFinite(p) || p < 0 || p > 100) return null;
+    const tip = Math.round(b * (p / 100) * 100) / 100;
+    const total = Math.round((b + tip) * 100) / 100;
+    return { tip, total };
+  }, [bill, tipPercent]);
 
   async function copy() {
+    if (!result) return;
     const text = es
-      ? `Propina: ${tip.toFixed(2)}\nTotal: ${total.toFixed(2)}\nPor persona: ${perPerson.toFixed(2)}`
-      : `Tip: ${tip.toFixed(2)}\nTotal: ${total.toFixed(2)}\nPer person: ${perPerson.toFixed(2)}`;
+      ? `Propina: ${result.tip} | Total: ${result.total}`
+      : `Tip: ${result.tip} | Total: ${result.total}`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -35,39 +36,70 @@ export function TipCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
   }
 
   function reset() {
-    setBill("100");
-    setPercent("15");
-    setPeople("1");
+    setBill("50");
+    setTipPercent("15");
     setCopied(false);
   }
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border bg-muted/30 p-6 space-y-2">
-        <p className="text-sm text-muted-foreground">{es ? "Resultados" : "Results"}</p>
-        <p className="text-lg font-medium">{es ? "Propina" : "Tip"}: ${tip.toFixed(2)}</p>
-        <p className="text-lg font-medium">{es ? "Total" : "Total"}: ${total.toFixed(2)}</p>
-        <p className="text-lg font-medium">{es ? "Por persona" : "Per person"}: ${perPerson.toFixed(2)}</p>
+      <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
+        <p className="text-sm text-muted-foreground">{es ? "Propina y total" : "Tip and total"}</p>
+        {result ? (
+          <div>
+            <p className="text-3xl font-semibold">{es ? `Propina: ${result.tip}` : `Tip: ${result.tip}`}</p>
+            <p className="text-sm text-muted-foreground">{es ? `Total: ${result.total}` : `Total: ${result.total}`}</p>
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            {es ? "Introduce un monto y porcentaje válidos" : "Enter a valid bill and percentage"}
+          </p>
+        )}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <label className="block space-y-2 text-sm">
-          <span className="font-medium">{es ? "Cuenta" : "Bill"}</span>
-          <input type="number" value={bill} onChange={(e) => setBill(e.target.value)} className={fieldClass} min="0" step="0.01" />
-        </label>
-        <label className="block space-y-2 text-sm">
-          <span className="font-medium">{es ? "Propina %" : "Tip %"}</span>
-          <input type="number" value={percent} onChange={(e) => setPercent(e.target.value)} className={fieldClass} min="0" step="1" />
-        </label>
-        <label className="block space-y-2 text-sm">
-          <span className="font-medium">{es ? "Personas" : "People"}</span>
-          <input type="number" value={people} onChange={(e) => setPeople(e.target.value)} className={fieldClass} min="1" step="1" />
-        </label>
+      <label className="block space-y-2 text-sm">
+        <span className="font-medium">{es ? "Monto de la cuenta" : "Bill amount"}</span>
+        <input
+          type="number"
+          min="0"
+          max="100000"
+          step="0.01"
+          value={bill}
+          onChange={(e) => setBill(e.target.value)}
+          className={fieldClass}
+          placeholder={es ? "Ej. 50" : "e.g. 50"}
+        />
+      </label>
+
+      <label className="block space-y-2 text-sm">
+        <span className="font-medium">{es ? "Porcentaje de propina (%)" : "Tip percentage (%)"}</span>
+        <input
+          type="number"
+          min="0"
+          max="100"
+          step="1"
+          value={tipPercent}
+          onChange={(e) => setTipPercent(e.target.value)}
+          className={fieldClass}
+          placeholder={es ? "Ej. 15" : "e.g. 15"}
+        />
+      </label>
+
+      <p className="text-sm text-muted-foreground">
+        {es
+          ? "Calcula la propina y el total a pagar. Ideal para restaurantes."
+          : "Calculates the tip amount and total to pay. Ideal for restaurants."}
+      </p>
+
+      <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
+        <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
+        <p>{es ? "Cuenta 50, 15% → Propina 7.50, Total 57.50" : "Bill 50, 15% → Tip 7.50, Total 57.50"}</p>
+        <p>{es ? "Cuenta 100, 20% → Propina 20.00, Total 120.00" : "Bill 100, 20% → Tip 20.00, Total 120.00"}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
         <button type="button" className={`${buttonClass} bg-primary text-primary-foreground`} onClick={copy}>
-          {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar resultados" : "Copy results"}
+          {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar resultado" : "Copy result"}
         </button>
         <button type="button" className={buttonClass} onClick={reset}>
           {es ? "Reiniciar" : "Reset"}

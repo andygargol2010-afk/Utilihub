@@ -5,23 +5,25 @@ const tool = makeTool(
   "Age Calculator",
   "fechas",
   "calculator",
-  "Calculate exact age in years, months and days from birth date, plus next birthday and days lived.",
+  "Calculate exact age in years, months, and days from date of birth.",
   [
     "age calculator",
-    "how old am I",
-    "exact age calculator",
-    "birthday calculator",
+    "calculate age",
     "calculadora de edad",
-    "cuantos años tengo",
-    "calculadora de edad exacta",
+    "edad exacta",
+    "how old am i",
   ],
   {
-    title: "Age Calculator — How old am I? Exact years, months & days | UtiliHub",
-    description: "Free online age calculator. Enter your birth date to get exact age in years, months and days, next birthday and total days lived. Runs locally in the browser.",
+    title: "Age Calculator — Exact Years, Months, Days | UtiliHub",
+    description: "Free age calculator. Enter birth date to get precise age in years, months, and days. Browser-only.",
+    summaryEs: "Calcula la edad exacta en años, meses y días a partir de la fecha de nacimiento.",
   },
 );
-tool.faq.push(faq("How is exact age calculated?", "It computes the difference between today and the birth date in years, months and days, accounting for leap years and varying month lengths."));
-tool.faq.push(faq("Does it work for future birth dates?", "No. Birth date must be in the past. Future dates show an error."));
-tool.faq.push(faq("Is the calculation accurate for leap years?", "Yes. The tool uses standard date arithmetic that correctly handles February 29."));
+tool.faq.push(
+  faq(
+    "How is age calculated?",
+    "Age is computed by comparing the birth date to the current date, accounting for full years, months, and remaining days.",
+  ),
+);
 
 export const AGE_CALCULATOR_TOOLS = [tool];
