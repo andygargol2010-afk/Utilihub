@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 264
+runs_done: 265
 runs_max: 500
 ```
 
@@ -56,7 +56,7 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: MODELADOR-3D
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
@@ -104,6 +104,7 @@ META run 261: confirmed monolith health 331826 B / 7519 lines / SHA de1e458a / n
 MODELADOR-3D run 262: pyramid base aligned to axes (rotateY 45deg) + distinct palette icon. Surgical. runs_done=262.
 MODELADOR-3D run 263: hemisphere ShapeKind (closed lathe dome) wired in modeler3d-helpers. Surgical, tsc OK. runs_done=263.
 PRODUCT run 264: chimney-brick densify (160 flecks + 9 lime efflorescence streaks) via local clone surgical. runs_done=264.
+MODELADOR-3D run 265: ceramic MatPreset (glossy glazed, EN/ES) in helpers. Surgical, tsc checked. runs_done=265.
 ```
 
 <!-- end:house-modeler-state.md -->
