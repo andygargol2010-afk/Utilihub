@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Share2 } from "lucide-react";
 import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 import { trackEvent } from "@/lib/analytics";
 
@@ -14,7 +14,7 @@ interface SpotlightExp {
   teaserEs: string;
   ctaEn: string;
   ctaEs: string;
-  accent: string; // tailwind color base e.g. amber, violet
+  accent: string;
 }
 
 const POOL: SpotlightExp[] = [
@@ -151,7 +151,6 @@ export function DailyExperienceSpotlight({ locale }: Props) {
     let selected = POOL[dayIdx];
     const last = loadLast();
     if (last === selected.id && POOL.length > 1) {
-      // Avoid consecutive same if possible
       selected = POOL[(dayIdx + 1) % POOL.length];
     }
     setExp(selected);
@@ -172,62 +171,61 @@ export function DailyExperienceSpotlight({ locale }: Props) {
     trackEvent("spotlight-share", { id: exp.id, locale, day: dayOfYear });
   };
 
-  // Dynamic classes based on accent (safe subset of Tailwind)
-  const borderClass = `border-${accent}-500/40`;
-  const bgFrom = `from-${accent}-500/10`;
-  const bgTo = `to-${accent === "amber" ? "violet" : accent}-500/5`;
+  const borderClass = `border-${accent}-500/50`;
+  const bgFrom = `from-${accent}-500/15`;
+  const bgTo = `to-${accent === "amber" ? "violet" : accent}-500/8`;
   const textAccent = `text-${accent}-600`;
-  const badgeBg = `bg-${accent}-500/15`;
-  const badgeText = `text-${accent}-700 dark:text-${accent}-400`;
+  const badgeBg = `bg-${accent}-500/20`;
+  const badgeText = `text-${accent}-800 dark:text-${accent}-300`;
   const btnBg = `bg-${accent}-600`;
   const btnHover = `hover:bg-${accent}-700`;
   const btnOutline = `focus-visible:outline-${accent}-500`;
-  const shareBorder = `border-${accent}-500/40`;
+  const shareBorder = `border-${accent}-500/50`;
 
   return (
     <section className="container-page py-4" aria-labelledby="spotlight-title">
-      <div className={`rounded-2xl border ${borderClass} bg-gradient-to-br ${bgFrom} ${bgTo} p-4 sm:p-5 shadow-sm`}>
+      <div className={`rounded-2xl border-2 ${borderClass} bg-gradient-to-br ${bgFrom} ${bgTo} p-4 sm:p-5 shadow-md`}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <p className={`text-xs font-bold uppercase tracking-[0.14em] ${textAccent}`}>
                 {isEs ? "Destacado del día" : "Daily Spotlight"}
               </p>
-              <span className={`inline-flex items-center rounded-full ${badgeBg} px-2 py-0.5 text-[10px] font-bold ${badgeText}`}>
-                D{dayOfYear}
+              <span className={`inline-flex items-center rounded-full ${badgeBg} px-2.5 py-0.5 text-[10px] font-black ${badgeText}`}>
+                {isEs ? "HOY" : "TODAY"} · D{dayOfYear}
               </span>
             </div>
-            <h2 id="spotlight-title" className="mt-1 text-lg font-black">
+            <h2 id="spotlight-title" className="mt-1 text-lg font-black tracking-tight">
               {title}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">{teaser}</p>
-            <p className="mt-1 text-xs text-muted-foreground/80">
+            <p className="mt-1 text-xs font-medium text-muted-foreground/90">
               {isEs
                 ? `Rota en ~${hoursLeft}h · ¡Comparte y trae a un amigo!`
                 : `Rotates in ~${hoursLeft}h · Share and bring a friend!`}
             </p>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <Link
                 to={path}
-                className={`inline-flex items-center gap-1.5 rounded-lg ${btnBg} px-4 py-2 text-sm font-bold text-white ${btnHover} focus-visible:outline focus-visible:outline-2 ${btnOutline}`}
+                className={`inline-flex items-center gap-1.5 rounded-xl ${btnBg} px-5 py-2.5 text-sm font-bold text-white shadow-sm ${btnHover} focus-visible:outline focus-visible:outline-2 ${btnOutline}`}
                 data-event="spotlight-click"
                 data-exp={exp.id}
                 onClick={() => trackEvent("spotlight-click", { id: exp.id, locale, day: dayOfYear })}
               >
                 {cta} <ArrowRight className="size-4" />
               </Link>
-              <div onClick={handleShareTrack}>
+              <div onClick={handleShareTrack} className="inline-flex">
                 <ExperienceShareButton
                   title={title}
                   url={fullUrl}
                   locale={locale}
                   variant="button"
-                  className={shareBorder}
+                  className={`${shareBorder} font-semibold`}
                 />
               </div>
             </div>
           </div>
-          <Sparkles className={`size-8 ${textAccent} opacity-70 shrink-0`} aria-hidden />
+          <Sparkles className={`size-9 ${textAccent} opacity-80 shrink-0`} aria-hidden />
         </div>
       </div>
     </section>
