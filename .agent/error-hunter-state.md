@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: deploy ERROR logs (tip c373982a ERROR) + known smoke (registry still has all dedicated wires including E025, no PLACEHOLDER) + discovery via build failure
-- deploy: tip before fix c373982aee45608bca5627742a2ca37a4b613b14 ERROR (JSX syntax); fix commit 7ea952667596898929cefba2990ec9c4f02681ea
-- known_smoke: green for E001–E025 (no open/recurring; previous READY deploys confirmed dedicateds wired)
-- new_findings: E026 — ToolSearch.tsx facets.map Button closing tag truncated `</Button` → build ERROR
-- fixes: 1 (ToolSearch.tsx restore `</Button>`)
+- mode: known smoke (E001–E026 fixed, no open/recurring) + discovery (patterns PLACEHOLDER/$(cat, truncated JSX, unwired dedicated sample, validator, playgrounds/sims/kits)
+- deploy: tip 7eb99cc7ba09621d1b965a37af7317072dd99130 READY (previous ERROR c373982a fixed in 7ea9526; docs bb9dff2)
+- known_smoke: green — registry no PLACEHOLDER + dedicated wires (incl. E025), home routes clean no $(cat, ToolSearch Button closed, modeler-3d routing correct, spanishToolSummary from es-summaries
+- new_findings: none (validator OK with warnings only; no truncated tags; sampled kits/games/experiences full)
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: deploy ERROR priority (E026 JSX truncation)
+- last_known_focus: registry/dedicated wiring + JSX truncation (E026)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
