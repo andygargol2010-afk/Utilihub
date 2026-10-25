@@ -213,6 +213,12 @@ const PxToRemCalculatorToolUi = lazy(() =>
 const DailyTravelBudgetCalculatorToolUi = lazy(() =>
   import("./DailyTravelBudgetCalculatorTool").then((m) => ({ default: m.DailyTravelBudgetCalculatorTool })),
 );
+const PercentageDifferenceCalculatorToolUi = lazy(() =>
+  import("./PercentageDifferenceCalculatorTool").then((m) => ({ default: m.PercentageDifferenceCalculatorTool })),
+);
+const SpeedDistanceTimeCalculatorToolUi = lazy(() =>
+  import("./SpeedDistanceTimeCalculatorTool").then((m) => ({ default: m.SpeedDistanceTimeCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -267,6 +273,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-area-rectangular") return RoomAreaCalculatorToolUi;
   if (slug === "calculadora-px-a-rem") return PxToRemCalculatorToolUi;
   if (slug === "calculadora-presupuesto-diario-viaje") return DailyTravelBudgetCalculatorToolUi;
+  if (slug === "calculadora-diferencia-porcentual") return PercentageDifferenceCalculatorToolUi;
+  if (slug === "calculadora-velocidad-distancia-tiempo") return SpeedDistanceTimeCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
