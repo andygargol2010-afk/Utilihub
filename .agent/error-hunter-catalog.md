@@ -16,7 +16,7 @@ Formato por entrada:
 
 ## E001 — Registry PLACEHOLDER / tool page crash
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-25 (registry.tsx exports GENERAL_TOOL_UI / pickComponent kind-first, no PLACEHOLDER; dedicated wires present)
+- **last_seen**: 2026-10-25 (registry.tsx full, exports GENERAL_TOOL_UI / pickComponent kind-first, no PLACEHOLDER; dedicated wires present)
 - **symptom**: "We could not load this page" · `Cannot read properties of undefined (reading 'kind')` en GeneralTool bundle
 - **root_cause**: `src/components/general/registry.tsx` reemplazado por PLACEHOLDER o sin `GENERAL_TOOL_UI` / `buildLazyRegistry` / `pickComponent`
 - **check**: leer registry completo; tamaño razonable; exports presentes; abrir 1–2 tools del catálogo
@@ -301,7 +301,7 @@ Formato por entrada:
 
 ## E031 — $(cat stubs corrupten archivos (catalog, state, registry, index)
 - **status**: open (recurring)
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-25 (current catalog/state/registry/index clean, no literal $(cat; pattern remains risk for future agent runs)
 - **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" en vez del contenido real; home 404 o registry roto o agente pierde memoria
 - **root_cause**: agentes escriben el comando shell como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
 - **check**: leer .agent/error-hunter-catalog.md; debe ser Markdown real con entradas E###; no una línea $(cat
@@ -318,10 +318,9 @@ Formato por entrada:
 - **fix_hint**: renombrar a slug único y actualizar registry
 - **files**: `src/lib/general/room-area-calculator-tool.ts`, `src/components/general/registry.tsx`
 
-
 ## E033 — ModularPatternComposer returns null (playground blank)
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-25 (file full ~23kB, exports ModularPatternComposer function with real canvas/layers; previous intermediate deploy ERROR on missing export resolved)
 - **fixed_at**: 2026-10-25
 - **symptom**: /studio/modular-pattern-composer or equivalent playground renders nothing (blank canvas)
 - **root_cause**: ModularPatternComposer.tsx was a stub ending with `return null;` plus comments about placeholder to avoid huge payload
