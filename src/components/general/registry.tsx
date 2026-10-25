@@ -207,6 +207,12 @@ const GpaCalculatorToolUi = lazy(() =>
 const RoomAreaCalculatorToolUi = lazy(() =>
   import("./RoomAreaCalculatorTool").then((m) => ({ default: m.RoomAreaCalculatorTool })),
 );
+const PxToRemCalculatorToolUi = lazy(() =>
+  import("./PxToRemCalculatorTool").then((m) => ({ default: m.PxToRemCalculatorTool })),
+);
+const DailyTravelBudgetCalculatorToolUi = lazy(() =>
+  import("./DailyTravelBudgetCalculatorTool").then((m) => ({ default: m.DailyTravelBudgetCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -259,6 +265,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-propina") return TipCalculatorToolUi;
   if (slug === "calculadora-gpa") return GpaCalculatorToolUi;
   if (slug === "calculadora-area-rectangular") return RoomAreaCalculatorToolUi;
+  if (slug === "calculadora-px-a-rem") return PxToRemCalculatorToolUi;
+  if (slug === "calculadora-presupuesto-diario-viaje") return DailyTravelBudgetCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
