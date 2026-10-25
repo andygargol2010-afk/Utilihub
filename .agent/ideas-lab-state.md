@@ -68,11 +68,11 @@ path_es: /es/
 path_seo: n/a
 domain: conversion-paths
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: Roll: U=0.47 <0.50 → GROWTH; U_g=0.71 >0.35 → FLEX urn. Selected conversion-paths (weight set to 1, other FLEX +1). Distinct from recent growth-surfaces (discovery rail) and traffic-bets (random button). Focus on conversion depth from home entry.
+notes: EXECUTE run 1/4: Shipped HomeValuePath component (lazy on home EN+ES after discovery rail). Fixed 3 high-value steps (aurora-particle, n-body-gravity-sim, neon-layer) with numbered path, clear CTAs, localStorage micro-progress "X of 3 explored" (marks on click, persists), data-event=value-path-click + data-exp/step. Lightweight CSS/no heavy assets. CWV-safe (lazy + fallback height). Adsterra intact. Next: polish visuals/progress or add more steps/variants if needed.
 adsense-prep_runs: 3
 ```
 
