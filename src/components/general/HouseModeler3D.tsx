@@ -682,6 +682,15 @@ function paintWallMasonryBump(ctx: CanvasRenderingContext2D, size: number) {
       ctx.fillRect(x - 1, y0, 3, rh);
     }
   }
+  // Stone grain pits and chisel specks so ashlar faces catch light unevenly.
+  for (let p = 0; p < 110; p++) {
+    const px = hash2(p, 61) * size;
+    const py = hash2(p, 67) * size;
+    ctx.fillStyle = hash2(p, 71) > 0.5 ? "rgba(240,240,240,0.3)" : "rgba(40,40,40,0.32)";
+    ctx.beginPath();
+    ctx.arc(px, py, 0.6 + hash2(p, 73) * 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 /** Running-bond brick for the chimney stack. Smaller courses than wall ashlar, soot under the crown. */
