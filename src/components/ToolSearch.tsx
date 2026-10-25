@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent, lazy, Suspense } from "react";
 import { Search, SlidersHorizontal, Star, Tag } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ALL_CATEGORIES, ALL_TOOLS, toolHref, type CatalogTool } from "@/lib/all-tools";
-import { ToolCard } from "@/components/ToolCard";
 import { useFavorites } from "@/hooks/use-favorites";
 import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
 
@@ -36,6 +35,10 @@ const STOP = new Set([
 ]);
 
 const PAGE_SIZE = 30;
+
+// ToolCard pulls CompactToolRow + catalog bits. Keep it off the ToolSearch chunk;
+// the first paint uses StaticListing, and the interactive list waits for idle.
+const ToolCard = lazy(() => import("@/components/ToolCard").then((m) => ({ default: m.ToolCard })));
 
 export function ToolSearch({
   initialCategory,
@@ -249,7 +252,7 @@ export function ToolSearch({
               >
                 {f.label}
                 <span className="ml-1 opacity-70">{f.count}</span>
-              </Button>
+              </Button
             ))}
           </div>
         )}
@@ -269,11 +272,13 @@ export function ToolSearch({
               Your favorites
             </h2>
           </div>
-          <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-            {favTools.map((t) => (
-              <ToolCard key={t.slug} tool={t} isFavorite onToggleFavorite={toggle} />
-            ))}
-          </div>
+          <Suspense fallback={null}>
+            <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+              {favTools.map((t) => (
+                <ToolCard key={t.slug} tool={t} isFavorite onToggleFavorite={toggle} />
+              ))}
+            </div>
+          </Suspense>
         </section>
       )}
       {!compactHome && (
@@ -285,29 +290,31 @@ export function ToolSearch({
               No tools match «{query || tag}».
             </p>
           ) : (
-            <>
-              <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-                {shown.map((t) => (
-                  <ToolCard
-                    key={t.slug}
-                    tool={t}
-                    isFavorite={favorites.includes(t.slug)}
-                    onToggleFavorite={toggle}
-                  />
-                ))}
-              </div>
-              {remaining > 0 && (
-                <div className="mt-3 flex justify-center">
-                  <button
-                    type="button"
-                    onClick={() => setVisible((v) => v + PAGE_SIZE)}
-                    className="inline-flex min-h-11 items-center rounded-xl border border-border bg-card px-5 text-sm font-bold hover:border-primary/40 hover:bg-accent"
-                  >
-                    Show {Math.min(PAGE_SIZE, remaining)} more ({remaining} left)
-                  </button>
+            <Suspense fallback={<StaticListing tools={staticTools} />}>
+              <>
+                <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+                  {shown.map((t) => (
+                    <ToolCard
+                      key={t.slug}
+                      tool={t}
+                      isFavorite={favorites.includes(t.slug)}
+                      onToggleFavorite={toggle}
+                    />
+                  ))}
                 </div>
-              )}
-            </>
+                {remaining > 0 && (
+                  <div className="mt-3 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                      className="inline-flex min-h-11 items-center rounded-xl border border-border bg-card px-5 text-sm font-bold hover:border-primary/40 hover:bg-accent"
+                    >
+                      Show {Math.min(PAGE_SIZE, remaining)} more ({remaining} left)
+                    </button>
+                  </div>
+                )}
+              </>
+            </Suspense>
           )}
         </div>
       )}

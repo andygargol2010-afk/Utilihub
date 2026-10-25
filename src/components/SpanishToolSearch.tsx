@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent, lazy, Suspense } from "react";
 import { Search, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ALL_CATEGORIES, ALL_TOOLS, type CatalogTool } from "@/lib/all-tools";
-import { ToolCard } from "@/components/ToolCard";
 import { useFavorites } from "@/hooks/use-favorites";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 import { spanishToolSummary } from "@/lib/i18n/es-summaries";
@@ -15,6 +14,9 @@ function normalize(s: string) {
 const STOP = new Set(["de", "la", "el", "los", "las", "para", "por", "un", "una", "y", "o", "en", "the", "a", "an", "and", "or", "for", "to", "of", "in"]);
 const categoryButtonClass = "min-h-11 shrink-0 rounded-full px-3 text-xs font-semibold";
 const PAGE_SIZE = 30;
+
+// Same as EN: keep ToolCard (and its row/catalog deps) off the SpanishToolSearch chunk.
+const ToolCard = lazy(() => import("@/components/ToolCard").then((m) => ({ default: m.ToolCard })));
 
 export function SpanishToolSearch({ initialCategory, compactHome = false }: { initialCategory?: string; compactHome?: boolean }) {
   const [query, setQuery] = useState("");
@@ -163,14 +165,16 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
           <h2 id="fav-title" className="mb-2 flex items-center gap-2 text-sm font-bold">
             <Star className="size-4 text-amber-500" /> Tus favoritas
           </h2>
-          <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-            {favorites
-              .map((slug) => ALL_TOOLS.find((t) => t.slug === slug))
-              .filter((t): t is CatalogTool => Boolean(t))
-              .map((t) => (
-                <ToolCard key={t.slug} tool={t} locale="es" isFavorite onToggleFavorite={toggle} />
-              ))}
-          </div>
+          <Suspense fallback={null}>
+            <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+              {favorites
+                .map((slug) => ALL_TOOLS.find((t) => t.slug === slug))
+                .filter((t): t is CatalogTool => Boolean(t))
+                .map((t) => (
+                  <ToolCard key={t.slug} tool={t} locale="es" isFavorite onToggleFavorite={toggle} />
+                ))}
+            </div>
+          </Suspense>
         </section>
       )}
 
@@ -182,24 +186,26 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
             No hay herramientas que coincidan con «{query || tag}».
           </p>
         ) : (
-          <>
-            <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-              {shown.map((t) => (
-                <ToolCard key={t.slug} tool={t} locale="es" isFavorite={favorites.includes(t.slug)} onToggleFavorite={toggle} />
-              ))}
-            </div>
-            {remaining > 0 && (
-              <div className="mt-3 flex justify-center">
-                <button
-                  type="button"
-                  onClick={() => setVisible((v) => v + PAGE_SIZE)}
-                  className="inline-flex min-h-11 items-center rounded-xl border border-border bg-card px-5 text-sm font-bold hover:border-primary/40 hover:bg-accent"
-                >
-                  Mostrar {Math.min(PAGE_SIZE, remaining)} más ({remaining} restantes)
-                </button>
+          <Suspense fallback={<StaticListing tools={staticTools} />}>
+            <>
+              <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+                {shown.map((t) => (
+                  <ToolCard key={t.slug} tool={t} locale="es" isFavorite={favorites.includes(t.slug)} onToggleFavorite={toggle} />
+                ))}
               </div>
-            )}
-          </>
+              {remaining > 0 && (
+                <div className="mt-3 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setVisible((v) => v + PAGE_SIZE)}
+                    className="inline-flex min-h-11 items-center rounded-xl border border-border bg-card px-5 text-sm font-bold hover:border-primary/40 hover:bg-accent"
+                  >
+                    Mostrar {Math.min(PAGE_SIZE, remaining)} más ({remaining} restantes)
+                  </button>
+                </div>
+              )}
+            </>
+          </Suspense>
         )}
       </div>
     </div>
