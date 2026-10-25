@@ -121,6 +121,8 @@ import { DAILY_WATER_INTAKE_CALCULATOR_TOOLS } from "./daily-water-intake-calcul
 import { UNIT_PRICE_TOOLS } from "./unit-price-tool";
 import { AGE_CALCULATOR_TOOLS } from "./age-calculator-tool";
 import { TIP_CALCULATOR_TOOLS } from "./tip-calculator-tool";
+import { GPA_CALCULATOR_TOOLS } from "./gpa-calculator-tool";
+import { ROOM_AREA_CALCULATOR_TOOLS } from "./room-area-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -246,4 +248,6 @@ export const GENERAL_TOOLS = [
   ...UNIT_PRICE_TOOLS,
   ...AGE_CALCULATOR_TOOLS,
   ...TIP_CALCULATOR_TOOLS,
+  ...GPA_CALCULATOR_TOOLS,
+  ...ROOM_AREA_CALCULATOR_TOOLS,
 ];
