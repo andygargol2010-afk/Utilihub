@@ -268,4 +268,26 @@ Formato por entrada:
 - **fix_hint**: restore the missing `>` on the closing tag; scan for other truncated JSX in recent polish commits
 - **files**: `src/components/ToolSearch.tsx`
 
+
+
+## E027 — Dedicated UI for calculadora-ingesta-agua-diaria not wired in registry
+- **status**: fixed
+- **fixed_at**: 2026-10-25
+- **last_seen**: 2026-10-25
+- **symptom**: /calculadora-ingesta-agua-diaria (y /es/...) muestra UI genérica de MathTool ("Statistical tool not implemented") en vez de la UI dedicada con campo de peso y rango 30-35 ml/kg
+- **root_cause**: feat(catalog) añadió makeTool + DailyWaterIntakeCalculatorTool.tsx + import en index.ts, pero pickComponent en registry.tsx no tiene slug === + lazy import; kind "calculator" cae a MathToolUi default
+- **check**: registry.tsx tiene lazy DailyWaterIntakeCalculatorToolUi y if (slug === "calculadora-ingesta-agua-diaria"); componente exporta función real
+- **fix_hint**: añadir lazy + early slug check en pickComponent; tools-builder debe actualizar registry al añadir dedicated UI
+- **files**: `src/components/general/registry.tsx`, `src/components/general/DailyWaterIntakeCalculatorTool.tsx`
+
+## E028 — Dedicated UI for calculadora-consumo-agua not wired in registry
+- **status**: fixed
+- **fixed_at**: 2026-10-25
+- **last_seen**: 2026-10-25
+- **symptom**: /calculadora-consumo-agua muestra UI genérica en vez de la dedicada (litros/día + días → mensual/anual)
+- **root_cause**: makeTool + WaterConsumptionCalculatorTool.tsx + import en index.ts existían, pero pickComponent no tiene slug === + lazy; cae a MathToolUi
+- **check**: registry.tsx tiene lazy WaterConsumptionCalculatorToolUi y if (slug === "calculadora-consumo-agua"); componente exporta función real
+- **fix_hint**: añadir lazy + early slug check en pickComponent
+- **files**: `src/components/general/registry.tsx`, `src/components/general/WaterConsumptionCalculatorTool.tsx`
+
 <!-- end:catalog -->

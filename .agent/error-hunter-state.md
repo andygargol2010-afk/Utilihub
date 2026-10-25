@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001–E026 fixed, no open/recurring) + discovery (registry wires, home, kits KitchenPrepBoard, playgrounds NBody/Aurora, patterns PLACEHOLDER/$(cat, truncated JSX)
-- deploy: tip adc36cff13f4c8228e304abbd78ff0f1c330e417 READY (previous 58639870 READY)
-- known_smoke: green — registry no PLACEHOLDER + dedicated wires (incl. E025 arithmetic/median/factorial), home routes clean no $(cat, ToolSearch Button closed, modeler-3d routing correct, index.ts full catalog
-- new_findings: none (KitchenPrepBoard.tsx complete multi-recipe selector + share PNG; NBodyGravitySim + AuroraParticlePlayground full canvas loops; no truncated tags; build events clean)
-- fixes: 0
+- mode: known smoke (E001–E026 fixed/green) + discovery (new catalog tool calculadora-ingesta-agua-diaria + consumo-agua registry wires, home routes)
+- deploy: tip de97af680c8cf9c700b6a644b969441d5a7a2156 READY
+- known_smoke: green — registry no PLACEHOLDER, home index.tsx starts with import no $(cat, modeler routing ok, index.ts full
+- new_findings: E027 + E028 discovered and fixed (wires added)
+- fixes: 2 (E027, E028 — added lazy + slug checks in registry.tsx)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: playgrounds (NBody/Aurora) + registry + kits
+- last_known_focus: registry (dedicated wires) + new catalog tools
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 

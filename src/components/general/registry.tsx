@@ -183,6 +183,12 @@ const MedianCalculatorToolUi = lazy(() =>
 const FactorialCalculatorToolUi = lazy(() =>
   import("./FactorialCalculatorTool").then((m) => ({ default: m.FactorialCalculatorTool })),
 );
+const DailyWaterIntakeCalculatorToolUi = lazy(() =>
+  import("./DailyWaterIntakeCalculatorTool").then((m) => ({ default: m.DailyWaterIntakeCalculatorTool })),
+);
+const WaterConsumptionCalculatorToolUi = lazy(() =>
+  import("./WaterConsumptionCalculatorTool").then((m) => ({ default: m.WaterConsumptionCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -227,6 +233,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-media-aritmetica") return ArithmeticMeanCalculatorToolUi;
   if (slug === "calculadora-mediana") return MedianCalculatorToolUi;
   if (slug === "calculadora-factorial") return FactorialCalculatorToolUi;
+  if (slug === "calculadora-ingesta-agua-diaria") return DailyWaterIntakeCalculatorToolUi;
+  if (slug === "calculadora-consumo-agua") return WaterConsumptionCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
