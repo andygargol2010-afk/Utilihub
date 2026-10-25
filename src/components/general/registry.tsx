@@ -195,6 +195,12 @@ const SphereSurfaceAreaCalculatorToolUi = lazy(() =>
 const SquarePerimeterCalculatorToolUi = lazy(() =>
   import("./SquarePerimeterCalculatorTool").then((m) => ({ default: m.SquarePerimeterCalculatorTool })),
 );
+const AgeCalculatorToolUi = lazy(() =>
+  import("./AgeCalculatorTool").then((m) => ({ default: m.AgeCalculatorTool })),
+);
+const TipCalculatorToolUi = lazy(() =>
+  import("./TipCalculatorTool").then((m) => ({ default: m.TipCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -243,6 +249,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-consumo-agua") return WaterConsumptionCalculatorToolUi;
   if (slug === "calculadora-area-superficie-esfera") return SphereSurfaceAreaCalculatorToolUi;
   if (slug === "calculadora-perimetro-cuadrado") return SquarePerimeterCalculatorToolUi;
+  if (slug === "calculadora-edad") return AgeCalculatorToolUi;
+  if (slug === "calculadora-propina") return TipCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
