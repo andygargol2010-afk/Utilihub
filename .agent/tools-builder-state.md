@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-25 | fechas | calculadora-edad | AgeCalculatorTool
+- 2026-10-25 | finanzas | calculadora-propina | TipCalculatorTool
 - 2026-10-25 | salud | calculadora-ingesta-agua-diaria | DailyWaterIntakeCalculatorTool
 - 2026-10-24 | texto | calculadora-longitud-promedio-palabra | AverageWordLengthCalculatorTool
 - 2026-10-24 | finanzas | calculadora-interes-diario | DailyInterestCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-24 | productividad | calculadora-ratio-trabajo-descanso | WorkBreakRatioCalculatorTool
 - 2026-10-24 | cocina | calculadora-agua-arroz | RiceWaterCalculatorTool
 - 2026-10-24 | conversiones | conversor-pulgadas-cm | InchesToCmConverterTool
-- 2026-10-24 | matematicas | calculadora-raiz-cubica | CubeRootCalculatorTool
-- 2026-10-24 | matematicas | calculadora-raiz-cuadrada | SquareRootCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -38,7 +38,7 @@ Use with PRODUCT diversity rules (ops). Prefer under-represented clusters.
 Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
-fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones)
+fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje)
@@ -47,7 +47,7 @@ diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-d
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica)
-finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario)
+finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina)
 productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto, calculadora-horas-estudio, calculadora-ratio-trabajo-descanso)
 matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado, perimetro-triangulo, calculadora-porcentaje-de-numero, calculadora-raiz-cuadrada, calculadora-raiz-cubica, calculadora-logaritmo)
 ```
@@ -67,6 +67,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-24: PRODUCT — calculadora-logaritmo (matematicas) + calculadora-presion-atmosferica (ciencia). Clusters distintos, calidad alta. SEO locales: defer pt.
 2026-10-24: PRODUCT — calculadora-longitud-promedio-palabra (texto) + calculadora-interes-diario (finanzas). Clusters distintos, calidad alta. SEO locales: defer pt.
 2026-10-25: NEW-CATEGORY — salud + calculadora-ingesta-agua-diaria. Gates OK. Seed tool calidad alta. SEO locales: defer pt.
+2026-10-25: PRODUCT — calculadora-edad (fechas) + calculadora-propina (finanzas). Clusters distintos, calidad alta. SEO locales: defer pt.
 ```
 
 ---
@@ -74,10 +75,10 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: NEW-CATEGORY (roll 2)
-last_slugs: calculadora-ingesta-agua-diaria
+last_mode: PRODUCT (roll 15)
+last_slugs: calculadora-edad, calculadora-propina
 last_deploy: pending
-last_sha: pending
+last_sha: 93bbd0110b906fa0a37869fb73048e1908f115fb
 ```
 
 <!-- end:tools-builder-state.md -->
