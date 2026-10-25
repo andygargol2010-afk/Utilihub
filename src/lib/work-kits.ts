@@ -94,6 +94,15 @@ export const WORK_KITS: WorkKit[] = [
     outcome: "A clear renovation plan with live calculations and progress, ready to copy or share.",
     toolSlugs: [],
   },
+  {
+    slug: "preparacion-cocina",
+    englishSlug: "kitchen-prep",
+    name: "Kitchen prep board",
+    eyebrow: "Meal prep station",
+    description: "Interactive kitchen prep board: scale servings, check ingredients live, reorder steps, run a step timer with progress, and share a PNG summary. A coherent prep path, not a tool list.",
+    outcome: "Meal ready with servings scaled, ingredients checked, and steps tracked in the browser.",
+    toolSlugs: [],
+  },
 ];
 
 export function kitTools(kit: WorkKit): CatalogTool[] {
