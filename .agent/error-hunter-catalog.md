@@ -238,4 +238,14 @@ Formato por entrada:
 - **fix_hint**: align spotlight paths with actual route definitions; verify other POOL entries against routes/
 - **files**: `src/components/DailyExperienceSpotlight.tsx`, `src/routes/n-body-gravity.tsx`, `src/routes/es.n-body-gravity.tsx`
 
+## E024 — Dedicated UIs for unit-price and rice-water not wired in registry (generic "not implemented")
+- **status**: fixed
+- **last_seen**: 2026-10-25
+- **fixed_at**: 2026-10-25
+- **symptom**: /calculadora-precio-unitario y /calculadora-agua-arroz muestran "Statistical tool not implemented" (MathTool default) en vez de la UI dedicada con campos de precio/cantidad o tazas/ratio
+- **root_cause**: makeTool + UnitPriceTool.tsx / RiceWaterCalculatorTool.tsx dedicados e import en index.ts existían, pero pickComponent en registry.tsx no tenía slug === + lazy import; kind "calculator" cae a MathToolUi switch default throw
+- **check**: registry.tsx tiene lazy UnitPriceToolUi + RiceWaterCalculatorToolUi y if (slug === "calculadora-precio-unitario") / "calculadora-agua-arroz"; componentes exportan función real (useState + useMemo)
+- **fix_hint**: añadir lazy + early slug check en pickComponent; tools-builder debe actualizar registry al añadir dedicated UI
+- **files**: `src/components/general/registry.tsx`, `src/components/general/UnitPriceTool.tsx`, `src/components/general/RiceWaterCalculatorTool.tsx`
+
 <!-- end:catalog -->

@@ -168,6 +168,12 @@ const DailySpendingCalculatorToolUi = lazy(() =>
 const WorkBreakRatioCalculatorToolUi = lazy(() =>
   import("./WorkBreakRatioCalculatorTool").then((m) => ({ default: m.WorkBreakRatioCalculatorTool })),
 );
+const UnitPriceToolUi = lazy(() =>
+  import("./UnitPriceTool").then((m) => ({ default: m.UnitPriceTool })),
+);
+const RiceWaterCalculatorToolUi = lazy(() =>
+  import("./RiceWaterCalculatorTool").then((m) => ({ default: m.RiceWaterCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -207,6 +213,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "conversor-pulgadas-cm") return InchesToCmConverterToolUi;
   if (slug === "calculadora-gasto-diario") return DailySpendingCalculatorToolUi;
   if (slug === "calculadora-ratio-trabajo-descanso") return WorkBreakRatioCalculatorToolUi;
+  if (slug === "calculadora-precio-unitario") return UnitPriceToolUi;
+  if (slug === "calculadora-agua-arroz") return RiceWaterCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
