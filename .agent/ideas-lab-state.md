@@ -68,11 +68,11 @@ path_es: /es/
 path_seo: n/a
 domain: conversion-paths
 runs_total: 4
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: EXECUTE run 2/4: Polished HomeValuePath visuals — progress bar (role=progressbar, violet	o emerald), completion banner with Sparkles when 3/3, done state shows check + "Done/Hecho" label + "Explore again" CTA, stronger hover/shadow. Still lazy on home EN+ES, localStorage, data-events intact. CWV-safe (no new deps/assets). Adsterra intact. Next: optional deeper variants or close if acceptance met.
+notes: EXECUTE run 3/4: HomeValuePath now refreshable — "New/Nueva" button picks 3 random unique from 6-experience pool (aurora, n-body, neon, prism, color-cascade, aura). Progress still localStorage by id, data-events (value-path-click + value-path-refresh), progress bar + completion intact. Still lazy on home EN+ES. CWV-safe (no new deps/assets, light JS). Adsterra intact. Next: final polish or close if acceptance met.
 adsense-prep_runs: 3
 ```
 
