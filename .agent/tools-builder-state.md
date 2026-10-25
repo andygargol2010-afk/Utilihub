@@ -15,7 +15,7 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
 - 2026-10-25 | educacion | calculadora-gpa | GpaCalculatorTool
-- 2026-10-25 | hogar | calculadora-area-habitacion | RoomAreaCalculatorTool
+- 2026-10-25 | hogar | calculadora-area-rectangular | RoomAreaCalculatorTool
 - 2026-10-25 | fechas | calculadora-edad | AgeCalculatorTool
 - 2026-10-25 | finanzas | calculadora-propina | TipCalculatorTool
 - 2026-10-25 | salud | calculadora-ingesta-agua-diaria | DailyWaterIntakeCalculatorTool
@@ -40,7 +40,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica)
-hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-habitacion)
+hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado)
@@ -68,7 +68,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-24: PRODUCT — calculadora-longitud-promedio-palabra (texto) + calculadora-interes-diario (finanzas). Clusters distintos, calidad alta. SEO locales: defer pt.
 2026-10-25: NEW-CATEGORY — salud + calculadora-ingesta-agua-diaria. Gates OK. Seed tool calidad alta. SEO locales: defer pt.
 2026-10-25: PRODUCT — calculadora-edad (fechas) + calculadora-propina (finanzas). Clusters distintos, calidad alta. SEO locales: defer pt.
-2026-10-25: PRODUCT — calculadora-gpa (educacion) + calculadora-area-habitacion (hogar). Clusters distintos, calidad alta. SEO locales: defer pt.
+2026-10-25: PRODUCT — calculadora-gpa (educacion) + calculadora-area-rectangular (hogar). Clusters distintos, calidad alta. SEO locales: defer pt. (slug renombrado por dupe previo)
 ```
 
 ---
@@ -77,9 +77,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT (roll 18)
-last_slugs: calculadora-gpa, calculadora-area-habitacion
+last_slugs: calculadora-gpa, calculadora-area-rectangular
 last_deploy: pending
-last_sha: 37111dc26164bb7b799d9351daf7c1d6520f7bd9
+last_sha: c58a8d5d0b15c0e5b40df74ed9171d0cb130cb97
 ```
 
 <!-- end:tools-builder-state.md -->
