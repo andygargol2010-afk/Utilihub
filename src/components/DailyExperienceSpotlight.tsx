@@ -14,6 +14,7 @@ interface SpotlightExp {
   teaserEs: string;
   ctaEn: string;
   ctaEs: string;
+  accent: string; // tailwind color base e.g. amber, violet
 }
 
 const POOL: SpotlightExp[] = [
@@ -27,6 +28,7 @@ const POOL: SpotlightExp[] = [
     teaserEs: "Estelas bloom multi-modo con atractores y emisores.",
     ctaEn: "Launch Aurora",
     ctaEs: "Lanzar Aurora",
+    accent: "amber",
   },
   {
     id: "n-body-gravity-sim",
@@ -38,6 +40,7 @@ const POOL: SpotlightExp[] = [
     teaserEs: "Dinámica gravitatoria en vivo con presets y estelas.",
     ctaEn: "Simulate Gravity",
     ctaEs: "Simular Gravedad",
+    accent: "sky",
   },
   {
     id: "neon-layer-composer",
@@ -49,6 +52,7 @@ const POOL: SpotlightExp[] = [
     teaserEs: "Lienzo neón a mano alzada con bloom, simetría y partículas.",
     ctaEn: "Compose Neon",
     ctaEs: "Componer Neón",
+    accent: "fuchsia",
   },
   {
     id: "prism-trail-composer",
@@ -60,6 +64,7 @@ const POOL: SpotlightExp[] = [
     teaserEs: "Estelas prisma arcoíris con glow continuo.",
     ctaEn: "Trail Prism",
     ctaEs: "Estela Prisma",
+    accent: "violet",
   },
   {
     id: "color-cascade-fusion",
@@ -71,6 +76,7 @@ const POOL: SpotlightExp[] = [
     teaserEs: "Fusión de colores adyacentes y cascadas combo.",
     ctaEn: "Fuse Colors",
     ctaEs: "Fusionar Colores",
+    accent: "emerald",
   },
   {
     id: "aura-card-share",
@@ -82,6 +88,7 @@ const POOL: SpotlightExp[] = [
     teaserEs: "Cartas de partículas compartibles con citas y esquemas.",
     ctaEn: "Compose Aura",
     ctaEs: "Componer Aura",
+    accent: "rose",
   },
 ];
 
@@ -100,6 +107,13 @@ function getDayOfYear(): number {
   const start = new Date(now.getFullYear(), 0, 0);
   const diff = now.getTime() - start.getTime();
   return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+function hoursUntilMidnight(): number {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(24, 0, 0, 0);
+  return Math.max(1, Math.ceil((midnight.getTime() - now.getTime()) / (1000 * 60 * 60)));
 }
 
 function loadLast(): string | null {
@@ -126,12 +140,14 @@ interface Props {
 export function DailyExperienceSpotlight({ locale }: Props) {
   const [exp, setExp] = useState<SpotlightExp | null>(null);
   const [dayOfYear, setDayOfYear] = useState(0);
+  const [hoursLeft, setHoursLeft] = useState(24);
   const isEs = locale === "es";
 
   useEffect(() => {
     const dayIdx = getDayIndex();
     const doy = getDayOfYear();
     setDayOfYear(doy);
+    setHoursLeft(hoursUntilMidnight());
     let selected = POOL[dayIdx];
     const last = loadLast();
     if (last === selected.id && POOL.length > 1) {
@@ -150,21 +166,34 @@ export function DailyExperienceSpotlight({ locale }: Props) {
   const teaser = isEs ? exp.teaserEs : exp.teaserEn;
   const cta = isEs ? exp.ctaEs : exp.ctaEn;
   const fullUrl = typeof window !== "undefined" ? `${window.location.origin}${path}` : path;
+  const accent = exp.accent;
 
   const handleShareTrack = () => {
     trackEvent("spotlight-share", { id: exp.id, locale, day: dayOfYear });
   };
 
+  // Dynamic classes based on accent (safe subset of Tailwind)
+  const borderClass = `border-${accent}-500/40`;
+  const bgFrom = `from-${accent}-500/10`;
+  const bgTo = `to-${accent === "amber" ? "violet" : accent}-500/5`;
+  const textAccent = `text-${accent}-600`;
+  const badgeBg = `bg-${accent}-500/15`;
+  const badgeText = `text-${accent}-700 dark:text-${accent}-400`;
+  const btnBg = `bg-${accent}-600`;
+  const btnHover = `hover:bg-${accent}-700`;
+  const btnOutline = `focus-visible:outline-${accent}-500`;
+  const shareBorder = `border-${accent}-500/40`;
+
   return (
     <section className="container-page py-4" aria-labelledby="spotlight-title">
-      <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/10 to-violet-500/5 p-4 sm:p-5 shadow-sm">
+      <div className={`rounded-2xl border ${borderClass} bg-gradient-to-br ${bgFrom} ${bgTo} p-4 sm:p-5 shadow-sm`}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-600">
+              <p className={`text-xs font-bold uppercase tracking-[0.14em] ${textAccent}`}>
                 {isEs ? "Destacado del día" : "Daily Spotlight"}
               </p>
-              <span className="inline-flex items-center rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:text-amber-400">
+              <span className={`inline-flex items-center rounded-full ${badgeBg} px-2 py-0.5 text-[10px] font-bold ${badgeText}`}>
                 D{dayOfYear}
               </span>
             </div>
@@ -173,12 +202,14 @@ export function DailyExperienceSpotlight({ locale }: Props) {
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">{teaser}</p>
             <p className="mt-1 text-xs text-muted-foreground/80">
-              {isEs ? "Rota cada día · ¡Comparte la experiencia!" : "Rotates daily · Share the experience!"}
+              {isEs
+                ? `Rota en ~${hoursLeft}h · ¡Comparte y trae a un amigo!`
+                : `Rotates in ~${hoursLeft}h · Share and bring a friend!`}
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
               <Link
                 to={path}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-600 px-4 py-2 text-sm font-bold text-white hover:bg-amber-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
+                className={`inline-flex items-center gap-1.5 rounded-lg ${btnBg} px-4 py-2 text-sm font-bold text-white ${btnHover} focus-visible:outline focus-visible:outline-2 ${btnOutline}`}
                 data-event="spotlight-click"
                 data-exp={exp.id}
                 onClick={() => trackEvent("spotlight-click", { id: exp.id, locale, day: dayOfYear })}
@@ -191,12 +222,12 @@ export function DailyExperienceSpotlight({ locale }: Props) {
                   url={fullUrl}
                   locale={locale}
                   variant="button"
-                  className="border-amber-500/40"
+                  className={shareBorder}
                 />
               </div>
             </div>
           </div>
-          <Sparkles className="size-8 text-amber-500/70 shrink-0" aria-hidden />
+          <Sparkles className={`size-8 ${textAccent} opacity-70 shrink-0`} aria-hidden />
         </div>
       </div>
     </section>
