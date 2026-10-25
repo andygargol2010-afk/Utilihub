@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001 registry, E005 homes, E004 3D routing, E031 catalog real) + discovery (playgrounds/ModularPatternComposer)
-- deploy: tip SHA caa4965 pushed; previous READY on 57a9f0a3; no current ERROR on latest
-- known_smoke: all sampled fixed (registry full, homes real, 3D correct routing); E031 still recurring pattern but current files clean
-- new_findings: E033 ModularPatternComposer was stub returning null (blank playground); restored full from 6528acc5
-- fixes: restored src/components/playgrounds/ModularPatternComposer.tsx (530 lines added); catalog + state updated
+- mode: known smoke (E001 registry full no PLACEHOLDER, E005 homes real no $(cat, E031 catalog/state clean, E033 ModularPatternComposer exports + full) + discovery (playgrounds sample, pattern search $(cat/PLACEHOLDER/not implemented, index.ts tools spread, es.index)
+- deploy: tip SHA 66368332 READY on dpl_4K1A62mNnxedRDJZ3hFs1wJqm65a; previous ERROR on ModularPatternComposer restore (export missing intermediate) resolved by later commit
+- known_smoke: all sampled fixed/passing (registry complete, homes import+createFileRoute, no $(cat); E031 pattern still recurring risk but current files clean)
+- new_findings: none (no PLACEHOLDER, no $(cat, no return null stubs in sampled playgrounds, catalog index complete, ModularPatternComposer full export)
+- fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E031 $(cat pattern) + playgrounds
+- last_known_focus: E001/E005/E031 + playgrounds/ModularPatternComposer
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
