@@ -252,7 +252,7 @@ export function ToolSearch({
               >
                 {f.label}
                 <span className="ml-1 opacity-70">{f.count}</span>
-              </Button
+              </Button>
             ))}
           </div>
         )}
