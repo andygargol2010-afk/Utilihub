@@ -5,6 +5,7 @@ import { KitCarryBoard } from "@/components/kits/KitCarryBoard";
 import { MarketStallBoard } from "@/components/kits/MarketStallBoard";
 import { TravelPackingBoard } from "@/components/kits/TravelPackingBoard";
 import { HomeRenovationBoard } from "@/components/kits/HomeRenovationBoard";
+import { KitchenPrepBoard } from "@/components/kits/KitchenPrepBoard";
 import { ToolCard } from "@/components/ToolCard";
 import { spanishToolName } from "@/lib/i18n/es";
 import { kitBySlug, kitTools, kitEnglishPath } from "@/lib/work-kits";
@@ -65,6 +66,12 @@ const KIT_ES: Record<string, { name: string; eyebrow: string; description: strin
     description: "Tablero multi-paso interactivo para medir una habitación, estimar piso y pintura, seguir costos, checklist de progreso y temporizador de foco. Un plan de renovación vivo en el navegador.",
     outcome: "Un plan de renovación claro con cálculos en vivo y progreso, listo para copiar o compartir.",
   },
+  "preparacion-cocina": {
+    name: "Tablero de preparación de cocina",
+    eyebrow: "Estación de meal prep",
+    description: "Tablero interactivo de preparación: escalá porciones, marcá ingredientes en vivo, reordená pasos, usá el temporizador de paso con progreso y compartí un resumen PNG. Un camino de prep coherente, no una lista de herramientas.",
+    outcome: "Comida lista con porciones escaladas, ingredientes marcados y pasos seguidos en el navegador.",
+  },
 };
 
 export const Route = createFileRoute("/es/kits/$slug")({
@@ -110,6 +117,7 @@ function SpanishKitPage() {
   const isMarketStall = kit.slug === "puesto-de-feria";
   const isTravelPacking = kit.slug === "packing-viaje";
   const isHomeRenovation = kit.slug === "kit-renovacion-hogar";
+  const isKitchenPrep = kit.slug === "preparacion-cocina";
   return (
     <main className="container-page py-6 sm:py-8">
       <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Kits", to: "/es/kits" }, { label: esMeta.name }]} />
@@ -127,6 +135,8 @@ function SpanishKitPage() {
         <TravelPackingBoard locale="es" />
       ) : isHomeRenovation ? (
         <HomeRenovationBoard locale="es" />
+      ) : isKitchenPrep ? (
+        <KitchenPrepBoard locale="es" />
       ) : (
         <>
           <KitCarryBoard
