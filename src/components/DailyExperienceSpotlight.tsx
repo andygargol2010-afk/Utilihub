@@ -95,6 +95,13 @@ function getDayIndex(): number {
   return day % POOL.length;
 }
 
+function getDayOfYear(): number {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now.getTime() - start.getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
 function loadLast(): string | null {
   if (typeof window === "undefined") return null;
   try {
@@ -118,10 +125,13 @@ interface Props {
 
 export function DailyExperienceSpotlight({ locale }: Props) {
   const [exp, setExp] = useState<SpotlightExp | null>(null);
+  const [dayOfYear, setDayOfYear] = useState(0);
   const isEs = locale === "es";
 
   useEffect(() => {
     const dayIdx = getDayIndex();
+    const doy = getDayOfYear();
+    setDayOfYear(doy);
     let selected = POOL[dayIdx];
     const last = loadLast();
     if (last === selected.id && POOL.length > 1) {
@@ -130,7 +140,7 @@ export function DailyExperienceSpotlight({ locale }: Props) {
     }
     setExp(selected);
     saveLast(selected.id);
-    trackEvent("spotlight-view", { id: selected.id, locale });
+    trackEvent("spotlight-view", { id: selected.id, locale, day: doy });
   }, [locale]);
 
   if (!exp) return null;
@@ -141,38 +151,52 @@ export function DailyExperienceSpotlight({ locale }: Props) {
   const cta = isEs ? exp.ctaEs : exp.ctaEn;
   const fullUrl = typeof window !== "undefined" ? `${window.location.origin}${path}` : path;
 
+  const handleShareTrack = () => {
+    trackEvent("spotlight-share", { id: exp.id, locale, day: dayOfYear });
+  };
+
   return (
     <section className="container-page py-4" aria-labelledby="spotlight-title">
-      <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/5 to-violet-500/5 p-4 sm:p-5">
+      <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/10 to-violet-500/5 p-4 sm:p-5 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-600">
-              {isEs ? "Destacado del día" : "Daily Spotlight"}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-600">
+                {isEs ? "Destacado del día" : "Daily Spotlight"}
+              </p>
+              <span className="inline-flex items-center rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:text-amber-400">
+                D{dayOfYear}
+              </span>
+            </div>
             <h2 id="spotlight-title" className="mt-1 text-lg font-black">
               {title}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">{teaser}</p>
+            <p className="mt-1 text-xs text-muted-foreground/80">
+              {isEs ? "Rota cada día · ¡Comparte la experiencia!" : "Rotates daily · Share the experience!"}
+            </p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
               <Link
                 to={path}
                 className="inline-flex items-center gap-1.5 rounded-lg bg-amber-600 px-4 py-2 text-sm font-bold text-white hover:bg-amber-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500"
                 data-event="spotlight-click"
                 data-exp={exp.id}
-                onClick={() => trackEvent("spotlight-click", { id: exp.id, locale })}
+                onClick={() => trackEvent("spotlight-click", { id: exp.id, locale, day: dayOfYear })}
               >
                 {cta} <ArrowRight className="size-4" />
               </Link>
-              <ExperienceShareButton
-                title={title}
-                url={fullUrl}
-                locale={locale}
-                variant="button"
-                className="border-amber-500/40"
-              />
+              <div onClick={handleShareTrack}>
+                <ExperienceShareButton
+                  title={title}
+                  url={fullUrl}
+                  locale={locale}
+                  variant="button"
+                  className="border-amber-500/40"
+                />
+              </div>
             </div>
           </div>
-          <Sparkles className="size-8 text-amber-500/60 shrink-0" aria-hidden />
+          <Sparkles className="size-8 text-amber-500/70 shrink-0" aria-hidden />
         </div>
       </div>
     </section>
