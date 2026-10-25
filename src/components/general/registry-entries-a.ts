@@ -53,4 +53,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-gasto-diario", name: "DailySpendingCalculatorTool", path: "./DailySpendingCalculatorTool", export: "DailySpendingCalculatorTool" },
   { slug: "calculadora-logaritmo", name: "LogarithmCalculatorTool", path: "./LogarithmCalculatorTool", export: "LogarithmCalculatorTool" },
   { slug: "calculadora-presion-atmosferica", name: "AtmosphericPressureCalculatorTool", path: "./AtmosphericPressureCalculatorTool", export: "AtmosphericPressureCalculatorTool" },
+  { slug: "calculadora-longitud-promedio-palabra", name: "AverageWordLengthCalculatorTool", path: "./AverageWordLengthCalculatorTool", export: "AverageWordLengthCalculatorTool" },
+  { slug: "calculadora-interes-diario", name: "DailyInterestCalculatorTool", path: "./DailyInterestCalculatorTool", export: "DailyInterestCalculatorTool" },
 ] as const;
