@@ -258,7 +258,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-edad") return AgeCalculatorToolUi;
   if (slug === "calculadora-propina") return TipCalculatorToolUi;
   if (slug === "calculadora-gpa") return GpaCalculatorToolUi;
-  if (slug === "calculadora-area-habitacion") return RoomAreaCalculatorToolUi;
+  if (slug === "calculadora-area-rectangular") return RoomAreaCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
