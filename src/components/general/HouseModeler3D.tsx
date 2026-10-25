@@ -1113,6 +1113,26 @@ function paintNosing(ctx: CanvasRenderingContext2D, size: number) {
     }
     ctx.fillStyle = "rgba(42,24,12,0.8)";
     ctx.fillRect(x1 - 2, 0, 2, size);
+    // End-grain checks: short radial splits from the growth-ring centre.
+    for (let c = 0; c < 3; c++) {
+      const a = hash2(i, 31 + c) * Math.PI * 2;
+      const len = (x1 - x0) * (0.18 + hash2(i, 41 + c) * 0.22);
+      ctx.strokeStyle = "rgba(28,14,6,0.55)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(a) * len, cy + Math.sin(a) * len);
+      ctx.stroke();
+    }
+    // Hand-worn edge: lighter board top, dark grime in the joint.
+    ctx.fillStyle = "rgba(190,150,104,0.14)";
+    ctx.fillRect(x0 + 2, 0, Math.max(2, (x1 - x0) * 0.18), size);
+    ctx.fillStyle = "rgba(24,14,8,0.22)";
+    ctx.fillRect(x1 - 5, 0, 3, size);
+  }
+  for (let k = 0; k < 24; k++) {
+    ctx.fillStyle = `rgba(30,18,9,${0.1 + hash2(k, 77) * 0.12})`;
+    ctx.fillRect(Math.floor(hash2(k, 78) * size), Math.floor(hash2(k, 79) * size), 1 + Math.floor(hash2(k, 80) * 2), 1);
   }
 }
 
