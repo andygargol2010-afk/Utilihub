@@ -1,6 +1,6 @@
 export type ShapeKind = "box" | "sphere" | "cylinder" | "cone" | "plane" | "torus" | "prism" | "tube" | "pyramid" | "hemisphere" | "capsule";
 
-export type MatPreset = "default" | "matte" | "metal" | "glass" | "plastic" | "rubber" | "wood" | "concrete" | "ceramic" | "glow";
+export type MatPreset = "default" | "matte" | "metal" | "glass" | "plastic" | "rubber" | "wood" | "concrete" | "ceramic" | "glow" | "brushed";
 
 /** 1 world unit ≈ 10 cm for measurement labels */
 export const UNIT_CM = 10;
@@ -287,6 +287,15 @@ export function makeMaterial(THREE: any, color: string, preset: MatPreset = "def
       flatShading: false,
     });
   }
+  if (preset === "brushed") {
+    return new THREE.MeshStandardMaterial({
+      color,
+      metalness: 0.85,
+      roughness: 0.42,
+      envMapIntensity: 1,
+      flatShading: false,
+    });
+  }
   if (preset === "glow") {
     return new THREE.MeshStandardMaterial({
       color,
@@ -324,6 +333,7 @@ export function matPresetList(es: boolean): { id: MatPreset; label: string }[] {
     { id: "wood", label: es ? "Madera" : "Wood" },
     { id: "concrete", label: es ? "Hormigón" : "Concrete" },
     { id: "ceramic", label: es ? "Cerámica" : "Ceramic" },
+    { id: "brushed", label: es ? "Metal cepillado" : "Brushed metal" },
     { id: "glow", label: es ? "Brillo" : "Glow" },
   ];
 }

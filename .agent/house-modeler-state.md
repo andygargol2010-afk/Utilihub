@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 273
+runs_done: 274
 runs_max: 500
 ```
 
@@ -60,7 +60,7 @@ last_mode: MODELADOR-3D
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: MODELADOR-3D run 273 capsule ShapeKind. runs_done=273.
+note: MODELADOR-3D run 274 brushed-metal MatPreset. runs_done=274.
 ```
 
 Refresh after each run.
@@ -113,6 +113,7 @@ PRODUCT run 270: door-leaf timber densify (stile grain, kick scuffs, hand-worn v
 PRODUCT run 271: nosing timber densify (end-grain checks, hand-worn edge, joint grime, specks) via local clone surgical. runs_done=271.
 PRODUCT run 272: wall head-plate densify (oak knots, drying checks, joint grime/dust specks) via local clone surgical. runs_done=272.
 MODELADOR-3D run 273: capsule ShapeKind (CapsuleGeometry) wired in helpers, tsc OK. runs_done=273.
+MODELADOR-3D run 274: brushed-metal MatPreset (Metal cepillado) in helpers. runs_done=274.
 ```
 
 <!-- end:house-modeler-state.md -->
