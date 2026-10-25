@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 278
+runs_done: 279
 runs_max: 500
 ```
 
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 278 wall-masonry bump grain-pit densify. runs_done=278.
+note: PRODUCT run 279 chimney-brick bump grain-pit densify. runs_done=279.
 ```
 
 Refresh after each run.
@@ -118,6 +118,7 @@ PRODUCT run 275: glazing densify (rain droplets + run-off trails + lower-corner 
 PRODUCT run 276: hedgerow densify (16 leaf flecks per crown: sunlit tops + dark gaps) via local clone surgical. runs_done=276.
 PRODUCT run 277: plaster bump densify (90 micro pits/sand grains) via local clone surgical. runs_done=277.
 PRODUCT run 278: wall-masonry bump densify (110 grain pits/chisel specks) via local clone surgical. runs_done=278.
+PRODUCT run 279: chimney-brick bump densify (120 clay pits/grit specks) via local clone surgical. runs_done=279.
 ```
 
 <!-- end:house-modeler-state.md -->

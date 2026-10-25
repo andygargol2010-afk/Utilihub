@@ -771,6 +771,15 @@ function paintChimneyBrickBump(ctx: CanvasRenderingContext2D, size: number) {
       ctx.fillRect(x - 1, y0, 2, rh);
     }
   }
+  // Fired-clay surface pits and grit so brick faces catch raking light unevenly.
+  for (let p = 0; p < 120; p++) {
+    const px = hash2(p, 61) * size;
+    const py = hash2(p, 67) * size;
+    ctx.fillStyle = hash2(p, 71) > 0.5 ? "rgba(255,255,255,0.26)" : "rgba(30,30,30,0.3)";
+    ctx.beginPath();
+    ctx.arc(px, py, 0.5 + hash2(p, 73) * 1.3, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 /** Crown and flue pots: weathered clay cap, not a second roof-tile map. */
