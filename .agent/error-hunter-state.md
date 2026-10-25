@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001–E026 fixed, no open/recurring) + discovery (KitchenPrepBoard kit full, patterns PLACEHOLDER/$(cat, truncated JSX, registry wires, runtime logs)
-- deploy: tip 5863987097a8f6006666a272662bbdeaa5a5e7fe READY (previous docs a06083c2 READY)
-- known_smoke: green — registry no PLACEHOLDER + dedicated wires (incl. E025/E026), home routes clean no $(cat, ToolSearch Button closed, modeler-3d routing correct
-- new_findings: none (KitchenPrepBoard.tsx complete multi-recipe selector + canvas share; no truncated tags; runtime preview error logs empty last 30m)
+- mode: known smoke (E001–E026 fixed, no open/recurring) + discovery (registry wires, home, kits KitchenPrepBoard, playgrounds NBody/Aurora, patterns PLACEHOLDER/$(cat, truncated JSX)
+- deploy: tip adc36cff13f4c8228e304abbd78ff0f1c330e417 READY (previous 58639870 READY)
+- known_smoke: green — registry no PLACEHOLDER + dedicated wires (incl. E025 arithmetic/median/factorial), home routes clean no $(cat, ToolSearch Button closed, modeler-3d routing correct, index.ts full catalog
+- new_findings: none (KitchenPrepBoard.tsx complete multi-recipe selector + share PNG; NBodyGravitySim + AuroraParticlePlayground full canvas loops; no truncated tags; build events clean)
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: kits/experiences + registry wires
+- last_known_focus: playgrounds (NBody/Aurora) + registry + kits
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
