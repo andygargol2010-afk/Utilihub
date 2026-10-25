@@ -1,1 +1,1 @@
-$(cat /tmp/catalog.md)
+$(cat /tmp/catalog-good.md)
