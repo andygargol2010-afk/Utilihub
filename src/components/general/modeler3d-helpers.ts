@@ -172,7 +172,12 @@ export function makeGeometry(THREE: any, kind: ShapeKind) {
     case "torus": return new THREE.TorusGeometry(0.55, 0.2, 32, 64);
     case "prism": return new THREE.CylinderGeometry(0.55, 0.55, 1.1, 3);
     case "tube": return new THREE.CylinderGeometry(0.28, 0.28, 1.2, 40);
-    case "pyramid": return new THREE.ConeGeometry(0.55, 1.1, 4);
+    case "pyramid": {
+      // Base edges aligned to the axes (square 1.1 x 1.1) so it snaps flush next to cubes.
+      const g = new THREE.ConeGeometry(0.55 * Math.SQRT2, 1.1, 4);
+      g.rotateY(Math.PI / 4);
+      return g;
+    }
     default: return new THREE.BoxGeometry(1, 1, 1);
   }
 }
@@ -292,6 +297,6 @@ export function shapeList(es: boolean): { kind: ShapeKind; label: string; icon: 
     { kind: "torus", label: es ? "Toro" : "Torus", icon: "◎" },
     { kind: "prism", label: es ? "Prisma" : "Prism", icon: "△" },
     { kind: "tube", label: es ? "Tubo" : "Tube", icon: "◯" },
-    { kind: "pyramid", label: es ? "Pirámide" : "Pyramid", icon: "△" },
+    { kind: "pyramid", label: es ? "Pirámide" : "Pyramid", icon: "◭" },
   ];
 }

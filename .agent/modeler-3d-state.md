@@ -8,8 +8,8 @@ path_entry: src/components/general/Modeler3D.tsx
 modules: modeler3d-studio, modeler3d-core, modeler3d-three-init, modeler3d-helpers, modeler3d-align, modeler3d-scenes
 style: Tinkercad-like primitives studio (not house realism)
 last_mode: SHAPES
-last_date: 2026-10-21
-note: Added pyramid ShapeKind (4-sided cone geometry) fully wired in helpers: type, makeGeometry, BASE_SIZE, NAME_PAIR EN/ES, shapeList. Surgical. Acceptance: palette add + transform.
+last_date: 2026-10-25
+note: Run 262: pyramid base axis-aligned (square 1.1) + icon ◭. Earlier: added pyramid ShapeKind (4-sided cone geometry) fully wired in helpers: type, makeGeometry, BASE_SIZE, NAME_PAIR EN/ES, shapeList. Surgical. Acceptance: palette add + transform.
 ```
 
 Update `last_mode` / `last_date` / short note after each MODELADOR-3D run.

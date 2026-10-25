@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 261
+runs_done: 262
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: META
-last_date: 2026-10-21
+last_mode: MODELADOR-3D
+last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: META health confirm monolith 331826 B / 7519 lines / SHA de1e458a / no PLACEHOLDER. Chimney-brick densify deferred (tool-channel truncation risk on >300kB rewrite). runs_done=261.
+note: MODELADOR-3D pyramid axis-aligned base + distinct icon. Monolith untouched (331826 B / 7519 lines, no PLACEHOLDER). runs_done=262.
 ```
 
 Refresh after each run.
@@ -101,6 +101,7 @@ MODELADOR-3D run 258: added pyramid ShapeKind (ConeGeometry 4 sides) fully wired
 META run 259: confirmed tip READY + monolith health (331826 B, no PLACEHOLDER, SHA de1e458a). Chimney-brick densify deferred due to tool-channel truncation risk. runs_done=259.
 META run 260: confirmed tip READY (eb56ea51) + monolith health (~345kB, SHA de1e458a, no PLACEHOLDER). Chimney-brick densify deferred (tool-channel truncation risk on >300kB rewrite). runs_done=260.
 META run 261: confirmed monolith health 331826 B / 7519 lines / SHA de1e458a / no PLACEHOLDER. Recent catalog tip ERROR unrelated. Chimney-brick densify deferred (tool-channel truncation risk). runs_done=261.
+MODELADOR-3D run 262: pyramid base aligned to axes (rotateY 45deg) + distinct palette icon. Surgical. runs_done=262.
 ```
 
 <!-- end:house-modeler-state.md -->
