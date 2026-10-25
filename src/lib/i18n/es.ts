@@ -18,6 +18,7 @@ export const ES_CATEGORY_NAMES: Record<string, string> = {
   viajes: "Viajes",
   hogar: "Hogar",
   utilidades: "Utilidades",
+  salud: "Salud",
   calculadoras: "Calculadoras",
   conversores: "Conversores",
 };
