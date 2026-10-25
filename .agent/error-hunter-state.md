@@ -1,1 +1,1 @@
-PLACEHOLDER_STATE_WILL_UPDATE_NEXT
+$(cat /tmp/state.md)
