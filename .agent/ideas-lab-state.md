@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: studio-composition
-last_closed_id: modular-pattern-composer
+last_closed_domain: traffic-diagnosis
+last_closed_id: weekly-diagnosis-2026-10-25
 p_fixed: 0.35
 
 weights_core:
@@ -27,13 +27,13 @@ weights_core:
 weights_growth:
   traffic-bets: 3
   search-magnets: 3
-  growth-surfaces: 2
-  share-hooks: 4
-  retention-loops: 6
-  conversion-paths: 1
-  traffic-diagnosis: 5
-  adsense-prep: 10
-  seo-locales: 9   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  growth-surfaces: 3
+  share-hooks: 5
+  retention-loops: 7
+  conversion-paths: 2
+  traffic-diagnosis: 1
+  adsense-prep: 11
+  seo-locales: 10   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 3
 ```
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-25 | traffic-diagnosis | weekly-diagnosis-2026-10-25 | Diagnóstico de tráfico 7d (18-25 oct) vs prior (11-18 oct): site pageviews 159 vs 179 (-11.2%, por encima de umbral -15%). Home /: 27 vs 47 pv (-42.5%, bajo umbral -25% de ruta). Otras rutas de bajo volumen estables o variables. Sin acceso a custom events (plan). No evidencia de 2× errores. Adsterra intacto. Recomendación A: monitorear home engagement (spotlight/value-path recientes); B: no cambios urgentes en ads; C: posible estacionalidad o efecto de nuevas superficies. Closed after 1 run.
 - 2026-10-25 | studio-composition | modular-pattern-composer | Interactive Modular Pattern Composer complete: place modular tiles on grid with live procedural animations (flow/pulse/morph/spin), multi-layers with blend/opacity, symmetry (mirror/radial), tile library (geometric/organic/particle + hex/blob), color palettes + gradients, playback controls, brush size for multi-cell place/erase, PNG share with baked title + utilihub.com + tile count, URL deep-link for settings, localStorage auto-persist of composition. EN+ES routes. CWV-safe (grid 12, layer cap 6, no heavy deps). Adsterra intact. Closed after 6 runs. Distinct from freehand neon-layer by modular/repeatable systems + animation playback.
 - 2026-10-25 | kits | kitchen-prep-board | Interactive Kitchen Prep Board complete: multi-recipe selector (chicken bowl / veggie stir-fry / overnight oats), visual servings scaler, ingredient checklist with live scale, step reorder ↑↓, circular SVG timer ring, live summary strip, richer PNG share (recipe/servings/progress/checked/current step + utilihub.com) + ExperienceShareButton URL share, localStorage persist. EN+ES routes. CWV-safe (no heavy assets/deps). Adsterra intact. Closed after 4 runs. Coherent multi-step kit elevating kits beyond static tool lists.
 - 2026-10-25 | traffic-bets | daily-experience-spotlight | Daily Experience Spotlight on home EN+ES complete: daily rotation (day-of-year + localStorage avoid) of high-value experiences (aurora, n-body, neon-layer, prism-trail, color-cascade, aura-card), short teaser, direct deep-link CTA, ExperienceShareButton + data-events (spotlight-view/click/share), TODAY badge, rotation countdown, experience-specific accents. Lazy load after hero. CWV-safe (no heavy assets/deps). Adsterra intact. Closed after 4 runs. Measurable bet on recovering visitor drop via higher home engagement and shares.
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-24 | traffic-bets | shareable-experiences-boost | Shareability boost complete: ExperienceShareButton (Web Share API + clipboard + data-event share_click) on top experiences headers EN+ES (aurora, neon-layer, n-body, color-cascade, prism-trail, aura-card) + cards in ExperienceDiscoveryRail. Home teaser "Shareable Experiences" / "Experiencias compartibles" with deep-links. EN+ES. CWV-safe (light events, no heavy assets). Adsterra intact. Closed after 4 runs. Bet on referral traffic from shares.
 - 2026-10-24 | growth-surfaces | experience-discovery-rail | Horizontal discovery rail on home EN+ES complete: category chips, deterministic shuffle, horizontal snap cards with short desc + deep links, category gradient previews + icons, scroll chevrons + fade edges, keyboard (arrows/S), data-events. Surfaces 10 experiences. Lightweight CSS only, no heavy assets/deps. Improves discovery beyond Random Experience button. EN+ES. CWV-safe. Closed after 4 runs. Adsterra intact.
 - 2026-10-23 | studio-composition | neon-layer-composer | Interactive Neon Layer Composer complete: freehand multi-layer neon canvas, bloom, symmetry (mirror/radial/kaleido), continuous + stroke particle emitters with gravity/wind, pointer force attract/repel, particle lifetime + size, bg modes (void/glow/grid), layer opacity/fade, title overlay, PNG share with branding, URL deep-link, pause + keyboard (Space/C/U/R), randomize. EN+ES. CWV-safe (cap 280, lazy). Closed after 6 runs. Adsterra intact. Distinct from prism-trail.
-- 2026-10-23 | quality-lift | aurora-particle-playground | Elevated Aurora Particle Playground complete: multi-mode (ribbon/orb/vortex) bloom systems with adjustable persistent fading trails (trail length 4-24), attract/repel polarity + dynamic pointer force, additive lighter compositing, density/speed/bloom/gravity/wind, emitters (place/drag/remove, cap 8), palettes, randomize, pause, PNG share with baked title+utilihub.com+settings+trail, URL deep-link. Sets elevated standard above GravityParticlesPlayground (basic orbits) and ParticleMagnetLab (polarity/arrows) in layered multi-mode bloom delight + interactive emission + trail control. EN+ES. CWV-safe (cap 300, lazy). Closed after 7 runs. Adsterra intact. Bar moved permanently.
 ```
 
 ---
@@ -71,7 +71,7 @@ runs_remaining: 0
 acceptance: n/a
 share: n/a
 next_step_required: no
-notes: Closed modular-pattern-composer. Next run IDEATE.
+notes: Closed weekly traffic-diagnosis. Site -11.2% (no alert), home -42.5% (route alert). Next run IDEATE.
 adsense-prep_runs: 3
 ```
 
