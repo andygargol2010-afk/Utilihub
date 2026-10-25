@@ -18,6 +18,10 @@ const HomeValuePath = lazy(() =>
   import("@/components/HomeValuePath").then((m) => ({ default: m.HomeValuePath })),
 );
 
+const DailyExperienceSpotlight = lazy(() =>
+  import("@/components/DailyExperienceSpotlight").then((m) => ({ default: m.DailyExperienceSpotlight })),
+);
+
 const RANDOM_EXPERIENCES_ES = [
   "/es/aurora-particle-playground",
   "/es/pulse-catch",
@@ -208,6 +212,10 @@ function SpanishHome() {
           </div>
         </div>
       </section>
+
+      <Suspense fallback={<div className="container-page py-4 min-h-[120px]" aria-hidden /> }>
+        <DailyExperienceSpotlight locale="es" />
+      </Suspense>
 
       <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden /> }>
         <ExperienceDiscoveryRail locale="es" />
