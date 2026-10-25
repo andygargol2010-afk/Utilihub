@@ -59,5 +59,5 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-edad", name: "AgeCalculatorTool", path: "./AgeCalculatorTool", export: "AgeCalculatorTool" },
   { slug: "calculadora-propina", name: "TipCalculatorTool", path: "./TipCalculatorTool", export: "TipCalculatorTool" },
   { slug: "calculadora-gpa", name: "GpaCalculatorTool", path: "./GpaCalculatorTool", export: "GpaCalculatorTool" },
-  { slug: "calculadora-area-habitacion", name: "RoomAreaCalculatorTool", path: "./RoomAreaCalculatorTool", export: "RoomAreaCalculatorTool" },
+  { slug: "calculadora-area-rectangular", name: "RoomAreaCalculatorTool", path: "./RoomAreaCalculatorTool", export: "RoomAreaCalculatorTool" },
 ] as const;

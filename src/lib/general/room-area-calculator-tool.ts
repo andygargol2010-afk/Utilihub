@@ -1,28 +1,28 @@
 import { makeTool, faq } from "./types";
 
 const tool = makeTool(
-  "calculadora-area-habitacion",
-  "Room Area Calculator",
+  "calculadora-area-rectangular",
+  "Rectangular Area Calculator",
   "hogar",
   "calculator",
-  "Calculate room area from length and width in meters or feet.",
+  "Calculate area of a rectangular room or space from length and width.",
   [
+    "rectangular area calculator",
     "room area calculator",
-    "room square meters",
-    "calculadora area habitacion",
-    "metros cuadrados habitacion",
-    "calculate room size",
+    "calculadora area rectangular",
+    "area habitacion largo ancho",
+    "calculate square meters room",
   ],
   {
-    title: "Room Area Calculator — Length × Width | UtiliHub",
-    description: "Free room area calculator. Enter length and width to get square meters or square feet. Browser-only.",
-    summaryEs: "Calcula el área de una habitación a partir del largo y el ancho.",
+    title: "Rectangular Area Calculator — Length × Width | UtiliHub",
+    description: "Free rectangular area calculator for rooms. Enter length and width to get square meters or feet. Browser-only.",
+    summaryEs: "Calcula el área rectangular (habitación) a partir del largo y el ancho.",
   },
 );
 tool.faq.push(
   faq(
-    "How do I calculate room area?",
-    "Area = length × width. Choose meters or feet; the result is shown in the matching square unit.",
+    "How do I calculate rectangular area?",
+    "Area = length × width. Select meters or feet; result uses the matching square unit.",
   ),
 );
 
