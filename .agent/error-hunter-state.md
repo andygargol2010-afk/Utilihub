@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001–E024 green: registry kind-first + dedicateds, no PLACEHOLDER, home clean, playgrounds full) + discovery (sampled more dedicated calculator UIs outside prior set: ArithmeticMean/Median/Factorial exist in index but not wired in pickComponent → MathTool "not implemented")
-- deploy: tip before fix 64c3a7d551597218d863f7f7360b285c2e1bf614 READY (no ERROR on branch tip); fix commit 10fa54760ffebc3782eedb576d45af616a0a388b
-- known_smoke: green (no open/recurring failures)
-- new_findings: E025 — calculadora-media-aritmetica, calculadora-mediana, calculadora-factorial dedicated UIs not in registry pickComponent
-- fixes: 1 (registry.tsx wire ArithmeticMeanCalculatorToolUi + MedianCalculatorToolUi + FactorialCalculatorToolUi)
+- mode: deploy ERROR logs (tip c373982a ERROR) + known smoke (registry still has all dedicated wires including E025, no PLACEHOLDER) + discovery via build failure
+- deploy: tip before fix c373982aee45608bca5627742a2ca37a4b613b14 ERROR (JSX syntax); fix commit 7ea952667596898929cefba2990ec9c4f02681ea
+- known_smoke: green for E001–E025 (no open/recurring; previous READY deploys confirmed dedicateds wired)
+- new_findings: E026 — ToolSearch.tsx facets.map Button closing tag truncated `</Button` → build ERROR
+- fixes: 1 (ToolSearch.tsx restore `</Button>`)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: registry dedicated wiring continued (E025 family)
+- last_known_focus: deploy ERROR priority (E026 JSX truncation)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
