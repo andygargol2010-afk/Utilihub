@@ -156,6 +156,18 @@ const AverageWordLengthCalculatorToolUi = lazy(() =>
 const DailyInterestCalculatorToolUi = lazy(() =>
   import("./DailyInterestCalculatorTool").then((m) => ({ default: m.DailyInterestCalculatorTool })),
 );
+const CubeRootCalculatorToolUi = lazy(() =>
+  import("./CubeRootCalculatorTool").then((m) => ({ default: m.CubeRootCalculatorTool })),
+);
+const InchesToCmConverterToolUi = lazy(() =>
+  import("./InchesToCmConverterTool").then((m) => ({ default: m.InchesToCmConverterTool })),
+);
+const DailySpendingCalculatorToolUi = lazy(() =>
+  import("./DailySpendingCalculatorTool").then((m) => ({ default: m.DailySpendingCalculatorTool })),
+);
+const WorkBreakRatioCalculatorToolUi = lazy(() =>
+  import("./WorkBreakRatioCalculatorTool").then((m) => ({ default: m.WorkBreakRatioCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -191,6 +203,10 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-presion-atmosferica") return AtmosphericPressureCalculatorToolUi;
   if (slug === "calculadora-longitud-promedio-palabra") return AverageWordLengthCalculatorToolUi;
   if (slug === "calculadora-interes-diario") return DailyInterestCalculatorToolUi;
+  if (slug === "calculadora-raiz-cubica") return CubeRootCalculatorToolUi;
+  if (slug === "conversor-pulgadas-cm") return InchesToCmConverterToolUi;
+  if (slug === "calculadora-gasto-diario") return DailySpendingCalculatorToolUi;
+  if (slug === "calculadora-ratio-trabajo-descanso") return WorkBreakRatioCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
