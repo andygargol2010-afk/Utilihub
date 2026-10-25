@@ -174,6 +174,15 @@ const UnitPriceToolUi = lazy(() =>
 const RiceWaterCalculatorToolUi = lazy(() =>
   import("./RiceWaterCalculatorTool").then((m) => ({ default: m.RiceWaterCalculatorTool })),
 );
+const ArithmeticMeanCalculatorToolUi = lazy(() =>
+  import("./ArithmeticMeanCalculatorTool").then((m) => ({ default: m.ArithmeticMeanCalculatorTool })),
+);
+const MedianCalculatorToolUi = lazy(() =>
+  import("./MedianCalculatorTool").then((m) => ({ default: m.MedianCalculatorTool })),
+);
+const FactorialCalculatorToolUi = lazy(() =>
+  import("./FactorialCalculatorTool").then((m) => ({ default: m.FactorialCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -215,6 +224,9 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-ratio-trabajo-descanso") return WorkBreakRatioCalculatorToolUi;
   if (slug === "calculadora-precio-unitario") return UnitPriceToolUi;
   if (slug === "calculadora-agua-arroz") return RiceWaterCalculatorToolUi;
+  if (slug === "calculadora-media-aritmetica") return ArithmeticMeanCalculatorToolUi;
+  if (slug === "calculadora-mediana") return MedianCalculatorToolUi;
+  if (slug === "calculadora-factorial") return FactorialCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
