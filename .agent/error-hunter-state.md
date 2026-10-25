@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001 registry full no PLACEHOLDER, E005 homes real no $(cat, E031 catalog/state clean) + discovery (games routes/es.juegos.index + GamesCatalog, pattern search $(cat/PLACEHOLDER/return null in playgrounds, live site www.utilihub.net home/tools)
-- deploy: tip SHA c9d19c91 READY on dpl_71hmqM61cWLBjMCuQcQgWxRvbrNx; build completed successfully (no ERROR)
-- known_smoke: all sampled fixed/passing (registry complete with pickComponent + dedicated wires, homes import+createFileRoute, no $(cat); E031 pattern still recurring risk but current files clean)
-- new_findings: none (games catalog full, no stubs, no PLACEHOLDER, no $(cat, live home and tools load without 404)
-- fixes: 0 (checks OK)
+- mode: known smoke (E001 registry full no PLACEHOLDER, E005 homes real no $(cat, E031 catalog/state clean) + discovery (studio ModularPatternComposer route + component, pattern search $(cat/PLACEHOLDER/return null, live home/tools)
+- deploy: previous tip READY (no ERROR); new commit 85a635d5 pending deploy verification
+- known_smoke: all sampled fixed/passing (registry complete, homes clean, no $(cat); E031 risk remains but files clean)
+- new_findings: E033 regression — ModularPatternComposer.tsx was stub (return <div>Modular Pattern Composer (restored)</div>); live /modular-pattern-composer showed controls but source was incomplete for future deploys. Fixed by restoring full canvas implementation.
+- fixes: 1 (src/components/playgrounds/ModularPatternComposer.tsx restored full ~16kB from historical SHA; catalog E033 updated)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E001/E005/E031 + games/studio sample
+- last_known_focus: E001/E005/E031 + studio ModularPatternComposer
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
