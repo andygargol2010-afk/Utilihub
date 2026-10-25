@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001–E021 green: no PLACEHOLDER, registry/index full, home routes clean, playgrounds E010–E012 full canvas) + discovery (sampled unit-price tool after recent FAQ commit; found not imported in index.ts → 404)
-- deploy: tip before fix READY (SHA e003779e); this run added catalog wire (SHA 3afd869b…); post-push deploy pending verification
-- known_smoke: green (no open/recurring failures on prior set)
-- new_findings: E022 — tool definition exists but not wired into GENERAL_TOOLS (fixed this run)
-- fixes: 1 (index.ts: import + spread UNIT_PRICE_TOOLS)
+- mode: known smoke (E001–E022 green: no PLACEHOLDER, registry/index full, home routes clean, playgrounds E010–E012 full canvas, UNIT_PRICE wired) + discovery (sampled recent home DailyExperienceSpotlight + playground routes)
+- deploy: tip SHA 4d6d12d5 READY; this run fix f13537f5… (path correction); post-push deploy pending verification
+- known_smoke: green (no open/recurring failures; E010–E012 still full implementations)
+- new_findings: E023 — DailyExperienceSpotlight N-Body path pointed to non-existent /n-body-gravity-sim (fixed this run)
+- fixes: 1 (DailyExperienceSpotlight.tsx: correct pathEn/pathEs for n-body entry)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: catalog index wiring for recently touched tools + playgrounds smoke
+- last_known_focus: playgrounds smoke (E010–E012) + recent home spotlight component
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
