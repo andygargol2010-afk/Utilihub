@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 268
+runs_done: 269
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 333435
+approx_bytes: 334900
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 268 plinth densify. runs_done=268.
+note: PRODUCT run 269 joinery paint-wear densify. runs_done=269.
 ```
 
 Refresh after each run.
@@ -108,6 +108,7 @@ MODELADOR-3D run 265: ceramic MatPreset (glossy glazed, EN/ES) in helpers. Surgi
 PRODUCT run 266: fascia-board densify (knots, nail heads, rain streaks) via local clone surgical. runs_done=266.
 MODELADOR-3D run 267: glow (emissive) MatPreset in helpers. Surgical. runs_done=267.
 PRODUCT run 268: plinth masonry densify (grain flecks, damp splash, efflorescence) via local clone surgical. runs_done=268.
+PRODUCT run 269: joinery (window sash) paint-wear densify (chips, stipple, sill grime) via local clone surgical. runs_done=269.
 ```
 
 <!-- end:house-modeler-state.md -->

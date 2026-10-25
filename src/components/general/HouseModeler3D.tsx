@@ -1391,6 +1391,20 @@ function paintJoinery(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "rgba(92,78,62,0.35)";
   ctx.fillRect(0, size - 4, size, 4);
   ctx.fillRect(0, 0, size, 3);
+  // Chipped enamel showing bare timber, grime pooling at the sill and brush stipple so the sash reads as aged paint.
+  for (let i = 0; i < 22; i++) {
+    ctx.fillStyle = `rgba(138,104,70,${0.3 + hash2(i, 3.3) * 0.3})`;
+    ctx.fillRect(hash2(i, 14.1) * size, hash2(i, 15.7) * size, 1 + hash2(i, 16.9) * 3, 1 + hash2(i, 17.3) * 2);
+  }
+  for (let i = 0; i < 90; i++) {
+    const t = 196 + Math.floor(hash2(i, 18.2) * 34);
+    ctx.fillStyle = `rgba(${t}, ${t - 7}, ${t - 20}, ${0.1 + hash2(i, 19.4) * 0.12})`;
+    ctx.fillRect(hash2(i, 20.6) * size, hash2(i, 21.8) * size, 1 + hash2(i, 22.5) * 2, 1);
+  }
+  for (let s = 0; s < 6; s++) {
+    ctx.fillStyle = `rgba(78,66,52,${0.07 + hash2(s, 23.1) * 0.08})`;
+    ctx.fillRect(hash2(s, 24.7) * size, size * 0.8, 2 + hash2(s, 25.3) * 6, size * 0.2);
+  }
 }
 
 function paintJoineryBump(ctx: CanvasRenderingContext2D, size: number) {
