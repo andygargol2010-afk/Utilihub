@@ -67,11 +67,11 @@ path_en: /modular-pattern-composer
 path_es: /es/modular-pattern-composer
 domain: studio-composition
 runs_total: 6
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 3/6: gradient fills (color2 linear), organic blob tile, keyboard shortcuts (Space play/pause, C clear, R randomize), randomize seeds 8 tiles on active layer. EN+ES labels/hints updated. CWV-safe (no new deps, layer cap 6, lazy canvas). Adsterra intact. next-step already registered. Previous: EXECUTE 2/6 multi-layers/blend/erase/diamond/star.
+notes: EXECUTE 4/6: spin animation mode (tiles rotate over time), random per-tile rotation on place/randomize, hexagon tile type added to library. EN+ES labels/hints updated. CWV-safe (no new deps, layer cap 6, lazy canvas). Adsterra intact. next-step already registered. Previous: EXECUTE 3/6 gradients/blob/keyboard/randomize seed.
 adsense-prep_runs: 3
 ```
 
