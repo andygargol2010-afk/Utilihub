@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 274
+runs_done: 275
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 335900
+approx_bytes: 338922
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: MODELADOR-3D
+last_mode: PRODUCT
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: MODELADOR-3D run 274 brushed-metal MatPreset. runs_done=274.
+note: PRODUCT run 275 glazing densify. runs_done=275.
 ```
 
 Refresh after each run.
@@ -114,6 +114,7 @@ PRODUCT run 271: nosing timber densify (end-grain checks, hand-worn edge, joint 
 PRODUCT run 272: wall head-plate densify (oak knots, drying checks, joint grime/dust specks) via local clone surgical. runs_done=272.
 MODELADOR-3D run 273: capsule ShapeKind (CapsuleGeometry) wired in helpers, tsc OK. runs_done=273.
 MODELADOR-3D run 274: brushed-metal MatPreset (Metal cepillado) in helpers. runs_done=274.
+PRODUCT run 275: glazing densify (rain droplets + run-off trails + lower-corner grime) via local clone surgical. runs_done=275.
 ```
 
 <!-- end:house-modeler-state.md -->

@@ -1517,6 +1517,30 @@ function paintGlazing(ctx: CanvasRenderingContext2D, size: number) {
     ctx.ellipse(x, y, 1.2 + hash2(i, 7) * 2.4, 0.8, hash2(i, 2) * Math.PI, 0, Math.PI * 2);
     ctx.fill();
   }
+  // Dried rain droplets with faint run-off trails.
+  for (let i = 0; i < 34; i++) {
+    const x = (0.06 + hash2(i, 11.3) * 0.88) * size;
+    const y = (0.06 + hash2(i, 12.7) * 0.88) * size;
+    const r = 0.9 + hash2(i, 13.1) * 1.8;
+    ctx.fillStyle = `rgba(255,255,255,${0.14 + hash2(i, 14.2) * 0.2})`;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+    if (hash2(i, 15.4) > 0.6) {
+      ctx.strokeStyle = "rgba(120,140,150,0.12)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x, y + r);
+      ctx.lineTo(x + (hash2(i, 16.5) - 0.5) * 3, y + r + 8 + hash2(i, 17.6) * 22);
+      ctx.stroke();
+    }
+  }
+  // Grime pooled in the lower corners.
+  const grime = ctx.createLinearGradient(0, size * 0.82, 0, size);
+  grime.addColorStop(0, "rgba(84,78,66,0)");
+  grime.addColorStop(1, "rgba(84,78,66,0.2)");
+  ctx.fillStyle = grime;
+  ctx.fillRect(0, size * 0.82, size, size * 0.18);
 }
 
 function paintGlazingRough(ctx: CanvasRenderingContext2D, size: number) {
