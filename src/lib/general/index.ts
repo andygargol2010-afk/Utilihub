@@ -123,6 +123,8 @@ import { AGE_CALCULATOR_TOOLS } from "./age-calculator-tool";
 import { TIP_CALCULATOR_TOOLS } from "./tip-calculator-tool";
 import { GPA_CALCULATOR_TOOLS } from "./gpa-calculator-tool";
 import { ROOM_AREA_CALCULATOR_TOOLS } from "./room-area-calculator-tool";
+import { PX_TO_REM_CALCULATOR_TOOLS } from "./px-to-rem-calculator-tool";
+import { DAILY_TRAVEL_BUDGET_CALCULATOR_TOOLS } from "./daily-travel-budget-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -250,4 +252,6 @@ export const GENERAL_TOOLS = [
   ...TIP_CALCULATOR_TOOLS,
   ...GPA_CALCULATOR_TOOLS,
   ...ROOM_AREA_CALCULATOR_TOOLS,
+  ...PX_TO_REM_CALCULATOR_TOOLS,
+  ...DAILY_TRAVEL_BUDGET_CALCULATOR_TOOLS,
 ];
