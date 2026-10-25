@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 272
+runs_done: 273
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: MODELADOR-3D
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 272 wall head-plate oak densify. runs_done=272.
+note: MODELADOR-3D run 273 capsule ShapeKind. runs_done=273.
 ```
 
 Refresh after each run.
@@ -112,6 +112,7 @@ PRODUCT run 269: joinery (window sash) paint-wear densify (chips, stipple, sill 
 PRODUCT run 270: door-leaf timber densify (stile grain, kick scuffs, hand-worn varnish) via local clone surgical. runs_done=270.
 PRODUCT run 271: nosing timber densify (end-grain checks, hand-worn edge, joint grime, specks) via local clone surgical. runs_done=271.
 PRODUCT run 272: wall head-plate densify (oak knots, drying checks, joint grime/dust specks) via local clone surgical. runs_done=272.
+MODELADOR-3D run 273: capsule ShapeKind (CapsuleGeometry) wired in helpers, tsc OK. runs_done=273.
 ```
 
 <!-- end:house-modeler-state.md -->
