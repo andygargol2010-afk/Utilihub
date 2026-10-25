@@ -69,6 +69,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-25: NEW-CATEGORY — salud + calculadora-ingesta-agua-diaria. Gates OK. Seed tool calidad alta. SEO locales: defer pt.
 2026-10-25: PRODUCT — calculadora-edad (fechas) + calculadora-propina (finanzas). Clusters distintos, calidad alta. SEO locales: defer pt.
 2026-10-25: PRODUCT — calculadora-gpa (educacion) + calculadora-area-rectangular (hogar). Clusters distintos, calidad alta. SEO locales: defer pt. (slug renombrado por dupe previo)
+2026-10-25: FIX-BUILD — deploy ERROR on ModularPatternComposer (export not found on older SHA). Current HEAD has full export. No new tools this run.
 ```
 
 ---
@@ -76,10 +77,10 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT (roll 18)
-last_slugs: calculadora-gpa, calculadora-area-rectangular
-last_deploy: pending
-last_sha: c58a8d5d0b15c0e5b40df74ed9171d0cb130cb97
+last_mode: FIX-BUILD
+last_slugs: none
+last_deploy: ERROR (investigating)
+last_sha: 209b534ca2a740aa684501eb3f5e2ac8e41cb870
 ```
 
 <!-- end:tools-builder-state.md -->
