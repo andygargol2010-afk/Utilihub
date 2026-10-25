@@ -117,6 +117,7 @@ import { LOGARITHM_CALCULATOR_TOOLS } from "./logarithm-calculator-tool";
 import { ATMOSPHERIC_PRESSURE_CALCULATOR_TOOLS } from "./atmospheric-pressure-calculator-tool";
 import { AVERAGE_WORD_LENGTH_CALCULATOR_TOOLS } from "./average-word-length-calculator-tool";
 import { DAILY_INTEREST_CALCULATOR_TOOLS } from "./daily-interest-calculator-tool";
+import { DAILY_WATER_INTAKE_CALCULATOR_TOOLS } from "./daily-water-intake-calculator-tool";
 import { UNIT_PRICE_TOOLS } from "./unit-price-tool";
 
 export { GENERAL_CATEGORIES };
@@ -239,5 +240,6 @@ export const GENERAL_TOOLS = [
   ...ATMOSPHERIC_PRESSURE_CALCULATOR_TOOLS,
   ...AVERAGE_WORD_LENGTH_CALCULATOR_TOOLS,
   ...DAILY_INTEREST_CALCULATOR_TOOLS,
+  ...DAILY_WATER_INTAKE_CALCULATOR_TOOLS,
   ...UNIT_PRICE_TOOLS,
 ];
