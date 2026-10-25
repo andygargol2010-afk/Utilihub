@@ -15,6 +15,10 @@ const ExperienceDiscoveryRail = lazy(() =>
   import("@/components/ExperienceDiscoveryRail").then((m) => ({ default: m.ExperienceDiscoveryRail })),
 );
 
+const HomeValuePath = lazy(() =>
+  import("@/components/HomeValuePath").then((m) => ({ default: m.HomeValuePath })),
+);
+
 const RANDOM_EXPERIENCES = [
   "/aurora-particle-playground",
   "/pulse-catch",
@@ -188,6 +192,9 @@ function HomePage() {
       </section>
       <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden /> }>
         <ExperienceDiscoveryRail locale="en" />
+      </Suspense>
+      <Suspense fallback={<div className="container-page py-4 min-h-[160px]" aria-hidden /> }>
+        <HomeValuePath locale="en" />
       </Suspense>
       <section className="container-page py-6">
         <div className="rounded-2xl border border-border/60 bg-card/50 p-4 sm:p-5">
