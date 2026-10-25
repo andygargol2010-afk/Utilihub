@@ -16,13 +16,13 @@ last_closed_id: daily-experience-spotlight
 p_fixed: 0.35
 
 weights_core:
-  kits: 15
-  journeys: 1
-  games: 6
-  simulators: 4
-  studio-composition: 2
-  playgrounds: 7
-  quality-lift: 3
+  kits: 1
+  journeys: 2
+  games: 7
+  simulators: 5
+  studio-composition: 3
+  playgrounds: 8
+  quality-lift: 4
 
 weights_growth:
   traffic-bets: 3
@@ -60,7 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Interactive Kitchen Prep Board — coherent multi-step kit for meal prep. Visual recipe scaler (stepper or drag servings), ingredient checklist with live check/status, step-by-step timer with progress ring, drag-to-reorder prep steps on a visual station board, live weight/progress summary, PNG share with baked title + utilihub.com + servings/progress. EN+ES routes. Distinct living prep path (not a tool list or single calculator). CWV-safe (no heavy assets, lazy). Adsterra intact.
+id: kitchen-prep-board
+path_en: /kits/kitchen-prep
+path_es: /es/kits/preparacion-cocina
+domain: kits
+runs_total: 4
+runs_remaining: 4
+acceptance: pending
+share: both
+next_step_required: no
+notes: CORE roll U=0.9931338061630458 → CORE. Weighted sample r=0.9958047374252952 of 38 → kits (weight 15). last_closed_domain=traffic-bets ≠ kits, no re-roll. Interactive board elevates kits beyond static tool lists (cf. market-stall, travel-packing, home-renovation). Weights updated: kits=1, others +1.
+adsense-prep_runs: 3
 ```
 
 <!-- end:ideas-lab-state.md -->
