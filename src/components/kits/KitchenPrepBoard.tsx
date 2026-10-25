@@ -70,6 +70,9 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
   const current = orderedSteps[currentStep];
   const progress = Math.round(((currentStep + (running ? 0.5 : 0)) / orderedSteps.length) * 100);
   const checkedCount = checked.length;
+  const suggestedSec = current ? current.duration * 60 : 60;
+  const ringProgress = Math.min(1, timerSeconds / suggestedSec);
+  const circumference = 2 * Math.PI * 42;
 
   function toggleIng(id: string) {
     setChecked((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -199,23 +202,47 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
                 <Timer className="size-4 text-primary" />
                 {es ? current.es : current.en}
               </div>
-              <div className="mt-2 flex items-center justify-between">
-                <span className="text-2xl font-black tabular-nums">
-                  {Math.floor(timerSeconds / 60)}:{(timerSeconds % 60).toString().padStart(2, "0")}
-                </span>
-                <div className="flex gap-2">
-                  <button type="button" onClick={startTimer} className="rounded-full bg-primary px-3 py-1 text-sm font-bold text-primary-foreground">
-                    {running ? (es ? "Reiniciar" : "Restart") : (es ? "Iniciar" : "Start")}
-                  </button>
-                  <button type="button" onClick={() => setRunning(false)} className="rounded-full border px-3 py-1 text-sm">Pause</button>
-                  {currentStep < orderedSteps.length - 1 && (
-                    <button type="button" onClick={() => { setCurrentStep(currentStep + 1); setTimerSeconds(0); setRunning(false); }} className="rounded-full border px-3 py-1 text-sm">
-                      {es ? "Siguiente" : "Next"}
+              <div className="mt-3 flex items-center gap-4">
+                <div className="relative size-28 shrink-0">
+                  <svg className="size-full -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
+                    <circle cx="50" cy="50" r="42" stroke="currentColor" strokeWidth="8" fill="none" className="text-muted/40" />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      stroke="currentColor"
+                      strokeWidth="8"
+                      fill="none"
+                      className="text-primary transition-all duration-300"
+                      strokeDasharray={circumference}
+                      strokeDashoffset={circumference * (1 - ringProgress)}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 grid place-items-center">
+                    <span className="text-xl font-black tabular-nums">
+                      {Math.floor(timerSeconds / 60)}:{(timerSeconds % 60).toString().padStart(2, "0")}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-1 flex-col gap-2">
+                  <div className="flex flex-wrap gap-2">
+                    <button type="button" onClick={startTimer} className="rounded-full bg-primary px-3 py-1 text-sm font-bold text-primary-foreground">
+                      {running ? (es ? "Reiniciar" : "Restart") : (es ? "Iniciar" : "Start")}
                     </button>
+                    <button type="button" onClick={() => setRunning(false)} className="rounded-full border px-3 py-1 text-sm">Pause</button>
+                    {currentStep < orderedSteps.length - 1 && (
+                      <button type="button" onClick={() => { setCurrentStep(currentStep + 1); setTimerSeconds(0); setRunning(false); }} className="rounded-full border px-3 py-1 text-sm">
+                        {es ? "Siguiente" : "Next"}
+                      </button>
+                    )}
+                  </div>
+                  <div className="text-xs text-muted-foreground">{es ? "Tiempo sugerido" : "Suggested"}: {current.duration} min</div>
+                  {ringProgress >= 1 && running && (
+                    <div className="text-xs font-semibold text-primary">{es ? "¡Tiempo cumplido!" : "Time's up!"}</div>
                   )}
                 </div>
               </div>
-              <div className="mt-3 text-xs text-muted-foreground">{es ? "Tiempo sugerido" : "Suggested"}: {current.duration} min</div>
             </div>
           )}
         </div>
