@@ -318,4 +318,15 @@ Formato por entrada:
 - **fix_hint**: renombrar a slug único y actualizar registry
 - **files**: `src/lib/general/room-area-calculator-tool.ts`, `src/components/general/registry.tsx`
 
+
+## E033 — ModularPatternComposer returns null (playground blank)
+- **status**: fixed
+- **last_seen**: 2026-10-25
+- **fixed_at**: 2026-10-25
+- **symptom**: /studio/modular-pattern-composer or equivalent playground renders nothing (blank canvas)
+- **root_cause**: ModularPatternComposer.tsx was a stub ending with `return null;` plus comments about placeholder to avoid huge payload
+- **check**: file exports function that returns real JSX with canvas, not null; size > 10kB
+- **fix_hint**: restore full component from good SHA (e.g. 6528acc5) that has layers, drawTile, animations
+- **files**: `src/components/playgrounds/ModularPatternComposer.tsx`
+
 <!-- end:catalog -->
