@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001 regression detected) + discovery (registry stub, agent docs stub)
-- deploy: recent SHAs READY; tip may need new deploy after fix
-- known_smoke: E001 OPEN (registry.tsx = "$(cat /tmp/utilihub/registry.tsx)"); E005 home clean; others green
-- new_findings: E031 — agent files and registry corrupted by $(cat stubs (same pattern as E005)
-- fixes: restored registry.tsx from good SHA 10fa5476 + added wires for E027-E030; restored catalog+state
+- mode: known smoke (E031 recurring catalog stub) + discovery (games/simulators registries, general index, HouseModeler3D, tip deploy status)
+- deploy: tip SHA 60cea8a8 sin deploy aún; último ERROR en 37111dc (slug dupe calculadora-area-habitacion) ya corregido por rename a calculadora-area-rectangular en commits posteriores
+- known_smoke: E001 registry.tsx real (pickComponent + dedicated wires OK); E005 homes reales; E031 OPEN (catalog.md era literal "$(cat /tmp/catalog.md)", ahora restaurado); E032 fixed
+- new_findings: ninguna tool rota nueva; E031 es el único abierto real
+- fixes: restaurado error-hunter-catalog.md completo (E001–E032) desde history + entradas nuevas; state actualizado
 
 ## Rotation (evitar sesgo)
-- last_known_focus: registry E001 regression + agent docs
+- last_known_focus: E031 catalog stub + deploy tip status
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
