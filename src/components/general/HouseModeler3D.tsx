@@ -1120,6 +1120,30 @@ function paintFascia(ctx: CanvasRenderingContext2D, size: number) {
     for (let x = 0; x <= size; x += 8) ctx.lineTo(x, gy + Math.sin(x * 0.08 + i) * 1.2);
     ctx.stroke();
   }
+  // Knots, nail heads and rain streaks so the fascia board reads as aged timber.
+  for (let k = 0; k < 5; k++) {
+    const kx = hash2(k, 8.3) * size;
+    const ky = hash2(k, 9.7) * (size - 24) + 6;
+    ctx.fillStyle = "rgba(48,28,14,0.55)";
+    ctx.beginPath();
+    ctx.ellipse(kx, ky, 4 + hash2(k, 1.9) * 3, 2.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(60,36,18,0.35)";
+    ctx.beginPath();
+    ctx.ellipse(kx, ky, 8, 4.5, 0, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  for (let n = 0; n < 8; n++) {
+    const nx = (n + 0.5) * (size / 8);
+    ctx.fillStyle = "rgba(34,22,14,0.7)";
+    ctx.fillRect(nx, size * 0.42, 2.5, 2.5);
+    ctx.fillStyle = "rgba(120,88,60,0.4)";
+    ctx.fillRect(nx, size * 0.42 + 2.5, 1.5, 6 + hash2(n, 3.3) * 10);
+  }
+  for (let s = 0; s < 6; s++) {
+    ctx.fillStyle = `rgba(52,40,30,${0.1 + hash2(s, 5.5) * 0.12})`;
+    ctx.fillRect(hash2(s, 7.1) * size, 0, 2 + hash2(s, 2.2) * 3, size);
+  }
   // Weathered drip line along the lower edge.
   ctx.fillStyle = "rgba(42,26,16,0.55)";
   ctx.fillRect(0, size - 6, size, 6);
