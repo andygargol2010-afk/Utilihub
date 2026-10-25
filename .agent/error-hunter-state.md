@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001–E019 green: no PLACEHOLDER/$(cat, registry/index full with previous wires, home routes clean start-with-import, playgrounds E010-E011 full canvas+loop; E012 prior restore verified) + discovery (sampled latest feat(cat) tools calculadora-longitud-promedio-palabra + calculadora-interes-diario: dedicated *CalculatorTool.tsx exist and full with useState/useMemo, imported in index.ts, but not wired in registry pickComponent → fall to Math/TextTool generic)
-- deploy: tip SHA 102221abcc34957807a59126fcb005a3daa6733e READY (feat(cat) add the two tools); no ERROR
-- known_smoke: green (no open/recurring failures; all last_seen updated)
-- new_findings: E020 — dedicated UIs for longitud-promedio-palabra + interes-diario not wired in registry (fixed this run)
-- fixes: 1 (registry.tsx: added lazy + slug checks for the two tools)
+- mode: known smoke (E001–E020 green: no PLACEHOLDER, registry/index full, home routes clean, playgrounds E010–E012 full canvas) + discovery (sampled older dedicated tools still in catalog: calculadora-raiz-cubica, conversor-pulgadas-cm, calculadora-gasto-diario, calculadora-ratio-trabajo-descanso — all had *Tool.tsx + index import but missing registry pickComponent wires)
+- deploy: tip before fix was READY for registry E020; this run added wires (SHA 821d39f…); post-push deploy pending verification
+- known_smoke: green (no open/recurring failures on prior set)
+- new_findings: E021 — four more dedicated UIs not wired (fixed this run)
+- fixes: 1 (registry.tsx: lazy + slug checks for the four tools)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: latest catalog tools wiring + playgrounds full + home routes (this run)
+- last_known_focus: older catalog dedicated wiring (raiz-cubica family) + playgrounds smoke
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
