@@ -113,6 +113,8 @@ import { WORK_BREAK_RATIO_CALCULATOR_TOOLS } from "./work-break-ratio-calculator
 import { RICE_WATER_CALCULATOR_TOOLS } from "./rice-water-calculator-tool";
 import { YARDS_TO_METERS_CONVERTER_TOOLS } from "./yards-to-meters-converter-tool";
 import { DAILY_SPENDING_CALCULATOR_TOOLS } from "./daily-spending-calculator-tool";
+import { LOGARITHM_CALCULATOR_TOOLS } from "./logarithm-calculator-tool";
+import { ATMOSPHERIC_PRESSURE_CALCULATOR_TOOLS } from "./atmospheric-pressure-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -230,4 +232,6 @@ export const GENERAL_TOOLS = [
   ...RICE_WATER_CALCULATOR_TOOLS,
   ...YARDS_TO_METERS_CONVERTER_TOOLS,
   ...DAILY_SPENDING_CALCULATOR_TOOLS,
+  ...LOGARITHM_CALCULATOR_TOOLS,
+  ...ATMOSPHERIC_PRESSURE_CALCULATOR_TOOLS,
 ];

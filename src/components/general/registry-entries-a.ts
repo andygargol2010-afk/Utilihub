@@ -51,4 +51,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-agua-arroz", name: "RiceWaterCalculatorTool", path: "./RiceWaterCalculatorTool", export: "RiceWaterCalculatorTool" },
   { slug: "conversor-yardas-metros", name: "YardsToMetersConverterTool", path: "./YardsToMetersConverterTool", export: "YardsToMetersConverterTool" },
   { slug: "calculadora-gasto-diario", name: "DailySpendingCalculatorTool", path: "./DailySpendingCalculatorTool", export: "DailySpendingCalculatorTool" },
+  { slug: "calculadora-logaritmo", name: "LogarithmCalculatorTool", path: "./LogarithmCalculatorTool", export: "LogarithmCalculatorTool" },
+  { slug: "calculadora-presion-atmosferica", name: "AtmosphericPressureCalculatorTool", path: "./AtmosphericPressureCalculatorTool", export: "AtmosphericPressureCalculatorTool" },
 ] as const;
