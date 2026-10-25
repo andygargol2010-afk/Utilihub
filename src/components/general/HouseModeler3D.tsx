@@ -473,6 +473,15 @@ function paintPlasterBump(ctx: CanvasRenderingContext2D, size: number) {
     }
     ctx.stroke();
   }
+  // Micro pits and sand grains so lit plaster reads as hand-floated, not smooth.
+  for (let p = 0; p < 90; p++) {
+    const px = hash2(p, 41) * size;
+    const py = hash2(p, 43) * size;
+    ctx.fillStyle = hash2(p, 47) > 0.5 ? "rgba(255,255,255,0.3)" : "rgba(25,25,25,0.3)";
+    ctx.beginPath();
+    ctx.arc(px, py, 0.6 + hash2(p, 53) * 1.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintPlinth(ctx: CanvasRenderingContext2D, size: number) {
