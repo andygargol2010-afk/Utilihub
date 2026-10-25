@@ -16,13 +16,13 @@ last_closed_id: kitchen-prep-board
 p_fixed: 0.35
 
 weights_core:
-  kits: 1
-  journeys: 2
-  games: 7
-  simulators: 5
-  studio-composition: 3
-  playgrounds: 8
-  quality-lift: 4
+  kits: 2
+  journeys: 3
+  games: 8
+  simulators: 6
+  studio-composition: 1
+  playgrounds: 9
+  quality-lift: 5
 
 weights_growth:
   traffic-bets: 3
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: n/a
-notes: Closed kitchen-prep-board 2026-10-25. Next run → IDEATE.
+status: active
+idea: Interactive Modular Pattern Composer: place modular tiles on a grid with live procedural animations (flow, pulse, morph), multi-layers with blend/opacity, symmetry modes (mirror/radial), tile library (geometric, organic, particle stamps), color palettes + gradients, playback controls, PNG share with baked title + utilihub.com + tile count, URL deep-link for composition. Distinct from freehand neon-layer by modular/repeatable systems + animation playback. EN+ES. CWV-safe.
+id: modular-pattern-composer
+path_en: /modular-pattern-composer
+path_es: /es/modular-pattern-composer
+domain: studio-composition
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: both
+next_step_required: yes
+notes: Roll U=0.888 >0.50 → CORE. Weighted U_w=17.09 /30 → studio-composition (15-18). last_closed kits ≠ selected, no re-roll. Weights updated: studio→1, others CORE +1. Idea focuses on modular tile systems with live animation distinct from freehand neon canvas.
 adsense-prep_runs: 3
 ```
 
