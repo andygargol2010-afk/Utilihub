@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001–E020 green: no PLACEHOLDER, registry/index full, home routes clean, playgrounds E010–E012 full canvas) + discovery (sampled older dedicated tools still in catalog: calculadora-raiz-cubica, conversor-pulgadas-cm, calculadora-gasto-diario, calculadora-ratio-trabajo-descanso — all had *Tool.tsx + index import but missing registry pickComponent wires)
-- deploy: tip before fix was READY for registry E020; this run added wires (SHA 821d39f…); post-push deploy pending verification
+- mode: known smoke (E001–E021 green: no PLACEHOLDER, registry/index full, home routes clean, playgrounds E010–E012 full canvas) + discovery (sampled unit-price tool after recent FAQ commit; found not imported in index.ts → 404)
+- deploy: tip before fix READY (SHA e003779e); this run added catalog wire (SHA 3afd869b…); post-push deploy pending verification
 - known_smoke: green (no open/recurring failures on prior set)
-- new_findings: E021 — four more dedicated UIs not wired (fixed this run)
-- fixes: 1 (registry.tsx: lazy + slug checks for the four tools)
+- new_findings: E022 — tool definition exists but not wired into GENERAL_TOOLS (fixed this run)
+- fixes: 1 (index.ts: import + spread UNIT_PRICE_TOOLS)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: older catalog dedicated wiring (raiz-cubica family) + playgrounds smoke
+- last_known_focus: catalog index wiring for recently touched tools + playgrounds smoke
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
