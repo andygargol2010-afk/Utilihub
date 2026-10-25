@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 263
+runs_done: 264
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 331826
+approx_bytes: 332493
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -56,7 +56,7 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: MODELADOR-3D
+last_mode: PRODUCT
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
@@ -103,6 +103,7 @@ META run 260: confirmed tip READY (eb56ea51) + monolith health (~345kB, SHA de1e
 META run 261: confirmed monolith health 331826 B / 7519 lines / SHA de1e458a / no PLACEHOLDER. Recent catalog tip ERROR unrelated. Chimney-brick densify deferred (tool-channel truncation risk). runs_done=261.
 MODELADOR-3D run 262: pyramid base aligned to axes (rotateY 45deg) + distinct palette icon. Surgical. runs_done=262.
 MODELADOR-3D run 263: hemisphere ShapeKind (closed lathe dome) wired in modeler3d-helpers. Surgical, tsc OK. runs_done=263.
+PRODUCT run 264: chimney-brick densify (160 flecks + 9 lime efflorescence streaks) via local clone surgical. runs_done=264.
 ```
 
 <!-- end:house-modeler-state.md -->

@@ -687,6 +687,20 @@ function paintChimneyBrick(ctx: CanvasRenderingContext2D, size: number) {
       }
     }
   }
+  // Brick-face fleck, lime efflorescence streaks and chipped arrises so the stack reads as aged fired clay.
+  for (let i = 0; i < 160; i++) {
+    const hx = hash2(i * 1.7 + 3.1, 9.3);
+    const hy = hash2(i * 2.3 + 5.7, 1.9);
+    const dark = hash2(i, 6.6) > 0.5;
+    ctx.fillStyle = dark ? "rgba(52, 32, 24, 0.30)" : "rgba(214, 170, 140, 0.26)";
+    ctx.fillRect(hx * size, hy * size, 1 + hash2(i, 2.2) * 2, 1 + hash2(i, 4.1) * 2);
+  }
+  for (let i = 0; i < 9; i++) {
+    const x = hash2(i + 0.5, 7.7) * size;
+    const y = hash2(i + 2.5, 3.3) * size * 0.8;
+    ctx.fillStyle = "rgba(226, 218, 204, 0.16)";
+    ctx.fillRect(x, y, 1.5, 10 + hash2(i, 8.8) * 22);
+  }
   ctx.strokeStyle = "rgba(186, 170, 154, 0.55)";
   ctx.lineWidth = 2;
   for (let r = 0; r <= rows; r++) {
