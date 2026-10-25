@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001 registry full no PLACEHOLDER, E005 homes real no $(cat, E031 catalog/state clean, E033 ModularPatternComposer exports + full) + discovery (playgrounds sample, pattern search $(cat/PLACEHOLDER/not implemented, index.ts tools spread, es.index)
-- deploy: tip SHA 66368332 READY on dpl_4K1A62mNnxedRDJZ3hFs1wJqm65a; previous ERROR on ModularPatternComposer restore (export missing intermediate) resolved by later commit
-- known_smoke: all sampled fixed/passing (registry complete, homes import+createFileRoute, no $(cat); E031 pattern still recurring risk but current files clean)
-- new_findings: none (no PLACEHOLDER, no $(cat, no return null stubs in sampled playgrounds, catalog index complete, ModularPatternComposer full export)
+- mode: known smoke (E001 registry full no PLACEHOLDER, E005 homes real no $(cat, E031 catalog/state clean) + discovery (games routes/es.juegos.index + GamesCatalog, pattern search $(cat/PLACEHOLDER/return null in playgrounds, live site www.utilihub.net home/tools)
+- deploy: tip SHA c9d19c91 READY on dpl_71hmqM61cWLBjMCuQcQgWxRvbrNx; build completed successfully (no ERROR)
+- known_smoke: all sampled fixed/passing (registry complete with pickComponent + dedicated wires, homes import+createFileRoute, no $(cat); E031 pattern still recurring risk but current files clean)
+- new_findings: none (games catalog full, no stubs, no PLACEHOLDER, no $(cat, live home and tools load without 404)
 - fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E001/E005/E031 + playgrounds/ModularPatternComposer
+- last_known_focus: E001/E005/E031 + games/studio sample
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
