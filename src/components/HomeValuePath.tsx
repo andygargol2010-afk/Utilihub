@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
-import { CheckCircle2, ArrowRight, Sparkles } from "lucide-react";
+import { CheckCircle2, ArrowRight, Sparkles, RefreshCw } from "lucide-react";
 
 interface ValueStep {
   id: string;
@@ -14,7 +14,7 @@ interface ValueStep {
   shortEs: string;
 }
 
-const VALUE_STEPS: ValueStep[] = [
+const EXPERIENCE_POOL: ValueStep[] = [
   {
     id: "aurora-particle-playground",
     pathEn: "/aurora-particle-playground",
@@ -48,7 +48,49 @@ const VALUE_STEPS: ValueStep[] = [
     shortEn: "Freehand bloom & symmetry",
     shortEs: "Bloom a mano alzada y simetría",
   },
+  {
+    id: "prism-trail-composer",
+    pathEn: "/studio/prism-trail-composer",
+    pathEs: "/es/studio/compositor-estela-prisma",
+    titleEn: "Prism Trail",
+    titleEs: "Estela Prisma",
+    ctaEn: "Trail rainbow",
+    ctaEs: "Estela arcoíris",
+    shortEn: "Rainbow prism trails",
+    shortEs: "Estelas prisma arcoíris",
+  },
+  {
+    id: "color-cascade-fusion",
+    pathEn: "/color-cascade-fusion",
+    pathEs: "/es/color-cascade-fusion",
+    titleEn: "Color Cascade",
+    titleEs: "Cascada de Color",
+    ctaEn: "Fuse colors",
+    ctaEs: "Fusionar colores",
+    shortEn: "Adjacent fusion + combos",
+    shortEs: "Fusión adyacente + combos",
+  },
+  {
+    id: "aura-card-share",
+    pathEn: "/aura-card",
+    pathEs: "/es/aura-card",
+    titleEn: "Aura Card",
+    titleEs: "Carta Aura",
+    ctaEn: "Compose share",
+    ctaEs: "Componer compartir",
+    shortEn: "Shareable particles + quotes",
+    shortEs: "Partículas y citas compartibles",
+  },
 ];
+
+function pickRandomSteps(n = 3): ValueStep[] {
+  const shuffled = [...EXPERIENCE_POOL];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled.slice(0, n);
+}
 
 const STORAGE_KEY = "utilihub-value-path-explored";
 
@@ -78,14 +120,19 @@ interface Props {
 
 export function HomeValuePath({ locale }: Props) {
   const [explored, setExplored] = useState<Set<string>>(new Set());
+  const [steps, setSteps] = useState<ValueStep[]>(() => pickRandomSteps());
   const isEs = locale === "es";
 
   useEffect(() => {
     setExplored(loadExplored());
   }, []);
 
-  const count = VALUE_STEPS.filter((s) => explored.has(s.id)).length;
-  const total = VALUE_STEPS.length;
+  const refresh = useCallback(() => {
+    setSteps(pickRandomSteps());
+  }, []);
+
+  const count = steps.filter((s) => explored.has(s.id)).length;
+  const total = steps.length;
   const complete = count >= total;
   const progressPct = Math.round((count / total) * 100);
 
@@ -111,15 +158,27 @@ export function HomeValuePath({ locale }: Props) {
               {isEs ? "Explorá 3 experiencias destacadas" : "Explore 3 featured experiences"}
             </h2>
           </div>
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-bold ${
-              complete
-                ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
-                : "bg-violet-500/10 text-violet-700 dark:text-violet-300"
-            }`}
-          >
-            {count} {isEs ? "de" : "of"} {total} {isEs ? "exploradas" : "explored"}
-          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={refresh}
+              className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-semibold hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+              data-event="value-path-refresh"
+              title={isEs ? "Nueva ruta aleatoria" : "New random path"}
+            >
+              <RefreshCw className="size-3.5" aria-hidden />
+              {isEs ? "Nueva" : "New"}
+            </button>
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-bold ${
+                complete
+                  ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+                  : "bg-violet-500/10 text-violet-700 dark:text-violet-300"
+              }`}
+            >
+              {count} {isEs ? "de" : "of"} {total} {isEs ? "exploradas" : "explored"}
+            </span>
+          </div>
         </div>
 
         {/* Progress bar */}
@@ -149,7 +208,7 @@ export function HomeValuePath({ locale }: Props) {
         )}
 
         <ol className="grid gap-3 sm:grid-cols-3">
-          {VALUE_STEPS.map((step, i) => {
+          {steps.map((step, i) => {
             const done = explored.has(step.id);
             const path = isEs ? step.pathEs : step.pathEn;
             const title = isEs ? step.titleEs : step.titleEn;
