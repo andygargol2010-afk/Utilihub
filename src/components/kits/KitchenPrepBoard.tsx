@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChefHat, Check, Clock, Download, RotateCcw, Timer, GripVertical, ChevronDown } from "lucide-react";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const BASE_SERVINGS = 4;
 
@@ -141,6 +142,13 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
   const ringProgress = Math.min(1, timerSeconds / Math.max(1, suggestedSec));
   const circumference = 2 * Math.PI * 42;
 
+  const shareUrl =
+    typeof window !== "undefined"
+      ? window.location.href.split("?")[0]
+      : es
+        ? "https://utilihub.com/es/kits/preparacion-cocina"
+        : "https://utilihub.com/kits/kitchen-prep";
+
   function selectRecipe(id: string) {
     setRecipeId(id);
     setRecipeOpen(false);
@@ -178,18 +186,44 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
   function sharePng() {
     const canvas = document.createElement("canvas");
     canvas.width = 800;
-    canvas.height = 600;
+    canvas.height = 640;
     const ctx = canvas.getContext("2d")!;
     ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, 800, 600);
+    ctx.fillRect(0, 0, 800, 640);
+    // accent bar
+    ctx.fillStyle = "#22c55e";
+    ctx.fillRect(0, 0, 8, 640);
     ctx.fillStyle = "#e2e8f0";
-    ctx.font = "bold 32px system-ui";
-    ctx.fillText(es ? "Preparaci\u00f3n de cocina" : "Kitchen Prep Board", 40, 70);
-    ctx.font = "20px system-ui";
+    ctx.font = "bold 30px system-ui, sans-serif";
+    ctx.fillText(es ? "Preparaci\u00f3n de cocina" : "Kitchen Prep Board", 40, 56);
+    ctx.font = "18px system-ui, sans-serif";
     const recipeName = es ? recipe.es : recipe.en;
-    ctx.fillText(`${recipeName} \u00b7 ${es ? "Porciones" : "Servings"}: ${servings}`, 40, 120);
-    ctx.fillText(`${es ? "Progreso" : "Progress"}: ${progress}%`, 40, 155);
-    ctx.fillText("utilihub.com", 40, 560);
+    ctx.fillStyle = "#94a3b8";
+    ctx.fillText(recipeName, 40, 92);
+    ctx.fillStyle = "#e2e8f0";
+    ctx.font = "16px system-ui, sans-serif";
+    ctx.fillText(`${es ? "Porciones" : "Servings"}: ${servings}`, 40, 140);
+    ctx.fillText(`${es ? "Progreso pasos" : "Steps progress"}: ${progress}%  (${currentStep + 1}/${orderedSteps.length})`, 40, 170);
+    ctx.fillText(`${es ? "Ingredientes listos" : "Ingredients ready"}: ${checkedCount}/${recipe.ingredients.length}`, 40, 200);
+    if (current) {
+      ctx.fillText(`${es ? "Paso actual" : "Current step"}: ${es ? current.es : current.en}`, 40, 230);
+    }
+    // mini checklist of first 4 ingredients
+    ctx.fillStyle = "#64748b";
+    ctx.font = "14px system-ui, sans-serif";
+    ctx.fillText(es ? "Lista r\u00e1pida:" : "Quick list:", 40, 280);
+    recipe.ingredients.slice(0, 5).forEach((ing, i) => {
+      const done = checked.includes(ing.id);
+      const scaled = (ing.amount * scale).toFixed(ing.amount % 1 ? 1 : 0);
+      ctx.fillStyle = done ? "#22c55e" : "#cbd5e1";
+      ctx.fillText(`${done ? "\u2713" : "\u25cb"}  ${es ? ing.es : ing.en}  ${scaled} ${ing.unit}`, 40, 310 + i * 26);
+    });
+    ctx.fillStyle = "#64748b";
+    ctx.font = "14px system-ui, sans-serif";
+    ctx.fillText("utilihub.com", 40, 600);
+    ctx.fillStyle = "#22c55e";
+    ctx.font = "12px system-ui, sans-serif";
+    ctx.fillText(es ? "Kit interactivo de preparaci\u00f3n" : "Interactive meal-prep kit", 40, 622);
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = "kitchen-prep.png";
@@ -208,7 +242,12 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
             {es ? "Preparaci\u00f3n de comida" : "Meal prep station"}
           </h2>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          <ExperienceShareButton
+            title={es ? "Preparaci\u00f3n de cocina" : "Kitchen Prep Board"}
+            url={shareUrl}
+            locale={locale}
+          />
           <button type="button" onClick={sharePng} className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-bold">
             <Download className="size-4" /> PNG
           </button>
@@ -216,6 +255,21 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
             <RotateCcw className="size-4" /> {es ? "Reiniciar" : "Reset"}
           </button>
         </div>
+      </div>
+
+      {/* Live summary strip */}
+      <div className="mt-4 flex flex-wrap gap-3 rounded-xl border border-border/60 bg-card/80 px-3 py-2.5 text-sm">
+        <span className="font-semibold tabular-nums">
+          {es ? "Porciones" : "Servings"}: <span className="text-primary">{servings}</span>
+        </span>
+        <span className="text-muted-foreground">\u00b7</span>
+        <span className="font-semibold tabular-nums">
+          {es ? "Ingredientes" : "Ingredients"}: <span className="text-primary">{checkedCount}/{recipe.ingredients.length}</span>
+        </span>
+        <span className="text-muted-foreground">\u00b7</span>
+        <span className="font-semibold tabular-nums">
+          {es ? "Progreso" : "Progress"}: <span className="text-primary">{progress}%</span>
+        </span>
       </div>
 
       {/* Recipe selector */}
@@ -292,8 +346,8 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
                   <span className="flex-1 min-w-0">{es ? step.es : step.en}</span>
                   <span className="text-xs text-muted-foreground shrink-0">{step.duration >= 60 ? `${Math.round(step.duration / 60)}h` : `${step.duration}m`}</span>
                   <div className="flex shrink-0">
-                    <button type="button" onClick={() => moveStep(i, -1)} disabled={i === 0} className="size-8 rounded border opacity-70 disabled:opacity-20 text-sm">↑</button>
-                    <button type="button" onClick={() => moveStep(i, 1)} disabled={i === orderedSteps.length - 1} className="size-8 rounded border opacity-70 disabled:opacity-20 text-sm ml-1">↓</button>
+                    <button type="button" onClick={() => moveStep(i, -1)} disabled={i === 0} className="size-8 rounded border opacity-70 disabled:opacity-20 text-sm">\u2191</button>
+                    <button type="button" onClick={() => moveStep(i, 1)} disabled={i === orderedSteps.length - 1} className="size-8 rounded border opacity-70 disabled:opacity-20 text-sm ml-1">\u2193</button>
                   </div>
                 </div>
               ))}
@@ -334,7 +388,9 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
                     <button type="button" onClick={startTimer} className="rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground">
                       {running ? (es ? "Reiniciar" : "Restart") : (es ? "Iniciar" : "Start")}
                     </button>
-                    <button type="button" onClick={() => setRunning(false)} className="rounded-full border px-4 py-2 text-sm">Pause</button>
+                    <button type="button" onClick={() => setRunning(false)} className="rounded-full border px-4 py-2 text-sm">
+                      {es ? "Pausa" : "Pause"}
+                    </button>
                     {currentStep < orderedSteps.length - 1 && (
                       <button type="button" onClick={() => { setCurrentStep(currentStep + 1); setTimerSeconds(0); setRunning(false); }} className="rounded-full border px-4 py-2 text-sm">
                         {es ? "Siguiente" : "Next"}
