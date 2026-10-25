@@ -318,14 +318,14 @@ Formato por entrada:
 - **fix_hint**: renombrar a slug único y actualizar registry
 - **files**: `src/lib/general/room-area-calculator-tool.ts`, `src/components/general/registry.tsx`
 
-## E033 — ModularPatternComposer returns null (playground blank)
-- **status**: fixed
-- **last_seen**: 2026-10-25 (file full ~23kB, exports ModularPatternComposer function with real canvas/layers; previous intermediate deploy ERROR on missing export resolved)
+## E033 — ModularPatternComposer returns null / stub (playground blank or placeholder)
+- **status**: fixed (vigilar regresión)
+- **last_seen**: 2026-10-25 (restored full ~16kB canvas/layers/animations/controls from early good SHA; previous stub "(restored)" replaced)
 - **fixed_at**: 2026-10-25
-- **symptom**: /studio/modular-pattern-composer or equivalent playground renders nothing (blank canvas)
-- **root_cause**: ModularPatternComposer.tsx was a stub ending with `return null;` plus comments about placeholder to avoid huge payload
-- **check**: file exports function that returns real JSX with canvas, not null; size > 10kB
-- **fix_hint**: restore full component from good SHA (e.g. 6528acc5) that has layers, drawTile, animations
+- **symptom**: playground renders blank or only a placeholder div instead of interactive grid canvas
+- **root_cause**: file replaced by stub returning simple div (or null) to avoid large payload
+- **check**: file size >10kB; exports function returning JSX with <canvas> and controls, not a single div or null
+- **fix_hint**: restore full component from good historical SHA that has Tile/Layer types, drawTile, requestAnimationFrame tick
 - **files**: `src/components/playgrounds/ModularPatternComposer.tsx`
 
 <!-- end:catalog -->
