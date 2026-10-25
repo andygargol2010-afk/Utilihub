@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 267
+runs_done: 268
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: MODELADOR-3D
+last_mode: PRODUCT
 last_date: 2026-10-25
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: MODELADOR-3D run 267 glow MatPreset. runs_done=267.
+note: PRODUCT run 268 plinth densify. runs_done=268.
 ```
 
 Refresh after each run.
@@ -107,6 +107,7 @@ PRODUCT run 264: chimney-brick densify (160 flecks + 9 lime efflorescence streak
 MODELADOR-3D run 265: ceramic MatPreset (glossy glazed, EN/ES) in helpers. Surgical, tsc checked. runs_done=265.
 PRODUCT run 266: fascia-board densify (knots, nail heads, rain streaks) via local clone surgical. runs_done=266.
 MODELADOR-3D run 267: glow (emissive) MatPreset in helpers. Surgical. runs_done=267.
+PRODUCT run 268: plinth masonry densify (grain flecks, damp splash, efflorescence) via local clone surgical. runs_done=268.
 ```
 
 <!-- end:house-modeler-state.md -->

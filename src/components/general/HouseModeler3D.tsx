@@ -505,6 +505,20 @@ function paintPlinth(ctx: CanvasRenderingContext2D, size: number) {
     ctx.lineTo(size, y);
     ctx.stroke();
   }
+  // Stone grain, damp splash near the ground line and efflorescence so the plinth reads as aged masonry.
+  for (let i = 0; i < 140; i++) {
+    const t = 130 + Math.floor(hash2(i, 9.1) * 70);
+    ctx.fillStyle = `rgba(${t}, ${t - 8}, ${t - 20}, ${0.12 + hash2(i, 4.4) * 0.16})`;
+    ctx.fillRect(hash2(i, 1.7) * size, hash2(i, 6.3) * size, 1 + hash2(i, 2.9) * 2.5, 1 + hash2(i, 8.2) * 1.5);
+  }
+  for (let s = 0; s < 10; s++) {
+    ctx.fillStyle = `rgba(60,50,38,${0.08 + hash2(s, 3.7) * 0.1})`;
+    ctx.fillRect(hash2(s, 5.9) * size, size * 0.62, 3 + hash2(s, 7.7) * 7, size * 0.38);
+  }
+  for (let s = 0; s < 5; s++) {
+    ctx.fillStyle = "rgba(226,220,206,0.22)";
+    ctx.fillRect(hash2(s, 11.3) * size, hash2(s, 12.9) * size * 0.5, 1.5, 10 + hash2(s, 13.1) * 18);
+  }
 }
 
 /** Board-formed warm concrete for strip footings. Shared catalog map; do not dispose per part. */
