@@ -1213,6 +1213,21 @@ function paintDoorLeaf(ctx: CanvasRenderingContext2D, size: number) {
       ctx.fill();
     }
   }
+  // Vertical grain on stiles, kick-plate scuffs on the bottom rail and hand-worn varnish near the lock stile.
+  for (let g = 0; g < 14; g++) {
+    const gx = hash2(g, 61.3) * size;
+    ctx.fillStyle = `rgba(56,32,16,${0.08 + hash2(g, 62.1) * 0.1})`;
+    ctx.fillRect(g % 2 ? gx % stile : size - stile + (gx % stile), 0, 1, size);
+  }
+  for (let sc = 0; sc < 9; sc++) {
+    ctx.fillStyle = `rgba(34,20,10,${0.15 + hash2(sc, 63.7) * 0.2})`;
+    ctx.fillRect(hash2(sc, 64.2) * size, size - rail + hash2(sc, 65.8) * (rail - 3), 6 + hash2(sc, 66.4) * 16, 1.5);
+  }
+  const hand = ctx.createRadialGradient(size - stile * 0.5, size * 0.55, 2, size - stile * 0.5, size * 0.55, size * 0.16);
+  hand.addColorStop(0, "rgba(176,128,84,0.3)");
+  hand.addColorStop(1, "rgba(176,128,84,0)");
+  ctx.fillStyle = hand;
+  ctx.fillRect(size - stile * 3, size * 0.35, stile * 3, size * 0.4);
 }
 
 /** Standing-seam galvanized leaf. Ports the board-formed joint idea onto a door skin. */
