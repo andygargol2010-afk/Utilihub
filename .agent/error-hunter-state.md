@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-25
-- mode: known smoke (E001–E023 green: no PLACEHOLDER, home routes clean, registry kind-first + dedicateds, playgrounds full) + discovery (sampled dedicated calculator UIs outside prior set: UnitPriceTool + RiceWaterCalculatorTool exist in index but not wired in pickComponent → MathTool "not implemented")
-- deploy: tip before fix 4cfec1415da29b404117a5f7c905e918934232f3 READY (no ERROR on branch tip); previous ERROR was older SHA 386ac087
+- mode: known smoke (E001–E024 green: registry kind-first + dedicateds, no PLACEHOLDER, home clean, playgrounds full) + discovery (sampled more dedicated calculator UIs outside prior set: ArithmeticMean/Median/Factorial exist in index but not wired in pickComponent → MathTool "not implemented")
+- deploy: tip before fix 64c3a7d551597218d863f7f7360b285c2e1bf614 READY (no ERROR on branch tip); fix commit 10fa54760ffebc3782eedb576d45af616a0a388b
 - known_smoke: green (no open/recurring failures)
-- new_findings: E024 — calculadora-precio-unitario and calculadora-agua-arroz dedicated UIs not in registry pickComponent
-- fixes: 1 (registry.tsx wire UnitPriceToolUi + RiceWaterCalculatorToolUi)
+- new_findings: E025 — calculadora-media-aritmetica, calculadora-mediana, calculadora-factorial dedicated UIs not in registry pickComponent
+- fixes: 1 (registry.tsx wire ArithmeticMeanCalculatorToolUi + MedianCalculatorToolUi + FactorialCalculatorToolUi)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: catalog index + registry dedicated wiring (E022/E024 family)
+- last_known_focus: registry dedicated wiring continued (E025 family)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
