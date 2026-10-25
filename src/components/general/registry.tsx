@@ -201,6 +201,12 @@ const AgeCalculatorToolUi = lazy(() =>
 const TipCalculatorToolUi = lazy(() =>
   import("./TipCalculatorTool").then((m) => ({ default: m.TipCalculatorTool })),
 );
+const GpaCalculatorToolUi = lazy(() =>
+  import("./GpaCalculatorTool").then((m) => ({ default: m.GpaCalculatorTool })),
+);
+const RoomAreaCalculatorToolUi = lazy(() =>
+  import("./RoomAreaCalculatorTool").then((m) => ({ default: m.RoomAreaCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -251,6 +257,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-perimetro-cuadrado") return SquarePerimeterCalculatorToolUi;
   if (slug === "calculadora-edad") return AgeCalculatorToolUi;
   if (slug === "calculadora-propina") return TipCalculatorToolUi;
+  if (slug === "calculadora-gpa") return GpaCalculatorToolUi;
+  if (slug === "calculadora-area-habitacion") return RoomAreaCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
