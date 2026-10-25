@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Bet on recovering the recent visitor drop (-32% in last traffic-diagnosis) via a Daily Experience Spotlight on home EN+ES. Rotates daily one high-value interactive experience from the pool (aurora, n-body, neon-layer, prism-trail, color-cascade, aura-card), with short teaser, direct deep-link CTA, integrated ExperienceShareButton, localStorage last-shown, and data-events (spotlight-view, spotlight-click, spotlight-share). Lightweight only, no new deps or heavy assets. CWV-safe. Measurable bet on higher home engagement, shares and referral traffic. Adsterra intact.
+id: daily-experience-spotlight
+path_en: /
+path_es: /es
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: met
-share: n/a
+domain: traffic-bets
+runs_total: 4
+runs_remaining: 4
+acceptance: pending
+share: both
 next_step_required: no
-notes: home-value-path-boost closed (acceptance met after final EXECUTE). Ready for next IDEATE on next run.
+notes: Roll: U=0.2987 <0.50 → GROWTH; U_g=0.270 <0.35 → FIXED urn (traffic-bets|search-magnets equal weight 3); selected traffic-bets. last_closed=conversion-paths ≠, no re-roll. FIXED weights unchanged. Prefers analytics (visitor drop).
 adsense-prep_runs: 3
 ```
 
