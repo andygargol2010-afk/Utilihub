@@ -67,11 +67,11 @@ path_en: /modular-pattern-composer
 path_es: /es/modular-pattern-composer
 domain: studio-composition
 runs_total: 6
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: both
 next_step_required: yes
-notes: EXECUTE 1/6 shipped: ModularPatternComposer component (grid 12x12 place tiles, live flow/pulse/morph anim, symmetry mirror/radial, palettes, playback, PNG share with title+count+utilihub.com, URL params). EN+ES routes with ExperienceShareButton + PlaygroundNextStep before Adsterra. next-step.ts registered. CWV-safe (lazy route, canvas only). Adsterra intact. Roll U=0.888 >0.50 → CORE. Weighted U_w=17.09 /30 → studio-composition (15-18). last_closed kits ≠ selected, no re-roll. Weights updated: studio→1, others CORE +1.
+notes: EXECUTE 2/6: multi-layer support (add/select up to 6, per-layer opacity + blend modes source-over/lighter/screen/overlay/multiply), erase mode with symmetry, diamond + star tiles. Global opacity separated. PNG includes layer count. EN+ES labels updated. CWV-safe (layer cap 6, no new deps, lazy). Adsterra intact. next-step already registered. Previous: EXECUTE 1/6 grid/anim/symmetry/PNG/URL.
 adsense-prep_runs: 3
 ```
 
