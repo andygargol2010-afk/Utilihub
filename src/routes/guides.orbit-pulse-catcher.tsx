@@ -58,32 +58,43 @@ function OrbitPulseCatcherGuideEn() {
           Pulses move continuously along one or more circular orbits. Matching zones appear as radial sectors or arcs that you must hit while the pulse is inside them. Early levels use fewer zones; as difficulty rises the number of active zones grows toward a maximum of eight. Timing precision matters more than raw speed: a pulse that just clips the edge of a zone can still count, but late or early misses break the combo.
         </p>
         <p>
-          The radial layout keeps everything in view on both desktop and mobile. Because the motion is circular rather than linear, peripheral vision and rhythm recognition become useful skills.
+          The radial layout keeps everything in view on both desktop and mobile. Because the motion is circular rather than linear, peripheral vision and rhythm recognition become useful skills. Zones start at four and increase by roughly one every two levels (capped at eight), so the angular window for each zone shrinks as the run progresses.
         </p>
 
         <h2>Combo multipliers and scoring</h2>
         <p>
           Consecutive successful catches increase a combo multiplier. Higher combos award more points per catch and unlock visual milestones. Missing a pulse resets the combo. The best scores come from long, unbroken chains rather than occasional perfect hits.
         </p>
+        <p>
+          Points per successful catch scale with combo length, current level, and any active power-up boost. A base value is multiplied by a combo factor (growing with successive catches), a level factor, and a temporary boost multiplier when a power-up is active. Combo milestones at 5 and 10 trigger extra particle celebrations without changing the underlying formula.
+        </p>
 
         <h2>Power-up pulses</h2>
         <p>
-          Certain pulses are power-ups. Catching them grants temporary bonuses such as an extra life or a score boost. These appear less frequently than normal pulses and are usually visually distinct. Using them at the right moment can extend a high-combo run or recover from a near-miss.
+          Certain pulses are power-ups. Catching them grants temporary bonuses such as an extra life or a score boost. These appear less frequently than normal pulses and are usually visually distinct (different hue and stronger glow). Using them at the right moment can extend a high-combo run or recover from a near-miss. Lives are capped, and the score boost is time-limited.
         </p>
 
         <h2>Particle bursts, haptic feedback, and visual polish</h2>
         <p>
-          Successful catches, level-ups, and combo milestones (especially at 5 and 10) trigger particle bursts. The effects are modest in count and lifetime so they stay performant. Wide touch zones include ripple feedback. On devices that support it, haptic pulses give tactile confirmation without relying solely on sight or sound.
+          Successful catches, level-ups, and combo milestones (especially at 5 and 10) trigger particle bursts. The effects are modest in count and lifetime so they stay performant. Wide touch zones include ripple feedback. On devices that support it, haptic pulses give tactile confirmation without relying solely on sight or sound. Catch rings expand outward from the hit location, and power-up hits produce denser sparks.
         </p>
 
         <h2>Controls: touch and keyboard</h2>
         <p>
-          On touch screens the zones are large enough for comfortable tapping. Keyboard support maps number keys 1–N and nearby QWERTY keys to the active zones, letting desktop players stay precise without looking at the keyboard. Both input methods feed the same timing and scoring logic.
+          On touch screens the zones are large enough for comfortable tapping. Keyboard support maps number keys 1–N and nearby QWERTY keys to the active zones, letting desktop players stay precise without looking at the keyboard. Both input methods feed the same timing and scoring logic. Zone numbers are drawn inside the arcs for quick reference.
         </p>
 
         <h2>PNG share and localStorage high scores</h2>
         <p>
           After a strong run you can export a PNG that includes the game title, UtiliHub branding, and your best score, level, and combo. High scores persist in localStorage so they survive page reloads and browser restarts. Nothing leaves the device except the image you choose to share.
+        </p>
+
+        <h2>Worked example: a mid-run high-score path</h2>
+        <p>
+          Imagine a player starting at level 1 with four zones. They catch the first few pulses cleanly, building a combo to 4. A power-up pulse appears (golden hue). They catch it, gaining one life and a temporary score boost. With the boost active they push the combo to 8 before the boost expires. At level 3 (five zones) they deliberately take safer center hits rather than edge clips, keeping the combo alive. By the time zones reach six or seven they have already banked enough points that a single miss is less devastating. They finish the run by exporting a PNG that shows the final score, level, and peak combo for later comparison.
+        </p>
+        <p>
+          The example illustrates the practical trade-off: early power-up use to protect lives and amplify scoring, followed by more conservative timing once zone count rises.
         </p>
 
         <h2>Distinction from related games</h2>
@@ -98,6 +109,7 @@ function OrbitPulseCatcherGuideEn() {
           <li>Save power-up pulses for moments when your combo is already high or when you need the extra life to finish a level.</li>
           <li>Use keyboard on desktop for tighter timing; touch ripples help confirm mobile hits.</li>
           <li>Export a PNG of your best run — the baked stats make it easy to track progress over time.</li>
+          <li>Note the zone growth pattern: four zones early, then one additional zone roughly every two levels, up to eight. Adjust your visual scan accordingly.</li>
         </ul>
 
         <h2>Performance and Core Web Vitals</h2>
@@ -119,10 +131,10 @@ function OrbitPulseCatcherGuideEn() {
 
         <h2>Frequently asked questions</h2>
         <p>
-          <strong>How many zones can appear?</strong> The matching zones grow up to a maximum of eight as levels progress.
+          <strong>How many zones can appear?</strong> The matching zones grow up to a maximum of eight as levels progress. They start at four and increase roughly every two levels.
         </p>
         <p>
-          <strong>Do power-ups stack?</strong> They provide temporary effects (extra life or score boost). Catching another while one is active usually refreshes or extends the benefit.
+          <strong>Do power-ups stack?</strong> They provide temporary effects (extra life or score boost). Catching another while one is active usually refreshes or extends the benefit. Lives are capped.
         </p>
         <p>
           <strong>Is the high score shared online?</strong> No. Scores stay in localStorage on your device. The PNG share is the way to show others your result.
@@ -132,6 +144,12 @@ function OrbitPulseCatcherGuideEn() {
         </p>
         <p>
           <strong>Can I use both touch and keyboard?</strong> Yes. Both inputs are active and map to the same zones.
+        </p>
+        <p>
+          <strong>What ends a combo?</strong> A missed pulse or a long pause without a successful catch resets the combo counter.
+        </p>
+        <p>
+          <strong>How do I maximize the power-up boost?</strong> Catch the power-up while your combo is already elevated so the temporary multiplier applies to the highest-value catches.
         </p>
 
         <p className="mt-8">
