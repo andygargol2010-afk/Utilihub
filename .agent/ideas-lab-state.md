@@ -67,11 +67,11 @@ path_en: /games/orbit-pulse-catcher
 path_es: /es/juegos/atrapa-pulsos-orbita
 domain: games
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 3
 acceptance: pending
 share: png
 next_step_required: yes
-notes: EXECUTE 2/6: Added keyboard controls (keys 1-6 and QWERTY for zones), zone flash highlight on attempt, pulse trails for timing juice, slightly more forgiving tolerance + better particle count/life, progressive spawn/speed scaling. Instructions updated EN+ES. CWV-safe (modest trails, no new deps). Adsterra intact. Next: more levels polish, visual juice refinements, mobile feel.
+notes: EXECUTE 3/6: Progressive zones (4→8 with level), expanding catch rings + pulse scale animation, numbered zone labels for mobile/keyboard clarity, wider touch tolerance, adjusted scoring/spawn/life. Instructions updated EN+ES. CWV-safe (modest particles/rings, no new deps). Adsterra intact. Next: further visual polish or mobile refinements, possible power-ups.
 adsense-prep_runs: 3
 ```
 
