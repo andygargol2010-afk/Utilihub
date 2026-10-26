@@ -64,6 +64,7 @@ Registry anti-wipe remains the highest-priority safety rule.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
 2026-10-26: PRODUCT — conversor-texto-caso (texto) + calculadora-frecuencia-cardiaca-objetivo (salud). Clusters distintos, calidad alta. SEO locales: defer pt. Multiple commits due to sequential push; registry dedicated ifs pending category fallback for now.
+2026-10-26: FIX-BUILD — deploy ERROR on ignoreCommand >256 chars (dpl_Cqrs6rgtk...). Already fixed on branch (ba0769f short command). No new tools this run. Next PRODUCT after READY.
 ```
 
 ---
@@ -71,10 +72,10 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: conversor-texto-caso, calculadora-frecuencia-cardiaca-objetivo
-last_deploy: pending
-last_sha: f5cc524950041aa362a5cc9b90693150c27bb21b
+last_mode: FIX-BUILD
+last_slugs: none
+last_deploy: ERROR (schema) then fix pushed pending deploy
+last_sha: ba0769f43b732f8e19bcc4144c5b913e59afef7f
 ```
 
 <!-- end:tools-builder-state.md -->
