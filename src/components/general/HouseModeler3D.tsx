@@ -530,6 +530,38 @@ function paintPlinth(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+/** Grayscale plinth relief matching paintPlinth's coursing: raised stones, recessed mortar, chipped tops. */
+function paintPlinthBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#2e2e2e";
+  ctx.fillRect(0, 0, size, size);
+  const cols = 6;
+  const rows = 3;
+  const mortar = 3;
+  for (let r = 0; r < rows; r++) {
+    const y0 = (r / rows) * size;
+    const rh = size / rows;
+    const shift = r % 2 === 0 ? 0 : size / cols / 2;
+    for (let c = -1; c < cols + 1; c++) {
+      const vary = hash2(c + 2, r + 5);
+      const lift = 150 + Math.floor(vary * 60);
+      ctx.fillStyle = `rgb(${lift},${lift},${lift})`;
+      const x = c * (size / cols) + shift + mortar;
+      const w = size / cols - mortar * 1.4;
+      ctx.fillRect(x, y0 + mortar, w, rh - mortar * 1.6);
+      // Chipped top edge dips below the face.
+      ctx.fillStyle = "rgba(60,60,60,0.7)";
+      ctx.fillRect(x + vary * 6, y0 + mortar, 4 + vary * 8, 2);
+    }
+  }
+  // Stone grain pits and chisel specks so the plinth face catches light unevenly.
+  for (let p = 0; p < 100; p++) {
+    ctx.fillStyle = hash2(p, 81) > 0.5 ? "rgba(235,235,235,0.28)" : "rgba(35,35,35,0.34)";
+    ctx.beginPath();
+    ctx.arc(hash2(p, 83) * size, hash2(p, 89) * size, 0.6 + hash2(p, 91) * 1.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
 /** Board-formed warm concrete for strip footings. Shared catalog map; do not dispose per part. */
 function paintBoardFormed(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [168, 158, 144], 14);
@@ -2215,10 +2247,7 @@ function makeMaterials() {
     paintPlinth(ctx, s);
     paintRoughFromAlbedo(ctx, s, 168, 80, true);
   }, false);
-  const edgeBump = makeCanvasTexture(TEX, (ctx, s) => {
-    paintPlinth(ctx, s);
-    // Mortar joints darker in the color map become the relief source.
-  }, false);
+  const edgeBump = makeCanvasTexture(TEX, paintPlinthBump, false);
   const edgeNormal = makeCanvasTexture(TEX, (ctx, s) => {
     paintPlinth(ctx, s);
     paintNormalFromHeight(ctx, s, 3.1);
