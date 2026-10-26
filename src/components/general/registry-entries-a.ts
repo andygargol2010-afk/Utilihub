@@ -70,4 +70,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-frecuencia-cardiaca-objetivo", name: "TargetHeartRateCalculatorTool", path: "./TargetHeartRateCalculatorTool", export: "TargetHeartRateCalculatorTool" },
   { slug: "calculadora-porcentaje-asistencia", name: "AttendancePercentageCalculatorTool", path: "./AttendancePercentageCalculatorTool", export: "AttendancePercentageCalculatorTool" },
   { slug: "calculadora-costo-por-km", name: "CostPerKmCalculatorTool", path: "./CostPerKmCalculatorTool", export: "CostPerKmCalculatorTool" },
+  { slug: "calculadora-densidad", name: "DensityCalculatorTool", path: "./DensityCalculatorTool", export: "DensityCalculatorTool" },
+  { slug: "calculadora-error-porcentual", name: "PercentageErrorCalculatorTool", path: "./PercentageErrorCalculatorTool", export: "PercentageErrorCalculatorTool" },
 ] as const;
