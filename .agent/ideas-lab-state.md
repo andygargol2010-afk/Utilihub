@@ -67,11 +67,11 @@ path_en: /games/orbit-pulse-catcher
 path_es: /es/juegos/atrapa-pulsos-orbita
 domain: games
 runs_total: 6
-runs_remaining: 2
+runs_remaining: 1
 acceptance: pending
 share: png
 next_step_required: yes
-notes: EXECUTE 4/6: Golden power-up pulses (rare after level 1, ~11%): slower speed, larger glow/trail/particles, +1 life (cap 5) + temporary 1.8x score boost (~3s, center turns gold + BOOST HUD). Visual distinction (hue 48, scale, sparks). Instructions updated EN+ES. CWV-safe (modest extra particles). Adsterra intact. Next: mobile refinements or more visual polish / next-step check.
+notes: EXECUTE 5/6: Mobile refinements: wider touch zone (OUTER_R+40 / INNER-8), haptic vibrate on catch (20ms) / miss (10ms) / power-up (40ms) via navigator.vibrate, white touch ripples on pointer down, richer PNG share (best + level + combo if >1 + local best note), touch-action none. Instructions updated EN+ES. CWV-safe (no extra deps, modest particles). Adsterra intact. Next-step already in GAME_JOURNEYS + PlaygroundNextStep. Next: final polish or close.
 adsense-prep_runs: 3
 ```
 
