@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-26
-- mode: known smoke (E031 critical files no PLACEHOLDER/$(cat; registry.tsx full with dedicated wires + kind-first; index.tsx/es.index.tsx clean import+createFileRoute; summary-es.ts full SUMMARY_ES; ModularPatternComposer full canvas) + discovery (code search PLACEHOLDER/$(cat/"Tool not available" = 0 in src/.agent; sampled games.tsx layout, herramientas.$slug redirect, ModularPatternComposer >10kB interactive)
-- deploy: Vercel API 403 forbidden (no list); previous state noted READY on older SHA, no recent ERROR on tip; tip SHA 504cdbea5eda2675f6723adfe7d25cc8baf52950
+- mode: known smoke (E031 tip clean no PLACEHOLDER/$(cat in catalog/registry/index/es.index/summary-es; registry.tsx full dedicated wires + kind-first Media/Document before config; homes start with import+createFileRoute; ModularPatternComposer full interactive canvas >10kB) + discovery (code search PLACEHOLDER/$(cat/"Tool not available"/not implemented = 0 in src/; sampled registry pickComponent, homes, playground)
+- deploy: latest branch deploys READY (SHA e9ea46fddaa091bfb2cf6e1d2341cc2508be1123 and prior); no ERROR in recent list
 - known_smoke: all fixed entries green; E031 open as recurring risk but tip clean (no active corruption)
-- new_findings: none — no new runtime/routing/registry/SEO/corrupt patterns in sampled paths (homes, registry, playground, routes)
+- new_findings: none — no new runtime/routing/registry/SEO/corrupt/build patterns in sampled paths
 - fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E031/E001/E005 critical clean + playground E033
+- last_known_focus: E031/E001/E005/E033 critical + registry wires
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
