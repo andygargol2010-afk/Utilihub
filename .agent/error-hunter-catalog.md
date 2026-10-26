@@ -301,7 +301,7 @@ Formato por entrada:
 
 ## E031 — $(cat stubs / PLACEHOLDER corrupten archivos críticos
 - **status**: open (recurring)
-- **last_seen**: 2026-10-26 (tip clean run 7; no PLACEHOLDER or $(cat in critical files: registry.tsx, summary-es.ts, index.tsx, es.index.tsx, catalog itself; ModularPatternComposer full)
+- **last_seen**: 2026-10-26 (run 8 tip clean: no PLACEHOLDER/$(cat in registry.tsx, summary-es.ts, index.tsx, es.index.tsx, catalog; dedicated wires re-added for recent tools)
 - **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" o "PLACEHOLDER" en vez del contenido real; home 404, registry roto, o build ERROR por missing export
 - **root_cause**: agentes escriben el comando shell o un placeholder como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
 - **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts; deben ser contenido real, no PLACEHOLDER ni $(cat
@@ -349,23 +349,23 @@ Formato por entrada:
 - **files**: `src/components/general/registry.tsx`, `IvaCalculatorTool.tsx`, `KmhToMsConverterTool.tsx`
 
 ## E036 — Dedicated UIs calculadora-porcentaje-asistencia y calculadora-costo-por-km no wired en registry
-- **status**: fixed
-- **last_seen**: 2026-10-26
+- **status**: fixed (re-fixed 2026-10-26 after regression; wires lost when registry simplified)
+- **last_seen**: 2026-10-26 (run 8: components existed, tools in catalog, but pickComponent missing ifs → re-wired)
 - **fixed_at**: 2026-10-26
 - **symptom**: tools muestran MathTool genérico en vez de la UI dedicada (porcentaje asistencia, costo por km)
-- **root_cause**: componentes AttendancePercentageCalculatorTool.tsx y CostPerKmCalculatorTool.tsx existen, tools en catalog index y registry-entries-a.ts, pero faltaban lazy + if (slug === ...) en pickComponent de registry.tsx
+- **root_cause**: componentes AttendancePercentageCalculatorTool.tsx y CostPerKmCalculatorTool.tsx existen, tools en catalog index, pero faltaban lazy + if (slug === ...) en pickComponent de registry.tsx (regresión)
 - **check**: registry.tsx tiene lazy imports y returns tempranos para "calculadora-porcentaje-asistencia" y "calculadora-costo-por-km"
-- **fix_hint**: añadir lazy + early return en pickComponent (antes de kind routes)
+- **fix_hint**: añadir lazy + early return en pickComponent (antes de kind/category routes)
 - **files**: `src/components/general/registry.tsx`, `AttendancePercentageCalculatorTool.tsx`, `CostPerKmCalculatorTool.tsx`
 
 ## E037 — Dedicated UIs conversor-texto-caso y calculadora-frecuencia-cardiaca-objetivo no wired en registry
-- **status**: fixed
-- **last_seen**: 2026-10-26
+- **status**: fixed (re-fixed 2026-10-26 after regression; wires lost when registry simplified)
+- **last_seen**: 2026-10-26 (run 8: components existed, tools in catalog, but pickComponent missing ifs → re-wired)
 - **fixed_at**: 2026-10-26
 - **symptom**: tools muestran TextTool/MathTool genérico en vez de la UI dedicada (conversión de caso de texto, FC objetivo)
-- **root_cause**: componentes TextCaseConverterTool.tsx y TargetHeartRateCalculatorTool.tsx existen, tools en catalog index, pero faltaban lazy + if (slug === ...) en pickComponent de registry.tsx
+- **root_cause**: componentes TextCaseConverterTool.tsx y TargetHeartRateCalculatorTool.tsx existen, tools en catalog index, pero faltaban lazy + if (slug === ...) en pickComponent de registry.tsx (regresión)
 - **check**: registry.tsx tiene lazy imports y returns tempranos para "conversor-texto-caso" y "calculadora-frecuencia-cardiaca-objetivo"
-- **fix_hint**: añadir lazy + early return en pickComponent (antes de kind routes)
+- **fix_hint**: añadir lazy + early return en pickComponent (antes de kind/category routes)
 - **files**: `src/components/general/registry.tsx`, `TextCaseConverterTool.tsx`, `TargetHeartRateCalculatorTool.tsx`
 
 <!-- end:catalog -->
