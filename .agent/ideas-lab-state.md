@@ -6,6 +6,8 @@ If truncated: re-fetch immediately. Keep this file small.
 
 Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 
+**Process (see ideas-lab.md / ops):** ONE commit per run (code + this file together). No deploys. No state-only commit except CLOSE. Default project 4 runs (max 6). IDEATE stores rubric scores for 3 candidates in `notes`.
+
 ---
 
 ## DOMAIN WEIGHTS + last_closed
@@ -67,11 +69,11 @@ path_en: /guides/orbit-pulse-catcher
 path_es: /es/guias/orbit-pulse-catcher
 domain: search-magnets
 runs_total: 6
-runs_remaining: 4
+runs_remaining: 5
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: Roll: U=0.00317 < 0.50 → GROWTH; U_g=0.0873 < 0.35 → FIXED urn (traffic-bets:3 + search-magnets:3); selected search-magnets (no weight updates). Distinct from modular-pattern-composer-guide and n-body-gravity-guide. Targets recently closed orbit-pulse-catcher for search depth on timing/orbit games. EXECUTE 1/6: shipped initial long-form EN+ES static routes with core sections (radial mechanics, zones, combos, power-ups, particles/haptics, controls, PNG/localStorage, distinctions, strategies, FAQs, deep links). Adsterra intact. CWV-safe (static). EXECUTE 2/6: deepened with worked mid-run high-score example, zone growth pattern (4 + ~1/2 levels to 8), scoring scale details (combo/level/boost), denser particle/haptic notes, +2 FAQs, extra strategy bullet. EN+ES in sync. Adsterra intact. CWV-safe (static).
+notes: Roll: U=0.00317 < 0.50 → GROWTH; U_g=0.0873 < 0.35 → FIXED urn (traffic-bets:3 + search-magnets:3); selected search-magnets (no weight updates). Distinct from modular-pattern-composer-guide and n-body-gravity-guide. Targets recently closed orbit-pulse-catcher for search depth on timing/orbit games. EXECUTE 1/6: shipped initial long-form EN+ES static routes with core sections (radial mechanics, zones, combos, power-ups, particles/haptics, controls, PNG/localStorage, distinctions, strategies, FAQs, deep links). Adsterra intact. CWV-safe (static).
 adsense-prep_runs: 3
 ```
 
