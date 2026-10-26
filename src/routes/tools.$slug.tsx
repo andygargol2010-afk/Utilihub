@@ -1,15 +1,12 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { lazy } from "react";
-import { ToolUiFallback } from "@/components/ToolUiFallback";
 import type { CatalogTool } from "@/lib/all-tools";
+import { ToolPage } from "./tools.$slug.page";
 
 type ToolHead = {
   meta: Array<{ title?: string; name?: string; property?: string; content?: string }>;
   links?: Array<{ rel: string; href: string; hrefLang?: string }>;
   scripts?: Array<{ type: string; children: string }>;
 };
-
-const ToolPage = lazy(() => import("./tools.$slug.page").then((m) => ({ default: m.ToolPage })));
 
 export const Route = createFileRoute("/tools/$slug")({
   loader: async ({ params }) => {
@@ -35,10 +32,6 @@ export const Route = createFileRoute("/tools/$slug")({
       head,
     };
   },
-  // Catalog import blocks the real page. Paint a reserved shell instead of a blank route.
-  pendingComponent: ToolRoutePending,
-  pendingMs: 100,
-  pendingMinMs: 0,
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Tool not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
     return loaderData.head;
@@ -114,17 +107,4 @@ async function buildEnglishToolHead(
       },
     ],
   };
-}
-
-function ToolRoutePending() {
-  return (
-    <div className="container-page py-6 sm:py-8" aria-busy="true">
-      <div className="h-5 w-56 max-w-full animate-pulse rounded bg-muted" />
-      <div className="mt-3 h-8 w-72 max-w-full animate-pulse rounded bg-muted" />
-      <p className="mt-1 h-5 w-48 max-w-full animate-pulse rounded bg-muted" />
-      <section className="surface-card mt-4 min-h-72 p-4 sm:p-6" aria-label="Loading tool">
-        <ToolUiFallback locale="en" />
-      </section>
-    </div>
-  );
 }
