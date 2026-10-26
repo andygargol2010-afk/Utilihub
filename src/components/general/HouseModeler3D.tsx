@@ -1189,6 +1189,16 @@ function paintPlateBump(ctx: CanvasRenderingContext2D, size: number) {
     ctx.lineTo(size, y + 1);
     ctx.stroke();
   }
+  // Oak pores and fine grit so the head plate reads as sawn timber, not smooth grooved board.
+  for (let p = 0; p < 90; p++) {
+    const x = hash2(p, 71.3) * size;
+    const y = hash2(p, 72.7) * size;
+    const r = 0.5 + hash2(p, 73.9) * 1.0;
+    ctx.fillStyle = hash2(p, 74.5) > 0.5 ? "rgba(60,60,60,0.45)" : "rgba(220,220,220,0.35)";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintNosing(ctx: CanvasRenderingContext2D, size: number) {
