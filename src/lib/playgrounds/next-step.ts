@@ -325,6 +325,16 @@ export const PLAYGROUNDS: readonly PlaygroundRef[] = [
     pathEs: "/es/aura-card",
     emoji: "✨",
   },
+  {
+    id: "orbit-pulse-catcher",
+    nameEn: "Orbit Pulse Catcher",
+    nameEs: "Atrapa Pulsos Órbita",
+    blurbEn: "Time taps on colored zones to catch orbiting matching pulses. Combos and levels.",
+    blurbEs: "Sincronizá toques en zonas de color para atrapar pulsos orbitantes coincidentes. Combos y niveles.",
+    pathEn: "/games/orbit-pulse-catcher",
+    pathEs: "/es/juegos/atrapa-pulsos-orbita",
+    emoji: "🔴",
+  },
 ] as const;
 
 /** First id = primary next step. */
@@ -360,6 +370,7 @@ export const PLAYGROUND_JOURNEYS: Record<string, string[]> = {
   "daily-progress-constellation": ["constellation-studio", "constellation-name", "aurora", "solar-system-scale-explorer"],
   "color-cascade-fusion": ["pulse-catch", "firework", "particles", "aurora"],
   "aura-card-share": ["aurora-particle-playground", "prism-trail-composer", "neon-signature-composer", "postcard"],
+  "orbit-pulse-catcher": ["pulse-catch", "color-cascade-fusion", "aurora", "firework"],
 };
 
 export function playgroundById(id: string): PlaygroundRef | undefined {
