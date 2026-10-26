@@ -74,4 +74,6 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "calculadora-velocidad-promedio-diaria", name: "DailyAverageSpeedCalculatorTool", path: "./DailyAverageSpeedCalculatorTool", export: "DailyAverageSpeedCalculatorTool" },
   { slug: "calculadora-diferencia-porcentual", name: "PercentageDifferenceCalculatorTool", path: "./PercentageDifferenceCalculatorTool", export: "PercentageDifferenceCalculatorTool" },
   { slug: "calculadora-velocidad-distancia-tiempo", name: "SpeedDistanceTimeCalculatorTool", path: "./SpeedDistanceTimeCalculatorTool", export: "SpeedDistanceTimeCalculatorTool" },
+  { slug: "calculadora-relacion-aspecto", name: "AspectRatioCalculatorTool", path: "./AspectRatioCalculatorTool", export: "AspectRatioCalculatorTool" },
+  { slug: "calculadora-dias-entre-fechas", name: "DaysBetweenDatesCalculatorTool", path: "./DaysBetweenDatesCalculatorTool", export: "DaysBetweenDatesCalculatorTool" },
 ] as const;
