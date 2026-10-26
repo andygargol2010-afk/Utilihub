@@ -2030,6 +2030,69 @@ function paintWornEarthBump(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+/** Planter foliage: layered olive-green leaf clusters with sunlit tips and dark gaps. */
+function paintPlanterLeaf(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#2f5230";
+  ctx.fillRect(0, 0, size, size);
+  for (let i = 0; i < 110; i++) {
+    const x = hash2(i, 2.1) * size;
+    const y = hash2(i, 6.7) * size;
+    const r = 3 + hash2(i, 4.4) * 7;
+    const tone = hash2(i, 8.8);
+    const g = Math.floor(78 + tone * 62);
+    ctx.fillStyle = `rgba(${Math.floor(44 + tone * 40)},${g},${Math.floor(38 + tone * 22)},0.85)`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * 0.45, hash2(i, 1.3) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(24,46,26,0.45)";
+    ctx.lineWidth = 0.7;
+    ctx.beginPath();
+    ctx.moveTo(x - Math.cos(hash2(i, 1.3) * Math.PI) * r, y - Math.sin(hash2(i, 1.3) * Math.PI) * r * 0.45);
+    ctx.lineTo(x + Math.cos(hash2(i, 1.3) * Math.PI) * r, y + Math.sin(hash2(i, 1.3) * Math.PI) * r * 0.45);
+    ctx.stroke();
+  }
+  for (let i = 0; i < 40; i++) {
+    ctx.fillStyle = "rgba(14,30,16,0.35)";
+    ctx.beginPath();
+    ctx.arc(hash2(i, 9.9) * size, hash2(i, 3.2) * size, 1.5 + hash2(i, 5.1) * 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  for (let i = 0; i < 30; i++) {
+    ctx.fillStyle = "rgba(150,186,92,0.4)";
+    ctx.fillRect(hash2(i, 7.3) * size, hash2(i, 0.9) * size, 2, 1.4);
+  }
+}
+
+function paintPlanterLeafBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#6a6a6a";
+  ctx.fillRect(0, 0, size, size);
+  // Overlapping leaf blades: raised centres with a darker midrib.
+  for (let i = 0; i < 110; i++) {
+    const x = hash2(i, 2.1) * size;
+    const y = hash2(i, 6.7) * size;
+    const r = 3 + hash2(i, 4.4) * 7;
+    const rot = hash2(i, 1.3) * Math.PI;
+    const lift = 140 + Math.floor(hash2(i, 5.9) * 70);
+    ctx.fillStyle = `rgb(${lift},${lift},${lift})`;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * 0.45, rot, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(40,40,40,0.8)";
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(x - Math.cos(rot) * r, y - Math.sin(rot) * r * 0.45);
+    ctx.lineTo(x + Math.cos(rot) * r, y + Math.sin(rot) * r * 0.45);
+    ctx.stroke();
+  }
+  // Deep gaps between clusters.
+  for (let i = 0; i < 40; i++) {
+    ctx.fillStyle = "rgba(30,30,30,0.6)";
+    ctx.beginPath();
+    ctx.arc(hash2(i, 9.9) * size, hash2(i, 3.2) * size, 1.5 + hash2(i, 5.1) * 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
 function paintContactAO(ctx: CanvasRenderingContext2D, size: number) {
   const c = size / 2;
   const g = ctx.createRadialGradient(c, c, size * 0.08, c, c, size * 0.5);
@@ -2417,6 +2480,8 @@ function makeMaterials() {
     paintRoughFromAlbedo(ctx, s, 168, 48, true);
   }, false);
   const joineryBump = makeCanvasTexture(TEX, paintJoineryBump, false);
+  const planterLeafMap = makeCanvasTexture(TEX, paintPlanterLeaf, true);
+  const planterLeafBump = makeCanvasTexture(TEX, paintPlanterLeafBump, false);
   const glazingMap = makeCanvasTexture(TEX, paintGlazing, true);
   const glazingRough = makeCanvasTexture(TEX, paintGlazingRough, false);
 
@@ -2694,7 +2759,10 @@ function makeMaterials() {
     opacity: 0.58,
   });
   const planterLeaf = new THREE.MeshStandardMaterial({
-    color: 0x3f6b3a,
+    color: 0xffffff,
+    map: planterLeafMap ?? undefined,
+    bumpMap: planterLeafBump ?? undefined,
+    bumpScale: 0.03,
     roughness: 0.82,
     metalness: 0.02,
   });
