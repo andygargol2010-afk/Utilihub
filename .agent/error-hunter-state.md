@@ -11,9 +11,11 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: rules-bootstrap-2026-10-26
-last_fix: see catalog E001–E003 fixed/watch
-notes: Prefer new discovery over re-verifying fixed items.
+last_run: 2026-10-26 run 11
+last_fix: none (checks OK)
+last_known_focus: E031 recurring smoke (tip clean)
+new_findings: none
+notes: Known smoke green (homes, registry, summary-es, ModularPatternComposer full). Latest Vercel deploy READY. No PLACEHOLDER/$(cat in critical paths. No open errors requiring fix.
 ```
 
 <!-- end:error-hunter-state.md -->
