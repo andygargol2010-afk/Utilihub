@@ -5,7 +5,7 @@ import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from
 
 const title = "Orbit Pulse Catcher: Radial Timing Game Guide | UtiliHub";
 const description = cleanDescription(
-  "Original long-form guide to the Orbit Pulse Catcher interactive timing game. Explains radial orbit mechanics, zone matching that grows to 8 zones, combo multipliers, power-up pulses, particle bursts, haptic feedback, wide touch zones, keyboard controls, PNG share with branding and stats, and localStorage high scores. Strategies, distinctions from other pulse games, and deep links to the live experience.",
+  "Original long-form guide to the Orbit Pulse Catcher interactive timing game. Explains radial orbit mechanics, zone matching that grows to 8 zones, combo multipliers, power-up pulses, particle bursts, haptic feedback, wide touch zones, keyboard controls, PNG share with branding and stats, and localStorage high scores. Strategies, rhythm patterns, common mistakes, distinctions from other pulse games, and deep links to the live experience.",
 );
 
 export const Route = createFileRoute("/guides/orbit-pulse-catcher")({
@@ -37,7 +37,7 @@ function OrbitPulseCatcherGuideEn() {
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Orbit Pulse Catcher: Master Radial Timing, Combos, and High Scores</h1>
         <p className="lead">
-          Orbit Pulse Catcher is an interactive timing game built around radial orbit mechanics. Pulses travel along circular orbits while matching zones grow from a few up to eight. Catch them at the right moment to build combos, trigger power-ups, and chase high scores. This original guide covers the core loop, scoring systems, visual and haptic feedback, controls, sharing, persistence, practical strategies, and how it differs from related pulse and arcade experiences on UtiliHub.
+          Orbit Pulse Catcher is an interactive timing game built around radial orbit mechanics. Pulses travel along circular orbits while matching zones grow from a few up to eight. Catch them at the right moment to build combos, trigger power-ups, and chase high scores. This original guide covers the core loop, scoring systems, visual and haptic feedback, controls, sharing, persistence, practical strategies, rhythm patterns, common mistakes, and how it differs from related pulse and arcade experiences on UtiliHub.
         </p>
 
         <div className="not-prose my-8 rounded-xl border border-primary/20 bg-primary/5 p-6">
@@ -97,6 +97,23 @@ function OrbitPulseCatcherGuideEn() {
           The example illustrates the practical trade-off: early power-up use to protect lives and amplify scoring, followed by more conservative timing once zone count rises.
         </p>
 
+        <h2>Rhythm recognition and pattern anticipation</h2>
+        <p>
+          Because pulses follow continuous circular motion, the timing interval between successive zone hits is relatively stable on a given level. Players who internalize the period can start anticipating the next hit window instead of reacting purely visually. On early levels (four zones) the angular spacing is wide; a comfortable rhythm is one tap roughly every 0.6–0.8 seconds depending on orbit speed. As zones increase to six or seven the windows shrink and the required cadence becomes tighter—practice matching the beat of the orbit rather than chasing individual pulses.
+        </p>
+        <p>
+          A useful drill: mute or ignore the visual pulse for a few seconds and tap only on the remembered interval, then re-sync. Successful runs often show a slight lead on the zone entry rather than a center hit, giving a small buffer against late reactions. Power-up pulses disrupt the pattern intentionally; treat them as a short rhythm break rather than a forced reset.
+        </p>
+
+        <h2>Common mistakes and how to avoid them</h2>
+        <ul>
+          <li><strong>Chasing edge clips for style:</strong> Early levels reward precision, but once zones exceed five the angular margin shrinks. Prefer center-of-zone hits to protect the combo.</li>
+          <li><strong>Holding power-ups too long:</strong> The score boost is time-limited. Activate while a combo is already building so the multiplier applies to the highest-value catches.</li>
+          <li><strong>Ignoring keyboard on desktop:</strong> Touch works, but number-key mapping (1–N) reduces latency and lets you keep eyes on the orbit. Map the zones once and stay on keys.</li>
+          <li><strong>Panic after a near-miss:</strong> A single miss resets the combo but does not end the run if lives remain. Reset mentally to the new rhythm instead of over-correcting speed.</li>
+          <li><strong>Skipping the PNG export:</strong> The baked stats (score, level, peak combo) are the only persistent record. Export after every personal best so progress is visible later.</li>
+        </ul>
+
         <h2>Distinction from related games</h2>
         <p>
           Pulse Catch Arena focuses on linear or arena-style pulse catching with different spatial rules. Refraction Challenge is a physics-based aiming and light-bending puzzle rather than a pure timing game. Orbit Pulse Catcher is defined by its radial orbit layout, growing zone count, and emphasis on sustained combo rhythm.
@@ -110,6 +127,7 @@ function OrbitPulseCatcherGuideEn() {
           <li>Use keyboard on desktop for tighter timing; touch ripples help confirm mobile hits.</li>
           <li>Export a PNG of your best run — the baked stats make it easy to track progress over time.</li>
           <li>Note the zone growth pattern: four zones early, then one additional zone roughly every two levels, up to eight. Adjust your visual scan accordingly.</li>
+          <li>Internalize the orbit period early; anticipation beats pure reaction once zones exceed five.</li>
         </ul>
 
         <h2>Performance and Core Web Vitals</h2>
@@ -127,6 +145,7 @@ function OrbitPulseCatcherGuideEn() {
           <li><Link to="/games/pulse-catch-arena">Pulse Catch Arena</Link> — alternative pulse-catching rules.</li>
           <li><Link to="/games/refraction-challenge">Refraction Challenge</Link> — physics aiming puzzle.</li>
           <li><Link to="/guides/modular-pattern-composer">Modular Pattern Composer Guide</Link> — companion long-form guide on another interactive surface.</li>
+          <li><Link to="/guides/n-body-gravity">N-Body Gravity Guide</Link> — related simulation guide with timing and particle systems.</li>
         </ul>
 
         <h2>Frequently asked questions</h2>
@@ -150,6 +169,15 @@ function OrbitPulseCatcherGuideEn() {
         </p>
         <p>
           <strong>How do I maximize the power-up boost?</strong> Catch the power-up while your combo is already elevated so the temporary multiplier applies to the highest-value catches.
+        </p>
+        <p>
+          <strong>Is there a best orbit speed to aim for?</strong> Speed increases with level. Focus on matching the current period rather than forcing a fixed tempo; the radial layout makes the interval predictable once you have a few successful hits.
+        </p>
+        <p>
+          <strong>Do particle effects affect timing?</strong> No. Particles are visual only and do not alter collision or scoring windows. They remain modest to protect performance.
+        </p>
+        <p>
+          <strong>Can I restart a level without losing the whole run?</strong> Lives allow recovery from individual misses. A full restart (if available in the UI) clears the current score but preserves the localStorage high score.
         </p>
 
         <p className="mt-8">

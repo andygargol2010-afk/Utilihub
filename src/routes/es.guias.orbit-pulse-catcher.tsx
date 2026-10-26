@@ -5,7 +5,7 @@ import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from
 
 const title = "Atrapa Pulsos en Órbita: Guía del Juego de Timing Radial | UtiliHub";
 const description = cleanDescription(
-  "Guía original de largo formato sobre el juego interactivo Atrapa Pulsos en Órbita. Explica mecánicas de órbita radial, coincidencia de zonas que crecen hasta 8, multiplicadores de combo, pulsos de power-up, ráfagas de partículas, feedback háptico, zonas táctiles amplias, controles de teclado, compartir PNG con branding y estadísticas, y high scores en localStorage. Estrategias, distinción de otros juegos de pulsos y enlaces profundos a la experiencia en vivo.",
+  "Guía original de largo formato sobre el juego interactivo Atrapa Pulsos en Órbita. Explica mecánicas de órbita radial, coincidencia de zonas que crecen hasta 8, multiplicadores de combo, pulsos de power-up, ráfagas de partículas, feedback háptico, zonas táctiles amplias, controles de teclado, compartir PNG con branding y estadísticas, y high scores en localStorage. Estrategias, patrones de ritmo, errores comunes, distinción de otros juegos de pulsos y enlaces profundos a la experiencia en vivo.",
 );
 
 export const Route = createFileRoute("/es/guias/orbit-pulse-catcher")({
@@ -37,7 +37,7 @@ function OrbitPulseCatcherGuideEs() {
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Atrapa Pulsos en Órbita: Domina el Timing Radial, los Combos y las Puntuaciones Altas</h1>
         <p className="lead">
-          Atrapa Pulsos en Órbita es un juego interactivo de timing construido alrededor de mecánicas de órbita radial. Los pulsos viajan a lo largo de órbitas circulares mientras las zonas de coincidencia crecen desde unas pocas hasta ocho. Atrápalos en el momento correcto para construir combos, activar power-ups y perseguir puntuaciones altas. Esta guía original cubre el bucle principal, los sistemas de puntuación, el feedback visual y háptico, los controles, el compartir, la persistencia, estrategias prácticas y cómo se diferencia de otras experiencias de pulsos y arcade en UtiliHub.
+          Atrapa Pulsos en Órbita es un juego interactivo de timing construido alrededor de mecánicas de órbita radial. Los pulsos viajan a lo largo de órbitas circulares mientras las zonas de coincidencia crecen desde unas pocas hasta ocho. Atrápalos en el momento correcto para construir combos, activar power-ups y perseguir puntuaciones altas. Esta guía original cubre el bucle principal, los sistemas de puntuación, el feedback visual y háptico, los controles, el compartir, la persistencia, estrategias prácticas, patrones de ritmo, errores comunes y cómo se diferencia de otras experiencias de pulsos y arcade en UtiliHub.
         </p>
 
         <div className="not-prose my-8 rounded-xl border border-primary/20 bg-primary/5 p-6">
@@ -97,6 +97,23 @@ function OrbitPulseCatcherGuideEs() {
           El ejemplo ilustra el equilibrio práctico: uso temprano del power-up para proteger vidas y amplificar la puntuación, seguido de un timing más conservador una vez que el número de zonas sube.
         </p>
 
+        <h2>Reconocimiento de ritmo y anticipación de patrones</h2>
+        <p>
+          Debido a que los pulsos siguen un movimiento circular continuo, el intervalo de timing entre aciertos sucesivos de zona es relativamente estable en un nivel dado. Los jugadores que internalizan el período pueden empezar a anticipar la siguiente ventana de acierto en lugar de reaccionar puramente de forma visual. En niveles tempranos (cuatro zonas) el espaciado angular es amplio; un ritmo cómodo es un toque aproximadamente cada 0,6–0,8 segundos dependiendo de la velocidad de órbita. A medida que las zonas aumentan a seis o siete las ventanas se encogen y la cadencia requerida se vuelve más ajustada—practica igualar el ritmo de la órbita en lugar de perseguir pulsos individuales.
+        </p>
+        <p>
+          Un ejercicio útil: silencia o ignora el pulso visual durante unos segundos y toca solo en el intervalo recordado, luego re-sincroniza. Las rachas exitosas a menudo muestran un ligero adelanto en la entrada de la zona en lugar de un acierto en el centro, dando un pequeño buffer contra reacciones tardías. Los pulsos de power-up interrumpen el patrón intencionadamente; trátalos como un breve descanso de ritmo en lugar de un reinicio forzado.
+        </p>
+
+        <h2>Errores comunes y cómo evitarlos</h2>
+        <ul>
+          <li><strong>Perseguir clips de borde por estilo:</strong> Los niveles tempranos recompensan la precisión, pero una vez que las zonas superan cinco el margen angular se reduce. Prefiere aciertos en el centro de la zona para proteger el combo.</li>
+          <li><strong>Guardar power-ups demasiado tiempo:</strong> El boost de puntuación es de duración limitada. Actívalo mientras un combo ya está construyéndose para que el multiplicador se aplique a las capturas de mayor valor.</li>
+          <li><strong>Ignorar el teclado en escritorio:</strong> El táctil funciona, pero el mapeo de teclas numéricas (1–N) reduce la latencia y te permite mantener los ojos en la órbita. Mapea las zonas una vez y quédate en las teclas.</li>
+          <li><strong>Pánico después de un casi fallo:</strong> Un solo fallo reinicia el combo pero no termina la partida si quedan vidas. Reinicia mentalmente al nuevo ritmo en lugar de sobre-corregir la velocidad.</li>
+          <li><strong>Saltarse la exportación PNG:</strong> Las estadísticas horneadas (puntuación, nivel, pico de combo) son el único registro persistente. Exporta después de cada récord personal para que el progreso sea visible más tarde.</li>
+        </ul>
+
         <h2>Distinción de juegos relacionados</h2>
         <p>
           Pulse Catch Arena se centra en la captura de pulsos lineal o de estilo arena con reglas espaciales diferentes. Desafío de Refracción es un puzzle de física basado en apuntar y doblar la luz en lugar de un juego puro de timing. Atrapa Pulsos en Órbita se define por su diseño de órbita radial, el recuento creciente de zonas y el énfasis en el ritmo de combo sostenido.
@@ -110,6 +127,7 @@ function OrbitPulseCatcherGuideEs() {
           <li>Usa el teclado en escritorio para un timing más ajustado; las ondas táctiles ayudan a confirmar los aciertos en móvil.</li>
           <li>Exporta un PNG de tu mejor racha — las estadísticas horneadas facilitan seguir el progreso a lo largo del tiempo.</li>
           <li>Nota el patrón de crecimiento de zonas: cuatro zonas al principio, luego una zona adicional aproximadamente cada dos niveles, hasta ocho. Ajusta tu escaneo visual en consecuencia.</li>
+          <li>Internaliza el período de órbita temprano; la anticipación supera la reacción pura una vez que las zonas superan cinco.</li>
         </ul>
 
         <h2>Rendimiento y Core Web Vitals</h2>
@@ -127,6 +145,7 @@ function OrbitPulseCatcherGuideEs() {
           <li><Link to="/es/juegos/pulse-catch-arena">Pulse Catch Arena</Link> — reglas alternativas de captura de pulsos.</li>
           <li><Link to="/es/juegos/desafio-refraccion">Desafío de Refracción</Link> — puzzle de física de apuntar.</li>
           <li><Link to="/es/guias/modular-pattern-composer">Guía del Compositor de Patrones Modulares</Link> — guía companion de largo formato sobre otra superficie interactiva.</li>
+          <li><Link to="/es/guias/n-body-gravity">Guía de Gravedad N-Cuerpos</Link> — guía relacionada de simulación con sistemas de timing y partículas.</li>
         </ul>
 
         <h2>Preguntas frecuentes</h2>
@@ -150,6 +169,15 @@ function OrbitPulseCatcherGuideEs() {
         </p>
         <p>
           <strong>¿Cómo maximizo el boost del power-up?</strong> Atrapa el power-up mientras tu combo ya está elevado para que el multiplicador temporal se aplique a las capturas de mayor valor.
+        </p>
+        <p>
+          <strong>¿Hay una velocidad de órbita óptima a la que apuntar?</strong> La velocidad aumenta con el nivel. Enfócate en igualar el período actual en lugar de forzar un tempo fijo; el diseño radial hace que el intervalo sea predecible una vez que tienes unos pocos aciertos exitosos.
+        </p>
+        <p>
+          <strong>¿Los efectos de partículas afectan el timing?</strong> No. Las partículas son solo visuales y no alteran las ventanas de colisión o puntuación. Permanecen modestas para proteger el rendimiento.
+        </p>
+        <p>
+          <strong>¿Puedo reiniciar un nivel sin perder toda la partida?</strong> Las vidas permiten recuperarse de fallos individuales. Un reinicio completo (si está disponible en la UI) borra la puntuación actual pero preserva el high score en localStorage.
         </p>
 
         <p className="mt-8">
