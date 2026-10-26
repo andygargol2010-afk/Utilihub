@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 296
+runs_done: 297
 runs_max: 500
 ```
 
@@ -43,7 +43,8 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 349500
+approx_bytes: 353970
+fps_baseline_desktop: ~4 fps (1366x768, headless SwiftShader software GL in cloud sandbox, 2026-10-26; compare only against same environment)
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -56,11 +57,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: META
 last_date: 2026-10-26
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 296 planter-leaf procedural map + bump. runs_done=296.
+note: META run 297 created backlog from audit; build OK locally. runs_done=297.
 ```
 
 Refresh after each run.
@@ -136,6 +137,7 @@ PRODUCT run 293: plinth dedicated stone bump map (raised stones, recessed mortar
 PRODUCT run 294: worn-earth dedicated bump map (clods, hairline cracks, foot dimples) via local clone surgical. runs_done=294.
 PRODUCT run 295: interior quarry-floor dedicated bump map (square pavers, recessed grout, pits) via local clone surgical. runs_done=295.
 PRODUCT run 296: planter foliage leaf texture + dedicated bump map (was flat colour) via local clone surgical. runs_done=296.
+META run 297: created .agent/house-modeler-backlog.md from browser audit (no undo/autosave/PNG/presets); local build+playwright OK, 0 modeler console errors. runs_done=297.
 ```
 
 <!-- end:house-modeler-state.md -->
