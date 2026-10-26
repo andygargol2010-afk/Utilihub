@@ -301,7 +301,7 @@ Formato por entrada:
 
 ## E031 — $(cat stubs / PLACEHOLDER corrupten archivos críticos
 - **status**: open (recurring)
-- **last_seen**: 2026-10-26 (tip clean run 4; no PLACEHOLDER or $(cat in critical files: registry.tsx, summary-es.ts, index.tsx, es.index.tsx, catalog itself; ModularPatternComposer full; previous ERROR SHA had it but restored)
+- **last_seen**: 2026-10-26 (tip clean run 5; no PLACEHOLDER or $(cat in critical files: registry.tsx, summary-es.ts, index.tsx, es.index.tsx, catalog itself; ModularPatternComposer full)
 - **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" o "PLACEHOLDER" en vez del contenido real; home 404, registry roto, o build ERROR por missing export
 - **root_cause**: agentes escriben el comando shell o un placeholder como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
 - **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts; deben ser contenido real, no PLACEHOLDER ni $(cat
@@ -347,5 +347,15 @@ Formato por entrada:
 - **check**: registry.tsx tiene lazy imports y returns tempranos para "calculadora-iva" y "conversor-kmh-ms"
 - **fix_hint**: añadir lazy + early return en pickComponent (antes de kind routes)
 - **files**: `src/components/general/registry.tsx`, `IvaCalculatorTool.tsx`, `KmhToMsConverterTool.tsx`
+
+## E036 — Dedicated UIs calculadora-porcentaje-asistencia y calculadora-costo-por-km no wired en registry
+- **status**: fixed
+- **last_seen**: 2026-10-26
+- **fixed_at**: 2026-10-26
+- **symptom**: tools muestran MathTool genérico en vez de la UI dedicada (porcentaje asistencia, costo por km)
+- **root_cause**: componentes AttendancePercentageCalculatorTool.tsx y CostPerKmCalculatorTool.tsx existen, tools en catalog index y registry-entries-a.ts, pero faltaban lazy + if (slug === ...) en pickComponent de registry.tsx
+- **check**: registry.tsx tiene lazy imports y returns tempranos para "calculadora-porcentaje-asistencia" y "calculadora-costo-por-km"
+- **fix_hint**: añadir lazy + early return en pickComponent (antes de kind routes)
+- **files**: `src/components/general/registry.tsx`, `AttendancePercentageCalculatorTool.tsx`, `CostPerKmCalculatorTool.tsx`
 
 <!-- end:catalog -->
