@@ -824,6 +824,16 @@ function paintChimneyCrownBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fill();
   ctx.fillStyle = "#d8d8d8";
   ctx.fillRect(0, size - 7, size, 4);
+  // Cast-stone pores and sand grit so the crown cap reads as rough mortar, not a smooth slab.
+  for (let p = 0; p < 90; p++) {
+    const x = hash2(p, 7.3) * size;
+    const y = hash2(p, 8.9) * size;
+    const r = 0.7 + hash2(p, 9.4) * 1.3;
+    ctx.fillStyle = hash2(p, 10.1) > 0.45 ? "rgba(40,40,40,0.55)" : "rgba(236,236,236,0.4)";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintTimber(ctx: CanvasRenderingContext2D, size: number) {
