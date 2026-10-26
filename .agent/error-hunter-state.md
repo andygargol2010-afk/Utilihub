@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-26 (run 9)
-- mode: known smoke (E031 tip clean: no PLACEHOLDER/$(cat in registry.tsx, homes, summary-es.ts, catalog; homes start with import + DeferredHomeReviews; modeler3d-app → Modeler3DStudio) + discovery (sampled modeler3d-app, summary-es real content, no "Tool not available"/PLACEHOLDER patterns; recent dedicated wires present)
-- deploy: recent deploys READY (no ERROR); tip SHA d31f58f pending or recent READY
-- known_smoke: all fixed entries green on tip; E031 open as recurring risk but tip clean (no stubs)
+- date: 2026-10-26 (run 10)
+- mode: known smoke (E031 tip clean: no PLACEHOLDER/$(cat in registry.tsx, homes, summary-es.ts, catalog; homes start with import + DeferredHomeReviews; modeler files present but not in general registry path checked) + discovery (sampled recent tools PercentageErrorCalculatorTool / AspectRatioCalculatorTool wired and logic ok; games/simulators registries structured; no "Tool not available"/PLACEHOLDER/$(cat patterns in src; validate:catalog and validate:registry PASS)
+- deploy: auto-deploy disabled for branch in vercel.json; no ERROR logs accessible; tip SHA 2bbab280 pending status
+- known_smoke: E031 open(recurring) but tip clean; other fixed entries not re-failed on sampled checks
 - new_findings: none
 - fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E031 clean check + E004 modeler3d + home routes
+- last_known_focus: E031 clean check + recent catalog tools (percentage-error, aspect-ratio) + games/simulators sample
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
