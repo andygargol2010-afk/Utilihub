@@ -26,7 +26,7 @@ export function RiceWaterCalculatorTool({ locale = "en" }: { tool?: GeneralTool;
   async function copy() {
     if (!result) return;
     try {
-      await navigator.clipboard.writeText(`${result.waterCups} cups`);
+      await navigator.clipboard.writeText(`${result.waterCups} ${es ? "tazas" : "cups"}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
