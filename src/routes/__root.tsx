@@ -11,6 +11,8 @@ import { SpanishSiteHeader } from "@/components/SpanishSiteHeader";
 import { SpanishSiteFooter } from "@/components/SpanishSiteFooter";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
 import { FavoritesProvider } from "@/hooks/use-favorites";
+import { AdsConfigContext, ADS_OFF, type AdsConfig } from "@/lib/ads-config";
+import { getAdsConfig } from "@/lib/ads-edge";
 
 function useIsSpanish() {
   const { pathname } = useLocation();
@@ -115,6 +117,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: async (): Promise<{ ads: AdsConfig }> => {
+    const ads = await getAdsConfig();
+    return { ads };
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -235,11 +241,14 @@ function PortugueseMinimalFooter() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const loaderData = Route.useLoaderData() as { ads?: typeof ADS_OFF } | undefined;
+  const ads = loaderData?.ads ?? ADS_OFF;
   const isSpanish = useIsSpanish();
   const isPortuguese = useIsPortuguese();
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AdsConfigContext.Provider value={ads}>
       <FavoritesProvider>
         {isPortuguese ? (
           <PortugueseMinimalHeader />
@@ -260,6 +269,7 @@ function RootComponent() {
         )}
         <DeferredInsights />
       </FavoritesProvider>
+      </AdsConfigContext.Provider>
     </QueryClientProvider>
   );
 }
