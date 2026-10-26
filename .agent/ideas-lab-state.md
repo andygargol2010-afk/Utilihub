@@ -16,13 +16,13 @@ last_closed_id: modular-pattern-composer-guide
 p_fixed: 0.35
 
 weights_core:
-  kits: 2
-  journeys: 3
-  games: 8
-  simulators: 6
-  studio-composition: 1
-  playgrounds: 9
-  quality-lift: 5
+  kits: 3
+  journeys: 4
+  games: 9
+  simulators: 7
+  studio-composition: 2
+  playgrounds: 10
+  quality-lift: 1
 
 weights_growth:
   traffic-bets: 3
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: closed
-idea: Original long-form SEO guide (EN+ES) on the Modular Pattern Composer. Explains modular tile systems on a grid, live procedural animations (flow/pulse/morph/spin), multi-layer blend/opacity, symmetry (mirror/radial), tile library (geometric/organic/particle + hex/blob), color palettes + gradients, playback controls, brush size for multi-cell place/erase, PNG share with branding, URL deep-link, localStorage auto-persist. Practical composition tips, distinction from freehand neon-layer, FAQs, and deep links to the live experience + related playgrounds. Original explanatory text for search depth. Static pages, CWV-safe.
-id: modular-pattern-composer-guide
-path_en: /guides/modular-pattern-composer
-path_es: /es/guias/modular-pattern-composer
-domain: search-magnets
+status: active
+idea: Elevate the existing Refraction Challenge game (games family) to a higher quality standard: add live ray preview while aiming, particle spark effects on lens refraction and target hit, PNG share of the successful path with branding, localStorage progress persistence across levels, and 2 additional advanced levels. Distinctive capabilities beyond classic Minesweeper and Pong peers.
+id: refraction-challenge
+path_en: /games/refraction-challenge
+path_es: /es/juegos/refraction-challenge
+domain: quality-lift
 runs_total: 6
-runs_remaining: 0
-acceptance: complete
-share: n/a
-next_step_required: no
-notes: DOMAIN ROLL IDEATE: U=0.37 < 0.50 → GROWTH. U_g=0.28 < 0.35 → FIXED urn (traffic-bets | search-magnets, equal weights 3). Selected search-magnets. FIXED: no weight updates. last_closed_domain=traffic-diagnosis ≠ match (no re-roll). Idea leverages recently closed modular-pattern-composer for SEO depth (distinct from n-body-gravity-guide). EXECUTE 1/6: shipped full original long-form EN+ES guide pages with meta, hreflang, breadcrumbs, deep links to live composer, FAQs, practical tips, distinction from neon-layer. CWV-safe static. Adsterra intact. EXECUTE 2/6: expanded both EN+ES guides with worked example (flowing radial mandala), related experiences section with internal links (neon-layer, n-body, aurora, waypoint-river, n-body guide), extra FAQs. Adsterra intact. CWV-safe. EXECUTE 3/6: completed full original long-form EN guide (was placeholder); synced content with ES (worked example, related links, FAQs, tips). CWV-safe static. Adsterra intact. EXECUTE 4/6: fully synced ES guide with worked example + related experiences; added extra FAQ (export single layer) to both EN+ES. CWV-safe static. Adsterra intact. EXECUTE 5/6: added share FAQ (PNG vs deep-link) to both EN+ES guides. CWV-safe static. Adsterra intact. EXECUTE 6/6: closed project. Content complete and sufficient. No further changes needed. Adsterra intact. CWV-safe.
+runs_remaining: 6
+acceptance: pending
+share: png
+next_step_required: yes
+notes: DOMAIN ROLL IDEATE: U=0.9766 > 0.50 → CORE. Weighted cumulative sample (total 34) = 31.49 → quality-lift. last_closed_domain=search-magnets (GROWTH) ≠ match (no re-roll). Weights: selected→1, other CORE +1. QUALITY-LIFT: U_f=0.6655 < 2/3 → family=games. Compared 3: RefractionChallengeGame (physics lenses, levels, canvas gradients), MinesweeperGame (classic grid, difficulties, touch chord), PongGame (arcade canvas, difficulties, no-cap mode). All similar quality; selected refraction-challenge for most headroom on distinctive elevated standard (live preview + particles + share PNG + persist progress + more levels) that peers still lack. runs_total=6 (5-10 required). Adsterra intact. CWV-safe (lazy canvas, modest particles).
 adsense-prep_runs: 3
 ```
 
