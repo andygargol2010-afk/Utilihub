@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 294
+runs_done: 295
 runs_max: 500
 ```
 
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-26
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 294 worn-earth dedicated bump map. runs_done=294.
+note: PRODUCT run 295 quarry-floor dedicated bump map. runs_done=295.
 ```
 
 Refresh after each run.
@@ -134,6 +134,7 @@ PRODUCT run 291: head-plate bump densify (90 oak pores/grit specks) via local cl
 PRODUCT run 292: gravel dedicated pebble bump map (domed stones, dark gaps) via local clone surgical. runs_done=292.
 PRODUCT run 293: plinth dedicated stone bump map (raised stones, recessed mortar, chipped tops, grain pits) via local clone surgical. runs_done=293.
 PRODUCT run 294: worn-earth dedicated bump map (clods, hairline cracks, foot dimples) via local clone surgical. runs_done=294.
+PRODUCT run 295: interior quarry-floor dedicated bump map (square pavers, recessed grout, pits) via local clone surgical. runs_done=295.
 ```
 
 <!-- end:house-modeler-state.md -->

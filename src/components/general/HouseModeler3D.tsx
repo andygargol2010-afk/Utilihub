@@ -1945,6 +1945,47 @@ function paintWornEarth(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+function paintQuarryFloorBump(ctx: CanvasRenderingContext2D, size: number) {
+  // Interior quarry tile: square pavers with recessed grout and chipped, worn faces.
+  ctx.fillStyle = "#808080";
+  ctx.fillRect(0, 0, size, size);
+  const n = 4;
+  const cell = size / n;
+  for (let r = 0; r < n; r++) {
+    for (let c = 0; c < n; c++) {
+      const x = c * cell;
+      const y = r * cell;
+      const lift = 128 + Math.floor((hash2(r * 7 + c, 151) - 0.5) * 30);
+      ctx.fillStyle = `rgb(${lift},${lift},${lift})`;
+      ctx.fillRect(x + 3, y + 3, cell - 6, cell - 6);
+      // soft rounded edge catching the light
+      ctx.strokeStyle = "rgba(255,255,255,0.35)";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x + 4, y + 4, cell - 8, cell - 8);
+    }
+  }
+  // Recessed grout lines
+  ctx.strokeStyle = "rgba(20,20,20,0.85)";
+  ctx.lineWidth = 3;
+  for (let i = 0; i <= n; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * cell, 0);
+    ctx.lineTo(i * cell, size);
+    ctx.moveTo(0, i * cell);
+    ctx.lineTo(size, i * cell);
+    ctx.stroke();
+  }
+  // Fired-clay pits, chipped corners and foot-traffic scuffs
+  for (let p = 0; p < 100; p++) {
+    const px = hash2(p, 153) * size;
+    const py = hash2(p, 155) * size;
+    ctx.fillStyle = hash2(p, 157) > 0.5 ? "rgba(20,20,20,0.34)" : "rgba(255,255,255,0.22)";
+    ctx.beginPath();
+    ctx.ellipse(px, py, 0.8 + hash2(p, 159) * 1.7, 0.6 + hash2(p, 161) * 1.1, hash2(p, 163) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
 function paintWornEarthBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "#6a6a6a";
   ctx.fillRect(0, 0, size, size);
@@ -2312,6 +2353,7 @@ function makeMaterials() {
     paintRoughFromAlbedo(ctx, s, 160, 72, true);
   }, false);
   const roofBump = makeCanvasTexture(TEX, paintTileBump, false);
+  const floorClayBump = makeCanvasTexture(TEX, paintQuarryFloorBump, false);
   const roofNormal = makeCanvasTexture(TEX, (ctx, s) => {
     paintTileBump(ctx, s);
     paintNormalFromHeight(ctx, s, 4.2);
@@ -2401,6 +2443,7 @@ function makeMaterials() {
   applyRepeat(roofRough, 3, 2);
   applyRepeat(roofBump, 3, 2);
   applyRepeat(roofNormal, 3, 2);
+  applyRepeat(floorClayBump, 3, 2);
   applyRepeat(roofMetalMap, 2, 2);
   applyRepeat(roofMetalRough, 2, 2);
   applyRepeat(roofMetalBump, 2, 2);
@@ -2498,7 +2541,7 @@ function makeMaterials() {
     color: 0xfff4ea,
     map: roofMap ?? undefined,
     roughnessMap: roofRough ?? undefined,
-    bumpMap: roofBump ?? roofRough ?? undefined,
+    bumpMap: floorClayBump ?? roofBump ?? roofRough ?? undefined,
     bumpScale: 0.042,
     normalMap: roofNormal ?? undefined,
     normalScale: new THREE.Vector2(0.62, 0.62),
