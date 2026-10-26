@@ -64,14 +64,14 @@ status: active
 idea: Elevate the existing Refraction Challenge game (games family) to a higher quality standard: add live ray preview while aiming, particle spark effects on lens refraction and target hit, PNG share of the successful path with branding, localStorage progress persistence across levels, and 2 additional advanced levels. Distinctive capabilities beyond classic Minesweeper and Pong peers.
 id: refraction-challenge
 path_en: /games/refraction-challenge
-path_es: /es/juegos/refraction-challenge
+path_es: /es/juegos/desafio-refraccion
 domain: quality-lift
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: png
 next_step_required: yes
-notes: DOMAIN ROLL IDEATE: U=0.9766 > 0.50 → CORE. Weighted cumulative sample (total 34) = 31.49 → quality-lift. last_closed_domain=search-magnets (GROWTH) ≠ match (no re-roll). Weights: selected→1, other CORE +1. QUALITY-LIFT: U_f=0.6655 < 2/3 → family=games. Compared 3: RefractionChallengeGame (physics lenses, levels, canvas gradients), MinesweeperGame (classic grid, difficulties, touch chord), PongGame (arcade canvas, difficulties, no-cap mode). All similar quality; selected refraction-challenge for most headroom on distinctive elevated standard (live preview + particles + share PNG + persist progress + more levels) that peers still lack. runs_total=6 (5-10 required). Adsterra intact. CWV-safe (lazy canvas, modest particles).
+notes: DOMAIN ROLL IDEATE: U=0.9766 > 0.50 → CORE. Weighted cumulative sample (total 34) = 31.49 → quality-lift. last_closed_domain=search-magnets (GROWTH) ≠ match (no re-roll). Weights: selected→1, other CORE +1. QUALITY-LIFT: U_f=0.6655 < 2/3 → family=games. Compared 3: RefractionChallengeGame (physics lenses, levels, canvas gradients), MinesweeperGame (classic grid, difficulties, touch chord), PongGame (arcade canvas, difficulties, no-cap mode). All similar quality; selected refraction-challenge for most headroom on distinctive elevated standard (live preview + particles + share PNG + persist progress + more levels) that peers still lack. runs_total=6 (5-10 required). Adsterra intact. CWV-safe (lazy canvas, modest particles). EXECUTE 1/6: live full-path dashed preview (green if hit, amber if miss) + short solid aim indicator while adjusting angle. Peers lack this predictive aiming. Next: particles / share / persist / +2 levels.
 adsense-prep_runs: 3
 ```
 
