@@ -231,6 +231,12 @@ const AttendancePercentageCalculatorToolUi = lazy(() =>
 const CostPerKmCalculatorToolUi = lazy(() =>
   import("./CostPerKmCalculatorTool").then((m) => ({ default: m.CostPerKmCalculatorTool })),
 );
+const TextCaseConverterToolUi = lazy(() =>
+  import("./TextCaseConverterTool").then((m) => ({ default: m.TextCaseConverterTool })),
+);
+const TargetHeartRateCalculatorToolUi = lazy(() =>
+  import("./TargetHeartRateCalculatorTool").then((m) => ({ default: m.TargetHeartRateCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -291,6 +297,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "conversor-kmh-ms") return KmhToMsConverterToolUi;
   if (slug === "calculadora-porcentaje-asistencia") return AttendancePercentageCalculatorToolUi;
   if (slug === "calculadora-costo-por-km") return CostPerKmCalculatorToolUi;
+  if (slug === "conversor-texto-caso") return TextCaseConverterToolUi;
+  if (slug === "calculadora-frecuencia-cardiaca-objetivo") return TargetHeartRateCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
