@@ -67,11 +67,11 @@ path_en: /games/orbit-pulse-catcher
 path_es: /es/juegos/atrapa-pulsos-orbita
 domain: games
 runs_total: 6
-runs_remaining: 3
+runs_remaining: 2
 acceptance: pending
 share: png
 next_step_required: yes
-notes: EXECUTE 3/6: Progressive zones (4→8 with level), expanding catch rings + pulse scale animation, numbered zone labels for mobile/keyboard clarity, wider touch tolerance, adjusted scoring/spawn/life. Instructions updated EN+ES. CWV-safe (modest particles/rings, no new deps). Adsterra intact. Next: further visual polish or mobile refinements, possible power-ups.
+notes: EXECUTE 4/6: Golden power-up pulses (rare after level 1, ~11%): slower speed, larger glow/trail/particles, +1 life (cap 5) + temporary 1.8x score boost (~3s, center turns gold + BOOST HUD). Visual distinction (hue 48, scale, sparks). Instructions updated EN+ES. CWV-safe (modest extra particles). Adsterra intact. Next: mobile refinements or more visual polish / next-step check.
 adsense-prep_runs: 3
 ```
 
