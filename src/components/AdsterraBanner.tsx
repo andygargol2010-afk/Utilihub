@@ -2,14 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
+import { useAdFormat } from "@/lib/ads-config";
 
 /**
- * Adsterra banner scripts ON for retest (2026-10-15).
- * Previous note: same zone once redirected (pixelmeshweb → 1xbet).
- * If redirect returns, set false again and swap DESKTOP/MOBILE key+src.
+ * Adsterra banner (highrevenueformat.com invoke.js).
+ * Script injection is gated by Edge Config kill switch (ads_enabled + formats.banner)
+ * and marketing cookie consent. Fail closed when flags are off.
  */
-const ADS_SCRIPTS_ENABLED = true;
-
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
   width: 728,
@@ -24,12 +23,8 @@ const MOBILE = {
   src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
 };
 
-/**
- * Tool/game/finance banner.
- * The 728×90 box is in the first paint (same as the home banner) so consent/viewport
- * and the deferred script cannot push the page down when the ad loads.
- */
 export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) {
+  const bannerOn = useAdFormat("banner");
   const slotRef = useRef<HTMLDivElement>(null);
   const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
   const [allowed, setAllowed] = useState(false);
@@ -43,15 +38,16 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
   }, []);
 
   useEffect(() => {
+    if (!bannerOn) return;
     const mq = window.matchMedia("(min-width: 768px)");
     const apply = () => setViewport(mq.matches ? "desktop" : "mobile");
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
-  }, []);
+  }, [bannerOn]);
 
   useEffect(() => {
-    if (viewport !== "mobile") {
+    if (!bannerOn || viewport !== "mobile") {
       setScale(1);
       return;
     }
@@ -62,10 +58,10 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
     updateScale();
     window.addEventListener("resize", updateScale);
     return () => window.removeEventListener("resize", updateScale);
-  }, [viewport]);
+  }, [bannerOn, viewport]);
 
   useEffect(() => {
-    if (!ADS_SCRIPTS_ENABLED) return;
+    if (!bannerOn) return;
     if (!allowed || !viewport || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
     const slot = slotRef.current;
     let cancelled = false;
@@ -103,7 +99,10 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
       if (slot.dataset.loaded) delete slot.dataset.loaded;
       slot.replaceChildren();
     };
-  }, [allowed, viewport]);
+  }, [bannerOn, allowed, viewport]);
+
+  // Collapse completely when kill switch is off — no reserved box, no layout weight.
+  if (!bannerOn) return null;
 
   return (
     <aside
