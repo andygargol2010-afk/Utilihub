@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-26 (run 8)
-- mode: known smoke (E031 tip clean: no PLACEHOLDER/$(cat; homes clean; summary-es real; registry has dedicated wires) + discovery (recent tools from tools-builder-state: asistencia, costo-por-km, texto-caso, FC-objetivo had dedicated components but wires missing in pickComponent → regression of E036/E037)
-- deploy: tip READY (no ERROR on recent); post-push of fix SHA ad146b6d pending verify
-- known_smoke: E036/E037 regressed (wires lost) → re-fixed; others green; E031 open as recurring risk but tip clean
-- new_findings: none beyond the regressions (pattern known)
-- fixes: 1 (registry.tsx re-wire 4 dedicated UIs + catalog/state updates)
+- date: 2026-10-26 (run 9)
+- mode: known smoke (E031 tip clean: no PLACEHOLDER/$(cat in registry.tsx, homes, summary-es.ts, catalog; homes start with import + DeferredHomeReviews; modeler3d-app → Modeler3DStudio) + discovery (sampled modeler3d-app, summary-es real content, no "Tool not available"/PLACEHOLDER patterns; recent dedicated wires present)
+- deploy: recent deploys READY (no ERROR); tip SHA d31f58f pending or recent READY
+- known_smoke: all fixed entries green on tip; E031 open as recurring risk but tip clean (no stubs)
+- new_findings: none
+- fixes: 0
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E036/E037 registry wires + E031 clean check
+- last_known_focus: E031 clean check + E004 modeler3d + home routes
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
