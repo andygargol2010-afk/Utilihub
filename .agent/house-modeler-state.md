@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 293
+runs_done: 294
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 340300
+approx_bytes: 349500
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-26
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 293 plinth dedicated stone bump map. runs_done=293.
+note: PRODUCT run 294 worn-earth dedicated bump map. runs_done=294.
 ```
 
 Refresh after each run.
@@ -133,6 +133,7 @@ PRODUCT run 290: footing board-formed bump densify (90 concrete pores/grit speck
 PRODUCT run 291: head-plate bump densify (90 oak pores/grit specks) via local clone surgical. runs_done=291.
 PRODUCT run 292: gravel dedicated pebble bump map (domed stones, dark gaps) via local clone surgical. runs_done=292.
 PRODUCT run 293: plinth dedicated stone bump map (raised stones, recessed mortar, chipped tops, grain pits) via local clone surgical. runs_done=293.
+PRODUCT run 294: worn-earth dedicated bump map (clods, hairline cracks, foot dimples) via local clone surgical. runs_done=294.
 ```
 
 <!-- end:house-modeler-state.md -->

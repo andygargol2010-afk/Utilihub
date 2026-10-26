@@ -1945,6 +1945,50 @@ function paintWornEarth(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillRect(0, 0, size, size);
 }
 
+function paintWornEarthBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#6a6a6a";
+  ctx.fillRect(0, 0, size, size);
+  // Packed clods: raised crumbs with darker rims.
+  for (let i = 0; i < 90; i++) {
+    const x = hash2(i, 2.3) * size;
+    const y = hash2(i, 7.9) * size;
+    const r = 1.2 + hash2(i, 5.5) * 3.4;
+    const lift = 135 + Math.floor(hash2(i, 1.4) * 60);
+    const g = ctx.createRadialGradient(x - r * 0.2, y - r * 0.2, r * 0.1, x, y, r);
+    g.addColorStop(0, `rgb(${lift},${lift},${lift})`);
+    g.addColorStop(1, "rgba(70,70,70,0.85)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * (0.6 + hash2(i, 3.7) * 0.4), hash2(i, 4.8) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // Dry hairline cracks and foot-worn dimples.
+  ctx.strokeStyle = "rgba(34,34,34,0.7)";
+  ctx.lineWidth = 0.9;
+  for (let i = 0; i < 14; i++) {
+    let x = hash2(i, 9.1) * size;
+    let y = hash2(i, 1.9) * size;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    for (let k = 0; k < 4; k++) {
+      x += (hash2(i * 7 + k, 3.3) - 0.5) * 16;
+      y += (hash2(i * 7 + k, 6.1) - 0.5) * 16;
+      ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+  for (let i = 0; i < 10; i++) {
+    const x = hash2(i, 12.2) * size;
+    const y = hash2(i, 8.4) * size;
+    const r = 5 + hash2(i, 2.6) * 6;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, "rgba(50,50,50,0.6)");
+    g.addColorStop(1, "rgba(50,50,50,0)");
+    ctx.fillStyle = g;
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  }
+}
+
 function paintContactAO(ctx: CanvasRenderingContext2D, size: number) {
   const c = size / 2;
   const g = ctx.createRadialGradient(c, c, size * 0.08, c, c, size * 0.5);
@@ -4112,13 +4156,15 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         paintRoughFromAlbedo(ctx, s, 188, 48, true);
       }, false);
       if (earthMap) earthMap.repeat.set(3, 3);
+      const earthBump = makeCanvasTexture(256, paintWornEarthBump, false);
       if (earthRough) earthRough.repeat.set(3, 3);
+      if (earthBump) earthBump.repeat.set(3, 3);
       const apronGeo = new THREE.RingGeometry(11.15, 16.8, 64);
       const apronMat = new THREE.MeshStandardMaterial({
         color: 0xffffff,
         map: earthMap ?? undefined,
         roughnessMap: earthRough ?? undefined,
-        bumpMap: earthRough ?? undefined,
+        bumpMap: earthBump ?? earthRough ?? undefined,
         bumpScale: 0.03,
         roughness: 0.97,
         metalness: 0,
@@ -4135,7 +4181,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         color: 0xd8cbb6,
         map: earthMap ?? undefined,
         roughnessMap: earthRough ?? undefined,
-        bumpMap: earthRough ?? undefined,
+        bumpMap: earthBump ?? earthRough ?? undefined,
         bumpScale: 0.035,
         roughness: 0.96,
         metalness: 0,
@@ -4569,6 +4615,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           pathMat.dispose();
           earthMap?.dispose();
           earthRough?.dispose();
+          earthBump?.dispose();
           tufts.geometry.dispose();
           tuftMat.dispose();
           tufts.dispose();
