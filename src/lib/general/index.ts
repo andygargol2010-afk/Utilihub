@@ -131,6 +131,8 @@ import { TIME_TO_GOAL_CALCULATOR_TOOLS } from "./time-to-goal-calculator-tool";
 import { KWH_COST_CALCULATOR_TOOLS } from "./kwh-cost-calculator-tool";
 import { IVA_CALCULATOR_TOOLS } from "./iva-calculator-tool";
 import { KMH_TO_MS_CONVERTER_TOOLS } from "./kmh-to-ms-converter-tool";
+import { TEXT_CASE_CONVERTER_TOOLS } from "./text-case-converter-tool";
+import { TARGET_HEART_RATE_CALCULATOR_TOOLS } from "./target-heart-rate-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -266,4 +268,6 @@ export const GENERAL_TOOLS = [
   ...KWH_COST_CALCULATOR_TOOLS,
   ...IVA_CALCULATOR_TOOLS,
   ...KMH_TO_MS_CONVERTER_TOOLS,
+  ...TEXT_CASE_CONVERTER_TOOLS,
+  ...TARGET_HEART_RATE_CALCULATOR_TOOLS,
 ];
