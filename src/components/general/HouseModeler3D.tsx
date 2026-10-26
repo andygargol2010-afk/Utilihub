@@ -1433,6 +1433,16 @@ function paintRoofMetalBump(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fillStyle = "#2e2e2e";
     ctx.fillRect(x, 0, 2, size);
   }
+  // Zinc oxide pits and fine grit so the sheet reads as weathered metal, not a ribbed plastic panel.
+  for (let p = 0; p < 100; p++) {
+    const x = hash2(p, 11.3) * size;
+    const y = hash2(p, 12.7) * size;
+    const r = 0.6 + hash2(p, 13.9) * 1.2;
+    ctx.fillStyle = hash2(p, 14.5) > 0.5 ? "rgba(46,46,46,0.5)" : "rgba(236,236,236,0.35)";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 /** Painted bar stock. Ports door-sheet ribs onto a rail: vertical flutes, oxide, no rivet rows. Densified: more flutes + extra weathering flecks. */
