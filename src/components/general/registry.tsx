@@ -219,6 +219,12 @@ const PercentageDifferenceCalculatorToolUi = lazy(() =>
 const SpeedDistanceTimeCalculatorToolUi = lazy(() =>
   import("./SpeedDistanceTimeCalculatorTool").then((m) => ({ default: m.SpeedDistanceTimeCalculatorTool })),
 );
+const IvaCalculatorToolUi = lazy(() =>
+  import("./IvaCalculatorTool").then((m) => ({ default: m.IvaCalculatorTool })),
+);
+const KmhToMsConverterToolUi = lazy(() =>
+  import("./KmhToMsConverterTool").then((m) => ({ default: m.KmhToMsConverterTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -275,6 +281,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-presupuesto-diario-viaje") return DailyTravelBudgetCalculatorToolUi;
   if (slug === "calculadora-diferencia-porcentual") return PercentageDifferenceCalculatorToolUi;
   if (slug === "calculadora-velocidad-distancia-tiempo") return SpeedDistanceTimeCalculatorToolUi;
+  if (slug === "calculadora-iva") return IvaCalculatorToolUi;
+  if (slug === "conversor-kmh-ms") return KmhToMsConverterToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
