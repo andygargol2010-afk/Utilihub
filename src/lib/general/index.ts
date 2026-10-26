@@ -138,6 +138,8 @@ import { SLEEP_CYCLE_TOOLS } from "./sleep-cycle-tool";
 import { BOX_SHADOW_TOOLS } from "./box-shadow-tool";
 import { ATTENDANCE_PERCENTAGE_CALCULATOR_TOOLS } from "./attendance-percentage-calculator-tool";
 import { COST_PER_KM_CALCULATOR_TOOLS } from "./cost-per-km-calculator-tool";
+import { DENSITY_CALCULATOR_TOOLS } from "./density-calculator-tool";
+import { PERCENTAGE_ERROR_CALCULATOR_TOOLS } from "./percentage-error-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -280,4 +282,6 @@ export const GENERAL_TOOLS = [
   ...BOX_SHADOW_TOOLS,
   ...ATTENDANCE_PERCENTAGE_CALCULATOR_TOOLS,
   ...COST_PER_KM_CALCULATOR_TOOLS,
+  ...DENSITY_CALCULATOR_TOOLS,
+  ...PERCENTAGE_ERROR_CALCULATOR_TOOLS,
 ];
