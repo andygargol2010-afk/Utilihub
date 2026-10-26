@@ -9,8 +9,9 @@ const CX = W / 2;
 const CY = H / 2 - 20;
 const INNER_R = 48;
 const OUTER_R = 160;
-const ZONES = 6;
-const ZONE_COLORS = [200, 30, 120, 280, 50, 160]; // hues
+const BASE_ZONES = 4;
+const MAX_ZONES = 8;
+const ZONE_COLORS = [200, 30, 120, 280, 50, 160, 310, 80]; // hues up to 8
 
 type Pulse = {
   angle: number;
@@ -20,6 +21,7 @@ type Pulse = {
   zone: number;
   life: number;
   trail: { x: number; y: number }[];
+  scale: number;
 };
 
 type Particle = {
@@ -30,6 +32,15 @@ type Particle = {
   life: number;
   hue: number;
   size: number;
+  type: "spark" | "ring";
+};
+
+type CatchRing = {
+  x: number;
+  y: number;
+  r: number;
+  life: number;
+  hue: number;
 };
 
 export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }) {
@@ -47,6 +58,7 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
 
   const pulsesRef = useRef<Pulse[]>([]);
   const particlesRef = useRef<Particle[]>([]);
+  const ringsRef = useRef<CatchRing[]>([]);
   const scoreRef = useRef(0);
   const livesRef = useRef(3);
   const comboRef = useRef(0);
@@ -57,6 +69,7 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
   const spawnTimerRef = useRef(0);
   const flashZoneRef = useRef<number | null>(null);
   const flashTimerRef = useRef(0);
+  const zonesRef = useRef(BASE_ZONES);
 
   useEffect(() => {
     setBest(readBestScore("orbit-pulse-catcher"));
@@ -68,11 +81,13 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
     comboRef.current = combo;
     runningRef.current = running;
     gameOverRef.current = gameOver;
-  }, [score, lives, combo, running, gameOver]);
+    zonesRef.current = Math.min(MAX_ZONES, BASE_ZONES + Math.floor((level - 1) / 2));
+  }, [score, lives, combo, running, gameOver, level]);
 
   const hardReset = useCallback(() => {
     pulsesRef.current = [];
     particlesRef.current = [];
+    ringsRef.current = [];
     spawnTimerRef.current = 0;
     shakeRef.current = 0;
     flashZoneRef.current = null;
@@ -91,51 +106,63 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
     livesRef.current = 3;
     runningRef.current = true;
     gameOverRef.current = false;
+    zonesRef.current = BASE_ZONES;
   }, []);
 
   const tryCatch = useCallback((zone: number) => {
     if (!runningRef.current || gameOverRef.current || paused) return;
+    const zones = zonesRef.current;
+    if (zone < 0 || zone >= zones) return;
     flashZoneRef.current = zone;
-    flashTimerRef.current = 12;
-    const tolerance = 0.38; // slightly more forgiving timing feel
+    flashTimerRef.current = 14;
+    const tolerance = 0.42; // more forgiving for mobile timing
     let caught = false;
     pulsesRef.current = pulsesRef.current.filter((p) => {
       if (p.zone !== zone) return true;
-      const zoneAngle = (zone / ZONES) * Math.PI * 2;
+      const zoneAngle = (zone / zones) * Math.PI * 2;
       let diff = Math.abs(p.angle - zoneAngle);
       diff = Math.min(diff, Math.PI * 2 - diff);
       if (diff < tolerance) {
         caught = true;
         const now = performance.now();
-        if (now - lastCatchRef.current < 1000) {
-          comboRef.current = Math.min(12, comboRef.current + 1);
+        if (now - lastCatchRef.current < 1100) {
+          comboRef.current = Math.min(15, comboRef.current + 1);
         } else {
           comboRef.current = 1;
         }
         lastCatchRef.current = now;
         setCombo(comboRef.current);
-        const pts = Math.round(22 * (1 + (comboRef.current - 1) * 0.35) * (1 + level * 0.12));
+        const pts = Math.round(24 * (1 + (comboRef.current - 1) * 0.4) * (1 + level * 0.15));
         setScore((s) => {
           const next = s + pts;
           setBest((b) => writeBestScore("orbit-pulse-catcher", Math.max(b, next)));
           return next;
         });
-        // particles + ring
         const ang = p.angle;
         const px = CX + Math.cos(ang) * p.radius;
         const py = CY + Math.sin(ang) * p.radius;
-        for (let i = 0; i < 18; i++) {
+        // sparks
+        for (let i = 0; i < 22; i++) {
           particlesRef.current.push({
             x: px,
             y: py,
-            vx: (Math.random() - 0.5) * 7,
-            vy: (Math.random() - 0.5) * 7,
-            life: 32,
+            vx: (Math.random() - 0.5) * 8,
+            vy: (Math.random() - 0.5) * 8,
+            life: 36,
             hue: p.hue,
-            size: 1.8 + Math.random() * 2.4,
+            size: 1.6 + Math.random() * 2.8,
+            type: "spark",
           });
         }
-        shakeRef.current = 6;
+        // expanding catch ring
+        ringsRef.current.push({
+          x: px,
+          y: py,
+          r: 12,
+          life: 28,
+          hue: p.hue,
+        });
+        shakeRef.current = 7;
         return false;
       }
       return true;
@@ -154,23 +181,26 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
       });
       comboRef.current = 0;
       setCombo(0);
-      shakeRef.current = 3;
+      shakeRef.current = 4;
     }
   }, [level, paused]);
 
-  // Keyboard controls: 1-6 or QWERTY for zones
+  // Keyboard controls: 1-N or QWERTY for zones
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!runningRef.current || gameOverRef.current || paused) return;
+      const zones = zonesRef.current;
       let zone = -1;
       const k = e.key.toLowerCase();
-      if (k >= "1" && k <= "6") zone = parseInt(k, 10) - 1;
+      if (k >= "1" && k <= String(zones)) zone = parseInt(k, 10) - 1;
       else if (k === "q") zone = 0;
       else if (k === "w") zone = 1;
       else if (k === "e") zone = 2;
       else if (k === "r") zone = 3;
-      else if (k === "t") zone = 4;
-      else if (k === "y") zone = 5;
+      else if (k === "t" && zones > 4) zone = 4;
+      else if (k === "y" && zones > 5) zone = 5;
+      else if (k === "u" && zones > 6) zone = 6;
+      else if (k === "i" && zones > 7) zone = 7;
       if (zone >= 0) {
         e.preventDefault();
         tryCatch(zone);
@@ -187,31 +217,35 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
       if (!paused && !gameOver) {
         const dt = 16;
         spawnTimerRef.current += dt;
-        const difficulty = 1 + level * 0.25;
-        const spawnEvery = Math.max(480, 1600 - difficulty * 90);
-        if (spawnTimerRef.current > spawnEvery && pulsesRef.current.length < 3 + level) {
+        const difficulty = 1 + level * 0.22;
+        const spawnEvery = Math.max(420, 1500 - difficulty * 80);
+        const maxPulses = 2 + Math.floor(level * 0.6);
+        if (spawnTimerRef.current > spawnEvery && pulsesRef.current.length < maxPulses) {
           spawnTimerRef.current = 0;
-          const zone = Math.floor(Math.random() * ZONES);
+          const zones = zonesRef.current;
+          const zone = Math.floor(Math.random() * zones);
           const startAngle = Math.random() * Math.PI * 2;
           pulsesRef.current.push({
             angle: startAngle,
-            radius: INNER_R + 35 + Math.random() * (OUTER_R - INNER_R - 55),
-            speed: (0.009 + Math.random() * 0.014) * difficulty,
-            hue: ZONE_COLORS[zone],
+            radius: INNER_R + 40 + Math.random() * (OUTER_R - INNER_R - 50),
+            speed: (0.008 + Math.random() * 0.016) * difficulty,
+            hue: ZONE_COLORS[zone % ZONE_COLORS.length],
             zone,
-            life: 380,
+            life: 420 - level * 8,
             trail: [],
+            scale: 1,
           });
         }
 
-        // update pulses + trails
+        // update pulses + trails + scale pulse
         pulsesRef.current = pulsesRef.current.filter((p) => {
           p.angle += p.speed;
           p.life -= 1;
+          p.scale = 1 + Math.sin(performance.now() * 0.008 + p.angle) * 0.12;
           const x = CX + Math.cos(p.angle) * p.radius;
           const y = CY + Math.sin(p.angle) * p.radius;
           p.trail.push({ x, y });
-          if (p.trail.length > 10) p.trail.shift();
+          if (p.trail.length > 12) p.trail.shift();
           return p.life > 0;
         });
 
@@ -223,18 +257,25 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
           return pt.life > 0;
         });
 
-        if (shakeRef.current > 0) shakeRef.current -= 0.35;
+        // rings expand
+        ringsRef.current = ringsRef.current.filter((r) => {
+          r.r += 2.4;
+          r.life -= 1;
+          return r.life > 0;
+        });
+
+        if (shakeRef.current > 0) shakeRef.current -= 0.4;
         if (flashTimerRef.current > 0) {
           flashTimerRef.current -= 1;
           if (flashTimerRef.current <= 0) flashZoneRef.current = null;
         }
 
-        // level up
-        if (scoreRef.current > level * 180 && level < 8) {
+        // level up (softer threshold)
+        if (scoreRef.current > level * 220 && level < 10) {
           setLevel((l) => l + 1);
         }
 
-        if (performance.now() - lastCatchRef.current > 1500) {
+        if (performance.now() - lastCatchRef.current > 1600) {
           if (comboRef.current > 0) {
             comboRef.current = 0;
             setCombo(0);
@@ -251,20 +292,32 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
         ctx.fillStyle = "#060810";
         ctx.fillRect(-4, -4, W + 8, H + 8);
 
-        // zones as arcs with flash
-        for (let z = 0; z < ZONES; z++) {
-          const start = (z / ZONES) * Math.PI * 2 - Math.PI / ZONES;
-          const end = start + (Math.PI * 2) / ZONES;
+        const zones = zonesRef.current;
+
+        // zones as arcs with flash + labels
+        for (let z = 0; z < zones; z++) {
+          const start = (z / zones) * Math.PI * 2 - Math.PI / zones;
+          const end = start + (Math.PI * 2) / zones;
           ctx.beginPath();
           ctx.arc(CX, CY, OUTER_R, start, end);
           ctx.arc(CX, CY, INNER_R, end, start, true);
           ctx.closePath();
           const flash = flashZoneRef.current === z && flashTimerRef.current > 0;
-          ctx.fillStyle = `hsla(${ZONE_COLORS[z]}, 70%, 45%, ${flash ? 0.45 : 0.22})`;
+          ctx.fillStyle = `hsla(${ZONE_COLORS[z % ZONE_COLORS.length]}, 70%, 45%, ${flash ? 0.5 : 0.24})`;
           ctx.fill();
-          ctx.strokeStyle = `hsl(${ZONE_COLORS[z]}, 80%, ${flash ? 75 : 60}%)`;
-          ctx.lineWidth = flash ? 3.5 : 2;
+          ctx.strokeStyle = `hsl(${ZONE_COLORS[z % ZONE_COLORS.length]}, 80%, ${flash ? 78 : 62}%)`;
+          ctx.lineWidth = flash ? 4 : 2.2;
           ctx.stroke();
+
+          // zone label (number) for mobile/keyboard clarity
+          const midAng = start + (Math.PI / zones);
+          const lx = CX + Math.cos(midAng) * (OUTER_R - 22);
+          const ly = CY + Math.sin(midAng) * (OUTER_R - 22);
+          ctx.fillStyle = "rgba(255,255,255,0.85)";
+          ctx.font = "bold 13px system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(String(z + 1), lx, ly);
         }
 
         // center
@@ -276,25 +329,36 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // pulses with trails
+        // catch rings
+        for (const r of ringsRef.current) {
+          ctx.globalAlpha = Math.max(0, r.life / 28);
+          ctx.beginPath();
+          ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+          ctx.strokeStyle = `hsl(${r.hue}, 100%, 70%)`;
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+
+        // pulses with trails + scale
         for (const p of pulsesRef.current) {
-          // trail
           if (p.trail.length > 1) {
             ctx.beginPath();
             ctx.moveTo(p.trail[0].x, p.trail[0].y);
             for (let i = 1; i < p.trail.length; i++) {
               ctx.lineTo(p.trail[i].x, p.trail[i].y);
             }
-            ctx.strokeStyle = `hsla(${p.hue}, 90%, 62%, 0.35)`;
-            ctx.lineWidth = 4;
+            ctx.strokeStyle = `hsla(${p.hue}, 90%, 62%, 0.4)`;
+            ctx.lineWidth = 5;
             ctx.stroke();
           }
           const x = CX + Math.cos(p.angle) * p.radius;
           const y = CY + Math.sin(p.angle) * p.radius;
+          const rad = 11 * p.scale;
           ctx.beginPath();
-          ctx.arc(x, y, 11, 0, Math.PI * 2);
+          ctx.arc(x, y, rad, 0, Math.PI * 2);
           ctx.fillStyle = `hsl(${p.hue}, 90%, 62%)`;
-          ctx.shadowBlur = 14;
+          ctx.shadowBlur = 16;
           ctx.shadowColor = `hsl(${p.hue}, 90%, 62%)`;
           ctx.fill();
           ctx.shadowBlur = 0;
@@ -302,7 +366,7 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
 
         // particles
         for (const pt of particlesRef.current) {
-          ctx.globalAlpha = Math.max(0, pt.life / 32);
+          ctx.globalAlpha = Math.max(0, pt.life / 36);
           ctx.fillStyle = `hsl(${pt.hue}, 100%, 70%)`;
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
@@ -311,11 +375,12 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
         ctx.globalAlpha = 1;
 
         // HUD
-        ctx.fillStyle = "rgba(255,255,255,0.9)";
+        ctx.fillStyle = "rgba(255,255,255,0.92)";
         ctx.font = "bold 14px system-ui, sans-serif";
         ctx.textAlign = "left";
+        ctx.textBaseline = "alphabetic";
         ctx.fillText(`${es ? "Puntos" : "Score"}: ${scoreRef.current}`, 12, 24);
-        ctx.fillText(`${es ? "Nivel" : "Level"}: ${level}`, 12, 42);
+        ctx.fillText(`${es ? "Nivel" : "Level"}: ${level} (${zones})`, 12, 42);
         ctx.fillText(`${es ? "Vidas" : "Lives"}: ${livesRef.current}`, 12, 60);
         if (comboRef.current > 1) {
           ctx.textAlign = "center";
@@ -372,10 +437,11 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
     const dx = x - CX;
     const dy = y - CY;
     const dist = Math.hypot(dx, dy);
-    if (dist < INNER_R || dist > OUTER_R + 20) return;
+    if (dist < INNER_R - 4 || dist > OUTER_R + 28) return; // wider touch zone
     let ang = Math.atan2(dy, dx);
     if (ang < 0) ang += Math.PI * 2;
-    const zone = Math.floor((ang / (Math.PI * 2)) * ZONES) % ZONES;
+    const zones = zonesRef.current;
+    const zone = Math.floor((ang / (Math.PI * 2)) * zones) % zones;
     tryCatch(zone);
   };
 
@@ -436,8 +502,8 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
       </div>
       <p className="max-w-md text-center text-xs text-white/60">
         {es
-          ? "Clic en la zona de color (o teclas 1-6 / QWERTY) cuando el pulso coincidente esté sobre ella. Combos por atrapes consecutivos. Estelas y flash de zona."
-          : "Click the matching color zone (or keys 1-6 / QWERTY) when the pulse is over it. Combos for consecutive catches. Trails and zone flash."}
+          ? "Clic en la zona numerada (o teclas 1-N / QWERTY) cuando el pulso coincidente esté sobre ella. Zonas aumentan con el nivel. Anillos de captura y estelas. Más tolerante en móvil."
+          : "Click the numbered matching zone (or keys 1-N / QWERTY) when the pulse is over it. Zones grow with level. Catch rings and trails. More forgiving on mobile."}
       </p>
     </div>
   );
