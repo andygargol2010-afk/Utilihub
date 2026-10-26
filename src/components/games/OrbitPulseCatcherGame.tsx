@@ -148,6 +148,25 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
         }
         lastCatchRef.current = now;
         setCombo(comboRef.current);
+        // milestone bursts
+        if (comboRef.current === 5 || comboRef.current === 10) {
+          const ang = p.angle;
+          const px = CX + Math.cos(ang) * p.radius;
+          const py = CY + Math.sin(ang) * p.radius;
+          for (let i = 0; i < 36; i++) {
+            particlesRef.current.push({
+              x: px,
+              y: py,
+              vx: (Math.random() - 0.5) * 12,
+              vy: (Math.random() - 0.5) * 12,
+              life: 48,
+              hue: 48 + Math.random() * 20,
+              size: 2.5 + Math.random() * 3,
+              type: "spark",
+            });
+          }
+          shakeRef.current = Math.max(shakeRef.current, 9);
+        }
         const mult = powerupTimerRef.current > 0 ? 1.8 : 1;
         const pts = Math.round(24 * (1 + (comboRef.current - 1) * 0.4) * (1 + level * 0.15) * mult);
         setScore((s) => {
@@ -316,6 +335,25 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
         // level up (softer threshold)
         if (scoreRef.current > level * 220 && level < 10) {
           setLevel((l) => l + 1);
+          // level-up celebration burst
+          for (let i = 0; i < 48; i++) {
+            const ang = Math.random() * Math.PI * 2;
+            const spd = 3 + Math.random() * 6;
+            particlesRef.current.push({
+              x: CX,
+              y: CY,
+              vx: Math.cos(ang) * spd,
+              vy: Math.sin(ang) * spd,
+              life: 50,
+              hue: ZONE_COLORS[Math.floor(Math.random() * zonesRef.current) % ZONE_COLORS.length],
+              size: 2 + Math.random() * 3,
+              type: "spark",
+            });
+          }
+          shakeRef.current = 12;
+          if (typeof navigator !== "undefined" && navigator.vibrate) {
+            navigator.vibrate(30);
+          }
         }
 
         if (performance.now() - lastCatchRef.current > 1600) {
