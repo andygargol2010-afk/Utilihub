@@ -66,4 +66,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-costo-kwh", name: "KwhCostCalculatorTool", path: "./KwhCostCalculatorTool", export: "KwhCostCalculatorTool" },
   { slug: "calculadora-iva", name: "IvaCalculatorTool", path: "./IvaCalculatorTool", export: "IvaCalculatorTool" },
   { slug: "conversor-kmh-ms", name: "KmhToMsConverterTool", path: "./KmhToMsConverterTool", export: "KmhToMsConverterTool" },
+  { slug: "conversor-texto-caso", name: "TextCaseConverterTool", path: "./TextCaseConverterTool", export: "TextCaseConverterTool" },
+  { slug: "calculadora-frecuencia-cardiaca-objetivo", name: "TargetHeartRateCalculatorTool", path: "./TargetHeartRateCalculatorTool", export: "TargetHeartRateCalculatorTool" },
 ] as const;
