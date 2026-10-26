@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 281
+runs_done: 282
 runs_max: 500
 ```
 
@@ -56,11 +56,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: MODELADOR-3D
+last_mode: PRODUCT
 last_date: 2026-10-26
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: MODELADOR-3D run 281 velvet MatPreset. runs_done=281.
+note: PRODUCT run 282 tile bump densify. runs_done=282.
 ```
 
 Refresh after each run.
@@ -121,6 +121,7 @@ PRODUCT run 278: wall-masonry bump densify (110 grain pits/chisel specks) via lo
 PRODUCT run 279: chimney-brick bump densify (120 clay pits/grit specks) via local clone surgical. runs_done=279.
 PRODUCT run 280: timber bump densify (90 grain ridges + 8 knots) via local clone surgical. runs_done=280.
 MODELADOR-3D run 281: velvet MatPreset (Terciopelo, sheen cloth) in helpers. runs_done=281.
+PRODUCT run 282: clay tile bump densify (110 pits/grit specks) via local clone surgical. runs_done=282.
 ```
 
 <!-- end:house-modeler-state.md -->

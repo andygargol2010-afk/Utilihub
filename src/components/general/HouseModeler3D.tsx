@@ -1087,6 +1087,15 @@ function paintTileBump(ctx: CanvasRenderingContext2D, size: number) {
       ctx.stroke();
     }
   }
+  // Fired-clay pits and glaze-free grit so tile faces catch raking light unevenly.
+  for (let p = 0; p < 110; p++) {
+    const px = hash2(p, 131) * size;
+    const py = hash2(p, 133) * size;
+    ctx.fillStyle = hash2(p, 135) > 0.45 ? "rgba(20,20,20,0.34)" : "rgba(255,255,255,0.22)";
+    ctx.beginPath();
+    ctx.ellipse(px, py, 0.8 + hash2(p, 137) * 1.6, 0.6 + hash2(p, 139) * 1.1, hash2(p, 141) * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintPlate(ctx: CanvasRenderingContext2D, size: number) {
