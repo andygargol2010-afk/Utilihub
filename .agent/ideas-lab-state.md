@@ -16,13 +16,13 @@ last_closed_id: refraction-challenge
 p_fixed: 0.35
 
 weights_core:
-  kits: 3
-  journeys: 4
-  games: 9
-  simulators: 7
-  studio-composition: 2
-  playgrounds: 10
-  quality-lift: 1
+  kits: 4
+  journeys: 5
+  games: 1
+  simulators: 8
+  studio-composition: 3
+  playgrounds: 11
+  quality-lift: 2
 
 weights_growth:
   traffic-bets: 3
@@ -60,7 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Interactive Orbit Pulse Catcher game: orbiting colored pulses around a center; player times taps or clicks to catch them in matching zones for score. Combo multipliers on consecutive perfect catches, increasing speed and density per level, particle burst effects on catch, miss penalty, high-score localStorage, PNG share of best run with branding (title + utilihub.com + score + combo), keyboard/touch controls, progressive levels (5-8). Distinct from Pulse Catch Arena and Refraction Challenge by radial orbit timing + zone matching. EN+ES routes. CWV-safe (canvas lazy, modest particles). Adsterra intact. Next-step required.
+id: orbit-pulse-catcher
+path_en: /games/orbit-pulse-catcher
+path_es: /es/juegos/orbit-pulse-catcher
+domain: games
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
+share: png
+next_step_required: yes
+notes: DOMAIN ROLL IDEATE: U=0.721 > 0.50 → CORE. Weighted sample index 14 → games (cumul 7-16 of 36). last_closed_domain=quality-lift ≠ games (no re-roll). Selected games→1; other CORE +1. New interactive timing game with radial orbits and zone matching, distinct from existing PulseCatch and Refraction. runs_total=6 within quality bar.
+adsense-prep_runs: 3
 ```
 
 <!-- end:ideas-lab-state.md -->
