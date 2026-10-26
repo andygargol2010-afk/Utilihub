@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
+status: active
+idea: Original long-form SEO guide (EN+ES) on the Orbit Pulse Catcher interactive timing game. Explains radial orbit mechanics, zone matching that grows to 8 zones, combo multipliers, power-up pulses (+life +boost), particle bursts on catch/level-up/combo milestones, haptic feedback, wide touch zones with ripples, keyboard 1-N/QWERTY controls, PNG share with branding + best/level/combo stats, localStorage high scores. Practical high-score strategies, worked examples, distinction from other pulse/arcade games (Pulse Catch Arena, Refraction Challenge), deep links to the live game, FAQs. Static routes with meta, hreflang, breadcrumbs. CWV-safe. Adsterra intact.
+id: orbit-pulse-catcher-guide
+path_en: /guides/orbit-pulse-catcher
+path_es: /es/guias/orbit-pulse-catcher
+domain: search-magnets
+runs_total: 6
+runs_remaining: 6
+acceptance: pending
 share: n/a
 next_step_required: no
-notes: Closed orbit-pulse-catcher. Ready for next IDEATE.
+notes: Roll: U=0.00317 < 0.50 → GROWTH; U_g=0.0873 < 0.35 → FIXED urn (traffic-bets:3 + search-magnets:3); selected search-magnets (no weight updates). Distinct from modular-pattern-composer-guide and n-body-gravity-guide. Targets recently closed orbit-pulse-catcher for search depth on timing/orbit games.
 adsense-prep_runs: 3
 ```
 
