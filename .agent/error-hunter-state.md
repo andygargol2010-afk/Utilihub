@@ -11,12 +11,12 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-26 (run 6)
-- mode: known smoke (E031 tip clean: no PLACEHOLDER/$(cat in critical files; registry full with dedicated wires; homes clean; summary-es real) + discovery (sampled new tools from latest feat(cat): calculadora-porcentaje-asistencia + calculadora-costo-por-km had dedicated components and catalog entries but not wired in registry.tsx pickComponent → generic MathTool)
+- date: 2026-10-26 (run 7)
+- mode: known smoke (E031 tip clean: no PLACEHOLDER/$(cat in critical files; registry full with dedicated wires; homes clean; summary-es real) + discovery (sampled recent tools from tools-builder-state: conversor-texto-caso + calculadora-frecuencia-cardiaca-objetivo had dedicated components and catalog entries but not wired in registry.tsx pickComponent → generic Text/MathTool)
 - deploy: tip READY (previous SHAs); no ERROR on recent deploys
 - known_smoke: all fixed green; E031 open as recurring risk but tip clean
-- new_findings: E036 dedicated UIs for new calculators not wired (fixed in this run)
-- fixes: 1 (registry.tsx wire + catalog E036)
+- new_findings: E037 dedicated UIs for text-case and target-heart-rate not wired (fixed in this run)
+- fixes: 1 (registry.tsx wire + catalog E037)
 
 ## Rotation (evitar sesgo)
 - last_known_focus: E031 + registry + new tools wiring
