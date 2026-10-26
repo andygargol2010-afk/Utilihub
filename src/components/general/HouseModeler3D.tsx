@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
+import { exportScenePng } from "./house-modeler/exportPng";
 
 type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
@@ -5719,6 +5720,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         clear: "Limpiar",
         parts: "elementos",
         fullscreen: "Pantalla completa",
+        png: "Exportar PNG",
         exitFs: "Salir",
         tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · E valla · T sendero · Y jardinera · U banco · I farol · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
@@ -5911,6 +5913,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         clear: "Clear",
         parts: "parts",
         fullscreen: "Fullscreen",
+        png: "Export PNG",
         exitFs: "Exit",
         tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · E fence · T path · Y planter · U bench · I lamp · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
@@ -6796,6 +6799,15 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         >
           {isFullscreen ? labels.exitFs : labels.fullscreen}
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
+        </button>
+        <button
+          type="button"
+          data-testid="export-png"
+          onClick={() => { const t = threeRef.current; if (t) exportScenePng(t.renderer, t.scene, t.camera); }}
+          aria-label={labels.png}
+          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
+        >
+          {labels.png}
         </button>
       </div>
 

@@ -8,7 +8,7 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 |---|------|-----|-------|-----|-------|--------|
 | 1 | Autosave design to localStorage + restore on load (try/catch, versioned) | 5 | 5 | 2 | 12.5 | open |
 | 2 | Undo / redo (Ctrl+Z / Ctrl+Y + toolbar buttons, snapshot stack in new module) | 5 | 5 | 3 | 8.3 | open |
-| 3 | Export PNG screenshot button (renderer toBlob after a render, EN+ES) | 4 | 4 | 1 | 16 | open |
+| 3 | Export PNG screenshot button (renderer toBlob after a render, EN+ES) | 4 | 4 | 1 | 16 | DONE run 298 (house-modeler/exportPng.ts) |
 | 4 | Ready-made house presets (small cabin, 2-room, garden shed) loadable in one click | 4 | 5 | 3 | 6.7 | open |
 | 5 | Share link: encode design in URL hash, load on open | 5 | 4 | 3 | 6.7 | open |
 | 6 | Time-of-day / lighting presets (morning, noon, sunset) via sun position | 3 | 4 | 2 | 6 | open |
@@ -22,4 +22,4 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 14 | Fix 2 unrelated 404 resource requests seen on tool page (non-modeler) | 2 | 5 | 2 | 5 | open |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
-Next pick by score: #3 PNG export (16), #1 autosave (12.5), #2 undo/redo (8.3), #8 onboarding (7.5).
+Next pick by score: #1 autosave (12.5), #2 undo/redo (8.3), #8 onboarding (7.5).
