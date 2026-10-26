@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
+import { trackEvent } from "@/lib/analytics";
 
 type Lens = { x: number; y: number; r: number; strength: number };
 type Block = { x: number; y: number; w: number; h: number };
@@ -34,8 +35,8 @@ const LEVELS: Level[] = [
     lenses: [],
     blocks: [],
     target: { x: 430, y: 140, r: 18 },
-    hintEn: "Straight shot — aim carefully.",
-    hintEs: "Tiro directo — apuntá con cuidado.",
+    hintEn: "Straight shot \u2014 aim carefully.",
+    hintEs: "Tiro directo \u2014 apunt\u00e1 con cuidado.",
   },
   {
     lenses: [{ x: 240, y: 140, r: 42, strength: 0.045 }],
@@ -52,7 +53,7 @@ const LEVELS: Level[] = [
     blocks: [{ x: 250, y: 40, w: 20, h: 80 }],
     target: { x: 430, y: 210, r: 18 },
     hintEn: "Two lenses + a blocker. Thread the gap.",
-    hintEs: "Dos lentes y un obstáculo. Pasá por el hueco.",
+    hintEs: "Dos lentes y un obst\u00e1culo. Pas\u00e1 por el hueco.",
   },
   {
     lenses: [
@@ -81,7 +82,7 @@ const LEVELS: Level[] = [
     ],
     target: { x: 440, y: 140, r: 15 },
     hintEn: "Final: navigate the corridor.",
-    hintEs: "Final: navegá el corredor.",
+    hintEs: "Final: naveg\u00e1 el corredor.",
   },
 ];
 
@@ -189,6 +190,7 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
   const [best, setBest] = useState(0);
   const [cleared, setCleared] = useState(false);
   const [particleTick, setParticleTick] = useState(0);
+  const [exporting, setExporting] = useState(false);
 
   const level = LEVELS[levelIdx]!;
 
@@ -395,6 +397,41 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
     particlesRef.current = [];
   };
 
+  const exportPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas || result !== "hit") return;
+    setExporting(true);
+    try {
+      const off = document.createElement("canvas");
+      off.width = canvas.width;
+      off.height = canvas.height;
+      const octx = off.getContext("2d");
+      if (!octx) return;
+      octx.drawImage(canvas, 0, 0);
+      octx.fillStyle = "rgba(255,255,255,0.92)";
+      octx.font = "bold 14px system-ui, sans-serif";
+      octx.textAlign = "left";
+      octx.fillText("utilihub.com", 12, off.height - 14);
+      octx.font = "11px system-ui, sans-serif";
+      octx.fillText(
+        `${es ? "Nivel" : "Level"} ${levelIdx + 1} \u00b7 ${shots} ${es ? "disparos" : "shots"}`,
+        12,
+        off.height - 30
+      );
+      octx.font = "bold 16px system-ui, sans-serif";
+      octx.textAlign = "center";
+      octx.fillText(es ? "Desaf\u00edo de refracci\u00f3n" : "Refraction Challenge", off.width / 2, 22);
+      const dataUrl = off.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = `refraction-challenge-level-${levelIdx + 1}.png`;
+      a.click();
+      trackEvent("game_share", { slug: "refraction-challenge", type: "png", locale });
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-3">
       <style>{`
@@ -425,7 +462,7 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
         <canvas
           ref={canvasRef}
           role="img"
-          aria-label={es ? `Nivel ${levelIdx + 1}: lentes, obstáculos y blanco del láser` : `Level ${levelIdx + 1}: lenses, blockers and laser target`}
+          aria-label={es ? `Nivel ${levelIdx + 1}: lentes, obst\u00e1culos y blanco del l\u00e1ser` : `Level ${levelIdx + 1}: lenses, blockers and laser target`}
           width={W}
           height={H}
           className="h-auto w-full touch-none"
@@ -434,7 +471,7 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
       </div>
 
       <label className="block text-xs text-emerald-100/70">
-        {es ? "Ángulo" : "Angle"}: {angle}°
+        {es ? "\u00c1ngulo" : "Angle"}: {angle}\u00b0
         <input
           type="range"
           min={-55}
@@ -460,6 +497,11 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
         {result === "hit" && levelIdx < LEVELS.length - 1 && (
           <GamePrimaryButton onClick={next}>{es ? "Siguiente nivel" : "Next level"}</GamePrimaryButton>
         )}
+        {result === "hit" && (
+          <GameSecondaryButton onClick={exportPng} disabled={exporting}>
+            {es ? "Compartir PNG" : "Share PNG"}
+          </GameSecondaryButton>
+        )}
         {result === "miss" && (
           <GameSecondaryButton onClick={resetLevel}>{es ? "Reintentar" : "Retry"}</GameSecondaryButton>
         )}
@@ -467,17 +509,17 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
       </div>
 
       {result === "hit" && !cleared && (
-        <p className="text-center text-sm font-bold text-emerald-300">{es ? "¡Impacto!" : "Hit!"}</p>
+        <p className="text-center text-sm font-bold text-emerald-300">{es ? "\u00a1Impacto!" : "Hit!"}</p>
       )}
       {result === "miss" && (
         <p className="text-center text-sm font-semibold text-amber-200/90">
-          {es ? "Fallaste — ajustá el ángulo." : "Miss — tweak the angle."}
+          {es ? "Fallaste \u2014 ajust\u00e1 el \u00e1ngulo." : "Miss \u2014 tweak the angle."}
         </p>
       )}
       {cleared && (
         <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-3 text-center">
           <p className="font-black text-emerald-300">
-            {es ? "¡Todos los niveles!" : "All levels cleared!"}
+            {es ? "\u00a1Todos los niveles!" : "All levels cleared!"}
           </p>
           <p className="mt-1 text-xs text-white/60">
             {es ? "Disparos totales" : "Total shots"}: {shots}
