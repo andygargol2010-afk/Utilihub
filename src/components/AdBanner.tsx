@@ -2,14 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
+import { useAdFormat } from "@/lib/ads-config";
 
 /**
- * Adsterra banner scripts ON for retest (2026-10-15).
- * Previous note: same zone once redirected (pixelmeshweb → 1xbet).
- * If redirect returns, set false again and swap DESKTOP/MOBILE key+src.
+ * Home / hub Adsterra banner (same zone as AdsterraBanner).
+ * Gated by Edge Config: ads_enabled + formats.banner. Fail closed.
  */
-const ADS_SCRIPTS_ENABLED = true;
-
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
   width: 728,
@@ -26,8 +24,8 @@ const MOBILE = {
 
 type AtWindow = Window & { atOptions?: Record<string, unknown> };
 
-/** Home banner. The 728×90 box is in the first paint so the script cannot shift the page. */
 export function AdBanner() {
+  const bannerOn = useAdFormat("banner");
   const slotRef = useRef<HTMLDivElement>(null);
   const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
   const [allowed, setAllowed] = useState(false);
@@ -40,15 +38,16 @@ export function AdBanner() {
   }, []);
 
   useEffect(() => {
+    if (!bannerOn) return;
     const mq = window.matchMedia("(min-width: 768px)");
     const apply = () => setViewport(mq.matches ? "desktop" : "mobile");
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
-  }, []);
+  }, [bannerOn]);
 
   useEffect(() => {
-    if (!ADS_SCRIPTS_ENABLED) return;
+    if (!bannerOn) return;
     if (!allowed || !viewport || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
     const slot = slotRef.current;
     let cancelled = false;
@@ -86,7 +85,9 @@ export function AdBanner() {
       if (slot.dataset.loaded) delete slot.dataset.loaded;
       slot.replaceChildren();
     };
-  }, [allowed, viewport]);
+  }, [bannerOn, allowed, viewport]);
+
+  if (!bannerOn) return null;
 
   return (
     <aside

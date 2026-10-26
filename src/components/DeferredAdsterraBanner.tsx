@@ -1,15 +1,18 @@
 import { lazy, Suspense } from "react";
+import { useAdFormat } from "@/lib/ads-config";
 
 const AdsterraBanner = lazy(() =>
   import("./AdsterraBanner").then((m) => ({ default: m.AdsterraBanner })),
 );
 
 /**
- * AdsterraBanner pulls consent listeners, matchMedia, and idle script injection.
- * Keep that off the tool-route shell so hydration can paint the calculator first.
- * The fallback reserves the same 728×90 aspect-ratio slot used on first paint.
+ * Lazy Adsterra banner. When Edge Config has banner off, renders nothing
+ * (no reserved slot) so the page does not keep empty ad chrome.
  */
 export function DeferredAdsterraBanner({ label = "Advertisement" }: { label?: string }) {
+  const bannerOn = useAdFormat("banner");
+  if (!bannerOn) return null;
+
   return (
     <Suspense fallback={<AdsterraBannerSlot label={label} />}>
       <AdsterraBanner label={label} />
@@ -17,13 +20,12 @@ export function DeferredAdsterraBanner({ label = "Advertisement" }: { label?: st
   );
 }
 
-/** Matches the reserved box in AdsterraBanner so the title area and tool surface do not shift. */
+/** Matches the reserved box in AdsterraBanner while the chunk loads (only when ads on). */
 function AdsterraBannerSlot({ label }: { label: string }) {
   return (
     <aside
       className="ad-slot my-6 w-full max-w-full overflow-x-hidden rounded-xl border border-border/60 bg-surface/35"
       aria-label={label}
-      aria-hidden
     >
       <div className="flex min-h-7 items-center justify-center px-2 pt-1 text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
         {label}
