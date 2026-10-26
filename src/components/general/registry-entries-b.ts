@@ -1,6 +1,6 @@
 /**
  * Registry entries (B) — agents may append one object per new tool.
- * Keep this file small (< 10 KB). Do NOT write PLACEHOLDER.
+ * Keep this file small (< 10 KB). Do NOT write stub markers.
  */
 export type RegistryEntry = {
   slug: string;
@@ -76,4 +76,8 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "calculadora-velocidad-distancia-tiempo", name: "SpeedDistanceTimeCalculatorTool", path: "./SpeedDistanceTimeCalculatorTool", export: "SpeedDistanceTimeCalculatorTool" },
   { slug: "calculadora-relacion-aspecto", name: "AspectRatioCalculatorTool", path: "./AspectRatioCalculatorTool", export: "AspectRatioCalculatorTool" },
   { slug: "calculadora-dias-entre-fechas", name: "DaysBetweenDatesCalculatorTool", path: "./DaysBetweenDatesCalculatorTool", export: "DaysBetweenDatesCalculatorTool" },
+  { slug: "calculadora-densidad", name: "DensityCalculatorTool", path: "./DensityCalculatorTool", export: "DensityCalculatorTool" },
+  { slug: "calculadora-error-porcentual", name: "PercentageErrorCalculatorTool", path: "./PercentageErrorCalculatorTool", export: "PercentageErrorCalculatorTool" },
+  { slug: "conversor-texto-caso", name: "TextCaseConverterTool", path: "./TextCaseConverterTool", export: "TextCaseConverterTool" },
+  { slug: "calculadora-frecuencia-cardiaca-objetivo", name: "TargetHeartRateCalculatorTool", path: "./TargetHeartRateCalculatorTool", export: "TargetHeartRateCalculatorTool" },
 ] as const;
