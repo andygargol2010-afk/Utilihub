@@ -136,6 +136,8 @@ import { TARGET_HEART_RATE_CALCULATOR_TOOLS } from "./target-heart-rate-calculat
 import { ROMAN_TOOLS } from "./roman-tool";
 import { SLEEP_CYCLE_TOOLS } from "./sleep-cycle-tool";
 import { BOX_SHADOW_TOOLS } from "./box-shadow-tool";
+import { ATTENDANCE_PERCENTAGE_CALCULATOR_TOOLS } from "./attendance-percentage-calculator-tool";
+import { COST_PER_KM_CALCULATOR_TOOLS } from "./cost-per-km-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -276,4 +278,6 @@ export const GENERAL_TOOLS = [
   ...ROMAN_TOOLS,
   ...SLEEP_CYCLE_TOOLS,
   ...BOX_SHADOW_TOOLS,
+  ...ATTENDANCE_PERCENTAGE_CALCULATOR_TOOLS,
+  ...COST_PER_KM_CALCULATOR_TOOLS,
 ];

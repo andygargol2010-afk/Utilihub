@@ -68,4 +68,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "conversor-kmh-ms", name: "KmhToMsConverterTool", path: "./KmhToMsConverterTool", export: "KmhToMsConverterTool" },
   { slug: "conversor-texto-caso", name: "TextCaseConverterTool", path: "./TextCaseConverterTool", export: "TextCaseConverterTool" },
   { slug: "calculadora-frecuencia-cardiaca-objetivo", name: "TargetHeartRateCalculatorTool", path: "./TargetHeartRateCalculatorTool", export: "TargetHeartRateCalculatorTool" },
+  { slug: "calculadora-porcentaje-asistencia", name: "AttendancePercentageCalculatorTool", path: "./AttendancePercentageCalculatorTool", export: "AttendancePercentageCalculatorTool" },
+  { slug: "calculadora-costo-por-km", name: "CostPerKmCalculatorTool", path: "./CostPerKmCalculatorTool", export: "CostPerKmCalculatorTool" },
 ] as const;
