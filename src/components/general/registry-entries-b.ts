@@ -81,4 +81,5 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "conversor-texto-caso", name: "TextCaseConverterTool", path: "./TextCaseConverterTool", export: "TextCaseConverterTool" },
   { slug: "calculadora-frecuencia-cardiaca-objetivo", name: "TargetHeartRateCalculatorTool", path: "./TargetHeartRateCalculatorTool", export: "TargetHeartRateCalculatorTool" },
   { slug: "calculadora-volumen-tanque", name: "TankVolumeCalculatorTool", path: "./TankVolumeCalculatorTool", export: "TankVolumeCalculatorTool" },
+  { slug: "calculadora-porciones-pizza", name: "PizzaPortionsCalculatorTool", path: "./PizzaPortionsCalculatorTool", export: "PizzaPortionsCalculatorTool" },
 ] as const;
