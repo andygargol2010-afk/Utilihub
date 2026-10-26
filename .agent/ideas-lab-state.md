@@ -11,8 +11,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: quality-lift
-last_closed_id: refraction-challenge
+last_closed_domain: games
+last_closed_id: orbit-pulse-catcher
 p_fixed: 0.35
 
 weights_core:
@@ -43,6 +43,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-26 | games | orbit-pulse-catcher | Interactive Orbit Pulse Catcher complete after 6 runs. Radial orbit timing + matching zones (grow to 8), combo multipliers, power-up pulses (+life + boost), particle bursts on catch/level-up/combo milestones (5/10), haptic, wide touch zones + ripples, keyboard 1-N/QWERTY, PNG share with branding + best/level/combo, localStorage high score. EN+ES. CWV-safe (lazy canvas, modest particles). Adsterra intact. Next-step registered. Distinct from Pulse Catch Arena / Refraction Challenge.
 - 2026-10-26 | quality-lift | refraction-challenge | Elevated standard on Refraction Challenge (games family) complete after 6 runs. Live full-path dashed ray preview (green hit / amber miss) + solid aim indicator while adjusting angle; particle spark effects on lens refraction entry (cyan) and target hit (emerald + gold bursts, cap 48, short life, gravity drift); PNG share of successful path with branding (title + utilihub.com + level/shots baked on offscreen canvas); localStorage progress persistence (maxCleared + shots under utilihub_game_progress_refraction-challenge) with resume at next uncleared level + progress banner + Restart clears; +2 advanced levels (now 7 total: four/five lenses + tight/dense blockers, smaller targets). Distinctive capabilities peers (Minesweeper, Pong) still lack. EN+ES routes. CWV-safe (lazy canvas, modest particles, static level data). Adsterra intact. Bar moved for future quality-lift comparisons.
 - 2026-10-26 | search-magnets | modular-pattern-composer-guide | Original long-form SEO guide (EN+ES) on the Modular Pattern Composer complete. Explains modular tile systems on a grid, live procedural animations (flow/pulse/morph/spin), multi-layer blend/opacity, symmetry (mirror/radial), tile library (geometric/organic/particle + hex/blob), color palettes + gradients, playback controls, brush size for multi-cell place/erase, PNG share with branding, URL deep-link, localStorage auto-persist. Practical composition tips, distinction from freehand neon-layer, worked example (flowing radial mandala), related experiences, FAQs (including share PNG vs deep-link and single-layer export). Original explanatory text for search depth. EN+ES static routes with meta, hreflang, breadcrumbs, deep links to live composer. CWV-safe. Adsterra intact. Closed after 6 runs. Distinct from n-body-gravity-guide.
 - 2026-10-25 | traffic-diagnosis | weekly-diagnosis-2026-10-25 | Diagnóstico de tráfico 7d (18-25 oct) vs prior (11-18 oct): site pageviews 159 vs 179 (-11.2%, por encima de umbral -15%). Home /: 27 vs 47 pv (-42.5%, bajo umbral -25% de ruta). Otras rutas de bajo volumen estables o variables. Sin acceso a custom events (plan). No evidencia de 2× errores. Adsterra intacto. Recomendación A: monitorear home engagement (spotlight/value-path recientes); B: no cambios urgentes en ads; C: posible estacionalidad o efecto de nuevas superficies. Closed after 1 run.
@@ -52,7 +53,6 @@ adsense-prep_runs: 3
 - 2026-10-24 | conversion-paths | home-value-path-boost | Sección Ruta de valor / Value Path en home EN+ES completa: 3 experiencias aleatorias de pool de 6 (aurora, n-body, neon, prism, color-cascade, aura), progreso localStorage (1 de 3), botón Nueva/New, CTAs claros, data-events (value-path-click + value-path-refresh), barra de progreso y mensaje de completado. Lazy load en home. CWV-safe (sin assets pesados ni deps nuevas). Adsterra intacto. Closed after 4 runs. Mejora rutas de conversión desde home hacia experiencias interactivas de alto valor.
 - 2026-10-24 | journeys | waypoint-river-journey | Interactive Waypoint River Journey complete: place/drag waypoints to define flowing particle river, fading trails (4-24), speed/width/bloom/density/gravity controls, attractors, pause/randomize/clear, keyboard (Space/R/C), PNG share with baked title + utilihub.com + waypoint count, URL deep-link (?wp=). EN+ES routes. CWV-safe (density cap 80, lazy canvas). Next-step before Adsterra. Adsterra intact. Closed after 6 runs. Distinct path/progression experience.
 - 2026-10-24 | search-magnets | n-body-gravity-guide | Original long-form SEO guide (EN+ES) on interactive N-body and multi-attractor gravity simulations complete. Explains Newtonian force summation, soft collisions, fading trails, body glow, presets, numerical integration (Euler vs semi-implicit), energy/virial, circular binary worked example, practical tuning (G/softening/timestep/scale), mutual vs fixed-attractor contrast, camera, CWV caps, FAQs and deep links to the live simulator + related playgrounds. Original explanatory text for search depth. EN+ES routes with meta, hreflang, breadcrumbs. CWV-safe (static). Adsterra intact. Closed after 6 runs.
-- 2026-10-24 | traffic-bets | shareable-experiences-boost | Shareability boost complete: ExperienceShareButton (Web Share API + clipboard + data-event share_click) on top experiences headers EN+ES (aurora, neon-layer, n-body, color-cascade, prism-trail, aura-card) + cards in ExperienceDiscoveryRail. Home teaser "Shareable Experiences" / "Experiencias compartibles" with deep-links. EN+ES. CWV-safe (light events, no heavy assets). Adsterra intact. Closed after 4 runs. Bet on referral traffic from shares.
 ```
 
 ---
@@ -60,18 +60,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive Orbit Pulse Catcher game: orbiting colored pulses around a center; player times taps or clicks to catch them in matching zones for score. Combo multipliers on consecutive perfect catches, increasing speed and density per level, particle burst effects on catch, miss penalty, high-score localStorage, PNG share of best run with branding (title + utilihub.com + score + combo), keyboard/touch controls, progressive levels (5-8). Distinct from Pulse Catch Arena and Refraction Challenge by radial orbit timing + zone matching. EN+ES routes. CWV-safe (canvas lazy, modest particles). Adsterra intact. Next-step required.
-id: orbit-pulse-catcher
-path_en: /games/orbit-pulse-catcher
-path_es: /es/juegos/atrapa-pulsos-orbita
-domain: games
-runs_total: 6
-runs_remaining: 1
-acceptance: pending
-share: png
-next_step_required: yes
-notes: EXECUTE 5/6: Mobile refinements: wider touch zone (OUTER_R+40 / INNER-8), haptic vibrate on catch (20ms) / miss (10ms) / power-up (40ms) via navigator.vibrate, white touch ripples on pointer down, richer PNG share (best + level + combo if >1 + local best note), touch-action none. Instructions updated EN+ES. CWV-safe (no extra deps, modest particles). Adsterra intact. Next-step already in GAME_JOURNEYS + PlaygroundNextStep. Next: final polish or close.
+status: none
+idea: n/a
+id: n/a
+path_en: n/a
+path_es: n/a
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
+share: n/a
+next_step_required: no
+notes: Closed orbit-pulse-catcher. Ready for next IDEATE.
 adsense-prep_runs: 3
 ```
 
