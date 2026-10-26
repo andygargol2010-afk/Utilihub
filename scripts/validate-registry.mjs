@@ -42,20 +42,33 @@ for (const forbidden of ["PLACEHOLDER", "$(cat"]) {
   }
 }
 
-const lazyRe = /lazy\s*\(\s*\(\s*\)\s*=>/g;
-const lazyMatches = registry.match(lazyRe) || [];
-const lazyCount = lazyMatches.length;
-
+const lazyCount = (registry.match(/lazy\s*\(\s*\(\s*\)\s*=>/g) || []).length;
 const importPaths = [...registry.matchAll(/import\s*\(\s*["']\.\/([^"']+)["']\s*\)/g)].map((m) => m[1]);
 const uniqueImports = [...new Set(importPaths)];
 
-const slugMatches = [...registry.matchAll(/if\s*\(\s*slug\s*===\s*["']([^"']+)["']\s*\)/g)].map((m) => m[1]);
-const uniqueSlugs = [...new Set(slugMatches)];
+const slugEquals = [...registry.matchAll(/if\s*\(\s*slug\s*===\s*["']([^"']+)["']\s*\)/g)].map((m) => m[1]);
+const entrySlugs = [...combined.matchAll(/slug:\s*["']([^"']+)["']/g)].map((m) => m[1]);
+const opSlugs = [...registry.matchAll(/op === ["']([^"']+)["']/g)].map((m) => m[1]);
+const allQuoted = [...new Set([...slugEquals, ...entrySlugs, ...opSlugs])];
+
+const entryObjects = [...(entriesA + entriesB).matchAll(
+  /\{\s*slug:\s*["']([^"']+)["']\s*,\s*name:\s*["']([^"']+)["']\s*,\s*path:\s*["']([^"']+)["']\s*,\s*export:\s*["']([^"']+)["']\s*\}/g,
+)];
+const entryCount = entryObjects.length;
 
 const minComponents = Number(baseline.minComponents) || 0;
+const minEntries = Number(baseline.minEntries) || 0;
+
 if (lazyCount < minComponents) {
   console.error(
     `validate-registry: lazy components ${lazyCount} < baseline minComponents ${minComponents}`,
+  );
+  process.exit(1);
+}
+
+if (entryCount < minEntries) {
+  console.error(
+    `validate-registry: registry entries ${entryCount} < baseline minEntries ${minEntries}`,
   );
   process.exit(1);
 }
@@ -69,20 +82,29 @@ for (const imp of uniqueImports) {
     if (!existsSync(alt)) missingFiles.push(file);
   }
 }
+for (const m of entryObjects) {
+  const p = m[3].replace(/^\.\//, "");
+  const file = p.endsWith(".tsx") || p.endsWith(".ts") ? p : `${p}.tsx`;
+  const full = join(componentsDir, file);
+  if (!existsSync(full)) {
+    const alt = join(componentsDir, `${p}.ts`);
+    if (!existsSync(alt)) missingFiles.push(`entry:${file}`);
+  }
+}
 if (missingFiles.length) {
-  console.error(`validate-registry: missing component files:\n  ${missingFiles.join("\n  ")}`);
+  console.error(`validate-registry: missing component files:\n  ${[...new Set(missingFiles)].join("\n  ")}`);
   process.exit(1);
 }
 
 const baselineSlugs = Array.isArray(baseline.slugs) ? baseline.slugs : [];
-const missingSlugs = baselineSlugs.filter((s) => !uniqueSlugs.includes(s));
+const missingSlugs = baselineSlugs.filter((s) => !allQuoted.includes(s));
 if (missingSlugs.length) {
   console.error(
-    `validate-registry: baseline slugs missing from registry.tsx:\n  ${missingSlugs.join("\n  ")}`,
+    `validate-registry: baseline slugs missing:\n  ${missingSlugs.join("\n  ")}`,
   );
   process.exit(1);
 }
 
 console.log(
-  `validate-registry PASS: lazy=${lazyCount} (min ${minComponents}), uniqueImports=${uniqueImports.length}, dedicatedSlugs=${uniqueSlugs.length}, registryLines=${lineCount}`,
+  `validate-registry PASS: lazy=${lazyCount} (min ${minComponents}), entries=${entryCount} (min ${minEntries}), uniqueImports=${uniqueImports.length}, quotedSlugs=${allQuoted.length}, registryLines=${lineCount}`,
 );
