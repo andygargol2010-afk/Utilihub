@@ -16,9 +16,9 @@ export const BOX_SHADOW_TOOLS = [
       "generador sombra caja css",
     ],
     {
-      title: "CSS Box Shadow Generator — Free Online | UtiliHub",
+      title: "CSS Box Shadow Generator Online Free | UtiliHub",
       description:
-        "Free CSS box-shadow generator. Live preview, adjust horizontal/vertical offset, blur, spread, color, and inset. Copy the CSS snippet instantly. Runs in your browser.",
+        "Free CSS box-shadow generator with live preview. Offset, blur, spread, color, inset—copy CSS instantly. No signup.",
     },
   ),
 ];

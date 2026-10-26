@@ -4,7 +4,7 @@ import { makeTool } from "./types";
 export const ROMAN_TOOLS = [
   makeTool(
     "conversor-numeros-romanos",
-    "Roman numeral converter",
+    "Roman Numeral Converter",
     "educacion",
     "converter",
     "Convert 1 to 3999 into standard Roman numerals and decode subtractive forms back to numbers.",
@@ -20,9 +20,9 @@ export const ROMAN_TOOLS = [
     ],
     {
       mode: "roman-numeral",
-      title: "Roman Numeral Converter — 1 to 3999 | UtiliHub",
+      title: "Roman Numeral Converter 1–3999 Free Online | UtiliHub",
       description:
-        "Convert integers from 1 to 3999 into standard subtractive Roman numerals and decode MCMXCIV-style forms. IIII and IC are rejected. Runs locally.",
+        "Convert numbers to Roman numerals and back (1–3999, subtractive). Free, local, no signup.",
     },
   ),
 ];
