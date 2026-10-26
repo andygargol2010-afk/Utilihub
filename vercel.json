@@ -1,5 +1,5 @@
 {
-  "ignoreCommand": "bash -c \"git rev-parse --verify HEAD^ >/dev/null 2>&1 && git diff --quiet HEAD^ -- . ':!docs' ':!.agent' ':!.github' ':!*.md' || exit 1\"",
+  "ignoreCommand": "bash scripts/vercel-ignore.sh",
   "headers": [
     {
       "source": "/(.*)",
