@@ -44,6 +44,13 @@ type CatchRing = {
   hue: number;
 };
 
+type TouchRipple = {
+  x: number;
+  y: number;
+  r: number;
+  life: number;
+};
+
 export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -60,6 +67,7 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
   const pulsesRef = useRef<Pulse[]>([]);
   const particlesRef = useRef<Particle[]>([]);
   const ringsRef = useRef<CatchRing[]>([]);
+  const ripplesRef = useRef<TouchRipple[]>([]);
   const scoreRef = useRef(0);
   const livesRef = useRef(3);
   const comboRef = useRef(0);
@@ -72,6 +80,8 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
   const flashTimerRef = useRef(0);
   const zonesRef = useRef(BASE_ZONES);
   const powerupTimerRef = useRef(0); // temporary score boost
+  const lastLevelRef = useRef(1);
+  const lastComboRef = useRef(0);
 
   useEffect(() => {
     setBest(readBestScore("orbit-pulse-catcher"));
@@ -84,12 +94,15 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
     runningRef.current = running;
     gameOverRef.current = gameOver;
     zonesRef.current = Math.min(MAX_ZONES, BASE_ZONES + Math.floor((level - 1) / 2));
+    lastLevelRef.current = level;
+    lastComboRef.current = combo;
   }, [score, lives, combo, running, gameOver, level]);
 
   const hardReset = useCallback(() => {
     pulsesRef.current = [];
     particlesRef.current = [];
     ringsRef.current = [];
+    ripplesRef.current = [];
     spawnTimerRef.current = 0;
     shakeRef.current = 0;
     flashZoneRef.current = null;
@@ -118,7 +131,7 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
     if (zone < 0 || zone >= zones) return;
     flashZoneRef.current = zone;
     flashTimerRef.current = 14;
-    const tolerance = 0.42; // more forgiving for mobile timing
+    const tolerance = 0.48; // more forgiving for mobile timing
     let caught = false;
     pulsesRef.current = pulsesRef.current.filter((p) => {
       if (p.zone !== zone) return true;
@@ -168,6 +181,9 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
           hue: p.hue,
         });
         shakeRef.current = p.isPowerup ? 10 : 7;
+        if (typeof navigator !== "undefined" && navigator.vibrate) {
+          navigator.vibrate(p.isPowerup ? 40 : 20);
+        }
         if (p.isPowerup) {
           // +1 life if under cap, plus temporary multiplier
           setLives((l) => {
@@ -196,6 +212,9 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
       comboRef.current = 0;
       setCombo(0);
       shakeRef.current = 4;
+      if (typeof navigator !== "undefined" && navigator.vibrate) {
+        navigator.vibrate(10);
+      }
     }
   }, [level, paused]);
 
@@ -280,6 +299,13 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
           return r.life > 0;
         });
 
+        // touch ripples
+        ripplesRef.current = ripplesRef.current.filter((rip) => {
+          rip.r += 3.2;
+          rip.life -= 1;
+          return rip.life > 0;
+        });
+
         if (shakeRef.current > 0) shakeRef.current -= 0.4;
         if (flashTimerRef.current > 0) {
           flashTimerRef.current -= 1;
@@ -353,6 +379,17 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
           ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
           ctx.strokeStyle = `hsl(${r.hue}, 100%, 70%)`;
           ctx.lineWidth = 2.5;
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+
+        // touch ripples
+        for (const rip of ripplesRef.current) {
+          ctx.globalAlpha = Math.max(0, rip.life / 18);
+          ctx.beginPath();
+          ctx.arc(rip.x, rip.y, rip.r, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(255,255,255,0.7)";
+          ctx.lineWidth = 2;
           ctx.stroke();
         }
         ctx.globalAlpha = 1;
@@ -460,11 +497,13 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
     const dx = x - CX;
     const dy = y - CY;
     const dist = Math.hypot(dx, dy);
-    if (dist < INNER_R - 4 || dist > OUTER_R + 28) return; // wider touch zone
+    if (dist < INNER_R - 8 || dist > OUTER_R + 40) return; // even wider touch zone for mobile
     let ang = Math.atan2(dy, dx);
     if (ang < 0) ang += Math.PI * 2;
     const zones = zonesRef.current;
     const zone = Math.floor((ang / (Math.PI * 2)) * zones) % zones;
+    // visual ripple at touch
+    ripplesRef.current.push({ x, y, r: 8, life: 18 });
     tryCatch(zone);
   };
 
@@ -473,18 +512,22 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
     if (!canvas) return;
     const off = document.createElement("canvas");
     off.width = W;
-    off.height = H + 60;
+    off.height = H + 80;
     const octx = off.getContext("2d");
     if (!octx) return;
     octx.drawImage(canvas, 0, 0);
     octx.fillStyle = "#0a0a12";
-    octx.fillRect(0, H, W, 60);
+    octx.fillRect(0, H, W, 80);
     octx.fillStyle = "#fff";
     octx.font = "bold 16px system-ui";
     octx.textAlign = "center";
     octx.fillText("Orbit Pulse Catcher", W / 2, H + 22);
     octx.font = "13px system-ui";
-    octx.fillText(`utilihub.com  ·  ${es ? "Puntos" : "Score"}: ${best}`, W / 2, H + 42);
+    const extra = lastComboRef.current > 1 ? `  ·  Combo x${lastComboRef.current}` : "";
+    octx.fillText(`utilihub.com  ·  ${es ? "Puntos" : "Score"}: ${best}  ·  ${es ? "Nivel" : "Lvl"}: ${lastLevelRef.current}${extra}`, W / 2, H + 42);
+    octx.font = "11px system-ui";
+    octx.fillStyle = "rgba(255,255,255,0.6)";
+    octx.fillText(es ? "Mejor puntuación local" : "Local best score", W / 2, H + 62);
     off.toBlob((blob) => {
       if (!blob) return;
       const url = URL.createObjectURL(blob);
@@ -504,7 +547,7 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
         width={W}
         height={H}
         className="max-w-full rounded-xl border border-white/10 touch-none"
-        style={{ aspectRatio: `${W}/${H}`, maxHeight: "70vh" }}
+        style={{ aspectRatio: `${W}/${H}`, maxHeight: "70vh", touchAction: "none" }}
         onPointerDown={onPointer}
       />
       <div className="flex flex-wrap justify-center gap-2">
@@ -525,8 +568,8 @@ export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }
       </div>
       <p className="max-w-md text-center text-xs text-white/60">
         {es
-          ? "Clic en la zona numerada (o teclas 1-N / QWERTY) cuando el pulso coincidente esté sobre ella. Zonas aumentan con el nivel. Anillos de captura y estelas. Pulsos dorados raros: +1 vida y boost temporal. Más tolerante en móvil."
-          : "Click the numbered matching zone (or keys 1-N / QWERTY) when the pulse is over it. Zones grow with level. Catch rings and trails. Rare golden power-up pulses: +1 life and temporary score boost. More forgiving on mobile."}
+          ? "Tocá la zona numerada (o teclas 1-N / QWERTY) cuando el pulso coincidente esté sobre ella. Zona de toque más amplia y vibración en capturas. Zonas aumentan con el nivel. Anillos, estelas y ripples. Pulsos dorados raros: +1 vida y boost."
+          : "Tap the numbered matching zone (or keys 1-N / QWERTY) when the pulse is over it. Wider touch zone + haptic on catches. Zones grow with level. Catch rings, trails and touch ripples. Rare golden power-up pulses: +1 life and temporary score boost."}
       </p>
     </div>
   );
