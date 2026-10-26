@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-26
-- mode: known smoke (E001 registry full, E005 homes clean no $(cat, E031/E034 tip clean no PLACEHOLDER, E033 ModularPatternComposer full canvas) + discovery (searches for PLACEHOLDER/$(cat/Tool not available, sampled homes/registry/playground/i18n)
-- deploy: tip SHA 5f413e1836ca12478e25dbf5b5bfadc682238236 READY (dpl_GHVPeKeCQjWgnB9TWmimivmvpPDF); older ERROR on unrelated chore commit
-- known_smoke: all fixed entries green on tip; E031 open as recurring risk but no active corruption in critical files
-- new_findings: none — no new runtime/routing/registry/SEO/corrupt patterns detected in sampled paths
+- mode: known smoke (E001 registry full no PLACEHOLDER, E005 homes start with import no $(cat, E031/E034 critical files clean, E033 ModularPatternComposer full >10kB canvas) + discovery (code search PLACEHOLDER/$(cat/Tool not available = 0; sampled live www.utilihub.net home/tools/png-a-jpg/games/studio/es home; registry/i18n full)
+- deploy: tip SHA 61dfd45c45fec287ab39e9081d5cb024ab32453a no deploy yet (docs only); latest READY dpl_9B6pwpGVysHhbEJm3isvg9yz5WZ2 on bdef37210307cecc0021239260f0e50edc7e2257; no recent ERROR on tip
+- known_smoke: all fixed entries green on tip; E031 open as recurring risk but no active corruption
+- new_findings: none — no new runtime/routing/registry/SEO/corrupt patterns in sampled paths (prod 404 on some new slugs expected if not promoted)
 - fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E031 PLACEHOLDER risk + homes/registry smoke
+- last_known_focus: E001/E005/E031 homes+registry+composer smoke
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
