@@ -15,13 +15,14 @@ export function PercentageErrorCalculatorTool({ locale = "en" }: { tool?: Genera
   const result = useMemo(() => {
     const e = parseFloat(experimental);
     const t = parseFloat(theoretical);
-    if (!Number.isFinite(e) || !Number.isFinite(t) || t === 0) return null;
+    if (!Number.isFinite(e) || !Number.isFinite(t)) return { error: "empty" as const };
+    if (t === 0) return { error: "zero" as const };
     const error = Math.abs(e - t) / Math.abs(t) * 100;
     return { error: Math.round(error * 100) / 100 };
   }, [experimental, theoretical]);
 
   async function copy() {
-    if (!result) return;
+    if ("error" in result) return;
     const text = es
       ? `Error porcentual: ${result.error}% (exp ${experimental} / teor ${theoretical})`
       : `Percentage error: ${result.error}% (exp ${experimental} / theo ${theoretical})`;
@@ -44,11 +45,15 @@ export function PercentageErrorCalculatorTool({ locale = "en" }: { tool?: Genera
     <div className="space-y-6">
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
         <p className="text-sm text-muted-foreground">{es ? "Error porcentual" : "Percentage error"}</p>
-        {result ? (
+        {!"error" in result ? (
           <p className="text-3xl font-semibold">{result.error}%</p>
-        ) : (
+        ) : result.error === "zero" ? (
           <p className="text-sm text-muted-foreground">
             {es ? "Valor teórico ≠ 0" : "Theoretical value ≠ 0"}
+          </p>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            {es ? "Ingresá ambos valores numéricos" : "Enter both numeric values"}
           </p>
         )}
       </div>
@@ -74,7 +79,7 @@ export function PercentageErrorCalculatorTool({ locale = "en" }: { tool?: Genera
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button type="button" className={`${buttonClass} bg-primary text-primary-foreground`} onClick={copy}>
+        <button type="button" className={`${buttonClass} bg-primary text-primary-foreground`} onClick={copy} disabled={"error" in result}>
           {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar" : "Copy"}
         </button>
         <button type="button" className={buttonClass} onClick={reset}>
