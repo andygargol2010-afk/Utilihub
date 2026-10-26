@@ -45,7 +45,7 @@ export function PercentageErrorCalculatorTool({ locale = "en" }: { tool?: Genera
     <div className="space-y-6">
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
         <p className="text-sm text-muted-foreground">{es ? "Error porcentual" : "Percentage error"}</p>
-        {!"error" in result ? (
+        {!("error" in result) ? (
           <p className="text-3xl font-semibold">{result.error}%</p>
         ) : result.error === "zero" ? (
           <p className="text-sm text-muted-foreground">
