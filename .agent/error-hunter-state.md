@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-26
-- mode: known smoke (E001 registry full no PLACEHOLDER, E005 homes clean, E031/E034 tip clean, ModularPatternComposer full) + discovery (new tools calculadora-iva + conversor-kmh-ms missing registry wires)
-- deploy: tip previous e5459da no deploy listed yet at check; fix SHA 554d53a (wire dedicated UIs) committed; post-push verification pending
-- known_smoke: registry complete, homes start with import no $(cat, summary-es full no PLACEHOLDER, ModularPatternComposer canvas present; E031 still open as risk pattern but no active corruption
-- new_findings: E035 — dedicated UIs for calculadora-iva and conversor-kmh-ms existed + catalog wired but pickComponent missing slug checks → generic Math/Converter UI. Fixed by adding lazy + early returns.
-- fixes: 1 code (registry.tsx wire); catalog + state updated
+- mode: known smoke (E001 registry full, E005 homes clean no $(cat, E031/E034 tip clean no PLACEHOLDER, E033 ModularPatternComposer full canvas) + discovery (searches for PLACEHOLDER/$(cat/Tool not available, sampled homes/registry/playground/i18n)
+- deploy: tip SHA 5f413e1836ca12478e25dbf5b5bfadc682238236 READY (dpl_GHVPeKeCQjWgnB9TWmimivmvpPDF); older ERROR on unrelated chore commit
+- known_smoke: all fixed entries green on tip; E031 open as recurring risk but no active corruption in critical files
+- new_findings: none — no new runtime/routing/registry/SEO/corrupt patterns detected in sampled paths
+- fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E031 PLACEHOLDER risk + new tool wiring (E035)
+- last_known_focus: E031 PLACEHOLDER risk + homes/registry smoke
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
