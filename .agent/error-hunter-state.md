@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-26 (run 4)
-- mode: known smoke (E031 tip clean: no PLACEHOLDER/$(cat in catalog/registry/index/es.index/summary-es; registry.tsx full dedicated wires + kind-first Media/Document; homes start with import+createFileRoute; ModularPatternComposer full interactive >10kB; summary-es.ts real SUMMARY_ES) + discovery (code search PLACEHOLDER/$(cat/"Tool not available"/not implemented = 0; live /es home 200; sampled registry, homes, playground, production png-a-jpg OK with name SEO; iva not on production yet)
-- deploy: tip branch READY (SHA 668b5f4c7e203325ae725b25b2a16b1701ba59ef); no active ERROR on tip
+- date: 2026-10-26 (run 5)
+- mode: known smoke (E031 tip clean: no PLACEHOLDER/$(cat in critical files catalog/registry/index/es.index/summary-es; registry.tsx full with dedicated wires + kind-first Media/Document; homes start with import+createFileRoute no stubs; ModularPatternComposer full canvas/layers/animations >10kB; summary-es.ts real SUMMARY_ES map) + discovery (code search PLACEHOLDER/$(cat/"Tool not available"/not implemented = 0 hits; sampled recent game registration orbit-pulse-catcher commits clean; no broken imports or kind mismatches found in sampled paths)
+- deploy: tip branch READY (SHA 3f59ef2772a97d4898af06edc02777c1a022d06b); no active ERROR on tip (previous ERROR deploys are older SHAs)
 - known_smoke: all fixed green; E031 open as recurring risk but tip clean
 - new_findings: none
 - fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E031 + registry wires + homes + ModularPatternComposer + live ES home + production sample tools
+- last_known_focus: E031 + registry + homes + ModularPatternComposer + summary-es + recent games registration
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
