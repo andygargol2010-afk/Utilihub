@@ -1,1 +1,1 @@
-$(cat /tmp/guide-en-updated.tsx)
+PLACEHOLDER_WILL_REPLACE
