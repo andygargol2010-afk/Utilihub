@@ -68,6 +68,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-26: FIX-BUILD — deploy ERROR on ignoreCommand >256 chars (dpl_Cqrs6rgtk...). Already fixed on branch (ba0769f short command). No new tools this run. Next PRODUCT after READY.
 2026-10-26: PRODUCT — calculadora-porcentaje-asistencia (educacion) + calculadora-costo-por-km (viajes). Clusters distintos. SEO locales: none active.
 2026-10-26: PRODUCT — calculadora-densidad (ciencia) + calculadora-error-porcentual (matematicas). Clusters distintos, calidad alta. SEO locales: defer pt.
+2026-10-26: FIX-BUILD — deploy ERROR dpl_2kykMQp8... on SHA 03a896db due to duplicate slug calculadora-relacion-aspecto in two files. Fixed on HEAD (duplicate file removed, wired to aspect-ratio-tool.ts). No new tools. Next PRODUCT after READY.
 ```
 
 ---
@@ -75,10 +76,10 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: calculadora-relacion-aspecto, calculadora-dias-entre-fechas
-last_deploy: pending
-last_sha: 7f183e2d1ac212e4401ebf07f05361fff3702471
+last_mode: FIX-BUILD
+last_slugs: (none — fix only)
+last_deploy: ERROR on previous, fix committed
+last_sha: 741a0e02906973db161025b175bd9ede3eeacd9d
 ```
 
 <!-- end:tools-builder-state.md -->
