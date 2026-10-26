@@ -225,6 +225,12 @@ const SleepCycleToolUi = lazy(() =>
 const BoxShadowToolUi = lazy(() =>
   import("./BoxShadowTool").then((m) => ({ default: m.BoxShadowTool })),
 );
+const AttendancePercentageCalculatorToolUi = lazy(() =>
+  import("./AttendancePercentageCalculatorTool").then((m) => ({ default: m.AttendancePercentageCalculatorTool })),
+);
+const CostPerKmCalculatorToolUi = lazy(() =>
+  import("./CostPerKmCalculatorTool").then((m) => ({ default: m.CostPerKmCalculatorTool })),
+);
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const kind = (tool.kind || "").toLowerCase();
@@ -283,6 +289,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-velocidad-distancia-tiempo") return SpeedDistanceTimeCalculatorToolUi;
   if (slug === "calculadora-iva") return IvaCalculatorToolUi;
   if (slug === "conversor-kmh-ms") return KmhToMsConverterToolUi;
+  if (slug === "calculadora-porcentaje-asistencia") return AttendancePercentageCalculatorToolUi;
+  if (slug === "calculadora-costo-por-km") return CostPerKmCalculatorToolUi;
 
   // 1) File / media tools
   if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
