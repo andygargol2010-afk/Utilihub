@@ -5,7 +5,7 @@ import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from
 
 const title = "Orbit Pulse Catcher: Radial Timing Game Guide | UtiliHub";
 const description = cleanDescription(
-  "Original long-form guide to the Orbit Pulse Catcher interactive timing game. Explains radial orbit mechanics, zone matching that grows to 8 zones, combo multipliers, power-up pulses, particle bursts, haptic feedback, wide touch zones, keyboard controls, PNG share with branding and stats, and localStorage high scores. Strategies, rhythm patterns, common mistakes, distinctions from other pulse games, and deep links to the live experience.",
+  "Original long-form guide to the Orbit Pulse Catcher interactive timing game. Explains radial orbit mechanics, zone matching that grows to 8 zones, combo multipliers, power-up pulses, particle bursts, haptic feedback, wide touch zones, keyboard controls, PNG share with branding and stats, and localStorage high scores. Includes exact scoring formula, level progression, timing windows, strategies, rhythm patterns, common mistakes, distinctions from other pulse games, and deep links to the live experience.",
 );
 
 export const Route = createFileRoute("/guides/orbit-pulse-catcher")({
@@ -37,7 +37,7 @@ function OrbitPulseCatcherGuideEn() {
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Orbit Pulse Catcher: Master Radial Timing, Combos, and High Scores</h1>
         <p className="lead">
-          Orbit Pulse Catcher is an interactive timing game built around radial orbit mechanics. Pulses travel along circular orbits while matching zones grow from a few up to eight. Catch them at the right moment to build combos, trigger power-ups, and chase high scores. This original guide covers the core loop, scoring systems, visual and haptic feedback, controls, sharing, persistence, practical strategies, rhythm patterns, common mistakes, and how it differs from related pulse and arcade experiences on UtiliHub.
+          Orbit Pulse Catcher is an interactive timing game built around radial orbit mechanics. Pulses travel along circular orbits while matching zones grow from a few up to eight. Catch them at the right moment to build combos, trigger power-ups, and chase high scores. This original guide covers the core loop, scoring systems, visual and haptic feedback, controls, sharing, persistence, practical strategies, rhythm patterns, common mistakes, exact formula and progression, and how it differs from related pulse and arcade experiences on UtiliHub.
         </p>
 
         <div className="not-prose my-8 rounded-xl border border-primary/20 bg-primary/5 p-6">
@@ -69,9 +69,55 @@ function OrbitPulseCatcherGuideEn() {
           Points per successful catch scale with combo length, current level, and any active power-up boost. A base value is multiplied by a combo factor (growing with successive catches), a level factor, and a temporary boost multiplier when a power-up is active. Combo milestones at 5 and 10 trigger extra particle celebrations without changing the underlying formula.
         </p>
 
+        <h2>Exact scoring formula and worked examples</h2>
+        <p>
+          Each successful catch awards points according to this formula (rounded to the nearest integer):
+        </p>
+        <p>
+          pts = 24 × (1 + (combo − 1) × 0.4) × (1 + level × 0.15) × multiplier
+        </p>
+        <p>
+          where the multiplier is 1.8 while a power-up boost is active and 1.0 otherwise. Combo starts at 1 on the first catch after a reset and grows by 1 for each subsequent catch that occurs within 1.1 seconds of the previous one. A miss, or more than 1.6 seconds without a catch, resets the combo.
+        </p>
+        <p>
+          <strong>Example 1 (early game):</strong> Level 1, combo 3, no boost. Combo factor = 1 + 2 × 0.4 = 1.8; level factor = 1 + 0.15 = 1.15; pts ≈ 24 × 1.8 × 1.15 = 50.
+        </p>
+        <p>
+          <strong>Example 2 (mid combo + boost):</strong> Level 4, combo 8, boost active. Combo factor = 1 + 7 × 0.4 = 3.8; level factor = 1 + 0.6 = 1.6; pts ≈ 24 × 3.8 × 1.6 × 1.8 = 263.
+        </p>
+        <p>
+          <strong>Example 3 (high level, no boost):</strong> Level 7, combo 12, no boost. Combo factor = 1 + 11 × 0.4 = 5.4; level factor = 1 + 1.05 = 2.05; pts ≈ 24 × 5.4 × 2.05 = 266.
+        </p>
+        <p>
+          These numbers illustrate why protecting a high combo under an active boost produces the largest single catches, while steady medium combos still accumulate reliably over a long run.
+        </p>
+
+        <h2>Level progression and zone count</h2>
+        <p>
+          Zones begin at 4 and increase by one every two levels, capped at 8:
+        </p>
+        <ul>
+          <li>Levels 1–2: 4 zones</li>
+          <li>Levels 3–4: 5 zones</li>
+          <li>Levels 5–6: 6 zones</li>
+          <li>Levels 7–8: 7 zones</li>
+          <li>Levels 9+: 8 zones</li>
+        </ul>
+        <p>
+          A level-up occurs when the current score exceeds level × 220 (maximum level 10). Orbit speed, pulse spawn rate, and the maximum number of simultaneous pulses all increase with level. Power-up pulses appear more frequently after level 1 (approximately an 11 % chance per spawn).
+        </p>
+
+        <h2>Timing windows and input details</h2>
+        <p>
+          The angular tolerance for a successful catch is approximately 0.48 radians (about 27.5°), intentionally forgiving for mobile play. Combo credit requires the next catch within 1 100 ms of the previous one; otherwise the combo resets to 1. If more than 1 600 ms pass without a catch the combo also drops to zero. These windows reward a steady rhythm rather than frantic tapping.
+        </p>
+        <p>
+          Keyboard mapping (desktop): number keys 1–N select the corresponding zone. Additional QWERTY keys are bound for the first eight zones: Q = zone 1, W = 2, E = 3, R = 4, T = 5, Y = 6, U = 7, I = 8. Touch uses a wide annular hit area that produces visual ripples on contact.
+        </p>
+
         <h2>Power-up pulses</h2>
         <p>
-          Certain pulses are power-ups. Catching them grants temporary bonuses such as an extra life or a score boost. These appear less frequently than normal pulses and are usually visually distinct (different hue and stronger glow). Using them at the right moment can extend a high-combo run or recover from a near-miss. Lives are capped, and the score boost is time-limited.
+          Certain pulses are power-ups. Catching them grants temporary bonuses such as an extra life or a score boost. These appear less frequently than normal pulses and are usually visually distinct (different hue and stronger glow). Using them at the right moment can extend a high-combo run or recover from a near-miss. Lives are capped at 5, and the score boost lasts roughly three seconds.
         </p>
 
         <h2>Particle bursts, haptic feedback, and visual polish</h2>
@@ -128,6 +174,7 @@ function OrbitPulseCatcherGuideEn() {
           <li>Export a PNG of your best run — the baked stats make it easy to track progress over time.</li>
           <li>Note the zone growth pattern: four zones early, then one additional zone roughly every two levels, up to eight. Adjust your visual scan accordingly.</li>
           <li>Internalize the orbit period early; anticipation beats pure reaction once zones exceed five.</li>
+          <li>Time power-up catches to overlap with a rising combo so the 1.8× multiplier hits the highest-value pulses.</li>
         </ul>
 
         <h2>Performance and Core Web Vitals</h2>
@@ -153,7 +200,7 @@ function OrbitPulseCatcherGuideEn() {
           <strong>How many zones can appear?</strong> The matching zones grow up to a maximum of eight as levels progress. They start at four and increase roughly every two levels.
         </p>
         <p>
-          <strong>Do power-ups stack?</strong> They provide temporary effects (extra life or score boost). Catching another while one is active usually refreshes or extends the benefit. Lives are capped.
+          <strong>Do power-ups stack?</strong> They provide temporary effects (extra life or score boost). Catching another while one is active usually refreshes or extends the benefit. Lives are capped at 5.
         </p>
         <p>
           <strong>Is the high score shared online?</strong> No. Scores stay in localStorage on your device. The PNG share is the way to show others your result.
@@ -165,10 +212,10 @@ function OrbitPulseCatcherGuideEn() {
           <strong>Can I use both touch and keyboard?</strong> Yes. Both inputs are active and map to the same zones.
         </p>
         <p>
-          <strong>What ends a combo?</strong> A missed pulse or a long pause without a successful catch resets the combo counter.
+          <strong>What ends a combo?</strong> A missed pulse or a long pause (more than about 1.6 seconds) without a successful catch resets the combo counter. Combo growth itself requires catches within 1.1 seconds of each other.
         </p>
         <p>
-          <strong>How do I maximize the power-up boost?</strong> Catch the power-up while your combo is already elevated so the temporary multiplier applies to the highest-value catches.
+          <strong>How do I maximize the power-up boost?</strong> Catch the power-up while your combo is already elevated so the temporary 1.8× multiplier applies to the highest-value catches.
         </p>
         <p>
           <strong>Is there a best orbit speed to aim for?</strong> Speed increases with level. Focus on matching the current period rather than forcing a fixed tempo; the radial layout makes the interval predictable once you have a few successful hits.
@@ -178,6 +225,12 @@ function OrbitPulseCatcherGuideEn() {
         </p>
         <p>
           <strong>Can I restart a level without losing the whole run?</strong> Lives allow recovery from individual misses. A full restart (if available in the UI) clears the current score but preserves the localStorage high score.
+        </p>
+        <p>
+          <strong>What is the angular tolerance?</strong> Approximately 0.48 radians, giving a forgiving window that works well on both touch and keyboard.
+        </p>
+        <p>
+          <strong>How does the level-up threshold work?</strong> You advance when your score exceeds the current level multiplied by 220, up to a maximum of level 10.
         </p>
 
         <p className="mt-8">
