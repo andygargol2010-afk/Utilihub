@@ -25,18 +25,28 @@ const escapeXml = (value: string) => {
 type SitemapEntry = {
   path: string;
   priority: string;
+  /** ISO date (YYYY-MM-DD). Only set when known real; never invent per-tool dates. */
+  lastmod?: string;
   alternates?: Array<{ lang: string; path: string }>;
 };
 
-const pair = (enPath: string, esPath: string, priority: string): SitemapEntry[] => {
+/** Build/deploy day for hub lastmod only (not individual tools). */
+const BUILD_DAY = new Date().toISOString().slice(0, 10);
+
+const pair = (
+  enPath: string,
+  esPath: string,
+  priority: string,
+  opts?: { lastmod?: string },
+): SitemapEntry[] => {
   const alternates = [
     { lang: "en", path: enPath },
     { lang: "es", path: esPath },
     { lang: "x-default", path: enPath },
   ];
   return [
-    { path: enPath, priority, alternates },
-    { path: esPath, priority, alternates },
+    { path: enPath, priority, lastmod: opts?.lastmod, alternates },
+    { path: esPath, priority, lastmod: opts?.lastmod, alternates },
   ];
 };
 
@@ -62,33 +72,47 @@ export const Route = createFileRoute("/sitemap.xml")({
     handlers: {
       GET: () => {
         const hubPairs: SitemapEntry[] = [
-          ...pair("/", "/es", "1.0"),
-          ...pair("/tools", "/es/herramientas", "0.9"),
-          ...pair("/finance", "/es/finanzas", "0.9"),
-          ...pair("/kits", "/es/kits", "0.9"),
-          ...pair("/hubs/documents-and-files", "/es/hubs/documentos-y-archivos", "0.9"),
-          // Featured hubs: games + advanced sit at the top of discovery
-          ...pair("/games", "/es/juegos", "0.95"),
-          ...pair("/simulators", "/es/simuladores", "0.9"),
-          ...pair("/experiences", "/es/experiences", "0.92"),
-          ...pair("/legal", "/es/aviso-legal", "0.3"),
-          ...pair("/privacy", "/es/privacidad", "0.3"),
-          ...pair("/terms", "/es/terminos", "0.3"),
-          ...pair("/contact", "/es/contacto", "0.3"),
+          ...pair("/", "/es", "1.0", { lastmod: BUILD_DAY }),
+          ...pair("/tools", "/es/herramientas", "0.9", { lastmod: BUILD_DAY }),
+          ...pair("/finance", "/es/finanzas", "0.9", { lastmod: BUILD_DAY }),
+          ...pair("/kits", "/es/kits", "0.9", { lastmod: BUILD_DAY }),
+          ...pair("/hubs/documents-and-files", "/es/hubs/documentos-y-archivos", "0.9", {
+            lastmod: BUILD_DAY,
+          }),
+          ...pair("/games", "/es/juegos", "0.95", { lastmod: BUILD_DAY }),
+          ...pair("/simulators", "/es/simuladores", "0.9", { lastmod: BUILD_DAY }),
+          ...pair("/experiences", "/es/experiences", "0.92", { lastmod: BUILD_DAY }),
+          ...pair("/legal", "/es/aviso-legal", "0.3", { lastmod: BUILD_DAY }),
+          ...pair("/privacy", "/es/privacidad", "0.3", { lastmod: BUILD_DAY }),
+          ...pair("/terms", "/es/terminos", "0.3", { lastmod: BUILD_DAY }),
+          ...pair("/contact", "/es/contacto", "0.3", { lastmod: BUILD_DAY }),
         ];
 
+        // Canonical ES paths under /es/guias/… (not /es/guides/…)
         const guidePairs: SitemapEntry[] = [
-          ...pair("/guides/compound-interest", "/es/guias/interes-compuesto", "0.75"),
-          ...pair("/guides/particle-physics", "/es/guias/fisica-particulas", "0.75"),
-          ...pair("/guides/canvas-webgl-performance", "/es/guides/canvas-webgl-performance", "0.75"),
-          ...pair("/guides/n-body-gravity", "/es/guias/n-body-gravity", "0.75"),
+          ...pair("/guides/compound-interest", "/es/guias/interes-compuesto", "0.75", {
+            lastmod: BUILD_DAY,
+          }),
+          ...pair("/guides/particle-physics", "/es/guias/fisica-particulas", "0.75", {
+            lastmod: BUILD_DAY,
+          }),
+          ...pair(
+            "/guides/canvas-webgl-performance",
+            "/es/guias/rendimiento-canvas-webgl",
+            "0.75",
+            { lastmod: BUILD_DAY },
+          ),
+          ...pair("/guides/n-body-gravity", "/es/guias/n-body-gravity", "0.75", {
+            lastmod: BUILD_DAY,
+          }),
         ];
 
-        const categoryPairs: SitemapEntry[] = ALL_CATEGORIES.flatMap((category) => {
-          const enPath =
-            category.slug === "finanzas" ? "/finance" : englishCategoryPath(category.slug);
-          const esPath =
-            category.slug === "finanzas" ? "/es/finanzas" : `/es/categoria/${category.slug}`;
+        // Finance hubs already listed above — skip slug "finanzas" to avoid duplicate loc.
+        const categoryPairs: SitemapEntry[] = ALL_CATEGORIES.filter(
+          (category) => category.slug !== "finanzas",
+        ).flatMap((category) => {
+          const enPath = englishCategoryPath(category.slug);
+          const esPath = `/es/categoria/${category.slug}`;
           let priority = "0.8";
           if (category.slug === "herramientas-avanzadas") priority = "0.95";
           else if (category.slug === "educacion") priority = "0.9";
@@ -111,17 +135,18 @@ export const Route = createFileRoute("/sitemap.xml")({
           pair(`/simulators/${sim.slug}`, `/es/simuladores/${sim.slugEs}`, "0.8"),
         );
 
+        // No lastmod on tools unless we have a real content-updated timestamp (we don't).
         const toolEntries: SitemapEntry[] = ALL_TOOLS.flatMap((tool) => {
           const enPath = toolHref(tool);
           const esPath = spanishToolPath(tool);
           return pair(enPath, esPath, toolPriority(tool));
         });
 
-        // SEO locales (pt beachhead) — include hreflang to EN+ES counterparts where they exist
         const seoLocaleEntries: SitemapEntry[] = [
           {
             path: "/pt",
             priority: "0.9",
+            lastmod: BUILD_DAY,
             alternates: [
               { lang: "pt", path: "/pt" },
               { lang: "es", path: "/es" },
@@ -132,6 +157,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           {
             path: "/pt/pulse-catch",
             priority: "0.8",
+            lastmod: BUILD_DAY,
             alternates: [
               { lang: "pt", path: "/pt/pulse-catch" },
               { lang: "es", path: "/es/pulse-catch" },
@@ -141,7 +167,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           },
         ];
 
-        const paths = [
+        const pathsRaw = [
           ...hubPairs,
           ...guidePairs,
           ...categoryPairs,
@@ -153,16 +179,31 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...seoLocaleEntries,
         ];
 
+        // Keep first occurrence of each path (canonical-only list).
+        const seen = new Set<string>();
+        const paths: SitemapEntry[] = [];
+        for (const entry of pathsRaw) {
+          if (seen.has(entry.path)) continue;
+          seen.add(entry.path);
+          paths.push(entry);
+        }
+
         const xml =
           `<?xml version="1.0" encoding="UTF-8"?>` +
           `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">` +
           paths
-            .map(
-              (entry) =>
+            .map((entry) => {
+              const lastmod =
+                entry.lastmod != null
+                  ? `<lastmod>${escapeXml(entry.lastmod)}</lastmod>`
+                  : "";
+              return (
                 `<url><loc>${escapeXml(`${SITE_URL}${entry.path}`)}</loc>` +
+                lastmod +
                 `<changefreq>weekly</changefreq><priority>${entry.priority}</priority>` +
-                `${hreflangXml(entry)}</url>`,
-            )
+                `${hreflangXml(entry)}</url>`
+              );
+            })
             .join("") +
           `</urlset>`;
 
