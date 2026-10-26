@@ -217,9 +217,9 @@ export function HeatIndexTool({ locale = "en" }: { tool: GeneralTool; locale?: L
     const feelsF = mph < 3 ? airF : windChillF(airF, mph);
     const feels = fromF(feelsF, scale);
     let band = copy.low;
-    if (feelsF <= -35) band = copy.min5;
-    else if (feelsF <= -15) band = copy.min10;
-    else if (feelsF <= 0) band = copy.min30;
+    if (feelsF <= -48) band = copy.min5;
+    else if (feelsF <= -32) band = copy.min10;
+    else if (feelsF <= -18) band = copy.min30;
     return {
       feels,
       air,
