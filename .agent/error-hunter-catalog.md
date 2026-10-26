@@ -16,7 +16,7 @@ Formato por entrada:
 
 ## E001 — Registry PLACEHOLDER / tool page crash
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-25 (registry.tsx full, exports GENERAL_TOOL_UI / pickComponent kind-first, no PLACEHOLDER; dedicated wires present)
+- **last_seen**: 2026-10-26 (registry.tsx full, exports GENERAL_TOOL_UI / pickComponent kind-first, no PLACEHOLDER; dedicated wires present including new)
 - **symptom**: "We could not load this page" · `Cannot read properties of undefined (reading 'kind')` en GeneralTool bundle
 - **root_cause**: `src/components/general/registry.tsx` reemplazado por PLACEHOLDER o sin `GENERAL_TOOL_UI` / `buildLazyRegistry` / `pickComponent`
 - **check**: leer registry completo; tamaño razonable; exports presentes; abrir 1–2 tools del catálogo
@@ -25,7 +25,7 @@ Formato por entrada:
 
 ## E002 — Image/PDF tools muestran calculadora numérica
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-25 (media.ts kind:"image"/"pdf"; MediaTool file upload + process; pickComponent kind-first MediaToolUi)
+- **last_seen**: 2026-10-26 (media.ts kind:"image"/"pdf"; MediaTool file upload + process; pickComponent kind-first MediaToolUi)
 - **symptom**: PNG a JPG / Comprimir imagen piden "Primer valor / Segundo valor / Calcular" en vez de subir archivo
 - **root_cause**: routing por kind incorrecto; tools `image`/`pdf` no van a MediaTool/DocumentTool
 - **check**: kind de slugs image/pdf en catalog; pickComponent / DeferredToolUi prioriza kind Media/Document
@@ -34,7 +34,7 @@ Formato por entrada:
 
 ## E003 — SEO / guía genérica que no nombra la tool
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: pasos/FAQ genéricos ("Primer valor…") sin mencionar la herramienta real
 - **root_cause**: `spanishGuideFallback` / defaults de `makeTool` no branch por kind
 - **check**: ToolSeoContent + about/steps/faq de 2 tools distintas (image vs calc)
@@ -43,7 +43,7 @@ Formato por entrada:
 
 ## E004 — modelador-3d carga House Modeler
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-25 (modeler3d-app.tsx → Modeler3DStudio; registry-3d.tsx slug modelador-casas-3d → HouseModeler3D else Modeler3D)
+- **last_seen**: 2026-10-26 (modeler3d-app.tsx → Modeler3DStudio; registry-3d.tsx slug modelador-casas-3d → HouseModeler3D else Modeler3D)
 - **symptom**: página "Modelador 3D" muestra UI de casas (paredes, terreno, "Modelador de casas 3D")
 - **root_cause**: `modeler3d-app.tsx` reexportaba `HouseModeler3D` en vez de `Modeler3DStudio`
 - **check**: `modeler3d-app` → Modeler3DStudio; `registry-3d` slug `modelador-casas-3d` → House; `modelador-3d` → Modeler3D
@@ -52,7 +52,7 @@ Formato por entrada:
 
 ## E005 — Home 404 por routes corruptas
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-25 (index.tsx y es.index.tsx empiezan con import, createFileRoute, sin $(cat); DeferredHomeReviews real)
+- **last_seen**: 2026-10-26 (index.tsx y es.index.tsx empiezan con import, createFileRoute, sin $(cat); DeferredHomeReviews real)
 - **symptom**: `/` o `/es` → "We could not find this page" / 404 UtiliHub
 - **root_cause**: `src/routes/index.tsx` y `es.index.tsx` contenían literal `$(cat /tmp/…)` (stub de shell)
 - **check**: ambos archivos empiezan con `import` y exportan `createFileRoute`; **no** contienen `$(cat`
@@ -61,7 +61,7 @@ Formato por entrada:
 
 ## E006 — Build ERROR por import fantasma en home
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: deploy Vercel ERROR; log: cannot resolve `@/components/DeferredReviews`
 - **root_cause**: import inventado al restaurar home; el componente real es `DeferredHomeReviews`
 - **check**: imports de index/es.index resuelven a archivos existentes bajo `src/components`
@@ -70,7 +70,7 @@ Formato por entrada:
 
 ## E007 — Build ERROR por spanishToolSummary no exportado desde es.ts
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-22
 - **symptom**: deploy Vercel ERROR; build falla en rollup con missing export spanishToolSummary
 - **root_cause**: spanishToolSummary se movió a es-summaries.ts; algunos archivos aún importaban desde es.ts
@@ -80,7 +80,7 @@ Formato por entrada:
 
 ## E008 — Build ERROR por import de componente no existente en home
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-22
 - **symptom**: deploy ERROR; cannot resolve import en index.tsx
 - **root_cause**: import de componente que no existe en src/components
@@ -90,7 +90,7 @@ Formato por entrada:
 
 ## E009 — Tool page crash por kind undefined en registry
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: Cannot read properties of undefined (reading 'kind')
 - **root_cause**: registry.tsx no exportaba GENERAL_TOOL_UI correctamente o pickComponent fallaba
 - **check**: registry.tsx tiene pickComponent y buildLazyRegistry
@@ -99,7 +99,7 @@ Formato por entrada:
 
 ## E010 — SEO genérico sin nombre de tool
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: guías y FAQ genéricas sin el nombre de la tool
 - **root_cause**: fallbacks no kind-aware
 - **check**: ToolSeoContent usa el nombre de la tool
@@ -108,7 +108,7 @@ Formato por entrada:
 
 ## E011 — modelador-3d muestra HouseModeler
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: modelador-3d carga UI de casas
 - **root_cause**: reexport incorrecto
 - **check**: modeler3d-app.tsx exporta Modeler3DStudio
@@ -117,7 +117,7 @@ Formato por entrada:
 
 ## E012 — Home 404 por $(cat stubs en routes
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: home 404
 - **root_cause**: index.tsx con $(cat
 - **check**: index.tsx empieza con import
@@ -126,7 +126,7 @@ Formato por entrada:
 
 ## E013 — Build ERROR DeferredReviews fantasma
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: cannot resolve DeferredReviews
 - **root_cause**: import incorrecto
 - **check**: usa DeferredHomeReviews
@@ -135,7 +135,7 @@ Formato por entrada:
 
 ## E014 — spanishToolSummary missing export
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: build missing export
 - **root_cause**: movido a es-summaries
 - **check**: imports desde es-summaries
@@ -144,7 +144,7 @@ Formato por entrada:
 
 ## E015 — Dedicated UIs no wired (silabas, roi, imc)
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: "not implemented" en vez de UI dedicada
 - **root_cause**: faltaba slug check en pickComponent
 - **check**: registry tiene if slug === para ellos
@@ -153,7 +153,7 @@ Formato por entrada:
 
 ## E016 — Build ERROR N > 2 sin escapar en JSX
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: esbuild fails on > in JSX
 - **root_cause**: "N > 2" raw en <p>
 - **check**: no raw > en texto JSX
@@ -162,7 +162,7 @@ Formato por entrada:
 
 ## E017 — Dedicated calculator/counter UIs no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **symptom**: generic not implemented
 - **root_cause**: no slug check
 - **check**: pickComponent has dedicated returns
@@ -171,7 +171,7 @@ Formato por entrada:
 
 ## E018 — Build ERROR slug duplicado calculadora-descuento-porcentaje
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-24
 - **symptom**: Catalog validator slug duplicado
 - **root_cause**: dos makeTool con mismo slug
@@ -181,7 +181,7 @@ Formato por entrada:
 
 ## E019 — Dedicated UIs logaritmo y presion no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: MathTool genérico
 - **root_cause**: no slug check
@@ -191,7 +191,7 @@ Formato por entrada:
 
 ## E020 — Dedicated UIs longitud-promedio y interes-diario no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: generic UI
 - **root_cause**: no wire
@@ -201,7 +201,7 @@ Formato por entrada:
 
 ## E021 — Dedicated UIs raiz-cubica y otros no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: not implemented
 - **root_cause**: missing slug checks
@@ -211,7 +211,7 @@ Formato por entrada:
 
 ## E022 — tool definition not wired in catalog index (precio-unitario 404)
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: 404 on tool page
 - **root_cause**: not in GENERAL_TOOLS export
@@ -221,7 +221,7 @@ Formato por entrada:
 
 ## E023 — DailyExperienceSpotlight N-Body path 404
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: link to n-body 404
 - **root_cause**: wrong path in spotlight
@@ -231,7 +231,7 @@ Formato por entrada:
 
 ## E024 — Dedicated UIs unit-price y rice-water no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: MathTool default
 - **root_cause**: no slug check
@@ -241,7 +241,7 @@ Formato por entrada:
 
 ## E025 — Dedicated UIs arithmetic-mean, median, factorial no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: not implemented
 - **root_cause**: missing wires
@@ -251,7 +251,7 @@ Formato por entrada:
 
 ## E026 — Build ERROR por JSX truncado en ToolSearch.tsx
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: deploy ERROR; missing > in </Button
 - **root_cause**: facets.map tenía </Button sin >
@@ -261,7 +261,7 @@ Formato por entrada:
 
 ## E027 — Dedicated UI calculadora-ingesta-agua-diaria no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: MathTool genérico
 - **root_cause**: no slug check
@@ -271,7 +271,7 @@ Formato por entrada:
 
 ## E028 — Dedicated UI calculadora-consumo-agua no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: generic UI
 - **root_cause**: no wire
@@ -281,7 +281,7 @@ Formato por entrada:
 
 ## E029 — Dedicated UI calculadora-area-superficie-esfera no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: MathTool
 - **root_cause**: missing
@@ -291,7 +291,7 @@ Formato por entrada:
 
 ## E030 — Dedicated UI calculadora-perimetro-cuadrado no wired
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: generic
 - **root_cause**: no slug
@@ -301,7 +301,7 @@ Formato por entrada:
 
 ## E031 — $(cat stubs / PLACEHOLDER corrupten archivos críticos
 - **status**: open (recurring)
-- **last_seen**: 2026-10-25 (tip clean; but SHA 1a75be3 had PLACEHOLDER in summary-es.ts causing build ERROR; pattern of agent stubs remains risk)
+- **last_seen**: 2026-10-26 (tip clean; no PLACEHOLDER or $(cat in critical files; previous ERROR SHA had it but restored)
 - **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" o "PLACEHOLDER" en vez del contenido real; home 404, registry roto, o build ERROR por missing export
 - **root_cause**: agentes escriben el comando shell o un placeholder como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
 - **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts; deben ser contenido real, no PLACEHOLDER ni $(cat
@@ -310,7 +310,7 @@ Formato por entrada:
 
 ## E032 — Build ERROR por slug duplicado calculadora-area-habitacion
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: deploy ERROR; slug duplicado calculadora-area-habitacion
 - **root_cause**: dos makeTool con el mismo slug
@@ -320,7 +320,7 @@ Formato por entrada:
 
 ## E033 — ModularPatternComposer returns null / stub (playground blank or placeholder)
 - **status**: fixed (vigilar regresión)
-- **last_seen**: 2026-10-25 (restored full ~16kB canvas/layers/animations/controls from early good SHA; previous stub "(restored)" replaced)
+- **last_seen**: 2026-10-26 (full canvas/layers/animations/controls present, >10kB)
 - **fixed_at**: 2026-10-25
 - **symptom**: playground renders blank or only a placeholder div instead of interactive grid canvas
 - **root_cause**: file replaced by stub returning simple div (or null) to avoid large payload
@@ -330,12 +330,22 @@ Formato por entrada:
 
 ## E034 — Build ERROR por PLACEHOLDER en summary-es.ts (missing SUMMARY_ES export)
 - **status**: fixed
-- **last_seen**: 2026-10-25
+- **last_seen**: 2026-10-26
 - **fixed_at**: 2026-10-25
 - **symptom**: deploy Vercel ERROR; rollup "SUMMARY_ES" is not exported by summary-es.ts
-- **root_cause**: commit 1a75be3 replaced summary-es.ts with literal PLACEHOLDER; tip c920a10 restored full curated map
+- **root_cause**: commit 1a75be3 replaced summary-es.ts with literal PLACEHOLDER; later restored full curated map
 - **check**: summary-es.ts starts with export const SUMMARY_ES and is >10kB; no PLACEHOLDER
 - **fix_hint**: restore full SUMMARY_ES map from previous good commit
 - **files**: `src/lib/i18n/summary-es.ts`, `src/lib/i18n/es-summaries.ts`
+
+## E035 — Dedicated UIs calculadora-iva y conversor-kmh-ms no wired en registry
+- **status**: fixed
+- **last_seen**: 2026-10-26
+- **fixed_at**: 2026-10-26
+- **symptom**: tools muestran MathTool/ConverterTool genérico en vez de la UI dedicada (IVA add/extract, km/h↔m/s)
+- **root_cause**: componentes IvaCalculatorTool.tsx y KmhToMsConverterTool.tsx existen, tools en catalog index, pero faltaban lazy + if (slug === ...) en pickComponent
+- **check**: registry.tsx tiene lazy imports y returns tempranos para "calculadora-iva" y "conversor-kmh-ms"
+- **fix_hint**: añadir lazy + early return en pickComponent (antes de kind routes)
+- **files**: `src/components/general/registry.tsx`, `IvaCalculatorTool.tsx`, `KmhToMsConverterTool.tsx`
 
 <!-- end:catalog -->
