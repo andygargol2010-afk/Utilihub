@@ -1,5 +1,10 @@
 {
   "ignoreCommand": "bash scripts/vercel-ignore.sh",
+  "git": {
+    "deploymentEnabled": {
+      "fix/spanish-complete": false
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
