@@ -67,11 +67,11 @@ path_en: /games/orbit-pulse-catcher
 path_es: /es/juegos/atrapa-pulsos-orbita
 domain: games
 runs_total: 6
-runs_remaining: 5
+runs_remaining: 4
 acceptance: pending
 share: png
 next_step_required: yes
-notes: EXECUTE 1/6: Shipped initial interactive canvas game. 6 colored radial zones, orbiting matching pulses, click zone when pulse aligned (angular tolerance), combo multipliers, level progression on score, lives on miss, particle bursts, high-score localStorage, PNG share with branding. Registered in catalog + registry + next-step. EN+ES via dynamic routes. CWV-safe (lazy, modest particles). Adsterra intact via existing GamePage. Next runs: polish timing feel, more levels, keyboard, visual juice.
+notes: EXECUTE 2/6: Added keyboard controls (keys 1-6 and QWERTY for zones), zone flash highlight on attempt, pulse trails for timing juice, slightly more forgiving tolerance + better particle count/life, progressive spawn/speed scaling. Instructions updated EN+ES. CWV-safe (modest trails, no new deps). Adsterra intact. Next: more levels polish, visual juice refinements, mobile feel.
 adsense-prep_runs: 3
 ```
 
