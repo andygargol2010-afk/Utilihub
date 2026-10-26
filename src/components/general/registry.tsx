@@ -15,6 +15,8 @@ const AttendancePercentageCalculatorToolUi = lazy(() => import("./AttendancePerc
 const CostPerKmCalculatorToolUi = lazy(() => import("./CostPerKmCalculatorTool").then((m) => ({ default: m.CostPerKmCalculatorTool })));
 const TextCaseConverterToolUi = lazy(() => import("./TextCaseConverterTool").then((m) => ({ default: m.TextCaseConverterTool })));
 const TargetHeartRateCalculatorToolUi = lazy(() => import("./TargetHeartRateCalculatorTool").then((m) => ({ default: m.TargetHeartRateCalculatorTool })));
+const AspectRatioCalculatorToolUi = lazy(() => import("./AspectRatioCalculatorTool").then((m) => ({ default: m.AspectRatioCalculatorTool })));
+const DaysBetweenDatesCalculatorToolUi = lazy(() => import("./DaysBetweenDatesCalculatorTool").then((m) => ({ default: m.DaysBetweenDatesCalculatorTool })));
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const slug = (tool.slug || "").toLowerCase();
@@ -24,6 +26,8 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-costo-por-km") return CostPerKmCalculatorToolUi;
   if (slug === "conversor-texto-caso") return TextCaseConverterToolUi;
   if (slug === "calculadora-frecuencia-cardiaca-objetivo") return TargetHeartRateCalculatorToolUi;
+  if (slug === "calculadora-relacion-aspecto") return AspectRatioCalculatorToolUi;
+  if (slug === "calculadora-dias-entre-fechas") return DaysBetweenDatesCalculatorToolUi;
   if ((tool.category || "").toLowerCase() === "ciencia") return ScienceToolUi;
   if ((tool.category || "").toLowerCase() === "matematicas") return MathToolUi;
   return GeneralToolUi;
