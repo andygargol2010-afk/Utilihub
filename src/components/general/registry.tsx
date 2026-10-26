@@ -11,11 +11,19 @@ const MathToolUi = lazy(() => import("./MathTool").then((m) => ({ default: m.Mat
 const ScienceToolUi = lazy(() => import("./ScienceTool").then((m) => ({ default: m.ScienceTool })));
 const DensityCalculatorToolUi = lazy(() => import("./DensityCalculatorTool").then((m) => ({ default: m.DensityCalculatorTool })));
 const PercentageErrorCalculatorToolUi = lazy(() => import("./PercentageErrorCalculatorTool").then((m) => ({ default: m.PercentageErrorCalculatorTool })));
+const AttendancePercentageCalculatorToolUi = lazy(() => import("./AttendancePercentageCalculatorTool").then((m) => ({ default: m.AttendancePercentageCalculatorTool })));
+const CostPerKmCalculatorToolUi = lazy(() => import("./CostPerKmCalculatorTool").then((m) => ({ default: m.CostPerKmCalculatorTool })));
+const TextCaseConverterToolUi = lazy(() => import("./TextCaseConverterTool").then((m) => ({ default: m.TextCaseConverterTool })));
+const TargetHeartRateCalculatorToolUi = lazy(() => import("./TargetHeartRateCalculatorTool").then((m) => ({ default: m.TargetHeartRateCalculatorTool })));
 
 function pickComponent(tool: GeneralTool): ToolComp {
   const slug = (tool.slug || "").toLowerCase();
   if (slug === "calculadora-densidad") return DensityCalculatorToolUi;
   if (slug === "calculadora-error-porcentual") return PercentageErrorCalculatorToolUi;
+  if (slug === "calculadora-porcentaje-asistencia") return AttendancePercentageCalculatorToolUi;
+  if (slug === "calculadora-costo-por-km") return CostPerKmCalculatorToolUi;
+  if (slug === "conversor-texto-caso") return TextCaseConverterToolUi;
+  if (slug === "calculadora-frecuencia-cardiaca-objetivo") return TargetHeartRateCalculatorToolUi;
   if ((tool.category || "").toLowerCase() === "ciencia") return ScienceToolUi;
   if ((tool.category || "").toLowerCase() === "matematicas") return MathToolUi;
   return GeneralToolUi;
