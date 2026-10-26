@@ -140,7 +140,7 @@ import { ATTENDANCE_PERCENTAGE_CALCULATOR_TOOLS } from "./attendance-percentage-
 import { COST_PER_KM_CALCULATOR_TOOLS } from "./cost-per-km-calculator-tool";
 import { DENSITY_CALCULATOR_TOOLS } from "./density-calculator-tool";
 import { PERCENTAGE_ERROR_CALCULATOR_TOOLS } from "./percentage-error-calculator-tool";
-import { ASPECT_RATIO_CALCULATOR_TOOLS } from "./aspect-ratio-calculator-tool";
+import { ASPECT_RATIO_TOOLS } from "./aspect-ratio-tool";
 import { DAYS_BETWEEN_DATES_CALCULATOR_TOOLS } from "./days-between-dates-calculator-tool";
 
 export { GENERAL_CATEGORIES };
@@ -286,6 +286,6 @@ export const GENERAL_TOOLS = [
   ...COST_PER_KM_CALCULATOR_TOOLS,
   ...DENSITY_CALCULATOR_TOOLS,
   ...PERCENTAGE_ERROR_CALCULATOR_TOOLS,
-  ...ASPECT_RATIO_CALCULATOR_TOOLS,
+  ...ASPECT_RATIO_TOOLS,
   ...DAYS_BETWEEN_DATES_CALCULATOR_TOOLS,
 ];
