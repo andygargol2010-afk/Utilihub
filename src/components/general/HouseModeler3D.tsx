@@ -1483,6 +1483,16 @@ function paintRailingMetalBump(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fillStyle = "#2c2c2c";
     ctx.fillRect(x, 0, 2, size);
   }
+  // Paint pits and fine grit so the bar stock reads as weathered painted iron, not smooth fluted plastic.
+  for (let p = 0; p < 90; p++) {
+    const x = hash2(p, 21.3) * size;
+    const y = hash2(p, 22.7) * size;
+    const r = 0.6 + hash2(p, 23.9) * 1.1;
+    ctx.fillStyle = hash2(p, 24.5) > 0.5 ? "rgba(44,44,44,0.5)" : "rgba(226,226,226,0.35)";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintDoorLeafBump(ctx: CanvasRenderingContext2D, size: number) {
