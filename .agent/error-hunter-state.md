@@ -12,14 +12,14 @@ repo: andygargol2010-afk/Utilihub
 
 ## Last run
 - date: 2026-10-26
-- mode: known smoke (E001 registry full no PLACEHOLDER, E005 homes start with import no $(cat, E031 critical files clean, E004/E002 kind routing ok) + discovery (code search PLACEHOLDER/$(cat/"Tool not available" = 0; sampled registry.tsx full dedicated wires, summary-es.ts full >10kB no PLACEHOLDER, index.tsx clean; live prod home OK, some new slugs 404 expected)
-- deploy: tip SHA 6d589f6ee1de276776bdb9f50f360823da94b618 no deploy yet; latest READY dpl_9B6pwpGVysHhbEJm3isvg9yz5WZ2 on bdef37210307cecc0021239260f0e50edc7e2257; recent CANCELED on later SHAs; no recent ERROR on tip
-- known_smoke: all fixed entries green on tip; E031 open as recurring risk but no active corruption
-- new_findings: none — no new runtime/routing/registry/SEO/corrupt patterns in sampled paths
+- mode: known smoke (E031 critical files no PLACEHOLDER/$(cat; registry.tsx full with dedicated wires + kind-first; index.tsx/es.index.tsx clean import+createFileRoute; summary-es.ts full SUMMARY_ES; ModularPatternComposer full canvas) + discovery (code search PLACEHOLDER/$(cat/"Tool not available" = 0 in src/.agent; sampled games.tsx layout, herramientas.$slug redirect, ModularPatternComposer >10kB interactive)
+- deploy: Vercel API 403 forbidden (no list); previous state noted READY on older SHA, no recent ERROR on tip; tip SHA 504cdbea5eda2675f6723adfe7d25cc8baf52950
+- known_smoke: all fixed entries green; E031 open as recurring risk but tip clean (no active corruption)
+- new_findings: none — no new runtime/routing/registry/SEO/corrupt patterns in sampled paths (homes, registry, playground, routes)
 - fixes: 0 (checks OK)
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E001/E005/E031 registry+homes+critical clean
+- last_known_focus: E031/E001/E005 critical clean + playground E033
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
