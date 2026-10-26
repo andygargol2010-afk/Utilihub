@@ -227,6 +227,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Defendé un planeta brillante de olas de asteroides. Apuntá interceptores, construí combos, desbloqueá power-ups y sobreviví dificultad creciente.",
     hasScore: true,
   },
+  {
+    slug: "orbit-pulse-catcher",
+    slugEs: "atrapa-pulsos-orbita",
+    nameEn: "Orbit Pulse Catcher",
+    nameEs: "Atrapa Pulsos Órbita",
+    tag: "arcade",
+    emoji: "🔴",
+    summaryEn: "Time your taps on colored zones to catch orbiting matching pulses. Combos, levels, particle bursts, PNG share.",
+    summaryEs: "Sincronizá tus toques en zonas de color para atrapar pulsos orbitantes coincidentes. Combos, niveles, explosiones de partículas, PNG compartible.",
+    hasScore: true,
+  },
 ] as const;
 
 /** Next-step games for retention (first = primary). Keys = EN slug. */
@@ -250,6 +261,7 @@ export const GAME_JOURNEYS: Record<string, string[]> = {
   "magnetic-letter-catcher": ["snake", "pacman", "tetris", "code-type-race"],
   "pulse-catch-arena": ["pong", "snake", "tetris", "magnetic-letter-catcher"],
   "orbit-defender-arcade": ["pulse-catch-arena", "pong", "snake", "tetris"],
+  "orbit-pulse-catcher": ["pulse-catch-arena", "orbit-defender-arcade", "pong", "refraction-challenge"],
 };
 
 export function relatedGames(current: Pick<GameDef, "slug" | "tag">): GameDef[] {
