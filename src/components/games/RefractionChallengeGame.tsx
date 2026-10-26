@@ -13,9 +13,21 @@ type Level = {
   hintEs: string;
 };
 
+type Particle = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  maxLife: number;
+  color: string;
+  size: number;
+};
+
 const W = 480;
 const H = 280;
 const ORIGIN = { x: 24, y: H / 2 };
+const MAX_PARTICLES = 48;
 
 const LEVELS: Level[] = [
   {
@@ -73,13 +85,46 @@ const LEVELS: Level[] = [
   },
 ];
 
-function castRay(angleDeg: number, level: Level): { points: { x: number; y: number }[]; hit: boolean } {
+function spawnSparks(
+  particles: Particle[],
+  x: number,
+  y: number,
+  count: number,
+  color: string,
+  speed = 1.8
+) {
+  for (let i = 0; i < count; i++) {
+    if (particles.length >= MAX_PARTICLES) break;
+    const a = Math.random() * Math.PI * 2;
+    const s = speed * (0.4 + Math.random() * 0.9);
+    particles.push({
+      x,
+      y,
+      vx: Math.cos(a) * s,
+      vy: Math.sin(a) * s,
+      life: 1,
+      maxLife: 0.55 + Math.random() * 0.45,
+      color,
+      size: 1.2 + Math.random() * 2.2,
+    });
+  }
+}
+
+function castRay(
+  angleDeg: number,
+  level: Level
+): {
+  points: { x: number; y: number }[];
+  hit: boolean;
+  refractionPoints: { x: number; y: number }[];
+} {
   const rad = (angleDeg * Math.PI) / 180;
   let x = ORIGIN.x;
   let y = ORIGIN.y;
   let vx = Math.cos(rad);
   let vy = Math.sin(rad);
   const points = [{ x, y }];
+  const refractionPoints: { x: number; y: number }[] = [];
   const step = 2;
   const inside = new Set<number>();
 
@@ -92,14 +137,14 @@ function castRay(angleDeg: number, level: Level): { points: { x: number; y: numb
 
     for (const b of level.blocks) {
       if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
-        return { points, hit: false };
+        return { points, hit: false, refractionPoints };
       }
     }
 
     const t = level.target;
     if ((x - t.x) ** 2 + (y - t.y) ** 2 <= t.r ** 2) {
       points.push({ x: t.x, y: t.y });
-      return { points, hit: true };
+      return { points, hit: true, refractionPoints };
     }
 
     level.lenses.forEach((lens, idx) => {
@@ -109,6 +154,7 @@ function castRay(angleDeg: number, level: Level): { points: { x: number; y: numb
       if (dist < lens.r) {
         if (!inside.has(idx)) {
           inside.add(idx);
+          refractionPoints.push({ x, y });
           const tx = lens.x - x;
           const ty = lens.y - y;
           const tl = Math.hypot(tx, ty) || 1;
@@ -127,12 +173,14 @@ function castRay(angleDeg: number, level: Level): { points: { x: number; y: numb
     });
   }
 
-  return { points, hit: false };
+  return { points, hit: false, refractionPoints };
 }
 
 export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const rafRef = useRef<number>(0);
   const [levelIdx, setLevelIdx] = useState(0);
   const [angle, setAngle] = useState(0);
   const [shots, setShots] = useState(0);
@@ -140,6 +188,7 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
   const [result, setResult] = useState<"idle" | "hit" | "miss">("idle");
   const [best, setBest] = useState(0);
   const [cleared, setCleared] = useState(false);
+  const [particleTick, setParticleTick] = useState(0);
 
   const level = LEVELS[levelIdx]!;
 
@@ -148,6 +197,30 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
   }, []);
 
   const path = useMemo(() => castRay(angle, level), [angle, level]);
+
+  // Particle animation loop (modest count, CWV-safe)
+  useEffect(() => {
+    let last = performance.now();
+    const loop = (now: number) => {
+      const dt = Math.min(0.033, (now - last) / 1000);
+      last = now;
+      const ps = particlesRef.current;
+      if (ps.length > 0) {
+        for (let i = ps.length - 1; i >= 0; i--) {
+          const p = ps[i]!;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.04;
+          p.life -= dt / p.maxLife;
+          if (p.life <= 0) ps.splice(i, 1);
+        }
+        setParticleTick((t) => t + 1);
+      }
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -257,15 +330,39 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
       ctx.stroke();
       ctx.shadowBlur = 0;
     }
-  }, [angle, fired, level, path, result]);
+
+    // Draw spark particles
+    const ps = particlesRef.current;
+    for (const p of ps) {
+      const alpha = Math.max(0, p.life);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * alpha, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }, [angle, fired, level, path, result, particleTick]);
 
   const fire = () => {
-    const { hit } = castRay(angle, level);
+    const cast = castRay(angle, level);
     const nextShots = shots + 1;
     setFired(true);
     setShots(nextShots);
-    setResult(hit ? "hit" : "miss");
-    if (hit && levelIdx >= LEVELS.length - 1) {
+    setResult(cast.hit ? "hit" : "miss");
+
+    // Spark bursts on lens refraction points
+    for (const rp of cast.refractionPoints) {
+      spawnSparks(particlesRef.current, rp.x, rp.y, 8, "#7dd3fc", 2.2);
+    }
+    // Spark burst on target hit
+    if (cast.hit) {
+      const t = level.target;
+      spawnSparks(particlesRef.current, t.x, t.y, 16, "#6ee7b7", 2.8);
+      spawnSparks(particlesRef.current, t.x, t.y, 8, "#fde68a", 1.6);
+    }
+
+    if (cast.hit && levelIdx >= LEVELS.length - 1) {
       setCleared(true);
       const score = Math.max(1, 1000 - nextShots * 40);
       setBest(writeBestScore("refraction-challenge", score));
@@ -278,12 +375,14 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
       setFired(false);
       setResult("idle");
       setAngle(0);
+      particlesRef.current = [];
     }
   };
 
   const resetLevel = () => {
     setFired(false);
     setResult("idle");
+    particlesRef.current = [];
   };
 
   const restart = () => {
@@ -293,6 +392,7 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
     setFired(false);
     setResult("idle");
     setCleared(false);
+    particlesRef.current = [];
   };
 
   return (
@@ -346,6 +446,7 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
             if (fired) {
               setFired(false);
               setResult("idle");
+              particlesRef.current = [];
             }
           }}
           className="mt-1 w-full accent-emerald-400"
