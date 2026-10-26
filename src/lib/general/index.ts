@@ -133,6 +133,9 @@ import { IVA_CALCULATOR_TOOLS } from "./iva-calculator-tool";
 import { KMH_TO_MS_CONVERTER_TOOLS } from "./kmh-to-ms-converter-tool";
 import { TEXT_CASE_CONVERTER_TOOLS } from "./text-case-converter-tool";
 import { TARGET_HEART_RATE_CALCULATOR_TOOLS } from "./target-heart-rate-calculator-tool";
+import { ROMAN_TOOLS } from "./roman-tool";
+import { SLEEP_CYCLE_TOOLS } from "./sleep-cycle-tool";
+import { BOX_SHADOW_TOOLS } from "./box-shadow-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -270,4 +273,7 @@ export const GENERAL_TOOLS = [
   ...KMH_TO_MS_CONVERTER_TOOLS,
   ...TEXT_CASE_CONVERTER_TOOLS,
   ...TARGET_HEART_RATE_CALCULATOR_TOOLS,
+  ...ROMAN_TOOLS,
+  ...SLEEP_CYCLE_TOOLS,
+  ...BOX_SHADOW_TOOLS,
 ];
