@@ -221,15 +221,27 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
     ctx.arc(ORIGIN.x, ORIGIN.y, 8, 0, Math.PI * 2);
     ctx.fill();
 
-    if (!fired) {
-      const rad = (angle * Math.PI) / 180;
-      ctx.strokeStyle = "rgba(52,211,153,0.25)";
-      ctx.setLineDash([6, 6]);
+    // Live full-path preview while aiming (elevated standard vs peers)
+    if (!fired && path.points.length > 1) {
+      ctx.strokeStyle = path.hit ? "rgba(110,231,183,0.55)" : "rgba(251,191,36,0.4)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 6]);
       ctx.beginPath();
-      ctx.moveTo(ORIGIN.x, ORIGIN.y);
-      ctx.lineTo(ORIGIN.x + Math.cos(rad) * 80, ORIGIN.y + Math.sin(rad) * 80);
+      ctx.moveTo(path.points[0]!.x, path.points[0]!.y);
+      for (let i = 1; i < path.points.length; i++) {
+        ctx.lineTo(path.points[i]!.x, path.points[i]!.y);
+      }
       ctx.stroke();
       ctx.setLineDash([]);
+
+      // Short solid aim indicator near origin
+      const rad = (angle * Math.PI) / 180;
+      ctx.strokeStyle = "rgba(52,211,153,0.85)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(ORIGIN.x, ORIGIN.y);
+      ctx.lineTo(ORIGIN.x + Math.cos(rad) * 36, ORIGIN.y + Math.sin(rad) * 36);
+      ctx.stroke();
     }
 
     if (fired && path.points.length > 1) {
