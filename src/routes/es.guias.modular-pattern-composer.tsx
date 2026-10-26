@@ -198,6 +198,9 @@ function ModularPatternGuideEs() {
         <p>
           <strong>¿Puedo exportar solo una capa?</strong> El PNG captura el fotograma compuesto actual. Puedes ocultar capas temporalmente (opacidad 0) antes de exportar para aislar una, luego restaurar.
         </p>
+        <p>
+          <strong>¿Cómo comparto una composición con un amigo?</strong> Usa la exportación PNG para una imagen estática, o copia la URL (deep-link) para que abran el mismo estado editable exacto. El deep-link restaura baldosas, capas, paleta y ajustes de animación.
+        </p>
 
         <p className="mt-8">
           <Link to="/es/modular-pattern-composer" className="font-semibold text-primary">
