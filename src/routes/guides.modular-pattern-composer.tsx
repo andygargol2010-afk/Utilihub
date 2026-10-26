@@ -197,6 +197,9 @@ function ModularPatternGuideEn() {
         <p>
           <strong>Can I export only one layer?</strong> The PNG captures the current composited frame. You can temporarily hide layers (opacity 0) before export to isolate one, then restore.
         </p>
+        <p>
+          <strong>How do I share a composition with a friend?</strong> Use the PNG export for a static image, or copy the URL (deep-link) so they open the exact same editable state. The deep-link restores tiles, layers, palette and animation settings.
+        </p>
 
         <p className="mt-8">
           <Link to="/modular-pattern-composer" className="font-semibold text-primary">
