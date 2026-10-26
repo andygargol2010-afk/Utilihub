@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-26 | ciencia | calculadora-densidad | DensityCalculatorTool
+- 2026-10-26 | matematicas | calculadora-error-porcentual | PercentageErrorCalculatorTool
 - 2026-10-26 | educacion | calculadora-porcentaje-asistencia | AttendancePercentageCalculatorTool
 - 2026-10-26 | viajes | calculadora-costo-por-km | CostPerKmCalculatorTool
 - 2026-10-26 | texto | conversor-texto-caso | TextCaseConverterTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-25 | hogar | calculadora-costo-kwh | KwhCostCalculatorTool
 - 2026-10-25 | ciencia | calculadora-velocidad-distancia-tiempo | SpeedDistanceTimeCalculatorTool
 - 2026-10-25 | matematicas | calculadora-diferencia-porcentual | PercentageDifferenceCalculatorTool
-- 2026-10-25 | diseno | calculadora-px-a-rem | PxToRemCalculatorTool
-- 2026-10-25 | viajes | calculadora-presupuesto-diario-viaje | DailyTravelBudgetCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad)
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso)
@@ -49,7 +49,7 @@ salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva)
 productividad: recent (tiempo-lectura, porcentaje-completado, horas-extras, velocidad-promedio-diaria, palabras-por-minuto, calculadora-horas-estudio, calculadora-ratio-trabajo-descanso, calculadora-horas-para-meta)
-matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado, perimetro-triangulo, calculadora-porcentaje-de-numero, calculadora-raiz-cuadrada, calculadora-raiz-cubica, calculadora-logaritmo, calculadora-diferencia-porcentual)
+matematicas: recent (area-triangulo, area-paralelogramo, area-trapecio, area-rombo, area-elipse, area-hexagono, factorial, teorema-pitagoras, regla-de-tres, pendiente, perimetro-cuadrado, perimetro-triangulo, calculadora-porcentaje-de-numero, calculadora-raiz-cuadrada, calculadora-raiz-cubica, calculadora-logaritmo, calculadora-diferencia-porcentual, calculadora-error-porcentual)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -66,6 +66,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-26: PRODUCT — conversor-texto-caso (texto) + calculadora-frecuencia-cardiaca-objetivo (salud). Clusters distintos, calidad alta. SEO locales: defer pt. Multiple commits due to sequential push; registry dedicated ifs pending category fallback for now.
 2026-10-26: FIX-BUILD — deploy ERROR on ignoreCommand >256 chars (dpl_Cqrs6rgtk...). Already fixed on branch (ba0769f short command). No new tools this run. Next PRODUCT after READY.
 2026-10-26: PRODUCT — calculadora-porcentaje-asistencia (educacion) + calculadora-costo-por-km (viajes). Clusters distintos. SEO locales: none active.
+2026-10-26: PRODUCT — calculadora-densidad (ciencia) + calculadora-error-porcentual (matematicas). Clusters distintos, calidad alta. SEO locales: defer pt.
 ```
 
 ---
@@ -74,7 +75,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-porcentaje-asistencia, calculadora-costo-por-km
+last_slugs: calculadora-densidad, calculadora-error-porcentual
 last_deploy: pending
 last_sha: pending
 ```
