@@ -67,11 +67,11 @@ path_en: /guides/orbit-pulse-catcher
 path_es: /es/guias/orbit-pulse-catcher
 domain: search-magnets
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: Roll: U=0.00317 < 0.50 → GROWTH; U_g=0.0873 < 0.35 → FIXED urn (traffic-bets:3 + search-magnets:3); selected search-magnets (no weight updates). Distinct from modular-pattern-composer-guide and n-body-gravity-guide. Targets recently closed orbit-pulse-catcher for search depth on timing/orbit games.
+notes: Roll: U=0.00317 < 0.50 → GROWTH; U_g=0.0873 < 0.35 → FIXED urn (traffic-bets:3 + search-magnets:3); selected search-magnets (no weight updates). Distinct from modular-pattern-composer-guide and n-body-gravity-guide. Targets recently closed orbit-pulse-catcher for search depth on timing/orbit games. EXECUTE 1/6: shipped initial long-form EN+ES static routes with core sections (radial mechanics, zones, combos, power-ups, particles/haptics, controls, PNG/localStorage, distinctions, strategies, FAQs, deep links). Adsterra intact. CWV-safe (static).
 adsense-prep_runs: 3
 ```
 
