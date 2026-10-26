@@ -1739,6 +1739,30 @@ function paintFasciaBump(ctx: CanvasRenderingContext2D, size: number) {
   }
 }
 
+/** Grayscale pebble relief for the gravel bump map: domed stones with dark gaps between them. */
+function paintGravelBump(ctx: CanvasRenderingContext2D, size: number) {
+  ctx.fillStyle = "#585858";
+  ctx.fillRect(0, 0, size, size);
+  const stone = (x: number, y: number, r: number, rot: number, squash: number, lift: number) => {
+    const g = ctx.createRadialGradient(x - r * 0.25, y - r * 0.25, r * 0.1, x, y, r);
+    g.addColorStop(0, `rgb(${lift + 40},${lift + 40},${lift + 40})`);
+    g.addColorStop(0.75, `rgb(${lift},${lift},${lift})`);
+    g.addColorStop(1, "rgba(30,30,30,0.9)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r, r * squash, rot, 0, Math.PI * 2);
+    ctx.fill();
+  };
+  for (let i = 0; i < 160; i++) {
+    const r = 0.9 + hash2(i, 9.6) * 2.8;
+    stone(hash2(i, 1.7) * size, hash2(i, 4.1) * size, r, hash2(i, 3) * Math.PI, 0.65 + hash2(i, 6) * 0.5, 130 + Math.floor(hash2(i, 2.4) * 50));
+  }
+  for (let i = 0; i < 24; i++) {
+    const r = 3.5 + hash2(i, 11) * 4.2;
+    stone(hash2(i + 200, 3.3) * size, hash2(i + 200, 5.7) * size, r, hash2(i, 4.4) * Math.PI, 0.6 + hash2(i, 8.2) * 0.45, 170 + Math.floor(hash2(i, 1.8) * 40));
+  }
+}
+
 function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
   noiseFill(ctx, size, [158, 148, 132], 28);
   // Base pebbles
@@ -2234,6 +2258,7 @@ function makeMaterials() {
   }, false);
   const gravelMap = makeCanvasTexture(TEX, paintGravel, true);
   const gravelRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 200, 36), false);
+  const gravelBump = makeCanvasTexture(TEX, paintGravelBump, false);
   const plateMap = makeCanvasTexture(TEX, paintPlate, true);
   const plateRough = makeCanvasTexture(TEX, (ctx, s) => paintRoughness(ctx, s, 150, 30), false);
   const plateBump = makeCanvasTexture(TEX, paintPlateBump, false);
@@ -2315,6 +2340,7 @@ function makeMaterials() {
   applyRepeat(groundNormal, 10, 10);
   applyRepeat(gravelMap, 5, 5);
   applyRepeat(gravelRough, 5, 5);
+  applyRepeat(gravelBump, 5, 5);
   applyRepeat(plateMap, 3, 1);
   applyRepeat(plateRough, 3, 1);
   applyRepeat(plateBump, 3, 1);
@@ -2421,8 +2447,8 @@ function makeMaterials() {
     color: 0xffffff,
     map: gravelMap ?? undefined,
     roughnessMap: gravelRough ?? undefined,
-    bumpMap: gravelRough ?? undefined,
-    bumpScale: 0.04,
+    bumpMap: gravelBump ?? gravelRough ?? undefined,
+    bumpScale: 0.05,
     roughness: 0.92,
     metalness: 0.01,
   });
