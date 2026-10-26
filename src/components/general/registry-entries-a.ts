@@ -64,4 +64,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-presupuesto-diario-viaje", name: "DailyTravelBudgetCalculatorTool", path: "./DailyTravelBudgetCalculatorTool", export: "DailyTravelBudgetCalculatorTool" },
   { slug: "calculadora-horas-para-meta", name: "TimeToGoalCalculatorTool", path: "./TimeToGoalCalculatorTool", export: "TimeToGoalCalculatorTool" },
   { slug: "calculadora-costo-kwh", name: "KwhCostCalculatorTool", path: "./KwhCostCalculatorTool", export: "KwhCostCalculatorTool" },
+  { slug: "calculadora-iva", name: "IvaCalculatorTool", path: "./IvaCalculatorTool", export: "IvaCalculatorTool" },
+  { slug: "conversor-kmh-ms", name: "KmhToMsConverterTool", path: "./KmhToMsConverterTool", export: "KmhToMsConverterTool" },
 ] as const;
