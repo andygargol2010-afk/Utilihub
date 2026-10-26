@@ -85,6 +85,43 @@ const LEVELS: Level[] = [
     hintEn: "Final: navigate the corridor.",
     hintEs: "Final: navegá el corredor.",
   },
+  {
+    lenses: [
+      { x: 140, y: 60, r: 32, strength: 0.065 },
+      { x: 220, y: 160, r: 38, strength: 0.055 },
+      { x: 310, y: 90, r: 28, strength: 0.07 },
+      { x: 380, y: 180, r: 34, strength: 0.05 },
+    ],
+    blocks: [
+      { x: 180, y: 0, w: 14, h: 90 },
+      { x: 180, y: 190, w: 14, h: 90 },
+      { x: 260, y: 40, w: 14, h: 70 },
+      { x: 340, y: 150, w: 14, h: 80 },
+    ],
+    target: { x: 450, y: 50, r: 14 },
+    hintEn: "Advanced: four lenses, tight corridors. Precision required.",
+    hintEs: "Avanzado: cuatro lentes, corredores estrechos. Precisión requerida.",
+  },
+  {
+    lenses: [
+      { x: 120, y: 200, r: 30, strength: 0.075 },
+      { x: 200, y: 80, r: 36, strength: 0.06 },
+      { x: 280, y: 160, r: 28, strength: 0.08 },
+      { x: 350, y: 60, r: 32, strength: 0.055 },
+      { x: 400, y: 200, r: 26, strength: 0.07 },
+    ],
+    blocks: [
+      { x: 160, y: 30, w: 12, h: 100 },
+      { x: 160, y: 170, w: 12, h: 110 },
+      { x: 240, y: 100, w: 12, h: 60 },
+      { x: 320, y: 0, w: 12, h: 80 },
+      { x: 320, y: 200, w: 12, h: 80 },
+      { x: 370, y: 120, w: 12, h: 50 },
+    ],
+    target: { x: 455, y: 230, r: 12 },
+    hintEn: "Expert: five lenses + dense blockers. Thread the needle.",
+    hintEs: "Experto: cinco lentes + obstáculos densos. Pasá por la aguja.",
+  },
 ];
 
 function readProgress(): { maxCleared: number; shots: number } {
