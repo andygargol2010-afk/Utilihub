@@ -1520,6 +1520,16 @@ function paintDoorLeafBump(ctx: CanvasRenderingContext2D, size: number) {
   ctx.fillStyle = "#4a4a4a";
   ctx.fillRect(stile + 8, rail + 8, size - stile * 2 - 16, mid - rail - rail / 2 - 12);
   ctx.fillRect(stile + 8, mid + rail / 2 + 8, size - stile * 2 - 16, size - rail - (mid + rail / 2) - 16);
+  // Wood pores and fine grit so the door leaf reads as weathered painted timber, not a smooth molded panel.
+  for (let p = 0; p < 90; p++) {
+    const x = hash2(p, 61.3) * size;
+    const y = hash2(p, 62.7) * size;
+    const r = 0.5 + hash2(p, 63.9) * 1.0;
+    ctx.fillStyle = hash2(p, 64.5) > 0.5 ? "rgba(58,58,58,0.45)" : "rgba(216,216,216,0.35)";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 
