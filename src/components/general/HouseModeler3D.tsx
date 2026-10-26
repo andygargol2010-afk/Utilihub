@@ -1385,6 +1385,16 @@ function paintDoorMetalBump(ctx: CanvasRenderingContext2D, size: number) {
   }
   ctx.fillStyle = "#3a3a3a";
   ctx.fillRect(0, Math.floor(size * 0.62), size, 4);
+  // Oxide pits and fine grit so the sheet reads as weathered steel, not smooth ribbed plastic.
+  for (let p = 0; p < 90; p++) {
+    const x = hash2(p, 31.3) * size;
+    const y = hash2(p, 32.7) * size;
+    const r = 0.6 + hash2(p, 33.9) * 1.1;
+    ctx.fillStyle = hash2(p, 34.5) > 0.5 ? "rgba(58,58,58,0.5)" : "rgba(216,216,216,0.35)";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 /** Standing-seam zinc roof. Ports the door sheet-metal ribs onto a covering, without rivet rows. */

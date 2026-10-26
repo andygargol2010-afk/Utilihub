@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 285
+runs_done: 286
 runs_max: 500
 ```
 
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-26
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 285 railing-metal bump densify. runs_done=285. Deploy not verified.
+note: PRODUCT run 286 door-metal bump densify. runs_done=286. Deploy not verified.
 ```
 
 Refresh after each run.
@@ -125,6 +125,7 @@ PRODUCT run 282: clay tile bump densify (110 pits/grit specks) via local clone s
 PRODUCT run 283: chimney-crown bump densify (90 cast-stone pores/grit specks) via local clone surgical. runs_done=283.
 PRODUCT run 284: roof-metal bump densify (100 oxide pits/grit specks) via local clone surgical. runs_done=284.
 PRODUCT run 285: railing-metal bump densify (90 paint pits/grit specks) via local clone surgical. runs_done=285.
+PRODUCT run 286: door-metal bump densify (90 oxide pits/grit specks) via local clone surgical. runs_done=286.
 ```
 
 <!-- end:house-modeler-state.md -->
