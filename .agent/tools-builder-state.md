@@ -14,6 +14,8 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-25 | productividad | calculadora-horas-para-meta | TimeToGoalCalculatorTool
+- 2026-10-25 | hogar | calculadora-costo-kwh | KwhCostCalculatorTool
 - 2026-10-25 | ciencia | calculadora-velocidad-distancia-tiempo | SpeedDistanceTimeCalculatorTool
 - 2026-10-25 | matematicas | calculadora-diferencia-porcentual | PercentageDifferenceCalculatorTool
 - 2026-10-25 | diseno | calculadora-px-a-rem | PxToRemCalculatorTool
@@ -24,8 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-25 | finanzas | calculadora-propina | TipCalculatorTool
 - 2026-10-25 | salud | calculadora-ingesta-agua-diaria | DailyWaterIntakeCalculatorTool
 - 2026-10-24 | texto | calculadora-longitud-promedio-palabra | AverageWordLengthCalculatorTool
-- 2026-10-24 | finanzas | calculadora-interes-diario | DailyInterestCalculatorTool
-- 2026-10-24 | ciencia | calculadora-presion-atmosferica | AtmosphericPressureCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -80,7 +80,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-diferencia-porcentual, calculadora-velocidad-distancia-tiempo
+last_slugs: calculadora-horas-para-meta, calculadora-costo-kwh
 last_deploy: pending
 last_sha: (pending push)
 ```

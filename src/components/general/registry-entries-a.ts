@@ -62,4 +62,6 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-area-rectangular", name: "RoomAreaCalculatorTool", path: "./RoomAreaCalculatorTool", export: "RoomAreaCalculatorTool" },
   { slug: "calculadora-px-a-rem", name: "PxToRemCalculatorTool", path: "./PxToRemCalculatorTool", export: "PxToRemCalculatorTool" },
   { slug: "calculadora-presupuesto-diario-viaje", name: "DailyTravelBudgetCalculatorTool", path: "./DailyTravelBudgetCalculatorTool", export: "DailyTravelBudgetCalculatorTool" },
+  { slug: "calculadora-horas-para-meta", name: "TimeToGoalCalculatorTool", path: "./TimeToGoalCalculatorTool", export: "TimeToGoalCalculatorTool" },
+  { slug: "calculadora-costo-kwh", name: "KwhCostCalculatorTool", path: "./KwhCostCalculatorTool", export: "KwhCostCalculatorTool" },
 ] as const;

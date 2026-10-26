@@ -127,6 +127,8 @@ import { PX_TO_REM_CALCULATOR_TOOLS } from "./px-to-rem-calculator-tool";
 import { DAILY_TRAVEL_BUDGET_CALCULATOR_TOOLS } from "./daily-travel-budget-calculator-tool";
 import { PERCENTAGE_DIFFERENCE_CALCULATOR_TOOLS } from "./percentage-difference-calculator-tool";
 import { SPEED_DISTANCE_TIME_CALCULATOR_TOOLS } from "./speed-distance-time-calculator-tool";
+import { TIME_TO_GOAL_CALCULATOR_TOOLS } from "./time-to-goal-calculator-tool";
+import { KWH_COST_CALCULATOR_TOOLS } from "./kwh-cost-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -258,4 +260,6 @@ export const GENERAL_TOOLS = [
   ...DAILY_TRAVEL_BUDGET_CALCULATOR_TOOLS,
   ...PERCENTAGE_DIFFERENCE_CALCULATOR_TOOLS,
   ...SPEED_DISTANCE_TIME_CALCULATOR_TOOLS,
+  ...TIME_TO_GOAL_CALCULATOR_TOOLS,
+  ...KWH_COST_CALCULATOR_TOOLS,
 ];
