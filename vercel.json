@@ -5,6 +5,13 @@
       "fix/spanish-complete": false
     }
   },
+  "redirects": [
+    {
+      "source": "/es/",
+      "destination": "/es",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
