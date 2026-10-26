@@ -267,6 +267,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-area-circulo") return CircleAreaCalculatorToolUi;
   if (slug === "conversor-onzas-gramos") return OuncesToGramsConverterToolUi;
   if (slug === "calculadora-peso-ideal") return IdealWeightCalculatorToolUi;
+  if (slug === "calculadora-peso-saludable") return IdealWeightCalculatorToolUi;
   if (slug === "calculadora-potencia-electrica") return ElectricalPowerCalculatorToolUi;
   if (slug === "calculadora-tiempo-vuelo") return FlightTimeCalculatorToolUi;
   if (slug === "calculadora-pendiente") return SlopeCalculatorToolUi;
@@ -285,6 +286,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-logaritmo") return LogarithmCalculatorToolUi;
   if (slug === "calculadora-presion-atmosferica") return AtmosphericPressureCalculatorToolUi;
   if (slug === "calculadora-longitud-media-palabra") return AverageWordLengthCalculatorToolUi;
+  if (slug === "calculadora-longitud-promedio-palabra") return AverageWordLengthCalculatorToolUi;
   if (slug === "calculadora-interes-diario") return DailyInterestCalculatorToolUi;
   if (slug === "calculadora-ratio-trabajo-descanso") return WorkBreakRatioCalculatorToolUi;
   if (slug === "calculadora-precio-unitario") return UnitPriceToolUi;
@@ -293,6 +295,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-mediana") return MedianCalculatorToolUi;
   if (slug === "calculadora-factorial") return FactorialCalculatorToolUi;
   if (slug === "calculadora-agua-diaria") return DailyWaterIntakeCalculatorToolUi;
+  if (slug === "calculadora-ingesta-agua-diaria") return DailyWaterIntakeCalculatorToolUi;
   if (slug === "calculadora-consumo-agua") return WaterConsumptionCalculatorToolUi;
   if (slug === "calculadora-area-superficie-esfera") return SphereSurfaceAreaCalculatorToolUi;
   if (slug === "calculadora-perimetro-cuadrado") return SquarePerimeterCalculatorToolUi;
@@ -300,8 +303,11 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "calculadora-propina") return TipCalculatorToolUi;
   if (slug === "calculadora-gpa") return GpaCalculatorToolUi;
   if (slug === "calculadora-area-habitacion") return RoomAreaCalculatorToolUi;
+  if (slug === "calculadora-area-rectangular") return RoomAreaCalculatorToolUi;
   if (slug === "calculadora-px-rem") return PxToRemCalculatorToolUi;
+  if (slug === "calculadora-px-a-rem") return PxToRemCalculatorToolUi;
   if (slug === "calculadora-presupuesto-viaje-diario") return DailyTravelBudgetCalculatorToolUi;
+  if (slug === "calculadora-presupuesto-diario-viaje") return DailyTravelBudgetCalculatorToolUi;
   if (slug === "calculadora-diferencia-porcentual") return PercentageDifferenceCalculatorToolUi;
   if (slug === "calculadora-velocidad-distancia-tiempo") return SpeedDistanceTimeCalculatorToolUi;
   if (slug === "calculadora-iva") return IvaCalculatorToolUi;
@@ -322,10 +328,30 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (kind === "document") return DocumentToolUi;
 
   // 3) Design / color
-  if (kind === "design" || kind === "color" || category === "diseno" || category === "design") return DesignToolUi;
+  if (
+    kind === "design" ||
+    kind === "color" ||
+    category === "diseno" ||
+    category === "design" ||
+    slug.startsWith("css-")
+  ) {
+    return DesignToolUi;
+  }
 
-  // 4) Configured numeric operations
-  if (tool.config && (tool.config as { operation?: string }).operation) return ConfiguredToolUi;
+  // 4) Config-driven numeric vs document operations
+  if (tool.config && typeof tool.config === "object" && "operation" in tool.config) {
+    const op = String((tool.config as { operation?: string }).operation || "");
+    if (
+      op === "pdf-metadata" ||
+      op === "text-diff" ||
+      op === "csv-inspector" ||
+      op === "markdown-html" ||
+      op === "file-name-batch"
+    ) {
+      return DocumentToolUi;
+    }
+    return ConfiguredToolUi;
+  }
 
   // 5) Kind routes
   if (kind === "converter" || kind === "conversion" || kind === "unit") return ConverterToolUi;
