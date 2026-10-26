@@ -619,6 +619,16 @@ function paintBoardFormedBump(ctx: CanvasRenderingContext2D, size: number) {
   }
   ctx.fillStyle = "rgba(12,12,12,0.72)";
   ctx.fillRect(Math.floor(size * 0.5) - 2, 0, 3, size);
+  // Concrete air-void pores and fine aggregate grit so the footing reads as cast concrete, not smooth boards.
+  for (let p = 0; p < 90; p++) {
+    const x = hash2(p, 61.3) * size;
+    const y = hash2(p, 62.7) * size;
+    const r = 0.5 + hash2(p, 63.9) * 1.0;
+    ctx.fillStyle = hash2(p, 64.5) > 0.5 ? "rgba(52,52,52,0.45)" : "rgba(216,216,216,0.35)";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 /** Running-bond ashlar for wall faces. Port of the plinth course, scaled for a 2.6 m bay. */

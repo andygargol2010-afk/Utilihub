@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 289
+runs_done: 290
 runs_max: 500
 ```
 
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-26
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 289 door-leaf bump densify. runs_done=289.
+note: PRODUCT run 290 footing board-formed bump densify. runs_done=290.
 ```
 
 Refresh after each run.
@@ -129,6 +129,7 @@ PRODUCT run 286: door-metal bump densify (90 oxide pits/grit specks) via local c
 PRODUCT run 287: joinery bump densify (90 paint pits/grit specks) via local clone surgical. runs_done=287.
 PRODUCT run 288: fascia bump densify (90 wood pores/grit specks) via local clone surgical. runs_done=288.
 PRODUCT run 289: door-leaf bump densify (90 wood pores/grit specks) via local clone surgical. runs_done=289.
+PRODUCT run 290: footing board-formed bump densify (90 concrete pores/grit specks) via local clone surgical. runs_done=290.
 ```
 
 <!-- end:house-modeler-state.md -->
