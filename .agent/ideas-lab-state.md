@@ -67,11 +67,11 @@ path_en: /guides/modular-pattern-composer
 path_es: /es/guias/modular-pattern-composer
 domain: search-magnets
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: n/a
 next_step_required: no
-notes: DOMAIN ROLL IDEATE: U=0.37 < 0.50 → GROWTH. U_g=0.28 < 0.35 → FIXED urn (traffic-bets | search-magnets, equal weights 3). Selected search-magnets. FIXED: no weight updates. last_closed_domain=traffic-diagnosis ≠ match (no re-roll). Idea leverages recently closed modular-pattern-composer for SEO depth (distinct from n-body-gravity-guide).
+notes: DOMAIN ROLL IDEATE: U=0.37 < 0.50 → GROWTH. U_g=0.28 < 0.35 → FIXED urn (traffic-bets | search-magnets, equal weights 3). Selected search-magnets. FIXED: no weight updates. last_closed_domain=traffic-diagnosis ≠ match (no re-roll). Idea leverages recently closed modular-pattern-composer for SEO depth (distinct from n-body-gravity-guide). EXECUTE 1/6: shipped full original long-form EN+ES guide pages with meta, hreflang, breadcrumbs, deep links to live composer, FAQs, practical tips, distinction from neon-layer. CWV-safe static. Adsterra intact. Next: polish / expand sections or internal links if needed.
 adsense-prep_runs: 3
 ```
 
