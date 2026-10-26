@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 287
+runs_done: 288
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 339846
+approx_bytes: 340300
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
 Actions restore workflow_id: 375758025
@@ -60,7 +60,7 @@ last_mode: PRODUCT
 last_date: 2026-10-26
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 287 joinery bump densify. runs_done=287. Deploy not verified.
+note: PRODUCT run 288 fascia bump densify. runs_done=288.
 ```
 
 Refresh after each run.
@@ -127,6 +127,7 @@ PRODUCT run 284: roof-metal bump densify (100 oxide pits/grit specks) via local 
 PRODUCT run 285: railing-metal bump densify (90 paint pits/grit specks) via local clone surgical. runs_done=285.
 PRODUCT run 286: door-metal bump densify (90 oxide pits/grit specks) via local clone surgical. runs_done=286.
 PRODUCT run 287: joinery bump densify (90 paint pits/grit specks) via local clone surgical. runs_done=287.
+PRODUCT run 288: fascia bump densify (90 wood pores/grit specks) via local clone surgical. runs_done=288.
 ```
 
 <!-- end:house-modeler-state.md -->

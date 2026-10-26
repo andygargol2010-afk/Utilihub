@@ -1697,6 +1697,16 @@ function paintFasciaBump(ctx: CanvasRenderingContext2D, size: number) {
     ctx.fillRect(0, y - 1, size, 3);
   }
   ctx.fillRect(0, size - 6, size, 6);
+  // Wood pores and fine grit so the painted fascia reads as weathered board, not smooth plastic.
+  for (let p = 0; p < 90; p++) {
+    const x = hash2(p, 51.3) * size;
+    const y = hash2(p, 52.7) * size;
+    const r = 0.5 + hash2(p, 53.9) * 1.0;
+    ctx.fillStyle = hash2(p, 54.5) > 0.5 ? "rgba(58,58,58,0.45)" : "rgba(216,216,216,0.35)";
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintGravel(ctx: CanvasRenderingContext2D, size: number) {
