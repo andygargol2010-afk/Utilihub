@@ -972,6 +972,21 @@ function paintTimberBump(ctx: CanvasRenderingContext2D, size: number) {
     const joint = (0.18 + hash2(i, 11) * 0.58) * size;
     ctx.fillRect(joint, y0, 3, y1 - y0);
   }
+  // Grain ridges and small knots so plank faces catch raking light unevenly.
+  for (let g = 0; g < 90; g++) {
+    const gx = hash2(g, 81) * size;
+    const gy = hash2(g, 83) * size;
+    ctx.fillStyle = hash2(g, 85) > 0.5 ? "rgba(255,255,255,0.2)" : "rgba(30,30,30,0.26)";
+    ctx.fillRect(gx, gy, 6 + hash2(g, 87) * 28, 1);
+  }
+  for (let k = 0; k < 8; k++) {
+    const kx = hash2(k, 89) * size;
+    const ky = hash2(k, 91) * size;
+    ctx.fillStyle = "rgba(34,34,34,0.4)";
+    ctx.beginPath();
+    ctx.ellipse(kx, ky, 2 + hash2(k, 93) * 2.5, 1.2 + hash2(k, 95), 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 function paintClayTiles(ctx: CanvasRenderingContext2D, size: number) {
