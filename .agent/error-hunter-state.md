@@ -11,15 +11,15 @@ repo: andygargol2010-afk/Utilihub
 - Si se descubre un error nuevo → añadir entrada E0xx al catalog en el mismo commit o docs(agent) seguido.
 
 ## Last run
-- date: 2026-10-25
-- mode: known smoke (E001 registry full, E005 homes clean, E031/E034 PLACEHOLDER risk) + discovery (Vercel ERROR logs on tip-1, summary-es.ts PLACEHOLDER check, modeler3d-app, HouseModeler size)
-- deploy: SHA 1a75be3 ERROR (PLACEHOLDER in summary-es.ts → missing SUMMARY_ES export); tip c920a10 restored file (deploy pending or not yet listed)
-- known_smoke: registry complete no PLACEHOLDER, homes start with import no $(cat, ModularPatternComposer full canvas; E031 recurring risk confirmed by previous PLACEHOLDER
-- new_findings: E034 — summary-es.ts was PLACEHOLDER on ERROR SHA, causing build fail; already restored in tip commit. Added to catalog as fixed.
-- fixes: 0 code (restore already in c920a10); docs catalog + state updated
+- date: 2026-10-26
+- mode: known smoke (E001 registry full no PLACEHOLDER, E005 homes clean, E031/E034 tip clean, ModularPatternComposer full) + discovery (new tools calculadora-iva + conversor-kmh-ms missing registry wires)
+- deploy: tip previous e5459da no deploy listed yet at check; fix SHA 554d53a (wire dedicated UIs) committed; post-push verification pending
+- known_smoke: registry complete, homes start with import no $(cat, summary-es full no PLACEHOLDER, ModularPatternComposer canvas present; E031 still open as risk pattern but no active corruption
+- new_findings: E035 — dedicated UIs for calculadora-iva and conversor-kmh-ms existed + catalog wired but pickComponent missing slug checks → generic Math/Converter UI. Fixed by adding lazy + early returns.
+- fixes: 1 code (registry.tsx wire); catalog + state updated
 
 ## Rotation (evitar sesgo)
-- last_known_focus: E031/E034 PLACEHOLDER stubs + i18n summary-es
+- last_known_focus: E031 PLACEHOLDER risk + new tool wiring (E035)
 - Preferir rotar qué E### se profundiza si todos los smokes pasan.
 - new_error_budget: al menos 1 path de descubrimiento por corrida (muestra de tools no cubiertas por el catálogo).
 
