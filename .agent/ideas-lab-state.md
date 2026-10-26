@@ -64,14 +64,14 @@ status: active
 idea: Interactive Orbit Pulse Catcher game: orbiting colored pulses around a center; player times taps or clicks to catch them in matching zones for score. Combo multipliers on consecutive perfect catches, increasing speed and density per level, particle burst effects on catch, miss penalty, high-score localStorage, PNG share of best run with branding (title + utilihub.com + score + combo), keyboard/touch controls, progressive levels (5-8). Distinct from Pulse Catch Arena and Refraction Challenge by radial orbit timing + zone matching. EN+ES routes. CWV-safe (canvas lazy, modest particles). Adsterra intact. Next-step required.
 id: orbit-pulse-catcher
 path_en: /games/orbit-pulse-catcher
-path_es: /es/juegos/orbit-pulse-catcher
+path_es: /es/juegos/atrapa-pulsos-orbita
 domain: games
 runs_total: 6
-runs_remaining: 6
+runs_remaining: 5
 acceptance: pending
 share: png
 next_step_required: yes
-notes: DOMAIN ROLL IDEATE: U=0.721 > 0.50 → CORE. Weighted sample index 14 → games (cumul 7-16 of 36). last_closed_domain=quality-lift ≠ games (no re-roll). Selected games→1; other CORE +1. New interactive timing game with radial orbits and zone matching, distinct from existing PulseCatch and Refraction. runs_total=6 within quality bar.
+notes: EXECUTE 1/6: Shipped initial interactive canvas game. 6 colored radial zones, orbiting matching pulses, click zone when pulse aligned (angular tolerance), combo multipliers, level progression on score, lives on miss, particle bursts, high-score localStorage, PNG share with branding. Registered in catalog + registry + next-step. EN+ES via dynamic routes. CWV-safe (lazy, modest particles). Adsterra intact via existing GamePage. Next runs: polish timing feel, more levels, keyboard, visual juice.
 adsense-prep_runs: 3
 ```
 
