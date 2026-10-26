@@ -5,6 +5,7 @@ import { DeferredRelatedTools } from "@/components/DeferredRelatedTools";
 import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { DeferredKitReturnRibbon } from "@/components/kits/DeferredKitReturnRibbon";
+import { ToolSeoContent } from "@/components/ToolSeoContent";
 import type { CatalogTool } from "@/lib/all-tools";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
@@ -29,10 +30,6 @@ export function SpanishToolPage() {
       mod.recordRecentTool(tool.slug);
     });
   }, [tool.slug]);
-
-  const about = Array.isArray(tool.about) ? tool.about.filter(Boolean) : [];
-  const steps = Array.isArray(tool.steps) ? tool.steps.filter(Boolean) : [];
-  const faq = Array.isArray(tool.faq) ? tool.faq : [];
 
   const categoryTo =
     categorySlug === "finanzas" ? ("/es/finanzas" as const) : ("/es/categoria/$slug" as const);
@@ -90,46 +87,8 @@ export function SpanishToolPage() {
       <DeferredAdsterraBanner />
       <DeferredRelatedTools tool={tool} locale="es" />
 
-      {(about.length > 0 || steps.length > 0 || faq.length > 0) && (
-        <section className="mt-10 space-y-8" aria-labelledby="tool-guide-title">
-          <h2 id="tool-guide-title" className="text-2xl font-black">
-            {name}: cómo funciona
-          </h2>
-          {about.length > 0 && (
-            <div>
-              <h3 className="text-base font-bold">Sobre {name}</h3>
-              <div className="mt-2 space-y-2 text-sm text-muted-foreground">
-                {about.map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-              </div>
-            </div>
-          )}
-          {steps.length > 0 && (
-            <div>
-              <h3 className="text-base font-bold">Cómo usarla</h3>
-              <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
-                {steps.map((s, i) => (
-                  <li key={i}>{s}</li>
-                ))}
-              </ol>
-            </div>
-          )}
-          {faq.length > 0 && (
-            <div>
-              <h3 className="text-base font-bold">Preguntas frecuentes</h3>
-              <dl className="mt-2 space-y-3 text-sm">
-                {faq.map((item, i) => (
-                  <div key={i}>
-                    <dt className="font-semibold">{item.q}</dt>
-                    <dd className="mt-1 text-muted-foreground">{item.a}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          )}
-        </section>
-      )}
+      {/* ES-only guide: overrides aboutEs/stepsEs/faqEs or spanishGuideFallback — never EN catalog copy */}
+      <ToolSeoContent tool={tool} locale="es" />
     </div>
   );
 }
