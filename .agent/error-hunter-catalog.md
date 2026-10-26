@@ -301,7 +301,7 @@ Formato por entrada:
 
 ## E031 — $(cat stubs / PLACEHOLDER corrupten archivos críticos
 - **status**: open (recurring)
-- **last_seen**: 2026-10-26 (run 8 tip clean: no PLACEHOLDER/$(cat in registry.tsx, summary-es.ts, index.tsx, es.index.tsx, catalog; dedicated wires re-added for recent tools)
+- **last_seen**: 2026-10-26 (run 9 tip clean: no PLACEHOLDER/$(cat in registry.tsx, summary-es.ts, index.tsx, es.index.tsx, catalog; dedicated wires present)
 - **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" o "PLACEHOLDER" en vez del contenido real; home 404, registry roto, o build ERROR por missing export
 - **root_cause**: agentes escriben el comando shell o un placeholder como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
 - **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts; deben ser contenido real, no PLACEHOLDER ni $(cat
