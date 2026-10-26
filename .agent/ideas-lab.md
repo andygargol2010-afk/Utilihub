@@ -37,31 +37,26 @@ Reply in **Spanish** at the end of every run (template in ideas-lab-ops.md).
 3. COMMIT IDENTITY: name `andygargol2010-afk`, email `andygargol2010@gmail.com`. FORBIDDEN: agent@utilihub.net etc.
 4. NEVER create/delete/update any other automation. Only automation_update THIS task if bootstrap must change. State → ideas-lab-state.md.
 5. NEVER change cadence/schedule/notification.
-6. Do NOT touch HouseModeler3D.tsx. Do NOT touch Adsterra/ads core unless pure layout spacing. NEVER remove Adsterra.
+6. Do NOT touch `HouseModeler3D.tsx`. Do NOT touch Adsterra/ads core or the ads kill switch (`ads-config`, `ads-edge`, AdsterraBanner/AdBanner). NEVER remove Adsterra.
 7. One primary outcome per run.
-8. POST-PUSH DEPLOY CHECK on fix/spanish-complete. ERROR→FIX-BUILD max 2. READY→state it. User-facing → POST-SHIP SMOKE (ops).
-9. RATE_LIMITED is not a build error.
-10. runs_total/remaining integers 1..15. Never raise cap mid-project.
-11. DOMAIN ROLL (IDEATE only):
+8. **ONE COMMIT PER RUN.** Code + state updates go in a **single** `push_files` (or equivalent) commit. Never a separate `docs(agent)` state-only commit after a feat, except on **CLOSE**. No post-ship deploy.
+9. **NO DEPLOYS.** Auto-deploys on `fix/spanish-complete` are disabled on purpose. Never call `create_deployment`, Deploy Hooks, or any Vercel deploy API. Andy/Claude review and deploy in batches. Replace any “deploy + smoke” step with **PRE-PUSH SELF-REVIEW** (ops).
+10. RATE_LIMITED / Vercel Hobby quota messages are not build errors the agent must “fix” by deploying.
+11. `runs_total` / `runs_remaining` integers. Default project size **4 runs**, hard max **6**. Never raise cap mid-project. A project that cannot show a working playable/useful core by **run 2** must be cut down or closed.
+12. DOMAIN ROLL (IDEATE only):
     - **CORE** = `kits | journeys | games | simulators | studio-composition | playgrounds | quality-lift`
-    - **GROWTH** = `traffic-bets | growth-surfaces | share-hooks | search-magnets | retention-loops | conversion-paths | traffic-diagnosis | adsense-prep | seo-locales` (omit **seo-locales** from the roll set once active SEO locales ≥ 5; see §14)
-    - U ~ Uniform(0,1): U < 0.50 → GROWTH, else CORE.
-    - CORE: weighted sample from weights_core; selected→1; other CORE→+1.
-    - GROWTH TWO-URN: p_fixed (default 0.35). U_g < p_fixed → FIXED urn only (`traffic-bets`,`search-magnets` weight 3; no weight updates). Else FLEX urn = all other GROWTH domains including **seo-locales** and adsense-prep; selected non-FIXED→1; other non-FIXED→+1; FIXED untouched.
-    - adsense-prep temporary weight 2; runs 0..5; remove after 5th selection completes.
-    - last_closed_domain match → re-roll once same catalog.
-    - Never default to kits out of habit.
-12. NEXT STEP for shareable playgrounds under playgrounds|journeys|studio-composition|games: register next-step.ts + PlaygroundNextStep EN+ES before AdsterraBanner. Same when **quality-lift** upgrades a surface in those families.
-13. **seo-locales (GROWTH FLEX, temporary):** When selected or EXECUTE continues it: follow **SEO-LOCALES procedure** in ideas-lab-ops.md and `.agent/seo-locales-registry.md`. Activate/extend one high-spoken language under `/{code}/...`. No primary-nav links from EN or ES. Keep registry + `src/lib/i18n/seo-locales.ts` in sync.
-14. **seo-locales CAP = 5 active languages:** Count rows with status `active` in `.agent/seo-locales-registry.md` / `SEO_LOCALES_ACTIVE`. When **active count ≥ 5**:
-    - **Retire the domain:** set `seo-locales: 0` in `weights_growth` (ideas-lab-state.md), remove `seo-locales` from the GROWTH domain list used in DOMAIN ROLL, and stop selecting it.
-    - Do not activate a 6th SEO locale via this domain.
-    - Existing `/{code}/...` routes stay; other domains may still add pages for already-active locales when cheap.
-    - Document retirement in state NOTES when the 5th language is completed.
-15. **quality-lift (CORE):** When selected or EXECUTE continues it: follow **QUALITY-LIFT procedure** in ideas-lab-ops.md. Family = uniform random among `playgrounds` | `games` | `simulators` (U_f thirds; **no** bias from catalog size or “more material”). Compare 3 existing; improve one to an *elevated* standard (not parity). runs_total **must** be 5–10. Forbidden: generic polish that only matches the other two.
+    - **GROWTH** = two-urn (see ops). `seo-locales` only in FLEX; skip if SEO_LOCALES_ACTIVE ≥ 5.
+13. EN + ES for every user-facing surface (routes, copy, meta). Product UI strings stay locale-correct.
+14. Files under `.agent/ideas-lab*.md` **win over** the automation prompt if they disagree.
+15. Never rewrite `registry.tsx` / `registry-entries-a.ts` / `registry-entries-b.ts` wholesale. Ideas-lab must not append catalog calculator tools via registry unless explicitly a non-catalog surface.
+16. Never write files containing the literal tokens `PLACEHOLDER` or `$(cat`.
 
-## Core Web Vitals
+---
 
-When writing code, follow the Core Web Vitals rules in **ideas-lab-ops.md** (lazy route isolation, no home/catalog bloat, CLS-safe stages, no needless heavy deps). Site speed is shared with the daily performance automation — do not undo its work.
+## Out of scope
+
+- Catalog calculators / duplicate `makeTool` wrappers (tools-builder domain).
+- House Modeler 3D (`HouseModeler3D.tsx` and house-modeler agent files).
+- Changing Adsterra integration or Global Config ads flags.
 
 <!-- end:ideas-lab.md -->
