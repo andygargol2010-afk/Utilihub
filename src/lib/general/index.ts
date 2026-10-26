@@ -129,6 +129,8 @@ import { PERCENTAGE_DIFFERENCE_CALCULATOR_TOOLS } from "./percentage-difference-
 import { SPEED_DISTANCE_TIME_CALCULATOR_TOOLS } from "./speed-distance-time-calculator-tool";
 import { TIME_TO_GOAL_CALCULATOR_TOOLS } from "./time-to-goal-calculator-tool";
 import { KWH_COST_CALCULATOR_TOOLS } from "./kwh-cost-calculator-tool";
+import { IVA_CALCULATOR_TOOLS } from "./iva-calculator-tool";
+import { KMH_TO_MS_CONVERTER_TOOLS } from "./kmh-to-ms-converter-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -262,4 +264,6 @@ export const GENERAL_TOOLS = [
   ...SPEED_DISTANCE_TIME_CALCULATOR_TOOLS,
   ...TIME_TO_GOAL_CALCULATOR_TOOLS,
   ...KWH_COST_CALCULATOR_TOOLS,
+  ...IVA_CALCULATOR_TOOLS,
+  ...KMH_TO_MS_CONVERTER_TOOLS,
 ];
