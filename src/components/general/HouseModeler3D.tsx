@@ -1,5 +1,5 @@
 import type { GeneralTool } from "@/lib/general/types";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
@@ -8,6 +8,7 @@ import { exportScenePng } from "./house-modeler/exportPng";
 import { copyShareUrl, readShareHash } from "./house-modeler/shareLink";
 import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
 import { createHistory, undoKeyStep } from "./house-modeler/history";
+import { computeAreaStats, formatAreaStats } from "./house-modeler/areaStats";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
 import { PresetPicker } from "./house-modeler/PresetPicker";
 import { applyTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
@@ -6262,7 +6263,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     t.selectionHelper.visible = false;
   };
   const historyRef = useRef(createHistory());
-  const [, setHistRev] = useState(0);
+  const [histRev, setHistRev] = useState(0);
+  const areaText = useMemo(
+    () => formatAreaStats(computeAreaStats(partsRef.current.map((p) => ({ kind: p.kind, obj: findPartObject(p.id) }))), es),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [count, histRev, es, findPartObject],
+  );
   const stepHistory = (dir: "undo" | "redo") => {
     const h = historyRef.current;
     const snap = dir === "undo" ? h.undo() : h.redo();
@@ -6802,6 +6808,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
           {count} {labels.parts}
         </span>
+        {areaText && (
+          <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground" title={es ? "Áreas brutas (huecos sin descontar)" : "Gross areas (openings not subtracted)"}>
+            {areaText}
+          </span>
+        )}
         <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-700/40 bg-amber-900/15 px-2 py-0.5 text-[11px] font-semibold text-foreground">
           <span
             className="h-2.5 w-2.5 shrink-0 rounded-full ring-1 ring-black/20"
