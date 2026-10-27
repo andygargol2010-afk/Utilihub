@@ -1,1 +1,1 @@
-placeholder for index
+$(cat /tmp/index.ts)
