@@ -144,6 +144,182 @@ import { ASPECT_RATIO_TOOLS } from "./aspect-ratio-tool";
 import { DAYS_BETWEEN_DATES_CALCULATOR_TOOLS } from "./days-between-dates-calculator-tool";
 import { TANK_VOLUME_CALCULATOR_TOOLS } from "./tank-volume-calculator-tool";
 import { PIZZA_PORTIONS_CALCULATOR_TOOLS } from "./pizza-portions-calculator-tool";
+// Re-wired 2026-10-27: modules dropped from this index by b300eb06 (2026-10-19).
+import { FINANCE_TOOLS } from "./finance";
+import { SEO_GROWTH_TOOLS } from "./seo-growth";
+import { GAP_TOOLS } from "./gap-tools";
+import { PERCENT_ADVANCED_TOOLS } from "./percent-advanced";
+import { ALGEBRA_ADVANCED_TOOLS } from "./algebra-advanced";
+import { GEOMETRY_SUITE_TOOLS } from "./geometry-suite";
+import { ARITHMETIC_SUITE_TOOLS } from "./arithmetic-suite";
+import { SEQUENCE_SUITE_TOOLS } from "./sequence-suite";
+import { TRIG_SUITE_TOOLS } from "./trig-suite";
+import { EXPLOG_SUITE_TOOLS } from "./explog-suite";
+import { MATRIX_BINARY_SUITE_TOOLS } from "./matrix-binary-suite";
+import { OVERTIME_PAY_TOOLS } from "./overtime-pay";
+import { UTM_BUILDER_TOOLS } from "./utm-builder";
+import { VAT_EXTRACTOR_TOOLS } from "./vat-extractor";
+import { AC_SIZE_TOOLS } from "./ac-size";
+import { CONCRETE_CALCULATOR_TOOLS } from "./concrete-calculator";
+import { WALLPAPER_CALCULATOR_TOOLS } from "./wallpaper-calculator";
+import { DRYWALL_CALCULATOR_TOOLS } from "./drywall-calculator";
+import { MEETING_COST_TOOLS } from "./meeting-cost";
+import { FENCE_CALCULATOR_TOOLS } from "./fence-calculator";
+import { STAIR_CALCULATOR_TOOLS } from "./stair-calculator";
+import { GRAVEL_CALCULATOR_TOOLS } from "./gravel-calculator";
+import { FLOORING_CALCULATOR_TOOLS } from "./flooring-calculator";
+import { AIRFRYER_CALCULATOR_TOOLS } from "./airfryer-calculator";
+import { BAKERS_PERCENTAGE_TOOLS } from "./bakers-percentage";
+import { DECK_CALCULATOR_TOOLS } from "./deck-calculator";
+import { ROOF_CALCULATOR_TOOLS } from "./roof-calculator";
+import { POOL_CALCULATOR_TOOLS } from "./pool-calculator";
+import { PAVER_CALCULATOR_TOOLS } from "./paver-calculator";
+import { SOD_CALCULATOR_TOOLS } from "./sod-calculator";
+import { GUTTER_CALCULATOR_TOOLS } from "./gutter-calculator";
+import { INSULATION_CALCULATOR_TOOLS } from "./insulation-calculator";
+import { BRICK_CALCULATOR_TOOLS } from "./brick-calculator";
+import { YEAST_CONVERTER_TOOLS } from "./yeast-converter";
+import { DOUGH_WATER_TEMP_TOOLS } from "./dough-water-temp";
+import { SIDING_CALCULATOR_TOOLS } from "./siding-calculator";
+import { BASEBOARD_CALCULATOR_TOOLS } from "./baseboard-calculator";
+import { GRASS_SEED_CALCULATOR_TOOLS } from "./grass-seed-calculator";
+import { FIREWOOD_CALCULATOR_TOOLS } from "./firewood-calculator";
+import { SHEET_CALCULATOR_TOOLS } from "./sheet-calculator";
+import { CAULK_CALCULATOR_TOOLS } from "./caulk-calculator";
+import { GROUT_CALCULATOR_TOOLS } from "./grout-calculator";
+import { THINSET_CALCULATOR_TOOLS } from "./thinset-calculator";
+import { HEAT_INDEX_TOOLS } from "./heat-index-calculator";
+import { DEW_POINT_TOOLS } from "./dew-point-calculator";
+import { RAISED_BED_CALCULATOR_TOOLS } from "./raised-bed-calculator";
+import { RETAINING_WALL_CALCULATOR_TOOLS } from "./retaining-wall-calculator";
+import { STUD_CALCULATOR_TOOLS } from "./stud-calculator";
+import { RAINWATER_CALCULATOR_TOOLS } from "./rainwater-calculator";
+import { BOARD_FOOT_CALCULATOR_TOOLS } from "./board-foot-calculator";
+import { ROBOTS_TXT_TOOLS } from "./robots-txt-generator";
+import { SCHENGEN_CALCULATOR_TOOLS } from "./schengen-calculator";
+import { ISBN_VALIDATOR_TOOLS } from "./isbn-validator";
+import { ICS_EVENT_TOOLS } from "./ics-event-tool";
+import { WIND_CHILL_TOOLS } from "./wind-chill-tool";
+import { ISO_DURATION_TOOLS } from "./iso-duration-tool";
+import { CONTRAST_TOOLS } from "./contrast-tool";
+import { CRON_TOOLS } from "./cron-tool";
+import { NATO_TOOLS } from "./nato-tool";
+import { JETLAG_TOOLS } from "./jetlag-tool";
+import { IBAN_TOOLS } from "./iban-tool";
+import { SHOE_SIZE_TOOLS } from "./shoe-size-tool";
+import { CHMOD_TOOLS } from "./chmod-tool";
+import { RESISTOR_BAND_TOOLS } from "./resistor-bands-tool";
+import { APA_CITATION_TOOLS } from "./apa-citation-tool";
+import { CHORD_TRANSPOSE_TOOLS } from "./chord-transpose-tool";
+import { DNI_LETTER_TOOLS } from "./dni-letter-tool";
+import { SUBNET_TOOLS } from "./subnet-tool";
+import { COORDINATE_TOOLS } from "./coordinates-tool";
+import { EAN_TOOLS } from "./ean-tool";
+import { CLAMP_TOOLS } from "./clamp-tool";
+import { BRAILLE_TOOLS } from "./braille-tool";
+import { ULID_TOOLS } from "./ulid-tool";
+import { DECIBEL_TOOLS } from "./decibel-tool";
+import { JWT_TOOLS } from "./jwt-tool";
+import { PASSWORD_ENTROPY_TOOLS } from "./password-entropy-tool";
+import { OPEN_GRAPH_TOOLS } from "./open-graph-tool";
+import { MARKDOWN_TABLE_TOOLS } from "./markdown-table-tool";
+import { JSON_TS_TOOLS } from "./json-to-typescript-tool";
+import { LUHN_TOOLS } from "./luhn-tool";
+import { BPM_DELAY_TOOLS } from "./bpm-delay-tool";
+import { VCARD_TOOLS } from "./vcard-tool";
+import { SECURITY_TXT_TOOLS } from "./security-txt-tool";
+import { RUT_CHILE_TOOLS } from "./rut-chile-tool";
+import { MORSE_TOOLS } from "./morse-tool";
+import { GITIGNORE_TOOLS } from "./gitignore-tool";
+import { RICE_TOOLS } from "./rice-tool";
+import { SRT_OFFSET_TOOLS } from "./srt-offset-tool";
+import { MANIFEST_TOOLS } from "./manifest-tool";
+import { OKLCH_TOOLS } from "./oklch-tool";
+import { WHATSAPP_LINK_TOOLS } from "./whatsapp-link-tool";
+import { ISO_WEEK_TOOLS } from "./iso-week-tool";
+import { BEAUFORT_TOOLS } from "./beaufort-tool";
+import { PALINDROME_TOOLS } from "./palindrome-tool";
+import { UNIX_TIMESTAMP_TOOLS } from "./unix-timestamp-tool";
+import { CASE_CONVERTER_TOOLS } from "./case-converter-tool";
+import { SIMPLE_INTEREST_TOOLS } from "./simple-interest-tool";
+import { COMPOUND_INTEREST_TOOLS } from "./compound-interest-tool";
+import { RANDOM_NUMBER_TOOLS } from "./random-number-tool";
+import { DICE_ROLLER_TOOLS } from "./dice-roller-tool";
+import { RUNNING_PACE_TOOLS } from "./running-pace-tool";
+import { COIN_FLIP_TOOLS } from "./coin-flip-tool";
+import { RANDOM_COLOR_TOOLS } from "./random-color-tool";
+import { RANDOM_USERNAME_TOOLS } from "./random-username-tool";
+import { TRIANGLE_AREA_TOOLS } from "./triangle-area-tool";
+import { QR_CODE_GENERATOR_TOOLS } from "./qr-code-generator-tool";
+import { RANDOM_QUOTE_TOOLS } from "./random-quote-tool";
+import { WATER_INTAKE_TOOLS } from "./water-intake-tool";
+import { TDEE_CALCULATOR_TOOLS } from "./tdee-calculator-tool";
+import { DUE_DATE_CALCULATOR_TOOLS } from "./due-date-calculator-tool";
+import { DISCOUNT_CALCULATOR_TOOLS } from "./discount-calculator-tool";
+import { MACRO_CALCULATOR_TOOLS } from "./macro-calculator-tool";
+import { IDEAL_WEIGHT_TOOLS } from "./ideal-weight-tool";
+import { COMPANY_NAME_GENERATOR_TOOLS } from "./company-name-generator-tool";
+import { EMAIL_VALIDATOR_TOOLS } from "./email-validator-tool";
+import { OHMS_LAW_TOOLS } from "./ohms-law-tool";
+import { PASSWORD_STRENGTH_TOOLS } from "./password-strength-tool";
+import { HEX_COLOR_CONVERTER_TOOLS } from "./hex-color-converter-tool";
+import { CSV_TO_JSON_TOOLS } from "./csv-to-json-tool";
+import { XML_TO_JSON_TOOLS } from "./xml-to-json-tool";
+import { BASE64_TOOLS } from "./base64-tool";
+import { POMODORO_TIMER_TOOLS } from "./pomodoro-timer-tool";
+import { DOWNLOAD_TIME_TOOLS } from "./download-time-tool";
+import { BODY_FAT_TOOLS } from "./body-fat-tool";
+import { KINETIC_ENERGY_TOOLS } from "./kinetic-energy-tool";
+import { TIMEZONE_TOOLS } from "./timezone-tool";
+import { PERCENTAGE_OF_TOOLS } from "./percentage-of-tool";
+import { SLUG_GENERATOR_TOOLS } from "./slug-generator-tool";
+import { BILL_SPLIT_TOOLS } from "./bill-split-tool";
+import { CURRENCY_CONVERTER_TOOLS } from "./currency-converter-tool";
+import { RECIPE_COST_TOOLS } from "./recipe-cost-tool";
+import { ELECTRICITY_COST_TOOLS } from "./electricity-cost-tool";
+import { WORD_COUNTER_TOOLS } from "./word-counter-tool";
+import { LOAN_PAYMENT_TOOLS } from "./loan-payment-tool";
+import { AVERAGE_SPEED_TOOLS } from "./average-speed-tool";
+import { ACCELERATION_TOOLS } from "./acceleration-tool";
+import { FUEL_EFFICIENCY_TOOLS } from "./fuel-efficiency-tool";
+import { HEART_RATE_ZONE_TOOLS } from "./heart-rate-zone-tool";
+import { HOURLY_RATE_TOOLS } from "./hourly-rate-tool";
+import { LINE_SORTER_TOOLS } from "./line-sorter-tool";
+import { BUSINESS_DAYS_TOOLS } from "./business-days-tool";
+import { TEXT_NORMALIZER_TOOLS } from "./text-normalizer-tool";
+import { BUDGET_503020_TOOLS } from "./budget-503020-tool";
+import { UUID_TOOLS } from "./uuid-tool";
+import { DATE_DIFFERENCE_TOOLS } from "./date-difference-tool";
+import { RECIPE_SCALER_TOOLS } from "./recipe-scaler-tool";
+import { ROOM_AREA_TOOLS } from "./room-area-tool";
+import { FINAL_GRADE_TOOLS } from "./final-grade-tool";
+import { TEMPERATURE_CONVERTER_TOOLS } from "./temperature-converter-tool";
+import { PROPORTION_CALCULATOR_TOOLS } from "./proportion-calculator-tool";
+import { CSS_GRADIENT_GENERATOR_TOOLS } from "./css-gradient-generator-tool";
+import { CHARACTER_COUNTER_TOOLS } from "./character-counter-tool";
+import { CALORIE_DEFICIT_TOOLS } from "./calorie-deficit-tool";
+import { TRIP_TIME_TOOLS } from "./trip-time-tool";
+import { FORCE_CALCULATOR_TOOLS } from "./force-calculator-tool";
+import { BAC_CALCULATOR_TOOLS } from "./bac-calculator-tool";
+import { TIP_TAX_CALCULATOR_TOOLS } from "./tip-tax-calculator-tool";
+import { SPHERE_VOLUME_CALCULATOR_TOOLS } from "./sphere-volume-calculator-tool";
+import { SENTENCE_COUNTER_TOOLS } from "./sentence-counter-tool";
+import { CYLINDER_VOLUME_CALCULATOR_TOOLS } from "./cylinder-volume-calculator-tool";
+import { PARAGRAPH_COUNTER_TOOLS } from "./paragraph-counter-tool";
+import { WORD_FREQUENCY_COUNTER_TOOLS } from "./word-frequency-counter-tool";
+import { CIRCLE_AREA_CALCULATOR_TOOLS } from "./circle-area-calculator-tool";
+import { VOWEL_COUNTER_TOOLS } from "./vowel-counter-tool";
+import { RECTANGLE_AREA_CALCULATOR_TOOLS } from "./rectangle-area-calculator-tool";
+import { CONSONANT_COUNTER_TOOLS } from "./consonant-counter-tool";
+import { WEIGHTED_AVERAGE_CALCULATOR_TOOLS } from "./weighted-average-calculator-tool";
+import { CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS } from "./circle-circumference-calculator-tool";
+import { RECTANGLE_PERIMETER_CALCULATOR_TOOLS } from "./rectangle-perimeter-calculator-tool";
+import { PRESSURE_CONVERTER_TOOLS } from "./pressure-converter-tool";
+import { CALORIES_BURNED_CALCULATOR_TOOLS } from "./calories-burned-tool";
+import { PYRAMID_VOLUME_CALCULATOR_TOOLS } from "./pyramid-volume-calculator-tool";
+import { TRAPEZOID_AREA_CALCULATOR_TOOLS } from "./trapezoid-area-calculator-tool";
+import { PARALLELOGRAM_AREA_CALCULATOR_TOOLS } from "./parallelogram-area-calculator-tool";
+import { RECTANGULAR_PRISM_VOLUME_CALCULATOR_TOOLS } from "./rectangular-prism-volume-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -292,4 +468,183 @@ export const GENERAL_TOOLS = [
   ...DAYS_BETWEEN_DATES_CALCULATOR_TOOLS,
   ...TANK_VOLUME_CALCULATOR_TOOLS,
   ...PIZZA_PORTIONS_CALCULATOR_TOOLS,
+  // Re-wired after b300eb06 (old relative order). Current tools above keep their EN paths on collisions.
+  // csv-a-json: no generic UI computes it; conversor-csv-json (CSV_TO_JSON_TOOLS) covers the intent.
+  // Not re-wired: SAVINGS_GOAL_TOOLS, RULE_OF_72_TOOLS, PROFIT_MARGIN_CALCULATOR_TOOLS (category finanzas;
+  // /finance and /es/finanzas routes only serve FINANCIAL_TOOLS, so their pages would 404).
+  ...FINANCE_TOOLS,
+  ...SEO_GROWTH_TOOLS,
+  ...GAP_TOOLS.filter((tool) => tool.slug !== "csv-a-json"),
+  ...PERCENT_ADVANCED_TOOLS,
+  ...ALGEBRA_ADVANCED_TOOLS,
+  ...GEOMETRY_SUITE_TOOLS,
+  ...ARITHMETIC_SUITE_TOOLS,
+  ...SEQUENCE_SUITE_TOOLS,
+  ...TRIG_SUITE_TOOLS,
+  ...EXPLOG_SUITE_TOOLS,
+  ...MATRIX_BINARY_SUITE_TOOLS,
+  ...OVERTIME_PAY_TOOLS,
+  ...UTM_BUILDER_TOOLS,
+  ...VAT_EXTRACTOR_TOOLS,
+  ...AC_SIZE_TOOLS,
+  ...CONCRETE_CALCULATOR_TOOLS,
+  ...WALLPAPER_CALCULATOR_TOOLS,
+  ...DRYWALL_CALCULATOR_TOOLS,
+  ...MEETING_COST_TOOLS,
+  ...FENCE_CALCULATOR_TOOLS,
+  ...STAIR_CALCULATOR_TOOLS,
+  ...GRAVEL_CALCULATOR_TOOLS,
+  ...FLOORING_CALCULATOR_TOOLS,
+  ...AIRFRYER_CALCULATOR_TOOLS,
+  ...BAKERS_PERCENTAGE_TOOLS,
+  ...DECK_CALCULATOR_TOOLS,
+  ...ROOF_CALCULATOR_TOOLS,
+  ...POOL_CALCULATOR_TOOLS,
+  ...PAVER_CALCULATOR_TOOLS,
+  ...SOD_CALCULATOR_TOOLS,
+  ...GUTTER_CALCULATOR_TOOLS,
+  ...INSULATION_CALCULATOR_TOOLS,
+  ...BRICK_CALCULATOR_TOOLS,
+  ...YEAST_CONVERTER_TOOLS,
+  ...DOUGH_WATER_TEMP_TOOLS,
+  ...SIDING_CALCULATOR_TOOLS,
+  ...BASEBOARD_CALCULATOR_TOOLS,
+  ...GRASS_SEED_CALCULATOR_TOOLS,
+  ...FIREWOOD_CALCULATOR_TOOLS,
+  ...SHEET_CALCULATOR_TOOLS,
+  ...CAULK_CALCULATOR_TOOLS,
+  ...GROUT_CALCULATOR_TOOLS,
+  ...THINSET_CALCULATOR_TOOLS,
+  ...HEAT_INDEX_TOOLS,
+  ...DEW_POINT_TOOLS,
+  ...RAISED_BED_CALCULATOR_TOOLS,
+  ...RETAINING_WALL_CALCULATOR_TOOLS,
+  ...STUD_CALCULATOR_TOOLS,
+  ...RAINWATER_CALCULATOR_TOOLS,
+  ...BOARD_FOOT_CALCULATOR_TOOLS,
+  ...ROBOTS_TXT_TOOLS,
+  ...SCHENGEN_CALCULATOR_TOOLS,
+  ...ISBN_VALIDATOR_TOOLS,
+  ...ICS_EVENT_TOOLS,
+  ...WIND_CHILL_TOOLS,
+  ...ISO_DURATION_TOOLS,
+  ...CONTRAST_TOOLS,
+  ...CRON_TOOLS,
+  ...NATO_TOOLS,
+  ...JETLAG_TOOLS,
+  ...IBAN_TOOLS,
+  ...SHOE_SIZE_TOOLS,
+  ...CHMOD_TOOLS,
+  ...RESISTOR_BAND_TOOLS,
+  ...APA_CITATION_TOOLS,
+  ...CHORD_TRANSPOSE_TOOLS,
+  ...DNI_LETTER_TOOLS,
+  ...SUBNET_TOOLS,
+  ...COORDINATE_TOOLS,
+  ...EAN_TOOLS,
+  ...CLAMP_TOOLS,
+  ...BRAILLE_TOOLS,
+  ...ULID_TOOLS,
+  ...DECIBEL_TOOLS,
+  ...JWT_TOOLS,
+  ...PASSWORD_ENTROPY_TOOLS,
+  ...OPEN_GRAPH_TOOLS,
+  ...MARKDOWN_TABLE_TOOLS,
+  ...JSON_TS_TOOLS,
+  ...LUHN_TOOLS,
+  ...BPM_DELAY_TOOLS,
+  ...VCARD_TOOLS,
+  ...SECURITY_TXT_TOOLS,
+  ...RUT_CHILE_TOOLS,
+  ...MORSE_TOOLS,
+  ...GITIGNORE_TOOLS,
+  ...RICE_TOOLS,
+  ...SRT_OFFSET_TOOLS,
+  ...MANIFEST_TOOLS,
+  ...OKLCH_TOOLS,
+  ...WHATSAPP_LINK_TOOLS,
+  ...ISO_WEEK_TOOLS,
+  ...BEAUFORT_TOOLS,
+  ...PALINDROME_TOOLS,
+  ...UNIX_TIMESTAMP_TOOLS,
+  ...CASE_CONVERTER_TOOLS,
+  ...SIMPLE_INTEREST_TOOLS,
+  ...COMPOUND_INTEREST_TOOLS,
+  ...RANDOM_NUMBER_TOOLS,
+  ...DICE_ROLLER_TOOLS,
+  ...RUNNING_PACE_TOOLS,
+  ...COIN_FLIP_TOOLS,
+  ...RANDOM_COLOR_TOOLS,
+  ...RANDOM_USERNAME_TOOLS,
+  ...TRIANGLE_AREA_TOOLS,
+  ...QR_CODE_GENERATOR_TOOLS,
+  ...RANDOM_QUOTE_TOOLS,
+  ...WATER_INTAKE_TOOLS,
+  ...TDEE_CALCULATOR_TOOLS,
+  ...DUE_DATE_CALCULATOR_TOOLS,
+  ...DISCOUNT_CALCULATOR_TOOLS,
+  ...MACRO_CALCULATOR_TOOLS,
+  ...IDEAL_WEIGHT_TOOLS,
+  ...COMPANY_NAME_GENERATOR_TOOLS,
+  ...EMAIL_VALIDATOR_TOOLS,
+  ...OHMS_LAW_TOOLS,
+  ...PASSWORD_STRENGTH_TOOLS,
+  ...HEX_COLOR_CONVERTER_TOOLS,
+  ...CSV_TO_JSON_TOOLS,
+  ...XML_TO_JSON_TOOLS,
+  ...BASE64_TOOLS,
+  ...POMODORO_TIMER_TOOLS,
+  ...DOWNLOAD_TIME_TOOLS,
+  ...BODY_FAT_TOOLS,
+  ...KINETIC_ENERGY_TOOLS,
+  ...TIMEZONE_TOOLS,
+  ...PERCENTAGE_OF_TOOLS,
+  ...SLUG_GENERATOR_TOOLS,
+  ...BILL_SPLIT_TOOLS,
+  ...CURRENCY_CONVERTER_TOOLS,
+  ...RECIPE_COST_TOOLS,
+  ...ELECTRICITY_COST_TOOLS,
+  ...WORD_COUNTER_TOOLS,
+  ...LOAN_PAYMENT_TOOLS,
+  ...AVERAGE_SPEED_TOOLS,
+  ...ACCELERATION_TOOLS,
+  ...FUEL_EFFICIENCY_TOOLS,
+  ...HEART_RATE_ZONE_TOOLS,
+  ...HOURLY_RATE_TOOLS,
+  ...LINE_SORTER_TOOLS,
+  ...BUSINESS_DAYS_TOOLS,
+  ...TEXT_NORMALIZER_TOOLS,
+  ...BUDGET_503020_TOOLS,
+  ...UUID_TOOLS,
+  ...DATE_DIFFERENCE_TOOLS,
+  ...RECIPE_SCALER_TOOLS,
+  ...ROOM_AREA_TOOLS,
+  ...FINAL_GRADE_TOOLS,
+  ...TEMPERATURE_CONVERTER_TOOLS,
+  ...PROPORTION_CALCULATOR_TOOLS,
+  ...CSS_GRADIENT_GENERATOR_TOOLS,
+  ...CHARACTER_COUNTER_TOOLS,
+  ...CALORIE_DEFICIT_TOOLS,
+  ...TRIP_TIME_TOOLS,
+  ...FORCE_CALCULATOR_TOOLS,
+  ...BAC_CALCULATOR_TOOLS,
+  ...TIP_TAX_CALCULATOR_TOOLS,
+  ...SPHERE_VOLUME_CALCULATOR_TOOLS,
+  ...SENTENCE_COUNTER_TOOLS,
+  ...CYLINDER_VOLUME_CALCULATOR_TOOLS,
+  ...PARAGRAPH_COUNTER_TOOLS,
+  ...WORD_FREQUENCY_COUNTER_TOOLS,
+  ...CIRCLE_AREA_CALCULATOR_TOOLS,
+  ...VOWEL_COUNTER_TOOLS,
+  ...RECTANGLE_AREA_CALCULATOR_TOOLS,
+  ...CONSONANT_COUNTER_TOOLS,
+  ...WEIGHTED_AVERAGE_CALCULATOR_TOOLS,
+  ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
+  ...RECTANGLE_PERIMETER_CALCULATOR_TOOLS,
+  ...PRESSURE_CONVERTER_TOOLS,
+  ...CALORIES_BURNED_CALCULATOR_TOOLS,
+  ...PYRAMID_VOLUME_CALCULATOR_TOOLS,
+  ...TRAPEZOID_AREA_CALCULATOR_TOOLS,
+  ...PARALLELOGRAM_AREA_CALCULATOR_TOOLS,
+  ...RECTANGULAR_PRISM_VOLUME_CALCULATOR_TOOLS,
 ];

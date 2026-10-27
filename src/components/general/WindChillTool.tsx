@@ -107,7 +107,7 @@ export function WindChillTool({ locale = "en" }: { tool: GeneralTool; locale?: L
           <p className="text-sm">
             {es
               ? `Equivalencias: aire ${formatTemp(result.airF)}°F, viento ${formatTemp(result.windMph)} mph (${formatTemp(result.windKmh)} km/h).`
-              : `Converted inputs: air ${formatTemp(result.airC)}°C, wind ${formatTemp(result.windKmh)} km/h (${formatTemp(result.windMph)} mph).`
+              : `Converted inputs: air ${formatTemp(result.airC)}°C, wind ${formatTemp(result.windKmh)} km/h (${formatTemp(result.windMph)} mph).`}
           </p>
           <button type="button" className={buttonClass} onClick={copyResult}>
             {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar" : "Copy"}
