@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { exportScenePng } from "./house-modeler/exportPng";
+import { readAutosave, serializeParts, writeAutosave } from "./house-modeler/autosave";
 
 type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
@@ -5721,6 +5722,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "elementos",
         fullscreen: "Pantalla completa",
         png: "Exportar PNG",
+        restored: "Diseño anterior restaurado",
         exitFs: "Salir",
         tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · E valla · T sendero · Y jardinera · U banco · I farol · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
@@ -5914,6 +5916,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         parts: "parts",
         fullscreen: "Fullscreen",
         png: "Export PNG",
+        restored: "Previous design restored",
         exitFs: "Exit",
         tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · E fence · T path · Y planter · U bench · I lamp · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
@@ -6194,6 +6197,47 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (actionHintTimer.current) window.clearTimeout(actionHintTimer.current);
     actionHintTimer.current = window.setTimeout(() => setActionHint(null), 2400);
   };
+  // Autosave: restore the last design once the scene is ready, then snapshot every 2 s (module: house-modeler/autosave).
+  useEffect(() => {
+    if (!ready) return;
+    const refs: Record<string, { current: string }> = {
+      door: doorFinishRef, roof: roofFinishRef, wall: wallFinishRef, column: columnFinishRef, stairs: stairsFinishRef, railing: railingFinishRef,
+      window: windowFinishRef, floor: floorFinishRef, fence: fenceFinishRef, path: pathFinishRef, planter: planterFinishRef, bench: benchFinishRef,
+      chimney: chimneyFinishRef, lamp: lampFinishRef, beam: beamFinishRef, foundation: foundationFinishRef, pergola: pergolaFinishRef,
+    };
+    const saved = partsRef.current.length ? [] : readAutosave();
+    for (const s of saved) {
+      const ref = refs[s.k];
+      const prev = ref.current;
+      if (s.f) ref.current = s.f;
+      placeAt(new THREE.Vector3(s.x, 0, s.z), s.k as PartKind);
+      ref.current = prev;
+      const part = partsRef.current[partsRef.current.length - 1];
+      const obj = part ? findPartObject(part.id) : null;
+      if (obj) {
+        obj.rotation.y = s.r;
+        part.rotationY = s.r;
+      }
+    }
+    if (saved.length) {
+      selectedRef.current = null;
+      setSelectedId(null);
+      setSelectedPos(null);
+      if (threeRef.current) threeRef.current.selectionHelper.visible = false;
+      flashActionHint(labels.restored);
+    }
+    let last = serializeParts(partsRef.current);
+    const save = () => {
+      last = writeAutosave(serializeParts(partsRef.current), last);
+    };
+    const timer = window.setInterval(save, 2000);
+    window.addEventListener("pagehide", save);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("pagehide", save);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready]);
   const refuseSelection = (needsUnlock = false) => {
     if (!selectedId) {
       flashActionHint(labels.needSel);
