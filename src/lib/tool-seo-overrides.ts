@@ -100,6 +100,7 @@ import { TOOL_SEO_OVERRIDES_RUT_CHILE } from "./tool-seo-overrides-rut-chile";
 import { TOOL_SEO_OVERRIDES_MORSE } from "./tool-seo-overrides-morse";
 import { TOOL_SEO_OVERRIDES_ROMAN } from "./tool-seo-overrides-roman";
 import { TOOL_SEO_OVERRIDES_CTR } from "./tool-seo-overrides-ctr";
+import { TOOL_SEO_OVERRIDES_CTR_BATCH1 } from "./tool-seo-overrides-ctr-batch1";
 import { TOOL_SEO_OVERRIDES_GITIGNORE } from "./tool-seo-overrides-gitignore";
 import { TOOL_SEO_OVERRIDES_RICE } from "./tool-seo-overrides-rice";
 import { TOOL_SEO_OVERRIDES_SRT } from "./tool-seo-overrides-srt";
@@ -233,6 +234,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_MORSE,
   ...TOOL_SEO_OVERRIDES_ROMAN,
   ...TOOL_SEO_OVERRIDES_CTR,
+  ...TOOL_SEO_OVERRIDES_CTR_BATCH1,
   ...TOOL_SEO_OVERRIDES_GITIGNORE,
   ...TOOL_SEO_OVERRIDES_RICE,
   ...TOOL_SEO_OVERRIDES_SRT,

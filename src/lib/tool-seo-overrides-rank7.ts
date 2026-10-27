@@ -128,10 +128,10 @@ export const TOOL_SEO_OVERRIDES_RANK7: Record<string, ToolSeoOverride> = {
   },
 
   "conversor-de-unidades": {
-    metaTitle: "Unit Converter Free — Length, Weight, Temp, Volume | UtiliHub",
+    metaTitle: "Unit Converter Online – Length, Weight, Temp | UtiliHub",
     metaTitleEs: "Conversor de unidades online gratis — longitud, peso, temp, volumen | UtiliHub",
     metaDescription:
-      "Convert length, weight, temperature, volume, area and time in one tool. Free unit converter, standard factors, no signup.",
+      "Convert length, weight, temperature, volume, area and time instantly. Standard factors, runs in your browser, free.",
     metaDescriptionEs:
       "Convertí longitud, peso, temperatura, volumen, área y tiempo en una sola herramienta. Conversor de unidades gratis, factores estándar, sin registro.",
     about: [

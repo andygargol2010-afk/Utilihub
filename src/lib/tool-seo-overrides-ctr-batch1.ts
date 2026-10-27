@@ -1,6 +1,9 @@
 import type { ToolSeoOverride } from "./tool-seo-overrides";
 
-/** CTR Phase A batch 1 — must be spread LAST in tool-seo-overrides.ts so it wins over RANK7. */
+/**
+ * CTR Phase A batch 1 — spread right after CTR in tool-seo-overrides.ts. Keys that also live in
+ * WATER_CONSUMPTION / RANK6 / RANK7 (richer content) are shadowed there; combustible-necesario wins here.
+ */
 export const TOOL_SEO_OVERRIDES_CTR_BATCH1: Record<string, ToolSeoOverride> = {
   "conversor-de-unidades": {
     metaTitle: "Unit Converter Online — Length, Weight, Temp | UtiliHub",
@@ -152,10 +155,10 @@ export const TOOL_SEO_OVERRIDES_CTR_BATCH1: Record<string, ToolSeoOverride> = {
     faq: [],
   },
   "combustible-necesario": {
-    metaTitle: "Fuel Needed Calculator — Distance × L/100 km | UtiliHub",
+    metaTitle: "Fuel Needed Calculator – Distance × L/100 km | UtiliHub",
     metaTitleEs: "Calculadora de combustible — distancia × L/100 km | UtiliHub",
     metaDescription:
-      "Estimate liters needed from distance and L/100 km (e.g. 300 km at 7 L/100 km → 21 L). Free fuel calculator, no signup.",
+      "Estimate liters needed from distance and L/100 km (e.g. 300 km at 7 L/100 km = 21 L). Free fuel calculator, no signup.",
     metaDescriptionEs:
       "Estimá litros según distancia y L/100 km (ej. 300 km a 7 L/100 km → 21 L). Gratis, sin registro.",
     about: [
