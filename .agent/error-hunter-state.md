@@ -11,11 +11,11 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-26 run 12
-last_fix: none (checks OK)
-last_known_focus: E031 recurring smoke (tip clean: no PLACEHOLDER/$(cat in registry.tsx, summary-es.ts, index.tsx, es.index.tsx)
-new_findings: none
-notes: Known smoke green (homes start with import + DeferredHomeReviews; registry full with dedicated wires; ModularPatternComposer full interactive canvas). Latest Vercel deploy on branch READY (SHA 90a2dffe). No open errors requiring code fix.
+last_run: 2026-10-26 run 13
+last_fix: E038 wire CubeRootCalculatorTool (registry.tsx)
+last_known_focus: E031 recurring smoke (tip clean after restore: no PLACEHOLDER/$(cat in registry.tsx, summary-es.ts, index.tsx, es.index.tsx)
+new_findings: E038 dedicated UI calculadora-raiz-cubica not wired (component + catalog present, missing pickComponent if)
+notes: Known smoke green on homes and critical files. Discovery found unwired CubeRoot (similar to prior dedicated UI pattern). Fixed in 478da3b. Latest prior Vercel READY on older SHA; tip deploy pending. No open errors requiring immediate further code fix.
 ```
 
 <!-- end:error-hunter-state.md -->

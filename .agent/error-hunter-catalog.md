@@ -369,3 +369,13 @@ Formato por entrada:
 - **files**: `src/components/general/registry.tsx`, `TextCaseConverterTool.tsx`, `TargetHeartRateCalculatorTool.tsx`
 
 <!-- end:catalog -->
+
+## E038 — Dedicated UI calculadora-raiz-cubica no wired en registry
+- **status**: fixed
+- **last_seen**: 2026-10-26
+- **fixed_at**: 2026-10-27
+- **symptom**: tool muestra MathTool genérico en vez de la UI dedicada (raíz cúbica)
+- **root_cause**: componente CubeRootCalculatorTool.tsx existe, tool en catalog index (CUBE_ROOT_CALCULATOR_TOOLS), pero faltaba lazy + if (slug === "calculadora-raiz-cubica") en pickComponent
+- **check**: registry.tsx tiene lazy import y return temprano para "calculadora-raiz-cubica"
+- **fix_hint**: añadir lazy + early return en pickComponent (antes de kind routes)
+- **files**: `src/components/general/registry.tsx`, `CubeRootCalculatorTool.tsx`
