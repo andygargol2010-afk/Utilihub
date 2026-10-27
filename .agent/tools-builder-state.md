@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-27 | matematicas | calculadora-porcentaje-del-total | PercentageOfTotalCalculatorTool
 - 2026-10-27 | finanzas | calculadora-presupuesto-mensual | MonthlyBudgetCalculatorTool
 - 2026-10-27 | matematicas | calculadora-porcentaje-restante | PercentageRemainingCalculatorTool
 - 2026-10-27 | viajes | calculadora-costo-litro-combustible | FuelLiterCostCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-26 | matematicas | calculadora-error-porcentual | PercentageErrorCalculatorTool
 - 2026-10-26 | educacion | calculadora-porcentaje-asistencia | AttendancePercentageCalculatorTool
 - 2026-10-26 | viajes | calculadora-costo-por-km | CostPerKmCalculatorTool
-- 2026-10-26 | texto | conversor-texto-caso | TextCaseConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -61,6 +61,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-27: PRODUCT — calculadora-porcentaje-del-total (matematicas). One tool (default). Anti-dupe OK. Practical % of total. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-presupuesto-mensual (finanzas). One tool (default per ops). Anti-dupe OK. Practical remaining budget. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-porcentaje-restante (matematicas). One tool (default per ops). Anti-dupe OK. Practical remaining percentage. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-costo-litro-combustible (viajes). One tool. Anti-dupe OK (new slug). Practical total fuel cost. Dedicated UI created; pickComponent if pending (uses category fallback for now). SEO locales: defer pt.
@@ -82,9 +83,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-presupuesto-mensual
+last_slugs: calculadora-porcentaje-del-total
 last_deploy: no (branch auto-deploy disabled)
-last_sha: 12743bb22730d97e615b7cef81b68dda33350921
+last_sha: (pending this commit)
 ```
 
 <!-- end:tools-builder-state.md -->
