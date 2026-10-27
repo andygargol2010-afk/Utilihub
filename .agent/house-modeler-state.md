@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 303
+runs_done: 304
 runs_max: 500
 ```
 
@@ -57,11 +57,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: MODELADOR-3D
 last_date: 2026-10-27
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 303 house presets (house-modeler/presets.ts + PresetPicker.tsx). Build OK, 0 modeler console errors (2 unrelated 404s), fps ~3 desktop SwiftShader (baseline ~4, no render change). runs_done=303.
+note: MODELADOR-3D run 304 autosave (2s interval + pagehide/visibilitychange). Build OK, 0 console errors, fps ~14 desktop (modeler-3d page, house baseline untouched). runs_done=304.
 ```
 
 Refresh after each run.
@@ -144,6 +144,7 @@ PRODUCT run 300: undo/redo (backlog #2): history.ts snapshot stack, Ctrl+Z/Shift
 PRODUCT run 301: first-visit onboarding hint overlay (backlog #8), new module house-modeler/OnboardingHint.tsx EN+ES, localStorage-remembered; monolith +119 B. runs_done=301.
 PRODUCT run 302: share link (backlog #5): Copy link button, #design= hash wins over autosave, sanitizeParts shared in autosave.ts; monolith +1114 B. runs_done=302.
 PRODUCT run 303: house presets (backlog #4): cabin/two-room/shed dropdown, replaces scene via restoreParts (undoable); monolith +221 B. runs_done=303.
+MODELADOR-3D run 304: real autosave of live scene every 2s + pagehide/visibilitychange (was beforeunload only, unreliable on mobile); saveScene guarded until engine ready. Verified add cube -> reload restores, desktop+mobile. Monolith untouched. runs_done=304.
 ```
 
 <!-- end:house-modeler-state.md -->

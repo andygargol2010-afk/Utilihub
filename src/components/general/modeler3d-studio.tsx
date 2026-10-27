@@ -54,8 +54,18 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
 
   useEffect(() => {
     const onUnload = () => { try { saveScene(); } catch { /* */ } };
+    // Autosave: the live scene (incl. final drag positions) every 2 s, so a mobile tab kill never loses work.
+    const tick = window.setInterval(onUnload, 2000);
+    const onHide = () => { if (document.visibilityState === "hidden") onUnload(); };
     window.addEventListener("beforeunload", onUnload);
-    return () => window.removeEventListener("beforeunload", onUnload);
+    window.addEventListener("pagehide", onUnload);
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      window.clearInterval(tick);
+      window.removeEventListener("beforeunload", onUnload);
+      window.removeEventListener("pagehide", onUnload);
+      document.removeEventListener("visibilitychange", onHide);
+    };
   }, [saveScene]);
 
   useModelerThreeInit({

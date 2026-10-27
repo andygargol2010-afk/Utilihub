@@ -545,6 +545,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
   }, [pushHistory, selectMesh]);
 
   const saveScene = useCallback(() => {
+    if (!threeRef.current) return;
     try {
       const data = snapshot();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
