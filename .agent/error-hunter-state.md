@@ -11,12 +11,12 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-27 run 18
-last_fix: none (0 fixes; checks OK)
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER stubs) — smoke green on critical: index.tsx real, registry.tsx full no PLACEHOLDER, summary-es full SUMMARY_ES, no $(cat in src)
-new_findings: none
-deploy: latest listed READY on 291bb58; tip 61924ea6 not yet listed (pending or filtered); no recent ERROR on branch
-notes: Known smoke green (index.tsx starts with import + createFileRoute, no $(cat; registry.tsx full with dedicated lazy wires incl. CubeRoot; summary-es.ts starts with export const SUMMARY_ES >10kB). Discovery sampled es.juegos.$slug.tsx (solid GameShell + GamePlayer + catalog lookup, no stub), es.guias.orbit-pulse-catcher.tsx (full real long-form TSX content, no $(cat), proper createFileRoute), registry-3d.tsx (correct: modelador-casas-3d → HouseModeler3D else Modeler3D). No "Tool not available" or not implemented in components. Recent commits on branch are ideas-lab guide depth with correct author identity. No runtime/routing/registry/SEO/tool-broken issues found. E031 remains open/recurring for vigilance but no current corruption.
+last_run: 2026-10-27 run 19
+last_fix: E040 AuroraRibbonWeaver PLACEHOLDER stub (SHA 76d60622)
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER stubs) — fixed new instance in AuroraRibbonWeaver.tsx; critical homes/registry/summary-es clean)
+new_findings: E040 (PLACEHOLDER in playground component causing build ERROR)
+deploy: recent ERROR on 027e2060 and 61924ea6 due to missing export; fix pushed, awaiting new deploy READY
+notes: Known smoke green on index.tsx, registry, summary-es, orbit guide. Discovery found AuroraRibbonWeaver.tsx literal PLACEHOLDER_WILL_REPLACE (from 3a991e2), causing Vercel build ERROR "AuroraRibbonWeaver is not exported". Restored full component from e01519d (gravity/hueShift/randomize/deep-link). No other $(cat or PLACEHOLDER in src. E031 remains open/recurring.
 ```
 
 <!-- end:error-hunter-state.md -->
