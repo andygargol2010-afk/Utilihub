@@ -18,6 +18,7 @@ export const ES_CATEGORY_NAMES: Record<string, string> = {
   viajes: "Viajes",
   hogar: "Hogar",
   utilidades: "Utilidades",
+  salud: "Salud",
   calculadoras: "Calculadoras",
   conversores: "Conversores",
 };
@@ -331,6 +332,8 @@ const EXACT_NAMES: Record<string, string> = {
   "matriz-2x2": "Matriz 2×2: determinante e inversa",
   "bases-numericas": "Binario ↔ decimal ↔ hexadecimal",
   bitwise: "Operadores bit a bit (AND, OR, XOR)",
+  "calculadora-horas-a-decimal": "Calculadora de horas a decimal",
+  "conversor-horas-decimal": "Conversor de horas a decimal",
 };
 
 const ACCENTED_TERMS: Record<string, string> = {
