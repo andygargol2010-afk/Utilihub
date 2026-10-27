@@ -62,7 +62,24 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Interactive Aurora Ribbon Weaver playground. User draws freehand or waypoint paths that become flowing multi-ribbon aurora streams with adjustable width, speed, bloom, color gradients, particle density, and gravity/attractors. Live preview, pause/randomize/clear, keyboard shortcuts, PNG share with baked title + utilihub.com + ribbon count, localStorage persist, URL deep-link. EN+ES routes. Distinct from waypoint-river, neon-layer freehand, modular pattern, and gravity particle playgrounds by ribbon-weaving composition + aurora bloom aesthetic.
+id: aurora-ribbon-weaver
+path_en: /aurora-ribbon-weaver
+path_es: /es/aurora-ribbon-weaver
+path_seo: n/a
+domain: playgrounds
+runs_total: 4
+runs_remaining: 4
+acceptance: User draws a path on canvas, sees multi-ribbon aurora streams flow along it with adjustable controls, and shares a branded PNG of the composition.
+share: png
+next_step_required: no
+notes: Rubric scores (value/share/search/distinct/feas/perf):
+C1 playgrounds aurora-ribbon-weaver: 5/5/3/4/5/4 = 26
+C2 simulators climate-feedback-loop: 4/3/4/5/4/3 = 23
+C3 games rhythm-orbit-tap: 5/5/3/4/5/4 = 26 (tie broken by higher domain weight + playgrounds preference)
+Chosen: aurora-ribbon-weaver. Domain roll: weighted preference playgrounds (11) after last search-magnets close. p_fixed unused this IDEATE (CORE selected).
+adsense-prep_runs: 3
 ```
 
 <!-- end:ideas-lab-state.md -->
