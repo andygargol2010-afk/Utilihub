@@ -35,7 +35,7 @@ Do **not** add EN (`/` or bare) or ES (`/es`) here — those are first-class pro
 | code | BCP-47 | dir | status | prefix | pages_done (paths) | notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | pt | pt-BR | ltr | active | /pt | /pt, /pt/pulse-catch, /pt/orbit-defender-arcade, /pt/snake, /pt/pong | hreflang wired to EN+ES; no nav from EN/ES; minimal shell; fourth experience added |
-| fr | fr-FR | ltr | active | /fr | /fr, /fr/fluid-ink-flow-playground, /fr/pulse-catch, /fr/snake | hreflang wired; no nav from EN/ES; minimal shell; third experience added |
+| fr | fr-FR | ltr | active | /fr | /fr, /fr/fluid-ink-flow-playground, /fr/pulse-catch, /fr/snake, /fr/pong | hreflang wired; no nav from EN/ES; minimal shell; fourth experience added |
 
 ---
 

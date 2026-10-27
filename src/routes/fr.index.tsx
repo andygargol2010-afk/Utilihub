@@ -72,6 +72,12 @@ function FrenchHome() {
             >
               Jouer à Snake
             </Link>
+            <Link
+              to="/fr/pong"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-primary/30 bg-card px-5 py-3 text-sm font-bold text-primary hover:bg-primary/5"
+            >
+              Jouer à Pong
+            </Link>
           </div>
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
             <span>Sans inscription</span>
@@ -109,6 +115,14 @@ function FrenchHome() {
             </Link>
             <p className="text-sm text-muted-foreground">
               Mangez les pommes, grandissez et évitez les murs. Contrôles fluides, score et meilleur score local.
+            </p>
+          </li>
+          <li>
+            <Link to="/fr/pong" className="font-semibold text-primary hover:underline">
+              Pong — duel de palettes classique
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              Duel de palettes contre la CPU. Contrôles fluides, score et meilleur score local.
             </p>
           </li>
         </ul>
