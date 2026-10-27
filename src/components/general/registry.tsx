@@ -1,1 +1,414 @@
-$(cat /tmp/registry-new.tsx)
+import { lazy, type ComponentType, type ReactNode } from "react";
+import { GENERAL_TOOLS } from "@/lib/general";
+import type { GeneralTool } from "@/lib/general/types";
+
+/**
+ * Thin registry — agents should almost never edit this file.
+ *
+ * Contract with DeferredToolUi:
+ *   GENERAL_TOOL_UI[slug] must be a zero-arg function () => ReactNode
+ *   that already closes over the tool + locale.
+ *
+ * Routing priority:
+ *   1. kind image/pdf/media → MediaTool
+ *   2. kind document → DocumentTool (must beat config.operation)
+ *   3. design/color (kind or slug) → DesignTool
+ *   4. config.operation (numeric) → ConfiguredTool
+ *   5. other kinds → category tools
+ *   6. else → GeneralTool
+ */
+
+const TOOL_BY_SLUG = new Map(GENERAL_TOOLS.map((t) => [t.slug, t]));
+
+type ToolComp = ComponentType<{ tool: GeneralTool; locale?: "en" | "es" }>;
+
+const GeneralToolUi = lazy(() =>
+  import("./GeneralTool").then((m) => ({ default: m.GeneralTool })),
+);
+const ConfiguredToolUi = lazy(() =>
+  import("./ConfiguredTool").then((m) => ({ default: m.ConfiguredTool })),
+);
+const MediaToolUi = lazy(() =>
+  import("./MediaTool").then((m) => ({ default: m.MediaTool })),
+);
+const DesignToolUi = lazy(() =>
+  import("./DesignTool").then((m) => ({ default: m.DesignTool })),
+);
+const DocumentToolUi = lazy(() =>
+  import("./DocumentTool").then((m) => ({ default: m.DocumentTool })),
+);
+const ConverterToolUi = lazy(() =>
+  import("./ConverterTool").then((m) => ({ default: m.ConverterTool })),
+);
+const TextToolUi = lazy(() =>
+  import("./TextTool").then((m) => ({ default: m.TextTool })),
+);
+const MathToolUi = lazy(() =>
+  import("./MathTool").then((m) => ({ default: m.MathTool })),
+);
+const FinanceToolUi = lazy(() =>
+  import("./FinanceTool").then((m) => ({ default: m.FinanceTool })),
+);
+const ScienceToolUi = lazy(() =>
+  import("./ScienceTool").then((m) => ({ default: m.ScienceTool })),
+);
+const TimeToolUi = lazy(() =>
+  import("./TimeTool").then((m) => ({ default: m.TimeTool })),
+);
+const EducationToolUi = lazy(() =>
+  import("./EducationTool").then((m) => ({ default: m.EducationTool })),
+);
+const SecurityToolUi = lazy(() =>
+  import("./SecurityTool").then((m) => ({ default: m.SecurityTool })),
+);
+const FormulaToolUi = lazy(() =>
+  import("./FormulaTool").then((m) => ({ default: m.FormulaTool })),
+);
+const GeneratorToolUi = lazy(() =>
+  import("./GeneratorTool").then((m) => ({ default: m.GeneratorTool })),
+);
+const DevToolUi = lazy(() =>
+  import("./DevTool").then((m) => ({ default: m.DevTool })),
+);
+
+const LetterFrequencyCalculatorToolUi = lazy(() =>
+  import("./LetterFrequencyCalculatorTool").then((m) => ({ default: m.LetterFrequencyCalculatorTool })),
+);
+const WorkCalculatorToolUi = lazy(() =>
+  import("./WorkCalculatorTool").then((m) => ({ default: m.WorkCalculatorTool })),
+);
+const RuleOfThreeCalculatorToolUi = lazy(() =>
+  import("./RuleOfThreeCalculatorTool").then((m) => ({ default: m.RuleOfThreeCalculatorTool })),
+);
+const OvertimeCalculatorToolUi = lazy(() =>
+  import("./OvertimeCalculatorTool").then((m) => ({ default: m.OvertimeCalculatorTool })),
+);
+const CubeVolumeCalculatorToolUi = lazy(() =>
+  import("./CubeVolumeCalculatorTool").then((m) => ({ default: m.CubeVolumeCalculatorTool })),
+);
+const TriangleAreaCalculatorToolUi = lazy(() =>
+  import("./TriangleAreaCalculatorTool").then((m) => ({ default: m.TriangleAreaCalculatorTool })),
+);
+const CircleAreaCalculatorToolUi = lazy(() =>
+  import("./CircleAreaCalculatorTool").then((m) => ({ default: m.CircleAreaCalculatorTool })),
+);
+const OuncesToGramsConverterToolUi = lazy(() =>
+  import("./OuncesToGramsConverterTool").then((m) => ({ default: m.OuncesToGramsConverterTool })),
+);
+const IdealWeightCalculatorToolUi = lazy(() =>
+  import("./IdealWeightCalculatorTool").then((m) => ({ default: m.IdealWeightCalculatorTool })),
+);
+const ElectricalPowerCalculatorToolUi = lazy(() =>
+  import("./ElectricalPowerCalculatorTool").then((m) => ({ default: m.ElectricalPowerCalculatorTool })),
+);
+const FlightTimeCalculatorToolUi = lazy(() =>
+  import("./FlightTimeCalculatorTool").then((m) => ({ default: m.FlightTimeCalculatorTool })),
+);
+const SlopeCalculatorToolUi = lazy(() =>
+  import("./SlopeCalculatorTool").then((m) => ({ default: m.SlopeCalculatorTool })),
+);
+const LineCounterToolUi = lazy(() =>
+  import("./LineCounterTool").then((m) => ({ default: m.LineCounterTool })),
+);
+const CompoundInterestCalculatorToolUi = lazy(() =>
+  import("./CompoundInterestCalculatorTool").then((m) => ({ default: m.CompoundInterestCalculatorTool })),
+);
+const DailyCaloriesCalculatorToolUi = lazy(() =>
+  import("./DailyCaloriesCalculatorTool").then((m) => ({ default: m.DailyCaloriesCalculatorTool })),
+);
+const StandardDeviationCalculatorToolUi = lazy(() =>
+  import("./StandardDeviationCalculatorTool").then((m) => ({ default: m.StandardDeviationCalculatorTool })),
+);
+const ConeVolumeCalculatorToolUi = lazy(() =>
+  import("./ConeVolumeCalculatorTool").then((m) => ({ default: m.ConeVolumeCalculatorTool })),
+);
+const HoursBetweenDatesCalculatorToolUi = lazy(() =>
+  import("./HoursBetweenDatesCalculatorTool").then((m) => ({ default: m.HoursBetweenDatesCalculatorTool })),
+);
+const WordsPerMinuteCalculatorToolUi = lazy(() =>
+  import("./WordsPerMinuteCalculatorTool").then((m) => ({ default: m.WordsPerMinuteCalculatorTool })),
+);
+const SyllableCounterToolUi = lazy(() =>
+  import("./SyllableCounterTool").then((m) => ({ default: m.SyllableCounterTool })),
+);
+const RoiCalculatorToolUi = lazy(() =>
+  import("./RoiCalculatorTool").then((m) => ({ default: m.RoiCalculatorTool })),
+);
+const BmiCalculatorToolUi = lazy(() =>
+  import("./BmiCalculatorTool").then((m) => ({ default: m.BmiCalculatorTool })),
+);
+const SquareRootCalculatorToolUi = lazy(() =>
+  import("./SquareRootCalculatorTool").then((m) => ({ default: m.SquareRootCalculatorTool })),
+);
+const HarmonicMeanCalculatorToolUi = lazy(() =>
+  import("./HarmonicMeanCalculatorTool").then((m) => ({ default: m.HarmonicMeanCalculatorTool })),
+);
+const LogarithmCalculatorToolUi = lazy(() =>
+  import("./LogarithmCalculatorTool").then((m) => ({ default: m.LogarithmCalculatorTool })),
+);
+const AtmosphericPressureCalculatorToolUi = lazy(() =>
+  import("./AtmosphericPressureCalculatorTool").then((m) => ({ default: m.AtmosphericPressureCalculatorTool })),
+);
+const AverageWordLengthCalculatorToolUi = lazy(() =>
+  import("./AverageWordLengthCalculatorTool").then((m) => ({ default: m.AverageWordLengthCalculatorTool })),
+);
+const DailyInterestCalculatorToolUi = lazy(() =>
+  import("./DailyInterestCalculatorTool").then((m) => ({ default: m.DailyInterestCalculatorTool })),
+);
+const WorkBreakRatioCalculatorToolUi = lazy(() =>
+  import("./WorkBreakRatioCalculatorTool").then((m) => ({ default: m.WorkBreakRatioCalculatorTool })),
+);
+const UnitPriceToolUi = lazy(() =>
+  import("./UnitPriceTool").then((m) => ({ default: m.UnitPriceTool })),
+);
+const RiceWaterCalculatorToolUi = lazy(() =>
+  import("./RiceWaterCalculatorTool").then((m) => ({ default: m.RiceWaterCalculatorTool })),
+);
+const ArithmeticMeanCalculatorToolUi = lazy(() =>
+  import("./ArithmeticMeanCalculatorTool").then((m) => ({ default: m.ArithmeticMeanCalculatorTool })),
+);
+const MedianCalculatorToolUi = lazy(() =>
+  import("./MedianCalculatorTool").then((m) => ({ default: m.MedianCalculatorTool })),
+);
+const FactorialCalculatorToolUi = lazy(() =>
+  import("./FactorialCalculatorTool").then((m) => ({ default: m.FactorialCalculatorTool })),
+);
+const DailyWaterIntakeCalculatorToolUi = lazy(() =>
+  import("./DailyWaterIntakeCalculatorTool").then((m) => ({ default: m.DailyWaterIntakeCalculatorTool })),
+);
+const WaterConsumptionCalculatorToolUi = lazy(() =>
+  import("./WaterConsumptionCalculatorTool").then((m) => ({ default: m.WaterConsumptionCalculatorTool })),
+);
+const SphereSurfaceAreaCalculatorToolUi = lazy(() =>
+  import("./SphereSurfaceAreaCalculatorTool").then((m) => ({ default: m.SphereSurfaceAreaCalculatorTool })),
+);
+const SquarePerimeterCalculatorToolUi = lazy(() =>
+  import("./SquarePerimeterCalculatorTool").then((m) => ({ default: m.SquarePerimeterCalculatorTool })),
+);
+const AgeCalculatorToolUi = lazy(() =>
+  import("./AgeCalculatorTool").then((m) => ({ default: m.AgeCalculatorTool })),
+);
+const TipCalculatorToolUi = lazy(() =>
+  import("./TipCalculatorTool").then((m) => ({ default: m.TipCalculatorTool })),
+);
+const GpaCalculatorToolUi = lazy(() =>
+  import("./GpaCalculatorTool").then((m) => ({ default: m.GpaCalculatorTool })),
+);
+const RoomAreaCalculatorToolUi = lazy(() =>
+  import("./RoomAreaCalculatorTool").then((m) => ({ default: m.RoomAreaCalculatorTool })),
+);
+const PxToRemCalculatorToolUi = lazy(() =>
+  import("./PxToRemCalculatorTool").then((m) => ({ default: m.PxToRemCalculatorTool })),
+);
+const DailyTravelBudgetCalculatorToolUi = lazy(() =>
+  import("./DailyTravelBudgetCalculatorTool").then((m) => ({ default: m.DailyTravelBudgetCalculatorTool })),
+);
+const PercentageDifferenceCalculatorToolUi = lazy(() =>
+  import("./PercentageDifferenceCalculatorTool").then((m) => ({ default: m.PercentageDifferenceCalculatorTool })),
+);
+const SpeedDistanceTimeCalculatorToolUi = lazy(() =>
+  import("./SpeedDistanceTimeCalculatorTool").then((m) => ({ default: m.SpeedDistanceTimeCalculatorTool })),
+);
+const IvaCalculatorToolUi = lazy(() =>
+  import("./IvaCalculatorTool").then((m) => ({ default: m.IvaCalculatorTool })),
+);
+const KmhToMsConverterToolUi = lazy(() =>
+  import("./KmhToMsConverterTool").then((m) => ({ default: m.KmhToMsConverterTool })),
+);
+const RomanToolUi = lazy(() =>
+  import("./RomanTool").then((m) => ({ default: m.RomanTool })),
+);
+const SleepCycleToolUi = lazy(() =>
+  import("./SleepCycleTool").then((m) => ({ default: m.SleepCycleTool })),
+);
+const BoxShadowToolUi = lazy(() =>
+  import("./BoxShadowTool").then((m) => ({ default: m.BoxShadowTool })),
+);
+const AttendancePercentageCalculatorToolUi = lazy(() =>
+  import("./AttendancePercentageCalculatorTool").then((m) => ({ default: m.AttendancePercentageCalculatorTool })),
+);
+const CostPerKmCalculatorToolUi = lazy(() =>
+  import("./CostPerKmCalculatorTool").then((m) => ({ default: m.CostPerKmCalculatorTool })),
+);
+const DensityCalculatorToolUi = lazy(() =>
+  import("./DensityCalculatorTool").then((m) => ({ default: m.DensityCalculatorTool })),
+);
+const PercentageErrorCalculatorToolUi = lazy(() =>
+  import("./PercentageErrorCalculatorTool").then((m) => ({ default: m.PercentageErrorCalculatorTool })),
+);
+const TextCaseConverterToolUi = lazy(() =>
+  import("./TextCaseConverterTool").then((m) => ({ default: m.TextCaseConverterTool })),
+);
+const TargetHeartRateCalculatorToolUi = lazy(() =>
+  import("./TargetHeartRateCalculatorTool").then((m) => ({ default: m.TargetHeartRateCalculatorTool })),
+);
+const AspectRatioCalculatorToolUi = lazy(() =>
+  import("./AspectRatioCalculatorTool").then((m) => ({ default: m.AspectRatioCalculatorTool })),
+);
+const DaysBetweenDatesCalculatorToolUi = lazy(() =>
+  import("./DaysBetweenDatesCalculatorTool").then((m) => ({ default: m.DaysBetweenDatesCalculatorTool })),
+);
+
+const CubeRootCalculatorToolUi = lazy(() =>
+  import("./CubeRootCalculatorTool").then((m) => ({ default: m.CubeRootCalculatorTool })),
+);
+
+function pickComponent(tool: GeneralTool): ToolComp {
+  const kind = (tool.kind || "").toLowerCase();
+  const slug = (tool.slug || "").toLowerCase();
+  const category = (tool.category || "").toLowerCase();
+
+  // Dedicated calculator / text tools that must not fall into generic Math/Text/ScienceTool
+  if (slug === "conversor-numeros-romanos") return RomanToolUi;
+  if (slug === "calculadora-ciclo-sueno") return SleepCycleToolUi;
+  if (slug === "generador-sombra-css") return BoxShadowToolUi;
+  if (slug === "calculadora-frecuencia-letras") return LetterFrequencyCalculatorToolUi;
+  if (slug === "calculadora-trabajo") return WorkCalculatorToolUi;
+  if (slug === "calculadora-regla-de-tres") return RuleOfThreeCalculatorToolUi;
+  if (slug === "calculadora-horas-extras") return OvertimeCalculatorToolUi;
+  if (slug === "calculadora-volumen-cubo") return CubeVolumeCalculatorToolUi;
+  if (slug === "calculadora-area-triangulo") return TriangleAreaCalculatorToolUi;
+  if (slug === "calculadora-area-circulo") return CircleAreaCalculatorToolUi;
+  if (slug === "conversor-onzas-gramos") return OuncesToGramsConverterToolUi;
+  if (slug === "calculadora-peso-ideal") return IdealWeightCalculatorToolUi;
+  if (slug === "calculadora-peso-saludable") return IdealWeightCalculatorToolUi;
+  if (slug === "calculadora-potencia-electrica") return ElectricalPowerCalculatorToolUi;
+  if (slug === "calculadora-tiempo-vuelo") return FlightTimeCalculatorToolUi;
+  if (slug === "calculadora-pendiente") return SlopeCalculatorToolUi;
+  if (slug === "contador-lineas") return LineCounterToolUi;
+  if (slug === "calculadora-interes-compuesto") return CompoundInterestCalculatorToolUi;
+  if (slug === "calculadora-calorias-diarias") return DailyCaloriesCalculatorToolUi;
+  if (slug === "calculadora-desviacion-estandar") return StandardDeviationCalculatorToolUi;
+  if (slug === "calculadora-volumen-cono") return ConeVolumeCalculatorToolUi;
+  if (slug === "calculadora-horas-entre-fechas") return HoursBetweenDatesCalculatorToolUi;
+  if (slug === "calculadora-palabras-por-minuto") return WordsPerMinuteCalculatorToolUi;
+  if (slug === "contador-silabas") return SyllableCounterToolUi;
+  if (slug === "calculadora-roi") return RoiCalculatorToolUi;
+  if (slug === "calculadora-imc") return BmiCalculatorToolUi;
+  if (slug === "calculadora-raiz-cuadrada") return SquareRootCalculatorToolUi;
+  if (slug === "calculadora-media-armonica") return HarmonicMeanCalculatorToolUi;
+  if (slug === "calculadora-logaritmo") return LogarithmCalculatorToolUi;
+  if (slug === "calculadora-presion-atmosferica") return AtmosphericPressureCalculatorToolUi;
+  if (slug === "calculadora-longitud-media-palabra") return AverageWordLengthCalculatorToolUi;
+  if (slug === "calculadora-longitud-promedio-palabra") return AverageWordLengthCalculatorToolUi;
+  if (slug === "calculadora-interes-diario") return DailyInterestCalculatorToolUi;
+  if (slug === "calculadora-ratio-trabajo-descanso") return WorkBreakRatioCalculatorToolUi;
+  if (slug === "calculadora-precio-unitario") return UnitPriceToolUi;
+  if (slug === "calculadora-agua-arroz") return RiceWaterCalculatorToolUi;
+  if (slug === "calculadora-media-aritmetica") return ArithmeticMeanCalculatorToolUi;
+  if (slug === "calculadora-mediana") return MedianCalculatorToolUi;
+  if (slug === "calculadora-factorial") return FactorialCalculatorToolUi;
+  if (slug === "calculadora-agua-diaria") return DailyWaterIntakeCalculatorToolUi;
+  if (slug === "calculadora-ingesta-agua-diaria") return DailyWaterIntakeCalculatorToolUi;
+  if (slug === "calculadora-consumo-agua") return WaterConsumptionCalculatorToolUi;
+  if (slug === "calculadora-area-superficie-esfera") return SphereSurfaceAreaCalculatorToolUi;
+  if (slug === "calculadora-perimetro-cuadrado") return SquarePerimeterCalculatorToolUi;
+  if (slug === "calculadora-edad") return AgeCalculatorToolUi;
+  if (slug === "calculadora-propina") return TipCalculatorToolUi;
+  if (slug === "calculadora-gpa") return GpaCalculatorToolUi;
+  if (slug === "calculadora-area-habitacion") return RoomAreaCalculatorToolUi;
+  if (slug === "calculadora-area-rectangular") return RoomAreaCalculatorToolUi;
+  if (slug === "calculadora-px-rem") return PxToRemCalculatorToolUi;
+  if (slug === "calculadora-px-a-rem") return PxToRemCalculatorToolUi;
+  if (slug === "calculadora-presupuesto-viaje-diario") return DailyTravelBudgetCalculatorToolUi;
+  if (slug === "calculadora-presupuesto-diario-viaje") return DailyTravelBudgetCalculatorToolUi;
+  if (slug === "calculadora-diferencia-porcentual") return PercentageDifferenceCalculatorToolUi;
+  if (slug === "calculadora-velocidad-distancia-tiempo") return SpeedDistanceTimeCalculatorToolUi;
+  if (slug === "calculadora-iva") return IvaCalculatorToolUi;
+  if (slug === "conversor-kmh-ms") return KmhToMsConverterToolUi;
+  if (slug === "calculadora-porcentaje-asistencia") return AttendancePercentageCalculatorToolUi;
+  if (slug === "calculadora-costo-por-km") return CostPerKmCalculatorToolUi;
+  if (slug === "calculadora-densidad") return DensityCalculatorToolUi;
+  if (slug === "calculadora-error-porcentual") return PercentageErrorCalculatorToolUi;
+  if (slug === "conversor-texto-caso") return TextCaseConverterToolUi;
+  if (slug === "calculadora-frecuencia-cardiaca-objetivo") return TargetHeartRateCalculatorToolUi;
+  if (slug === "calculadora-relacion-aspecto") return AspectRatioCalculatorToolUi;
+  if (slug === "calculadora-dias-entre-fechas") return DaysBetweenDatesCalculatorToolUi;
+  if (slug === "calculadora-raiz-cubica") return CubeRootCalculatorToolUi;
+
+  // 1) Media
+  if (kind === "image" || kind === "pdf" || kind === "media") return MediaToolUi;
+
+  // 2) Document beats config.operation
+  if (kind === "document") return DocumentToolUi;
+
+  // 3) Design / color
+  if (
+    kind === "design" ||
+    kind === "color" ||
+    category === "diseno" ||
+    category === "design" ||
+    slug.startsWith("css-")
+  ) {
+    return DesignToolUi;
+  }
+
+  // 4) Config-driven numeric vs document operations
+  if (tool.config && typeof tool.config === "object" && "operation" in tool.config) {
+    const op = String((tool.config as { operation?: string }).operation || "");
+    if (
+      op === "pdf-metadata" ||
+      op === "text-diff" ||
+      op === "csv-inspector" ||
+      op === "markdown-html" ||
+      op === "file-name-batch"
+    ) {
+      return DocumentToolUi;
+    }
+    return ConfiguredToolUi;
+  }
+
+  // 5) Kind routes
+  if (kind === "converter" || kind === "conversion" || kind === "unit") return ConverterToolUi;
+  if (kind === "text" || kind === "code" || kind === "encode") return TextToolUi;
+  if (kind === "math" || kind === "stats" || kind === "calculator") return MathToolUi;
+  if (kind === "finance" || kind === "money") return FinanceToolUi;
+  if (kind === "science" || kind === "physics") return ScienceToolUi;
+  if (kind === "time" || kind === "date" || kind === "timer") return TimeToolUi;
+  if (kind === "education" || kind === "school") return EducationToolUi;
+  if (kind === "security" || kind === "password") return SecurityToolUi;
+  if (kind === "generator") return GeneratorToolUi;
+  if (kind === "dev" || kind === "developer") return DevToolUi;
+
+  // 6) Category routes
+  if (category === "math" || category === "matematicas") return MathToolUi;
+  if (category === "science" || category === "ciencia") return ScienceToolUi;
+  if (category === "formula") return FormulaToolUi;
+  if (category === "finance" || category === "finanzas") return FinanceToolUi;
+  if (category === "education" || category === "educacion") return EducationToolUi;
+  if (category === "generator" || category === "generadores") return GeneratorToolUi;
+  if (category === "text" || category === "texto") return TextToolUi;
+  if (category === "dev" || category === "desarrollo") return DevToolUi;
+  if (category === "media") return MediaToolUi;
+  if (category === "design" || category === "diseno") return DesignToolUi;
+  if (category === "security" || category === "seguridad") return SecurityToolUi;
+  if (category === "time" || category === "fechas") return TimeToolUi;
+  if (category === "converter" || category === "conversiones") return ConverterToolUi;
+
+  return GeneralToolUi;
+}
+
+function buildLazyRegistry(locale: "en" | "es") {
+  const cache = new Map<string, () => ReactNode>();
+
+  return new Proxy({} as Record<string, () => ReactNode>, {
+    get(_target, prop) {
+      if (typeof prop !== "string") return undefined;
+      if (cache.has(prop)) return cache.get(prop);
+
+      const tool = TOOL_BY_SLUG.get(prop);
+      if (!tool) return undefined;
+
+      const Comp = pickComponent(tool);
+      const render = () => <Comp tool={tool} locale={locale} />;
+      cache.set(prop, render);
+      return render;
+    },
+    has(_target, prop) {
+      return typeof prop === "string" && TOOL_BY_SLUG.has(prop);
+    },
+  });
+}
+
+export const GENERAL_TOOL_UI = buildLazyRegistry("en");
+export const GENERAL_TOOL_UI_ES = buildLazyRegistry("es");
