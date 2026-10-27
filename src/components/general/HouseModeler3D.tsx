@@ -13,7 +13,7 @@ import { computeAreaStats, formatAreaStats } from "./house-modeler/areaStats";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
 import { SnapPicker, gridStep, setGridStep, snapLabel, type SnapStep } from "./house-modeler/snapGrid";
 import { PresetPicker } from "./house-modeler/PresetPicker";
-import { applyTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
+import { applyTimeOfDay, loadTimeOfDay, saveTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
 import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
 import { attachScrollFade } from "./house-modeler/scrollFade";
 
@@ -3949,7 +3949,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     anim: number;
   } | null>(null);
   const lightRigRef = useRef<LightRig | null>(null);
-  const [tod, setTod] = useState<TimeOfDay>("sunset");
+  const [tod, setTod] = useState<TimeOfDay>("sunset"); // real value restored in the scene effect
   const [snapSel, setSnapSel] = useState<SnapStep>(0.5);
   useEffect(() => setSnapSel(gridStep()), []);
   const partsRef = useRef<ScenePart[]>([]);
@@ -4253,6 +4253,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       scene.add(rim);
       scene.add(rim.target);
       lightRigRef.current = { scene, renderer, skyUniforms, sun, hemi, dir, fill, rim, sunDisc };
+      const savedTod = loadTimeOfDay();
+      if (savedTod !== "sunset") { applyTimeOfDay(lightRigRef.current, savedTod); setTod(savedTod); }
 
       const mats = makeMaterials();
 
@@ -6947,7 +6949,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {isFullscreen ? labels.exitFs : labels.fullscreen}
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
         </button>
-        <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
+        <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); saveTimeOfDay(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
         <SnapPicker es={es} value={snapSel} onPick={(v) => { setGridStep(v); setSnapSel(v); }} />
         <PresetPicker es={es} hasParts={count > 0} onPick={(parts) => { restoreParts(parts); flashActionHint(es ? "Plantilla cargada" : "Preset loaded"); }} />
         <button

@@ -55,3 +55,23 @@ export function applyTimeOfDay(rig: LightRig, id: TimeOfDay) {
   rig.rim.position.set(rig.sun.x * 18, 2.6, rig.sun.z * 18);
   rig.sunDisc.position.copy(rig.sun).multiplyScalar(220);
 }
+
+const TOD_KEY = "utilihub.houseModeler.timeOfDay.v1";
+
+/** Last chosen time of day (falls back to sunset when storage is empty or blocked). */
+export function loadTimeOfDay(): TimeOfDay {
+  try {
+    const v = window.localStorage.getItem(TOD_KEY);
+    return TIME_PRESETS.some((x) => x.id === v) ? (v as TimeOfDay) : "sunset";
+  } catch {
+    return "sunset";
+  }
+}
+
+export function saveTimeOfDay(id: TimeOfDay) {
+  try {
+    window.localStorage.setItem(TOD_KEY, id);
+  } catch {
+    /* storage blocked: choice lasts this session only */
+  }
+}
