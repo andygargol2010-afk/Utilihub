@@ -14,7 +14,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, nudgeSelected, setSizeAxis,
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
-    copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL, exportPNG, exportGLB,
+    copySelected, cutSelected, pasteClipboard, exportJSON, importJSON, exportSTL, exportPNG, exportGLB,
     clearSelection, dropToFloor, alignSelection, objectLimitMsg,
     matPreset, applyMatPreset, UNIT_CM,
     listNamedScenes, saveNamedScene, loadNamedScene, deleteNamedScene, copyShareLink, applyPreset,
@@ -245,6 +245,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
             </button>
             <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">{es ? "Limpiar" : "Clear"}</button>
             <button type="button" title="Export JSON" onClick={exportJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">JSON</button>
+            <button type="button" title={es ? "Abrir escena desde archivo JSON" : "Open scene from JSON file"} onClick={importJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">{es ? "Abrir" : "Open"}</button>
             <button type="button" title="Export STL" onClick={exportSTL} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">STL</button>
             <button type="button" title={es ? "Captura PNG" : "Screenshot PNG"} onClick={exportPNG} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">PNG</button>
             <button type="button" title={es ? "Exportar GLB" : "Export GLB"} onClick={exportGLB} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">GLB</button>

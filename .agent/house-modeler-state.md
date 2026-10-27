@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 305
+runs_done: 306
 runs_max: 500
 ```
 
@@ -57,11 +57,11 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: PRODUCT
+last_mode: MODELADOR-3D
 last_date: 2026-10-27
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 305 time-of-day presets. Build OK, 0 modeler console errors, fps ~3 desktop SwiftShader. runs_done=305.
+note: MODELADOR-3D run 306 Import scene JSON (Open button). runs_done=306. Prior: PRODUCT run 305 time-of-day presets. Build OK, 0 modeler console errors, fps ~3 desktop SwiftShader. runs_done=305.
 PRODUCT run 305: time-of-day lighting presets (backlog #6): Morning/Noon/Sunset/Dusk dropdown, new modules house-modeler/lighting.ts + TimeOfDayPicker.tsx; monolith +546 B (360607). Verified EN+ES desktop+mobile, 0 modeler console errors (only 2 known unrelated 404s). fps ~3 in SwiftShader (baseline ~4, noise-level, no new render cost). Local server: `PORT=4173 node .output/server/index.mjs` after build; EN url /tools/3d-house-modeler, ES /es/herramientas/modelador-casas-3d. runs_done=305.
 ```
 
@@ -147,6 +147,7 @@ PRODUCT run 302: share link (backlog #5): Copy link button, #design= hash wins o
 PRODUCT run 303: house presets (backlog #4): cabin/two-room/shed dropdown, replaces scene via restoreParts (undoable); monolith +221 B. runs_done=303.
 MODELADOR-3D run 304: real autosave of live scene every 2s + pagehide/visibilitychange (was beforeunload only, unreliable on mobile); saveScene guarded until engine ready. Verified add cube -> reload restores, desktop+mobile. Monolith untouched. runs_done=304.
 PRODUCT run 305: time-of-day lighting presets (backlog #6): Morning/Noon/Sunset/Dusk dropdown, new modules house-modeler/lighting.ts + TimeOfDayPicker.tsx; monolith +546 B (360607). Verified EN+ES desktop+mobile, 0 modeler console errors (only 2 known unrelated 404s). fps ~3 in SwiftShader (baseline ~4, noise-level, no new render cost). Local server: `PORT=4173 node .output/server/index.mjs` after build; EN url /tools/3d-house-modeler, ES /es/herramientas/modelador-casas-3d. runs_done=305.
+MODELADOR-3D run 306: Import scene JSON (new 'Open/Abrir' toolbar button, importJSON in modeler3d-core, confirm before replace, invalid-file alert EN+ES, undoable). Verified EN desktop + ES mobile round trip export->clear->open, 0 console errors. House monolith untouched (360607 B). runs_done=306.
 ```
 
 <!-- end:house-modeler-state.md -->

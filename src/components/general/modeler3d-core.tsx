@@ -648,6 +648,31 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     URL.revokeObjectURL(a.href);
   }, [snapshot]);
 
+  const importJSON = useCallback(() => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "application/json,.json";
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file || file.size > 5_000_000) return;
+      try {
+        const data = JSON.parse(await file.text()) as HistoryEntry;
+        if (!Array.isArray(data?.meshes) || !data.meshes.length) throw new Error("empty");
+        if (objectsRef.current.length > 0 && !window.confirm(es ? "¿Reemplazar la escena actual por el archivo?" : "Replace the current scene with this file?")) return;
+        const entry = { meshes: data.meshes, groups: Array.isArray(data.groups) ? data.groups : [] } as HistoryEntry;
+        pushHistory();
+        restoreSnapshot(entry);
+        historyRef.current = [...historyRef.current.slice(0, histIdxRef.current + 1), entry];
+        histIdxRef.current = historyRef.current.length - 1;
+        setCanUndo(histIdxRef.current > 0);
+        setCanRedo(false);
+      } catch {
+        window.alert(es ? "Archivo JSON de escena no válido." : "Not a valid scene JSON file.");
+      }
+    };
+    input.click();
+  }, [es, pushHistory, restoreSnapshot]);
+
   const exportSTL = useCallback(async () => {
     const t = threeRef.current;
     if (!t) return;
@@ -777,7 +802,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, nudgeSelected, setSizeAxis,
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
-    copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL, exportPNG, exportGLB,
+    copySelected, cutSelected, pasteClipboard, exportJSON, importJSON, exportSTL, exportPNG, exportGLB,
     clearSelection, dropToFloor, alignSelection, objectLimitMsg,
     matPreset, applyMatPreset, UNIT_CM,
     listNamedScenes, saveNamedScene, loadNamedScene, deleteNamedScene, copyShareLink, applyPreset,
