@@ -61,12 +61,13 @@ path_es: /es/fluid-ink-flow-playground
 path_seo: n/a
 domain: playgrounds
 runs_total: 4
-runs_remaining: 2
+runs_remaining: 1
 acceptance: User draws a stroke on canvas, sees viscous multi-color ink flow along it with adjustable controls and mixing, and shares a branded PNG of the composition.
 share: png
 next_step_required: no
 notes: Run 1/4 EXECUTE: shipped working core — freehand canvas drawing, particle-based viscous ink flow with viscosity/density/gravity/surface-tension controls, color variety, pause/randomize/clear, keyboard shortcuts, localStorage persist, branded PNG export (title + utilihub.com + stroke count). EN+ES routes + next-step catalog entry. Core playable. Next: refine mixing aesthetic, URL deep-link, more polish.
 Run 2/4 EXECUTE: added URL deep-link (?ink= base64 restores full strokes on load, prefers over localStorage) + refined particle color mixing (nearby different colors lerp RGB). URL updates on save/clear/randomize. EN+ES help text updated. Mixing more visible. Next: final polish / mobile density tuning / close if solid.
+Run 3/4 EXECUTE: mobile density auto-tuning (cap density ≤4 and max ~650 particles on <480px) + overall particle cap (1400 desktop) + neighbor check step-2 when high count or mobile for better INP/CWV. Slightly larger soft particles. Help text notes auto density. Solid for mobile. Next: final close or light polish if needed.
 adsense-prep_runs: 3
 ```
 

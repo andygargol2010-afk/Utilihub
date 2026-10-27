@@ -68,6 +68,7 @@ export function FluidInkFlowPlayground({ locale }: Props) {
   const currentStroke = useRef<Stroke | null>(null);
   const raf = useRef<number>(0);
   const paused = useRef(false);
+  const isMobileRef = useRef(false);
 
   const [viscosity, setViscosity] = useState(0.92);
   const [density, setDensity] = useState(3);
@@ -79,10 +80,15 @@ export function FluidInkFlowPlayground({ locale }: Props) {
   const es = locale === "es";
   const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#ffeaa7", "#dfe6e9", "#fd79a8", "#a29bfe"];
 
+  const updateMobile = useCallback(() => {
+    isMobileRef.current = window.innerWidth < 480;
+  }, []);
+
   const resize = useCallback(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
+    updateMobile();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const rect = container.getBoundingClientRect();
     canvas.width = rect.width * dpr;
@@ -91,7 +97,7 @@ export function FluidInkFlowPlayground({ locale }: Props) {
     canvas.style.height = `${Math.max(420, rect.width * 0.65)}px`;
     const ctx = canvas.getContext("2d");
     if (ctx) ctx.scale(dpr, dpr);
-  }, []);
+  }, [updateMobile]);
 
   useEffect(() => {
     resize();
@@ -115,7 +121,12 @@ export function FluidInkFlowPlayground({ locale }: Props) {
   };
 
   const emitParticles = (x: number, y: number, color: string) => {
-    for (let i = 0; i < density; i++) {
+    const mobile = isMobileRef.current;
+    const effectiveDensity = mobile ? Math.min(density, 4) : density;
+    const maxParticles = mobile ? 650 : 1400;
+    if (particlesRef.current.length >= maxParticles) return;
+    const toAdd = Math.min(effectiveDensity, maxParticles - particlesRef.current.length);
+    for (let i = 0; i < toAdd; i++) {
       particlesRef.current.push({
         x: x + (Math.random() - 0.5) * 8,
         y: y + (Math.random() - 0.5) * 8,
@@ -224,6 +235,8 @@ export function FluidInkFlowPlayground({ locale }: Props) {
     ctx.fillRect(0, 0, w, h);
 
     const parts = particlesRef.current;
+    const mobile = isMobileRef.current;
+    const checkStep = parts.length > 400 || mobile ? 2 : 1;
     for (let i = parts.length - 1; i >= 0; i--) {
       const p = parts[i];
       p.vy += gravity;
@@ -231,7 +244,7 @@ export function FluidInkFlowPlayground({ locale }: Props) {
       p.vy *= viscosity;
       let fx = 0, fy = 0, count = 0;
       let mixR = 0, mixG = 0, mixB = 0, mixN = 0;
-      for (let j = 0; j < parts.length; j++) {
+      for (let j = 0; j < parts.length; j += checkStep) {
         if (i === j) continue;
         const o = parts[j];
         const dx = o.x - p.x;
@@ -267,7 +280,7 @@ export function FluidInkFlowPlayground({ locale }: Props) {
       const alpha = Math.max(0.15, p.life / p.maxLife);
       ctx.beginPath();
       ctx.fillStyle = p.color + Math.floor(alpha * 180).toString(16).padStart(2, "0");
-      ctx.arc(p.x, p.y, 2.2 + (1 - alpha) * 1.5, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, 2.4 + (1 - alpha) * 1.8, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -421,8 +434,8 @@ export function FluidInkFlowPlayground({ locale }: Props) {
       </div>
       <p className="text-xs text-muted-foreground">
         {es
-          ? "Atajos: Espacio pausa · C limpiar · R aleatorio · S PNG. Dibujá libremente; la tinta fluye y se mezcla. La URL se actualiza con el deep-link."
-          : "Shortcuts: Space pause · C clear · R randomize · S PNG. Draw freehand; ink flows and mixes. URL updates with the deep-link."}
+          ? "Atajos: Espacio pausa · C limpiar · R aleatorio · S PNG. Dibujá libremente; la tinta fluye y se mezcla. Densidad automática en móvil. La URL se actualiza con el deep-link."
+          : "Shortcuts: Space pause · C clear · R randomize · S PNG. Draw freehand; ink flows and mixes. Auto density on mobile. URL updates with the deep-link."}
       </p>
     </div>
   );
