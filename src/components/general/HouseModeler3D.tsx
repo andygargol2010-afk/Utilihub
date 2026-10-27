@@ -15,6 +15,7 @@ import { SnapPicker, gridStep, setGridStep, snapLabel, type SnapStep } from "./h
 import { PresetPicker } from "./house-modeler/PresetPicker";
 import { applyTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
 import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
+import { attachScrollFade } from "./house-modeler/scrollFade";
 
 type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
@@ -3931,6 +3932,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const es = locale === "es";
   const mountRef = useRef<HTMLDivElement>(null);
   const shellRef = useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
+  useEffect(() => (toolbarRef.current ? attachScrollFade(toolbarRef.current) : undefined), []);
   const threeRef = useRef<{
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
@@ -6847,6 +6850,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       </div>
 
       <div
+        ref={toolbarRef}
         role="toolbar"
         aria-label={labels.title}
         className="flex gap-2 overflow-x-auto overscroll-x-contain pb-1 snap-x snap-mandatory [scrollbar-width:thin]"

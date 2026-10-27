@@ -14,12 +14,12 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 6 | Time-of-day / lighting presets (morning, noon, sunset) via sun position | 3 | 4 | 2 | 6 | DONE run 305 (house-modeler/lighting.ts + TimeOfDayPicker.tsx; morning/noon/sunset/dusk; choice not persisted yet) |
 | 7 | Dimension labels for the selected part (W x H x D, m) shown on canvas | 4 | 4 | 3 | 5.3 | DONE run 307 (house-modeler/dimensionLabel.ts; DOM overlay W × H × D m above selected part) |
 | 8 | Onboarding hint overlay on first visit (dismissable, remembered) incl. touch gestures | 3 | 5 | 2 | 7.5 | DONE run 301 (house-modeler/OnboardingHint.tsx) |
-| 9 | Mobile: bigger structure palette tap targets + one-finger orbit/two-finger pan hint | 3 | 4 | 2 | 6 | open |
+| 9 | Mobile: toolbar scroll affordance (edge fade) so off-screen controls are discoverable | 3 | 4 | 2 | 6 | DONE run 311 (house-modeler/scrollFade.ts; fade mask <768px only, hides at scroll ends; palette targets already 44px; gesture hint exists in onboarding) |
 | 10 | Performance: adaptive pixel ratio / shadow map size when FPS < 30 | 4 | 3 | 3 | 4 | DONE run 310 (house-modeler/adaptiveQuality.ts; pixel ratio steps 2→1.5→1→0.75 when fps<28 over 2.5s, never steps back up; shadow map size untouched) |
 | 11 | Total floor area / wall area readout (feeds paint/flooring tools via links) | 3 | 3 | 2 | 4.5 | DONE run 308 (house-modeler/areaStats.ts; gross floor/wall/roof m² chip, openings not subtracted) |
 | 12 | Snap-to-grid toggle + visible grid size option | 3 | 3 | 2 | 4.5 | DONE run 309 (house-modeler/snapGrid.tsx; 0.1/0.25/0.5/1 m dropdown, persisted, drives snap + nudges) |
 | 13 | Extract texture painters from monolith into house-modeler/ modules (hygiene) | 2 | 2 | 4 | 1 | open |
-| 14 | Fix 2 unrelated 404 resource requests seen on tool page (non-modeler) | 2 | 5 | 2 | 5 | open |
+| 14 | Fix 2 unrelated 404 resource requests seen on tool page (non-modeler) | 2 | 5 | 2 | 5 | WONTFIX (run 311: /_vercel/insights and speed-insights scripts only exist on Vercel; 404 only on local server) |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
-Next pick by score: #14 404s (5), #9 mobile palette (6, but palette already compact/44px targets; re-audit first), #13 extraction.
+Next pick by score: #13 extraction (hygiene), then new audit for fresh items (e.g. persist time-of-day, layers/locks in undo snapshot, measure tool).
