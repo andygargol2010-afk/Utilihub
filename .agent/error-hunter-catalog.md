@@ -387,3 +387,15 @@ Formato por entrada:
 - **check**: es.guias.orbit-pulse-catcher.tsx empieza con import y createFileRoute; no contiene $(cat
 - **fix_hint**: RESTORE desde commit previo bueno (ej. 90a2dff)
 - **files**: `src/routes/es.guias.orbit-pulse-catcher.tsx`
+
+## E040 — AuroraRibbonWeaver.tsx PLACEHOLDER stub causes build ERROR
+- **status**: fixed
+- **last_seen**: 2026-10-27 (run 19)
+- **fixed_at**: 2026-10-27
+- **symptom**: Vercel deploy ERROR; rollup "AuroraRibbonWeaver" is not exported by AuroraRibbonWeaver.tsx
+- **root_cause**: commit 3a991e2 replaced the full interactive component with literal "PLACEHOLDER_WILL_REPLACE"
+- **check**: file exports function AuroraRibbonWeaver, size >10kB, contains canvas + controls, not PLACEHOLDER
+- **fix_hint**: RESTORE full component from pre-placeholder SHA (e01519d)
+- **files**: `src/components/playgrounds/AuroraRibbonWeaver.tsx`, `src/routes/aurora-ribbon-weaver.tsx`
+
+<!-- end:catalog -->
