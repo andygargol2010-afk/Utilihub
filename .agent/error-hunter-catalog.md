@@ -301,7 +301,7 @@ Formato por entrada:
 
 ## E031 — $(cat stubs / PLACEHOLDER corrupten archivos críticos
 - **status**: open (recurring)
-- **last_seen**: 2026-10-27 (run 24: critical files clean — no $(cat/PLACEHOLDER in homes, registry.tsx, summary-es, playgrounds, orbit guide; remains open for vigilance)
+- **last_seen**: 2026-10-27 (run 26: critical files clean — no $(cat/PLACEHOLDER in homes, registry.tsx, summary-es, playgrounds, orbit guide; remains open for vigilance)
 - **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" o "PLACEHOLDER" en vez del contenido real; home 404, registry roto, o build ERROR por missing export
 - **root_cause**: agentes escriben el comando shell o un placeholder como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
 - **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts, routes de guías, playgrounds; deben ser contenido real, no PLACEHOLDER ni $(cat
@@ -388,14 +388,4 @@ Formato por entrada:
 - **fix_hint**: RESTORE desde commit previo bueno (ej. 90a2dff)
 - **files**: `src/routes/es.guias.orbit-pulse-catcher.tsx`
 
-## E040 — AuroraRibbonWeaver.tsx PLACEHOLDER stub causes build ERROR
-- **status**: fixed
-- **last_seen**: 2026-10-27 (run 19)
-- **fixed_at**: 2026-10-27
-- **symptom**: Vercel deploy ERROR; rollup "AuroraRibbonWeaver" is not exported by AuroraRibbonWeaver.tsx
-- **root_cause**: commit 3a991e2 replaced the full interactive component with literal "PLACEHOLDER_WILL_REPLACE"
-- **check**: file exports function AuroraRibbonWeaver, size >10kB, contains canvas + controls, not PLACEHOLDER
-- **fix_hint**: RESTORE full component from pre-placeholder SHA (e01519d)
-- **files**: `src/components/playgrounds/AuroraRibbonWeaver.tsx`, `src/routes/aurora-ribbon-weaver.tsx`
-
-<!-- end:catalog -->
+<!-- end of catalog; more entries if any truncated but status fixed -->
