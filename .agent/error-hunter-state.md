@@ -11,12 +11,12 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-27 run 21
-last_fix: restored src/lib/general/index.ts from e341781 (was "placeholder for index")
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER stubs) — fixed index.ts placeholder; registry.tsx, homes, AuroraRibbonWeaver, ModularPatternComposer, summary-es clean)
-new_findings: src/lib/general/index.ts reduced to placeholder string, would break GENERAL_TOOLS export and tool pages/build
-deploy: latest ERROR on older SHAs (027e2060, 61924ea6); current HEAD a0d2c50 had no deploy; this restore should allow READY
-notes: Known smoke green on fixed items. Discovery found placeholder in catalog index.ts. Restored full content. E031 remains open/recurring for vigilance. 1 fix.
+last_run: 2026-10-27 run 22
+last_fix: none (checks OK)
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER stubs) — critical files clean: index.ts full, registry.tsx large with dedicated wires, homes import+createFileRoute no $(cat, AuroraRibbonWeaver and ModularPatternComposer full, summary-es exports SUMMARY_ES)
+new_findings: none
+deploy: no deploy for current HEAD 34ab869c; previous ERROR on older SHAs (027e2060, 61924ea6) already addressed in later commits
+notes: Known smoke green. Discovery sampled homes, registry, catalog index, modeler3d-app/registry-3d, playgrounds, summary-es — all clean, no PLACEHOLDER/$(cat/"Tool not available". E031 remains open/recurring for vigilance. 0 fixes.
 ```
 
 <!-- end:error-hunter-state.md -->
