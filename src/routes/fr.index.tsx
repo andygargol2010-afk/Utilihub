@@ -66,6 +66,12 @@ function FrenchHome() {
             >
               Jouer à Pulse Catch
             </Link>
+            <Link
+              to="/fr/snake"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-primary/30 bg-card px-5 py-3 text-sm font-bold text-primary hover:bg-primary/5"
+            >
+              Jouer à Snake
+            </Link>
           </div>
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
             <span>Sans inscription</span>
@@ -95,6 +101,14 @@ function FrenchHome() {
             </Link>
             <p className="text-sm text-muted-foreground">
               Touchez les étincelles brillantes avant qu'elles ne s'éteignent. Construisez des combos et enregistrez votre meilleur score.
+            </p>
+          </li>
+          <li>
+            <Link to="/fr/snake" className="font-semibold text-primary hover:underline">
+              Snake — jeu classique du serpent
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              Mangez les pommes, grandissez et évitez les murs. Contrôles fluides, score et meilleur score local.
             </p>
           </li>
         </ul>
