@@ -9,6 +9,8 @@ import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./h
 import { createHistory, undoKeyStep } from "./house-modeler/history";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
 import { PresetPicker } from "./house-modeler/PresetPicker";
+import { applyTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
+import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
 
 type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
@@ -3940,6 +3942,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     selectionHelper: THREE.BoxHelper;
     anim: number;
   } | null>(null);
+  const lightRigRef = useRef<LightRig | null>(null);
+  const [tod, setTod] = useState<TimeOfDay>("sunset");
   const partsRef = useRef<ScenePart[]>([]);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -4239,6 +4243,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       rim.position.set(sun.x * 18, 2.6, sun.z * 18);
       scene.add(rim);
       scene.add(rim.target);
+      lightRigRef.current = { scene, renderer, skyUniforms, sun, hemi, dir, fill, rim, sunDisc };
 
       const mats = makeMaterials();
 
@@ -4708,6 +4713,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         // Mark disposed and cancel RAF before teardown so a route change
         // cannot render into a context that is already going away.
         disposed = true;
+        lightRigRef.current = null;
         cancelAnimationFrame(threeRef.current?.anim ?? 0);
         try {
           window.removeEventListener("resize", onResize);
@@ -6911,6 +6917,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {isFullscreen ? labels.exitFs : labels.fullscreen}
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
         </button>
+        <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
         <PresetPicker es={es} hasParts={count > 0} onPick={(parts) => { restoreParts(parts); flashActionHint(es ? "Plantilla cargada" : "Preset loaded"); }} />
         <button
           type="button"

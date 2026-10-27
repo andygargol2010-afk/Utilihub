@@ -10,45 +10,211 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuraCardRouteImport } from './routes/aura-card'
+import { Route as AuroraRouteImport } from './routes/aurora'
+import { Route as AuroraParticlePlaygroundRouteImport } from './routes/aurora-particle-playground'
+import { Route as AuroraRibbonWeaverRouteImport } from './routes/aurora-ribbon-weaver'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
+import { Route as ColorCascadeFusionRouteImport } from './routes/color-cascade-fusion'
+import { Route as ConstellationRouteImport } from './routes/constellation'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as CookiesRouteImport } from './routes/cookies'
+import { Route as DailyProgressConstellationRouteImport } from './routes/daily-progress-constellation'
+import { Route as EchoWaveRouteImport } from './routes/echo-wave'
 import { Route as EsRouteImport } from './routes/es'
 import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as FinanzasRouteImport } from './routes/finanzas'
+import { Route as FireworkRouteImport } from './routes/firework'
+import { Route as FluidTypeRouteImport } from './routes/fluid-type'
+import { Route as GamesRouteImport } from './routes/games'
+import { Route as GlowTrailRouteImport } from './routes/glow-trail'
+import { Route as JourneysRouteImport } from './routes/journeys'
 import { Route as KitsRouteImport } from './routes/kits'
 import { Route as LegalRouteImport } from './routes/legal'
+import { Route as ModularPatternComposerRouteImport } from './routes/modular-pattern-composer'
+import { Route as NBodyGravityRouteImport } from './routes/n-body-gravity'
+import { Route as NeonLayerComposerRouteImport } from './routes/neon-layer-composer'
+import { Route as NeonSignRouteImport } from './routes/neon-sign'
+import { Route as PostcardRouteImport } from './routes/postcard'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PulseCatchRouteImport } from './routes/pulse-catch'
+import { Route as ReturnStreakBoardRouteImport } from './routes/return-streak-board'
+import { Route as RiverLightRouteImport } from './routes/river-light'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SimulatorsRouteImport } from './routes/simulators'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SolarSystemScaleExplorerRouteImport } from './routes/solar-system-scale-explorer'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as VisualSignatureRouteImport } from './routes/visual-signature'
+import { Route as AdminReviewsRouteImport } from './routes/admin.reviews'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as EducacionSubjectRouteImport } from './routes/educacion.$subject'
 import { Route as EducationSubjectRouteImport } from './routes/education.$subject'
 import { Route as EsIndexRouteImport } from './routes/es.index'
+import { Route as EsAcercaRouteImport } from './routes/es.acerca'
+import { Route as EsAuraCardRouteImport } from './routes/es.aura-card'
+import { Route as EsAuroraRouteImport } from './routes/es.aurora'
+import { Route as EsAuroraParticlePlaygroundRouteImport } from './routes/es.aurora-particle-playground'
+import { Route as EsAuroraRibbonWeaverRouteImport } from './routes/es.aurora-ribbon-weaver'
+import { Route as EsAvisoLegalRouteImport } from './routes/es.aviso-legal'
+import { Route as EsColorCascadeFusionRouteImport } from './routes/es.color-cascade-fusion'
+import { Route as EsConstellationRouteImport } from './routes/es.constellation'
+import { Route as EsContactoRouteImport } from './routes/es.contacto'
+import { Route as EsCookiesRouteImport } from './routes/es.cookies'
+import { Route as EsDailyProgressConstellationRouteImport } from './routes/es.daily-progress-constellation'
+import { Route as EsEchoWaveRouteImport } from './routes/es.echo-wave'
 import { Route as EsFinanzasRouteImport } from './routes/es.finanzas'
+import { Route as EsFireworkRouteImport } from './routes/es.firework'
+import { Route as EsFirmaVisualRouteImport } from './routes/es.firma-visual'
+import { Route as EsFluidTypeRouteImport } from './routes/es.fluid-type'
+import { Route as EsGlowTrailRouteImport } from './routes/es.glow-trail'
 import { Route as EsHerramientasRouteImport } from './routes/es.herramientas'
+import { Route as EsJuegosRouteImport } from './routes/es.juegos'
+import { Route as EsKitsRouteImport } from './routes/es.kits'
+import { Route as EsModularPatternComposerRouteImport } from './routes/es.modular-pattern-composer'
+import { Route as EsNBodyGravityRouteImport } from './routes/es.n-body-gravity'
+import { Route as EsNeonLayerComposerRouteImport } from './routes/es.neon-layer-composer'
+import { Route as EsNeonSignRouteImport } from './routes/es.neon-sign'
+import { Route as EsPostcardRouteImport } from './routes/es.postcard'
+import { Route as EsPrivacidadRouteImport } from './routes/es.privacidad'
+import { Route as EsPulseCatchRouteImport } from './routes/es.pulse-catch'
+import { Route as EsReturnStreakBoardRouteImport } from './routes/es.return-streak-board'
+import { Route as EsRioLuzRouteImport } from './routes/es.rio-luz'
+import { Route as EsSimuladoresRouteImport } from './routes/es.simuladores'
+import { Route as EsSolarSystemScaleExplorerRouteImport } from './routes/es.solar-system-scale-explorer'
+import { Route as EsTerminosRouteImport } from './routes/es.terminos'
+import { Route as EsViajesRouteImport } from './routes/es.viajes'
+import { Route as ExperiencesIndexRouteImport } from './routes/experiences.index'
+import { Route as FinanceIndexRouteImport } from './routes/finance.index'
 import { Route as FinanceSlugRouteImport } from './routes/finance.$slug'
 import { Route as FinanzasSlugRouteImport } from './routes/finanzas.$slug'
+import { Route as GamesIndexRouteImport } from './routes/games.index'
+import { Route as GamesSlugRouteImport } from './routes/games.$slug'
+import { Route as GuidesCanvasWebglPerformanceRouteImport } from './routes/guides.canvas-webgl-performance'
+import { Route as GuidesCompoundInterestRouteImport } from './routes/guides.compound-interest'
+import { Route as GuidesModularPatternComposerRouteImport } from './routes/guides.modular-pattern-composer'
+import { Route as GuidesNBodyGravityRouteImport } from './routes/guides.n-body-gravity'
+import { Route as GuidesOrbitPulseCatcherRouteImport } from './routes/guides.orbit-pulse-catcher'
+import { Route as GuidesParticlePhysicsRouteImport } from './routes/guides.particle-physics'
 import { Route as HerramientasIndexRouteImport } from './routes/herramientas.index'
 import { Route as HerramientasSlugRouteImport } from './routes/herramientas.$slug'
 import { Route as HubsDocumentosYArchivosRouteImport } from './routes/hubs.documentos-y-archivos'
 import { Route as HubsDocumentsAndFilesRouteImport } from './routes/hubs.documents-and-files'
+import { Route as JourneysCelebrationRouteImport } from './routes/journeys.celebration'
+import { Route as JourneysColorHarmonyRouteImport } from './routes/journeys.color-harmony'
+import { Route as JourneysWaypointRiverComposerRouteImport } from './routes/journeys.waypoint-river-composer'
 import { Route as KitsSlugRouteImport } from './routes/kits.$slug'
+import { Route as PlaygroundsIndexRouteImport } from './routes/playgrounds.index'
+import { Route as PlaygroundsConstellationRouteImport } from './routes/playgrounds.constellation'
+import { Route as PlaygroundsDebtSnowballRouteImport } from './routes/playgrounds.debt-snowball'
+import { Route as PlaygroundsFloorPlanRouteImport } from './routes/playgrounds.floor-plan'
+import { Route as PlaygroundsGravityParticlesRouteImport } from './routes/playgrounds.gravity-particles'
+import { Route as PlaygroundsGravityRibbonCanvasRouteImport } from './routes/playgrounds.gravity-ribbon-canvas'
+import { Route as PlaygroundsKaleidoscopeMandalaRouteImport } from './routes/playgrounds.kaleidoscope-mandala'
+import { Route as PlaygroundsParticleMagnetsRouteImport } from './routes/playgrounds.particle-magnets'
+import { Route as PlaygroundsParticleSignatureRouteImport } from './routes/playgrounds.particle-signature'
+import { Route as PlaygroundsParticlesRouteImport } from './routes/playgrounds.particles'
+import { Route as PlaygroundsSeatingChartRouteImport } from './routes/playgrounds.seating-chart'
+import { Route as PtIndexRouteImport } from './routes/pt.index'
+import { Route as PtOrbitDefenderArcadeRouteImport } from './routes/pt.orbit-defender-arcade'
+import { Route as PtPongRouteImport } from './routes/pt.pong'
+import { Route as PtPulseCatchRouteImport } from './routes/pt.pulse-catch'
+import { Route as PtSnakeRouteImport } from './routes/pt.snake'
+import { Route as SimulatorsIndexRouteImport } from './routes/simulators.index'
+import { Route as SimulatorsSlugRouteImport } from './routes/simulators.$slug'
+import { Route as StudioNeonSignatureComposerRouteImport } from './routes/studio.neon-signature-composer'
+import { Route as StudioPrismTrailComposerRouteImport } from './routes/studio.prism-trail-composer'
 import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
+import { Route as UxDensityLabRouteImport } from './routes/ux.density-lab'
+import { Route as UxFocusLaneRouteImport } from './routes/ux.focus-lane'
+import { Route as EsCategoriaSlugRouteImport } from './routes/es.categoria.$slug'
+import { Route as EsEducacionSubjectRouteImport } from './routes/es.educacion.$subject'
+import { Route as EsExperiencesIndexRouteImport } from './routes/es.experiences.index'
+import { Route as EsFinanzasIndexRouteImport } from './routes/es.finanzas.index'
 import { Route as EsFinanzasSlugRouteImport } from './routes/es.finanzas.$slug'
+import { Route as EsGuiasFisicaParticulasRouteImport } from './routes/es.guias.fisica-particulas'
+import { Route as EsGuiasInteresCompuestoRouteImport } from './routes/es.guias.interes-compuesto'
+import { Route as EsGuiasModularPatternComposerRouteImport } from './routes/es.guias.modular-pattern-composer'
+import { Route as EsGuiasNBodyGravityRouteImport } from './routes/es.guias.n-body-gravity'
+import { Route as EsGuiasOrbitPulseCatcherRouteImport } from './routes/es.guias.orbit-pulse-catcher'
+import { Route as EsGuiasRendimientoCanvasWebglRouteImport } from './routes/es.guias.rendimiento-canvas-webgl'
+import { Route as EsGuidesCanvasWebglPerformanceRouteImport } from './routes/es.guides.canvas-webgl-performance'
+import { Route as EsHerramientasIndexRouteImport } from './routes/es.herramientas.index'
 import { Route as EsHerramientasSlugRouteImport } from './routes/es.herramientas.$slug'
+import { Route as EsHubsDocumentosYArchivosRouteImport } from './routes/es.hubs.documentos-y-archivos'
+import { Route as EsJuegosIndexRouteImport } from './routes/es.juegos.index'
+import { Route as EsJuegosSlugRouteImport } from './routes/es.juegos.$slug'
+import { Route as EsKitsSlugRouteImport } from './routes/es.kits.$slug'
+import { Route as EsPlaygroundsIndexRouteImport } from './routes/es.playgrounds.index'
+import { Route as EsPlaygroundsConstelacionRouteImport } from './routes/es.playgrounds.constelacion'
+import { Route as EsPlaygroundsDeudaBolaNieveRouteImport } from './routes/es.playgrounds.deuda-bola-nieve'
+import { Route as EsPlaygroundsFirmaParticulasRouteImport } from './routes/es.playgrounds.firma-particulas'
+import { Route as EsPlaygroundsImanesParticulasRouteImport } from './routes/es.playgrounds.imanes-particulas'
+import { Route as EsPlaygroundsKaleidoscopioMandalaRouteImport } from './routes/es.playgrounds.kaleidoscopio-mandala'
+import { Route as EsPlaygroundsLienzoCintasGravedadRouteImport } from './routes/es.playgrounds.lienzo-cintas-gravedad'
+import { Route as EsPlaygroundsParticulasRouteImport } from './routes/es.playgrounds.particulas'
+import { Route as EsPlaygroundsParticulasGravedadRouteImport } from './routes/es.playgrounds.particulas-gravedad'
+import { Route as EsPlaygroundsPlanoAsientosRouteImport } from './routes/es.playgrounds.plano-asientos'
+import { Route as EsPlaygroundsPlanoPlantaRouteImport } from './routes/es.playgrounds.plano-planta'
+import { Route as EsSimuladoresIndexRouteImport } from './routes/es.simuladores.index'
+import { Route as EsSimuladoresSlugRouteImport } from './routes/es.simuladores.$slug'
+import { Route as EsStudioCompositorEstelaPrismaRouteImport } from './routes/es.studio.compositor-estela-prisma'
+import { Route as EsStudioCompositorFirmaNeonRouteImport } from './routes/es.studio.compositor-firma-neon'
+import { Route as EsUxCarrilFocoRouteImport } from './routes/es.ux.carril-foco'
+import { Route as EsUxLaboratorioDensidadRouteImport } from './routes/es.ux.laboratorio-densidad'
+import { Route as EsViajesArmoniaColorRouteImport } from './routes/es.viajes.armonia-color'
+import { Route as EsViajesCelebracionRouteImport } from './routes/es.viajes.celebracion'
+import { Route as EsViajesCompositorRioWaypointsRouteImport } from './routes/es.viajes.compositor-rio-waypoints'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuraCardRoute = AuraCardRouteImport.update({
+  id: '/aura-card',
+  path: '/aura-card',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuroraRoute = AuroraRouteImport.update({
+  id: '/aurora',
+  path: '/aurora',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuroraParticlePlaygroundRoute =
+  AuroraParticlePlaygroundRouteImport.update({
+    id: '/aurora-particle-playground',
+    path: '/aurora-particle-playground',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuroraRibbonWeaverRoute = AuroraRibbonWeaverRouteImport.update({
+  id: '/aurora-ribbon-weaver',
+  path: '/aurora-ribbon-weaver',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AvisoLegalRoute = AvisoLegalRouteImport.update({
   id: '/aviso-legal',
   path: '/aviso-legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ColorCascadeFusionRoute = ColorCascadeFusionRouteImport.update({
+  id: '/color-cascade-fusion',
+  path: '/color-cascade-fusion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConstellationRoute = ConstellationRouteImport.update({
+  id: '/constellation',
+  path: '/constellation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -59,6 +225,22 @@ const ContactRoute = ContactRouteImport.update({
 const ContactoRoute = ContactoRouteImport.update({
   id: '/contacto',
   path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CookiesRoute = CookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DailyProgressConstellationRoute =
+  DailyProgressConstellationRouteImport.update({
+    id: '/daily-progress-constellation',
+    path: '/daily-progress-constellation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const EchoWaveRoute = EchoWaveRouteImport.update({
+  id: '/echo-wave',
+  path: '/echo-wave',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EsRoute = EsRouteImport.update({
@@ -76,6 +258,31 @@ const FinanzasRoute = FinanzasRouteImport.update({
   path: '/finanzas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FireworkRoute = FireworkRouteImport.update({
+  id: '/firework',
+  path: '/firework',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FluidTypeRoute = FluidTypeRouteImport.update({
+  id: '/fluid-type',
+  path: '/fluid-type',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamesRoute = GamesRouteImport.update({
+  id: '/games',
+  path: '/games',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GlowTrailRoute = GlowTrailRouteImport.update({
+  id: '/glow-trail',
+  path: '/glow-trail',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JourneysRoute = JourneysRouteImport.update({
+  id: '/journeys',
+  path: '/journeys',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KitsRoute = KitsRouteImport.update({
   id: '/kits',
   path: '/kits',
@@ -84,6 +291,31 @@ const KitsRoute = KitsRouteImport.update({
 const LegalRoute = LegalRouteImport.update({
   id: '/legal',
   path: '/legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModularPatternComposerRoute = ModularPatternComposerRouteImport.update({
+  id: '/modular-pattern-composer',
+  path: '/modular-pattern-composer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NBodyGravityRoute = NBodyGravityRouteImport.update({
+  id: '/n-body-gravity',
+  path: '/n-body-gravity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NeonLayerComposerRoute = NeonLayerComposerRouteImport.update({
+  id: '/neon-layer-composer',
+  path: '/neon-layer-composer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NeonSignRoute = NeonSignRouteImport.update({
+  id: '/neon-sign',
+  path: '/neon-sign',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PostcardRoute = PostcardRouteImport.update({
+  id: '/postcard',
+  path: '/postcard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacidadRoute = PrivacidadRouteImport.update({
@@ -96,14 +328,55 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PulseCatchRoute = PulseCatchRouteImport.update({
+  id: '/pulse-catch',
+  path: '/pulse-catch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReturnStreakBoardRoute = ReturnStreakBoardRouteImport.update({
+  id: '/return-streak-board',
+  path: '/return-streak-board',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RiverLightRoute = RiverLightRouteImport.update({
+  id: '/river-light',
+  path: '/river-light',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SimulatorsRoute = SimulatorsRouteImport.update({
+  id: '/simulators',
+  path: '/simulators',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolarSystemScaleExplorerRoute =
+  SolarSystemScaleExplorerRouteImport.update({
+    id: '/solar-system-scale-explorer',
+    path: '/solar-system-scale-explorer',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VisualSignatureRoute = VisualSignatureRouteImport.update({
+  id: '/visual-signature',
+  path: '/visual-signature',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminReviewsRoute = AdminReviewsRouteImport.update({
+  id: '/admin/reviews',
+  path: '/admin/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategoriaSlugRoute = CategoriaSlugRouteImport.update({
@@ -131,15 +404,184 @@ const EsIndexRoute = EsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => EsRoute,
 } as any)
+const EsAcercaRoute = EsAcercaRouteImport.update({
+  id: '/acerca',
+  path: '/acerca',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsAuraCardRoute = EsAuraCardRouteImport.update({
+  id: '/aura-card',
+  path: '/aura-card',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsAuroraRoute = EsAuroraRouteImport.update({
+  id: '/aurora',
+  path: '/aurora',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsAuroraParticlePlaygroundRoute =
+  EsAuroraParticlePlaygroundRouteImport.update({
+    id: '/aurora-particle-playground',
+    path: '/aurora-particle-playground',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsAuroraRibbonWeaverRoute = EsAuroraRibbonWeaverRouteImport.update({
+  id: '/aurora-ribbon-weaver',
+  path: '/aurora-ribbon-weaver',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsAvisoLegalRoute = EsAvisoLegalRouteImport.update({
+  id: '/aviso-legal',
+  path: '/aviso-legal',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsColorCascadeFusionRoute = EsColorCascadeFusionRouteImport.update({
+  id: '/color-cascade-fusion',
+  path: '/color-cascade-fusion',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsConstellationRoute = EsConstellationRouteImport.update({
+  id: '/constellation',
+  path: '/constellation',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsContactoRoute = EsContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsCookiesRoute = EsCookiesRouteImport.update({
+  id: '/cookies',
+  path: '/cookies',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsDailyProgressConstellationRoute =
+  EsDailyProgressConstellationRouteImport.update({
+    id: '/daily-progress-constellation',
+    path: '/daily-progress-constellation',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsEchoWaveRoute = EsEchoWaveRouteImport.update({
+  id: '/echo-wave',
+  path: '/echo-wave',
+  getParentRoute: () => EsRoute,
+} as any)
 const EsFinanzasRoute = EsFinanzasRouteImport.update({
   id: '/finanzas',
   path: '/finanzas',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsFireworkRoute = EsFireworkRouteImport.update({
+  id: '/firework',
+  path: '/firework',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsFirmaVisualRoute = EsFirmaVisualRouteImport.update({
+  id: '/firma-visual',
+  path: '/firma-visual',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsFluidTypeRoute = EsFluidTypeRouteImport.update({
+  id: '/fluid-type',
+  path: '/fluid-type',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsGlowTrailRoute = EsGlowTrailRouteImport.update({
+  id: '/glow-trail',
+  path: '/glow-trail',
   getParentRoute: () => EsRoute,
 } as any)
 const EsHerramientasRoute = EsHerramientasRouteImport.update({
   id: '/herramientas',
   path: '/herramientas',
   getParentRoute: () => EsRoute,
+} as any)
+const EsJuegosRoute = EsJuegosRouteImport.update({
+  id: '/juegos',
+  path: '/juegos',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsKitsRoute = EsKitsRouteImport.update({
+  id: '/kits',
+  path: '/kits',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsModularPatternComposerRoute =
+  EsModularPatternComposerRouteImport.update({
+    id: '/modular-pattern-composer',
+    path: '/modular-pattern-composer',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsNBodyGravityRoute = EsNBodyGravityRouteImport.update({
+  id: '/n-body-gravity',
+  path: '/n-body-gravity',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsNeonLayerComposerRoute = EsNeonLayerComposerRouteImport.update({
+  id: '/neon-layer-composer',
+  path: '/neon-layer-composer',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsNeonSignRoute = EsNeonSignRouteImport.update({
+  id: '/neon-sign',
+  path: '/neon-sign',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsPostcardRoute = EsPostcardRouteImport.update({
+  id: '/postcard',
+  path: '/postcard',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsPrivacidadRoute = EsPrivacidadRouteImport.update({
+  id: '/privacidad',
+  path: '/privacidad',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsPulseCatchRoute = EsPulseCatchRouteImport.update({
+  id: '/pulse-catch',
+  path: '/pulse-catch',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsReturnStreakBoardRoute = EsReturnStreakBoardRouteImport.update({
+  id: '/return-streak-board',
+  path: '/return-streak-board',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsRioLuzRoute = EsRioLuzRouteImport.update({
+  id: '/rio-luz',
+  path: '/rio-luz',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsSimuladoresRoute = EsSimuladoresRouteImport.update({
+  id: '/simuladores',
+  path: '/simuladores',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsSolarSystemScaleExplorerRoute =
+  EsSolarSystemScaleExplorerRouteImport.update({
+    id: '/solar-system-scale-explorer',
+    path: '/solar-system-scale-explorer',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsTerminosRoute = EsTerminosRouteImport.update({
+  id: '/terminos',
+  path: '/terminos',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsViajesRoute = EsViajesRouteImport.update({
+  id: '/viajes',
+  path: '/viajes',
+  getParentRoute: () => EsRoute,
+} as any)
+const ExperiencesIndexRoute = ExperiencesIndexRouteImport.update({
+  id: '/experiences/',
+  path: '/experiences/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinanceIndexRoute = FinanceIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => FinanceRoute,
 } as any)
 const FinanceSlugRoute = FinanceSlugRouteImport.update({
   id: '/$slug',
@@ -150,6 +592,48 @@ const FinanzasSlugRoute = FinanzasSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => FinanzasRoute,
+} as any)
+const GamesIndexRoute = GamesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GamesRoute,
+} as any)
+const GamesSlugRoute = GamesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => GamesRoute,
+} as any)
+const GuidesCanvasWebglPerformanceRoute =
+  GuidesCanvasWebglPerformanceRouteImport.update({
+    id: '/guides/canvas-webgl-performance',
+    path: '/guides/canvas-webgl-performance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const GuidesCompoundInterestRoute = GuidesCompoundInterestRouteImport.update({
+  id: '/guides/compound-interest',
+  path: '/guides/compound-interest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesModularPatternComposerRoute =
+  GuidesModularPatternComposerRouteImport.update({
+    id: '/guides/modular-pattern-composer',
+    path: '/guides/modular-pattern-composer',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const GuidesNBodyGravityRoute = GuidesNBodyGravityRouteImport.update({
+  id: '/guides/n-body-gravity',
+  path: '/guides/n-body-gravity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesOrbitPulseCatcherRoute = GuidesOrbitPulseCatcherRouteImport.update({
+  id: '/guides/orbit-pulse-catcher',
+  path: '/guides/orbit-pulse-catcher',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesParticlePhysicsRoute = GuidesParticlePhysicsRouteImport.update({
+  id: '/guides/particle-physics',
+  path: '/guides/particle-physics',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const HerramientasIndexRoute = HerramientasIndexRouteImport.update({
   id: '/herramientas/',
@@ -171,11 +655,135 @@ const HubsDocumentsAndFilesRoute = HubsDocumentsAndFilesRouteImport.update({
   path: '/hubs/documents-and-files',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JourneysCelebrationRoute = JourneysCelebrationRouteImport.update({
+  id: '/celebration',
+  path: '/celebration',
+  getParentRoute: () => JourneysRoute,
+} as any)
+const JourneysColorHarmonyRoute = JourneysColorHarmonyRouteImport.update({
+  id: '/color-harmony',
+  path: '/color-harmony',
+  getParentRoute: () => JourneysRoute,
+} as any)
+const JourneysWaypointRiverComposerRoute =
+  JourneysWaypointRiverComposerRouteImport.update({
+    id: '/waypoint-river-composer',
+    path: '/waypoint-river-composer',
+    getParentRoute: () => JourneysRoute,
+  } as any)
 const KitsSlugRoute = KitsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => KitsRoute,
 } as any)
+const PlaygroundsIndexRoute = PlaygroundsIndexRouteImport.update({
+  id: '/playgrounds/',
+  path: '/playgrounds/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaygroundsConstellationRoute =
+  PlaygroundsConstellationRouteImport.update({
+    id: '/playgrounds/constellation',
+    path: '/playgrounds/constellation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlaygroundsDebtSnowballRoute = PlaygroundsDebtSnowballRouteImport.update({
+  id: '/playgrounds/debt-snowball',
+  path: '/playgrounds/debt-snowball',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaygroundsFloorPlanRoute = PlaygroundsFloorPlanRouteImport.update({
+  id: '/playgrounds/floor-plan',
+  path: '/playgrounds/floor-plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaygroundsGravityParticlesRoute =
+  PlaygroundsGravityParticlesRouteImport.update({
+    id: '/playgrounds/gravity-particles',
+    path: '/playgrounds/gravity-particles',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlaygroundsGravityRibbonCanvasRoute =
+  PlaygroundsGravityRibbonCanvasRouteImport.update({
+    id: '/playgrounds/gravity-ribbon-canvas',
+    path: '/playgrounds/gravity-ribbon-canvas',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlaygroundsKaleidoscopeMandalaRoute =
+  PlaygroundsKaleidoscopeMandalaRouteImport.update({
+    id: '/playgrounds/kaleidoscope-mandala',
+    path: '/playgrounds/kaleidoscope-mandala',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlaygroundsParticleMagnetsRoute =
+  PlaygroundsParticleMagnetsRouteImport.update({
+    id: '/playgrounds/particle-magnets',
+    path: '/playgrounds/particle-magnets',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlaygroundsParticleSignatureRoute =
+  PlaygroundsParticleSignatureRouteImport.update({
+    id: '/playgrounds/particle-signature',
+    path: '/playgrounds/particle-signature',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PlaygroundsParticlesRoute = PlaygroundsParticlesRouteImport.update({
+  id: '/playgrounds/particles',
+  path: '/playgrounds/particles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaygroundsSeatingChartRoute = PlaygroundsSeatingChartRouteImport.update({
+  id: '/playgrounds/seating-chart',
+  path: '/playgrounds/seating-chart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PtIndexRoute = PtIndexRouteImport.update({
+  id: '/pt/',
+  path: '/pt/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PtOrbitDefenderArcadeRoute = PtOrbitDefenderArcadeRouteImport.update({
+  id: '/pt/orbit-defender-arcade',
+  path: '/pt/orbit-defender-arcade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PtPongRoute = PtPongRouteImport.update({
+  id: '/pt/pong',
+  path: '/pt/pong',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PtPulseCatchRoute = PtPulseCatchRouteImport.update({
+  id: '/pt/pulse-catch',
+  path: '/pt/pulse-catch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PtSnakeRoute = PtSnakeRouteImport.update({
+  id: '/pt/snake',
+  path: '/pt/snake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulatorsIndexRoute = SimulatorsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SimulatorsRoute,
+} as any)
+const SimulatorsSlugRoute = SimulatorsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => SimulatorsRoute,
+} as any)
+const StudioNeonSignatureComposerRoute =
+  StudioNeonSignatureComposerRouteImport.update({
+    id: '/studio/neon-signature-composer',
+    path: '/studio/neon-signature-composer',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const StudioPrismTrailComposerRoute =
+  StudioPrismTrailComposerRouteImport.update({
+    id: '/studio/prism-trail-composer',
+    path: '/studio/prism-trail-composer',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ToolsIndexRoute = ToolsIndexRouteImport.update({
   id: '/tools/',
   path: '/tools/',
@@ -186,240 +794,1268 @@ const ToolsSlugRoute = ToolsSlugRouteImport.update({
   path: '/tools/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UxDensityLabRoute = UxDensityLabRouteImport.update({
+  id: '/ux/density-lab',
+  path: '/ux/density-lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UxFocusLaneRoute = UxFocusLaneRouteImport.update({
+  id: '/ux/focus-lane',
+  path: '/ux/focus-lane',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsCategoriaSlugRoute = EsCategoriaSlugRouteImport.update({
+  id: '/categoria/$slug',
+  path: '/categoria/$slug',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsEducacionSubjectRoute = EsEducacionSubjectRouteImport.update({
+  id: '/educacion/$subject',
+  path: '/educacion/$subject',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsExperiencesIndexRoute = EsExperiencesIndexRouteImport.update({
+  id: '/experiences/',
+  path: '/experiences/',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsFinanzasIndexRoute = EsFinanzasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EsFinanzasRoute,
+} as any)
 const EsFinanzasSlugRoute = EsFinanzasSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => EsFinanzasRoute,
+} as any)
+const EsGuiasFisicaParticulasRoute = EsGuiasFisicaParticulasRouteImport.update({
+  id: '/guias/fisica-particulas',
+  path: '/guias/fisica-particulas',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsGuiasInteresCompuestoRoute = EsGuiasInteresCompuestoRouteImport.update({
+  id: '/guias/interes-compuesto',
+  path: '/guias/interes-compuesto',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsGuiasModularPatternComposerRoute =
+  EsGuiasModularPatternComposerRouteImport.update({
+    id: '/guias/modular-pattern-composer',
+    path: '/guias/modular-pattern-composer',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsGuiasNBodyGravityRoute = EsGuiasNBodyGravityRouteImport.update({
+  id: '/guias/n-body-gravity',
+  path: '/guias/n-body-gravity',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsGuiasOrbitPulseCatcherRoute =
+  EsGuiasOrbitPulseCatcherRouteImport.update({
+    id: '/guias/orbit-pulse-catcher',
+    path: '/guias/orbit-pulse-catcher',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsGuiasRendimientoCanvasWebglRoute =
+  EsGuiasRendimientoCanvasWebglRouteImport.update({
+    id: '/guias/rendimiento-canvas-webgl',
+    path: '/guias/rendimiento-canvas-webgl',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsGuidesCanvasWebglPerformanceRoute =
+  EsGuidesCanvasWebglPerformanceRouteImport.update({
+    id: '/guides/canvas-webgl-performance',
+    path: '/guides/canvas-webgl-performance',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsHerramientasIndexRoute = EsHerramientasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EsHerramientasRoute,
 } as any)
 const EsHerramientasSlugRoute = EsHerramientasSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => EsHerramientasRoute,
 } as any)
+const EsHubsDocumentosYArchivosRoute =
+  EsHubsDocumentosYArchivosRouteImport.update({
+    id: '/hubs/documentos-y-archivos',
+    path: '/hubs/documentos-y-archivos',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsJuegosIndexRoute = EsJuegosIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EsJuegosRoute,
+} as any)
+const EsJuegosSlugRoute = EsJuegosSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EsJuegosRoute,
+} as any)
+const EsKitsSlugRoute = EsKitsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EsKitsRoute,
+} as any)
+const EsPlaygroundsIndexRoute = EsPlaygroundsIndexRouteImport.update({
+  id: '/playgrounds/',
+  path: '/playgrounds/',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsPlaygroundsConstelacionRoute =
+  EsPlaygroundsConstelacionRouteImport.update({
+    id: '/playgrounds/constelacion',
+    path: '/playgrounds/constelacion',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsPlaygroundsDeudaBolaNieveRoute =
+  EsPlaygroundsDeudaBolaNieveRouteImport.update({
+    id: '/playgrounds/deuda-bola-nieve',
+    path: '/playgrounds/deuda-bola-nieve',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsPlaygroundsFirmaParticulasRoute =
+  EsPlaygroundsFirmaParticulasRouteImport.update({
+    id: '/playgrounds/firma-particulas',
+    path: '/playgrounds/firma-particulas',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsPlaygroundsImanesParticulasRoute =
+  EsPlaygroundsImanesParticulasRouteImport.update({
+    id: '/playgrounds/imanes-particulas',
+    path: '/playgrounds/imanes-particulas',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsPlaygroundsKaleidoscopioMandalaRoute =
+  EsPlaygroundsKaleidoscopioMandalaRouteImport.update({
+    id: '/playgrounds/kaleidoscopio-mandala',
+    path: '/playgrounds/kaleidoscopio-mandala',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsPlaygroundsLienzoCintasGravedadRoute =
+  EsPlaygroundsLienzoCintasGravedadRouteImport.update({
+    id: '/playgrounds/lienzo-cintas-gravedad',
+    path: '/playgrounds/lienzo-cintas-gravedad',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsPlaygroundsParticulasRoute = EsPlaygroundsParticulasRouteImport.update({
+  id: '/playgrounds/particulas',
+  path: '/playgrounds/particulas',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsPlaygroundsParticulasGravedadRoute =
+  EsPlaygroundsParticulasGravedadRouteImport.update({
+    id: '/playgrounds/particulas-gravedad',
+    path: '/playgrounds/particulas-gravedad',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsPlaygroundsPlanoAsientosRoute =
+  EsPlaygroundsPlanoAsientosRouteImport.update({
+    id: '/playgrounds/plano-asientos',
+    path: '/playgrounds/plano-asientos',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsPlaygroundsPlanoPlantaRoute =
+  EsPlaygroundsPlanoPlantaRouteImport.update({
+    id: '/playgrounds/plano-planta',
+    path: '/playgrounds/plano-planta',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsSimuladoresIndexRoute = EsSimuladoresIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EsSimuladoresRoute,
+} as any)
+const EsSimuladoresSlugRoute = EsSimuladoresSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EsSimuladoresRoute,
+} as any)
+const EsStudioCompositorEstelaPrismaRoute =
+  EsStudioCompositorEstelaPrismaRouteImport.update({
+    id: '/studio/compositor-estela-prisma',
+    path: '/studio/compositor-estela-prisma',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsStudioCompositorFirmaNeonRoute =
+  EsStudioCompositorFirmaNeonRouteImport.update({
+    id: '/studio/compositor-firma-neon',
+    path: '/studio/compositor-firma-neon',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsUxCarrilFocoRoute = EsUxCarrilFocoRouteImport.update({
+  id: '/ux/carril-foco',
+  path: '/ux/carril-foco',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsUxLaboratorioDensidadRoute = EsUxLaboratorioDensidadRouteImport.update({
+  id: '/ux/laboratorio-densidad',
+  path: '/ux/laboratorio-densidad',
+  getParentRoute: () => EsRoute,
+} as any)
+const EsViajesArmoniaColorRoute = EsViajesArmoniaColorRouteImport.update({
+  id: '/armonia-color',
+  path: '/armonia-color',
+  getParentRoute: () => EsViajesRoute,
+} as any)
+const EsViajesCelebracionRoute = EsViajesCelebracionRouteImport.update({
+  id: '/celebracion',
+  path: '/celebracion',
+  getParentRoute: () => EsViajesRoute,
+} as any)
+const EsViajesCompositorRioWaypointsRoute =
+  EsViajesCompositorRioWaypointsRouteImport.update({
+    id: '/compositor-rio-waypoints',
+    path: '/compositor-rio-waypoints',
+    getParentRoute: () => EsViajesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/aura-card': typeof AuraCardRoute
+  '/aurora': typeof AuroraRoute
+  '/aurora-particle-playground': typeof AuroraParticlePlaygroundRoute
+  '/aurora-ribbon-weaver': typeof AuroraRibbonWeaverRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/color-cascade-fusion': typeof ColorCascadeFusionRoute
+  '/constellation': typeof ConstellationRoute
   '/contact': typeof ContactRoute
   '/contacto': typeof ContactoRoute
+  '/cookies': typeof CookiesRoute
+  '/daily-progress-constellation': typeof DailyProgressConstellationRoute
+  '/echo-wave': typeof EchoWaveRoute
   '/es': typeof EsRouteWithChildren
   '/finance': typeof FinanceRouteWithChildren
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/firework': typeof FireworkRoute
+  '/fluid-type': typeof FluidTypeRoute
+  '/games': typeof GamesRouteWithChildren
+  '/glow-trail': typeof GlowTrailRoute
+  '/journeys': typeof JourneysRouteWithChildren
   '/kits': typeof KitsRouteWithChildren
   '/legal': typeof LegalRoute
+  '/modular-pattern-composer': typeof ModularPatternComposerRoute
+  '/n-body-gravity': typeof NBodyGravityRoute
+  '/neon-layer-composer': typeof NeonLayerComposerRoute
+  '/neon-sign': typeof NeonSignRoute
+  '/postcard': typeof PostcardRoute
   '/privacidad': typeof PrivacidadRoute
   '/privacy': typeof PrivacyRoute
+  '/pulse-catch': typeof PulseCatchRoute
+  '/return-streak-board': typeof ReturnStreakBoardRoute
+  '/river-light': typeof RiverLightRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/simulators': typeof SimulatorsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/solar-system-scale-explorer': typeof SolarSystemScaleExplorerRoute
+  '/terms': typeof TermsRoute
+  '/visual-signature': typeof VisualSignatureRoute
+  '/admin/reviews': typeof AdminReviewsRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/education/$subject': typeof EducationSubjectRoute
+  '/es/acerca': typeof EsAcercaRoute
+  '/es/aura-card': typeof EsAuraCardRoute
+  '/es/aurora': typeof EsAuroraRoute
+  '/es/aurora-particle-playground': typeof EsAuroraParticlePlaygroundRoute
+  '/es/aurora-ribbon-weaver': typeof EsAuroraRibbonWeaverRoute
+  '/es/aviso-legal': typeof EsAvisoLegalRoute
+  '/es/color-cascade-fusion': typeof EsColorCascadeFusionRoute
+  '/es/constellation': typeof EsConstellationRoute
+  '/es/contacto': typeof EsContactoRoute
+  '/es/cookies': typeof EsCookiesRoute
+  '/es/daily-progress-constellation': typeof EsDailyProgressConstellationRoute
+  '/es/echo-wave': typeof EsEchoWaveRoute
   '/es/finanzas': typeof EsFinanzasRouteWithChildren
+  '/es/firework': typeof EsFireworkRoute
+  '/es/firma-visual': typeof EsFirmaVisualRoute
+  '/es/fluid-type': typeof EsFluidTypeRoute
+  '/es/glow-trail': typeof EsGlowTrailRoute
   '/es/herramientas': typeof EsHerramientasRouteWithChildren
+  '/es/juegos': typeof EsJuegosRouteWithChildren
+  '/es/kits': typeof EsKitsRouteWithChildren
+  '/es/modular-pattern-composer': typeof EsModularPatternComposerRoute
+  '/es/n-body-gravity': typeof EsNBodyGravityRoute
+  '/es/neon-layer-composer': typeof EsNeonLayerComposerRoute
+  '/es/neon-sign': typeof EsNeonSignRoute
+  '/es/postcard': typeof EsPostcardRoute
+  '/es/privacidad': typeof EsPrivacidadRoute
+  '/es/pulse-catch': typeof EsPulseCatchRoute
+  '/es/return-streak-board': typeof EsReturnStreakBoardRoute
+  '/es/rio-luz': typeof EsRioLuzRoute
+  '/es/simuladores': typeof EsSimuladoresRouteWithChildren
+  '/es/solar-system-scale-explorer': typeof EsSolarSystemScaleExplorerRoute
+  '/es/terminos': typeof EsTerminosRoute
+  '/es/viajes': typeof EsViajesRouteWithChildren
   '/finance/$slug': typeof FinanceSlugRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
+  '/games/$slug': typeof GamesSlugRoute
+  '/guides/canvas-webgl-performance': typeof GuidesCanvasWebglPerformanceRoute
+  '/guides/compound-interest': typeof GuidesCompoundInterestRoute
+  '/guides/modular-pattern-composer': typeof GuidesModularPatternComposerRoute
+  '/guides/n-body-gravity': typeof GuidesNBodyGravityRoute
+  '/guides/orbit-pulse-catcher': typeof GuidesOrbitPulseCatcherRoute
+  '/guides/particle-physics': typeof GuidesParticlePhysicsRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
   '/hubs/documentos-y-archivos': typeof HubsDocumentosYArchivosRoute
   '/hubs/documents-and-files': typeof HubsDocumentsAndFilesRoute
+  '/journeys/celebration': typeof JourneysCelebrationRoute
+  '/journeys/color-harmony': typeof JourneysColorHarmonyRoute
+  '/journeys/waypoint-river-composer': typeof JourneysWaypointRiverComposerRoute
   '/kits/$slug': typeof KitsSlugRoute
+  '/playgrounds/constellation': typeof PlaygroundsConstellationRoute
+  '/playgrounds/debt-snowball': typeof PlaygroundsDebtSnowballRoute
+  '/playgrounds/floor-plan': typeof PlaygroundsFloorPlanRoute
+  '/playgrounds/gravity-particles': typeof PlaygroundsGravityParticlesRoute
+  '/playgrounds/gravity-ribbon-canvas': typeof PlaygroundsGravityRibbonCanvasRoute
+  '/playgrounds/kaleidoscope-mandala': typeof PlaygroundsKaleidoscopeMandalaRoute
+  '/playgrounds/particle-magnets': typeof PlaygroundsParticleMagnetsRoute
+  '/playgrounds/particle-signature': typeof PlaygroundsParticleSignatureRoute
+  '/playgrounds/particles': typeof PlaygroundsParticlesRoute
+  '/playgrounds/seating-chart': typeof PlaygroundsSeatingChartRoute
+  '/pt/orbit-defender-arcade': typeof PtOrbitDefenderArcadeRoute
+  '/pt/pong': typeof PtPongRoute
+  '/pt/pulse-catch': typeof PtPulseCatchRoute
+  '/pt/snake': typeof PtSnakeRoute
+  '/simulators/$slug': typeof SimulatorsSlugRoute
+  '/studio/neon-signature-composer': typeof StudioNeonSignatureComposerRoute
+  '/studio/prism-trail-composer': typeof StudioPrismTrailComposerRoute
   '/tools/$slug': typeof ToolsSlugRoute
+  '/ux/density-lab': typeof UxDensityLabRoute
+  '/ux/focus-lane': typeof UxFocusLaneRoute
   '/es/': typeof EsIndexRoute
+  '/experiences/': typeof ExperiencesIndexRoute
+  '/finance/': typeof FinanceIndexRoute
+  '/games/': typeof GamesIndexRoute
   '/herramientas/': typeof HerramientasIndexRoute
+  '/playgrounds/': typeof PlaygroundsIndexRoute
+  '/pt/': typeof PtIndexRoute
+  '/simulators/': typeof SimulatorsIndexRoute
   '/tools/': typeof ToolsIndexRoute
+  '/es/categoria/$slug': typeof EsCategoriaSlugRoute
+  '/es/educacion/$subject': typeof EsEducacionSubjectRoute
   '/es/finanzas/$slug': typeof EsFinanzasSlugRoute
+  '/es/guias/fisica-particulas': typeof EsGuiasFisicaParticulasRoute
+  '/es/guias/interes-compuesto': typeof EsGuiasInteresCompuestoRoute
+  '/es/guias/modular-pattern-composer': typeof EsGuiasModularPatternComposerRoute
+  '/es/guias/n-body-gravity': typeof EsGuiasNBodyGravityRoute
+  '/es/guias/orbit-pulse-catcher': typeof EsGuiasOrbitPulseCatcherRoute
+  '/es/guias/rendimiento-canvas-webgl': typeof EsGuiasRendimientoCanvasWebglRoute
+  '/es/guides/canvas-webgl-performance': typeof EsGuidesCanvasWebglPerformanceRoute
   '/es/herramientas/$slug': typeof EsHerramientasSlugRoute
+  '/es/hubs/documentos-y-archivos': typeof EsHubsDocumentosYArchivosRoute
+  '/es/juegos/$slug': typeof EsJuegosSlugRoute
+  '/es/kits/$slug': typeof EsKitsSlugRoute
+  '/es/playgrounds/constelacion': typeof EsPlaygroundsConstelacionRoute
+  '/es/playgrounds/deuda-bola-nieve': typeof EsPlaygroundsDeudaBolaNieveRoute
+  '/es/playgrounds/firma-particulas': typeof EsPlaygroundsFirmaParticulasRoute
+  '/es/playgrounds/imanes-particulas': typeof EsPlaygroundsImanesParticulasRoute
+  '/es/playgrounds/kaleidoscopio-mandala': typeof EsPlaygroundsKaleidoscopioMandalaRoute
+  '/es/playgrounds/lienzo-cintas-gravedad': typeof EsPlaygroundsLienzoCintasGravedadRoute
+  '/es/playgrounds/particulas': typeof EsPlaygroundsParticulasRoute
+  '/es/playgrounds/particulas-gravedad': typeof EsPlaygroundsParticulasGravedadRoute
+  '/es/playgrounds/plano-asientos': typeof EsPlaygroundsPlanoAsientosRoute
+  '/es/playgrounds/plano-planta': typeof EsPlaygroundsPlanoPlantaRoute
+  '/es/simuladores/$slug': typeof EsSimuladoresSlugRoute
+  '/es/studio/compositor-estela-prisma': typeof EsStudioCompositorEstelaPrismaRoute
+  '/es/studio/compositor-firma-neon': typeof EsStudioCompositorFirmaNeonRoute
+  '/es/ux/carril-foco': typeof EsUxCarrilFocoRoute
+  '/es/ux/laboratorio-densidad': typeof EsUxLaboratorioDensidadRoute
+  '/es/viajes/armonia-color': typeof EsViajesArmoniaColorRoute
+  '/es/viajes/celebracion': typeof EsViajesCelebracionRoute
+  '/es/viajes/compositor-rio-waypoints': typeof EsViajesCompositorRioWaypointsRoute
+  '/es/experiences/': typeof EsExperiencesIndexRoute
+  '/es/finanzas/': typeof EsFinanzasIndexRoute
+  '/es/herramientas/': typeof EsHerramientasIndexRoute
+  '/es/juegos/': typeof EsJuegosIndexRoute
+  '/es/playgrounds/': typeof EsPlaygroundsIndexRoute
+  '/es/simuladores/': typeof EsSimuladoresIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/aura-card': typeof AuraCardRoute
+  '/aurora': typeof AuroraRoute
+  '/aurora-particle-playground': typeof AuroraParticlePlaygroundRoute
+  '/aurora-ribbon-weaver': typeof AuroraRibbonWeaverRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/color-cascade-fusion': typeof ColorCascadeFusionRoute
+  '/constellation': typeof ConstellationRoute
   '/contact': typeof ContactRoute
   '/contacto': typeof ContactoRoute
-  '/finance': typeof FinanceRouteWithChildren
+  '/cookies': typeof CookiesRoute
+  '/daily-progress-constellation': typeof DailyProgressConstellationRoute
+  '/echo-wave': typeof EchoWaveRoute
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/firework': typeof FireworkRoute
+  '/fluid-type': typeof FluidTypeRoute
+  '/glow-trail': typeof GlowTrailRoute
+  '/journeys': typeof JourneysRouteWithChildren
   '/kits': typeof KitsRouteWithChildren
   '/legal': typeof LegalRoute
+  '/modular-pattern-composer': typeof ModularPatternComposerRoute
+  '/n-body-gravity': typeof NBodyGravityRoute
+  '/neon-layer-composer': typeof NeonLayerComposerRoute
+  '/neon-sign': typeof NeonSignRoute
+  '/postcard': typeof PostcardRoute
   '/privacidad': typeof PrivacidadRoute
   '/privacy': typeof PrivacyRoute
+  '/pulse-catch': typeof PulseCatchRoute
+  '/return-streak-board': typeof ReturnStreakBoardRoute
+  '/river-light': typeof RiverLightRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/solar-system-scale-explorer': typeof SolarSystemScaleExplorerRoute
+  '/terms': typeof TermsRoute
+  '/visual-signature': typeof VisualSignatureRoute
+  '/admin/reviews': typeof AdminReviewsRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/education/$subject': typeof EducationSubjectRoute
-  '/es/finanzas': typeof EsFinanzasRouteWithChildren
-  '/es/herramientas': typeof EsHerramientasRouteWithChildren
+  '/es/acerca': typeof EsAcercaRoute
+  '/es/aura-card': typeof EsAuraCardRoute
+  '/es/aurora': typeof EsAuroraRoute
+  '/es/aurora-particle-playground': typeof EsAuroraParticlePlaygroundRoute
+  '/es/aurora-ribbon-weaver': typeof EsAuroraRibbonWeaverRoute
+  '/es/aviso-legal': typeof EsAvisoLegalRoute
+  '/es/color-cascade-fusion': typeof EsColorCascadeFusionRoute
+  '/es/constellation': typeof EsConstellationRoute
+  '/es/contacto': typeof EsContactoRoute
+  '/es/cookies': typeof EsCookiesRoute
+  '/es/daily-progress-constellation': typeof EsDailyProgressConstellationRoute
+  '/es/echo-wave': typeof EsEchoWaveRoute
+  '/es/firework': typeof EsFireworkRoute
+  '/es/firma-visual': typeof EsFirmaVisualRoute
+  '/es/fluid-type': typeof EsFluidTypeRoute
+  '/es/glow-trail': typeof EsGlowTrailRoute
+  '/es/kits': typeof EsKitsRouteWithChildren
+  '/es/modular-pattern-composer': typeof EsModularPatternComposerRoute
+  '/es/n-body-gravity': typeof EsNBodyGravityRoute
+  '/es/neon-layer-composer': typeof EsNeonLayerComposerRoute
+  '/es/neon-sign': typeof EsNeonSignRoute
+  '/es/postcard': typeof EsPostcardRoute
+  '/es/privacidad': typeof EsPrivacidadRoute
+  '/es/pulse-catch': typeof EsPulseCatchRoute
+  '/es/return-streak-board': typeof EsReturnStreakBoardRoute
+  '/es/rio-luz': typeof EsRioLuzRoute
+  '/es/solar-system-scale-explorer': typeof EsSolarSystemScaleExplorerRoute
+  '/es/terminos': typeof EsTerminosRoute
+  '/es/viajes': typeof EsViajesRouteWithChildren
   '/finance/$slug': typeof FinanceSlugRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
+  '/games/$slug': typeof GamesSlugRoute
+  '/guides/canvas-webgl-performance': typeof GuidesCanvasWebglPerformanceRoute
+  '/guides/compound-interest': typeof GuidesCompoundInterestRoute
+  '/guides/modular-pattern-composer': typeof GuidesModularPatternComposerRoute
+  '/guides/n-body-gravity': typeof GuidesNBodyGravityRoute
+  '/guides/orbit-pulse-catcher': typeof GuidesOrbitPulseCatcherRoute
+  '/guides/particle-physics': typeof GuidesParticlePhysicsRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
   '/hubs/documentos-y-archivos': typeof HubsDocumentosYArchivosRoute
   '/hubs/documents-and-files': typeof HubsDocumentsAndFilesRoute
+  '/journeys/celebration': typeof JourneysCelebrationRoute
+  '/journeys/color-harmony': typeof JourneysColorHarmonyRoute
+  '/journeys/waypoint-river-composer': typeof JourneysWaypointRiverComposerRoute
   '/kits/$slug': typeof KitsSlugRoute
+  '/playgrounds/constellation': typeof PlaygroundsConstellationRoute
+  '/playgrounds/debt-snowball': typeof PlaygroundsDebtSnowballRoute
+  '/playgrounds/floor-plan': typeof PlaygroundsFloorPlanRoute
+  '/playgrounds/gravity-particles': typeof PlaygroundsGravityParticlesRoute
+  '/playgrounds/gravity-ribbon-canvas': typeof PlaygroundsGravityRibbonCanvasRoute
+  '/playgrounds/kaleidoscope-mandala': typeof PlaygroundsKaleidoscopeMandalaRoute
+  '/playgrounds/particle-magnets': typeof PlaygroundsParticleMagnetsRoute
+  '/playgrounds/particle-signature': typeof PlaygroundsParticleSignatureRoute
+  '/playgrounds/particles': typeof PlaygroundsParticlesRoute
+  '/playgrounds/seating-chart': typeof PlaygroundsSeatingChartRoute
+  '/pt/orbit-defender-arcade': typeof PtOrbitDefenderArcadeRoute
+  '/pt/pong': typeof PtPongRoute
+  '/pt/pulse-catch': typeof PtPulseCatchRoute
+  '/pt/snake': typeof PtSnakeRoute
+  '/simulators/$slug': typeof SimulatorsSlugRoute
+  '/studio/neon-signature-composer': typeof StudioNeonSignatureComposerRoute
+  '/studio/prism-trail-composer': typeof StudioPrismTrailComposerRoute
   '/tools/$slug': typeof ToolsSlugRoute
+  '/ux/density-lab': typeof UxDensityLabRoute
+  '/ux/focus-lane': typeof UxFocusLaneRoute
   '/es': typeof EsIndexRoute
+  '/experiences': typeof ExperiencesIndexRoute
+  '/finance': typeof FinanceIndexRoute
+  '/games': typeof GamesIndexRoute
   '/herramientas': typeof HerramientasIndexRoute
+  '/playgrounds': typeof PlaygroundsIndexRoute
+  '/pt': typeof PtIndexRoute
+  '/simulators': typeof SimulatorsIndexRoute
   '/tools': typeof ToolsIndexRoute
+  '/es/categoria/$slug': typeof EsCategoriaSlugRoute
+  '/es/educacion/$subject': typeof EsEducacionSubjectRoute
   '/es/finanzas/$slug': typeof EsFinanzasSlugRoute
+  '/es/guias/fisica-particulas': typeof EsGuiasFisicaParticulasRoute
+  '/es/guias/interes-compuesto': typeof EsGuiasInteresCompuestoRoute
+  '/es/guias/modular-pattern-composer': typeof EsGuiasModularPatternComposerRoute
+  '/es/guias/n-body-gravity': typeof EsGuiasNBodyGravityRoute
+  '/es/guias/orbit-pulse-catcher': typeof EsGuiasOrbitPulseCatcherRoute
+  '/es/guias/rendimiento-canvas-webgl': typeof EsGuiasRendimientoCanvasWebglRoute
+  '/es/guides/canvas-webgl-performance': typeof EsGuidesCanvasWebglPerformanceRoute
   '/es/herramientas/$slug': typeof EsHerramientasSlugRoute
+  '/es/hubs/documentos-y-archivos': typeof EsHubsDocumentosYArchivosRoute
+  '/es/juegos/$slug': typeof EsJuegosSlugRoute
+  '/es/kits/$slug': typeof EsKitsSlugRoute
+  '/es/playgrounds/constelacion': typeof EsPlaygroundsConstelacionRoute
+  '/es/playgrounds/deuda-bola-nieve': typeof EsPlaygroundsDeudaBolaNieveRoute
+  '/es/playgrounds/firma-particulas': typeof EsPlaygroundsFirmaParticulasRoute
+  '/es/playgrounds/imanes-particulas': typeof EsPlaygroundsImanesParticulasRoute
+  '/es/playgrounds/kaleidoscopio-mandala': typeof EsPlaygroundsKaleidoscopioMandalaRoute
+  '/es/playgrounds/lienzo-cintas-gravedad': typeof EsPlaygroundsLienzoCintasGravedadRoute
+  '/es/playgrounds/particulas': typeof EsPlaygroundsParticulasRoute
+  '/es/playgrounds/particulas-gravedad': typeof EsPlaygroundsParticulasGravedadRoute
+  '/es/playgrounds/plano-asientos': typeof EsPlaygroundsPlanoAsientosRoute
+  '/es/playgrounds/plano-planta': typeof EsPlaygroundsPlanoPlantaRoute
+  '/es/simuladores/$slug': typeof EsSimuladoresSlugRoute
+  '/es/studio/compositor-estela-prisma': typeof EsStudioCompositorEstelaPrismaRoute
+  '/es/studio/compositor-firma-neon': typeof EsStudioCompositorFirmaNeonRoute
+  '/es/ux/carril-foco': typeof EsUxCarrilFocoRoute
+  '/es/ux/laboratorio-densidad': typeof EsUxLaboratorioDensidadRoute
+  '/es/viajes/armonia-color': typeof EsViajesArmoniaColorRoute
+  '/es/viajes/celebracion': typeof EsViajesCelebracionRoute
+  '/es/viajes/compositor-rio-waypoints': typeof EsViajesCompositorRioWaypointsRoute
+  '/es/experiences': typeof EsExperiencesIndexRoute
+  '/es/finanzas': typeof EsFinanzasIndexRoute
+  '/es/herramientas': typeof EsHerramientasIndexRoute
+  '/es/juegos': typeof EsJuegosIndexRoute
+  '/es/playgrounds': typeof EsPlaygroundsIndexRoute
+  '/es/simuladores': typeof EsSimuladoresIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/aura-card': typeof AuraCardRoute
+  '/aurora': typeof AuroraRoute
+  '/aurora-particle-playground': typeof AuroraParticlePlaygroundRoute
+  '/aurora-ribbon-weaver': typeof AuroraRibbonWeaverRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/color-cascade-fusion': typeof ColorCascadeFusionRoute
+  '/constellation': typeof ConstellationRoute
   '/contact': typeof ContactRoute
   '/contacto': typeof ContactoRoute
+  '/cookies': typeof CookiesRoute
+  '/daily-progress-constellation': typeof DailyProgressConstellationRoute
+  '/echo-wave': typeof EchoWaveRoute
   '/es': typeof EsRouteWithChildren
   '/finance': typeof FinanceRouteWithChildren
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/firework': typeof FireworkRoute
+  '/fluid-type': typeof FluidTypeRoute
+  '/games': typeof GamesRouteWithChildren
+  '/glow-trail': typeof GlowTrailRoute
+  '/journeys': typeof JourneysRouteWithChildren
   '/kits': typeof KitsRouteWithChildren
   '/legal': typeof LegalRoute
+  '/modular-pattern-composer': typeof ModularPatternComposerRoute
+  '/n-body-gravity': typeof NBodyGravityRoute
+  '/neon-layer-composer': typeof NeonLayerComposerRoute
+  '/neon-sign': typeof NeonSignRoute
+  '/postcard': typeof PostcardRoute
   '/privacidad': typeof PrivacidadRoute
   '/privacy': typeof PrivacyRoute
+  '/pulse-catch': typeof PulseCatchRoute
+  '/return-streak-board': typeof ReturnStreakBoardRoute
+  '/river-light': typeof RiverLightRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/simulators': typeof SimulatorsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/solar-system-scale-explorer': typeof SolarSystemScaleExplorerRoute
+  '/terms': typeof TermsRoute
+  '/visual-signature': typeof VisualSignatureRoute
+  '/admin/reviews': typeof AdminReviewsRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/education/$subject': typeof EducationSubjectRoute
+  '/es/acerca': typeof EsAcercaRoute
+  '/es/aura-card': typeof EsAuraCardRoute
+  '/es/aurora': typeof EsAuroraRoute
+  '/es/aurora-particle-playground': typeof EsAuroraParticlePlaygroundRoute
+  '/es/aurora-ribbon-weaver': typeof EsAuroraRibbonWeaverRoute
+  '/es/aviso-legal': typeof EsAvisoLegalRoute
+  '/es/color-cascade-fusion': typeof EsColorCascadeFusionRoute
+  '/es/constellation': typeof EsConstellationRoute
+  '/es/contacto': typeof EsContactoRoute
+  '/es/cookies': typeof EsCookiesRoute
+  '/es/daily-progress-constellation': typeof EsDailyProgressConstellationRoute
+  '/es/echo-wave': typeof EsEchoWaveRoute
   '/es/finanzas': typeof EsFinanzasRouteWithChildren
+  '/es/firework': typeof EsFireworkRoute
+  '/es/firma-visual': typeof EsFirmaVisualRoute
+  '/es/fluid-type': typeof EsFluidTypeRoute
+  '/es/glow-trail': typeof EsGlowTrailRoute
   '/es/herramientas': typeof EsHerramientasRouteWithChildren
+  '/es/juegos': typeof EsJuegosRouteWithChildren
+  '/es/kits': typeof EsKitsRouteWithChildren
+  '/es/modular-pattern-composer': typeof EsModularPatternComposerRoute
+  '/es/n-body-gravity': typeof EsNBodyGravityRoute
+  '/es/neon-layer-composer': typeof EsNeonLayerComposerRoute
+  '/es/neon-sign': typeof EsNeonSignRoute
+  '/es/postcard': typeof EsPostcardRoute
+  '/es/privacidad': typeof EsPrivacidadRoute
+  '/es/pulse-catch': typeof EsPulseCatchRoute
+  '/es/return-streak-board': typeof EsReturnStreakBoardRoute
+  '/es/rio-luz': typeof EsRioLuzRoute
+  '/es/simuladores': typeof EsSimuladoresRouteWithChildren
+  '/es/solar-system-scale-explorer': typeof EsSolarSystemScaleExplorerRoute
+  '/es/terminos': typeof EsTerminosRoute
+  '/es/viajes': typeof EsViajesRouteWithChildren
   '/finance/$slug': typeof FinanceSlugRoute
   '/finanzas/$slug': typeof FinanzasSlugRoute
+  '/games/$slug': typeof GamesSlugRoute
+  '/guides/canvas-webgl-performance': typeof GuidesCanvasWebglPerformanceRoute
+  '/guides/compound-interest': typeof GuidesCompoundInterestRoute
+  '/guides/modular-pattern-composer': typeof GuidesModularPatternComposerRoute
+  '/guides/n-body-gravity': typeof GuidesNBodyGravityRoute
+  '/guides/orbit-pulse-catcher': typeof GuidesOrbitPulseCatcherRoute
+  '/guides/particle-physics': typeof GuidesParticlePhysicsRoute
   '/herramientas/$slug': typeof HerramientasSlugRoute
   '/hubs/documentos-y-archivos': typeof HubsDocumentosYArchivosRoute
   '/hubs/documents-and-files': typeof HubsDocumentsAndFilesRoute
+  '/journeys/celebration': typeof JourneysCelebrationRoute
+  '/journeys/color-harmony': typeof JourneysColorHarmonyRoute
+  '/journeys/waypoint-river-composer': typeof JourneysWaypointRiverComposerRoute
   '/kits/$slug': typeof KitsSlugRoute
+  '/playgrounds/constellation': typeof PlaygroundsConstellationRoute
+  '/playgrounds/debt-snowball': typeof PlaygroundsDebtSnowballRoute
+  '/playgrounds/floor-plan': typeof PlaygroundsFloorPlanRoute
+  '/playgrounds/gravity-particles': typeof PlaygroundsGravityParticlesRoute
+  '/playgrounds/gravity-ribbon-canvas': typeof PlaygroundsGravityRibbonCanvasRoute
+  '/playgrounds/kaleidoscope-mandala': typeof PlaygroundsKaleidoscopeMandalaRoute
+  '/playgrounds/particle-magnets': typeof PlaygroundsParticleMagnetsRoute
+  '/playgrounds/particle-signature': typeof PlaygroundsParticleSignatureRoute
+  '/playgrounds/particles': typeof PlaygroundsParticlesRoute
+  '/playgrounds/seating-chart': typeof PlaygroundsSeatingChartRoute
+  '/pt/orbit-defender-arcade': typeof PtOrbitDefenderArcadeRoute
+  '/pt/pong': typeof PtPongRoute
+  '/pt/pulse-catch': typeof PtPulseCatchRoute
+  '/pt/snake': typeof PtSnakeRoute
+  '/simulators/$slug': typeof SimulatorsSlugRoute
+  '/studio/neon-signature-composer': typeof StudioNeonSignatureComposerRoute
+  '/studio/prism-trail-composer': typeof StudioPrismTrailComposerRoute
   '/tools/$slug': typeof ToolsSlugRoute
+  '/ux/density-lab': typeof UxDensityLabRoute
+  '/ux/focus-lane': typeof UxFocusLaneRoute
   '/es/': typeof EsIndexRoute
+  '/experiences/': typeof ExperiencesIndexRoute
+  '/finance/': typeof FinanceIndexRoute
+  '/games/': typeof GamesIndexRoute
   '/herramientas/': typeof HerramientasIndexRoute
+  '/playgrounds/': typeof PlaygroundsIndexRoute
+  '/pt/': typeof PtIndexRoute
+  '/simulators/': typeof SimulatorsIndexRoute
   '/tools/': typeof ToolsIndexRoute
+  '/es/categoria/$slug': typeof EsCategoriaSlugRoute
+  '/es/educacion/$subject': typeof EsEducacionSubjectRoute
   '/es/finanzas/$slug': typeof EsFinanzasSlugRoute
+  '/es/guias/fisica-particulas': typeof EsGuiasFisicaParticulasRoute
+  '/es/guias/interes-compuesto': typeof EsGuiasInteresCompuestoRoute
+  '/es/guias/modular-pattern-composer': typeof EsGuiasModularPatternComposerRoute
+  '/es/guias/n-body-gravity': typeof EsGuiasNBodyGravityRoute
+  '/es/guias/orbit-pulse-catcher': typeof EsGuiasOrbitPulseCatcherRoute
+  '/es/guias/rendimiento-canvas-webgl': typeof EsGuiasRendimientoCanvasWebglRoute
+  '/es/guides/canvas-webgl-performance': typeof EsGuidesCanvasWebglPerformanceRoute
   '/es/herramientas/$slug': typeof EsHerramientasSlugRoute
+  '/es/hubs/documentos-y-archivos': typeof EsHubsDocumentosYArchivosRoute
+  '/es/juegos/$slug': typeof EsJuegosSlugRoute
+  '/es/kits/$slug': typeof EsKitsSlugRoute
+  '/es/playgrounds/constelacion': typeof EsPlaygroundsConstelacionRoute
+  '/es/playgrounds/deuda-bola-nieve': typeof EsPlaygroundsDeudaBolaNieveRoute
+  '/es/playgrounds/firma-particulas': typeof EsPlaygroundsFirmaParticulasRoute
+  '/es/playgrounds/imanes-particulas': typeof EsPlaygroundsImanesParticulasRoute
+  '/es/playgrounds/kaleidoscopio-mandala': typeof EsPlaygroundsKaleidoscopioMandalaRoute
+  '/es/playgrounds/lienzo-cintas-gravedad': typeof EsPlaygroundsLienzoCintasGravedadRoute
+  '/es/playgrounds/particulas': typeof EsPlaygroundsParticulasRoute
+  '/es/playgrounds/particulas-gravedad': typeof EsPlaygroundsParticulasGravedadRoute
+  '/es/playgrounds/plano-asientos': typeof EsPlaygroundsPlanoAsientosRoute
+  '/es/playgrounds/plano-planta': typeof EsPlaygroundsPlanoPlantaRoute
+  '/es/simuladores/$slug': typeof EsSimuladoresSlugRoute
+  '/es/studio/compositor-estela-prisma': typeof EsStudioCompositorEstelaPrismaRoute
+  '/es/studio/compositor-firma-neon': typeof EsStudioCompositorFirmaNeonRoute
+  '/es/ux/carril-foco': typeof EsUxCarrilFocoRoute
+  '/es/ux/laboratorio-densidad': typeof EsUxLaboratorioDensidadRoute
+  '/es/viajes/armonia-color': typeof EsViajesArmoniaColorRoute
+  '/es/viajes/celebracion': typeof EsViajesCelebracionRoute
+  '/es/viajes/compositor-rio-waypoints': typeof EsViajesCompositorRioWaypointsRoute
+  '/es/experiences/': typeof EsExperiencesIndexRoute
+  '/es/finanzas/': typeof EsFinanzasIndexRoute
+  '/es/herramientas/': typeof EsHerramientasIndexRoute
+  '/es/juegos/': typeof EsJuegosIndexRoute
+  '/es/playgrounds/': typeof EsPlaygroundsIndexRoute
+  '/es/simuladores/': typeof EsSimuladoresIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
+    | '/aura-card'
+    | '/aurora'
+    | '/aurora-particle-playground'
+    | '/aurora-ribbon-weaver'
     | '/aviso-legal'
+    | '/color-cascade-fusion'
+    | '/constellation'
     | '/contact'
     | '/contacto'
+    | '/cookies'
+    | '/daily-progress-constellation'
+    | '/echo-wave'
     | '/es'
     | '/finance'
     | '/finanzas'
+    | '/firework'
+    | '/fluid-type'
+    | '/games'
+    | '/glow-trail'
+    | '/journeys'
     | '/kits'
     | '/legal'
+    | '/modular-pattern-composer'
+    | '/n-body-gravity'
+    | '/neon-layer-composer'
+    | '/neon-sign'
+    | '/postcard'
     | '/privacidad'
     | '/privacy'
+    | '/pulse-catch'
+    | '/return-streak-board'
+    | '/river-light'
     | '/robots.txt'
+    | '/simulators'
     | '/sitemap.xml'
+    | '/solar-system-scale-explorer'
+    | '/terms'
+    | '/visual-signature'
+    | '/admin/reviews'
     | '/categoria/$slug'
     | '/category/$slug'
     | '/educacion/$subject'
     | '/education/$subject'
+    | '/es/acerca'
+    | '/es/aura-card'
+    | '/es/aurora'
+    | '/es/aurora-particle-playground'
+    | '/es/aurora-ribbon-weaver'
+    | '/es/aviso-legal'
+    | '/es/color-cascade-fusion'
+    | '/es/constellation'
+    | '/es/contacto'
+    | '/es/cookies'
+    | '/es/daily-progress-constellation'
+    | '/es/echo-wave'
     | '/es/finanzas'
+    | '/es/firework'
+    | '/es/firma-visual'
+    | '/es/fluid-type'
+    | '/es/glow-trail'
     | '/es/herramientas'
+    | '/es/juegos'
+    | '/es/kits'
+    | '/es/modular-pattern-composer'
+    | '/es/n-body-gravity'
+    | '/es/neon-layer-composer'
+    | '/es/neon-sign'
+    | '/es/postcard'
+    | '/es/privacidad'
+    | '/es/pulse-catch'
+    | '/es/return-streak-board'
+    | '/es/rio-luz'
+    | '/es/simuladores'
+    | '/es/solar-system-scale-explorer'
+    | '/es/terminos'
+    | '/es/viajes'
     | '/finance/$slug'
     | '/finanzas/$slug'
+    | '/games/$slug'
+    | '/guides/canvas-webgl-performance'
+    | '/guides/compound-interest'
+    | '/guides/modular-pattern-composer'
+    | '/guides/n-body-gravity'
+    | '/guides/orbit-pulse-catcher'
+    | '/guides/particle-physics'
     | '/herramientas/$slug'
     | '/hubs/documentos-y-archivos'
     | '/hubs/documents-and-files'
+    | '/journeys/celebration'
+    | '/journeys/color-harmony'
+    | '/journeys/waypoint-river-composer'
     | '/kits/$slug'
+    | '/playgrounds/constellation'
+    | '/playgrounds/debt-snowball'
+    | '/playgrounds/floor-plan'
+    | '/playgrounds/gravity-particles'
+    | '/playgrounds/gravity-ribbon-canvas'
+    | '/playgrounds/kaleidoscope-mandala'
+    | '/playgrounds/particle-magnets'
+    | '/playgrounds/particle-signature'
+    | '/playgrounds/particles'
+    | '/playgrounds/seating-chart'
+    | '/pt/orbit-defender-arcade'
+    | '/pt/pong'
+    | '/pt/pulse-catch'
+    | '/pt/snake'
+    | '/simulators/$slug'
+    | '/studio/neon-signature-composer'
+    | '/studio/prism-trail-composer'
     | '/tools/$slug'
+    | '/ux/density-lab'
+    | '/ux/focus-lane'
     | '/es/'
+    | '/experiences/'
+    | '/finance/'
+    | '/games/'
     | '/herramientas/'
+    | '/playgrounds/'
+    | '/pt/'
+    | '/simulators/'
     | '/tools/'
+    | '/es/categoria/$slug'
+    | '/es/educacion/$subject'
     | '/es/finanzas/$slug'
+    | '/es/guias/fisica-particulas'
+    | '/es/guias/interes-compuesto'
+    | '/es/guias/modular-pattern-composer'
+    | '/es/guias/n-body-gravity'
+    | '/es/guias/orbit-pulse-catcher'
+    | '/es/guias/rendimiento-canvas-webgl'
+    | '/es/guides/canvas-webgl-performance'
     | '/es/herramientas/$slug'
+    | '/es/hubs/documentos-y-archivos'
+    | '/es/juegos/$slug'
+    | '/es/kits/$slug'
+    | '/es/playgrounds/constelacion'
+    | '/es/playgrounds/deuda-bola-nieve'
+    | '/es/playgrounds/firma-particulas'
+    | '/es/playgrounds/imanes-particulas'
+    | '/es/playgrounds/kaleidoscopio-mandala'
+    | '/es/playgrounds/lienzo-cintas-gravedad'
+    | '/es/playgrounds/particulas'
+    | '/es/playgrounds/particulas-gravedad'
+    | '/es/playgrounds/plano-asientos'
+    | '/es/playgrounds/plano-planta'
+    | '/es/simuladores/$slug'
+    | '/es/studio/compositor-estela-prisma'
+    | '/es/studio/compositor-firma-neon'
+    | '/es/ux/carril-foco'
+    | '/es/ux/laboratorio-densidad'
+    | '/es/viajes/armonia-color'
+    | '/es/viajes/celebracion'
+    | '/es/viajes/compositor-rio-waypoints'
+    | '/es/experiences/'
+    | '/es/finanzas/'
+    | '/es/herramientas/'
+    | '/es/juegos/'
+    | '/es/playgrounds/'
+    | '/es/simuladores/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
+    | '/aura-card'
+    | '/aurora'
+    | '/aurora-particle-playground'
+    | '/aurora-ribbon-weaver'
     | '/aviso-legal'
+    | '/color-cascade-fusion'
+    | '/constellation'
     | '/contact'
     | '/contacto'
-    | '/finance'
+    | '/cookies'
+    | '/daily-progress-constellation'
+    | '/echo-wave'
     | '/finanzas'
+    | '/firework'
+    | '/fluid-type'
+    | '/glow-trail'
+    | '/journeys'
     | '/kits'
     | '/legal'
+    | '/modular-pattern-composer'
+    | '/n-body-gravity'
+    | '/neon-layer-composer'
+    | '/neon-sign'
+    | '/postcard'
     | '/privacidad'
     | '/privacy'
+    | '/pulse-catch'
+    | '/return-streak-board'
+    | '/river-light'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/solar-system-scale-explorer'
+    | '/terms'
+    | '/visual-signature'
+    | '/admin/reviews'
     | '/categoria/$slug'
     | '/category/$slug'
     | '/educacion/$subject'
     | '/education/$subject'
-    | '/es/finanzas'
-    | '/es/herramientas'
+    | '/es/acerca'
+    | '/es/aura-card'
+    | '/es/aurora'
+    | '/es/aurora-particle-playground'
+    | '/es/aurora-ribbon-weaver'
+    | '/es/aviso-legal'
+    | '/es/color-cascade-fusion'
+    | '/es/constellation'
+    | '/es/contacto'
+    | '/es/cookies'
+    | '/es/daily-progress-constellation'
+    | '/es/echo-wave'
+    | '/es/firework'
+    | '/es/firma-visual'
+    | '/es/fluid-type'
+    | '/es/glow-trail'
+    | '/es/kits'
+    | '/es/modular-pattern-composer'
+    | '/es/n-body-gravity'
+    | '/es/neon-layer-composer'
+    | '/es/neon-sign'
+    | '/es/postcard'
+    | '/es/privacidad'
+    | '/es/pulse-catch'
+    | '/es/return-streak-board'
+    | '/es/rio-luz'
+    | '/es/solar-system-scale-explorer'
+    | '/es/terminos'
+    | '/es/viajes'
     | '/finance/$slug'
     | '/finanzas/$slug'
+    | '/games/$slug'
+    | '/guides/canvas-webgl-performance'
+    | '/guides/compound-interest'
+    | '/guides/modular-pattern-composer'
+    | '/guides/n-body-gravity'
+    | '/guides/orbit-pulse-catcher'
+    | '/guides/particle-physics'
     | '/herramientas/$slug'
     | '/hubs/documentos-y-archivos'
     | '/hubs/documents-and-files'
+    | '/journeys/celebration'
+    | '/journeys/color-harmony'
+    | '/journeys/waypoint-river-composer'
     | '/kits/$slug'
+    | '/playgrounds/constellation'
+    | '/playgrounds/debt-snowball'
+    | '/playgrounds/floor-plan'
+    | '/playgrounds/gravity-particles'
+    | '/playgrounds/gravity-ribbon-canvas'
+    | '/playgrounds/kaleidoscope-mandala'
+    | '/playgrounds/particle-magnets'
+    | '/playgrounds/particle-signature'
+    | '/playgrounds/particles'
+    | '/playgrounds/seating-chart'
+    | '/pt/orbit-defender-arcade'
+    | '/pt/pong'
+    | '/pt/pulse-catch'
+    | '/pt/snake'
+    | '/simulators/$slug'
+    | '/studio/neon-signature-composer'
+    | '/studio/prism-trail-composer'
     | '/tools/$slug'
+    | '/ux/density-lab'
+    | '/ux/focus-lane'
     | '/es'
+    | '/experiences'
+    | '/finance'
+    | '/games'
     | '/herramientas'
+    | '/playgrounds'
+    | '/pt'
+    | '/simulators'
     | '/tools'
+    | '/es/categoria/$slug'
+    | '/es/educacion/$subject'
     | '/es/finanzas/$slug'
+    | '/es/guias/fisica-particulas'
+    | '/es/guias/interes-compuesto'
+    | '/es/guias/modular-pattern-composer'
+    | '/es/guias/n-body-gravity'
+    | '/es/guias/orbit-pulse-catcher'
+    | '/es/guias/rendimiento-canvas-webgl'
+    | '/es/guides/canvas-webgl-performance'
     | '/es/herramientas/$slug'
+    | '/es/hubs/documentos-y-archivos'
+    | '/es/juegos/$slug'
+    | '/es/kits/$slug'
+    | '/es/playgrounds/constelacion'
+    | '/es/playgrounds/deuda-bola-nieve'
+    | '/es/playgrounds/firma-particulas'
+    | '/es/playgrounds/imanes-particulas'
+    | '/es/playgrounds/kaleidoscopio-mandala'
+    | '/es/playgrounds/lienzo-cintas-gravedad'
+    | '/es/playgrounds/particulas'
+    | '/es/playgrounds/particulas-gravedad'
+    | '/es/playgrounds/plano-asientos'
+    | '/es/playgrounds/plano-planta'
+    | '/es/simuladores/$slug'
+    | '/es/studio/compositor-estela-prisma'
+    | '/es/studio/compositor-firma-neon'
+    | '/es/ux/carril-foco'
+    | '/es/ux/laboratorio-densidad'
+    | '/es/viajes/armonia-color'
+    | '/es/viajes/celebracion'
+    | '/es/viajes/compositor-rio-waypoints'
+    | '/es/experiences'
+    | '/es/finanzas'
+    | '/es/herramientas'
+    | '/es/juegos'
+    | '/es/playgrounds'
+    | '/es/simuladores'
   id:
     | '__root__'
     | '/'
+    | '/about'
+    | '/aura-card'
+    | '/aurora'
+    | '/aurora-particle-playground'
+    | '/aurora-ribbon-weaver'
     | '/aviso-legal'
+    | '/color-cascade-fusion'
+    | '/constellation'
     | '/contact'
     | '/contacto'
+    | '/cookies'
+    | '/daily-progress-constellation'
+    | '/echo-wave'
     | '/es'
     | '/finance'
     | '/finanzas'
+    | '/firework'
+    | '/fluid-type'
+    | '/games'
+    | '/glow-trail'
+    | '/journeys'
     | '/kits'
     | '/legal'
+    | '/modular-pattern-composer'
+    | '/n-body-gravity'
+    | '/neon-layer-composer'
+    | '/neon-sign'
+    | '/postcard'
     | '/privacidad'
     | '/privacy'
+    | '/pulse-catch'
+    | '/return-streak-board'
+    | '/river-light'
     | '/robots.txt'
+    | '/simulators'
     | '/sitemap.xml'
+    | '/solar-system-scale-explorer'
+    | '/terms'
+    | '/visual-signature'
+    | '/admin/reviews'
     | '/categoria/$slug'
     | '/category/$slug'
     | '/educacion/$subject'
     | '/education/$subject'
+    | '/es/acerca'
+    | '/es/aura-card'
+    | '/es/aurora'
+    | '/es/aurora-particle-playground'
+    | '/es/aurora-ribbon-weaver'
+    | '/es/aviso-legal'
+    | '/es/color-cascade-fusion'
+    | '/es/constellation'
+    | '/es/contacto'
+    | '/es/cookies'
+    | '/es/daily-progress-constellation'
+    | '/es/echo-wave'
     | '/es/finanzas'
+    | '/es/firework'
+    | '/es/firma-visual'
+    | '/es/fluid-type'
+    | '/es/glow-trail'
     | '/es/herramientas'
+    | '/es/juegos'
+    | '/es/kits'
+    | '/es/modular-pattern-composer'
+    | '/es/n-body-gravity'
+    | '/es/neon-layer-composer'
+    | '/es/neon-sign'
+    | '/es/postcard'
+    | '/es/privacidad'
+    | '/es/pulse-catch'
+    | '/es/return-streak-board'
+    | '/es/rio-luz'
+    | '/es/simuladores'
+    | '/es/solar-system-scale-explorer'
+    | '/es/terminos'
+    | '/es/viajes'
     | '/finance/$slug'
     | '/finanzas/$slug'
+    | '/games/$slug'
+    | '/guides/canvas-webgl-performance'
+    | '/guides/compound-interest'
+    | '/guides/modular-pattern-composer'
+    | '/guides/n-body-gravity'
+    | '/guides/orbit-pulse-catcher'
+    | '/guides/particle-physics'
     | '/herramientas/$slug'
     | '/hubs/documentos-y-archivos'
     | '/hubs/documents-and-files'
+    | '/journeys/celebration'
+    | '/journeys/color-harmony'
+    | '/journeys/waypoint-river-composer'
     | '/kits/$slug'
+    | '/playgrounds/constellation'
+    | '/playgrounds/debt-snowball'
+    | '/playgrounds/floor-plan'
+    | '/playgrounds/gravity-particles'
+    | '/playgrounds/gravity-ribbon-canvas'
+    | '/playgrounds/kaleidoscope-mandala'
+    | '/playgrounds/particle-magnets'
+    | '/playgrounds/particle-signature'
+    | '/playgrounds/particles'
+    | '/playgrounds/seating-chart'
+    | '/pt/orbit-defender-arcade'
+    | '/pt/pong'
+    | '/pt/pulse-catch'
+    | '/pt/snake'
+    | '/simulators/$slug'
+    | '/studio/neon-signature-composer'
+    | '/studio/prism-trail-composer'
     | '/tools/$slug'
+    | '/ux/density-lab'
+    | '/ux/focus-lane'
     | '/es/'
+    | '/experiences/'
+    | '/finance/'
+    | '/games/'
     | '/herramientas/'
+    | '/playgrounds/'
+    | '/pt/'
+    | '/simulators/'
     | '/tools/'
+    | '/es/categoria/$slug'
+    | '/es/educacion/$subject'
     | '/es/finanzas/$slug'
+    | '/es/guias/fisica-particulas'
+    | '/es/guias/interes-compuesto'
+    | '/es/guias/modular-pattern-composer'
+    | '/es/guias/n-body-gravity'
+    | '/es/guias/orbit-pulse-catcher'
+    | '/es/guias/rendimiento-canvas-webgl'
+    | '/es/guides/canvas-webgl-performance'
     | '/es/herramientas/$slug'
+    | '/es/hubs/documentos-y-archivos'
+    | '/es/juegos/$slug'
+    | '/es/kits/$slug'
+    | '/es/playgrounds/constelacion'
+    | '/es/playgrounds/deuda-bola-nieve'
+    | '/es/playgrounds/firma-particulas'
+    | '/es/playgrounds/imanes-particulas'
+    | '/es/playgrounds/kaleidoscopio-mandala'
+    | '/es/playgrounds/lienzo-cintas-gravedad'
+    | '/es/playgrounds/particulas'
+    | '/es/playgrounds/particulas-gravedad'
+    | '/es/playgrounds/plano-asientos'
+    | '/es/playgrounds/plano-planta'
+    | '/es/simuladores/$slug'
+    | '/es/studio/compositor-estela-prisma'
+    | '/es/studio/compositor-firma-neon'
+    | '/es/ux/carril-foco'
+    | '/es/ux/laboratorio-densidad'
+    | '/es/viajes/armonia-color'
+    | '/es/viajes/celebracion'
+    | '/es/viajes/compositor-rio-waypoints'
+    | '/es/experiences/'
+    | '/es/finanzas/'
+    | '/es/herramientas/'
+    | '/es/juegos/'
+    | '/es/playgrounds/'
+    | '/es/simuladores/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AuraCardRoute: typeof AuraCardRoute
+  AuroraRoute: typeof AuroraRoute
+  AuroraParticlePlaygroundRoute: typeof AuroraParticlePlaygroundRoute
+  AuroraRibbonWeaverRoute: typeof AuroraRibbonWeaverRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
+  ColorCascadeFusionRoute: typeof ColorCascadeFusionRoute
+  ConstellationRoute: typeof ConstellationRoute
   ContactRoute: typeof ContactRoute
   ContactoRoute: typeof ContactoRoute
+  CookiesRoute: typeof CookiesRoute
+  DailyProgressConstellationRoute: typeof DailyProgressConstellationRoute
+  EchoWaveRoute: typeof EchoWaveRoute
   EsRoute: typeof EsRouteWithChildren
   FinanceRoute: typeof FinanceRouteWithChildren
   FinanzasRoute: typeof FinanzasRouteWithChildren
+  FireworkRoute: typeof FireworkRoute
+  FluidTypeRoute: typeof FluidTypeRoute
+  GamesRoute: typeof GamesRouteWithChildren
+  GlowTrailRoute: typeof GlowTrailRoute
+  JourneysRoute: typeof JourneysRouteWithChildren
   KitsRoute: typeof KitsRouteWithChildren
   LegalRoute: typeof LegalRoute
+  ModularPatternComposerRoute: typeof ModularPatternComposerRoute
+  NBodyGravityRoute: typeof NBodyGravityRoute
+  NeonLayerComposerRoute: typeof NeonLayerComposerRoute
+  NeonSignRoute: typeof NeonSignRoute
+  PostcardRoute: typeof PostcardRoute
   PrivacidadRoute: typeof PrivacidadRoute
   PrivacyRoute: typeof PrivacyRoute
+  PulseCatchRoute: typeof PulseCatchRoute
+  ReturnStreakBoardRoute: typeof ReturnStreakBoardRoute
+  RiverLightRoute: typeof RiverLightRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SimulatorsRoute: typeof SimulatorsRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SolarSystemScaleExplorerRoute: typeof SolarSystemScaleExplorerRoute
+  TermsRoute: typeof TermsRoute
+  VisualSignatureRoute: typeof VisualSignatureRoute
+  AdminReviewsRoute: typeof AdminReviewsRoute
   CategoriaSlugRoute: typeof CategoriaSlugRoute
   CategorySlugRoute: typeof CategorySlugRoute
   EducacionSubjectRoute: typeof EducacionSubjectRoute
   EducationSubjectRoute: typeof EducationSubjectRoute
+  GuidesCanvasWebglPerformanceRoute: typeof GuidesCanvasWebglPerformanceRoute
+  GuidesCompoundInterestRoute: typeof GuidesCompoundInterestRoute
+  GuidesModularPatternComposerRoute: typeof GuidesModularPatternComposerRoute
+  GuidesNBodyGravityRoute: typeof GuidesNBodyGravityRoute
+  GuidesOrbitPulseCatcherRoute: typeof GuidesOrbitPulseCatcherRoute
+  GuidesParticlePhysicsRoute: typeof GuidesParticlePhysicsRoute
   HerramientasSlugRoute: typeof HerramientasSlugRoute
   HubsDocumentosYArchivosRoute: typeof HubsDocumentosYArchivosRoute
   HubsDocumentsAndFilesRoute: typeof HubsDocumentsAndFilesRoute
+  PlaygroundsConstellationRoute: typeof PlaygroundsConstellationRoute
+  PlaygroundsDebtSnowballRoute: typeof PlaygroundsDebtSnowballRoute
+  PlaygroundsFloorPlanRoute: typeof PlaygroundsFloorPlanRoute
+  PlaygroundsGravityParticlesRoute: typeof PlaygroundsGravityParticlesRoute
+  PlaygroundsGravityRibbonCanvasRoute: typeof PlaygroundsGravityRibbonCanvasRoute
+  PlaygroundsKaleidoscopeMandalaRoute: typeof PlaygroundsKaleidoscopeMandalaRoute
+  PlaygroundsParticleMagnetsRoute: typeof PlaygroundsParticleMagnetsRoute
+  PlaygroundsParticleSignatureRoute: typeof PlaygroundsParticleSignatureRoute
+  PlaygroundsParticlesRoute: typeof PlaygroundsParticlesRoute
+  PlaygroundsSeatingChartRoute: typeof PlaygroundsSeatingChartRoute
+  PtOrbitDefenderArcadeRoute: typeof PtOrbitDefenderArcadeRoute
+  PtPongRoute: typeof PtPongRoute
+  PtPulseCatchRoute: typeof PtPulseCatchRoute
+  PtSnakeRoute: typeof PtSnakeRoute
+  StudioNeonSignatureComposerRoute: typeof StudioNeonSignatureComposerRoute
+  StudioPrismTrailComposerRoute: typeof StudioPrismTrailComposerRoute
   ToolsSlugRoute: typeof ToolsSlugRoute
+  UxDensityLabRoute: typeof UxDensityLabRoute
+  UxFocusLaneRoute: typeof UxFocusLaneRoute
+  ExperiencesIndexRoute: typeof ExperiencesIndexRoute
   HerramientasIndexRoute: typeof HerramientasIndexRoute
+  PlaygroundsIndexRoute: typeof PlaygroundsIndexRoute
+  PtIndexRoute: typeof PtIndexRoute
   ToolsIndexRoute: typeof ToolsIndexRoute
 }
 
@@ -432,11 +2068,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aura-card': {
+      id: '/aura-card'
+      path: '/aura-card'
+      fullPath: '/aura-card'
+      preLoaderRoute: typeof AuraCardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aurora': {
+      id: '/aurora'
+      path: '/aurora'
+      fullPath: '/aurora'
+      preLoaderRoute: typeof AuroraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aurora-particle-playground': {
+      id: '/aurora-particle-playground'
+      path: '/aurora-particle-playground'
+      fullPath: '/aurora-particle-playground'
+      preLoaderRoute: typeof AuroraParticlePlaygroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aurora-ribbon-weaver': {
+      id: '/aurora-ribbon-weaver'
+      path: '/aurora-ribbon-weaver'
+      fullPath: '/aurora-ribbon-weaver'
+      preLoaderRoute: typeof AuroraRibbonWeaverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aviso-legal': {
       id: '/aviso-legal'
       path: '/aviso-legal'
       fullPath: '/aviso-legal'
       preLoaderRoute: typeof AvisoLegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/color-cascade-fusion': {
+      id: '/color-cascade-fusion'
+      path: '/color-cascade-fusion'
+      fullPath: '/color-cascade-fusion'
+      preLoaderRoute: typeof ColorCascadeFusionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/constellation': {
+      id: '/constellation'
+      path: '/constellation'
+      fullPath: '/constellation'
+      preLoaderRoute: typeof ConstellationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -451,6 +2136,27 @@ declare module '@tanstack/react-router' {
       path: '/contacto'
       fullPath: '/contacto'
       preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cookies': {
+      id: '/cookies'
+      path: '/cookies'
+      fullPath: '/cookies'
+      preLoaderRoute: typeof CookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/daily-progress-constellation': {
+      id: '/daily-progress-constellation'
+      path: '/daily-progress-constellation'
+      fullPath: '/daily-progress-constellation'
+      preLoaderRoute: typeof DailyProgressConstellationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/echo-wave': {
+      id: '/echo-wave'
+      path: '/echo-wave'
+      fullPath: '/echo-wave'
+      preLoaderRoute: typeof EchoWaveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/es': {
@@ -474,6 +2180,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FinanzasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/firework': {
+      id: '/firework'
+      path: '/firework'
+      fullPath: '/firework'
+      preLoaderRoute: typeof FireworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fluid-type': {
+      id: '/fluid-type'
+      path: '/fluid-type'
+      fullPath: '/fluid-type'
+      preLoaderRoute: typeof FluidTypeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/games': {
+      id: '/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof GamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/glow-trail': {
+      id: '/glow-trail'
+      path: '/glow-trail'
+      fullPath: '/glow-trail'
+      preLoaderRoute: typeof GlowTrailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journeys': {
+      id: '/journeys'
+      path: '/journeys'
+      fullPath: '/journeys'
+      preLoaderRoute: typeof JourneysRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/kits': {
       id: '/kits'
       path: '/kits'
@@ -486,6 +2227,41 @@ declare module '@tanstack/react-router' {
       path: '/legal'
       fullPath: '/legal'
       preLoaderRoute: typeof LegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modular-pattern-composer': {
+      id: '/modular-pattern-composer'
+      path: '/modular-pattern-composer'
+      fullPath: '/modular-pattern-composer'
+      preLoaderRoute: typeof ModularPatternComposerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/n-body-gravity': {
+      id: '/n-body-gravity'
+      path: '/n-body-gravity'
+      fullPath: '/n-body-gravity'
+      preLoaderRoute: typeof NBodyGravityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/neon-layer-composer': {
+      id: '/neon-layer-composer'
+      path: '/neon-layer-composer'
+      fullPath: '/neon-layer-composer'
+      preLoaderRoute: typeof NeonLayerComposerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/neon-sign': {
+      id: '/neon-sign'
+      path: '/neon-sign'
+      fullPath: '/neon-sign'
+      preLoaderRoute: typeof NeonSignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/postcard': {
+      id: '/postcard'
+      path: '/postcard'
+      fullPath: '/postcard'
+      preLoaderRoute: typeof PostcardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacidad': {
@@ -502,6 +2278,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pulse-catch': {
+      id: '/pulse-catch'
+      path: '/pulse-catch'
+      fullPath: '/pulse-catch'
+      preLoaderRoute: typeof PulseCatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/return-streak-board': {
+      id: '/return-streak-board'
+      path: '/return-streak-board'
+      fullPath: '/return-streak-board'
+      preLoaderRoute: typeof ReturnStreakBoardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/river-light': {
+      id: '/river-light'
+      path: '/river-light'
+      fullPath: '/river-light'
+      preLoaderRoute: typeof RiverLightRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/robots.txt': {
       id: '/robots.txt'
       path: '/robots.txt'
@@ -509,11 +2306,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/simulators': {
+      id: '/simulators'
+      path: '/simulators'
+      fullPath: '/simulators'
+      preLoaderRoute: typeof SimulatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solar-system-scale-explorer': {
+      id: '/solar-system-scale-explorer'
+      path: '/solar-system-scale-explorer'
+      fullPath: '/solar-system-scale-explorer'
+      preLoaderRoute: typeof SolarSystemScaleExplorerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/visual-signature': {
+      id: '/visual-signature'
+      path: '/visual-signature'
+      fullPath: '/visual-signature'
+      preLoaderRoute: typeof VisualSignatureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/reviews': {
+      id: '/admin/reviews'
+      path: '/admin/reviews'
+      fullPath: '/admin/reviews'
+      preLoaderRoute: typeof AdminReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/categoria/$slug': {
@@ -551,11 +2383,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EsIndexRouteImport
       parentRoute: typeof EsRoute
     }
+    '/es/acerca': {
+      id: '/es/acerca'
+      path: '/acerca'
+      fullPath: '/es/acerca'
+      preLoaderRoute: typeof EsAcercaRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/aura-card': {
+      id: '/es/aura-card'
+      path: '/aura-card'
+      fullPath: '/es/aura-card'
+      preLoaderRoute: typeof EsAuraCardRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/aurora': {
+      id: '/es/aurora'
+      path: '/aurora'
+      fullPath: '/es/aurora'
+      preLoaderRoute: typeof EsAuroraRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/aurora-particle-playground': {
+      id: '/es/aurora-particle-playground'
+      path: '/aurora-particle-playground'
+      fullPath: '/es/aurora-particle-playground'
+      preLoaderRoute: typeof EsAuroraParticlePlaygroundRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/aurora-ribbon-weaver': {
+      id: '/es/aurora-ribbon-weaver'
+      path: '/aurora-ribbon-weaver'
+      fullPath: '/es/aurora-ribbon-weaver'
+      preLoaderRoute: typeof EsAuroraRibbonWeaverRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/aviso-legal': {
+      id: '/es/aviso-legal'
+      path: '/aviso-legal'
+      fullPath: '/es/aviso-legal'
+      preLoaderRoute: typeof EsAvisoLegalRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/color-cascade-fusion': {
+      id: '/es/color-cascade-fusion'
+      path: '/color-cascade-fusion'
+      fullPath: '/es/color-cascade-fusion'
+      preLoaderRoute: typeof EsColorCascadeFusionRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/constellation': {
+      id: '/es/constellation'
+      path: '/constellation'
+      fullPath: '/es/constellation'
+      preLoaderRoute: typeof EsConstellationRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/contacto': {
+      id: '/es/contacto'
+      path: '/contacto'
+      fullPath: '/es/contacto'
+      preLoaderRoute: typeof EsContactoRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/cookies': {
+      id: '/es/cookies'
+      path: '/cookies'
+      fullPath: '/es/cookies'
+      preLoaderRoute: typeof EsCookiesRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/daily-progress-constellation': {
+      id: '/es/daily-progress-constellation'
+      path: '/daily-progress-constellation'
+      fullPath: '/es/daily-progress-constellation'
+      preLoaderRoute: typeof EsDailyProgressConstellationRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/echo-wave': {
+      id: '/es/echo-wave'
+      path: '/echo-wave'
+      fullPath: '/es/echo-wave'
+      preLoaderRoute: typeof EsEchoWaveRouteImport
+      parentRoute: typeof EsRoute
+    }
     '/es/finanzas': {
       id: '/es/finanzas'
       path: '/finanzas'
       fullPath: '/es/finanzas'
       preLoaderRoute: typeof EsFinanzasRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/firework': {
+      id: '/es/firework'
+      path: '/firework'
+      fullPath: '/es/firework'
+      preLoaderRoute: typeof EsFireworkRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/firma-visual': {
+      id: '/es/firma-visual'
+      path: '/firma-visual'
+      fullPath: '/es/firma-visual'
+      preLoaderRoute: typeof EsFirmaVisualRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/fluid-type': {
+      id: '/es/fluid-type'
+      path: '/fluid-type'
+      fullPath: '/es/fluid-type'
+      preLoaderRoute: typeof EsFluidTypeRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/glow-trail': {
+      id: '/es/glow-trail'
+      path: '/glow-trail'
+      fullPath: '/es/glow-trail'
+      preLoaderRoute: typeof EsGlowTrailRouteImport
       parentRoute: typeof EsRoute
     }
     '/es/herramientas': {
@@ -564,6 +2508,125 @@ declare module '@tanstack/react-router' {
       fullPath: '/es/herramientas'
       preLoaderRoute: typeof EsHerramientasRouteImport
       parentRoute: typeof EsRoute
+    }
+    '/es/juegos': {
+      id: '/es/juegos'
+      path: '/juegos'
+      fullPath: '/es/juegos'
+      preLoaderRoute: typeof EsJuegosRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/kits': {
+      id: '/es/kits'
+      path: '/kits'
+      fullPath: '/es/kits'
+      preLoaderRoute: typeof EsKitsRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/modular-pattern-composer': {
+      id: '/es/modular-pattern-composer'
+      path: '/modular-pattern-composer'
+      fullPath: '/es/modular-pattern-composer'
+      preLoaderRoute: typeof EsModularPatternComposerRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/n-body-gravity': {
+      id: '/es/n-body-gravity'
+      path: '/n-body-gravity'
+      fullPath: '/es/n-body-gravity'
+      preLoaderRoute: typeof EsNBodyGravityRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/neon-layer-composer': {
+      id: '/es/neon-layer-composer'
+      path: '/neon-layer-composer'
+      fullPath: '/es/neon-layer-composer'
+      preLoaderRoute: typeof EsNeonLayerComposerRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/neon-sign': {
+      id: '/es/neon-sign'
+      path: '/neon-sign'
+      fullPath: '/es/neon-sign'
+      preLoaderRoute: typeof EsNeonSignRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/postcard': {
+      id: '/es/postcard'
+      path: '/postcard'
+      fullPath: '/es/postcard'
+      preLoaderRoute: typeof EsPostcardRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/privacidad': {
+      id: '/es/privacidad'
+      path: '/privacidad'
+      fullPath: '/es/privacidad'
+      preLoaderRoute: typeof EsPrivacidadRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/pulse-catch': {
+      id: '/es/pulse-catch'
+      path: '/pulse-catch'
+      fullPath: '/es/pulse-catch'
+      preLoaderRoute: typeof EsPulseCatchRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/return-streak-board': {
+      id: '/es/return-streak-board'
+      path: '/return-streak-board'
+      fullPath: '/es/return-streak-board'
+      preLoaderRoute: typeof EsReturnStreakBoardRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/rio-luz': {
+      id: '/es/rio-luz'
+      path: '/rio-luz'
+      fullPath: '/es/rio-luz'
+      preLoaderRoute: typeof EsRioLuzRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/simuladores': {
+      id: '/es/simuladores'
+      path: '/simuladores'
+      fullPath: '/es/simuladores'
+      preLoaderRoute: typeof EsSimuladoresRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/solar-system-scale-explorer': {
+      id: '/es/solar-system-scale-explorer'
+      path: '/solar-system-scale-explorer'
+      fullPath: '/es/solar-system-scale-explorer'
+      preLoaderRoute: typeof EsSolarSystemScaleExplorerRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/terminos': {
+      id: '/es/terminos'
+      path: '/terminos'
+      fullPath: '/es/terminos'
+      preLoaderRoute: typeof EsTerminosRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/viajes': {
+      id: '/es/viajes'
+      path: '/viajes'
+      fullPath: '/es/viajes'
+      preLoaderRoute: typeof EsViajesRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/experiences/': {
+      id: '/experiences/'
+      path: '/experiences'
+      fullPath: '/experiences/'
+      preLoaderRoute: typeof ExperiencesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/finance/': {
+      id: '/finance/'
+      path: '/'
+      fullPath: '/finance/'
+      preLoaderRoute: typeof FinanceIndexRouteImport
+      parentRoute: typeof FinanceRoute
     }
     '/finance/$slug': {
       id: '/finance/$slug'
@@ -578,6 +2641,62 @@ declare module '@tanstack/react-router' {
       fullPath: '/finanzas/$slug'
       preLoaderRoute: typeof FinanzasSlugRouteImport
       parentRoute: typeof FinanzasRoute
+    }
+    '/games/': {
+      id: '/games/'
+      path: '/'
+      fullPath: '/games/'
+      preLoaderRoute: typeof GamesIndexRouteImport
+      parentRoute: typeof GamesRoute
+    }
+    '/games/$slug': {
+      id: '/games/$slug'
+      path: '/$slug'
+      fullPath: '/games/$slug'
+      preLoaderRoute: typeof GamesSlugRouteImport
+      parentRoute: typeof GamesRoute
+    }
+    '/guides/canvas-webgl-performance': {
+      id: '/guides/canvas-webgl-performance'
+      path: '/guides/canvas-webgl-performance'
+      fullPath: '/guides/canvas-webgl-performance'
+      preLoaderRoute: typeof GuidesCanvasWebglPerformanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/compound-interest': {
+      id: '/guides/compound-interest'
+      path: '/guides/compound-interest'
+      fullPath: '/guides/compound-interest'
+      preLoaderRoute: typeof GuidesCompoundInterestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/modular-pattern-composer': {
+      id: '/guides/modular-pattern-composer'
+      path: '/guides/modular-pattern-composer'
+      fullPath: '/guides/modular-pattern-composer'
+      preLoaderRoute: typeof GuidesModularPatternComposerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/n-body-gravity': {
+      id: '/guides/n-body-gravity'
+      path: '/guides/n-body-gravity'
+      fullPath: '/guides/n-body-gravity'
+      preLoaderRoute: typeof GuidesNBodyGravityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/orbit-pulse-catcher': {
+      id: '/guides/orbit-pulse-catcher'
+      path: '/guides/orbit-pulse-catcher'
+      fullPath: '/guides/orbit-pulse-catcher'
+      preLoaderRoute: typeof GuidesOrbitPulseCatcherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides/particle-physics': {
+      id: '/guides/particle-physics'
+      path: '/guides/particle-physics'
+      fullPath: '/guides/particle-physics'
+      preLoaderRoute: typeof GuidesParticlePhysicsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/herramientas/': {
       id: '/herramientas/'
@@ -607,12 +2726,173 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HubsDocumentsAndFilesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journeys/celebration': {
+      id: '/journeys/celebration'
+      path: '/celebration'
+      fullPath: '/journeys/celebration'
+      preLoaderRoute: typeof JourneysCelebrationRouteImport
+      parentRoute: typeof JourneysRoute
+    }
+    '/journeys/color-harmony': {
+      id: '/journeys/color-harmony'
+      path: '/color-harmony'
+      fullPath: '/journeys/color-harmony'
+      preLoaderRoute: typeof JourneysColorHarmonyRouteImport
+      parentRoute: typeof JourneysRoute
+    }
+    '/journeys/waypoint-river-composer': {
+      id: '/journeys/waypoint-river-composer'
+      path: '/waypoint-river-composer'
+      fullPath: '/journeys/waypoint-river-composer'
+      preLoaderRoute: typeof JourneysWaypointRiverComposerRouteImport
+      parentRoute: typeof JourneysRoute
+    }
     '/kits/$slug': {
       id: '/kits/$slug'
       path: '/$slug'
       fullPath: '/kits/$slug'
       preLoaderRoute: typeof KitsSlugRouteImport
       parentRoute: typeof KitsRoute
+    }
+    '/playgrounds/': {
+      id: '/playgrounds/'
+      path: '/playgrounds'
+      fullPath: '/playgrounds/'
+      preLoaderRoute: typeof PlaygroundsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/constellation': {
+      id: '/playgrounds/constellation'
+      path: '/playgrounds/constellation'
+      fullPath: '/playgrounds/constellation'
+      preLoaderRoute: typeof PlaygroundsConstellationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/debt-snowball': {
+      id: '/playgrounds/debt-snowball'
+      path: '/playgrounds/debt-snowball'
+      fullPath: '/playgrounds/debt-snowball'
+      preLoaderRoute: typeof PlaygroundsDebtSnowballRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/floor-plan': {
+      id: '/playgrounds/floor-plan'
+      path: '/playgrounds/floor-plan'
+      fullPath: '/playgrounds/floor-plan'
+      preLoaderRoute: typeof PlaygroundsFloorPlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/gravity-particles': {
+      id: '/playgrounds/gravity-particles'
+      path: '/playgrounds/gravity-particles'
+      fullPath: '/playgrounds/gravity-particles'
+      preLoaderRoute: typeof PlaygroundsGravityParticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/gravity-ribbon-canvas': {
+      id: '/playgrounds/gravity-ribbon-canvas'
+      path: '/playgrounds/gravity-ribbon-canvas'
+      fullPath: '/playgrounds/gravity-ribbon-canvas'
+      preLoaderRoute: typeof PlaygroundsGravityRibbonCanvasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/kaleidoscope-mandala': {
+      id: '/playgrounds/kaleidoscope-mandala'
+      path: '/playgrounds/kaleidoscope-mandala'
+      fullPath: '/playgrounds/kaleidoscope-mandala'
+      preLoaderRoute: typeof PlaygroundsKaleidoscopeMandalaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/particle-magnets': {
+      id: '/playgrounds/particle-magnets'
+      path: '/playgrounds/particle-magnets'
+      fullPath: '/playgrounds/particle-magnets'
+      preLoaderRoute: typeof PlaygroundsParticleMagnetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/particle-signature': {
+      id: '/playgrounds/particle-signature'
+      path: '/playgrounds/particle-signature'
+      fullPath: '/playgrounds/particle-signature'
+      preLoaderRoute: typeof PlaygroundsParticleSignatureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/particles': {
+      id: '/playgrounds/particles'
+      path: '/playgrounds/particles'
+      fullPath: '/playgrounds/particles'
+      preLoaderRoute: typeof PlaygroundsParticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playgrounds/seating-chart': {
+      id: '/playgrounds/seating-chart'
+      path: '/playgrounds/seating-chart'
+      fullPath: '/playgrounds/seating-chart'
+      preLoaderRoute: typeof PlaygroundsSeatingChartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pt/': {
+      id: '/pt/'
+      path: '/pt'
+      fullPath: '/pt/'
+      preLoaderRoute: typeof PtIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pt/orbit-defender-arcade': {
+      id: '/pt/orbit-defender-arcade'
+      path: '/pt/orbit-defender-arcade'
+      fullPath: '/pt/orbit-defender-arcade'
+      preLoaderRoute: typeof PtOrbitDefenderArcadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pt/pong': {
+      id: '/pt/pong'
+      path: '/pt/pong'
+      fullPath: '/pt/pong'
+      preLoaderRoute: typeof PtPongRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pt/pulse-catch': {
+      id: '/pt/pulse-catch'
+      path: '/pt/pulse-catch'
+      fullPath: '/pt/pulse-catch'
+      preLoaderRoute: typeof PtPulseCatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pt/snake': {
+      id: '/pt/snake'
+      path: '/pt/snake'
+      fullPath: '/pt/snake'
+      preLoaderRoute: typeof PtSnakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulators/': {
+      id: '/simulators/'
+      path: '/'
+      fullPath: '/simulators/'
+      preLoaderRoute: typeof SimulatorsIndexRouteImport
+      parentRoute: typeof SimulatorsRoute
+    }
+    '/simulators/$slug': {
+      id: '/simulators/$slug'
+      path: '/$slug'
+      fullPath: '/simulators/$slug'
+      preLoaderRoute: typeof SimulatorsSlugRouteImport
+      parentRoute: typeof SimulatorsRoute
+    }
+    '/studio/neon-signature-composer': {
+      id: '/studio/neon-signature-composer'
+      path: '/studio/neon-signature-composer'
+      fullPath: '/studio/neon-signature-composer'
+      preLoaderRoute: typeof StudioNeonSignatureComposerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/studio/prism-trail-composer': {
+      id: '/studio/prism-trail-composer'
+      path: '/studio/prism-trail-composer'
+      fullPath: '/studio/prism-trail-composer'
+      preLoaderRoute: typeof StudioPrismTrailComposerRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/tools/': {
       id: '/tools/'
@@ -628,12 +2908,110 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ux/density-lab': {
+      id: '/ux/density-lab'
+      path: '/ux/density-lab'
+      fullPath: '/ux/density-lab'
+      preLoaderRoute: typeof UxDensityLabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ux/focus-lane': {
+      id: '/ux/focus-lane'
+      path: '/ux/focus-lane'
+      fullPath: '/ux/focus-lane'
+      preLoaderRoute: typeof UxFocusLaneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/es/categoria/$slug': {
+      id: '/es/categoria/$slug'
+      path: '/categoria/$slug'
+      fullPath: '/es/categoria/$slug'
+      preLoaderRoute: typeof EsCategoriaSlugRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/educacion/$subject': {
+      id: '/es/educacion/$subject'
+      path: '/educacion/$subject'
+      fullPath: '/es/educacion/$subject'
+      preLoaderRoute: typeof EsEducacionSubjectRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/experiences/': {
+      id: '/es/experiences/'
+      path: '/experiences'
+      fullPath: '/es/experiences/'
+      preLoaderRoute: typeof EsExperiencesIndexRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/finanzas/': {
+      id: '/es/finanzas/'
+      path: '/'
+      fullPath: '/es/finanzas/'
+      preLoaderRoute: typeof EsFinanzasIndexRouteImport
+      parentRoute: typeof EsFinanzasRoute
+    }
     '/es/finanzas/$slug': {
       id: '/es/finanzas/$slug'
       path: '/$slug'
       fullPath: '/es/finanzas/$slug'
       preLoaderRoute: typeof EsFinanzasSlugRouteImport
       parentRoute: typeof EsFinanzasRoute
+    }
+    '/es/guias/fisica-particulas': {
+      id: '/es/guias/fisica-particulas'
+      path: '/guias/fisica-particulas'
+      fullPath: '/es/guias/fisica-particulas'
+      preLoaderRoute: typeof EsGuiasFisicaParticulasRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/guias/interes-compuesto': {
+      id: '/es/guias/interes-compuesto'
+      path: '/guias/interes-compuesto'
+      fullPath: '/es/guias/interes-compuesto'
+      preLoaderRoute: typeof EsGuiasInteresCompuestoRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/guias/modular-pattern-composer': {
+      id: '/es/guias/modular-pattern-composer'
+      path: '/guias/modular-pattern-composer'
+      fullPath: '/es/guias/modular-pattern-composer'
+      preLoaderRoute: typeof EsGuiasModularPatternComposerRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/guias/n-body-gravity': {
+      id: '/es/guias/n-body-gravity'
+      path: '/guias/n-body-gravity'
+      fullPath: '/es/guias/n-body-gravity'
+      preLoaderRoute: typeof EsGuiasNBodyGravityRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/guias/orbit-pulse-catcher': {
+      id: '/es/guias/orbit-pulse-catcher'
+      path: '/guias/orbit-pulse-catcher'
+      fullPath: '/es/guias/orbit-pulse-catcher'
+      preLoaderRoute: typeof EsGuiasOrbitPulseCatcherRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/guias/rendimiento-canvas-webgl': {
+      id: '/es/guias/rendimiento-canvas-webgl'
+      path: '/guias/rendimiento-canvas-webgl'
+      fullPath: '/es/guias/rendimiento-canvas-webgl'
+      preLoaderRoute: typeof EsGuiasRendimientoCanvasWebglRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/guides/canvas-webgl-performance': {
+      id: '/es/guides/canvas-webgl-performance'
+      path: '/guides/canvas-webgl-performance'
+      fullPath: '/es/guides/canvas-webgl-performance'
+      preLoaderRoute: typeof EsGuidesCanvasWebglPerformanceRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/herramientas/': {
+      id: '/es/herramientas/'
+      path: '/'
+      fullPath: '/es/herramientas/'
+      preLoaderRoute: typeof EsHerramientasIndexRouteImport
+      parentRoute: typeof EsHerramientasRoute
     }
     '/es/herramientas/$slug': {
       id: '/es/herramientas/$slug'
@@ -642,15 +3020,185 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EsHerramientasSlugRouteImport
       parentRoute: typeof EsHerramientasRoute
     }
+    '/es/hubs/documentos-y-archivos': {
+      id: '/es/hubs/documentos-y-archivos'
+      path: '/hubs/documentos-y-archivos'
+      fullPath: '/es/hubs/documentos-y-archivos'
+      preLoaderRoute: typeof EsHubsDocumentosYArchivosRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/juegos/': {
+      id: '/es/juegos/'
+      path: '/'
+      fullPath: '/es/juegos/'
+      preLoaderRoute: typeof EsJuegosIndexRouteImport
+      parentRoute: typeof EsJuegosRoute
+    }
+    '/es/juegos/$slug': {
+      id: '/es/juegos/$slug'
+      path: '/$slug'
+      fullPath: '/es/juegos/$slug'
+      preLoaderRoute: typeof EsJuegosSlugRouteImport
+      parentRoute: typeof EsJuegosRoute
+    }
+    '/es/kits/$slug': {
+      id: '/es/kits/$slug'
+      path: '/$slug'
+      fullPath: '/es/kits/$slug'
+      preLoaderRoute: typeof EsKitsSlugRouteImport
+      parentRoute: typeof EsKitsRoute
+    }
+    '/es/playgrounds/': {
+      id: '/es/playgrounds/'
+      path: '/playgrounds'
+      fullPath: '/es/playgrounds/'
+      preLoaderRoute: typeof EsPlaygroundsIndexRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/constelacion': {
+      id: '/es/playgrounds/constelacion'
+      path: '/playgrounds/constelacion'
+      fullPath: '/es/playgrounds/constelacion'
+      preLoaderRoute: typeof EsPlaygroundsConstelacionRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/deuda-bola-nieve': {
+      id: '/es/playgrounds/deuda-bola-nieve'
+      path: '/playgrounds/deuda-bola-nieve'
+      fullPath: '/es/playgrounds/deuda-bola-nieve'
+      preLoaderRoute: typeof EsPlaygroundsDeudaBolaNieveRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/firma-particulas': {
+      id: '/es/playgrounds/firma-particulas'
+      path: '/playgrounds/firma-particulas'
+      fullPath: '/es/playgrounds/firma-particulas'
+      preLoaderRoute: typeof EsPlaygroundsFirmaParticulasRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/imanes-particulas': {
+      id: '/es/playgrounds/imanes-particulas'
+      path: '/playgrounds/imanes-particulas'
+      fullPath: '/es/playgrounds/imanes-particulas'
+      preLoaderRoute: typeof EsPlaygroundsImanesParticulasRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/kaleidoscopio-mandala': {
+      id: '/es/playgrounds/kaleidoscopio-mandala'
+      path: '/playgrounds/kaleidoscopio-mandala'
+      fullPath: '/es/playgrounds/kaleidoscopio-mandala'
+      preLoaderRoute: typeof EsPlaygroundsKaleidoscopioMandalaRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/lienzo-cintas-gravedad': {
+      id: '/es/playgrounds/lienzo-cintas-gravedad'
+      path: '/playgrounds/lienzo-cintas-gravedad'
+      fullPath: '/es/playgrounds/lienzo-cintas-gravedad'
+      preLoaderRoute: typeof EsPlaygroundsLienzoCintasGravedadRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/particulas': {
+      id: '/es/playgrounds/particulas'
+      path: '/playgrounds/particulas'
+      fullPath: '/es/playgrounds/particulas'
+      preLoaderRoute: typeof EsPlaygroundsParticulasRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/particulas-gravedad': {
+      id: '/es/playgrounds/particulas-gravedad'
+      path: '/playgrounds/particulas-gravedad'
+      fullPath: '/es/playgrounds/particulas-gravedad'
+      preLoaderRoute: typeof EsPlaygroundsParticulasGravedadRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/plano-asientos': {
+      id: '/es/playgrounds/plano-asientos'
+      path: '/playgrounds/plano-asientos'
+      fullPath: '/es/playgrounds/plano-asientos'
+      preLoaderRoute: typeof EsPlaygroundsPlanoAsientosRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/playgrounds/plano-planta': {
+      id: '/es/playgrounds/plano-planta'
+      path: '/playgrounds/plano-planta'
+      fullPath: '/es/playgrounds/plano-planta'
+      preLoaderRoute: typeof EsPlaygroundsPlanoPlantaRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/simuladores/': {
+      id: '/es/simuladores/'
+      path: '/'
+      fullPath: '/es/simuladores/'
+      preLoaderRoute: typeof EsSimuladoresIndexRouteImport
+      parentRoute: typeof EsSimuladoresRoute
+    }
+    '/es/simuladores/$slug': {
+      id: '/es/simuladores/$slug'
+      path: '/$slug'
+      fullPath: '/es/simuladores/$slug'
+      preLoaderRoute: typeof EsSimuladoresSlugRouteImport
+      parentRoute: typeof EsSimuladoresRoute
+    }
+    '/es/studio/compositor-estela-prisma': {
+      id: '/es/studio/compositor-estela-prisma'
+      path: '/studio/compositor-estela-prisma'
+      fullPath: '/es/studio/compositor-estela-prisma'
+      preLoaderRoute: typeof EsStudioCompositorEstelaPrismaRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/studio/compositor-firma-neon': {
+      id: '/es/studio/compositor-firma-neon'
+      path: '/studio/compositor-firma-neon'
+      fullPath: '/es/studio/compositor-firma-neon'
+      preLoaderRoute: typeof EsStudioCompositorFirmaNeonRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/ux/carril-foco': {
+      id: '/es/ux/carril-foco'
+      path: '/ux/carril-foco'
+      fullPath: '/es/ux/carril-foco'
+      preLoaderRoute: typeof EsUxCarrilFocoRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/ux/laboratorio-densidad': {
+      id: '/es/ux/laboratorio-densidad'
+      path: '/ux/laboratorio-densidad'
+      fullPath: '/es/ux/laboratorio-densidad'
+      preLoaderRoute: typeof EsUxLaboratorioDensidadRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/viajes/armonia-color': {
+      id: '/es/viajes/armonia-color'
+      path: '/armonia-color'
+      fullPath: '/es/viajes/armonia-color'
+      preLoaderRoute: typeof EsViajesArmoniaColorRouteImport
+      parentRoute: typeof EsViajesRoute
+    }
+    '/es/viajes/celebracion': {
+      id: '/es/viajes/celebracion'
+      path: '/celebracion'
+      fullPath: '/es/viajes/celebracion'
+      preLoaderRoute: typeof EsViajesCelebracionRouteImport
+      parentRoute: typeof EsViajesRoute
+    }
+    '/es/viajes/compositor-rio-waypoints': {
+      id: '/es/viajes/compositor-rio-waypoints'
+      path: '/compositor-rio-waypoints'
+      fullPath: '/es/viajes/compositor-rio-waypoints'
+      preLoaderRoute: typeof EsViajesCompositorRioWaypointsRouteImport
+      parentRoute: typeof EsViajesRoute
+    }
   }
 }
 
 interface EsFinanzasRouteChildren {
   EsFinanzasSlugRoute: typeof EsFinanzasSlugRoute
+  EsFinanzasIndexRoute: typeof EsFinanzasIndexRoute
 }
 
 const EsFinanzasRouteChildren: EsFinanzasRouteChildren = {
   EsFinanzasSlugRoute: EsFinanzasSlugRoute,
+  EsFinanzasIndexRoute: EsFinanzasIndexRoute,
 }
 
 const EsFinanzasRouteWithChildren = EsFinanzasRoute._addFileChildren(
@@ -659,36 +3207,211 @@ const EsFinanzasRouteWithChildren = EsFinanzasRoute._addFileChildren(
 
 interface EsHerramientasRouteChildren {
   EsHerramientasSlugRoute: typeof EsHerramientasSlugRoute
+  EsHerramientasIndexRoute: typeof EsHerramientasIndexRoute
 }
 
 const EsHerramientasRouteChildren: EsHerramientasRouteChildren = {
   EsHerramientasSlugRoute: EsHerramientasSlugRoute,
+  EsHerramientasIndexRoute: EsHerramientasIndexRoute,
 }
 
 const EsHerramientasRouteWithChildren = EsHerramientasRoute._addFileChildren(
   EsHerramientasRouteChildren,
 )
 
+interface EsJuegosRouteChildren {
+  EsJuegosSlugRoute: typeof EsJuegosSlugRoute
+  EsJuegosIndexRoute: typeof EsJuegosIndexRoute
+}
+
+const EsJuegosRouteChildren: EsJuegosRouteChildren = {
+  EsJuegosSlugRoute: EsJuegosSlugRoute,
+  EsJuegosIndexRoute: EsJuegosIndexRoute,
+}
+
+const EsJuegosRouteWithChildren = EsJuegosRoute._addFileChildren(
+  EsJuegosRouteChildren,
+)
+
+interface EsKitsRouteChildren {
+  EsKitsSlugRoute: typeof EsKitsSlugRoute
+}
+
+const EsKitsRouteChildren: EsKitsRouteChildren = {
+  EsKitsSlugRoute: EsKitsSlugRoute,
+}
+
+const EsKitsRouteWithChildren =
+  EsKitsRoute._addFileChildren(EsKitsRouteChildren)
+
+interface EsSimuladoresRouteChildren {
+  EsSimuladoresSlugRoute: typeof EsSimuladoresSlugRoute
+  EsSimuladoresIndexRoute: typeof EsSimuladoresIndexRoute
+}
+
+const EsSimuladoresRouteChildren: EsSimuladoresRouteChildren = {
+  EsSimuladoresSlugRoute: EsSimuladoresSlugRoute,
+  EsSimuladoresIndexRoute: EsSimuladoresIndexRoute,
+}
+
+const EsSimuladoresRouteWithChildren = EsSimuladoresRoute._addFileChildren(
+  EsSimuladoresRouteChildren,
+)
+
+interface EsViajesRouteChildren {
+  EsViajesArmoniaColorRoute: typeof EsViajesArmoniaColorRoute
+  EsViajesCelebracionRoute: typeof EsViajesCelebracionRoute
+  EsViajesCompositorRioWaypointsRoute: typeof EsViajesCompositorRioWaypointsRoute
+}
+
+const EsViajesRouteChildren: EsViajesRouteChildren = {
+  EsViajesArmoniaColorRoute: EsViajesArmoniaColorRoute,
+  EsViajesCelebracionRoute: EsViajesCelebracionRoute,
+  EsViajesCompositorRioWaypointsRoute: EsViajesCompositorRioWaypointsRoute,
+}
+
+const EsViajesRouteWithChildren = EsViajesRoute._addFileChildren(
+  EsViajesRouteChildren,
+)
+
 interface EsRouteChildren {
-  EsIndexRoute: typeof EsIndexRoute
+  EsAcercaRoute: typeof EsAcercaRoute
+  EsAuraCardRoute: typeof EsAuraCardRoute
+  EsAuroraRoute: typeof EsAuroraRoute
+  EsAuroraParticlePlaygroundRoute: typeof EsAuroraParticlePlaygroundRoute
+  EsAuroraRibbonWeaverRoute: typeof EsAuroraRibbonWeaverRoute
+  EsAvisoLegalRoute: typeof EsAvisoLegalRoute
+  EsColorCascadeFusionRoute: typeof EsColorCascadeFusionRoute
+  EsConstellationRoute: typeof EsConstellationRoute
+  EsContactoRoute: typeof EsContactoRoute
+  EsCookiesRoute: typeof EsCookiesRoute
+  EsDailyProgressConstellationRoute: typeof EsDailyProgressConstellationRoute
+  EsEchoWaveRoute: typeof EsEchoWaveRoute
   EsFinanzasRoute: typeof EsFinanzasRouteWithChildren
+  EsFireworkRoute: typeof EsFireworkRoute
+  EsFirmaVisualRoute: typeof EsFirmaVisualRoute
+  EsFluidTypeRoute: typeof EsFluidTypeRoute
+  EsGlowTrailRoute: typeof EsGlowTrailRoute
   EsHerramientasRoute: typeof EsHerramientasRouteWithChildren
+  EsJuegosRoute: typeof EsJuegosRouteWithChildren
+  EsKitsRoute: typeof EsKitsRouteWithChildren
+  EsModularPatternComposerRoute: typeof EsModularPatternComposerRoute
+  EsNBodyGravityRoute: typeof EsNBodyGravityRoute
+  EsNeonLayerComposerRoute: typeof EsNeonLayerComposerRoute
+  EsNeonSignRoute: typeof EsNeonSignRoute
+  EsPostcardRoute: typeof EsPostcardRoute
+  EsPrivacidadRoute: typeof EsPrivacidadRoute
+  EsPulseCatchRoute: typeof EsPulseCatchRoute
+  EsReturnStreakBoardRoute: typeof EsReturnStreakBoardRoute
+  EsRioLuzRoute: typeof EsRioLuzRoute
+  EsSimuladoresRoute: typeof EsSimuladoresRouteWithChildren
+  EsSolarSystemScaleExplorerRoute: typeof EsSolarSystemScaleExplorerRoute
+  EsTerminosRoute: typeof EsTerminosRoute
+  EsViajesRoute: typeof EsViajesRouteWithChildren
+  EsIndexRoute: typeof EsIndexRoute
+  EsCategoriaSlugRoute: typeof EsCategoriaSlugRoute
+  EsEducacionSubjectRoute: typeof EsEducacionSubjectRoute
+  EsGuiasFisicaParticulasRoute: typeof EsGuiasFisicaParticulasRoute
+  EsGuiasInteresCompuestoRoute: typeof EsGuiasInteresCompuestoRoute
+  EsGuiasModularPatternComposerRoute: typeof EsGuiasModularPatternComposerRoute
+  EsGuiasNBodyGravityRoute: typeof EsGuiasNBodyGravityRoute
+  EsGuiasOrbitPulseCatcherRoute: typeof EsGuiasOrbitPulseCatcherRoute
+  EsGuiasRendimientoCanvasWebglRoute: typeof EsGuiasRendimientoCanvasWebglRoute
+  EsGuidesCanvasWebglPerformanceRoute: typeof EsGuidesCanvasWebglPerformanceRoute
+  EsHubsDocumentosYArchivosRoute: typeof EsHubsDocumentosYArchivosRoute
+  EsPlaygroundsConstelacionRoute: typeof EsPlaygroundsConstelacionRoute
+  EsPlaygroundsDeudaBolaNieveRoute: typeof EsPlaygroundsDeudaBolaNieveRoute
+  EsPlaygroundsFirmaParticulasRoute: typeof EsPlaygroundsFirmaParticulasRoute
+  EsPlaygroundsImanesParticulasRoute: typeof EsPlaygroundsImanesParticulasRoute
+  EsPlaygroundsKaleidoscopioMandalaRoute: typeof EsPlaygroundsKaleidoscopioMandalaRoute
+  EsPlaygroundsLienzoCintasGravedadRoute: typeof EsPlaygroundsLienzoCintasGravedadRoute
+  EsPlaygroundsParticulasRoute: typeof EsPlaygroundsParticulasRoute
+  EsPlaygroundsParticulasGravedadRoute: typeof EsPlaygroundsParticulasGravedadRoute
+  EsPlaygroundsPlanoAsientosRoute: typeof EsPlaygroundsPlanoAsientosRoute
+  EsPlaygroundsPlanoPlantaRoute: typeof EsPlaygroundsPlanoPlantaRoute
+  EsStudioCompositorEstelaPrismaRoute: typeof EsStudioCompositorEstelaPrismaRoute
+  EsStudioCompositorFirmaNeonRoute: typeof EsStudioCompositorFirmaNeonRoute
+  EsUxCarrilFocoRoute: typeof EsUxCarrilFocoRoute
+  EsUxLaboratorioDensidadRoute: typeof EsUxLaboratorioDensidadRoute
+  EsExperiencesIndexRoute: typeof EsExperiencesIndexRoute
+  EsPlaygroundsIndexRoute: typeof EsPlaygroundsIndexRoute
 }
 
 const EsRouteChildren: EsRouteChildren = {
-  EsIndexRoute: EsIndexRoute,
+  EsAcercaRoute: EsAcercaRoute,
+  EsAuraCardRoute: EsAuraCardRoute,
+  EsAuroraRoute: EsAuroraRoute,
+  EsAuroraParticlePlaygroundRoute: EsAuroraParticlePlaygroundRoute,
+  EsAuroraRibbonWeaverRoute: EsAuroraRibbonWeaverRoute,
+  EsAvisoLegalRoute: EsAvisoLegalRoute,
+  EsColorCascadeFusionRoute: EsColorCascadeFusionRoute,
+  EsConstellationRoute: EsConstellationRoute,
+  EsContactoRoute: EsContactoRoute,
+  EsCookiesRoute: EsCookiesRoute,
+  EsDailyProgressConstellationRoute: EsDailyProgressConstellationRoute,
+  EsEchoWaveRoute: EsEchoWaveRoute,
   EsFinanzasRoute: EsFinanzasRouteWithChildren,
+  EsFireworkRoute: EsFireworkRoute,
+  EsFirmaVisualRoute: EsFirmaVisualRoute,
+  EsFluidTypeRoute: EsFluidTypeRoute,
+  EsGlowTrailRoute: EsGlowTrailRoute,
   EsHerramientasRoute: EsHerramientasRouteWithChildren,
+  EsJuegosRoute: EsJuegosRouteWithChildren,
+  EsKitsRoute: EsKitsRouteWithChildren,
+  EsModularPatternComposerRoute: EsModularPatternComposerRoute,
+  EsNBodyGravityRoute: EsNBodyGravityRoute,
+  EsNeonLayerComposerRoute: EsNeonLayerComposerRoute,
+  EsNeonSignRoute: EsNeonSignRoute,
+  EsPostcardRoute: EsPostcardRoute,
+  EsPrivacidadRoute: EsPrivacidadRoute,
+  EsPulseCatchRoute: EsPulseCatchRoute,
+  EsReturnStreakBoardRoute: EsReturnStreakBoardRoute,
+  EsRioLuzRoute: EsRioLuzRoute,
+  EsSimuladoresRoute: EsSimuladoresRouteWithChildren,
+  EsSolarSystemScaleExplorerRoute: EsSolarSystemScaleExplorerRoute,
+  EsTerminosRoute: EsTerminosRoute,
+  EsViajesRoute: EsViajesRouteWithChildren,
+  EsIndexRoute: EsIndexRoute,
+  EsCategoriaSlugRoute: EsCategoriaSlugRoute,
+  EsEducacionSubjectRoute: EsEducacionSubjectRoute,
+  EsGuiasFisicaParticulasRoute: EsGuiasFisicaParticulasRoute,
+  EsGuiasInteresCompuestoRoute: EsGuiasInteresCompuestoRoute,
+  EsGuiasModularPatternComposerRoute: EsGuiasModularPatternComposerRoute,
+  EsGuiasNBodyGravityRoute: EsGuiasNBodyGravityRoute,
+  EsGuiasOrbitPulseCatcherRoute: EsGuiasOrbitPulseCatcherRoute,
+  EsGuiasRendimientoCanvasWebglRoute: EsGuiasRendimientoCanvasWebglRoute,
+  EsGuidesCanvasWebglPerformanceRoute: EsGuidesCanvasWebglPerformanceRoute,
+  EsHubsDocumentosYArchivosRoute: EsHubsDocumentosYArchivosRoute,
+  EsPlaygroundsConstelacionRoute: EsPlaygroundsConstelacionRoute,
+  EsPlaygroundsDeudaBolaNieveRoute: EsPlaygroundsDeudaBolaNieveRoute,
+  EsPlaygroundsFirmaParticulasRoute: EsPlaygroundsFirmaParticulasRoute,
+  EsPlaygroundsImanesParticulasRoute: EsPlaygroundsImanesParticulasRoute,
+  EsPlaygroundsKaleidoscopioMandalaRoute:
+    EsPlaygroundsKaleidoscopioMandalaRoute,
+  EsPlaygroundsLienzoCintasGravedadRoute:
+    EsPlaygroundsLienzoCintasGravedadRoute,
+  EsPlaygroundsParticulasRoute: EsPlaygroundsParticulasRoute,
+  EsPlaygroundsParticulasGravedadRoute: EsPlaygroundsParticulasGravedadRoute,
+  EsPlaygroundsPlanoAsientosRoute: EsPlaygroundsPlanoAsientosRoute,
+  EsPlaygroundsPlanoPlantaRoute: EsPlaygroundsPlanoPlantaRoute,
+  EsStudioCompositorEstelaPrismaRoute: EsStudioCompositorEstelaPrismaRoute,
+  EsStudioCompositorFirmaNeonRoute: EsStudioCompositorFirmaNeonRoute,
+  EsUxCarrilFocoRoute: EsUxCarrilFocoRoute,
+  EsUxLaboratorioDensidadRoute: EsUxLaboratorioDensidadRoute,
+  EsExperiencesIndexRoute: EsExperiencesIndexRoute,
+  EsPlaygroundsIndexRoute: EsPlaygroundsIndexRoute,
 }
 
 const EsRouteWithChildren = EsRoute._addFileChildren(EsRouteChildren)
 
 interface FinanceRouteChildren {
   FinanceSlugRoute: typeof FinanceSlugRoute
+  FinanceIndexRoute: typeof FinanceIndexRoute
 }
 
 const FinanceRouteChildren: FinanceRouteChildren = {
   FinanceSlugRoute: FinanceSlugRoute,
+  FinanceIndexRoute: FinanceIndexRoute,
 }
 
 const FinanceRouteWithChildren =
@@ -706,6 +3429,34 @@ const FinanzasRouteWithChildren = FinanzasRoute._addFileChildren(
   FinanzasRouteChildren,
 )
 
+interface GamesRouteChildren {
+  GamesSlugRoute: typeof GamesSlugRoute
+  GamesIndexRoute: typeof GamesIndexRoute
+}
+
+const GamesRouteChildren: GamesRouteChildren = {
+  GamesSlugRoute: GamesSlugRoute,
+  GamesIndexRoute: GamesIndexRoute,
+}
+
+const GamesRouteWithChildren = GamesRoute._addFileChildren(GamesRouteChildren)
+
+interface JourneysRouteChildren {
+  JourneysCelebrationRoute: typeof JourneysCelebrationRoute
+  JourneysColorHarmonyRoute: typeof JourneysColorHarmonyRoute
+  JourneysWaypointRiverComposerRoute: typeof JourneysWaypointRiverComposerRoute
+}
+
+const JourneysRouteChildren: JourneysRouteChildren = {
+  JourneysCelebrationRoute: JourneysCelebrationRoute,
+  JourneysColorHarmonyRoute: JourneysColorHarmonyRoute,
+  JourneysWaypointRiverComposerRoute: JourneysWaypointRiverComposerRoute,
+}
+
+const JourneysRouteWithChildren = JourneysRoute._addFileChildren(
+  JourneysRouteChildren,
+)
+
 interface KitsRouteChildren {
   KitsSlugRoute: typeof KitsSlugRoute
 }
@@ -716,29 +3467,98 @@ const KitsRouteChildren: KitsRouteChildren = {
 
 const KitsRouteWithChildren = KitsRoute._addFileChildren(KitsRouteChildren)
 
+interface SimulatorsRouteChildren {
+  SimulatorsSlugRoute: typeof SimulatorsSlugRoute
+  SimulatorsIndexRoute: typeof SimulatorsIndexRoute
+}
+
+const SimulatorsRouteChildren: SimulatorsRouteChildren = {
+  SimulatorsSlugRoute: SimulatorsSlugRoute,
+  SimulatorsIndexRoute: SimulatorsIndexRoute,
+}
+
+const SimulatorsRouteWithChildren = SimulatorsRoute._addFileChildren(
+  SimulatorsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AuraCardRoute: AuraCardRoute,
+  AuroraRoute: AuroraRoute,
+  AuroraParticlePlaygroundRoute: AuroraParticlePlaygroundRoute,
+  AuroraRibbonWeaverRoute: AuroraRibbonWeaverRoute,
   AvisoLegalRoute: AvisoLegalRoute,
+  ColorCascadeFusionRoute: ColorCascadeFusionRoute,
+  ConstellationRoute: ConstellationRoute,
   ContactRoute: ContactRoute,
   ContactoRoute: ContactoRoute,
+  CookiesRoute: CookiesRoute,
+  DailyProgressConstellationRoute: DailyProgressConstellationRoute,
+  EchoWaveRoute: EchoWaveRoute,
   EsRoute: EsRouteWithChildren,
   FinanceRoute: FinanceRouteWithChildren,
   FinanzasRoute: FinanzasRouteWithChildren,
+  FireworkRoute: FireworkRoute,
+  FluidTypeRoute: FluidTypeRoute,
+  GamesRoute: GamesRouteWithChildren,
+  GlowTrailRoute: GlowTrailRoute,
+  JourneysRoute: JourneysRouteWithChildren,
   KitsRoute: KitsRouteWithChildren,
   LegalRoute: LegalRoute,
+  ModularPatternComposerRoute: ModularPatternComposerRoute,
+  NBodyGravityRoute: NBodyGravityRoute,
+  NeonLayerComposerRoute: NeonLayerComposerRoute,
+  NeonSignRoute: NeonSignRoute,
+  PostcardRoute: PostcardRoute,
   PrivacidadRoute: PrivacidadRoute,
   PrivacyRoute: PrivacyRoute,
+  PulseCatchRoute: PulseCatchRoute,
+  ReturnStreakBoardRoute: ReturnStreakBoardRoute,
+  RiverLightRoute: RiverLightRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
+  SimulatorsRoute: SimulatorsRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SolarSystemScaleExplorerRoute: SolarSystemScaleExplorerRoute,
+  TermsRoute: TermsRoute,
+  VisualSignatureRoute: VisualSignatureRoute,
+  AdminReviewsRoute: AdminReviewsRoute,
   CategoriaSlugRoute: CategoriaSlugRoute,
   CategorySlugRoute: CategorySlugRoute,
   EducacionSubjectRoute: EducacionSubjectRoute,
   EducationSubjectRoute: EducationSubjectRoute,
+  GuidesCanvasWebglPerformanceRoute: GuidesCanvasWebglPerformanceRoute,
+  GuidesCompoundInterestRoute: GuidesCompoundInterestRoute,
+  GuidesModularPatternComposerRoute: GuidesModularPatternComposerRoute,
+  GuidesNBodyGravityRoute: GuidesNBodyGravityRoute,
+  GuidesOrbitPulseCatcherRoute: GuidesOrbitPulseCatcherRoute,
+  GuidesParticlePhysicsRoute: GuidesParticlePhysicsRoute,
   HerramientasSlugRoute: HerramientasSlugRoute,
   HubsDocumentosYArchivosRoute: HubsDocumentosYArchivosRoute,
   HubsDocumentsAndFilesRoute: HubsDocumentsAndFilesRoute,
+  PlaygroundsConstellationRoute: PlaygroundsConstellationRoute,
+  PlaygroundsDebtSnowballRoute: PlaygroundsDebtSnowballRoute,
+  PlaygroundsFloorPlanRoute: PlaygroundsFloorPlanRoute,
+  PlaygroundsGravityParticlesRoute: PlaygroundsGravityParticlesRoute,
+  PlaygroundsGravityRibbonCanvasRoute: PlaygroundsGravityRibbonCanvasRoute,
+  PlaygroundsKaleidoscopeMandalaRoute: PlaygroundsKaleidoscopeMandalaRoute,
+  PlaygroundsParticleMagnetsRoute: PlaygroundsParticleMagnetsRoute,
+  PlaygroundsParticleSignatureRoute: PlaygroundsParticleSignatureRoute,
+  PlaygroundsParticlesRoute: PlaygroundsParticlesRoute,
+  PlaygroundsSeatingChartRoute: PlaygroundsSeatingChartRoute,
+  PtOrbitDefenderArcadeRoute: PtOrbitDefenderArcadeRoute,
+  PtPongRoute: PtPongRoute,
+  PtPulseCatchRoute: PtPulseCatchRoute,
+  PtSnakeRoute: PtSnakeRoute,
+  StudioNeonSignatureComposerRoute: StudioNeonSignatureComposerRoute,
+  StudioPrismTrailComposerRoute: StudioPrismTrailComposerRoute,
   ToolsSlugRoute: ToolsSlugRoute,
+  UxDensityLabRoute: UxDensityLabRoute,
+  UxFocusLaneRoute: UxFocusLaneRoute,
+  ExperiencesIndexRoute: ExperiencesIndexRoute,
   HerramientasIndexRoute: HerramientasIndexRoute,
+  PlaygroundsIndexRoute: PlaygroundsIndexRoute,
+  PtIndexRoute: PtIndexRoute,
   ToolsIndexRoute: ToolsIndexRoute,
 }
 export const routeTree = rootRouteImport

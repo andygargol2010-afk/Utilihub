@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 304
+runs_done: 305
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 360061
+approx_bytes: 360607
 fps_baseline_desktop: ~4 fps (1366x768, headless SwiftShader software GL in cloud sandbox, 2026-10-26; compare only against same environment)
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
@@ -57,11 +57,12 @@ Update `approx_bytes` / SHA after successful surgical PRODUCT or RESTORE verific
 ## LAST RUN SNAPSHOT
 
 ```
-last_mode: MODELADOR-3D
+last_mode: PRODUCT
 last_date: 2026-10-27
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: MODELADOR-3D run 304 autosave (2s interval + pagehide/visibilitychange). Build OK, 0 console errors, fps ~14 desktop (modeler-3d page, house baseline untouched). runs_done=304.
+note: PRODUCT run 305 time-of-day presets. Build OK, 0 modeler console errors, fps ~3 desktop SwiftShader. runs_done=305.
+PRODUCT run 305: time-of-day lighting presets (backlog #6): Morning/Noon/Sunset/Dusk dropdown, new modules house-modeler/lighting.ts + TimeOfDayPicker.tsx; monolith +546 B (360607). Verified EN+ES desktop+mobile, 0 modeler console errors (only 2 known unrelated 404s). fps ~3 in SwiftShader (baseline ~4, noise-level, no new render cost). Local server: `PORT=4173 node .output/server/index.mjs` after build; EN url /tools/3d-house-modeler, ES /es/herramientas/modelador-casas-3d. runs_done=305.
 ```
 
 Refresh after each run.
@@ -145,6 +146,7 @@ PRODUCT run 301: first-visit onboarding hint overlay (backlog #8), new module ho
 PRODUCT run 302: share link (backlog #5): Copy link button, #design= hash wins over autosave, sanitizeParts shared in autosave.ts; monolith +1114 B. runs_done=302.
 PRODUCT run 303: house presets (backlog #4): cabin/two-room/shed dropdown, replaces scene via restoreParts (undoable); monolith +221 B. runs_done=303.
 MODELADOR-3D run 304: real autosave of live scene every 2s + pagehide/visibilitychange (was beforeunload only, unreliable on mobile); saveScene guarded until engine ready. Verified add cube -> reload restores, desktop+mobile. Monolith untouched. runs_done=304.
+PRODUCT run 305: time-of-day lighting presets (backlog #6): Morning/Noon/Sunset/Dusk dropdown, new modules house-modeler/lighting.ts + TimeOfDayPicker.tsx; monolith +546 B (360607). Verified EN+ES desktop+mobile, 0 modeler console errors (only 2 known unrelated 404s). fps ~3 in SwiftShader (baseline ~4, noise-level, no new render cost). Local server: `PORT=4173 node .output/server/index.mjs` after build; EN url /tools/3d-house-modeler, ES /es/herramientas/modelador-casas-3d. runs_done=305.
 ```
 
 <!-- end:house-modeler-state.md -->
