@@ -3,199 +3,286 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
 
-const TITLE = "Atrapa Pulsos en Órbita: guía de timing radial y combos | UtiliHub";
-const DESCRIPTION =
-  "Guía completa de Atrapa Pulsos en Órbita: mecánicas de zona radial, multiplicadores de combo, fórmula de puntuación con ejemplos y progresión de dificultad. Jugá gratis en el navegador.";
+const title = "Atrapa Pulsos en Órbita: Guía del Juego de Timing Radial | UtiliHub";
+const description = cleanDescription(
+  "Guía original de largo formato sobre el juego interactivo Atrapa Pulsos en Órbita. Explica mecánicas de órbita radial, coincidencia de zonas que crecen hasta 8, multiplicadores de combo, pulsos de power-up, ráfagas de partículas, feedback háptico, zonas táctiles amplias, controles de teclado, compartir PNG con branding y estadísticas, y high scores en localStorage. Incluye fórmula exacta de puntuación, progresión de niveles, ventanas de timing, estrategias, patrones de ritmo, errores comunes, técnicas avanzadas y recuperación, ejercicios de práctica estructurados, distinción de otros juegos de pulsos y enlaces profundos a la experiencia en vivo.",
+);
 
 export const Route = createFileRoute("/es/guias/orbit-pulse-catcher")({
   head: () => ({
     meta: [
-      { title: TITLE },
-      { name: "description", content: cleanDescription(DESCRIPTION) },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: cleanDescription(DESCRIPTION) },
-      { property: "og:url", content: absoluteUrl("/es/guias/orbit-pulse-catcher") },
-      { property: "og:image", content: ogImage },
+      { title },
+      { name: "description", content: description },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
       { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: TITLE },
-      { name: "twitter:description", content: cleanDescription(DESCRIPTION) },
-      { name: "twitter:image", content: ogImage },
+      { property: "og:locale", content: "es_ES" },
+      { property: "og:url", content: absoluteUrl("/es/guias/orbit-pulse-catcher") },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:image", content: ogImage() },
+    ],
+    links: [
+      { rel: "canonical", href: absoluteUrl("/es/guias/orbit-pulse-catcher") },
       ...hreflangLinks("/guides/orbit-pulse-catcher", "/es/guias/orbit-pulse-catcher"),
     ],
-    links: [{ rel: "canonical", href: absoluteUrl("/es/guias/orbit-pulse-catcher") }],
   }),
-  component: EsOrbitPulseCatcherGuidePage,
+  component: OrbitPulseCatcherGuideEs,
 });
 
-function EsOrbitPulseCatcherGuidePage() {
+function OrbitPulseCatcherGuideEs() {
   return (
     <div className="container-page py-8 sm:py-12">
-      <Breadcrumbs
-        items={[
-          { label: "Inicio", to: "/es" },
-          { label: "Guías", to: "/es/guias" },
-          { label: "Atrapa Pulsos en Órbita" },
-        ]}
-      />
+      <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Guías", to: "/es/guias" }, { label: "Atrapa Pulsos en Órbita" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Atrapa Pulsos en Órbita: Domina el Timing Radial, los Combos y las Puntuaciones Altas</h1>
         <p className="lead">
-          Atrapa Pulsos en Órbita es un desafío de timing: un pulso gira y tenés que capturarlo cuando atraviesa la zona activa. Esta guía cubre mecánicas, combos, la fórmula de puntuación con ejemplos trabajados y cómo subir de nivel sin romper la racha.
+          Atrapa Pulsos en Órbita es un juego interactivo de timing construido alrededor de mecánicas de órbita radial. Los pulsos viajan a lo largo de órbitas circulares mientras las zonas de coincidencia crecen desde unas pocas hasta ocho. Atrápalos en el momento correcto para construir combos, activar power-ups y perseguir puntuaciones altas. Esta guía original cubre el bucle principal, los sistemas de puntuación, el feedback visual y háptico, los controles, el compartir, la persistencia, estrategias prácticas, patrones de ritmo, errores comunes, la fórmula exacta y la progresión, técnicas avanzadas, ejercicios de práctica estructurados, y cómo se diferencia de otras experiencias de pulsos y arcade en UtiliHub.
         </p>
 
         <div className="not-prose my-8 rounded-xl border border-primary/20 bg-primary/5 p-6">
-          <h3 className="text-lg font-bold">Jugá la experiencia en vivo</h3>
+          <h3 className="text-lg font-bold">Juega la experiencia en vivo</h3>
           <p className="mt-2 text-muted-foreground">
-            Abrí el playground, practicá capturas y mirá cómo el combo multiplica cada acierto.
+            Coincide pulsos en órbitas radiales, haz crecer tu combo y comparte tu mejor puntuación.
           </p>
           <Link
-            to="/es/pulse-catch"
-            className="mt-4 inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+            to="/es/juegos/atrapa-pulsos-orbita"
+            className="mt-4 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
           >
-            Jugar Atrapa Pulsos en Órbita
+            Abrir Atrapa Pulsos en Órbita
           </Link>
         </div>
 
         <h2>Mecánicas de órbita radial y coincidencia de zonas</h2>
         <p>
-          El pulso se mueve en una trayectoria circular. En cada momento hay una o más zonas activas sobre el anillo; tu trabajo es pulsar (o hacer clic) cuando el pulso está dentro de esa zona. Un acierto suma puntos y alimenta el combo; un fallo o un retraso largo corta la racha.
+          Los pulsos se mueven continuamente a lo largo de una o más órbitas circulares. Las zonas de coincidencia aparecen como sectores o arcos radiales que debes golpear mientras el pulso está dentro de ellas. Los niveles iniciales usan menos zonas; a medida que aumenta la dificultad el número de zonas activas crece hacia un máximo de ocho. La precisión de timing importa más que la velocidad bruta: un pulso que apenas roza el borde de una zona puede contar, pero los fallos tempranos o tardíos rompen el combo.
         </p>
         <p>
-          La dificultad sube al aumentar la velocidad angular y al reducir el arco de la zona. En niveles altos las zonas son más estrechas y el margen de error, menor. Aprendé el ritmo del nivel actual antes de perseguir clips al borde.
+          El diseño radial mantiene todo a la vista tanto en escritorio como en móvil. Debido a que el movimiento es circular en lugar de lineal, la visión periférica y el reconocimiento de ritmo se convierten en habilidades útiles. Las zonas empiezan en cuatro y aumentan aproximadamente una cada dos niveles (tope en ocho), por lo que la ventana angular de cada zona se reduce a medida que avanza la partida.
         </p>
 
         <h2>Multiplicadores de combo y puntuación</h2>
         <p>
-          Cada captura exitosa dentro de la ventana de tiempo suma al combo. El multiplicador de combo crece con rachas largas; un fallo o una pausa demasiado larga lo reinicia. Un boost temporal puede aplicar un factor extra sobre el total de la captura.
+          Las capturas consecutivas exitosas aumentan un multiplicador de combo. Combos más altos otorgan más puntos por captura y desbloquean hitos visuales. Fallar un pulso reinicia el combo. Las mejores puntuaciones vienen de cadenas largas e ininterrumpidas en lugar de aciertos perfectos ocasionales.
         </p>
         <p>
-          La puntuación de una captura combina una base por acierto, el factor de combo, el factor de nivel y, si está activo, el boost. Mantener el combo vale más que sumar capturas aisladas a ritmo bajo.
+          Los puntos por captura exitosa escalan con la longitud del combo, el nivel actual y cualquier boost de power-up activo. Un valor base se multiplica por un factor de combo (que crece con capturas sucesivas), un factor de nivel y un multiplicador de boost temporal cuando un power-up está activo. Los hitos de combo en 5 y 10 activan celebraciones extra de partículas sin alterar la fórmula subyacente.
         </p>
 
         <h2>Fórmula exacta de puntuación y ejemplos trabajados</h2>
         <p>
-          En la implementación actual, la puntuación por captura se puede modelar así (valores orientativos del playground):
+          Cada captura exitosa otorga puntos según esta fórmula (redondeada al entero más cercano):
         </p>
         <p>
-          <strong>
-            pts ≈ base × (1 + (combo − 1) × 0.4) × (1 + (nivel − 1) × 0.15) × (boost ? 1.8 : 1)
-          </strong>
+          pts = 24 × (1 + (combo − 1) × 0.4) × (1 + nivel × 0.15) × multiplicador
         </p>
         <p>
-          Con base ≈ 24 puntos por captura limpia. El combo cuenta capturas seguidas sin fallo; el nivel empieza en 1. El boost, cuando está activo, multiplica por 1.8.
+          donde el multiplicador es 1.8 mientras un boost de power-up está activo y 1.0 en caso contrario. El combo empieza en 1 en la primera captura después de un reinicio y crece en 1 por cada captura posterior que ocurra dentro de 1,1 segundos de la anterior. Un fallo, o más de 1,6 segundos sin captura, reinicia el combo.
         </p>
         <p>
-          <strong>Ejemplo 1 (juego temprano):</strong> Nivel 1, combo 3, sin boost. Factor combo = 1 + 2 × 0.4 =
-          1.8; factor nivel = 1 + 0.15 = 1.15; pts ≈ 24 × 1.8 × 1.15 = 50.
+          <strong>Ejemplo 1 (juego temprano):</strong> Nivel 1, combo 3, sin boost. Factor combo = 1 + 2 × 0.4 = 1.8; factor nivel = 1 + 0.15 = 1.15; pts ≈ 24 × 1.8 × 1.15 = 50.
         </p>
         <p>
-          <strong>Ejemplo 2 (combo medio + boost):</strong> Nivel 4, combo 8, boost activo. Factor combo = 1 +
-          7 × 0.4 = 3.8; factor nivel = 1 + 0.6 = 1.6; pts ≈ 24 × 3.8 × 1.6 × 1.8 = 263.
+          <strong>Ejemplo 2 (combo medio + boost):</strong> Nivel 4, combo 8, boost activo. Factor combo = 1 + 7 × 0.4 = 3.8; factor nivel = 1 + 0.6 = 1.6; pts ≈ 24 × 3.8 × 1.6 × 1.8 = 263.
         </p>
         <p>
-          <strong>Ejemplo 3 (nivel alto, sin boost):</strong> Nivel 7, combo 12, sin boost. Factor combo = 1 +
-          11 × 0.4 = 5.4; factor nivel = 1 + 1.05 = 2.05; pts ≈ 24 × 5.4 × 2.05 = 266.
+          <strong>Ejemplo 3 (nivel alto, sin boost):</strong> Nivel 7, combo 12, sin boost. Factor combo = 1 + 11 × 0.4 = 5.4; factor nivel = 1 + 1.05 = 2.05; pts ≈ 24 × 5.4 × 2.05 = 266.
+        </p>
+        <p>
+          Estos números ilustran por qué proteger un combo alto bajo un boost activo produce las capturas individuales más grandes, mientras que combos medios sostenidos acumulan de forma fiable a lo largo de una partida larga.
         </p>
 
-        <h2>Ventana de combo y reinicio</h2>
+        <h2>Progresión de niveles y recuento de zonas</h2>
         <p>
-          El combo crece si capturás dentro de aproximadamente 1.1 s desde la captura anterior. Se reinicia tras
-          un fallo o si pasa más de 1.6 s sin acierto. Priorizá la continuidad del combo frente a arriesgar un
-          borde dudoso.
-        </p>
-
-        <h2>Progresión de zonas y dificultad</h2>
-        <p>
-          Al subir de nivel aparecen más zonas o arcos más chicos. Una buena regla: dominá el centro del arco
-          antes de perseguir clips de borde, y solo buscá esos clips cuando ya manejes más de 5 zonas con
-          estabilidad.
+          Las zonas empiezan en 4 y aumentan una cada dos niveles, con tope en 8:
         </p>
         <ul>
-          <li>Niveles 1–2: pocas zonas, arcos amplios</li>
+          <li>Niveles 1–2: 4 zonas</li>
           <li>Niveles 3–4: 5 zonas</li>
           <li>Niveles 5–6: 6 zonas</li>
-          <li>Niveles superiores: arcos más estrechos y mayor velocidad</li>
+          <li>Niveles 7–8: 7 zonas</li>
+          <li>Niveles 9+: 8 zonas</li>
         </ul>
-
-        <h2>Controles y feedback</h2>
         <p>
-          Mapeo de teclado (escritorio): las teclas numéricas 1–N seleccionan la zona correspondiente cuando el
-          modo lo permite; el clic o toque en la zona activa también cuenta. Las capturas exitosas, subidas de
-          nivel y hitos de combo (especialmente en 5 y 10) activan feedback visual y, si está habilitado,
-          sonoro.
+          Una subida de nivel ocurre cuando la puntuación actual supera nivel × 220 (máximo nivel 10). La velocidad de órbita, la tasa de aparición de pulsos y el máximo de pulsos simultáneos aumentan con el nivel. Los pulsos de power-up aparecen con más frecuencia después del nivel 1 (aproximadamente un 11 % de probabilidad por spawn).
         </p>
 
-        <h2>Estrategia por tramo de nivel</h2>
+        <h2>Ventanas de timing y detalles de entrada</h2>
         <p>
-          Una vez que las zonas llegan a seis o más, el tiempo de reacción puro ya no es suficiente: hay que
-          anticipar. Recuperación después de un fallo: el combo cae, pero las vidas permanecen. Inmediatamente
-          volvé al centro del arco y reconstruí el combo antes de volver a los bordes.
+          La tolerancia angular para una captura exitosa es aproximadamente 0,48 radianes (unos 27,5°), intencionadamente indulgente para el juego móvil. El crédito de combo requiere que la siguiente captura ocurra dentro de 1 100 ms de la anterior; de lo contrario el combo se reinicia a 1. Si pasan más de 1 600 ms sin una captura el combo también cae a cero. Estas ventanas recompensan un ritmo constante en lugar de toques frénticos.
+        </p>
+        <p>
+          Mapeo de teclado (escritorio): las teclas numéricas 1–N seleccionan la zona correspondiente. Teclas QWERTY adicionales están vinculadas a las primeras ocho zonas: Q = zona 1, W = 2, E = 3, R = 4, T = 5, Y = 6, U = 7, I = 8. El táctil usa una zona anular amplia que produce ondas visuales al contacto.
+        </p>
+
+        <h2>Pulsos de power-up</h2>
+        <p>
+          Ciertos pulsos son power-ups. Atraparlos otorga bonificaciones temporales como una vida extra o un impulso de puntuación. Aparecen con menos frecuencia que los pulsos normales y suelen ser visualmente distintos (tono diferente y brillo más fuerte). Usarlos en el momento adecuado puede extender una racha de combo alto o recuperarse de un casi fallo. Las vidas tienen tope en 5 y el impulso de puntuación dura aproximadamente tres segundos.
+        </p>
+
+        <h2>Ráfagas de partículas, feedback háptico y pulido visual</h2>
+        <p>
+          Las capturas exitosas, subidas de nivel y hitos de combo (especialmente en 5 y 10) activan ráfagas de partículas. Los efectos tienen un recuento y vida modesta para mantener el rendimiento. Las zonas táctiles amplias incluyen feedback de ondas. En dispositivos que lo soportan, los pulsos hápticos dan confirmación táctil sin depender solo de la vista o el sonido. Los anillos de captura se expanden desde el punto de impacto y los aciertos de power-up producen chispas más densas.
+        </p>
+
+        <h2>Controles: táctil y teclado</h2>
+        <p>
+          En pantallas táctiles las zonas son lo suficientemente grandes para toques cómodos. El soporte de teclado mapea las teclas numéricas 1-N y teclas cercanas de QWERTY a las zonas activas, permitiendo a los jugadores de escritorio mantenerse precisos sin mirar el teclado. Ambos métodos de entrada alimentan la misma lógica de timing y puntuación. Los números de zona se dibujan dentro de los arcos para referencia rápida.
+        </p>
+
+        <h2>Compartir PNG y high scores en localStorage</h2>
+        <p>
+          Después de una buena racha puedes exportar un PNG que incluye el título del juego, el branding de UtiliHub y tu mejor puntuación, nivel y combo. Las puntuaciones altas persisten en localStorage para que sobrevivan recargas de página y reinicios del navegador. Nada sale del dispositivo excepto la imagen que eliges compartir.
+        </p>
+
+        <h2>Ejemplo trabajado: una ruta de puntuación alta a mitad de partida</h2>
+        <p>
+          Imagina un jugador que empieza en nivel 1 con cuatro zonas. Atrapa los primeros pulsos limpiamente, construyendo un combo hasta 4. Aparece un pulso de power-up (tono dorado). Lo atrapa, ganando una vida y un boost temporal de puntuación. Con el boost activo empuja el combo hasta 8 antes de que expire. En nivel 3 (cinco zonas) toma deliberadamente aciertos más seguros en el centro en lugar de clips de borde, manteniendo el combo vivo. Para cuando las zonas llegan a seis o siete ya ha acumulado suficientes puntos como para que un solo fallo sea menos devastador. Termina la partida exportando un PNG que muestra la puntuación final, nivel y pico de combo para comparación posterior.
+        </p>
+        <p>
+          El ejemplo ilustra el equilibrio práctico: uso temprano del power-up para proteger vidas y amplificar la puntuación, seguido de un timing más conservador una vez que el número de zonas sube.
+        </p>
+
+        <h2>Reconocimiento de ritmo y anticipación de patrones</h2>
+        <p>
+          Debido a que los pulsos siguen un movimiento circular continuo, el intervalo de timing entre aciertos sucesivos de zona es relativamente estable en un nivel dado. Los jugadores que internalizan el período pueden empezar a anticipar la siguiente ventana de acierto en lugar de reaccionar puramente de forma visual. En niveles tempranos (cuatro zonas) el espaciado angular es amplio; un ritmo cómodo es un toque aproximadamente cada 0,6–0,8 segundos dependiendo de la velocidad de órbita. A medida que las zonas aumentan a seis o siete las ventanas se encogen y la cadencia requerida se vuelve más ajustada—practica igualar el ritmo de la órbita en lugar de perseguir pulsos individuales.
+        </p>
+        <p>
+          Un ejercicio útil: silencia o ignora el pulso visual durante unos segundos y toca solo en el intervalo recordado, luego re-sincroniza. Las rachas exitosas a menudo muestran un ligero adelanto en la entrada de la zona en lugar de un acierto en el centro, dando un pequeño buffer contra reacciones tardías. Los pulsos de power-up interrumpen el patrón intencionadamente; trátalos como un breve descanso de ritmo en lugar de un reinicio forzado.
+        </p>
+
+        <h2>Técnicas avanzadas: adelanto, recuperación y conciencia multi-pulso</h2>
+        <p>
+          Una vez que las zonas llegan a seis o más, el tiempo de reacción puro ya no es suficiente. Adelantar la entrada de la zona por 50–80 ms (aproximadamente el tiempo de una anticipación visual rápida) da un buffer contra el lag de entrada en móvil o cuando hay múltiples pulsos activos. Cuando dos pulsos se acercan a zonas diferentes simultáneamente, prioriza el que continúa una cadena de combo existente; un solo fallo reinicia el multiplicador, así que proteger la racha actual supera atrapar ambos.
+        </p>
+        <p>
+          Recuperación después de un fallo: el combo cae, pero las vidas permanecen. Inmediatamente cambia a un adelanto ligeramente más temprano e ignora los efectos de partículas del fallo. En escritorio la fila QWERTY (Q–I) te permite mantener los dedos en la fila de inicio mientras los ojos se quedan en la órbita. En móvil, las zonas anulares amplias significan que puedes pre-posicionar el pulgar sobre el siguiente arco esperado en lugar de perseguir el pulso. Practica ejercicios cortos de recuperación: falla deliberadamente una vez en nivel 3–4, luego reconstruye a combo 5 sin más fallos. Los jugadores que dominan la recuperación convierten más casi-fallos a mitad de partida en puntuaciones aún altas.
+        </p>
+
+        <h2>Ejercicios de práctica estructurados para dominio progresivo</h2>
+        <p>
+          Sesiones cortas dedicadas construyen las habilidades de anticipación y recuperación que las puntuaciones altas requieren. Cada ejercicio apunta a una ventana específica del juego.
         </p>
         <ul>
-          <li>
-            <strong>Adelanto y mantener (niveles 3–4, 5 zonas):</strong> Adelanta deliberadamente un poco la
-            entrada y mantené el ritmo del nivel.
-          </li>
-          <li>
-            <strong>Pre-posicionamiento (6+ zonas):</strong> Adelanta las entradas de zona por 50–80 ms una vez
-            que las zonas superan cinco; pre-posicioná el cursor o el dedo.
-          </li>
+          <li><strong>Calentamiento de recuento de zonas (niveles 1–2, 4 zonas):</strong> Juega hasta combo 6 sin fallo. Objetivo: internalizar el intervalo de ~0,7 s. Resultado esperado: un adelanto cómodo de 40–60 ms se vuelve automático.</li>
+          <li><strong>Adelanto y mantener (niveles 3–4, 5 zonas):</strong> Adelanta deliberadamente cada entrada de zona por ~60 ms. Mantén combo ≥5 durante dos niveles consecutivos. Resultado: buffer contra la ventana angular que se reduce.</li>
+          <li><strong>Escalera de recuperación (cualquier nivel):</strong> Falla intencionadamente una vez, luego reconstruye al pico de combo anterior dentro de 20 segundos. Repite tres veces. Construye velocidad de reinicio mental.</li>
+          <li><strong>Ejercicio de timing de power-up:</strong> Espera un power-up mientras el combo es 4–6, atrápalo, luego empuja dos capturas más bajo el boost 1,8×. Anota la diferencia versus una cadena equivalente sin boost.</li>
+          <li><strong>Prioridad multi-pulso (niveles altos):</strong> Cuando dos pulsos son visibles, siempre protege primero la cadena de combo más alta. Rastrea cuántas situaciones duales resuelves sin reinicio.</li>
         </ul>
+        <p>
+          Completa un ejercicio por sesión. Después de tres sesiones la combinación de anticipación, recuperación y timing de boost típicamente eleva la longitud media de combo en 1–2 y reduce la frecuencia de fallos tardíos.
+        </p>
 
-        <h2>Errores frecuentes</h2>
+        <h2>Errores comunes y cómo evitarlos</h2>
         <ul>
-          <li>Pulsar por ritmo fijo sin mirar el pulso: el período cambia con el nivel.</li>
-          <li>Romper un combo alto por un borde innecesario.</li>
-          <li>Ignorar el boost cuando está activo y jugar demasiado seguro.</li>
-          <li>No recalibrar después de un reinicio de combo.</li>
+          <li><strong>Perseguir clips de borde por estilo:</strong> Los niveles tempranos recompensan la precisión, pero una vez que las zonas superan cinco el margen angular se reduce. Prefiere aciertos en el centro de la zona para proteger el combo.</li>
+          <li><strong>Guardar power-ups demasiado tiempo:</strong> El boost de puntuación es de duración limitada. Actívalo mientras un combo ya está construyéndose para que el multiplicador se aplique a las capturas de mayor valor.</li>
+          <li><strong>Ignorar el teclado en escritorio:</strong> El táctil funciona, pero el mapeo de teclas numéricas (1–N) reduce la latencia y te permite mantener los ojos en la órbita. Mapea las zonas una vez y quédate en las teclas.</li>
+          <li><strong>Pánico después de un casi fallo:</strong> Un solo fallo reinicia el combo pero no termina la partida si quedan vidas. Reinicia mentalmente al nuevo ritmo en lugar de sobre-corregir la velocidad.</li>
+          <li><strong>Saltarse la exportación PNG:</strong> Las estadísticas horneadas (puntuación, nivel, pico de combo) son el único registro persistente. Exporta después de cada récord personal para que el progreso sea visible más tarde.</li>
         </ul>
 
-        <h2>Checklist antes de una run seria</h2>
-        <ol>
-          <li>Calentá 30–60 s en el nivel actual sin perseguir puntuación.</li>
-          <li>Anotá mentalmente el arco cómodo (centro vs borde).</li>
-          <li>Si el combo se corta, respirá y reconstruí; no fuerces el mismo error.</li>
-          <li>Usá el boost en rachas ya estables, no en la primera captura tras un fallo.</li>
-        </ol>
+        <h2>Distinción de juegos relacionados</h2>
+        <p>
+          Pulse Catch Arena se centra en la captura de pulsos lineal o de estilo arena con reglas espaciales diferentes. Desafío de Refracción es un puzzle de física basado en apuntar y doblar la luz en lugar de un juego puro de timing. Atrapa Pulsos en Órbita se define por su diseño de órbita radial, el recuento creciente de zonas y el énfasis en el ritmo de combo sostenido.
+        </p>
+
+        <h2>Estrategias prácticas para puntuaciones altas</h2>
+        <ul>
+          <li>Prioriza la consistencia sobre la codicia: un combo medio sostenido a lo largo de niveles suele superar un estallido ultra-alto corto que termina temprano.</li>
+          <li>Observa la velocidad de órbita y el recuento de zonas juntos; cuando las zonas se multiplican, reduce tu tolerancia al riesgo en aciertos de borde.</li>
+          <li>Guarda los pulsos de power-up para momentos en los que tu combo ya es alto o cuando necesitas la vida extra para terminar un nivel.</li>
+          <li>Usa el teclado en escritorio para un timing más ajustado; las ondas táctiles ayudan a confirmar los aciertos en móvil.</li>
+          <li>Exporta un PNG de tu mejor racha — las estadísticas horneadas facilitan seguir el progreso a lo largo del tiempo.</li>
+          <li>Nota el patrón de crecimiento de zonas: cuatro zonas al principio, luego una zona adicional aproximadamente cada dos niveles, hasta ocho. Ajusta tu escaneo visual en consecuencia.</li>
+          <li>Internaliza el período de órbita temprano; la anticipación supera la reacción pura una vez que las zonas superan cinco.</li>
+          <li>Temporiza las capturas de power-up para que coincidan con un combo en aumento de modo que el multiplicador 1,8× impacte los pulsos de mayor valor.</li>
+          <li>Adelanta las entradas de zona por 50–80 ms una vez que las zonas superan cinco; pre-posiciona en móvil y usa teclas de fila de inicio en escritorio para velocidad de recuperación.</li>
+        </ul>
+
+        <h2>Rendimiento y Core Web Vitals</h2>
+        <p>
+          El canvas se carga de forma perezosa en su propia ruta. Los recuentos y vidas de partículas están limitados. No se introducen dependencias pesadas nuevas. El resultado se mantiene seguro para CWV en móvil mientras entrega feedback visual y háptico claro.
+        </p>
+
+        <h2>Cómo UtiliHub implementa el juego</h2>
+        <p>
+          El componente del juego mantiene posiciones de órbita, zonas activas, estado de combo, vidas y puntuación. Cada fotograma avanza los pulsos, verifica intersecciones de zonas, activa partículas y hápticos en aciertos, y actualiza el almacén de high score. Las rutas en inglés y español se mantienen sincronizadas. Adsterra permanece intacto.
+        </p>
+
+        <h2>Experiencias relacionadas</h2>
+        <ul>
+          <li><Link to="/es/juegos/pulse-catch-arena">Pulse Catch Arena</Link> — reglas alternativas de captura de pulsos.</li>
+          <li><Link to="/es/juegos/desafio-refraccion">Desafío de Refracción</Link> — puzzle de física de apuntar.</li>
+          <li><Link to="/es/guias/modular-pattern-composer">Guía del Compositor de Patrones Modulares</Link> — guía companion de largo formato sobre otra superficie interactiva.</li>
+          <li><Link to="/es/guias/n-body-gravity">Guía de Gravedad N-Cuerpos</Link> — guía relacionada de simulación con sistemas de timing y partículas.</li>
+        </ul>
 
         <h2>Preguntas frecuentes</h2>
-        <h3>¿Se puede jugar en el celular?</h3>
         <p>
-          Sí. El playground responde a toques; en pantallas chicas priorizá el centro de la zona para no fallar
-          por precisión de dedo.
+          <strong>¿Cuántas zonas pueden aparecer?</strong> Las zonas de coincidencia crecen hasta un máximo de ocho a medida que avanzan los niveles. Empiezan en cuatro y aumentan aproximadamente cada dos niveles.
         </p>
-        <h3>¿Hay que crear cuenta?</h3>
-        <p>No. Se juega en el navegador, sin registro.</p>
-        <h3>¿La puntuación se guarda en un servidor?</h3>
         <p>
-          El foco de esta experiencia es la práctica local y el feedback inmediato. Consultá la página del juego
-          para el estado actual de rankings o guardado.
+          <strong>¿Los power-ups se apilan?</strong> Proporcionan efectos temporales (vida extra o impulso de puntuación). Atrapar otro mientras uno está activo suele refrescar o extender el beneficio. Las vidas tienen tope en 5.
+        </p>
+        <p>
+          <strong>¿La puntuación alta se comparte online?</strong> No. Las puntuaciones se quedan en localStorage en tu dispositivo. El compartir PNG es la forma de mostrar a otros tu resultado.
+        </p>
+        <p>
+          <strong>¿Funciona offline?</strong> Sí, una vez que la página ha cargado. Toda la lógica y persistencia son del lado del cliente.
+        </p>
+        <p>
+          <strong>¿Puedo usar tanto táctil como teclado?</strong> Sí. Ambos inputs están activos y mapean a las mismas zonas.
+        </p>
+        <p>
+          <strong>¿Qué termina un combo?</strong> Un pulso fallado o una pausa larga (más de unos 1,6 segundos) sin una captura exitosa reinicia el contador de combo. El crecimiento del combo en sí requiere capturas dentro de 1,1 segundos entre sí.
+        </p>
+        <p>
+          <strong>¿Cómo maximizo el boost del power-up?</strong> Atrapa el power-up mientras tu combo ya está elevado para que el multiplicador temporal 1,8× se aplique a las capturas de mayor valor.
+        </p>
+        <p>
+          <strong>¿Hay una mejor velocidad de órbita a la que apuntar?</strong> La velocidad aumenta con el nivel. Enfócate en igualar el período actual en lugar de forzar un tempo fijo; el diseño radial hace el intervalo predecible una vez que tienes unos cuantos aciertos exitosos.
+        </p>
+        <p>
+          <strong>¿Los efectos de partículas afectan el timing?</strong> No. Las partículas son solo visuales y no alteran las ventanas de colisión o puntuación. Permanecen modestas para proteger el rendimiento.
+        </p>
+        <p>
+          <strong>¿Puedo reiniciar un nivel sin perder toda la partida?</strong> Las vidas permiten recuperación de fallos individuales. Un reinicio completo (si está disponible en la UI) limpia la puntuación actual pero preserva el high score de localStorage.
+        </p>
+        <p>
+          <strong>¿Cuál es la tolerancia angular?</strong> Aproximadamente 0,48 radianes, lo que da una ventana indulgente que funciona bien tanto en táctil como en teclado.
+        </p>
+        <p>
+          <strong>¿Cómo funciona el umbral de subida de nivel?</strong> Avanzas cuando tu puntuación supera el nivel actual multiplicado por 220, hasta un máximo de nivel 10.
+        </p>
+        <p>
+          <strong>¿Cuántos pulsos simultáneos pueden aparecer?</strong> El máximo aumenta con el nivel (empezando bajo y subiendo). Enfócate en el pulso que está a punto de entrar en una zona en lugar de rastrear cada órbita.
+        </p>
+        <p>
+          <strong>¿Qué pasa cuando las vidas llegan a cero?</strong> La partida termina y la puntuación final se compara con el high score de localStorage. Exporta un PNG antes de reiniciar si es un récord personal.
+        </p>
+        <p>
+          <strong>¿Puedo practicar niveles específicos?</strong> No hay selección de nivel; la progresión es continua. Los niveles tempranos sirven como calentamiento natural para las ventanas más ajustadas que siguen.
         </p>
 
-        <div className="not-prose mt-10 flex flex-wrap gap-3">
-          <Link
-            to="/es/pulse-catch"
-            className="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
-          >
-            Jugar ahora
-          </Link>
-          <Link
-            to="/es/guias"
-            className="inline-flex items-center rounded-lg border px-4 py-2 text-sm font-semibold hover:bg-muted"
-          >
-            Más guías
-          </Link>
-        </div>
+        <p>
+          <strong>¿Cuánto debe durar una sesión de práctica?</strong> Cinco a ocho minutos enfocados en un ejercicio es más efectivo que rachas más largas sin foco. Bloques cortos y concentrados mejoran la retención del período de órbita.
+        </p>
+        <p>
+          <strong>¿Adelantar aumenta el riesgo de fallos tempranos?</strong> Dentro de la tolerancia de 0,48 rad un adelanto de 50–80 ms permanece dentro de la ventana en velocidades de órbita típicas; principalmente convierte reacciones tardías en capturas exitosas.
+        </p>
 
-        <p className="mt-8 text-sm text-muted-foreground">
-          {SITE_NAME} — herramientas y playgrounds gratuitos en el navegador.
+        <p className="mt-8">
+          <Link to="/es/juegos/atrapa-pulsos-orbita" className="font-semibold text-primary">
+            Abre Atrapa Pulsos en Órbita y comienza tu racha de puntuación alta →
+          </Link>
         </p>
       </article>
-
-      <div className="mx-auto mt-10 max-w-3xl">
-        <AdsterraBanner placement="guide-bottom" />
+      <div className="mt-10">
+        <AdsterraBanner />
       </div>
     </div>
   );
 }
+
