@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: playgrounds
-last_closed_id: fluid-ink-flow-playground
+last_closed_domain: seo-locales
+last_closed_id: seo-locales-fr-shell
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-27 | seo-locales | seo-locales-fr-shell | French (fr) SEO-first locale shell + 4 experiences (/fr, /fr/fluid-ink-flow-playground, /fr/pulse-catch, /fr/snake, /fr/pong) complete after 4 runs. Full French titles, descriptions, UI strings via locale=fr, hreflang alternates, minimal shell, no primary nav links from EN/ES. CWV-safe. Adsterra intact.
 - 2026-10-27 | playgrounds | fluid-ink-flow-playground | Interactive Fluid Ink Flow playground complete after 4 runs. Freehand viscous multi-color ink with mixing, controls (viscosity/density/gravity/tension), URL deep-link, mobile density tuning, branded PNG, EN+ES. CWV-safe particle caps. Adsterra intact.
 - 2026-10-27 | search-magnets | orbit-pulse-catcher-guide | Original long-form SEO guide (EN+ES) on the Orbit Pulse Catcher interactive timing game complete after 6 runs. Full EN+ES depth including scoring formula, drills, 15-min plan. CWV-safe. Adsterra intact.
 ```
@@ -54,7 +55,7 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: done
 idea: Add French (fr) SEO-first locale with minimal shell and full localization of key interactive experiences (playgrounds/games) for search discovery via hreflang, no primary nav links from EN/ES.
 id: seo-locales-fr-shell
 path_en: n/a
@@ -62,11 +63,11 @@ path_es: n/a
 path_seo: /fr
 domain: seo-locales
 runs_total: 4
-runs_remaining: 1
+runs_remaining: 0
 acceptance: User opens /fr and at least one experience route (e.g. /fr/fluid-ink-flow or equivalent), sees complete French titles, descriptions, and UI strings; hreflang present; no EN/ES navigation links to it.
 share: n/a
-next_step_required: yes
-notes: EXECUTE 1/4: shipped /fr minimal shell + /fr/fluid-ink-flow-playground with full French titles, descriptions, UI strings (via locale=fr in playground), hreflang alternates, minimal header/footer, lang=fr. No primary nav links from EN/ES. EXECUTE 2/4: added /fr/pulse-catch with full French UI strings (extended PulseCatch locale to include fr), titles, descriptions, hreflang; updated /fr home to list both experiences. EXECUTE 3/4: added /fr/pong with full French UI strings (extended PongGame locale to include fr), titles, descriptions, hreflang; updated /fr home and registry. Rubric from IDEATE retained. Next: polish shell if needed or close after final verification.
+next_step_required: no
+notes: EXECUTE 4/4 (CLOSE): final verification of /fr shell + experiences (fluid-ink, pulse-catch, snake, pong). Full French titles/descriptions/UI strings, hreflang, minimal shell, no EN/ES nav links confirmed. Project closed. Rubric from IDEATE retained.
 adsense-prep_runs: 3
 ```
 
