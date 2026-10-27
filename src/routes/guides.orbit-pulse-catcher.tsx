@@ -5,7 +5,7 @@ import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from
 
 const title = "Orbit Pulse Catcher: Radial Timing Game Guide | UtiliHub";
 const description = cleanDescription(
-  "Original long-form guide to the Orbit Pulse Catcher interactive timing game. Explains radial orbit mechanics, zone matching that grows to 8 zones, combo multipliers, power-up pulses, particle bursts, haptic feedback, wide touch zones, keyboard controls, PNG share with branding and stats, and localStorage high scores. Includes exact scoring formula, level progression, timing windows, strategies, rhythm patterns, common mistakes, distinctions from other pulse games, and deep links to the live experience.",
+  "Original long-form guide to the Orbit Pulse Catcher interactive timing game. Explains radial orbit mechanics, zone matching that grows to 8 zones, combo multipliers, power-up pulses, particle bursts, haptic feedback, wide touch zones, keyboard controls, PNG share with branding and stats, and localStorage high scores. Includes exact scoring formula, level progression, timing windows, strategies, rhythm patterns, common mistakes, advanced techniques and recovery, distinctions from other pulse games, and deep links to the live experience.",
 );
 
 export const Route = createFileRoute("/guides/orbit-pulse-catcher")({
@@ -37,7 +37,7 @@ function OrbitPulseCatcherGuideEn() {
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Orbit Pulse Catcher: Master Radial Timing, Combos, and High Scores</h1>
         <p className="lead">
-          Orbit Pulse Catcher is an interactive timing game built around radial orbit mechanics. Pulses travel along circular orbits while matching zones grow from a few up to eight. Catch them at the right moment to build combos, trigger power-ups, and chase high scores. This original guide covers the core loop, scoring systems, visual and haptic feedback, controls, sharing, persistence, practical strategies, rhythm patterns, common mistakes, exact formula and progression, and how it differs from related pulse and arcade experiences on UtiliHub.
+          Orbit Pulse Catcher is an interactive timing game built around radial orbit mechanics. Pulses travel along circular orbits while matching zones grow from a few up to eight. Catch them at the right moment to build combos, trigger power-ups, and chase high scores. This original guide covers the core loop, scoring systems, visual and haptic feedback, controls, sharing, persistence, practical strategies, rhythm patterns, common mistakes, exact formula and progression, advanced techniques, and how it differs from related pulse and arcade experiences on UtiliHub.
         </p>
 
         <div className="not-prose my-8 rounded-xl border border-primary/20 bg-primary/5 p-6">
@@ -151,6 +151,14 @@ function OrbitPulseCatcherGuideEn() {
           A useful drill: mute or ignore the visual pulse for a few seconds and tap only on the remembered interval, then re-sync. Successful runs often show a slight lead on the zone entry rather than a center hit, giving a small buffer against late reactions. Power-up pulses disrupt the pattern intentionally; treat them as a short rhythm break rather than a forced reset.
         </p>
 
+        <h2>Advanced techniques: leading, recovery, and multi-pulse awareness</h2>
+        <p>
+          Once zones reach six or more, pure reaction time is no longer enough. Leading the zone entry by 50–80 ms (roughly the time of a quick visual anticipation) gives a buffer against input lag on mobile or when multiple pulses are active. When two pulses approach different zones simultaneously, prioritize the one that continues an existing combo chain; a single miss resets the multiplier, so protecting the current streak outweighs catching both.
+        </p>
+        <p>
+          Recovery after a miss: the combo drops, but lives remain. Immediately shift to a slightly earlier lead and ignore the particle effects of the miss. On desktop the QWERTY row (Q–I) lets you keep fingers on home row while eyes stay on the orbit. On mobile, the wide annular zones mean you can pre-position your thumb over the next expected arc rather than chasing the pulse. Practice short recovery drills: deliberately miss once at level 3–4, then rebuild to combo 5 without further misses. Players who master recovery convert more mid-run near-misses into still-high scores.
+        </p>
+
         <h2>Common mistakes and how to avoid them</h2>
         <ul>
           <li><strong>Chasing edge clips for style:</strong> Early levels reward precision, but once zones exceed five the angular margin shrinks. Prefer center-of-zone hits to protect the combo.</li>
@@ -175,6 +183,7 @@ function OrbitPulseCatcherGuideEn() {
           <li>Note the zone growth pattern: four zones early, then one additional zone roughly every two levels, up to eight. Adjust your visual scan accordingly.</li>
           <li>Internalize the orbit period early; anticipation beats pure reaction once zones exceed five.</li>
           <li>Time power-up catches to overlap with a rising combo so the 1.8× multiplier hits the highest-value pulses.</li>
+          <li>Lead zone entries by 50–80 ms once zones exceed five; pre-position on mobile and use home-row keys on desktop for recovery speed.</li>
         </ul>
 
         <h2>Performance and Core Web Vitals</h2>
@@ -231,6 +240,15 @@ function OrbitPulseCatcherGuideEn() {
         </p>
         <p>
           <strong>How does the level-up threshold work?</strong> You advance when your score exceeds the current level multiplied by 220, up to a maximum of level 10.
+        </p>
+        <p>
+          <strong>How many simultaneous pulses can appear?</strong> The maximum increases with level (starting low and rising). Focus on the pulse that is about to enter a zone rather than tracking every orbit.
+        </p>
+        <p>
+          <strong>What happens when lives reach zero?</strong> The run ends and the final score is compared to the localStorage high score. Export a PNG before restarting if it is a personal best.
+        </p>
+        <p>
+          <strong>Can I practice specific levels?</strong> There is no level select; progression is continuous. Early levels serve as natural warm-up for the tighter windows that follow.
         </p>
 
         <p className="mt-8">
