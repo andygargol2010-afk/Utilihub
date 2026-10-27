@@ -3,10 +3,9 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
 
-const TITLE =
-  "Atrapa Pulsos en Órbita: timing radial, combos y puntuación alta | UtiliHub";
+const TITLE = "Atrapa Pulsos en Órbita: guía de timing radial y combos | UtiliHub";
 const DESCRIPTION =
-  "Guía de Atrapa Pulsos en Órbita: zonas radiales, multiplicadores de combo, fórmula de puntuación con ejemplos y progresión de dificultad. Juega gratis en el navegador.";
+  "Guía completa de Atrapa Pulsos en Órbita: mecánicas de zona radial, multiplicadores de combo, fórmula de puntuación con ejemplos y progresión de dificultad. Jugá gratis en el navegador.";
 
 export const Route = createFileRoute("/es/guias/orbit-pulse-catcher")({
   head: () => ({
@@ -32,7 +31,13 @@ export const Route = createFileRoute("/es/guias/orbit-pulse-catcher")({
 function EsOrbitPulseCatcherGuidePage() {
   return (
     <div className="container-page py-8 sm:py-12">
-      <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Guías", to: "/es/guias" }, { label: "Atrapa Pulsos en Órbita" }]} />
+      <Breadcrumbs
+        items={[
+          { label: "Inicio", to: "/es" },
+          { label: "Guías", to: "/es/guias" },
+          { label: "Atrapa Pulsos en Órbita" },
+        ]}
+      />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Atrapa Pulsos en Órbita: Domina el Timing Radial, los Combos y las Puntuaciones Altas</h1>
         <p className="lead">
@@ -40,7 +45,7 @@ function EsOrbitPulseCatcherGuidePage() {
         </p>
 
         <div className="not-prose my-8 rounded-xl border border-primary/20 bg-primary/5 p-6">
-          <h3 className="text-lg font-bold">Juega la experiencia en vivo</h3>
+          <h3 className="text-lg font-bold">Jugá la experiencia en vivo</h3>
           <p className="mt-2 text-muted-foreground">
             Abrí el playground, practicá capturas y mirá cómo el combo multiplica cada acierto.
           </p>
@@ -48,7 +53,7 @@ function EsOrbitPulseCatcherGuidePage() {
             to="/es/pulse-catch"
             className="mt-4 inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
           >
-            Jugar Atrapa Pulsos en Órbita →
+            Jugar Atrapa Pulsos en Órbita
           </Link>
         </div>
 
@@ -73,30 +78,70 @@ function EsOrbitPulseCatcherGuidePage() {
           En la implementación actual, la puntuación por captura se puede modelar así (valores orientativos del playground):
         </p>
         <p>
-          <strong>pts ≈ base × (1 + (combo − 1) × 0.4) × (1 + (nivel − 1) × 0.15) × (boost ? 1.8 : 1)</strong>
+          <strong>
+            pts ≈ base × (1 + (combo − 1) × 0.4) × (1 + (nivel − 1) × 0.15) × (boost ? 1.8 : 1)
+          </strong>
         </p>
         <p>
           Con base ≈ 24 puntos por captura limpia. El combo cuenta capturas seguidas sin fallo; el nivel empieza en 1. El boost, cuando está activo, multiplica por 1.8.
         </p>
         <p>
-          <strong>Ejemplo 1 (juego temprano):</strong> Nivel 1, combo 3, sin boost. Factor combo = 1 + 2 × 0.4 = 1.8; factor nivel = 1 + 0.15 = 1.15; pts ≈ 24 × 1.8 × 1.15 = 50.
+          <strong>Ejemplo 1 (juego temprano):</strong> Nivel 1, combo 3, sin boost. Factor combo = 1 + 2 × 0.4 =
+          1.8; factor nivel = 1 + 0.15 = 1.15; pts ≈ 24 × 1.8 × 1.15 = 50.
         </p>
         <p>
-          <strong>Ejemplo 2 (combo medio + boost):</strong> Nivel 4, combo 8, boost activo. Factor combo = 1 + 7 × 0.4 = 3.8; factor nivel = 1 + 0.6 = 1.6; pts ≈ 24 × 3.8 × 1.6 × 1.8 = 263.
+          <strong>Ejemplo 2 (combo medio + boost):</strong> Nivel 4, combo 8, boost activo. Factor combo = 1 +
+          7 × 0.4 = 3.8; factor nivel = 1 + 0.6 = 1.6; pts ≈ 24 × 3.8 × 1.6 × 1.8 = 263.
         </p>
         <p>
-          <strong>Ejemplo 3 (nivel alto, sin boost):</strong> Nivel 7, combo 12, sin boost. Factor combo = 1 + 11 × 0.4 = 5.4; factor nivel = 1 + 1.05 = 2.05; pts ≈ 24 × 5.4 × 2.05 = 266.
+          <strong>Ejemplo 3 (nivel alto, sin boost):</strong> Nivel 7, combo 12, sin boost. Factor combo = 1 +
+          11 × 0.4 = 5.4; factor nivel = 1 + 1.05 = 2.05; pts ≈ 24 × 5.4 × 2.05 = 266.
         </p>
 
         <h2>Ventana de combo y reinicio</h2>
         <p>
-          El combo crece si capturás dentro de aproximadamente 1.1 s desde la captura anterior. Se reinicia tras un fallo o si pasa más de 1.6 s sin acierto. Priorizá la continuidad del combo frente a arriesgar un borde dudoso.
+          El combo crece si capturás dentro de aproximadamente 1.1 s desde la captura anterior. Se reinicia tras
+          un fallo o si pasa más de 1.6 s sin acierto. Priorizá la continuidad del combo frente a arriesgar un
+          borde dudoso.
         </p>
 
         <h2>Progresión de zonas y dificultad</h2>
         <p>
-          Al subir de nivel aparecen más zonas o arcos más chicos. Una buena regla: dominá el centro del arco antes de perseguir clips de borde, y solo buscá esos clips cuando ya manejes más de 5 zonas con estabilidad.
+          Al subir de nivel aparecen más zonas o arcos más chicos. Una buena regla: dominá el centro del arco
+          antes de perseguir clips de borde, y solo buscá esos clips cuando ya manejes más de 5 zonas con
+          estabilidad.
         </p>
+        <ul>
+          <li>Niveles 1–2: pocas zonas, arcos amplios</li>
+          <li>Niveles 3–4: 5 zonas</li>
+          <li>Niveles 5–6: 6 zonas</li>
+          <li>Niveles superiores: arcos más estrechos y mayor velocidad</li>
+        </ul>
+
+        <h2>Controles y feedback</h2>
+        <p>
+          Mapeo de teclado (escritorio): las teclas numéricas 1–N seleccionan la zona correspondiente cuando el
+          modo lo permite; el clic o toque en la zona activa también cuenta. Las capturas exitosas, subidas de
+          nivel y hitos de combo (especialmente en 5 y 10) activan feedback visual y, si está habilitado,
+          sonoro.
+        </p>
+
+        <h2>Estrategia por tramo de nivel</h2>
+        <p>
+          Una vez que las zonas llegan a seis o más, el tiempo de reacción puro ya no es suficiente: hay que
+          anticipar. Recuperación después de un fallo: el combo cae, pero las vidas permanecen. Inmediatamente
+          volvé al centro del arco y reconstruí el combo antes de volver a los bordes.
+        </p>
+        <ul>
+          <li>
+            <strong>Adelanto y mantener (niveles 3–4, 5 zonas):</strong> Adelanta deliberadamente un poco la
+            entrada y mantené el ritmo del nivel.
+          </li>
+          <li>
+            <strong>Pre-posicionamiento (6+ zonas):</strong> Adelanta las entradas de zona por 50–80 ms una vez
+            que las zonas superan cinco; pre-posicioná el cursor o el dedo.
+          </li>
+        </ul>
 
         <h2>Errores frecuentes</h2>
         <ul>
@@ -117,13 +162,15 @@ function EsOrbitPulseCatcherGuidePage() {
         <h2>Preguntas frecuentes</h2>
         <h3>¿Se puede jugar en el celular?</h3>
         <p>
-          Sí. El playground responde a toques; en pantallas chicas priorizá el centro de la zona para no fallar por precisión de dedo.
+          Sí. El playground responde a toques; en pantallas chicas priorizá el centro de la zona para no fallar
+          por precisión de dedo.
         </p>
         <h3>¿Hay que crear cuenta?</h3>
         <p>No. Se juega en el navegador, sin registro.</p>
         <h3>¿La puntuación se guarda en un servidor?</h3>
         <p>
-          El foco de esta experiencia es la práctica local y el feedback inmediato. Consultá la página del juego para el estado actual de rankings o guardado.
+          El foco de esta experiencia es la práctica local y el feedback inmediato. Consultá la página del juego
+          para el estado actual de rankings o guardado.
         </p>
 
         <div className="not-prose mt-10 flex flex-wrap gap-3">
