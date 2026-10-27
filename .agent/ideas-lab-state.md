@@ -54,19 +54,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
+status: active
+idea: Add French (fr) SEO-first locale with minimal shell and full localization of key interactive experiences (playgrounds/games) for search discovery via hreflang, no primary nav links from EN/ES.
+id: seo-locales-fr-shell
 path_en: n/a
 path_es: n/a
-path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
+path_seo: /fr
+domain: seo-locales
+runs_total: 4
+runs_remaining: 4
+acceptance: User opens /fr and at least one experience route (e.g. /fr/fluid-ink-flow or equivalent), sees complete French titles, descriptions, and UI strings; hreflang present; no EN/ES navigation links to it.
 share: n/a
-next_step_required: no
-notes: Project fluid-ink-flow-playground CLOSED after 4 runs. Core playable from run 1, deep-link + mixing run 2, mobile CWV run 3, final review run 4. Next run will IDEATE.
+next_step_required: yes
+notes: Rubric scores (1-5): Candidate A (new fr shell + 3 pages): value=4, share=3, search=5, distinct=5, feas=4, perf=5, total=26. Candidate B (expand pt +4 pages): 3,3,4,3,5,5 total=23. Candidate C (new ar RTL +2 pages): 4,3,4,5,3,5 total=24. Chose A (highest, all >=3 on value/distinct). Domain roll: two-urn GROWTH, FLEX (simulated u=0.42 > p_fixed=0.35), weights favored seo-locales (10) among FLEX. adsense-prep_runs: 3 unchanged.
 adsense-prep_runs: 3
 ```
 
