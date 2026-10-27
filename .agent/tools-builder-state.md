@@ -70,6 +70,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-26: PRODUCT — calculadora-densidad (ciencia) + calculadora-error-porcentual (matematicas). Clusters distintos, calidad alta. SEO locales: defer pt.
 2026-10-26: FIX-BUILD — deploy ERROR dpl_2kykMQp8... on SHA 03a896db due to duplicate slug calculadora-relacion-aspecto in two files. Fixed on HEAD (duplicate file removed, wired to aspect-ratio-tool.ts). No new tools. Next PRODUCT after READY.
 2026-10-26: FIX-BUILD — confirmed duplicate gone on HEAD 55f59a06; forced redeploy dpl_DCUETUZ6... (QUEUED). No new tools while ERROR/QUEUED. Next PRODUCT after READY.
+2026-10-27: RESTORE-ONLY — registry-entries-b.ts was placeholder; restored full content from known-good e341781. No new tools this run (anti-wipe priority). Registry architecture verified post-restore.
 ```
 
 ---
@@ -77,10 +78,10 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: calculadora-porciones-pizza
+last_mode: RESTORE-ONLY
+last_slugs: none
 last_deploy: no (branch auto-deploy disabled)
-last_sha: 4dd1d6d1074b7a9d2b22ae38a59f344248c7343b
+last_sha: (pending this commit)
 ```
 
 <!-- end:tools-builder-state.md -->
