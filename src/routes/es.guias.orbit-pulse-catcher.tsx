@@ -1,1 +1,1 @@
-PLACEHOLDER_ES
+$(cat /tmp/guide_es.tsx)

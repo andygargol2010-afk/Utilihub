@@ -1,1 +1,1 @@
-PLACEHOLDER_STATE
+$(cat /tmp/state.md)
