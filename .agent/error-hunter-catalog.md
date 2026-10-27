@@ -301,12 +301,12 @@ Formato por entrada:
 
 ## E031 — $(cat stubs / PLACEHOLDER corrupten archivos críticos
 - **status**: open (recurring)
-- **last_seen**: 2026-10-27 (run 15: fixed es.guias.orbit-pulse-catcher.tsx which was literal "$(cat /tmp/guide_es.tsx)"; homes, registry, summary-es, ModularPatternComposer clean; dedicated wires present)
+- **last_seen**: 2026-10-27 (run 19: fixed AuroraRibbonWeaver.tsx PLACEHOLDER_WILL_REPLACE causing build ERROR; other critical files clean)
 - **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" o "PLACEHOLDER" en vez del contenido real; home 404, registry roto, o build ERROR por missing export
 - **root_cause**: agentes escriben el comando shell o un placeholder como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
-- **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts, routes de guías; deben ser contenido real, no PLACEHOLDER ni $(cat
+- **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts, routes de guías, playgrounds; deben ser contenido real, no PLACEHOLDER ni $(cat
 - **fix_hint**: RESTORE contenido real desde git history; nunca commitear output de cat sin expandir ni PLACEHOLDER
-- **files**: `.agent/error-hunter-catalog.md`, `.agent/error-hunter-state.md`, `src/components/general/registry.tsx`, `src/lib/i18n/summary-es.ts`, `src/routes/*.tsx`
+- **files**: `.agent/error-hunter-catalog.md`, `.agent/error-hunter-state.md`, `src/components/general/registry.tsx`, `src/lib/i18n/summary-es.ts`, `src/routes/*.tsx`, `src/components/playgrounds/*.tsx`
 
 ## E032 — Build ERROR por slug duplicado calculadora-area-habitacion
 - **status**: fixed
@@ -368,8 +368,6 @@ Formato por entrada:
 - **fix_hint**: añadir lazy + early return en pickComponent (antes de kind/category routes)
 - **files**: `src/components/general/registry.tsx`, `TextCaseConverterTool.tsx`, `TargetHeartRateCalculatorTool.tsx`
 
-<!-- end:catalog -->
-
 ## E038 — Dedicated UI calculadora-raiz-cubica no wired en registry
 - **status**: fixed
 - **last_seen**: 2026-10-27 (run 14: CubeRootCalculatorToolUi lazy + wire present)
@@ -389,3 +387,15 @@ Formato por entrada:
 - **check**: es.guias.orbit-pulse-catcher.tsx empieza con import y createFileRoute; no contiene $(cat
 - **fix_hint**: RESTORE desde commit previo bueno (ej. 90a2dff)
 - **files**: `src/routes/es.guias.orbit-pulse-catcher.tsx`
+
+## E040 — AuroraRibbonWeaver.tsx PLACEHOLDER stub causes build ERROR
+- **status**: fixed
+- **last_seen**: 2026-10-27 (run 19)
+- **fixed_at**: 2026-10-27
+- **symptom**: Vercel deploy ERROR; rollup "AuroraRibbonWeaver" is not exported by AuroraRibbonWeaver.tsx
+- **root_cause**: commit 3a991e2 replaced the full interactive component with literal "PLACEHOLDER_WILL_REPLACE"
+- **check**: file exports function AuroraRibbonWeaver, size >10kB, contains canvas + controls, not PLACEHOLDER
+- **fix_hint**: RESTORE full component from pre-placeholder SHA (e01519d)
+- **files**: `src/components/playgrounds/AuroraRibbonWeaver.tsx`, `src/routes/aurora-ribbon-weaver.tsx`
+
+<!-- end:catalog -->
