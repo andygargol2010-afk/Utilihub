@@ -16,7 +16,7 @@ When shipping a **new** playground / high-traffic page later: check `active` loc
 Order = preferred pick when domain rolls and no forced locale in ACTIVE PROJECT:
 
 1. `pt` — Portuguese (pt-BR bias for copy) — **now active**
-2. `fr` — French
+2. `fr` — French — **now active**
 3. `de` — German
 4. `ar` — Arabic (`dir=rtl` required)
 5. `hi` — Hindi
@@ -35,6 +35,7 @@ Do **not** add EN (`/` or bare) or ES (`/es`) here — those are first-class pro
 | code | BCP-47 | dir | status | prefix | pages_done (paths) | notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | pt | pt-BR | ltr | active | /pt | /pt, /pt/pulse-catch, /pt/orbit-defender-arcade, /pt/snake, /pt/pong | hreflang wired to EN+ES; no nav from EN/ES; minimal shell; fourth experience added |
+| fr | fr-FR | ltr | active | /fr | /fr, /fr/fluid-ink-flow-playground | hreflang wired; no nav from EN/ES; minimal shell; first experience added |
 
 ---
 

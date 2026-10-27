@@ -29,6 +29,7 @@ export const Route = createFileRoute("/fluid-ink-flow-playground")({
       { rel: "canonical", href: absoluteUrl("/fluid-ink-flow-playground") },
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/fluid-ink-flow-playground") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/fluid-ink-flow-playground") },
+      { rel: "alternate", hrefLang: "fr", href: absoluteUrl("/fr/fluid-ink-flow-playground") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/fluid-ink-flow-playground") },
     ],
   }),

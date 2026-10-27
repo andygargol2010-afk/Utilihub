@@ -36,6 +36,7 @@ export const SEO_LOCALE_PRIORITY: readonly string[] = [
  */
 export const SEO_LOCALES_ACTIVE: readonly SeoLocale[] = [
   { code: "pt", bcp47: "pt-BR", dir: "ltr", labelEn: "Portuguese", status: "active" },
+  { code: "fr", bcp47: "fr-FR", dir: "ltr", labelEn: "French", status: "active" },
 ] as const;
 
 export function seoLocaleByCode(code: string): SeoLocale | undefined {
