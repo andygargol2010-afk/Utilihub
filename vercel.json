@@ -10,6 +10,31 @@
       "source": "/es/",
       "destination": "/es",
       "permanent": true
+    },
+    {
+      "source": "/es/herramientas/porcentaje-hasta-meta",
+      "destination": "/es/herramientas/calculadora-porcentaje-completado",
+      "permanent": true
+    },
+    {
+      "source": "/es/herramientas/porcentaje-de-porcentaje",
+      "destination": "/es/herramientas/calculadora-de-porcentajes",
+      "permanent": true
+    },
+    {
+      "source": "/es/herramientas/calculadora-tableros",
+      "destination": "/es/herramientas/calculadora-azulejos",
+      "permanent": true
+    },
+    {
+      "source": "/tools/arithmetic-sequence-calculator",
+      "destination": "/tools/number-sequences",
+      "permanent": true
+    },
+    {
+      "source": "/es/herramientas/sucesion-aritmetica",
+      "destination": "/es/herramientas/secuencias",
+      "permanent": true
     }
   ],
   "headers": [
