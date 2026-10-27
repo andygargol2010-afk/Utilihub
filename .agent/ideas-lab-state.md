@@ -48,4 +48,29 @@ adsense-prep_runs: 3
 - 2026-10-27 | search-magnets | orbit-pulse-catcher-guide | Original long-form SEO guide (EN+ES) on the Orbit Pulse Catcher interactive timing game complete after 6 runs. Full EN+ES depth including scoring formula, drills, 15-min plan. CWV-safe. Adsterra intact.
 ```
 
+---
+
+## ACTIVE PROJECT
+
+```
+status: active
+idea: Interactive Fluid Ink Flow playground. User draws freehand strokes that become viscous flowing ink with adjustable viscosity, color mixing on overlaps, particle density, gravity pull, and surface tension. Live preview, pause/randomize/clear, keyboard shortcuts, PNG share with baked title + utilihub.com + stroke count, localStorage persist, URL deep-link. EN+ES routes. Distinct from aurora-ribbon-weaver (ribbon streams), aurora-particle-playground (discrete particles), and color-cascade-fusion by viscous fluid ink composition + mixing aesthetic.
+id: fluid-ink-flow-playground
+path_en: /fluid-ink-flow-playground
+path_es: /es/fluid-ink-flow-playground
+path_seo: n/a
+domain: playgrounds
+runs_total: 4
+runs_remaining: 4
+acceptance: User draws a stroke on canvas, sees viscous multi-color ink flow along it with adjustable controls and mixing, and shares a branded PNG of the composition.
+share: png
+next_step_required: no
+notes: Rubric scores (value/share/search/distinct/feas/perf):
+C1 playgrounds fluid-ink-flow-playground: 5/5/3/5/5/4 = 27
+C2 simulators ecosystem-balance: 4/3/4/4/4/4 = 23
+C3 games pulse-memory-match: 5/4/3/4/5/5 = 26
+Chosen: fluid-ink-flow-playground. Domain roll: weighted preference playgrounds (11) after last search-magnets close. p_fixed unused this IDEATE (CORE selected).
+adsense-prep_runs: 3
+```
+
 <!-- end:ideas-lab-state.md -->
