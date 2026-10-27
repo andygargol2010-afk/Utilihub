@@ -84,4 +84,5 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "cambio-de-base", name: "ExpLogSuiteTool", path: "./ExpLogSuiteTool", export: "ExpLogSuiteTool" },
   { slug: "matriz-2x2", name: "MatrixBinarySuiteTool", path: "./MatrixBinarySuiteTool", export: "MatrixBinarySuiteTool" },
   { slug: "calculadora-tableros", name: "SheetCalculatorTool", path: "./SheetCalculatorTool", export: "SheetCalculatorTool" },
+  { slug: "calculadora-costo-litro-combustible", name: "FuelLiterCostCalculatorTool", path: "./FuelLiterCostCalculatorTool", export: "FuelLiterCostCalculatorTool" },
 ] as const;
