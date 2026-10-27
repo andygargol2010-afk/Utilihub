@@ -11,12 +11,12 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-27 run 17
+last_run: 2026-10-27 run 18
 last_fix: none (0 fixes; checks OK)
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER stubs) — homes, registry, summary-es clean; no $(cat in src, no literal PLACEHOLDER in critical files)
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER stubs) — smoke green on critical: index.tsx real, registry.tsx full no PLACEHOLDER, summary-es full SUMMARY_ES, no $(cat in src)
 new_findings: none
-deploy: latest listed READY on 291bb58; tip 2116429 not yet listed (pending or filtered); no recent ERROR on branch
-notes: Known smoke green (index/es.index start with import + createFileRoute, no $(cat; summary-es full SUMMARY_ES export >10kB; registry.tsx full with many dedicated lazy wires including CubeRoot, no PLACEHOLDER). Discovery sampled aurora-ribbon-weaver route (full real content, imports playground), games layout (simple Outlet OK), small routes are redirects/simple pages. No runtime/routing/registry/SEO/tool-broken issues in sample. No open code bugs remaining in sampled paths.
+deploy: latest listed READY on 291bb58; tip 61924ea6 not yet listed (pending or filtered); no recent ERROR on branch
+notes: Known smoke green (index.tsx starts with import + createFileRoute, no $(cat; registry.tsx full with dedicated lazy wires incl. CubeRoot; summary-es.ts starts with export const SUMMARY_ES >10kB). Discovery sampled es.juegos.$slug.tsx (solid GameShell + GamePlayer + catalog lookup, no stub), es.guias.orbit-pulse-catcher.tsx (full real long-form TSX content, no $(cat), proper createFileRoute), registry-3d.tsx (correct: modelador-casas-3d → HouseModeler3D else Modeler3D). No "Tool not available" or not implemented in components. Recent commits on branch are ideas-lab guide depth with correct author identity. No runtime/routing/registry/SEO/tool-broken issues found. E031 remains open/recurring for vigilance but no current corruption.
 ```
 
 <!-- end:error-hunter-state.md -->
