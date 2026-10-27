@@ -60,6 +60,12 @@ function GermanHome() {
             >
               Fluid Ink Flow ausprobieren
             </Link>
+            <Link
+              to="/de/pulse-catch"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-primary/30 bg-card px-5 py-3 text-sm font-bold text-primary hover:bg-primary/5"
+            >
+              Pulse Catch spielen
+            </Link>
           </div>
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
             <span>Ohne Anmeldung</span>
@@ -81,6 +87,14 @@ function GermanHome() {
             </Link>
             <p className="text-sm text-muted-foreground">
               Zeichnen Sie freihändige Striche, die zu zähflüssiger mehrfarbiger fließender Tinte werden. Stellen Sie Viskosität, Dichte, Gravitation und Oberflächenspannung ein.
+            </p>
+          </li>
+          <li>
+            <Link to="/de/pulse-catch" className="font-semibold text-primary hover:underline">
+              Pulse Catch — schnelles Reaktionsspiel
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              Tippe auf die leuchtenden Funken, bevor sie erlöschen. Baue Combos auf und speichere deinen besten Score.
             </p>
           </li>
         </ul>
