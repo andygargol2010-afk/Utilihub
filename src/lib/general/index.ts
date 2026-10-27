@@ -145,6 +145,7 @@ import { DAYS_BETWEEN_DATES_CALCULATOR_TOOLS } from "./days-between-dates-calcul
 import { TANK_VOLUME_CALCULATOR_TOOLS } from "./tank-volume-calculator-tool";
 import { PIZZA_PORTIONS_CALCULATOR_TOOLS } from "./pizza-portions-calculator-tool";
 import { FUEL_LITER_COST_CALCULATOR_TOOLS } from "./fuel-liter-cost-calculator-tool";
+import { PERCENTAGE_REMAINING_CALCULATOR_TOOLS } from "./percentage-remaining-calculator-tool";
 
 export { GENERAL_CATEGORIES };
 
@@ -294,4 +295,5 @@ export const GENERAL_TOOLS = [
   ...TANK_VOLUME_CALCULATOR_TOOLS,
   ...PIZZA_PORTIONS_CALCULATOR_TOOLS,
   ...FUEL_LITER_COST_CALCULATOR_TOOLS,
+  ...PERCENTAGE_REMAINING_CALCULATOR_TOOLS,
 ];
