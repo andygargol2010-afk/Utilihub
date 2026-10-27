@@ -1,1 +1,87 @@
-PLACEHOLDER_STATE
+# UtiliHub Ideas Lab — State (3/3)
+
+**Part 3 of 3 — runtime state only.** End marker: `<!-- end:ideas-lab-state.md -->`.
+
+If truncated: re-fetch immediately. Keep this file small.
+
+Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
+
+**Process (see ideas-lab.md / ops):** ONE commit per run (code + this file together). No deploys. No state-only commit except CLOSE. Default project 4 runs (max 6). IDEATE stores rubric scores for 3 candidates in `notes`.
+
+---
+
+## DOMAIN WEIGHTS + last_closed
+
+```
+last_closed_domain: search-magnets
+last_closed_id: orbit-pulse-catcher-guide
+p_fixed: 0.35
+
+weights_core:
+  kits: 4
+  journeys: 5
+  games: 1
+  simulators: 8
+  studio-composition: 3
+  playgrounds: 11
+  quality-lift: 2
+
+weights_growth:
+  traffic-bets: 3
+  search-magnets: 3
+  growth-surfaces: 3
+  share-hooks: 5
+  retention-loops: 7
+  conversion-paths: 2
+  traffic-diagnosis: 1
+  adsense-prep: 11
+  seo-locales: 10   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+
+adsense-prep_runs: 3
+```
+
+---
+
+## RECENT_CLOSED (max 10, newest first)
+
+```
+- 2026-10-27 | search-magnets | orbit-pulse-catcher-guide | Original long-form SEO guide (EN+ES) on Orbit Pulse Catcher complete after 6 runs. Explains radial orbit mechanics, zone matching growing to 8, combo multipliers, power-up pulses (+life +boost), particle bursts, haptic, wide touch + keyboard 1-N/QWERTY, PNG share with branding + stats, localStorage high scores. Includes scoring formula + examples, progression table, timing windows, advanced techniques (lead 50-80ms, recovery drills), structured practice drills, 15-min high-score session plan, FAQs, deep links to live game. Distinct from modular-pattern-composer-guide and n-body-gravity-guide. Static routes with meta/hreflang/breadcrumbs. CWV-safe. Adsterra intact.
+- 2026-10-26 | games | orbit-pulse-catcher | Interactive Orbit Pulse Catcher complete after 6 runs. Radial orbit timing + matching zones (grow to 8), combo multipliers, power-up pulses (+life + boost), particle bursts on catch/level-up/combo milestones (5/10), haptic, wide touch zones + ripples, keyboard 1-N/QWERTY, PNG share with branding + best/level/combo, localStorage high score. EN+ES. CWV-safe (lazy canvas, modest particles). Adsterra intact. Next-step registered. Distinct from Pulse Catch Arena / Refraction Challenge.
+- 2026-10-26 | quality-lift | refraction-challenge | Elevated standard on Refraction Challenge (games family) complete after 6 runs. Live full-path dashed ray preview (green hit / amber miss) + solid aim indicator while adjusting angle; particle spark effects on lens refraction entry (cyan) and target hit (emerald + gold bursts, cap 48, short life, gravity drift); PNG share of successful path with branding (title + utilihub.com + level/shots baked on offscreen canvas); localStorage progress persistence (maxCleared + shots under utilihub_game_progress_refraction-challenge) with resume at next uncleared level + progress banner + Restart clears; +2 advanced levels (now 7 total: four/five lenses + tight/dense blockers, smaller targets). Distinctive capabilities peers (Minesweeper, Pong) still lack. EN+ES routes. CWV-safe (lazy canvas, modest particles, static level data). Adsterra intact. Bar moved for future quality-lift comparisons.
+- 2026-10-26 | search-magnets | modular-pattern-composer-guide | Original long-form SEO guide (EN+ES) on the Modular Pattern Composer complete. Explains modular tile systems on a grid, live procedural animations (flow/pulse/morph/spin), multi-layer blend/opacity, symmetry (mirror/radial), tile library (geometric/organic/particle + hex/blob), color palettes + gradients, playback controls, brush size for multi-cell place/erase, PNG share with branding, URL deep-link, localStorage auto-persist. Practical composition tips, distinction from freehand neon-layer, worked example (flowing radial mandala), related experiences, FAQs (including share PNG vs deep-link and single-layer export). Original explanatory text for search depth. EN+ES static routes with meta, hreflang, breadcrumbs, deep links to live composer. CWV-safe. Adsterra intact. Closed after 6 runs. Distinct from n-body-gravity-guide.
+- 2026-10-25 | traffic-diagnosis | weekly-diagnosis-2026-10-25 | Diagnóstico de tráfico 7d (18-25 oct) vs prior (11-18 oct): site pageviews 159 vs 179 (-11.2%, por encima de umbral -15%). Home /: 27 vs 47 pv (-42.5%, bajo umbral -25% de ruta). Otras rutas de bajo volumen estables o variables. Sin acceso a custom events (plan). No evidencia de 2× errores. Adsterra intacto. Recomendación A: monitorear home engagement (spotlight/value-path recientes); B: no cambios urgentes en ads; C: posible estacionalidad o efecto de nuevas superficies. Closed after 1 run.
+- 2026-10-25 | studio-composition | modular-pattern-composer | Interactive Modular Pattern Composer complete: place modular tiles on grid with live procedural animations (flow/pulse/morph/spin), multi-layers with blend/opacity, symmetry (mirror/radial), tile library (geometric/organic/particle + hex/blob), color palettes + gradients, playback controls, brush size for multi-cell place/erase, PNG share with baked title + utilihub.com + tile count, URL deep-link for settings, localStorage auto-persist of composition. EN+ES routes. CWV-safe (grid 12, layer cap 6, no heavy deps). Adsterra intact. Closed after 6 runs. Distinct from freehand neon-layer by modular/repeatable systems + animation playback.
+- 2026-10-25 | kits | kitchen-prep-board | Interactive Kitchen Prep Board complete: multi-recipe selector (chicken bowl / veggie stir-fry / overnight oats), visual servings scaler, ingredient checklist with live scale, step reorder ↑↓, circular SVG timer ring, live summary strip, richer PNG share (recipe/servings/progress/checked/current step + utilihub.com) + ExperienceShareButton URL share, localStorage persist. EN+ES routes. CWV-safe (no heavy assets/deps). Adsterra intact. Closed after 4 runs. Coherent multi-step kit elevating kits beyond static tool lists.
+- 2026-10-25 | traffic-bets | daily-experience-spotlight | Daily Experience Spotlight on home EN+ES complete: daily rotation (day-of-year + localStorage avoid) of high-value experiences (aurora, n-body, neon-layer, prism-trail, color-cascade, aura-card), short teaser, direct deep-link CTA, ExperienceShareButton + data-events (spotlight-view/click/share), TODAY badge, rotation countdown, experience-specific accents. Lazy load after hero. CWV-safe (no heavy assets/deps). Adsterra intact. Closed after 4 runs. Measurable bet on recovering visitor drop via higher home engagement and shares.
+- 2026-10-24 | conversion-paths | home-value-path-boost | Sección Ruta de valor / Value Path en home EN+ES completa: 3 experiencias aleatorias de pool de 6 (aurora, n-body, neon, prism, color-cascade, aura), progreso localStorage (1 de 3), botón Nueva/New, CTAs claros, data-events (value-path-click + value-path-refresh), barra de progreso y mensaje de completado. Lazy load en home. CWV-safe (sin assets pesados ni deps nuevas). Adsterra intacto. Closed after 4 runs. Mejora rutas de conversión desde home hacia experiencias interactivas de alto valor.
+- 2026-10-24 | journeys | waypoint-river-journey | Interactive Waypoint River Journey complete: place/drag waypoints to define flowing particle river, fading trails (4-24), speed/width/bloom/density/gravity controls, attractors, pause/randomize/clear, keyboard (Space/R/C), PNG share with baked title + utilihub.com + waypoint count, URL deep-link (?wp=). EN+ES routes. CWV-safe (density cap 80, lazy canvas). Next-step before Adsterra. Adsterra intact. Closed after 6 runs. Distinct path/progression experience.
+```
+
+---
+
+## ACTIVE PROJECT
+
+```
+status: active
+idea: Interactive Aurora Ribbon Weaver playground. User draws freehand or waypoint paths that become flowing multi-ribbon aurora streams with adjustable width, speed, bloom, color gradients, particle density, and gravity/attractors. Live preview, pause/randomize/clear, keyboard shortcuts, PNG share with baked title + utilihub.com + ribbon count, localStorage persist, URL deep-link. EN+ES routes. Distinct from waypoint-river, neon-layer freehand, modular pattern, and gravity particle playgrounds by ribbon-weaving composition + aurora bloom aesthetic.
+id: aurora-ribbon-weaver
+path_en: /aurora-ribbon-weaver
+path_es: /es/aurora-ribbon-weaver
+path_seo: n/a
+domain: playgrounds
+runs_total: 4
+runs_remaining: 1
+acceptance: User draws a path on canvas, sees multi-ribbon aurora streams flow along it with adjustable controls, and shares a branded PNG of the composition.
+share: png
+next_step_required: no
+notes: EXECUTE 1/4 complete. Core shipped: freehand path drawing generates multi-ribbon (3-8) offset aurora streams with layered bloom, flowing particles along ribbons, controls for count/width/speed/density/bloom, pause/clear, branded PNG export (title + utilihub.com + path count). EN+ES routes + next-step registration. CWV-safe (lazy canvas, modest particles). Distinct ribbon-weaving + aurora bloom. Rubric scores (value/share/search/distinct/feas/perf):
+C1 playgrounds aurora-ribbon-weaver: 5/5/3/4/5/4 = 26
+C2 simulators climate-feedback-loop: 4/3/4/5/4/3 = 23
+C3 games rhythm-orbit-tap: 5/5/3/4/5/4 = 26 (tie broken by higher domain weight + playgrounds preference)
+Chosen: aurora-ribbon-weaver. Domain roll: weighted preference playgrounds (11) after last search-magnets close. p_fixed unused this IDEATE (CORE selected).
+EXECUTE 2/4 complete. Added Randomize button + keyboard (Space pause, C clear, R randomize), localStorage persist of paths + key settings (utilihub_aurora_ribbon_weaver_v1), and URL deep-link via ?arp= base64 (short payloads only; ExperienceShareButton captures it). EN+ES labels updated. CWV-safe (no new deps, modest random paths). Distinct ribbon-weaving + aurora bloom retained.
+EXECUTE 3/4 complete. Added gravity pull control (particles trail with adjustable downward sine weave for more dynamic aurora flow) and hue shift slider (0-360°) for color palette variation on ribbons and particles. Both persisted in localStorage and URL deep-link. EN+ES labels and help updated. CWV-safe (no new deps, modest calc). Distinct ribbon-weaving + aurora bloom enhanced with gravity and color control.
+adsense-prep_runs: 3
+```
+
+<!-- end:ideas-lab-state.md -->
