@@ -38,18 +38,23 @@ export function writeAutosave(json: string, last: string): string {
 
 const VALID_KINDS = ["wall", "floor", "roof", "column", "door", "window", "stairs", "railing", "chimney", "beam", "foundation", "pergola", "fence", "path", "planter", "bench", "lamp"];
 
+/** Keep only well-formed parts (shared by autosave and share links). */
+export function sanitizeParts(list: unknown): SavedPart[] {
+  if (!Array.isArray(list)) return [];
+  return list
+    .filter(
+      (p: SavedPart) =>
+        p && VALID_KINDS.includes(p.k) && Number.isFinite(p.x) && Number.isFinite(p.z) && Number.isFinite(p.r) && (p.f === undefined || typeof p.f === "string"),
+    )
+    .slice(0, 400);
+}
+
 export function readAutosave(): SavedPart[] {
   try {
     const raw = window.localStorage.getItem(KEY);
     if (!raw) return [];
     const data = JSON.parse(raw);
-    if (data?.v !== 1 || !Array.isArray(data.parts)) return [];
-    return data.parts
-      .filter(
-        (p: SavedPart) =>
-          p && VALID_KINDS.includes(p.k) && Number.isFinite(p.x) && Number.isFinite(p.z) && Number.isFinite(p.r) && (p.f === undefined || typeof p.f === "string"),
-      )
-      .slice(0, 400);
+    return data?.v === 1 ? sanitizeParts(data.parts) : [];
   } catch {
     return [];
   }

@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { exportScenePng } from "./house-modeler/exportPng";
+import { copyShareUrl, readShareHash } from "./house-modeler/shareLink";
 import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
 import { createHistory, undoKeyStep } from "./house-modeler/history";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
@@ -5725,6 +5726,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         fullscreen: "Pantalla completa",
         png: "Exportar PNG",
         restored: "Diseño anterior restaurado",
+        share: "Copiar enlace",
+        shared: "Enlace copiado: cualquiera puede abrir tu diseño",
+        shareFail: "No se pudo copiar el enlace",
+        sharedLoaded: "Diseño compartido cargado",
         undo: "Deshacer",
         redo: "Rehacer",
         exitFs: "Salir",
@@ -5921,6 +5926,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         fullscreen: "Fullscreen",
         png: "Export PNG",
         restored: "Previous design restored",
+        share: "Copy link",
+        shared: "Link copied: anyone can open your design",
+        shareFail: "Could not copy the link",
+        sharedLoaded: "Shared design loaded",
         undo: "Undo",
         redo: "Redo",
         exitFs: "Exit",
@@ -6252,8 +6261,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   // Autosave: restore the last design once the scene is ready, then snapshot every 2 s (module: house-modeler/autosave).
   useEffect(() => {
     if (!ready) return;
-    const saved = partsRef.current.length ? [] : readAutosave();
-    if (saved.length) restoreParts(saved), flashActionHint(labels.restored);
+    const shared = partsRef.current.length ? [] : readShareHash();
+    const saved = partsRef.current.length || shared.length ? [] : readAutosave();
+    if (shared.length) restoreParts(shared), flashActionHint(labels.sharedLoaded);
+    else if (saved.length) restoreParts(saved), flashActionHint(labels.restored);
     let last = serializeParts(partsRef.current);
     historyRef.current.sync(last);
     const save = () => {
@@ -6907,6 +6918,15 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
         >
           {labels.png}
+        </button>
+        <button
+          type="button"
+          data-testid="share-link"
+          onClick={() => { void copyShareUrl(serializeParts(partsRef.current)).then((ok) => flashActionHint(ok ? labels.shared : labels.shareFail)); }}
+          aria-label={labels.share}
+          className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
+        >
+          {labels.share}
         </button>
       </div>
 
