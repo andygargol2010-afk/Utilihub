@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
+import { createDimensionLabel } from "./house-modeler/dimensionLabel";
 import { exportScenePng } from "./house-modeler/exportPng";
 import { copyShareUrl, readShareHash } from "./house-modeler/shareLink";
 import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
@@ -4596,6 +4597,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const selectionHelper = new THREE.BoxHelper(new THREE.Object3D(), 0xc4843a);
       selectionHelper.visible = false;
       scene.add(selectionHelper);
+      const dimLabel = createDimensionLabel(el);
 
       const onResize = () => {
         if (!mountRef.current) return;
@@ -4644,11 +4646,14 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             selectionHelper.setFromObject(target);
             if (badge) badge.visible = badgeWas;
             selectionHelper.visible = true;
+            dimLabel.update(selectionHelper, camera);
           } else {
             selectionHelper.visible = false;
+            dimLabel.update(null, camera);
           }
         } else {
           selectionHelper.visible = false;
+          dimLabel.update(null, camera);
         }
         controls.update();
         // Keep the shadow frustum on the work point so orbit-pan does not clip shadows.
@@ -4788,6 +4793,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           sky.material.dispose();
           controls.dispose();
           selectionHelper.dispose();
+          dimLabel.dispose();
           renderer.dispose();
           if (renderer.domElement.parentElement === el) el.removeChild(renderer.domElement);
         } catch {

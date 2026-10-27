@@ -12,7 +12,7 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 4 | Ready-made house presets (small cabin, 2-room, garden shed) loadable in one click | 4 | 5 | 3 | 6.7 | DONE run 303 (house-modeler/presets.ts + PresetPicker.tsx; 3 presets, confirm before replace, undoable) |
 | 5 | Share link: encode design in URL hash, load on open | 5 | 4 | 3 | 6.7 | DONE run 302 (house-modeler/shareLink.ts; Copy link button; #design= hash wins over autosave) |
 | 6 | Time-of-day / lighting presets (morning, noon, sunset) via sun position | 3 | 4 | 2 | 6 | DONE run 305 (house-modeler/lighting.ts + TimeOfDayPicker.tsx; morning/noon/sunset/dusk; choice not persisted yet) |
-| 7 | Dimension labels for the selected part (W x H x D, m) shown on canvas | 4 | 4 | 3 | 5.3 | open |
+| 7 | Dimension labels for the selected part (W x H x D, m) shown on canvas | 4 | 4 | 3 | 5.3 | DONE run 307 (house-modeler/dimensionLabel.ts; DOM overlay W × H × D m above selected part) |
 | 8 | Onboarding hint overlay on first visit (dismissable, remembered) incl. touch gestures | 3 | 5 | 2 | 7.5 | DONE run 301 (house-modeler/OnboardingHint.tsx) |
 | 9 | Mobile: bigger structure palette tap targets + one-finger orbit/two-finger pan hint | 3 | 4 | 2 | 6 | open |
 | 10 | Performance: adaptive pixel ratio / shadow map size when FPS < 30 | 4 | 3 | 3 | 4 | open |
@@ -22,4 +22,4 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 14 | Fix 2 unrelated 404 resource requests seen on tool page (non-modeler) | 2 | 5 | 2 | 5 | open |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
-Next pick by score: #9 mobile palette (6), #7 dimension labels (5.3), #14 404s (5).
+Next pick by score: #9 mobile palette (6), #14 404s (5), #11 area readout (4.5), #12 snap-to-grid (4.5).
