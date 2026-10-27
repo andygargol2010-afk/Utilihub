@@ -1,7 +1,7 @@
 import { makeTool } from "./types";
-const t=(slug:string,name:string,summary:string,fields:string[],operation:string)=>makeTool(slug,name,"hogar","number",summary,name.toLowerCase().split(/s+/),{mode:"advanced",operation,fields});
+const t=(slug:string,name:string,summary:string,fields:string[],operation:string)=>makeTool(slug,name,"hogar","number",summary,name.toLowerCase().split(/\s+/),{mode:"advanced",operation,fields});
 export const PRACTICAL_ADVANCED_TOOLS=[
- t("consumo-agua","Water consumption calculator","Calculate total water use from daily consumption and number of days.",["Daily consumption (L)","Number of days"],"water-consumption"),
+ t("consumo-agua","Water Consumption Calculator","Calculate total water use from daily consumption and number of days.",["Daily consumption (L)","Number of days"],"water-consumption"),
  t("calorias-receta","Recipe calorie intake","Calculate total recipe calories from calories per serving and number of servings.",["Calories per serving","Number of servings"],"recipe-calories"),
  t("coste-por-kilo","Cost per kilogram","Calculate price per kilogram from price and weight purchased.",["Price","Weight (kg)"],"cost-per-kg"),
  t("coste-por-litro","Cost per liter","Calculate price per liter from price and volume.",["Price","Volume (L)"],"cost-per-liter"),
