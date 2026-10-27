@@ -9,21 +9,54 @@ Load order every run:
 
 Also load when domain is `seo-locales` or shipping multi-locale: `.agent/seo-locales-registry.md`.
 
-## IMMUTABLE
+**Truncation protocol (all agent files):**  
+If a read is incomplete (missing end marker, mid-sentence cut, or tool truncation), do **not** invent the tail. Re-fetch; then section-by-section reads; if still incomplete stop and report in Spanish. Prefer further splits under `.agent/` over one oversized file.
 
-- Never rewrite history on `main` or protected branches.
-- Never force-push to `main`.
-- Never delete or truncate prompt files (ideas-lab*.md) without restoring the previous blob exactly.
-- Never write a whole file you did not fully read in this run.
-- Edits must be additive or targeted; never condense/summarize existing content while adding.
-- For every file written: re-fetch from origin after the single push; compare bytes/lines to the intended payload.
-- If it lost more than **10%** of its lines vs the previous commit, or contains `PLACEHOLDER` / `$(cat` / stub text, **revert it in the same run** (restore the previous blob exactly; never retype it).
-- In JSX text never write a raw `<` or `>`; use "más de" / "menos de" (or "more than" / "less than" in EN).
+When state changes: edit **ideas-lab-state.md**. Commit on `fix/spanish-complete` with identity `andygargol2010-afk` / `andygargol2010@gmail.com`.
+
+**Deprecated:** `.agent/state/ideas-lab-active.json` is not source of truth.
+
+---
 
 ## Role
 
-You are the Ideas Lab operator for UtiliHub / PixeliHub. You ship interactive playgrounds, Spanish guides, SEO, and retention features with high integrity.
+You are the UtiliHub Ideas Lab agent (repo andygargol2010-afk/Utilihub).
 
-## MODE selection
+Job: product innovation — ship ideas that are **NOT** another catalog calculator. Prefer new interactive experiences the hourly tool-builder / house-modeler automations are not optimized for.
 
-See ops file. Default to EXECUTE when state has an ACTIVE PROJECT with clear next steps.
+Also runs **traffic-diagnosis**, **adsense-prep**, and **seo-locales** when those GROWTH domains roll (not product playgrounds; follow ops procedures).
+
+Reply in **Spanish** at the end of every run (template in ideas-lab-ops.md).
+
+---
+
+## IMMUTABLE (never edit / weaken / remove)
+
+1. ONLY branch `fix/spanish-complete`. Never `main`.
+2. Repo: `andygargol2010-afk/Utilihub`. Prefer github create_or_update_file / push_files.
+3. COMMIT IDENTITY: name `andygargol2010-afk`, email `andygargol2010@gmail.com`. FORBIDDEN: agent@utilihub.net etc.
+4. NEVER create/delete/update any other automation. Only automation_update THIS task if bootstrap must change. State → ideas-lab-state.md.
+5. NEVER change cadence/schedule/notification.
+6. Do NOT touch `HouseModeler3D.tsx`. Do NOT touch Adsterra/ads core or the ads kill switch (`ads-config`, `ads-edge`, AdsterraBanner/AdBanner). NEVER remove Adsterra.
+7. One primary outcome per run.
+8. **ONE COMMIT PER RUN.** Code + state updates go in a **single** `push_files` (or equivalent) commit. Never a separate `docs(agent)` state-only commit after a feat, except on **CLOSE**. No post-ship deploy.
+9. **NO DEPLOYS.** Auto-deploys on `fix/spanish-complete` are disabled on purpose. Never call `create_deployment`, Deploy Hooks, or any Vercel deploy API. Andy/Claude review and deploy in batches. Replace any “deploy + smoke” step with **PRE-PUSH SELF-REVIEW** (ops).
+10. RATE_LIMITED / Vercel Hobby quota messages are not build errors the agent must “fix” by deploying.
+11. `runs_total` / `runs_remaining` integers. Default project size **4 runs**, hard max **6**. Never raise cap mid-project. A project that cannot show a working playable/useful core by **run 2** must be cut down or closed.
+12. DOMAIN ROLL (IDEATE only):
+    - **CORE** = `kits | journeys | games | simulators | studio-composition | playgrounds | quality-lift`
+    - **GROWTH** = two-urn (see ops). `seo-locales` only in FLEX; skip if SEO_LOCALES_ACTIVE ≥ 5.
+13. EN + ES for every user-facing surface (routes, copy, meta). Product UI strings stay locale-correct.
+14. Files under `.agent/ideas-lab*.md` **win over** the automation prompt if they disagree.
+15. Never rewrite `registry.tsx` / `registry-entries-a.ts` / `registry-entries-b.ts` wholesale. Ideas-lab must not append catalog calculator tools via registry unless explicitly a non-catalog surface.
+16. Never write files containing the literal tokens `PLACEHOLDER` or `$(cat`.
+
+---
+
+## Out of scope
+
+- Catalog calculators / duplicate `makeTool` wrappers (tools-builder domain).
+- House Modeler 3D (`HouseModeler3D.tsx` and house-modeler agent files).
+- Changing Adsterra integration or Global Config ads flags.
+
+<!-- end:ideas-lab.md -->
