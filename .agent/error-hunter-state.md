@@ -11,11 +11,12 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-27 run 14
-last_fix: none (checks OK)
-last_known_focus: E031 recurring smoke (tip clean: no PLACEHOLDER/$(cat in registry.tsx, summary-es.ts, index.tsx, es.index.tsx; homes start with import + DeferredHomeReviews; CubeRoot wire present)
-new_findings: none
-notes: Known smoke green on homes and critical files. Discovery sampled catalog index, registry dedicated wires, no stubs or "not implemented". Latest Vercel READY on 291bb58; tip 67b8507 no deploy yet (no ERROR). No open errors requiring code fix.
+last_run: 2026-10-27 run 15
+last_fix: restore src/routes/es.guias.orbit-pulse-catcher.tsx (was $(cat stub) → full ES guide from 90a2dff; SHA 789317d)
+last_known_focus: E031 recurring (homes/registry/summary clean; found + fixed guide stub)
+new_findings: E039 ES orbit-pulse-catcher guide $(cat stub (fixed)
+deploy: previous READY on 291bb58; tip after fix 789317d (await deploy; no ERROR observed)
+notes: Known smoke green on critical files. Discovery found 24-byte stub in es.guias.orbit-pulse-catcher.tsx. Restored real content. Catalog + state updated. No open code bugs remaining in sampled paths.
 ```
 
 <!-- end:error-hunter-state.md -->
