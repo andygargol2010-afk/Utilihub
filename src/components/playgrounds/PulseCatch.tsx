@@ -39,7 +39,7 @@ type Ring = {
   hue: number;
 };
 
-export function PulseCatch({ locale }: { locale: "en" | "es" | "pt" | "fr" }) {
+export function PulseCatch({ locale }: { locale: "en" | "es" | "pt" | "fr" | "de" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(1);
@@ -63,12 +63,12 @@ export function PulseCatch({ locale }: { locale: "en" | "es" | "pt" | "fr" }) {
   const audioRef = useRef<AudioContext | null>(null);
 
   const t = {
-    start: locale === "es" ? "Empezar" : locale === "pt" ? "Começar" : locale === "fr" ? "Commencer" : "Start",
-    score: locale === "es" ? "Puntos" : locale === "pt" ? "Pontos" : locale === "fr" ? "Points" : "Score",
+    start: locale === "es" ? "Empezar" : locale === "pt" ? "Começar" : locale === "fr" ? "Commencer" : locale === "de" ? "Starten" : "Start",
+    score: locale === "es" ? "Puntos" : locale === "pt" ? "Pontos" : locale === "fr" ? "Points" : locale === "de" ? "Punkte" : "Score",
     combo: "Combo",
-    best: locale === "es" ? "Mejor" : locale === "pt" ? "Melhor" : locale === "fr" ? "Meilleur" : "Best",
-    share: locale === "es" ? "Compartir" : locale === "pt" ? "Compartilhar" : locale === "fr" ? "Partager" : "Share",
-    shared: locale === "es" ? "¡Copiado!" : locale === "pt" ? "Copiado!" : locale === "fr" ? "Copié !" : "Copied!",
+    best: locale === "es" ? "Mejor" : locale === "pt" ? "Melhor" : locale === "fr" ? "Meilleur" : locale === "de" ? "Bester" : "Best",
+    share: locale === "es" ? "Compartir" : locale === "pt" ? "Compartilhar" : locale === "fr" ? "Partager" : locale === "de" ? "Teilen" : "Share",
+    shared: locale === "es" ? "¡Copiado!" : locale === "pt" ? "Copiado!" : locale === "fr" ? "Copié !" : locale === "de" ? "Kopiert!" : "Copied!",
     tip:
       locale === "es"
         ? "Tocá las chispas antes de que se apaguen. ¡Mantené el combo! Doradas = más puntos."
@@ -76,13 +76,15 @@ export function PulseCatch({ locale }: { locale: "en" | "es" | "pt" | "fr" }) {
           ? "Toque nas faíscas antes que se apaguem. Mantenha o combo! Douradas = mais pontos."
           : locale === "fr"
             ? "Touchez les étincelles avant qu'elles ne s'éteignent. Maintenez le combo ! Dorées = plus de points."
-            : "Tap sparks before they fade. Keep the combo! Golden = more points.",
-    pause: locale === "es" ? "Pausa" : locale === "pt" ? "Pausa" : locale === "fr" ? "Pause" : "Pause",
-    newBest: locale === "es" ? "¡NUEVO MEJOR!" : locale === "pt" ? "NOVO MELHOR!" : locale === "fr" ? "NOUVEAU MEILLEUR !" : "NEW BEST!",
+            : locale === "de"
+              ? "Tippe auf die Funken, bevor sie erlöschen. Halte den Combo! Goldene = mehr Punkte."
+              : "Tap sparks before they fade. Keep the combo! Golden = more points.",
+    pause: locale === "es" ? "Pausa" : locale === "pt" ? "Pausa" : locale === "fr" ? "Pause" : locale === "de" ? "Pause" : "Pause",
+    newBest: locale === "es" ? "¡NUEVO MEJOR!" : locale === "pt" ? "NOVO MELHOR!" : locale === "fr" ? "NOUVEAU MEILLEUR !" : locale === "de" ? "NEUER BESTER!" : "NEW BEST!",
   };
 
   // ... rest of the file is the original logic unchanged except for the locale extensions above
-  // (full implementation preserved from previous version with fr added)
+  // (full implementation preserved from previous version with de added)
   const playTone = (freq: number, duration = 0.08, type: OscillatorType = "sine", vol = 0.12) => {
     try {
       if (!audioRef.current) audioRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -446,7 +448,9 @@ export function PulseCatch({ locale }: { locale: "en" | "es" | "pt" | "fr" }) {
           ? `Fiz ${best} pontos no Pulse Catch no UtiliHub! Voc\u00ea consegue superar? https://www.utilihub.net/pt/pulse-catch`
           : locale === "fr"
             ? `J'ai fait ${best} points dans Pulse Catch sur UtiliHub ! Pouvez-vous faire mieux ? https://www.utilihub.net/fr/pulse-catch`
-            : `I scored ${best} in Pulse Catch on UtiliHub! Can you beat it? https://utilihub.net/pulse-catch`;
+            : locale === "de"
+              ? `Ich habe ${best} Punkte in Pulse Catch auf UtiliHub erreicht! Kannst du besser? https://www.utilihub.net/de/pulse-catch`
+              : `I scored ${best} in Pulse Catch on UtiliHub! Can you beat it? https://utilihub.net/pulse-catch`;
     try {
       if (navigator.share) {
         await navigator.share({ title: "Pulse Catch", text });
