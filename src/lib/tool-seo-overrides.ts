@@ -1,3 +1,4 @@
+successfully downloaded text file (SHA: 8444779a10c641fd43fd2227118feb628b6892c9)
 /** Unique SEO copy overrides for high-priority general tools (by internal slug). */
 
 import { TOOL_SEO_OVERRIDES_BASE_A } from "./tool-seo-overrides-base-a";
@@ -119,6 +120,7 @@ import { TOOL_SEO_OVERRIDES_COCINA } from "./tool-seo-overrides-cocina";
 import { TOOL_SEO_OVERRIDES_RANK5 } from "./tool-seo-overrides-rank5";
 import { TOOL_SEO_OVERRIDES_RANK6 } from "./tool-seo-overrides-rank6";
 import { TOOL_SEO_OVERRIDES_RANK7 } from "./tool-seo-overrides-rank7";
+import { TOOL_SEO_OVERRIDES_ATTENDANCE } from "./tool-seo-overrides-attendance";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -253,6 +255,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_RANK5,
   ...TOOL_SEO_OVERRIDES_RANK6,
   ...TOOL_SEO_OVERRIDES_RANK7,
+  ...TOOL_SEO_OVERRIDES_ATTENDANCE,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
