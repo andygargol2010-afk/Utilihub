@@ -10,13 +10,14 @@ type Path = { points: Point[]; hueBase: number };
 interface Particle {
   pathIndex: number;
   ribbonIndex: number;
-  t: number; // 0..1 along path
+  t: number;
   speed: number;
   size: number;
   hueOffset: number;
 }
 
 const AURORA_HUES = [180, 200, 220, 260, 300, 320, 140, 160];
+const STORAGE_KEY = "utilihub_aurora_ribbon_weaver_v1";
 
 export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
   useEffect(() => {
@@ -37,6 +38,7 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
   const [bloom, setBloom] = useState(1.2);
   const [pathCount, setPathCount] = useState(0);
   const [paused, setPaused] = useState(false);
+  const loadedRef = useRef(false);
 
   const labels = {
     en: {
@@ -48,8 +50,9 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
       clear: "Clear",
       pause: "Pause",
       resume: "Resume",
+      randomize: "Randomize",
       export: "Share PNG",
-      help: "Draw freehand paths. Each becomes multi-ribbon aurora streams that flow with bloom and particles. Distinct ribbon-weaving composition.",
+      help: "Draw freehand paths or press R to randomize. Space pauses, C clears. Composition persists and deep-links via URL. Multi-ribbon aurora streams with bloom.",
       count: "Paths",
     },
     es: {
@@ -61,8 +64,9 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
       clear: "Limpiar",
       pause: "Pausar",
       resume: "Reanudar",
+      randomize: "Aleatorio",
       export: "Compartir PNG",
-      help: "Dibujá caminos a mano alzada. Cada uno se convierte en flujos multi-cinta aurora con bloom y partículas. Composición de tejido de cintas distintiva.",
+      help: "Dibujá caminos a mano alzada o presioná R para aleatorizar. Espacio pausa, C limpia. La composición persiste y se puede deep-linkear por URL. Flujos multi-cinta aurora con bloom.",
       count: "Caminos",
     },
   }[locale];
@@ -87,6 +91,70 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
   useEffect(() => {
     initParticles();
   }, [pathCount, density, ribbonCount, initParticles]);
+
+  // Load from URL deep-link or localStorage on mount
+  useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const arp = params.get("arp");
+      if (arp) {
+        const decoded = JSON.parse(atob(arp));
+        if (decoded.paths && Array.isArray(decoded.paths)) {
+          pathsRef.current = decoded.paths;
+          setPathCount(decoded.paths.length);
+          if (typeof decoded.ribbonCount === "number") setRibbonCount(decoded.ribbonCount);
+          if (typeof decoded.width === "number") setWidth(decoded.width);
+          if (typeof decoded.speed === "number") setSpeed(decoded.speed);
+          if (typeof decoded.density === "number") setDensity(decoded.density);
+          if (typeof decoded.bloom === "number") setBloom(decoded.bloom);
+          return;
+        }
+      }
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data.paths && Array.isArray(data.paths)) {
+          pathsRef.current = data.paths;
+          setPathCount(data.paths.length);
+          if (typeof data.ribbonCount === "number") setRibbonCount(data.ribbonCount);
+          if (typeof data.width === "number") setWidth(data.width);
+          if (typeof data.speed === "number") setSpeed(data.speed);
+          if (typeof data.density === "number") setDensity(data.density);
+          if (typeof data.bloom === "number") setBloom(data.bloom);
+        }
+      }
+    } catch {}
+  }, []);
+
+  // Persist to localStorage and update URL deep-link
+  useEffect(() => {
+    if (!loadedRef.current) return;
+    try {
+      const payload = {
+        paths: pathsRef.current,
+        ribbonCount,
+        width,
+        speed,
+        density,
+        bloom,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      // Keep URL short: only include if paths exist and not too large
+      const json = JSON.stringify(payload);
+      if (json.length < 1800) {
+        const encoded = btoa(json);
+        const url = new URL(window.location.href);
+        if (pathsRef.current.length > 0) {
+          url.searchParams.set("arp", encoded);
+        } else {
+          url.searchParams.delete("arp");
+        }
+        window.history.replaceState({}, "", url.toString());
+      }
+    } catch {}
+  }, [pathCount, ribbonCount, width, speed, density, bloom]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -162,7 +230,6 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
 
-      // Draw ribbons
       for (const path of pathsRef.current) {
         const pts = path.points;
         if (pts.length < 2) continue;
@@ -196,7 +263,6 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
               ctx.lineTo(x, y);
             }
           }
-          // Bloom layers
           ctx.strokeStyle = `hsla(${hue}, 85%, 70%, ${0.12 * bloom})`;
           ctx.lineWidth = width * 5 * bloom;
           ctx.stroke();
@@ -209,7 +275,6 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
         }
       }
 
-      // Drawing preview
       if (drawingRef.current && drawingRef.current.length > 1) {
         ctx.beginPath();
         ctx.moveTo(drawingRef.current[0].x, drawingRef.current[0].y);
@@ -219,7 +284,6 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
         ctx.stroke();
       }
 
-      // Particles
       ctx.globalCompositeOperation = "lighter";
       for (const p of particlesRef.current) {
         const path = pathsRef.current[p.pathIndex];
@@ -265,17 +329,62 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
     };
   }, [ribbonCount, width, speed, bloom]);
 
-  const clear = () => {
+  const clear = useCallback(() => {
     pathsRef.current = [];
     particlesRef.current = [];
     drawingRef.current = null;
     setPathCount(0);
-  };
+  }, []);
 
-  const togglePause = () => {
+  const togglePause = useCallback(() => {
     pausedRef.current = !pausedRef.current;
     setPaused(pausedRef.current);
-  };
+  }, []);
+
+  const randomize = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+    const newPaths: Path[] = [];
+    const n = 2 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < n; i++) {
+      const points: Point[] = [];
+      let x = 40 + Math.random() * (w - 80);
+      let y = 40 + Math.random() * (h - 80);
+      const steps = 18 + Math.floor(Math.random() * 22);
+      for (let j = 0; j < steps; j++) {
+        x += (Math.random() - 0.5) * 48;
+        y += (Math.random() - 0.5) * 36;
+        x = Math.max(16, Math.min(w - 16, x));
+        y = Math.max(16, Math.min(h - 16, y));
+        points.push({ x: Math.round(x), y: Math.round(y) });
+      }
+      newPaths.push({
+        points,
+        hueBase: AURORA_HUES[i % AURORA_HUES.length],
+      });
+    }
+    pathsRef.current = newPaths;
+    setPathCount(newPaths.length);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === " " || e.code === "Space") {
+        e.preventDefault();
+        togglePause();
+      } else if (e.key === "c" || e.key === "C") {
+        clear();
+      } else if (e.key === "r" || e.key === "R") {
+        randomize();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [clear, togglePause, randomize]);
 
   const exportPng = () => {
     const canvas = canvasRef.current;
@@ -286,7 +395,6 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
     const octx = off.getContext("2d");
     if (!octx) return;
     octx.drawImage(canvas, 0, 0);
-    // Branding
     octx.fillStyle = "rgba(0,0,0,0.55)";
     octx.fillRect(0, off.height - 48, off.width, 48);
     octx.fillStyle = "#fff";
@@ -337,6 +445,7 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
           <input type="range" min={0.5} max={2.5} step={0.1} value={bloom} onChange={(e) => setBloom(Number(e.target.value))} className="accent-primary" />
         </label>
         <div className="flex flex-wrap gap-2 sm:col-span-2 lg:col-span-3">
+          <button type="button" onClick={randomize} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">{labels.randomize}</button>
           <button type="button" onClick={clear} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">{labels.clear}</button>
           <button type="button" onClick={togglePause} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">{paused ? labels.resume : labels.pause}</button>
           <button type="button" onClick={exportPng} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">{labels.export}</button>

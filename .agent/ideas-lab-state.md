@@ -70,7 +70,7 @@ path_es: /es/aurora-ribbon-weaver
 path_seo: n/a
 domain: playgrounds
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: User draws a path on canvas, sees multi-ribbon aurora streams flow along it with adjustable controls, and shares a branded PNG of the composition.
 share: png
 next_step_required: no
@@ -79,6 +79,7 @@ C1 playgrounds aurora-ribbon-weaver: 5/5/3/4/5/4 = 26
 C2 simulators climate-feedback-loop: 4/3/4/5/4/3 = 23
 C3 games rhythm-orbit-tap: 5/5/3/4/5/4 = 26 (tie broken by higher domain weight + playgrounds preference)
 Chosen: aurora-ribbon-weaver. Domain roll: weighted preference playgrounds (11) after last search-magnets close. p_fixed unused this IDEATE (CORE selected).
+EXECUTE 2/4 complete. Added Randomize button + keyboard (Space pause, C clear, R randomize), localStorage persist of paths + key settings (utilihub_aurora_ribbon_weaver_v1), and URL deep-link via ?arp= base64 (short payloads only; ExperienceShareButton captures it). EN+ES labels updated. CWV-safe (no new deps, modest random paths). Distinct ribbon-weaving + aurora bloom retained.
 adsense-prep_runs: 3
 ```
 
