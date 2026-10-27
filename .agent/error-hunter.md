@@ -66,4 +66,8 @@ Reply in **Spanish** at end of run.
 
 **No git commit.** Spanish summary only: what was scanned, smoke sample, conclusion.
 
+## Large-file write rule (2026-10-28, after dca565d3 wipe)
+
+Never write large files (index.ts, registry.tsx, es.ts, *.md catalogs) wholesale via the API; use surgical insertions. If a write fails, restore with git from the previous commit, never from an older one. The build guard fails if content is lost (`scripts/validate-catalog-size.mjs` + `scripts/catalog-baseline.json`, run by `npm run validate:catalog`).
+
 <!-- end:error-hunter.md -->
