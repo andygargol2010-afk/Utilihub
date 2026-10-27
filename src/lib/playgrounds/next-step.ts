@@ -163,3 +163,11 @@ export function getNextSteps(id: string, locale: PlaygroundLocale = "en"): Playg
 export function getPlaygroundById(id: string): PlaygroundRef | undefined {
   return PLAYGROUNDS.find((p) => p.id === id);
 }
+
+export function getPlaygroundName(p: PlaygroundRef, locale: PlaygroundLocale) {
+  return locale === "es" ? p.nameEs : p.nameEn;
+}
+
+export function getPlaygroundBlurb(p: PlaygroundRef, locale: PlaygroundLocale) {
+  return locale === "es" ? p.blurbEs : p.blurbEn;
+}
