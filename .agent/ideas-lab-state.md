@@ -70,11 +70,11 @@ path_es: /es/aurora-ribbon-weaver
 path_seo: n/a
 domain: playgrounds
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User draws a path on canvas, sees multi-ribbon aurora streams flow along it with adjustable controls, and shares a branded PNG of the composition.
 share: png
 next_step_required: no
-notes: Rubric scores (value/share/search/distinct/feas/perf):
+notes: EXECUTE 1/4 complete. Core shipped: freehand path drawing generates multi-ribbon (3-8) offset aurora streams with layered bloom, flowing particles along ribbons, controls for count/width/speed/density/bloom, pause/clear, branded PNG export (title + utilihub.com + path count). EN+ES routes + next-step registration. CWV-safe (lazy canvas, modest particles). Distinct ribbon-weaving + aurora bloom. Rubric scores (value/share/search/distinct/feas/perf):
 C1 playgrounds aurora-ribbon-weaver: 5/5/3/4/5/4 = 26
 C2 simulators climate-feedback-loop: 4/3/4/5/4/3 = 23
 C3 games rhythm-orbit-tap: 5/5/3/4/5/4 = 26 (tie broken by higher domain weight + playgrounds preference)
