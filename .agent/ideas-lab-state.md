@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: search-magnets
-last_closed_id: orbit-pulse-catcher-guide
+last_closed_domain: playgrounds
+last_closed_id: fluid-ink-flow-playground
 p_fixed: 0.35
 
 weights_core:
@@ -23,7 +23,7 @@ weights_core:
   games: 1
   simulators: 8
   studio-composition: 3
-  playgrounds: 11
+  playgrounds: 9
   quality-lift: 2
 
 weights_growth:
@@ -45,6 +45,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-27 | playgrounds | fluid-ink-flow-playground | Interactive Fluid Ink Flow playground complete after 4 runs. Freehand viscous multi-color ink with mixing, controls (viscosity/density/gravity/tension), URL deep-link, mobile density tuning, branded PNG, EN+ES. CWV-safe particle caps. Adsterra intact.
 - 2026-10-27 | search-magnets | orbit-pulse-catcher-guide | Original long-form SEO guide (EN+ES) on the Orbit Pulse Catcher interactive timing game complete after 6 runs. Full EN+ES depth including scoring formula, drills, 15-min plan. CWV-safe. Adsterra intact.
 ```
 
@@ -53,21 +54,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive Fluid Ink Flow playground. User draws freehand strokes that become viscous flowing ink with adjustable viscosity, color mixing on overlaps, particle density, gravity pull, and surface tension. Live preview, pause/randomize/clear, keyboard shortcuts, PNG share with baked title + utilihub.com + stroke count, localStorage persist, URL deep-link. EN+ES routes. Distinct from aurora-ribbon-weaver (ribbon streams), aurora-particle-playground (discrete particles), and color-cascade-fusion by viscous fluid ink composition + mixing aesthetic.
-id: fluid-ink-flow-playground
-path_en: /fluid-ink-flow-playground
-path_es: /es/fluid-ink-flow-playground
+status: done
+idea: n/a
+id: n/a
+path_en: n/a
+path_es: n/a
 path_seo: n/a
-domain: playgrounds
-runs_total: 4
-runs_remaining: 1
-acceptance: User draws a stroke on canvas, sees viscous multi-color ink flow along it with adjustable controls and mixing, and shares a branded PNG of the composition.
-share: png
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
+share: n/a
 next_step_required: no
-notes: Run 1/4 EXECUTE: shipped working core — freehand canvas drawing, particle-based viscous ink flow with viscosity/density/gravity/surface-tension controls, color variety, pause/randomize/clear, keyboard shortcuts, localStorage persist, branded PNG export (title + utilihub.com + stroke count). EN+ES routes + next-step catalog entry. Core playable. Next: refine mixing aesthetic, URL deep-link, more polish.
-Run 2/4 EXECUTE: added URL deep-link (?ink= base64 restores full strokes on load, prefers over localStorage) + refined particle color mixing (nearby different colors lerp RGB). URL updates on save/clear/randomize. EN+ES help text updated. Mixing more visible. Next: final polish / mobile density tuning / close if solid.
-Run 3/4 EXECUTE: mobile density auto-tuning (cap density ≤4 and max ~650 particles on <480px) + overall particle cap (1400 desktop) + neighbor check step-2 when high count or mobile for better INP/CWV. Slightly larger soft particles. Help text notes auto density. Solid for mobile. Next: final close or light polish if needed.
+notes: Project fluid-ink-flow-playground CLOSED after 4 runs. Core playable from run 1, deep-link + mixing run 2, mobile CWV run 3, final review run 4. Next run will IDEATE.
 adsense-prep_runs: 3
 ```
 
