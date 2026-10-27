@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-27 | matematicas | calculadora-porcentaje-restante | PercentageRemainingCalculatorTool
 - 2026-10-27 | viajes | calculadora-costo-litro-combustible | FuelLiterCostCalculatorTool
 - 2026-10-26 | cocina | calculadora-porciones-pizza | PizzaPortionsCalculatorTool
 - 2026-10-26 | hogar | calculadora-volumen-tanque | TankVolumeCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-26 | viajes | calculadora-costo-por-km | CostPerKmCalculatorTool
 - 2026-10-26 | texto | conversor-texto-caso | TextCaseConverterTool
 - 2026-10-26 | salud | calculadora-frecuencia-cardiaca-objetivo | TargetHeartRateCalculatorTool
-- 2026-10-26 | finanzas | calculadora-iva | IvaCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -61,6 +61,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-27: PRODUCT — calculadora-porcentaje-restante (matematicas). One tool (default per ops). Anti-dupe OK. Practical remaining percentage. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-costo-litro-combustible (viajes). One tool. Anti-dupe OK (new slug). Practical total fuel cost. Dedicated UI created; pickComponent if pending (uses category fallback for now). SEO locales: defer pt.
 2026-10-26: PRODUCT — calculadora-porciones-pizza (cocina). One tool (default per ops.md). Anti-dupe OK. Practical pizza order calculator. SEO locales: defer pt.
 2026-10-26: PRODUCT — calculadora-volumen-tanque (hogar). One tool (default per ops.md). Anti-dupe OK (no prior slug). Practical cylindrical water tank in liters. SEO locales: defer pt.
@@ -80,7 +81,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-costo-litro-combustible
+last_slugs: calculadora-porcentaje-restante
 last_deploy: no (branch auto-deploy disabled)
 last_sha: (this commit)
 ```

@@ -85,4 +85,5 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "matriz-2x2", name: "MatrixBinarySuiteTool", path: "./MatrixBinarySuiteTool", export: "MatrixBinarySuiteTool" },
   { slug: "calculadora-tableros", name: "SheetCalculatorTool", path: "./SheetCalculatorTool", export: "SheetCalculatorTool" },
   { slug: "calculadora-costo-litro-combustible", name: "FuelLiterCostCalculatorTool", path: "./FuelLiterCostCalculatorTool", export: "FuelLiterCostCalculatorTool" },
+  { slug: "calculadora-porcentaje-restante", name: "PercentageRemainingCalculatorTool", path: "./PercentageRemainingCalculatorTool", export: "PercentageRemainingCalculatorTool" },
 ] as const;
