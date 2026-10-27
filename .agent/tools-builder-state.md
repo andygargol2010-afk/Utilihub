@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-27 | finanzas | calculadora-presupuesto-mensual | MonthlyBudgetCalculatorTool
 - 2026-10-27 | matematicas | calculadora-porcentaje-restante | PercentageRemainingCalculatorTool
 - 2026-10-27 | viajes | calculadora-costo-litro-combustible | FuelLiterCostCalculatorTool
 - 2026-10-26 | cocina | calculadora-porciones-pizza | PizzaPortionsCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-26 | educacion | calculadora-porcentaje-asistencia | AttendancePercentageCalculatorTool
 - 2026-10-26 | viajes | calculadora-costo-por-km | CostPerKmCalculatorTool
 - 2026-10-26 | texto | conversor-texto-caso | TextCaseConverterTool
-- 2026-10-26 | salud | calculadora-frecuencia-cardiaca-objetivo | TargetHeartRateCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -47,7 +47,7 @@ diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-d
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia)
-finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva)
+finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -61,6 +61,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-27: PRODUCT — calculadora-presupuesto-mensual (finanzas). One tool (default per ops). Anti-dupe OK. Practical remaining budget. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-porcentaje-restante (matematicas). One tool (default per ops). Anti-dupe OK. Practical remaining percentage. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-costo-litro-combustible (viajes). One tool. Anti-dupe OK (new slug). Practical total fuel cost. Dedicated UI created; pickComponent if pending (uses category fallback for now). SEO locales: defer pt.
 2026-10-26: PRODUCT — calculadora-porciones-pizza (cocina). One tool (default per ops.md). Anti-dupe OK. Practical pizza order calculator. SEO locales: defer pt.
@@ -81,9 +82,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-porcentaje-restante
+last_slugs: calculadora-presupuesto-mensual
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (this commit)
+last_sha: 12743bb22730d97e615b7cef81b68dda33350921
 ```
 
 <!-- end:tools-builder-state.md -->
