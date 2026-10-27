@@ -8,6 +8,7 @@ import { copyShareUrl, readShareHash } from "./house-modeler/shareLink";
 import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
 import { createHistory, undoKeyStep } from "./house-modeler/history";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
+import { PresetPicker } from "./house-modeler/PresetPicker";
 
 type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
@@ -6910,6 +6911,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {isFullscreen ? labels.exitFs : labels.fullscreen}
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
         </button>
+        <PresetPicker es={es} hasParts={count > 0} onPick={(parts) => { restoreParts(parts); flashActionHint(es ? "Plantilla cargada" : "Preset loaded"); }} />
         <button
           type="button"
           data-testid="export-png"

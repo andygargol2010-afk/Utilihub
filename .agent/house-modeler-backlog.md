@@ -9,7 +9,7 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 1 | Autosave design to localStorage + restore on load (try/catch, versioned) | 5 | 5 | 2 | 12.5 | DONE run 299 (house-modeler/autosave.ts; parts+finishes+yaw; layers/locks not yet) |
 | 2 | Undo / redo (Ctrl+Z / Ctrl+Y + toolbar buttons, snapshot stack in new module) | 5 | 5 | 3 | 8.3 | DONE run 300 (house-modeler/history.ts; Ctrl+Z/Shift+Z/Y + Undo/Redo buttons; locks/layers not in snapshot) |
 | 3 | Export PNG screenshot button (renderer toBlob after a render, EN+ES) | 4 | 4 | 1 | 16 | DONE run 298 (house-modeler/exportPng.ts) |
-| 4 | Ready-made house presets (small cabin, 2-room, garden shed) loadable in one click | 4 | 5 | 3 | 6.7 | open |
+| 4 | Ready-made house presets (small cabin, 2-room, garden shed) loadable in one click | 4 | 5 | 3 | 6.7 | DONE run 303 (house-modeler/presets.ts + PresetPicker.tsx; 3 presets, confirm before replace, undoable) |
 | 5 | Share link: encode design in URL hash, load on open | 5 | 4 | 3 | 6.7 | DONE run 302 (house-modeler/shareLink.ts; Copy link button; #design= hash wins over autosave) |
 | 6 | Time-of-day / lighting presets (morning, noon, sunset) via sun position | 3 | 4 | 2 | 6 | open |
 | 7 | Dimension labels for the selected part (W x H x D, m) shown on canvas | 4 | 4 | 3 | 5.3 | open |
@@ -22,4 +22,4 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 14 | Fix 2 unrelated 404 resource requests seen on tool page (non-modeler) | 2 | 5 | 2 | 5 | open |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
-Next pick by score: #4 presets (6.7), #6 time-of-day (6), #9 mobile palette (6).
+Next pick by score: #6 time-of-day (6), #9 mobile palette (6).
