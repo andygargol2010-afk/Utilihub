@@ -6,6 +6,7 @@ import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { exportScenePng } from "./house-modeler/exportPng";
 import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
 import { createHistory, undoKeyStep } from "./house-modeler/history";
+import { OnboardingHint } from "./house-modeler/OnboardingHint";
 
 type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
@@ -6939,6 +6940,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
             : "linear-gradient(180deg, #87a8c8 0%, #c5d4a8 55%, #5a7a48 100%)",
         }}
       >
+        <OnboardingHint es={es} />
         {/* 3D canvas */}
         <div className="relative min-h-0 min-w-0 flex-1">
           <div

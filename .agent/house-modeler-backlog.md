@@ -13,7 +13,7 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 5 | Share link: encode design in URL hash, load on open | 5 | 4 | 3 | 6.7 | open |
 | 6 | Time-of-day / lighting presets (morning, noon, sunset) via sun position | 3 | 4 | 2 | 6 | open |
 | 7 | Dimension labels for the selected part (W x H x D, m) shown on canvas | 4 | 4 | 3 | 5.3 | open |
-| 8 | Onboarding hint overlay on first visit (dismissable, remembered) incl. touch gestures | 3 | 5 | 2 | 7.5 | open |
+| 8 | Onboarding hint overlay on first visit (dismissable, remembered) incl. touch gestures | 3 | 5 | 2 | 7.5 | DONE run 301 (house-modeler/OnboardingHint.tsx) |
 | 9 | Mobile: bigger structure palette tap targets + one-finger orbit/two-finger pan hint | 3 | 4 | 2 | 6 | open |
 | 10 | Performance: adaptive pixel ratio / shadow map size when FPS < 30 | 4 | 3 | 3 | 4 | open |
 | 11 | Total floor area / wall area readout (feeds paint/flooring tools via links) | 3 | 3 | 2 | 4.5 | open |
@@ -22,4 +22,4 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 14 | Fix 2 unrelated 404 resource requests seen on tool page (non-modeler) | 2 | 5 | 2 | 5 | open |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
-Next pick by score: #8 onboarding (7.5), #4 presets / #5 share link (6.7).
+Next pick by score: #4 presets / #5 share link (6.7), #6 time-of-day (6), #9 mobile palette (6).
