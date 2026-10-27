@@ -25,12 +25,13 @@ Reply in **Spanish** at end of run.
 
 1. ONLY `fix/spanish-complete`. Never `main`.
 2. **ONE COMMIT PER RUN** when something ships (code + state together).
-3. **NO DEPLOYS.** Auto-deploys on `fix/spanish-complete` are disabled on purpose. Never call `create_deployment`, Deploy Hooks, or any Vercel deploy API. Andy/Claude review and deploy in batches. Replace any “deploy + smoke” step with **PRE-PUSH SELF-REVIEW** (ops: integrity, blob-SHA restore, no raw JSX < >).
+3. **NO DEPLOYS.** Auto-deploys on `fix/spanish-complete` are disabled on purpose. Never call `create_deployment`, Deploy Hooks, or any Vercel deploy API. Andy/Claude review and deploy in batches. Replace any “deploy + smoke” step with **PRE-PUSH SELF-REVIEW** (ops).
 4. Never change automation cadence/accounts/workflows.
 5. **Never break:** ads kill switch, SEO `head`, SSR H1, registry integrity.
 6. **Never edit** `HouseModeler3D.tsx`.
 7. Files under `.agent/ideas-lab*` win over bootstrap prompt.
 8. EN + ES for user-facing copy; Core Web Vitals rules still apply.
+9. **NO DEPLOYS.** Auto-deploys on `fix/spanish-complete` are disabled on purpose. Never call `create_deployment`, Deploy Hooks, or any Vercel deploy API. Andy/Claude review and deploy in batches. Replace any “deploy + smoke” step with **PRE-PUSH SELF-REVIEW** (ops).
 
 ---
 
