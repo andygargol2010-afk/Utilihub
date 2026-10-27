@@ -82,4 +82,5 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "calculadora-frecuencia-cardiaca-objetivo", name: "TargetHeartRateCalculatorTool", path: "./TargetHeartRateCalculatorTool", export: "TargetHeartRateCalculatorTool" },
   { slug: "calculadora-volumen-tanque", name: "TankVolumeCalculatorTool", path: "./TankVolumeCalculatorTool", export: "TankVolumeCalculatorTool" },
   { slug: "calculadora-porciones-pizza", name: "PizzaPortionsCalculatorTool", path: "./PizzaPortionsCalculatorTool", export: "PizzaPortionsCalculatorTool" },
+  { slug: "calculadora-presupuesto-mensual", name: "MonthlyBudgetCalculatorTool", path: "./MonthlyBudgetCalculatorTool", export: "MonthlyBudgetCalculatorTool" },
 ] as const;
