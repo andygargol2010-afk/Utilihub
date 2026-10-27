@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 309
+runs_done: 310
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 361952
+approx_bytes: 362322
 fps_baseline_desktop: ~4 fps (1366x768, headless SwiftShader software GL in cloud sandbox, 2026-10-26; compare only against same environment)
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
@@ -61,7 +61,7 @@ last_mode: PRODUCT
 last_date: 2026-10-27
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 309 snap-grid size picker (backlog #12), monolith +424 B, build OK, 0 modeler console errors, fps desktop ~3.25 SwiftShader. runs_done=309. Prior: PRODUCT run 308 area readout chip (backlog #11), monolith +633 B, build OK, 0 modeler console errors, fps desktop ~3 SwiftShader (baseline ~4). runs_done=308. Prior: PRODUCT run 307 dimension labels (backlog #7), monolith +288 B, build OK, 0 modeler console errors, fps desktop ~2.75 SwiftShader (baseline ~4, noise). runs_done=307. Prior: MODELADOR-3D run 306 Import scene JSON (Open button). runs_done=306. Prior: PRODUCT run 305 time-of-day presets. Build OK, 0 modeler console errors, fps ~3 desktop SwiftShader. runs_done=305.
+note: PRODUCT run 310 adaptive render resolution (backlog #10), fps desktop 4.75 SwiftShader; mobile canvas 492->246px and ~12fps. runs_done=310. Prior: PRODUCT run 309 snap-grid size picker (backlog #12), monolith +424 B, build OK, 0 modeler console errors, fps desktop ~3.25 SwiftShader. runs_done=309. Prior: PRODUCT run 308 area readout chip (backlog #11), monolith +633 B, build OK, 0 modeler console errors, fps desktop ~3 SwiftShader (baseline ~4). runs_done=308. Prior: PRODUCT run 307 dimension labels (backlog #7), monolith +288 B, build OK, 0 modeler console errors, fps desktop ~2.75 SwiftShader (baseline ~4, noise). runs_done=307. Prior: MODELADOR-3D run 306 Import scene JSON (Open button). runs_done=306. Prior: PRODUCT run 305 time-of-day presets. Build OK, 0 modeler console errors, fps ~3 desktop SwiftShader. runs_done=305.
 PRODUCT run 305: time-of-day lighting presets (backlog #6): Morning/Noon/Sunset/Dusk dropdown, new modules house-modeler/lighting.ts + TimeOfDayPicker.tsx; monolith +546 B (360607). Verified EN+ES desktop+mobile, 0 modeler console errors (only 2 known unrelated 404s). fps ~3 in SwiftShader (baseline ~4, noise-level, no new render cost). Local server: `PORT=4173 node .output/server/index.mjs` after build; EN url /tools/3d-house-modeler, ES /es/herramientas/modelador-casas-3d. runs_done=305.
 ```
 
@@ -151,6 +151,7 @@ MODELADOR-3D run 306: Import scene JSON (new 'Open/Abrir' toolbar button, import
 PRODUCT run 307: selected-part dimension label W × H × D m (backlog #7), new module house-modeler/dimensionLabel.ts; monolith +288 B (360895). Verified EN desktop + ES mobile. runs_done=307.
 PRODUCT run 308: floor/wall/roof gross area chip next to part count (backlog #11), new module house-modeler/areaStats.ts; monolith +633 B. Verified EN desktop + ES mobile (preset -> chip). runs_done=308.
 PRODUCT run 309: snap grid size picker 0.1/0.25/0.5/1 m (backlog #12), new module house-modeler/snapGrid.tsx; GRID const replaced by gridStep(); persisted in localStorage. Verified EN desktop + ES mobile. runs_done=309.
+PRODUCT run 310: adaptive pixel ratio (backlog #10), new module house-modeler/adaptiveQuality.ts; monolith +~450 B. Verified EN desktop (1052->789px, fps 4.75) + ES mobile dsf2 (492->246px, ~12fps), 0 new modeler console errors. runs_done=310.
 ```
 
 <!-- end:house-modeler-state.md -->

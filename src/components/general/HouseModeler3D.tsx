@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
+import { createAdaptiveQuality } from "./house-modeler/adaptiveQuality";
 import { createDimensionLabel } from "./house-modeler/dimensionLabel";
 import { exportScenePng } from "./house-modeler/exportPng";
 import { copyShareUrl, readShareHash } from "./house-modeler/shareLink";
@@ -4152,6 +4153,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      const adaptiveQ = createAdaptiveQuality(renderer.getPixelRatio());
       renderer.setSize(el.clientWidth, el.clientHeight);
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -4711,6 +4713,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         rim.target.position.set(focusX, 1.5, focusZ);
         rim.target.updateMatrixWorld();
         renderer.render(scene, camera);
+        const nextPr = adaptiveQ.tick(performance.now());
+        if (nextPr !== null && el.clientWidth > 0) {
+          renderer.setPixelRatio(nextPr);
+          renderer.setSize(el.clientWidth, el.clientHeight);
+        }
         threeRef.current!.anim = requestAnimationFrame(tick);
       };
       tick();
