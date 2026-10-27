@@ -62,11 +62,11 @@ path_es: n/a
 path_seo: /fr
 domain: seo-locales
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: User opens /fr and at least one experience route (e.g. /fr/fluid-ink-flow or equivalent), sees complete French titles, descriptions, and UI strings; hreflang present; no EN/ES navigation links to it.
 share: n/a
 next_step_required: yes
-notes: EXECUTE 1/4: shipped /fr minimal shell + /fr/fluid-ink-flow-playground with full French titles, descriptions, UI strings (via locale=fr in playground), hreflang alternates, minimal header/footer, lang=fr. No primary nav links from EN/ES. Rubric from IDEATE retained. Next: add more experiences (e.g. pulse-catch or others) and ensure full coverage.
+notes: EXECUTE 1/4: shipped /fr minimal shell + /fr/fluid-ink-flow-playground with full French titles, descriptions, UI strings (via locale=fr in playground), hreflang alternates, minimal header/footer, lang=fr. No primary nav links from EN/ES. EXECUTE 2/4: added /fr/pulse-catch with full French UI strings (extended PulseCatch locale to include fr), titles, descriptions, hreflang; updated /fr home to list both experiences. Rubric from IDEATE retained. Next: add one more experience (e.g. snake or aurora) and polish shell if needed.
 adsense-prep_runs: 3
 ```
 
