@@ -1,0 +1,1 @@
+$(cat /tmp/hours-to-decimal-tool.ts)
