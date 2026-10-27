@@ -61,15 +61,11 @@ path_es: /es/fluid-ink-flow-playground
 path_seo: n/a
 domain: playgrounds
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User draws a stroke on canvas, sees viscous multi-color ink flow along it with adjustable controls and mixing, and shares a branded PNG of the composition.
 share: png
 next_step_required: no
-notes: Rubric scores (value/share/search/distinct/feas/perf):
-C1 playgrounds fluid-ink-flow-playground: 5/5/3/5/5/4 = 27
-C2 simulators ecosystem-balance: 4/3/4/4/4/4 = 23
-C3 games pulse-memory-match: 5/4/3/4/5/5 = 26
-Chosen: fluid-ink-flow-playground. Domain roll: weighted preference playgrounds (11) after last search-magnets close. p_fixed unused this IDEATE (CORE selected).
+notes: Run 1/4 EXECUTE: shipped working core — freehand canvas drawing, particle-based viscous ink flow with viscosity/density/gravity/surface-tension controls, color variety, pause/randomize/clear, keyboard shortcuts, localStorage persist, branded PNG export (title + utilihub.com + stroke count). EN+ES routes + next-step catalog entry. Core playable. Next: refine mixing aesthetic, URL deep-link, more polish.
 adsense-prep_runs: 3
 ```
 
