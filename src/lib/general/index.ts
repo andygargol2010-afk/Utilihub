@@ -1,1 +1,1 @@
-$(cat /tmp/index.ts)
+PLACEHOLDER_WILL_REPLACE
