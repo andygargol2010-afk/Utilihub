@@ -2,10 +2,10 @@ import type { ToolSeoOverride } from "./tool-seo-overrides";
 
 export const TOOL_SEO_OVERRIDES_WATER_CONSUMPTION: Record<string, ToolSeoOverride> = {
   "consumo-agua": {
-    metaTitle: "Water Consumption Calculator — Daily Liters × Days | UtiliHub",
+    metaTitle: "Water Consumption Calculator — Liters × Days | UtiliHub",
     metaTitleEs: "Calculadora de consumo de agua — litros por día | UtiliHub",
     metaDescription:
-      "Calculate total water use from daily consumption in liters and number of days. Example: 150 L per day for 30 days = 4500 L. Free, in the browser.",
+      "Total water use from daily liters × days (e.g. 150 L × 30 = 4,500 L). Free water consumption calculator, no signup.",
     metaDescriptionEs:
       "Calculá el consumo total de agua a partir de los litros por día y la cantidad de días. Ejemplo: 150 L por día durante 30 días = 4500 L. Gratis, en el navegador.",
     about: [
@@ -40,3 +40,6 @@ export const TOOL_SEO_OVERRIDES_WATER_CONSUMPTION: Record<string, ToolSeoOverrid
     ],
   },
 };
+
+TOOL_SEO_OVERRIDES_WATER_CONSUMPTION["calculadora-consumo-agua"] =
+  TOOL_SEO_OVERRIDES_WATER_CONSUMPTION["consumo-agua"];
