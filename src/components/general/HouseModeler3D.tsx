@@ -10,6 +10,7 @@ import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./h
 import { createHistory, undoKeyStep } from "./house-modeler/history";
 import { computeAreaStats, formatAreaStats } from "./house-modeler/areaStats";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
+import { SnapPicker, gridStep, setGridStep, snapLabel, type SnapStep } from "./house-modeler/snapGrid";
 import { PresetPicker } from "./house-modeler/PresetPicker";
 import { applyTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
 import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
@@ -256,10 +257,9 @@ function syncLockBadge(obj: THREE.Object3D, on: boolean) {
   badge.visible = on;
 }
 
-const GRID = 0.5;
-
 function snap(v: number) {
-  return Math.round(v / GRID) * GRID;
+  const g = gridStep();
+  return Math.round(v / g) * g;
 }
 
 /** Site disc is radius 120. Keep dragged parts inside it when the ray misses the mesh. */
@@ -3946,6 +3946,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   } | null>(null);
   const lightRigRef = useRef<LightRig | null>(null);
   const [tod, setTod] = useState<TimeOfDay>("sunset");
+  const [snapSel, setSnapSel] = useState<SnapStep>(0.5);
+  useEffect(() => setSnapSel(gridStep()), []);
   const partsRef = useRef<ScenePart[]>([]);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -5049,7 +5051,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     boxWithoutBadge(obj, spanBox);
     obj.rotation.y = yaw;
     obj.updateMatrixWorld(true);
-    const span = Math.max(GRID, snap(spanBox.max.x - spanBox.min.x));
+    const span = Math.max(gridStep(), snap(spanBox.max.x - spanBox.min.x));
     const originX = snap(obj.position.x);
     const originZ = snap(obj.position.z);
     // Rim clamp can pull a +span step back onto the source, stacking an unselectable twin.
@@ -5059,7 +5061,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     let cleared = false;
     for (let turn = 0; turn < 4 && !cleared; turn++) {
       const heading = yaw + turn * (Math.PI / 2);
-      for (const dist of [span, span + GRID]) {
+      for (const dist of [span, span + gridStep()]) {
         const nx = snap(obj.position.x + Math.cos(heading) * dist);
         const nz = snap(obj.position.z - Math.sin(heading) * dist);
         const [cx, cz] = clampToSite(nx, nz);
@@ -5541,10 +5543,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown") {
         if (!canMutate || paletteDragRef.current || draggingRef.current || dragArmRef.current) return;
         e.preventDefault();
-        if (e.key === "ArrowLeft") nudgeSelected(-GRID, 0);
-        else if (e.key === "ArrowRight") nudgeSelected(GRID, 0);
-        else if (e.key === "ArrowUp") nudgeSelected(0, -GRID);
-        else nudgeSelected(0, GRID);
+        if (e.key === "ArrowLeft") nudgeSelected(-gridStep(), 0);
+        else if (e.key === "ArrowRight") nudgeSelected(gridStep(), 0);
+        else if (e.key === "ArrowUp") nudgeSelected(0, -gridStep());
+        else nudgeSelected(0, gridStep());
       }
       // A palette/ground place commits on pointerup with toolRef. Switching tools mid-gesture
       // placed a different kind than the ghost the pointer was showing.
@@ -6935,6 +6937,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
         </button>
         <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
+        <SnapPicker es={es} value={snapSel} onPick={(v) => { setGridStep(v); setSnapSel(v); }} />
         <PresetPicker es={es} hasParts={count > 0} onPick={(parts) => { restoreParts(parts); flashActionHint(es ? "Plantilla cargada" : "Preset loaded"); }} />
         <button
           type="button"
@@ -7144,7 +7147,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                   } · ${paletteItems.find((item) => item.kind === tool)?.key ?? ""}${placeLayerCaption ? ` · ${placeLayerCaption}` : ""}`}
             </span>
             <span className="w-fit rounded-md bg-black/45 px-2 py-0.5 text-[10px] font-medium text-amber-100/90">
-              {labels.snap}
+              {snapLabel(snapSel, es)}
             </span>
           </div>
           {selectedKindLabel && !placingFromPalette && (
@@ -7182,7 +7185,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <button
                 type="button"
                 disabled={selectedLocked}
-                onClick={() => nudgeSelected(0, -GRID)}
+                onClick={() => nudgeSelected(0, -gridStep())}
                 aria-label={labels.nudgeZN}
                 title={labels.nudgeZN}
                 className="min-h-11 min-w-11 rounded-lg border border-amber-100/20 bg-amber-950/80 text-sm font-semibold text-amber-50 hover:bg-amber-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-200 disabled:opacity-40"
@@ -7193,7 +7196,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <button
                 type="button"
                 disabled={selectedLocked}
-                onClick={() => nudgeSelected(-GRID, 0)}
+                onClick={() => nudgeSelected(-gridStep(), 0)}
                 aria-label={labels.nudgeXN}
                 title={labels.nudgeXN}
                 className="min-h-11 min-w-11 rounded-lg border border-amber-100/20 bg-amber-950/80 text-sm font-semibold text-amber-50 hover:bg-amber-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-200 disabled:opacity-40"
@@ -7213,7 +7216,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <button
                 type="button"
                 disabled={selectedLocked}
-                onClick={() => nudgeSelected(GRID, 0)}
+                onClick={() => nudgeSelected(gridStep(), 0)}
                 aria-label={labels.nudgeXP}
                 title={labels.nudgeXP}
                 className="min-h-11 min-w-11 rounded-lg border border-amber-100/20 bg-amber-950/80 text-sm font-semibold text-amber-50 hover:bg-amber-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-200 disabled:opacity-40"
@@ -7224,7 +7227,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
               <button
                 type="button"
                 disabled={selectedLocked}
-                onClick={() => nudgeSelected(0, GRID)}
+                onClick={() => nudgeSelected(0, gridStep())}
                 aria-label={labels.nudgeZP}
                 title={labels.nudgeZP}
                 className="min-h-11 min-w-11 rounded-lg border border-amber-100/20 bg-amber-950/80 text-sm font-semibold text-amber-50 hover:bg-amber-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-200 disabled:opacity-40"
@@ -8025,10 +8028,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 {labels.rotDeg} {selectedRot * 90}° · {labels.yawHint}
               </p>
               <div className="mt-1.5 grid grid-cols-4 gap-1" role="group" aria-label={labels.nudge}>
-                <button type="button" onClick={() => nudgeSelected(-GRID, 0)} aria-label={labels.nudgeXN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">−X</button>
-                <button type="button" onClick={() => nudgeSelected(GRID, 0)} aria-label={labels.nudgeXP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">+X</button>
-                <button type="button" onClick={() => nudgeSelected(0, -GRID)} aria-label={labels.nudgeZN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">−Z</button>
-                <button type="button" onClick={() => nudgeSelected(0, GRID)} aria-label={labels.nudgeZP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">+Z</button>
+                <button type="button" onClick={() => nudgeSelected(-gridStep(), 0)} aria-label={labels.nudgeXN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">−X</button>
+                <button type="button" onClick={() => nudgeSelected(gridStep(), 0)} aria-label={labels.nudgeXP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">+X</button>
+                <button type="button" onClick={() => nudgeSelected(0, -gridStep())} aria-label={labels.nudgeZN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">−Z</button>
+                <button type="button" onClick={() => nudgeSelected(0, gridStep())} aria-label={labels.nudgeZP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent">+Z</button>
               </div>
               <div className="mt-2 grid grid-cols-1 gap-1.5">
                 <button
@@ -8068,10 +8071,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 {selectedRot * 90}°
               </span>
               <div className="grid grid-cols-2 gap-1">
-                <button type="button" onClick={() => nudgeSelected(-GRID, 0)} disabled={selectedLocked} aria-label={labels.nudgeXN} title={selectedLocked ? labels.lockedAction : labels.nudgeXN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">−X</button>
-                <button type="button" onClick={() => nudgeSelected(GRID, 0)} disabled={selectedLocked} aria-label={labels.nudgeXP} title={selectedLocked ? labels.lockedAction : labels.nudgeXP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">+X</button>
-                <button type="button" onClick={() => nudgeSelected(0, -GRID)} disabled={selectedLocked} aria-label={labels.nudgeZN} title={selectedLocked ? labels.lockedAction : labels.nudgeZN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">−Z</button>
-                <button type="button" onClick={() => nudgeSelected(0, GRID)} disabled={selectedLocked} aria-label={labels.nudgeZP} title={selectedLocked ? labels.lockedAction : labels.nudgeZP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">+Z</button>
+                <button type="button" onClick={() => nudgeSelected(-gridStep(), 0)} disabled={selectedLocked} aria-label={labels.nudgeXN} title={selectedLocked ? labels.lockedAction : labels.nudgeXN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">−X</button>
+                <button type="button" onClick={() => nudgeSelected(gridStep(), 0)} disabled={selectedLocked} aria-label={labels.nudgeXP} title={selectedLocked ? labels.lockedAction : labels.nudgeXP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">+X</button>
+                <button type="button" onClick={() => nudgeSelected(0, -gridStep())} disabled={selectedLocked} aria-label={labels.nudgeZN} title={selectedLocked ? labels.lockedAction : labels.nudgeZN} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">−Z</button>
+                <button type="button" onClick={() => nudgeSelected(0, gridStep())} disabled={selectedLocked} aria-label={labels.nudgeZP} title={selectedLocked ? labels.lockedAction : labels.nudgeZP} className="min-h-11 rounded-md border border-border bg-background text-[10px] font-semibold hover:bg-accent disabled:opacity-40">+Z</button>
               </div>
               <p className="text-center text-[8px] leading-tight text-muted-foreground">{labels.nudge}</p>
               <button
