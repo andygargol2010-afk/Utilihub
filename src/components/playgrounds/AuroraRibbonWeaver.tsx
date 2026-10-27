@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { absoluteUrl } from "@/lib/seo";
+import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 type Locale = "en" | "es";
 type Point = { x: number; y: number };
@@ -40,6 +42,7 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
   const [hueShift, setHueShift] = useState(0);
   const [pathCount, setPathCount] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
   const loadedRef = useRef(false);
 
   const labels = {
@@ -56,7 +59,7 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
       resume: "Resume",
       randomize: "Randomize",
       export: "Share PNG",
-      help: "Draw freehand paths or press R to randomize. Space pauses, C clears. Adjust gravity for downward weave and hue shift for color variation. Composition persists and deep-links via URL. Multi-ribbon aurora streams with bloom.",
+      help: "Draw freehand paths or press R to randomize. Space pauses, C clears. Adjust gravity for downward weave and hue shift for color variation. Your composition is saved in this browser; Share copies a link that reopens it with the same paths and settings, and Share PNG downloads a branded image.",
       count: "Paths",
     },
     es: {
@@ -72,7 +75,7 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
       resume: "Reanudar",
       randomize: "Aleatorio",
       export: "Compartir PNG",
-      help: "Dibujá caminos a mano alzada o presioná R para aleatorizar. Espacio pausa, C limpia. Ajustá la gravedad para un tejido hacia abajo y el desplazamiento de tono para variación de color. La composición persiste y se puede deep-linkear por URL. Flujos multi-cinta aurora con bloom.",
+      help: "Dibujá caminos a mano alzada o presioná R para aleatorizar. Espacio pausa, C limpia. Ajustá la gravedad para un tejido hacia abajo y el desplazamiento de tono para variación de color. Tu composición se guarda en este navegador; Compartir copia un enlace que la reabre con los mismos caminos y ajustes, y Compartir PNG descarga una imagen con la marca.",
       count: "Caminos",
     },
   }[locale];
@@ -165,6 +168,7 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
         }
         window.history.replaceState({}, "", url.toString());
       }
+      setShareUrl(window.location.href);
     } catch {}
   }, [pathCount, ribbonCount, width, speed, density, bloom, gravity, hueShift]);
 
@@ -472,6 +476,11 @@ export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
           <button type="button" onClick={clear} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">{labels.clear}</button>
           <button type="button" onClick={togglePause} className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold">{paused ? labels.resume : labels.pause}</button>
           <button type="button" onClick={exportPng} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">{labels.export}</button>
+          <ExperienceShareButton
+            title="Aurora Ribbon Weaver"
+            url={shareUrl || absoluteUrl(locale === "es" ? "/es/aurora-ribbon-weaver" : "/aurora-ribbon-weaver")}
+            locale={locale}
+          />
         </div>
         <p className="text-xs text-muted-foreground sm:col-span-2 lg:col-span-3">{labels.help}</p>
       </div>
