@@ -63,7 +63,7 @@ path_es: n/a
 path_seo: /de
 domain: seo-locales
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User opens /de and at least one experience route (e.g. /de/fluid-ink-flow-playground or equivalent), sees complete German titles, descriptions, and UI strings; hreflang present; no EN/ES navigation links to it.
 share: n/a
 next_step_required: yes
@@ -72,6 +72,7 @@ notes: IDEATE roll: p_fixed=0.35, random~0.52 > p_fixed → FLEX urn. Weighted s
 2. retention-loops-streak-constellation: 5/4/3/3/4/4 =23 Closest: existing Daily Progress Constellation, progress trackers.
 3. search-magnets-fluid-ink-guide: 4/3/4/3/5/5 =24 Closest: orbit-pulse-catcher-guide, other long-form guides.
 Chosen highest/tied with search demand priority and domain weight. Project size 4 runs. Must deliver playable/useful core by run 2.
+EXECUTE 1/4: added /de shell (German home with titles/descriptions/UI) + /de/fluid-ink-flow-playground with full German localization (locale=de support added to FluidInkFlowPlayground for labels/buttons/tips/PNG watermark). hreflang alternates present. Minimal shell, no primary nav from EN/ES. Registered de as active in seo-locales.ts + registry. Core playable experience delivered. Adsterra intact. CWV-safe.
 adsense-prep_runs: 3
 ```
 

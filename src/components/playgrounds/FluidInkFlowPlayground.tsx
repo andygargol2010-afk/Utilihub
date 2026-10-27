@@ -13,7 +13,7 @@ type Particle = {
   maxLife: number;
 };
 
-type Props = { locale: "en" | "es" | "fr" };
+type Props = { locale: "en" | "es" | "fr" | "de" };
 
 const STORAGE_KEY = "utilihub-fluid-ink-flow-v1";
 
@@ -79,6 +79,7 @@ export function FluidInkFlowPlayground({ locale }: Props) {
 
   const isEs = locale === "es";
   const isFr = locale === "fr";
+  const isDe = locale === "de";
   const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#ffeaa7", "#dfe6e9", "#fd79a8", "#a29bfe"];
 
   const updateMobile = useCallback(() => {
@@ -357,7 +358,7 @@ export function FluidInkFlowPlayground({ locale }: Props) {
     ctx.fillRect(0, h - 48, w, 48);
     ctx.fillStyle = "#fff";
     ctx.font = "bold 14px system-ui, sans-serif";
-    const strokeWord = isFr ? "traits" : isEs ? "trazos" : "strokes";
+    const strokeWord = isDe ? "Striche" : isFr ? "traits" : isEs ? "trazos" : "strokes";
     ctx.fillText(`Fluid Ink Flow · utilihub.com · ${strokeCount} ${strokeWord}`, 16, h - 20);
     const url = canvas.toDataURL("image/png");
     const a = document.createElement("a");
@@ -396,25 +397,25 @@ export function FluidInkFlowPlayground({ locale }: Props) {
           onTouchEnd={endDraw}
         />
         <div className="pointer-events-none absolute left-3 top-3 rounded-full bg-black/50 px-2.5 py-1 text-xs font-semibold text-white/90">
-          {strokeCount} {isFr ? "traits" : isEs ? "trazos" : "strokes"}
+          {strokeCount} {isDe ? "Striche" : isFr ? "traits" : isEs ? "trazos" : "strokes"}
         </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <label className="flex flex-col gap-1 text-xs font-semibold">
-          {isFr ? "Viscosité" : isEs ? "Viscosidad" : "Viscosity"}
+          {isDe ? "Viskosität" : isFr ? "Viscosité" : isEs ? "Viscosidad" : "Viscosity"}
           <input type="range" min="0.75" max="0.99" step="0.01" value={viscosity} onChange={(e) => setViscosity(Number(e.target.value))} className="accent-cyan-500" />
         </label>
         <label className="flex flex-col gap-1 text-xs font-semibold">
-          {isFr ? "Densité" : isEs ? "Densidad" : "Density"}
+          {isDe ? "Dichte" : isFr ? "Densité" : isEs ? "Densidad" : "Density"}
           <input type="range" min="1" max="8" step="1" value={density} onChange={(e) => setDensity(Number(e.target.value))} className="accent-cyan-500" />
         </label>
         <label className="flex flex-col gap-1 text-xs font-semibold">
-          {isFr ? "Gravité" : isEs ? "Gravedad" : "Gravity"}
+          {isDe ? "Gravitation" : isFr ? "Gravité" : isEs ? "Gravedad" : "Gravity"}
           <input type="range" min="0" max="0.4" step="0.01" value={gravity} onChange={(e) => setGravity(Number(e.target.value))} className="accent-cyan-500" />
         </label>
         <label className="flex flex-col gap-1 text-xs font-semibold">
-          {isFr ? "Tension superficielle" : isEs ? "Tensión superficial" : "Surface tension"}
+          {isDe ? "Oberflächenspannung" : isFr ? "Tension superficielle" : isEs ? "Tensión superficial" : "Surface tension"}
           <input type="range" min="0" max="0.5" step="0.01" value={tension} onChange={(e) => setTension(Number(e.target.value))} className="accent-cyan-500" />
         </label>
       </div>
@@ -422,24 +423,26 @@ export function FluidInkFlowPlayground({ locale }: Props) {
       <div className="flex flex-wrap gap-2">
         <button type="button" onClick={togglePause} className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-semibold hover:bg-accent">
           {isPaused ? <Play className="size-4" /> : <Pause className="size-4" />}
-          {isPaused ? (isFr ? "Reprendre" : isEs ? "Reanudar" : "Resume") : (isFr ? "Pause" : isEs ? "Pausa" : "Pause")}
+          {isPaused ? (isDe ? "Fortsetzen" : isFr ? "Reprendre" : isEs ? "Reanudar" : "Resume") : (isDe ? "Pause" : isFr ? "Pause" : isEs ? "Pausa" : "Pause")}
         </button>
         <button type="button" onClick={randomize} className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-semibold hover:bg-accent">
-          <Shuffle className="size-4" /> {isFr ? "Aléatoire" : isEs ? "Aleatorio" : "Randomize"}
+          <Shuffle className="size-4" /> {isDe ? "Zufällig" : isFr ? "Aléatoire" : isEs ? "Aleatorio" : "Randomize"}
         </button>
         <button type="button" onClick={clear} className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-semibold hover:bg-accent">
-          <Trash2 className="size-4" /> {isFr ? "Effacer" : isEs ? "Limpiar" : "Clear"}
+          <Trash2 className="size-4" /> {isDe ? "Löschen" : isFr ? "Effacer" : isEs ? "Limpiar" : "Clear"}
         </button>
         <button type="button" onClick={downloadPng} className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-bold text-primary-foreground hover:opacity-90">
           <Download className="size-4" /> PNG
         </button>
       </div>
       <p className="text-xs text-muted-foreground">
-        {isFr
-          ? "Raccourcis : Espace pause · C effacer · R aléatoire · S PNG. Dessinez à main levée ; l'encre coule et se mélange. Densité automatique sur mobile. L'URL se met à jour avec le deep-link."
-          : isEs
-            ? "Atajos: Espacio pausa · C limpiar · R aleatorio · S PNG. Dibujá libremente; la tinta fluye y se mezcla. Densidad automática en móvil. La URL se actualiza con el deep-link."
-            : "Shortcuts: Space pause · C clear · R randomize · S PNG. Draw freehand; ink flows and mixes. Auto density on mobile. URL updates with the deep-link."}
+        {isDe
+          ? "Shortcuts: Leertaste Pause · C löschen · R zufällig · S PNG. Zeichnen Sie freihändig; die Tinte fließt und mischt sich. Automatische Dichte auf Mobilgeräten. Die URL aktualisiert sich mit dem Deep-Link."
+          : isFr
+            ? "Raccourcis : Espace pause · C effacer · R aléatoire · S PNG. Dessinez à main levée ; l'encre coule et se mélange. Densité automatique sur mobile. L'URL se met à jour avec le deep-link."
+            : isEs
+              ? "Atajos: Espacio pausa · C limpiar · R aleatorio · S PNG. Dibujá libremente; la tinta fluye y se mezcla. Densidad automática en móvil. La URL se actualiza con el deep-link."
+              : "Shortcuts: Space pause · C clear · R randomize · S PNG. Draw freehand; ink flows and mixes. Auto density on mobile. URL updates with the deep-link."}
       </p>
     </div>
   );

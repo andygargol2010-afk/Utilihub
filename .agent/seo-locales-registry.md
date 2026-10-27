@@ -17,7 +17,7 @@ Order = preferred pick when domain rolls and no forced locale in ACTIVE PROJECT:
 
 1. `pt` — Portuguese (pt-BR bias for copy) — **now active**
 2. `fr` — French — **now active**
-3. `de` — German
+3. `de` — German — **now active**
 4. `ar` — Arabic (`dir=rtl` required)
 5. `hi` — Hindi
 6. `id` — Indonesian
@@ -36,6 +36,7 @@ Do **not** add EN (`/` or bare) or ES (`/es`) here — those are first-class pro
 | --- | --- | --- | --- | --- | --- | --- |
 | pt | pt-BR | ltr | active | /pt | /pt, /pt/pulse-catch, /pt/orbit-defender-arcade, /pt/snake, /pt/pong | hreflang wired to EN+ES; no nav from EN/ES; minimal shell; fourth experience added |
 | fr | fr-FR | ltr | active | /fr | /fr, /fr/fluid-ink-flow-playground, /fr/pulse-catch, /fr/snake, /fr/pong | hreflang wired; no nav from EN/ES; minimal shell; fourth experience added |
+| de | de-DE | ltr | active | /de | /de, /de/fluid-ink-flow-playground | hreflang wired; no nav from EN/ES; minimal shell; first experience added |
 
 ---
 
