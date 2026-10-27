@@ -301,12 +301,12 @@ Formato por entrada:
 
 ## E031 — $(cat stubs / PLACEHOLDER corrupten archivos críticos
 - **status**: open (recurring)
-- **last_seen**: 2026-10-27 (run 14 tip clean: no PLACEHOLDER/$(cat in registry.tsx, summary-es.ts, index.tsx, es.index.tsx, catalog; homes start with import + DeferredHomeReviews; dedicated wires present including CubeRoot; ModularPatternComposer full)
+- **last_seen**: 2026-10-27 (run 15: fixed es.guias.orbit-pulse-catcher.tsx which was literal "$(cat /tmp/guide_es.tsx)"; homes, registry, summary-es, ModularPatternComposer clean; dedicated wires present)
 - **symptom**: archivos críticos contienen literalmente "$(cat /tmp/....md)" o "PLACEHOLDER" en vez del contenido real; home 404, registry roto, o build ERROR por missing export
 - **root_cause**: agentes escriben el comando shell o un placeholder como contenido del archivo en lugar de ejecutar cat o pegar el contenido real
-- **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts; deben ser contenido real, no PLACEHOLDER ni $(cat
+- **check**: leer .agent/error-hunter-catalog.md, registry.tsx, summary-es.ts, routes de guías; deben ser contenido real, no PLACEHOLDER ni $(cat
 - **fix_hint**: RESTORE contenido real desde git history; nunca commitear output de cat sin expandir ni PLACEHOLDER
-- **files**: `.agent/error-hunter-catalog.md`, `.agent/error-hunter-state.md`, `src/components/general/registry.tsx`, `src/lib/i18n/summary-es.ts`
+- **files**: `.agent/error-hunter-catalog.md`, `.agent/error-hunter-state.md`, `src/components/general/registry.tsx`, `src/lib/i18n/summary-es.ts`, `src/routes/*.tsx`
 
 ## E032 — Build ERROR por slug duplicado calculadora-area-habitacion
 - **status**: fixed
@@ -379,3 +379,13 @@ Formato por entrada:
 - **check**: registry.tsx tiene lazy import y return temprano para "calculadora-raiz-cubica"
 - **fix_hint**: añadir lazy + early return en pickComponent (antes de kind routes)
 - **files**: `src/components/general/registry.tsx`, `CubeRootCalculatorTool.tsx`
+
+## E039 — ES guide orbit-pulse-catcher stub $(cat
+- **status**: fixed
+- **last_seen**: 2026-10-27
+- **fixed_at**: 2026-10-27
+- **symptom**: /es/guias/orbit-pulse-catcher 404 o crash por contenido literal "$(cat /tmp/guide_es.tsx)"
+- **root_cause**: agente escribió el comando shell como body del route en lugar del TSX real
+- **check**: es.guias.orbit-pulse-catcher.tsx empieza con import y createFileRoute; no contiene $(cat
+- **fix_hint**: RESTORE desde commit previo bueno (ej. 90a2dff)
+- **files**: `src/routes/es.guias.orbit-pulse-catcher.tsx`
