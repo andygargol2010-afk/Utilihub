@@ -1,49 +1,30 @@
-# UtiliHub Ideas Lab — Ops (2/3)
+# UtiliHub Ideas Lab — Ops
 
-**Part 2 of 3.** Procedures, quality bars, EXECUTE checklist. End marker required.
+Procedures, definition of done, and run checklist. Load after `ideas-lab.md` and state.
 
-Load after ideas-lab.md. Files win over automation prompt.
-
----
-
-## MODE
-
-0) Load state → rules → ops (+ seo registry if needed).  
-1) `status: active` && `runs_remaining > 0` → **EXECUTE**.  
-2) `done` / remaining 0 → **IDEATE** (two-urn GROWTH) or **CLOSE**.  
-3) No deploy step. No `create_deployment`.
+Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 
 ---
 
 ## ONE COMMIT PER RUN
 
-- Every EXECUTE (and IDEATE that only updates state) produces **exactly one** git commit on `fix/spanish-complete`.
-- Include **code + `.agent/ideas-lab-state.md`** in the same `push_files` call.
-- **Forbidden:** feat commit then a second `docs(agent)` state commit.
-- **Exception:** CLOSE may be a state-only commit when no code changes remain.
-- Commit identity: `andygargol2010-afk` <andygargol2010@gmail.com>.
-- Prefer prefixes: `feat(ideas-lab):`, `polish(ideas-lab):`, `docs(ideas-lab):` (CLOSE only).
-
----
+- Code + state in a **single** `push_files` / commit.
+- **Never** a state-only commit (except CLOSE, if applicable).
+- If nothing user-visible changed: **no push** — keep the run log in the final reply.
 
 ## NO DEPLOYS
 
-Auto deploys are disabled for `fix/spanish-complete` on purpose.
-
-- Do **not** call Vercel `create_deployment`, deploy hooks, or CLI deploy.
-- Do **not** wait for preview URLs or treat missing deploys as failures.
-- Andy / Claude review and deploy in batches.
+- Never `create_deployment`, deploy hooks, or Vercel deploy APIs.
 - Post-ship smoke is replaced by **PRE-PUSH SELF-REVIEW**.
-
----
 
 ## PRE-PUSH SELF-REVIEW (mandatory — report in Spanish summary)
 
 Before finishing the run, complete and report:
 
-**a. Origin re-fetch**  
-For every file written: re-fetch from origin after the single push; compare bytes/lines to the intended payload.  
-Abort and restore if any file shrank **>10%** unexpectedly, or contains `PLACEHOLDER` / `$(cat`.
+**a. Origin re-fetch + integrity**  
+Never write a whole file you did not fully read in this run. For every file written: re-fetch from origin after the single push; compare bytes/lines to the intended payload.  
+If it lost more than **10%** of its lines vs the previous commit, or contains `PLACEHOLDER` / `$(cat` / stub text, **revert it in the same run**.  
+To restore an old version, **reuse its blob SHA via the Git Data API** instead of retyping it.
 
 **b. File size**  
 Never write a file **> 40 KB** in full via the API. For larger files: targeted edits only, or split modules.
@@ -55,7 +36,10 @@ If touching catalog at all: search `GENERAL_TOOLS` / `src/lib/general/index.ts` 
 **d. TypeScript sanity**  
 Every import path exists; every exported symbol used exists. No dangling imports.
 
-Report a short **PRE-PUSH SELF-REVIEW** block in the Spanish summary (pass/fail per a–d).
+**f. JSX text**  
+In JSX text never write a raw `<` or `>`; use "más de" / "menos de" (or "more than" / "less than" in EN).
+
+Report a short **PRE-PUSH SELF-REVIEW** block in the Spanish summary (pass/fail per a–d + f).
 
 ---
 
@@ -68,115 +52,74 @@ Generate **3 candidate ideas**. Score each **1–5** on:
 3. **Search demand** (real query people type; GSC or keyword logic)
 4. **Distinctiveness** vs existing UtiliHub surfaces (**list the 3 closest**)
 5. **Feasibility** in the run budget (default 4 / max 6)
-6. **Performance cost** (mobile CWV risk; lower score = worse)
+6. **Performance cost** (bundle, main-thread, mobile)
 
-**Pick** the best total score. Write all scores into state `notes`.  
-**Reject** any idea scoring **< 3** on value **or** distinctiveness.
-
-### Project size
-
-- Default **`runs_total: 4`**, hard max **6**.
-- Must show a working, playable/useful **core by run 2** or cut scope / close.
-
-### quality-lift
-
-- Prefer the surface with **weakest engagement / oldest update** (not uniform random across all).
-- Before run 1: write **3 concrete measurable improvements** as the “elevated bar” in `notes`.
-- Still score 3 candidates when choosing which surface to lift.
-
-### search-magnets (guides)
-
-- Must target a **real query** (GSC or explicit keyword logic).
-- Original examples / visuals; link to the live tool/game.
-- No thin text pages.
-
-### IDEATE idea template
-
-```
-status: active
-idea: <paragraph>
-id: <kebab-case>
-path_en: /... or n/a
-path_es: /es/... or n/a
-path_seo: /{code}/...   # when seo-locales
-domain: <rolled>
-runs_total: <4..6>      # quality-lift: 4–6 with elevated bar
-runs_remaining: <same at IDEATE>
-acceptance: <user does X, sees Y>
-share: url | png | both | n/a
-next_step_required: yes | no
-notes: <rubric scores for 3 candidates; chosen id; roll math; quality-lift bar if any>
-adsense-prep_runs: <n>
-```
+Pick the best **total**. Write scores in state.  
+**Reject** any idea scoring **<3** on value or distinctiveness.
 
 ---
 
-## EXECUTE — DEFINITION OF DONE
+## PROJECT SIZE
 
-An EXECUTE run is done only when **all** hold:
+- Default **4** runs, max **6**.
+- If a project cannot show a working, playable/useful **core by run 2**, cut it down or abandon.
+- Polish-only runs (colors, particle tweaks): **at most 1 per project**.
 
-1. **One user-visible outcome** stated as an acceptance test: *user does X, sees Y*.
-2. **EN + ES** strings (UI and routes as applicable).
-3. **Mobile** considered at **390px** width (layout not broken).
-4. **No new console errors** expected from the change.
-5. **Lazy-loaded** route/component when interactive (canvas/WebGL/games).
+---
+
+## QUALITY-LIFT
+
+- Prefer the surface with the **weakest engagement / oldest update** (not uniform random).
+- Before run 1 of a lift: write **3 concrete measurable improvements** in state ("elevated bar").
+
+---
+
+## SEARCH-MAGNET GUIDES
+
+- Must target a **real query** (GSC or keyword logic).
+- Include original examples/visuals and a **link to the tool/playground**.
+- No thin text.
+
+---
+
+## DEFINITION OF DONE (EXECUTE)
+
+1. One **user-visible** outcome as an acceptance test: "user does X, sees Y".
+2. **EN + ES** strings.
+3. **Mobile** considered (390px).
+4. No new console errors expected.
+5. Interactive UI **lazy-loaded** where appropriate.
 6. **Single commit** (code + state) after PRE-PUSH SELF-REVIEW.
-7. Polish-only runs (colors, particle tweaks) **at most 1 per project**.
+7. Adsterra / ads kill switch **untouched**.
+8. **HouseModeler3D.tsx** not modified.
 
-### EXECUTE checklist (copy into summary)
+---
+
+## EXECUTE CHECKLIST
 
 ```
+[ ] State loaded; project within size limits
 [ ] Acceptance test written (user does X, sees Y)
 [ ] EN + ES strings
 [ ] Mobile 390px considered
-[ ] Lazy-load if interactive
-[ ] No registry.tsx / registry-entries rewrite
-[ ] No duplicate slug (if catalog touched)
-[ ] PRE-PUSH SELF-REVIEW a–d passed
-[ ] ONE commit: code + ideas-lab-state.md
-[ ] No create_deployment / deploy hook
-[ ] Adsterra / ads kill switch untouched
-[ ] HouseModeler3D.tsx untouched
+[ ] Lazy-load interactive / heavy UI
+[ ] PRE-PUSH SELF-REVIEW a–d + f passed
+[ ] Single commit (code + state) OR no push
+[ ] Spanish summary with scores / acceptance / PRE-PUSH block
 ```
-
----
-
-## Core Web Vitals (every ship)
-
-- **LCP:** shells with font-display / sized media; avoid blocking the home critical path.
-- **INP:** no heavy work on first interaction; modest particle counts on mobile.
-- **CLS:** reserve space for interactive stages; fixed aspect for canvas.
-- **Bundle:** no new heavy deps unless essential; never pull HouseModeler3D or full tools registry into a playground.
-
----
-
-## GROWTH two-urn (unchanged logic)
-
-- With probability `p_fixed` use FIXED growth weights; else FLEX.
-- `seo-locales` only in FLEX; **skip domain if ≥ 5 active** locales in registry.
-- Weight updates only on CLOSE per existing practice.
 
 ---
 
 ## Spanish summary template
 
 ```
-Deploy: no (branch deploy disabled; batch review)
-PRE-PUSH SELF-REVIEW: a=… b=… c=… d=…
-Outcome / acceptance: …
-ACTIVE PROJECT: id, runs_remaining/runs_total
-Rubric (if IDEATE): …
-Commits: <single hash>
-Adsterra: untouched
-Next: …
+Modo: IDEATE|EXECUTE|CLOSE
+Idea / aceptación: …
+Scores (si IDEATE): …
+Cambios: …
+PRE-PUSH SELF-REVIEW: a=… b=… c=… d=… f=…
+Commit: <SHA>|ninguno
+Ads / HouseModeler3D / registry: intactos
 ```
-
----
-
-## ALWAYS
-
-- Quality > novelty; one outcome; files win over prompt.
-- Guard CWV; EN+ES; never remove Adsterra; never touch HouseModeler3D.
-- Truncation → re-read, do not invent.
 
 <!-- end:ideas-lab-ops.md -->
