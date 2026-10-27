@@ -55,19 +55,23 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Add French (fr) SEO-first locale with minimal shell and full localization of key interactive experiences (playgrounds/games) for search discovery via hreflang, no primary nav links from EN/ES.
-id: seo-locales-fr-shell
+status: active
+idea: Add German (de) SEO-first locale with minimal shell and full localization of key interactive experiences (playgrounds/games) for search discovery via hreflang, no primary nav links from EN/ES. Mirror the successful fr shell pattern for next priority locale.
+id: seo-locales-de-shell
 path_en: n/a
 path_es: n/a
-path_seo: /fr
+path_seo: /de
 domain: seo-locales
 runs_total: 4
-runs_remaining: 0
-acceptance: User opens /fr and at least one experience route (e.g. /fr/fluid-ink-flow or equivalent), sees complete French titles, descriptions, and UI strings; hreflang present; no EN/ES navigation links to it.
+runs_remaining: 4
+acceptance: User opens /de and at least one experience route (e.g. /de/fluid-ink-flow-playground or equivalent), sees complete German titles, descriptions, and UI strings; hreflang present; no EN/ES navigation links to it.
 share: n/a
-next_step_required: no
-notes: EXECUTE 4/4 (CLOSE): final verification of /fr shell + experiences (fluid-ink, pulse-catch, snake, pong). Full French titles/descriptions/UI strings, hreflang, minimal shell, no EN/ES nav links confirmed. Project closed. Rubric from IDEATE retained.
+next_step_required: yes
+notes: IDEATE roll: p_fixed=0.35, random~0.52 > p_fixed → FLEX urn. Weighted selection favored seo-locales (w=10). Candidates scored 1-5 (value/share/search/distinct/feas/perf):
+1. seo-locales-de-shell: 4/2/5/4/5/4 =24 (chosen) Closest: /fr, /pt, EN/ES shells.
+2. retention-loops-streak-constellation: 5/4/3/3/4/4 =23 Closest: existing Daily Progress Constellation, progress trackers.
+3. search-magnets-fluid-ink-guide: 4/3/4/3/5/5 =24 Closest: orbit-pulse-catcher-guide, other long-form guides.
+Chosen highest/tied with search demand priority and domain weight. Project size 4 runs. Must deliver playable/useful core by run 2.
 adsense-prep_runs: 3
 ```
 
