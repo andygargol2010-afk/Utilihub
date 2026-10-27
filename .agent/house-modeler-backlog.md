@@ -7,7 +7,7 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | # | Item | Val | Reach | Eff | Score | Status |
 |---|------|-----|-------|-----|-------|--------|
 | 1 | Autosave design to localStorage + restore on load (try/catch, versioned) | 5 | 5 | 2 | 12.5 | DONE run 299 (house-modeler/autosave.ts; parts+finishes+yaw; layers/locks not yet) |
-| 2 | Undo / redo (Ctrl+Z / Ctrl+Y + toolbar buttons, snapshot stack in new module) | 5 | 5 | 3 | 8.3 | open |
+| 2 | Undo / redo (Ctrl+Z / Ctrl+Y + toolbar buttons, snapshot stack in new module) | 5 | 5 | 3 | 8.3 | DONE run 300 (house-modeler/history.ts; Ctrl+Z/Shift+Z/Y + Undo/Redo buttons; locks/layers not in snapshot) |
 | 3 | Export PNG screenshot button (renderer toBlob after a render, EN+ES) | 4 | 4 | 1 | 16 | DONE run 298 (house-modeler/exportPng.ts) |
 | 4 | Ready-made house presets (small cabin, 2-room, garden shed) loadable in one click | 4 | 5 | 3 | 6.7 | open |
 | 5 | Share link: encode design in URL hash, load on open | 5 | 4 | 3 | 6.7 | open |
@@ -22,4 +22,4 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 14 | Fix 2 unrelated 404 resource requests seen on tool page (non-modeler) | 2 | 5 | 2 | 5 | open |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
-Next pick by score: #2 undo/redo (8.3), #8 onboarding (7.5), #4 presets / #5 share link (6.7).
+Next pick by score: #8 onboarding (7.5), #4 presets / #5 share link (6.7).

@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 299
+runs_done: 300
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 356533
+approx_bytes: 358626
 fps_baseline_desktop: ~4 fps (1366x768, headless SwiftShader software GL in cloud sandbox, 2026-10-26; compare only against same environment)
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
@@ -61,7 +61,7 @@ last_mode: PRODUCT
 last_date: 2026-10-27
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 299 autosave/restore (house-modeler/autosave.ts). Build OK, 0 modeler console errors, fps 3.3-3.5 desktop (baseline ~4, SwiftShader noise). runs_done=299.
+note: PRODUCT run 300 undo/redo (house-modeler/history.ts). Build OK, 0 modeler console errors, fps 3.25-3.5 desktop (baseline ~4, SwiftShader noise). runs_done=300.
 ```
 
 Refresh after each run.
@@ -140,6 +140,7 @@ PRODUCT run 296: planter foliage leaf texture + dedicated bump map (was flat col
 META run 297: created .agent/house-modeler-backlog.md from browser audit (no undo/autosave/PNG/presets); local build+playwright OK, 0 modeler console errors. runs_done=297.
 PRODUCT run 298: Export PNG button (backlog #3) in new module house-modeler/exportPng.ts; value run. Note: npm ci fails (lockfile missing @vercel/global-config); WindChillTool.tsx has tsc TS1005 at line 111 (unrelated, vite build still passes). runs_done=298.
 PRODUCT run 299: autosave to localStorage + restore on load (backlog #1), new module house-modeler/autosave.ts; monolith +2005 B. Needs `npm install` (npm ci fails). runs_done=299.
+PRODUCT run 300: undo/redo (backlog #2): history.ts snapshot stack, Ctrl+Z/Shift+Z/Y + Undo/Redo toolbar buttons EN+ES; autosave restore refactored into restoreParts; monolith +2093 B. runs_done=300.
 ```
 
 <!-- end:house-modeler-state.md -->

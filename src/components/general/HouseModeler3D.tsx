@@ -4,7 +4,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { exportScenePng } from "./house-modeler/exportPng";
-import { readAutosave, serializeParts, writeAutosave } from "./house-modeler/autosave";
+import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
+import { createHistory, undoKeyStep } from "./house-modeler/history";
 
 type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
@@ -5723,6 +5724,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         fullscreen: "Pantalla completa",
         png: "Exportar PNG",
         restored: "Diseño anterior restaurado",
+        undo: "Deshacer",
+        redo: "Rehacer",
         exitFs: "Salir",
         tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · E valla · T sendero · Y jardinera · U banco · I farol · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
@@ -5917,6 +5920,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         fullscreen: "Fullscreen",
         png: "Export PNG",
         restored: "Previous design restored",
+        undo: "Undo",
+        redo: "Redo",
         exitFs: "Exit",
         tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · E fence · T path · Y planter · U bench · I lamp · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
@@ -6197,15 +6202,24 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (actionHintTimer.current) window.clearTimeout(actionHintTimer.current);
     actionHintTimer.current = window.setTimeout(() => setActionHint(null), 2400);
   };
-  // Autosave: restore the last design once the scene is ready, then snapshot every 2 s (module: house-modeler/autosave).
-  useEffect(() => {
-    if (!ready) return;
+  const restoreParts = (saved: SavedPart[]) => {
+    const t = threeRef.current;
+    if (!t) return;
+    for (const p of partsRef.current) {
+      const o = findPartObject(p.id);
+      if (o) {
+        disposeLockBadge(o);
+        t.partsRoot.remove(o);
+        disposeObjectResources(o, false);
+      }
+    }
+    partsRef.current = [];
+    setCount(0);
     const refs: Record<string, { current: string }> = {
       door: doorFinishRef, roof: roofFinishRef, wall: wallFinishRef, column: columnFinishRef, stairs: stairsFinishRef, railing: railingFinishRef,
       window: windowFinishRef, floor: floorFinishRef, fence: fenceFinishRef, path: pathFinishRef, planter: planterFinishRef, bench: benchFinishRef,
       chimney: chimneyFinishRef, lamp: lampFinishRef, beam: beamFinishRef, foundation: foundationFinishRef, pergola: pergolaFinishRef,
     };
-    const saved = partsRef.current.length ? [] : readAutosave();
     for (const s of saved) {
       const ref = refs[s.k];
       const prev = ref.current;
@@ -6219,21 +6233,49 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         part.rotationY = s.r;
       }
     }
-    if (saved.length) {
-      selectedRef.current = null;
-      setSelectedId(null);
-      setSelectedPos(null);
-      if (threeRef.current) threeRef.current.selectionHelper.visible = false;
-      flashActionHint(labels.restored);
-    }
+    selectedRef.current = null;
+    setSelectedId(null);
+    setSelectedPos(null);
+    t.selectionHelper.visible = false;
+  };
+  const historyRef = useRef(createHistory());
+  const [, setHistRev] = useState(0);
+  const stepHistory = (dir: "undo" | "redo") => {
+    const h = historyRef.current;
+    const snap = dir === "undo" ? h.undo() : h.redo();
+    if (!snap) return;
+    restoreParts(snap);
+    h.sync(serializeParts(partsRef.current));
+    setHistRev((n) => n + 1);
+  };
+  // Autosave: restore the last design once the scene is ready, then snapshot every 2 s (module: house-modeler/autosave).
+  useEffect(() => {
+    if (!ready) return;
+    const saved = partsRef.current.length ? [] : readAutosave();
+    if (saved.length) restoreParts(saved), flashActionHint(labels.restored);
     let last = serializeParts(partsRef.current);
+    historyRef.current.sync(last);
     const save = () => {
       last = writeAutosave(serializeParts(partsRef.current), last);
     };
     const timer = window.setInterval(save, 2000);
+    // Undo/redo: record settled changes (not mid-drag); Ctrl/Cmd+Z, +Shift+Z, +Y.
+    const watch = window.setInterval(() => {
+      if (draggingRef.current || dragArmRef.current || paletteDragRef.current) return;
+      if (historyRef.current.observe(serializeParts(partsRef.current))) setHistRev((n) => n + 1);
+    }, 300);
+    const onUndoKey = (e: KeyboardEvent) => {
+      const step = undoKeyStep(e);
+      if (!step) return;
+      e.preventDefault();
+      stepHistory(step);
+    };
+    window.addEventListener("keydown", onUndoKey);
     window.addEventListener("pagehide", save);
     return () => {
       window.clearInterval(timer);
+      window.clearInterval(watch);
+      window.removeEventListener("keydown", onUndoKey);
       window.removeEventListener("pagehide", save);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -6822,6 +6864,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {labels.del}
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">Del</kbd>
         </button>
+        {(["undo", "redo"] as const).map((d) => (
+          <button
+            key={d}
+            type="button"
+            onClick={() => stepHistory(d)}
+            disabled={!(d === "undo" ? historyRef.current.canUndo() : historyRef.current.canRedo())}
+            title={d === "undo" ? "Ctrl+Z" : "Ctrl+Shift+Z"}
+            className="inline-flex min-h-11 shrink-0 snap-start items-center rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:opacity-40"
+          >
+            {labels[d]}
+          </button>
+        ))}
         <button
           type="button"
           onClick={clearAll}
