@@ -26,6 +26,8 @@ Job: product innovation — ship ideas that are **NOT** another catalog calculat
 
 **Variety over clones:** Do not keep shipping the same playground pattern (canvas + particles/trails + drag attractors + PNG). Prefer distinct interaction metaphors and underused CORE domains (`games`, `simulators`, `kits`, `journeys`) when recent closes already cover particle/field sandboxes. Ops **VARIETY MANDATE** is binding on IDEATE.
 
+**Games:** When domain is `games`, prefer **classic high-demand game types** (snake, 2048, tic-tac-toe style already on site) *or* original games. Classics need a written **IP check** in notes (public-domain / traditional / generic mechanics only; no branded commercial IP). Ops section **games — classic + original** is binding.
+
 Also runs **traffic-diagnosis**, **adsense-prep**, and **seo-locales** when those GROWTH domains roll (not product playgrounds; follow ops procedures).
 
 Reply in **Spanish** at the end of every run (template in ideas-lab-ops.md).
