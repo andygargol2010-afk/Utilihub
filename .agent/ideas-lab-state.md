@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: retention-loops
-last_closed_id: retention-loops-streak-constellation
+last_closed_domain: playgrounds
+last_closed_id: magnetic-field-sandbox
 p_fixed: 0.35
 
 weights_core:
@@ -23,7 +23,7 @@ weights_core:
   games: 1
   simulators: 8
   studio-composition: 3
-  playgrounds: 9
+  playgrounds: 8
   quality-lift: 2
 
 weights_growth:
@@ -45,6 +45,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-28 | playgrounds | magnetic-field-sandbox | Interactive magnetic field lines sandbox complete after 4 runs. Place/drag N/S poles, live curved field lines (monopole tracing), flowing particles (toggle), directional arrowheads N→S, presets (Dipole, Two North, Quadrupole), URL deep-link, branded PNG, EN+ES routes, mobile 390px with modest line/particle caps. CWV-safe. Adsterra intact.
 - 2026-10-28 | retention-loops | retention-loops-streak-constellation | Daily streak constellation visualizer complete after 4 runs. Interactive canvas star placement, check-in streak (localStorage + URL deep-link), milestone colors/progress bar, optional name personalization, branded PNG export, EN+ES routes, mobile 390px. CWV-safe. Adsterra intact.
 - 2026-10-27 | seo-locales | seo-locales-de-shell | German (de) SEO-first locale shell + 4 experiences (/de, /de/fluid-ink-flow-playground, /de/pulse-catch, /de/snake, /de/pong) complete after 4 runs. Full German titles, descriptions, UI strings via locale=de, hreflang alternates, minimal shell, no primary nav links from EN/ES. CWV-safe. Adsterra intact.
 - 2026-10-27 | seo-locales | seo-locales-fr-shell | French (fr) SEO-first locale shell + 4 experiences (/fr, /fr/fluid-ink-flow-playground, /fr/pulse-catch, /fr/snake, /fr/pong) complete after 4 runs. Full French titles, descriptions, UI strings via locale=fr, hreflang alternates, minimal shell, no primary nav links from EN/ES. CWV-safe. Adsterra intact.
@@ -57,19 +58,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive magnetic field lines sandbox where users place and drag north/south magnetic poles on a canvas; live animated field lines update in real time based on pole positions and strengths. Supports URL deep-link for setups, branded PNG export, EN+ES routes and UI. Mobile-friendly at 390px with modest line counts for CWV.
-id: magnetic-field-sandbox
-path_en: /magnetic-field-sandbox
-path_es: /es/sandbox-campo-magnetico
+status: done
+idea: n/a
+id: n/a
+path_en: n/a
+path_es: n/a
 path_seo: n/a
-domain: playgrounds
-runs_total: 4
+domain: n/a
+runs_total: 0
 runs_remaining: 0
-acceptance: User places a north and a south pole on the canvas, sees curved field lines animate between them, can drag the poles to update the lines live, and exports a branded PNG.
-share: both
-next_step_required: yes
-notes: Rubric scores (value/share/search/distinct/feas/perf): C1 magnetic-field-sandbox 5/4/4/4/5/4 total 26; C2 fractal-zoom-explorer 4/5/4/5/4/3 total 25; C3 sound-reactive-particles 4/3/3/3/4/3 total 20. Chosen magnetic-field-sandbox (highest total, strong feasibility). Roll: p_fixed=0.35 → FLEX core (playgrounds weight 9 highest). Closest existing surfaces: gravity-sandbox (n-body), aurora-particle-playground, fluid-ink-flow-playground. adsense-prep_runs: 3. Run 1/4: shipped core MagneticFieldSandbox component + EN/ES routes. Place N/S poles by click (mode buttons), drag to move, double-click remove. Live field lines traced from N poles following monopole field (curved N→S), modest line counts (mobile capped), URL deep-link (?p=...), branded PNG export. Canvas 380px mobile / 500px sm. CWV-safe (no heavy deps, limited steps). Adsterra intact. Run 2/4: added flowing particles along field lines (modest count, mobile capped at 18), quick presets (Dipole, Two North), apply-strength-to-all button, registered in PlaygroundNextStep catalog (retention). EN+ES strings updated. CWV-safe. Adsterra intact. Run 3/4: added directional arrowheads on field lines showing N→S flow, particles on/off toggle, full registration in next-step.ts catalog. EN+ES. CWV-safe. Adsterra intact. Run 4/4: added Quadrupole preset (2N+2S square layout) for more complex field visualization. EN+ES labels and button. Mobile 390px considered. CWV-safe. Adsterra intact. Project complete (runs_remaining=0).
+acceptance: n/a
+share: n/a
+next_step_required: no
+notes: Closed magnetic-field-sandbox after run 4/4 (Quadrupole preset). Project complete. Next run IDEATE.
 adsense-prep_runs: 3
 ```
 
