@@ -1,7 +1,7 @@
 /** Autosave of the placed parts (kind, position, yaw, own finish) in localStorage. Versioned; every access is guarded. */
 const KEY = "utilihub.houseModeler.autosave.v1";
 
-export type SavedPart = { k: string; x: number; z: number; r: number; f?: string };
+export type SavedPart = { k: string; x: number; z: number; r: number; f?: string; l?: 1 };
 
 type PartLike = { kind: string; position: number[]; rotationY: number } & Record<string, unknown>;
 
@@ -19,6 +19,7 @@ export function serializeParts(parts: PartLike[]): string {
       z: Math.round(p.position[2] * 100) / 100,
       r: Math.round(p.rotationY * 1000) / 1000,
       ...(typeof f === "string" ? { f } : {}),
+      ...(p.locked === true ? { l: 1 as const } : {}),
     };
   });
   return JSON.stringify({ v: 1, parts: out });

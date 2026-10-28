@@ -24,6 +24,7 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 17 | Share link carries time of day | 3 | 3 | 1 | 9 | DONE run 313 (shareLink.ts &tod=) |
 | 18 | Clear-all (button / C key, no confirm) shows 'Ctrl+Z or Undo brings it back' hint | 3 | 4 | 1 | 12 | DONE run 314 (clearedHintRef in monolith) |
 | 19 | Stale '0.5 m' in shortcut tip / nudge label follows snap grid | 2 | 4 | 1 | 8 | DONE run 315 (withGridLabels in snapGrid.tsx) |
+| 20 | Persist per-part lock in autosave/share/undo | 3 | 3 | 1 | 9 | DONE run 316 (SavedPart.l) |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
 Ideas for next audit: layers/locks in undo snapshot, measure tool (distance between two points), Delete-key/Ctrl+D discoverability, include time-of-day in share link.

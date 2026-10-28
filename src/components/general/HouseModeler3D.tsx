@@ -6274,8 +6274,13 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       if (obj) {
         obj.rotation.y = s.r;
         part.rotationY = s.r;
+        if (s.l) {
+          part.locked = true;
+          syncLockBadge(obj, partFrozen(part, layersRef.current));
+        }
       }
     }
+    setLockRev((n) => n + 1);
     selectedRef.current = null;
     setSelectedId(null);
     setSelectedPos(null);

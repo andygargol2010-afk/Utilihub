@@ -17,7 +17,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 ## RUN LIFETIME
 
 ```
-runs_done: 315
+runs_done: 316
 runs_max: 500
 ```
 
@@ -43,7 +43,7 @@ User request 2026-10-16: next 3 executions focus on making the UI more comfortab
 
 ```
 path: src/components/general/HouseModeler3D.tsx
-approx_bytes: 363394
+approx_bytes: 363550
 fps_baseline_desktop: ~4 fps (1366x768, headless SwiftShader software GL in cloud sandbox, 2026-10-26; compare only against same environment)
 last_known_good_hint: (post META 261 health 331826 B / 7519 lines, no PLACEHOLDER, SHA de1e458a)
 policy: prefer META when create_or_update_file would full-rewrite >300KB (tool-channel truncation risk)
@@ -61,7 +61,7 @@ last_mode: PRODUCT
 last_date: 2026-10-28
 SEO_LOCALES_ACTIVE: pt (defer)
 deploy: READY (prior tip eb56ea51; recent catalog tip 372efa6c ERROR unrelated to modeler)
-note: PRODUCT run 315 shortcut tip + nudge label follow the chosen snap grid (was hard-coded 0.5 m), monolith +78 B, build OK, 0 modeler console errors, fps desktop 4.5 SwiftShader. runs_done=315. Prior: PRODUCT run 314 clear-all feedback hint (backlog #18), monolith +322 B, build OK, 0 modeler console errors, fps desktop 5.25 SwiftShader. runs_done=314. Prior: PRODUCT run 313 share link carries time-of-day (&tod=), monolith +203 B, build OK, 0 modeler console errors, fps desktop 3.25 SwiftShader. runs_done=313. Prior: PRODUCT run 312 persist time-of-day (backlog #16), monolith +234 B, build OK, 0 modeler console errors, fps desktop 4.5 SwiftShader (baseline ~4). runs_done=312. Prior: PRODUCT run 311 mobile toolbar edge-fade (backlog #9), monolith +235 B, build OK, 0 modeler console errors, fps desktop 5.75 SwiftShader. runs_done=311. Prior: PRODUCT run 310 adaptive render resolution (backlog #10), fps desktop 4.75 SwiftShader; mobile canvas 492->246px and ~12fps. runs_done=310. Prior: PRODUCT run 309 snap-grid size picker (backlog #12), monolith +424 B, build OK, 0 modeler console errors, fps desktop ~3.25 SwiftShader. runs_done=309. Prior: PRODUCT run 308 area readout chip (backlog #11), monolith +633 B, build OK, 0 modeler console errors, fps desktop ~3 SwiftShader (baseline ~4). runs_done=308. Prior: PRODUCT run 307 dimension labels (backlog #7), monolith +288 B, build OK, 0 modeler console errors, fps desktop ~2.75 SwiftShader (baseline ~4, noise). runs_done=307. Prior: MODELADOR-3D run 306 Import scene JSON (Open button). runs_done=306. Prior: PRODUCT run 305 time-of-day presets. Build OK, 0 modeler console errors, fps ~3 desktop SwiftShader. runs_done=305.
+note: PRODUCT run 316 per-part lock persisted in autosave/share/undo (SavedPart.l), monolith +156 B, build OK, 0 modeler console errors, fps desktop 4 SwiftShader. runs_done=316. Prior: PRODUCT run 315 shortcut tip + nudge label follow the chosen snap grid (was hard-coded 0.5 m), monolith +78 B, build OK, 0 modeler console errors, fps desktop 4.5 SwiftShader. runs_done=315. Prior: PRODUCT run 314 clear-all feedback hint (backlog #18), monolith +322 B, build OK, 0 modeler console errors, fps desktop 5.25 SwiftShader. runs_done=314. Prior: PRODUCT run 313 share link carries time-of-day (&tod=), monolith +203 B, build OK, 0 modeler console errors, fps desktop 3.25 SwiftShader. runs_done=313. Prior: PRODUCT run 312 persist time-of-day (backlog #16), monolith +234 B, build OK, 0 modeler console errors, fps desktop 4.5 SwiftShader (baseline ~4). runs_done=312. Prior: PRODUCT run 311 mobile toolbar edge-fade (backlog #9), monolith +235 B, build OK, 0 modeler console errors, fps desktop 5.75 SwiftShader. runs_done=311. Prior: PRODUCT run 310 adaptive render resolution (backlog #10), fps desktop 4.75 SwiftShader; mobile canvas 492->246px and ~12fps. runs_done=310. Prior: PRODUCT run 309 snap-grid size picker (backlog #12), monolith +424 B, build OK, 0 modeler console errors, fps desktop ~3.25 SwiftShader. runs_done=309. Prior: PRODUCT run 308 area readout chip (backlog #11), monolith +633 B, build OK, 0 modeler console errors, fps desktop ~3 SwiftShader (baseline ~4). runs_done=308. Prior: PRODUCT run 307 dimension labels (backlog #7), monolith +288 B, build OK, 0 modeler console errors, fps desktop ~2.75 SwiftShader (baseline ~4, noise). runs_done=307. Prior: MODELADOR-3D run 306 Import scene JSON (Open button). runs_done=306. Prior: PRODUCT run 305 time-of-day presets. Build OK, 0 modeler console errors, fps ~3 desktop SwiftShader. runs_done=305.
 PRODUCT run 305: time-of-day lighting presets (backlog #6): Morning/Noon/Sunset/Dusk dropdown, new modules house-modeler/lighting.ts + TimeOfDayPicker.tsx; monolith +546 B (360607). Verified EN+ES desktop+mobile, 0 modeler console errors (only 2 known unrelated 404s). fps ~3 in SwiftShader (baseline ~4, noise-level, no new render cost). Local server: `PORT=4173 node .output/server/index.mjs` after build; EN url /tools/3d-house-modeler, ES /es/herramientas/modelador-casas-3d. runs_done=305.
 ```
 
@@ -157,6 +157,7 @@ PRODUCT run 312: time-of-day choice persisted in localStorage (backlog #16), loa
 PRODUCT run 313: share link includes time of day (&tod=dusk etc., sunset omitted; applied on load when no local parts), shareLink.ts readShareTod; monolith +203 B (362994). Verified EN desktop + ES mobile: dusk link opened in fresh context shows Dusk. runs_done=313.
 PRODUCT run 314: after Clear (button or C key) an action hint says the scene can be recovered with Ctrl+Z/Undo (backlog #18). runs_done=314.
 PRODUCT run 315: stale '0.5 m' in shortcut tip + nudge pad label now follows snap grid via withGridLabels (snapGrid.tsx), EN+ES. runs_done=315.
+PRODUCT run 316: per-part lock (L) persisted in autosave, share link and undo (SavedPart.l); verified lock->reload->locked, unlock->Ctrl+Z->locked. runs_done=316.
 ```
 
 <!-- end:house-modeler-state.md -->
