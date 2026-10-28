@@ -1,6 +1,7 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
+import { LazyBoundary, retryableLazy } from "@/components/LazyBoundary";
 
-const ShareAndExportActions = lazy(() =>
+const ShareAndExportActions = retryableLazy(() =>
   import("./ShareAndExportActions").then((m) => ({ default: m.ShareAndExportActions })),
 );
 
@@ -19,8 +20,10 @@ export function DeferredShareAndExport({
   locale?: Locale;
 }) {
   return (
-    <Suspense fallback={<div className="mt-4 min-h-[4.5rem] border-t pt-4" aria-hidden />}>
-      <ShareAndExportActions title={title} locale={locale} />
-    </Suspense>
+    <LazyBoundary locale={locale} onRetry={ShareAndExportActions.retry} className="mt-4">
+      <Suspense fallback={<div className="mt-4 min-h-[4.5rem] border-t pt-4" aria-hidden />}>
+        <ShareAndExportActions title={title} locale={locale} />
+      </Suspense>
+    </LazyBoundary>
   );
 }

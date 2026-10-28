@@ -19,9 +19,11 @@ export function DeferredKitReturnRibbon({
   useEffect(() => {
     let cancelled = false;
     const load = () => {
-      void import("@/components/kits/KitReturnRibbon").then((mod) => {
-        if (!cancelled) setRibbon(() => mod.KitReturnRibbon);
-      });
+      import("@/components/kits/KitReturnRibbon")
+        .then((mod) => {
+          if (!cancelled) setRibbon(() => mod.KitReturnRibbon);
+        })
+        .catch(() => {});
     };
     const idle = window.requestIdleCallback;
     if (typeof idle === "function") {

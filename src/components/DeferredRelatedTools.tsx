@@ -1,7 +1,8 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import type { CatalogTool } from "@/lib/all-tools";
+import { LazyBoundary, retryableLazy } from "@/components/LazyBoundary";
 
-const RelatedToolPath = lazy(() =>
+const RelatedToolPath = retryableLazy(() =>
   import("./RelatedToolPath").then((m) => ({ default: m.RelatedToolPath })),
 );
 
@@ -17,9 +18,11 @@ export function DeferredRelatedTools({
   locale: "en" | "es";
 }) {
   return (
-    <Suspense fallback={<RelatedToolsSlot />}>
-      <RelatedToolPath tool={tool} locale={locale} />
-    </Suspense>
+    <LazyBoundary locale={locale} onRetry={RelatedToolPath.retry} className="mt-5">
+      <Suspense fallback={<RelatedToolsSlot />}>
+        <RelatedToolPath tool={tool} locale={locale} />
+      </Suspense>
+    </LazyBoundary>
   );
 }
 

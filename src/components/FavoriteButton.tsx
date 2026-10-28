@@ -1,4 +1,3 @@
-import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/hooks/use-favorites";
 
@@ -42,8 +41,32 @@ export function FavoriteButton({
           : "btn-press gap-2"
       }
     >
-      <Star className="size-4" fill={active ? "currentColor" : "none"} />
+      <StarIcon filled={active} />
       {active ? copy.active : copy.inactive}
     </Button>
+  );
+}
+
+/**
+ * lucide "star", inlined: the shared lucide chunk was one more request (and one
+ * more chunk that can fail) on every tool page for a 300-byte icon.
+ */
+function StarIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill={filled ? "currentColor" : "none"}
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-star size-4"
+      aria-hidden="true"
+    >
+      <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+    </svg>
   );
 }

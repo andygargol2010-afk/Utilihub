@@ -20,12 +20,16 @@ export function ToolPage() {
   };
 
   useEffect(() => {
-    void import("@/lib/analytics").then((mod) => {
-      mod.trackEvent("tool_open", { slug: tool.slug, locale: "en" });
-    });
-    void import("@/hooks/use-recent-tools").then((mod) => {
-      mod.recordRecentTool(tool.slug);
-    });
+    import("@/lib/analytics")
+      .then((mod) => {
+        mod.trackEvent("tool_open", { slug: tool.slug, locale: "en" });
+      })
+      .catch(() => {});
+    import("@/hooks/use-recent-tools")
+      .then((mod) => {
+        mod.recordRecentTool(tool.slug);
+      })
+      .catch(() => {});
   }, [tool.slug]);
 
   if (!category || !categoryPublicSlug) return <p className="container-page py-10">Tool not available.</p>;

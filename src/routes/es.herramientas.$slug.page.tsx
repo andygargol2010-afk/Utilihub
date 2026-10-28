@@ -23,12 +23,16 @@ export function SpanishToolPage() {
   const summaryEs = spanishToolSummary(tool);
 
   useEffect(() => {
-    void import("@/lib/analytics").then((mod) => {
-      mod.trackEvent("tool_open", { slug: tool.slug, locale: "es" });
-    });
-    void import("@/hooks/use-recent-tools").then((mod) => {
-      mod.recordRecentTool(tool.slug);
-    });
+    import("@/lib/analytics")
+      .then((mod) => {
+        mod.trackEvent("tool_open", { slug: tool.slug, locale: "es" });
+      })
+      .catch(() => {});
+    import("@/hooks/use-recent-tools")
+      .then((mod) => {
+        mod.recordRecentTool(tool.slug);
+      })
+      .catch(() => {});
   }, [tool.slug]);
 
   const categoryTo =

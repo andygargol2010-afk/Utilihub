@@ -13,6 +13,7 @@ import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 import { AdsConfigContext, ADS_OFF, type AdsConfig } from "@/lib/ads-config";
 import { getAdsConfig } from "@/lib/ads-edge";
+import { isChunkLoadError } from "@/lib/chunk-errors";
 
 function useIsSpanish() {
   const { pathname } = useLocation();
@@ -74,22 +75,47 @@ function NotFound() {
   );
 }
 
-// Server-rendered page content, captured before hydration. If a lazy chunk fails to load,
-// we keep showing it (H1, tool, FAQ) instead of replacing the page with an error screen.
-const SSR_SNAPSHOT =
-  typeof document !== "undefined"
-    ? {
-        path: window.location.pathname,
-        header: document.querySelector("body > header")?.outerHTML ?? "",
-        main: document.getElementById("main-content")?.innerHTML ?? "",
-        footer: document.querySelector("body > footer")?.outerHTML ?? "",
-      }
-    : null;
+/**
+ * Server-rendered header/main/footer, captured before hydration (the entry
+ * module runs after the parser has passed them) and refreshed at
+ * DOMContentLoaded so streamed Suspense content is included. If a route chunk
+ * fails to load (crawler renderer, flaky network) the root errorComponent shows
+ * this markup instead of a full-page error, so Googlebot never sees a soft 404.
+ * Only valid for the path it was captured on (not after client navigation).
+ */
+let ssrShellHtml: string | null = null;
+let ssrShellPath: string | null = null;
 
-function isChunkLoadError(error: Error | undefined) {
-  const text = `${error?.name ?? ""} ${error?.message ?? ""}`;
-  return /dynamically imported module|Importing a module script failed|error loading dynamically imported module|ChunkLoadError|Loading chunk/i.test(text);
+function captureSsrShell() {
+  const main = document.getElementById("main-content");
+  if (!main) return;
+  if (ssrShellPath !== null && ssrShellPath !== window.location.pathname) return;
+  ssrShellPath = window.location.pathname;
+  const parts: string[] = [];
+  const prev = main.previousElementSibling;
+  if (prev?.tagName === "HEADER") parts.push(prev.outerHTML);
+  parts.push(main.outerHTML);
+  const next = main.nextElementSibling;
+  if (next?.tagName === "FOOTER") parts.push(next.outerHTML);
+  ssrShellHtml = parts.join("");
 }
+
+if (typeof document !== "undefined") {
+  captureSsrShell();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", captureSsrShell, { once: true });
+  }
+}
+
+const BOT_RE =
+  /bot\b|crawler|spider|crawling|Googlebot|Google-InspectionTool|AdsBot|Mediapartners|bingpreview|Slurp|DuckDuck|Baiduspider|YandexBot|facebookexternalhit|Lighthouse/i;
+
+function isBotVisitor() {
+  return typeof navigator !== "undefined" && BOT_RE.test(navigator.userAgent || "");
+}
+
+/** One automatic route retry per page load; a second failure keeps the server HTML. */
+let routeRetried = false;
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
@@ -97,15 +123,19 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const isSpanish = useIsSpanish();
   const isPortuguese = useIsPortuguese();
   const isFrench = useIsFrench();
+  const keepServerHtml =
+    Boolean(ssrShellHtml) && ssrShellPath === pathname && (isChunkLoadError(error) || isBotVisitor());
   useEffect(() => console.error(error), [error]);
-  if (isChunkLoadError(error) && SSR_SNAPSHOT && SSR_SNAPSHOT.main && SSR_SNAPSHOT.path === pathname) {
-    return (
-      <>
-        <div dangerouslySetInnerHTML={{ __html: SSR_SNAPSHOT.header }} />
-        <main id="main-content" dangerouslySetInnerHTML={{ __html: SSR_SNAPSHOT.main }} />
-        <div dangerouslySetInnerHTML={{ __html: SSR_SNAPSHOT.footer }} />
-      </>
-    );
+  useEffect(() => {
+    if (!keepServerHtml || routeRetried) return;
+    routeRetried = true;
+    // Not cleared on re-render: the single retry must still fire if reset changes identity.
+    setTimeout(() => {
+      void router.invalidate().finally(() => reset());
+    }, 600);
+  }, [keepServerHtml, router, reset]);
+  if (keepServerHtml) {
+    return <div style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: ssrShellHtml as string }} />;
   }
   const msg = error?.message?.slice(0, 280) || "";
   const stackLine = (error?.stack || "")

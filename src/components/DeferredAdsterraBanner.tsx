@@ -1,7 +1,8 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { useAdFormat } from "@/lib/ads-config";
+import { LazyBoundary, retryableLazy } from "@/components/LazyBoundary";
 
-const AdsterraBanner = lazy(() =>
+const AdsterraBanner = retryableLazy(() =>
   import("./AdsterraBanner").then((m) => ({ default: m.AdsterraBanner })),
 );
 
@@ -13,10 +14,13 @@ export function DeferredAdsterraBanner({ label = "Advertisement" }: { label?: st
   const bannerOn = useAdFormat("banner");
   if (!bannerOn) return null;
 
+  // A failed ad chunk hides the slot silently; it must never take the page down.
   return (
-    <Suspense fallback={<AdsterraBannerSlot label={label} />}>
-      <AdsterraBanner label={label} />
-    </Suspense>
+    <LazyBoundary fallback={null}>
+      <Suspense fallback={<AdsterraBannerSlot label={label} />}>
+        <AdsterraBanner label={label} />
+      </Suspense>
+    </LazyBoundary>
   );
 }
 

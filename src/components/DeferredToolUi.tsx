@@ -1,5 +1,6 @@
-import { lazy, Suspense, useMemo, type ReactNode } from "react";
+import { lazy, Suspense, useMemo, useState, type ReactNode } from "react";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
+import { LazyBoundary } from "@/components/LazyBoundary";
 
 type Locale = "en" | "es";
 
@@ -79,6 +80,8 @@ async function loadRenderer(slug: string, locale: Locale): Promise<() => ReactNo
  * PixeliHub loads PixelArtStudio on demand only.
  */
 export function DeferredToolUi({ slug, locale }: { slug: string; locale: Locale }) {
+  // Bumped by the boundary's Retry: a fresh lazy() re-fetches a chunk that failed.
+  const [attempt, setAttempt] = useState(0);
   const Ui = useMemo(
     () =>
       lazy(async () => {
@@ -90,12 +93,14 @@ export function DeferredToolUi({ slug, locale }: { slug: string; locale: Locale 
           },
         };
       }),
-    [slug, locale],
+    [slug, locale, attempt],
   );
 
   return (
-    <Suspense fallback={<ToolUiFallback locale={locale} />}>
-      <Ui />
-    </Suspense>
+    <LazyBoundary locale={locale} onRetry={() => setAttempt((n) => n + 1)}>
+      <Suspense fallback={<ToolUiFallback locale={locale} />}>
+        <Ui />
+      </Suspense>
+    </LazyBoundary>
   );
 }

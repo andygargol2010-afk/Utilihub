@@ -1,7 +1,8 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import type { ToolShowcase } from "@/lib/tool-showcase";
+import { LazyBoundary, retryableLazy } from "@/components/LazyBoundary";
 
-const ToolShowcaseHero = lazy(() =>
+const ToolShowcaseHero = retryableLazy(() =>
   import("@/components/ToolShowcaseHero").then((m) => ({ default: m.ToolShowcaseHero })),
 );
 
@@ -32,9 +33,11 @@ export function DeferredShowcaseHero({
 
   useEffect(() => {
     let cancelled = false;
-    void import("@/lib/tool-showcase").then((mod) => {
-      if (!cancelled) setShowcase(mod.getToolShowcase(slug) ?? null);
-    });
+    import("@/lib/tool-showcase")
+      .then((mod) => {
+        if (!cancelled) setShowcase(mod.getToolShowcase(slug) ?? null);
+      })
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
@@ -43,8 +46,10 @@ export function DeferredShowcaseHero({
   if (!showcase) return <HeroSlot />;
 
   return (
-    <Suspense fallback={<HeroSlot />}>
-      <ToolShowcaseHero name={name} slug={slug} showcase={showcase} locale={locale} />
-    </Suspense>
+    <LazyBoundary fallback={null}>
+      <Suspense fallback={<HeroSlot />}>
+        <ToolShowcaseHero name={name} slug={slug} showcase={showcase} locale={locale} />
+      </Suspense>
+    </LazyBoundary>
   );
 }
