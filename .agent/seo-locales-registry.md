@@ -36,7 +36,7 @@ Do **not** add EN (`/` or bare) or ES (`/es`) here — those are first-class pro
 | --- | --- | --- | --- | --- | --- | --- |
 | pt | pt-BR | ltr | active | /pt | /pt, /pt/pulse-catch, /pt/orbit-defender-arcade, /pt/snake, /pt/pong | hreflang wired to EN+ES; no nav from EN/ES; minimal shell; fourth experience added |
 | fr | fr-FR | ltr | active | /fr | /fr, /fr/fluid-ink-flow-playground, /fr/pulse-catch, /fr/snake, /fr/pong | hreflang wired; no nav from EN/ES; minimal shell; fourth experience added |
-| de | de-DE | ltr | active | /de | /de, /de/fluid-ink-flow-playground, /de/pulse-catch, /de/snake | hreflang wired; no nav from EN/ES; minimal shell; third experience added |
+| de | de-DE | ltr | active | /de | /de, /de/fluid-ink-flow-playground, /de/pulse-catch, /de/snake, /de/pong | hreflang wired; no nav from EN/ES; minimal shell; fourth experience added |
 
 ---
 

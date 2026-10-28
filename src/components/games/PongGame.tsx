@@ -31,10 +31,11 @@ function fillRoundRect(ctx: Ctx2D, x: number, y: number, w: number, h: number, r
   }
 }
 
-export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
+export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" | "de" }) {
   const es = locale === "es";
   const pt = locale === "pt";
   const fr = locale === "fr";
+  const de = locale === "de";
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [running, setRunning] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -198,7 +199,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
         if (s.bx < 0) {
           setScoreC((c) => {
             const n = c + 1;
-            if (n >= WIN) setMessage(pt ? "CPU ganha" : fr ? "CPU gagne" : es ? "CPU gana" : "CPU wins");
+            if (n >= WIN) setMessage(pt ? "CPU ganha" : fr ? "CPU gagne" : de ? "CPU gewinnt" : es ? "CPU gana" : "CPU wins");
             return n;
           });
           resetBall(false);
@@ -206,7 +207,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
           setScoreP((p) => {
             const n = p + 1;
             setBest((b) => writeBestScore("pong", Math.max(b, n)));
-            if (n >= WIN) setMessage(pt ? "Você ganhou!" : fr ? "Vous avez gagné !" : es ? "¡Ganaste!" : "You win!");
+            if (n >= WIN) setMessage(pt ? "Você ganhou!" : fr ? "Vous avez gagné !" : de ? "Du gewinnst!" : es ? "¡Ganaste!" : "You win!");
             return n;
           });
           resetBall(true);
@@ -261,7 +262,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [running, paused, message, es, pt, fr]);
+  }, [running, paused, message, es, pt, fr, de]);
 
   const onPointerMove = (e: ReactPointerEvent<HTMLCanvasElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -286,7 +287,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
           {scoreP} — {scoreC}
         </span>
         <span>
-          {pt ? "Melhor" : fr ? "Meilleur" : es ? "Mejor" : "Best"}: {best}
+          {pt ? "Melhor" : fr ? "Meilleur" : de ? "Beste" : es ? "Mejor" : "Best"}: {best}
         </span>
         <GameSecondaryButton
           active={diff === "easy"}
@@ -295,7 +296,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
             hardReset();
           }}
         >
-          {pt ? "Fácil" : fr ? "Facile" : es ? "Fácil" : "Easy"}
+          {pt ? "Fácil" : fr ? "Facile" : de ? "Einfach" : es ? "Fácil" : "Easy"}
         </GameSecondaryButton>
         <GameSecondaryButton
           active={diff === "medium"}
@@ -304,7 +305,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
             hardReset();
           }}
         >
-          {pt ? "Médio" : fr ? "Moyen" : es ? "Medio" : "Med"}
+          {pt ? "Médio" : fr ? "Moyen" : de ? "Mittel" : es ? "Medio" : "Med"}
         </GameSecondaryButton>
         <GameSecondaryButton
           active={diff === "hard"}
@@ -313,7 +314,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
             hardReset();
           }}
         >
-          {pt ? "Difícil" : fr ? "Difficile" : es ? "Difícil" : "Hard"}
+          {pt ? "Difícil" : fr ? "Difficile" : de ? "Schwer" : es ? "Difícil" : "Hard"}
         </GameSecondaryButton>
         <GameSecondaryButton
           active={noSpeedCap}
@@ -323,21 +324,23 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
               ? "Sem limite de velocidade: a bola continua acelerando em cada rebatida"
               : fr
               ? "Sans limite de vitesse : la balle continue d'accélérer à chaque rebond"
+              : de
+              ? "Ohne Geschwindigkeitslimit: Der Ball beschleunigt bei jedem Abprall weiter"
               : es
               ? "Sin tope de velocidad: la pelota sigue acelerando en cada rebote"
               : "No speed cap: the ball keeps accelerating on every bounce"
           }
         >
-          {pt ? (noSpeedCap ? "Sem limite ✓" : "Sem limite") : fr ? (noSpeedCap ? "Sans limite ✓" : "Sans limite") : es ? (noSpeedCap ? "Sin límite ✓" : "Sin límite") : noSpeedCap ? "No cap ✓" : "No cap"}
+          {pt ? (noSpeedCap ? "Sem limite ✓" : "Sem limite") : fr ? (noSpeedCap ? "Sans limite ✓" : "Sans limite") : de ? (noSpeedCap ? "Kein Limit ✓" : "Kein Limit") : es ? (noSpeedCap ? "Sin límite ✓" : "Sin límite") : noSpeedCap ? "No cap ✓" : "No cap"}
         </GameSecondaryButton>
         {!running ? (
-          <GamePrimaryButton onClick={hardReset}>{pt ? "Jogar" : fr ? "Jouer" : es ? "Jugar" : "Play"}</GamePrimaryButton>
+          <GamePrimaryButton onClick={hardReset}>{pt ? "Jogar" : fr ? "Jouer" : de ? "Spielen" : es ? "Jugar" : "Play"}</GamePrimaryButton>
         ) : (
           <>
             <GameSecondaryButton onClick={() => setPaused((p) => !p)} active={paused}>
-              {paused ? (pt ? "Continuar" : fr ? "Continuer" : es ? "Seguir" : "Resume") : pt ? "Pausa" : fr ? "Pause" : es ? "Pausa" : "Pause"}
+              {paused ? (pt ? "Continuar" : fr ? "Continuer" : de ? "Fortsetzen" : es ? "Seguir" : "Resume") : pt ? "Pausa" : fr ? "Pause" : de ? "Pause" : es ? "Pausa" : "Pause"}
             </GameSecondaryButton>
-            <GamePrimaryButton onClick={hardReset}>{pt ? "Reiniciar" : fr ? "Recommencer" : es ? "Reiniciar" : "Restart"}</GamePrimaryButton>
+            <GamePrimaryButton onClick={hardReset}>{pt ? "Reiniciar" : fr ? "Recommencer" : de ? "Neustart" : es ? "Reiniciar" : "Restart"}</GamePrimaryButton>
           </>
         )}
       </div>
@@ -345,7 +348,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
         <p className="text-sm font-bold text-emerald-300">
           {message}
           <span className="ml-2 font-medium text-emerald-200/80">
-            {pt ? "· Espaço = outra partida" : fr ? "· Espace = autre partie" : es ? "· Espacio = otra partida" : "· Space = play again"}
+            {pt ? "· Espaço = outra partida" : fr ? "· Espace = autre partie" : de ? "· Leertaste = nochmal spielen" : es ? "· Espacio = otra partida" : "· Space = play again"}
           </span>
         </p>
       )}
@@ -355,6 +358,8 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
             ? "Velocidade sem limite — a bola acelera em cada rebatida"
             : fr
             ? "Vitesse sans limite — la balle accélère à chaque rebond"
+            : de
+            ? "Geschwindigkeit ohne Limit — der Ball beschleunigt bei jedem Schläger-Treffer"
             : es
             ? "Velocidad sin tope — la pelota acelera en cada paleta"
             : "Uncapped speed — ball accelerates on every paddle hit"}
@@ -373,6 +378,8 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" }) {
           ? `\u2191\u2193 / WASD ou arraste \u00b7 espaço = pausa / nova partida \u00b7 até ${WIN}`
           : fr
           ? `\u2191\u2193 / WASD ou glisser \u00b7 espace = pause / nouvelle partie \u00b7 premier à ${WIN}`
+          : de
+          ? `\u2191\u2193 / WASD oder ziehen \u00b7 Leertaste = Pause / neues Spiel \u00b7 zuerst bei ${WIN}`
           : es
           ? `\u2191\u2193 / WASD o arrastrá \u00b7 espacio = pausa / nueva partida \u00b7 a ${WIN}`
           : `\u2191\u2193 / WASD or drag \u00b7 space = pause / play again \u00b7 first to ${WIN}`}

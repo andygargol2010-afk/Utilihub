@@ -72,6 +72,12 @@ function GermanHome() {
             >
               Snake spielen
             </Link>
+            <Link
+              to="/de/pong"
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-primary/30 bg-card px-5 py-3 text-sm font-bold text-primary hover:bg-primary/5"
+            >
+              Pong spielen
+            </Link>
           </div>
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
             <span>Ohne Anmeldung</span>
@@ -109,6 +115,14 @@ function GermanHome() {
             </Link>
             <p className="text-sm text-muted-foreground">
               Iss Äpfel, wachse und vermeide die Wände. Flüssige Steuerung und lokaler Bestwert.
+            </p>
+          </li>
+          <li>
+            <Link to="/de/pong" className="font-semibold text-primary hover:underline">
+              Pong — klassisches Schlägerduell
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              Schlägerduell gegen die CPU. Flüssige Steuerung mit Maus oder Pfeiltasten und lokaler Bestwert.
             </p>
           </li>
         </ul>
