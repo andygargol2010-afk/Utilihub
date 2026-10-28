@@ -15,6 +15,7 @@ import { OnboardingHint } from "./house-modeler/OnboardingHint";
 import { SnapPicker, withGridLabels, gridStep, setGridStep, snapLabel, type SnapStep } from "./house-modeler/snapGrid";
 import { PresetPicker } from "./house-modeler/PresetPicker";
 import { MirrorButton, mirrorParts } from "./house-modeler/MirrorButton";
+import { ViewPicker, viewPose } from "./house-modeler/ViewPicker";
 import { RotateDesignButton, rotateParts } from "./house-modeler/RotateDesignButton";
 import { applyTimeOfDay, loadTimeOfDay, saveTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
 import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
@@ -6984,6 +6985,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {isFullscreen ? labels.exitFs : labels.fullscreen}
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
         </button>
+        <ViewPicker es={es} onPick={(v) => { const t = threeRef.current; if (!t) return; const pose = viewPose(JSON.parse(serializeParts(partsRef.current)).parts, v); t.controls.target.set(...pose.target); t.camera.position.set(...pose.position); t.camera.lookAt(...pose.target); t.controls.update(); }} />
         <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); saveTimeOfDay(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
         <SnapPicker es={es} value={snapSel} onPick={(v) => { setGridStep(v); setSnapSel(v); }} />
         <MeasureButton es={es} active={measuring} onToggle={() => { const on = !measuring; measureRef.current?.setActive(on); setMeasuring(on); flashActionHint(on ? (es ? "Medir: toca dos puntos del suelo" : "Measure: click two ground points") : (es ? "Medición desactivada" : "Measure off")); }} />
