@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-28 | diseno | calculadora-factor-de-escala | ScaleFactorCalculatorTool
 - 2026-10-28 | finanzas | calculadora-interes-simple | SimpleInterestCalculatorTool
 - 2026-10-28 | matematicas | calculadora-regla-de-tres | RuleOfThreeCalculatorTool
 - 2026-10-28 | matematicas | calculadora-cambio-porcentual | PercentageChangeCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-27 | matematicas | calculadora-porcentaje-del-total | PercentageOfTotalCalculatorTool
 - 2026-10-27 | finanzas | calculadora-presupuesto-mensual | MonthlyBudgetCalculatorTool
 - 2026-10-27 | matematicas | calculadora-porcentaje-restante | PercentageRemainingCalculatorTool
-- 2026-10-27 | viajes | calculadora-costo-litro-combustible | FuelLiterCostCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -43,7 +43,7 @@ ciencia/f\u00edsica: recent (fuerza, volumen-esfera, volumen-cilindro, densidad,
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo)
-diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto)
+diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple)
@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (\u22654 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md \u00a7PRODUCT step 4.
+2026-10-28: PRODUCT — calculadora-factor-de-escala (diseno). One tool (default). Anti-dupe OK (new slug). Practical scale factor for design/models. SEO locales: defer pt/fr/de.
 2026-10-28: PRODUCT — calculadora-interes-simple (finanzas). One tool (default). Anti-dupe OK (new slug). Practical simple interest for loans/savings. SEO locales: defer pt/fr/de.
 2026-10-28: PRODUCT — calculadora-regla-de-tres (matematicas). One tool (default). Anti-dupe OK (new slug). Practical proportions. SEO locales: defer pt/fr/de.
 2026-10-28: PRODUCT — calculadora-cambio-porcentual (matematicas). One tool (default). Anti-dupe OK (new slug). Practical percentage change. SEO locales: defer pt/fr/de.
@@ -82,7 +83,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-interes-simple
+last_slugs: calculadora-factor-de-escala
 last_deploy: no (branch auto-deploy disabled)
 last_sha: pending
 ```

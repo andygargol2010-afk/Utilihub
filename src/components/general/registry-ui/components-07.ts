@@ -4,3 +4,4 @@ import { lazy } from "react";
 
 export const RuleOfThreeCalculatorToolUi = lazy(() => import("../RuleOfThreeCalculatorTool").then((m) => ({ default: m.RuleOfThreeCalculatorTool })));
 export const SimpleInterestCalculatorToolUi = lazy(() => import("../SimpleInterestCalculatorTool").then((m) => ({ default: m.SimpleInterestCalculatorTool })));
+export const ScaleFactorCalculatorToolUi = lazy(() => import("../ScaleFactorCalculatorTool").then((m) => ({ default: m.ScaleFactorCalculatorTool })));

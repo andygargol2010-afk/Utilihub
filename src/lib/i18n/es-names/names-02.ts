@@ -54,4 +54,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-cambio-porcentual": "Calculadora de cambio porcentual",
   "calculadora-regla-de-tres": "Calculadora de regla de tres",
   "calculadora-interes-simple": "Calculadora de interés simple",
+  "calculadora-factor-de-escala": "Calculadora de factor de escala",
 };
