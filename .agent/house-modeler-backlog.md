@@ -30,6 +30,7 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 23 | Turn 90 button: rotate whole design 90 deg around footprint centre (undoable) | 3 | 3 | 1 | 9 | DONE run 319 (house-modeler/RotateDesignButton.tsx) |
 | 24 | Measure tool: toggle, two ground taps -> distance label (m + ft), snaps to grid | 4 | 4 | 3 | 5.3 | DONE run 320 (house-modeler/measure.tsx; ground only, not part-to-part) |
 | 25 | Camera View picker: 3D / Plan (top) / Front / Side framing whole design | 4 | 4 | 1 | 16 | DONE run 322 (house-modeler/ViewPicker.tsx) |
+| 26 | Hide/Show roof toggle to see the interior (roofs only, nothing deleted) | 4 | 4 | 1 | 16 | DONE run 323 (house-modeler/RoofToggle.tsx; not persisted; roof placed while hidden stays visible until next toggle) |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
 Ideas for next audit: layers/locks in undo snapshot, measure tool (distance between two points), Delete-key/Ctrl+D discoverability, include time-of-day in share link.

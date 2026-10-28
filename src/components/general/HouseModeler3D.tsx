@@ -16,6 +16,7 @@ import { SnapPicker, withGridLabels, gridStep, setGridStep, snapLabel, type Snap
 import { PresetPicker } from "./house-modeler/PresetPicker";
 import { MirrorButton, mirrorParts } from "./house-modeler/MirrorButton";
 import { ViewPicker, viewPose } from "./house-modeler/ViewPicker";
+import { RoofToggle } from "./house-modeler/RoofToggle";
 import { RotateDesignButton, rotateParts } from "./house-modeler/RotateDesignButton";
 import { applyTimeOfDay, loadTimeOfDay, saveTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
 import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
@@ -4963,6 +4964,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     return found;
   }, []);
 
+  const roofHiddenRef = useRef(false);
+  const [roofHidden, setRoofHidden] = useState(false);
   const applyLayerVisibility = useCallback(() => {
     const t = threeRef.current;
     if (!t) return;
@@ -4970,7 +4973,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const layer = layersRef.current.find((l) => l.id === part.layerId);
       const obj = findPartObject(part.id);
       if (!obj) continue;
-      obj.visible = layer ? layer.visible : true;
+      obj.visible = (layer ? layer.visible : true) && !(roofHiddenRef.current && part.kind === "roof");
       syncLockBadge(obj, partFrozen(part, layersRef.current));
     }
   }, [findPartObject]);
@@ -6985,6 +6988,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {isFullscreen ? labels.exitFs : labels.fullscreen}
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
         </button>
+        <RoofToggle es={es} hidden={roofHidden} onToggle={() => { roofHiddenRef.current = !roofHiddenRef.current; setRoofHidden(roofHiddenRef.current); applyLayerVisibility(); }} />
         <ViewPicker es={es} onPick={(v) => { const t = threeRef.current; if (!t) return; const pose = viewPose(JSON.parse(serializeParts(partsRef.current)).parts, v); t.controls.target.set(...pose.target); t.camera.position.set(...pose.position); t.camera.lookAt(...pose.target); t.controls.update(); }} />
         <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); saveTimeOfDay(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
         <SnapPicker es={es} value={snapSel} onPick={(v) => { setGridStep(v); setSnapSel(v); }} />
