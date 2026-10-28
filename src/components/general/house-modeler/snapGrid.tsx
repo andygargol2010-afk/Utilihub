@@ -51,3 +51,9 @@ export function SnapPicker({ es, value, onPick }: { es: boolean; value: SnapStep
     </select>
   );
 }
+
+/** Labels that mention the nudge distance must follow the chosen grid, not a hard-coded 0.5 m. */
+export function withGridLabels<T extends { nudge: string; tip: string }>(l: T, es: boolean, v: number): T {
+  const m = es ? `${fmt(v, true)} m` : `${fmt(v, false)} m`;
+  return { ...l, nudge: es ? `Mover ${m}` : `Nudge ${m}`, tip: l.tip.replace(/0[.,]5 m/, m) };
+}

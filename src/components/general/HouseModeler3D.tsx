@@ -11,7 +11,7 @@ import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./h
 import { createHistory, undoKeyStep } from "./house-modeler/history";
 import { computeAreaStats, formatAreaStats } from "./house-modeler/areaStats";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
-import { SnapPicker, gridStep, setGridStep, snapLabel, type SnapStep } from "./house-modeler/snapGrid";
+import { SnapPicker, withGridLabels, gridStep, setGridStep, snapLabel, type SnapStep } from "./house-modeler/snapGrid";
 import { PresetPicker } from "./house-modeler/PresetPicker";
 import { applyTimeOfDay, loadTimeOfDay, saveTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
 import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
@@ -5724,7 +5724,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     window.addEventListener("pointercancel", onCancel);
   };
 
-  const labels = es
+  const labelsBase = es
     ? {
         title: "Modelador de casas 3D",
         wall: "Pared",
@@ -6125,6 +6125,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         nudgeZN: "Move −Z",
         fsBar: "Fullscreen actions",
       };
+  const labels = withGridLabels(labelsBase, es, snapSel);
 
   const selectedPart = partsRef.current.find((p) => p.id === selectedId);
   const selectedKind = selectedPart?.kind;
