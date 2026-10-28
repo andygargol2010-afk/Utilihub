@@ -33,7 +33,8 @@ function parseQuery(): Partial<Data> | null {
   const p = new URLSearchParams(window.location.search);
   const s = p.get("stars");
   const st = p.get("streak");
-  if (!s && !st) return null;
+  const n = p.get("name");
+  if (!s && !st && !n) return null;
   const stars: Star[] = [];
   if (s) {
     s.split(";").forEach((pair) => {
@@ -41,12 +42,13 @@ function parseQuery(): Partial<Data> | null {
       if (!isNaN(x) && !isNaN(y)) stars.push({ x, y, size: 3 + Math.random() * 2, born: Date.now() });
     });
   }
-  return { stars, streak: st ? Number(st) || 0 : stars.length };
+  return { stars, streak: st ? Number(st) || 0 : stars.length, name: n || undefined };
 }
 
 function toQuery(d: Data): string {
   const stars = d.stars.map((s) => `${s.x.toFixed(3)},${s.y.toFixed(3)}`).join(";");
-  return `?stars=${encodeURIComponent(stars)}&streak=${d.streak}`;
+  const name = d.name ? `&name=${encodeURIComponent(d.name)}` : "";
+  return `?stars=${encodeURIComponent(stars)}&streak=${d.streak}${name}`;
 }
 
 function milestoneColor(streak: number, i: number): string {
@@ -73,13 +75,14 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
   const [msg, setMsg] = useState("");
   const [placing, setPlacing] = useState(false);
   const [pulse, setPulse] = useState(false);
+  const [nameInput, setNameInput] = useState("");
   const anim = useRef(0);
   const es = locale === "es";
 
   useEffect(() => {
     let d = load();
     const q = parseQuery();
-    if (q && q.stars && q.stars.length > d.stars.length) {
+    if (q && ((q.stars && q.stars.length > d.stars.length) || q.name)) {
       d = { ...d, ...q, lastCheckIn: Date.now() };
       save(d);
     }
@@ -90,6 +93,7 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
       d.streak = Math.max(d.streak, 1);
     }
     setData(d);
+    setNameInput(d.name || "");
   }, []);
 
   useEffect(() => {
@@ -163,16 +167,22 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
         ctx.globalAlpha = 1;
       });
 
-      // branding
+      // branding + name
       ctx.font = "bold 13px system-ui";
       ctx.fillStyle = "rgba(56,189,248,0.9)";
       ctx.textAlign = "center";
-      ctx.fillText(es ? "Constelaci\u00f3n de racha UtiliHub" : "UtiliHub Streak Constellation", w / 2, h - 10);
+      const brand = es ? "Constelaci\u00f3n de racha UtiliHub" : "UtiliHub Streak Constellation";
+      ctx.fillText(brand, w / 2, h - 10);
+      if (data.name) {
+        ctx.font = "bold 16px system-ui";
+        ctx.fillStyle = "#fff";
+        ctx.fillText(data.name, w / 2, 28);
+      }
 
       if (forExport && data.streak > 0) {
         ctx.font = "bold 28px system-ui";
         ctx.fillStyle = "#fff";
-        ctx.fillText(`${data.streak} ${es ? "d\u00edas" : "days"}`, w / 2, 36);
+        ctx.fillText(`${data.streak} ${es ? "d\u00edas" : "days"}`, w / 2, data.name ? 56 : 36);
       }
     };
 
@@ -228,15 +238,18 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
     if (!c) return;
     const ctx = c.getContext("2d");
     if (!ctx) return;
-    // redraw with overlay
-    const t = performance.now();
-    // temporary draw call via re-trigger not easy; draw overlay then blob then clear overlay by next frame
     const w = c.clientWidth, h = c.clientHeight;
     ctx.save();
+    if (data.name) {
+      ctx.font = "bold 16px system-ui";
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.fillText(data.name, w / 2, 28);
+    }
     ctx.font = "bold 28px system-ui";
     ctx.fillStyle = "#fff";
     ctx.textAlign = "center";
-    ctx.fillText(`${data.streak} ${es ? "d\u00edas" : "days"}`, w / 2, 36);
+    ctx.fillText(`${data.streak} ${es ? "d\u00edas" : "days"}`, w / 2, data.name ? 56 : 36);
     ctx.restore();
     c.toBlob((b) => {
       if (!b) return;
@@ -246,8 +259,6 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
       a.click();
       setMsg(es ? "PNG descargado" : "PNG downloaded");
       setTimeout(() => setMsg(""), 1800);
-      // force redraw clean
-      const dummy = document.createEvent("Event");
       window.dispatchEvent(new Event("resize"));
     });
   }
@@ -268,13 +279,25 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
     const empty = { stars: [], streak: 0, lastCheckIn: 0 };
     save(empty);
     setData(empty);
+    setNameInput("");
     window.history.replaceState(null, "", window.location.pathname);
     setMsg(es ? "Reiniciado" : "Reset");
     setTimeout(() => setMsg(""), 1800);
   }
 
+  function saveName() {
+    const next = { ...data, name: nameInput.trim() || undefined };
+    save(next);
+    setData(next);
+    const url = window.location.pathname + toQuery(next);
+    window.history.replaceState(null, "", url);
+    setMsg(es ? "Nombre guardado" : "Name saved");
+    setTimeout(() => setMsg(""), 1500);
+  }
+
   const milestoneLabel = data.streak >= 30 ? (es ? "\u00b7 Arco\u00edris" : "\u00b7 Rainbow") : data.streak >= 14 ? (es ? "\u00b7 P\u00farpura" : "\u00b7 Purple") : data.streak >= 7 ? (es ? "\u00b7 Oro" : "\u00b7 Gold") : "";
   const nm = nextMilestone(data.streak);
+  const barColor = data.streak >= 30 ? "bg-gradient-to-r from-cyan-400 via-purple-400 to-amber-400" : data.streak >= 14 ? "bg-purple-500" : data.streak >= 7 ? "bg-amber-400" : "bg-cyan-500";
 
   return (
     <div className="space-y-5">
@@ -284,13 +307,26 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
         </p>
         <h2 className={`mt-1 text-2xl font-black ${pulse ? "scale-105 transition-transform" : ""}`}>{data.streak} {es ? "d\u00edas de racha" : "day streak"}{milestoneLabel}</h2>
         <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-          <div className="h-full bg-cyan-500 transition-all duration-500" style={{ width: `${nm.progress}%` }} />
+          <div className={`h-full transition-all duration-500 ${barColor}`} style={{ width: `${nm.progress}%` }} />
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
           {es
             ? `Pr\u00f3ximo hito: ${nm.target} d\u00edas (${nm.remaining} restantes)`
             : `Next milestone: ${nm.target} days (${nm.remaining} left)`}
         </p>
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <input
+            type="text"
+            value={nameInput}
+            onChange={(e) => setNameInput(e.target.value.slice(0, 32))}
+            placeholder={es ? "Nombre de la constelaci\u00f3n (opcional)" : "Constellation name (optional)"}
+            className="rounded-lg border border-border/60 bg-background px-2 py-1 text-xs"
+            maxLength={32}
+          />
+          <button type="button" onClick={saveName} className="rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-2 py-1 text-xs font-semibold text-cyan-600 hover:bg-cyan-500/20 dark:text-cyan-400">
+            {es ? "Guardar nombre" : "Save name"}
+          </button>
+        </div>
         <p className="mt-1 text-sm text-muted-foreground">
           {es
             ? "Hac\u00e9 check-in diario y coloc\u00e1 estrellas en el mapa. Colores especiales a los 7, 14 y 30 d\u00edas. Compart\u00ed el enlace para restaurar el progreso."
