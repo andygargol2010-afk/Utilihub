@@ -1,6 +1,6 @@
-# UtiliHub Ideas Lab \u2014 State (3/3)
+# UtiliHub Ideas Lab — State (3/3)
 
-**Part 3 of 3 \u2014 runtime state only.** End marker: `<!-- end:ideas-lab-state.md -->`.
+**Part 3 of 3 — runtime state only.** End marker: `<!-- end:ideas-lab-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file small.
 
@@ -35,7 +35,7 @@ weights_growth:
   conversion-paths: 2
   traffic-diagnosis: 1
   adsense-prep: 11
-  seo-locales: 10   # retire \u2192 0 when SEO_LOCALES_ACTIVE length \u2265 5
+  seo-locales: 10   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
 
 adsense-prep_runs: 3
 ```
@@ -57,19 +57,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive magnetic field lines sandbox where users place and drag north/south magnetic poles on a canvas; live animated field lines update in real time based on pole positions and strengths. Supports URL deep-link for setups, branded PNG export, EN+ES routes and UI. Mobile-friendly at 390px with modest line counts for CWV.
+id: magnetic-field-sandbox
+path_en: /magnetic-field-sandbox
+path_es: /es/sandbox-campo-magnetico
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed retention-loops-streak-constellation after final polish (name + milestone bar). Next run IDEATE.
+domain: playgrounds
+runs_total: 4
+runs_remaining: 4
+acceptance: User places a north and a south pole on the canvas, sees curved field lines animate between them, can drag the poles to update the lines live, and exports a branded PNG.
+share: both
+next_step_required: yes
+notes: Rubric scores (value/share/search/distinct/feas/perf): C1 magnetic-field-sandbox 5/4/4/4/5/4 total 26; C2 fractal-zoom-explorer 4/5/4/5/4/3 total 25; C3 sound-reactive-particles 4/3/3/3/4/3 total 20. Chosen magnetic-field-sandbox (highest total, strong feasibility). Roll: p_fixed=0.35 → FLEX core (playgrounds weight 9 highest). Closest existing surfaces: gravity-sandbox (n-body), aurora-particle-playground, fluid-ink-flow-playground. adsense-prep_runs: 3
 adsense-prep_runs: 3
 ```
 
