@@ -59,19 +59,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: (closed — ready for next IDEATE)
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive SIR epidemic compartmental model simulator. Users set transmission rate (β), recovery rate (γ), initial infected, population size; see live updating S/I/R curves over time. Discrete interventions (vaccination campaign, lockdown) as toggles that modify rates mid-run. Parameter URL deep-link for sharing specific scenarios. Branded PNG of the curve chart. EN+ES routes and UI. Mobile-friendly charts (390px). No freehand drawing — pure parameter → effect model with readouts.
+id: sir-epidemic-simulator
+path_en: /sir-epidemic-simulator
+path_es: /es/simulador-epidemia-sir
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed minesweeper-classic 2026-10-28 (run 4/4). Final polish: Same-board practice button for seeded layouts. Acceptance met. Next run = IDEATE (variety: last CORE games; prefer simulators/kits/journeys).
+domain: simulators
+runs_total: 4
+runs_remaining: 4
+acceptance: User adjusts R0 or rates, sees S/I/R curves update live; toggles an intervention and sees the peak/flatten change; can share URL with current params.
+share: both
+next_step_required: yes
+notes: IDEATE 2026-10-28. Roll: after games close, variety mandate prefers simulators/kits/journeys over playgrounds (saturated particle/canvas). CORE weights simulators=8 high. p_fixed=0.35 → treated as CORE. Candidates: 1) SIR Epidemic Simulator (metaphor: parameter-driven compartmental dynamics + live curves + discrete interventions; closest-3: BudgetSurvivorGame decision-outcomes, FormulaMemory learning, OrbitPulse timing; why not particle-canvas: no freehand/attractors/trails, pure model+graphs; scores value5 share4 search4 distinct5 feas4 perf4 =26). 2) Double Pendulum (metaphor: chaotic mechanical params + trajectory; closest: magnetic-field, fluid-ink trails, orbit games; distinct3 because trails; scores 4/3/3/3/4/3=20). 3) Circuit Resistance Kit (metaphor: discrete component assembly → voltage/current readouts; closest none pure; scores 4/3/3/4/4/5=23). Picked 1. IP: n/a (original model). Core by run 2 required.
 adsense-prep_runs: 3
 ```
 
