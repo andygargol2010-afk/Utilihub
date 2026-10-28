@@ -16,6 +16,7 @@ import { PresetPicker } from "./house-modeler/PresetPicker";
 import { applyTimeOfDay, loadTimeOfDay, saveTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
 import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
 import { attachScrollFade } from "./house-modeler/scrollFade";
+import { nextSelectableId } from "./house-modeler/cycleSelect";
 
 type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
@@ -5545,6 +5546,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const selPart = selId ? partsRef.current.find((part) => part.id === selId) : undefined;
       const canMutate = !!selPart && !partFrozen(selPart, layersRef.current);
       // Backspace/arrows must not be swallowed when nothing can move — that blocked history and page scroll.
+      if (e.key === "Tab" && partsRef.current.length) {
+        const nid = nextSelectableId(partsRef.current, layersRef.current, selId ?? null, e.shiftKey ? -1 : 1);
+        const np = nid ? partsRef.current.find((p) => p.id === nid) : undefined;
+        if (np) {
+          e.preventDefault();
+          selectedRef.current = np.id;
+          setSelectedId(np.id);
+          setSelectedRot(((Math.round(np.rotationY / (Math.PI / 2)) % 4) + 4) % 4);
+          setSelectedPos([np.position[0], np.position[2]]);
+        }
+        return;
+      }
       if (e.key === "Delete" || e.key === "Backspace") {
         if (!canMutate) return;
         e.preventDefault();
@@ -5764,7 +5777,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         undo: "Deshacer",
         redo: "Rehacer",
         exitFs: "Salir",
-        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · E valla · T sendero · Y jardinera · U banco · I farol · R rotar · L bloqueo · D duplicar · G encuadrar · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
+        tip: "Atajos: 1 pared · 2 piso · 3 techo · 4 pilar · 5 puerta · 6 ventana · 7 escalera · 8 baranda · 9 chimenea · 0 viga · Q cimentación · W pérgola · E valla · T sendero · Y jardinera · U banco · I farol · R rotar · L bloqueo · D duplicar · G encuadrar · Tab siguiente pieza · flechas mueven 0,5 m · Supr borrar · C limpiar · F pantalla completa · Esc cancelar",
         palette: "Estructuras",
         dragHint: "Arrastrá al terreno",
         variants: "Acabado activo",
@@ -5964,7 +5977,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         undo: "Undo",
         redo: "Redo",
         exitFs: "Exit",
-        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · E fence · T path · Y planter · U bench · I lamp · R rotate · L lock · D duplicate · G frame · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
+        tip: "Shortcuts: 1 wall · 2 floor · 3 roof · 4 column · 5 door · 6 window · 7 stairs · 8 railing · 9 chimney · 0 beam · Q foundation · W pergola · E fence · T path · Y planter · U bench · I lamp · R rotate · L lock · D duplicate · G frame · Tab next part · arrows nudge 0.5 m · Del delete · C clear · F fullscreen · Esc cancel",
         palette: "Structures",
         dragHint: "Drag to ground",
         variants: "Active finish",
