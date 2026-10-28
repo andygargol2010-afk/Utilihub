@@ -201,6 +201,7 @@ import { ISBN_VALIDATOR_TOOLS } from "./isbn-validator";
 import { ICS_EVENT_TOOLS } from "./ics-event-tool";
 import { WIND_CHILL_TOOLS } from "./wind-chill-tool";
 import { ISO_DURATION_TOOLS } from "./iso-duration-tool";
+import { LOCALE_CONVERTER_TOOLS } from "./locale-converter-tool";
 import { CONTRAST_TOOLS } from "./contrast-tool";
 import { CRON_TOOLS } from "./cron-tool";
 import { NATO_TOOLS } from "./nato-tool";
@@ -534,6 +535,7 @@ export const GENERAL_TOOLS = [
   ...ICS_EVENT_TOOLS,
   ...WIND_CHILL_TOOLS,
   ...ISO_DURATION_TOOLS,
+  ...LOCALE_CONVERTER_TOOLS,
   ...CONTRAST_TOOLS,
   ...CRON_TOOLS,
   ...NATO_TOOLS,

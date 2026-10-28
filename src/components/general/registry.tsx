@@ -481,6 +481,10 @@ const IsoDurationToolUi = lazy(() =>
   import("./IsoDurationTool").then((m) => ({ default: m.IsoDurationTool })),
 );
 
+const LocaleConverterToolUi = lazy(() =>
+  import("./LocaleConverterTool").then((m) => ({ default: m.LocaleConverterTool })),
+);
+
 const ContrastToolUi = lazy(() =>
   import("./ContrastTool").then((m) => ({ default: m.ContrastTool })),
 );
@@ -1047,6 +1051,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "generador-ics") return IcsEventToolUi;
   if (slug === "calculadora-enfriamiento-viento") return WindChillToolUi;
   if (slug === "generador-duracion-iso") return IsoDurationToolUi;
+  if (slug === "conversor-locale") return LocaleConverterToolUi;
   if (slug === "validador-contraste") return ContrastToolUi;
   if (slug === "generador-cron") return CronToolUi;
   if (slug === "traductor-fonetico-otan") return NatoToolUi;

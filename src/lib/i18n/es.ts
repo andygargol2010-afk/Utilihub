@@ -241,6 +241,7 @@ const EXACT_NAMES: Record<string, string> = {
   "generador-ics": "Generador de evento ICS",
   "calculadora-enfriamiento-viento": "Calculadora de enfriamiento por viento",
   "generador-duracion-iso": "Generador de duración ISO 8601",
+  "conversor-locale": "Conversor de locale (fechas, números y monedas)",
   "validador-contraste": "Validador de contraste WCAG",
   "generador-cron": "Generador de expresiones cron",
   "traductor-fonetico-otan": "Traductor del alfabeto fonético OTAN",
