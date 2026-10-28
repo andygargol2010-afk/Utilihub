@@ -1,4 +1,5 @@
 // Lazy tool UIs part 05 — split out of ../registry.tsx on 2026-10-28.
+// Newest tools moved to components-06 (2026-10-28) to keep this file under ~3.5–4 KB.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import { lazy } from "react";
 
@@ -180,16 +181,4 @@ export const ParallelogramAreaCalculatorToolUi = lazy(() =>
 
 export const RectangularPrismVolumeCalculatorToolUi = lazy(() =>
   import("../RectangularPrismVolumeCalculatorTool").then((m) => ({ default: m.RectangularPrismVolumeCalculatorTool })),
-);
-
-export const SentencesPerParagraphCalculatorToolUi = lazy(() =>
-  import("../SentencesPerParagraphCalculatorTool").then((m) => ({ default: m.SentencesPerParagraphCalculatorTool })),
-);
-
-export const HypotenuseCalculatorToolUi = lazy(() =>
-  import("../HypotenuseCalculatorTool").then((m) => ({ default: m.HypotenuseCalculatorTool })),
-);
-
-export const PercentageChangeCalculatorToolUi = lazy(() =>
-  import("../PercentageChangeCalculatorTool").then((m) => ({ default: m.PercentageChangeCalculatorTool })),
 );

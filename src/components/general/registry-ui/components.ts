@@ -4,3 +4,5 @@ export * from "./components-02";
 export * from "./components-03";
 export * from "./components-04";
 export * from "./components-05";
+export * from "./components-06";
+export * from "./components-07";
