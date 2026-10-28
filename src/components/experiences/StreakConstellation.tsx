@@ -5,7 +5,7 @@ import { type PlaygroundLocale } from "@/lib/playgrounds/next-step";
 
 const STORAGE_KEY = "utilihub-streak-constellation-v1";
 
-type Star = { x: number; y: number; size: number; born: number };
+type Star = { x: number; y: number; size: number; born: number; hue?: number };
 type Data = { stars: Star[]; streak: number; lastCheckIn: number; name?: string };
 
 function load(): Data {
@@ -49,6 +49,13 @@ function toQuery(d: Data): string {
   return `?stars=${encodeURIComponent(stars)}&streak=${d.streak}`;
 }
 
+function milestoneColor(streak: number, i: number): string {
+  if (streak >= 30) return `hsl(${(i * 37) % 360}, 85%, 62%)`;
+  if (streak >= 14) return "#c084fc"; // purple
+  if (streak >= 7) return "#fbbf24"; // gold
+  return "#38bdf8"; // cyan
+}
+
 export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLocale }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [data, setData] = useState<Data>({ stars: [], streak: 0, lastCheckIn: 0 });
@@ -87,7 +94,7 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
-    const draw = (t: number) => {
+    const draw = (t: number, forExport = false) => {
       const w = c.clientWidth, h = c.clientHeight;
       if (!w || !h) return;
       ctx.clearRect(0, 0, w, h);
@@ -106,8 +113,9 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
       }
 
       // lines
-      ctx.strokeStyle = "rgba(56,189,248,0.4)";
-      ctx.lineWidth = 1.2;
+      const lineAlpha = data.streak >= 7 ? 0.6 : 0.4;
+      ctx.strokeStyle = `rgba(56,189,248,${lineAlpha})`;
+      ctx.lineWidth = data.streak >= 14 ? 1.6 : 1.2;
       for (let i = 1; i < data.stars.length; i++) {
         const a = data.stars[i - 1], b = data.stars[i];
         ctx.beginPath();
@@ -123,21 +131,24 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
         const tw = 0.8 + 0.2 * Math.sin(phase + i);
         const r = s.size * grow * tw;
         const sx = s.x * w, sy = s.y * h;
+        const color = milestoneColor(data.streak, i);
         ctx.beginPath();
         ctx.arc(sx, sy, r, 0, Math.PI * 2);
-        ctx.fillStyle = "#38bdf8";
+        ctx.fillStyle = color;
         ctx.fill();
-        ctx.shadowColor = "#0ea5e9";
-        ctx.shadowBlur = 14 * tw;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = (data.streak >= 7 ? 18 : 14) * tw;
         ctx.fill();
         ctx.shadowBlur = 0;
         // cross
-        ctx.strokeStyle = "rgba(56,189,248,0.6)";
+        ctx.strokeStyle = color;
+        ctx.globalAlpha = 0.7;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(sx - r * 2, sy); ctx.lineTo(sx + r * 2, sy);
         ctx.moveTo(sx, sy - r * 2); ctx.lineTo(sx, sy + r * 2);
         ctx.stroke();
+        ctx.globalAlpha = 1;
       });
 
       // branding
@@ -145,6 +156,12 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
       ctx.fillStyle = "rgba(56,189,248,0.9)";
       ctx.textAlign = "center";
       ctx.fillText(es ? "Constelaci\u00f3n de racha UtiliHub" : "UtiliHub Streak Constellation", w / 2, h - 10);
+
+      if (forExport && data.streak > 0) {
+        ctx.font = "bold 28px system-ui";
+        ctx.fillStyle = "#fff";
+        ctx.fillText(`${data.streak} ${es ? "d\u00edas" : "days"}`, w / 2, 36);
+      }
     };
 
     const loop = (t: number) => { draw(t); anim.current = requestAnimationFrame(loop); };
@@ -162,7 +179,9 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
       return;
     }
     const nextStreak = sameDay(data.lastCheckIn, now - 86400000) || data.lastCheckIn === 0 ? data.streak + 1 : 1;
-    setData({ ...data, streak: nextStreak, lastCheckIn: now });
+    const next = { ...data, streak: nextStreak, lastCheckIn: now };
+    save(next);
+    setData(next);
     setPlacing(true);
     setMsg(es ? `Racha: ${nextStreak} \u00b7 toc\u00e1 el canvas para colocar estrella` : `Streak: ${nextStreak} \u00b7 tap canvas to place star`);
   }
@@ -191,6 +210,18 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
   function exportPng() {
     const c = canvasRef.current;
     if (!c) return;
+    const ctx = c.getContext("2d");
+    if (!ctx) return;
+    // redraw with overlay
+    const t = performance.now();
+    // temporary draw call via re-trigger not easy; draw overlay then blob then clear overlay by next frame
+    const w = c.clientWidth, h = c.clientHeight;
+    ctx.save();
+    ctx.font = "bold 28px system-ui";
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+    ctx.fillText(`${data.streak} ${es ? "d\u00edas" : "days"}`, w / 2, 36);
+    ctx.restore();
     c.toBlob((b) => {
       if (!b) return;
       const a = document.createElement("a");
@@ -198,6 +229,20 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
       a.download = `streak-constellation-${data.streak}.png`;
       a.click();
       setMsg(es ? "PNG descargado" : "PNG downloaded");
+      setTimeout(() => setMsg(""), 1800);
+      // force redraw clean
+      const dummy = document.createEvent("Event");
+      window.dispatchEvent(new Event("resize"));
+    });
+  }
+
+  function copyShare() {
+    const url = window.location.origin + window.location.pathname + toQuery(data);
+    navigator.clipboard.writeText(url).then(() => {
+      setMsg(es ? "Enlace copiado" : "Link copied");
+      setTimeout(() => setMsg(""), 1800);
+    }).catch(() => {
+      setMsg(es ? "No se pudo copiar" : "Copy failed");
       setTimeout(() => setMsg(""), 1800);
     });
   }
@@ -212,21 +257,26 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
     setTimeout(() => setMsg(""), 1800);
   }
 
+  const milestoneLabel = data.streak >= 30 ? (es ? "\u00b7 Arco\u00edris" : "\u00b7 Rainbow") : data.streak >= 14 ? (es ? "\u00b7 P\u00farpura" : "\u00b7 Purple") : data.streak >= 7 ? (es ? "\u00b7 Oro" : "\u00b7 Gold") : "";
+
   return (
     <div className="space-y-5">
       <div className="rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-6">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
           {es ? "Constelaci\u00f3n de racha" : "Streak constellation"}
         </p>
-        <h2 className="mt-1 text-2xl font-black">{data.streak} {es ? "d\u00edas de racha" : "day streak"}</h2>
+        <h2 className="mt-1 text-2xl font-black">{data.streak} {es ? "d\u00edas de racha" : "day streak"}{milestoneLabel}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           {es
-            ? "Hac\u00e9 check-in diario y coloc\u00e1 estrellas en el mapa. Compart\u00ed el enlace para restaurar el progreso."
-            : "Check in daily and place stars on the map. Share the link to restore progress."}
+            ? "Hac\u00e9 check-in diario y coloc\u00e1 estrellas en el mapa. Colores especiales a los 7, 14 y 30 d\u00edas. Compart\u00ed el enlace para restaurar el progreso."
+            : "Check in daily and place stars on the map. Special colors at 7, 14 and 30 days. Share the link to restore progress."}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <button type="button" onClick={checkIn} className="rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-3 py-1.5 text-xs font-semibold text-cyan-600 hover:bg-cyan-500/20 dark:text-cyan-400">
             {es ? "Check-in de hoy" : "Today's check-in"}
+          </button>
+          <button type="button" onClick={copyShare} className="rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-3 py-1.5 text-xs font-semibold text-cyan-600 hover:bg-cyan-500/20 dark:text-cyan-400">
+            {es ? "Copiar enlace" : "Copy share link"}
           </button>
           <button type="button" onClick={exportPng} className="rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-3 py-1.5 text-xs font-semibold text-cyan-600 hover:bg-cyan-500/20 dark:text-cyan-400">
             {es ? "PNG con marca" : "Branded PNG"}

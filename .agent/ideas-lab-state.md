@@ -64,7 +64,7 @@ path_es: /es/constelacion-racha
 path_seo: n/a
 domain: retention-loops
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: User visits the page, sees current streak and constellation canvas; after simulated or real check-in sees a new star appear; can export branded PNG and share via URL that restores progress.
 share: both
 next_step_required: yes
@@ -74,6 +74,7 @@ notes: IDEATE roll: p_fixed=0.35, random~0.61 > p_fixed \u2192 FLEX urn. Weighte
 3. share-hooks-particle-signature: 4/5/3/3/4/4 =23 Closest: aura-card, firma-visual, neon-sign.
 Chosen for highest total, strong shareability and retention value, feasible in 4 runs (core playable by run 2). Must deliver interactive canvas + basic streak by run 2.
 Run 1 (this): Shipped interactive canvas component with click/touch star placement, daily check-in streak logic (localStorage + query deep-link restore), growth animation, branded PNG export, lazy-loaded EN route /streak-constellation and ES /es/constelacion-racha, mobile 390px layout, Adsterra intact. Core playable achieved early.
+Run 2: Milestone visual rewards (cyan <7, gold >=7, purple >=14, rainbow >=30), stronger lines/glow, copy share link button, streak number overlay on branded PNG export, immediate save on check-in. EN+ES. CWV-safe. Adsterra intact.
 adsense-prep_runs: 3
 ```
 
