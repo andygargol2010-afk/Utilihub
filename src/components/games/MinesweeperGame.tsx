@@ -36,16 +36,26 @@ function makeEmpty(rows: number, cols: number): Cell[][] {
   );
 }
 
-function placeMines(board: Cell[][], mines: number, safeR: number, safeC: number): Cell[][] {
+function mulberry32(a: number) {
+  return function () {
+    let t = (a += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function placeMines(board: Cell[][], mines: number, safeR: number, safeC: number, seed?: number): Cell[][] {
   const rows = board.length;
   const cols = board[0]!.length;
   const next = board.map((row) => row.map((c) => ({ ...c })));
+  const rand = seed != null ? mulberry32(seed) : Math.random;
   let placed = 0;
   let guard = 0;
   while (placed < mines && guard < 5000) {
     guard++;
-    const r = Math.floor(Math.random() * rows);
-    const c = Math.floor(Math.random() * cols);
+    const r = Math.floor(rand() * rows);
+    const c = Math.floor(rand() * cols);
     if ((r === safeR && c === safeC) || next[r]![c]!.mine) continue;
     if (Math.abs(r - safeR) <= 1 && Math.abs(c - safeC) <= 1) continue;
     next[r]![c]!.mine = true;
@@ -88,6 +98,7 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   const [won, setWon] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [best, setBest] = useState<number | null>(null);
+  const [seed, setSeed] = useState<number | null>(null);
   const longPressRef = useRef<{ r: number; c: number; t: number } | null>(null);
   const longFiredRef = useRef(false);
   const boardRef = useRef(board);
@@ -96,6 +107,20 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   boardRef.current = board;
   secondsRef.current = seconds;
   diffRef.current = diff;
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const d = params.get("diff") as Diff | null;
+    if (d && CONFIG[d]) {
+      setDiff(d);
+      setBoard(makeEmpty(CONFIG[d].rows, CONFIG[d].cols));
+    }
+    const s = params.get("seed");
+    if (s) {
+      const n = parseInt(s, 10);
+      if (!Number.isNaN(n)) setSeed(n);
+    }
+  }, []);
 
   useEffect(() => {
     setBest(readBestLow(`minesweeper_${diff}`));
@@ -110,6 +135,14 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   const flags = useMemo(() => board.flat().filter((c) => c.flag).length, [board]);
   const minesLeft = cfg.mines - flags;
 
+  const updateUrl = useCallback((d: Diff, s: number | null) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("diff", d);
+    if (s != null) url.searchParams.set("seed", String(s));
+    else url.searchParams.delete("seed");
+    window.history.replaceState(null, "", url);
+  }, []);
+
   const reset = useCallback(
     (d: Diff = diff) => {
       const c = CONFIG[d];
@@ -119,8 +152,10 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
       setDead(false);
       setWon(false);
       setSeconds(0);
+      setSeed(null);
+      updateUrl(d, null);
     },
-    [diff],
+    [diff, updateUrl],
   );
 
   const checkWin = (b: Cell[][]) => {
@@ -134,8 +169,14 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   const openAt = (r: number, c: number) => {
     if (dead || won) return;
     let cur = boardRef.current;
+    let currentSeed = seed;
     if (!started) {
-      cur = placeMines(cur, cfg.mines, r, c);
+      if (currentSeed == null) {
+        currentSeed = Math.floor(Math.random() * 1e9);
+        setSeed(currentSeed);
+        updateUrl(diff, currentSeed);
+      }
+      cur = placeMines(cur, cfg.mines, r, c, currentSeed);
       setStarted(true);
     }
     const cell = cur[r]![c]!;

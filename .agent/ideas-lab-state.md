@@ -66,7 +66,7 @@ path_es: /es/buscaminas
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: user clicks a cell, sees number or mine (boom), flags correctly, clears board to win; mobile works, EN/ES switch.
 share: both
 next_step_required: yes
@@ -75,6 +75,7 @@ notes: IDEATE 2026-10-28. Roll: variety mandate (last 2 CORE=playgrounds), prefe
 2. memory-match-pairs (games): value4 share4 search4 distinct4 feas5 perf5 total26. Closest: similar card UIs. Metaphor: pair-matching memory. IP: traditional memory match.
 3. connect-four-drops (games): value4 share3 search4 distinct4 feas4 perf4 total23. Closest: grid games. Metaphor: gravity-drop connect. IP: generic connect-four style.
 Chosen: minesweeper-classic (highest, strong search demand "play minesweeper online", classic IP-safe, distinct from sandboxes). No quality-lift. adsense-prep_runs unchanged.
+Run 1 (2026-10-28): created dedicated routes /minesweeper and /es/buscaminas wrapping existing GamePlayer + GameShell; enhanced MinesweeperGame with URL deep-link (?diff= &seed=) using seeded RNG for reproducible boards. Playable core live (click to reveal, flag, win/lose, difficulties, timer, EN/ES). Next: mobile polish at 390px, optional branded PNG export, any UX fixes.
 adsense-prep_runs: 3
 ```
 
