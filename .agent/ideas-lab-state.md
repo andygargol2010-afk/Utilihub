@@ -1,6 +1,6 @@
-# UtiliHub Ideas Lab — State (3/3)
+# UtiliHub Ideas Lab \u2014 State (3/3)
 
-**Part 3 of 3 — runtime state only.** End marker: `<!-- end:ideas-lab-state.md -->`.
+**Part 3 of 3 \u2014 runtime state only.** End marker: `<!-- end:ideas-lab-state.md -->`.
 
 If truncated: re-fetch immediately. Keep this file small.
 
@@ -35,7 +35,7 @@ weights_growth:
   conversion-paths: 2
   traffic-diagnosis: 1
   adsense-prep: 11
-  seo-locales: 10   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5
+  seo-locales: 10   # retire \u2192 0 when SEO_LOCALES_ACTIVE length \u2265 5
 
 adsense-prep_runs: 3
 ```
@@ -64,15 +64,16 @@ path_es: /es/constelacion-racha
 path_seo: n/a
 domain: retention-loops
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User visits the page, sees current streak and constellation canvas; after simulated or real check-in sees a new star appear; can export branded PNG and share via URL that restores progress.
 share: both
 next_step_required: yes
-notes: IDEATE roll: p_fixed=0.35, random~0.61 > p_fixed → FLEX urn. Weighted selection favored retention-loops (w=7) after recent seo-locales. Candidates scored 1-5 (value/share/search/distinct/feas/perf):
+notes: IDEATE roll: p_fixed=0.35, random~0.61 > p_fixed \u2192 FLEX urn. Weighted selection favored retention-loops (w=7) after recent seo-locales. Candidates scored 1-5 (value/share/search/distinct/feas/perf):
 1. retention-loops-streak-constellation: 5/5/3/4/4/4 =25 (chosen) Closest: daily-progress-constellation, constellation.tsx, aura-card.
 2. retention-loops-progress-garden: 4/4/2/3/5/5 =23 Closest: daily-progress-constellation, playgrounds index, growth-surfaces.
 3. share-hooks-particle-signature: 4/5/3/3/4/4 =23 Closest: aura-card, firma-visual, neon-sign.
 Chosen for highest total, strong shareability and retention value, feasible in 4 runs (core playable by run 2). Must deliver interactive canvas + basic streak by run 2.
+Run 1 (this): Shipped interactive canvas component with click/touch star placement, daily check-in streak logic (localStorage + query deep-link restore), growth animation, branded PNG export, lazy-loaded EN route /streak-constellation and ES /es/constelacion-racha, mobile 390px layout, Adsterra intact. Core playable achieved early.
 adsense-prep_runs: 3
 ```
 
