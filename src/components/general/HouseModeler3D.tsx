@@ -13,6 +13,7 @@ import { computeAreaStats, formatAreaStats } from "./house-modeler/areaStats";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
 import { SnapPicker, withGridLabels, gridStep, setGridStep, snapLabel, type SnapStep } from "./house-modeler/snapGrid";
 import { PresetPicker } from "./house-modeler/PresetPicker";
+import { MirrorButton, mirrorParts } from "./house-modeler/MirrorButton";
 import { applyTimeOfDay, loadTimeOfDay, saveTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
 import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
 import { attachScrollFade } from "./house-modeler/scrollFade";
@@ -6976,6 +6977,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         </button>
         <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); saveTimeOfDay(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
         <SnapPicker es={es} value={snapSel} onPick={(v) => { setGridStep(v); setSnapSel(v); }} />
+        <MirrorButton es={es} disabled={count === 0} onMirror={() => { restoreParts(mirrorParts(JSON.parse(serializeParts(partsRef.current)).parts)); flashActionHint(es ? "Diseño reflejado — Ctrl+Z deshace" : "Design mirrored — Ctrl+Z undoes"); }} />
         <PresetPicker es={es} hasParts={count > 0} onPick={(parts) => { restoreParts(parts); flashActionHint(es ? "Plantilla cargada" : "Preset loaded"); }} />
         <button
           type="button"
