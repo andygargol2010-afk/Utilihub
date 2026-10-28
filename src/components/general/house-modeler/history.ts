@@ -1,4 +1,10 @@
-import type { SavedPart } from "./autosave";
+import { sanitizeLayers, type SavedLayer, type SavedPart } from "./autosave";
+
+export type HistoryStep = { parts: SavedPart[]; layers: SavedLayer[] | null };
+const step = (json: string): HistoryStep => {
+  const d = JSON.parse(json);
+  return { parts: d.parts, layers: sanitizeLayers(d.ly) };
+};
 
 /** Undo/redo over serialized snapshots (autosave format). The monolith feeds it the current snapshot; it never touches the scene. */
 export function createHistory(limit = 60) {
@@ -19,19 +25,19 @@ export function createHistory(limit = 60) {
       cur = json;
       return true;
     },
-    undo(): SavedPart[] | null {
+    undo(): HistoryStep | null {
       const prev = past.pop();
       if (prev === undefined) return null;
       future.push(cur);
       cur = prev;
-      return JSON.parse(prev).parts;
+      return step(prev);
     },
-    redo(): SavedPart[] | null {
+    redo(): HistoryStep | null {
       const next = future.pop();
       if (next === undefined) return null;
       past.push(cur);
       cur = next;
-      return JSON.parse(next).parts;
+      return step(next);
     },
     canUndo: () => past.length > 0,
     canRedo: () => future.length > 0,

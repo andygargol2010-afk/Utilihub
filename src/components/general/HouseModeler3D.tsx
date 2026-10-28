@@ -8,7 +8,7 @@ import { createDimensionLabel } from "./house-modeler/dimensionLabel";
 import { createMeasure, MeasureButton, type Measure } from "./house-modeler/measure";
 import { exportScenePng } from "./house-modeler/exportPng";
 import { copyShareUrl, readShareHash, readShareTod } from "./house-modeler/shareLink";
-import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
+import { readAutosave, readAutosaveLayers, serializeParts, setLayerSource, writeAutosave, type SavedLayer, type SavedPart } from "./house-modeler/autosave";
 import { createHistory, undoKeyStep } from "./house-modeler/history";
 import { flushToNeighbors } from "./house-modeler/edgeSnap";
 import { computeAreaStats, formatAreaStats } from "./house-modeler/areaStats";
@@ -6288,9 +6288,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     actionHintTimer.current = window.setTimeout(() => setActionHint(null), 2400);
   };
   clearedHintRef.current = () => flashActionHint(es ? "Escena limpiada — Ctrl+Z o Deshacer la recupera" : "Scene cleared — Ctrl+Z or Undo brings it back");
-  const restoreParts = (saved: SavedPart[]) => {
+  setLayerSource(() => layersRef.current);
+  const restoreParts = (saved: SavedPart[], savedLayers?: SavedLayer[] | null) => {
     const t = threeRef.current;
     if (!t) return;
+    const keepLayers = savedLayers ?? layersRef.current;
+    layersRef.current = keepLayers;
     for (const p of partsRef.current) {
       const o = findPartObject(p.id);
       if (o) {
@@ -6310,7 +6313,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       const ref = refs[s.k];
       const prev = ref.current;
       if (s.f) ref.current = s.f;
+      const prevLayer = activeLayerRef.current;
+      activeLayerRef.current = s.y && keepLayers.some((l) => l.id === s.y) ? s.y : BASE_LAYER_ID;
       placeAt(new THREE.Vector3(s.x, 0, s.z), s.k as PartKind);
+      activeLayerRef.current = prevLayer;
       ref.current = prev;
       const part = partsRef.current[partsRef.current.length - 1];
       const obj = part ? findPartObject(part.id) : null;
@@ -6323,6 +6329,10 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         }
       }
     }
+    layersRef.current = keepLayers;
+    setLayers(keepLayers);
+    if (!keepLayers.some((l) => l.id === activeLayerRef.current)) setActiveLayerId(BASE_LAYER_ID);
+    applyLayerVisibility();
     setLockRev((n) => n + 1);
     selectedRef.current = null;
     setSelectedId(null);
@@ -6345,7 +6355,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const h = historyRef.current;
     const snap = dir === "undo" ? h.undo() : h.redo();
     if (!snap) return;
-    restoreParts(snap);
+    restoreParts(snap.parts, snap.layers);
     h.sync(serializeParts(partsRef.current));
     setHistRev((n) => n + 1);
   };
@@ -6357,7 +6367,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const sharedTod = partsRef.current.length ? null : readShareTod();
     if (sharedTod && lightRigRef.current) { applyTimeOfDay(lightRigRef.current, sharedTod); setTod(sharedTod); }
     if (shared.length) restoreParts(shared), flashActionHint(labels.sharedLoaded);
-    else if (saved.length) restoreParts(saved), flashActionHint(labels.restored);
+    else if (saved.length) restoreParts(saved, readAutosaveLayers()), flashActionHint(labels.restored);
     let last = serializeParts(partsRef.current);
     historyRef.current.sync(last);
     const save = () => {
