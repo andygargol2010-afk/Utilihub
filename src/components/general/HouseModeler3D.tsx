@@ -10,6 +10,7 @@ import { exportScenePng } from "./house-modeler/exportPng";
 import { copyShareUrl, readShareHash, readShareTod } from "./house-modeler/shareLink";
 import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
 import { createHistory, undoKeyStep } from "./house-modeler/history";
+import { flushToNeighbors } from "./house-modeler/edgeSnap";
 import { computeAreaStats, formatAreaStats } from "./house-modeler/areaStats";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
 import { SnapPicker, withGridLabels, gridStep, setGridStep, snapLabel, type SnapStep } from "./house-modeler/snapGrid";
@@ -4856,11 +4857,18 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     return () => cancelAnimationFrame(raf);
   }, [isFullscreen, ready]);
 
+  /** Pulls a grid position flush against nearby parts (roofs excluded) so walls meet end to end. */
+  const flush = useCallback((o: THREE.Object3D, kind: string, x: number, z: number): [number, number] => {
+    const root = threeRef.current?.partsRoot;
+    if (!root || kind === "roof") return [x, z];
+    return flushToNeighbors(root, o, x, z, (id) => partsRef.current.find((p) => p.id === id)?.kind === "roof");
+  }, []);
+
   const placeAt = useCallback((point: THREE.Vector3, kind: PartKind) => {
     const t = threeRef.current;
     if (!t) return;
-    const x = snap(point.x);
-    const z = snap(point.z);
+    let x = snap(point.x);
+    let z = snap(point.z);
     let obj: THREE.Object3D;
     const finish: DoorFinish = kind === "door" ? doorFinishRef.current : "timber";
     const roofCover: RoofFinish = kind === "roof" ? roofFinishRef.current : "clay";
@@ -4880,6 +4888,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     const foundationCover: FoundationFinish = kind === "foundation" ? foundationFinishRef.current : "concrete";
     const pergolaCover: PergolaFinish = kind === "pergola" ? pergolaFinishRef.current : "timber";
     obj = createPartMesh(kind, t.mats, finish, roofCover, wallCover, columnCover, stairsCover, railingCover, windowCover, floorCover, fenceCover, pathCover, planterCover, benchCover, chimneyCover, lampCover, beamCover, foundationCover, pergolaCover);
+    [x, z] = flush(obj, kind, x, z);
     obj.position.set(x, 0, z);
     obj.userData.finish = finish;
     obj.userData.roofFinish = roofCover;
@@ -5384,10 +5393,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         } else {
           const obj = findPartObject(dragId);
           if (obj && part) {
-            const [nx, nz] = clampToSite(
-              snap(point.x - draggingRef.current.offset.x),
-              snap(point.z - draggingRef.current.offset.z),
-            );
+            const [fx, fz] = flush(obj, part.kind, snap(point.x - draggingRef.current.offset.x), snap(point.z - draggingRef.current.offset.z));
+            const [nx, nz] = clampToSite(fx, fz);
             obj.position.x = nx;
             obj.position.z = nz;
             part.position = [nx, 0, obj.position.z];
