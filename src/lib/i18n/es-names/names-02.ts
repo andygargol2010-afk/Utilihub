@@ -56,4 +56,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-interes-simple": "Calculadora de interés simple",
   "calculadora-factor-de-escala": "Calculadora de factor de escala",
   "calculadora-descuento-sucesivo": "Calculadora de descuento sucesivo",
+  "calculadora-imc": "Calculadora de IMC",
 };

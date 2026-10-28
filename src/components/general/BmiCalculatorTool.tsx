@@ -30,7 +30,7 @@ export function BmiCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
 
   async function copy() {
     if (!result) return;
-    const text = `${result.bmi}`;
+    const text = es ? `IMC: ${result.bmi} (${result.category})` : `BMI: ${result.bmi} (${result.category})`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -90,6 +90,19 @@ export function BmiCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
         <button type="button" className={buttonClass} onClick={reset}>
           {es ? "Reiniciar" : "Reset"}
         </button>
+      </div>
+
+      <div className="text-sm text-muted-foreground space-y-1">
+        <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
+        <p>
+          <a href={es ? "/es/calculadora-calorias-diarias" : "/calculadora-calorias-diarias"} className="underline">
+            {es ? "Calculadora de calorías diarias" : "Daily calories calculator"}
+          </a>
+          {" · "}
+          <a href={es ? "/es/calculadora-ingesta-agua-diaria" : "/calculadora-ingesta-agua-diaria"} className="underline">
+            {es ? "Calculadora de ingesta de agua diaria" : "Daily water intake calculator"}
+          </a>
+        </p>
       </div>
     </div>
   );

@@ -5,32 +5,28 @@ const tool = makeTool(
   "BMI Calculator",
   "salud",
   "calculator",
-  "Calculate Body Mass Index (BMI) from weight and height. Instant classification underweight, normal, overweight or obese. Runs fully in the browser.",
+  "Calculate Body Mass Index (BMI) from weight in kg and height in cm.",
   [
     "bmi calculator",
-    "body mass index",
+    "imc calculator",
     "calculadora imc",
+    "body mass index",
     "indice de masa corporal",
-    "bmi chart",
-    "imc online",
   ],
   {
-    title: "BMI Calculator — Body Mass Index | UtiliHub",
-    description:
-      "Free BMI calculator. Enter weight and height to get your Body Mass Index and category. Metric units. Local, private, no signup.",
-    summaryEs: "Calcula tu índice de masa corporal (IMC) a partir del peso y la altura. Clasificación instantánea.",
+    title: "BMI Calculator | Body Mass Index | UtiliHub",
+    description: "Free BMI calculator. Enter weight (kg) and height (cm) to get your Body Mass Index and category. Browser-only, no signup.",
+    summaryEs: "Calcula el Índice de Masa Corporal (IMC) a partir del peso en kg y la altura en cm.",
   },
 );
 tool.faq.push(
   faq(
-    "How is BMI calculated?",
-    "BMI = weight (kg) / height (m)².",
+    "What is BMI?",
+    "BMI = weight (kg) / height (m)². Categories: underweight <18.5, normal 18.5-24.9, overweight 25-29.9, obese ≥30.",
   ),
-);
-tool.faq.push(
   faq(
-    "What do the BMI categories mean?",
-    "Standard WHO ranges: underweight < 18.5, normal 18.5–24.9, overweight 25–29.9, obese ≥ 30.",
+    "Is BMI accurate?",
+    "It is a screening tool, not a diagnosis. It does not account for muscle mass, age, or sex. Consult a doctor.",
   ),
 );
 

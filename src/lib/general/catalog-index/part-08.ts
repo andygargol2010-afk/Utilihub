@@ -23,6 +23,7 @@ import { RULE_OF_THREE_CALCULATOR_TOOLS } from "../rule-of-three-calculator-tool
 import { SIMPLE_INTEREST_CALCULATOR_TOOLS } from "../simple-interest-calculator-tool";
 import { SCALE_FACTOR_CALCULATOR_TOOLS } from "../scale-factor-calculator-tool";
 import { SUCCESSIVE_DISCOUNT_CALCULATOR_TOOLS } from "../successive-discount-calculator-tool";
+import { BMI_CALCULATOR_TOOLS } from "../bmi-calculator-tool";
 
 export const GENERAL_TOOLS_PART_08 = [
   ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
@@ -48,4 +49,5 @@ export const GENERAL_TOOLS_PART_08 = [
   ...SIMPLE_INTEREST_CALCULATOR_TOOLS,
   ...SCALE_FACTOR_CALCULATOR_TOOLS,
   ...SUCCESSIVE_DISCOUNT_CALCULATOR_TOOLS,
+  ...BMI_CALCULATOR_TOOLS,
 ];
