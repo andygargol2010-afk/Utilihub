@@ -67,7 +67,7 @@ export function FuelEfficiencyTool({ locale = "en" }: { tool?: GeneralTool; loca
           <span className="font-medium">{es ? "Unidad distancia" : "Distance unit"}</span>
           <select value={distUnit} onChange={(e) => setDistUnit(e.target.value as "km" | "mi")} className={fieldClass}>
             <option value="km">km</option>
-            <option value="mi">miles</option>
+            <option value="mi">{es ? "millas" : "miles"}</option>
           </select>
         </label>
         <label className="block space-y-2 text-sm">
@@ -77,8 +77,8 @@ export function FuelEfficiencyTool({ locale = "en" }: { tool?: GeneralTool; loca
         <label className="block space-y-2 text-sm">
           <span className="font-medium">{es ? "Unidad combustible" : "Fuel unit"}</span>
           <select value={fuelUnit} onChange={(e) => setFuelUnit(e.target.value as "L" | "gal")} className={fieldClass}>
-            <option value="L">Liters</option>
-            <option value="gal">Gallons</option>
+            <option value="L">{es ? "Litros" : "Liters"}</option>
+            <option value="gal">{es ? "Galones" : "Gallons"}</option>
           </select>
         </label>
       </div>
