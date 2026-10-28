@@ -145,30 +145,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           return pair(enPath, esPath, toolPriority(tool));
         });
 
-        const seoLocaleEntries: SitemapEntry[] = [
-          {
-            path: "/pt",
-            priority: "0.9",
-            lastmod: BUILD_DAY,
-            alternates: [
-              { lang: "pt", path: "/pt" },
-              { lang: "es", path: "/es" },
-              { lang: "en", path: "/" },
-              { lang: "x-default", path: "/" },
-            ],
-          },
-          {
-            path: "/pt/pulse-catch",
-            priority: "0.8",
-            lastmod: BUILD_DAY,
-            alternates: [
-              { lang: "pt", path: "/pt/pulse-catch" },
-              { lang: "es", path: "/es/pulse-catch" },
-              { lang: "en", path: "/pulse-catch" },
-              { lang: "x-default", path: "/pulse-catch" },
-            ],
-          },
-        ];
+        // SEO locales: none active after 2026-10-28 reset (no thin /pt|/fr|/de shells).
+        const seoLocaleEntries: SitemapEntry[] = [];
 
         const pathsRaw = [
           ...hubPairs,

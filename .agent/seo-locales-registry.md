@@ -1,23 +1,24 @@
 # SEO Locales Registry
 
-**Purpose:** languages beyond EN/ES that exist as **SEO-first routes** (`/{lang}/...`).  
-Not linked from EN or ES primary navigation — discovery via search + hreflang/sitemap.
+**Purpose:** languages beyond EN/ES as **full product surfaces** under `/{lang}/...`, not thin keyword shells.
 
-**Maintainer:** Ideas Lab domain `seo-locales` (and any human/agent that adds a locale).
+**Maintainer:** Ideas Lab domain `seo-locales`.
 
-When this domain runs or a new locale ships: update the table below **and** `src/lib/i18n/seo-locales.ts`.
+**RESET 2026-10-28:** previous thin shells for `pt` / `fr` / `de` were removed. Domain starts from zero. Do not re-ship minimal homes with only 3–4 games.
 
-When shipping a **new** playground / high-traffic page later: check `active` locales and, if capacity allows, add matching `/{lang}/...` routes (or queue under seo-locales).
+When this domain runs: update this file **and** `src/lib/i18n/seo-locales.ts` in the same commit.
+
+When EN/ES ship new high-traffic experiences later: check **Active locales** and extend `pages_done` for each active code (or queue work under seo-locales).
 
 ---
 
 ## Priority queue (not yet active)
 
-Order = preferred pick when domain rolls and no forced locale in ACTIVE PROJECT:
+Order = preferred pick when domain rolls:
 
-1. `pt` — Portuguese (pt-BR bias for copy) — **now active**
-2. `fr` — French — **now active**
-3. `de` — German — **now active**
+1. `pt` — Portuguese (pt-BR bias for copy)
+2. `fr` — French
+3. `de` — German
 4. `ar` — Arabic (`dir=rtl` required)
 5. `hi` — Hindi
 6. `id` — Indonesian
@@ -26,7 +27,7 @@ Order = preferred pick when domain rolls and no forced locale in ACTIVE PROJECT:
 9. `it` — Italian
 10. `nl` — Dutch
 
-Do **not** add EN (`/` or bare) or ES (`/es`) here — those are first-class product locales with nav.
+Do **not** add EN or ES here — those are first-class product locales with nav.
 
 ---
 
@@ -34,33 +35,47 @@ Do **not** add EN (`/` or bare) or ES (`/es`) here — those are first-class pro
 
 | code | BCP-47 | dir | status | prefix | pages_done (paths) | notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| pt | pt-BR | ltr | active | /pt | /pt, /pt/pulse-catch, /pt/orbit-defender-arcade, /pt/snake, /pt/pong | hreflang wired to EN+ES; no nav from EN/ES; minimal shell; fourth experience added |
-| fr | fr-FR | ltr | active | /fr | /fr, /fr/fluid-ink-flow-playground, /fr/pulse-catch, /fr/snake, /fr/pong | hreflang wired; no nav from EN/ES; minimal shell; fourth experience added |
-| de | de-DE | ltr | active | /de | /de, /de/fluid-ink-flow-playground, /de/pulse-catch, /de/snake, /de/pong | hreflang wired; no nav from EN/ES; minimal shell; fourth experience added |
+| *(none — reset 2026-10-28)* | | | | | | |
+
+---
+
+## Parity bar (definition of “active”)
+
+A locale may be marked `active` only when it has **at least**:
+
+1. Locale home matching current EN/ES home structure (hero, value props, experience rail / featured, not a stub).
+2. Tools hub (or equivalent catalog entry points) in that language.
+3. Games + simulators index (or shared catalog routes with locale UI strings).
+4. All high-traffic experiences already on EN that the project scoped (list in `pages_done`).
+5. `lang` + `dir`, hreflang alternates, sitemap entries.
+6. Design parity with current EN shell (not a frozen old minimal template).
+
+Thin shells (home + 4 games only) are **forbidden**.
 
 ---
 
 ## CAP = 5 active SEO locales
 
-EN and ES are **not** SEO locales and do not count.
+EN and ES do not count.
 
-- Maximum **5** rows with status `active` in the table above / in `SEO_LOCALES_ACTIVE`.
-- When the 5th language is activated and registered, Ideas Lab domain `seo-locales` must be **retired**: `weights_growth.seo-locales = 0`, omit from GROWTH domain roll, note in `ideas-lab-state.md`.
-- Do not open a 6th SEO locale via that domain. Further pages for the existing 5 may still be added by other work when cheap.
+- Max **5** rows with status `active`.
+- When the 5th language meets the parity bar and is registered, retire domain weight: `weights_growth.seo-locales = 0`.
+- Further pages for existing actives may still be added when EN grows.
 
 ---
 
 ## Rules (agent)
 
-0. If active count ≥ 5 → no new locale; retire domain (see CAP).
-1. One primary locale expansion outcome per `seo-locales` run (or continue same locale until a minimal viable set exists), only while active < 5.
-2. Choose next code = first in priority queue not in **Active locales**, unless ACTIVE PROJECT specifies otherwise.
-3. Route prefix: `/{code}/...` (e.g. `/pt`, `/ar/river-light`). File routes follow TanStack patterns used by the repo.
-4. **No** links from EN/ES header/footer/home primary nav to these locales. Optional: hreflang alternates only.
-5. Full page in target language: title, description, visible UI strings, FAQ/editorial on that page — not a thin machine-only stub.
-6. `lang` + `dir` on document/shell for that route tree (`ar` → rtl).
-7. Register in this file + `src/lib/i18n/seo-locales.ts` same commit.
-8. Adsterra: keep banners; do not remove. HouseModeler3D: do not touch.
-9. Smoke: open `/{code}/...` paths shipped this run (not EN/ES).
+0. If active count ≥ 5 → no new locale; retire domain weight.
+1. **One locale at a time.** Continue the same locale across runs until the parity bar is met (or project is closed intentionally).
+2. **`runs_total` must be ≥ 11** for any new `seo-locales` project (hard minimum). Global Ideas Lab max-6 does **not** apply to this domain.
+3. Choose next code = first in priority queue not in **Active locales**, unless ACTIVE PROJECT forces one.
+4. Route prefix: `/{code}/...`. Follow existing TanStack file-route patterns.
+5. **No** primary-nav links from EN/ES to these locales. hreflang + sitemap only.
+6. Full UI strings in the target language for every shipped page — no thin machine stubs.
+7. Register in this file + `src/lib/i18n/seo-locales.ts` same commit when activating.
+8. Adsterra: keep. HouseModeler3D: do not touch.
+9. Keep `pages_done` accurate so later runs can update existing locales when the rest of the site moves forward.
+10. After EN/ES design or catalog changes: prefer **updating** active locales over inventing new thin pages.
 
 <!-- end:seo-locales-registry.md -->
