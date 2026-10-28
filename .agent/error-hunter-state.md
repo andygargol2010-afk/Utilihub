@@ -11,12 +11,12 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-27 run 27
-last_fix: E040 calculadora-horas-a-decimal wired in index + registry (dedicated UI)
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: homes, registry, summary-es, no stubs)
-new_findings: E040 tool definition + dedicated UI not wired in catalog index / registry (404 or generic UI)
-deploy: latest READY cf5387db; newer commits including es.ts restore pending deploy; no current BUILDING/ERROR
-notes: Known smoke green. Discovery found new tool calculadora-horas-a-decimal (hours-to-decimal) missing from GENERAL_TOOLS and pickComponent. Fixed by adding import/spread + lazy/if. E031 remains open for vigilance. 1 fix.
+last_run: 2026-10-28 run 28
+last_fix: none (0 fixes)
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: homes index/es.index start with import, registry.tsx thin no PLACEHOLDER, playground ModularPatternComposer full, no stubs in src)
+new_findings: none
+deploy: latest READY bdc1876f (production target on branch); no current BUILDING/ERROR
+notes: Known smoke green (E031 open but files clean; E001-E040 fixed verified briefly via key files). Discovery: sampled recent tool calculadora-horas-a-decimal (wired in part-08 + slugs-01 + components-02), homes, games layout, playground. No $(cat/PLACEHOLDER in critical paths, no unwired dedicated UI, deploy READY. 0 fixes.
 ```
 
 <!-- end:error-hunter-state.md -->
