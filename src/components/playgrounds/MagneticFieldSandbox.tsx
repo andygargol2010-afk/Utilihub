@@ -1,1 +1,1 @@
-PLACEHOLDER_COMPONENT
+use client placeholder to be replaced
