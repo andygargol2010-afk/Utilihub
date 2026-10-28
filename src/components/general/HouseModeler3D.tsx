@@ -18,6 +18,7 @@ import { PresetPicker } from "./house-modeler/PresetPicker";
 import { MirrorButton, mirrorParts } from "./house-modeler/MirrorButton";
 import { ViewPicker, viewPose } from "./house-modeler/ViewPicker";
 import { RoofToggle } from "./house-modeler/RoofToggle";
+import { TurntableToggle } from "./house-modeler/TurntableToggle";
 import { ShortcutsHelp } from "./house-modeler/ShortcutsHelp";
 import { RotateDesignButton, rotateParts } from "./house-modeler/RotateDesignButton";
 import { applyTimeOfDay, loadTimeOfDay, saveTimeOfDay, type LightRig, type TimeOfDay } from "./house-modeler/lighting";
@@ -7003,6 +7004,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           <kbd className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">F</kbd>
         </button>
         <ShortcutsHelp es={es} />
+        <TurntableToggle es={es} threeRef={threeRef} />
         <RoofToggle es={es} hidden={roofHidden} onToggle={() => { roofHiddenRef.current = !roofHiddenRef.current; setRoofHidden(roofHiddenRef.current); applyLayerVisibility(); }} />
         <ViewPicker es={es} onPick={(v) => { const t = threeRef.current; if (!t) return; const pose = viewPose(JSON.parse(serializeParts(partsRef.current)).parts, v); t.controls.target.set(...pose.target); t.camera.position.set(...pose.position); t.camera.lookAt(...pose.target); t.controls.update(); }} />
         <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); saveTimeOfDay(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
