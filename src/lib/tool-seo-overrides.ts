@@ -121,6 +121,7 @@ import { TOOL_SEO_OVERRIDES_RANK5 } from "./tool-seo-overrides-rank5";
 import { TOOL_SEO_OVERRIDES_RANK6 } from "./tool-seo-overrides-rank6";
 import { TOOL_SEO_OVERRIDES_RANK7 } from "./tool-seo-overrides-rank7";
 import { TOOL_SEO_OVERRIDES_ATTENDANCE } from "./tool-seo-overrides-attendance";
+import { TOOL_SEO_OVERRIDES_HOURS } from "./tool-seo-overrides-hours";
 
 export type ToolSeoOverride = {
   metaTitle?: string;
@@ -257,6 +258,7 @@ export const TOOL_SEO_OVERRIDES: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_RANK6,
   ...TOOL_SEO_OVERRIDES_RANK7,
   ...TOOL_SEO_OVERRIDES_ATTENDANCE,
+  ...TOOL_SEO_OVERRIDES_HOURS,
 };
 
 export function toolSeoOverride(slug: string): ToolSeoOverride | undefined {
