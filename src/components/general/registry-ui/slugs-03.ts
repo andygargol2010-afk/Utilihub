@@ -8,4 +8,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-hipotenusa": UI.HypotenuseCalculatorToolUi,
   "calculadora-promedio-simple": UI.SimpleAverageCalculatorToolUi,
   "calculadora-cambio-porcentual": UI.PercentageChangeCalculatorToolUi,
+  "calculadora-regla-de-tres": UI.RuleOfThreeCalculatorToolUi,
 };

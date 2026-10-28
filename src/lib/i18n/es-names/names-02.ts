@@ -52,4 +52,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-hipotenusa": "Calculadora de hipotenusa",
   "calculadora-promedio-simple": "Calculadora de promedio simple",
   "calculadora-cambio-porcentual": "Calculadora de cambio porcentual",
+  "calculadora-regla-de-tres": "Calculadora de regla de tres",
 };

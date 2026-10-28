@@ -19,6 +19,7 @@ import { SENTENCES_PER_PARAGRAPH_CALCULATOR_TOOLS } from "../sentences-per-parag
 import { HYPOTENUSE_CALCULATOR_TOOLS } from "../hypotenuse-calculator-tool";
 import { SIMPLE_AVERAGE_CALCULATOR_TOOLS } from "../simple-average-calculator-tool";
 import { PERCENTAGE_CHANGE_CALCULATOR_TOOLS } from "../percentage-change-calculator-tool";
+import { RULE_OF_THREE_CALCULATOR_TOOLS } from "../rule-of-three-calculator-tool";
 
 export const GENERAL_TOOLS_PART_08 = [
   ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
@@ -40,4 +41,5 @@ export const GENERAL_TOOLS_PART_08 = [
   ...HYPOTENUSE_CALCULATOR_TOOLS,
   ...SIMPLE_AVERAGE_CALCULATOR_TOOLS,
   ...PERCENTAGE_CHANGE_CALCULATOR_TOOLS,
+  ...RULE_OF_THREE_CALCULATOR_TOOLS,
 ];
