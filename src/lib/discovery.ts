@@ -26,11 +26,11 @@ export const TOOL_JOURNEYS: Record<string, string[]> = {
   "timestamp-generator": ["timestamp-to-date", "calculadora-de-fechas", "sumar-dias", "diferencia-fechas"],
   "timestamp-to-date": ["timestamp-generator", "calculadora-de-fechas", "sumar-dias", "diferencia-fechas"],
 
-  "contador-de-palabras": ["tiempo-lectura", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
-  "contador-de-caracteres": ["contador-de-palabras", "tiempo-lectura", "limpiar-texto", "generador-nombres-archivos"],
-  "limpiar-texto": ["contador-de-palabras", "tiempo-lectura", "generador-nombres-archivos", "contador-de-caracteres"],
-  "tiempo-lectura": ["contador-de-palabras", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
-  "generador-nombres-archivos": ["limpiar-texto", "contador-de-palabras", "tiempo-lectura", "contador-de-caracteres"],
+  "contador-de-palabras": ["calculadora-tiempo-lectura", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
+  "contador-de-caracteres": ["contador-de-palabras", "calculadora-tiempo-lectura", "limpiar-texto", "generador-nombres-archivos"],
+  "limpiar-texto": ["contador-de-palabras", "calculadora-tiempo-lectura", "generador-nombres-archivos", "contador-de-caracteres"],
+  "calculadora-tiempo-lectura": ["contador-de-palabras", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
+  "generador-nombres-archivos": ["limpiar-texto", "contador-de-palabras", "calculadora-tiempo-lectura", "contador-de-caracteres"],
   "modelador-3d": ["modelador-casas-3d", "pixelihub", "relacion-aspecto", "mezclador-de-colores"],
   "modelador-casas-3d": ["modelador-3d", "pintura-superficie", "relacion-aspecto", "ppi-pantalla"],
   /* pixelihub-nextstep-v1 */
@@ -124,7 +124,11 @@ export function journeyLabel(
   ) {
     return es ? "Más herramientas de porcentajes y proporciones" : "More proportion and percentage tools";
   }
-  if (current.slug === "contador-de-palabras" || current.slug === "tiempo-lectura") {
+  if (
+    current.slug === "contador-de-palabras" ||
+    current.slug === "tiempo-lectura" ||
+    current.slug === "calculadora-tiempo-lectura"
+  ) {
     return es
       ? "Seguí con el texto: tiempo de lectura y limpieza"
       : "Keep going with your text: reading time and cleanup";

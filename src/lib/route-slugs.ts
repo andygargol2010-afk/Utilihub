@@ -1,4 +1,5 @@
 import type { CatalogTool } from "./all-tools";
+import { CANONICAL_TOOL_REDIRECTS } from "./canonical-tool-redirects";
 
 export type PublicLocale = "en" | "es";
 
@@ -50,12 +51,16 @@ export function spanishToolSlug(tool: Pick<CatalogTool, "slug">) {
   return tool.slug;
 }
 
-export function englishToolPath(tool: Pick<CatalogTool, "name" | "category">) {
+export function englishToolPath(tool: Pick<CatalogTool, "name" | "category"> & { slug?: string }) {
+  const redirect = tool.slug ? CANONICAL_TOOL_REDIRECTS[tool.slug] : undefined;
+  if (redirect) return redirect.en;
   const slug = englishToolSlug(tool);
   return tool.category === "finanzas" ? `/finance/${slug}` : `/tools/${slug}`;
 }
 
 export function spanishToolPath(tool: Pick<CatalogTool, "slug" | "category">) {
+  const redirect = CANONICAL_TOOL_REDIRECTS[tool.slug];
+  if (redirect) return redirect.es;
   return tool.category === "finanzas" ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`;
 }
 
@@ -71,6 +76,12 @@ export function publicToolLink(
   tool: Pick<CatalogTool, "name" | "slug" | "category">,
   locale: PublicLocale = "en",
 ): { to: string; params: { slug: string } } {
+  const redirect = CANONICAL_TOOL_REDIRECTS[tool.slug];
+  if (redirect) {
+    return locale === "es"
+      ? { to: "/es/herramientas/$slug", params: { slug: redirect.esSlug } }
+      : { to: "/tools/$slug", params: { slug: redirect.enSlug } };
+  }
   if (locale === "es") {
     if (tool.category === "finanzas") {
       return { to: "/es/finanzas/$slug", params: { slug: tool.slug } };

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ALL_CATEGORIES, ALL_TOOLS, toolHref } from "@/lib/all-tools";
+import { isRedirectedToolSlug } from "@/lib/canonical-tool-redirects";
 import { EDUCATION_SUBJECTS } from "@/lib/general/education";
 import { GAMES } from "@/lib/games/catalog";
 import { englishCategoryPath, spanishToolPath } from "@/lib/route-slugs";
@@ -136,7 +137,9 @@ export const Route = createFileRoute("/sitemap.xml")({
         );
 
         // No lastmod on tools unless we have a real content-updated timestamp (we don't).
+        // Consolidated duplicates 301 to their canonical tool; list only the canonical URL.
         const toolEntries: SitemapEntry[] = ALL_TOOLS.flatMap((tool) => {
+          if (isRedirectedToolSlug(tool.slug)) return [];
           const enPath = toolHref(tool);
           const esPath = spanishToolPath(tool);
           return pair(enPath, esPath, toolPriority(tool));

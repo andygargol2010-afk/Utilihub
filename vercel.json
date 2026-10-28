@@ -10,6 +10,21 @@
       "source": "/es/",
       "destination": "/es",
       "permanent": true
+    },
+    {
+      "source": "/es/herramientas/imc",
+      "destination": "/es/herramientas/calculadora-imc",
+      "permanent": true
+    },
+    {
+      "source": "/tools/reading-time-estimator",
+      "destination": "/tools/reading-time-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/es/herramientas/tiempo-lectura",
+      "destination": "/es/herramientas/calculadora-tiempo-lectura",
+      "permanent": true
     }
   ],
   "headers": [
