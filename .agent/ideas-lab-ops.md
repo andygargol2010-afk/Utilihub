@@ -77,6 +77,34 @@ Generate **3 candidate ideas**. Score each **1–5** on:
 **Pick** the best total score. Write all scores into state `notes`.  
 **Reject** any idea scoring **< 3** on value **or** distinctiveness.
 
+### VARIETY MANDATE (hard — especially for playgrounds / interactive)
+
+Recent closes cluster around the same pattern: **canvas + particles/field lines + place/drag attractors + live trails + branded PNG + URL deep-link**. That pattern is saturated. IDEATE must break it.
+
+**Before scoring, read RECENT_CLOSED + ACTIVE PROJECT.** For each candidate:
+
+1. List **3 closest existing surfaces** by *mechanic*, not by theme name.
+2. State the **primary interaction metaphor** in one phrase (e.g. "turn-based grid puzzle", "step sequencer", "spatial packing", "constraint solver", "story choice tree", "rhythm timing", "declarative form → diagram", "local multiplayer pass-and-play").
+3. If the metaphor is essentially **freehand/particle canvas with attractors or trails**, score **distinctiveness ≤ 2** and **reject** unless the domain is explicitly `quality-lift` on that same surface.
+
+**Anti-patterns (do not propose as new CORE playgrounds):**
+- Another particle / ink / aurora / ribbon / magnet / gravity trail sandbox
+- Another N/S pole or attractor field visualizer
+- Another "draw freehand → pretty animated strokes" studio
+- Cosmetic reskins of fluid-ink, magnetic-field, aurora-particle, glow-trail, gravity-ribbon
+
+**Prefer underused mechanics and CORE domains:**
+- `games` (rules, levels, score, fail states — not pure sandboxes)
+- `simulators` (cause→effect models with parameters and readouts, not just pretty fields)
+- `kits` (multi-step guided recipes / assemblers with discrete parts)
+- `journeys` (ordered stages, progress, narrative waypoints)
+- `studio-composition` only if the composition model is **not** freehand particle paint
+- Non-canvas or hybrid UI: grids, cards, timelines, forms that generate structure, text+visual dual panes, audio/rhythm (CWV-safe), packing/layout planners, educational drills with clear win condition
+
+**Domain balance:** If the last 2 closed CORE projects were both `playgrounds`, **prefer** rolling or choosing among `games | simulators | kits | journeys | quality-lift` when FLEX/CORE allows. Do not keep stacking playgrounds only because weight is high — high weight is not a license for clones.
+
+**Notes must include:** closest-3 list, primary metaphor, and one sentence why this is *not* the saturated particle/canvas cluster.
+
 ### Project size
 
 - Default **`runs_total: 4`**, hard max **6**.
@@ -109,7 +137,7 @@ runs_remaining: <same at IDEATE>
 acceptance: <user does X, sees Y>
 share: url | png | both | n/a
 next_step_required: yes | no
-notes: <rubric scores for 3 candidates; chosen id; roll math; quality-lift bar if any>
+notes: <rubric scores for 3 candidates; closest-3; primary metaphor; why not particle-canvas clone; chosen id; roll math; quality-lift bar if any>
 adsense-prep_runs: <n>
 ```
 
@@ -182,6 +210,7 @@ Next: …
 - Quality > novelty; one outcome; files win over prompt.
 - Guard CWV; EN+ES; never remove Adsterra; never touch HouseModeler3D.
 - Truncation → re-read, do not invent.
+- **Variety > another particle sandbox.** Prefer underused domains and distinct mechanics.
 
 <!-- end:ideas-lab-ops.md -->
 
