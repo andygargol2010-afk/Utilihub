@@ -5202,9 +5202,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     t.controls.update();
   }, [findPartObject]);
 
+  const clearedHintRef = useRef<(() => void) | null>(null);
   const clearAll = useCallback(() => {
     const t = threeRef.current;
     if (!t) return;
+    const before = partsRef.current.length;
     const prevId = selectedRef.current;
     const kept: ScenePart[] = [];
     for (const p of [...partsRef.current]) {
@@ -5234,6 +5236,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       t.selectionHelper.visible = false;
     }
     setCount(partsRef.current.length);
+    if (before > kept.length) clearedHintRef.current?.();
     // A ground click arms a place and disables orbit before any part exists.
     // Clear must cancel that gesture, or pointerup spawns a piece and orbit stays locked.
     const dragId = draggingRef.current?.id ?? dragArmRef.current?.id;
@@ -6240,6 +6243,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (actionHintTimer.current) window.clearTimeout(actionHintTimer.current);
     actionHintTimer.current = window.setTimeout(() => setActionHint(null), 2400);
   };
+  clearedHintRef.current = () => flashActionHint(es ? "Escena limpiada — Ctrl+Z o Deshacer la recupera" : "Scene cleared — Ctrl+Z or Undo brings it back");
   const restoreParts = (saved: SavedPart[]) => {
     const t = threeRef.current;
     if (!t) return;

@@ -22,7 +22,10 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 14 | Fix 2 unrelated 404 resource requests seen on tool page (non-modeler) | 2 | 5 | 2 | 5 | WONTFIX (run 311: /_vercel/insights and speed-insights scripts only exist on Vercel; 404 only on local server) |
 | 16 | Persist time-of-day choice across reloads | 3 | 4 | 1 | 12 | DONE run 312 (lighting.ts load/saveTimeOfDay) |
 | 17 | Share link carries time of day | 3 | 3 | 1 | 9 | DONE run 313 (shareLink.ts &tod=) |
+| 18 | Clear-all (button / C key, no confirm) shows 'Ctrl+Z or Undo brings it back' hint | 3 | 4 | 1 | 12 | DONE run 314 (clearedHintRef in monolith) |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
 Ideas for next audit: layers/locks in undo snapshot, measure tool (distance between two points), Delete-key/Ctrl+D discoverability, include time-of-day in share link.
 Next pick by score: #13 extraction (hygiene), then new audit for fresh items (e.g. persist time-of-day, layers/locks in undo snapshot, measure tool).
+
+New ideas (run 314): Tab/Shift+Tab to cycle selection, measure tool, stale shortcut tip text (says arrows nudge 0.5 m; now grid-dependent), layers/locks in undo snapshot.
