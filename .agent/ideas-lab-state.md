@@ -13,14 +13,14 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: playgrounds
-last_closed_id: magnetic-field-sandbox
+last_closed_domain: games
+last_closed_id: minesweeper-classic
 p_fixed: 0.35
 
 weights_core:
   kits: 4
   journeys: 5
-  games: 1
+  games: 2
   simulators: 8
   studio-composition: 3
   playgrounds: 8
@@ -45,6 +45,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-28 | games | minesweeper-classic | Classic Minesweeper interactive game complete after 4 runs. Grid reveal (numbers/mines), flag (right-click/long-press), chord on open numbers, difficulties, timer/best, seeded URL deep-link, Same-board practice button, branded PNG, EN+ES dedicated routes (/minesweeper, /es/buscaminas), mobile 390px aspect-square cells. CWV-safe. Adsterra intact.
 - 2026-10-28 | playgrounds | magnetic-field-sandbox | Interactive magnetic field lines sandbox complete after 4 runs. Place/drag N/S poles, live curved field lines (monopole tracing), flowing particles (toggle), directional arrowheads N→S, presets (Dipole, Two North, Quadrupole), URL deep-link, branded PNG, EN+ES routes, mobile 390px with modest line/particle caps. CWV-safe. Adsterra intact.
 - 2026-10-28 | retention-loops | retention-loops-streak-constellation | Daily streak constellation visualizer complete after 4 runs. Interactive canvas star placement, check-in streak (localStorage + URL deep-link), milestone colors/progress bar, optional name personalization, branded PNG export, EN+ES routes, mobile 390px. CWV-safe. Adsterra intact.
 - 2026-10-27 | seo-locales | seo-locales-de-shell | German (de) SEO-first locale shell + 4 experiences (/de, /de/fluid-ink-flow-playground, /de/pulse-catch, /de/snake, /de/pong) complete after 4 runs. Full German titles, descriptions, UI strings via locale=de, hreflang alternates, minimal shell, no primary nav links from EN/ES. CWV-safe. Adsterra intact.
@@ -58,26 +59,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Classic Minesweeper interactive game. Grid of cells, click to reveal numbers or mines, right-click/flag, win by revealing all safe cells. Difficulties (easy/medium/hard), timer/score, EN+ES routes and UI, mobile 390px touch-friendly, URL deep-link for seed/difficulty, optional branded PNG of board. Rules-based with clear win/lose. Not a particle sandbox.
-id: minesweeper-classic
-path_en: /minesweeper
-path_es: /es/buscaminas
+status: done
+idea: (closed — ready for next IDEATE)
+id: n/a
+path_en: n/a
+path_es: n/a
 path_seo: n/a
-domain: games
-runs_total: 4
-runs_remaining: 1
-acceptance: user clicks a cell, sees number or mine (boom), flags correctly, clears board to win; mobile works, EN/ES switch.
-share: both
-next_step_required: yes
-notes: IDEATE 2026-10-28. Roll: variety mandate (last 2 CORE=playgrounds), preferred underused CORE; weighted toward games (low weight 1). Candidates:
-1. minesweeper-classic (games): value5 share4 search5 distinct5 feas5 perf4 total28. Closest: snake (grid), pong (if), tic-tac-toe grid. Metaphor: risk-reveal grid puzzle with win/lose. Not particle-canvas (rules, discrete cells, fail states). IP: traditional minesweeper-style reveal (public-domain mechanics; generic UI/naming; no branded assets).
-2. memory-match-pairs (games): value4 share4 search4 distinct4 feas5 perf5 total26. Closest: similar card UIs. Metaphor: pair-matching memory. IP: traditional memory match.
-3. connect-four-drops (games): value4 share3 search4 distinct4 feas4 perf4 total23. Closest: grid games. Metaphor: gravity-drop connect. IP: generic connect-four style.
-Chosen: minesweeper-classic (highest, strong search demand "play minesweeper online", classic IP-safe, distinct from sandboxes). No quality-lift. adsense-prep_runs unchanged.
-Run 1 (2026-10-28): created dedicated routes /minesweeper and /es/buscaminas wrapping existing GamePlayer + GameShell; enhanced MinesweeperGame with URL deep-link (?diff= &seed=) using seeded RNG for reproducible boards. Playable core live (click to reveal, flag, win/lose, difficulties, timer, EN/ES). Next: mobile polish at 390px, optional branded PNG export, any UX fixes.
-Run 2 (2026-10-28): mobile polish — cells now aspect-square with grid-controlled sizing (fits 390px even on hard 16×16 without overflow), tighter gaps/padding on small screens, PNG export button that draws branded board (header UtiliHub title + difficulty/time, footer utilihub.app) to canvas and downloads. UX: aria-labels on cells. Core remains solid. Next: final polish / close if acceptance met.
-Run 3 (2026-10-28): added Share button that copies the current deep-link (diff + seed) to clipboard with brief "Copied!" feedback. Improves shareability of exact boards. Help text updated. Acceptance fully met. Next: close or light polish.
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
+share: n/a
+next_step_required: no
+notes: Closed minesweeper-classic 2026-10-28 (run 4/4). Final polish: Same-board practice button for seeded layouts. Acceptance met. Next run = IDEATE (variety: last CORE games; prefer simulators/kits/journeys).
 adsense-prep_runs: 3
 ```
 

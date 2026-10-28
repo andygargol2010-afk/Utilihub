@@ -159,6 +159,16 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
     [diff, updateUrl],
   );
 
+  const practiceSame = useCallback(() => {
+    if (seed == null) return;
+    const c = CONFIG[diff];
+    setBoard(makeEmpty(c.rows, c.cols));
+    setStarted(false);
+    setDead(false);
+    setWon(false);
+    setSeconds(0);
+  }, [diff, seed]);
+
   const checkWin = (b: Cell[][]) => {
     const ok = b.every((row) => row.every((cell) => cell.mine || cell.open));
     if (ok) {
@@ -371,6 +381,11 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
           </span>
         )}
         <GamePrimaryButton onClick={() => reset()}>{es ? "Nuevo" : "New"}</GamePrimaryButton>
+        {seed != null && (
+          <GameSecondaryButton onClick={practiceSame}>
+            {es ? "Misma" : "Same"}
+          </GameSecondaryButton>
+        )}
         <GameSecondaryButton onClick={exportPng}>{es ? "PNG" : "PNG"}</GameSecondaryButton>
         <GameSecondaryButton onClick={shareUrl}>
           {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}
@@ -425,8 +440,8 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
       <p className="text-center text-[11px] text-white/50">
         {es
-          ? "Toque = abrir · mantener = poner bandera · número abierto abre vecinos · Compartir copia el enlace con semilla"
-          : "Tap = open · hold = flag · open number = chord · Share copies the seeded link"}
+          ? "Toque = abrir · mantener = poner bandera · número abierto abre vecinos · Misma = practicar el mismo tablero · Compartir copia el enlace con semilla"
+          : "Tap = open · hold = flag · open number = chord · Same = practice same board · Share copies the seeded link"}
       </p>
     </div>
   );
