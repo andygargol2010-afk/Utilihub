@@ -35,6 +35,7 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 28 | Keyboard shortcuts cheat sheet (? key + Shortcuts button, portal dialog, EN+ES) | 3 | 4 | 1 | 12 | DONE run 325 (house-modeler/ShortcutsHelp.tsx) |
 | 29 | Edge snap: place/drag pulls a part flush to neighbouring part edges (<=0.3 m, roofs excluded) | 4 | 5 | 2 | 10 | DONE run 326 (house-modeler/edgeSnap.ts; ghost preview not snapped; palette-drag ghost unchanged) |
 | 30 | Spin view: turntable toggle auto-orbits camera for presentations, stops on canvas press | 3 | 4 | 1 | 12 | DONE run 327 (house-modeler/TurntableToggle.tsx) |
+| 31 | Estimated build cost chip (rough USD from floor/wall/roof area + per-piece prices, rounded to 100) | 4 | 4 | 1 | 16 | DONE run 328 (house-modeler/costEstimate.ts) |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
 Ideas for next audit: layers/locks in undo snapshot, measure tool (distance between two points), Delete-key/Ctrl+D discoverability, include time-of-day in share link.

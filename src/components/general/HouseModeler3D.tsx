@@ -12,6 +12,7 @@ import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./h
 import { createHistory, undoKeyStep } from "./house-modeler/history";
 import { flushToNeighbors } from "./house-modeler/edgeSnap";
 import { computeAreaStats, formatAreaStats } from "./house-modeler/areaStats";
+import { estimateCost, formatCost } from "./house-modeler/costEstimate";
 import { OnboardingHint } from "./house-modeler/OnboardingHint";
 import { SnapPicker, withGridLabels, gridStep, setGridStep, snapLabel, type SnapStep } from "./house-modeler/snapGrid";
 import { PresetPicker } from "./house-modeler/PresetPicker";
@@ -6335,6 +6336,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [count, histRev, es, findPartObject],
   );
+  const costText = useMemo(
+    () => formatCost(estimateCost(computeAreaStats(partsRef.current.map((p) => ({ kind: p.kind, obj: findPartObject(p.id) }))), partsRef.current.map((p) => p.kind)), es),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [count, histRev, es, findPartObject],
+  );
   const stepHistory = (dir: "undo" | "redo") => {
     const h = historyRef.current;
     const snap = dir === "undo" ? h.undo() : h.redo();
@@ -6879,6 +6885,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         {areaText && (
           <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground" title={es ? "Áreas brutas (huecos sin descontar)" : "Gross areas (openings not subtracted)"}>
             {areaText}
+          </span>
+        )}
+        {costText && (
+          <span data-testid="cost-chip" className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground" title={es ? "Estimación muy aproximada en USD (precios medios de obra)" : "Very rough USD estimate (average build prices)"}>
+            {costText}
           </span>
         )}
         <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-700/40 bg-amber-900/15 px-2 py-0.5 text-[11px] font-semibold text-foreground">
