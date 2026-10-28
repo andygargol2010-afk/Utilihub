@@ -58,19 +58,23 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Classic Minesweeper interactive game. Grid of cells, click to reveal numbers or mines, right-click/flag, win by revealing all safe cells. Difficulties (easy/medium/hard), timer/score, EN+ES routes and UI, mobile 390px touch-friendly, URL deep-link for seed/difficulty, optional branded PNG of board. Rules-based with clear win/lose. Not a particle sandbox.
+id: minesweeper-classic
+path_en: /minesweeper
+path_es: /es/buscaminas
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed magnetic-field-sandbox after run 4/4 (Quadrupole preset). Project complete. Next run IDEATE.
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: user clicks a cell, sees number or mine (boom), flags correctly, clears board to win; mobile works, EN/ES switch.
+share: both
+next_step_required: yes
+notes: IDEATE 2026-10-28. Roll: variety mandate (last 2 CORE=playgrounds), preferred underused CORE; weighted toward games (low weight 1). Candidates:
+1. minesweeper-classic (games): value5 share4 search5 distinct5 feas5 perf4 total28. Closest: snake (grid), pong (if), tic-tac-toe grid. Metaphor: risk-reveal grid puzzle with win/lose. Not particle-canvas (rules, discrete cells, fail states). IP: traditional minesweeper-style reveal (public-domain mechanics; generic UI/naming; no branded assets).
+2. memory-match-pairs (games): value4 share4 search4 distinct4 feas5 perf5 total26. Closest: similar card UIs. Metaphor: pair-matching memory. IP: traditional memory match.
+3. connect-four-drops (games): value4 share3 search4 distinct4 feas4 perf4 total23. Closest: grid games. Metaphor: gravity-drop connect. IP: generic connect-four style.
+Chosen: minesweeper-classic (highest, strong search demand "play minesweeper online", classic IP-safe, distinct from sandboxes). No quality-lift. adsense-prep_runs unchanged.
 adsense-prep_runs: 3
 ```
 
