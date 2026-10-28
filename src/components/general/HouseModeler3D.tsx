@@ -5,6 +5,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { createAdaptiveQuality } from "./house-modeler/adaptiveQuality";
 import { createDimensionLabel } from "./house-modeler/dimensionLabel";
+import { createMeasure, MeasureButton, type Measure } from "./house-modeler/measure";
 import { exportScenePng } from "./house-modeler/exportPng";
 import { copyShareUrl, readShareHash, readShareTod } from "./house-modeler/shareLink";
 import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
@@ -3952,6 +3953,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     anim: number;
   } | null>(null);
   const lightRigRef = useRef<LightRig | null>(null);
+  const measureRef = useRef<Measure | null>(null);
+  const [measuring, setMeasuring] = useState(false);
   const [tod, setTod] = useState<TimeOfDay>("sunset"); // real value restored in the scene effect
   const [snapSel, setSnapSel] = useState<SnapStep>(0.5);
   useEffect(() => setSnapSel(gridStep()), []);
@@ -4611,6 +4614,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       selectionHelper.visible = false;
       scene.add(selectionHelper);
       const dimLabel = createDimensionLabel(el);
+      const measure = createMeasure(el, scene, camera, ground, renderer.domElement, (v) => Math.round(v / gridStep()) * gridStep());
+      measureRef.current = measure;
 
       const onResize = () => {
         if (!mountRef.current) return;
@@ -4668,6 +4673,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           selectionHelper.visible = false;
           dimLabel.update(null, camera);
         }
+        measure.update(camera);
         controls.update();
         // Keep the shadow frustum on the work point so orbit-pan does not clip shadows.
         const focusX = controls.target.x;
@@ -4812,6 +4818,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           controls.dispose();
           selectionHelper.dispose();
           dimLabel.dispose();
+          measure.dispose();
+          measureRef.current = null;
           renderer.dispose();
           if (renderer.domElement.parentElement === el) el.removeChild(renderer.domElement);
         } catch {
@@ -5385,7 +5393,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     };
 
     const onDown = (ev: PointerEvent) => {
-      if (ev.button !== 0) return;
+      if (ev.button !== 0 || measureRef.current?.active) return;
 
       // Palette placement happens only on its own pointerup (avoids double-place).
       if (paletteDragRef.current) {
@@ -6978,6 +6986,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         </button>
         <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); saveTimeOfDay(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
         <SnapPicker es={es} value={snapSel} onPick={(v) => { setGridStep(v); setSnapSel(v); }} />
+        <MeasureButton es={es} active={measuring} onToggle={() => { const on = !measuring; measureRef.current?.setActive(on); setMeasuring(on); flashActionHint(on ? (es ? "Medir: toca dos puntos del suelo" : "Measure: click two ground points") : (es ? "Medición desactivada" : "Measure off")); }} />
         <MirrorButton es={es} disabled={count === 0} onMirror={() => { restoreParts(mirrorParts(JSON.parse(serializeParts(partsRef.current)).parts)); flashActionHint(es ? "Diseño reflejado — Ctrl+Z deshace" : "Design mirrored — Ctrl+Z undoes"); }} />
         <RotateDesignButton es={es} disabled={count === 0} onRotate={() => { restoreParts(rotateParts(JSON.parse(serializeParts(partsRef.current)).parts)); flashActionHint(es ? "Diseño girado — Ctrl+Z deshace" : "Design turned — Ctrl+Z undoes"); }} />
         <PresetPicker es={es} hasParts={count > 0} onPick={(parts) => { restoreParts(parts); flashActionHint(es ? "Plantilla cargada" : "Preset loaded"); }} />
