@@ -57,4 +57,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-factor-de-escala": "Calculadora de factor de escala",
   "calculadora-descuento-sucesivo": "Calculadora de descuento sucesivo",
   "calculadora-imc": "Calculadora de IMC",
+  "calculadora-porcentaje-de-numero": "Calculadora de porcentaje de un número",
 };

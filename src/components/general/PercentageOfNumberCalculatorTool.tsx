@@ -73,6 +73,19 @@ export function PercentageOfNumberCalculatorTool({ locale = "en" }: { tool?: Gen
           {es ? "Reiniciar" : "Reset"}
         </button>
       </div>
+
+      <div className="text-sm text-muted-foreground space-y-1">
+        <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
+        <p>
+          <a href={es ? "/es/calculadora-porcentaje-del-total" : "/calculadora-porcentaje-del-total"} className="underline">
+            {es ? "Calculadora de porcentaje del total" : "Percentage of total calculator"}
+          </a>
+          {" · "}
+          <a href={es ? "/es/calculadora-cambio-porcentual" : "/calculadora-cambio-porcentual"} className="underline">
+            {es ? "Calculadora de cambio porcentual" : "Percentage change calculator"}
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

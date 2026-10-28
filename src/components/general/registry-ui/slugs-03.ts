@@ -13,4 +13,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-factor-de-escala": UI.ScaleFactorCalculatorToolUi,
   "calculadora-descuento-sucesivo": UI.SuccessiveDiscountCalculatorToolUi,
   "calculadora-imc": UI.BmiCalculatorToolUi,
+  "calculadora-porcentaje-de-numero": UI.PercentageOfNumberCalculatorToolUi,
 };

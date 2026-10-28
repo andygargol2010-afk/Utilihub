@@ -24,6 +24,7 @@ import { SIMPLE_INTEREST_CALCULATOR_TOOLS } from "../simple-interest-calculator-
 import { SCALE_FACTOR_CALCULATOR_TOOLS } from "../scale-factor-calculator-tool";
 import { SUCCESSIVE_DISCOUNT_CALCULATOR_TOOLS } from "../successive-discount-calculator-tool";
 import { BMI_CALCULATOR_TOOLS } from "../bmi-calculator-tool";
+import { PERCENTAGE_OF_NUMBER_CALCULATOR_TOOLS } from "../percentage-of-number-calculator-tool";
 
 export const GENERAL_TOOLS_PART_08 = [
   ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
@@ -50,4 +51,5 @@ export const GENERAL_TOOLS_PART_08 = [
   ...SCALE_FACTOR_CALCULATOR_TOOLS,
   ...SUCCESSIVE_DISCOUNT_CALCULATOR_TOOLS,
   ...BMI_CALCULATOR_TOOLS,
+  ...PERCENTAGE_OF_NUMBER_CALCULATOR_TOOLS,
 ];
