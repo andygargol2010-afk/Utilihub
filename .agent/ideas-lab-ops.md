@@ -105,6 +105,28 @@ Recent closes cluster around the same pattern: **canvas + particles/field lines 
 
 **Notes must include:** closest-3 list, primary metaphor, and one sentence why this is *not* the saturated particle/canvas cluster.
 
+### games — classic + original (search demand bias)
+
+When domain is **`games`**, candidates may be:
+
+1. **Classic / well-known game types** with real search demand (preferred when demand is clear), **or**
+2. **Original invented games** with a clear win/lose or score loop.
+
+UtiliHub already has examples like snake, 2048, and tic-tac-toe (3 en raya). A polished known type often beats a pure invention on traffic.
+
+**Copyright / IP gate (mandatory before choosing a classic):**
+- Only ship mechanics that are **traditional, public-domain, or generic** (rules themselves are generally not copyrightable; specific expression, art, names, and branded IP are).
+- **Allowed examples (non-exhaustive):** tic-tac-toe, snake-style grid eat-grow, 2048-style merge, memory match pairs, hangman / word guess, minesweeper-style reveal, connect-four style gravity drops, checkers/draughts basic, solitaire klondike-style (generic), pong/breakout-style paddle+ball, flappy-style gap flyer *without* branded assets, sudoku / nonogram / sliding puzzle, rock-paper-scissors, Simon-style color sequence memory, Battleship-style grid hunt (generic naming).
+- **Forbidden:** Nintendo/Sega/Sony/Disney/etc. characters or titles; Mario, Pokémon, Tetris as branded product (use a clearly generic “block falling puzzle” only if rules are not a slavish copy of protected expression and naming is generic — when in doubt **skip**); any game whose distinctive art, music, levels, or name is still commercial IP; clones that reproduce unique copyrighted level design or audiovisual identity.
+- In `notes` write a one-line **IP check**: e.g. `IP: traditional grid merge (2048-like mechanics; generic UI; no branded assets)` or `IP: rejected Tetris brand — skipped`.
+- If IP status is unclear → **do not ship**; invent an original game or pick another safe classic.
+
+**Distinctiveness still applies:** do not re-ship snake / 2048 / tic-tac-toe if they already exist as UtiliHub surfaces — either **quality-lift** them or pick a *different* classic not already in the catalog.
+
+**Search demand:** for classics, score search demand from real queries people type (e.g. "play minesweeper online", "memory card game", "connect 4 online"). Prefer the classic with strong demand *and* not already on the site.
+
+**At least one of the 3 IDEATE candidates** when domain is `games` should be a **classic** (IP-safe) unless every high-demand classic is already shipped; the other candidates may be original.
+
 ### Project size
 
 - Default **`runs_total: 4`**, hard max **6**.
@@ -137,7 +159,7 @@ runs_remaining: <same at IDEATE>
 acceptance: <user does X, sees Y>
 share: url | png | both | n/a
 next_step_required: yes | no
-notes: <rubric scores for 3 candidates; closest-3; primary metaphor; why not particle-canvas clone; chosen id; roll math; quality-lift bar if any>
+notes: <rubric scores for 3 candidates; closest-3; primary metaphor; why not particle-canvas clone; IP check if classic game; chosen id; roll math; quality-lift bar if any>
 adsense-prep_runs: <n>
 ```
 
@@ -211,6 +233,7 @@ Next: …
 - Guard CWV; EN+ES; never remove Adsterra; never touch HouseModeler3D.
 - Truncation → re-read, do not invent.
 - **Variety > another particle sandbox.** Prefer underused domains and distinct mechanics.
+- **Games:** classics with IP check + demand OK; never ship unclear or branded IP.
 
 <!-- end:ideas-lab-ops.md -->
 
