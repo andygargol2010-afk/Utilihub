@@ -114,4 +114,5 @@ export const SLUG_UI_02: Record<string, ToolComp> = {
   "calculadora-oraciones-por-parrafo": UI.SentencesPerParagraphCalculatorToolUi,
   "calculadora-hipotenusa": UI.HypotenuseCalculatorToolUi,
   "calculadora-promedio-simple": UI.SimpleAverageCalculatorToolUi,
+  "calculadora-cambio-porcentual": UI.PercentageChangeCalculatorToolUi,
 };

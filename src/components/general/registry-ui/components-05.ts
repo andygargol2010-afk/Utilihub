@@ -189,3 +189,7 @@ export const SentencesPerParagraphCalculatorToolUi = lazy(() =>
 export const HypotenuseCalculatorToolUi = lazy(() =>
   import("../HypotenuseCalculatorTool").then((m) => ({ default: m.HypotenuseCalculatorTool })),
 );
+
+export const PercentageChangeCalculatorToolUi = lazy(() =>
+  import("../PercentageChangeCalculatorTool").then((m) => ({ default: m.PercentageChangeCalculatorTool })),
+);
