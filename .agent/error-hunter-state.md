@@ -11,12 +11,12 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-28 run 31
+last_run: 2026-10-28 run 32
 last_fix: none (0 fixes)
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: homes index/es.index start with import, registry.tsx thin no PLACEHOLDER, HypotenuseCalculatorTool fully wired in components-05 + slugs-02, catalog part-08 includes HYPOTENUSE, games.index clean, no stubs in src)
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: homes index/es.index start with import, registry.tsx thin no PLACEHOLDER, no $(cat in src, games/es guides full)
 new_findings: none
-deploy: latest READY bdc1876f (production target on branch); head 618211c2 no current BUILDING/ERROR (newer commits pending deploy)
-notes: Known smoke green (E031 open but files clean; E001-E040 fixed verified briefly via key files). Discovery: sampled new tool calculadora-hipotenusa (fully wired: tool file + UI + lazy + slug + catalog index), es.index, games.index, no $(cat/PLACEHOLDER in critical paths. 0 fixes.
+deploy: latest READY bdc1876f (production target on branch); head 21138dd no current BUILDING/ERROR (newer commits pending deploy)
+notes: Known smoke green (E031 open but files clean; E001-E040 fixed verified briefly via key files + live pages). Discovery: sampled hipotenusa (page loads, correct slug), png-a-jpg (image guide kind-aware), modelador-3d (correct studio not House), /games and /es/juegos, es.guias.orbit-pulse-catcher full guide, studio/prism-trail-composer. No 404s on valid paths, no Tool not available crashes, no PLACEHOLDER/$(cat in critical. 0 fixes.
 ```
 
 <!-- end:error-hunter-state.md -->
