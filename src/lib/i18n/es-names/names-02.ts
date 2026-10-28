@@ -47,4 +47,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   bitwise: "Operadores bit a bit (AND, OR, XOR)",
   "calculadora-horas-a-decimal": "Calculadora de horas a decimal",
   "conversor-horas-decimal": "Conversor de horas a decimal",
+  "calculadora-area-triangulo": "Calculadora de área de triángulo",
 };

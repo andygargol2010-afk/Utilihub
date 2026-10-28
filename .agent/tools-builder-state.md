@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-28 | ciencia | calculadora-area-triangulo | TriangleAreaCalculatorTool
 - 2026-10-27 | fechas | calculadora-horas-a-decimal | HoursToDecimalCalculatorTool
 - 2026-10-27 | matematicas | calculadora-porcentaje-del-total | PercentageOfTotalCalculatorTool
 - 2026-10-27 | finanzas | calculadora-presupuesto-mensual | MonthlyBudgetCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-26 | fechas | calculadora-dias-entre-fechas | DaysBetweenDatesCalculatorTool
 - 2026-10-26 | ciencia | calculadora-densidad | DensityCalculatorTool
 - 2026-10-26 | matematicas | calculadora-error-porcentual | PercentageErrorCalculatorTool
-- 2026-10-26 | educacion | calculadora-porcentaje-asistencia | AttendancePercentageCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad, calculadora-dias-entre-fechas, calculadora-horas-a-decimal)
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso)
@@ -61,21 +61,12 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-28: PRODUCT — calculadora-area-triangulo (ciencia). One tool (default). Anti-dupe OK (no prior slug). Practical triangle area from base/height. SEO locales: defer pt/fr/de.
 2026-10-27: PRODUCT — calculadora-horas-a-decimal (fechas). One tool (default). Anti-dupe OK (new slug, demand for timesheets). Practical decimal hours. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-porcentaje-del-total (matematicas). One tool (default). Anti-dupe OK. Practical % of total. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-presupuesto-mensual (finanzas). One tool (default per ops). Anti-dupe OK. Practical remaining budget. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-porcentaje-restante (matematicas). One tool (default per ops). Anti-dupe OK. Practical remaining percentage. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-costo-litro-combustible (viajes). One tool. Anti-dupe OK (new slug). Practical total fuel cost. Dedicated UI created; pickComponent if pending (uses category fallback for now). SEO locales: defer pt.
-2026-10-26: PRODUCT — calculadora-porciones-pizza (cocina). One tool (default per ops.md). Anti-dupe OK. Practical pizza order calculator. SEO locales: defer pt.
-2026-10-26: PRODUCT — calculadora-volumen-tanque (hogar). One tool (default per ops.md). Anti-dupe OK (no prior slug). Practical cylindrical water tank in liters. SEO locales: defer pt.
-2026-10-26: PRODUCT — calculadora-relacion-aspecto (diseno) + calculadora-dias-entre-fechas (fechas). Clusters distintos, calidad alta. SEO locales: defer pt. Multiple commits due to sequential wiring after initial components push.
-2026-10-26: PRODUCT — conversor-texto-caso (texto) + calculadora-frecuencia-cardiaca-objetivo (salud). Clusters distintos, calidad alta. SEO locales: defer pt. Multiple commits due to sequential push; registry dedicated ifs pending category fallback for now.
-2026-10-26: FIX-BUILD — deploy ERROR on ignoreCommand >256 chars (dpl_Cqrs6rgtk...). Already fixed on branch (ba0769f short command). No new tools this run. Next PRODUCT after READY.
-2026-10-26: PRODUCT — calculadora-porcentaje-asistencia (educacion) + calculadora-costo-por-km (viajes). Clusters distintos. SEO locales: none active.
-2026-10-26: PRODUCT — calculadora-densidad (ciencia) + calculadora-error-porcentual (matematicas). Clusters distintos, calidad alta. SEO locales: defer pt.
-2026-10-26: FIX-BUILD — deploy ERROR dpl_2kykMQp8... on SHA 03a896db due to duplicate slug calculadora-relacion-aspecto in two files. Fixed on HEAD (duplicate file removed, wired to aspect-ratio-tool.ts). No new tools. Next PRODUCT after READY.
-2026-10-26: FIX-BUILD — confirmed duplicate gone on HEAD 55f59a06; forced redeploy dpl_DCUETUZ6... (QUEUED). No new tools while ERROR/QUEUED. Next PRODUCT after READY.
-2026-10-27: RESTORE-ONLY — registry-entries-b.ts was placeholder; restored full content from known-good e341781. No new tools this run (anti-wipe priority). Registry architecture verified post-restore.
 ```
 
 ---
@@ -84,9 +75,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-horas-a-decimal
+last_slugs: calculadora-area-triangulo
 last_deploy: no (branch auto-deploy disabled)
-last_sha: a74bed92fd0139f19ea5c224fe3d82d80431f02b
+last_sha: pending
 ```
 
 <!-- end:tools-builder-state.md -->

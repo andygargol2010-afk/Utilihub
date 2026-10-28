@@ -15,16 +15,22 @@ export function TriangleAreaCalculatorTool({ locale = "en" }: { tool?: GeneralTo
   const result = useMemo(() => {
     const b = parseFloat(base);
     const h = parseFloat(height);
-    if (isNaN(b) || isNaN(h) || b <= 0 || h <= 0) return null;
+    if (!Number.isFinite(b) || !Number.isFinite(h) || b <= 0 || h <= 0 || Math.abs(b) > 1e9 || Math.abs(h) > 1e9) return null;
     const area = (b * h) / 2;
-    return { area: Math.round(area * 100) / 100 };
+    return {
+      area: Math.round(area * 10000) / 10000,
+      base: b,
+      height: h,
+    };
   }, [base, height]);
 
   async function copy() {
     if (!result) return;
-    const textOut = es ? `\u00c1rea: ${result.area}` : `Area: ${result.area}`;
+    const text = es
+      ? `Base ${result.base}, altura ${result.height} → área ${result.area}`
+      : `Base ${result.base}, height ${result.height} → area ${result.area}`;
     try {
-      await navigator.clipboard.writeText(textOut);
+      await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -41,29 +47,57 @@ export function TriangleAreaCalculatorTool({ locale = "en" }: { tool?: GeneralTo
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
-        <p className="text-sm text-muted-foreground">{es ? "\u00c1rea del tri\u00e1ngulo" : "Triangle area"}</p>
+        <p className="text-sm text-muted-foreground">{es ? "Área del triángulo" : "Triangle area"}</p>
         {result ? (
-          <p className="text-3xl font-semibold">{result.area}</p>
+          <div className="space-y-1">
+            <p className="text-3xl font-semibold">{result.area}</p>
+            <p className="text-sm text-muted-foreground">
+              {es ? `Base ${result.base} · Altura ${result.height}` : `Base ${result.base} · Height ${result.height}`}
+            </p>
+          </div>
         ) : (
-          <p className="text-sm text-muted-foreground">{es ? "Introduce valores v\u00e1lidos > 0" : "Enter valid values > 0"}</p>
+          <p className="text-sm text-muted-foreground">
+            {es ? "Introduce base y altura > 0" : "Enter base and height > 0"}
+          </p>
         )}
       </div>
 
-      <div className="grid gap-4">
-        <label className="block space-y-2 text-sm">
-          <span className="font-medium">{es ? "Base" : "Base"}</span>
-          <input type="number" step="any" min="0" value={base} onChange={(e) => setBase(e.target.value)} className={fieldClass} />
-        </label>
-        <label className="block space-y-2 text-sm">
-          <span className="font-medium">{es ? "Altura" : "Height"}</span>
-          <input type="number" step="any" min="0" value={height} onChange={(e) => setHeight(e.target.value)} className={fieldClass} />
-        </label>
-      </div>
+      <label className="block space-y-2 text-sm">
+        <span className="font-medium">{es ? "Base" : "Base"}</span>
+        <input
+          type="number"
+          value={base}
+          onChange={(e) => setBase(e.target.value)}
+          className={fieldClass}
+          placeholder={es ? "Ej. 10" : "e.g. 10"}
+          min="0"
+          step="any"
+        />
+      </label>
+
+      <label className="block space-y-2 text-sm">
+        <span className="font-medium">{es ? "Altura" : "Height"}</span>
+        <input
+          type="number"
+          value={height}
+          onChange={(e) => setHeight(e.target.value)}
+          className={fieldClass}
+          placeholder={es ? "Ej. 5" : "e.g. 5"}
+          min="0"
+          step="any"
+        />
+      </label>
+
+      <p className="text-sm text-muted-foreground">
+        {es
+          ? "Área = (base × altura) / 2. Útil para geometría, construcción y escuela."
+          : "Area = (base × height) / 2. Useful for geometry, construction, and school."}
+      </p>
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? "Base 10, altura 5 \u2192 25" : "Base 10, height 5 \u2192 25"}</p>
-        <p>{es ? "Base 8, altura 6 \u2192 24" : "Base 8, height 6 \u2192 24"}</p>
+        <p>{es ? "Base 10, altura 5 → 25" : "Base 10, height 5 → 25"}</p>
+        <p>{es ? "Base 6, altura 4 → 12" : "Base 6, height 4 → 12"}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -73,6 +107,19 @@ export function TriangleAreaCalculatorTool({ locale = "en" }: { tool?: GeneralTo
         <button type="button" className={buttonClass} onClick={reset}>
           {es ? "Reiniciar" : "Reset"}
         </button>
+      </div>
+
+      <div className="text-sm text-muted-foreground space-y-1">
+        <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
+        <p>
+          <a href={es ? "/es/calculadora-area-rectangulo" : "/calculadora-area-rectangulo"} className="underline">
+            {es ? "Calculadora de área de rectángulo" : "Rectangle area calculator"}
+          </a>
+          {" · "}
+          <a href={es ? "/es/calculadora-circunferencia" : "/calculadora-circunferencia"} className="underline">
+            {es ? "Calculadora de circunferencia" : "Circumference calculator"}
+          </a>
+        </p>
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ import { MONTHLY_BUDGET_CALCULATOR_TOOLS } from "../monthly-budget-calculator-to
 import { PERCENTAGE_OF_TOTAL_CALCULATOR_TOOLS } from "../percentage-of-total-calculator-tool";
 import { HOURS_TO_DECIMAL_CALCULATOR_TOOLS } from "../hours-to-decimal-calculator-tool";
 import { HOURS_TO_DECIMAL_TOOLS } from "../hours-to-decimal-tool";
+import { TRIANGLE_AREA_CALCULATOR_TOOLS } from "../triangle-area-calculator-tool";
 
 export const GENERAL_TOOLS_PART_08 = [
   ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
@@ -30,4 +31,5 @@ export const GENERAL_TOOLS_PART_08 = [
   ...PERCENTAGE_OF_TOTAL_CALCULATOR_TOOLS,
   ...HOURS_TO_DECIMAL_CALCULATOR_TOOLS,
   ...HOURS_TO_DECIMAL_TOOLS,
+  ...TRIANGLE_AREA_CALCULATOR_TOOLS,
 ];
