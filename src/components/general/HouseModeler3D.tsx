@@ -4946,6 +4946,12 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
       pergolaFinish: pergolaCover,
     });
     syncLockBadge(obj, !!layersRef.current.find((l) => l.id === layerId)?.locked);
+    // A roof added while roofs are hidden turns them all back on, so the button never lies about what is visible.
+    if (kind === "roof" && roofHiddenRef.current) {
+      roofHiddenRef.current = false;
+      setRoofHidden(false);
+      queueMicrotask(() => applyLayerVisibility());
+    }
     setCount(partsRef.current.length);
     // selectedRef is read by Delete/R before the state effect flushes.
     selectedRef.current = id;
