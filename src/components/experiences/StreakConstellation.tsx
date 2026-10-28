@@ -56,11 +56,23 @@ function milestoneColor(streak: number, i: number): string {
   return "#38bdf8"; // cyan
 }
 
+function nextMilestone(streak: number): { target: number; remaining: number; progress: number; label: string } {
+  const targets = [7, 14, 30];
+  const next = targets.find(t => t > streak) || 30;
+  const prev = targets.filter(t => t <= streak).pop() || 0;
+  const span = next - prev;
+  const done = streak - prev;
+  const progress = Math.min(100, Math.max(0, (done / span) * 100));
+  const remaining = Math.max(0, next - streak);
+  return { target: next, remaining, progress, label: next === 30 && streak >= 30 ? "max" : `${next}` };
+}
+
 export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLocale }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [data, setData] = useState<Data>({ stars: [], streak: 0, lastCheckIn: 0 });
   const [msg, setMsg] = useState("");
   const [placing, setPlacing] = useState(false);
+  const [pulse, setPulse] = useState(false);
   const anim = useRef(0);
   const es = locale === "es";
 
@@ -183,6 +195,8 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
     save(next);
     setData(next);
     setPlacing(true);
+    setPulse(true);
+    setTimeout(() => setPulse(false), 600);
     setMsg(es ? `Racha: ${nextStreak} \u00b7 toc\u00e1 el canvas para colocar estrella` : `Streak: ${nextStreak} \u00b7 tap canvas to place star`);
   }
 
@@ -201,6 +215,8 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
     save(next);
     setData(next);
     setPlacing(false);
+    setPulse(true);
+    setTimeout(() => setPulse(false), 600);
     const url = window.location.pathname + toQuery(next);
     window.history.replaceState(null, "", url);
     setMsg(es ? "Estrella colocada \u00b7 progreso en URL" : "Star placed \u00b7 progress in URL");
@@ -258,14 +274,23 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
   }
 
   const milestoneLabel = data.streak >= 30 ? (es ? "\u00b7 Arco\u00edris" : "\u00b7 Rainbow") : data.streak >= 14 ? (es ? "\u00b7 P\u00farpura" : "\u00b7 Purple") : data.streak >= 7 ? (es ? "\u00b7 Oro" : "\u00b7 Gold") : "";
+  const nm = nextMilestone(data.streak);
 
   return (
     <div className="space-y-5">
-      <div className="rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-6">
+      <div className={`rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-6 ${pulse ? "ring-2 ring-cyan-400/60 transition-all duration-300" : ""}`}>
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
           {es ? "Constelaci\u00f3n de racha" : "Streak constellation"}
         </p>
-        <h2 className="mt-1 text-2xl font-black">{data.streak} {es ? "d\u00edas de racha" : "day streak"}{milestoneLabel}</h2>
+        <h2 className={`mt-1 text-2xl font-black ${pulse ? "scale-105 transition-transform" : ""}`}>{data.streak} {es ? "d\u00edas de racha" : "day streak"}{milestoneLabel}</h2>
+        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+          <div className="h-full bg-cyan-500 transition-all duration-500" style={{ width: `${nm.progress}%` }} />
+        </div>
+        <p className="mt-1 text-xs text-muted-foreground">
+          {es
+            ? `Pr\u00f3ximo hito: ${nm.target} d\u00edas (${nm.remaining} restantes)`
+            : `Next milestone: ${nm.target} days (${nm.remaining} left)`}
+        </p>
         <p className="mt-1 text-sm text-muted-foreground">
           {es
             ? "Hac\u00e9 check-in diario y coloc\u00e1 estrellas en el mapa. Colores especiales a los 7, 14 y 30 d\u00edas. Compart\u00ed el enlace para restaurar el progreso."
