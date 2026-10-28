@@ -113,4 +113,5 @@ export const SLUG_UI_02: Record<string, ToolComp> = {
   "calculadora-area-triangulo": UI.TriangleAreaCalculatorToolUi,
   "calculadora-oraciones-por-parrafo": UI.SentencesPerParagraphCalculatorToolUi,
   "calculadora-hipotenusa": UI.HypotenuseCalculatorToolUi,
+  "calculadora-promedio-simple": UI.SimpleAverageCalculatorToolUi,
 };

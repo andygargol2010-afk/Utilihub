@@ -50,4 +50,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-area-triangulo": "Calculadora de área de triángulo",
   "calculadora-oraciones-por-parrafo": "Calculadora de oraciones por párrafo",
   "calculadora-hipotenusa": "Calculadora de hipotenusa",
+  "calculadora-promedio-simple": "Calculadora de promedio simple",
 };
