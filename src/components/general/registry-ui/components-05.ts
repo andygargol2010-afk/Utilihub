@@ -181,3 +181,7 @@ export const ParallelogramAreaCalculatorToolUi = lazy(() =>
 export const RectangularPrismVolumeCalculatorToolUi = lazy(() =>
   import("../RectangularPrismVolumeCalculatorTool").then((m) => ({ default: m.RectangularPrismVolumeCalculatorTool })),
 );
+
+export const SentencesPerParagraphCalculatorToolUi = lazy(() =>
+  import("../SentencesPerParagraphCalculatorTool").then((m) => ({ default: m.SentencesPerParagraphCalculatorTool })),
+);

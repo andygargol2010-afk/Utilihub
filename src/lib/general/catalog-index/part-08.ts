@@ -15,6 +15,7 @@ import { PERCENTAGE_OF_TOTAL_CALCULATOR_TOOLS } from "../percentage-of-total-cal
 import { HOURS_TO_DECIMAL_CALCULATOR_TOOLS } from "../hours-to-decimal-calculator-tool";
 import { HOURS_TO_DECIMAL_TOOLS } from "../hours-to-decimal-tool";
 import { TRIANGLE_AREA_CALCULATOR_TOOLS } from "../triangle-area-calculator-tool";
+import { SENTENCES_PER_PARAGRAPH_CALCULATOR_TOOLS } from "../sentences-per-paragraph-calculator-tool";
 
 export const GENERAL_TOOLS_PART_08 = [
   ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
@@ -32,4 +33,5 @@ export const GENERAL_TOOLS_PART_08 = [
   ...HOURS_TO_DECIMAL_CALCULATOR_TOOLS,
   ...HOURS_TO_DECIMAL_TOOLS,
   ...TRIANGLE_AREA_CALCULATOR_TOOLS,
+  ...SENTENCES_PER_PARAGRAPH_CALCULATOR_TOOLS,
 ];

@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-28 | texto | calculadora-oraciones-por-parrafo | SentencesPerParagraphCalculatorTool
 - 2026-10-28 | ciencia | calculadora-area-triangulo | TriangleAreaCalculatorTool
 - 2026-10-27 | fechas | calculadora-horas-a-decimal | HoursToDecimalCalculatorTool
 - 2026-10-27 | matematicas | calculadora-porcentaje-del-total | PercentageOfTotalCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-26 | diseno | calculadora-relacion-aspecto | AspectRatioCalculatorTool
 - 2026-10-26 | fechas | calculadora-dias-entre-fechas | DaysBetweenDatesCalculatorTool
 - 2026-10-26 | ciencia | calculadora-densidad | DensityCalculatorTool
-- 2026-10-26 | matematicas | calculadora-error-porcentual | PercentageErrorCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -42,7 +42,7 @@ fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fecha
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
-texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso)
+texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo)
@@ -61,6 +61,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-10-28: PRODUCT — calculadora-oraciones-por-parrafo (texto). One tool (default). Anti-dupe OK (no prior slug). Practical average sentences per paragraph for writing analysis. SEO locales: defer pt/fr/de.
 2026-10-28: PRODUCT — calculadora-area-triangulo (ciencia). One tool (default). Anti-dupe OK (no prior slug). Practical triangle area from base/height. SEO locales: defer pt/fr/de.
 2026-10-27: PRODUCT — calculadora-horas-a-decimal (fechas). One tool (default). Anti-dupe OK (new slug, demand for timesheets). Practical decimal hours. SEO locales: defer pt/fr.
 2026-10-27: PRODUCT — calculadora-porcentaje-del-total (matematicas). One tool (default). Anti-dupe OK. Practical % of total. SEO locales: defer pt/fr.
@@ -75,7 +76,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-area-triangulo
+last_slugs: calculadora-oraciones-por-parrafo
 last_deploy: no (branch auto-deploy disabled)
 last_sha: pending
 ```
