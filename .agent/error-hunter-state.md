@@ -11,12 +11,12 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-28 run 28
+last_run: 2026-10-28 run 29
 last_fix: none (0 fixes)
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: homes index/es.index start with import, registry.tsx thin no PLACEHOLDER, playground ModularPatternComposer full, no stubs in src)
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: homes index/es.index start with import, registry.tsx thin no PLACEHOLDER, MagneticFieldSandbox full, no stubs in src)
 new_findings: none
-deploy: latest READY bdc1876f (production target on branch); no current BUILDING/ERROR
-notes: Known smoke green (E031 open but files clean; E001-E040 fixed verified briefly via key files). Discovery: sampled recent tool calculadora-horas-a-decimal (wired in part-08 + slugs-01 + components-02), homes, games layout, playground. No $(cat/PLACEHOLDER in critical paths, no unwired dedicated UI, deploy READY. 0 fixes.
+deploy: latest READY bdc1876f (production target on branch); head 462e1c40 no current BUILDING/ERROR
+notes: Known smoke green (E031 open but files clean; E001-E040 fixed verified briefly via key files). Discovery: sampled games.index, magnetic-field-sandbox route + component (recent PLACEHOLDER restore ok), es.index, no $(cat/PLACEHOLDER in critical paths. 0 fixes.
 ```
 
 <!-- end:error-hunter-state.md -->
