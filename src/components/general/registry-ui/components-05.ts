@@ -185,3 +185,7 @@ export const RectangularPrismVolumeCalculatorToolUi = lazy(() =>
 export const SentencesPerParagraphCalculatorToolUi = lazy(() =>
   import("../SentencesPerParagraphCalculatorTool").then((m) => ({ default: m.SentencesPerParagraphCalculatorTool })),
 );
+
+export const HypotenuseCalculatorToolUi = lazy(() =>
+  import("../HypotenuseCalculatorTool").then((m) => ({ default: m.HypotenuseCalculatorTool })),
+);

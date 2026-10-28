@@ -49,4 +49,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "conversor-horas-decimal": "Conversor de horas a decimal",
   "calculadora-area-triangulo": "Calculadora de área de triángulo",
   "calculadora-oraciones-por-parrafo": "Calculadora de oraciones por párrafo",
+  "calculadora-hipotenusa": "Calculadora de hipotenusa",
 };

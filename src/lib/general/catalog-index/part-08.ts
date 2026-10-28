@@ -16,6 +16,7 @@ import { HOURS_TO_DECIMAL_CALCULATOR_TOOLS } from "../hours-to-decimal-calculato
 import { HOURS_TO_DECIMAL_TOOLS } from "../hours-to-decimal-tool";
 import { TRIANGLE_AREA_CALCULATOR_TOOLS } from "../triangle-area-calculator-tool";
 import { SENTENCES_PER_PARAGRAPH_CALCULATOR_TOOLS } from "../sentences-per-paragraph-calculator-tool";
+import { HYPOTENUSE_CALCULATOR_TOOLS } from "../hypotenuse-calculator-tool";
 
 export const GENERAL_TOOLS_PART_08 = [
   ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
@@ -34,4 +35,5 @@ export const GENERAL_TOOLS_PART_08 = [
   ...HOURS_TO_DECIMAL_TOOLS,
   ...TRIANGLE_AREA_CALCULATOR_TOOLS,
   ...SENTENCES_PER_PARAGRAPH_CALCULATOR_TOOLS,
+  ...HYPOTENUSE_CALCULATOR_TOOLS,
 ];
