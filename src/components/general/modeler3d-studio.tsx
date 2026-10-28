@@ -15,7 +15,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
     copySelected, cutSelected, pasteClipboard, exportJSON, importJSON, exportSTL, exportPNG, exportGLB,
-    clearSelection, dropToFloor, alignSelection, objectLimitMsg,
+    clearSelection, selectAll, dropToFloor, alignSelection, objectLimitMsg,
     matPreset, applyMatPreset, UNIT_CM,
     listNamedScenes, saveNamedScene, loadNamedScene, deleteNamedScene, copyShareLink, applyPreset,
   } = core;
@@ -86,6 +86,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
       if (mod && (e.key === "c" || e.key === "C")) { e.preventDefault(); copySelected(); return; }
       if (mod && (e.key === "x" || e.key === "X")) { e.preventDefault(); cutSelected(); return; }
       if (mod && (e.key === "v" || e.key === "V")) { e.preventDefault(); pasteClipboard(); return; }
+      if (mod && (e.key === "a" || e.key === "A")) { e.preventDefault(); selectAll(); return; }
       if (mod && (e.key === "d" || e.key === "D")) { e.preventDefault(); copySelected(); pasteClipboard(); return; }
       if (mod) return;
       if (e.key === "Escape") { e.preventDefault(); clearSelection(); setCtxMenu(null); setShowHelp(false); setShowScenes(false); return; }
@@ -109,7 +110,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [snap, undo, redo, groupSelected, ungroupSelected, copySelected, cutSelected, pasteClipboard, deleteSelected, setMode, nudgeSelected, clearSelection, setCtxMenu]);
+  }, [snap, undo, redo, groupSelected, ungroupSelected, copySelected, cutSelected, pasteClipboard, deleteSelected, selectAll, setMode, nudgeSelected, clearSelection, setCtxMenu]);
 
   return (
     <div ref={studioRef} className={`relative w-full overflow-hidden bg-[#0a0610] ${fullscreen ? "fixed inset-0 z-50 h-full rounded-none border-0" : "min-h-[520px] h-[min(75vh,720px)] rounded-xl border border-rose-500/25 shadow-[0_0_40px_rgba(244,63,94,0.08)]"}`}>
@@ -131,6 +132,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
             <li><kbd className="rounded bg-white/10 px-1">S</kbd> — {es ? "Escalar" : "Scale"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Del</kbd> — {es ? "Eliminar" : "Delete"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Esc</kbd> — {es ? "Deseleccionar" : "Deselect"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">Ctrl+A</kbd> — {es ? "Seleccionar todo" : "Select all"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Ctrl+D</kbd> — {es ? "Duplicar" : "Duplicate"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Ctrl+C/X/V</kbd> — {es ? "Copiar / cortar / pegar" : "Copy / cut / paste"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Ctrl+Z</kbd> / <kbd className="rounded bg-white/10 px-1">Ctrl+Y</kbd> — {es ? "Deshacer / rehacer" : "Undo / redo"}</li>
@@ -232,6 +234,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
             <button type="button" onClick={ungroupSelected} disabled={!selectedIds.some((id) => groupIds.includes(id))} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs">{es ? "Desagrupar" : "Ungroup"}</button>
             <button type="button" onClick={deleteSelected} disabled={selectedIds.length === 0} className="rounded-lg border border-rose-500/40 bg-rose-950/60 px-2 py-1.5 text-[11px] font-semibold text-rose-100 hover:bg-rose-900/70 disabled:opacity-35 sm:text-xs">{es ? "Eliminar" : "Delete"}</button>
             <button type="button" onClick={() => { copySelected(); pasteClipboard(); }} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs" title="Ctrl+D">{es ? "Duplicar" : "Duplicate"}</button>
+            <button type="button" onClick={selectAll} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs" title="Ctrl+A">{es ? "Todo" : "Select all"}</button>
             <button type="button" onClick={dropToFloor} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs">{es ? "Piso" : "Floor"}</button>
             <button type="button" onClick={() => setShowHelp((v) => !v)} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs" title={es ? "Atajos" : "Shortcuts"}>?</button>
             <span className="mx-0.5 hidden h-5 w-px bg-white/15 sm:inline-block" />

@@ -206,6 +206,18 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     selectMesh(null);
   }, [selectMesh]);
 
+  const selectAll = useCallback(() => {
+    const t = threeRef.current;
+    if (!t) return;
+    const inGroup = new Set<string>();
+    for (const g of groupsRef.current.values()) for (const c of g.childIds) inGroup.add(c);
+    const ids = [...Array.from(t.meshes.keys()).filter((id: string) => !inGroup.has(id)), ...Array.from(groupsRef.current.keys())] as string[];
+    if (!ids.length) return;
+    const primary = ids[ids.length - 1]!;
+    selectMesh(primary);
+    selectedIdsRef.current = ids; setSelectedIds(ids);
+  }, [selectMesh]);
+
   const setMode = useCallback((m: "translate" | "rotate" | "scale") => {
     setModeState(m);
     modeRef.current = m;
@@ -803,7 +815,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
     copySelected, cutSelected, pasteClipboard, exportJSON, importJSON, exportSTL, exportPNG, exportGLB,
-    clearSelection, dropToFloor, alignSelection, objectLimitMsg,
+    clearSelection, selectAll, dropToFloor, alignSelection, objectLimitMsg,
     matPreset, applyMatPreset, UNIT_CM,
     listNamedScenes, saveNamedScene, loadNamedScene, deleteNamedScene, copyShareLink, applyPreset,
   };
