@@ -71,7 +71,7 @@ Generate **3 candidate ideas**. Score each **1–5** on:
 2. **Shareability** (screenshot-worthy moment)
 3. **Search demand** (real query people type; GSC or keyword logic)
 4. **Distinctiveness** vs existing UtiliHub surfaces (**list the 3 closest**)
-5. **Feasibility** in the run budget (default 4 / max 6)
+5. **Feasibility** in the run budget (default 4 / max 6; **seo-locales: min 11**)
 6. **Performance cost** (mobile CWV risk; lower score = worse)
 
 **Pick** the best total score. Write all scores into state `notes`.  
@@ -129,8 +129,9 @@ UtiliHub already has examples like snake, 2048, and tic-tac-toe (3 en raya). A p
 
 ### Project size
 
-- Default **`runs_total: 4`**, hard max **6**.
+- Default **`runs_total: 4`**, hard max **6** for CORE and most GROWTH domains.
 - Must show a working, playable/useful **core by run 2** or cut scope / close.
+- **Exception — domain `seo-locales`:** hard **minimum `runs_total: 11`** (always more than 10). Global max-6 does **not** apply. Thin shells are forbidden; see section **seo-locales** below and `.agent/seo-locales-registry.md`.
 
 ### quality-lift
 
@@ -144,6 +145,20 @@ UtiliHub already has examples like snake, 2048, and tic-tac-toe (3 en raya). A p
 - Original examples / visuals; link to the live tool/game.
 - No thin text pages.
 
+### seo-locales (full product parity — RESET 2026-10-28)
+
+**Goal:** cover in the target language **what EN already covers** (home structure, tools hubs, games/simulators indexes, high-traffic experiences) — **not** 3–4 keyword pages with a minimal shell.
+
+**Hard rules:**
+1. Load `.agent/seo-locales-registry.md` + `src/lib/i18n/seo-locales.ts` every time this domain is active.
+2. **`runs_total` ≥ 11** at IDEATE. Never open a seo-locales project with fewer runs.
+3. **Forbidden:** thin shells (home + a handful of games only). Previous pt/fr/de shells were deleted 2026-10-28 for this reason.
+4. One locale at a time until the **parity bar** in the registry is met; track `pages_done` so later runs can **update** that locale when EN/ES grow.
+5. Design must track current EN shell — do not freeze an old minimal template.
+6. Mark locale `active` in registry + `SEO_LOCALES_ACTIVE` only when parity bar is met.
+7. CAP 5 active SEO locales; then set `weights_growth.seo-locales = 0`.
+8. EN+ES checklist rows still apply for any dual-language touch; SEO locale pages themselves use the target language strings.
+
 ### IDEATE idea template
 
 ```
@@ -154,12 +169,12 @@ path_en: /... or n/a
 path_es: /es/... or n/a
 path_seo: /{code}/...   # when seo-locales
 domain: <rolled>
-runs_total: <4..6>      # quality-lift: 4–6 with elevated bar
+runs_total: <4..6>      # quality-lift: 4–6; seo-locales: >= 11
 runs_remaining: <same at IDEATE>
 acceptance: <user does X, sees Y>
 share: url | png | both | n/a
 next_step_required: yes | no
-notes: <rubric scores for 3 candidates; closest-3; primary metaphor; why not particle-canvas clone; IP check if classic game; chosen id; roll math; quality-lift bar if any>
+notes: <rubric scores for 3 candidates; closest-3; primary metaphor; why not particle-canvas clone; IP check if classic game; chosen id; roll math; quality-lift bar if any; seo-locales parity plan if any>
 adsense-prep_runs: <n>
 ```
 
@@ -170,7 +185,7 @@ adsense-prep_runs: <n>
 An EXECUTE run is done only when **all** hold:
 
 1. **One user-visible outcome** stated as an acceptance test: *user does X, sees Y*.
-2. **EN + ES** strings (UI and routes as applicable).
+2. **EN + ES** strings (UI and routes as applicable). For seo-locales: target-language strings on `/{code}/...`.
 3. **Mobile** considered at **390px** width (layout not broken).
 4. **No new console errors** expected from the change.
 5. **Lazy-loaded** route/component when interactive (canvas/WebGL/games).
@@ -181,7 +196,7 @@ An EXECUTE run is done only when **all** hold:
 
 ```
 [ ] Acceptance test written (user does X, sees Y)
-[ ] EN + ES strings
+[ ] EN + ES strings (or target locale for seo-locales)
 [ ] Mobile 390px considered
 [ ] Lazy-load if interactive
 [ ] No registry.tsx / registry-entries rewrite
@@ -234,6 +249,7 @@ Next: …
 - Truncation → re-read, do not invent.
 - **Variety > another particle sandbox.** Prefer underused domains and distinct mechanics.
 - **Games:** classics with IP check + demand OK; never ship unclear or branded IP.
+- **seo-locales:** full parity, min 11 runs, track pages_done; no thin shells.
 
 <!-- end:ideas-lab-ops.md -->
 
