@@ -6,7 +6,7 @@ import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { createAdaptiveQuality } from "./house-modeler/adaptiveQuality";
 import { createDimensionLabel } from "./house-modeler/dimensionLabel";
 import { exportScenePng } from "./house-modeler/exportPng";
-import { copyShareUrl, readShareHash } from "./house-modeler/shareLink";
+import { copyShareUrl, readShareHash, readShareTod } from "./house-modeler/shareLink";
 import { readAutosave, serializeParts, writeAutosave, type SavedPart } from "./house-modeler/autosave";
 import { createHistory, undoKeyStep } from "./house-modeler/history";
 import { computeAreaStats, formatAreaStats } from "./house-modeler/areaStats";
@@ -6296,6 +6296,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (!ready) return;
     const shared = partsRef.current.length ? [] : readShareHash();
     const saved = partsRef.current.length || shared.length ? [] : readAutosave();
+    const sharedTod = partsRef.current.length ? null : readShareTod();
+    if (sharedTod && lightRigRef.current) { applyTimeOfDay(lightRigRef.current, sharedTod); setTod(sharedTod); }
     if (shared.length) restoreParts(shared), flashActionHint(labels.sharedLoaded);
     else if (saved.length) restoreParts(saved), flashActionHint(labels.restored);
     let last = serializeParts(partsRef.current);
@@ -6964,7 +6966,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         <button
           type="button"
           data-testid="share-link"
-          onClick={() => { void copyShareUrl(serializeParts(partsRef.current)).then((ok) => flashActionHint(ok ? labels.shared : labels.shareFail)); }}
+          onClick={() => { void copyShareUrl(serializeParts(partsRef.current), tod).then((ok) => flashActionHint(ok ? labels.shared : labels.shareFail)); }}
           aria-label={labels.share}
           className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent"
         >
