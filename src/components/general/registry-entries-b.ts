@@ -84,4 +84,5 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "calculadora-porciones-pizza", name: "PizzaPortionsCalculatorTool", path: "./PizzaPortionsCalculatorTool", export: "PizzaPortionsCalculatorTool" },
   { slug: "calculadora-presupuesto-mensual", name: "MonthlyBudgetCalculatorTool", path: "./MonthlyBudgetCalculatorTool", export: "MonthlyBudgetCalculatorTool" },
   { slug: "calculadora-horas-a-decimal", name: "HoursToDecimalCalculatorTool", path: "./HoursToDecimalCalculatorTool", export: "HoursToDecimalCalculatorTool" },
+  { slug: "calculadora-markup", name: "MarkupCalculatorTool", path: "./MarkupCalculatorTool", export: "MarkupCalculatorTool" },
 ] as const;
