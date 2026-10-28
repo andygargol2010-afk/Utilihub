@@ -20,5 +20,6 @@ Las entradas E### viven en `.agent/error-hunter-catalog/` (archivos de ~10 entra
 - `.agent/error-hunter-catalog/E011-E020.md`
 - `.agent/error-hunter-catalog/E021-E030.md`
 - `.agent/error-hunter-catalog/E031-E040.md`
+- `.agent/error-hunter-catalog/E041-E050.md`
 
 Add new entries in the smallest file of `.agent/error-hunter-catalog/`; never rewrite files wholesale. Si el más chico supera ~100 líneas, crear `E###-E###.md` nuevo y listarlo arriba.

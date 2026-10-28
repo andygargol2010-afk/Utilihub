@@ -3,7 +3,7 @@ import { makeTool, faq } from "./types";
 const tool = makeTool(
   "calculadora-iva",
   "VAT / Sales Tax Calculator",
-  "finanzas",
+  "utilidades",
   "calculator",
   "Calculate VAT or sales tax: add tax to a net price or extract tax from a gross price.",
   [
