@@ -38,9 +38,9 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 31 | Estimated build cost chip (rough USD from floor/wall/roof area + per-piece prices, rounded to 100) | 4 | 4 | 1 | 16 | DONE run 328 (house-modeler/costEstimate.ts) |
 | 32 | Multi-select (shift/ctrl-click or box) with move/delete/duplicate of the group | 5 | 4 | 4 | 5 | open |
 | 33 | Layers hidden/visible state + locks in undo snapshot and autosave | 3 | 3 | 2 | 4.5 | open |
-| 34 | Subtract door/window openings from wall area readout and cost chip | 3 | 3 | 2 | 4.5 | open |
+| 34 | Subtract door/window openings from wall area readout and cost chip | 3 | 3 | 2 | 4.5 | DONE run 330 (areaStats.ts; fixed 2.0/1.3 m2 per door/window) |
 | 35 | Measure tool: snap to part corners, part-to-part distance | 3 | 3 | 2 | 4.5 | open |
-| 36 | Mobile: pinch-to-zoom/two-finger pan hint + double-tap Frame | 3 | 4 | 2 | 6 | open |
+| 36 | Mobile: pinch-to-zoom/two-finger pan hint + double-tap Frame | 3 | 4 | 2 | 6 | open (hint exists in onboarding; double-tap conflicts with tap-to-place, View picker already frames) |
 | 37 | Export design as image with transparent/white background + dimension overlay option | 2 | 3 | 2 | 3 | open |
 | 38 | Persist snap-grid/view/roof-hidden state in share link (full scene state) | 2 | 3 | 2 | 3 | open |
 | 39 | Floor-plan 2D export (top view PNG with room labels) | 4 | 3 | 3 | 4 | open |

@@ -6883,7 +6883,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {count} {labels.parts}
         </span>
         {areaText && (
-          <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground" title={es ? "Áreas brutas (huecos sin descontar)" : "Gross areas (openings not subtracted)"}>
+          <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground" title={es ? "Muros netos: puertas y ventanas descontadas" : "Net walls: door and window openings subtracted"}>
             {areaText}
           </span>
         )}
