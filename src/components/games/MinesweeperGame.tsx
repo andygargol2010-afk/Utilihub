@@ -99,6 +99,7 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   const [seconds, setSeconds] = useState(0);
   const [best, setBest] = useState<number | null>(null);
   const [seed, setSeed] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
   const longPressRef = useRef<{ r: number; c: number; t: number } | null>(null);
   const longFiredRef = useRef(false);
   const boardRef = useRef(board);
@@ -261,6 +262,17 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
     longPressRef.current = null;
   };
 
+  const shareUrl = useCallback(async () => {
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // fallback silent
+    }
+  }, []);
+
   const exportPng = useCallback(() => {
     const rows = board.length;
     const cols = board[0]?.length || 0;
@@ -360,6 +372,9 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
         )}
         <GamePrimaryButton onClick={() => reset()}>{es ? "Nuevo" : "New"}</GamePrimaryButton>
         <GameSecondaryButton onClick={exportPng}>{es ? "PNG" : "PNG"}</GameSecondaryButton>
+        <GameSecondaryButton onClick={shareUrl}>
+          {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}
+        </GameSecondaryButton>
       </div>
       {(dead || won) && (
         <p className={`text-sm font-bold ${won ? "text-emerald-300" : "text-rose-300"}`}>
@@ -410,8 +425,8 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
       <p className="text-center text-[11px] text-white/50">
         {es
-          ? "Toque = abrir · mantener = poner bandera · número abierto abre vecinos"
-          : "Tap = open · hold = flag · open number = chord"}
+          ? "Toque = abrir · mantener = poner bandera · número abierto abre vecinos · Compartir copia el enlace con semilla"
+          : "Tap = open · hold = flag · open number = chord · Share copies the seeded link"}
       </p>
     </div>
   );
