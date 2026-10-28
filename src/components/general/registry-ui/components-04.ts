@@ -201,3 +201,7 @@ export const PercentageOfToolUi = lazy(() =>
 export const SlugGeneratorToolUi = lazy(() =>
   import("../SlugGeneratorTool").then((m) => ({ default: m.SlugGeneratorTool })),
 );
+
+export const TriangleAreaCalculatorToolUi = lazy(() =>
+  import("../TriangleAreaCalculatorTool").then((m) => ({ default: m.TriangleAreaCalculatorTool })),
+);
