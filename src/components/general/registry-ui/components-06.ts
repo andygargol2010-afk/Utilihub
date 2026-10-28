@@ -10,6 +10,10 @@ export const HypotenuseCalculatorToolUi = lazy(() =>
   import("../HypotenuseCalculatorTool").then((m) => ({ default: m.HypotenuseCalculatorTool })),
 );
 
+export const SimpleAverageCalculatorToolUi = lazy(() =>
+  import("../SimpleAverageCalculatorTool").then((m) => ({ default: m.SimpleAverageCalculatorTool })),
+);
+
 export const PercentageChangeCalculatorToolUi = lazy(() =>
   import("../PercentageChangeCalculatorTool").then((m) => ({ default: m.PercentageChangeCalculatorTool })),
 );
