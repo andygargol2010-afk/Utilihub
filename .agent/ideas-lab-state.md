@@ -65,11 +65,11 @@ path_es: /es/sandbox-campo-magnetico
 path_seo: n/a
 domain: playgrounds
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User places a north and a south pole on the canvas, sees curved field lines animate between them, can drag the poles to update the lines live, and exports a branded PNG.
 share: both
 next_step_required: yes
-notes: Rubric scores (value/share/search/distinct/feas/perf): C1 magnetic-field-sandbox 5/4/4/4/5/4 total 26; C2 fractal-zoom-explorer 4/5/4/5/4/3 total 25; C3 sound-reactive-particles 4/3/3/3/4/3 total 20. Chosen magnetic-field-sandbox (highest total, strong feasibility). Roll: p_fixed=0.35 → FLEX core (playgrounds weight 9 highest). Closest existing surfaces: gravity-sandbox (n-body), aurora-particle-playground, fluid-ink-flow-playground. adsense-prep_runs: 3
+notes: Rubric scores (value/share/search/distinct/feas/perf): C1 magnetic-field-sandbox 5/4/4/4/5/4 total 26; C2 fractal-zoom-explorer 4/5/4/5/4/3 total 25; C3 sound-reactive-particles 4/3/3/3/4/3 total 20. Chosen magnetic-field-sandbox (highest total, strong feasibility). Roll: p_fixed=0.35 → FLEX core (playgrounds weight 9 highest). Closest existing surfaces: gravity-sandbox (n-body), aurora-particle-playground, fluid-ink-flow-playground. adsense-prep_runs: 3. Run 1/4: shipped core MagneticFieldSandbox component + EN/ES routes. Place N/S poles by click (mode buttons), drag to move, double-click remove. Live field lines traced from N poles following monopole field (curved N→S), modest line counts (mobile capped), URL deep-link (?p=...), branded PNG export. Canvas 380px mobile / 500px sm. CWV-safe (no heavy deps, limited steps). Adsterra intact.
 adsense-prep_runs: 3
 ```
 
