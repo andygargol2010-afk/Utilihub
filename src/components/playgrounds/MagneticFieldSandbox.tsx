@@ -37,6 +37,7 @@ const labels = {
     presets: "Presets",
     dipole: "Dipole",
     twoN: "Two North",
+    quad: "Quadrupole",
     applyStrength: "Apply strength to all",
     particles: "Particles",
     on: "On",
@@ -58,6 +59,7 @@ const labels = {
     presets: "Presets",
     dipole: "Dipolo",
     twoN: "Dos Norte",
+    quad: "Cuadrupolo",
     applyStrength: "Aplicar fuerza a todos",
     particles: "Partículas",
     on: "Activadas",
@@ -413,7 +415,7 @@ export function MagneticFieldSandbox({ locale }: { locale: Locale }) {
     }
   };
 
-  const loadPreset = (kind: "dipole" | "twoN") => {
+  const loadPreset = (kind: "dipole" | "twoN" | "quad") => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
@@ -425,10 +427,18 @@ export function MagneticFieldSandbox({ locale }: { locale: Locale }) {
         { id: nextId.current++, x: cx - 70, y: cy, polarity: 1, strength: s },
         { id: nextId.current++, x: cx + 70, y: cy, polarity: -1, strength: s },
       ];
-    } else {
+    } else if (kind === "twoN") {
       polesRef.current = [
         { id: nextId.current++, x: cx - 60, y: cy - 40, polarity: 1, strength: s },
         { id: nextId.current++, x: cx + 60, y: cy + 40, polarity: 1, strength: s },
+      ];
+    } else {
+      // quadrupole: N S N S in square
+      polesRef.current = [
+        { id: nextId.current++, x: cx - 50, y: cy - 50, polarity: 1, strength: s },
+        { id: nextId.current++, x: cx + 50, y: cy - 50, polarity: -1, strength: s },
+        { id: nextId.current++, x: cx + 50, y: cy + 50, polarity: 1, strength: s },
+        { id: nextId.current++, x: cx - 50, y: cy + 50, polarity: -1, strength: s },
       ];
     }
     setPoleCount(polesRef.current.length);
@@ -587,6 +597,13 @@ export function MagneticFieldSandbox({ locale }: { locale: Locale }) {
           className="min-h-11 rounded-lg border border-border px-3 text-sm font-medium"
         >
           {t.twoN}
+        </button>
+        <button
+          type="button"
+          onClick={() => loadPreset("quad")}
+          className="min-h-11 rounded-lg border border-border px-3 text-sm font-medium"
+        >
+          {t.quad}
         </button>
       </div>
 
