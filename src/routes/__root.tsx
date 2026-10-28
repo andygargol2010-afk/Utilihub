@@ -74,12 +74,39 @@ function NotFound() {
   );
 }
 
+// Server-rendered page content, captured before hydration. If a lazy chunk fails to load,
+// we keep showing it (H1, tool, FAQ) instead of replacing the page with an error screen.
+const SSR_SNAPSHOT =
+  typeof document !== "undefined"
+    ? {
+        path: window.location.pathname,
+        header: document.querySelector("body > header")?.outerHTML ?? "",
+        main: document.getElementById("main-content")?.innerHTML ?? "",
+        footer: document.querySelector("body > footer")?.outerHTML ?? "",
+      }
+    : null;
+
+function isChunkLoadError(error: Error | undefined) {
+  const text = `${error?.name ?? ""} ${error?.message ?? ""}`;
+  return /dynamically imported module|Importing a module script failed|error loading dynamically imported module|ChunkLoadError|Loading chunk/i.test(text);
+}
+
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
+  const { pathname } = useLocation();
   const isSpanish = useIsSpanish();
   const isPortuguese = useIsPortuguese();
   const isFrench = useIsFrench();
   useEffect(() => console.error(error), [error]);
+  if (isChunkLoadError(error) && SSR_SNAPSHOT && SSR_SNAPSHOT.main && SSR_SNAPSHOT.path === pathname) {
+    return (
+      <>
+        <div dangerouslySetInnerHTML={{ __html: SSR_SNAPSHOT.header }} />
+        <main id="main-content" dangerouslySetInnerHTML={{ __html: SSR_SNAPSHOT.main }} />
+        <div dangerouslySetInnerHTML={{ __html: SSR_SNAPSHOT.footer }} />
+      </>
+    );
+  }
   const msg = error?.message?.slice(0, 280) || "";
   const stackLine = (error?.stack || "")
     .split("\n")
