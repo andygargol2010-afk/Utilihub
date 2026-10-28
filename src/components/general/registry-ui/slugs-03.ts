@@ -11,4 +11,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-regla-de-tres": UI.RuleOfThreeCalculatorToolUi,
   "calculadora-interes-simple": UI.SimpleInterestCalculatorToolUi,
   "calculadora-factor-de-escala": UI.ScaleFactorCalculatorToolUi,
+  "calculadora-descuento-sucesivo": UI.SuccessiveDiscountCalculatorToolUi,
 };
