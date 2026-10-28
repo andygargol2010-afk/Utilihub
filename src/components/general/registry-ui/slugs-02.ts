@@ -110,4 +110,5 @@ export const SLUG_UI_02: Record<string, ToolComp> = {
   "calculadora-area-trapecio": UI.TrapezoidAreaCalculatorToolUi,
   "calculadora-area-paralelogramo": UI.ParallelogramAreaCalculatorToolUi,
   "calculadora-volumen-prisma-rectangular": UI.RectangularPrismVolumeCalculatorToolUi,
+  "calculadora-area-triangulo": UI.TriangleAreaCalculatorToolUi,
 };
