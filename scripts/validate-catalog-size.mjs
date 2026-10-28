@@ -4,8 +4,9 @@
  *
  * Fails the build when an automation loses content:
  *   - ALL_TOOLS (runtime count, bundled with esbuild) < baseline.minTools
- *   - import lines in src/lib/general/index.ts < baseline.minIndexImports
- *   - lines in src/components/general/registry.tsx < baseline.minRegistryLines
+ *   - import lines in src/lib/general/index.ts + src/lib/general/catalog-index/*.ts < baseline.minIndexImports
+ *   - lines in src/components/general/registry.tsx + registry-ui/*.ts < baseline.minRegistryLines
+ *   (both were split into small files on 2026-10-28; counts are summed over the parts)
  *   - any file in src/ has a line starting with "successfully downloaded text file"
  *     or "$(cat", or contains the token PLACEHOLDER_
  *
@@ -47,16 +48,24 @@ for (const file of walk(srcDir)) {
   });
 }
 
-const indexSrc = readFileSync(join(srcDir, "lib/general/index.ts"), "utf8");
-const indexImports = (indexSrc.match(/^import\s/gm) || []).length;
-if (indexImports < baseline.minIndexImports) {
-  errors.push(`src/lib/general/index.ts has ${indexImports} imports (baseline min ${baseline.minIndexImports})`);
+function readParts(mainFile, partsDir) {
+  const files = [join(srcDir, mainFile)];
+  for (const name of readdirSync(join(srcDir, partsDir)).sort()) {
+    if (/\.tsx?$/.test(name)) files.push(join(srcDir, partsDir, name));
+  }
+  return files.map((f) => readFileSync(f, "utf8"));
 }
 
-const registrySrc = readFileSync(join(srcDir, "components/general/registry.tsx"), "utf8");
-const registryLines = (registrySrc.match(/\n/g) || []).length;
+const indexImports = readParts("lib/general/index.ts", "lib/general/catalog-index")
+  .reduce((n, src) => n + (src.match(/^import\s/gm) || []).length, 0);
+if (indexImports < baseline.minIndexImports) {
+  errors.push(`src/lib/general/index.ts + catalog-index/ have ${indexImports} imports (baseline min ${baseline.minIndexImports})`);
+}
+
+const registryLines = readParts("components/general/registry.tsx", "components/general/registry-ui")
+  .reduce((n, src) => n + (src.match(/\n/g) || []).length, 0);
 if (registryLines < baseline.minRegistryLines) {
-  errors.push(`src/components/general/registry.tsx has ${registryLines} lines (baseline min ${baseline.minRegistryLines})`);
+  errors.push(`src/components/general/registry.tsx + registry-ui/ have ${registryLines} lines (baseline min ${baseline.minRegistryLines})`);
 }
 
 let toolCount = null;

@@ -3,7 +3,7 @@
  * Build-time registry integrity guard.
  * Fails the build if dedicated UI wiring shrinks or stub-marker leaks in.
  */
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -13,6 +13,8 @@ const entriesAPath = join(root, "src/components/general/registry-entries-a.ts");
 const entriesBPath = join(root, "src/components/general/registry-entries-b.ts");
 const baselinePath = join(root, "scripts/registry-baseline.json");
 const componentsDir = join(root, "src/components/general");
+// registry.tsx was split on 2026-10-28: lazy UIs and the slug map live in registry-ui/*.ts.
+const registryUiDir = join(componentsDir, "registry-ui");
 
 function read(path) {
   if (!existsSync(path)) {
@@ -22,7 +24,10 @@ function read(path) {
   return readFileSync(path, "utf8");
 }
 
-const registry = read(registryPath);
+const registryUiFiles = existsSync(registryUiDir)
+  ? readdirSync(registryUiDir).filter((n) => /\.tsx?$/.test(n)).sort().map((n) => join(registryUiDir, n))
+  : [];
+const registry = [registryPath, ...registryUiFiles].map(read).join("\n");
 const entriesA = read(entriesAPath);
 const entriesB = read(entriesBPath);
 const baseline = JSON.parse(read(baselinePath));
@@ -31,7 +36,7 @@ const combined = registry + "\n" + entriesA + "\n" + entriesB;
 const lineCount = registry.split(/\r?\n/).length;
 
 if (lineCount < 300) {
-  console.error(`validate-registry: registry.tsx is only ${lineCount} lines (min 300)`);
+  console.error(`validate-registry: registry.tsx + registry-ui/ are only ${lineCount} lines (min 300)`);
   process.exit(1);
 }
 
@@ -43,10 +48,13 @@ for (const forbidden of ["PLACEHOLDER", "$(cat"]) {
 }
 
 const lazyCount = (registry.match(/lazy\s*\(\s*\(\s*\)\s*=>/g) || []).length;
-const importPaths = [...registry.matchAll(/import\s*\(\s*["']\.\/([^"']+)["']\s*\)/g)].map((m) => m[1]);
+const importPaths = [...registry.matchAll(/import\s*\(\s*["']\.\.?\/([^"']+)["']\s*\)/g)].map((m) => m[1]);
 const uniqueImports = [...new Set(importPaths)];
 
-const slugEquals = [...registry.matchAll(/if\s*\(\s*slug\s*===\s*["']([^"']+)["']\s*\)/g)].map((m) => m[1]);
+const slugEquals = [
+  ...[...registry.matchAll(/if\s*\(\s*slug\s*===\s*["']([^"']+)["']\s*\)/g)].map((m) => m[1]),
+  ...[...registry.matchAll(/^\s*["']([^"']+)["']\s*:\s*UI\.[A-Za-z0-9_]+,/gm)].map((m) => m[1]),
+];
 const entrySlugs = [...combined.matchAll(/slug:\s*["']([^"']+)["']/g)].map((m) => m[1]);
 const opSlugs = [...registry.matchAll(/op === ["']([^"']+)["']/g)].map((m) => m[1]);
 const allQuoted = [...new Set([...slugEquals, ...entrySlugs, ...opSlugs])];
