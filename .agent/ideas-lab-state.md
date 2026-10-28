@@ -56,27 +56,23 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Add German (de) SEO-first locale with minimal shell and full localization of key interactive experiences (playgrounds/games) for search discovery via hreflang, no primary nav links from EN/ES. Mirror the successful fr shell pattern for next priority locale.
-id: seo-locales-de-shell
-path_en: n/a
-path_es: n/a
-path_seo: /de
-domain: seo-locales
+status: active
+idea: Build a daily streak constellation visualizer that rewards consecutive visits to interactive experiences (playgrounds/games) with a growing, shareable star map. Users check in daily, complete a light challenge or just visit, and see their constellation expand with stars, lines, and colors. Includes EN+ES, URL deep-link for progress (localStorage + query param), branded PNG export, mobile-friendly at 390px. Distinct from existing daily-progress-constellation by adding interactive star placement, growth animation, and share hooks.
+id: retention-loops-streak-constellation
+path_en: /streak-constellation
+path_es: /es/constelacion-racha
+path_seo: n/a
+domain: retention-loops
 runs_total: 4
-runs_remaining: 0
-acceptance: User opens /de and at least one experience route (e.g. /de/fluid-ink-flow-playground or equivalent), sees complete German titles, descriptions, and UI strings; hreflang present; no EN/ES navigation links to it.
-share: n/a
-next_step_required: no
-notes: IDEATE roll: p_fixed=0.35, random~0.52 > p_fixed → FLEX urn. Weighted selection favored seo-locales (w=10). Candidates scored 1-5 (value/share/search/distinct/feas/perf):
-1. seo-locales-de-shell: 4/2/5/4/5/4 =24 (chosen) Closest: /fr, /pt, EN/ES shells.
-2. retention-loops-streak-constellation: 5/4/3/3/4/4 =23 Closest: existing Daily Progress Constellation, progress trackers.
-3. search-magnets-fluid-ink-guide: 4/3/4/3/5/5 =24 Closest: orbit-pulse-catcher-guide, other long-form guides.
-Chosen highest/tied with search demand priority and domain weight. Project size 4 runs. Must deliver playable/useful core by run 2.
-EXECUTE 1/4: added /de shell (German home with titles/descriptions/UI) + /de/fluid-ink-flow-playground with full German localization (locale=de support added to FluidInkFlowPlayground for labels/buttons/tips/PNG watermark). hreflang alternates present. Minimal shell, no primary nav from EN/ES. Registered de as active in seo-locales.ts + registry. Core playable experience delivered. Adsterra intact. CWV-safe.
-EXECUTE 2/4: added /de/pulse-catch with full German localization (locale=de support added to PulseCatch for labels/buttons/tips/share text). Updated /de home with link and list entry. hreflang present. Minimal shell. Adsterra intact. CWV-safe. Second experience delivered.
-EXECUTE 3/4: added /de/snake with full German localization (locale=de support added to SnakeGame for canvas labels, buttons, hints, dpad, best/play/pause/resume strings). Updated /de home with link and list entry. hreflang present. Minimal shell. Adsterra intact. CWV-safe. Third experience delivered.
-EXECUTE 4/4: added /de/pong with full German localization (locale=de support added to PongGame for all labels/buttons/hints/messages). Updated /de home with link and list entry. hreflang present. Minimal shell. Fourth experience delivered. Project complete. Adsterra intact. CWV-safe.
+runs_remaining: 4
+acceptance: User visits the page, sees current streak and constellation canvas; after simulated or real check-in sees a new star appear; can export branded PNG and share via URL that restores progress.
+share: both
+next_step_required: yes
+notes: IDEATE roll: p_fixed=0.35, random~0.61 > p_fixed → FLEX urn. Weighted selection favored retention-loops (w=7) after recent seo-locales. Candidates scored 1-5 (value/share/search/distinct/feas/perf):
+1. retention-loops-streak-constellation: 5/5/3/4/4/4 =25 (chosen) Closest: daily-progress-constellation, constellation.tsx, aura-card.
+2. retention-loops-progress-garden: 4/4/2/3/5/5 =23 Closest: daily-progress-constellation, playgrounds index, growth-surfaces.
+3. share-hooks-particle-signature: 4/5/3/3/4/4 =23 Closest: aura-card, firma-visual, neon-sign.
+Chosen for highest total, strong shareability and retention value, feasible in 4 runs (core playable by run 2). Must deliver interactive canvas + basic streak by run 2.
 adsense-prep_runs: 3
 ```
 
