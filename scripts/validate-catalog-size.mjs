@@ -64,7 +64,11 @@ try {
   const { build } = createRequire(join(root, "package.json"))("esbuild");
   const result = await build({
     stdin: {
-      contents: 'import { ALL_TOOLS } from "@/lib/all-tools"; console.log(ALL_TOOLS.length);',
+      contents: [
+        'import { ALL_TOOLS } from "@/lib/all-tools";',
+        "const malformed = ALL_TOOLS.filter((t) => !Array.isArray(t.keywords) || ['name', 'summary', 'description'].some((k) => typeof t[k] !== 'string')).map((t) => t.slug);",
+        "console.log(JSON.stringify({ count: ALL_TOOLS.length, malformed }));",
+      ].join("\n"),
       resolveDir: root,
       loader: "ts",
     },
@@ -90,10 +94,16 @@ try {
     console.log = origLog;
     console.error = origError;
   }
-  toolCount = Number(logs.at(-1));
+  const out = JSON.parse(logs.at(-1) ?? "null");
+  toolCount = Number(out?.count);
   if (!Number.isFinite(toolCount)) throw new Error(`unexpected output: ${logs.at(-1)}`);
   if (toolCount < baseline.minTools) {
     errors.push(`ALL_TOOLS has ${toolCount} tools (baseline min ${baseline.minTools})`);
+  }
+  // Search/home index every tool by name + summary + description + keywords.join():
+  // one tool without them crashes /, /es and /tools with a full-page error.
+  for (const slug of out.malformed ?? []) {
+    errors.push(`tool "${slug}" is missing keywords[] or name/summary/description strings`);
   }
 } catch (err) {
   errors.push(`could not evaluate ALL_TOOLS: ${err && err.message ? err.message.split("\n")[0] : err}`);
