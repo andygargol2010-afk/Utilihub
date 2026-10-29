@@ -224,7 +224,7 @@ export const GAMES: readonly GameDef[] = [
     tag: "arcade",
     emoji: "⚡",
     summaryEn: "Catch falling neon pulses with your bar. Build combos, lose lives on misses, rising difficulty. Particle bursts on every catch.",
-    summaryEs: "Atrapá pulsos neón que caen con tu barra. Construí combos, perdés vidas si fallás, dificultad creciente. Explosiones de partículas en cada captura.",
+    summaryEs: "Atrapá pulsos neón que caen con tu barra. Construí combos, perés vidas si fallás, dificultad creciente. Explosiones de partículas en cada captura.",
     hasScore: true,
   },
   {
@@ -247,6 +247,17 @@ export const GAMES: readonly GameDef[] = [
     emoji: "🔴",
     summaryEn: "Time your taps on colored zones to catch orbiting matching pulses. Combos, levels, particle bursts, PNG share.",
     summaryEs: "Sincronizá tus toques en zonas de color para atrapar pulsos orbitantes coincidentes. Combos, niveles, explosiones de partículas, PNG compartible.",
+    hasScore: true,
+  },
+  {
+    slug: "simon-sequence-memory",
+    slugEs: "memoria-secuencia-simon",
+    nameEn: "Simon Sequence Memory",
+    nameEs: "Memoria de Secuencia Simon",
+    tag: "puzzle",
+    emoji: "🎨",
+    summaryEn: "Classic Simon: watch the growing color sequence with tones, then repeat it. Levels, best score, sound toggle.",
+    summaryEs: "Simon clásico: mirá la secuencia de colores con tonos que crece y repetila. Niveles, mejor puntaje, sonido.",
     hasScore: true,
   },
 ] as const;
@@ -274,6 +285,7 @@ export const GAME_JOURNEYS: Record<string, string[]> = {
   "pulse-catch-arena": ["pong", "snake", "tetris", "magnetic-letter-catcher"],
   "orbit-defender-arcade": ["pulse-catch-arena", "pong", "snake", "tetris"],
   "orbit-pulse-catcher": ["pulse-catch-arena", "orbit-defender-arcade", "pong", "refraction-challenge"],
+  "simon-sequence-memory": ["memory", "formula-memory", "hangman", "lights-out"],
 };
 
 export function relatedGames(current: Pick<GameDef, "slug" | "tag">): GameDef[] {

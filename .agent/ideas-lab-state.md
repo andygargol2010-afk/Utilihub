@@ -70,11 +70,12 @@ path_es: /es/juegos/memoria-secuencia-simon
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User clicks Start, watches sequence of 3+ colors/sounds, repeats it correctly to advance length, sees score increase; on error sees game-over with best score and share PNG.
 share: both
 next_step_required: yes
 notes: Domain roll: FLEX (p_fixed 0.35 rolled False), chose games (underweighted 2, variety after recent simulators/kits/journeys; avoids saturated playgrounds). Candidates: 1. simon-sequence-memory (value5 share4 demand5 dist4 feas5 perf5 total28; closest: MemoryGame pairs, FormulaMemory, Hangman; metaphor: sequence recall timing; not particle-canvas; IP: traditional Simon-like generic colors/sounds no brand). 2. sliding-puzzle-15 (value4 share3 demand4 dist4 feas5 perf5 total25; closest: 2048 grid, LightsOut; metaphor: tile slide spatial packing; IP: traditional). 3. battleship-grid-hunt (value5 share4 demand5 dist5 feas4 perf4 total27; closest: Minesweeper grid, ConnectFour; metaphor: hidden grid hunt; IP: traditional generic). Chose simon for strong search + feasibility + not existing.
+Run 1 (2026-10-29): Core playable shipped. 4 pads, start with 3-color sequence + sine tones (Web Audio), user repeat advances length/score, fail shows game-over + best (localStorage). Sound toggle. EN+ES via catalog routes /games/simon-sequence-memory + /es/juegos/memoria-secuencia-simon. Lazy. Mobile 2x2 ~96-112px pads. CWV-safe (no heavy deps). Next: URL deep-link seed, branded PNG high-score, polish levels/aria.
 adsense-prep_runs: 3
 ```
 
