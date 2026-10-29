@@ -3,7 +3,7 @@ import { makeTool, faq } from "./types";
 const tool = makeTool(
   "calculadora-descuento-sucesivo",
   "Successive Discount Calculator",
-  "finanzas",
+  "utilidades",
   "calculator",
   "Calculate the final price after two successive percentage discounts (applied sequentially, not added).",
   [
