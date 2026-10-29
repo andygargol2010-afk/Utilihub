@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-29 run 38
+last_run: 2026-10-29 run 39
 last_mode: HUNT
 last_fix: none
 last_prevent: none
 last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, registry.tsx thin no PLACEHOLDER; E041 calculadora-iva loads with dedicated UI on prod)
-new_findings: none. Sampled: /es home OK, /es/juegos + snake OK, /es/herramientas/modelador-3d loads Modeler3D (cubes/spheres, not House), calculadora-semilla-cesped, generador-robots-txt, validador-iban all load with proper UI. No "Tool not available" or kind mismatch observed in samples.
-deploy: latest READY 6ad2ca3 (production); post-run37 commits exist but not yet in latest listed deploy (or already reflected since iva loads). No ERROR.
-notes: Known smoke E031 green, E041 verified working on live. Discovery path sampled games/studio/home/other tools outside catalog focus — all green. No fixes this run.
+new_findings: none. Sampled: /es home OK, /es/juegos + snake OK (game UI present), /es/herramientas/modelador-3d description cubes/spheres (not House), calculadora-iva dedicated Sumar/Extraer UI, png-a-jpg has file select. New hangman/ahorcado routes + catalog entry exist but 404 on live (latest READY deploy still 6ad2ca3). No "Tool not available" or kind mismatch.
+deploy: latest READY 6ad2ca3 (production); newer commits (hangman etc.) not yet in listed deploy. No ERROR/BUILDING.
+notes: Known smoke E031 green, E041 verified working on live. Discovery path sampled games/home/image tools + new hangman code (pending deploy) — all green where live. No fixes this run.
 ```
 
 <!-- end:error-hunter-state.md -->
