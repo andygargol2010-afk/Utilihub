@@ -59,19 +59,23 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive multi-step recipe assembly kit. Users pick a base cuisine or blank, drag/add discrete ingredient cards into ordered steps, set quantities and notes, see a live visual timeline and assembled preview card. Generate shopping list, branded PNG recipe card with accent bar, URL deep-link of the full recipe. EN+ES routes. Not a calculator; discrete parts assembler with progress waypoints.
+id: recipe-assembly-kit
+path_en: /kits/recipe-assembly
+path_es: /es/kits/ensamblaje-receta
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Project choice-story-journey closed after 4 runs (final polish: ending accent colors in UI + PNG bar). Ready for next IDEATE.
+domain: kits
+runs_total: 4
+runs_remaining: 4
+acceptance: User adds at least 3 ingredients across 2 steps, sees live preview and shopping list update, then copies share link or downloads PNG.
+share: both
+next_step_required: yes
+notes: IDEATE 2026-10-29. Roll math: p_fixed=0.35 triggered FIXED growth (r=0.052); weighted roll among growth (no seo) landed on traffic-diagnosis (low weight). Variety mandate overrides to underused CORE kits (weights_core kits=4, recent closes heavy on playgrounds/journeys/simulators/games). 3 candidates scored 1-5 (value/share/search/distinct/feas/perf):
+1. recipe-assembly-kit (declarative form	o diagram / guided parts assembler): 5/4/4/5/4/5 =27. Closest-3: existing cocina ratio calculators (static), choice-story-journey (narrative not parts), budget survivor game (survival not assembly). Primary metaphor: multi-step discrete parts assembler with visual timeline. Why not particle-canvas: form+cards+timeline, no freehand or particles.
+2. diy-home-project-kit (checklist+parts list for home DIY): 4/3/3/4/4/5=23. Closest: home tools calculators, journeys. Metaphor: guided checklist assembler.
+3. packing-list-kit (spatial packing planner for travel): 4/4/3/4/3/4=22. Closest: viajes tools, packing not interactive. Metaphor: constraint packing with discrete items.
+Rejected <3 none. IP n/a. Chosen recipe-assembly-kit. adsense-prep_runs still 3.
 adsense-prep_runs: 3
 ```
 
