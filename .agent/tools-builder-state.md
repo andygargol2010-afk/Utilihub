@@ -84,6 +84,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-28: PRODUCT — calculadora-oraciones-por-parrafo (texto). One tool (default). Anti-dupe OK (no prior slug). Practical average sentences per paragraph for writing analysis. SEO locales: defer pt/fr/de.
 2026-10-28: PRODUCT — calculadora-area-triangulo (ciencia). One tool (default). Anti-dupe OK (no prior slug). Practical triangle area from base/height. SEO locales: defer pt/fr/de.
 2026-10-27: PRODUCT — calculadora-horas-a-decimal (fechas). One tool (default). Anti-dupe OK (new slug, demand for timesheets). Practical decimal hours. SEO locales: defer pt/fr.
+2026-10-29: META — saturation check. Many simple geometry (trapecio, rombo, elipse, hexagon) and converters already have dedicated components. No new high-quality candidate in under-represented clusters without dupe risk this run. Prefer improve existing weak ones in next runs.
 ```
 
 ---
@@ -91,8 +92,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: calculadora-caudal
+last_mode: META
+last_slugs: none
 last_deploy: no (branch auto-deploy disabled)
 last_sha: pending
 ```
