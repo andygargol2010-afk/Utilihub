@@ -62,7 +62,20 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Interactive classic Simon-style color sequence memory game. User watches a growing sequence of colored buttons light up with tones, then repeats the sequence by clicking. Increases length on success; ends on mistake. Includes levels, best score, sound toggle, URL deep-link for sequence seed, branded PNG share of high score, EN+ES routes. Distinct from existing pair-matching MemoryGame.
+id: simon-sequence-memory
+path_en: /games/simon-sequence-memory
+path_es: /es/juegos/memoria-secuencia-simon
+path_seo: n/a
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User clicks Start, watches sequence of 3+ colors/sounds, repeats it correctly to advance length, sees score increase; on error sees game-over with best score and share PNG.
+share: both
+next_step_required: yes
+notes: Domain roll: FLEX (p_fixed 0.35 rolled False), chose games (underweighted 2, variety after recent simulators/kits/journeys; avoids saturated playgrounds). Candidates: 1. simon-sequence-memory (value5 share4 demand5 dist4 feas5 perf5 total28; closest: MemoryGame pairs, FormulaMemory, Hangman; metaphor: sequence recall timing; not particle-canvas; IP: traditional Simon-like generic colors/sounds no brand). 2. sliding-puzzle-15 (value4 share3 demand4 dist4 feas5 perf5 total25; closest: 2048 grid, LightsOut; metaphor: tile slide spatial packing; IP: traditional). 3. battleship-grid-hunt (value5 share4 demand5 dist5 feas4 perf4 total27; closest: Minesweeper grid, ConnectFour; metaphor: hidden grid hunt; IP: traditional generic). Chose simon for strong search + feasibility + not existing.
+adsense-prep_runs: 3
 ```
 
 <!-- end:ideas-lab-state.md -->
