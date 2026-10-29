@@ -61,7 +61,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Interactive logistic map chaos lab: explore the classic population model x→r*x*(1-x) with live time series, cobweb plot, and bifurcation diagram. Sliders for r (0-4), initial x, iterations; highlight period-doubling cascade, Feigenbaum point, windows of stability; educational readouts for attractor type; URL deep-link params; branded PNG of bifurcation + cobweb; EN+ES routes. Distinct from particle sandboxes — pure iterative math visualization with plots.
+id: logistic-chaos-lab
+path_en: /simulators/logistic-chaos-lab
+path_es: /es/simuladores/laboratorio-caos-logistico
+path_seo: n/a
+domain: simulators
+runs_total: 4
+runs_remaining: 4
+acceptance: User opens the simulator, adjusts r past 3.57, sees period-doubling then chaos in the bifurcation diagram and cobweb, shares URL or PNG with the diagram.
+share: both
+next_step_required: yes
+notes: C1 spring-mass-lab (4/3/3/4/4/4=22) closest: pendulum, n-body, double-pendulum; metaphor: discrete spring-mass constraint assembly; why not particle: connected components + energy readout. C2 heat-diffusion-grid (4/5/3/5/4/4=25) closest: states-of-matter, boids, sir; metaphor: grid cellular diffusion; why not: color-mapped temp cells, no freehand. C3 logistic-chaos-lab (3/4/4/5/5/5=26) closest: double-pendulum, sir-epidemic, predator-prey; metaphor: iterative parameter sweep + bifurcation diagram; why not particle-canvas: mathematical iteration plots (time series/cobweb/bifurcation), no freehand or particles. Chosen id: logistic-chaos-lab. Roll: CORE simulators (high weight 8, variety after recent games/kits/journeys; underused math chaos vs physics particles). IP: n/a (classic math model, public domain). adsense-prep_runs: 3. Run 1: core iteration engine + time series + cobweb + basic r slider + EN+ES routes + URL
 ```
 
 <!-- end:ideas-lab-state.md -->
