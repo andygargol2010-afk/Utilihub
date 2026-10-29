@@ -14,3 +14,5 @@ export const IvaCalculatorToolUi = lazy(() => import("../IvaCalculatorTool").the
 export const ReadingTimeCalculatorToolUi = lazy(() => import("../ReadingTimeCalculatorTool").then((m) => ({ default: m.ReadingTimeCalculatorTool })));
 export const TablespoonMlConverterToolUi = lazy(() => import("../TablespoonMlConverterTool").then((m) => ({ default: m.TablespoonMlConverterTool })));
 export const FluidOuncesMlConverterToolUi = lazy(() => import("../FluidOuncesMlConverterTool").then((m) => ({ default: m.FluidOuncesMlConverterTool })));
+export const CupsMlConverterToolUi = lazy(() => import("../CupsMlConverterTool").then((m) => ({ default: m.CupsMlConverterTool })));
+export const CelsiusKelvinConverterToolUi = lazy(() => import("../CelsiusKelvinConverterTool").then((m) => ({ default: m.CelsiusKelvinConverterTool })));

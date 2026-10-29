@@ -22,4 +22,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "conversor-cucharadas-ml": UI.TablespoonMlConverterToolUi,
   "conversor-onzas-ml": UI.FluidOuncesMlConverterToolUi,
   "conversor-tazas-ml": UI.CupsMlConverterToolUi,
+  "conversor-celsius-kelvin": UI.CelsiusKelvinConverterToolUi,
 };
