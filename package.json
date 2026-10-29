@@ -15,7 +15,9 @@
     "agent:run": "node scripts/agent-system.mjs run",
     "agent:innovator": "node scripts/innovator-cycle.mjs",
     "agent:self-improve": "node scripts/self-improvement.mjs",
-    "write-brand": "node scripts/write-brand-assets.mjs"
+    "write-brand": "node scripts/write-brand-assets.mjs",
+    "zernio:accounts": "node scripts/zernio-list-accounts.mjs",
+    "zernio:post": "node scripts/zernio-create-post.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
