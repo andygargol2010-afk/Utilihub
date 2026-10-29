@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-29 run 37
+last_run: 2026-10-29 run 38
 last_mode: HUNT
-last_fix: E041 (calculadora-iva 404 — missing from GENERAL_TOOLS index + UI wire)
+last_fix: none
 last_prevent: none
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, registry.tsx thin no PLACEHOLDER, games.index OK)
-new_findings: E041 regression (tool file + category utilidades present, but not imported in any catalog-index/part-*.ts → 404 on /es/herramientas/calculadora-iva). Sampled games index, 3d-modeler, home EN/ES, porcentaje, markup, interes-simple (latter two OK).
-deploy: latest READY 6ad2ca3 (pre-fix); new commits pending deploy
-notes: Known smoke E031 green. Discovery found missing index entry for existing tool. Fixed by adding to part-09 + lazy UI + slug map. Next: verify post-deploy that /es/herramientas/calculadora-iva loads with dedicated UI.
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, registry.tsx thin no PLACEHOLDER; E041 calculadora-iva loads with dedicated UI on prod)
+new_findings: none. Sampled: /es home OK, /es/juegos + snake OK, /es/herramientas/modelador-3d loads Modeler3D (cubes/spheres, not House), calculadora-semilla-cesped, generador-robots-txt, validador-iban all load with proper UI. No "Tool not available" or kind mismatch observed in samples.
+deploy: latest READY 6ad2ca3 (production); post-run37 commits exist but not yet in latest listed deploy (or already reflected since iva loads). No ERROR.
+notes: Known smoke E031 green, E041 verified working on live. Discovery path sampled games/studio/home/other tools outside catalog focus — all green. No fixes this run.
 ```
 
 <!-- end:error-hunter-state.md -->
