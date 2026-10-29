@@ -21,3 +21,7 @@ export const PercentageChangeCalculatorToolUi = lazy(() =>
 export const SavingsRateCalculatorToolUi = lazy(() =>
   import("../SavingsRateCalculatorTool").then((m) => ({ default: m.SavingsRateCalculatorTool })),
 );
+
+export const CupsMlConverterToolUi = lazy(() =>
+  import("../CupsMlConverterTool").then((m) => ({ default: m.CupsMlConverterTool })),
+);

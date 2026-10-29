@@ -21,4 +21,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-tiempo-de-lectura": UI.ReadingTimeCalculatorToolUi,
   "conversor-cucharadas-ml": UI.TablespoonMlConverterToolUi,
   "conversor-onzas-ml": UI.FluidOuncesMlConverterToolUi,
+  "conversor-tazas-ml": UI.CupsMlConverterToolUi,
 };
