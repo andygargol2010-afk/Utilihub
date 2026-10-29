@@ -23,7 +23,19 @@ export type SimDef = {
 };
 
 export const SIMULATORS: readonly SimDef[] = [
-  // ... (abbreviated for this call; full content from local will be used in practice)
+  {
+    slug: "molecular-motion",
+    slugEs: "movimiento-molecular",
+    nameEn: "Molecular motion",
+    nameEs: "Movimiento molecular",
+    tag: "chemistry",
+    theme: "lab",
+    emoji: "⚛️",
+    badgeEn: "States of matter",
+    badgeEs: "Estados de la materia",
+    summaryEn: "Interactive states of matter simulator: solid, liquid, and gas. Watch particles vibrate, flow, or fly free. Free educational chemistry/physics demo in the browser.",
+    summaryEs: "Simulador interactivo de estados de la materia: sólido, líquido y gas. Mirá cómo las partículas vibran, fluyen o vuelan. Demostración educativa gratis de química/física en el navegador.",
+  },
   {
     slug: "logistic-chaos-lab",
     slugEs: "laboratorio-caos-logistico",
@@ -39,4 +51,46 @@ export const SIMULATORS: readonly SimDef[] = [
   },
 ] as const;
 
-// Note: full catalog with all previous entries + new one + journeys update is intended; this is the addition for the call.
+export const SIM_JOURNEYS: Record<string, string[]> = {
+  "logistic-chaos-lab": ["sir-epidemic", "galton-board", "double-pendulum", "ecosystem"],
+};
+
+export function relatedSims(current: Pick<SimDef, "slug">): SimDef[] {
+  const curated = (SIM_JOURNEYS[current.slug] ?? [])
+    .map((slug) => SIMULATORS.find((s) => s.slug === slug))
+    .filter((s): s is SimDef => Boolean(s));
+  if (curated.length >= 4) return curated.slice(0, 4);
+  const used = new Set([current.slug, ...curated.map((s) => s.slug)]);
+  const rest = SIMULATORS.filter((s) => !used.has(s.slug));
+  return [...curated, ...rest].slice(0, 4);
+}
+
+export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
+  const key = slug.toLowerCase();
+  return SIMULATORS.find(
+    (s) => (locale === "es" ? s.slugEs === key : s.slug === key) || s.slug === key || s.slugEs === key,
+  );
+}
+
+export function simPath(sim: SimDef, locale: SimLocale = "en") {
+  return locale === "es" ? `/es/simuladores/${sim.slugEs}` : `/simulators/${sim.slug}`;
+}
+
+export function simName(sim: SimDef, locale: SimLocale = "en") {
+  return locale === "es" ? sim.nameEs : sim.nameEn;
+}
+
+export function simSummary(sim: SimDef, locale: SimLocale = "en") {
+  return locale === "es" ? sim.summaryEs : sim.summaryEn;
+}
+
+export function simBadge(sim: SimDef, locale: SimLocale = "en") {
+  return locale === "es" ? sim.badgeEs : sim.badgeEn;
+}
+
+export function simTagLabel(tag: SimTag, locale: SimLocale = "en") {
+  if (locale === "es") {
+    return tag === "physics" ? "Física" : tag === "chemistry" ? "Química" : "Matemática";
+  }
+  return tag === "physics" ? "Physics" : tag === "chemistry" ? "Chemistry" : "Math";
+}
