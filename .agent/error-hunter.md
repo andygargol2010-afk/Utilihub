@@ -15,7 +15,7 @@ Identity on every commit: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 
 ## Role
 
-Find and fix **real** user-facing or build-breaking defects on UtiliHub. Prefer high-severity regressions from other automations over cosmetic nits.
+Find and fix **real** user-facing or build-breaking defects on UtiliHub — **and prevent** the next ones. Prefer high-severity regressions from other automations over cosmetic nits.
 
 Not your job: new catalog tools, Ideas Lab features, HouseModeler3D feature work, Adsterra monetization changes, cadence/account changes.
 
@@ -37,34 +37,83 @@ Reply in **Spanish** at end of run.
 
 ---
 
-## Run budget
+## MODE (pick once per run)
 
-- **≤ 20%** of the run on regression smoke of **already fixed** catalog items (rotate which E### you sample).
-- **≥ 80%** on discovery + new fixes.
+At the start of every run, choose **exactly one** mode and write it into `error-hunter-state.md` as `mode: HUNT | PREVENT`.
+
+**How to choose (50 / 50):**
+- If `last_mode` in state is missing or was `PREVENT` → prefer **HUNT** (unless the previous HUNT found zero and files are clearly over soft limits — then PREVENT).
+- If `last_mode` was `HUNT` → prefer **PREVENT`.
+- Override to **PREVENT** when any tracked split target is over soft limit (see PREVENT playbook), even if the coin would say HUNT.
+- Override to **HUNT** when Vercel shows a current ERROR deploy or a user-facing 5xx/build break is known this run.
+
+Target long-run mix: **~50% HUNT / ~50% PREVENT**.
 
 ---
 
-## Discovery order
+## HUNT mode (discovery + fix)
 
+**Budget**
+- **≤ 20%** of the run on regression smoke of **already fixed** catalog items (rotate which E### you sample).
+- **≥ 80%** on discovery + new fixes.
+
+**Discovery order**
 1. Production / runtime errors if Vercel logs or live symptoms are available.
 2. Risky patterns in **recent commits** from other autos: `PLACEHOLDER`, `$(cat`, duplicate slugs, registry shrink, missing imports, wrong EN/ES casing, missing H1, broken internal links, sitemap URLs that 404.
 3. Code sampling of high-traffic routes and shared shells.
 
----
-
-## Definition of done (per fix)
-
+**Definition of done (per fix)**
 1. **Reproduction** written (steps or URL + expected vs actual).
 2. **Fix** applied with minimal blast radius.
 3. **Proof check** that demonstrates fixed (command, URL assertion, or validator).
 4. Catalog entry updated (`status`, `last_seen` / `fixed_at`) — never delete E### rows.
 5. Single commit (or no commit if no fix).
 
+**If nothing found:** **No git commit.** Spanish summary only: mode, what was scanned, smoke sample, conclusion.
+
 ---
 
-## If nothing found
+## PREVENT mode (stop the next breakage)
 
-**No git commit.** Spanish summary only: what was scanned, smoke sample, conclusion.
+Goal: reduce the chance that tools-builder / ideas-lab / other autos create the same class of failures (truncation, oversized writes, missing part files, registry/i18n drift).
+
+**Do one primary prevention outcome per run** (minimal blast radius). Prefer structural capacity over speculative refactors.
+
+**PREVENT playbook (pick the highest-priority item that still needs work)**
+
+1. **Split / pre-create capacity for files other autos expand every run**
+   - Catalog tools: if the smallest `src/lib/general/catalog-index/part-NN.ts` is **> ~150 lines or > ~6 KB**, create the next empty `part-NN` with the standard header + empty export array, and add a one-line `...PART_NN_TOOLS,` spread + import in `src/lib/general/index.ts` (surgical insert only).
+   - Registry UI: same for `src/components/general/registry-ui/components-NN.ts` and `slugs-NN.ts` when smallest exceeds soft limit; wire parent with one-line insert.
+   - i18n names: same for `src/lib/i18n/es-names/names-NN.ts` (never shrink `es.ts` below guard).
+   - SEO overrides: same for `src/lib/tool-seo-index/part-NN.ts`.
+   - Error Hunter catalog: if the smallest `.agent/error-hunter-catalog/E###-E###.md` is **> ~100 lines**, create the next empty range file and list it in `error-hunter-catalog.md`.
+   - Agent state/ops files that other autos rewrite: if any `.agent/*-state.md` or large ops file is approaching **> 20 KB**, propose or apply a split of historical notes into `.agent/logs/` or a dated archive — only if safe and reversible.
+
+2. **Guards and baselines**
+   - Keep `scripts/validate-catalog-size.mjs` + `scripts/catalog-baseline.json` truthful after intentional growth (update baseline only when a real approved expansion happened, never to hide shrinkage).
+   - If a recurring E### is “file wiped / truncated by API write”, add or tighten a check that fails the push when content is lost.
+
+3. **Structural debt that causes recurring HUNT findings**
+   - Category routing traps (e.g. `finanzas` on GENERAL_TOOLS → 404): scan for the pattern and fix or document a hard rule for tools-builder.
+   - Missing lazy UI / slug map entries for tools that already exist in catalog.
+
+4. **Do not** invent product features, new catalog tools, or HouseModeler work under PREVENT.
+
+**Definition of done (PREVENT)**
+1. One concrete capacity or guard change landed (or explicit “nothing over soft limits” with measurements).
+2. State updated: `mode: PREVENT`, what was measured, what was created/split.
+3. Single commit when a change ships; **no commit** if only measurement and everything is under limits.
+4. PRE-PUSH SELF-REVIEW a–d still required when committing.
+
+**Soft limits (triggers for PREVENT override)**
+| Target | Soft limit | Action |
+|--------|------------|--------|
+| catalog-index part-NN | ~150 lines / 6 KB | new part + wire |
+| registry-ui components/slugs-NN | ~150 lines / 6 KB | new file + wire |
+| es-names names-NN | ~150 lines / 6 KB | new file + wire |
+| tool-seo-index part-NN | ~150 lines / 6 KB | new file + wire |
+| error-hunter-catalog chunk | ~100 lines | new E### range file |
+| any single API-written source file | approaching 40 KB | split or refuse full rewrite |
 
 ## Large-file write rule (2026-10-28, after dca565d3 wipe)
 
