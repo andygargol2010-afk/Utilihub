@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-29 run 44
+last_run: 2026-10-29 run 45
 last_mode: HUNT
 last_fix: none
 last_prevent: none
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, registry.tsx thin real content no PLACEHOLDER)
-new_findings: no new user-facing breaks. Sampled /es (home loads, 956 tools), /es/juegos/tetris (loads + controls), /tools/3d-modeler (studio UI), /es/herramientas/calculadora-iva (dedicated UI), /es/herramientas/png-a-jpg (file upload, not calc), /tools/modelador-casas-3d (HouseModeler correct), /es/juegos/snake (loads), /es/herramientas/generador-de-contrasenas (SEO + crypto), /es/guias/orbit-pulse-catcher (full guide). No "Tool not available" in live pages, no kind mismatch, no deploy ERROR. Old ERROR (dpl_GPXW... on 027e2060) was AuroraRibbonWeaver export missing; fixed in later commits.
-deploy: latest READY 6ad2ca3 (production, dpl_4c9bRZHGmDMz1RHieKLyYRDDLiEL). No ERROR/BUILDING in recent list.
-notes: Known smoke E031 green (critical files real). Discovery: home ES, tetris, 3D modeler, IVA calc, PNG-to-JPG, house modeler, snake, password gen, guide all load correctly on prod (utilihub.net). No fixes this run — checks OK.
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, registry.tsx thin real content (split) no PLACEHOLDER; remains open for vigilance)
+new_findings: new tools (calculadora-caudal, conversor-celsius-kelvin) 404 on production utilihub.net because production deploy is pinned to older SHA 6ad2ca3 (READY); code on branch tip 1ee46ca is correctly wired (in catalog-index/part-09, registry-entries, dedicated UI components exist). No code bug. Sampled /es/juegos (loads), /es/juegos/tetris (loads), /es/herramientas/calculadora-iva (dedicated UI OK). No "Tool not available", no kind mismatch, no deploy ERROR.
+deploy: latest READY production dpl_4c9bRZHGmDMz1RHieKLyYRDDLiEL on 6ad2ca3. No ERROR/BUILDING in recent. Branch tip ahead.
+notes: Known smoke E031 green. Discovery: deploy lag causes live 404 for tools added after last prod deploy; not a code regression. No fixes this run — checks OK on branch. Production lag noted but no promote (immutable).
 ```
 
 <!-- end:error-hunter-state.md -->
