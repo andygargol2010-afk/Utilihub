@@ -67,7 +67,7 @@ path_es: /es/kits/ensamblaje-receta
 path_seo: n/a
 domain: kits
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: User adds at least 3 ingredients across 2 steps, sees live preview and shopping list update, then copies share link or downloads PNG.
 share: both
 next_step_required: yes
@@ -77,6 +77,7 @@ notes: IDEATE 2026-10-29. Roll math: p_fixed=0.35 triggered FIXED growth (r=0.05
 3. packing-list-kit (spatial packing planner for travel): 4/4/3/4/3/4=22. Closest: viajes tools, packing not interactive. Metaphor: constraint packing with discrete items.
 Rejected <3 none. IP n/a. Chosen recipe-assembly-kit. adsense-prep_runs still 3.
 EXECUTE 2026-10-29 run 1/4: Created core component RecipeAssemblyKit with add steps/ingredients (qty/unit/notes), live preview timeline, aggregated shopping list, URL deep-link (btoa JSON), basic branded PNG with accent bar, EN+ES dedicated routes. Mobile 390px considered (flex wrap). CWV-safe, no heavy deps. Adsterra intact. Core playable.
+EXECUTE 2026-10-29 run 2/4: Added step + ingredient reordering (up/down buttons + HTML5 drag-and-drop), visual progress waypoints (bar + per-step accent when ingredients present), live preview highlight for completed steps. PNG accent bar retained. Mobile 390px flex-wrap. CWV-safe. Adsterra intact.
 adsense-prep_runs: 3
 ```
 

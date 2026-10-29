@@ -69,6 +69,8 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
     return decodeRecipe(params.get("r")) || emptyRecipe();
   });
   const [copied, setCopied] = useState(false);
+  const [dragStep, setDragStep] = useState<string | null>(null);
+  const [dragIng, setDragIng] = useState<{ stepId: string; ingId: string } | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -92,6 +94,11 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
     return Array.from(map.values());
   }, [recipe]);
 
+  const progress = useMemo(() => {
+    const filled = recipe.steps.filter((s) => s.ingredients.length > 0).length;
+    return { filled, total: recipe.steps.length, pct: recipe.steps.length ? Math.round((filled / recipe.steps.length) * 100) : 0 };
+  }, [recipe]);
+
   const addStep = () => {
     setRecipe((r) => ({
       ...r,
@@ -104,6 +111,16 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
       ...r,
       steps: r.steps.map((s) => (s.id === stepId ? { ...s, title } : s)),
     }));
+  };
+
+  const moveStep = (from: number, to: number) => {
+    if (to < 0 || to >= recipe.steps.length) return;
+    setRecipe((r) => {
+      const next = [...r.steps];
+      const [item] = next.splice(from, 1);
+      next.splice(to, 0, item);
+      return { ...r, steps: next };
+    });
   };
 
   const addIngredient = (stepId: string) => {
@@ -155,6 +172,20 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
     }));
   };
 
+  const moveIngredient = (stepId: string, from: number, to: number) => {
+    setRecipe((r) => ({
+      ...r,
+      steps: r.steps.map((s) => {
+        if (s.id !== stepId) return s;
+        if (to < 0 || to >= s.ingredients.length) return s;
+        const next = [...s.ingredients];
+        const [item] = next.splice(from, 1);
+        next.splice(to, 0, item);
+        return { ...s, ingredients: next };
+      }),
+    }));
+  };
+
   const copyLink = async () => {
     if (typeof window === "undefined") return;
     try {
@@ -169,13 +200,13 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
   const sharePng = () => {
     const canvas = document.createElement("canvas");
     canvas.width = 800;
-    canvas.height = 600;
+    canvas.height = 640;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, 800, 600);
+    ctx.fillRect(0, 0, 800, 640);
     ctx.fillStyle = "#22c55e";
-    ctx.fillRect(0, 0, 8, 600);
+    ctx.fillRect(0, 0, 8, 640);
     ctx.fillStyle = "#e2e8f0";
     ctx.font = "bold 32px system-ui, sans-serif";
     ctx.fillText(recipe.title || (es ? "Receta ensamblada" : "Assembled Recipe"), 40, 70);
@@ -184,7 +215,8 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
     ctx.fillText(es ? "Kit de ensamblaje de recetas" : "Recipe Assembly Kit", 40, 100);
     let y = 150;
     recipe.steps.forEach((step, si) => {
-      ctx.fillStyle = "#e2e8f0";
+      const done = step.ingredients.length > 0;
+      ctx.fillStyle = done ? "#22c55e" : "#e2e8f0";
       ctx.font = "bold 18px system-ui, sans-serif";
       ctx.fillText(`${si + 1}. ${step.title || (es ? "Paso" : "Step")}`, 40, y);
       y += 28;
@@ -198,7 +230,7 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
     });
     ctx.fillStyle = "#64748b";
     ctx.font = "12px system-ui, sans-serif";
-    ctx.fillText("utilihub.com", 40, 560);
+    ctx.fillText("utilihub.com", 40, 600);
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = "recipe-assembly.png";
@@ -234,72 +266,123 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
         </div>
       </div>
 
+      <div className="rounded-2xl border border-border bg-card/50 p-3">
+        <div className="flex items-center justify-between text-sm">
+          <span className="font-bold">{es ? "Progreso" : "Progress"}</span>
+          <span className="text-muted-foreground">{progress.filled}/{progress.total} {es ? "pasos con ingredientes" : "steps with ingredients"} · {progress.pct}%</span>
+        </div>
+        <div className="mt-2 flex gap-1">
+          {recipe.steps.map((s, i) => (
+            <div
+              key={s.id}
+              className={`h-2 flex-1 rounded-full ${s.ingredients.length > 0 ? "bg-primary" : "bg-muted"}`}
+              title={`${i + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+
       <div className="space-y-4">
-        {recipe.steps.map((step, si) => (
-          <div key={step.id} className="rounded-2xl border border-border bg-card p-4">
-            <div className="flex items-center gap-2">
-              <span className="flex size-8 items-center justify-center rounded-full bg-primary text-xs font-black text-primary-foreground">
-                {si + 1}
-              </span>
-              <input
-                type="text"
-                value={step.title}
-                onChange={(e) => updateStepTitle(step.id, e.target.value)}
-                className="flex-1 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium"
-                placeholder={es ? "Nombre del paso" : "Step name"}
-              />
-            </div>
-            <div className="mt-3 space-y-2">
-              {step.ingredients.map((ing) => (
-                <div key={ing.id} className="flex flex-wrap items-center gap-2 text-sm">
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.1"
-                    value={ing.qty}
-                    onChange={(e) => updateIngredient(step.id, ing.id, "qty", parseFloat(e.target.value) || 0)}
-                    className="w-16 rounded border border-border px-2 py-1"
-                  />
-                  <input
-                    type="text"
-                    value={ing.unit}
-                    onChange={(e) => updateIngredient(step.id, ing.id, "unit", e.target.value)}
-                    className="w-16 rounded border border-border px-2 py-1"
-                    placeholder="g"
-                  />
-                  <input
-                    type="text"
-                    value={ing.name}
-                    onChange={(e) => updateIngredient(step.id, ing.id, "name", e.target.value)}
-                    className="flex-1 min-w-[120px] rounded border border-border px-2 py-1"
-                    placeholder={es ? "Ingrediente" : "Ingredient"}
-                  />
-                  <input
-                    type="text"
-                    value={ing.notes}
-                    onChange={(e) => updateIngredient(step.id, ing.id, "notes", e.target.value)}
-                    className="w-32 rounded border border-border px-2 py-1"
-                    placeholder={es ? "Notas" : "Notes"}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeIngredient(step.id, ing.id)}
-                    className="rounded bg-destructive/10 px-2 py-1 text-xs text-destructive"
-                  >
-                    ×
-                  </button>
+        {recipe.steps.map((step, si) => {
+          const done = step.ingredients.length > 0;
+          return (
+            <div
+              key={step.id}
+              draggable
+              onDragStart={() => setDragStep(step.id)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => {
+                if (!dragStep || dragStep === step.id) return;
+                const from = recipe.steps.findIndex((s) => s.id === dragStep);
+                if (from >= 0) moveStep(from, si);
+                setDragStep(null);
+              }}
+              className={`rounded-2xl border p-4 ${done ? "border-primary/40 bg-card" : "border-border bg-card"}`}
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`flex size-8 items-center justify-center rounded-full text-xs font-black ${done ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                  {si + 1}
+                </span>
+                <input
+                  type="text"
+                  value={step.title}
+                  onChange={(e) => updateStepTitle(step.id, e.target.value)}
+                  className="min-w-[140px] flex-1 rounded-lg border border-border bg-background px-3 py-1.5 text-sm font-medium"
+                  placeholder={es ? "Nombre del paso" : "Step name"}
+                />
+                <div className="flex gap-1">
+                  <button type="button" onClick={() => moveStep(si, si - 1)} disabled={si === 0} className="rounded bg-secondary px-2 py-1 text-xs disabled:opacity-40">↑</button>
+                  <button type="button" onClick={() => moveStep(si, si + 1)} disabled={si === recipe.steps.length - 1} className="rounded bg-secondary px-2 py-1 text-xs disabled:opacity-40">↓</button>
                 </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => addIngredient(step.id)}
-                className="mt-1 rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium"
-              >
-                {es ? "+ Ingrediente" : "+ Ingredient"}
-              </button>
+              </div>
+              <div className="mt-3 space-y-2">
+                {step.ingredients.map((ing, ii) => (
+                  <div
+                    key={ing.id}
+                    draggable
+                    onDragStart={() => setDragIng({ stepId: step.id, ingId: ing.id })}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => {
+                      if (!dragIng || dragIng.stepId !== step.id || dragIng.ingId === ing.id) return;
+                      const from = step.ingredients.findIndex((i) => i.id === dragIng.ingId);
+                      if (from >= 0) moveIngredient(step.id, from, ii);
+                      setDragIng(null);
+                    }}
+                    className="flex flex-wrap items-center gap-2 text-sm"
+                  >
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.1"
+                      value={ing.qty}
+                      onChange={(e) => updateIngredient(step.id, ing.id, "qty", parseFloat(e.target.value) || 0)}
+                      className="w-16 rounded border border-border px-2 py-1"
+                    />
+                    <input
+                      type="text"
+                      value={ing.unit}
+                      onChange={(e) => updateIngredient(step.id, ing.id, "unit", e.target.value)}
+                      className="w-16 rounded border border-border px-2 py-1"
+                      placeholder="g"
+                    />
+                    <input
+                      type="text"
+                      value={ing.name}
+                      onChange={(e) => updateIngredient(step.id, ing.id, "name", e.target.value)}
+                      className="min-w-[120px] flex-1 rounded border border-border px-2 py-1"
+                      placeholder={es ? "Ingrediente" : "Ingredient"}
+                    />
+                    <input
+                      type="text"
+                      value={ing.notes}
+                      onChange={(e) => updateIngredient(step.id, ing.id, "notes", e.target.value)}
+                      className="w-28 rounded border border-border px-2 py-1"
+                      placeholder={es ? "Notas" : "Notes"}
+                    />
+                    <div className="flex gap-1">
+                      <button type="button" onClick={() => moveIngredient(step.id, ii, ii - 1)} disabled={ii === 0} className="rounded bg-secondary px-1.5 py-1 text-xs disabled:opacity-40">↑</button>
+                      <button type="button" onClick={() => moveIngredient(step.id, ii, ii + 1)} disabled={ii === step.ingredients.length - 1} className="rounded bg-secondary px-1.5 py-1 text-xs disabled:opacity-40">↓</button>
+                      <button
+                        type="button"
+                        onClick={() => removeIngredient(step.id, ing.id)}
+                        className="rounded bg-destructive/10 px-2 py-1 text-xs text-destructive"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => addIngredient(step.id)}
+                  className="mt-1 rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium"
+                >
+                  {es ? "+ Ingrediente" : "+ Ingredient"}
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         <button
           type="button"
           onClick={addStep}
@@ -317,7 +400,7 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
           <div className="mt-2 space-y-2 text-sm">
             {recipe.steps.map((step, si) => (
               <div key={step.id}>
-                <strong>
+                <strong className={step.ingredients.length > 0 ? "text-primary" : ""}>
                   {si + 1}. {step.title || (es ? "Paso" : "Step")}
                 </strong>
                 <ul className="ml-4 list-disc">
