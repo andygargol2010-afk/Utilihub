@@ -1,1 +1,1 @@
-$(cat /tmp/LogisticChaosLab.tsx)
+PLACEHOLDER_TO_REPLACE
