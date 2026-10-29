@@ -61,4 +61,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-markup": "Calculadora de markup",
   "calculadora-precio-por-unidad": "Calculadora de precio por unidad",
   "calculadora-tasa-de-ahorro": "Calculadora de tasa de ahorro",
+  "calculadora-tiempo-de-lectura": "Calculadora de tiempo de lectura",
 };

@@ -11,3 +11,4 @@ export const PercentageOfNumberCalculatorToolUi = lazy(() => import("../Percenta
 export const MarkupCalculatorToolUi = lazy(() => import("../MarkupCalculatorTool").then((m) => ({ default: m.MarkupCalculatorTool })));
 export const UnitPriceCalculatorToolUi = lazy(() => import("../UnitPriceCalculatorTool").then((m) => ({ default: m.UnitPriceCalculatorTool })));
 export const IvaCalculatorToolUi = lazy(() => import("../IvaCalculatorTool").then((m) => ({ default: m.IvaCalculatorTool })));
+export const ReadingTimeCalculatorToolUi = lazy(() => import("../ReadingTimeCalculatorTool").then((m) => ({ default: m.ReadingTimeCalculatorTool })));
