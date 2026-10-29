@@ -3,7 +3,7 @@ import { makeTool, faq } from "./types";
 const tool = makeTool(
   "calculadora-interes-simple",
   "Simple Interest Calculator",
-  "finanzas",
+  "utilidades",
   "calculator",
   "Calculate simple interest and total amount from principal, rate, and time.",
   [
