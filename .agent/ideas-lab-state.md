@@ -13,15 +13,15 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: games
-last_closed_id: hangman-classic
+last_closed_domain: simulators
+last_closed_id: logistic-chaos-lab
 p_fixed: 0.35
 
 weights_core:
   kits: 5
   journeys: 5
   games: 2
-  simulators: 8
+  simulators: 6
   studio-composition: 3
   playgrounds: 8
   quality-lift: 2
@@ -45,6 +45,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-29 | simulators | logistic-chaos-lab | Interactive logistic map chaos lab complete after 4 runs. Live time series, cobweb plot, bifurcation diagram with period-doubling cascade (P2/P4/P8), Feigenbaum point, stability windows (P3/P5), zoom cascade toggle, attractor type readout, URL deep-link, branded PNG, EN+ES routes (/simulators/logistic-chaos-lab, /es/simuladores/laboratorio-caos-logistico), mobile 390px. CWV-safe. Adsterra intact.
 - 2026-10-29 | games | hangman-classic | Classic Hangman word-guess game complete after 4 runs. Letter buttons + keyboard, categories + difficulty (easy/normal/hard), one hint, progressive SVG stick figure (extended for >6 misses), live guess announcements (aria-live), win/lose states, URL deep-link (?cat=&word=&diff=), branded PNG, share-link, EN+ES dedicated routes (/hangman, /es/ahorcado) + catalog entry, mobile 390px flex-wrap. CWV-safe. Adsterra intact.
 - 2026-10-29 | kits | recipe-assembly-kit | Interactive multi-step recipe assembly kit complete after 4 runs. Discrete ingredient cards into ordered steps with reordering/drag, cuisine presets, live timeline/preview + aggregated shopping list, progress waypoints, URL deep-link, branded PNG with accent bar + shopping, EN+ES routes, mobile 390px flex-wrap, reset. CWV-safe. Adsterra intact.
 - 2026-10-29 | journeys | choice-story-journey | Interactive narrative choice journey complete after 4 runs. Branching decision cards, labeled progress waypoints, back/undo, current-step highlight, 3 endings with accent colors, URL deep-link path, branded PNG with accent bar, copy-link, EN+ES routes, mobile 390px. CWV-safe. Adsterra intact.
@@ -61,20 +62,7 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive logistic map chaos lab: explore the classic population model x→r*x*(1-x) with live time series, cobweb plot, and bifurcation diagram. Sliders for r (0-4), initial x, iterations; highlight period-doubling cascade, Feigenbaum point, windows of stability; educational readouts for attractor type; URL deep-link params; branded PNG of bifurcation + cobweb; EN+ES routes. Distinct from particle sandboxes — pure iterative math visualization with plots.
-id: logistic-chaos-lab
-path_en: /simulators/logistic-chaos-lab
-path_es: /es/simuladores/laboratorio-caos-logistico
-path_seo: n/a
-domain: simulators
-runs_total: 4
-runs_remaining: 0
-acceptance: User opens the simulator, adjusts r past 3.57, sees period-doubling then chaos in the bifurcation diagram and cobweb, shares URL or PNG with the diagram.
-share: both
-next_step_required: no
-notes: C1 spring-mass-lab (4/3/3/4/4/4=22) closest: pendulum, n-body, double-pendulum; metaphor: discrete spring-mass constraint assembly; why not particle: connected components + energy readout. C2 heat-diffusion-grid (4/5/3/5/4/4=25) closest: states-of-matter, boids, sir; metaphor: grid cellular diffusion; why not: color-mapped temp cells, no freehand. C3 logistic-chaos-lab (3/4/4/5/5/5=26) closest: double-pendulum, sir-epidemic, predator-prey; metaphor: iterative parameter sweep + bifurcation diagram; why not particle-canvas: mathematical iteration plots (time series/cobweb/bifurcation), no freehand or particles. Chosen id: logistic-chaos-lab. Roll: CORE simulators (high weight 8, variety after recent games/kits/journeys; underused math chaos vs physics particles). IP: n/a (classic math model, public domain). adsense-prep_runs: 3. Run 1 done: core iteration engine + time series + cobweb + basic r/x0/iters sliders + EN+ES routes via catalog + URL deep-link + branded PNG. Run 2 done: bifurcation diagram (r 0-4 sweep, transient discard + plot points), attractor type readout (fixed/period-n/chaos via unique last values), period-doubling highlights (P2@3, P4@3.449, P8@3.544, Feigenbaum@3.57) + current-r vertical marker. Run 3 done: stability windows callouts (P3 ~3.828, P5 ~3.74 shaded + labels on bif diagram), current-r marker turns green in window, readout notes stability window, descriptive text updated. Run 4 done: zoom cascade toggle (focuses bif diagram on r=2.8–4 for clearer period-doubling view + adjusted markers/windows/labels), final polish, updated copy. Ready to close.
-adsense-prep_runs: 3
+status: none
 ```
 
 <!-- end:ideas-lab-state.md -->
