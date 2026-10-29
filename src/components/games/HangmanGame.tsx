@@ -59,6 +59,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
   const [misses, setMisses] = useState(0);
   const [hintsUsed, setHintsUsed] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [announce, setAnnounce] = useState("");
 
   const maxMisses = DIFFS.find((d) => d.id === diff)?.max ?? 6;
 
@@ -89,6 +90,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
     setGuessed(new Set());
     setMisses(0);
     setHintsUsed(0);
+    setAnnounce("");
   }, [es]);
 
   const updateUrl = useCallback((nextCat: Cat, nextWord: string, nextDiff: Diff) => {
@@ -116,9 +118,15 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
       const next = new Set(guessed);
       next.add(L);
       setGuessed(next);
-      if (!word.includes(L)) setMisses((m) => m + 1);
+      const correct = word.includes(L);
+      if (!correct) setMisses((m) => m + 1);
+      setAnnounce(
+        correct
+          ? es ? `Letra ${L} correcta` : `Letter ${L} correct`
+          : es ? `Letra ${L} incorrecta. Fallos: ${misses + 1}` : `Letter ${L} wrong. Misses: ${misses + 1}`,
+      );
     },
-    [over, guessed, word],
+    [over, guessed, word, es, misses],
   );
 
   const giveHint = useCallback(() => {
@@ -131,7 +139,8 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
     setGuessed(next);
     setHintsUsed((h) => h + 1);
     setMisses((m) => m + 1);
-  }, [over, word, guessed, hintsUsed]);
+    setAnnounce(es ? `Pista: letra ${letter}` : `Hint: letter ${letter}`);
+  }, [over, word, guessed, hintsUsed, es]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -156,6 +165,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
       setGuessed(new Set());
       setMisses(0);
       setHintsUsed(0);
+      setAnnounce("");
       updateUrl(nextCat, next, nextDiff);
     },
     [cat, diff, es, updateUrl],
@@ -200,6 +210,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
     if (misses >= 4) { ctx.beginPath(); ctx.moveTo(160, 120); ctx.lineTo(180, 140); ctx.stroke(); }
     if (misses >= 5) { ctx.beginPath(); ctx.moveTo(160, 155); ctx.lineTo(140, 180); ctx.stroke(); }
     if (misses >= 6) { ctx.beginPath(); ctx.moveTo(160, 155); ctx.lineTo(180, 180); ctx.stroke(); }
+    if (misses >= 7) { ctx.beginPath(); ctx.arc(156, 92, 1.5, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(164, 92, 1.5, 0, Math.PI * 2); ctx.fill(); }
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 22px system-ui, sans-serif";
     const display = revealed.join(" ");
@@ -252,8 +263,18 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
             {misses >= 4 && <line x1="70" y1="55" x2="85" y2="65" stroke="#f87171" strokeWidth="3" />}
             {misses >= 5 && <line x1="70" y1="75" x2="55" y2="95" stroke="#f87171" strokeWidth="3" />}
             {misses >= 6 && <line x1="70" y1="75" x2="85" y2="95" stroke="#f87171" strokeWidth="3" />}
+            {misses >= 7 && (
+              <>
+                <circle cx="66" cy="33" r="1.5" fill="#f87171" />
+                <circle cx="74" cy="33" r="1.5" fill="#f87171" />
+              </>
+            )}
           </svg>
         </div>
+      </div>
+
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {announce}
       </div>
 
       <div className="flex flex-wrap justify-center gap-1 sm:gap-2" role="group" aria-label={es ? "Palabra" : "Word"}>

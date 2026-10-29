@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: kits
-last_closed_id: recipe-assembly-kit
+last_closed_domain: games
+last_closed_id: hangman-classic
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-29 | games | hangman-classic | Classic Hangman word-guess game complete after 4 runs. Letter buttons + keyboard, categories + difficulty (easy/normal/hard), one hint, progressive SVG stick figure (extended for >6 misses), live guess announcements (aria-live), win/lose states, URL deep-link (?cat=&word=&diff=), branded PNG, share-link, EN+ES dedicated routes (/hangman, /es/ahorcado) + catalog entry, mobile 390px flex-wrap. CWV-safe. Adsterra intact.
 - 2026-10-29 | kits | recipe-assembly-kit | Interactive multi-step recipe assembly kit complete after 4 runs. Discrete ingredient cards into ordered steps with reordering/drag, cuisine presets, live timeline/preview + aggregated shopping list, progress waypoints, URL deep-link, branded PNG with accent bar + shopping, EN+ES routes, mobile 390px flex-wrap, reset. CWV-safe. Adsterra intact.
 - 2026-10-29 | journeys | choice-story-journey | Interactive narrative choice journey complete after 4 runs. Branching decision cards, labeled progress waypoints, back/undo, current-step highlight, 3 endings with accent colors, URL deep-link path, branded PNG with accent bar, copy-link, EN+ES routes, mobile 390px. CWV-safe. Adsterra intact.
 - 2026-10-28 | simulators | sir-epidemic-simulator | Interactive SIR epidemic compartmental model simulator complete after 4 runs. Live S/I/R curves, discrete interventions (lockdown, vaccination), Peak I + day tracking with marker, cumulative total cases, URL deep-link, branded PNG, EN+ES routes, mobile 390px, preset scenario buttons. CWV-safe. Adsterra intact.
@@ -60,20 +61,7 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Classic Hangman word-guess game. User selects letter buttons or types to reveal hidden word with limited misses (6-8). Progress shows word slots and miss counter / simple stick figure. Win on full reveal, lose on max misses. Categories or random words. URL deep-link for seed word. Branded PNG of progress. EN+ES routes.
-id: hangman-classic
-path_en: /hangman
-path_es: /es/ahorcado
-path_seo: n/a
-domain: games
-runs_total: 4
-runs_remaining: 1
-acceptance: User clicks letter buttons to guess a hidden word, sees revealed letters and remaining misses, wins by completing the word or loses after max misses.
-share: both
-next_step_required: yes
-notes: Rubric C1 HangmanClassic (4/3/5/4/5/5=26) closest-3: MemoryGame (pairs), FormulaMemoryGame (recall), text word tools; metaphor: limited-miss letter reveal for hidden word; why not particle-canvas: discrete buttons + slot display, no freehand or particles. C2 BattleshipGrid (4/4/4/3/4/5=24) closest: Minesweeper (reveal), ConnectFour (grid), Pathfinder; metaphor: ship place then alternate hunt hit/miss; why not: grid placement/shots. C3 SlidingPuzzle15 (3/3/3/4/5/5=23) closest: Game2048 (slide), LightsOut, TicTacToe; metaphor: tile slide to ordered goal. Why not particle-canvas for all. IP check C1: traditional hangman (public-domain mechanics, generic UI, no branded assets). Chosen id: hangman-classic (highest score, strong search "play hangman online", distinct from recent grid games). Roll: CORE games (variety mandate after recent kits/journeys + saturated playgrounds; underused weight 2; p_fixed 0.35 not selecting growth this cycle). adsense-prep_runs: 3. Run 1 done: core letter buttons A-Z, word slots reveal, miss counter + progressive SVG stick figure, win/lose states, EN+ES strings, dedicated routes /hangman + /es/ahorcado, catalog + registry entry so also under /games/hangman. Run 2 done: category selector (random/animals/countries/food/tech) with expanded word lists EN+ES, URL deep-link via ?cat=&word=, keyboard A-Z input, branded progress PNG export, share-link copy, mobile 390px polish (tighter slots/buttons, flex-wrap), reset/new word. Run 3 done: difficulty selector (easy/normal/hard → 8/6/4 max misses), one hint button (reveals random missing letter + costs 1 miss), expanded word lists (+4 per category), polished win/lose UX with larger status + aria-live, better button arias, URL includes ?diff=, mobile flex-wrap preserved. Next run 4: final polish, any a11y or edge cases, then CLOSE.
-adsense-prep_runs: 3
+status: none
 ```
 
 <!-- end:ideas-lab-state.md -->
