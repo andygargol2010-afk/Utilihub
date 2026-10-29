@@ -71,11 +71,20 @@ export const SEO_GROWTH_TOOLS = [
     "sleep cycle",
     "ciclos de sueño",
   ]),
-  t("pago-tarjeta-credito", "Credit card payoff calculator", "utilidades", "number", "Estimate months and interest to pay off a credit card balance.", [
-    "credit card payoff",
-    "card debt calculator",
-    "pago tarjeta",
-  ]),
+  makeTool(
+    "pago-tarjeta-credito",
+    "Credit card payoff calculator",
+    "utilidades",
+    "number",
+    "Estimate months and interest to pay off a credit card balance.",
+    ["credit card payoff", "card debt calculator", "pago tarjeta", "credit card minimum payment"],
+    {
+      mode: "seo-growth",
+      title: "Credit Card Payoff Calculator — Months & Interest | UtiliHub",
+      description:
+        "Estimate how many months it takes to pay off a credit card balance and how much interest you pay, from balance, APR, and monthly payment. Free, local, no signup.",
+    },
+  ),
   t("cron-generator", "Cron expression helper", "desarrollo", "code", "Build and explain common cron schedules.", [
     "cron expression",
     "cron generator",
