@@ -59,4 +59,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-imc": "Calculadora de IMC",
   "calculadora-porcentaje-de-numero": "Calculadora de porcentaje de un número",
   "calculadora-markup": "Calculadora de markup",
+  "calculadora-precio-por-unidad": "Calculadora de precio por unidad",
 };

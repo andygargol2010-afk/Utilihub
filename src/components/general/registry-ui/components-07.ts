@@ -9,3 +9,4 @@ export const SuccessiveDiscountCalculatorToolUi = lazy(() => import("../Successi
 export const BmiCalculatorToolUi = lazy(() => import("../BmiCalculatorTool").then((m) => ({ default: m.BmiCalculatorTool })));
 export const PercentageOfNumberCalculatorToolUi = lazy(() => import("../PercentageOfNumberCalculatorTool").then((m) => ({ default: m.PercentageOfNumberCalculatorTool })));
 export const MarkupCalculatorToolUi = lazy(() => import("../MarkupCalculatorTool").then((m) => ({ default: m.MarkupCalculatorTool })));
+export const UnitPriceCalculatorToolUi = lazy(() => import("../UnitPriceCalculatorTool").then((m) => ({ default: m.UnitPriceCalculatorTool })));

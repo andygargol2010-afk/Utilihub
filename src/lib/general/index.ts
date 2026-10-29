@@ -11,6 +11,7 @@ import { GENERAL_TOOLS_PART_05 } from "./catalog-index/part-05";
 import { GENERAL_TOOLS_PART_06 } from "./catalog-index/part-06";
 import { GENERAL_TOOLS_PART_07 } from "./catalog-index/part-07";
 import { GENERAL_TOOLS_PART_08 } from "./catalog-index/part-08";
+import { GENERAL_TOOLS_PART_09 } from "./catalog-index/part-09";
 
 export { GENERAL_CATEGORIES };
 
@@ -24,4 +25,5 @@ export const GENERAL_TOOLS = [
   ...GENERAL_TOOLS_PART_06,
   ...GENERAL_TOOLS_PART_07,
   ...GENERAL_TOOLS_PART_08,
+  ...GENERAL_TOOLS_PART_09,
 ];
