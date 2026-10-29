@@ -3,7 +3,7 @@ import { makeTool, faq } from "./types";
 const tool = makeTool(
   "calculadora-presupuesto-mensual",
   "Monthly Budget Calculator",
-  "finanzas",
+  "utilidades",
   "calculator",
   "Calculate remaining monthly budget after fixed and variable expenses.",
   [
