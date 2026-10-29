@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-29 run 42
+last_run: 2026-10-29 run 43
 last_mode: HUNT
 last_fix: none
 last_prevent: none
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, registry.tsx thin real content no PLACEHOLDER; E041 calculadora-iva dedicated UI live)
-new_findings: no new user-facing breaks. Sampled /es/herramientas/png-a-jpg (file upload UI + SEO names tool), /es/juegos (20 games), /es/herramientas/calculadora-imc (SEO formula + OMS), /es/herramientas/modelador-3d (cubes/spheres not House), /es/herramientas/modelador-casas-3d (walls/floors), /es/herramientas/calculadora-iva (Sumar/Extraer dedicated), /es/herramientas/conversor-kmh-ms, /es/herramientas/pixelihub, /es/juegos/snake, /es/herramientas/comprimir-imagen. No "Tool not available" in live pages, no kind mismatch, no deploy ERROR. Runtime logs empty. Soft catalog duplicates from prior note not re-verified as user break.
-deploy: latest READY 6ad2ca3 (production, dpl_4c9bRZHGmDMz1RHieKLyYRDDLiEL). No ERROR/BUILDING in recent list.
-notes: Known smoke E031 green (critical files real). Discovery: image, games, 3d studios, imc, iva, kmh-ms, pixelihub, snake, compress all load correctly on prod. No fixes this run — checks OK.
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, registry.tsx thin real content no PLACEHOLDER)
+new_findings: no new user-facing breaks. Sampled /es (home loads, 956 tools), /es/juegos (20 games), /es/juegos/tetris (page + loading), /es/herramientas/regla-de-tres (SEO names tool + formula), /es/herramientas/contador-de-palabras (SEO + local), /es/herramientas/conversor-temperatura (SEO names), /es/herramientas/calculadora-de-porcentajes + /porcentaje (live), /es/herramientas/generador-de-contrasenas (SEO + crypto). Non-existent slugs calculadora-porcentaje/porcentajes 404 as expected. No "Tool not available" in live pages, no kind mismatch, no deploy ERROR. Runtime logs not retained on hobby (recent window empty/unavailable).
+deploy: latest READY 6ad2ca3 (production, dpl_4c9bRZHGmDMz1RHieKLyYRDDLiEL). No ERROR/BUILDING in recent list. Newer preview READY but not production.
+notes: Known smoke E031 green (critical files real). Discovery: home, games list + tetris, percentage tools, word counter, temp converter, password gen all load correctly on prod (utilihub.net). No fixes this run — checks OK.
 ```
 
 <!-- end:error-hunter-state.md -->
