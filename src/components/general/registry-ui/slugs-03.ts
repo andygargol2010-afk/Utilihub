@@ -20,4 +20,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-iva": UI.IvaCalculatorToolUi,
   "calculadora-tiempo-de-lectura": UI.ReadingTimeCalculatorToolUi,
   "conversor-cucharadas-ml": UI.TablespoonMlConverterToolUi,
+  "conversor-onzas-ml": UI.FluidOuncesMlConverterToolUi,
 };
