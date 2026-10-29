@@ -48,4 +48,60 @@ export const TOOL_SEO_OVERRIDES_COCINA: Record<string, ToolSeoOverride> = {
       },
     ],
   },
+  "calculadora-ratio-cafe": {
+    metaTitle: "Coffee Ratio Calculator — Coffee to Water Ratio (1:15) | UtiliHub",
+    metaTitleEs: "Calculadora de ratio de café — proporción café y agua (1:15) | UtiliHub",
+    metaDescription:
+      "Free coffee-to-water ratio calculator. Enter coffee grams and brew ratio (1:15, 1:16, 1:17) to get the water in grams for pour-over, French press, or drip. Runs in your browser.",
+    metaDescriptionEs:
+      "Calculadora de proporción café-agua gratis: ingresá los gramos de café y el ratio (1:15, 1:16, 1:17) y obtené los gramos de agua para V60, prensa francesa o filtrado. En el navegador, sin registro.",
+    about: [
+      "Brewing water = coffee grams × ratio. A 1:15 ratio with 20 g of coffee needs 300 g of water; a lighter 1:17 cup needs 340 g.",
+      "Common ranges: 1:15 to 1:17 for pour-over, 1:12 to 1:15 for French press, 1:16 to 1:17 for drip machines.",
+      "Weigh both coffee and water in grams (1 g of water ≈ 1 ml) so the ratio stays consistent on any scale.",
+    ],
+    aboutEs: [
+      "Agua de preparación = gramos de café × ratio. Con 20 g de café y un ratio 1:15 necesitás 300 g de agua; con 1:17, 340 g.",
+      "Rangos habituales: 1:15 a 1:17 en vertido (V60), 1:12 a 1:15 en prensa francesa y 1:16 a 1:17 en filtrado de goteo.",
+      "Pesá café y agua en gramos (1 g de agua ≈ 1 ml) para que el ratio sea igual con cualquier balanza.",
+    ],
+    steps: [
+      "Enter the coffee weight in grams.",
+      "Enter the brew ratio (e.g. 15 for 1:15).",
+      "Read the water needed in grams and start brewing.",
+    ],
+    stepsEs: [
+      "Ingresá el peso del café en gramos.",
+      "Ingresá el ratio de preparación (p. ej. 15 para 1:15).",
+      "Leé los gramos de agua necesarios y prepará.",
+    ],
+    faq: [
+      {
+        q: "How do I calculate the coffee to water ratio?",
+        a: "Water (g) = coffee (g) × ratio. Example: 18 g of coffee at 1:16 → 18 × 16 = 288 g of water.",
+      },
+      {
+        q: "What is a good ratio for pour-over?",
+        a: "1:15 to 1:17 is typical: 1:15 gives a stronger cup, 1:17 a lighter one.",
+      },
+      {
+        q: "Is it free and private?",
+        a: "Yes. The calculation runs in your browser with no signup and nothing is uploaded.",
+      },
+    ],
+    faqEs: [
+      {
+        q: "¿Cómo se calcula la proporción de café y agua?",
+        a: "Agua (g) = café (g) × ratio. Ejemplo: 18 g de café con 1:16 → 18 × 16 = 288 g de agua.",
+      },
+      {
+        q: "¿Qué ratio uso para café vertido?",
+        a: "De 1:15 a 1:17 es lo habitual: 1:15 da una taza más intensa y 1:17 más suave.",
+      },
+      {
+        q: "¿Es gratis y privado?",
+        a: "Sí. El cálculo corre en tu navegador sin registro y no se sube nada.",
+      },
+    ],
+  },
 };
