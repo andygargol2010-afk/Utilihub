@@ -3,7 +3,7 @@ import { makeTool, faq } from "./types";
 const tool = makeTool(
   "calculadora-markup",
   "Markup Calculator",
-  "finanzas",
+  "utilidades",
   "calculator",
   "Calculate the selling price from cost and markup percentage. Instant result for pricing products or services. Runs fully in the browser.",
   [
