@@ -60,19 +60,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Classic Hangman word-guess game. User selects letter buttons or types to reveal hidden word with limited misses (6-8). Progress shows word slots and miss counter / simple stick figure. Win on full reveal, lose on max misses. Categories or random words. URL deep-link for seed word. Branded PNG of progress. EN+ES routes.
+id: hangman-classic
+path_en: /hangman
+path_es: /es/ahorcado
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed recipe-assembly-kit after run 4/4. Final polish: reset button + alphabetical shopping list. Ready for next IDEATE.
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User clicks letter buttons to guess a hidden word, sees revealed letters and remaining misses, wins by completing the word or loses after max misses.
+share: both
+next_step_required: yes
+notes: Rubric C1 HangmanClassic (4/3/5/4/5/5=26) closest-3: MemoryGame (pairs), FormulaMemoryGame (recall), text word tools; metaphor: limited-miss letter reveal for hidden word; why not particle-canvas: discrete buttons + slot display, no freehand or particles. C2 BattleshipGrid (4/4/4/3/4/5=24) closest: Minesweeper (reveal), ConnectFour (grid), Pathfinder; metaphor: ship place then alternate hunt hit/miss; why not: grid placement/shots. C3 SlidingPuzzle15 (3/3/3/4/5/5=23) closest: Game2048 (slide), LightsOut, TicTacToe; metaphor: tile slide to ordered goal. Why not particle-canvas for all. IP check C1: traditional hangman (public-domain mechanics, generic UI, no branded assets). Chosen id: hangman-classic (highest score, strong search "play hangman online", distinct from recent grid games). Roll: CORE games (variety mandate after recent kits/journeys + saturated playgrounds; underused weight 2; p_fixed 0.35 not selecting growth this cycle). adsense-prep_runs: 3. Run 1 next: core letter buttons, word reveal, miss counter, win/lose, EN+ES.
 adsense-prep_runs: 3
 ```
 
