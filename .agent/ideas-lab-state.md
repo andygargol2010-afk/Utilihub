@@ -59,19 +59,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive narrative choice journey: user selects from branching decision cards at each stage, sees progress waypoints, reaches one of several endings with a summary visual. EN+ES routes, URL deep-link of path, shareable ending card. Not a particle sandbox.
+id: choice-story-journey
+path_en: /choice-story-journey
+path_es: /es/viaje-historia-elecciones
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Project closed 2026-10-28 after EXECUTE 4/4. Added preset scenario buttons (Baseline outbreak, With lockdown, With vaccination) that set params + reset. Final polish complete. Previous notes retained in history.
+domain: journeys
+runs_total: 4
+runs_remaining: 4
+acceptance: User clicks through 3-5 decision stages, sees branching outcomes and a final ending summary with shareable card.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): C1 CareerPath (val4/share3/search3/dist4/feas5/perf5=24) closest: education subjects, kits, streak constellation; metaphor: branching decision tree. C2 RecipeJourney (4/4/4/3/4/5=24) closest: kits assembly, modular pattern, guides; metaphor: multi-step guided assembly. C3 StoryChoice (5/4/3/5/4/5=26) closest: none interactive narrative, retention progress, search guides; metaphor: narrative choice tree with waypoints. Why not particle-canvas: discrete card decisions + progress stages, no freehand or particles. Chosen id: choice-story-journey. Roll: CORE journeys (weights, variety preference after recent simulators/playgrounds). IP: n/a (original). adsense-prep_runs: 3
 adsense-prep_runs: 3
 ```
 
