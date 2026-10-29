@@ -10,3 +10,4 @@ export const BmiCalculatorToolUi = lazy(() => import("../BmiCalculatorTool").the
 export const PercentageOfNumberCalculatorToolUi = lazy(() => import("../PercentageOfNumberCalculatorTool").then((m) => ({ default: m.PercentageOfNumberCalculatorTool })));
 export const MarkupCalculatorToolUi = lazy(() => import("../MarkupCalculatorTool").then((m) => ({ default: m.MarkupCalculatorTool })));
 export const UnitPriceCalculatorToolUi = lazy(() => import("../UnitPriceCalculatorTool").then((m) => ({ default: m.UnitPriceCalculatorTool })));
+export const IvaCalculatorToolUi = lazy(() => import("../IvaCalculatorTool").then((m) => ({ default: m.IvaCalculatorTool })));
