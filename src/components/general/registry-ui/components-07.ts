@@ -17,3 +17,4 @@ export const FluidOuncesMlConverterToolUi = lazy(() => import("../FluidOuncesMlC
 export const CupsMlConverterToolUi = lazy(() => import("../CupsMlConverterTool").then((m) => ({ default: m.CupsMlConverterTool })));
 export const CelsiusKelvinConverterToolUi = lazy(() => import("../CelsiusKelvinConverterTool").then((m) => ({ default: m.CelsiusKelvinConverterTool })));
 export const GramsToPoundsConverterToolUi = lazy(() => import("../GramsToPoundsConverterTool").then((m) => ({ default: m.GramsToPoundsConverterTool })));
+export const FlowRateCalculatorToolUi = lazy(() => import("../FlowRateCalculatorTool").then((m) => ({ default: m.FlowRateCalculatorTool })));

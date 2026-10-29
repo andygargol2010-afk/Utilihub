@@ -24,4 +24,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "conversor-tazas-ml": UI.CupsMlConverterToolUi,
   "conversor-celsius-kelvin": UI.CelsiusKelvinConverterToolUi,
   "conversor-gramos-libras": UI.GramsToPoundsConverterToolUi,
+  "calculadora-caudal": UI.FlowRateCalculatorToolUi,
 };

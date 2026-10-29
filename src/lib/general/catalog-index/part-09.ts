@@ -9,6 +9,7 @@ import { FLUID_OUNCES_ML_CONVERTER_TOOLS } from "../fluid-ounces-ml-converter-to
 import { CUPS_ML_CONVERTER_TOOLS } from "../cups-ml-converter-tool";
 import { CELSIUS_KELVIN_CONVERTER_TOOLS } from "../celsius-kelvin-converter-tool";
 import { GRAMS_TO_POUNDS_CONVERTER_TOOLS } from "../grams-to-pounds-converter-tool";
+import { FLOW_RATE_CALCULATOR_TOOLS } from "../flow-rate-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -20,4 +21,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...CUPS_ML_CONVERTER_TOOLS,
   ...CELSIUS_KELVIN_CONVERTER_TOOLS,
   ...GRAMS_TO_POUNDS_CONVERTER_TOOLS,
+  ...FLOW_RATE_CALCULATOR_TOOLS,
 ];

@@ -8,22 +8,25 @@ const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-mu
 
 export function FlowRateCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
-  const [volume, setVolume] = useState("100");
-  const [time, setTime] = useState("10");
+  const [volume, setVolume] = useState("10");
+  const [time, setTime] = useState("5");
   const [copied, setCopied] = useState(false);
 
   const result = useMemo(() => {
     const v = parseFloat(volume);
     const t = parseFloat(time);
-    if (isNaN(v) || v < 0 || v > 1e9 || isNaN(t) || t <= 0 || t > 1e6) return null;
-    const rate = v / t;
-    return { rate: rate.toFixed(4) };
+    if (isNaN(v) || isNaN(t) || v < 0 || t <= 0 || v > 1e12 || t > 1e9) return null;
+    const q = v / t;
+    return Math.round(q * 10000) / 10000;
   }, [volume, time]);
 
   async function copy() {
-    if (!result) return;
+    if (result === null) return;
+    const textOut = es
+      ? `Caudal: ${result} (volumen ${volume} / tiempo ${time})`
+      : `Flow rate: ${result} (volume ${volume} / time ${time})`;
     try {
-      await navigator.clipboard.writeText(result.rate);
+      await navigator.clipboard.writeText(textOut);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -32,40 +35,45 @@ export function FlowRateCalculatorTool({ locale = "en" }: { tool?: GeneralTool; 
   }
 
   function reset() {
-    setVolume("100");
-    setTime("10");
+    setVolume("10");
+    setTime("5");
     setCopied(false);
   }
 
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
-        <p className="text-sm text-muted-foreground">{es ? "Caudal (volumen/tiempo)" : "Flow rate (volume/time)"}</p>
-        {result ? (
-          <p className="text-3xl font-semibold">{result.rate}</p>
+        <p className="text-sm text-muted-foreground">{es ? "Caudal (volumen / tiempo)" : "Flow rate (volume / time)"}</p>
+        {result !== null ? (
+          <p className="text-3xl font-semibold">{result}</p>
         ) : (
-          <p className="text-sm text-muted-foreground">{es ? "Volumen ≥ 0 y tiempo > 0 requeridos" : "Volume ≥ 0 and time > 0 required"}</p>
+          <p className="text-sm text-muted-foreground">
+            {es ? "Volumen ≥ 0, tiempo > 0 (máx razonable)" : "Volume ≥ 0, time > 0 (reasonable max)"}
+          </p>
         )}
       </div>
 
-      <label className="block space-y-2 text-sm">
-        <span className="font-medium">{es ? "Volumen (L, m³, etc.)" : "Volume (L, m³, etc.)"}</span>
-        <input type="number" step="any" min="0" value={volume} onChange={(e) => setVolume(e.target.value)} className={fieldClass} />
-      </label>
-
-      <label className="block space-y-2 text-sm">
-        <span className="font-medium">{es ? "Tiempo (s, min, h)" : "Time (s, min, h)"}</span>
-        <input type="number" step="any" min="0" value={time} onChange={(e) => setTime(e.target.value)} className={fieldClass} />
-      </label>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="block space-y-2 text-sm">
+          <span className="font-medium">{es ? "Volumen" : "Volume"}</span>
+          <input type="number" step="0.1" min="0" value={volume} onChange={(e) => setVolume(e.target.value)} className={fieldClass} />
+        </label>
+        <label className="block space-y-2 text-sm">
+          <span className="font-medium">{es ? "Tiempo" : "Time"}</span>
+          <input type="number" step="0.1" min="0.001" value={time} onChange={(e) => setTime(e.target.value)} className={fieldClass} />
+        </label>
+      </div>
 
       <p className="text-sm text-muted-foreground">
-        {es ? "Fórmula: Caudal = Volumen ÷ Tiempo" : "Formula: Flow rate = Volume ÷ Time"}
+        {es
+          ? "Q = V / t. Usa unidades consistentes (ej. L y min → L/min)."
+          : "Q = V / t. Use consistent units (e.g. L and min → L/min)."}
       </p>
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? "100 L / 10 min → 10 L/min" : "100 L / 10 min → 10 L/min"}</p>
-        <p>{es ? "50 m³ / 2 h → 25 m³/h" : "50 m³ / 2 h → 25 m³/h"}</p>
+        <p>{es ? "10 L en 5 min → 2 L/min" : "10 L in 5 min → 2 L/min"}</p>
+        <p>{es ? "1000 ml en 60 s → 16.6667 ml/s" : "1000 ml in 60 s → 16.6667 ml/s"}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -75,6 +83,19 @@ export function FlowRateCalculatorTool({ locale = "en" }: { tool?: GeneralTool; 
         <button type="button" className={buttonClass} onClick={reset}>
           {es ? "Reiniciar" : "Reset"}
         </button>
+      </div>
+
+      <div className="text-sm text-muted-foreground space-y-1">
+        <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
+        <p>
+          <a href={es ? "/es/calculadora-volumen-cilindro" : "/calculadora-volumen-cilindro"} className="underline">
+            {es ? "Volumen de cilindro" : "Cylinder volume"}
+          </a>
+          {" · "}
+          <a href={es ? "/es/calculadora-densidad" : "/calculadora-densidad"} className="underline">
+            {es ? "Calculadora de densidad" : "Density calculator"}
+          </a>
+        </p>
       </div>
     </div>
   );

@@ -64,4 +64,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-tiempo-de-lectura": "Calculadora de tiempo de lectura",
   "conversor-onzas-ml": "Conversor de onzas líquidas a ml",
   "conversor-celsius-kelvin": "Conversor de Celsius a Kelvin",
+  "calculadora-caudal": "Calculadora de caudal",
 };
