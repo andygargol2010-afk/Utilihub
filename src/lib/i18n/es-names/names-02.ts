@@ -62,4 +62,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-precio-por-unidad": "Calculadora de precio por unidad",
   "calculadora-tasa-de-ahorro": "Calculadora de tasa de ahorro",
   "calculadora-tiempo-de-lectura": "Calculadora de tiempo de lectura",
+  "conversor-onzas-ml": "Conversor de onzas líquidas a ml",
 };
