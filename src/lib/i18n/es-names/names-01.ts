@@ -61,4 +61,5 @@ export const ES_EXACT_NAMES_01: Record<string, string> = {
   "ahorro-periodico": "Ahorro periódico",
   "ahorro-para-una-compra": "Ahorro para una compra",
   "porcentaje-aumento": "Aumento porcentual",
+  "conversor-cucharadas-ml": "Conversor de cucharadas a ml",
 };

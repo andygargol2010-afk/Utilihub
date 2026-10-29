@@ -4,10 +4,12 @@ import { UNIT_PRICE_CALCULATOR_TOOLS } from "../unit-price-calculator-tool";
 import { SAVINGS_RATE_CALCULATOR_TOOLS } from "../savings-rate-calculator-tool";
 import { IVA_CALCULATOR_TOOLS } from "../iva-calculator-tool";
 import { READING_TIME_CALCULATOR_TOOLS } from "../reading-time-calculator-tool";
+import { TABLESPOON_ML_CONVERTER_TOOLS } from "../tablespoon-ml-converter-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
   ...SAVINGS_RATE_CALCULATOR_TOOLS,
   ...IVA_CALCULATOR_TOOLS,
   ...READING_TIME_CALCULATOR_TOOLS,
+  ...TABLESPOON_ML_CONVERTER_TOOLS,
 ];

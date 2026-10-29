@@ -12,3 +12,4 @@ export const MarkupCalculatorToolUi = lazy(() => import("../MarkupCalculatorTool
 export const UnitPriceCalculatorToolUi = lazy(() => import("../UnitPriceCalculatorTool").then((m) => ({ default: m.UnitPriceCalculatorTool })));
 export const IvaCalculatorToolUi = lazy(() => import("../IvaCalculatorTool").then((m) => ({ default: m.IvaCalculatorTool })));
 export const ReadingTimeCalculatorToolUi = lazy(() => import("../ReadingTimeCalculatorTool").then((m) => ({ default: m.ReadingTimeCalculatorTool })));
+export const TablespoonMlConverterToolUi = lazy(() => import("../TablespoonMlConverterTool").then((m) => ({ default: m.TablespoonMlConverterTool })));
