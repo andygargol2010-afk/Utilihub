@@ -1,69 +1,213 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
-import { GamePrimaryButton } from "./GameShell";
+import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
 
-const WORDS_EN = [
-  "REACT", "TYPESCRIPT", "UTILIHUB", "ALGORITHM", "CANVAS", "BROWSER", "COMPONENT", "FUNCTION",
-  "VARIABLE", "INTERFACE", "ASYNC", "PROMISE", "HOOK", "STATE", "EFFECT", "ROUTER",
+type Cat = "random" | "animals" | "countries" | "food" | "tech";
+
+const CATS: { id: Cat; en: string; es: string }[] = [
+  { id: "random", en: "Random", es: "Aleatorio" },
+  { id: "animals", en: "Animals", es: "Animales" },
+  { id: "countries", en: "Countries", es: "Países" },
+  { id: "food", en: "Food", es: "Comida" },
+  { id: "tech", en: "Tech", es: "Tecnología" },
 ];
 
-const WORDS_ES = [
-  "REACT", "TYPESCRIPT", "UTILIHUB", "ALGORITMO", "LIENZO", "NAVEGADOR", "COMPONENTE", "FUNCION",
-  "VARIABLE", "INTERFAZ", "ASINCRONO", "PROMESA", "GANCHO", "ESTADO", "EFECTO", "ENRUTADOR",
-];
+const WORDS: Record<Exclude<Cat, "random">, { en: string[]; es: string[] }> = {
+  animals: {
+    en: ["LION", "TIGER", "ELEPHANT", "GIRAFFE", "DOLPHIN", "PENGUIN", "KANGAROO", "ZEBRA", "PANDA", "EAGLE"],
+    es: ["LEON", "TIGRE", "ELEFANTE", "JIRAFA", "DELFIN", "PINGUINO", "CANGURO", "CEBRA", "PANDA", "AGUILA"],
+  },
+  countries: {
+    en: ["CANADA", "BRAZIL", "JAPAN", "FRANCE", "ITALY", "SPAIN", "MEXICO", "AUSTRALIA", "INDIA", "GERMANY"],
+    es: ["CANADA", "BRASIL", "JAPON", "FRANCIA", "ITALIA", "ESPANA", "MEXICO", "AUSTRALIA", "INDIA", "ALEMANIA"],
+  },
+  food: {
+    en: ["PIZZA", "SUSHI", "TACO", "BURGER", "PASTA", "SALAD", "STEAK", "CURRY", "APPLE", "BANANA"],
+    es: ["PIZZA", "SUSHI", "TACO", "HAMBURGUESA", "PASTA", "ENSALADA", "BISTEC", "CURRY", "MANZANA", "PLATANO"],
+  },
+  tech: {
+    en: ["REACT", "TYPESCRIPT", "BROWSER", "COMPONENT", "FUNCTION", "VARIABLE", "ALGORITHM", "INTERFACE", "ASYNC", "PROMISE"],
+    es: ["REACT", "TYPESCRIPT", "NAVEGADOR", "COMPONENTE", "FUNCION", "VARIABLE", "ALGORITMO", "INTERFAZ", "ASINCRONO", "PROMESA"],
+  },
+};
+
+const ALL_EN = Object.values(WORDS).flatMap((w) => w.en);
+const ALL_ES = Object.values(WORDS).flatMap((w) => w.es);
 
 const MAX_MISSES = 6;
 
-function randomWord(list: string[]) {
+function pickWord(list: string[], seed?: number) {
+  if (seed != null && list.length) {
+    const i = Math.abs(seed) % list.length;
+    return list[i]!;
+  }
   return list[Math.floor(Math.random() * list.length)]!;
 }
 
 export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
-  const words = es ? WORDS_ES : WORDS_EN;
 
-  const [word, setWord] = useState(() => randomWord(words));
+  const [cat, setCat] = useState<Cat>("random");
+  const [word, setWord] = useState("");
   const [guessed, setGuessed] = useState<Set<string>>(new Set());
   const [misses, setMisses] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  const wordList = useMemo(() => {
+    if (cat === "random") return es ? ALL_ES : ALL_EN;
+    return es ? WORDS[cat].es : WORDS[cat].en;
+  }, [cat, es]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const c = (params.get("cat") || "random") as Cat;
+    const validCat = CATS.some((x) => x.id === c) ? c : "random";
+    setCat(validCat);
+    const wParam = params.get("word")?.toUpperCase();
+    const list = validCat === "random" ? (es ? ALL_ES : ALL_EN) : (es ? WORDS[validCat].es : WORDS[validCat].en);
+    let initial = "";
+    if (wParam && list.includes(wParam)) {
+      initial = wParam;
+    } else {
+      const s = params.get("seed");
+      const seed = s ? parseInt(s, 10) : undefined;
+      initial = pickWord(list, Number.isNaN(seed) ? undefined : seed);
+    }
+    setWord(initial);
+    setGuessed(new Set());
+    setMisses(0);
+  }, [es]);
+
+  const updateUrl = useCallback((nextCat: Cat, nextWord: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("cat", nextCat);
+    url.searchParams.set("word", nextWord);
+    url.searchParams.delete("seed");
+    window.history.replaceState(null, "", url);
+  }, []);
 
   const revealed = useMemo(
-    () => word.split("").map((c) => (guessed.has(c) ? c : "_")),
+    () => (word ? word.split("").map((c) => (guessed.has(c) ? c : "_")) : []),
     [word, guessed],
   );
 
-  const won = revealed.every((c) => c !== "_");
+  const won = word && revealed.every((c) => c !== "_");
   const lost = misses >= MAX_MISSES;
   const over = won || lost;
 
   const guess = useCallback(
     (letter: string) => {
-      if (over || guessed.has(letter)) return;
+      const L = letter.toUpperCase();
+      if (over || !word || guessed.has(L) || !/^[A-Z]$/.test(L)) return;
       const next = new Set(guessed);
-      next.add(letter);
+      next.add(L);
       setGuessed(next);
-      if (!word.includes(letter)) setMisses((m) => m + 1);
+      if (!word.includes(L)) setMisses((m) => m + 1);
     },
     [over, guessed, word],
   );
 
-  const reset = useCallback(() => {
-    setWord(randomWord(words));
-    setGuessed(new Set());
-    setMisses(0);
-  }, [words]);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const k = e.key.toUpperCase();
+      if (k.length === 1 && /^[A-Z]$/.test(k)) {
+        e.preventDefault();
+        guess(k);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [guess]);
+
+  const startNew = useCallback(
+    (nextCat: Cat = cat) => {
+      const list = nextCat === "random" ? (es ? ALL_ES : ALL_EN) : (es ? WORDS[nextCat].es : WORDS[nextCat].en);
+      const next = pickWord(list);
+      setCat(nextCat);
+      setWord(next);
+      setGuessed(new Set());
+      setMisses(0);
+      updateUrl(nextCat, next);
+    },
+    [cat, es, updateUrl],
+  );
+
+  const shareUrl = useCallback(async () => {
+    updateUrl(cat, word);
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* silent */
+    }
+  }, [cat, word, updateUrl]);
+
+  const exportPng = useCallback(() => {
+    if (!word) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = 480;
+    canvas.height = 280;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#10b981";
+    ctx.font = "bold 16px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(es ? "Ahorcado · UtiliHub" : "Hangman · UtiliHub", canvas.width / 2, 28);
+    // simple gallows
+    ctx.strokeStyle = "#94a3b8";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(60, 240); ctx.lineTo(140, 240);
+    ctx.moveTo(90, 240); ctx.lineTo(90, 60);
+    ctx.moveTo(90, 60); ctx.lineTo(160, 60);
+    ctx.moveTo(160, 60); ctx.lineTo(160, 80);
+    ctx.stroke();
+    ctx.strokeStyle = "#f87171";
+    if (misses >= 1) { ctx.beginPath(); ctx.arc(160, 95, 12, 0, Math.PI * 2); ctx.stroke(); }
+    if (misses >= 2) { ctx.beginPath(); ctx.moveTo(160, 107); ctx.lineTo(160, 155); ctx.stroke(); }
+    if (misses >= 3) { ctx.beginPath(); ctx.moveTo(160, 120); ctx.lineTo(140, 140); ctx.stroke(); }
+    if (misses >= 4) { ctx.beginPath(); ctx.moveTo(160, 120); ctx.lineTo(180, 140); ctx.stroke(); }
+    if (misses >= 5) { ctx.beginPath(); ctx.moveTo(160, 155); ctx.lineTo(140, 180); ctx.stroke(); }
+    if (misses >= 6) { ctx.beginPath(); ctx.moveTo(160, 155); ctx.lineTo(180, 180); ctx.stroke(); }
+    // word slots
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 22px system-ui, sans-serif";
+    const display = revealed.join(" ");
+    ctx.fillText(display, canvas.width / 2 + 40, 140);
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "12px system-ui";
+    ctx.fillText(`${es ? "Fallos" : "Misses"}: ${misses}/${MAX_MISSES}`, canvas.width / 2, 220);
+    ctx.fillText("utilihub.app", canvas.width / 2, 260);
+    const a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = `utilihub-hangman-${word.toLowerCase()}.png`;
+    a.click();
+  }, [word, revealed, misses, es]);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
+  if (!word) return null;
+
   return (
-    <div className="mx-auto flex max-w-lg flex-col items-center gap-5 px-2">
+    <div className="mx-auto flex max-w-lg flex-col items-center gap-4 px-2 sm:gap-5">
+      <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
+        {CATS.map((c) => (
+          <GameSecondaryButton key={c.id} active={cat === c.id} onClick={() => startNew(c.id)}>
+            {es ? c.es : c.en}
+          </GameSecondaryButton>
+        ))}
+      </div>
+
       <div className="flex flex-col items-center gap-2">
         <p className="text-xs font-bold uppercase tracking-wider text-emerald-300/80">
           {es ? "Fallos" : "Misses"}: {misses} / {MAX_MISSES}
         </p>
-        {/* Simple progressive stick figure indicator */}
-        <div className="relative h-24 w-24" aria-hidden>
+        <div className="relative h-20 w-20 sm:h-24 sm:w-24" aria-hidden>
           <svg viewBox="0 0 100 120" className="h-full w-full">
-            {/* Gallows base */}
             <line x1="10" y1="110" x2="70" y2="110" stroke="#94a3b8" strokeWidth="4" />
             <line x1="30" y1="110" x2="30" y2="10" stroke="#94a3b8" strokeWidth="4" />
             <line x1="30" y1="10" x2="70" y2="10" stroke="#94a3b8" strokeWidth="4" />
@@ -82,7 +226,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
         {revealed.map((c, i) => (
           <span
             key={i}
-            className="flex h-10 w-8 items-center justify-center rounded border border-white/20 bg-white/5 text-lg font-bold text-white sm:h-12 sm:w-10 sm:text-xl"
+            className="flex h-9 w-7 items-center justify-center rounded border border-white/20 bg-white/5 text-base font-bold text-white sm:h-12 sm:w-10 sm:text-xl"
           >
             {c}
           </span>
@@ -95,7 +239,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
         </p>
       )}
 
-      <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2" style={{ maxWidth: "100%" }}>
+      <div className="flex flex-wrap justify-center gap-1 sm:gap-1.5" style={{ maxWidth: "100%" }}>
         {letters.map((L) => {
           const used = guessed.has(L);
           const correct = used && word.includes(L);
@@ -105,7 +249,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
               type="button"
               disabled={used || over}
               onClick={() => guess(L)}
-              className={`min-h-9 min-w-8 rounded-lg px-2 text-sm font-bold transition active:scale-95 disabled:opacity-40 sm:min-h-10 sm:min-w-9 ${
+              className={`min-h-9 min-w-8 rounded-lg px-1.5 text-xs font-bold transition active:scale-95 disabled:opacity-40 sm:min-h-10 sm:min-w-9 sm:px-2 sm:text-sm ${
                 used
                   ? correct
                     ? "bg-emerald-600/80 text-white"
@@ -120,7 +264,18 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
         })}
       </div>
 
-      <GamePrimaryButton onClick={reset}>{es ? "Nueva palabra" : "New word"}</GamePrimaryButton>
+      <div className="flex flex-wrap justify-center gap-2">
+        <GamePrimaryButton onClick={() => startNew()}>{es ? "Nueva palabra" : "New word"}</GamePrimaryButton>
+        <GameSecondaryButton onClick={exportPng}>{es ? "PNG" : "PNG"}</GameSecondaryButton>
+        <GameSecondaryButton onClick={shareUrl}>
+          {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}
+        </GameSecondaryButton>
+      </div>
+      <p className="text-center text-[11px] text-white/50">
+        {es
+          ? "Toca letras o usa el teclado · categorías · enlace con palabra · PNG de progreso"
+          : "Tap letters or use keyboard · categories · link with word · progress PNG"}
+      </p>
     </div>
   );
 }
