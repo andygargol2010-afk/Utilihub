@@ -16,3 +16,4 @@ export const TablespoonMlConverterToolUi = lazy(() => import("../TablespoonMlCon
 export const FluidOuncesMlConverterToolUi = lazy(() => import("../FluidOuncesMlConverterTool").then((m) => ({ default: m.FluidOuncesMlConverterTool })));
 export const CupsMlConverterToolUi = lazy(() => import("../CupsMlConverterTool").then((m) => ({ default: m.CupsMlConverterTool })));
 export const CelsiusKelvinConverterToolUi = lazy(() => import("../CelsiusKelvinConverterTool").then((m) => ({ default: m.CelsiusKelvinConverterTool })));
+export const GramsToPoundsConverterToolUi = lazy(() => import("../GramsToPoundsConverterTool").then((m) => ({ default: m.GramsToPoundsConverterTool })));

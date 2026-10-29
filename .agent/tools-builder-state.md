@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-29 | conversiones | conversor-gramos-libras | GramsToPoundsConverterTool
 - 2026-10-29 | ciencia | conversor-celsius-kelvin | CelsiusKelvinConverterTool
 - 2026-10-29 | hogar | conversor-tazas-ml | CupsMlConverterTool
 - 2026-10-29 | hogar | conversor-onzas-ml | FluidOuncesMlConverterTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-28 | matematicas | calculadora-porcentaje-de-numero | PercentageOfNumberCalculatorTool
 - 2026-10-28 | salud | calculadora-imc | BmiCalculatorTool
 - 2026-10-28 | finanzas | calculadora-descuento-sucesivo | SuccessiveDiscountCalculatorTool
-- 2026-10-28 | diseno | calculadora-factor-de-escala | ScaleFactorCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -44,7 +44,7 @@ hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-ga
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala)
-conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms)
+conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro)
@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (\u22654 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md \u00a7PRODUCT step 4.
+2026-10-29: PRODUCT — conversor-gramos-libras (conversiones). One tool (default). Anti-dupe OK (new slug). Practical weight g ↔ lb. SEO locales: defer pt/fr/de.
 2026-10-29: PRODUCT — conversor-celsius-kelvin (ciencia). One tool (default). Anti-dupe OK (new slug). Practical scientific °C ↔ K. SEO locales: defer pt/fr/de.
 2026-10-29: PRODUCT — conversor-tazas-ml (hogar). One tool (default). Anti-dupe OK (new slug). Practical cooking cups ↔ ml. SEO locales: defer pt/fr/de.
 2026-10-29: PRODUCT — conversor-onzas-ml (hogar). One tool (default). Anti-dupe OK (new slug). Practical cooking/drinks fl oz ↔ ml. SEO locales: defer pt/fr/de.
@@ -90,7 +91,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: conversor-celsius-kelvin
+last_slugs: conversor-gramos-libras
 last_deploy: no (branch auto-deploy disabled)
 last_sha: pending
 ```

@@ -8,6 +8,7 @@ import { TABLESPOON_ML_CONVERTER_TOOLS } from "../tablespoon-ml-converter-tool";
 import { FLUID_OUNCES_ML_CONVERTER_TOOLS } from "../fluid-ounces-ml-converter-tool";
 import { CUPS_ML_CONVERTER_TOOLS } from "../cups-ml-converter-tool";
 import { CELSIUS_KELVIN_CONVERTER_TOOLS } from "../celsius-kelvin-converter-tool";
+import { GRAMS_TO_POUNDS_CONVERTER_TOOLS } from "../grams-to-pounds-converter-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -18,4 +19,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...FLUID_OUNCES_ML_CONVERTER_TOOLS,
   ...CUPS_ML_CONVERTER_TOOLS,
   ...CELSIUS_KELVIN_CONVERTER_TOOLS,
+  ...GRAMS_TO_POUNDS_CONVERTER_TOOLS,
 ];
