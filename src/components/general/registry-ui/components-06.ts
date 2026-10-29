@@ -17,3 +17,7 @@ export const SimpleAverageCalculatorToolUi = lazy(() =>
 export const PercentageChangeCalculatorToolUi = lazy(() =>
   import("../PercentageChangeCalculatorTool").then((m) => ({ default: m.PercentageChangeCalculatorTool })),
 );
+
+export const SavingsRateCalculatorToolUi = lazy(() =>
+  import("../SavingsRateCalculatorTool").then((m) => ({ default: m.SavingsRateCalculatorTool })),
+);

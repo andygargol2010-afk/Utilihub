@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-29 | finanzas | calculadora-tasa-de-ahorro | SavingsRateCalculatorTool
 - 2026-10-29 | finanzas | calculadora-precio-por-unidad | UnitPriceCalculatorTool
 - 2026-10-28 | finanzas | calculadora-markup | MarkupCalculatorTool
 - 2026-10-28 | matematicas | calculadora-porcentaje-de-numero | PercentageOfNumberCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-28 | matematicas | calculadora-cambio-porcentual | PercentageChangeCalculatorTool
 - 2026-10-28 | educacion | calculadora-promedio-simple | SimpleAverageCalculatorTool
 - 2026-10-28 | ciencia | calculadora-hipotenusa | HypotenuseCalculatorTool
-- 2026-10-28 | texto | calculadora-oraciones-por-parrafo | SentencesPerParagraphCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -47,7 +47,7 @@ diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-d
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple)
-finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad)
+finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero)
 ```
 
@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (\u22654 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md \u00a7PRODUCT step 4.
+2026-10-29: PRODUCT — calculadora-tasa-de-ahorro (finanzas/utilidades). One tool (default). Anti-dupe OK (new slug). Practical savings rate from income/expenses. SEO locales: defer pt/fr/de.
 2026-10-29: PRODUCT — calculadora-precio-por-unidad (finanzas/utilidades). One tool (default). Anti-dupe OK (new slug). Practical unit price for comparisons. SEO locales: defer pt/fr/de.
 2026-10-28: PRODUCT — calculadora-markup (finanzas). One tool (default). Anti-dupe OK (new slug). Practical markup for pricing. SEO locales: defer pt/fr/de.
 2026-10-28: PRODUCT — calculadora-porcentaje-de-numero (matematicas). One tool (default). Anti-dupe OK (component + catalog data existed; completed catalog/UI/ES/related). Practical X% of Y. SEO locales: defer pt/fr/de.
@@ -84,7 +85,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-precio-por-unidad
+last_slugs: calculadora-tasa-de-ahorro
 last_deploy: no (branch auto-deploy disabled)
 last_sha: pending
 ```

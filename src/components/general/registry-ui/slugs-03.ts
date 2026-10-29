@@ -16,4 +16,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-porcentaje-de-numero": UI.PercentageOfNumberCalculatorToolUi,
   "calculadora-markup": UI.MarkupCalculatorToolUi,
   "calculadora-precio-por-unidad": UI.UnitPriceCalculatorToolUi,
+  "calculadora-tasa-de-ahorro": UI.SavingsRateCalculatorToolUi,
 };
