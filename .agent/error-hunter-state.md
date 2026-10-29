@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-29 run 43
+last_run: 2026-10-29 run 44
 last_mode: HUNT
 last_fix: none
 last_prevent: none
 last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, registry.tsx thin real content no PLACEHOLDER)
-new_findings: no new user-facing breaks. Sampled /es (home loads, 956 tools), /es/juegos (20 games), /es/juegos/tetris (page + loading), /es/herramientas/regla-de-tres (SEO names tool + formula), /es/herramientas/contador-de-palabras (SEO + local), /es/herramientas/conversor-temperatura (SEO names), /es/herramientas/calculadora-de-porcentajes + /porcentaje (live), /es/herramientas/generador-de-contrasenas (SEO + crypto). Non-existent slugs calculadora-porcentaje/porcentajes 404 as expected. No "Tool not available" in live pages, no kind mismatch, no deploy ERROR. Runtime logs not retained on hobby (recent window empty/unavailable).
-deploy: latest READY 6ad2ca3 (production, dpl_4c9bRZHGmDMz1RHieKLyYRDDLiEL). No ERROR/BUILDING in recent list. Newer preview READY but not production.
-notes: Known smoke E031 green (critical files real). Discovery: home, games list + tetris, percentage tools, word counter, temp converter, password gen all load correctly on prod (utilihub.net). No fixes this run — checks OK.
+new_findings: no new user-facing breaks. Sampled /es (home loads, 956 tools), /es/juegos/tetris (loads + controls), /tools/3d-modeler (studio UI), /es/herramientas/calculadora-iva (dedicated UI), /es/herramientas/png-a-jpg (file upload, not calc), /tools/modelador-casas-3d (HouseModeler correct), /es/juegos/snake (loads), /es/herramientas/generador-de-contrasenas (SEO + crypto), /es/guias/orbit-pulse-catcher (full guide). No "Tool not available" in live pages, no kind mismatch, no deploy ERROR. Old ERROR (dpl_GPXW... on 027e2060) was AuroraRibbonWeaver export missing; fixed in later commits.
+deploy: latest READY 6ad2ca3 (production, dpl_4c9bRZHGmDMz1RHieKLyYRDDLiEL). No ERROR/BUILDING in recent list.
+notes: Known smoke E031 green (critical files real). Discovery: home ES, tetris, 3D modeler, IVA calc, PNG-to-JPG, house modeler, snake, password gen, guide all load correctly on prod (utilihub.net). No fixes this run — checks OK.
 ```
 
 <!-- end:error-hunter-state.md -->
