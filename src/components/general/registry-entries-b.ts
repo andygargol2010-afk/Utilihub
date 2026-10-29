@@ -85,4 +85,5 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "calculadora-presupuesto-mensual", name: "MonthlyBudgetCalculatorTool", path: "./MonthlyBudgetCalculatorTool", export: "MonthlyBudgetCalculatorTool" },
   { slug: "calculadora-horas-a-decimal", name: "HoursToDecimalCalculatorTool", path: "./HoursToDecimalCalculatorTool", export: "HoursToDecimalCalculatorTool" },
   { slug: "calculadora-markup", name: "MarkupCalculatorTool", path: "./MarkupCalculatorTool", export: "MarkupCalculatorTool" },
+  { slug: "conversor-onzas-ml", name: "FluidOuncesMlConverterTool", path: "./FluidOuncesMlConverterTool", export: "FluidOuncesMlConverterTool" },
 ] as const;
