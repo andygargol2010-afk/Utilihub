@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-29 | hogar | conversor-cucharadas-ml | TablespoonMlConverterTool
 - 2026-10-29 | texto | calculadora-tiempo-de-lectura | ReadingTimeCalculatorTool
 - 2026-10-29 | finanzas | calculadora-tasa-de-ahorro | SavingsRateCalculatorTool
 - 2026-10-29 | finanzas | calculadora-precio-por-unidad | UnitPriceCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-28 | finanzas | calculadora-interes-simple | SimpleInterestCalculatorTool
 - 2026-10-28 | matematicas | calculadora-regla-de-tres | RuleOfThreeCalculatorTool
 - 2026-10-28 | matematicas | calculadora-cambio-porcentual | PercentageChangeCalculatorTool
-- 2026-10-28 | educacion | calculadora-promedio-simple | SimpleAverageCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -40,7 +40,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad, calculadora-dias-entre-fechas, calculadora-horas-a-decimal)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa)
-hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza)
+hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala)
@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (\u22654 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md \u00a7PRODUCT step 4.
+2026-10-29: PRODUCT — conversor-cucharadas-ml (hogar). One tool (default). Anti-dupe OK (new slug). Practical cooking tbsp/tsp ↔ ml. SEO locales: defer pt/fr/de.
 2026-10-29: PRODUCT — calculadora-tiempo-de-lectura (texto). One tool (default). Anti-dupe OK (new dedicated slug; innovator contador-tiempo-lectura exists but different). Practical reading time from words/wpm. SEO locales: defer pt/fr/de.
 2026-10-29: PRODUCT — calculadora-tasa-de-ahorro (finanzas/utilidades). One tool (default). Anti-dupe OK (new slug). Practical savings rate from income/expenses. SEO locales: defer pt/fr/de.
 2026-10-29: PRODUCT — calculadora-precio-por-unidad (finanzas/utilidades). One tool (default). Anti-dupe OK (new slug). Practical unit price for comparisons. SEO locales: defer pt/fr/de.
@@ -86,9 +87,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-tiempo-de-lectura
+last_slugs: conversor-cucharadas-ml
 last_deploy: no (branch auto-deploy disabled)
-last_sha: pending
+last_sha: fff12d10b07ba5f062643b502dc8c27d2907b980
 ```
 
 <!-- end:tools-builder-state.md -->
