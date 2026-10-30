@@ -13,14 +13,14 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: simulators
-last_closed_id: logistic-chaos-lab
+last_closed_domain: games
+last_closed_id: simon-sequence-memory
 p_fixed: 0.35
 
 weights_core:
   kits: 5
   journeys: 5
-  games: 2
+  games: 3
   simulators: 6
   studio-composition: 3
   playgrounds: 8
@@ -45,6 +45,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-29 | games | simon-sequence-memory | Classic Simon-style color sequence memory game complete after 4 runs. 4 colored pads with tones (Web Audio sine), growing sequence from 3, user repeats to advance score/level, game-over on mistake with best (localStorage). Sound toggle, difficulty (Easy/Normal/Hard speed), keyboard 1-4, URL deep-link (?seed=) with mulberry32 for reproducible challenge, branded PNG (accent + pads + score/best/level/difficulty + utilihub.app), share-link, New sequence button for fresh challenge, EN+ES via catalog (/games/simon-sequence-memory, /es/juegos/memoria-secuencia-simon), mobile 390px 2x2 pads. CWV-safe. Adsterra intact.
 - 2026-10-29 | simulators | logistic-chaos-lab | Interactive logistic map chaos lab complete after 4 runs. Live time series, cobweb plot, bifurcation diagram with period-doubling cascade (P2/P4/P8), Feigenbaum point, stability windows (P3/P5), zoom cascade toggle, attractor type readout, URL deep-link, branded PNG, EN+ES routes (/simulators/logistic-chaos-lab, /es/simuladores/laboratorio-caos-logistico), mobile 390px. CWV-safe. Adsterra intact.
 - 2026-10-29 | games | hangman-classic | Classic Hangman word-guess game complete after 4 runs. Letter buttons + keyboard, categories + difficulty (easy/normal/hard), one hint, progressive SVG stick figure (extended for >6 misses), live guess announcements (aria-live), win/lose states, URL deep-link (?cat=&word=&diff=), branded PNG, share-link, EN+ES dedicated routes (/hangman, /es/ahorcado) + catalog entry, mobile 390px flex-wrap. CWV-safe. Adsterra intact.
 - 2026-10-29 | kits | recipe-assembly-kit | Interactive multi-step recipe assembly kit complete after 4 runs. Discrete ingredient cards into ordered steps with reordering/drag, cuisine presets, live timeline/preview + aggregated shopping list, progress waypoints, URL deep-link, branded PNG with accent bar + shopping, EN+ES routes, mobile 390px flex-wrap, reset. CWV-safe. Adsterra intact.
@@ -54,7 +55,6 @@ adsense-prep_runs: 3
 - 2026-10-28 | games | minesweeper-classic | Classic Minesweeper interactive game complete after 4 runs. Grid reveal (numbers/mines), flag (right-click/long-press), chord on open numbers, difficulties, timer/best, seeded URL deep-link, Same-board practice button, branded PNG, EN+ES dedicated routes (/minesweeper, /es/buscaminas), mobile 390px aspect-square cells. CWV-safe. Adsterra intact.
 - 2026-10-28 | playgrounds | magnetic-field-sandbox | Interactive magnetic field lines sandbox complete after 4 runs. Place/drag N/S poles, live curved field lines (monopole tracing), flowing particles (toggle), directional arrowheads N→S, presets (Dipole, Two North, Quadrupole), URL deep-link, branded PNG, EN+ES routes, mobile 390px with modest line/particle caps. CWV-safe. Adsterra intact.
 - 2026-10-28 | retention-loops | retention-loops-streak-constellation | Daily streak constellation visualizer complete after 4 runs. Interactive canvas star placement, check-in streak (localStorage + URL deep-link), milestone colors/progress bar, optional name personalization, branded PNG export, EN+ES routes, mobile 390px. CWV-safe. Adsterra intact.
-- 2026-10-27 | playgrounds | fluid-ink-flow-playground | Interactive Fluid Ink Flow playground complete after 4 runs. Freehand viscous multi-color ink with mixing, controls (viscosity/density/gravity/tension), URL deep-link, mobile density tuning, branded PNG, EN+ES. CWV-safe particle caps. Adsterra intact.
 ```
 
 ---
@@ -62,7 +62,7 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: done
 idea: Interactive classic Simon-style color sequence memory game. User watches a growing sequence of colored buttons light up with tones, then repeats the sequence by clicking. Increases length on success; ends on mistake. Includes levels, best score, sound toggle, URL deep-link for sequence seed, branded PNG share of high score, EN+ES routes. Distinct from existing pair-matching MemoryGame.
 id: simon-sequence-memory
 path_en: /games/simon-sequence-memory
@@ -70,14 +70,15 @@ path_es: /es/juegos/memoria-secuencia-simon
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 1
+runs_remaining: 0
 acceptance: User clicks Start, watches sequence of 3+ colors/sounds, repeats it correctly to advance length, sees score increase; on error sees game-over with best score and share PNG.
 share: both
-next_step_required: yes
+next_step_required: no
 notes: Domain roll: FLEX (p_fixed 0.35 rolled False), chose games (underweighted 2, variety after recent simulators/kits/journeys; avoids saturated playgrounds). Candidates: 1. simon-sequence-memory (value5 share4 demand5 dist4 feas5 perf5 total28; closest: MemoryGame pairs, FormulaMemory, Hangman; metaphor: sequence recall timing; not particle-canvas; IP: traditional Simon-like generic colors/sounds no brand). 2. sliding-puzzle-15 (value4 share3 demand4 dist4 feas5 perf5 total25; closest: 2048 grid, LightsOut; metaphor: tile slide spatial packing; IP: traditional). 3. battleship-grid-hunt (value5 share4 demand5 dist5 feas4 perf4 total27; closest: Minesweeper grid, ConnectFour; metaphor: hidden grid hunt; IP: traditional generic). Chose simon for strong search + feasibility + not existing.
 Run 1 (2026-10-29): Core playable shipped. 4 pads, start with 3-color sequence + sine tones (Web Audio), user repeat advances length/score, fail shows game-over + best (localStorage). Sound toggle. EN+ES via catalog routes /games/simon-sequence-memory + /es/juegos/memoria-secuencia-simon. Lazy. Mobile 2x2 ~96-112px pads. CWV-safe (no heavy deps). Next: URL deep-link seed, branded PNG high-score, polish levels/aria.
 Run 2 (2026-10-29): URL deep-link seed (?seed=) with mulberry32 PRNG for reproducible sequence, branded score PNG (accent bar + pads + score/best/level + utilihub.app), level readout, improved aria-live announcements, share-link copies seeded URL, PNG/share buttons. Mobile 390px. CWV-safe. Next: polish edge cases, keyboard support or difficulty, final QA.
 Run 3 (2026-10-29): Keyboard support (keys 1-4 map to pads during input phase, with key labels on pads), difficulty selector (Easy/Normal/Hard adjusting playback speed and tone duration), statusRef for reliable input gating, updated status texts. Mobile 390px. CWV-safe. Next: final QA / edge polish / close.
+Run 4 (2026-10-29): Final QA and edge polish. Added New sequence button (clears seed, deletes ?seed= from URL, starts fresh random challenge). Play again keeps current seed for retry. Guarded start against re-entrancy. PNG now includes difficulty. Confirmed mobile 390px, keyboard, aria-live, sound, deep-link, share. Closed after 4 runs. CWV-safe. Adsterra intact.
 adsense-prep_runs: 3
 ```
 
