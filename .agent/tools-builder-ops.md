@@ -9,8 +9,10 @@ Load after tools-builder.md. Files win over automation bootstrap.
 ## MODE (every run)
 
 0. Load state → rules → ops. Read recent commits on `fix/spanish-complete` (limit ~10).
-1. Roll PRODUCT vs META (existing weights). Prefer PRODUCT when demand evidence exists.
-2. **No deploy step.** No `create_deployment`.
+1. Roll 1–20 (bootstrap): 1=META (~5%); 2=NEW-CATEGORY (~5%, gates in ops, 1 seed); 3–20=PRODUCT. **.md files override bootstrap volume.** Prefer PRODUCT when demand evidence exists.
+2. **No deploy step.** No `create_deployment`. Auto-deploy on this branch is disabled.
+
+**Volume (immutable):** Default **ONE tool per PRODUCT run**. Two only if both are small, non-overlapping, fully verified in the same commit, and registry remains safe. Never ship two mediocre tools. Bootstrap's "2 tools" is overridden by this rule.
 
 ---
 
