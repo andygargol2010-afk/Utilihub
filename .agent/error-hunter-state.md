@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-29 run 46
+last_run: 2026-10-29 run 47
 last_mode: HUNT
 last_fix: none
 last_prevent: none
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, registry.tsx thin real content (split) no PLACEHOLDER; remains open for vigilance)
-new_findings: sampled / (home OK), /es (OK), /tools/calculadora-iva (loads), /games/2048 (loads), /tools/3d-modeler and /es/herramientas/modelador-3d (proper 3D modeler descriptions, not HouseModeler). No "Tool not available" in live pages, no kind mismatch, no deploy ERROR. Production still on SHA 6ad2ca3; branch tip 8b7c72ac ahead with ideas-lab changes. Deploy lag persists for any post-6ad2ca3 tools (same as run 45); no code regression found.
-deploy: latest READY production dpl_4c9bRZHGmDMz1RHieKLyYRDDLiEL on 6ad2ca3. No ERROR/BUILDING in recent. Branch tip ahead.
-notes: Known smoke E031 green. Discovery: no new runtime/routing/SEO/tool bugs on branch tip or live pages sampled. Production lag noted but no promote (immutable). No fixes this run — checks OK.
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat in src, homes index/es.index start with import, no PLACEHOLDER in critical paths; remains open for vigilance)
+new_findings: sampled www.utilihub.net / (home OK), /es (OK), /tools/calculadora-iva and /es/herramientas/calculadora-iva (loads dedicated UI), /games/2048 (loads), /tools/modelador-3d (proper 3D modeler, not HouseModeler), /es/juegos/buscaminas (OK), /studio/prism-trail-composer (OK), /tools/png-a-jpg (image tool OK), /tools/fecha-despues (OK). /es/herramientas/calculadora-caudal 404 on production (expected: tool added post-6ad2ca3, deploy lag). No "Tool not available", no kind mismatch, no deploy ERROR. Branch tip f4c93225 ahead of production SHA 6ad2ca3.
+deploy: latest READY production dpl_4c9bRZHGmDMz1RHieKLyYRDDLiEL on 6ad2ca3. No recent ERROR/BUILDING. Branch tip ahead.
+notes: Known smoke E031 green. Discovery: no new runtime/routing/SEO/tool bugs on branch tip or live pages sampled. Production lag for new tools noted but no promote (immutable). No fixes this run — checks OK.
 ```
 
 <!-- end:error-hunter-state.md -->
