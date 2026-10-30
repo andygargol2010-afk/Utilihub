@@ -64,4 +64,5 @@ export const ES_EXACT_NAMES_01: Record<string, string> = {
   "conversor-cucharadas-ml": "Conversor de cucharadas a ml",
   "conversor-tazas-ml": "Conversor de tazas a ml",
   "conversor-gramos-libras": "Conversor de gramos a libras",
+  "calculadora-cuota-prestamo": "Calculadora de cuota de préstamo",
 };

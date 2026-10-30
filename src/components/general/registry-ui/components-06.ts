@@ -25,3 +25,7 @@ export const SavingsRateCalculatorToolUi = lazy(() =>
 export const CupsMlConverterToolUi = lazy(() =>
   import("../CupsMlConverterTool").then((m) => ({ default: m.CupsMlConverterTool })),
 );
+
+export const LoanMonthlyPaymentCalculatorToolUi = lazy(() =>
+  import("../LoanMonthlyPaymentCalculatorTool").then((m) => ({ default: m.LoanMonthlyPaymentCalculatorTool })),
+);
