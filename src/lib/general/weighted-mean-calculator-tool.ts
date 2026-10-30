@@ -1,7 +1,7 @@
 import { makeTool, faq } from "./types";
 
 const tool = makeTool(
-  "calculadora-media-ponderada",
+  "calculadora-promedio-ponderado",
   "Weighted Mean Calculator",
   "educacion",
   "calculator",
