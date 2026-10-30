@@ -28,4 +28,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-cuota-prestamo": UI.LoanMonthlyPaymentCalculatorToolUi,
   "calculadora-perimetro-rectangulo": UI.RectanglePerimeterCalculatorToolUi,
   "calculadora-media-ponderada": UI.WeightedAverageCalculatorToolUi,
+  "calculadora-media-cuadratica": UI.QuadraticMeanCalculatorToolUi,
 };

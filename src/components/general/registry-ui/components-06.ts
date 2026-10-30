@@ -37,3 +37,7 @@ export const RectanglePerimeterCalculatorToolUi = lazy(() =>
 export const WeightedAverageCalculatorToolUi = lazy(() =>
   import("../WeightedAverageCalculatorTool").then((m) => ({ default: m.WeightedAverageCalculatorTool })),
 );
+
+export const QuadraticMeanCalculatorToolUi = lazy(() =>
+  import("../QuadraticMeanCalculatorTool").then((m) => ({ default: m.QuadraticMeanCalculatorTool })),
+);
