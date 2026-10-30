@@ -88,4 +88,5 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "conversor-onzas-ml", name: "FluidOuncesMlConverterTool", path: "./FluidOuncesMlConverterTool", export: "FluidOuncesMlConverterTool" },
   { slug: "conversor-tazas-ml", name: "CupsMlConverterTool", path: "./CupsMlConverterTool", export: "CupsMlConverterTool" },
   { slug: "conversor-celsius-kelvin", name: "CelsiusKelvinConverterTool", path: "./CelsiusKelvinConverterTool", export: "CelsiusKelvinConverterTool" },
+  { slug: "calculadora-media-cuadratica", name: "QuadraticMeanCalculatorTool", path: "./QuadraticMeanCalculatorTool", export: "QuadraticMeanCalculatorTool" },
 ] as const;
