@@ -5,6 +5,9 @@ type CacheEntry = { at: number; value: AdsConfig };
 const TTL_MS = 60_000;
 let cache: CacheEntry | null = null;
 
+/** Hard kill switch: when true, no Adsterra unit loads anywhere. */
+const ADS_FORCE_OFF = true;
+
 function asBool(v: unknown): boolean {
   return v === true;
 }
@@ -25,8 +28,15 @@ function normalizeFormats(raw: unknown): AdsFormats {
  * Connection: process.env.GLOBAL_CONFIG, falling back to process.env.EDGE_CONFIG
  * (handled by @vercel/global-config). Missing connection or read errors → ALL OFF.
  * Cached in-process for ~60s.
+ *
+ * ADS_FORCE_OFF=true disables every format regardless of Edge Config.
  */
 export async function getAdsConfig(): Promise<AdsConfig> {
+  if (ADS_FORCE_OFF) {
+    cache = { at: Date.now(), value: ADS_OFF };
+    return ADS_OFF;
+  }
+
   const now = Date.now();
   if (cache && now - cache.at < TTL_MS) return cache.value;
 
