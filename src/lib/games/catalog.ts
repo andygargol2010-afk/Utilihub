@@ -235,7 +235,7 @@ export const GAMES: readonly GameDef[] = [
     tag: "arcade",
     emoji: "⚡",
     summaryEn: "Catch falling neon pulses with your bar. Build combos, lose lives on misses, rising difficulty. Particle bursts on every catch.",
-    summaryEs: "Atrapá pulsos neón que caen con tu barra. Construí combos, perés vidas si fallás, dificultad creciente. Explosiones de partículas en cada captura.",
+    summaryEs: "Atrapá pulsos neón que caen con tu barra. Construí combos, perdé vidas si fallás, dificultad creciente. Explosiones de partículas en cada captura.",
     hasScore: true,
   },
   {
