@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-30 | matematicas | calculadora-media-armonica | HarmonicMeanCalculatorTool
 - 2026-10-30 | matematicas | calculadora-desviacion-absoluta-media | MeanAbsoluteDeviationCalculatorTool
 - 2026-10-30 | matematicas | calculadora-media-cuadratica | QuadraticMeanCalculatorTool
 - 2026-10-30 | educacion | calculadora-media-ponderada | WeightedAverageCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-29 | hogar | conversor-tazas-ml | CupsMlConverterTool
 - 2026-10-29 | hogar | conversor-onzas-ml | FluidOuncesMlConverterTool
 - 2026-10-29 | hogar | conversor-cucharadas-ml | TablespoonMlConverterTool
-- 2026-10-29 | texto | calculadora-tiempo-de-lectura | ReadingTimeCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -47,7 +47,7 @@ diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-d
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo)
-matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media)
+matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras)
 ```
 
@@ -63,6 +63,7 @@ Registry anti-wipe remains the highest-priority safety rule. registry.tsx is lar
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (\u22654 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md \u00a7PRODUCT step 4.
 2026-10-30: META — clarified in ops.md that .md files override bootstrap volume (default 1 tool). Roll 1=META. Saturation continues; many clusters recent. Prefer improve existing weak tools next.
+2026-10-30: PRODUCT — calculadora-media-armonica (matematicas). One tool (default). Anti-dupe OK (new slug). Practical harmonic mean for rates/averages of rates. SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-desviacion-absoluta-media (matematicas). One tool (default). Anti-dupe OK (new slug). Practical MAD complementary to std dev/RMS. SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-media-cuadratica (matematicas). One tool (default). Anti-dupe OK (new slug). Practical RMS for signals/stats. SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-media-ponderada (educacion). One tool (default). Anti-dupe OK (new slug). Practical weighted average for grades/weights. SEO locales: defer pt/fr/de.
@@ -99,7 +100,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-desviacion-absoluta-media
+last_slugs: calculadora-media-armonica
 last_deploy: no (branch auto-deploy disabled)
 last_sha: (pending after push)
 ```

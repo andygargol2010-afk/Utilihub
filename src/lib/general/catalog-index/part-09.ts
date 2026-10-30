@@ -11,6 +11,7 @@ import { FLOW_RATE_CALCULATOR_TOOLS } from "../flow-rate-calculator-tool";
 import { LOAN_MONTHLY_PAYMENT_CALCULATOR_TOOLS } from "../loan-monthly-payment-calculator-tool";
 import { QUADRATIC_MEAN_CALCULATOR_TOOLS } from "../quadratic-mean-calculator-tool";
 import { MEAN_ABSOLUTE_DEVIATION_CALCULATOR_TOOLS } from "../mean-absolute-deviation-calculator-tool";
+import { HARMONIC_MEAN_CALCULATOR_TOOLS } from "../harmonic-mean-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -24,4 +25,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...LOAN_MONTHLY_PAYMENT_CALCULATOR_TOOLS,
   ...QUADRATIC_MEAN_CALCULATOR_TOOLS,
   ...MEAN_ABSOLUTE_DEVIATION_CALCULATOR_TOOLS,
+  ...HARMONIC_MEAN_CALCULATOR_TOOLS,
 ];

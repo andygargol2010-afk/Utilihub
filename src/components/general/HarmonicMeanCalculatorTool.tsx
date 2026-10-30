@@ -6,32 +6,38 @@ type Locale = "en" | "es";
 const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
 const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
 
-function parseNumbers(raw: string): number[] {
-  return raw
-    .split(/[\n,;\s]+/)
-    .map((x) => Number(x.trim().replace(",", ".")))
-    .filter((n) => Number.isFinite(n) && n > 0);
+function parseList(s: string): number[] {
+  return s
+    .split(/[,;\s]+/)
+    .map((x) => x.trim())
+    .filter(Boolean)
+    .map((x) => parseFloat(x))
+    .filter((n) => Number.isFinite(n));
 }
 
 export function HarmonicMeanCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
-  const [raw, setRaw] = useState("2, 3, 6");
+  const [valuesStr, setValuesStr] = useState("1, 2, 3");
   const [copied, setCopied] = useState(false);
 
   const result = useMemo(() => {
-    const xs = parseNumbers(raw);
-    if (xs.length < 1) return null;
-    if (xs.length > 500) return null;
-    const invSum = xs.reduce((a, x) => a + 1 / x, 0);
-    if (invSum === 0) return null;
-    const mean = xs.length / invSum;
-    return { mean: Math.round(mean * 1e8) / 1e8, count: xs.length };
-  }, [raw]);
+    const values = parseList(valuesStr);
+    if (values.length === 0) return null;
+    if (values.some((v) => !Number.isFinite(v) || v <= 0)) return null;
+    const n = values.length;
+    const sumInv = values.reduce((acc, v) => acc + 1 / v, 0);
+    const h = n / sumInv;
+    const rounded = Math.round(h * 10000) / 10000;
+    return { h: rounded, n, sumInv: Math.round(sumInv * 10000) / 10000 };
+  }, [valuesStr]);
 
   async function copy() {
     if (!result) return;
+    const text = es
+      ? `Media armónica: ${result.h}`
+      : `Harmonic mean: ${result.h}`;
     try {
-      await navigator.clipboard.writeText(`${result.mean}`);
+      await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -40,7 +46,7 @@ export function HarmonicMeanCalculatorTool({ locale = "en" }: { tool?: GeneralTo
   }
 
   function reset() {
-    setRaw("2, 3, 6");
+    setValuesStr("1, 2, 3");
     setCopied(false);
   }
 
@@ -49,42 +55,42 @@ export function HarmonicMeanCalculatorTool({ locale = "en" }: { tool?: GeneralTo
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
         <p className="text-sm text-muted-foreground">{es ? "Media armónica" : "Harmonic mean"}</p>
         {result ? (
-          <>
-            <p className="text-3xl font-semibold">{result.mean}</p>
+          <div>
+            <p className="text-3xl font-semibold">{result.h}</p>
             <p className="text-sm text-muted-foreground">
-              {es ? `${result.count} valores` : `${result.count} values`}
+              {es
+                ? `${result.n} valores · Σ(1/x) = ${result.sumInv}`
+                : `${result.n} values · Σ(1/x) = ${result.sumInv}`}
             </p>
-          </>
+          </div>
         ) : (
           <p className="text-sm text-muted-foreground">
-            {es
-              ? "Introduce números positivos separados por coma o espacio"
-              : "Enter positive numbers separated by comma or space"}
+            {es ? "Introduce al menos un número positivo finito" : "Enter at least one positive finite number"}
           </p>
         )}
       </div>
 
       <label className="block space-y-2 text-sm">
-        <span className="font-medium">{es ? "Números (positivos)" : "Numbers (positive)"}</span>
-        <textarea
-          rows={3}
-          value={raw}
-          onChange={(e) => setRaw(e.target.value)}
+        <span className="font-medium">{es ? "Números positivos (separados por coma)" : "Positive numbers (comma-separated)"}</span>
+        <input
+          type="text"
+          value={valuesStr}
+          onChange={(e) => setValuesStr(e.target.value)}
           className={fieldClass}
-          placeholder={es ? "2, 3, 6" : "2, 3, 6"}
+          placeholder={es ? "Ej. 1, 2, 3" : "e.g. 1, 2, 3"}
         />
       </label>
 
       <p className="text-sm text-muted-foreground">
         {es
-          ? "Fórmula: n / (1/x₁ + 1/x₂ + … + 1/xₙ). Útil para tasas, velocidades promedio y resistencias en paralelo."
-          : "Formula: n / (1/x₁ + 1/x₂ + … + 1/xₙ). Useful for rates, average speeds and parallel resistances."}
+          ? "Calcula n / Σ(1/x_i). Útil para promedios de tasas, velocidades o ratios (solo números positivos)."
+          : "Computes n / Σ(1/x_i). Useful for averages of rates, speeds, or ratios (positive numbers only)."}
       </p>
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? "2, 3, 6 → 3" : "2, 3, 6 → 3"}</p>
-        <p>{es ? "4, 4, 4 → 4" : "4, 4, 4 → 4"}</p>
+        <p>{es ? "1, 2, 3 → 1.6364" : "1, 2, 3 → 1.6364"}</p>
+        <p>{es ? "2, 4 → 2.6667" : "2, 4 → 2.6667"}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -94,6 +100,19 @@ export function HarmonicMeanCalculatorTool({ locale = "en" }: { tool?: GeneralTo
         <button type="button" className={buttonClass} onClick={reset}>
           {es ? "Reiniciar" : "Reset"}
         </button>
+      </div>
+
+      <div className="text-sm text-muted-foreground space-y-1">
+        <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
+        <p>
+          <a className="underline" href={es ? "/es/tools/calculadora-media-cuadratica" : "/tools/calculadora-media-cuadratica"}>
+            {es ? "Media cuadrática (RMS)" : "Quadratic mean (RMS)"}
+          </a>
+          {" · "}
+          <a className="underline" href={es ? "/es/tools/calculadora-promedio-simple" : "/tools/calculadora-promedio-simple"}>
+            {es ? "Promedio simple" : "Simple average"}
+          </a>
+        </p>
       </div>
     </div>
   );

@@ -45,3 +45,7 @@ export const QuadraticMeanCalculatorToolUi = lazy(() =>
 export const MeanAbsoluteDeviationCalculatorToolUi = lazy(() =>
   import("../MeanAbsoluteDeviationCalculatorTool").then((m) => ({ default: m.MeanAbsoluteDeviationCalculatorTool })),
 );
+
+export const HarmonicMeanCalculatorToolUi = lazy(() =>
+  import("../HarmonicMeanCalculatorTool").then((m) => ({ default: m.HarmonicMeanCalculatorTool })),
+);
