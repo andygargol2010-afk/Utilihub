@@ -67,4 +67,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-caudal": "Calculadora de caudal",
   "calculadora-media-cuadratica": "Calculadora de media cuadrática (RMS)",
   "calculadora-desviacion-absoluta-media": "Calculadora de desviación absoluta media",
+  "calculadora-media-geometrica": "Calculadora de media geométrica",
 };

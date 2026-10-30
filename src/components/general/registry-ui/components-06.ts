@@ -49,3 +49,7 @@ export const MeanAbsoluteDeviationCalculatorToolUi = lazy(() =>
 export const HarmonicMeanCalculatorToolUi = lazy(() =>
   import("../HarmonicMeanCalculatorTool").then((m) => ({ default: m.HarmonicMeanCalculatorTool })),
 );
+
+export const GeometricMeanCalculatorToolUi = lazy(() =>
+  import("../GeometricMeanCalculatorTool").then((m) => ({ default: m.GeometricMeanCalculatorTool })),
+);

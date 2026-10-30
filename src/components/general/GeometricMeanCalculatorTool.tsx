@@ -6,31 +6,49 @@ type Locale = "en" | "es";
 const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
 const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
 
+function parseList(s: string): number[] {
+  return s
+    .split(/[,;\s]+/)
+    .map((x) => x.trim())
+    .filter(Boolean)
+    .map((x) => parseFloat(x))
+    .filter((n) => Number.isFinite(n));
+}
+
 export function GeometricMeanCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
-  const [numbers, setNumbers] = useState("2, 8, 4");
+  const [valuesStr, setValuesStr] = useState("2, 8");
   const [copied, setCopied] = useState(false);
 
   const result = useMemo(() => {
-    const parts = numbers.split(/[,;\s]+/).map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
-    if (parts.length === 0 || parts.some(n => n <= 0)) return null;
-    const product = parts.reduce((a, b) => a * b, 1);
-    const geo = Math.pow(product, 1 / parts.length);
-    return { geo: Math.round(geo * 100) / 100, count: parts.length };
-  }, [numbers]);
+    const values = parseList(valuesStr);
+    if (values.length === 0) return null;
+    if (values.some((v) => !Number.isFinite(v) || v <= 0)) return null;
+    const n = values.length;
+    const product = values.reduce((acc, v) => acc * v, 1);
+    if (!Number.isFinite(product) || product <= 0) return null;
+    const g = Math.pow(product, 1 / n);
+    const rounded = Math.round(g * 10000) / 10000;
+    return { g: rounded, n, product: Math.round(product * 10000) / 10000 };
+  }, [valuesStr]);
 
   async function copy() {
     if (!result) return;
-    const text = `${result.geo}`;
+    const text = es
+      ? `Media geométrica: ${result.g}`
+      : `Geometric mean: ${result.g}`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    } catch { setCopied(false); }
+    } catch {
+      setCopied(false);
+    }
   }
 
   function reset() {
-    setNumbers("2, 8, 4"); setCopied(false);
+    setValuesStr("2, 8");
+    setCopied(false);
   }
 
   return (
@@ -38,28 +56,42 @@ export function GeometricMeanCalculatorTool({ locale = "en" }: { tool?: GeneralT
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
         <p className="text-sm text-muted-foreground">{es ? "Media geométrica" : "Geometric mean"}</p>
         {result ? (
-          <>
-            <p className="text-3xl font-semibold">{result.geo}</p>
-            <p className="text-sm text-muted-foreground">{es ? `de ${result.count} valores` : `from ${result.count} values`}</p>
-          </>
+          <div>
+            <p className="text-3xl font-semibold">{result.g}</p>
+            <p className="text-sm text-muted-foreground">
+              {es
+                ? `${result.n} valores · producto = ${result.product}`
+                : `${result.n} values · product = ${result.product}`}
+            </p>
+          </div>
         ) : (
-          <p className="text-sm text-muted-foreground">{es ? "Introduce números positivos separados por coma" : "Enter positive numbers separated by commas"}</p>
+          <p className="text-sm text-muted-foreground">
+            {es ? "Introduce al menos un número positivo finito" : "Enter at least one positive finite number"}
+          </p>
         )}
       </div>
 
       <label className="block space-y-2 text-sm">
-        <span className="font-medium">{es ? "Números (positivos)" : "Numbers (positive)"}</span>
-        <input type="text" value={numbers} onChange={(e) => setNumbers(e.target.value)} className={fieldClass} placeholder="2, 8, 4" />
+        <span className="font-medium">{es ? "Números positivos (separados por coma)" : "Positive numbers (comma-separated)"}</span>
+        <input
+          type="text"
+          value={valuesStr}
+          onChange={(e) => setValuesStr(e.target.value)}
+          className={fieldClass}
+          placeholder={es ? "Ej. 2, 8" : "e.g. 2, 8"}
+        />
       </label>
 
       <p className="text-sm text-muted-foreground">
-        {es ? "Media geométrica = raíz n-ésima del producto de los valores. Útil para tasas de crecimiento." : "Geometric mean = n-th root of the product of the values. Useful for growth rates."}
+        {es
+          ? "Calcula (\u03a0 x_i)^(1/n). Útil para tasas de crecimiento, porcentajes o promedios multiplicativos (solo números positivos)."
+          : "Computes (\u03a0 x_i)^(1/n). Useful for growth rates, percentages, or multiplicative averages (positive numbers only)."}
       </p>
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
         <p>{es ? "2, 8 → 4" : "2, 8 → 4"}</p>
-        <p>{es ? "1, 3, 9 → 3" : "1, 3, 9 → 3"}</p>
+        <p>{es ? "1, 2, 4 → 2" : "1, 2, 4 → 2"}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -69,6 +101,19 @@ export function GeometricMeanCalculatorTool({ locale = "en" }: { tool?: GeneralT
         <button type="button" className={buttonClass} onClick={reset}>
           {es ? "Reiniciar" : "Reset"}
         </button>
+      </div>
+
+      <div className="text-sm text-muted-foreground space-y-1">
+        <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
+        <p>
+          <a className="underline" href={es ? "/es/tools/calculadora-media-armonica" : "/tools/calculadora-media-armonica"}>
+            {es ? "Media armónica" : "Harmonic mean"}
+          </a>
+          {" · "}
+          <a className="underline" href={es ? "/es/tools/calculadora-promedio-simple" : "/tools/calculadora-promedio-simple"}>
+            {es ? "Promedio simple" : "Simple average"}
+          </a>
+        </p>
       </div>
     </div>
   );
