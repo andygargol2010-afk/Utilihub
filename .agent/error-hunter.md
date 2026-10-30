@@ -45,7 +45,7 @@ At the start of every run, choose **exactly one** mode and write it into `error-
 - If `last_mode` in state is missing or was `PREVENT` → prefer **HUNT** (unless the previous HUNT found zero and files are clearly over soft limits — then PREVENT).
 - If `last_mode` was `HUNT` → prefer **PREVENT`.
 - Override to **PREVENT** when any tracked split target is over soft limit (see PREVENT playbook), even if the coin would say HUNT.
-- Override to **HUNT** when Vercel shows a current ERROR deploy or a user-facing 5xx/build break is known this run.
+- Override to **HUNT** when Vercel shows a current ERROR deploy, `validate:catalog` fails, or a user-facing 5xx/build break is known this run.
 
 Target long-run mix: **~50% HUNT / ~50% PREVENT**.
 
@@ -57,8 +57,13 @@ Target long-run mix: **~50% HUNT / ~50% PREVENT**.
 - **≤ 20%** of the run on regression smoke of **already fixed** catalog items (rotate which E### you sample).
 - **≥ 80%** on discovery + new fixes.
 
-**Discovery order**
-1. Production / runtime errors if Vercel logs or live symptoms are available.
+**Mandatory first step (every HUNT run)**
+1. Run **`npm run validate:catalog`** (or `node scripts/validate-catalog.mjs && node scripts/validate-catalog-size.mjs`) on a fresh checkout of `fix/spanish-complete`.
+2. If it exits non-zero: treat each error (especially **slug duplicado en makeTool/wrappers**) as a **build-breaking defect**. Fix in this run, add/update E### in the error-hunter catalog, commit once. Do **not** skip to capacity or cosmetic work while catalog validation fails.
+3. If it passes: note “validate:catalog OK” in the Spanish summary and continue discovery below.
+
+**Discovery order (after catalog OK)**
+1. Production / runtime errors if Vercel logs or live symptoms are available (override to HUNT when latest production is ERROR).
 2. Risky patterns in **recent commits** from other autos: `PLACEHOLDER`, `$(cat`, duplicate slugs, registry shrink, missing imports, wrong EN/ES casing, missing H1, broken internal links, sitemap URLs that 404.
 3. Code sampling of high-traffic routes and shared shells.
 
@@ -80,6 +85,12 @@ Goal: reduce the chance that tools-builder / ideas-lab / other autos create the 
 **Do one primary prevention outcome per run** (minimal blast radius). Prefer structural capacity over speculative refactors.
 
 **PREVENT playbook (pick the highest-priority item that still needs work)**
+
+0. **Catalog integrity gate (cheap, every PREVENT run)**
+   - Run **`npm run validate:catalog`** once at the start (same as HUNT mandatory step).
+   - If it fails: **switch this run to HUNT**, fix the catalog errors, update E###, single commit. Capacity splits wait until the tree builds.
+   - If it passes: record “validate:catalog OK” in state and continue with capacity work below.
+   - Optional extra when catalog OK: quick scan of recent tool modules for two `makeTool("same-slug")` (class E018 / E032) — fix immediately if found.
 
 1. **Split / pre-create capacity for files other autos expand every run**
    - Catalog tools: if the smallest `src/lib/general/catalog-index/part-NN.ts` is **> ~150 lines or > ~6 KB**, create the next empty `part-NN` with the standard header + empty export array, and add a one-line `...PART_NN_TOOLS,` spread + import in `src/lib/general/index.ts` (surgical insert only).

@@ -90,6 +90,7 @@ Root causes seen in production-preview:
 
 A. **Slug uniqueness (repo-wide):** grep the candidate slug(s) across `src/` (catalog data, route-slugs, registry, i18n). **Zero** prior hits for a new slug. If a richer dedicated tool already owns the slug, do **not** also add a thin entry in a generic converter/list file — keep one owner only.
 B. **One owner per slug:** never ship “generic list entry + dedicated tool” for the same slug. Prefer the dedicated tool; remove or never add the duplicate list entry.
+B2. **Pre-push catalog gate:** before the PRODUCT commit, run **`npm run validate:catalog`**. If it reports **slug duplicado** (or any error), fix before pushing — do not land a tool that fails the same check Vercel runs in `npm run build`.
 C. **Registry ↔ files:** every new entry in `registry-entries-*.ts` points at a component file that exists **in the same commit** and exports the expected name.
 D. **No dangling paths:** if you remove or rename a tool, clean the corresponding entry in `registry-entries-a/b.ts` + catalog data + route-slugs in that same commit.
 E. **Same-commit integrity:** data + component + registry entry (+ i18n) land together. A half-landed tool is a 500 risk.
