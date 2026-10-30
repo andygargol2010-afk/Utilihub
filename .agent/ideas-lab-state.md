@@ -62,18 +62,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Classic Sudoku number-placement puzzle. 9x9 grid with row/column/3x3 box uniqueness. User fills cells (given clues remain fixed), pencil marks optional, difficulty levels (easy/medium/hard with more clues removed), live validity highlights on conflict, win detection when board is complete and valid, new game, URL deep-link for seed/difficulty, branded PNG of board + progress + utilihub.app. EN+ES routes and strings. Mobile 390px touch-friendly cells.
+id: sudoku-classic
+path_en: /games/sudoku-classic
+path_es: /es/juegos/sudoku-clasico
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed traffic-signal-lab after final polish (peak queue + phase remaining + full signals). Ready for next IDEATE.
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User selects difficulty, places numbers on the 9x9 grid respecting uniqueness, and sees a win state with celebration when the board is fully and validly completed.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): Sudoku (value5 share3 demand5 distinct5 feas4 perf5 total27); MemoryMatch (value4 share4 demand4 distinct4 feas5 perf5 total26); Battleship (value4 share3 demand4 distinct4 feas4 perf5 total24). Closest-3 for Sudoku: minesweeper (grid logic), hangman (guessing), connect-four (grid strategy). Primary metaphor: constraint-satisfaction number grid with uniqueness rules and progressive fill. Why not particle-canvas: pure DOM/CSS grid puzzle with discrete cell inputs and rule validation, no freehand drawing or attractors. IP check: traditional public-domain Sudoku rules (generic number grid, no branded assets or commercial IP). Chosen: sudoku-classic. Roll: CORE games (weight 5; variety preferred over saturated playgrounds; last closed simulators). Quality core by run 2: basic playable 9x9 with one difficulty + win check.
 adsense-prep_runs: 3
 ```
 
