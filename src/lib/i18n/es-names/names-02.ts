@@ -66,4 +66,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "conversor-celsius-kelvin": "Conversor de Celsius a Kelvin",
   "calculadora-caudal": "Calculadora de caudal",
   "calculadora-media-cuadratica": "Calculadora de media cuadrática (RMS)",
+  "calculadora-desviacion-absoluta-media": "Calculadora de desviación absoluta media",
 };

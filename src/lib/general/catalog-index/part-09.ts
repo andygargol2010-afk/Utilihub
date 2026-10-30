@@ -10,6 +10,7 @@ import { GRAMS_TO_POUNDS_CONVERTER_TOOLS } from "../grams-to-pounds-converter-to
 import { FLOW_RATE_CALCULATOR_TOOLS } from "../flow-rate-calculator-tool";
 import { LOAN_MONTHLY_PAYMENT_CALCULATOR_TOOLS } from "../loan-monthly-payment-calculator-tool";
 import { QUADRATIC_MEAN_CALCULATOR_TOOLS } from "../quadratic-mean-calculator-tool";
+import { MEAN_ABSOLUTE_DEVIATION_CALCULATOR_TOOLS } from "../mean-absolute-deviation-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -22,4 +23,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...FLOW_RATE_CALCULATOR_TOOLS,
   ...LOAN_MONTHLY_PAYMENT_CALCULATOR_TOOLS,
   ...QUADRATIC_MEAN_CALCULATOR_TOOLS,
+  ...MEAN_ABSOLUTE_DEVIATION_CALCULATOR_TOOLS,
 ];

@@ -29,4 +29,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-perimetro-rectangulo": UI.RectanglePerimeterCalculatorToolUi,
   "calculadora-media-ponderada": UI.WeightedAverageCalculatorToolUi,
   "calculadora-media-cuadratica": UI.QuadraticMeanCalculatorToolUi,
+  "calculadora-desviacion-absoluta-media": UI.MeanAbsoluteDeviationCalculatorToolUi,
 };

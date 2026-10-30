@@ -41,3 +41,7 @@ export const WeightedAverageCalculatorToolUi = lazy(() =>
 export const QuadraticMeanCalculatorToolUi = lazy(() =>
   import("../QuadraticMeanCalculatorTool").then((m) => ({ default: m.QuadraticMeanCalculatorTool })),
 );
+
+export const MeanAbsoluteDeviationCalculatorToolUi = lazy(() =>
+  import("../MeanAbsoluteDeviationCalculatorTool").then((m) => ({ default: m.MeanAbsoluteDeviationCalculatorTool })),
+);
