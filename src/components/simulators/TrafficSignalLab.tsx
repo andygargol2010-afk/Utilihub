@@ -20,6 +20,7 @@ export function TrafficSignalLab({ locale = "en" }: { locale?: SimLocale }) {
   const [throughput, setThroughput] = useState(0);
   const [queues, setQueues] = useState({ N: 0, S: 0, E: 0, W: 0 });
   const [avgWait, setAvgWait] = useState(0);
+  const [copied, setCopied] = useState(false);
 
   const carsRef = useRef<Car[]>([]);
   const nextId = useRef(1);
@@ -69,6 +70,19 @@ export function TrafficSignalLab({ locale = "en" }: { locale?: SimLocale }) {
     setGreenNs(ns);
     setGreenEw(ew);
   };
+
+  const copyLink = async () => {
+    if (typeof window === "undefined") return;
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const totalQueue = queues.N + queues.S + queues.E + queues.W;
 
   useEffect(() => {
     let raf = 0;
@@ -239,6 +253,9 @@ export function TrafficSignalLab({ locale = "en" }: { locale?: SimLocale }) {
         <SimSecondaryButton theme="lab" onClick={downloadPng}>
           {es ? "PNG marca" : "Branded PNG"}
         </SimSecondaryButton>
+        <SimSecondaryButton theme="lab" onClick={copyLink}>
+          {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Copiar enlace" : "Copy link"}
+        </SimSecondaryButton>
         <SimSecondaryButton theme="lab" onClick={() => applyPreset(8, 8)}>
           {es ? "Equilibrado" : "Balanced"}
         </SimSecondaryButton>
@@ -251,10 +268,10 @@ export function TrafficSignalLab({ locale = "en" }: { locale?: SimLocale }) {
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-sky-400/35 bg-black/50">
-        <canvas ref={canvasRef} width={W} height={H} className="h-auto w-full" style={{ aspectRatio: `${W}/${H}` }} />
+        <canvas ref={canvasRef} width={W} height={H} className="h-auto w-full touch-manipulation" style={{ aspectRatio: `${W}/${H}` }} />
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <div className="rounded-xl border border-sky-400/20 bg-black/40 px-2 py-2 text-center">
           <p className="text-[10px] font-bold uppercase tracking-wider text-white/50">{es ? "Flujo" : "Throughput"}</p>
           <p className="mt-0.5 text-lg font-bold tabular-nums text-emerald-300">{throughput}</p>
@@ -263,7 +280,11 @@ export function TrafficSignalLab({ locale = "en" }: { locale?: SimLocale }) {
           <p className="text-[10px] font-bold uppercase tracking-wider text-white/50">{es ? "Espera media" : "Avg wait"}</p>
           <p className="mt-0.5 text-lg font-bold tabular-nums text-sky-300">{avgWait.toFixed(1)}s</p>
         </div>
-        <div className="col-span-2 sm:col-span-1 grid grid-cols-4 gap-1">
+        <div className="rounded-xl border border-sky-400/20 bg-black/40 px-2 py-2 text-center">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-white/50">{es ? "Cola total" : "Total queue"}</p>
+          <p className="mt-0.5 text-lg font-bold tabular-nums text-amber-300">{totalQueue}</p>
+        </div>
+        <div className="grid grid-cols-4 gap-1">
           {(["N", "S", "E", "W"] as const).map((d) => (
             <div key={d} className="rounded-xl border border-sky-400/20 bg-black/40 px-1 py-2 text-center">
               <p className="text-[9px] font-bold uppercase tracking-wider text-white/50">Q {d}</p>
@@ -276,18 +297,18 @@ export function TrafficSignalLab({ locale = "en" }: { locale?: SimLocale }) {
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="text-xs text-sky-100/70">
           {es ? "Verde N-S (s)" : "NS green (s)"}: {greenNs}
-          <input type="range" min={3} max={20} step={1} value={greenNs} onChange={(e) => setGreenNs(Number(e.target.value))} className="mt-1 w-full accent-emerald-400" />
+          <input type="range" min={3} max={20} step={1} value={greenNs} onChange={(e) => setGreenNs(Number(e.target.value))} className="mt-1 h-8 w-full accent-emerald-400" />
         </label>
         <label className="text-xs text-sky-100/70">
           {es ? "Verde E-O (s)" : "EW green (s)"}: {greenEw}
-          <input type="range" min={3} max={20} step={1} value={greenEw} onChange={(e) => setGreenEw(Number(e.target.value))} className="mt-1 w-full accent-sky-400" />
+          <input type="range" min={3} max={20} step={1} value={greenEw} onChange={(e) => setGreenEw(Number(e.target.value))} className="mt-1 h-8 w-full accent-sky-400" />
         </label>
       </div>
 
       <p className="text-center text-xs text-white/55">
         {es
-          ? "Ajustá los tiempos verdes N-S y E-O o usá presets. Los coches avanzan solo con verde y se encolan con rojo. Minimizá la espera media y maximizá el flujo. Descargá PNG de la escena."
-          : "Adjust NS and EW green times or use presets. Cars move only on green and queue on red. Minimize average wait and maximize throughput. Download a branded PNG of the scene."}
+          ? "Ajustá los tiempos verdes N-S y E-O o usá presets. Los coches avanzan solo con verde y se encolan con rojo. Minimizá la espera media y maximizá el flujo. Copiá el enlace o descargá PNG de la escena."
+          : "Adjust NS and EW green times or use presets. Cars move only on green and queue on red. Minimize average wait and maximize throughput. Copy the link or download a branded PNG of the scene."}
       </p>
     </div>
   );
