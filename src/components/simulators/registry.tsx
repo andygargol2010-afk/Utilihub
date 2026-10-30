@@ -17,6 +17,7 @@ const GaltonBoardSim = lazy(() => import("./GaltonBoardSim").then((m) => ({ defa
 const BoidsFlockingLab = lazy(() => import("./BoidsFlockingLab").then((m) => ({ default: m.BoidsFlockingLab })));
 const ReactionDiffusionLab = lazy(() => import("./ReactionDiffusionLab").then((m) => ({ default: m.ReactionDiffusionLab })));
 const LogisticChaosLab = lazy(() => import("./LogisticChaosLab").then((m) => ({ default: m.LogisticChaosLab })));
+const TrafficSignalLab = lazy(() => import("./TrafficSignalLab").then((m) => ({ default: m.TrafficSignalLab })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -50,6 +51,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "lab-reaccion-difusion": ReactionDiffusionLab,
   "logistic-chaos-lab": LogisticChaosLab,
   "laboratorio-caos-logistico": LogisticChaosLab,
+  "traffic-signal-lab": TrafficSignalLab,
+  "laboratorio-semaforos": TrafficSignalLab,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
