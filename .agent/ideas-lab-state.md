@@ -62,23 +62,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive classic Simon-style color sequence memory game. User watches a growing sequence of colored buttons light up with tones, then repeats the sequence by clicking. Increases length on success; ends on mistake. Includes levels, best score, sound toggle, URL deep-link for sequence seed, branded PNG share of high score, EN+ES routes. Distinct from existing pair-matching MemoryGame.
-id: simon-sequence-memory
-path_en: /games/simon-sequence-memory
-path_es: /es/juegos/memoria-secuencia-simon
+status: active
+idea: Interactive flatpack furniture assembly kit. User selects a furniture type (simple shelf, desk, chair), gets discrete part cards (boards, screws, dowels), assembles them in ordered steps with reordering/drag, sees live exploded-to-assembled diagram preview, progress waypoints, part checklist, difficulty (Easy/Normal), URL deep-link for design seed, branded PNG of finished piece with accent + utilihub.app, EN+ES routes. Distinct from recipe-assembly-kit by physical product assembly metaphor.
+id: furniture-assembly-kit
+path_en: /kits/furniture-assembly-kit
+path_es: /es/kits/ensamblaje-muebles
 path_seo: n/a
-domain: games
+domain: kits
 runs_total: 4
-runs_remaining: 0
-acceptance: User clicks Start, watches sequence of 3+ colors/sounds, repeats it correctly to advance length, sees score increase; on error sees game-over with best score and share PNG.
+runs_remaining: 4
+acceptance: User selects furniture type, drags/reorders discrete parts into sequential assembly steps, sees live diagram update and progress, completes assembly to see finished PNG share option.
 share: both
-next_step_required: no
-notes: Domain roll: FLEX (p_fixed 0.35 rolled False), chose games (underweighted 2, variety after recent simulators/kits/journeys; avoids saturated playgrounds). Candidates: 1. simon-sequence-memory (value5 share4 demand5 dist4 feas5 perf5 total28; closest: MemoryGame pairs, FormulaMemory, Hangman; metaphor: sequence recall timing; not particle-canvas; IP: traditional Simon-like generic colors/sounds no brand). 2. sliding-puzzle-15 (value4 share3 demand4 dist4 feas5 perf5 total25; closest: 2048 grid, LightsOut; metaphor: tile slide spatial packing; IP: traditional). 3. battleship-grid-hunt (value5 share4 demand5 dist5 feas4 perf4 total27; closest: Minesweeper grid, ConnectFour; metaphor: hidden grid hunt; IP: traditional generic). Chose simon for strong search + feasibility + not existing.
-Run 1 (2026-10-29): Core playable shipped. 4 pads, start with 3-color sequence + sine tones (Web Audio), user repeat advances length/score, fail shows game-over + best (localStorage). Sound toggle. EN+ES via catalog routes /games/simon-sequence-memory + /es/juegos/memoria-secuencia-simon. Lazy. Mobile 2x2 ~96-112px pads. CWV-safe (no heavy deps). Next: URL deep-link seed, branded PNG high-score, polish levels/aria.
-Run 2 (2026-10-29): URL deep-link seed (?seed=) with mulberry32 PRNG for reproducible sequence, branded score PNG (accent bar + pads + score/best/level + utilihub.app), level readout, improved aria-live announcements, share-link copies seeded URL, PNG/share buttons. Mobile 390px. CWV-safe. Next: polish edge cases, keyboard support or difficulty, final QA.
-Run 3 (2026-10-29): Keyboard support (keys 1-4 map to pads during input phase, with key labels on pads), difficulty selector (Easy/Normal/Hard adjusting playback speed and tone duration), statusRef for reliable input gating, updated status texts. Mobile 390px. CWV-safe. Next: final QA / edge polish / close.
-Run 4 (2026-10-29): Final QA and edge polish. Added New sequence button (clears seed, deletes ?seed= from URL, starts fresh random challenge). Play again keeps current seed for retry. Guarded start against re-entrancy. PNG now includes difficulty. Confirmed mobile 390px, keyboard, aria-live, sound, deep-link, share. Closed after 4 runs. CWV-safe. Adsterra intact.
+next_step_required: yes
+notes: Domain roll: FLEX (p_fixed 0.35 rolled False), chose kits (weight 5, variety after recent games/simulators; avoids saturated playgrounds and just-closed games). Candidates: 1. furniture-assembly-kit (value5 share4 demand5 dist4 feas5 perf5 total28; closest: recipe-assembly-kit ordered steps+preview, choice-story-journey waypoints, perhaps packing if any; metaphor: ordered discrete part assembly with visual progress; not particle-canvas; IP: generic flatpack no brand). 2. suitcase-packing-optimizer (value5 share4 demand5 dist5 feas4 perf5 total28; closest: recipe, shopping lists; metaphor: spatial packing with discrete items and steps; not particle). 3. capsule-wardrobe-mixer (value4 share5 demand4 dist4 feas5 perf5 total27; closest: mix-match tools if any; metaphor: combinatorial mix-and-match assembly). Chose furniture for strong search demand (assemble furniture online/guide) + feasibility + distinct physical assembly.
 adsense-prep_runs: 3
 ```
 
