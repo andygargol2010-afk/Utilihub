@@ -1,7 +1,7 @@
 import { makeTool, faq } from "./types";
 
 const tool = makeTool(
-  "calculadora-cuota-prestamo",
+  "calculadora-pago-mensual-prestamo",
   "Loan Monthly Payment Calculator",
   "finanzas",
   "calculator",
