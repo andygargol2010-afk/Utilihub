@@ -29,3 +29,7 @@ export const CupsMlConverterToolUi = lazy(() =>
 export const LoanMonthlyPaymentCalculatorToolUi = lazy(() =>
   import("../LoanMonthlyPaymentCalculatorTool").then((m) => ({ default: m.LoanMonthlyPaymentCalculatorTool })),
 );
+
+export const RectanglePerimeterCalculatorToolUi = lazy(() =>
+  import("../RectanglePerimeterCalculatorTool").then((m) => ({ default: m.RectanglePerimeterCalculatorTool })),
+);

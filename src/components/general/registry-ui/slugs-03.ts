@@ -26,4 +26,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "conversor-gramos-libras": UI.GramsToPoundsConverterToolUi,
   "calculadora-caudal": UI.FlowRateCalculatorToolUi,
   "calculadora-cuota-prestamo": UI.LoanMonthlyPaymentCalculatorToolUi,
+  "calculadora-perimetro-rectangulo": UI.RectanglePerimeterCalculatorToolUi,
 };
