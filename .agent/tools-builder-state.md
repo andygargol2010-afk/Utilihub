@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (\u22654 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md \u00a7PRODUCT step 4.
+2026-10-30: META — clarified in ops.md that .md files override bootstrap volume (default 1 tool). Roll 1=META. Saturation continues; many clusters recent. Prefer improve existing weak tools next.
 2026-10-30: PRODUCT — calculadora-media-cuadratica (matematicas). One tool (default). Anti-dupe OK (new slug). Practical RMS for signals/stats. SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-media-ponderada (educacion). One tool (default). Anti-dupe OK (new slug). Practical weighted average for grades/weights. SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-perimetro-rectangulo (ciencia). One tool (default). Anti-dupe OK (new slug). Practical perimeter for rectangles. SEO locales: defer pt/fr/de.
@@ -96,10 +97,10 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 ## OPTIONAL — last run snapshot
 
 ```
-last_mode: PRODUCT
-last_slugs: calculadora-media-cuadratica
+last_mode: META
+last_slugs: (none)
 last_deploy: no (branch auto-deploy disabled)
-last_sha: f30ccdea452a547f323e4cd4ee433d82f1585eee
+last_sha: 95f24af5c008b638e977473d71ad41d9f5665f4d
 ```
 
 <!-- end:tools-builder-state.md -->
