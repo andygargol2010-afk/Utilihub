@@ -68,4 +68,5 @@ export const ES_EXACT_NAMES_01: Record<string, string> = {
   "calculadora-perimetro-rectangulo": "Calculadora de perímetro de rectángulo",
   "calculadora-media-ponderada": "Calculadora de media ponderada",
   "calculadora-media-armonica": "Calculadora de media armónica",
+  "calculadora-mediana": "Calculadora de mediana",
 };
