@@ -69,7 +69,7 @@ path_en: n/a
 path_es: n/a
 path_seo: n/a
 domain: n/a
-rans_total: 0
+runs_total: 0
 runs_remaining: 0
 acceptance: n/a
 share: n/a
