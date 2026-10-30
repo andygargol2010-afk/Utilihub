@@ -79,7 +79,7 @@ export function GrassSeedCalculatorTool({ locale = "en" }: { tool: GeneralTool; 
 
   const copy = es
     ? {
-        help: "Estimá kilos y sacos de semilla para césped nuevo, resiembra o un parche. Las dosis son de planificación: igualalas a la etiqueta del saco.",
+        help: "Estimá kilos y sacos de semilla para césped nuevo, resiembra o un parche. Las dosis son de planificación: igualálas a la etiqueta del saco.",
         presets: "Presets",
         metric: "Festuca 10×6 m",
         overseed: "Resiembra 4.000 ft²",
