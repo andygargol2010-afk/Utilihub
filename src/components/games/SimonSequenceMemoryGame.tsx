@@ -116,23 +116,27 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
     window.history.replaceState(null, "", url);
   }, []);
 
-  const start = () => {
-    ensureAudio();
-    let nextSeed = seed;
-    if (nextSeed == null) {
-      nextSeed = Math.floor(Math.random() * 1e9) + 1;
-      setSeed(nextSeed);
-    }
-    updateUrl(nextSeed);
-    const rng = mulberry32(nextSeed);
-    rngRef.current = rng;
-    const first = Array.from({ length: 3 }, () => Math.floor(rng() * 4));
-    setSequence(first);
-    setScore(0);
-    setStatus("playing");
-    setAnnounce(es ? "Secuencia iniciada." : "Sequence started.");
-    setTimeout(() => void playSequence(first), 350);
-  };
+  const start = useCallback(
+    (forceNew = false) => {
+      if (statusRef.current === "playing" || playingRef.current) return;
+      ensureAudio();
+      let nextSeed = forceNew ? null : seed;
+      if (nextSeed == null) {
+        nextSeed = Math.floor(Math.random() * 1e9) + 1;
+        setSeed(nextSeed);
+      }
+      updateUrl(nextSeed);
+      const rng = mulberry32(nextSeed);
+      rngRef.current = rng;
+      const first = Array.from({ length: 3 }, () => Math.floor(rng() * 4));
+      setSequence(first);
+      setScore(0);
+      setStatus("playing");
+      setAnnounce(es ? "Secuencia iniciada." : "Sequence started.");
+      setTimeout(() => void playSequence(first), 350);
+    },
+    [seed, ensureAudio, updateUrl, playSequence, es],
+  );
 
   const restart = () => {
     setStatus("idle");
@@ -143,6 +147,14 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
     setAnnounce("");
     playingRef.current = false;
     rngRef.current = null;
+  };
+
+  const startNew = () => {
+    setSeed(null);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("seed");
+    window.history.replaceState(null, "", url);
+    setTimeout(() => start(true), 0);
   };
 
   const onPad = useCallback(
@@ -234,13 +246,13 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
     ctx.fillStyle = "#94a3b8";
     ctx.font = "14px system-ui, sans-serif";
     const level = sequence.length || 3;
-    ctx.fillText(`${es ? "Nivel" : "Level"} ${level}`, canvas.width / 2, 225);
+    ctx.fillText(`${es ? "Nivel" : "Level"} ${level} · ${difficulty}`, canvas.width / 2, 225);
     ctx.fillText("utilihub.app", canvas.width / 2, 270);
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = `utilihub-simon-${score}.png`;
     a.click();
-  }, [score, best, sequence.length, es]);
+  }, [score, best, sequence.length, es, difficulty]);
 
   const statusText =
     status === "idle"
@@ -327,9 +339,14 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
 
       <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
         {status === "idle" || status === "over" ? (
-          <GamePrimaryButton onClick={status === "over" ? restart : start}>
-            {status === "over" ? (es ? "Jugar de nuevo" : "Play again") : es ? "Iniciar" : "Start"}
-          </GamePrimaryButton>
+          <>
+            <GamePrimaryButton onClick={() => (status === "over" ? restart() : start())}>
+              {status === "over" ? (es ? "Jugar de nuevo" : "Play again") : es ? "Iniciar" : "Start"}
+            </GamePrimaryButton>
+            <GameSecondaryButton onClick={startNew}>
+              {es ? "Nueva secuencia" : "New sequence"}
+            </GameSecondaryButton>
+          </>
         ) : (
           <GamePrimaryButton disabled>
             {es ? "En curso…" : "In progress…"}
