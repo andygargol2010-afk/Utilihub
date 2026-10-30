@@ -14,17 +14,11 @@ import { MONTHLY_BUDGET_CALCULATOR_TOOLS } from "../monthly-budget-calculator-to
 import { PERCENTAGE_OF_TOTAL_CALCULATOR_TOOLS } from "../percentage-of-total-calculator-tool";
 import { HOURS_TO_DECIMAL_CALCULATOR_TOOLS } from "../hours-to-decimal-calculator-tool";
 import { HOURS_TO_DECIMAL_TOOLS } from "../hours-to-decimal-tool";
-import { TRIANGLE_AREA_CALCULATOR_TOOLS } from "../triangle-area-calculator-tool";
 import { SENTENCES_PER_PARAGRAPH_CALCULATOR_TOOLS } from "../sentences-per-paragraph-calculator-tool";
 import { HYPOTENUSE_CALCULATOR_TOOLS } from "../hypotenuse-calculator-tool";
 import { SIMPLE_AVERAGE_CALCULATOR_TOOLS } from "../simple-average-calculator-tool";
-import { PERCENTAGE_CHANGE_CALCULATOR_TOOLS } from "../percentage-change-calculator-tool";
-import { RULE_OF_THREE_CALCULATOR_TOOLS } from "../rule-of-three-calculator-tool";
-import { SIMPLE_INTEREST_CALCULATOR_TOOLS } from "../simple-interest-calculator-tool";
 import { SCALE_FACTOR_CALCULATOR_TOOLS } from "../scale-factor-calculator-tool";
 import { SUCCESSIVE_DISCOUNT_CALCULATOR_TOOLS } from "../successive-discount-calculator-tool";
-import { BMI_CALCULATOR_TOOLS } from "../bmi-calculator-tool";
-import { PERCENTAGE_OF_NUMBER_CALCULATOR_TOOLS } from "../percentage-of-number-calculator-tool";
 import { MARKUP_CALCULATOR_TOOLS } from "../markup-calculator-tool";
 
 export const GENERAL_TOOLS_PART_08 = [
@@ -42,16 +36,10 @@ export const GENERAL_TOOLS_PART_08 = [
   ...PERCENTAGE_OF_TOTAL_CALCULATOR_TOOLS,
   ...HOURS_TO_DECIMAL_CALCULATOR_TOOLS,
   ...HOURS_TO_DECIMAL_TOOLS,
-  ...TRIANGLE_AREA_CALCULATOR_TOOLS,
   ...SENTENCES_PER_PARAGRAPH_CALCULATOR_TOOLS,
   ...HYPOTENUSE_CALCULATOR_TOOLS,
   ...SIMPLE_AVERAGE_CALCULATOR_TOOLS,
-  ...PERCENTAGE_CHANGE_CALCULATOR_TOOLS,
-  ...RULE_OF_THREE_CALCULATOR_TOOLS,
-  ...SIMPLE_INTEREST_CALCULATOR_TOOLS,
   ...SCALE_FACTOR_CALCULATOR_TOOLS,
   ...SUCCESSIVE_DISCOUNT_CALCULATOR_TOOLS,
-  ...BMI_CALCULATOR_TOOLS,
-  ...PERCENTAGE_OF_NUMBER_CALCULATOR_TOOLS,
   ...MARKUP_CALCULATOR_TOOLS,
 ];
