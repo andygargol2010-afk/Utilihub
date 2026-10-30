@@ -62,19 +62,18 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive traffic signal intersection lab. User sets green/red phase durations for north-south and east-west directions on a simple 4-way crossing. Cars (discrete agents) spawn from random directions, move on a grid road network, stop or go according to signals, queue up. Live congestion metric (average wait time, queue lengths), throughput counter. Adjust timings to minimize jams. Presets for balanced / rush-hour. URL deep-link for phase values. Branded PNG of the intersection with current queues + utilihub.app. EN+ES routes.
+path_en: /simulators/traffic-signal-lab
+path_es: /es/simuladores/laboratorio-semaforos
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed connect-four-classic after run 4 (AI difficulty Easy/Medium/Hard + undo). Next IDEATE.
+domain: simulators
+runs_total: 4
+runs_remaining: 4
+acceptance: User adjusts NS/EW green times, sees cars move and queue on the grid, congestion number updates live; can share URL or PNG of the scene.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): C1 traffic-signal-lab (chosen): value 4, share 4, search 3 ("traffic light simulation online"), distinct 5, feas 4, perf 4. Closest-3: n-body gravity (physics agents), food-chain ecosystem (agent counts), logistic-chaos (parameter plots). Primary metaphor: discrete phase-controlled agent grid flow. Why not particle-canvas: agents on fixed road cells with rule-based stop/go, not freehand trails/attractors. C2 inventory-eoq-lab: value 4, share 3, search 3, distinct 4, feas 5, perf 5. Closest: none direct; metaphor: stock level time-series with reorder triggers. C3 chemical-reaction-lab: value 3, share 3, search 2, distinct 3, feas 4, perf 4 (rejected low search/distinct). Roll: FLEX (p=0.42 > 0.35), weighted CORE prefer simulators (w=6) for variety after recent games/kits (not playgrounds saturated). IP n/a. Chosen id: traffic-signal-lab.
 adsense-prep_runs: 3
 ```
 
