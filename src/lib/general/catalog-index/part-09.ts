@@ -12,6 +12,7 @@ import { GRAMS_TO_POUNDS_CONVERTER_TOOLS } from "../grams-to-pounds-converter-to
 import { FLOW_RATE_CALCULATOR_TOOLS } from "../flow-rate-calculator-tool";
 import { LOAN_MONTHLY_PAYMENT_CALCULATOR_TOOLS } from "../loan-monthly-payment-calculator-tool";
 import { RECTANGLE_PERIMETER_CALCULATOR_TOOLS } from "../rectangle-perimeter-calculator-tool";
+import { WEIGHTED_AVERAGE_CALCULATOR_TOOLS } from "../weighted-average-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -26,4 +27,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...FLOW_RATE_CALCULATOR_TOOLS,
   ...LOAN_MONTHLY_PAYMENT_CALCULATOR_TOOLS,
   ...RECTANGLE_PERIMETER_CALCULATOR_TOOLS,
+  ...WEIGHTED_AVERAGE_CALCULATOR_TOOLS,
 ];

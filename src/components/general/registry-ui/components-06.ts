@@ -33,3 +33,7 @@ export const LoanMonthlyPaymentCalculatorToolUi = lazy(() =>
 export const RectanglePerimeterCalculatorToolUi = lazy(() =>
   import("../RectanglePerimeterCalculatorTool").then((m) => ({ default: m.RectanglePerimeterCalculatorTool })),
 );
+
+export const WeightedAverageCalculatorToolUi = lazy(() =>
+  import("../WeightedAverageCalculatorTool").then((m) => ({ default: m.WeightedAverageCalculatorTool })),
+);
