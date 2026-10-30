@@ -13,10 +13,12 @@ function spanishGuideFallback(
 } {
   const kind = (tool.kind || "").toLowerCase();
   const slug = (tool.slug || "").toLowerCase();
+  const summaryEs = typeof tool.summaryEs === "string" && tool.summaryEs.trim() ? tool.summaryEs.trim() : "";
   const summary =
-    typeof tool.summary === "string" && tool.summary.trim()
+    summaryEs ||
+    (typeof tool.summary === "string" && tool.summary.trim()
       ? tool.summary.trim()
-      : "";
+      : "");
 
   const baseAbout = summary
     ? [
