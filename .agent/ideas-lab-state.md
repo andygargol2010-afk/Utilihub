@@ -70,11 +70,12 @@ path_es: /es/juegos/conecta-cuatro
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User drops discs alternately on the 7x6 grid, sees a win highlight and message when 4 connect, can share the board via URL or branded PNG.
 share: both
 next_step_required: yes
 notes: IDEATE 2026-10-30. Roll: CORE preferred (variety after kits/games; p_fixed simulation chose CORE weights, games selected for underused classic). Candidates scored 1-5 (value/share/search/distinct/feas/perf): 1) Connect Four classic (5/4/5/5/4/5 total 28) closest: minesweeper (grid reveal), hangman (turn-based guess), simon (sequence memory). Metaphor: gravity-drop turn-based grid game. Not particle/canvas cluster — discrete drop + rule check. IP: traditional gravity-drop connect-four mechanics (generic naming/UI; no Hasbro/branded assets). 2) Memory match pairs (4/3/4/4/4/5 total 24) closest: simon, hangman, minesweeper. Metaphor: flip-card matching. Not particle. IP: traditional memory match. 3) Original constraint packing puzzle (4/3/3/5/3/4 total 22) closest: recipe-kit (discrete parts), furniture-kit, choice-journey. Metaphor: spatial packing with constraints. Not particle. Chosen: connect-four-classic (highest, strong search demand "play connect 4 online", distinct from existing games). adsense-prep_runs: 3
+EXECUTE 2026-10-30 run 1: core 7x6 grid + gravity drop + win highlight + message + PvP/CPU toggle + new game. EN+ES strings, mobile 390px touch columns. Catalog + registry wired (slug connect-four-classic / conecta-cuatro). Distinct from existing connect-four (advanced AI/animations). Next runs: URL deep-link, branded PNG, AI difficulty, undo.
 adsense-prep_runs: 3
 ```
 

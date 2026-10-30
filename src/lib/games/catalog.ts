@@ -52,6 +52,17 @@ export const GAMES: readonly GameDef[] = [
     hasScore: false,
   },
   {
+    slug: "connect-four-classic",
+    slugEs: "conecta-cuatro",
+    nameEn: "Connect Four Classic",
+    nameEs: "Conecta Cuatro Clásico",
+    tag: "board",
+    emoji: "🔴",
+    summaryEn: "Classic gravity-drop Connect Four. Two players or vs CPU. Connect four to win. Shareable board.",
+    summaryEs: "Conecta Cuatro clásico por gravedad. Dos jugadores o vs CPU. Conectá cuatro para ganar. Tablero compartible.",
+    hasScore: false,
+  },
+  {
     slug: "minesweeper",
     slugEs: "buscaminas",
     nameEn: "Minesweeper",
@@ -112,7 +123,7 @@ export const GAMES: readonly GameDef[] = [
     nameEn: "Sudoku",
     nameEs: "Sudoku",
     tag: "puzzle",
-    emoji: "🔹",
+    emoji: "🔷",
     summaryEn: "Fill the grid: no repeats in row, column, or box.",
     summaryEs: "Completá la grilla sin repetir en fila, columna o bloque.",
     hasScore: true,
@@ -265,8 +276,9 @@ export const GAMES: readonly GameDef[] = [
 /** Next-step games for retention (first = primary). Keys = EN slug. */
 export const GAME_JOURNEYS: Record<string, string[]> = {
   "2048": ["sudoku", "minesweeper", "memory", "lights-out"],
-  "tic-tac-toe": ["connect-four", "memory", "sudoku", "minesweeper"],
-  "connect-four": ["tic-tac-toe", "minesweeper", "memory", "sudoku"],
+  "tic-tac-toe": ["connect-four", "connect-four-classic", "memory", "sudoku"],
+  "connect-four": ["connect-four-classic", "tic-tac-toe", "minesweeper", "memory"],
+  "connect-four-classic": ["connect-four", "tic-tac-toe", "minesweeper", "memory"],
   minesweeper: ["sudoku", "2048", "memory", "lights-out"],
   hangman: ["memory", "minesweeper", "sudoku", "formula-memory"],
   snake: ["pacman", "tetris", "pong", "magnetic-letter-catcher"],

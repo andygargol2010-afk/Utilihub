@@ -6,6 +6,7 @@ const MemoryGame = lazy(() => import("./MemoryGame").then((m) => ({ default: m.M
 const SnakeGame = lazy(() => import("./SnakeGame").then((m) => ({ default: m.SnakeGame })));
 const Game2048 = lazy(() => import("./Game2048").then((m) => ({ default: m.Game2048 })));
 const ConnectFourGame = lazy(() => import("./ConnectFourGame").then((m) => ({ default: m.ConnectFourGame })));
+const ConnectFourClassicGame = lazy(() => import("./ConnectFourClassicGame").then((m) => ({ default: m.ConnectFourClassicGame })));
 const MinesweeperGame = lazy(() => import("./MinesweeperGame").then((m) => ({ default: m.MinesweeperGame })));
 const HangmanGame = lazy(() => import("./HangmanGame").then((m) => ({ default: m.HangmanGame })));
 const PongGame = lazy(() => import("./PongGame").then((m) => ({ default: m.PongGame })));
@@ -53,6 +54,8 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "2048": Game2048,
   "connect-four": ConnectFourGame,
   "conecta-4": ConnectFourGame,
+  "connect-four-classic": ConnectFourClassicGame,
+  "conecta-cuatro": ConnectFourClassicGame,
   minesweeper: MinesweeperGame,
   buscaminas: MinesweeperGame,
   hangman: HangmanGame,
