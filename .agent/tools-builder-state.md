@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-30 | educacion | calculadora-media-ponderada | WeightedAverageCalculatorTool
 - 2026-10-30 | ciencia | calculadora-perimetro-rectangulo | RectanglePerimeterCalculatorTool
 - 2026-10-30 | finanzas | calculadora-cuota-prestamo | LoanMonthlyPaymentCalculatorTool
 - 2026-10-29 | ciencia | calculadora-caudal | FlowRateCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-29 | texto | calculadora-tiempo-de-lectura | ReadingTimeCalculatorTool
 - 2026-10-29 | finanzas | calculadora-tasa-de-ahorro | SavingsRateCalculatorTool
 - 2026-10-29 | finanzas | calculadora-precio-por-unidad | UnitPriceCalculatorTool
-- 2026-10-28 | finanzas | calculadora-markup | MarkupCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -45,7 +45,7 @@ viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo)
-educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple)
+educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras)
@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (\u22654 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md \u00a7PRODUCT step 4.
+2026-10-30: PRODUCT — calculadora-media-ponderada (educacion). One tool (default). Anti-dupe OK (new slug). Practical weighted average for grades/weights. SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-perimetro-rectangulo (ciencia). One tool (default). Anti-dupe OK (new slug). Practical perimeter for rectangles. SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-cuota-prestamo (finanzas). One tool (default). Anti-dupe OK (new slug; dangling loan-payment in entries-b left as-is to avoid rewrite). Practical monthly fixed loan payment. SEO locales: defer pt/fr/de.
 2026-10-29: PRODUCT — calculadora-caudal (ciencia). One tool (default). Anti-dupe OK (new slug). Practical volume/time flow rate Q=V/t. SEO locales: defer pt/fr/de.
@@ -95,9 +96,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-perimetro-rectangulo
+last_slugs: calculadora-media-ponderada
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (to be filled after push)
+last_sha: 8b97f1d22da75fdb446b219eca98040beadb619e
 ```
 
 <!-- end:tools-builder-state.md -->
