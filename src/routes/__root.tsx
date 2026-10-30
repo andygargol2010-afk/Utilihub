@@ -200,6 +200,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: `${SITE_NAME} · Free online tools` },
       { name: "description", content: DEFAULT_DESCRIPTION },
       { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "google-adsense-account", content: "ca-pub-1030166831962980" },
       { name: "theme-color", content: "#1d4ed8" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
