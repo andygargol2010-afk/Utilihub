@@ -15,7 +15,6 @@ function emptyBoard(): Cell[][] {
 function drop(board: Cell[][], col: number, player: Cell): { board: Cell[][]; row: number } | null {
   if (board[0]![col]) return null;
   const next = board.map((r) => r.slice() as Cell[]);
-  const next = board.map((r) => r.slice() as Cell[]);
   for (let r = ROWS - 1; r >= 0; r--) {
     if (!next[r]![col]) {
       next[r]![col] = player;
