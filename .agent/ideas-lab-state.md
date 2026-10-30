@@ -62,19 +62,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Social Hook Composer — interactive template lab for creating shareable social media hooks. User selects a proven hook pattern (question, story, list, myth-bust, etc.), fills blanks with their topic, sees live preview of the post text + suggested hashtags, then copies text or generates a branded PNG card with accent bar + utilihub.app. URL deep-link for the filled template. EN+ES. Mobile-first.
+id: social-hook-composer
+path_en: /growth/social-hook-composer
+path_es: /es/crecimiento/compositor-ganchos-sociales
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed sudoku-classic after 4 runs. Peer/same-number highlights + auto-clear related pencil marks + stronger win celebration added on final run. Ready for next IDEATE.
+domain: share-hooks
+runs_total: 4
+runs_remaining: 4
+acceptance: User selects pattern, fills 2-3 blanks, sees live post preview, copies text or downloads branded PNG.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): Cand1 social-hook-composer value4 share5 search4 distinct4 feas5 perf5 total27 | closest-3: branded-PNG-exports-in-games, any-text-tools, quote-makers | metaphor: template-fill to copyable post | not particle-canvas (form+preview, no freehand). Cand2 quote-card-maker value4 share5 search3 distinct3 feas5 perf4 total24 | closest-3: PNG in closed projects, quote generators | metaphor: form to branded image | not particle. Cand3 challenge-result-sharer value3 share4 search3 distinct2 feas4 perf4 total20 (rejected low distinct, too close to games). Chose social-hook-composer (highest, growth share-hooks). Roll: FLEX (p>0.35), weighted to share-hooks. IP: n/a (original templates, generic patterns).
 adsense-prep_runs: 3
 ```
 
