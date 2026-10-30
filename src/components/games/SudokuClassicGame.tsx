@@ -5,6 +5,7 @@ import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
 type Diff = "easy" | "medium" | "hard";
 type Board = number[][];
 type Notes = Set<number>[][];
+type Snapshot = { grid: Board; notes: Notes };
 
 function mulberry32(a: number) {
   return function () {
@@ -96,6 +97,10 @@ function emptyNotes(): Notes {
   return Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => new Set<number>()));
 }
 
+function cloneNotes(n: Notes): Notes {
+  return n.map((row) => row.map((s) => new Set(s)));
+}
+
 export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
   const [diff, setDiff] = useState<Diff>("easy");
@@ -108,6 +113,8 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
   const [selected, setSelected] = useState<[number, number] | null>(null);
   const [won, setWon] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [history, setHistory] = useState<Snapshot[]>([]);
+  const [hintsLeft, setHintsLeft] = useState(3);
 
   const conflictMap = useMemo(() => {
     const m = new Set<string>();
@@ -139,6 +146,8 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
       setSelected(null);
       setWon(false);
       setPencilMode(false);
+      setHistory([]);
+      setHintsLeft(3);
       updateUrl(nextSeed, d);
     },
     [updateUrl],
@@ -157,6 +166,13 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const pushHistory = useCallback(() => {
+    setHistory((h) => [
+      ...h.slice(-20),
+      { grid: grid.map((r) => r.slice()), notes: cloneNotes(notes) },
+    ]);
+  }, [grid, notes]);
+
   const put = (n: number) => {
     if (!selected || won) return;
     const [r, c] = selected;
@@ -164,7 +180,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
 
     if (pencilMode && n > 0) {
       setNotes((prev) => {
-        const next = prev.map((row) => row.map((s) => new Set(s)));
+        const next = cloneNotes(prev);
         const cellNotes = next[r]![c]!;
         if (cellNotes.has(n)) cellNotes.delete(n);
         else cellNotes.add(n);
@@ -173,6 +189,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
       return;
     }
 
+    pushHistory();
     setGrid((g) => {
       const next = g.map((row) => row.slice());
       next[r]![c] = n;
@@ -187,12 +204,87 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     });
     if (n === 0) {
       setNotes((prev) => {
-        const next = prev.map((row) => row.map((s) => new Set(s)));
+        const next = cloneNotes(prev);
         next[r]![c] = new Set();
         return next;
       });
     }
   };
+
+  const undo = () => {
+    if (history.length === 0 || won) return;
+    const prev = history[history.length - 1]!;
+    setHistory((h) => h.slice(0, -1));
+    setGrid(prev.grid.map((r) => r.slice()));
+    setNotes(cloneNotes(prev.notes));
+    setWon(false);
+  };
+
+  const giveHint = () => {
+    if (hintsLeft <= 0 || won) return;
+    let r = selected?.[0] ?? 0;
+    let c = selected?.[1] ?? 0;
+    if (fixed[r]?.[c] || grid[r]![c] !== 0) {
+      // find first empty non-fixed
+      outer: for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (!fixed[i]![j] && grid[i]![j] === 0) {
+            r = i;
+            c = j;
+            break outer;
+          }
+        }
+      }
+    }
+    if (fixed[r]![c] || grid[r]![c] !== 0) return;
+    const correct = solution[r]![c]!;
+    pushHistory();
+    setGrid((g) => {
+      const next = g.map((row) => row.slice());
+      next[r]![c] = correct;
+      const complete = next.every((row, ri) =>
+        row.every((v, ci) => v !== 0 && v === solution[ri]![ci]),
+      );
+      const hasAnyConflict = next.some((row, ri) => row.some((_, ci) => hasConflict(next, ri, ci)));
+      if (complete && !hasAnyConflict) setWon(true);
+      return next;
+    });
+    setNotes((prev) => {
+      const next = cloneNotes(prev);
+      next[r]![c] = new Set();
+      return next;
+    });
+    setSelected([r, c]);
+    setHintsLeft((h) => h - 1);
+  };
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (won) return;
+      const key = e.key;
+      if (key >= "1" && key <= "9") {
+        put(parseInt(key, 10));
+        e.preventDefault();
+        return;
+      }
+      if (key === "0" || key === "Backspace" || key === "Delete") {
+        put(0);
+        e.preventDefault();
+        return;
+      }
+      if (!selected) return;
+      let [r, c] = selected;
+      if (key === "ArrowUp" || key === "w" || key === "W") r = Math.max(0, r - 1);
+      else if (key === "ArrowDown" || key === "s" || key === "S") r = Math.min(8, r + 1);
+      else if (key === "ArrowLeft" || key === "a" || key === "A") c = Math.max(0, c - 1);
+      else if (key === "ArrowRight" || key === "d" || key === "D") c = Math.min(8, c + 1);
+      else return;
+      setSelected([r, c]);
+      e.preventDefault();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selected, won, pencilMode, grid, notes, fixed, solution]); // put depends on these
 
   const shareUrl = useCallback(async () => {
     updateUrl(seed, diff);
@@ -258,7 +350,6 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
       }
     }
 
-    // Thick lines for boxes
     ctx.strokeStyle = "#34d399";
     ctx.lineWidth = 3;
     for (let i = 0; i <= 3; i++) {
@@ -316,6 +407,12 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
         </GamePrimaryButton>
         <GameSecondaryButton active={pencilMode} onClick={() => setPencilMode((p) => !p)}>
           {es ? "Lápiz" : "Pencil"}
+        </GameSecondaryButton>
+        <GameSecondaryButton onClick={undo} disabled={history.length === 0}>
+          {es ? "Deshacer" : "Undo"}
+        </GameSecondaryButton>
+        <GameSecondaryButton onClick={giveHint} disabled={hintsLeft <= 0}>
+          {es ? `Pista (${hintsLeft})` : `Hint (${hintsLeft})`}
         </GameSecondaryButton>
         <GameSecondaryButton onClick={shareUrl}>
           {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}
@@ -398,8 +495,8 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
 
       <p className="text-center text-xs text-emerald-100/60">
         {es
-          ? "Elegí dificultad, rellená números. Modo lápiz para marcas. Las celdas fijas no cambian. Conflictos en rojo. Compartí enlace o PNG."
-          : "Pick difficulty, place numbers. Pencil mode for marks. Fixed cells stay. Conflicts in red. Share link or PNG."}
+          ? "Elegí dificultad, rellená números (teclado o botones). Modo lápiz para marcas. Deshacer y 3 pistas. Flechas para mover. Conflictos en rojo. Compartí enlace o PNG."
+          : "Pick difficulty, place numbers (keyboard or buttons). Pencil mode for marks. Undo and 3 hints. Arrows to move. Conflicts in red. Share link or PNG."}
       </p>
     </div>
   );
