@@ -62,19 +62,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Classic Connect Four style gravity-drop turn-based grid game. Two players (or vs simple AI) take turns dropping colored discs into a 7x6 grid; first to connect 4 horizontally, vertically or diagonally wins. Includes win detection with highlight, undo last move, new game, difficulty for AI, URL deep-link for shared starting board or seed, branded PNG export of the final board with winner + utilihub.app, EN+ES routes and strings. Mobile-friendly 390px with touch drop.
+id: connect-four-classic
+path_en: /games/connect-four-classic
+path_es: /es/juegos/conecta-cuatro
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed furniture-assembly-kit after RUN4 final polish (localized step/part names for ES). Project complete. Next run IDEATE.
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User drops discs alternately on the 7x6 grid, sees a win highlight and message when 4 connect, can share the board via URL or branded PNG.
+share: both
+next_step_required: yes
+notes: IDEATE 2026-10-30. Roll: CORE preferred (variety after kits/games; p_fixed simulation chose CORE weights, games selected for underused classic). Candidates scored 1-5 (value/share/search/distinct/feas/perf): 1) Connect Four classic (5/4/5/5/4/5 total 28) closest: minesweeper (grid reveal), hangman (turn-based guess), simon (sequence memory). Metaphor: gravity-drop turn-based grid game. Not particle/canvas cluster — discrete drop + rule check. IP: traditional gravity-drop connect-four mechanics (generic naming/UI; no Hasbro/branded assets). 2) Memory match pairs (4/3/4/4/4/5 total 24) closest: simon, hangman, minesweeper. Metaphor: flip-card matching. Not particle. IP: traditional memory match. 3) Original constraint packing puzzle (4/3/3/5/3/4 total 22) closest: recipe-kit (discrete parts), furniture-kit, choice-journey. Metaphor: spatial packing with constraints. Not particle. Chosen: connect-four-classic (highest, strong search demand "play connect 4 online", distinct from existing games). adsense-prep_runs: 3
 adsense-prep_runs: 3
 ```
 
