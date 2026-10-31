@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-10-31 run 74
-runs_total: 74
+last_run: 2026-10-31 run 75
+runs_total: 75
 last_mode: HUNT
 last_fix: n/a (0 code fixes)
 last_prevent: n/a
-last_known_focus: E001/E005/E031/E046
-deploy: tip advancing; SEO uses GSC 100 (part1+part2). On list exhausted → ask user for new GSC export.
-notes: When seo_awaiting_new_list is true, ask user once/day for updated Search Console list; do not invent URLs.
+last_known_focus: E031/E001/E005/E046
+deploy: tip aed7df39 READY (production from fix/spanish-complete)
+notes: Known smoke E031 clean (no $(cat/PLACEHOLDER in critical); discovery samples (home ES, games/2048, 3d-modeler, calculadora-raiz-cubica) OK no 404/crash. Live unir-pdf guide Spanish generic (E046 held). No new findings.
 ```
 
 <!-- end:error-hunter-state.md -->
