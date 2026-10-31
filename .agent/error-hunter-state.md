@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-31 run 69
+last_run: 2026-10-31 run 70
 last_mode: HUNT
 last_fix: n/a (0 code fixes)
 last_prevent: n/a
-last_known_focus: E001/E005/E031/E046 — registry.tsx thin/proper (no PLACEHOLDER, kind-first), index.tsx/es.index.tsx start with import + createFileRoute (no $(cat), DeferredHomeReviews real); no $(cat/PLACEHOLDER in src; ToolSeoContent.tsx never falls back to EN summary
-new_findings: sampled /es/juegos (200, 23 games), /es (home 200), /es/herramientas/png-a-jpg (200, media steps ok but EN summary leak on live), /es/herramientas/calculadora-iva (EN leak on live), new tool calculadora-ratio-cintura-altura wired in tip (part-09 + slugs-03 + dedicated UI) but not live (deploy lag). No PLACEHOLDER/$(cat)/Tool not available in tip code. No current ERROR deploys on tip.
-deploy: latest production READY on 684f2714 (feat adsense meta). Tip of fix/spanish-complete is eb536f26 (later, ideas-lab restores + waist-to-height tool); E046 SEO fix and new tools not live yet. No current ERROR on tip. Deploy lag persists; no force deploy.
-notes: Known smoke green in tip (registry, home routes, no stubs, E046 fixed). Discovery: games/home/image/IMC ok; SEO EN leaks and new converter/tool 404/not indexed expected due to production lag. No surgical code fix this run (fixes already in tip). Catalog E031/E046 last_seen updated. State updated.
+last_known_focus: E001/E005/E031/E046 — registry.tsx thin/proper (no PLACEHOLDER, kind-first, dedicated wires present), index.tsx/es.index.tsx start with import + createFileRoute (no $(cat), DeferredHomeReviews real); no $(cat/PLACEHOLDER in src; ToolSeoContent.tsx never falls back to EN summary
+new_findings: sampled /es/juegos (200, 23 games), /es/herramientas/png-a-jpg (200, media UI + file upload ok, EN summary leak on live), /es/herramientas/calculadora-iva (shows generic MathTool number list + EN leak on live; dedicated IvaCalculatorToolUi wired in tip slugs-03), /es/herramientas/calculadora-ratio-cintura-altura (404 on live, wired in tip part-09 + slugs-03). No PLACEHOLDER/$(cat)/Tool not available in tip code. No current ERROR deploys on tip (prior ERROR on duplicate slug fixed in e490a288).
+deploy: latest production READY on 684f2714 (feat adsense meta). Tip of fix/spanish-complete is b0ca7af7 (later docs); E046 SEO fix, dedicated wires, and new tools not live yet. No current ERROR on tip. Deploy lag persists; no force deploy.
+notes: Known smoke green in tip (registry, home routes, no stubs, E046 fixed, dedicated UIs wired). Discovery: games ok; live shows expected lag symptoms (EN leaks, generic UI for IVA, 404 for new tool). No surgical code fix this run (fixes already in tip). Catalog E031/E046 last_seen updated. State updated.
 ```
 
 <!-- end:error-hunter-state.md -->
