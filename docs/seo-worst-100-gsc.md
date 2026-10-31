@@ -64,6 +64,6 @@ Fuente oficial del backlog SEO: **este archivo**.
 | https://www.utilihub.net/es/herramientas/calculadora-punto-rocio | 0 | 104 | 0% | 76.8 |
 | https://www.utilihub.net/es/herramientas/conversor-longitud | 0 | 14 | 0% | 76.5 |
 | https://www.utilihub.net/tools/weighted-mean-calculator | 0 | 14 | 0% | 76.4 |
-| https://www.utilihub.net/tools/color-mixer |  | 0 | 14 | 0% | 76.3 |
+| https://www.utilihub.net/tools/color-mixer | 0 | 14 | 0% | 76.6 |
 | https://www.utilihub.net/tools/ics-calendar-event-generator | 0 | 13 | 0% | 76.2 |
 | https://www.utilihub.net/tools/wacc-calculator | 0 | 12 | 0% | 76.1 |
