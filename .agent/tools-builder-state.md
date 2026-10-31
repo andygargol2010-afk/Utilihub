@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-31 | salud | calculadora-ratio-cintura-altura | WaistToHeightRatioCalculatorTool
 - 2026-10-31 | conversiones | conversor-acres-hectareas | AcresHectaresConverterTool
 - 2026-10-31 | salud | calculadora-ciclo-sueno | SleepCycleCalculatorTool
 - 2026-10-30 | educacion | calculadora-moda | ModeCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-30 | matematicas | calculadora-media-cuadratica | QuadraticMeanCalculatorTool
 - 2026-10-30 | educacion | calculadora-media-ponderada | WeightedAverageCalculatorTool
 - 2026-10-30 | ciencia | calculadora-perimetro-rectangulo | RectanglePerimeterCalculatorTool
-- 2026-10-30 | finanzas | calculadora-cuota-prestamo | LoanMonthlyPaymentCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -44,7 +44,7 @@ hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-ga
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala)
-salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno)
+salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico)
@@ -65,6 +65,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-30: META — clarified in ops.md that .md files override bootstrap volume (default 1 tool). Roll 1=META. Saturation continues; many clusters recent. Prefer improve existing weak tools next.
 2026-10-31: PRODUCT — calculadora-ciclo-sueno (salud). One tool (default). Anti-dupe OK (new slug). Practical sleep cycle calculator (90-min cycles + buffer) for bedtime/wake suggestions. High demand complement to existing health tools. SEO locales: defer pt/fr/de.
 2026-10-31: PRODUCT — conversor-acres-hectareas (conversiones). One tool (default; .md overrides bootstrap 2). Anti-dupe OK (new slug). Practical land area converter acres ↔ ha. Under-represented cluster. EN+ES UI with 2 examples. SEO locales: defer pt/fr/de.
+2026-10-31: PRODUCT — calculadora-ratio-cintura-altura (salud). One tool (default). Anti-dupe OK (new slug). Practical WHtR calculator (waist/height) for central obesity risk. Complements BMI. EN+ES UI with 2 examples, validation, FAQ. SEO locales: defer pt/fr/de.
 ```
 
 ---
@@ -73,9 +74,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: conversor-acres-hectareas
+last_slugs: calculadora-ratio-cintura-altura
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (will be filled after push)
+last_sha: (filled after push)
 ```
 
 <!-- end:tools-builder-state.md -->

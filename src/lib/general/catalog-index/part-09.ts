@@ -18,6 +18,7 @@ import { STATISTICAL_RANGE_CALCULATOR_TOOLS } from "../statistical-range-calcula
 import { MODE_CALCULATOR_TOOLS } from "../mode-calculator-tool";
 import { SLEEP_CYCLE_CALCULATOR_TOOLS } from "../sleep-cycle-calculator-tool";
 import { ACRES_HECTARES_CONVERTER_TOOLS } from "../acres-hectares-converter-tool";
+import { WAIST_TO_HEIGHT_RATIO_CALCULATOR_TOOLS } from "../waist-to-height-ratio-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -38,4 +39,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...MODE_CALCULATOR_TOOLS,
   ...SLEEP_CYCLE_CALCULATOR_TOOLS,
   ...ACRES_HECTARES_CONVERTER_TOOLS,
+  ...WAIST_TO_HEIGHT_RATIO_CALCULATOR_TOOLS,
 ];
