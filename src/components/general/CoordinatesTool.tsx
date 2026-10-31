@@ -124,6 +124,47 @@ export function CoordinatesTool({ locale = "en" }: { tool: GeneralTool; locale?:
           </button>
         </div>
       ) : null}
+
+      <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
+        <p className="font-medium">{es ? "Fórmula rápida" : "Quick formula"}</p>
+        <p>
+          {es
+            ? "Decimal → DMS: grados = parte entera; minutos = (fracción × 60); segundos = resto × 60."
+            : "Decimal → DMS: degrees = integer part; minutes = (fraction × 60); seconds = remainder × 60."}
+        </p>
+        <p>
+          {es
+            ? "DMS → decimal: grados + minutos/60 + segundos/3600 (S y O negativos)."
+            : "DMS → decimal: degrees + minutes/60 + seconds/3600 (S and W negative)."}
+        </p>
+      </div>
+
+      <div className="overflow-x-auto rounded-xl border text-sm">
+        <table className="w-full text-left">
+          <caption className="border-b bg-muted/30 px-3 py-2 text-left font-medium">
+            {es ? "Ejemplos" : "Examples"}
+          </caption>
+          <thead>
+            <tr className="border-b bg-muted/20">
+              <th className="px-3 py-2">{es ? "Lugar" : "Place"}</th>
+              <th className="px-3 py-2">{es ? "Decimal" : "Decimal"}</th>
+              <th className="px-3 py-2">DMS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b border-border/60">
+              <td className="px-3 py-2">Madrid</td>
+              <td className="px-3 py-2 tabular-nums">40.4168, -3.7038</td>
+              <td className="px-3 py-2">40° 25′ 0.48″ N, 3° 42′ 13.68″ {es ? "O" : "W"}</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2">Barcelona</td>
+              <td className="px-3 py-2 tabular-nums">41.403389, 2.174028</td>
+              <td className="px-3 py-2">41° 24′ 12.20″ N, 2° 10′ 26.50″ E</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
