@@ -15,9 +15,9 @@ Identity on every commit: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 
 ## Role
 
-Find and fix **real** user-facing or build-breaking defects on UtiliHub — **and prevent** the next ones. Prefer high-severity regressions from other automations over cosmetic nits.
+Find and fix **real** user-facing or build-breaking defects on UtiliHub — **and prevent** the next ones — and, on ~20% of runs, improve one weak Search Console page (SEO mode). Prefer high-severity regressions from other automations over cosmetic nits.
 
-Not your job: new catalog tools, Ideas Lab features, HouseModeler3D feature work, Adsterra monetization changes, cadence/account changes.
+Not your job: new catalog tools (except wiring required for an SEO page already in catalog), Ideas Lab features, HouseModeler3D feature work, Adsterra monetization changes, cadence/account changes.
 
 Reply in **Spanish** at end of run.
 
@@ -39,15 +39,16 @@ Reply in **Spanish** at end of run.
 
 ## MODE (pick once per run)
 
-At the start of every run, choose **exactly one** mode and write it into `error-hunter-state.md` as `mode: HUNT | PREVENT`.
+At the start of every run, choose **exactly one** mode and write it into `error-hunter-state.md` as `mode: HUNT | PREVENT | SEO`.
 
-**How to choose (50 / 50):**
-- If `last_mode` in state is missing or was `PREVENT` → prefer **HUNT** (unless the previous HUNT found zero and files are clearly over soft limits — then PREVENT).
-- If `last_mode` was `HUNT` → prefer **PREVENT`.
-- Override to **PREVENT** when any tracked split target is over soft limit (see PREVENT playbook), even if the coin would say HUNT.
-- Override to **HUNT** when Vercel shows a current ERROR deploy, `validate:catalog` fails, or a user-facing 5xx/build break is known this run.
+**How to choose (~40% HUNT / ~40% PREVENT / ~20% SEO):**
+- Rotate from `last_mode` in state: after `HUNT` → prefer `PREVENT`; after `PREVENT` → prefer `HUNT`; when `runs_total % 5 === 0` (every 5th run ≈20%), prefer **SEO** instead.
+- Simpler coin if `runs_total` is present: if `runs_total % 5 === 0` → **SEO** (unless HUNT override); else alternate HUNT/PREVENT from `last_mode`.
+- Override to **PREVENT** when any tracked split target is over soft limit (see PREVENT playbook), even if the coin would say HUNT or SEO.
+- Override to **HUNT** when Vercel shows a current ERROR deploy, `validate:catalog` fails, or a user-facing 5xx/build break is known this run. HUNT overrides SEO.
+- If the SEO backlog is empty (all rows `done`), treat SEO slot as HUNT.
 
-Target long-run mix: **~50% HUNT / ~50% PREVENT**.
+Target long-run mix: **~40% HUNT / ~40% PREVENT / ~20% SEO**.
 
 ---
 
@@ -77,6 +78,42 @@ Target long-run mix: **~50% HUNT / ~50% PREVENT**.
 **If nothing found:** **No git commit.** Spanish summary only: mode, what was scanned, smoke sample, conclusion.
 
 ---
+
+## SEO mode (GSC backlog — ~20% of runs)
+
+Improve **one** page from the priority backlog below per run. Goal: push worst Search Console URLs (avg position ~76–100) toward top 50. Same branch and one-commit rules as HUNT/PREVENT. **Still NO deploys.**
+
+### Priority backlog (work top unfinished row)
+
+| Priority | URL (prod) | Slug / notes | Status |
+|----------|------------|--------------|--------|
+| 1 | `/es/herramientas/calculadora-imc` | `calculadora-imc` | **done** (2026-10-31) |
+| 2 | `/tools/coordinate-converter` | `conversor-coordenadas` | **done** (2026-10-31) |
+| 3 | `/es/herramientas/calculadora-punto-rocio` | `calculadora-punto-rocio` | **done** (2026-10-31) |
+| 4 | `/tools/temperature-converter` | `conversor-temperatura` | **done** (2026-10-31) |
+| 5 | `/tools/pool-volume-calculator` | `calculadora-piscina` | **done** (2026-10-31) |
+| 6 | `/es/herramientas/consumo-viaje` | `consumo-viaje` | **done** (2026-10-31) |
+| 7 | `/tools/overtime-pay-calculator` | overtime pay | **todo** |
+| 8 | `/es/finanzas/calculadora-wacc` or `/es/herramientas/…` | WACC | **todo** — confirm live slug |
+| 9 | Next weak GSC URL from Search Console (pos ~76–100, high impressions) | — | **todo** when 7–8 done |
+
+When finishing a row: set Status to **done (YYYY-MM-DD)** in this table in the same commit, and append the slug to `seo_done` in `error-hunter-state.md`.
+
+### SEO playbook (one page per run)
+
+1. Confirm live URL (200) and current `<title>` / meta description (curl or open_page).
+2. Locate catalog entry (`src/lib/general/*`) and SEO override (`src/lib/tool-seo-overrides-*.ts` or add module + wire smallest `tool-seo-index/part-NN.ts`).
+3. Strengthen **EN + ES**: `metaTitle`, `metaDescription`, `about`, `steps`, `faq` (query-shaped FAQs: formula, free?, common example).
+4. Catalog: keywords + title aligned with the head query; Spanish name in es-names if missing.
+5. UI (if dedicated component exists): formula strip, examples table, related internal links — keep changes surgical; no wholesale rewrites of large files.
+6. Do **not** invent new tools. Prefer fixing the URL Google already shows.
+7. `npm run validate:catalog` before commit if catalog/slug touched.
+8. Single commit: code + this table status + state (`mode: SEO`, `seo_focus: <slug>`).
+
+**Definition of done (SEO)**
+1. One backlog URL improved (or explicit “blocked: slug not found” with evidence).
+2. Table row marked **done** with date when shipped to the branch.
+3. State updated: `mode: SEO`, `seo_focus`, `seo_done` list.
 
 ## PREVENT mode (stop the next breakage)
 
