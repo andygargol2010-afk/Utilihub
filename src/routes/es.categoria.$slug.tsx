@@ -135,17 +135,19 @@ function SpanishCategoryPage() {
     return () => window.clearTimeout(id);
   }, []);
 
-  // Memoize so the string-concat + map does not re-run on every render/hydration.
-  // Categories with dozens of tools otherwise spend main-thread time building searchText
-  // before the lazy list even paints.
+  // Only build searchText once the list is about to mount. Categories with dozens
+  // of tools otherwise spend main-thread time on the map during the first hydration
+  // while the shell is still showing the skeleton.
   const browseItems = useMemo(
     () =>
-      tools.map((t) => ({
-        ...t,
-        id: t.slug,
-        searchText: `${t.summary} ${t.description ?? ""} ${(t.keywords ?? []).join(" ")}`,
-      })),
-    [tools],
+      listReady
+        ? tools.map((t) => ({
+            ...t,
+            id: t.slug,
+            searchText: `${t.summary} ${t.description ?? ""} ${(t.keywords ?? []).join(" ")}`,
+          }))
+        : [],
+    [listReady, tools],
   );
 
   return (
