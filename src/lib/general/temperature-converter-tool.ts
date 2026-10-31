@@ -14,6 +14,9 @@ const tool = makeTool(
     "conversor de temperatura",
     "celsius a fahrenheit",
     "conversor celsius fahrenheit",
+    "celsius to kelvin",
+    "fahrenheit to kelvin",
+    "convertir temperatura",
   ],
   {
     title: "Temperature Converter — Celsius, Fahrenheit, Kelvin | UtiliHub",
