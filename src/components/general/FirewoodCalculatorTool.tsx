@@ -76,7 +76,7 @@ export function FirewoodCalculatorTool({ locale = "en" }: { tool: GeneralTool; l
         half: "Media cuerda",
         face: "Face cord 16 in",
         stere: "1 estéreo abedul",
-        loose: "Pino verde flojo",
+        loose: "Pino verde suelto",
         units: "Unidades",
         meters: "Metros",
         feet: "Pies",
