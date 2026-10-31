@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-31 run 63
+last_run: 2026-10-31 run 64
 last_mode: HUNT
 last_fix: n/a (0 code fixes)
 last_prevent: n/a
 last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean via code search and home index.tsx starts with import + createFileRoute; no $(cat/PLACEHOLDER in src; registry thin and proper)
-new_findings: sampled /es home (200, Spanish), /es/juegos/2048 (200), /es/herramientas/modelador-3d (200, proper 3D guide), /es/herramientas/calculadora-iva and calculadora-moda still show English in guide about on live (E046 fix in tip not deployed); production deploy READY on 684f2714; tip of branch 9d2ab410. No current ERROR deploys. utilihub.vercel.app 404 (expected; production is utilihub.net).
-deploy: latest production READY on 684f2714 (feat adsense meta). Tip of fix/spanish-complete is 9d2ab410 (later); E046 SEO fix, new tools not live yet. No current ERROR. Deploy lag persists; no force deploy.
-notes: Known smoke E031 green. Discovery confirms ongoing deploy lag (English leaks on live www.utilihub.net for tools without summaryEs). No surgical code fix this run (fixes already in tip). Catalog E031/E046 last_seen updated. State updated.
+new_findings: sampled /es home (200, Spanish), /es/juegos (200, list ok), /es/herramientas/modelador-3d (200, proper 3D guide), /es/herramientas/calculadora-iva and calculadora-horas-a-decimal still show English in guide about on live (E046 fix in tip not deployed); production deploy READY on 684f2714; tip of branch e5399da9. No current ERROR deploys on tip. utilihub.vercel.app 404 (expected; production is utilihub.net).
+deploy: latest production READY on 684f2714 (feat adsense meta). Tip of fix/spanish-complete is e5399da9 (later); E046 SEO fix, new tools not live yet. No current ERROR. Deploy lag persists; no force deploy.
+notes: Known smoke E031 green. Discovery confirms ongoing deploy lag (English leaks on live www.utilihub.net for tools with/without summaryEs). No surgical code fix this run (fixes already in tip). Catalog E031/E046 last_seen updated. State updated.
 ```
 
 <!-- end:error-hunter-state.md -->
