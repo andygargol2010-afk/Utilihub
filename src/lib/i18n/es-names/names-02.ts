@@ -70,4 +70,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-media-geometrica": "Calculadora de media geométrica",
   "calculadora-rango-estadistico": "Calculadora de rango estadístico",
   "calculadora-moda": "Calculadora de moda estadística",
+  "calculadora-ciclo-sueno": "Calculadora de ciclo de sueño",
 };

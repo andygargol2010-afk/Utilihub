@@ -35,4 +35,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-mediana": UI.MedianCalculatorToolUi,
   "calculadora-rango-estadistico": UI.StatisticalRangeCalculatorToolUi,
   "calculadora-moda": UI.ModeCalculatorToolUi,
+  "calculadora-ciclo-sueno": UI.SleepCycleCalculatorToolUi,
 };

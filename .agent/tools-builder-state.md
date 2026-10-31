@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-31 | salud | calculadora-ciclo-sueno | SleepCycleCalculatorTool
 - 2026-10-30 | educacion | calculadora-moda | ModeCalculatorTool
 - 2026-10-30 | matematicas | calculadora-rango-estadistico | StatisticalRangeCalculatorTool
 - 2026-10-30 | matematicas | calculadora-mediana | MedianCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-30 | ciencia | calculadora-perimetro-rectangulo | RectanglePerimeterCalculatorTool
 - 2026-10-30 | finanzas | calculadora-cuota-prestamo | LoanMonthlyPaymentCalculatorTool
 - 2026-10-29 | ciencia | calculadora-caudal | FlowRateCalculatorTool
-- 2026-10-29 | conversiones | conversor-gramos-libras | GramsToPoundsConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -44,7 +44,7 @@ hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-ga
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala)
-salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo)
+salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico)
@@ -63,7 +63,8 @@ Registry anti-wipe remains the highest-priority safety rule. registry.tsx is lar
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (\u22654 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md \u00a7PRODUCT step 4.
 2026-10-30: META — clarified in ops.md that .md files override bootstrap volume (default 1 tool). Roll 1=META. Saturation continues; many clusters recent. Prefer improve existing weak tools next.
-2026-10-30: PRODUCT — calculadora-moda (educacion). One tool (default). Anti-dupe OK (slug/component/registry existed; completed catalog index + dedicated lazy UI + ES name). Practical statistical mode complementary to median/range. SEO locales: defer pt/fr/de.
+2026-10-31: PRODUCT — calculadora-ciclo-sueno (salud). One tool (default). Anti-dupe OK (new slug). Practical sleep cycle calculator (90-min cycles + buffer) for bedtime/wake suggestions. High demand complement to existing health tools. SEO locales: defer pt/fr/de.
+2026-10-30: PRODUCT — calculadora-moda (educacion). One tool (default). Anti-dupe OK (slug already in registry/component; completed catalog index, lazy UI, slugs, ES name). Practical statistical mode (most frequent), complementary to median/range/means. EN+ES UI with examples. SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-rango-estadistico (matematicas). One tool (default). Anti-dupe OK (new slug). Practical statistical range (max-min). SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-mediana (matematicas). One tool (default). Anti-dupe OK (new slug). Practical median for ordered statistics. SEO locales: defer pt/fr/de.
 2026-10-30: PRODUCT — calculadora-media-geometrica (matematicas). One tool (default). Anti-dupe OK (new slug). Practical geometric mean for growth rates/multiplicative averages. SEO locales: defer pt/fr/de.
@@ -104,7 +105,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-moda
+last_slugs: calculadora-ciclo-sueno
 last_deploy: no (branch auto-deploy disabled)
 last_sha: (will be filled after push)
 ```

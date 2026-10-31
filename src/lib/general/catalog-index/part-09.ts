@@ -16,6 +16,7 @@ import { GEOMETRIC_MEAN_CALCULATOR_TOOLS } from "../geometric-mean-calculator-to
 import { MEDIAN_CALCULATOR_TOOLS } from "../median-calculator-tool";
 import { STATISTICAL_RANGE_CALCULATOR_TOOLS } from "../statistical-range-calculator-tool";
 import { MODE_CALCULATOR_TOOLS } from "../mode-calculator-tool";
+import { SLEEP_CYCLE_CALCULATOR_TOOLS } from "../sleep-cycle-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -34,4 +35,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...MEDIAN_CALCULATOR_TOOLS,
   ...STATISTICAL_RANGE_CALCULATOR_TOOLS,
   ...MODE_CALCULATOR_TOOLS,
+  ...SLEEP_CYCLE_CALCULATOR_TOOLS,
 ];

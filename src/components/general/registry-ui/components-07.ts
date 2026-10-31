@@ -20,3 +20,4 @@ export const GramsToPoundsConverterToolUi = lazy(() => import("../GramsToPoundsC
 export const FlowRateCalculatorToolUi = lazy(() => import("../FlowRateCalculatorTool").then((m) => ({ default: m.FlowRateCalculatorTool })));
 export const MedianCalculatorToolUi = lazy(() => import("../MedianCalculatorTool").then((m) => ({ default: m.MedianCalculatorTool })));
 export const ModeCalculatorToolUi = lazy(() => import("../ModeCalculatorTool").then((m) => ({ default: m.ModeCalculatorTool })));
+export const SleepCycleCalculatorToolUi = lazy(() => import("../SleepCycleCalculatorTool").then((m) => ({ default: m.SleepCycleCalculatorTool })));
