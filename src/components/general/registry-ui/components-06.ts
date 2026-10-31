@@ -61,3 +61,7 @@ export const StatisticalRangeCalculatorToolUi = lazy(() =>
 export const SalesCommissionCalculatorToolUi = lazy(() =>
   import("../SalesCommissionCalculatorTool").then((m) => ({ default: m.SalesCommissionCalculatorTool })),
 );
+
+export const TripFuelConsumptionCalculatorToolUi = lazy(() =>
+  import("../TripFuelConsumptionCalculatorTool").then((m) => ({ default: m.TripFuelConsumptionCalculatorTool })),
+);

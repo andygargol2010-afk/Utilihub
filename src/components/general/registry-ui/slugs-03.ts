@@ -4,6 +4,7 @@ import type { ToolComp } from "./types";
 import * as UI from "./components";
 
 export const SLUG_UI_03: Record<string, ToolComp> = {
+  "consumo-viaje": UI.TripFuelConsumptionCalculatorToolUi,
   "calculadora-oraciones-por-parrafo": UI.SentencesPerParagraphCalculatorToolUi,
   "calculadora-hipotenusa": UI.HypotenuseCalculatorToolUi,
   "calculadora-promedio-simple": UI.SimpleAverageCalculatorToolUi,
