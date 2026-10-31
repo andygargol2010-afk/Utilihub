@@ -1,0 +1,56 @@
+# UtiliHub — GSC worst pages (part 1/2)
+
+Parte de `docs/seo-worst-100-gsc.md`. Error Hunter lee **ambas** partes y une las filas.
+
+| URL | Clics | Impresiones | CTR | Posición |
+| --- | ---: | ---: | ---: | ---: |
+| https://www.utilihub.net/es/herramientas/generador-utm | 0 | 1 | 0% | 100.0 |
+| https://www.utilihub.net/tools/ipv4-subnet-calculator | 0 | 1 | 0% | 100.0 |
+| https://www.utilihub.net/es/herramientas/temperatura-cientifica | 0 | 1 | 0% | 99.0 |
+| https://www.utilihub.net/categoria/diseno | 1 | 1 | 100% | 98.0 |
+| https://www.utilihub.net/es/herramientas/conversor-frecuencia | 0 | 1 | 0% | 96.0 |
+| https://www.utilihub.net/es/herramientas/calculadora-calorias-diarias | 0 | 2 | 0% | 95.0 |
+| https://www.utilihub.net/herramientas/recortar-imagen | 0 | 2 | 0% | 94.5 |
+| https://www.utilihub.net/tools/board-foot-calculator | 0 | 2 | 0% | 93.5 |
+| https://www.utilihub.net/tools/kilometers-to-meters | 0 | 1 | 0% | 93.0 |
+| https://www.utilihub.net/tools/average-speed | 0 | 4 | 0% | 92.5 |
+| https://www.utilihub.net/tools/square-diagonal | 0 | 2 | 0% | 92.0 |
+| https://www.utilihub.net/es/herramientas/horas-entre-fechas | 0 | 1 | 0% | 92.0 |
+| https://www.utilihub.net/tools/border-radius-generator | 0 | 3 | 0% | 91.0 |
+| https://www.utilihub.net/tools/coefficient-of-variation | 0 | 1 | 0% | 91.0 |
+| https://www.utilihub.net/es/herramientas/trabajo-fuerza-distancia | 0 | 1 | 0% | 90.0 |
+| https://www.utilihub.net/es/herramientas/imc | 0 | 723 | 0% | 88.7 |
+| https://www.utilihub.net/finance/drawdown | 0 | 2 | 0% | 88.0 |
+| https://www.utilihub.net/tools/centripetal-acceleration | 0 | 1 | 0% | 88.0 |
+| https://www.utilihub.net/tools/meters-to-kilometers | 0 | 1 | 0% | 88.0 |
+| https://www.utilihub.net/es/herramientas/calculadora-consumo-agua | 0 | 2 | 0% | 87.0 |
+| https://www.utilihub.net/finanzas/rebalanceo-de-cartera | 0 | 2 | 0% | 87.0 |
+| https://www.utilihub.net/tools/quiz-builder-mathematics-calculo | 0 | 1 | 0% | 87.0 |
+| https://www.utilihub.net/es/herramientas/conversor-pulgadas-cm | 0 | 18 | 0% | 86.9 |
+| https://www.utilihub.net/tools/mass-energy-equivalence | 0 | 4 | 0% | 86.8 |
+| https://www.utilihub.net/tools/json-validator | 0 | 2 | 0% | 86.5 |
+| https://www.utilihub.net/es/herramientas/calculadora-pendiente | 0 | 7 | 0% | 86.4 |
+| https://www.utilihub.net/tools/random-draw | 0 | 4 | 0% | 86.3 |
+| https://www.utilihub.net/es/herramientas/rotar-imagen | 0 | 3 | 0% | 86.3 |
+| https://www.utilihub.net/es/finanzas/calculadora-wacc | 0 | 25 | 0% | 86.2 |
+| https://www.utilihub.net/es/herramientas/generador-paleta-complementaria | 0 | 2 | 0% | 86.0 |
+| https://www.utilihub.net/tools/sod-roll-calculator | 0 | 6 | 0% | 85.8 |
+| https://www.utilihub.net/tools/vinyl-siding-calculator | 0 | 4 | 0% | 85.8 |
+| https://www.utilihub.net/tools/temperature-converter | 0 | 87 | 0% | 85.7 |
+| https://www.utilihub.net/es/herramientas/calculadora-potencia-electrica | 0 | 17 | 0% | 85.4 |
+| https://www.utilihub.net/tools/tank-volume-calculator | 0 | 2 | 0% | 85.0 |
+| https://www.utilihub.net/es/herramientas/conversor-longitud | 0 | 14 | 0% | 84.9 |
+| https://www.utilihub.net/tools/periodic-growth-calculator | 0 | 3 | 0% | 84.3 |
+| https://www.utilihub.net/tools/pool-volume-calculator | 0 | 33 | 0% | 84.2 |
+| https://www.utilihub.net/es/herramientas/calculadora-area-habitacion | 0 | 6 | 0% | 84.2 |
+| https://www.utilihub.net/tools/credit-card-payoff-calculator | 0 | 2 | 0% | 84.0 |
+| https://www.utilihub.net/es/finanzas/poder-adquisitivo | 0 | 1 | 0% | 84.0 |
+| https://www.utilihub.net/tools/bread-hydration | 0 | 1 | 0% | 84.0 |
+| https://www.utilihub.net/tools/xml-to-json-converter | 0 | 1 | 0% | 84.0 |
+| https://www.utilihub.net/tools/us-gallons-to-liters | 0 | 4 | 0% | 83.5 |
+| https://www.utilihub.net/es/herramientas/calculadora-valla | 0 | 2 | 0% | 83.5 |
+| https://www.utilihub.net/finance/real-salary | 0 | 1 | 0% | 83.0 |
+| https://www.utilihub.net/tools/cumulative-frequency | 0 | 1 | 0% | 83.0 |
+| https://www.utilihub.net/tools/coordinate-converter | 0 | 195 | 0% | 82.4 |
+| https://www.utilihub.net/es/herramientas/conversor-onzas-gramos | 0 | 19 | 0% | 82.3 |
+| https://www.utilihub.net/es/herramientas/camel-case | 0 | 3 | 0% | 82.3 |
