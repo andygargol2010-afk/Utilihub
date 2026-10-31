@@ -66,10 +66,10 @@ status: active
 idea: Classic Minesweeper style grid reveal game. Selectable difficulties (easy 9x9/10 mines, medium 16x16/40, hard 16x30/99), left-click reveal with flood-fill for zeros, right-click or long-press flag, live mine counter and timer, win on all safe cells revealed or correct flags, lose on mine hit with reveal all, first-click safe guarantee, URL deep-link (?diff=&seed=) for reproducible board via mulberry32, branded PNG of final board + time/mines + utilihub.app, copy-link, EN+ES routes and strings. Mobile 390px touch-friendly cells with chord support. CWV-safe.
 id: minesweeper-classic
 path_en: /games/minesweeper-classic
-path_es: /es/juegos/buscaminas
+path_es: /es/juegos/buscaminas-clasico
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects difficulty, clicks cells to reveal safe numbers or flood zeros, flags suspects, sees remaining mines and timer, wins when all non-mines cleared or loses on mine with full reveal. Shareable via ?diff=&seed=. Download branded PNG.
 share: both
 next_step_required: yes
@@ -77,6 +77,7 @@ notes: Rubric (1-5): Cand1 Minesweeper Classic (games, classic reveal): value=5 
 Cand2 Packing Planner Kit (kits): value=4, share=4 PNG layout, search=3 "bin packing planner", distinct=4 (closest: furniture-assembly parts, recipe steps, traffic queues), feas=4, perf=5. Metaphor: spatial packing constraint solver. Why not: form+diagram packing, not canvas particles. Total 24.
 Cand3 Plant Care Journey (journeys): value=3, share=3, search=2, distinct=3 (closest: choice-story, recipe kit, furniture), feas=4, perf=5. Metaphor: ordered stages with progress waypoints. Total 20. Rejected low value/search.
 Chosen: minesweeper-classic (highest total, strong search demand, classic IP-safe, distinct from recent grid puzzles by reveal/flood-fill mechanic). Roll: CORE games (weight 5; balance after recent GROWTH and multiple games but high demand classic not yet shipped; variety avoids playground particle cluster and recent memory/sudoku/connect). No quality-lift.
+Run 1 (2026-10-31): Core playable shipped. New MinesweeperClassicGame.tsx with standard sizes (easy 9x9/10, medium 16x16/40, hard 16x30/99), flood-fill zeros, flags (right/long-press), chord on open numbers, live mines/timer, win on all safe open / lose reveal all, first-click safe, URL ?diff=&seed= mulberry32, branded PNG (board+stats+utilihub.app), best time localStorage, EN+ES via catalog+registry (/games/minesweeper-classic, /es/juegos/buscaminas-clasico). Mobile 390px CSS grid + overflow-x for hard. Distinct from existing Minesweeper (non-standard sizes). CWV-safe. Adsterra intact.
 adsense-prep_runs: 3
 ```
 
