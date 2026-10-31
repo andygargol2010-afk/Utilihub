@@ -4,12 +4,14 @@ import { makeTool } from "./types";
 export const POOL_CALCULATOR_TOOLS = [
   makeTool(
     "calculadora-piscina",
-    "Pool volume calculator",
+    "Pool Volume Calculator",
     "hogar",
     "formula",
     "Estimate pool volume in liters and gallons from shape and depth, plus a labeled chlorine dose and one turnover time.",
     [
       "pool volume calculator",
+      "pool volume liters",
+      "calculate pool gallons",
       "pool gallon calculator",
       "how many gallons in my pool",
       "swimming pool liters",
@@ -22,7 +24,7 @@ export const POOL_CALCULATOR_TOOLS = [
     ],
     {
       mode: "pool-calculator",
-      title: "Pool volume calculator — liters and gallons | UtiliHub",
+      title: "Pool Volume Calculator — Gallons, Liters & m³ Free | UtiliHub",
       description:
         "Calculate rectangular, round, or oval pool volume in liters, cubic meters, and gallons. Optional chlorine dose and turnover time. Free in the browser.",
     },
