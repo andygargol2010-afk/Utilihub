@@ -1,27 +1,25 @@
 import { makeTool, faq } from "./types";
 
 const tool = makeTool(
-  "calculadora-horas-extras",
-  "Overtime Pay Calculator",
-  "productividad",
+  "calculadora-horas-extra",
+  "Overtime Calculator",
+  "finanzas",
   "calculator",
-  "Calculate overtime pay from hours worked, hourly rate and overtime multiplier.",
+  "Calculate overtime pay from regular hours, hourly rate, overtime hours and multiplier.",
   [
     "overtime calculator",
-    "overtime pay",
-    "calculadora de horas extra",
+    "calculadora horas extra",
     "calculadora de horas extras",
-    "calcular valor hora extra online",
-    "calculadora horas extras",
-    "pago horas extras",
-    "overtime rate calculator",
+    "overtime pay calculator",
+    "horas extra calculadora",
   ],
   {
-    title: "Calculadora de Horas Extra Online — Overtime Pay | UtiliHub",
-    description: "Free overtime calculator. Enter hours, rate and multiplier to get regular + overtime pay. Instant, no signup.",
+    title: "Overtime Calculator | UtiliHub",
+    description: "Free overtime calculator. Enter regular hours, hourly rate, overtime hours and multiplier to get total pay. Instant browser calculation, EN+ES.",
+    summaryEs: "Calcula el pago de horas extra a partir de horas regulares, tarifa horaria y horas extra con multiplicador.",
   },
 );
-tool.faq.push(faq("How is overtime calculated?", "Regular hours are paid at the base rate. Hours above the threshold are paid at base rate × overtime multiplier (often 1.5)."),
-);
+tool.faq.push(faq("How is overtime calculated?", "Regular pay = regular hours × rate. Overtime pay = overtime hours × rate × multiplier (default 1.5). Total = regular + overtime. Rounded to 2 decimals."));
+tool.faq.push(faq("What is the standard overtime multiplier?", "Commonly 1.5× (time and a half) in many jurisdictions. Adjust the multiplier as needed for double time or local rules."));
 
 export const OVERTIME_CALCULATOR_TOOLS = [tool];

@@ -23,3 +23,5 @@ export const ModeCalculatorToolUi = lazy(() => import("../ModeCalculatorTool").t
 export const SleepCycleCalculatorToolUi = lazy(() => import("../SleepCycleCalculatorTool").then((m) => ({ default: m.SleepCycleCalculatorTool })));
 export const AcresHectaresConverterToolUi = lazy(() => import("../AcresHectaresConverterTool").then((m) => ({ default: m.AcresHectaresConverterTool })));
 export const WaistToHeightRatioCalculatorToolUi = lazy(() => import("../WaistToHeightRatioCalculatorTool").then((m) => ({ default: m.WaistToHeightRatioCalculatorTool })));
+export const SalesCommissionCalculatorToolUi = lazy(() => import("../SalesCommissionCalculatorTool").then((m) => ({ default: m.SalesCommissionCalculatorTool })));
+export const OvertimeCalculatorToolUi = lazy(() => import("../OvertimeCalculatorTool").then((m) => ({ default: m.OvertimeCalculatorTool })));
