@@ -62,7 +62,22 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Interactive classic memory match pairs card game. Grid of face-down cards with matching pairs (emojis/symbols/colors), player flips two at a time, matching pairs stay revealed and score, mismatch flip back, track moves and optional timer, selectable grid sizes (4x3, 4x4, 6x4), win when all matched with celebration, URL deep-link (?size=&seed=) for reproducible board via mulberry32, branded PNG of final board + moves + utilihub.app, copy-link, EN+ES routes and strings. Mobile 390px touch-friendly cards. CWV-safe.
+id: memory-match-classic
+path_en: /games/memory-match-classic
+path_es: /es/juegos/memoria-pares
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User selects grid size, flips cards to find matching pairs, sees moves count decrease and win banner when complete.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): Cand1 Memory Match (games, classic pairs): value=5 fun/search, share=4 screenshot board, search=5 "memory game online"/"pares", distinct=4 (closest: hangman letter-guess, simon sequence-memory, sudoku grid-puzzle), feas=5, perf=4 (CSS grid, no heavy canvas). Total 27. Metaphor: turn-based grid flip-and-match pairs. Why not particle-canvas: discrete card flip rules with win condition, no freehand trails/attractors. IP: traditional memory match pairs (generic symbols/emojis; no branded assets or commercial IP).
+Cand2 Bin Packing Planner (kits/simulators hybrid): value=4, share=4 PNG layout, search=3, distinct=4 (closest: furniture-assembly parts, recipe steps, traffic queues), feas=4, perf=5. Metaphor: spatial packing constraint solver. Why not: form+diagram packing, not canvas particles. Total 24.
+Cand3 Plant Care Journey (journeys): value=3, share=3, search=2, distinct=3 (closest: choice-story, recipe kit, furniture), feas=4, perf=5. Metaphor: ordered stages with progress waypoints. Total 20. Rejected low value/search.
+Chosen: memory-match-classic (highest total, strong search demand, classic IP-safe, distinct from recent grid puzzles by flip-match mechanic). Roll: CORE games (weight 5; last closed was GROWTH share-hooks so balance to CORE; variety avoids playground particle cluster). No quality-lift.
+adsense-prep_runs: 3
 ```
 
 <!-- end:ideas-lab-state.md -->
