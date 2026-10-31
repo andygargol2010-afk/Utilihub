@@ -38,4 +38,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-ciclo-sueno": UI.SleepCycleCalculatorToolUi,
   "conversor-acres-hectareas": UI.AcresHectaresConverterToolUi,
   "calculadora-ratio-cintura-altura": UI.WaistToHeightRatioCalculatorToolUi,
+  "calculadora-comision-de-venta": UI.SalesCommissionCalculatorToolUi,
 };

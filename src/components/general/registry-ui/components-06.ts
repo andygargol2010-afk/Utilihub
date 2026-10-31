@@ -57,3 +57,7 @@ export const GeometricMeanCalculatorToolUi = lazy(() =>
 export const StatisticalRangeCalculatorToolUi = lazy(() =>
   import("../StatisticalRangeCalculatorTool").then((m) => ({ default: m.StatisticalRangeCalculatorTool })),
 );
+
+export const SalesCommissionCalculatorToolUi = lazy(() =>
+  import("../SalesCommissionCalculatorTool").then((m) => ({ default: m.SalesCommissionCalculatorTool })),
+);
