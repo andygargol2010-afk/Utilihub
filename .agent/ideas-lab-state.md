@@ -37,7 +37,7 @@ weights_growth:
   adsense-prep: 11
   seo-locales: 10   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5; RESET 2026-10-28 empty actives
 
-adsense-prep_runs: 3
+adsense-prep_runs: 4
 ```
 
 ---
@@ -62,19 +62,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed quote-card-maker on 2026-10-31 after 4 runs; acceptance fully met. Next run IDEATE.
-adsense-prep_runs: 3
+status: active
+idea: Interactive AdSense readiness and compliance kit. User walks discrete checks for content quality, privacy policy presence, about/contact pages, original content, navigation, mobile readiness; live score 0-100 with per-item tips and improvement suggestions; URL deep-link to preserve checklist state; generates branded PNG scorecard with utilihub.app watermark and score; EN+ES routes. Not a particle sandbox.
+id: adsense-compliance-kit
+path_en: /growth/adsense-compliance-kit
+path_es: /es/crecimiento/kit-cumplimiento-adsense
+domain: adsense-prep
+runs_total: 4
+runs_remaining: 4
+acceptance: User toggles or completes discrete compliance checks, sees live score and tips update, generates PNG scorecard.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): C1 adsense-compliance-kit value5 share3 search4 distinct4 feas5 perf5 total26; C2 content-quality-scorer value4 share3 search3 distinct3 feas4 perf5 total22; C3 privacy-policy-generator value5 share4 search5 distinct4 feas4 perf5 total27. Closest-3 for chosen: furniture-assembly-kit (multi-step discrete parts), social-hook-composer (form fill live preview), quote-card-maker (input to branded output). Primary metaphor: multi-step guided compliance checklist with live scoring. Why not particle-canvas: form/grid checklist UI, no freehand or attractors. IP: n/a. Chosen: adsense-compliance-kit (high value for domain, distinct checklist). Roll: FLEX (p>0.35) then weighted growth → adsense-prep. adsense-prep_runs:4
+adsense-prep_runs: 4
 ```
 
 <!-- end:ideas-lab-state.md -->
