@@ -1,7 +1,7 @@
 import { makeTool, faq } from "./types";
 
 const tool = makeTool(
-  "calculadora-ciclo-sueno",
+  "calculadora-ciclos-sueno-90",
   "Sleep Cycle Calculator",
   "salud",
   "calculator",
