@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-31 run 65
+last_run: 2026-10-31 run 66
 last_mode: HUNT
 last_fix: n/a (0 code fixes)
 last_prevent: n/a
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean via code search and home index.tsx/es.index.tsx start with import + createFileRoute; no $(cat/PLACEHOLDER in src; registry thin and proper)
-new_findings: sampled /es home (200, Spanish), /es/juegos (200, list ok with 23 games), /es/herramientas/modelador-3d (200, proper 3D guide not HouseModeler), /es/herramientas/calculadora-iva and modelador-casas-3d still show English in guide about on live (E046 fix in tip not deployed); production deploy READY on 684f2714; tip of branch 61688643. No current ERROR deploys on tip. utilihub.vercel.app 404 (expected; production is utilihub.net).
-deploy: latest production READY on 684f2714 (feat adsense meta). Tip of fix/spanish-complete is 61688643 (later); E046 SEO fix, new tools not live yet. No current ERROR on tip. Deploy lag persists; no force deploy.
-notes: Known smoke E031 green. Discovery confirms ongoing deploy lag (English leaks on live www.utilihub.net for tools with/without summaryEs). Games and studios routing ok. No surgical code fix this run (fixes already in tip). Catalog E031/E046 last_seen updated. State updated.
+last_known_focus: E001/E005/E046 — registry.tsx thin and proper (no PLACEHOLDER, kind-first pickComponent), index.tsx/es.index.tsx start with import + createFileRoute (no $(cat), DeferredHomeReviews real); ToolSeoContent.tsx has never-fallback-to-EN summary (E046 fixed in tip)
+new_findings: sampled /es home (200, Spanish, 956 tools), /es/juegos (200, 23 games listed), /es/herramientas/modelador-3d (200, proper 3D studio not HouseModeler), /es/herramientas/calculadora-iva still shows English in guide about on live ("Calculate VAT..."). Tip SHA eb668be has the E046 fix; production READY on 684f2714. No deploy for current tip. No current ERROR deploys on tip. Previous ERROR on cddb081 was duplicate slug (already fixed later).
+deploy: latest production READY on 684f2714 (feat adsense meta). Tip of fix/spanish-complete is eb668be (later); E046 SEO fix not live yet. No current ERROR on tip. Deploy lag persists; no force deploy.
+notes: Known smoke green (registry, home routes, no stubs). Discovery: games and studios ok, modelador-3d correct. Ongoing deploy lag for E046. No surgical code fix this run (fixes already in tip). Catalog E046 last_seen updated. State updated.
 ```
 
 <!-- end:error-hunter-state.md -->
