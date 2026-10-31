@@ -53,3 +53,7 @@ export const HarmonicMeanCalculatorToolUi = lazy(() =>
 export const GeometricMeanCalculatorToolUi = lazy(() =>
   import("../GeometricMeanCalculatorTool").then((m) => ({ default: m.GeometricMeanCalculatorTool })),
 );
+
+export const StatisticalRangeCalculatorToolUi = lazy(() =>
+  import("../StatisticalRangeCalculatorTool").then((m) => ({ default: m.StatisticalRangeCalculatorTool })),
+);

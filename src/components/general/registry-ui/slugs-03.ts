@@ -33,4 +33,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-media-armonica": UI.HarmonicMeanCalculatorToolUi,
   "calculadora-media-geometrica": UI.GeometricMeanCalculatorToolUi,
   "calculadora-mediana": UI.MedianCalculatorToolUi,
+  "calculadora-rango-estadistico": UI.StatisticalRangeCalculatorToolUi,
 };

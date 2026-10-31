@@ -14,6 +14,7 @@ import { MEAN_ABSOLUTE_DEVIATION_CALCULATOR_TOOLS } from "../mean-absolute-devia
 import { HARMONIC_MEAN_CALCULATOR_TOOLS } from "../harmonic-mean-calculator-tool";
 import { GEOMETRIC_MEAN_CALCULATOR_TOOLS } from "../geometric-mean-calculator-tool";
 import { MEDIAN_CALCULATOR_TOOLS } from "../median-calculator-tool";
+import { STATISTICAL_RANGE_CALCULATOR_TOOLS } from "../statistical-range-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -30,4 +31,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...HARMONIC_MEAN_CALCULATOR_TOOLS,
   ...GEOMETRIC_MEAN_CALCULATOR_TOOLS,
   ...MEDIAN_CALCULATOR_TOOLS,
+  ...STATISTICAL_RANGE_CALCULATOR_TOOLS,
 ];
