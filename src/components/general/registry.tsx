@@ -29,6 +29,8 @@ import {
   TrigSuiteToolUi,
   ExpLogSuiteToolUi,
   MatrixBinarySuiteToolUi,
+  IvaCalculatorToolUi,
+  BmiCalculatorToolUi,
 } from "./registry-ui/components";
 
 /**
@@ -58,6 +60,11 @@ function pickComponent(tool: GeneralTool): ToolComp {
   const slug = (tool.slug || "").toLowerCase();
   const category = (tool.category || "").toLowerCase();
   const mode = String((tool.config as { mode?: unknown } | undefined)?.mode ?? "").toLowerCase();
+
+  // Hotfix: slug map not applying for these on live production (MathTool fallback).
+  // Keep dedicated wires in slugs-NN.ts; this is a surgical override until root cause is clear.
+  if (slug === "calculadora-iva") return IvaCalculatorToolUi;
+  if (slug === "calculadora-imc") return BmiCalculatorToolUi;
 
   // Dedicated calculator / text / re-wired tools: slug map in ./registry-ui/slugs-NN.ts
   const bySlug = dedicatedUiForSlug(slug);
