@@ -26,7 +26,7 @@ Reply in **Spanish** at end of run.
 ## IMMUTABLE
 
 1. ONLY `fix/spanish-complete`. Never `main`.
-2. **ONE COMMIT PER RUN** when there when a change ships (code + catalog/state). **NO commit if nothing found** — summary only.
+2. **ONE COMMIT PER RUN** when a change ships (code + catalog/state). **NO commit if nothing found** — summary only.
 3. **NO DEPLOYS.** Never `create_deployment` / deploy hooks.
 4. Never create/delete/pause other automations or change schedules.
 5. Do not rewrite `registry.tsx` / `registry-entries-*.ts` wholesale; append-only if a wire is required for a fix.
@@ -46,7 +46,7 @@ At the start of every run, choose **exactly one** mode and write it into `error-
 - Else alternate HUNT/PREVENT from `last_mode` (after HUNT → PREVENT; after PREVENT → HUNT).
 - Override to **PREVENT** when any tracked split target is over soft limit.
 - Override to **HUNT** when Vercel ERROR deploy, `validate:catalog` fails, or known 5xx/build break. HUNT overrides SEO.
-- If every URL in `docs/seo-worst-100-gsc.md` is already in `seo_done`, treat SEO slot as HUNT.
+- If every URL from the GSC 100 list is already in `seo_done`, treat SEO slot as HUNT.
 
 Target long-run mix: **~40% HUNT / ~40% PREVENT / ~20% SEO**.
 
@@ -66,11 +66,13 @@ Target long-run mix: **~40% HUNT / ~40% PREVENT / ~20% SEO**.
 
 ## SEO mode (GSC 100 — ~20% of runs)
 
-**Source of truth:** `docs/seo-worst-100-gsc.md` (**100** URLs from Search Console).
+**Source of truth (full 100 URLs):**
+- Index: `docs/seo-worst-100-gsc.md`
+- Rows: `docs/seo-worst-100-gsc-part1.md` + `docs/seo-worst-100-gsc-part2.md` (50 + 50)
 
 **Pick one URL per SEO run:**
 1. Load `seo_done` from `.agent/error-hunter-state.md` (pathnames without domain).
-2. Parse all table rows in `docs/seo-worst-100-gsc.md`.
+2. Parse **all** table rows (`| http`) from **both** part1 and part2.
 3. Exclude paths already in `seo_done`.
 4. Sort remaining by **impressions DESC**, then position DESC.
 5. Improve the **top remaining** URL only.
