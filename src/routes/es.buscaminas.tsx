@@ -6,12 +6,12 @@ import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
-const game = gameBySlug("buscaminas", "es")!;
+const game = gameBySlug("minesweeper")!;
 
 export const Route = createFileRoute("/es/buscaminas")({
   head: () => {
-    const title = `${game.nameEs} — juego online gratis | UtiliHub`;
-    const description = cleanDescription(game.summaryEs);
+    const title = "Buscaminas online gratis — jugar busca minas clásico | UtiliHub";
+    const description = cleanDescription("Jugá buscaminas online gratis. Clásico busca minas con dificultad fácil, media y difícil. Sin descarga, en el navegador.");
     const url = absoluteUrl("/es/buscaminas");
     return {
       meta: [

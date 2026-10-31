@@ -9,12 +9,15 @@ const tool = makeTool(
   [
     "overtime calculator",
     "overtime pay",
+    "calculadora de horas extra",
+    "calculadora de horas extras",
+    "calcular valor hora extra online",
     "calculadora horas extras",
     "pago horas extras",
     "overtime rate calculator",
   ],
   {
-    title: "Overtime Pay Calculator | UtiliHub",
+    title: "Calculadora de Horas Extra Online — Overtime Pay | UtiliHub",
     description: "Free overtime calculator. Enter hours, rate and multiplier to get regular + overtime pay. Instant, no signup.",
   },
 );

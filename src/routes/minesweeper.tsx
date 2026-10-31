@@ -10,8 +10,8 @@ const game = gameBySlug("minesweeper")!;
 
 export const Route = createFileRoute("/minesweeper")({
   head: () => {
-    const title = `${game.nameEn} — free online game | UtiliHub`;
-    const description = cleanDescription(game.summaryEn);
+    const title = "Minesweeper Online Free — Classic Buscaminas Game | UtiliHub";
+    const description = cleanDescription("Play minesweeper online free. Classic buscaminas / busca minas with easy, medium and hard. No download, in the browser.");
     const url = absoluteUrl("/minesweeper");
     return {
       meta: [

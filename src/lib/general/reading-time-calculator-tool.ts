@@ -7,6 +7,9 @@ const tool = makeTool(
   "calculator",
   "Estimate reading time from word count and reading speed (words per minute). Instant result for articles and documents. Runs fully in the browser.",
   [
+    "words to minutes",
+    "words to time",
+    "words to minutes converter",
     "reading time calculator",
     "words per minute reading time",
     "calculadora tiempo de lectura",
@@ -14,8 +17,8 @@ const tool = makeTool(
     "how long to read",
   ],
   {
-    title: "Reading Time Calculator — Estimate Minutes from Word Count and WPM | UtiliHub",
-    description: "Free reading time calculator. Enter word count and words-per-minute to get estimated reading time. Local, private, no signup.",
+    title: "Words to Minutes — Reading Time Calculator (WPM) | UtiliHub",
+    description: "Words to minutes: estimate reading time from word count and WPM. Free reading time calculator for articles and scripts.",
     summaryEs: "Calcula el tiempo de lectura estimado a partir del número de palabras y la velocidad de lectura (palabras por minuto).",
   },
 );
