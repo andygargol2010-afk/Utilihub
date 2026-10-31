@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-30 run 59
+last_run: 2026-10-30 run 60
 last_mode: HUNT
-last_fix: none (no clear code bug this run)
+last_fix: fix(seo) ToolSeoContent.tsx never fall back to EN summary on ES pages (E046)
 last_prevent: n/a
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean: no $(cat/PLACEHOLDER in src via code search, homes index/es.index start with import + createFileRoute, registry.tsx full no PLACEHOLDER; remains open for vigilance)
-new_findings: sampled tools outside catalog (calculadora-media-armonica 200, calculadora-media-geometrica 200 with proper title, calculadora-desviacion-absoluta-media 404 — tool defined + in part-09 on tip but tip not deployed; calculadora-raiz-cubica 200, conversor-kmh-ms 200, games 200, modelador-3d 404 but /tools/3d-modeler and /tools/3d-house-modeler 200). No new E0xx. Tip still on SHA 684f2714 READY; newer commits (including MAD) not yet on production.
-deploy: latest listed production READY dpl_AV3mRtraqdxQPWW9tvgwS1QskqvM on 684f271459febfcc0d00ee4e0067edf2e87be3d4. No ERROR on tip. No new deploy triggered by recent commits.
-notes: Known smoke E031 green. Discovery: no runtime/routing/registry bugs found on live; MAD 404 is deploy lag, not missing wire on tip. No fixes this run. Catalog last_seen updated for E031.
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean via code search; homes and registry start correctly, no PLACEHOLDER)
+new_findings: sampled /es/herramientas/calculadora-media-ponderada, calculadora-iva, calculadora-media-aritmetica, calculadora-media-armonica (all 200 but English sentences in guide about); /games 200; /tools/3d-modeler 200. English leak in Spanish guides for tools without summaryEs. Added E046 and fixed. calculadora-desviacion-absoluta-media still 404 on live (deploy lag, tip has it).
+deploy: latest production READY on 684f2714; new commits including this fix will trigger deploy. No ERROR on current tip before fix.
+notes: Known smoke E031 green. Discovery found SEO English leak on live Spanish tool pages. Fixed surgically in ToolSeoContent. Catalog and state updated. Tip SHA after fix: 9bc91478 (code) + ac3be9d6 (catalog).
 ```
 
 <!-- end:error-hunter-state.md -->
