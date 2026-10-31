@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-31 run 66
+last_run: 2026-10-31 run 67
 last_mode: HUNT
 last_fix: n/a (0 code fixes)
 last_prevent: n/a
 last_known_focus: E001/E005/E046 — registry.tsx thin and proper (no PLACEHOLDER, kind-first pickComponent), index.tsx/es.index.tsx start with import + createFileRoute (no $(cat), DeferredHomeReviews real); ToolSeoContent.tsx has never-fallback-to-EN summary (E046 fixed in tip)
-new_findings: sampled /es home (200, Spanish, 956 tools), /es/juegos (200, 23 games listed), /es/herramientas/modelador-3d (200, proper 3D studio not HouseModeler), /es/herramientas/calculadora-iva still shows English in guide about on live ("Calculate VAT..."). Tip SHA eb668be has the E046 fix; production READY on 684f2714. No deploy for current tip. No current ERROR deploys on tip. Previous ERROR on cddb081 was duplicate slug (already fixed later).
-deploy: latest production READY on 684f2714 (feat adsense meta). Tip of fix/spanish-complete is eb668be (later); E046 SEO fix not live yet. No current ERROR on tip. Deploy lag persists; no force deploy.
-notes: Known smoke green (registry, home routes, no stubs). Discovery: games and studios ok, modelador-3d correct. Ongoing deploy lag for E046. No surgical code fix this run (fixes already in tip). Catalog E046 last_seen updated. State updated.
+new_findings: sampled /es/juegos (200, 23 games listed including buscaminas), /es/herramientas/modelador-3d (200, proper 3D studio not HouseModeler), /es/herramientas/calculadora-iva still shows English in guide about on live ("Calculate VAT..."). Tip SHA 7ad1ec56 has the E046 fix; production READY on 684f2714. No deploy for current tip. No current ERROR deploys on tip. Previous ERROR on cddb081 was duplicate slug (already fixed later). No new runtime/routing issues found in samples.
+deploy: latest production READY on 684f2714 (feat adsense meta). Tip of fix/spanish-complete is 7ad1ec56 (later, ideas-lab minesweeper); E046 SEO fix not live yet. No current ERROR on tip. Deploy lag persists; no force deploy.
+notes: Known smoke green (registry, home routes, no stubs). Discovery: games and studios ok, modelador-3d correct. Ongoing deploy lag for E046. No surgical code fix this run (fixes already in tip). Catalog E046 last_seen updated in notes. State updated.
 ```
 
 <!-- end:error-hunter-state.md -->
