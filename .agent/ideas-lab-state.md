@@ -62,8 +62,19 @@ adsense-prep_runs: 3
 ## ACTIVE PROJECT
 
 ```
-status: none
-# Next run: IDEATE (two-urn GROWTH). Last closed: minesweeper-classic (games).
+status: active
+idea: Interactive quote card maker for share-hooks. User enters quote text, optional author, picks style (minimal/bold/accent), background color or gradient preset, live preview of branded card, generates PNG with utilihub.app watermark, copy image or text, share intent to X, URL deep-link for the quote params. Distinct from text-only hook composer by focusing on visual card output.
+id: quote-card-maker
+path_en: /growth/quote-card-maker
+path_es: /es/crecimiento/creador-tarjetas-citas
+domain: share-hooks
+runs_total: 4
+runs_remaining: 4
+acceptance: User fills quote + author + style, sees live preview card, downloads/copies branded PNG or shares link, card looks polished on mobile.
+share: both
+next_step_required: yes
+notes: Two-urn GROWTH FIXED (p=0.35, roll 0.188). Domain roll weights_growth FIXED (no seo-locales) chose share-hooks. Candidates: 1. quote-card-maker (value4 share5 search4 distinct3 feas5 perf5 total26) closest: social-hook-composer (text share), memory-match (PNG), sudoku (branded PNG); metaphor: form→visual card generator; not particle/canvas. 2. before-after-slider (value4 share5 search3 distinct4 feas4 perf4 total24) closest: social-hook (before-after pattern), traffic-lab (params), furniture-kit (progress); metaphor: comparison slider→share image. 3. shareable-checklist (value4 share4 search3 distinct4 feas5 perf5 total25) closest: furniture-assembly (checklist), social-hook, minesweeper (progress); metaphor: multi-item list builder→share PNG/link. Chose quote-card-maker highest score, distinct enough (visual focus vs text hooks). IP n/a. Why not clone: visual card composition not freehand particles.
+adsense-prep_runs: 3
 ```
 
 <!-- end:ideas-lab-state.md -->
