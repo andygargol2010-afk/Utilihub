@@ -70,11 +70,12 @@ path_es: /es/crecimiento/compositor-ganchos-sociales
 path_seo: n/a
 domain: share-hooks
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects pattern, fills 2-3 blanks, sees live post preview, copies text or downloads branded PNG.
 share: both
 next_step_required: yes
 notes: Rubric (1-5): Cand1 social-hook-composer value4 share5 search4 distinct4 feas5 perf5 total27 | closest-3: branded-PNG-exports-in-games, any-text-tools, quote-makers | metaphor: template-fill to copyable post | not particle-canvas (form+preview, no freehand). Cand2 quote-card-maker value4 share5 search3 distinct3 feas5 perf4 total24 | closest-3: PNG in closed projects, quote generators | metaphor: form to branded image | not particle. Cand3 challenge-result-sharer value3 share4 search3 distinct2 feas4 perf4 total20 (rejected low distinct, too close to games). Chose social-hook-composer (highest, growth share-hooks). Roll: FLEX (p>0.35), weighted to share-hooks. IP: n/a (original templates, generic patterns).
+Run 1 (2026-10-30): Core shipped — 5 patterns (question/story/list/myth/howto), fill blanks, live preview + hashtags, copy text, branded PNG (accent bar + text wrap + utilihub.app), URL deep-link (?p=&blanks), EN+ES routes, mobile 390px flex inputs. CWV-safe. Adsterra intact.
 adsense-prep_runs: 3
 ```
 
