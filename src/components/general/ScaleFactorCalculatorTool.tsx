@@ -98,11 +98,11 @@ export function ScaleFactorCalculatorTool({ locale = "en" }: { tool?: GeneralToo
       <div className="text-sm text-muted-foreground space-y-1">
         <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
         <p>
-          <a href={es ? "/es/calculadora-relacion-aspecto" : "/calculadora-relacion-aspecto"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-relacion-aspecto" : "/tools/calculadora-relacion-aspecto"} className="underline">
             {es ? "Calculadora de relación de aspecto" : "Aspect ratio calculator"}
           </a>
           {" · "}
-          <a href={es ? "/es/calculadora-ratio-dorado" : "/calculadora-ratio-dorado"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-ratio-dorado" : "/tools/calculadora-ratio-dorado"} className="underline">
             {es ? "Calculadora de ratio dorado" : "Golden ratio calculator"}
           </a>
         </p>
