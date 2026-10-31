@@ -19,3 +19,4 @@ export const CelsiusKelvinConverterToolUi = lazy(() => import("../CelsiusKelvinC
 export const GramsToPoundsConverterToolUi = lazy(() => import("../GramsToPoundsConverterTool").then((m) => ({ default: m.GramsToPoundsConverterTool })));
 export const FlowRateCalculatorToolUi = lazy(() => import("../FlowRateCalculatorTool").then((m) => ({ default: m.FlowRateCalculatorTool })));
 export const MedianCalculatorToolUi = lazy(() => import("../MedianCalculatorTool").then((m) => ({ default: m.MedianCalculatorTool })));
+export const ModeCalculatorToolUi = lazy(() => import("../ModeCalculatorTool").then((m) => ({ default: m.ModeCalculatorTool })));
