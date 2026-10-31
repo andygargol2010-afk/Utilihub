@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: share-hooks
-last_closed_id: social-hook-composer
+last_closed_domain: games
+last_closed_id: memory-match-classic
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 3
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-10-31 | games | memory-match-classic | Interactive classic memory match pairs card game complete after 4 runs. Grid of face-down cards with matching pairs (emojis/symbols), flip two, match stay + score, mismatch flip back, moves + optional timer, sizes 4x3/4x4/6x4, win celebration, URL deep-link (?size=&seed=) mulberry32, branded PNG (board + stats + utilihub.app), copy-link, best time/score localStorage, EN+ES routes (/games/memory-match-classic, /es/juegos/memoria-pares), mobile 390px CSS grid. CWV-safe. Adsterra intact.
 - 2026-10-31 | share-hooks | social-hook-composer | Interactive social media hook template composer complete after 4 runs. 9 patterns (question/story/list/myth/howto/curiosity-gap/statistic/contrarian/before-after), fill blanks, live preview + hashtags + char count with platform limits (X/Twitter 280, LinkedIn 1300, Instagram 2200), copy text, "Post to X" intent button, branded PNG (accent bar + pattern header + platform label + text wrap + utilihub.app), URL deep-link (?p=&blanks=&plat=), EN+ES routes (/growth/social-hook-composer, /es/crecimiento/compositor-ganchos-sociales), mobile 390px. CWV-safe. Adsterra intact.
 - 2026-10-30 | games | sudoku-classic | Classic Sudoku number-placement puzzle complete after 4 runs. 9x9 grid with uniqueness, difficulties (easy/medium/hard), pencil marks with toggle + auto-clear related on place, peer (row/col/box) + same-number highlights, live conflict highlights, win detection + celebration, undo stack, keyboard (1-9/0/arrows/WASD), 3 hints, URL deep-link (?seed=&diff=), branded PNG (board + notes + progress + utilihub.app), copy-link, EN+ES via catalog+registry (/games/sudoku-classic, /es/juegos/sudoku-clasico), mobile 390px touch cells. CWV-safe. Adsterra intact.
 - 2026-10-30 | simulators | traffic-signal-lab | Interactive traffic signal intersection lab complete after 4 runs. 4-way grid, discrete cars spawn/move/queue on green/red phases, NS/EW green sliders + presets (balanced/rush), live queues/throughput/avg wait/peak queue, phase remaining, URL deep-link (?ns=&ew=), branded PNG (queues + peak + utilihub.app), copy-link, EN+ES via catalog+registry (/simulators/traffic-signal-lab, /es/simuladores/laboratorio-semaforos), mobile 390px. CWV-safe. Adsterra intact.
@@ -54,7 +55,6 @@ adsense-prep_runs: 3
 - 2026-10-29 | simulators | logistic-chaos-lab | Interactive logistic map chaos lab complete after 4 runs. Live time series, cobweb plot, bifurcation diagram with period-doubling cascade (P2/P4/P8), Feigenbaum point, stability windows (P3/P5), zoom cascade toggle, attractor type readout, URL deep-link, branded PNG, EN+ES routes (/simulators/logistic-chaos-lab, /es/simuladores/laboratorio-caos-logistico), mobile 390px. CWV-safe. Adsterra intact.
 - 2026-10-29 | games | hangman-classic | Classic Hangman word-guess game complete after 4 runs. Letter buttons + keyboard, categories + difficulty (easy/normal/hard), one hint, progressive SVG stick figure (extended for >6 misses), live guess announcements (aria-live), win/lose states, URL deep-link (?cat=&word=&diff=), branded PNG, share-link, EN+ES dedicated routes (/hangman, /es/ahorcado) + catalog entry, mobile 390px flex-wrap. CWV-safe. Adsterra intact.
 - 2026-10-29 | kits | recipe-assembly-kit | Interactive multi-step recipe assembly kit complete after 4 runs. Discrete ingredient cards into ordered steps with reordering/drag, cuisine presets, live timeline/preview + aggregated shopping list, progress waypoints, URL deep-link, branded PNG with accent bar + shopping, EN+ES routes, mobile 390px flex-wrap, reset. CWV-safe. Adsterra intact.
-- 2026-10-29 | journeys | choice-story-journey | Interactive narrative choice journey complete after 4 runs. Branching decision cards, labeled progress waypoints, back/undo, current-step highlight, 3 endings with accent colors, URL deep-link path, branded PNG with accent bar, copy-link, EN+ES routes, mobile 390px. CWV-safe. Adsterra intact.
 ```
 
 ---
@@ -63,24 +63,20 @@ adsense-prep_runs: 3
 
 ```
 status: active
-idea: Interactive classic memory match pairs card game. Grid of face-down cards with matching pairs (emojis/symbols/colors), player flips two at a time, matching pairs stay revealed and score, mismatch flip back, track moves and optional timer, selectable grid sizes (4x3, 4x4, 6x4), win when all matched with celebration, URL deep-link (?size=&seed=) for reproducible board via mulberry32, branded PNG of final board + moves + utilihub.app, copy-link, EN+ES routes and strings. Mobile 390px touch-friendly cards. CWV-safe.
-id: memory-match-classic
-path_en: /games/memory-match-classic
-path_es: /es/juegos/memoria-pares
+idea: Classic Minesweeper style grid reveal game. Selectable difficulties (easy 9x9/10 mines, medium 16x16/40, hard 16x30/99), left-click reveal with flood-fill for zeros, right-click or long-press flag, live mine counter and timer, win on all safe cells revealed or correct flags, lose on mine hit with reveal all, first-click safe guarantee, URL deep-link (?diff=&seed=) for reproducible board via mulberry32, branded PNG of final board + time/mines + utilihub.app, copy-link, EN+ES routes and strings. Mobile 390px touch-friendly cells with chord support. CWV-safe.
+id: minesweeper-classic
+path_en: /games/minesweeper-classic
+path_es: /es/juegos/buscaminas
 domain: games
 runs_total: 4
-runs_remaining: 0
-acceptance: User selects grid size, flips cards to find matching pairs, sees moves count and live timer, win banner when complete with time. Shareable board via ?size=&seed=. Download branded PNG of current board + stats including time.
+runs_remaining: 4
+acceptance: User selects difficulty, clicks cells to reveal safe numbers or flood zeros, flags suspects, sees remaining mines and timer, wins when all non-mines cleared or loses on mine with full reveal. Shareable via ?diff=&seed=. Download branded PNG.
 share: both
-next_step_required: no
-notes: Rubric (1-5): Cand1 Memory Match (games, classic pairs): value=5 fun/search, share=4 screenshot board, search=5 "memory game online"/"pares", distinct=4 (closest: hangman letter-guess, simon sequence-memory, sudoku grid-puzzle), feas=5, perf=4 (CSS grid, no heavy canvas). Total 27. Metaphor: turn-based grid flip-and-match pairs. Why not particle-canvas: discrete card flip rules with win condition, no freehand trails/attractors. IP: traditional memory match pairs (generic symbols/emojis; no branded assets or commercial IP).
-Cand2 Bin Packing Planner (kits/simulators hybrid): value=4, share=4 PNG layout, search=3, distinct=4 (closest: furniture-assembly parts, recipe steps, traffic queues), feas=4, perf=5. Metaphor: spatial packing constraint solver. Why not: form+diagram packing, not canvas particles. Total 24.
+next_step_required: yes
+notes: Rubric (1-5): Cand1 Minesweeper Classic (games, classic reveal): value=5 fun/search, share=4 screenshot board, search=5 "minesweeper online"/"buscaminas", distinct=4 (closest: sudoku grid-logic, memory-match flip-pairs, hangman guess-letters), feas=5, perf=5 (CSS grid cells, no canvas). Total 28. Metaphor: turn-based grid reveal with flood-fill and flag logic. Why not particle-canvas: discrete cell state rules with win/lose condition, no freehand trails/attractors. IP: traditional minesweeper (generic rules and UI; public-domain mechanics; no branded assets or commercial IP).
+Cand2 Packing Planner Kit (kits): value=4, share=4 PNG layout, search=3 "bin packing planner", distinct=4 (closest: furniture-assembly parts, recipe steps, traffic queues), feas=4, perf=5. Metaphor: spatial packing constraint solver. Why not: form+diagram packing, not canvas particles. Total 24.
 Cand3 Plant Care Journey (journeys): value=3, share=3, search=2, distinct=3 (closest: choice-story, recipe kit, furniture), feas=4, perf=5. Metaphor: ordered stages with progress waypoints. Total 20. Rejected low value/search.
-Chosen: memory-match-classic (highest total, strong search demand, classic IP-safe, distinct from recent grid puzzles by flip-match mechanic). Roll: CORE games (weight 5; last closed was GROWTH share-hooks so balance to CORE; variety avoids playground particle cluster). No quality-lift.
-Run 1 (2026-10-31): Core playable shipped. Selectable sizes (4x3/4x4/6x4), flip two cards, match stay revealed + score, mismatch flip back, moves counter, pairs progress, win banner with celebration, best score per size (localStorage), EN+ES strings, mobile responsive CSS grid aspect-square cards, lazy via registry. Routes via catalog /games/memory-match-classic and /es/juegos/memoria-pares. No seed/PNG/timer yet (next runs). CWV-safe (no canvas). Adsterra intact.
-Run 2 (2026-10-31): URL deep-link (?size=&seed=) with mulberry32 for reproducible board on load / size change / restart. Copy-link (Share link) button copies current URL. Initial seed generated or read from query; history.replaceState updates params. EN+ES button labels. Mobile unchanged. No PNG/timer yet (next runs). CWV-safe. Adsterra intact.
-Run 3 (2026-10-31): Branded PNG download of current board. Canvas with accent bar, title, moves + pairs stats, grid of cards (face-up if matched/flipped/done, else UH back), footer utilihub.app. Download button EN+ES. Mobile 390px considered (canvas scales with cols). CWV-safe (on-demand canvas, no live draw). Adsterra intact. Timer still pending for final run.
-Run 4 (2026-10-31): Optional live timer added. Starts on first flip, stops on win or reset, displays mm:ss live, best time per size (localStorage via writeBestLow), included in win banner and branded PNG header stats. EN+ES labels. Mobile unchanged. Project complete: core + deep-link + PNG + timer. CWV-safe. Adsterra intact.
+Chosen: minesweeper-classic (highest total, strong search demand, classic IP-safe, distinct from recent grid puzzles by reveal/flood-fill mechanic). Roll: CORE games (weight 5; balance after recent GROWTH and multiple games but high demand classic not yet shipped; variety avoids playground particle cluster and recent memory/sudoku/connect). No quality-lift.
 adsense-prep_runs: 3
 ```
 
