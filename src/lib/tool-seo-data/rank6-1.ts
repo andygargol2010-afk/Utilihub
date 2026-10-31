@@ -5,35 +5,44 @@ import type { ToolSeoOverride } from "../tool-seo-overrides";
 export const TOOL_SEO_OVERRIDES_RANK6_1: Record<string, ToolSeoOverride> = {
   imc: {
     metaTitle: "BMI Calculator Free — kg & cm, WHO Categories | UtiliHub",
-    metaTitleEs: "Calculadora de IMC online gratis — kg, cm y categorías OMS | UtiliHub",
+    metaTitleEs: "Calculadora de IMC gratis — índice de masa corporal online | UtiliHub",
     metaDescription:
       "Calculate body mass index from weight (kg) and height (cm). See WHO category instantly. Free BMI calculator, no signup, private in your browser.",
     metaDescriptionEs:
-      "Calculá el índice de masa corporal con peso (kg) y altura (cm). Categoría OMS al instante. Calculadora de IMC gratis, sin registro, en el navegador.",
+      "Calculá tu IMC con peso (kg) y altura (cm): fórmula, tabla OMS y categoría al instante. Calculadora de IMC online gratis, sin registro.",
     about: [
       "BMI (body mass index) is weight in kilograms divided by height in meters squared: BMI = kg / m². If height is in cm, convert to meters first (divide by 100).",
       "Example: 70 kg and 175 cm → 70 / 1.75² ≈ 22.9 (normal range for adults).",
       "WHO adult ranges: under 18.5 underweight; 18.5–24.9 normal; 25–29.9 overweight; 30+ obesity. BMI is a screening number, not a full health diagnosis.",
+      "Use the interactive calculator above for an instant result, then compare it with the adult WHO table on the page.",
     ],
     aboutEs: [
-      "El IMC (índice de masa corporal) es el peso en kilogramos dividido por la altura en metros al cuadrado: IMC = kg / m². Si la altura está en cm, pasala a metros (÷ 100).",
-      "Ejemplo: 70 kg y 175 cm → 70 / 1,75² ≈ 22,9 (rango normal en adultos).",
-      "Umbrales OMS en adultos: <18,5 bajo peso; 18,5–24,9 normal; 25–29,9 sobrepeso; ≥30 obesidad. El IMC es una cifra de cribado, no un diagnóstico médico completo.",
+      "El IMC (índice de masa corporal) mide la relación entre peso y altura: IMC = peso (kg) ÷ altura (m)². Si la altura está en centímetros, dividila por 100 antes de elevar al cuadrado.",
+      "Ejemplo práctico: 70 kg y 175 cm → altura 1,75 m → 70 / 1,75² ≈ 22,9 (rango normal en adultos según la OMS).",
+      "Tabla IMC adultos (OMS): menos de 18,5 bajo peso; 18,5–24,9 peso normal; 25–29,9 sobrepeso; 30 o más obesidad. Es un indicador de cribado, no un diagnóstico médico ni un sustituto de la consulta profesional.",
+      "Esta calculadora de IMC online usa solo tu navegador: no guarda datos ni pide registro. Ideal para consultar rápido tu índice de masa corporal en kg y cm.",
+      "El mismo umbral de IMC se usa en hombres y mujeres adultos; no aplica igual a niños, adolescentes, embarazadas ni personas con mucha masa muscular. En esos casos conviene valoración clínica.",
     ],
     steps: [
       "Enter weight in kilograms.",
       "Enter height in centimeters.",
       "Read BMI and WHO category.",
+      "Compare with the adult WHO table on the page.",
     ],
     stepsEs: [
       "Ingresá el peso en kilogramos.",
       "Ingresá la altura en centímetros.",
-      "Leé el IMC y la categoría según la OMS.",
+      "Revisá el IMC y la categoría (bajo peso, normal, sobrepeso u obesidad).",
+      "Compará el resultado con la tabla IMC de la OMS en esta página.",
     ],
     faq: [
       {
         q: "How do I calculate BMI with kg and cm?",
         a: "BMI = kg ÷ (cm ÷ 100)². Example: 80 kg and 170 cm → 80 / 1.70² ≈ 27.7.",
+      },
+      {
+        q: "What is a normal BMI?",
+        a: "For most adults, WHO considers 18.5–24.9 a normal range. Values outside that range are only a screening signal.",
       },
       {
         q: "Is BMI the same for children?",
@@ -47,19 +56,27 @@ export const TOOL_SEO_OVERRIDES_RANK6_1: Record<string, ToolSeoOverride> = {
     faqEs: [
       {
         q: "¿Cómo se calcula el IMC con kg y cm?",
-        a: "IMC = kg ÷ (cm ÷ 100)². Ejemplo: 80 kg y 170 cm → 80 / 1,70² ≈ 27,7.",
+        a: "IMC = kg ÷ (cm ÷ 100)². Ejemplo: 80 kg y 170 cm → 80 / 1,70² ≈ 27,7 (sobrepeso).",
       },
       {
         q: "¿Qué IMC es normal?",
-        a: "En adultos, la OMS ubica el rango normal entre 18,5 y 24,9.",
+        a: "En adultos, la OMS ubica el peso normal entre 18,5 y 24,9. Por debajo es bajo peso; de 25 a 29,9 sobrepeso; desde 30 obesidad.",
+      },
+      {
+        q: "¿La tabla de IMC es igual para hombres y mujeres?",
+        a: "Los puntos de corte de la OMS para adultos son los mismos en hombres y mujeres. No reemplazan una evaluación médica individual.",
       },
       {
         q: "¿Hay calculadora de IMC online gratis?",
-        a: "Sí. Esta herramienta calcula el IMC y la categoría en el navegador, sin registro.",
+        a: "Sí. Esta herramienta calcula el IMC y la categoría en el navegador, sin registro ni instalación.",
       },
       {
         q: "¿El IMC sirve para niños?",
-        a: "No de la misma forma: en menores se usan percentiles por edad y sexo.",
+        a: "No uses los umbrales de adultos en niños o adolescentes: se interpretan con percentiles según edad y sexo.",
+      },
+      {
+        q: "¿El IMC mide grasa corporal o solo peso y altura?",
+        a: "Solo combina peso y altura. No distingue músculo de grasa; por eso es un cribado y no un diagnóstico completo.",
       },
     ],
   },
