@@ -69,7 +69,7 @@ path_en: /games/memory-match-classic
 path_es: /es/juegos/memoria-pares
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects grid size, flips cards to find matching pairs, sees moves count decrease and win banner when complete.
 share: both
 next_step_required: yes
@@ -77,6 +77,7 @@ notes: Rubric (1-5): Cand1 Memory Match (games, classic pairs): value=5 fun/sear
 Cand2 Bin Packing Planner (kits/simulators hybrid): value=4, share=4 PNG layout, search=3, distinct=4 (closest: furniture-assembly parts, recipe steps, traffic queues), feas=4, perf=5. Metaphor: spatial packing constraint solver. Why not: form+diagram packing, not canvas particles. Total 24.
 Cand3 Plant Care Journey (journeys): value=3, share=3, search=2, distinct=3 (closest: choice-story, recipe kit, furniture), feas=4, perf=5. Metaphor: ordered stages with progress waypoints. Total 20. Rejected low value/search.
 Chosen: memory-match-classic (highest total, strong search demand, classic IP-safe, distinct from recent grid puzzles by flip-match mechanic). Roll: CORE games (weight 5; last closed was GROWTH share-hooks so balance to CORE; variety avoids playground particle cluster). No quality-lift.
+Run 1 (2026-10-31): Core playable shipped. Selectable sizes (4x3/4x4/6x4), flip two cards, match stay revealed + score, mismatch flip back, moves counter, pairs progress, win banner with celebration, best score per size (localStorage), EN+ES strings, mobile responsive CSS grid aspect-square cards, lazy via registry. Routes via catalog /games/memory-match-classic and /es/juegos/memoria-pares. No seed/PNG/timer yet (next runs). CWV-safe (no canvas). Adsterra intact.
 adsense-prep_runs: 3
 ```
 

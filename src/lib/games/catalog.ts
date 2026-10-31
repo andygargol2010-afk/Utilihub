@@ -282,6 +282,17 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Simon clásico: mirá la secuencia de colores con tonos que crece y repetila. Niveles, mejor puntaje, sonido.",
     hasScore: true,
   },
+  {
+    slug: "memory-match-classic",
+    slugEs: "memoria-pares",
+    nameEn: "Memory Match Classic",
+    nameEs: "Memoria de Pares Clásica",
+    tag: "puzzle",
+    emoji: "🃏",
+    summaryEn: "Classic memory match: flip cards to find pairs. Choose grid size, track moves, win with celebration. Shareable later.",
+    summaryEs: "Memoria de pares clásica: volteá cartas para encontrar pares. Elegí tamaño de grilla, contá movimientos y ganá con celebración.",
+    hasScore: true,
+  },
 ] as const;
 
 /** Next-step games for retention (first = primary). Keys = EN slug. */
@@ -310,6 +321,7 @@ export const GAME_JOURNEYS: Record<string, string[]> = {
   "orbit-defender-arcade": ["pulse-catch-arena", "pong", "snake", "tetris"],
   "orbit-pulse-catcher": ["pulse-catch-arena", "orbit-defender-arcade", "pong", "refraction-challenge"],
   "simon-sequence-memory": ["memory", "formula-memory", "hangman", "lights-out"],
+  "memory-match-classic": ["memory", "simon-sequence-memory", "hangman", "sudoku-classic"],
 };
 
 export function relatedGames(current: Pick<GameDef, "slug" | "tag">): GameDef[] {

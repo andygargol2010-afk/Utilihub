@@ -45,6 +45,9 @@ const OrbitPulseCatcherGame = lazy(() =>
 const SimonSequenceMemoryGame = lazy(() =>
   import("./SimonSequenceMemoryGame").then((m) => ({ default: m.SimonSequenceMemoryGame })),
 );
+const MemoryMatchClassicGame = lazy(() =>
+  import("./MemoryMatchClassicGame").then((m) => ({ default: m.MemoryMatchClassicGame })),
+);
 
 const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -88,6 +91,8 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "atrapa-pulsos-orbita": OrbitPulseCatcherGame,
   "simon-sequence-memory": SimonSequenceMemoryGame,
   "memoria-secuencia-simon": SimonSequenceMemoryGame,
+  "memory-match-classic": MemoryMatchClassicGame,
+  "memoria-pares": MemoryMatchClassicGame,
 };
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {
