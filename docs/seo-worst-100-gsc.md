@@ -21,3 +21,7 @@ Fuente oficial: este índice + las filas en:
 **Ya hechas (2026-10-31):** `/es/herramientas/imc`, `/tools/coordinate-converter`, `/es/herramientas/calculadora-punto-rocio`, `/tools/temperature-converter`, `/tools/pool-volume-calculator`, `/es/herramientas/consumo-viaje`.
 
 **Siguiente por impresiones (aprox.):** `/es/finanzas/calculadora-wacc` (25), `/tools/overtime-pay-calculator` (25), `/tools/beaufort-wind-scale-converter` (22), …
+
+## Cuando se termine esta lista
+
+El Error Hunter (modo SEO) debe **pedirte una exportación nueva de Search Console** (URL, clics, impresiones, CTR, posición) y no inventar URLs. Con la lista nueva se regeneran part1/part2 y se reinicia el ciclo.

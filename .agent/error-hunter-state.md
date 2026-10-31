@@ -14,8 +14,9 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 
 ## SEO backlog pointer (for SEO mode)
 
-- **Source:** `docs/seo-worst-100-gsc.md` (full 100 URLs). Pick next by **impressions DESC** among paths not in `seo_done`.
+- **Source:** `docs/seo-worst-100-gsc.md` + part1/part2 (100 URLs). Pick next by **impressions DESC** among paths not in `seo_done`.
 - `seo_done` (paths): `/es/herramientas/imc`, `/tools/coordinate-converter`, `/es/herramientas/calculadora-punto-rocio`, `/tools/temperature-converter`, `/tools/pool-volume-calculator`, `/es/herramientas/consumo-viaje`
+- `seo_awaiting_new_list`: false (set **true** when GSC 100 is fully done — then ask user for a fresh Search Console export)
 - `seo_next` (hint): `/es/finanzas/calculadora-wacc`, `/tools/overtime-pay-calculator`, `/tools/beaufort-wind-scale-converter`, …
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
@@ -26,8 +27,8 @@ last_mode: HUNT
 last_fix: n/a (0 code fixes)
 last_prevent: n/a
 last_known_focus: E001/E005/E031/E046
-deploy: tip advancing; SEO mode uses docs/seo-worst-100-gsc.md (100 URLs).
-notes: SEO source of truth is the full GSC 100 list. Pick by impressions among paths not in seo_done.
+deploy: tip advancing; SEO uses GSC 100 (part1+part2). On list exhausted → ask user for new GSC export.
+notes: When seo_awaiting_new_list is true, ask user once/day for updated Search Console list; do not invent URLs.
 ```
 
 <!-- end:error-hunter-state.md -->

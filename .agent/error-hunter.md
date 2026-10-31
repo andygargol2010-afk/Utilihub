@@ -46,7 +46,7 @@ At the start of every run, choose **exactly one** mode and write it into `error-
 - Else alternate HUNT/PREVENT from `last_mode` (after HUNT → PREVENT; after PREVENT → HUNT).
 - Override to **PREVENT** when any tracked split target is over soft limit.
 - Override to **HUNT** when Vercel ERROR deploy, `validate:catalog` fails, or known 5xx/build break. HUNT overrides SEO.
-- If every URL from the GSC 100 list is already in `seo_done`, treat SEO slot as HUNT.
+- If every URL from the GSC 100 list is already in `seo_done` (or `seo_awaiting_new_list: true` in state): **do not invent URLs**. Treat the SEO slot as HUNT for code work, but the Spanish end-of-run summary **must** ask the user for a fresh GSC export (see SEO mode § Lista agotada).
 
 Target long-run mix: **~40% HUNT / ~40% PREVENT / ~20% SEO**.
 
@@ -84,6 +84,19 @@ Target long-run mix: **~40% HUNT / ~40% PREVENT / ~20% SEO**.
 **Still NO deploys.**
 
 **Definition of done (SEO):** one list URL improved (or blocked with evidence); path in `seo_done`; state `mode: SEO`, `seo_focus`.
+
+### Lista agotada → pedir nueva al usuario
+
+When **zero** remaining URLs (all paths from part1+part2 are in `seo_done`), on that SEO run (or the next SEO slot):
+
+1. Set in `error-hunter-state.md`: `seo_awaiting_new_list: true` and `seo_list_exhausted_at: YYYY-MM-DD`.
+2. **Do not** invent or scrape a new list.
+3. In the **Spanish summary at end of run**, ask the user clearly for an updated list, for example:
+
+   > Terminamos las 100 URLs del snapshot GSC. ¿Me pasás una **lista nueva exportada de Search Console** (páginas principales: URL, clics, impresiones, CTR, posición) con datos actualizados? Con eso actualizo `docs/seo-worst-100-gsc*.md` y sigo en el próximo ciclo SEO.
+
+4. Until the user provides a new list, SEO slots become HUNT (still repeat the ask briefly in the summary if `seo_awaiting_new_list` is true — once per day max, not every run).
+5. When the user pastes/updates the list: replace part1/part2 (+ index), clear `seo_awaiting_new_list`, reset or archive `seo_done` as appropriate, and resume SEO picks by impressions.
 
 ---
 
