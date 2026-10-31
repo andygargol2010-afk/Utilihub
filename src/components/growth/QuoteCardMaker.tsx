@@ -34,6 +34,14 @@ const EXAMPLES = [
     q: { en: "In the middle of difficulty lies opportunity.", es: "En medio de la dificultad yace la oportunidad." },
     a: { en: "Albert Einstein", es: "Albert Einstein" },
   },
+  {
+    q: { en: "Life is what happens when you're busy making other plans.", es: "La vida es lo que pasa mientras estás ocupado haciendo otros planes." },
+    a: { en: "John Lennon", es: "John Lennon" },
+  },
+  {
+    q: { en: "The future belongs to those who believe in the beauty of their dreams.", es: "El futuro pertenece a quienes creen en la belleza de sus sueños." },
+    a: { en: "Eleanor Roosevelt", es: "Eleanor Roosevelt" },
+  },
 ];
 
 export function QuoteCardMaker({ locale }: { locale: Locale }) {
@@ -78,10 +86,18 @@ export function QuoteCardMaker({ locale }: { locale: Locale }) {
   const charCount = quote.trim().length;
   const tooLong = charCount > 180;
 
+  // Dynamic sizing for preview based on length
+  const previewFontSize = charCount > 140 ? "0.95rem" : charCount > 90 ? "1.05rem" : styleId === "bold" ? "1.25rem" : styleId === "accent" ? "1.15rem" : "1.05rem";
+
   const loadExample = (idx: number) => {
     const ex = EXAMPLES[idx];
     setQuote(es ? ex.q.es : ex.q.en);
     setAuthor(es ? ex.a.es : ex.a.en);
+  };
+
+  const loadRandom = () => {
+    const idx = Math.floor(Math.random() * EXAMPLES.length);
+    loadExample(idx);
   };
 
   const reset = () => {
@@ -155,20 +171,20 @@ export function QuoteCardMaker({ locale }: { locale: Locale }) {
       ctx.fillStyle = "#ec4899";
       ctx.fillRect(0, 0, 16, 500);
     } else if (styleId === "bold") {
-      // subtle inner glow / border
       ctx.strokeStyle = isLight ? "#e2e8f0" : "rgba(255,255,255,0.15)";
       ctx.lineWidth = 4;
       ctx.strokeRect(20, 20, 760, 460);
     } else {
-      // minimal: thin border
       ctx.strokeStyle = isLight ? "#cbd5e1" : "rgba(255,255,255,0.1)";
       ctx.lineWidth = 2;
       ctx.strokeRect(12, 12, 776, 476);
     }
 
-    // Quote text — improved wrapping & sizing matched to style
+    // Quote text — dynamic size + wrapping
     ctx.fillStyle = isLight ? "#0f172a" : "#f8fafc";
-    const baseSize = styleId === "bold" ? 36 : styleId === "accent" ? 30 : 28;
+    let baseSize = styleId === "bold" ? 34 : styleId === "accent" ? 30 : 28;
+    if (charCount > 140) baseSize = Math.max(20, baseSize - 6);
+    else if (charCount > 90) baseSize = Math.max(22, baseSize - 3);
     const weight = styleId === "bold" ? "700 " : "500 ";
     ctx.font = `${weight}${baseSize}px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
     ctx.textAlign = "center";
@@ -186,18 +202,18 @@ export function QuoteCardMaker({ locale }: { locale: Locale }) {
       }
     }
     if (line) lines.push(line);
-    const lineHeight = baseSize * 1.3;
+    const lineHeight = baseSize * 1.28;
     const totalTextH = Math.min(lines.length, 6) * lineHeight;
-    const startY = 230 - totalTextH / 2 + baseSize * 0.65;
+    const startY = 250 - totalTextH / 2 + baseSize * 0.7;
     lines.slice(0, 6).forEach((ln, i) => {
       ctx.fillText(ln, 400, startY + i * lineHeight);
     });
 
     // Author
     if (displayAuthor) {
-      ctx.font = `italic ${styleId === "bold" ? 24 : 20}px system-ui, sans-serif`;
+      ctx.font = `italic ${styleId === "bold" ? 22 : 18}px system-ui, sans-serif`;
       ctx.fillStyle = isLight ? "#475569" : "#cbd5e1";
-      ctx.fillText(displayAuthor, 400, startY + Math.min(lines.length, 6) * lineHeight + 32);
+      ctx.fillText(displayAuthor, 400, startY + Math.min(lines.length, 6) * lineHeight + 28);
     }
 
     // Watermark
@@ -241,7 +257,7 @@ export function QuoteCardMaker({ locale }: { locale: Locale }) {
     borderLeft: styleId === "accent" ? "8px solid #ec4899" : undefined,
     border: styleId === "minimal" ? (bg.id === "white" ? "1px solid #e2e8f0" : "1px solid rgba(255,255,255,0.12)") : styleId === "bold" ? (bg.id === "white" ? "3px solid #e2e8f0" : "3px solid rgba(255,255,255,0.2)") : undefined,
     fontWeight: styleId === "bold" ? 700 : 500,
-    fontSize: styleId === "bold" ? "1.25rem" : styleId === "accent" ? "1.15rem" : "1.05rem",
+    fontSize: previewFontSize,
   };
 
   return (
@@ -274,6 +290,13 @@ export function QuoteCardMaker({ locale }: { locale: Locale }) {
             {es ? `Ej. ${i + 1}` : `Ex. ${i + 1}`}
           </button>
         ))}
+        <button
+          type="button"
+          onClick={loadRandom}
+          className="rounded-md border border-border px-2.5 py-1 text-xs font-medium hover:bg-muted"
+        >
+          {es ? "Aleatorio" : "Random"}
+        </button>
         <button
           type="button"
           onClick={reset}
