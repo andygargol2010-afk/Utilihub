@@ -69,11 +69,11 @@ path_en: /growth/adsense-compliance-kit
 path_es: /es/crecimiento/kit-cumplimiento-adsense
 domain: adsense-prep
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User toggles or completes discrete compliance checks, sees live score and tips update, generates PNG scorecard.
 share: both
 next_step_required: yes
-notes: Rubric (1-5): C1 adsense-compliance-kit value5 share3 search4 distinct4 feas5 perf5 total26; C2 content-quality-scorer value4 share3 search3 distinct3 feas4 perf5 total22; C3 privacy-policy-generator value5 share4 search5 distinct4 feas4 perf5 total27. Closest-3 for chosen: furniture-assembly-kit (multi-step discrete parts), social-hook-composer (form fill live preview), quote-card-maker (input to branded output). Primary metaphor: multi-step guided compliance checklist with live scoring. Why not particle-canvas: form/grid checklist UI, no freehand or attractors. IP: n/a. Chosen: adsense-compliance-kit (high value for domain, distinct checklist). Roll: FLEX (p>0.35) then weighted growth → adsense-prep. adsense-prep_runs:4
+notes: Rubric (1-5): C1 adsense-compliance-kit value5 share3 search4 distinct4 feas5 perf5 total26; C2 content-quality-scorer value4 share3 search3 distinct3 feas4 perf5 total22; C3 privacy-policy-generator value5 share4 search5 distinct4 feas4 perf5 total27. Closest-3 for chosen: furniture-assembly-kit (multi-step discrete parts), social-hook-composer (form fill live preview), quote-card-maker (input to branded output). Primary metaphor: multi-step guided compliance checklist with live scoring. Why not particle-canvas: form/grid checklist UI, no freehand or attractors. IP: n/a. Chosen: adsense-compliance-kit (high value for domain, distinct checklist). Roll: FLEX (p>0.35) then weighted growth → adsense-prep. adsense-prep_runs:4. Run 1 (2026-10-31): shipped core — 8 weighted discrete checks, live score 0-100 + progress bar + tips, URL deep-link (?c= bitstring), branded PNG scorecard (score + checklist + utilihub.app), reset, EN+ES routes + lazy component. Mobile 390px. CWV-safe. Adsterra intact. Next: polish tips/suggestions, more checks or examples, copy-image if needed.
 adsense-prep_runs: 4
 ```
 
