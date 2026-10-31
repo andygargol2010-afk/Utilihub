@@ -349,7 +349,11 @@ export function relatedGames(current: Pick<GameDef, "slug" | "tag">): GameDef[] 
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
   const key = slug.toLowerCase();
-  return GAMES.find((g) => (locale === "es" ? g.slugEs === key : g.slug === key) || g.slug === key || g.slugEs === key);
+  // Strict per-locale lookup: /games/$slug only resolves EN slugs and
+  // /es/juegos/$slug only resolves ES slugs. The old cross-locale fallback
+  // served the same game under both slugs with a canonical pointing to a
+  // different URL (duplicate content / locale leak).
+  return GAMES.find((g) => (locale === "es" ? g.slugEs === key : g.slug === key));
 }
 
 export function gamePath(game: GameDef, locale: GameLocale = "en") {
