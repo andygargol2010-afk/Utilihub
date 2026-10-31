@@ -21,3 +21,4 @@ export const FlowRateCalculatorToolUi = lazy(() => import("../FlowRateCalculator
 export const MedianCalculatorToolUi = lazy(() => import("../MedianCalculatorTool").then((m) => ({ default: m.MedianCalculatorTool })));
 export const ModeCalculatorToolUi = lazy(() => import("../ModeCalculatorTool").then((m) => ({ default: m.ModeCalculatorTool })));
 export const SleepCycleCalculatorToolUi = lazy(() => import("../SleepCycleCalculatorTool").then((m) => ({ default: m.SleepCycleCalculatorTool })));
+export const AcresHectaresConverterToolUi = lazy(() => import("../AcresHectaresConverterTool").then((m) => ({ default: m.AcresHectaresConverterTool })));

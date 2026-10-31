@@ -36,4 +36,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-rango-estadistico": UI.StatisticalRangeCalculatorToolUi,
   "calculadora-moda": UI.ModeCalculatorToolUi,
   "calculadora-ciclo-sueno": UI.SleepCycleCalculatorToolUi,
+  "conversor-acres-hectareas": UI.AcresHectaresConverterToolUi,
 };

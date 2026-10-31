@@ -71,4 +71,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "calculadora-rango-estadistico": "Calculadora de rango estadístico",
   "calculadora-moda": "Calculadora de moda estadística",
   "calculadora-ciclo-sueno": "Calculadora de ciclo de sueño",
+  "conversor-acres-hectareas": "Conversor de acres a hectáreas",
 };

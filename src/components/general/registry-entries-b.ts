@@ -91,4 +91,5 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "calculadora-media-cuadratica", name: "QuadraticMeanCalculatorTool", path: "./QuadraticMeanCalculatorTool", export: "QuadraticMeanCalculatorTool" },
   { slug: "calculadora-desviacion-absoluta-media", name: "MeanAbsoluteDeviationCalculatorTool", path: "./MeanAbsoluteDeviationCalculatorTool", export: "MeanAbsoluteDeviationCalculatorTool" },
   { slug: "calculadora-mediana", name: "MedianCalculatorTool", path: "./MedianCalculatorTool", export: "MedianCalculatorTool" },
+  { slug: "conversor-acres-hectareas", name: "AcresHectaresConverterTool", path: "./AcresHectaresConverterTool", export: "AcresHectaresConverterTool" },
 ] as const;
