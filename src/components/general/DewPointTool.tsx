@@ -233,6 +233,57 @@ export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
           </>
         )}
       </section>
+      <div className="lg:col-span-2 space-y-4">
+        <div className="overflow-x-auto rounded-xl border text-sm">
+          <table className="w-full text-left">
+            <caption className="border-b bg-muted/30 px-3 py-2 text-left font-medium">
+              {es ? "Bandas de punto de rocío (guía de confort)" : "Dew point bands (comfort guide)"}
+            </caption>
+            <thead>
+              <tr className="border-b bg-muted/20">
+                <th className="px-3 py-2">{es ? "Punto de rocío" : "Dew point"}</th>
+                <th className="px-3 py-2">{es ? "Sensación típica" : "Typical feel"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(
+                es
+                  ? [
+                      ["< 10 °C", "Seco / fresco"],
+                      ["10 – 16 °C", "Cómodo"],
+                      ["16 – 18 °C", "Ligeramente húmedo"],
+                      ["18 – 21 °C", "Bocho"],
+                      ["21 – 24 °C", "Muy húmedo"],
+                      ["> 24 °C", "Opresivo"],
+                    ]
+                  : [
+                      ["< 10 °C", "Dry / crisp"],
+                      ["10 – 16 °C", "Comfortable"],
+                      ["16 – 18 °C", "Slightly humid"],
+                      ["18 – 21 °C", "Muggy"],
+                      ["21 – 24 °C", "Very humid"],
+                      ["> 24 °C", "Oppressive"],
+                    ]
+              ).map(([range, feel]) => (
+                <tr key={range} className="border-b border-border/60">
+                  <td className="px-3 py-2 tabular-nums">{range}</td>
+                  <td className="px-3 py-2">{feel}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          {es ? "Herramientas relacionadas: " : "Related tools: "}
+          <a className="underline" href={es ? "/es/herramientas/calculadora-sensacion-termica" : "/tools/heat-index-and-wind-chill"}>
+            {es ? "Sensación térmica / índice de calor" : "Heat index & wind chill"}
+          </a>
+          {" · "}
+          <a className="underline" href={es ? "/es/herramientas/conversor-temperatura" : "/tools/temperature-converter"}>
+            {es ? "Conversor de temperatura" : "Temperature converter"}
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
