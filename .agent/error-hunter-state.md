@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-30 run 60
+last_run: 2026-10-31 run 61
 last_mode: HUNT
-last_fix: fix(seo) ToolSeoContent.tsx never fall back to EN summary on ES pages (E046)
+last_fix: n/a (0 code fixes)
 last_prevent: n/a
-last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean via code search; homes and registry start correctly, no PLACEHOLDER)
-new_findings: sampled /es/herramientas/calculadora-media-ponderada, calculadora-iva, calculadora-media-aritmetica, calculadora-media-armonica (all 200 but English sentences in guide about); /games 200; /tools/3d-modeler 200. English leak in Spanish guides for tools without summaryEs. Added E046 and fixed. calculadora-desviacion-absoluta-media still 404 on live (deploy lag, tip has it).
-deploy: latest production READY on 684f2714; new commits including this fix will trigger deploy. No ERROR on current tip before fix.
-notes: Known smoke E031 green. Discovery found SEO English leak on live Spanish tool pages. Fixed surgically in ToolSeoContent. Catalog and state updated. Tip SHA after fix: 9bc91478 (code) + ac3be9d6 (catalog).
+last_known_focus: E031 recurring ($(cat / PLACEHOLDER) — critical files clean via code search; homes index/es.index start with import + createFileRoute, registry.tsx full no PLACEHOLDER)
+new_findings: sampled /es home, /games, /games/2048, /tools/3d-modeler, /studio/prism-trail-composer (all 200 functional); /es/herramientas/calculadora-rango-estadistico 404 on live (wired in part-09, deploy lag); /es/herramientas/calculadora-media-armonica and calculadora-iva still show English sentences in guide about on live (E046 fix in tip 9bc91478 not yet deployed). Production deploy READY on 684f2714; tip 30d99c77+. Older ERROR deploys (duplicate slug) already fixed.
+deploy: latest production READY on 684f2714 (feat adsense meta). Tip of fix/spanish-complete is later (30d99c77+); E046 SEO fix and new tools not live yet. No current ERROR. Deploy lag noted; no force deploy.
+notes: Known smoke E031 green. Discovery found deploy lag (live still has English leak and new tools 404). No surgical code fix this run (already fixed in tip). Catalog E031 last_seen updated. State updated.
 ```
 
 <!-- end:error-hunter-state.md -->
