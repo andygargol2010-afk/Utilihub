@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-10-31 run 76
-runs_total: 76
+last_run: 2026-10-31 run 77
+runs_total: 77
 last_mode: HUNT
-last_fix: n/a (0 code fixes)
+last_fix: registry.tsx explicit early returns for calculadora-iva + calculadora-imc (SHA 8f7ea570)
 last_prevent: n/a
-last_known_focus: E031/E001/E005/E046
-deploy: tip aed7df39 READY (production from fix/spanish-complete); branch tip a21bac04 (docs only)
-notes: Known smoke E031 clean (no $(cat/PLACEHOLDER in src via search, homes start with import+createFileRoute, registry thin). Discovery: homes/juegos/studio OK. Live calculadora-iva shows generic MathTool UI ("Separa los valores...") despite slugs-03 wire to IvaCalculatorToolUi + proper component; guide about shows EN summary despite summaryEs set and ToolSeoContent fix (possible cache or data flow). unir-pdf guide generic Spanish OK. No clear surgical fix this run.
+last_known_focus: E031/E001/E005/E046/E047
+deploy: previous tip aed7df39 READY; new tip 8f7ea570 (awaiting deploy)
+notes: Known smoke E031 clean (no $(cat/PLACEHOLDER, homes/registry real). Discovery: live calculadora-iva and calculadora-imc show MathTool generic UI despite slug wires in slugs-01/03 + components. Hotfix: explicit if in pickComponent. New E047 open. Guide about for IVA looks Spanish. No other clear breaks in sampled games/home.
 ```
 
 <!-- end:error-hunter-state.md -->
