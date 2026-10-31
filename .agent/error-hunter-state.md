@@ -13,14 +13,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 ## Last focus
 
 ```
-last_run: 2026-10-31 run 73
+last_run: 2026-10-31 run 74
 last_mode: HUNT
 last_fix: n/a (0 code fixes)
 last_prevent: n/a
-last_known_focus: E001/E005/E031/E046 — registry.tsx thin/proper (no PLACEHOLDER, kind-first, dedicated wires present), index.tsx/es.index.tsx start with import + createFileRoute (no $(cat), DeferredHomeReviews real); no $(cat/PLACEHOLDER in src; ToolSeoContent.tsx never falls back to EN summary
-new_findings: sampled / , /es , /es/herramientas/calculadora-iva (loads, Spanish guide OK), /es/juegos/2048 (200), /es/herramientas/png-a-jpg (file upload), /growth/quote-card-maker (200, correct), /es/crecimiento/creador-tarjetas-citas (200), modelador-3d and modelador-casas-3d (200, distinct titles), /games /es/juegos /studio/prism-trail-composer (200). No 404s on sampled. No PLACEHOLDER/$(cat)/Tool not available issues in tip. Latest production READY on SHA 727efb1b (unique slug sleep-cycle). Prior ERROR deploys on older SHAs resolved.
-deploy: latest production READY on 727efb1b9a7c18d9907842434a65fce52498eca5 (fix(catalog): unique slug for sleep-cycle-calculator). Tip of fix/spanish-complete is that SHA. No current ERROR.
-notes: Known smoke green in tip and live (registry, homes, no stubs, E046 fixed, dedicated UIs). Discovery: modelers distinct, quote-card live on correct /growth/ path, games/studios OK. No surgical code fix this run (no errors found). Catalog E031 last_seen updated (still open for vigilance). State updated.
+last_known_focus: E001/E005/E031/E046 — registry.tsx thin/no PLACEHOLDER/kind-first, homes index.tsx/es.index.tsx start with import+createFileRoute (no $(cat), DeferredHomeReviews real); no $(cat/PLACEHOLDER in src via search; ToolSeoContent.tsx never falls back to EN summary
+new_findings: sampled /es/herramientas/calculadora-iva (loads but guide about still shows EN summary "Calculate VAT..."), /es/herramientas/png-a-jpg (guide about EN "Convert PNG images to JPG locally."), /es/herramientas/calculadora-imc (Spanish OK), /es/herramientas/calculadora-raiz-cubica (Spanish OK), /es/juegos/2048 (200), /es/crecimiento/creador-tarjetas-citas (200), /studio/prism-trail-composer (200), /es/studio/prism-trail-composer (404 — Spanish slug is compositor-estela-prisma which 200), /es/herramientas/calculadora-porcentaje-asistencia (Spanish guide OK). Homes OK. No PLACEHOLDER/$(cat)/Tool not available in tip. English leak on live for some tools despite code fix (possible deploy lag/cache on www.utilihub.net; latest production READY on tip SHA b4af870c).
+deploy: latest production READY on b4af870c42363ef3a9f6135243dd0749fafd05b5 (seo(pool-volume)). Tip of fix/spanish-complete is that SHA. No current ERROR.
+notes: Known smoke green in tip (registry, homes, no stubs). Discovery: English guide leak still visible on live for calculadora-iva and png-a-jpg (and others); code in ToolSeoContent prevents EN fallback. Spanish studio path differs. No surgical code fix this run (no clear code bug; symptom may be lag). Catalog E031 last_seen updated (open for vigilance). State updated.
 ```
 
 <!-- end:error-hunter-state.md -->
