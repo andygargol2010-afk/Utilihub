@@ -84,6 +84,7 @@ export function ProgressPassport({ locale }: { locale: Locale }) {
 
   const progress = Math.round((earned.size / STAMPS.length) * 100);
   const complete = progress === 100;
+  const nextStamp = STAMPS.find((s) => !earned.has(s.id));
 
   const shareLink = () => {
     const url = new URL(window.location.href);
@@ -118,6 +119,12 @@ export function ProgressPassport({ locale }: { locale: Locale }) {
         {complete && (
           <div className="mt-3 rounded-lg bg-emerald-100 px-3 py-2 text-center text-sm font-bold text-emerald-800">
             {locale === "es" ? "¡Pasaporte completo! Todos los sellos ganados." : "Passport complete! All stamps earned."}
+          </div>
+        )}
+        {nextStamp && !complete && (
+          <div className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-center text-sm text-amber-800">
+            {locale === "es" ? "Siguiente sugerido: " : "Suggested next: "}
+            <strong>{nextStamp.label[locale]}</strong>
           </div>
         )}
         <div className="mt-6 grid grid-cols-2 gap-4">
@@ -158,7 +165,7 @@ export function ProgressPassport({ locale }: { locale: Locale }) {
         </button>
       </div>
       <p className="mt-3 text-center text-xs text-muted-foreground">
-        {locale === "es" ? "Toca un sello para marcarlo (demo). El progreso se guarda localmente y la URL se actualiza." : "Tap a stamp to mark it (demo). Progress saves locally and the URL updates."}
+        {locale === "es" ? "Toca un sello para marcarlo (demo). El progreso se guarda localmente y la URL se actualiza en vivo." : "Tap a stamp to mark it (demo). Progress saves locally and the URL updates live."}
       </p>
     </div>
   );
