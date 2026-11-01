@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-01 run 91
-runs_total: 91
+last_run: 2026-11-01 run 92
+runs_total: 92
 last_mode: HUNT
 last_fix: nudge .vercel-redeploy (E050 deploy lag still)
 last_prevent: n/a
-last_known_focus: E031 + E050
-deploy: production READY on ada44c51 (pre-E050); tip 979a1f2e has E050 category utilidades; forced redeploy via .vercel-redeploy (run 91, commit 0e743d77)
-notes: Known smoke E031 clean (no $(cat/PLACEHOLDER in src via search; homes OK; registry full). E047 live OK (IVA dedicated UI on /es/herramientas/calculadora-iva). E050 code fixed (category utilidades in savings-goal-calculator-tool.ts) but live still 404 on ada44c51. Discovery: /es OK, /es/juegos OK, /es/herramientas/calculadora-iva OK (dedicated UI), /es/herramientas/calculadora-imc OK. No new runtime/routing/registry/SEO errors found. Waiting for tip deploy.
+last_known_focus: E050
+deploy: production READY on ada44c51 (pre-E050); tip 04bc5866 has E050 category utilidades + later fixes; forced redeploy via .vercel-redeploy (run 92)
+notes: Known smoke E050 still 404 on live www.utilihub.net/es/herramientas/calculadora-ahorro-para-meta (production on ada44c51). Code in tip has category utilidades. E047 live OK (IVA dedicated UI). Discovery: /es OK, /es/herramientas/modelador-3d OK (correct studio, not House), /es/juegos/2048 OK. No $(cat or PLACEHOLDER in src routes. No new runtime/routing/registry/SEO errors found. Waiting for tip deploy.
 ```
 
 <!-- end:error-hunter-state.md -->
