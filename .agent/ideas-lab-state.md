@@ -62,11 +62,11 @@ path_en: /simulators/bin-packing
 path_es: /es/simuladores/empaque-cajas
 domain: simulators
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects items, places them in the container, achieves high utilization score or completes a challenge, and can share PNG or link.
 share: both
 next_step_required: yes
-notes: Rubric scores (value/share/search/distinct/feas/perf): A-BinPack 4/4/4/5/5/5=27 (closest: none particle or freehand; metaphor: spatial packing constraint solver; why not particle: discrete item placement in bin, no trails/attractors); B-QueueFlow 4/3/3/4/5/5=24 (closest: simple process visuals; metaphor: sequential resource flow); C-TrajectoryPlot 3/3/4/3/4/3=20 (closest: physics demos; metaphor: parametric trajectory; may risk canvas). Chosen A. Domain roll: CORE simulators (balance underused domain, variety mandate vs recent games/playgrounds). IP: n/a (original sim). Run plan: 1 core packing UI + utilization, 2 presets/challenges, 3 score/PNG/share, 4 polish/mobile.
+notes: Rubric scores (value/share/search/distinct/feas/perf): A-BinPack 4/4/4/5/5/5=27 (closest: none particle or freehand; metaphor: spatial packing constraint solver; why not particle: discrete item placement in bin, no trails/attractors); B-QueueFlow 4/3/3/4/5/5=24 (closest: simple process visuals; metaphor: sequential resource flow); C-TrajectoryPlot 3/3/4/3/4/3=20 (closest: physics demos; metaphor: parametric trajectory; may risk canvas). Chosen A. Domain roll: CORE simulators (balance underused domain, variety mandate vs recent games/playgrounds). IP: n/a (original sim). Run plan: 1 core packing UI + utilization, 2 presets/challenges, 3 score/PNG/share, 4 polish/mobile. Run 1 done: core CSS grid-like placement, item select, click-to-place with overlap check, live util %.
 adsense-prep_runs: 6
 ```
 

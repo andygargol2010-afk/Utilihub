@@ -264,6 +264,21 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Intersección de 4 vías. Ajustá verdes N-S/E-O, mirá colas y flujo, y medí el throughput en vivo.",
   },
+  {
+    slug: "bin-packing",
+    slugEs: "empaque-cajas",
+    nameEn: "Bin packing",
+    nameEs: "Empaque de cajas",
+    tag: "math",
+    theme: "lab",
+    emoji: "📦",
+    badgeEn: "Utilization",
+    badgeEs: "Utilización",
+    summaryEn:
+      "Pack rectangles into a fixed bin. Click to place selected sizes, avoid overlaps, maximize utilization %.",
+    summaryEs:
+      "Empacá rectángulos en un contenedor fijo. Hacé clic para colocar tamaños, evitá solapamientos, maximizá la utilización %.",
+  },
 ] as const;
 
 export const SIM_JOURNEYS: Record<string, string[]> = {
