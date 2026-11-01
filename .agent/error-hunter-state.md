@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-01 run 89
-runs_total: 89
+last_run: 2026-11-01 run 90
+runs_total: 90
 last_mode: HUNT
-last_fix: nudge .vercel-redeploy (E050 deploy lag)
+last_fix: nudge .vercel-redeploy (E050 deploy lag still)
 last_prevent: n/a
 last_known_focus: E031 + E050
-deploy: production was READY on ada44c51 (pre-E050); tip 04cfc13e+ has E050 category utilidades; forced redeploy via .vercel-redeploy
-notes: Known smoke E031 clean (no $(cat/PLACEHOLDER in src; homes OK; registry full). E047 live OK (IVA dedicated UI). E050 code fixed since 8b33552c but live 404 until tip deploys. Discovery: /es/pulse-catch OK, /studio/prism-trail-composer OK, /es/finanzas/calculadora-wacc OK (finance path), /tools/beaufort-wind-scale-converter OK, /tools/overtime-pay-calculator OK. No new runtime/routing/registry errors. calculadora-horas-extra 404 expected (renamed to calculadora-pago-horas-extra per E048).
+deploy: production READY on ada44c51 (pre-E050); tip cdff2d48+ has E050 category utilidades; forced redeploy via .vercel-redeploy (run 90)
+notes: Known smoke E031 clean (no $(cat/PLACEHOLDER in src via search; homes OK; registry full). E047 live OK (IVA dedicated UI on /es/herramientas/calculadora-iva). E050 code fixed (category utilidades in savings-goal-calculator-tool.ts) but live still 404 on ada44c51. Discovery: /es OK, /es/juegos OK, /studio/prism-trail-composer OK, /es/herramientas/calculadora-punto-rocio OK, /es/finanzas/calculadora-wacc OK, /tools/overtime-pay-calculator OK, /es/herramientas/calculadora-markup OK, /es/herramientas/calculadora-imc OK. No new runtime/routing/registry/SEO errors found. calculadora-horas-extra 404 expected (renamed).
 ```
 
 <!-- end:error-hunter-state.md -->
