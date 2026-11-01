@@ -42,4 +42,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-comision-de-venta": UI.SalesCommissionCalculatorToolUi,
   "calculadora-horas-extra": UI.OvertimeCalculatorToolUi,
   "calculadora-calorias-porcion": UI.CaloriesPerServingCalculatorToolUi,
+  "calculadora-ahorro-para-meta": UI.SavingsGoalCalculatorToolUi,
 };

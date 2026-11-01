@@ -22,6 +22,7 @@ import { WAIST_TO_HEIGHT_RATIO_CALCULATOR_TOOLS } from "../waist-to-height-ratio
 import { SALES_COMMISSION_CALCULATOR_TOOLS } from "../sales-commission-calculator-tool";
 import { OVERTIME_CALCULATOR_TOOLS } from "../overtime-calculator-tool";
 import { CALORIES_PER_SERVING_CALCULATOR_TOOLS } from "../calories-per-serving-calculator-tool";
+import { SAVINGS_GOAL_CALCULATOR_TOOLS } from "../savings-goal-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -46,4 +47,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...SALES_COMMISSION_CALCULATOR_TOOLS,
   ...OVERTIME_CALCULATOR_TOOLS,
   ...CALORIES_PER_SERVING_CALCULATOR_TOOLS,
+  ...SAVINGS_GOAL_CALCULATOR_TOOLS,
 ];
