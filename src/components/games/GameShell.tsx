@@ -118,7 +118,7 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
               </div>
               <Link
                 to={gamePath(next, locale)}
-                className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-500"
+                className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
               >
                 {es ? "Jugar siguiente" : "Play next"}
                 <ArrowRight className="size-4" aria-hidden />
@@ -129,7 +129,7 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
                 <li key={g.slug}>
                   <Link
                     to={gamePath(g, locale)}
-                    className="flex min-h-11 items-center gap-2 rounded-xl border border-slate-200/80 bg-white/90 px-3 py-2 text-sm font-semibold text-slate-800 hover:border-emerald-400/50"
+                    className="flex min-h-11 items-center gap-2 rounded-xl border border-slate-200/80 bg-white/90 px-3 py-2 text-sm font-semibold text-slate-800 hover:border-emerald-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
                   >
                     <span aria-hidden>{g.emoji}</span>
                     <span className="truncate">{gameName(g, locale)}</span>
