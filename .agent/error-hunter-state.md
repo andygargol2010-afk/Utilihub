@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-01 run 81
-runs_total: 81
+last_run: 2026-11-01 run 82
+runs_total: 82
 last_mode: HUNT
-last_fix: n/a (docs only; code hotfix for E047 and E049 barrel already in tip 22245b41)
+last_fix: n/a (docs only; E047 confirmed fixed on live)
 last_prevent: n/a
 last_known_focus: E047
-deploy: latest listed production ERROR on 918e8c1a (conflicting re-exports); tip 22245b41 has dup removal + early returns in registry.tsx; no deploy listed for tip or post-918e8c1a commits yet
-notes: Known smoke E047 still OPEN on live www.utilihub.net (calculadora-iva and calculadora-imc show MathTool "Separa los valores..."). Discovery: home index.tsx clean, no $(cat/PLACEHOLDER in critical paths, new tool calculadora-calorias-porcion 404 expected until tip deploys. Awaiting successful deploy of tip 22245b41 to confirm build green and E047 symptom resolved.
+deploy: latest production READY on ada44c51 (fix/spanish-complete); prior ERROR on 918e8c1a known and superseded
+notes: Known smoke E047 FIXED — live client render of calculadora-iva and calculadora-imc shows dedicated UIs (Tasa IVA / Peso kg). Discovery: sampled porcentaje-de-numero, conversor-kmh-ms, color-contrast, home /es, modelador-3d paths; all load correctly under /es/herramientas/*; no $(cat/PLACEHOLDER in critical paths; no new runtime/routing errors found.
 ```
 
 <!-- end:error-hunter-state.md -->
