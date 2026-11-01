@@ -1,4 +1,4 @@
-// Lazy tool UIs part 06 — further split 2026-10-28 to keep files under ~3.5 KB.
+// Lazy tool UIs part 06 — unique entries only (dups removed 2026-11-01 to fix barrel conflicts).
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import { lazy } from "react";
 
@@ -10,10 +10,6 @@ export const HypotenuseCalculatorToolUi = lazy(() =>
   import("../HypotenuseCalculatorTool").then((m) => ({ default: m.HypotenuseCalculatorTool })),
 );
 
-export const SimpleAverageCalculatorToolUi = lazy(() =>
-  import("../SimpleAverageCalculatorTool").then((m) => ({ default: m.SimpleAverageCalculatorTool })),
-);
-
 export const PercentageChangeCalculatorToolUi = lazy(() =>
   import("../PercentageChangeCalculatorTool").then((m) => ({ default: m.PercentageChangeCalculatorTool })),
 );
@@ -22,20 +18,8 @@ export const SavingsRateCalculatorToolUi = lazy(() =>
   import("../SavingsRateCalculatorTool").then((m) => ({ default: m.SavingsRateCalculatorTool })),
 );
 
-export const CupsMlConverterToolUi = lazy(() =>
-  import("../CupsMlConverterTool").then((m) => ({ default: m.CupsMlConverterTool })),
-);
-
 export const LoanMonthlyPaymentCalculatorToolUi = lazy(() =>
   import("../LoanMonthlyPaymentCalculatorTool").then((m) => ({ default: m.LoanMonthlyPaymentCalculatorTool })),
-);
-
-export const RectanglePerimeterCalculatorToolUi = lazy(() =>
-  import("../RectanglePerimeterCalculatorTool").then((m) => ({ default: m.RectanglePerimeterCalculatorTool })),
-);
-
-export const WeightedAverageCalculatorToolUi = lazy(() =>
-  import("../WeightedAverageCalculatorTool").then((m) => ({ default: m.WeightedAverageCalculatorTool })),
 );
 
 export const QuadraticMeanCalculatorToolUi = lazy(() =>
@@ -44,10 +28,6 @@ export const QuadraticMeanCalculatorToolUi = lazy(() =>
 
 export const MeanAbsoluteDeviationCalculatorToolUi = lazy(() =>
   import("../MeanAbsoluteDeviationCalculatorTool").then((m) => ({ default: m.MeanAbsoluteDeviationCalculatorTool })),
-);
-
-export const HarmonicMeanCalculatorToolUi = lazy(() =>
-  import("../HarmonicMeanCalculatorTool").then((m) => ({ default: m.HarmonicMeanCalculatorTool })),
 );
 
 export const GeometricMeanCalculatorToolUi = lazy(() =>
@@ -64,4 +44,8 @@ export const SalesCommissionCalculatorToolUi = lazy(() =>
 
 export const TripFuelConsumptionCalculatorToolUi = lazy(() =>
   import("../TripFuelConsumptionCalculatorTool").then((m) => ({ default: m.TripFuelConsumptionCalculatorTool })),
+);
+
+export const CupsMlConverterToolUi = lazy(() =>
+  import("../CupsMlConverterTool").then((m) => ({ default: m.CupsMlConverterTool })),
 );
