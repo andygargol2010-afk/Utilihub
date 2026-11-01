@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-01 | conversiones | conversor-pies2-m2 | SquareFeetMetersConverterTool
 - 2026-11-01 | finanzas | calculadora-ahorro-para-meta | SavingsGoalCalculatorTool
 - 2026-10-31 | hogar | calculadora-calorias-porcion | CaloriesPerServingCalculatorTool
 - 2026-10-31 | finanzas | calculadora-horas-extra | OvertimeCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-30 | matematicas | calculadora-rango-estadistico | StatisticalRangeCalculatorTool
 - 2026-10-30 | matematicas | calculadora-mediana | MedianCalculatorTool
 - 2026-10-30 | matematicas | calculadora-media-geometrica | GeometricMeanCalculatorTool
-- 2026-10-30 | matematicas | calculadora-media-armonica | HarmonicMeanCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -48,7 +48,7 @@ salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico)
-conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras, conversor-acres-hectareas)
+conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras, conversor-acres-hectareas, conversor-pies2-m2)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -70,6 +70,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-31: PRODUCT — calculadora-horas-extra (finanzas). One tool (default). Anti-dupe OK (new slug, no prior overtime dedicated tool). Practical overtime pay calculator (regular + OT with multiplier). GSC demand evidence for overtime. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-10-31: PRODUCT — calculadora-calorias-porcion (hogar). One tool (default). Anti-dupe OK (new slug). Practical calories-per-serving calculator for recipes and diet tracking. Complements daily calories and cooking tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-01: PRODUCT — calculadora-ahorro-para-meta (finanzas). One tool (default; .md overrides bootstrap 2). Anti-dupe OK (new slug, no dedicated savings-goal tool). Practical monthly savings / months-to-goal calculator. High demand complement to savings-rate and compound-interest. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-11-01: PRODUCT — conversor-pies2-m2 (conversiones). One tool (default). Anti-dupe OK (new slug). Practical ft² ↔ m² area converter for rooms/land/construction. Under-represented complement to acres-ha. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-01: POLÍTICA SATURACIÓN ACTIVA. Cuando ≥8 clusters están “recent” en las últimas ~12: obligatorio 1 tool del cluster menos representado en RECENT_TOOLS (propósito nuevo). Improve solo si hay evidencia GSC clara de tool débil; si no, priorizar new. Prohibido cerrar en 0 tras un solo batch.
 2026-11-01: Prefer improve se reduce a casos con evidencia GSC explícita. En saturación el default es new (least-represented).
 ```
@@ -80,9 +81,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-ahorro-para-meta
+last_slugs: conversor-pies2-m2
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (filled after push)
+last_sha: f2b9a0f0401eed0bd74c09a187508e75da9517a6
 ```
 
 <!-- end:tools-builder-state.md -->
