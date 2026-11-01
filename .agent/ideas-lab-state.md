@@ -56,18 +56,18 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive bin packing simulator. User selects item sizes from presets (or custom), places them into a fixed container via click or simple controls (CSS), sees live utilization percentage, waste, score. Challenges or goals. URL deep-link for seed config. Branded PNG of packed result. EN+ES. Mobile-first 390px. No heavy canvas; CSS + state. IP-safe.
-id: bin-packing-sim
-path_en: /simulators/bin-packing
-path_es: /es/simuladores/empaque-cajas
-domain: simulators
+status: active
+idea: Interactive kids science experiment kit builder. User selects theme from presets (volcano, slime, simple circuit, plant growth), gets discrete materials list, follows multi-step guided assembly with checkoffs and safety tips, sees progress, estimated time, and can generate branded PNG of the completed setup or share link. Challenges for age groups. URL deep-link for theme. EN+ES. Mobile-first 390px. No heavy canvas; CSS + state + checklists. IP-safe original educational assembler.
+id: science-experiment-kit
+path_en: /kits/science-experiment
+path_es: /es/kits/experimento-ciencia
+domain: kits
 runs_total: 4
-runs_remaining: 0
-acceptance: User selects items, places them in the container, achieves high utilization score or completes a challenge, and can share PNG or link.
+runs_remaining: 4
+acceptance: User selects theme, reviews materials, completes guided steps with checks, and shares PNG or link of the experiment plan/setup.
 share: both
-next_step_required: no
-notes: Rubric scores (value/share/search/distinct/feas/perf): A-BinPack 4/4/4/5/5/5=27 (closest: none particle or freehand; metaphor: spatial packing constraint solver; why not particle: discrete item placement in bin, no trails/attractors); B-QueueFlow 4/3/3/4/5/5=24 (closest: simple process visuals; metaphor: sequential resource flow); C-TrajectoryPlot 3/3/4/3/4/3=20 (closest: physics demos; metaphor: parametric trajectory; may risk canvas). Chosen A. Domain roll: CORE simulators (balance underused domain, variety mandate vs recent games/playgrounds). IP: n/a (original sim). Run plan: 1 core packing UI + utilization, 2 presets/challenges, 3 score/PNG/share, 4 polish/mobile. Run 1 done: core CSS grid-like placement, item select, click-to-place with overlap check, live util %. Run 2 done: 4 challenges (free, 80% util, small-items 90%, mixed 70% with ≥3 types) with restricted item sets, live goal indicator, success badge. EN+ES. Mobile considered. Run 3 done: score=util%, best score localStorage per challenge, moves counter, branded PNG download of packed board (title, util, score, grid, utilihub.app), URL deep-link (?ch=challenge), share link button + PNG button. EN+ES. Mobile 390px ok. Run 4 done: polish/mobile — undo last placement button, faint CSS grid overlay on bin for placement guidance, bin maxWidth 320, updated EN+ES instructions mentioning undo. Acceptance met.
+next_step_required: yes
+notes: Rubric scores (value/share/search/distinct/feas/perf): A-ScienceKit 4/4/3/5/5/5=26 (closest: none particle or freehand; metaphor: multi-step guided recipe assembler with discrete parts and checkoffs; why not particle: discrete materials + sequential checklists, no trails/attractors); B-WorkoutKit 4/3/4/4/5/5=25 (closest: simple planners; metaphor: sequential routine builder); C-BudgetMealKit 3/3/4/4/5/5=24 (closest: catalog calculators; metaphor: form-to-plan). Chosen A. Domain roll: CORE kits (balance underused domain after recent simulators/games, variety mandate vs particle playgrounds). IP: n/a (original educational). Run plan: 1 core theme select + materials + steps checklist, 2 age presets/safety, 3 progress/PNG/share, 4 polish/mobile.
 adsense-prep_runs: 6
 ```
 
