@@ -54,18 +54,18 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed adsense-compliance-kit. Next run: IDEATE.
+status: active
+idea: Classic memory match pairs game. Grid of face-down cards; flip two at a time to find matching pairs. Score based on moves and time. Levels with increasing pairs. Presets for themes (animals, numbers, symbols). URL deep-link for seed. Branded PNG of completed board or high score. EN+ES. Mobile-first 390px. No heavy canvas; CSS grid + state. IP-safe traditional mechanics.
+id: memory-match
+path_en: /games/memory-match
+path_es: /es/juegos/memoria
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User starts game, flips cards, matches all pairs, sees score and can share PNG or link.
+share: both
+next_step_required: yes
+notes: Rubric scores (value/share/search/distinct/feas/perf): A-MemoryMatch 4/3/5/4/5/5=26 (closest: hangman/minesweeper/tic-tac-toe; metaphor: flip-to-match grid puzzle; not particle-canvas); B-ConnectFour 4/3/4/4/5/5=25 (closest: similar grid games; metaphor: gravity-drop connect; IP: traditional connect-four style); C-SpatialPackingSim 4/4/3/4/4/4=23 (closest: debt snowball visual; metaphor: constraint spatial packing; not particle). Chosen A. Domain roll: CORE games (underused vs playgrounds; variety mandate). IP: traditional memory match pairs (generic UI; no branded assets). Why not particle: discrete card flip grid, no freehand trails/attractors.
 adsense-prep_runs: 6
 ```
 
