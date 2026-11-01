@@ -57,7 +57,20 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Interactive digital progress passport for UtiliHub experiences. User earns discrete stamps by completing specific challenges or actions across existing kits, games, and simulators (e.g. finish a science kit theme, reach a memory-match level, achieve bin-packing utilization). Pages fill with stamps, progress bar, collection stats. Generate branded PNG of the passport page or current progress, share link with deep-link to current state. EN+ES. Mobile-first 390px. CSS-based stamp book UI + local state. No heavy canvas or particles.
+id: progress-passport
+path_en: /growth/progress-passport
+path_es: /es/crecimiento/pasaporte-progreso
+path_seo: n/a
+domain: retention-loops
+runs_total: 4
+runs_remaining: 4
+acceptance: User views passport, marks/completes a stamp action (or simulated for demo), sees stamp added and progress update, generates and shares PNG or link of the passport.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): Cand1 progress-passport value=5 share=5 search=3 distinct=5 feas=4 perf=5 total=27; Cand2 weekly-challenge-hub value=4 share=4 search=4 distinct=4 feas=5 perf=5 total=26; Cand3 utility-journal value=3 share=3 search=2 distinct=3 feas=5 perf=5 total=21. Chosen: progress-passport (highest). Closest-3: Return Streak Board (progress tracking), science-experiment-kit (guided completion stamps), quote-card-maker (shareable visual card). Primary metaphor: sequential stamp book / digital passport with discrete earned stamps and page progress. Why not particle-canvas: form-based stamp pages with CSS checkmarks and generated PNG, no freehand drawing or particle systems. IP: n/a. Roll: FLEX (random 0.41 > p_fixed 0.35), weighted across core+growth picked retention-loops. Quality over novelty; distinct from existing streak/constellation playgrounds.
+adsense-prep_runs: 6
 ```
 
 <!-- end:ideas-lab-state.md -->
