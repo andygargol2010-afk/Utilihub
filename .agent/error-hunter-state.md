@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-01 run 80
-runs_total: 80
+last_run: 2026-11-01 run 81
+runs_total: 81
 last_mode: HUNT
-last_fix: n/a (prior commits ebf4a613/0a2e376 removed duplicate lazy UI exports from components-06/07 to fix barrel conflicts that blocked build on 918e8c1a)
+last_fix: n/a (docs only; code hotfix for E047 and E049 barrel already in tip 22245b41)
 last_prevent: n/a
 last_known_focus: E047
-deploy: latest listed production ERROR on 918e8c1a (conflicting re-exports IvaCalculatorToolUi etc from components barrel); tip a968c545 has the dup removal fix; no new deploy listed yet for post-918e8c1a commits
-notes: Known smoke E047 still OPEN (dedicated UI hotfix in registry.tsx present; live on previous READY). Discovery: no PLACEHOLDER/$(cat in routes; home index.tsx clean. Build ERROR root was duplicate exports introduced with E047 hotfix; already cleaned in later commits. Awaiting deploy of current tip to confirm build green and E047 symptom.
+deploy: latest listed production ERROR on 918e8c1a (conflicting re-exports); tip 22245b41 has dup removal + early returns in registry.tsx; no deploy listed for tip or post-918e8c1a commits yet
+notes: Known smoke E047 still OPEN on live www.utilihub.net (calculadora-iva and calculadora-imc show MathTool "Separa los valores..."). Discovery: home index.tsx clean, no $(cat/PLACEHOLDER in critical paths, new tool calculadora-calorias-porcion 404 expected until tip deploys. Awaiting successful deploy of tip 22245b41 to confirm build green and E047 symptom resolved.
 ```
 
 <!-- end:error-hunter-state.md -->
