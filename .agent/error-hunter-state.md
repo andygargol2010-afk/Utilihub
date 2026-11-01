@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-01 run 87
-runs_total: 87
+last_run: 2026-11-01 run 88
+runs_total: 88
 last_mode: HUNT
-last_fix: E050 category finanzas → utilidades on calculadora-ahorro-para-meta (SHA 8b33552; code OK, live still 404 on ada44c51)
+last_fix: n/a (docs only; E050 code fixed earlier)
 last_prevent: n/a
 last_known_focus: E031
-deploy: latest production READY on ada44c51 (fix/spanish-complete); tip now 3b7edb9; prior ERROR on 918e8c1a superseded; auto-deploy lag on branch
-notes: Known smoke E031 open/recurring — critical files clean (no $(cat/PLACEHOLDER in src via search, homes index.tsx/es.index.tsx proper). E047/E050 code OK but E050 page 404 live due to deploy lag (production on older SHA). Discovery: sampled /es/pulse-catch and /studio/prism-trail-composer load OK; no category finanzas remaining in general tools; no new runtime/routing/SEO/registry errors found. No fixes this run.
+deploy: latest production READY on ada44c51 (fix/spanish-complete); tip now 490306dc; E050 still 404 live due to deploy lag
+notes: Known smoke E031 open/recurring — critical files clean (no $(cat/PLACEHOLDER in src via search, homes index.tsx/es.index.tsx proper). E047/E050 code OK but E050 page 404 live (production on older SHA ada44c51). Discovery: sampled /es/pulse-catch and /studio/prism-trail-composer load OK; no category finanzas remaining in general tools; no new runtime/routing/SEO/registry errors found. Docs commit to refresh catalog last_seen and potentially trigger deploy of tip.
 ```
 
 <!-- end:error-hunter-state.md -->
