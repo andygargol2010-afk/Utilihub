@@ -47,8 +47,8 @@ const EXPERIENCES: Experience[] = [
   },
   {
     id: "n-body-gravity-sim",
-    pathEn: "/n-body-gravity-sim",
-    pathEs: "/es/n-body-gravity-sim",
+    pathEn: "/n-body-gravity",
+    pathEs: "/es/n-body-gravity",
     titleEn: "N-Body Gravity Simulator",
     titleEs: "Simulador de Gravedad N-Cuerpos",
     descEn: "Add bodies, live gravity, trails, presets, zoom.",
