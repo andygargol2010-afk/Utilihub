@@ -23,6 +23,7 @@ import { SALES_COMMISSION_CALCULATOR_TOOLS } from "../sales-commission-calculato
 import { OVERTIME_CALCULATOR_TOOLS } from "../overtime-calculator-tool";
 import { CALORIES_PER_SERVING_CALCULATOR_TOOLS } from "../calories-per-serving-calculator-tool";
 import { SAVINGS_GOAL_CALCULATOR_TOOLS } from "../savings-goal-calculator-tool";
+import { SQUARE_FEET_METERS_CONVERTER_TOOLS } from "../square-feet-meters-converter-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -48,4 +49,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...OVERTIME_CALCULATOR_TOOLS,
   ...CALORIES_PER_SERVING_CALCULATOR_TOOLS,
   ...SAVINGS_GOAL_CALCULATOR_TOOLS,
+  ...SQUARE_FEET_METERS_CONVERTER_TOOLS,
 ];
