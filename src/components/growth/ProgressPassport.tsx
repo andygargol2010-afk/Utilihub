@@ -70,6 +70,10 @@ export function ProgressPassport({ locale }: { locale: Locale }) {
     });
   };
 
+  const reset = () => {
+    setEarned(new Set());
+  };
+
   const progress = Math.round((earned.size / STAMPS.length) * 100);
 
   const shareLink = () => {
@@ -100,7 +104,7 @@ export function ProgressPassport({ locale }: { locale: Locale }) {
         <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
           <div className="h-full bg-emerald-500 transition-all" style={{ width: `${progress}%` }} />
         </div>
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="mt-6 grid grid-cols-2 gap-4">
           {STAMPS.map((s) => {
             const has = earned.has(s.id);
             return (
@@ -108,9 +112,14 @@ export function ProgressPassport({ locale }: { locale: Locale }) {
                 key={s.id}
                 type="button"
                 onClick={() => toggle(s.id)}
-                className={`rounded-xl border-2 p-3 text-left text-xs transition ${has ? "border-emerald-500 bg-emerald-50" : "border-muted bg-muted/30"}`}
+                className={`relative rounded-xl border-2 p-3 text-left text-xs transition ${has ? "border-emerald-500 bg-emerald-50" : "border-muted bg-muted/30"}`}
               >
-                <div className="font-bold">{s.label[locale]}</div>
+                {has && (
+                  <div className="absolute -right-1 -top-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-emerald-600 bg-emerald-500 text-[10px] font-black text-white shadow-md rotate-12">
+                    ✓
+                  </div>
+                )}
+                <div className="font-bold pr-6">{s.label[locale]}</div>
                 <div className="mt-1 text-muted-foreground">{has ? "✓" : "○"} {s.desc[locale]}</div>
               </button>
             );
@@ -123,6 +132,11 @@ export function ProgressPassport({ locale }: { locale: Locale }) {
         </button>
         <button type="button" onClick={shareLink} className="flex-1 rounded-xl border px-4 py-3 text-sm font-bold">
           {locale === "es" ? "Copiar enlace" : "Copy link"}
+        </button>
+      </div>
+      <div className="mt-2">
+        <button type="button" onClick={reset} className="w-full rounded-xl border border-red-300 px-4 py-2 text-xs font-medium text-red-600">
+          {locale === "es" ? "Reiniciar pasaporte" : "Reset passport"}
         </button>
       </div>
       <p className="mt-3 text-center text-xs text-muted-foreground">
