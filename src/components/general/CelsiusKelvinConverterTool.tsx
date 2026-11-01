@@ -17,7 +17,10 @@ export function CelsiusKelvinConverterTool({ locale = "en" }: { tool?: GeneralTo
 
   const result = useMemo(() => {
     const n = parseFloat(amount);
-    if (isNaN(n) || n < -273.15 || n > 10000) return null;
+    if (isNaN(n)) return null;
+    // Kelvin cannot be negative (absolute zero is 0 K); Celsius cannot be below -273.15 °C.
+    if (from === "c" ? n < -273.15 : n < 0) return null;
+    if (n > 10000) return null;
     let k = 0;
     if (from === "c") k = n + OFFSET;
     else k = n;
@@ -60,7 +63,9 @@ export function CelsiusKelvinConverterTool({ locale = "en" }: { tool?: GeneralTo
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">
-            {es ? "Temperatura ≥ -273.15 °C (máx 10000)" : "Temperature ≥ -273.15 °C (max 10000)"}
+            {from === "c"
+              ? es ? "Temperatura ≥ -273.15 °C (máx 10000)" : "Temperature ≥ -273.15 °C (max 10000)"
+              : es ? "Kelvin ≥ 0 K (máx 10000)" : "Kelvin ≥ 0 K (max 10000)"}
           </p>
         )}
       </div>
