@@ -58,10 +58,10 @@ After shipping, bump the relevant lines (e.g. `recent` / count in notes).
 ## NOTES
 
 ```
-PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both small and fully verified same commit.
+PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both small and fully verified same commit. En saturación: forzar 1 del least-represented (ver ops.md §Saturación).
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
-POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (\u22654 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md \u00a7PRODUCT step 4.
+POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
 2026-10-30: META — clarified in ops.md that .md files override bootstrap volume (default 1 tool). Roll 1=META. Saturation continues; many clusters recent. Prefer improve existing weak tools next.
 2026-10-31: PRODUCT — calculadora-ciclo-sueno (salud). One tool (default). Anti-dupe OK (new slug). Practical sleep cycle calculator (90-min cycles + buffer) for bedtime/wake suggestions. High demand complement to existing health tools. SEO locales: defer pt/fr/de.
 2026-10-31: PRODUCT — conversor-acres-hectareas (conversiones). One tool (default; .md overrides bootstrap 2). Anti-dupe OK (new slug). Practical land area converter acres ↔ ha. Under-represented cluster. EN+ES UI with 2 examples. SEO locales: defer pt/fr/de.
@@ -70,6 +70,8 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-31: PRODUCT — calculadora-horas-extra (finanzas). One tool (default). Anti-dupe OK (new slug, no prior overtime dedicated tool). Practical overtime pay calculator (regular + OT with multiplier). GSC demand evidence for overtime. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-10-31: PRODUCT — calculadora-calorias-porcion (hogar). One tool (default). Anti-dupe OK (new slug). Practical calories-per-serving calculator for recipes and diet tracking. Complements daily calories and cooking tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-01: PRODUCT — calculadora-ahorro-para-meta (finanzas). One tool (default; .md overrides bootstrap 2). Anti-dupe OK (new slug, no dedicated savings-goal tool). Practical monthly savings / months-to-goal calculator. High demand complement to savings-rate and compound-interest. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-11-01: POLÍTICA SATURACIÓN ACTIVA. Cuando ≥8 clusters están “recent” en las últimas ~12: obligatorio 1 tool del cluster menos representado en RECENT_TOOLS (propósito nuevo). Improve solo si hay evidencia GSC clara de tool débil; si no, priorizar new. Prohibido cerrar en 0 tras un solo batch.
+2026-11-01: Prefer improve se reduce a casos con evidencia GSC explícita. En saturación el default es new (least-represented).
 ```
 
 ---

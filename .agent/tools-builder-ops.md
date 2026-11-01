@@ -66,7 +66,18 @@ d. Every import path exists; every exported symbol used exists.
 4. Single commit; re-fetch verify.
 5. Max 2 build-fix attempts only if validators would fail — still one logical outcome.
 
-Escape: ship **0** tools after honest anti-dupe / demand pass with no good candidate — no empty filler.
+### Saturación (obligatorio)
+
+Se considera saturación cuando ≥8 de los clusters listados en CLUSTER WATCH tienen tools en las últimas ~12 de RECENT_TOOLS.
+
+En saturación:
+1. **No se permite ship 0** tras solo el primer batch de candidatos.
+2. Ejecutar hasta 3 expansion rounds (≥4 ideas nuevas cada una).
+3. Si sigue sin candidato viable: elegir el **cluster menos representado** en RECENT_TOOLS y generar **exactamente 1 tool nueva** de ese cluster (propósito distinto a cualquier slug/purpose existente en `src/`).
+4. DoD completo sigue siendo obligatorio (UI EN+ES, 2 ejemplos, validación, 2 related links, etc.).
+5. Solo después de 2 expansion rounds fallidos + intento de least-represented fallido → entonces sí se permite ship 0 y explicar en el resumen.
+
+Fuera de saturación: se mantiene el escape anterior (0 tools si no hay buen candidato tras pass honesto).
 
 ---
 
