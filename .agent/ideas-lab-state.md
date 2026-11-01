@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: adsense-prep
-last_closed_id: adsense-compliance-kit
+last_closed_domain: games
+last_closed_id: memory-match-classic
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 6
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-01 | games | memory-match-classic | Classic memory match pairs game complete after 4 runs. Grid of face-down cards; flip two at a time to find matching pairs. Score based on moves and time. Levels with increasing pairs. Presets for themes (animals, numbers, symbols). URL deep-link for seed. Branded PNG of completed board or high score. EN+ES. Mobile-first 390px. No heavy canvas; CSS grid + state. IP-safe traditional mechanics. Acceptance met.
 - 2026-10-31 | adsense-prep | adsense-compliance-kit | Interactive AdSense readiness and compliance kit complete after 4 runs. 10 weighted discrete checks, live score 0-100 + progress bar + readiness badge, presets, per-item tips + suggestions, top missing panel, URL deep-link (?c=), branded PNG scorecard, copy image or download, copy link, reset. EN+ES routes (/growth/adsense-compliance-kit, /es/crecimiento/kit-cumplimiento-adsense), mobile 390px. CWV-safe. Adsterra intact.
 - 2026-10-31 | share-hooks | quote-card-maker | Interactive quote card maker complete after 4 runs. ... (full list preserved in previous)
 ```
@@ -55,17 +56,17 @@ adsense-prep_runs: 6
 
 ```
 status: active
-idea: Classic memory match pairs game. Grid of face-down cards; flip two at a time to find matching pairs. Score based on moves and time. Levels with increasing pairs. Presets for themes (animals, numbers, symbols). URL deep-link for seed. Branded PNG of completed board or high score. EN+ES. Mobile-first 390px. No heavy canvas; CSS grid + state. IP-safe traditional mechanics.
-id: memory-match-classic
-path_en: /games/memory-match-classic
-path_es: /es/juegos/memoria-pares
-domain: games
+idea: Interactive bin packing simulator. User selects item sizes from presets (or custom), places them into a fixed container via click or simple controls (CSS), sees live utilization percentage, waste, score. Challenges or goals. URL deep-link for seed config. Branded PNG of packed result. EN+ES. Mobile-first 390px. No heavy canvas; CSS + state. IP-safe.
+id: bin-packing-sim
+path_en: /simulators/bin-packing
+path_es: /es/simuladores/empaque-cajas
+domain: simulators
 runs_total: 4
-runs_remaining: 0
-acceptance: User starts game, flips cards, matches all pairs, sees score and can share PNG or link. Themes selectable. On clear, can advance to next larger grid size.
+runs_remaining: 4
+acceptance: User selects items, places them in the container, achieves high utilization score or completes a challenge, and can share PNG or link.
 share: both
-next_step_required: no
-notes: Rubric scores (value/share/search/distinct/feas/perf): A-MemoryMatch 4/3/5/4/5/5=26 (closest: hangman/minesweeper/tic-tac-toe; metaphor: flip-to-match grid puzzle; not particle-canvas); B-ConnectFour 4/3/4/4/5/5=25 (closest: similar grid games; metaphor: gravity-drop connect; IP: traditional connect-four style); C-SpatialPackingSim 4/4/3/4/4/4=23 (closest: debt snowball visual; metaphor: constraint spatial packing; not particle). Chosen A. Domain roll: CORE games (underused vs playgrounds; variety mandate). IP: traditional memory match pairs (generic UI; no branded assets). Why not particle: discrete card flip grid, no freehand trails/attractors. Run 1: added 4 theme presets (fruits/animals/numbers/symbols), URL param theme, per-theme best scores. Core playable already present from prior wiring. Run 2: added next-level advance on clear (4x3→4x4→6x4), win screen button + all-sizes message. EN+ES. Mobile 390px. No heavy deps. Run 3: added combined score (moves*10 + time), live score display, best score tracking + "new personal best" badge on win, score in PNG header. EN+ES. Run 4 (final): added live progress bar for matched pairs (visual fill + count). EN+ES. Mobile 390px. Acceptance met. Ready to close.
+next_step_required: yes
+notes: Rubric scores (value/share/search/distinct/feas/perf): A-BinPack 4/4/4/5/5/5=27 (closest: none particle or freehand; metaphor: spatial packing constraint solver; why not particle: discrete item placement in bin, no trails/attractors); B-QueueFlow 4/3/3/4/5/5=24 (closest: simple process visuals; metaphor: sequential resource flow); C-TrajectoryPlot 3/3/4/3/4/3=20 (closest: physics demos; metaphor: parametric trajectory; may risk canvas). Chosen A. Domain roll: CORE simulators (balance underused domain, variety mandate vs recent games/playgrounds). IP: n/a (original sim). Run plan: 1 core packing UI + utilization, 2 presets/challenges, 3 score/PNG/share, 4 polish/mobile.
 adsense-prep_runs: 6
 ```
 
