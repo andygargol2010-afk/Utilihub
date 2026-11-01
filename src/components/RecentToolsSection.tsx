@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Clock3 } from "lucide-react";
-import { ALL_TOOLS, toolHref } from "@/lib/all-tools";
+import { ALL_TOOLS } from "@/lib/all-tools";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { spanishToolName } from "@/lib/i18n/es";
+import { spanishToolSummary } from "@/lib/i18n/es-summaries";
 import { englishToolSlug } from "@/lib/route-slugs";
 
 export function RecentToolsSection({ locale = "en" }: { locale?: "en" | "es" }) {
@@ -29,7 +30,7 @@ export function RecentToolsSection({ locale = "en" }: { locale?: "en" | "es" }) 
             className="surface-card group p-4 transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lift"
           >
             <p className="font-bold group-hover:text-primary">{isSpanish ? spanishToolName(tool) : tool.name}</p>
-            <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{tool.summary}</p>
+            <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{isSpanish ? spanishToolSummary(tool) : tool.summary}</p>
           </Link>
         ) : null)}
       </div>
