@@ -5,7 +5,7 @@ import { HomeFeaturedSection } from "@/components/HomeFeaturedSection";
 import { RecentToolsSection } from "@/components/RecentToolsSection";
 import { SpanishToolSearch } from "@/components/SpanishToolSearch";
 import { ToolSearch } from "@/components/ToolSearch";
-import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
+import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory, allCategoryBySlug } from "@/lib/all-tools";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 import { englishCategorySlug, englishToolSlug } from "@/lib/route-slugs";
 
@@ -203,7 +203,7 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" }) {
                 }
               >
                 <span className={`text-xs font-bold uppercase tracking-wide ${isPixel ? "text-rose-500" : "text-primary"}`}>
-                  {isPixel ? "Pixel art" : tool.category}
+                  {isPixel ? "Pixel art" : (allCategoryBySlug(tool.category)?.name ?? tool.category)}
                 </span>
                 <h3 className={`mt-2 font-bold ${isPixel ? "group-hover:text-rose-500" : "group-hover:text-primary"}`}>
                   {tool.name}
