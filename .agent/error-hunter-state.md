@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-01 run 85
-runs_total: 85
+last_run: 2026-11-01 run 86
+runs_total: 86
 last_mode: HUNT
-last_fix: n/a (docs only; known smoke clean, no new errors)
+last_fix: E050 category finanzas → utilidades on calculadora-ahorro-para-meta (SHA 8b33552)
 last_prevent: n/a
 last_known_focus: E031
-deploy: latest production READY on ada44c51 (fix/spanish-complete); tip d0a3b93 no auto-deploy (vercel.json git.deploymentEnabled false for branch); prior ERROR on 918e8c1a superseded
-notes: Known smoke E031 open/recurring — critical files (registry.tsx, index.tsx, es.index.tsx, catalog) clean, no $(cat/PLACEHOLDER in src via search. E047 wiring confirmed live (IVA dedicated UI). Discovery: sampled /es, /pulse-catch, /es/herramientas/calculadora-iva, /tools/overtime-pay-calculator, /studio/prism-trail-composer, /es/herramientas/png-a-jpg, /games; all load without 404/crash/wrong UI; no new runtime/routing/SEO/deploy errors found.
+deploy: latest production READY on ada44c51 (fix/spanish-complete); tip now 412c85a (after fix); prior ERROR on 918e8c1a superseded; auto-deploy may be disabled for branch
+notes: Known smoke E031 open/recurring — critical files clean (no $(cat/PLACEHOLDER in src, registry full with pickComponent, homes proper). E047 confirmed live (dedicated IVA UI). Discovery: new tool calculadora-ahorro-para-meta (added in tip beacb90) had category finanzas in GENERAL_TOOLS → 404 on both /es/herramientas and /es/finanzas (matches E041 pattern); fixed category to utilidades. Sampled /pulse-catch, /studio/prism-trail-composer load OK. No other runtime/routing errors found.
 ```
 
 <!-- end:error-hunter-state.md -->
