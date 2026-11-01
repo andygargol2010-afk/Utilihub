@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-10-31 run 79
-runs_total: 79
+last_run: 2026-11-01 run 80
+runs_total: 80
 last_mode: HUNT
-last_fix: E048 (d938ab1d) rename duplicate slug calculadora-horas-extra → calculadora-pago-horas-extra in overtime-pay.ts
+last_fix: n/a (prior commits ebf4a613/0a2e376 removed duplicate lazy UI exports from components-06/07 to fix barrel conflicts that blocked build on 918e8c1a)
 last_prevent: n/a
-last_known_focus: E047/E048
-deploy: triggered production for tip 4e9091a → ERROR (duplicate slug); fix committed d938ab1d; awaiting next deploy of new tip
-notes: Known smoke E047 still OPEN on live www (IVA/IMC show MathTool "Separa los valores..."). Hotfix in registry.tsx present in tip. Discovery: games/2048 OK, 3d-modeler OK, no PLACEHOLDER/$(cat in src. New finding E048 blocked deploy of tip. Homes and other sampled tools load.
+last_known_focus: E047
+deploy: latest listed production ERROR on 918e8c1a (conflicting re-exports IvaCalculatorToolUi etc from components barrel); tip a968c545 has the dup removal fix; no new deploy listed yet for post-918e8c1a commits
+notes: Known smoke E047 still OPEN (dedicated UI hotfix in registry.tsx present; live on previous READY). Discovery: no PLACEHOLDER/$(cat in routes; home index.tsx clean. Build ERROR root was duplicate exports introduced with E047 hotfix; already cleaned in later commits. Awaiting deploy of current tip to confirm build green and E047 symptom.
 ```
 
 <!-- end:error-hunter-state.md -->
