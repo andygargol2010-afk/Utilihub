@@ -74,4 +74,5 @@ export const ES_EXACT_NAMES_02: Record<string, string> = {
   "conversor-acres-hectareas": "Conversor de acres a hectáreas",
   "calculadora-ratio-cintura-altura": "Calculadora de ratio cintura-altura",
   "calculadora-horas-extra": "Calculadora de horas extra",
+  "conversor-pies2-m2": "Conversor de pies cuadrados a metros cuadrados",
 };
