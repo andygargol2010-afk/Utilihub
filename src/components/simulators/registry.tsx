@@ -47,6 +47,7 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "galton-board": GaltonBoardSim,
   "tablero-galton": GaltonBoardSim,
   "boids-flocking-lab": BoidsFlockingLab,
+  "lab-bandadas-boids": BoidsFlockingLab,
   "reaction-diffusion-lab": ReactionDiffusionLab,
   "lab-reaccion-difusion": ReactionDiffusionLab,
   "logistic-chaos-lab": LogisticChaosLab,
