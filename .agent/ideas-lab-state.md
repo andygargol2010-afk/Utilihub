@@ -63,11 +63,11 @@ path_en: /kits/science-experiment
 path_es: /es/kits/experimento-ciencia
 domain: kits
 runs_total: 4
-runs_remaining: 1
+runs_remaining: 0
 acceptance: User selects theme, reviews materials, completes guided steps with checks, and shares PNG or link of the experiment plan/setup.
 share: both
-next_step_required: yes
-notes: Rubric scores (value/share/search/distinct/feas/perf): A-ScienceKit 4/4/3/5/5/5=26 (closest: none particle or freehand; metaphor: multi-step guided recipe assembler with discrete parts and checkoffs; why not particle: discrete materials + sequential checklists, no trails/attractors); B-WorkoutKit 4/3/4/4/5/5=25 (closest: simple planners; metaphor: sequential routine builder); C-BudgetMealKit 3/3/4/4/5/5=24 (closest: catalog calculators; metaphor: form-to-plan). Chosen A. Domain roll: CORE kits (balance underused domain after recent simulators/games, variety mandate vs particle playgrounds). IP: n/a (original educational). Run plan: 1 core theme select + materials + steps checklist (DONE), 2 age presets/safety (DONE), 3 progress/PNG/share (DONE this run — branded PNG of plan + copy link), 4 polish/mobile.
+next_step_required: no
+notes: Rubric scores (value/share/search/distinct/feas/perf): A-ScienceKit 4/4/3/5/5/5=26 (closest: none particle or freehand; metaphor: multi-step guided recipe assembler with discrete parts and checkoffs; why not particle: discrete materials + sequential checklists, no trails/attractors); B-WorkoutKit 4/3/4/4/5/5=25 (closest: simple planners; metaphor: sequential routine builder); C-BudgetMealKit 3/3/4/4/5/5=24 (closest: catalog calculators; metaphor: form-to-plan). Chosen A. Domain roll: CORE kits (balance underused domain after recent simulators/games, variety mandate vs particle playgrounds). IP: n/a (original educational). Run plan: 1 core theme select + materials + steps checklist (DONE), 2 age presets/safety (DONE), 3 progress/PNG/share (DONE), 4 polish/mobile (DONE this run — larger touch targets py-3/size-5, reset button, improved step spacing/active states, progress bar h-3, mobile 390px refinements). Ready for CLOSE.
 adsense-prep_runs: 6
 ```
 

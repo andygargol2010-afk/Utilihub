@@ -201,6 +201,10 @@ export function ScienceExperimentKit({ locale }: { locale: Locale }) {
     });
   };
 
+  const resetProgress = () => {
+    setChecked(new Array(steps.length).fill(false));
+  };
+
   const selectTheme = (id: string) => {
     setThemeId(id);
     updateUrl(id, undefined);
@@ -301,7 +305,7 @@ export function ScienceExperimentKit({ locale }: { locale: Locale }) {
           <select
             value={themeId}
             onChange={(e) => selectTheme(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-3 text-base"
           >
             {THEMES.map((t) => (
               <option key={t.id} value={t.id}>
@@ -315,7 +319,7 @@ export function ScienceExperimentKit({ locale }: { locale: Locale }) {
           <select
             value={age}
             onChange={(e) => selectAge(e.target.value as AgeGroup)}
-            className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-3 text-base"
           >
             {AGE_GROUPS.map((ag) => (
               <option key={ag.id} value={ag.id}>
@@ -333,8 +337,8 @@ export function ScienceExperimentKit({ locale }: { locale: Locale }) {
             {progress.done}/{progress.total} · {progress.pct}% · ~{theme.timeMin} {es ? "min" : "min"}
           </span>
         </div>
-        <div className="mt-2 h-2 w-full rounded-full bg-muted">
-          <div className="h-2 rounded-full bg-primary" style={{ width: `${progress.pct}%` }} />
+        <div className="mt-2 h-3 w-full rounded-full bg-muted">
+          <div className="h-3 rounded-full bg-primary transition-all" style={{ width: `${progress.pct}%` }} />
         </div>
       </div>
 
@@ -360,12 +364,13 @@ export function ScienceExperimentKit({ locale }: { locale: Locale }) {
         <h2 className="font-bold text-lg">{es ? "Pasos guiados" : "Guided steps"}</h2>
         <div className="mt-3 space-y-3">
           {steps.map((step, i) => (
-            <label key={i} className="flex items-start gap-3 rounded-xl border border-border p-3 cursor-pointer hover:bg-accent/50">
+            <label key={i} className="flex items-start gap-4 rounded-xl border border-border p-4 cursor-pointer hover:bg-accent/50 active:bg-accent/70">
               <input
                 type="checkbox"
                 checked={!!checked[i]}
                 onChange={() => toggleStep(i)}
-                className="mt-1 size-4"
+                className="mt-0.5 size-5 shrink-0"
+                aria-label={`${es ? "Paso" : "Step"} ${i + 1}`}
               />
               <span className={checked[i] ? "line-through text-muted-foreground" : ""}>
                 <span className="font-medium">{i + 1}. </span>
@@ -386,16 +391,23 @@ export function ScienceExperimentKit({ locale }: { locale: Locale }) {
         <button
           type="button"
           onClick={copyLink}
-          className="rounded-lg bg-secondary px-4 py-2 text-sm font-medium"
+          className="rounded-lg bg-secondary px-4 py-3 text-sm font-medium min-w-[120px]"
         >
           {copied ? (es ? "¡Enlace copiado!" : "Link copied!") : es ? "Copiar enlace" : "Copy link"}
         </button>
         <button
           type="button"
           onClick={sharePng}
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+          className="rounded-lg bg-primary px-4 py-3 text-sm font-medium text-primary-foreground min-w-[140px]"
         >
           {es ? "Descargar PNG del plan" : "Download plan PNG"}
+        </button>
+        <button
+          type="button"
+          onClick={resetProgress}
+          className="rounded-lg border border-border bg-card px-4 py-3 text-sm font-medium"
+        >
+          {es ? "Reiniciar" : "Reset"}
         </button>
       </div>
     </div>
