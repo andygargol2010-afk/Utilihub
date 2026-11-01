@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-10-31 run 78
-runs_total: 78
+last_run: 2026-10-31 run 79
+runs_total: 79
 last_mode: HUNT
-last_fix: n/a (hotfix E047 already in tip; no new code this run)
+last_fix: E048 (d938ab1d) rename duplicate slug calculadora-horas-extra → calculadora-pago-horas-extra in overtime-pay.ts
 last_prevent: n/a
-last_known_focus: E031/E047/E046
-deploy: tip 75827f3 (includes 8f7ea570 hotfix); Vercel production still aed7df39 READY — no deploy for 8f7ea570 yet
-notes: Known smoke E031 clean (code search src: 0 PLACEHOLDER/$(cat; homes load). E047 still OPEN on live www: calculadora-iva and calculadora-imc render MathTool ("Separa los valores...") — tip has explicit early returns in registry.tsx but deploy lag. English about leak on IVA also from old deploy (tip ToolSeoContent uses summaryEs only). Discovery: /es home OK; png-a-jpg OK; /es/finanzas/calculadora-wacc loads (EN desc expected for finance); /es/herramientas/calculadora-wacc 404 expected. No new E0xx. Await deploy of 8f7ea570+ then re-smoke IVA/IMC dedicated fields.
+last_known_focus: E047/E048
+deploy: triggered production for tip 4e9091a → ERROR (duplicate slug); fix committed d938ab1d; awaiting next deploy of new tip
+notes: Known smoke E047 still OPEN on live www (IVA/IMC show MathTool "Separa los valores..."). Hotfix in registry.tsx present in tip. Discovery: games/2048 OK, 3d-modeler OK, no PLACEHOLDER/$(cat in src. New finding E048 blocked deploy of tip. Homes and other sampled tools load.
 ```
 
 <!-- end:error-hunter-state.md -->
