@@ -3,7 +3,7 @@ import { makeTool, faq } from "./types";
 const tool = makeTool(
   "calculadora-ahorro-para-meta",
   "Savings Goal Calculator",
-  "finanzas",
+  "utilidades",
   "calculator",
   "Calculate how much to save monthly or how many months to reach a savings goal.",
   [
