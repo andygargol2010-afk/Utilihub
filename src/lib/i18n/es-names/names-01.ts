@@ -70,4 +70,5 @@ export const ES_EXACT_NAMES_01: Record<string, string> = {
   "calculadora-media-armonica": "Calculadora de media armónica",
   "calculadora-mediana": "Calculadora de mediana",
   "calculadora-comision-de-venta": "Calculadora de comisión de venta",
+  "calculadora-calorias-porcion": "Calculadora de calorías por porción",
 };

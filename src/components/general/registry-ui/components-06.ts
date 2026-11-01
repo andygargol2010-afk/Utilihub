@@ -49,3 +49,7 @@ export const TripFuelConsumptionCalculatorToolUi = lazy(() =>
 export const CupsMlConverterToolUi = lazy(() =>
   import("../CupsMlConverterTool").then((m) => ({ default: m.CupsMlConverterTool })),
 );
+
+export const CaloriesPerServingCalculatorToolUi = lazy(() =>
+  import("../CaloriesPerServingCalculatorTool").then((m) => ({ default: m.CaloriesPerServingCalculatorTool })),
+);

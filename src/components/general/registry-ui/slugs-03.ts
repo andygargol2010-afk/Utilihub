@@ -41,4 +41,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-ratio-cintura-altura": UI.WaistToHeightRatioCalculatorToolUi,
   "calculadora-comision-de-venta": UI.SalesCommissionCalculatorToolUi,
   "calculadora-horas-extra": UI.OvertimeCalculatorToolUi,
+  "calculadora-calorias-porcion": UI.CaloriesPerServingCalculatorToolUi,
 };

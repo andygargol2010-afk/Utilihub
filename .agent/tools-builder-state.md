@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-10-31 | hogar | calculadora-calorias-porcion | CaloriesPerServingCalculatorTool
 - 2026-10-31 | finanzas | calculadora-horas-extra | OvertimeCalculatorTool
 - 2026-10-31 | finanzas | calculadora-comision-de-venta | SalesCommissionCalculatorTool
 - 2026-10-31 | salud | calculadora-ratio-cintura-altura | WaistToHeightRatioCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-30 | matematicas | calculadora-media-geometrica | GeometricMeanCalculatorTool
 - 2026-10-30 | matematicas | calculadora-media-armonica | HarmonicMeanCalculatorTool
 - 2026-10-30 | matematicas | calculadora-desviacion-absoluta-media | MeanAbsoluteDeviationCalculatorTool
-- 2026-10-30 | matematicas | calculadora-media-cuadratica | QuadraticMeanCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -40,7 +40,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad, calculadora-dias-entre-fechas, calculadora-horas-a-decimal)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo)
-hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml)
+hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml, calculadora-calorias-porcion)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala)
@@ -68,6 +68,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-10-31: PRODUCT — calculadora-ratio-cintura-altura (salud). One tool (default). Anti-dupe OK (new slug). Practical WHtR calculator (waist/height) for central obesity risk. Complements BMI. EN+ES UI with 2 examples, validation, FAQ. SEO locales: defer pt/fr/de.
 2026-10-31: PRODUCT — calculadora-comision-de-venta (finanzas). One tool (default). Anti-dupe OK (dedicated vs generic comision-de-venta). Practical sales commission calculator. High demand for sales. EN+ES UI with 2 examples, validation, FAQ. SEO locales: defer pt/fr/de.
 2026-10-31: PRODUCT — calculadora-horas-extra (finanzas). One tool (default). Anti-dupe OK (new slug, no prior overtime dedicated tool). Practical overtime pay calculator (regular + OT with multiplier). GSC demand evidence for overtime. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-10-31: PRODUCT — calculadora-calorias-porcion (hogar). One tool (default). Anti-dupe OK (new slug). Practical calories-per-serving calculator for recipes and diet tracking. Complements daily calories and cooking tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 ```
 
 ---
@@ -76,7 +77,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-horas-extra
+last_slugs: calculadora-calorias-porcion
 last_deploy: no (branch auto-deploy disabled)
 last_sha: (filled after push)
 ```
