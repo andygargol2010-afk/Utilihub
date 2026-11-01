@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-01 run 88
-runs_total: 88
+last_run: 2026-11-01 run 89
+runs_total: 89
 last_mode: HUNT
-last_fix: n/a (docs only; E050 code fixed earlier)
+last_fix: nudge .vercel-redeploy (E050 deploy lag)
 last_prevent: n/a
-last_known_focus: E031
-deploy: latest production READY on ada44c51 (fix/spanish-complete); tip now 490306dc; E050 still 404 live due to deploy lag
-notes: Known smoke E031 open/recurring — critical files clean (no $(cat/PLACEHOLDER in src via search, homes index.tsx/es.index.tsx proper). E047/E050 code OK but E050 page 404 live (production on older SHA ada44c51). Discovery: sampled /es/pulse-catch and /studio/prism-trail-composer load OK; no category finanzas remaining in general tools; no new runtime/routing/SEO/registry errors found. Docs commit to refresh catalog last_seen and potentially trigger deploy of tip.
+last_known_focus: E031 + E050
+deploy: production was READY on ada44c51 (pre-E050); tip 04cfc13e+ has E050 category utilidades; forced redeploy via .vercel-redeploy
+notes: Known smoke E031 clean (no $(cat/PLACEHOLDER in src; homes OK; registry full). E047 live OK (IVA dedicated UI). E050 code fixed since 8b33552c but live 404 until tip deploys. Discovery: /es/pulse-catch OK, /studio/prism-trail-composer OK, /es/finanzas/calculadora-wacc OK (finance path), /tools/beaufort-wind-scale-converter OK, /tools/overtime-pay-calculator OK. No new runtime/routing/registry errors. calculadora-horas-extra 404 expected (renamed to calculadora-pago-horas-extra per E048).
 ```
 
 <!-- end:error-hunter-state.md -->
