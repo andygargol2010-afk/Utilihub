@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 107
-runs_total: 107
+last_run: 2026-11-02 run 108
+runs_total: 108
 last_mode: HUNT
-last_fix: n/a (clean)
+last_fix: n/a (clean; tip ebe2335d already contains SSR 500 fixes for partial SEO overrides)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs)
-deploy: production READY on tip 1619588a (NeonLayerComposer + summary-es restored)
-notes: Known smoke E031 — critical files clean (NBodyGravitySim 25kB restored prior, registry ~6k, summary-es ~45k with TMB entry, no $(cat/PLACEHOLDER in src). Discovery: live smoke calculadora-ahorro-para-meta, tmb, wacc, promedio-examenes, varianza, /es/n-body-gravity, home, simuladores all 200; no new 404s or broken tools. E051 English leaks ongoing coverage only. No deploy ERROR.
+deploy: production READY on b66efb99 (lag vs tip ebe2335d89c5b8f6dea0f33ff153d92071629bef which fixes SSR 500s on unit-converter, kinetic-energy-calculator, etc.)
+notes: Known smoke E031 — registry.tsx healthy (no PLACEHOLDER, full pickComponent + dedicated wires), summary-es.ts large curated map with TMB, index.tsx clean imports, no $(cat stubs in src. Discovery: live /es/herramientas/calculadora-iva 200 with Spanish; /es/herramientas/calculadora-tmb still English leak in summary (E051 coverage); unit-converter and kinetic-energy pages fail to load content on production (consistent with pre-tip SSR 500s); othello-classic 404 (not present or not deployed). No new open errors requiring code change this run. No deploy ERROR on recent.
 ```
 
 <!-- end:error-hunter-state.md -->
