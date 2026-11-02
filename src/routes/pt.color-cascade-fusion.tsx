@@ -59,7 +59,7 @@ function ColorCascadePagePt() {
         </p>
       </header>
       <ColorCascadeFusionGame locale="pt" />
-      <PlaygroundNextStep currentId="color-cascade-fusion" locale="pt" as any />
+      <PlaygroundNextStep currentId="color-cascade-fusion" locale="en" />
       <div className="mt-10">
         <AdsterraBanner />
       </div>
