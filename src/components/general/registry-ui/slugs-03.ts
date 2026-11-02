@@ -45,4 +45,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-ahorro-para-meta": UI.SavingsGoalCalculatorToolUi,
   "conversor-mpg-l100km": UI.MpgL100kmConverterToolUi,
   "conversor-zonas-horarias": UI.TimezoneConverterToolUi,
+  "calculadora-varianza": UI.VarianceCalculatorToolUi,
 };

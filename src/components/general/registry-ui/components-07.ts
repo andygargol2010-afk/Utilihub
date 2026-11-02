@@ -21,3 +21,4 @@ export const WaistToHeightRatioCalculatorToolUi = lazy(() => import("../WaistToH
 export const SavingsGoalCalculatorToolUi = lazy(() => import("../SavingsGoalCalculatorTool").then((m) => ({ default: m.SavingsGoalCalculatorTool })));
 export const MpgL100kmConverterToolUi = lazy(() => import("../MpgL100kmConverterTool").then((m) => ({ default: m.MpgL100kmConverterTool })));
 export const TimezoneConverterToolUi = lazy(() => import("../TimezoneConverterTool").then((m) => ({ default: m.TimezoneConverterTool })));
+export const VarianceCalculatorToolUi = lazy(() => import("../VarianceCalculatorTool").then((m) => ({ default: m.VarianceCalculatorTool })));

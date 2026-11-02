@@ -2,8 +2,10 @@
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import { MPG_L100KM_CONVERTER_TOOLS } from "../mpg-l100km-converter-tool";
 import { TIMEZONE_CONVERTER_TOOLS } from "../timezone-converter-tool";
+import { VARIANCE_CALCULATOR_TOOLS } from "../variance-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
   ...TIMEZONE_CONVERTER_TOOLS,
+  ...VARIANCE_CALCULATOR_TOOLS,
 ];
