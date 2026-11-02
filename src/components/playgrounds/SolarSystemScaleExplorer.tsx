@@ -3,24 +3,25 @@ import { useCallback, useEffect, useRef, useState } from "react";
 type Planet = {
   name: string;
   nameEs: string;
+  namePt: string;
   radiusKm: number;
   distanceAu: number;
   color: string;
 };
 
 const PLANETS: Planet[] = [
-  { name: "Mercury", nameEs: "Mercurio", radiusKm: 2439.7, distanceAu: 0.387, color: "#9a8b7a" },
-  { name: "Venus", nameEs: "Venus", radiusKm: 6051.8, distanceAu: 0.723, color: "#e8c07a" },
-  { name: "Earth", nameEs: "Tierra", radiusKm: 6371, distanceAu: 1, color: "#4a9be0" },
-  { name: "Mars", nameEs: "Marte", radiusKm: 3389.5, distanceAu: 1.524, color: "#c1440e" },
-  { name: "Jupiter", nameEs: "Júpiter", radiusKm: 69911, distanceAu: 5.203, color: "#d4a574" },
-  { name: "Saturn", nameEs: "Saturno", radiusKm: 58232, distanceAu: 9.537, color: "#e8d5a3" },
-  { name: "Uranus", nameEs: "Urano", radiusKm: 25362, distanceAu: 19.191, color: "#7ec8e3" },
-  { name: "Neptune", nameEs: "Neptuno", radiusKm: 24622, distanceAu: 30.069, color: "#4169e1" },
-  { name: "Pluto", nameEs: "Plutón", radiusKm: 1188.3, distanceAu: 39.482, color: "#c8b8a0" },
+  { name: "Mercury", nameEs: "Mercurio", namePt: "Mercúrio", radiusKm: 2439.7, distanceAu: 0.387, color: "#9a8b7a" },
+  { name: "Venus", nameEs: "Venus", namePt: "Vênus", radiusKm: 6051.8, distanceAu: 0.723, color: "#e8c07a" },
+  { name: "Earth", nameEs: "Tierra", namePt: "Terra", radiusKm: 6371, distanceAu: 1, color: "#4a9be0" },
+  { name: "Mars", nameEs: "Marte", namePt: "Marte", radiusKm: 3389.5, distanceAu: 1.524, color: "#c1440e" },
+  { name: "Jupiter", nameEs: "Júpiter", namePt: "Júpiter", radiusKm: 69911, distanceAu: 5.203, color: "#d4a574" },
+  { name: "Saturn", nameEs: "Saturno", namePt: "Saturno", radiusKm: 58232, distanceAu: 9.537, color: "#e8d5a3" },
+  { name: "Uranus", nameEs: "Urano", namePt: "Urano", radiusKm: 25362, distanceAu: 19.191, color: "#7ec8e3" },
+  { name: "Neptune", nameEs: "Neptuno", namePt: "Netuno", radiusKm: 24622, distanceAu: 30.069, color: "#4169e1" },
+  { name: "Pluto", nameEs: "Plutón", namePt: "Plutão", radiusKm: 1188.3, distanceAu: 39.482, color: "#c8b8a0" },
 ];
 
-export function SolarSystemScaleExplorer({ locale = "en" }: { locale?: "en" | "es" }) {
+export function SolarSystemScaleExplorer({ locale = "en" }: { locale?: "en" | "es" | "pt" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [scaleMode, setScaleMode] = useState<"size" | "distance" | "both">("both");
   const [selected, setSelected] = useState<string | null>(null);
@@ -38,7 +39,7 @@ export function SolarSystemScaleExplorer({ locale = "en" }: { locale?: "en" | "e
 
     const maxAu = 40;
     const maxR = Math.max(...PLANETS.map((p) => p.radiusKm));
-    PLANETS.forEach((p, i) => {
+    PLANETS.forEach((p) => {
       const x = 40 + (p.distanceAu / maxAu) * (w - 80);
       const r = scaleMode === "distance" ? 6 : Math.max(4, (p.radiusKm / maxR) * 40);
       ctx.beginPath();
@@ -52,13 +53,21 @@ export function SolarSystemScaleExplorer({ locale = "en" }: { locale?: "en" | "e
       }
       ctx.fillStyle = "#fff";
       ctx.font = "11px sans-serif";
-      ctx.fillText(locale === "es" ? p.nameEs : p.name, x - 20, h / 2 - r - 8);
+      const label = locale === "es" ? p.nameEs : locale === "pt" ? p.namePt : p.name;
+      ctx.fillText(label, x - 20, h / 2 - r - 8);
     });
   }, [scaleMode, selected, locale]);
 
   useEffect(() => {
     draw();
   }, [draw]);
+
+  const labels = {
+    size: locale === "es" ? "Tamaño" : locale === "pt" ? "Tamanho" : "Size",
+    distance: locale === "es" ? "Distancia" : locale === "pt" ? "Distância" : "Distance",
+    both: locale === "es" ? "Ambos" : locale === "pt" ? "Ambos" : "Both",
+    selected: locale === "es" ? "Seleccionado" : locale === "pt" ? "Selecionado" : "Selected",
+  };
 
   return (
     <div className="w-full">
@@ -70,7 +79,7 @@ export function SolarSystemScaleExplorer({ locale = "en" }: { locale?: "en" | "e
             onClick={() => setScaleMode(m)}
             className={`rounded px-3 py-1 text-xs font-medium ${scaleMode === m ? "bg-cyan-600 text-white" : "bg-muted"}`}
           >
-            {m === "size" ? (locale === "es" ? "Tamaño" : "Size") : m === "distance" ? (locale === "es" ? "Distancia" : "Distance") : (locale === "es" ? "Ambos" : "Both")}
+            {m === "size" ? labels.size : m === "distance" ? labels.distance : labels.both}
           </button>
         ))}
       </div>
@@ -89,7 +98,7 @@ export function SolarSystemScaleExplorer({ locale = "en" }: { locale?: "en" | "e
       />
       {selected && (
         <p className="mt-2 text-sm text-muted-foreground">
-          {locale === "es" ? "Seleccionado" : "Selected"}: {selected}
+          {labels.selected}: {selected}
         </p>
       )}
     </div>
