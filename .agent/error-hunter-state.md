@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 101
-runs_total: 101
+last_run: 2026-11-02 run 102
+runs_total: 102
 last_mode: HUNT
 last_fix: n/a (checks OK, no code changes)
 last_prevent: n/a
-last_known_focus: E031 smoke (code search clean, no PLACEHOLDER/$(cat in src; index.tsx proper; live /es and tools load)
-deploy: production READY on b66efb99; tip 022949a (and docs commits) has no deployment yet
-notes: Known smoke: E031 open/recurring check passed. Discovery: sampled live /es (home OK), modelador-3d (correct studio), png-a-jpg (image guide), calculadora-iva/imc (Spanish guides), 2048 game loads. Runtime logs still show E052 duplicate slugs on prod (deploy lag; tip part-09 clean). No new errors requiring code fix.
+last_known_focus: E031 smoke (code search: no $(cat, only normal placeholder attrs; live /es home OK, modelador-3d correct studio, ahorcado loads)
+deploy: production READY on b66efb99; tip cc9e2d27 has no deployment yet
+notes: Known smoke: E031 open/recurring check passed. Discovery: live /es OK; /es/herramientas/calculadora-varianza 404 (new tool in tip, deploy lag); /es/finanzas/calculadora-wacc still shows English description (E051 fix lag); modelador-3d loads correct studio. No new errors requiring code fix. Runtime logs unavailable (hobby retention).
 ```
 
 <!-- end:error-hunter-state.md -->
