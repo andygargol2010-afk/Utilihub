@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 96
-runs_total: 96
+last_run: 2026-11-02 run 97
+runs_total: 97
 last_mode: HUNT
-last_fix: E052 duplicate catalog imports in part-09 (median/mode/means/overtime)
+last_fix: n/a (E052 already fixed in e69c56bc, pending deploy)
 last_prevent: n/a
-last_known_focus: E031 (smoke clean — no $(cat/PLACEHOLDER)
-deploy: production READY on b66efb99 (E051 fix and this commit pending deploy)
-notes: Known smoke E031 open/recurring still clean (no stubs). Discovery: runtime logs showed new duplicates calculadora-mediana etc. from part-02+part-09; fixed by removing later imports. E051 English leaks still live (deploy lag on previous SHA); no new PLACEHOLDER/$(cat. Split catalog file for capacity.
+last_known_focus: E031 (smoke clean — no $(cat/PLACEHOLDER in homes/routes)
+deploy: production READY on b66efb99 (E052 fix and later commits pending deploy; duplicates still logged live)
+notes: Known smoke E031 open/recurring clean (index.tsx/es.index.tsx start with import, no $(cat). Discovery: sampled modelador-3d (Modeler3DStudio correct, not House), png-to-jpg (Media file upload), calculadora-mediana (dedicated UI), /es/juegos (loads 26 games). No new PLACEHOLDER/$(cat or kind mismatches. E052 duplicates still in runtime logs due to deploy lag on b66efb99.
 ```
 
 <!-- end:error-hunter-state.md -->
