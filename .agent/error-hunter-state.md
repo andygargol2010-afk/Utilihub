@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 104
-runs_total: 104
+last_run: 2026-11-02 run 105
+runs_total: 105
 last_mode: HUNT
-last_fix: summary-es.ts added curated Spanish for calculadora-tmb (E051 coverage); accidental PLACEHOLDER reverted immediately
+last_fix: n/a (checks OK, no code changes)
 last_prevent: n/a
-last_known_focus: E031 smoke (no $(cat in src; homes /es, IMC, modelador-3d OK)
-deploy: production READY on b66efb99; tip ea1f8ebf + catalog/state pending
-notes: Known smoke E031 clean. Discovery: /es/herramientas/calculadora-tmb English leak fixed in tip; /es/finanzas/calculadora-wacc English on live due to deploy lag (SUMMARY_ES present in tip); /es/juegos/ahorcado OK; runtime logs unavailable (hobby). No PLACEHOLDER/$(cat in critical paths after revert.
+last_known_focus: E031 smoke (registry.tsx full, no PLACEHOLDER/$(cat in critical; /es home, IMC, modelador-3d, 2048, png-a-jpg OK)
+deploy: production READY on b66efb99; tip 00550213 (new calculadora-promedio-examenes in part-10, 404 on live due to lag)
+notes: Known smoke E031 clean (vigilance open). Discovery: modelador-3d loads Modeler3DStudio (not House), games/2048 OK, image tool guide file-upload style, IMC Spanish guide OK. New tool calculadora-promedio-examenes 404 on production (expected, deploy lag); wired in tip catalog-index/part-10.ts category educacion. No new errors found. No PLACEHOLDER/$(cat regressions.
 ```
 
 <!-- end:error-hunter-state.md -->
