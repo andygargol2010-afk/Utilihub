@@ -6,9 +6,16 @@
  *   node scripts/check-sitemap-urls.mjs https://utilihub-xxx.vercel.app
  *
  * Only lists canonical <loc> entries (not xhtml:link alternates).
+ * Also checks that each 200 page declares <link rel="canonical"> pointing at itself.
+ *
+ * Local build (vite preview): locs use the production origin, so they are rewritten:
+ *   node scripts/check-sitemap-urls.mjs http://localhost:4173 --rewrite
  */
 
-const base = (process.argv[2] || "https://www.utilihub.net").replace(/\/$/, "");
+const PROD = "https://www.utilihub.net";
+const args = process.argv.slice(2);
+const rewrite = args.includes("--rewrite");
+const base = (args.find((a) => !a.startsWith("--")) || PROD).replace(/\/$/, "");
 const sitemapUrl = `${base}/sitemap.xml`;
 
 const concurrency = 12;
@@ -26,6 +33,7 @@ async function main() {
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());
   // Prefer locs that match this base (preview vs prod)
   const urls = [...new Set(locs)].filter((u) => u.startsWith(base) || u.includes("utilihub"));
+  const fetchUrl = (u) => (rewrite ? u.replace(/^https?:\/\/[^/]+/, base) : u);
   console.log(`Found ${urls.length} unique <loc> URLs`);
 
   const bad = [];
@@ -36,7 +44,7 @@ async function main() {
       const idx = i++;
       const url = urls[idx];
       try {
-        const r = await fetch(url, {
+        const r = await fetch(fetchUrl(url), {
           method: "GET",
           redirect: "manual",
           headers: { "user-agent": "UtiliHub-sitemap-check/1.0" },
@@ -46,6 +54,19 @@ async function main() {
           const location = r.headers.get("location") || "";
           bad.push({ url, status, location });
           console.log(`  ${status} ${url}${location ? ` → ${location}` : ""}`);
+        } else {
+          const html = await r.text();
+          const tags = html.match(/<link[^>]+rel="canonical"[^>]*>/gi) || [];
+          const tag = tags[0] || "";
+          if (tags.length > 1) {
+            bad.push({ url, status: "multi-canonical", location: String(tags.length) });
+            console.log(`  MULTI-CANONICAL ${url} (${tags.length})`);
+          }
+          const canonical = tag.match(/href="([^"]+)"/i)?.[1] || "";
+          if (canonical.replace(/\/$/, "") !== url.replace(/\/$/, "")) {
+            bad.push({ url, status: "canonical", location: canonical || "(none)" });
+            console.log(`  CANONICAL ${url} → ${canonical || "(none)"}`);
+          }
         }
       } catch (err) {
         bad.push({ url, status: 0, location: String(err) });

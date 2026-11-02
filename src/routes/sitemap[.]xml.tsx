@@ -6,6 +6,7 @@ import { GAMES } from "@/lib/games/catalog";
 import { englishCategoryPath, spanishToolPath } from "@/lib/route-slugs";
 import { SITE_URL } from "@/lib/seo";
 import { SIMULATORS } from "@/lib/simulators/catalog";
+import { toolSeoOverride } from "@/lib/tool-seo-overrides";
 import { WORK_KITS } from "@/lib/work-kits";
 
 /** Escape XML special chars without embedding &entity; literals that get mangled by some editors. */
@@ -61,11 +62,13 @@ const hreflangXml = (entry: SitemapEntry) => {
     .join("");
 };
 
-/** Higher priority for advanced tools and flagship 3D studios. */
+/** Higher priority for advanced tools, flagship 3D studios and tools with their own written content. */
 function toolPriority(tool: (typeof ALL_TOOLS)[number]): string {
   if (tool.category === "herramientas-avanzadas") return "0.85";
   if (tool.slug === "modelador-casas-3d" || tool.slug === "modelador-3d") return "0.85";
-  return "0.7";
+  // Own about/steps/FAQ copy (tool-seo-overrides): prioritise over generic catalog pages.
+  if (toolSeoOverride(tool.slug)) return "0.8";
+  return "0.6";
 }
 
 export const Route = createFileRoute("/sitemap.xml")({

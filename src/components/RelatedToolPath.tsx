@@ -2,29 +2,32 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { ToolCard } from "@/components/ToolCard";
 import type { CatalogTool } from "@/lib/all-tools";
-import { englishToolSlug } from "@/lib/route-slugs";
+import { publicToolLink } from "@/lib/route-slugs";
 import { spanishToolName } from "@/lib/i18n/es";
 import { journeyLabel, journeyTools } from "@/lib/discovery";
 
 function NextStepLink({ tool, locale }: { tool: CatalogTool; locale: "en" | "es" }) {
   const className =
     "inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90";
+  // Canonical target: consolidated duplicates and finance-only routes resolve to their final URL.
+  const link = publicToolLink(tool, locale);
+  const isFinanceRoute = link.to.includes("finan");
   if (locale === "es") {
-    if (tool.category === "finanzas") {
+    if (isFinanceRoute) {
       return (
-        <Link to="/es/finanzas/$slug" params={{ slug: tool.slug }} className={className}>
+        <Link to="/es/finanzas/$slug" params={link.params} className={className}>
           Abrir siguiente <ArrowRight className="size-4" />
         </Link>
       );
     }
     return (
-      <Link to="/es/herramientas/$slug" params={{ slug: tool.slug }} className={className}>
+      <Link to="/es/herramientas/$slug" params={link.params} className={className}>
         Abrir siguiente <ArrowRight className="size-4" />
       </Link>
     );
   }
-  const slug = englishToolSlug(tool);
-  if (tool.category === "finanzas") {
+  const slug = link.params.slug;
+  if (isFinanceRoute) {
     return (
       <Link to="/finance/$slug" params={{ slug }} className={className}>
         Open next <ArrowRight className="size-4" />

@@ -2,7 +2,7 @@ import { memo, useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { ALL_CATEGORIES, type CatalogTool } from "@/lib/all-tools";
-import { englishToolSlug } from "@/lib/route-slugs";
+import { publicToolLink } from "@/lib/route-slugs";
 import { spanishCategoryName, spanishToolName } from "@/lib/i18n/es";
 import { spanishToolSummary } from "@/lib/i18n/es-summaries";
 import { useFavorites } from "@/hooks/use-favorites";
@@ -41,14 +41,8 @@ export const CompactToolRow = memo(function CompactToolRow({
       .map((t) => (isSpanish ? t!.labelEs : t!.label));
   }, [tool, isSpanish]);
 
-  const route = isSpanish
-    ? tool.category === "finanzas"
-      ? "/es/finanzas/$slug"
-      : "/es/herramientas/$slug"
-    : tool.category === "finanzas"
-      ? "/finance/$slug"
-      : "/tools/$slug";
-  const slug = isSpanish ? tool.slug : englishToolSlug(tool);
+  // Canonical target (handles consolidated duplicates and finance routes).
+  const { to: route, params: linkParams } = publicToolLink(tool, isSpanish ? "es" : "en");
 
   return (
     <article
@@ -61,8 +55,8 @@ export const CompactToolRow = memo(function CompactToolRow({
         {categoryLabel.slice(0, 1)}
       </span>
       <Link
-        to={route}
-        params={{ slug }}
+        to={route as "/tools/$slug"}
+        params={linkParams}
         className="min-w-0 flex-1 rounded-md py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
         <span className="block truncate text-sm font-bold tracking-tight group-hover:text-primary">

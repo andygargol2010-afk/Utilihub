@@ -12,7 +12,8 @@ const description = cleanDescription(
 const icons = [BriefcaseBusiness, Search, FileText, GraduationCap];
 
 export const Route = createFileRoute("/kits")({
-  head: () => ({
+  // Layout route: only the hub itself emits canonical/hreflang, so /kits/<slug> keeps its own self-canonical.
+  head: ({ matches }) => ({
     meta: [
       { title },
       { name: "description", content: description },
@@ -28,7 +29,10 @@ export const Route = createFileRoute("/kits")({
       { name: "twitter:description", content: description },
       { name: "twitter:image", content: ogImage() },
     ],
-    links: [{ rel: "canonical", href: absoluteUrl("/kits") }, ...hreflangLinks("/kits", "/es/kits")],
+    links:
+      matches[matches.length - 1]?.routeId === "/kits"
+        ? [{ rel: "canonical", href: absoluteUrl("/kits") }, ...hreflangLinks("/kits", "/es/kits")]
+        : [],
     scripts: [
       {
         type: "application/ld+json",

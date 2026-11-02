@@ -61,7 +61,8 @@ const description = "Kits gratuitos de herramientas online para freelancers, SEO
 const icons = [BriefcaseBusiness, Search, FileText, GraduationCap];
 
 export const Route = createFileRoute("/es/kits")({
-  head: () => ({
+  // Layout route: only the hub itself emits canonical/hreflang, so /es/kits/<slug> keeps its own self-canonical.
+  head: ({ matches }) => ({
     meta: [
       { title },
       { name: "description", content: description },
@@ -72,11 +73,14 @@ export const Route = createFileRoute("/es/kits")({
       { property: "og:url", content: absoluteUrl("/es/kits") },
       { property: "og:image", content: ogImage() },
     ],
-    links: [
-      { rel: "canonical", href: absoluteUrl("/es/kits") },
-      { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/kits") },
-      { rel: "alternate", hrefLang: "en", href: absoluteUrl("/kits") },
-    ],
+    links:
+      matches[matches.length - 1]?.routeId === "/es/kits"
+        ? [
+            { rel: "canonical", href: absoluteUrl("/es/kits") },
+            { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/kits") },
+            { rel: "alternate", hrefLang: "en", href: absoluteUrl("/kits") },
+          ]
+        : [],
     scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "CollectionPage", name: title, description, url: absoluteUrl("/es/kits") }, breadcrumbSchema([{ name: "Inicio", path: "/es" }, { name: "Kits" }])] }) }],
   }),
   component: SpanishKitsPage,
