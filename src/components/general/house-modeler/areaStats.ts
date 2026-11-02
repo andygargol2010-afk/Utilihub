@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { fmtArea } from "./units";
 
 export interface AreaStats {
   floor: number;
@@ -42,10 +43,10 @@ export function computeAreaStats(parts: Measurable[]): AreaStats {
   return out;
 }
 
-export function formatAreaStats(a: AreaStats, es: boolean): string {
+export function formatAreaStats(a: AreaStats, es: boolean, imp = false): string {
   const bits: string[] = [];
-  if (a.floor > 0) bits.push(`${es ? "Suelo" : "Floor"} ${a.floor.toFixed(1)} m²`);
-  if (a.walls > 0) bits.push(`${es ? "Muros netos" : "Net walls"} ${a.walls.toFixed(1)} m²`);
-  if (a.roof > 0) bits.push(`${es ? "Techo" : "Roof"} ${a.roof.toFixed(1)} m²`);
+  if (a.floor > 0) bits.push(`${es ? "Suelo" : "Floor"} ${fmtArea(a.floor, imp)}`);
+  if (a.walls > 0) bits.push(`${es ? "Muros netos" : "Net walls"} ${fmtArea(a.walls, imp)}`);
+  if (a.roof > 0) bits.push(`${es ? "Techo" : "Roof"} ${fmtArea(a.roof, imp)}`);
   return bits.join(" · ");
 }

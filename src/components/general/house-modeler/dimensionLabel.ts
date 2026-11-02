@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { fmtLen } from "./units";
 
 export interface DimensionLabel {
   /** Show the W x H x D of a BoxHelper's geometry pinned above it, or hide when `helper` is null. */
@@ -33,7 +34,7 @@ export function createDimensionLabel(host: HTMLElement): DimensionLabel {
         el.style.display = "none";
         return;
       }
-      const text = `${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)} m`;
+      const text = `${fmtLen(size.x)} × ${fmtLen(size.y)} × ${fmtLen(size.z)}`;
       if (text !== last) {
         el.textContent = text;
         last = text;

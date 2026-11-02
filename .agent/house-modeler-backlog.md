@@ -63,7 +63,7 @@ META run 333 (2026-11-02, roll=1): backlog refreshed from code-level review (no 
 |---|------|-----|-------|-----|-------|--------|
 | 40 | Persist snap grid + roof-hidden + view in autosave (reload keeps the whole working state) | 3 | 4 | 1 | 12 | DONE run 334 (house-modeler/roofPref.ts; snap grid already persisted by #12; view deliberately not persisted) |
 | 41 | Wall-opening presets: one-click "add window/door to selected wall" centred on the wall | 4 | 4 | 3 | 5.3 | open |
-| 42 | Unit toggle m / ft for dimension label, area chips and cost chip (ES/EN locale default) | 3 | 4 | 2 | 6 | open |
+| 42 | Unit toggle m / ft for dimension label, area chips and cost chip (ES/EN locale default) | 3 | 4 | 2 | 6 | DONE run 335 (house-modeler/units.ts + UnitToggle.tsx; label+area chips; cost stays USD; default metric) |
 | 43 | Color/finish copy: "apply this finish to all parts of the same kind" button | 3 | 3 | 2 | 4.5 | open |
 | 44 | Print-friendly summary (PDF already exists): add floor-plan PNG and cost chip to it | 2 | 3 | 2 | 3 | open |
 

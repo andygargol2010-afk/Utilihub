@@ -20,6 +20,8 @@ import { PresetPicker } from "./house-modeler/PresetPicker";
 import { MirrorButton, mirrorParts } from "./house-modeler/MirrorButton";
 import { ViewPicker, viewPose } from "./house-modeler/ViewPicker";
 import { RoofToggle } from "./house-modeler/RoofToggle";
+import { UnitToggle } from "./house-modeler/UnitToggle";
+import { loadImperial, setImperial } from "./house-modeler/units";
 import { loadRoofHidden, saveRoofHidden } from "./house-modeler/roofPref";
 import { TurntableToggle } from "./house-modeler/TurntableToggle";
 import { ShortcutsHelp } from "./house-modeler/ShortcutsHelp";
@@ -4987,6 +4989,8 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
 
   const roofHiddenRef = useRef(false);
   const [roofHidden, setRoofHidden] = useState(false);
+  const [imperial, setImp] = useState(false);
+  useEffect(() => setImp(loadImperial()), []);
   const applyLayerVisibility = useCallback(() => {
     const t = threeRef.current;
     if (!t) return;
@@ -6345,9 +6349,9 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
   const historyRef = useRef(createHistory());
   const [histRev, setHistRev] = useState(0);
   const areaText = useMemo(
-    () => formatAreaStats(computeAreaStats(partsRef.current.map((p) => ({ kind: p.kind, obj: findPartObject(p.id) }))), es),
+    () => formatAreaStats(computeAreaStats(partsRef.current.map((p) => ({ kind: p.kind, obj: findPartObject(p.id) }))), es, imperial),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [count, histRev, es, findPartObject],
+    [count, histRev, es, imperial, findPartObject],
   );
   const costText = useMemo(
     () => formatCost(estimateCost(computeAreaStats(partsRef.current.map((p) => ({ kind: p.kind, obj: findPartObject(p.id) }))), partsRef.current.map((p) => p.kind)), es),
@@ -7034,6 +7038,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         </button>
         <ShortcutsHelp es={es} />
         <TurntableToggle es={es} threeRef={threeRef} />
+        <UnitToggle es={es} imperial={imperial} onToggle={() => { setImperial(!imperial); setImp(!imperial); }} />
         <RoofToggle es={es} hidden={roofHidden} onToggle={() => { roofHiddenRef.current = !roofHiddenRef.current; setRoofHidden(roofHiddenRef.current); saveRoofHidden(roofHiddenRef.current); applyLayerVisibility(); }} />
         <ViewPicker es={es} onPick={(v) => { const t = threeRef.current; if (!t) return; const pose = viewPose(JSON.parse(serializeParts(partsRef.current)).parts, v); t.controls.target.set(...pose.target); t.camera.position.set(...pose.position); t.camera.lookAt(...pose.target); t.controls.update(); }} />
         <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); saveTimeOfDay(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
