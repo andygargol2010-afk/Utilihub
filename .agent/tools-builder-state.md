@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-02 | salud | calculadora-superficie-corporal | BodySurfaceAreaCalculatorTool
 - 2026-11-02 | texto | conversor-numeros-romanos | RomanNumeralsConverterTool
 - 2026-11-02 | ciencia | calculadora-energia-cinetica | KineticEnergyCalculatorTool
 - 2026-11-02 | educacion | calculadora-promedio-examenes | ExamAverageCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-01 | finanzas | calculadora-ahorro-para-meta | SavingsGoalCalculatorTool
 - 2026-10-31 | hogar | calculadora-calorias-porcion | CaloriesPerServingCalculatorTool
 - 2026-10-31 | finanzas | calculadora-horas-extra | OvertimeCalculatorTool
-- 2026-10-31 | finanzas | calculadora-comision-de-venta | SalesCommissionCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -44,7 +44,7 @@ hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-ga
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura, conversor-numeros-romanos)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala, conversor-pt-a-px)
-salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura)
+salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura, calculadora-superficie-corporal)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda, calculadora-promedio-examenes)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico, calculadora-varianza)
@@ -80,6 +80,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-11-02: PRODUCT — calculadora-promedio-examenes (educacion). One tool (default, saturation least-represented in RECENT_TOOLS). Anti-dupe OK (new slug). Practical exam/test score average calculator. Complements simple average and grade-needed tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-02: PRODUCT — calculadora-energia-cinetica (ciencia). One tool (default, saturation least-represented). Anti-dupe OK (new slug, no prior dedicated kinetic energy tool). Practical E = ½ m v² calculator in SI units. Complements potential energy and force tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-02: PRODUCT — conversor-numeros-romanos (texto). One tool (default, saturation least-represented). Anti-dupe OK (new slug, no prior dedicated Roman numerals converter). Practical bidirectional number ↔ classic Roman (1–3999, subtractive). High search demand. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-11-02: PRODUCT — calculadora-superficie-corporal (salud). One tool (default, saturation least-represented — salud not in last ~12). Anti-dupe OK (new slug, no prior dedicated BSA tool). Practical Du Bois body surface area calculator (cm/kg → m²). Complements BMI and WHtR. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 ```
 
 ---
@@ -88,9 +89,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: conversor-numeros-romanos
+last_slugs: calculadora-superficie-corporal
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (will be set by this commit)
+last_sha: 08f110a819340de870ce293c7cde9c4ed68833a4
 ```
 
 <!-- end:tools-builder-state.md -->
