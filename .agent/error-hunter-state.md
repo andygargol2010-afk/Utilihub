@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 108
-runs_total: 108
+last_run: 2026-11-02 run 109
+runs_total: 109
 last_mode: HUNT
-last_fix: n/a (clean; tip ebe2335d already contains SSR 500 fixes for partial SEO overrides)
+last_fix: n/a (clean; tip has ebe2335d SSR/client fix for partial SEO overrides)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs)
-deploy: production READY on b66efb99 (lag vs tip ebe2335d89c5b8f6dea0f33ff153d92071629bef which fixes SSR 500s on unit-converter, kinetic-energy-calculator, etc.)
-notes: Known smoke E031 — registry.tsx healthy (no PLACEHOLDER, full pickComponent + dedicated wires), summary-es.ts large curated map with TMB, index.tsx clean imports, no $(cat stubs in src. Discovery: live /es/herramientas/calculadora-iva 200 with Spanish; /es/herramientas/calculadora-tmb still English leak in summary (E051 coverage); unit-converter and kinetic-energy pages fail to load content on production (consistent with pre-tip SSR 500s); othello-classic 404 (not present or not deployed). No new open errors requiring code change this run. No deploy ERROR on recent.
+deploy: production READY on b66efb99 (lag vs tip d8e2e8a1 / ebe2335d which fixes crashes on unit-converter, kinetic-energy-calculator, miles-to-kilometers-converter)
+notes: Known smoke E031 — no PLACEHOLDER or $(cat stubs in critical src files (registry, summary-es, routes, playgrounds). Discovery: live production still crashes with "Cannot read properties of undefined (reading 'length')" on /tools/unit-converter, /tools/kinetic-energy-calculator, /tools/miles-to-kilometers-converter (Tool not found page); /es/herramientas/calculadora-tmb now shows full Spanish summary and dedicated fields; /es/herramientas/calculadora-iva 200 with dedicated UI; othello-classic 404. No new open errors in tip code. No recent deploy ERROR. Pending: deploy of tip to clear production crashes.
 ```
 
 <!-- end:error-hunter-state.md -->
