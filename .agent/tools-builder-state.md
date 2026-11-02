@@ -88,7 +88,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 last_mode: PRODUCT
 last_slugs: calculadora-promedio-examenes
 last_deploy: no (branch auto-deploy disabled)
-last_sha: pending
+last_sha: a8db0ce7fdd085e5eddb44a233aa72e3ecbcf2d4
 ```
 
 <!-- end:tools-builder-state.md -->
