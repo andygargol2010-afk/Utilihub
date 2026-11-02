@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 105
-runs_total: 105
+last_run: 2026-11-02 run 106
+runs_total: 106
 last_mode: HUNT
-last_fix: n/a (checks OK, no code changes)
+last_fix: restored NBodyGravitySim.tsx from PLACEHOLDER (E031)
 last_prevent: n/a
-last_known_focus: E031 smoke (registry.tsx full, no PLACEHOLDER/$(cat in critical; /es home, IMC, modelador-3d, 2048, png-a-jpg OK)
-deploy: production READY on b66efb99; tip 00550213 (new calculadora-promedio-examenes in part-10, 404 on live due to lag)
-notes: Known smoke E031 clean (vigilance open). Discovery: modelador-3d loads Modeler3DStudio (not House), games/2048 OK, image tool guide file-upload style, IMC Spanish guide OK. New tool calculadora-promedio-examenes 404 on production (expected, deploy lag); wired in tip catalog-index/part-10.ts category educacion. No new errors found. No PLACEHOLDER/$(cat regressions.
+last_known_focus: E031 (PLACEHOLDER in playground)
+deploy: production READY on b66efb99; tip 1fd46d9 (NBody restore pending deploy)
+notes: Known smoke E031 caught real regression — NBodyGravitySim.tsx was one-line PLACEHOLDER. Restored full interactive sim from 50e3d456 with PT→ES fallback. Other critical files (registry, homes, summary-es) clean. Discovery: TMB English summary on live due to deploy lag (SUMMARY_ES present in tip); new calculadora-promedio-examenes 404 lag; studios/games/home OK. No other PLACEHOLDER/$(cat.
 ```
 
 <!-- end:error-hunter-state.md -->
