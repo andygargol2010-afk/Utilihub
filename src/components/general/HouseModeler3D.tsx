@@ -20,6 +20,7 @@ import { PresetPicker } from "./house-modeler/PresetPicker";
 import { MirrorButton, mirrorParts } from "./house-modeler/MirrorButton";
 import { ViewPicker, viewPose } from "./house-modeler/ViewPicker";
 import { RoofToggle } from "./house-modeler/RoofToggle";
+import { loadRoofHidden, saveRoofHidden } from "./house-modeler/roofPref";
 import { TurntableToggle } from "./house-modeler/TurntableToggle";
 import { ShortcutsHelp } from "./house-modeler/ShortcutsHelp";
 import { RotateDesignButton, rotateParts } from "./house-modeler/RotateDesignButton";
@@ -4963,6 +4964,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (kind === "roof" && roofHiddenRef.current) {
       roofHiddenRef.current = false;
       setRoofHidden(false);
+      saveRoofHidden(false);
       queueMicrotask(() => applyLayerVisibility());
     }
     setCount(partsRef.current.length);
@@ -6369,6 +6371,11 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     if (sharedTod && lightRigRef.current) { applyTimeOfDay(lightRigRef.current, sharedTod); setTod(sharedTod); }
     if (shared.length) restoreParts(shared), flashActionHint(labels.sharedLoaded);
     else if (saved.length) restoreParts(saved, readAutosaveLayers()), flashActionHint(labels.restored);
+    if (partsRef.current.length && loadRoofHidden() && partsRef.current.some((p) => p.kind === "roof")) {
+      roofHiddenRef.current = true;
+      setRoofHidden(true);
+      applyLayerVisibility();
+    }
     let last = serializeParts(partsRef.current);
     historyRef.current.sync(last);
     const save = () => {
@@ -7027,7 +7034,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         </button>
         <ShortcutsHelp es={es} />
         <TurntableToggle es={es} threeRef={threeRef} />
-        <RoofToggle es={es} hidden={roofHidden} onToggle={() => { roofHiddenRef.current = !roofHiddenRef.current; setRoofHidden(roofHiddenRef.current); applyLayerVisibility(); }} />
+        <RoofToggle es={es} hidden={roofHidden} onToggle={() => { roofHiddenRef.current = !roofHiddenRef.current; setRoofHidden(roofHiddenRef.current); saveRoofHidden(roofHiddenRef.current); applyLayerVisibility(); }} />
         <ViewPicker es={es} onPick={(v) => { const t = threeRef.current; if (!t) return; const pose = viewPose(JSON.parse(serializeParts(partsRef.current)).parts, v); t.controls.target.set(...pose.target); t.camera.position.set(...pose.position); t.camera.lookAt(...pose.target); t.controls.update(); }} />
         <TimeOfDayPicker es={es} value={tod} onPick={(id) => { setTod(id); saveTimeOfDay(id); if (lightRigRef.current) applyTimeOfDay(lightRigRef.current, id); }} />
         <SnapPicker es={es} value={snapSel} onPick={(v) => { setGridStep(v); setSnapSel(v); }} />
