@@ -29,6 +29,7 @@ export const Route = createFileRoute("/color-cascade-fusion")({
       { rel: "canonical", href: absoluteUrl("/color-cascade-fusion") },
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/color-cascade-fusion") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/color-cascade-fusion") },
+      { rel: "alternate", hrefLang: "pt", href: absoluteUrl("/pt/color-cascade-fusion") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/color-cascade-fusion") },
     ],
   }),
