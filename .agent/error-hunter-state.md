@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 97
-runs_total: 97
+last_run: 2026-11-02 run 98
+runs_total: 98
 last_mode: HUNT
-last_fix: n/a (E052 already fixed in e69c56bc, pending deploy)
+last_fix: n/a (no new code issues; E052 fixed in code since e69c56bc)
 last_prevent: n/a
-last_known_focus: E031 (smoke clean — no $(cat/PLACEHOLDER in homes/routes)
-deploy: production READY on b66efb99 (E052 fix and later commits pending deploy; duplicates still logged live)
-notes: Known smoke E031 open/recurring clean (index.tsx/es.index.tsx start with import, no $(cat). Discovery: sampled modelador-3d (Modeler3DStudio correct, not House), png-to-jpg (Media file upload), calculadora-mediana (dedicated UI), /es/juegos (loads 26 games). No new PLACEHOLDER/$(cat or kind mismatches. E052 duplicates still in runtime logs due to deploy lag on b66efb99.
+last_known_focus: E031/E052 smoke (homes clean; duplicates still in live logs)
+deploy: production READY on b66efb99 (tip a553487e has no deployment; E052 fix and later pending; duplicates still logged)
+notes: Known smoke: no open/recurring. Homes / and /es load clean (no $(cat/PLACEHOLDER). Discovery: sampled /tools/3d-modeler (loads), /es/herramientas/calculadora-mediana (loads), /es/herramientas/png-a-jpg (loads), /games/2048 and /es/juegos (26 games). Runtime logs confirm E052 duplicates still present on production b66efb99. No new PLACEHOLDER/$(cat or routing issues found. No code fix needed this run.
 ```
 
 <!-- end:error-hunter-state.md -->
