@@ -23,3 +23,4 @@ export const MpgL100kmConverterToolUi = lazy(() => import("../MpgL100kmConverter
 export const TimezoneConverterToolUi = lazy(() => import("../TimezoneConverterTool").then((m) => ({ default: m.TimezoneConverterTool })));
 export const VarianceCalculatorToolUi = lazy(() => import("../VarianceCalculatorTool").then((m) => ({ default: m.VarianceCalculatorTool })));
 export const PointsToPxConverterToolUi = lazy(() => import("../PointsToPxConverterTool").then((m) => ({ default: m.PointsToPxConverterTool })));
+export const BodySurfaceAreaCalculatorToolUi = lazy(() => import("../BodySurfaceAreaCalculatorTool").then((m) => ({ default: m.BodySurfaceAreaCalculatorTool })));
