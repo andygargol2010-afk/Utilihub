@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Share2, Check, Link2 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
-type Locale = "en" | "es";
+type Locale = "en" | "es" | "pt";
 
 interface Props {
   title: string;
@@ -15,7 +15,10 @@ interface Props {
 export function ExperienceShareButton({ title, url, locale = "en", className = "", variant = "button" }: Props) {
   const [status, setStatus] = useState("");
   const isEs = locale === "es";
-  const copy = isEs
+  const isPt = locale === "pt";
+  const copy = isPt
+    ? { share: "Compartilhar", copied: "Link copiado", error: "Não foi possível compartilhar", aria: "Compartilhar experiência" }
+    : isEs
     ? { share: "Compartir", copied: "Enlace copiado", error: "No se pudo compartir", aria: "Compartir experiencia" }
     : { share: "Share", copied: "Link copied", error: "Could not share", aria: "Share experience" };
 
@@ -23,7 +26,9 @@ export function ExperienceShareButton({ title, url, locale = "en", className = "
     trackEvent("share_click", { title, locale, url });
     const shareData = {
       title: `${title} | UtiliHub`,
-      text: isEs
+      text: isPt
+        ? `Veja esta experiência interativa no UtiliHub: ${title}`
+        : isEs
         ? `Mira esta experiencia interactiva en UtiliHub: ${title}`
         : `Check out this interactive experience on UtiliHub: ${title}`,
       url,
@@ -32,7 +37,7 @@ export function ExperienceShareButton({ title, url, locale = "en", className = "
     if (navigator.share && navigator.canShare?.(shareData)) {
       try {
         await navigator.share(shareData);
-        setStatus(isEs ? "Compartido" : "Shared");
+        setStatus(isPt ? "Compartilhado" : isEs ? "Compartido" : "Shared");
         setTimeout(() => setStatus(""), 1800);
         return;
       } catch {
