@@ -1,4 +1,4 @@
-import { makeTool } from "./types";
+import { makeTool, faq } from "./types";
 
 /** Gap: studs count sticks; sheet goods count panels. This converts a lumber cut list into board feet. */
 export const BOARD_FOOT_CALCULATOR_TOOLS = [
@@ -28,3 +28,19 @@ export const BOARD_FOOT_CALCULATOR_TOOLS = [
     },
   ),
 ];
+
+const boardFootTool = BOARD_FOOT_CALCULATOR_TOOLS[0];
+
+boardFootTool.faq.push(
+  faq(
+    "What is the board foot formula?",
+    "Board feet = thickness (in) × width (in) × length (ft) / 12, multiplied by the piece count. One board foot equals 144 cubic inches of lumber.",
+  ),
+);
+
+boardFootTool.faq.push(
+  faq(
+    "Should I use nominal or actual (dressed) sizes?",
+    "Both are supported. Lumber is sold by nominal size (e.g. a 2x4), but the actual dressed size is smaller (1.5 in × 3.5 in). Use nominal to estimate purchase cost, actual for true volume.",
+  ),
+);
