@@ -46,4 +46,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "conversor-mpg-l100km": UI.MpgL100kmConverterToolUi,
   "conversor-zonas-horarias": UI.TimezoneConverterToolUi,
   "calculadora-varianza": UI.VarianceCalculatorToolUi,
+  "conversor-pt-a-px": UI.PointsToPxConverterToolUi,
 };

@@ -22,3 +22,4 @@ export const SavingsGoalCalculatorToolUi = lazy(() => import("../SavingsGoalCalc
 export const MpgL100kmConverterToolUi = lazy(() => import("../MpgL100kmConverterTool").then((m) => ({ default: m.MpgL100kmConverterTool })));
 export const TimezoneConverterToolUi = lazy(() => import("../TimezoneConverterTool").then((m) => ({ default: m.TimezoneConverterTool })));
 export const VarianceCalculatorToolUi = lazy(() => import("../VarianceCalculatorTool").then((m) => ({ default: m.VarianceCalculatorTool })));
+export const PointsToPxConverterToolUi = lazy(() => import("../PointsToPxConverterTool").then((m) => ({ default: m.PointsToPxConverterTool })));
