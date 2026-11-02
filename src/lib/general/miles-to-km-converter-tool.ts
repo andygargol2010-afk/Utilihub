@@ -5,7 +5,7 @@ const tool = makeTool(
   "Miles to Kilometers Converter",
   "conversiones",
   "converter",
-  "Convert miles to kilometers. 1 mile = 1.609344 km.",
+  "Miles to km converter: enter miles and get kilometers instantly (1 mile = 1.609344 km) for runs, maps and road trips.",
   [
     "miles to km",
     "miles to km converter",
@@ -19,7 +19,7 @@ const tool = makeTool(
   {
     title: "Miles to Km Converter — Convert Miles to Kilometers Online | UtiliHub",
     description: "Convert miles to km instantly. 1 mile = 1.609344 km. Free miles to kilometers converter. No signup.",
-    summaryEs: "Convierte millas a kilómetros. 1 milla = 1.609344 km.",
+    summaryEs: "Convertí millas a km al instante (1 milla = 1,609344 km) para carreras, mapas y viajes.",
   },
 );
 tool.faq.push(faq("Conversion factor?", "Exactly 1.609344 km per mile."));

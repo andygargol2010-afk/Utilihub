@@ -77,7 +77,7 @@ export const FINANCE_TOOLS = [
   ),
   f(
     "calculadora-basica",
-    "Calculator",
+    "Basic calculator",
     "Quick four-operation calculator for add, subtract, multiply, and divide.",
     "basic-calc",
     ["Value A", "Value B", "Operation (1=add 2=sub 3=mul 4=div)"],

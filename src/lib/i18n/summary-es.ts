@@ -4,7 +4,8 @@
 export const SUMMARY_ES: Record<string, string> = {
   // —— Batch 1 ——
   pixelihub: "Estudio de pixel art online: grilla 8–256, capas, simetría, formas, export PNG y enlaces para compartir.",
-  calculadora: "Calculadora básica online. Operaciones rápidas en el navegador.",
+  calculadora: "Calculadora online gratis: sumá, restá, multiplicá, dividí y sacá porcentajes con los botones o el teclado, con historial de resultados.",
+  "porcentaje-hasta-meta": "Calculá el porcentaje hasta la meta: ingresá el valor actual y el objetivo y mirá el % de avance, el % que falta y las unidades restantes.",
   "calculadora-de-porcentajes": "Calculá porcentajes, aumentos y descuentos al instante.",
   "regla-de-tres": "Resolvé proporciones directas e inversas con la regla de tres.",
   "calculadora-de-fechas": "Diferencia entre fechas, sumar o restar días y calcular plazos.",
@@ -22,7 +23,7 @@ export const SUMMARY_ES: Record<string, string> = {
   "calculadora-imc": "Calculá tu índice de masa corporal (IMC) con peso y altura. Clasificación al instante.",
   "conversor-de-longitud": "Convertí metros, pies, pulgadas y más unidades de longitud.",
   "conversor-de-peso": "Convertí kilos, libras, onzas y otras unidades de peso.",
-  "conversor-de-unidades": "Conversor general de unidades comunes.",
+  "conversor-de-unidades": "Conversor de unidades online: longitud, peso, temperatura, volumen, área y tiempo, de métrico a imperial al instante.",
   "conversor-de-divisas": "Convertí entre divisas con tipos de cambio de referencia.",
   propina: "Calculá la propina y el total de una cuenta.",
   "calculadora-propina": "Calculá la propina y el total según el porcentaje y el número de personas.",
@@ -496,7 +497,7 @@ export const SUMMARY_ES: Record<string, string> = {
   "conversor-litros-galones": "Convertí litros a galones (US) y galones a litros.",
   "conversor-longitud": "Convertí entre metros, centímetros, kilómetros, pulgadas, pies y yardas.",
   "conversor-metros-pies": "Convertí metros a pies y pulgadas al instante.",
-  "conversor-millas-km": "Convertí millas a kilómetros (1 milla = 1,609344 km).",
+  "conversor-millas-km": "Convertí millas a km al instante (1 milla = 1,609344 km) para carreras, mapas y viajes.",
   "conversor-numeros-romanos": "Convertí números entre 1 y 3999 a números romanos y al revés.",
   "conversor-onzas-gramos": "Convertí onzas a gramos (1 oz = 28,3495 g).",
   "conversor-permisos-chmod": "Convertí permisos Unix entre octal y notación simbólica rwx.",

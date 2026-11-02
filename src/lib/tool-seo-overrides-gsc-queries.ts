@@ -3,12 +3,12 @@ import type { ToolSeoOverride } from "./tool-seo-overrides";
 /** GSC top queries by impressions+clicks (2026-10-31). One cycle SEO batch. */
 export const TOOL_SEO_OVERRIDES_GSC_QUERIES: Record<string, ToolSeoOverride> = {
   "conversor-locale": {
-    metaTitle: "Locale Converter Online — Dates, Numbers & Currency (BCP 47) | UtiliHub",
-    metaTitleEs: "Locale converter online — fechas, números y moneda por país | UtiliHub",
+    metaTitle: "Locale Converter Online — Dates, Numbers & Money | UtiliHub",
+    metaTitleEs: "Locale converter online — fechas, números, moneda | UtiliHub",
     metaDescription:
-      "Locale converter online: preview dates, numbers and currency in en-US, es-MX, de-DE, ja-JP or any BCP 47 tag. Free, instant, runs in the browser with Intl.",
+      "Locale converter online: see how dates, numbers and currency look in en-US, es-MX, de-DE, ja-JP or any BCP 47 tag. Free and instant. Try a locale now.",
     metaDescriptionEs:
-      "Locale converter online: mirá fechas, números y monedas en es-ES, es-MX, en-US, de-DE o cualquier locale BCP 47. Gratis, al instante, con Intl del navegador.",
+      "Locale converter online: mirá cómo se ven fechas, números y monedas en es-ES, es-MX, en-US, de-DE o cualquier locale BCP 47. Gratis. Probalo ahora.",
     about: [
       "People search for “locale converter online” and “locale online” when they need to see how a date, number or amount looks in another country format before shipping UI or documents.",
       "A BCP 47 locale tag (en-US, es-AR, pt-BR, zh-Hans) controls separators, order of day/month, and where the currency symbol goes.",
@@ -41,12 +41,12 @@ export const TOOL_SEO_OVERRIDES_GSC_QUERIES: Record<string, ToolSeoOverride> = {
     ],
   },
   "conversor-de-unidades": {
-    metaTitle: "Unit Converter Online — Length, Weight, Temperature & More | UtiliHub",
-    metaTitleEs: "Conversor de unidades online — longitud, peso, temperatura y más | UtiliHub",
+    metaTitle: "Unit Converter — Length, Weight, Temp & More | UtiliHub",
+    metaTitleEs: "Conversor de unidades — longitud, peso y más | UtiliHub",
     metaDescription:
-      "Free unit converter: length, weight, temperature, volume, area and time. Instant metric ↔ imperial results. No signup, runs in the browser.",
+      "Free unit converter for length, weight, temperature, volume, area and time. Get instant metric ↔ imperial results in your browser. Pick units and convert.",
     metaDescriptionEs:
-      "Conversor de unidades gratis: longitud, peso, temperatura, volumen, área y tiempo. Resultados métricos ↔ imperiales al instante. Sin registro.",
+      "Conversor de unidades gratis: longitud, peso, temperatura, volumen, área y tiempo. Resultados métricos ↔ imperiales al instante. Elegí unidades y convertí.",
     about: [
       "A unit converter applies fixed international factors between metric and common imperial units so you can switch length, mass, temperature, volume, area and time in one place.",
       "Typical searches include “unit converter”, “convert units” and “online converter” when someone needs a quick, trustworthy conversion without installing an app.",
@@ -77,12 +77,12 @@ export const TOOL_SEO_OVERRIDES_GSC_QUERIES: Record<string, ToolSeoOverride> = {
     ],
   },
   "conversor-millas-km": {
-    metaTitle: "Miles to Km Converter — Convert Miles to Kilometers Online | UtiliHub",
-    metaTitleEs: "Millas a km — conversor de millas a kilómetros online | UtiliHub",
+    metaTitle: "Miles to Km Converter — 1 mile = 1.609344 km | UtiliHub",
+    metaTitleEs: "Millas a km — conversor de millas a kilómetros | UtiliHub",
     metaDescription:
-      "Convert miles to km instantly. 1 mile = 1.609344 km. Free miles to kilometers converter for distance, maps and travel. No signup.",
+      "Convert miles to km instantly: 1 mile = 1.609344 km. Free miles to kilometers converter for running, maps and road trips. Enter miles and get km now.",
     metaDescriptionEs:
-      "Convertí millas a km al instante. 1 milla = 1,609344 km. Conversor gratis de millas a kilómetros para distancias y viajes. Sin registro.",
+      "Convertí millas a km al instante: 1 milla = 1,609344 km. Conversor gratis de millas a kilómetros para carreras, mapas y viajes. Ingresá las millas y listo.",
     about: [
       "Miles to km is one of the most common distance conversions: multiply miles by 1.609344 to get kilometers (exact international mile).",
       "Use it for road trips, running routes, aviation charts or any map that mixes US customary and metric units.",

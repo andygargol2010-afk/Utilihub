@@ -108,7 +108,7 @@ export const PERCENT_ADVANCED_TOOLS: GeneralTool[] = [
   base(
     "porcentaje-hasta-meta",
     "Percent to goal calculator",
-    "See how far you are toward a target and what remains in percent and units.",
+    "Percent to goal calculator: enter your current value and target to see percent complete, percent left and units remaining.",
     [
       "Progress toward a goal is (current ÷ goal) × 100, capped in interpretation when you overshoot.",
       "The remaining percentage is max(0, 100 − progress%) when you have not yet reached the target.",

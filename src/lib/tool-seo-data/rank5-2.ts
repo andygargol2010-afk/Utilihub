@@ -65,12 +65,12 @@ export const TOOL_SEO_OVERRIDES_RANK5_2: Record<string, ToolSeoOverride> = {
   },
 
   "porcentaje-hasta-meta": {
-    metaTitle: "Percent Complete Calculator — Progress to Goal | UtiliHub",
-    metaTitleEs: "Calculadora de porcentaje de avance online — % de meta y restante | UtiliHub",
+    metaTitle: "Percent to Goal Calculator — Progress & Remaining | UtiliHub",
+    metaTitleEs: "Porcentaje hasta la meta — calculadora de avance | UtiliHub",
     metaDescription:
-      "How far are you toward a goal? Get percent complete, percent left and units remaining. Free progress calculator, no signup.",
+      "Percent to goal calculator: enter current and target values to get percent complete, percent left and units remaining. Free for sales, savings and goals.",
     metaDescriptionEs:
-      "¿Qué porcentaje de la meta llevás? Calculá el % de avance, el % que falta y las unidades restantes. Ideal para ventas, ahorro y proyectos. Gratis.",
+      "Calculá el porcentaje hasta la meta: ingresá el valor actual y el objetivo y obtené el % de avance, el % que falta y las unidades restantes. Gratis, ya.",
     about: [
       "Percent to goal (progress %) is current ÷ target × 100. Remaining units are max(target − current, 0).",
       "Use the same unit for current and target (money, tasks, km). Over 100% means you already beat the goal.",

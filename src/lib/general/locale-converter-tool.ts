@@ -7,7 +7,7 @@ export const LOCALE_CONVERTER_TOOLS = [
     "Locale Converter",
     "desarrollo",
     "converter",
-    "Format a date, a number and a currency amount for any locale or BCP 47 tag, side by side, with the browser's Intl API.",
+    "Locale converter online: see a date, a number and a currency amount formatted for any locale or BCP 47 tag (en-US, es-MX, de-DE…), side by side.",
     [
       "locale converter online",
       "locale converter",
@@ -23,7 +23,7 @@ export const LOCALE_CONVERTER_TOOLS = [
       description:
         "Free locale converter: see how a date, number and currency amount look in en-US, de-DE, es-MX, ja-JP or any BCP 47 tag. Uses Intl, runs in your browser.",
       summaryEs:
-        "Formateá una fecha, un número y un importe en cualquier locale o etiqueta BCP 47 con la API Intl del navegador.",
+        "Locale converter online: mirá una fecha, un número y un importe con el formato de cualquier locale o etiqueta BCP 47 (es-MX, en-US, de-DE…), lado a lado.",
     },
   ),
 ];

@@ -4,12 +4,12 @@ import type { ToolSeoOverride } from "../tool-seo-overrides";
 
 export const TOOL_SEO_OVERRIDES_RANK5_1: Record<string, ToolSeoOverride> = {
   calculadora: {
-    metaTitle: "Online Calculator Free — Basic Math in Your Browser | UtiliHub",
+    metaTitle: "Calculator Online — Free, With Keyboard & History | UtiliHub",
     metaTitleEs: "Calculadora online gratis — suma, resta, × y ÷ | UtiliHub",
     metaDescription:
-      "Free online calculator for add, subtract, multiply and divide. Keyboard support, history, no signup. Works offline in your browser.",
+      "Free online calculator to add, subtract, multiply, divide and get percentages. Type with your keyboard, check recent results and calculate now, no signup.",
     metaDescriptionEs:
-      "Calculadora online gratis para sumar, restar, multiplicar y dividir. Teclado físico, historial y sin registro. Funciona en el navegador.",
+      "Calculadora online gratis para sumar, restar, multiplicar, dividir y sacar porcentajes. Usá el teclado, mirá el historial y calculá ya, sin registro.",
     about: [
       "A basic online calculator handles the four operations plus percent. Use the on-screen pad or your keyboard; session history shows recent results.",
       "All math runs locally with standard floating-point precision — nothing is sent to a server for this tool.",
