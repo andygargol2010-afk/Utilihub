@@ -7,6 +7,7 @@ import { createAdaptiveQuality } from "./house-modeler/adaptiveQuality";
 import { createDimensionLabel } from "./house-modeler/dimensionLabel";
 import { createMeasure, MeasureButton, type Measure } from "./house-modeler/measure";
 import { exportScenePng } from "./house-modeler/exportPng";
+import { exportFloorPlanPng } from "./house-modeler/floorPlan";
 import { copyShareUrl, readShareHash, readShareTod } from "./house-modeler/shareLink";
 import { readAutosave, readAutosaveLayers, serializeParts, setLayerSource, writeAutosave, type SavedLayer, type SavedPart } from "./house-modeler/autosave";
 import { createHistory, undoKeyStep } from "./house-modeler/history";
@@ -7043,6 +7044,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
         >
           {labels.png}
         </button>
+        <button type="button" data-testid="export-plan" disabled={count === 0} onClick={() => { flashActionHint(exportFloorPlanPng(partsRef.current.map((p) => ({ kind: p.kind, obj: findPartObject(p.id) })), es) ? (es ? "Planta descargada" : "Floor plan downloaded") : (es ? "Nada que exportar" : "Nothing to export")); }} title={es ? "Descarga la planta 2D con medidas" : "Download a 2D floor plan with dimensions"} className="inline-flex min-h-11 shrink-0 snap-start items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold hover:bg-accent disabled:opacity-50">{es ? "Planta PNG" : "Plan PNG"}</button>
         <button
           type="button"
           data-testid="share-link"

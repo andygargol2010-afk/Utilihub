@@ -43,7 +43,7 @@ Audit date 2026-10-26 (opened EN/ES, desktop+mobile): no undo/redo, no autosave 
 | 36 | Mobile: pinch-to-zoom/two-finger pan hint + double-tap Frame | 3 | 4 | 2 | 6 | open (hint exists in onboarding; double-tap conflicts with tap-to-place, View picker already frames) |
 | 37 | Export design as image with transparent/white background + dimension overlay option | 2 | 3 | 2 | 3 | open |
 | 38 | Persist snap-grid/view/roof-hidden state in share link (full scene state) | 2 | 3 | 2 | 3 | open |
-| 39 | Floor-plan 2D export (top view PNG with room labels) | 4 | 3 | 3 | 4 | open |
+| 39 | Floor-plan 2D export (top view PNG with room labels) | 4 | 3 | 3 | 4 | DONE run 332 (house-modeler/floorPlan.ts; top view PNG with walls/openings/roof outline, overall size m+ft, scale bar; no room names) |
 | 15 | Texture/bump micro-polish (max 1 in 8 PRODUCT runs) | 1 | 2 | 1 | 2 | open |
 
 Ideas for next audit: layers/locks in undo snapshot, measure tool (distance between two points), Delete-key/Ctrl+D discoverability, include time-of-day in share link.

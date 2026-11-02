@@ -15,7 +15,7 @@ const box = new THREE.Box3();
 const size = new THREE.Vector3();
 
 /** Unrotated bounding size, so a yawed part is not inflated by its world AABB. */
-function localSize(obj: THREE.Object3D): THREE.Vector3 {
+export function localSize(obj: THREE.Object3D): THREE.Vector3 {
   const yaw = obj.rotation.y;
   obj.rotation.y = 0;
   obj.updateMatrixWorld(true);
