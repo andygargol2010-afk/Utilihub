@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 94
-runs_total: 94
+last_run: 2026-11-02 run 95
+runs_total: 95
 last_mode: HUNT
-last_fix: n/a (docs only)
+last_fix: E051 Spanish summary/intro English leak (es-summaries WORDS + finance intro)
 last_prevent: n/a
 last_known_focus: E050
-deploy: production READY on b66efb99 (includes E050 category fix + prior)
-notes: Known smoke E050 now 200 on live www.utilihub.net/es/herramientas/calculadora-ahorro-para-meta with dedicated SavingsGoal UI (Meta de ahorro / Meses). E047 IVA dedicated OK. E031 vigilance: no $(cat/PLACEHOLDER in src. Discovery: /es OK, modelador-3d correct studio, /es/juegos/2048 OK, pixelihub OK, conversor-pies2-m2 200, WACC under /es/finanzas OK (herramientas 404 expected). No new runtime/routing/registry/SEO errors found. Deploy stable.
+deploy: production READY on b66efb99 (pre-fix; post-push pending)
+notes: Known smoke E050 still 200 dedicated. Discovery: crude phraseTranslate left English in math summaries (valor-absoluto etc.); finance pages used raw EN description. Fixed by expanding translator + routing finance intro through spanishToolSummary (uses SUMMARY_ES). No deploy ERROR. No new PLACEHOLDER/$(cat/registry issues.
 ```
 
 <!-- end:error-hunter-state.md -->

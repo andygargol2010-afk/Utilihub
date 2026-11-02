@@ -6,6 +6,7 @@ import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { DeferredFinanceSeo } from "@/components/DeferredFinanceSeo";
 import { absoluteUrl, cleanDescription, ogImage } from "@/lib/seo";
 import { spanishToolName } from "@/lib/i18n/es";
+import { spanishToolSummary } from "@/lib/i18n/es-summaries";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 
 type FinanceSeoLiteEs = {
@@ -102,6 +103,7 @@ function SpanishFinancialToolPage() {
 
   const intro =
     seo.introEs ??
+    spanishToolSummary({ slug: tool.slug, name: tool.name, summary: tool.summary, category: "finanzas" }) ??
     tool.description ??
     "Calcula y analiza este escenario financiero directamente en tu navegador.";
 
