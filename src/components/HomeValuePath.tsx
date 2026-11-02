@@ -6,12 +6,16 @@ interface ValueStep {
   id: string;
   pathEn: string;
   pathEs: string;
+  pathPt: string;
   titleEn: string;
   titleEs: string;
+  titlePt: string;
   ctaEn: string;
   ctaEs: string;
+  ctaPt: string;
   shortEn: string;
   shortEs: string;
+  shortPt: string;
 }
 
 const EXPERIENCE_POOL: ValueStep[] = [
@@ -19,67 +23,91 @@ const EXPERIENCE_POOL: ValueStep[] = [
     id: "aurora-particle-playground",
     pathEn: "/aurora-particle-playground",
     pathEs: "/es/aurora-particle-playground",
+    pathPt: "/pt/aurora-particle-playground",
     titleEn: "Aurora Particles",
     titleEs: "Partículas Aurora",
+    titlePt: "Partículas Aurora",
     ctaEn: "Explore bloom",
     ctaEs: "Explorar bloom",
+    ctaPt: "Explorar bloom",
     shortEn: "Multi-mode trails & attractors",
     shortEs: "Estelas multi-modo y atractores",
+    shortPt: "Estelas multi-modo e atratores",
   },
   {
     id: "n-body-gravity-sim",
     pathEn: "/n-body-gravity",
     pathEs: "/es/n-body-gravity",
+    pathPt: "/pt/n-body-gravity",
     titleEn: "N-Body Gravity",
     titleEs: "Gravedad N-Cuerpos",
+    titlePt: "Gravidade N-Corpos",
     ctaEn: "Simulate orbits",
     ctaEs: "Simular órbitas",
+    ctaPt: "Simular órbitas",
     shortEn: "Live gravity + presets",
     shortEs: "Gravedad en vivo + presets",
+    shortPt: "Gravidade ao vivo + presets",
   },
   {
     id: "neon-layer-composer",
     pathEn: "/neon-layer-composer",
     pathEs: "/es/neon-layer-composer",
+    pathPt: "/pt/neon-layer-composer",
     titleEn: "Neon Layers",
     titleEs: "Capas Neón",
+    titlePt: "Camadas Neon",
     ctaEn: "Draw glow",
     ctaEs: "Dibujar glow",
+    ctaPt: "Desenhar glow",
     shortEn: "Freehand bloom & symmetry",
     shortEs: "Bloom a mano alzada y simetría",
+    shortPt: "Bloom à mão livre e simetria",
   },
   {
     id: "prism-trail-composer",
     pathEn: "/studio/prism-trail-composer",
     pathEs: "/es/studio/compositor-estela-prisma",
+    pathPt: "/pt/studio/compositor-estela-prisma",
     titleEn: "Prism Trail",
     titleEs: "Estela Prisma",
+    titlePt: "Estela Prisma",
     ctaEn: "Trail rainbow",
     ctaEs: "Estela arcoíris",
+    ctaPt: "Estela arco-íris",
     shortEn: "Rainbow prism trails",
     shortEs: "Estelas prisma arcoíris",
+    shortPt: "Estelas prisma arco-íris",
   },
   {
     id: "color-cascade-fusion",
     pathEn: "/color-cascade-fusion",
     pathEs: "/es/color-cascade-fusion",
+    pathPt: "/pt/color-cascade-fusion",
     titleEn: "Color Cascade",
     titleEs: "Cascada de Color",
+    titlePt: "Cascata de Cor",
     ctaEn: "Fuse colors",
     ctaEs: "Fusionar colores",
+    ctaPt: "Fundir cores",
     shortEn: "Adjacent fusion + combos",
     shortEs: "Fusión adyacente + combos",
+    shortPt: "Fusão adjacente + combos",
   },
   {
     id: "aura-card-share",
     pathEn: "/aura-card",
     pathEs: "/es/aura-card",
+    pathPt: "/pt/aura-card",
     titleEn: "Aura Card",
     titleEs: "Carta Aura",
+    titlePt: "Cartão Aura",
     ctaEn: "Compose share",
     ctaEs: "Componer compartir",
+    ctaPt: "Compor compartilhar",
     shortEn: "Shareable particles + quotes",
     shortEs: "Partículas y citas compartibles",
+    shortPt: "Partículas e citações compartilháveis",
   },
 ];
 
@@ -115,13 +143,14 @@ function saveExplored(set: Set<string>) {
 }
 
 interface Props {
-  locale: "en" | "es";
+  locale: "en" | "es" | "pt";
 }
 
 export function HomeValuePath({ locale }: Props) {
   const [explored, setExplored] = useState<Set<string>>(new Set());
   const [steps, setSteps] = useState<ValueStep[]>(() => pickRandomSteps());
   const isEs = locale === "es";
+  const isPt = locale === "pt";
 
   useEffect(() => {
     setExplored(loadExplored());
@@ -146,16 +175,31 @@ export function HomeValuePath({ locale }: Props) {
     });
   };
 
+  const pathLabel = isPt ? "Rota de valor" : isEs ? "Ruta de valor" : "Value Path";
+  const title = isPt ? "Explore 3 experiências em destaque" : isEs ? "Explorá 3 experiencias destacadas" : "Explore 3 featured experiences";
+  const newLabel = isPt ? "Nova" : isEs ? "Nueva" : "New";
+  const newTitle = isPt ? "Nova rota aleatória" : isEs ? "Nueva ruta aleatoria" : "New random path";
+  const ofLabel = isPt ? "de" : isEs ? "de" : "of";
+  const exploredLabel = isPt ? "exploradas" : isEs ? "exploradas" : "explored";
+  const progressAria = isPt ? "Progresso da rota" : isEs ? "Progreso de la ruta" : "Value path progress";
+  const completeMsg = isPt
+    ? "Rota completa! Você explorou as 3 experiências em destaque."
+    : isEs
+    ? "¡Ruta completa! Ya exploraste las 3 experiencias destacadas."
+    : "Path complete! You explored all 3 featured experiences.";
+  const doneLabel = isPt ? "Feito" : isEs ? "Hecho" : "Done";
+  const againLabel = isPt ? "Explorar novamente" : isEs ? "Volver a explorar" : "Explore again";
+
   return (
     <section className="container-page py-6" aria-labelledby="value-path-title">
       <div className="rounded-2xl border border-border/60 bg-card/40 p-4 sm:p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-violet-600">
-              {isEs ? "Ruta de valor" : "Value Path"}
+              {pathLabel}
             </p>
             <h2 id="value-path-title" className="mt-1 text-lg font-black">
-              {isEs ? "Explorá 3 experiencias destacadas" : "Explore 3 featured experiences"}
+              {title}
             </h2>
           </div>
           <div className="flex items-center gap-2">
@@ -164,10 +208,10 @@ export function HomeValuePath({ locale }: Props) {
               onClick={refresh}
               className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-semibold hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
               data-event="value-path-refresh"
-              title={isEs ? "Nueva ruta aleatoria" : "New random path"}
+              title={newTitle}
             >
               <RefreshCw className="size-3.5" aria-hidden />
-              {isEs ? "Nueva" : "New"}
+              {newLabel}
             </button>
             <span
               className={`rounded-full px-3 py-1 text-xs font-bold ${
@@ -176,7 +220,7 @@ export function HomeValuePath({ locale }: Props) {
                   : "bg-violet-500/10 text-violet-700 dark:text-violet-300"
               }`}
             >
-              {count} {isEs ? "de" : "of"} {total} {isEs ? "exploradas" : "explored"}
+              {count} {ofLabel} {total} {exploredLabel}
             </span>
           </div>
         </div>
@@ -188,7 +232,7 @@ export function HomeValuePath({ locale }: Props) {
           aria-valuenow={count}
           aria-valuemin={0}
           aria-valuemax={total}
-          aria-label={isEs ? "Progreso de la ruta" : "Value path progress"}
+          aria-label={progressAria}
         >
           <div
             className={`h-full rounded-full transition-all duration-500 ${
@@ -201,19 +245,17 @@ export function HomeValuePath({ locale }: Props) {
         {complete && (
           <div className="mb-4 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-3 py-2 text-xs font-semibold text-emerald-800 dark:text-emerald-200">
             <Sparkles className="size-3.5 shrink-0" aria-hidden />
-            {isEs
-              ? "¡Ruta completa! Ya exploraste las 3 experiencias destacadas."
-              : "Path complete! You explored all 3 featured experiences."}
+            {completeMsg}
           </div>
         )}
 
         <ol className="grid gap-3 sm:grid-cols-3">
           {steps.map((step, i) => {
             const done = explored.has(step.id);
-            const path = isEs ? step.pathEs : step.pathEn;
-            const title = isEs ? step.titleEs : step.titleEn;
-            const cta = isEs ? step.ctaEs : step.ctaEn;
-            const short = isEs ? step.shortEs : step.shortEn;
+            const path = isPt ? step.pathPt : isEs ? step.pathEs : step.pathEn;
+            const title = isPt ? step.titlePt : isEs ? step.titleEs : step.titleEn;
+            const cta = isPt ? step.ctaPt : isEs ? step.ctaEs : step.ctaEn;
+            const short = isPt ? step.shortPt : isEs ? step.shortEs : step.shortEn;
             return (
               <li key={step.id} className="relative">
                 <Link
@@ -240,14 +282,14 @@ export function HomeValuePath({ locale }: Props) {
                     </span>
                     {done && (
                       <span className="text-[10px] font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
-                        {isEs ? "Hecho" : "Done"}
+                        {doneLabel}
                       </span>
                     )}
                   </div>
                   <h3 className="text-sm font-bold leading-snug group-hover:text-primary">{title}</h3>
                   <p className="mt-1 flex-1 text-xs text-muted-foreground">{short}</p>
                   <span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-primary">
-                    {done ? (isEs ? "Volver a explorar" : "Explore again") : cta}{" "}
+                    {done ? againLabel : cta}{" "}
                     <ArrowRight className="size-3 transition group-hover:translate-x-0.5" />
                   </span>
                 </Link>

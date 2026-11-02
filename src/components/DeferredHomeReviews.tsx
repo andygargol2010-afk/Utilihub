@@ -1,6 +1,6 @@
 import { useEffect, useState, type ComponentType } from "react";
 
-type ReviewsProps = { locale?: "en" | "es" };
+type ReviewsProps = { locale?: "en" | "es" | "pt" };
 
 /**
  * Home reviews hit the server function and then paint up to 12 cards.
@@ -37,19 +37,25 @@ export function DeferredHomeReviews({ locale = "en" }: ReviewsProps) {
   return <Reviews locale={locale} />;
 }
 
-function ReviewsSlot({ locale }: { locale: "en" | "es" }) {
+function ReviewsSlot({ locale }: { locale: "en" | "es" | "pt" }) {
   const es = locale === "es";
+  const pt = locale === "pt";
+  const community = pt ? "Comunidade" : es ? "Comunidad" : "Community";
+  const title = pt ? "O que dizem sobre o UtiliHub" : es ? "Qué dicen de UtiliHub" : "What people say about UtiliHub";
+  const desc = pt
+    ? "Deixe sua opinião sem criar conta. Nome opcional, apenas estrelas e um comentário."
+    : es
+    ? "Dejá tu opinión sin crear cuenta. Nombre opcional, solo estrellas y un comentario."
+    : "Leave feedback with no account. Name optional — just stars and a short comment.";
   return (
     <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="reviews-title" aria-busy="true">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{es ? "Comunidad" : "Community"}</p>
+        <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{community}</p>
         <h2 id="reviews-title" className="mt-1 text-2xl font-black sm:text-3xl">
-          {es ? "Qué dicen de UtiliHub" : "What people say about UtiliHub"}
+          {title}
         </h2>
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          {es
-            ? "Dejá tu opinión sin crear cuenta. Nombre opcional, solo estrellas y un comentario."
-            : "Leave feedback with no account. Name optional — just stars and a short comment."}
+          {desc}
         </p>
       </div>
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
