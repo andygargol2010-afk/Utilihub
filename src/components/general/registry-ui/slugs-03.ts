@@ -43,4 +43,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-horas-extra": UI.OvertimeCalculatorToolUi,
   "calculadora-calorias-porcion": UI.CaloriesPerServingCalculatorToolUi,
   "calculadora-ahorro-para-meta": UI.SavingsGoalCalculatorToolUi,
+  "conversor-mpg-l100km": UI.MpgL100kmConverterToolUi,
 };

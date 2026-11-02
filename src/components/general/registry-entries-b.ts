@@ -94,4 +94,5 @@ export const REGISTRY_ENTRIES_B: readonly RegistryEntry[] = [
   { slug: "conversor-acres-hectareas", name: "AcresHectaresConverterTool", path: "./AcresHectaresConverterTool", export: "AcresHectaresConverterTool" },
   { slug: "calculadora-comision-de-venta", name: "SalesCommissionCalculatorTool", path: "./SalesCommissionCalculatorTool", export: "SalesCommissionCalculatorTool" },
   { slug: "conversor-pies2-m2", name: "SquareFeetMetersConverterTool", path: "./SquareFeetMetersConverterTool", export: "SquareFeetMetersConverterTool" },
+  { slug: "conversor-mpg-l100km", name: "MpgL100kmConverterTool", path: "./MpgL100kmConverterTool", export: "MpgL100kmConverterTool" },
 ] as const;
