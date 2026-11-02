@@ -4,4 +4,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "conversor-zonas-horarias": "Conversor de zonas horarias",
   "calculadora-varianza": "Calculadora de varianza",
   "conversor-pt-a-px": "Conversor de puntos a píxeles",
+  "calculadora-promedio-examenes": "Calculadora de promedio de exámenes",
 };

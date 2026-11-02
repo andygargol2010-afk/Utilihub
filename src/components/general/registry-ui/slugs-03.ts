@@ -47,4 +47,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "conversor-zonas-horarias": UI.TimezoneConverterToolUi,
   "calculadora-varianza": UI.VarianceCalculatorToolUi,
   "conversor-pt-a-px": UI.PointsToPxConverterToolUi,
+  "calculadora-promedio-examenes": UI.ExamAverageCalculatorToolUi,
 };

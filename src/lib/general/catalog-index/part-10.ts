@@ -4,10 +4,12 @@ import { MPG_L100KM_CONVERTER_TOOLS } from "../mpg-l100km-converter-tool";
 import { TIMEZONE_CONVERTER_TOOLS } from "../timezone-converter-tool";
 import { VARIANCE_CALCULATOR_TOOLS } from "../variance-calculator-tool";
 import { POINTS_TO_PX_CONVERTER_TOOLS } from "../points-to-px-converter-tool";
+import { EXAM_AVERAGE_CALCULATOR_TOOLS } from "../exam-average-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
   ...TIMEZONE_CONVERTER_TOOLS,
   ...VARIANCE_CALCULATOR_TOOLS,
   ...POINTS_TO_PX_CONVERTER_TOOLS,
+  ...EXAM_AVERAGE_CALCULATOR_TOOLS,
 ];

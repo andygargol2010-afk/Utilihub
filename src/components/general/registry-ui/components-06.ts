@@ -53,3 +53,7 @@ export const CupsMlConverterToolUi = lazy(() =>
 export const CaloriesPerServingCalculatorToolUi = lazy(() =>
   import("../CaloriesPerServingCalculatorTool").then((m) => ({ default: m.CaloriesPerServingCalculatorTool })),
 );
+
+export const ExamAverageCalculatorToolUi = lazy(() =>
+  import("../ExamAverageCalculatorTool").then((m) => ({ default: m.ExamAverageCalculatorTool })),
+);
