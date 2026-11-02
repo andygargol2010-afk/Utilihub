@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-02 | diseno | conversor-pt-a-px | PointsToPxConverterTool
 - 2026-11-02 | matematicas | calculadora-varianza | VarianceCalculatorTool
 - 2026-11-02 | fechas | conversor-zonas-horarias | TimezoneConverterTool
 - 2026-11-01 | conversiones | conversor-mpg-l100km | MpgL100kmConverterTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-31 | salud | calculadora-ratio-cintura-altura | WaistToHeightRatioCalculatorTool
 - 2026-10-31 | conversiones | conversor-acres-hectareas | AcresHectaresConverterTool
 - 2026-10-31 | salud | calculadora-ciclo-sueno | SleepCycleCalculatorTool
-- 2026-10-30 | educacion | calculadora-moda | ModeCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -43,7 +43,7 @@ ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, are
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml, calculadora-calorias-porcion)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura)
-diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala)
+diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala, conversor-pt-a-px)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta)
@@ -76,6 +76,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-11-01: PRODUCT — conversor-mpg-l100km (conversiones). One tool (default). Anti-dupe OK (new slug). Practical MPG ↔ L/100km fuel efficiency converter for car trips. Complements existing fuel cost/consumption tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-02: PRODUCT — conversor-zonas-horarias (fechas). One tool (default, saturation least-represented). Anti-dupe OK (new slug, no prior dedicated timezone converter). Practical IANA timezone converter with current time and common zones. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-02: PRODUCT — calculadora-varianza (matematicas). One tool (default, saturation least-represented). Anti-dupe OK (new dedicated slug; generic entry in math.ts is thin). Practical sample/population variance + mean + SD. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-11-02: PRODUCT — conversor-pt-a-px (diseno). One tool (default, saturation least-represented). Anti-dupe OK (new slug, no prior pt↔px dedicated converter). Practical typography points to CSS pixels at 96 DPI. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 ```
 
 ---
@@ -84,9 +85,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-varianza
+last_slugs: conversor-pt-a-px
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (to be filled after push)
+last_sha: 691d48dbbc967cbdb63942f6098979f4c6110635
 ```
 
 <!-- end:tools-builder-state.md -->
