@@ -59,19 +59,19 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive achievement certificate maker. User selects a template (classic diploma, modern badge, playful award), enters name, achievement title, date and optional message. Sees live CSS/SVG preview of the branded certificate. Customizes from color presets. Generates downloadable PNG or copies a shareable URL with encoded parameters that reconstructs the certificate. EN+ES routes. Mobile-first 390px. No canvas or particles; pure form + declarative layout. Growth surface for shareable personal wins.
-id: achievement-certificate-maker
-path_en: /growth/achievement-certificate-maker
-path_es: /es/crecimiento/creador-certificado-logro
-path_seo: n/a
-domain: growth-surfaces
-runs_total: 4
-runs_remaining: 0
-acceptance: User fills the form, sees live certificate preview, then downloads the PNG or copies the deep-link share URL.
-share: both
-next_step_required: no
-notes: Rubric (1-5): C1 achievement-certificate-maker value=4 share=5 search=3 distinct=4 feas=5 perf=5 total=26; C2 social-invite-composer value=3 share=4 search=2 distinct=3 feas=5 perf=5 total=22; C3 challenge-badge-wall value=4 share=5 search=3 distinct=3 feas=5 perf=5 total=25. Closest-3 for C1: quote-card-maker (text\to card PNG), progress-passport (collection\to PNG), adsense-compliance-kit (form\to score PNG). Primary metaphor: declarative form \to visual certificate layout. Why not particle-canvas: zero freehand/particles/trails/attractors; discrete fields generate static branded document. IP: n/a (original). Roll math: rand=0.286 < p_fixed=0.35 \to FIXED; weighted random among growth excl seo-locales (total 34) \to growth-surfaces (w=3). Chosen id=achievement-certificate-maker. Variety: underused form-to-visual, not saturated playground pattern. Run 1: shipped core form + 3 templates + color presets + live CSS preview + URL deep-link + PNG download + copy image/link. EN+ES routes. Mobile 390px. Adsterra intact. Run 2: added Issued-by field (URL ib=), reset button, fixed preview relative positioning + better text wrapping, updated canvas layout for issuer line. Acceptance core met; polish continues. Run 3: added 3 quick-fill presets (Course Complete, Team MVP, Milestone) that populate title+message; decorative seal on canvas PNG for shareability. EN+ES. Mobile 390px. Adsterra intact. Run 4: added matching decorative seal to live CSS preview (absolute positioned), slight min-height bump for better layout fidelity with canvas, confirmed mobile wrap. Acceptance fully met. Project closed.
+status: active
+idea: Full Portuguese (pt-BR) product surface under /pt/ for SEO growth. Build locale home matching current EN/ES structure (hero, value props, experience rail/featured), tools hub entry points, games + simulators index, and high-traffic experiences with full UI strings in Portuguese. No thin shell. Register in seo-locales.ts + registry only when parity bar met. Priority first locale after reset. hreflang + sitemap. Design parity with EN shell. Mobile 390px. Adsterra intact.
+id: pt-product-parity
+path_en: n/a
+path_es: n/a
+path_seo: /pt/...
+domain: seo-locales
+runs_total: 11
+runs_remaining: 11
+acceptance: User visits /pt/ and sees full home structure in Portuguese matching EN parity bar (hero + featured experiences + hubs), not a stub; subsequent runs extend pages_done until active status.
+share: n/a
+next_step_required: yes
+notes: Rubric (1-5): C1 pt-product-parity value=5 share=3 search=5 distinct=5 feas=4 perf=5 total=27; C2 fr-product-parity value=5 share=3 search=4 distinct=5 feas=4 perf=5 total=26; C3 de-product-parity value=5 share=3 search=4 distinct=5 feas=4 perf=5 total=26. Closest-3: previous removed thin pt/fr/de shells (2026-10-28 reset), EN home structure, ES home structure. Primary metaphor: multi-locale routing + full UI translation parity for product surfaces. Why not particle-canvas: growth/seo domain, no interactive canvas; discrete page/route parity. IP: n/a. Roll math: rand=0.892 > p_fixed=0.35 → FLEX; weighted among growth (total 44) → seo-locales (w=10). Chosen id=pt-product-parity (priority queue first). Variety: underused SEO full-parity, not saturated playground. Plan: run 1+ build /pt/ home + core indexes; track pages_done; activate only on full bar. adsense-prep_runs: 6
 adsense-prep_runs: 6
 ```
 
