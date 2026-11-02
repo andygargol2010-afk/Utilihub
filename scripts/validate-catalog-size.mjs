@@ -9,6 +9,9 @@
  *   (both were split into small files on 2026-10-28; counts are summed over the parts)
  *   - any file in src/ has a line starting with "successfully downloaded text file"
  *     or "$(cat", or contains the token PLACEHOLDER_
+ *   - any .ts/.tsx in src/ under 200 bytes with no import/export statement (stub left by a
+ *     truncated write), or any file containing FULL_CONTENT or _FROM_TMP
+ *   - src/lib/i18n/summary-es.ts with fewer than MIN_SUMMARY_ES_LINES lines
  *
  * Baseline: scripts/catalog-baseline.json. Only raise it; never lower it to make a build pass.
  */
@@ -24,6 +27,7 @@ const errors = [];
 
 const TEXT_EXT = /\.(ts|tsx|js|jsx|mjs|cjs|css|json|md|html|svg|txt)$/;
 const BAD_LINE_PREFIXES = ["successfully downloaded text file", "$(cat"];
+const STUB_MARKERS = /FULL_CONTENT|_FROM_TMP/;
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -45,7 +49,19 @@ for (const file of walk(srcDir)) {
     if (line.includes("PLACEHOLDER_")) {
       errors.push(`${where} contains the stub token PLACEHOLDER_`);
     }
+    if (STUB_MARKERS.test(line)) {
+      errors.push(`${where} contains a truncated-write marker (FULL_CONTENT / _FROM_TMP)`);
+    }
   });
+  if (/\.tsx?$/.test(file) && statSync(file).size < 200 && !/^\s*(import|export)\b/m.test(lines.join("\n"))) {
+    errors.push(`${relative(root, file)} is under 200 bytes and has no import/export (stub left by a truncated write)`);
+  }
+}
+
+const MIN_SUMMARY_ES_LINES = 550;
+const summaryEsLines = readFileSync(join(srcDir, "lib/i18n/summary-es.ts"), "utf8").split(/\r?\n/).length;
+if (summaryEsLines < MIN_SUMMARY_ES_LINES) {
+  errors.push(`src/lib/i18n/summary-es.ts has ${summaryEsLines} lines (min ${MIN_SUMMARY_ES_LINES})`);
 }
 
 function readParts(mainFile, partsDir) {
@@ -128,5 +144,5 @@ if (errors.length) {
 }
 
 console.log(
-  `validate-catalog-size PASS: ALL_TOOLS=${toolCount} (min ${baseline.minTools}), indexImports=${indexImports} (min ${baseline.minIndexImports}), registryLines=${registryLines} (min ${baseline.minRegistryLines}), no corrupted-write markers in src/`,
+  `validate-catalog-size PASS: ALL_TOOLS=${toolCount} (min ${baseline.minTools}), indexImports=${indexImports} (min ${baseline.minIndexImports}), registryLines=${registryLines} (min ${baseline.minRegistryLines}), summary-es.ts=${summaryEsLines} lines (min ${MIN_SUMMARY_ES_LINES}), no corrupted-write markers or stubs in src/`,
 );
