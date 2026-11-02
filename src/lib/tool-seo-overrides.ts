@@ -54,8 +54,8 @@ export function resolvedToolSeo(tool: {
   return {
     title: o.metaTitle ?? tool.title,
     description: o.metaDescription ?? tool.description,
-    about: o.about.length ? o.about : tool.about,
-    steps: o.steps.length ? o.steps : tool.steps,
-    faq: o.faq.length ? o.faq : tool.faq ?? [],
+    about: o.about?.length ? o.about : tool.about,
+    steps: o.steps?.length ? o.steps : tool.steps,
+    faq: o.faq?.length ? o.faq : tool.faq ?? [],
   };
 }

@@ -26,11 +26,11 @@ export const TOOL_JOURNEYS: Record<string, string[]> = {
   "timestamp-generator": ["timestamp-to-date", "calculadora-de-fechas", "sumar-dias", "diferencia-fechas"],
   "timestamp-to-date": ["timestamp-generator", "calculadora-de-fechas", "sumar-dias", "diferencia-fechas"],
 
-  "contador-de-palabras": ["calculadora-tiempo-lectura", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
-  "contador-de-caracteres": ["contador-de-palabras", "calculadora-tiempo-lectura", "limpiar-texto", "generador-nombres-archivos"],
-  "limpiar-texto": ["contador-de-palabras", "calculadora-tiempo-lectura", "generador-nombres-archivos", "contador-de-caracteres"],
-  "calculadora-tiempo-lectura": ["contador-de-palabras", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
-  "generador-nombres-archivos": ["limpiar-texto", "contador-de-palabras", "calculadora-tiempo-lectura", "contador-de-caracteres"],
+  "contador-de-palabras": ["calculadora-tiempo-de-lectura", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
+  "contador-de-caracteres": ["contador-de-palabras", "calculadora-tiempo-de-lectura", "limpiar-texto", "generador-nombres-archivos"],
+  "limpiar-texto": ["contador-de-palabras", "calculadora-tiempo-de-lectura", "generador-nombres-archivos", "contador-de-caracteres"],
+  "calculadora-tiempo-de-lectura": ["contador-de-palabras", "limpiar-texto", "contador-de-caracteres", "generador-nombres-archivos"],
+  "generador-nombres-archivos": ["limpiar-texto", "contador-de-palabras", "calculadora-tiempo-de-lectura", "contador-de-caracteres"],
   "modelador-3d": ["modelador-casas-3d", "pixelihub", "relacion-aspecto", "mezclador-de-colores"],
   "modelador-casas-3d": ["modelador-3d", "pintura-superficie", "relacion-aspecto", "ppi-pantalla"],
   /* pixelihub-nextstep-v1 */
@@ -127,7 +127,7 @@ export function journeyLabel(
   if (
     current.slug === "contador-de-palabras" ||
     current.slug === "tiempo-lectura" ||
-    current.slug === "calculadora-tiempo-lectura"
+    current.slug === "calculadora-tiempo-de-lectura"
   ) {
     return es
       ? "Seguí con el texto: tiempo de lectura y limpieza"

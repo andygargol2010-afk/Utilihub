@@ -12,7 +12,7 @@ export const Route = createFileRoute("/tools/$slug")({
   loader: async ({ params }) => {
     // Catalog, slug helpers, SEO, and the showcase set stay off the route shell chunk.
     const { ALL_TOOLS, ALL_CATEGORIES } = await import("@/lib/all-tools");
-    const { toolByEnglishSlug, englishToolPath, englishCategorySlug, englishCategoryPath } = await import(
+    const { toolByEnglishSlug, englishToolPath, spanishToolPath, englishCategorySlug, englishCategoryPath } = await import(
       "@/lib/route-slugs",
     );
     const tool = toolByEnglishSlug(ALL_TOOLS, params.slug);
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/tools/$slug")({
     const seo = resolvedToolSeo(tool);
     const { hasToolShowcase } = await import("@/lib/showcase-slugs");
     const categoryView = category ? { slug: category.slug, name: category.name } : null;
-    const head = await buildEnglishToolHead(tool, categoryView, seo, englishToolPath, englishCategoryPath);
+    const head = await buildEnglishToolHead(tool, categoryView, seo, englishToolPath, englishCategoryPath, spanishToolPath);
     return {
       tool,
       category: categoryView,
@@ -45,6 +45,7 @@ async function buildEnglishToolHead(
   seo: { title?: string; description?: string; faq: Array<{ q: string; a: string }> },
   englishToolPath: (tool: Pick<CatalogTool, "name" | "category">) => string,
   englishCategoryPath: (internalCategorySlug: string) => string,
+  spanishToolPath: (tool: Pick<CatalogTool, "slug" | "category">) => string,
 ): Promise<ToolHead> {
   const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } =
     await import("@/lib/seo");
@@ -60,9 +61,7 @@ async function buildEnglishToolHead(
   const title = seo.title ?? tool.title;
   const description = cleanDescription(seo.description ?? tool.description);
   const url = absoluteUrl(englishToolPath(tool));
-  const esUrl = absoluteUrl(
-    tool.category === "finanzas" ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`,
-  );
+  const esUrl = absoluteUrl(spanishToolPath(tool));
   const categoryPath = englishCategoryPath(category.slug);
   const faq = seo.faq;
   return {

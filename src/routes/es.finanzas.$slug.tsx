@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
@@ -21,7 +21,16 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
     // Catalog stays off the route shell chunk.
     const { financialToolBySlug } = await import("@/lib/financial-tools");
     const tool = financialToolBySlug(params.slug);
-    if (!tool) throw notFound();
+    if (!tool) {
+      // General catalog tools tagged "finanzas" are served under /es/herramientas; old /es/finanzas URLs 301 there.
+      const { allToolBySlug } = await import("@/lib/all-tools");
+      const { usesFinanceRoute, spanishToolPath } = await import("@/lib/route-slugs");
+      const general = allToolBySlug(params.slug);
+      if (general && general.category === "finanzas" && !usesFinanceRoute(general)) {
+        throw redirect({ href: spanishToolPath(general), statusCode: 301 });
+      }
+      throw notFound();
+    }
     // Keep the SEO barrel off the route shell chunk.
     const { financeSeo } = await import("@/lib/finance-seo-content");
     const seo = financeSeo(tool.slug);

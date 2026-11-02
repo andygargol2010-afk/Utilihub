@@ -1,5 +1,13 @@
 import type { CatalogTool } from "./all-tools";
 import { CANONICAL_TOOL_REDIRECTS } from "./canonical-tool-redirects";
+import { FINANCIAL_CATALOG } from "./financial/catalog";
+
+const FINANCIAL_ROUTE_SLUGS = new Set(FINANCIAL_CATALOG.map((tool) => tool.slug));
+
+/** Only the dedicated financial calculators live under /finance and /es/finanzas; general tools tagged "finanzas" use /tools and /es/herramientas. */
+export function usesFinanceRoute(tool: { category: string; slug?: string }) {
+  return tool.category === "finanzas" && (!tool.slug || FINANCIAL_ROUTE_SLUGS.has(tool.slug));
+}
 
 export type PublicLocale = "en" | "es";
 
@@ -55,13 +63,13 @@ export function englishToolPath(tool: Pick<CatalogTool, "name" | "category"> & {
   const redirect = tool.slug ? CANONICAL_TOOL_REDIRECTS[tool.slug] : undefined;
   if (redirect) return redirect.en;
   const slug = englishToolSlug(tool);
-  return tool.category === "finanzas" ? `/finance/${slug}` : `/tools/${slug}`;
+  return usesFinanceRoute(tool) ? `/finance/${slug}` : `/tools/${slug}`;
 }
 
 export function spanishToolPath(tool: Pick<CatalogTool, "slug" | "category">) {
   const redirect = CANONICAL_TOOL_REDIRECTS[tool.slug];
   if (redirect) return redirect.es;
-  return tool.category === "finanzas" ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`;
+  return usesFinanceRoute(tool) ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`;
 }
 
 export function publicToolPath(tool: CatalogTool, locale: PublicLocale = "en") {
@@ -83,12 +91,12 @@ export function publicToolLink(
       : { to: "/tools/$slug", params: { slug: redirect.enSlug } };
   }
   if (locale === "es") {
-    if (tool.category === "finanzas") {
+    if (usesFinanceRoute(tool)) {
       return { to: "/es/finanzas/$slug", params: { slug: tool.slug } };
     }
     return { to: "/es/herramientas/$slug", params: { slug: tool.slug } };
   }
-  if (tool.category === "finanzas") {
+  if (usesFinanceRoute(tool)) {
     return { to: "/finance/$slug", params: { slug: englishToolSlug(tool) } };
   }
   return { to: "/tools/$slug", params: { slug: englishToolSlug(tool) } };

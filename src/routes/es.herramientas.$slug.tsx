@@ -12,7 +12,8 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
   loader: async ({ params }) => {
     const { allToolBySlug } = await import("@/lib/all-tools");
     const tool = allToolBySlug(params.slug);
-    if (!tool || tool.category === "finanzas") throw notFound();
+    const { usesFinanceRoute } = await import("@/lib/route-slugs");
+    if (!tool || usesFinanceRoute(tool)) throw notFound();
     const { toolSeoOverride } = await import("@/lib/tool-seo-overrides");
     const override = toolSeoOverride(tool.slug);
     const { spanishCategoryName, spanishToolName } = await import("@/lib/i18n/es");

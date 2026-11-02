@@ -5,7 +5,6 @@ import { TIMEZONE_CONVERTER_TOOLS } from "../timezone-converter-tool";
 import { VARIANCE_CALCULATOR_TOOLS } from "../variance-calculator-tool";
 import { POINTS_TO_PX_CONVERTER_TOOLS } from "../points-to-px-converter-tool";
 import { EXAM_AVERAGE_CALCULATOR_TOOLS } from "../exam-average-calculator-tool";
-import { KINETIC_ENERGY_CALCULATOR_TOOLS } from "../kinetic-energy-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -13,5 +12,4 @@ export const GENERAL_TOOLS_PART_10 = [
   ...VARIANCE_CALCULATOR_TOOLS,
   ...POINTS_TO_PX_CONVERTER_TOOLS,
   ...EXAM_AVERAGE_CALCULATOR_TOOLS,
-  ...KINETIC_ENERGY_CALCULATOR_TOOLS,
 ];

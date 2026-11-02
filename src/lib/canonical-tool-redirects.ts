@@ -12,9 +12,9 @@ export const CANONICAL_TOOL_REDIRECTS: Record<string, { en: string; es: string; 
   },
   "tiempo-lectura": {
     en: "/tools/reading-time-calculator",
-    es: "/es/herramientas/calculadora-tiempo-lectura",
+    es: "/es/herramientas/calculadora-tiempo-de-lectura",
     enSlug: "reading-time-calculator",
-    esSlug: "calculadora-tiempo-lectura",
+    esSlug: "calculadora-tiempo-de-lectura",
   },
 };
 
