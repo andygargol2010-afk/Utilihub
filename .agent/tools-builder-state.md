@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-02 | fechas | conversor-zonas-horarias | TimezoneConverterTool
 - 2026-11-01 | conversiones | conversor-mpg-l100km | MpgL100kmConverterTool
 - 2026-11-01 | conversiones | conversor-pies2-m2 | SquareFeetMetersConverterTool
 - 2026-11-01 | finanzas | calculadora-ahorro-para-meta | SavingsGoalCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-31 | salud | calculadora-ciclo-sueno | SleepCycleCalculatorTool
 - 2026-10-30 | educacion | calculadora-moda | ModeCalculatorTool
 - 2026-10-30 | matematicas | calculadora-rango-estadistico | StatisticalRangeCalculatorTool
-- 2026-10-30 | matematicas | calculadora-mediana | MedianCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -38,7 +38,7 @@ Use with PRODUCT diversity rules (ops). Prefer under-represented clusters.
 Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
-fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad, calculadora-dias-entre-fechas, calculadora-horas-a-decimal)
+fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad, calculadora-dias-entre-fechas, calculadora-horas-a-decimal, conversor-zonas-horarias)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml, calculadora-calorias-porcion)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
@@ -74,6 +74,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-11-01: POLÍTICA SATURACIÓN ACTIVA. Cuando ≥8 clusters están “recent” en las últimas ~12: obligatorio 1 tool del cluster menos representado en RECENT_TOOLS (propósito nuevo). Improve solo si hay evidencia GSC clara de tool débil; si no, priorizar new. Prohibido cerrar en 0 tras un solo batch.
 2026-11-01: Prefer improve se reduce a casos con evidencia GSC explícita. En saturación el default es new (least-represented).
 2026-11-01: PRODUCT — conversor-mpg-l100km (conversiones). One tool (default). Anti-dupe OK (new slug). Practical MPG ↔ L/100km fuel efficiency converter for car trips. Complements existing fuel cost/consumption tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-11-02: PRODUCT — conversor-zonas-horarias (fechas). One tool (default, saturation least-represented). Anti-dupe OK (new slug, no prior dedicated timezone converter). Practical IANA timezone converter with current time and common zones. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 ```
 
 ---
@@ -82,7 +83,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: conversor-mpg-l100km
+last_slugs: conversor-zonas-horarias
 last_deploy: no (branch auto-deploy disabled)
 last_sha: (to be filled after push)
 ```

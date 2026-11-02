@@ -1,6 +1,7 @@
 import type { CatalogTool } from "@/lib/all-tools";
 import { ES_EXACT_NAMES_01 } from "./es-names/names-01";
 import { ES_EXACT_NAMES_02 } from "./es-names/names-02";
+import { ES_EXACT_NAMES_03 } from "./es-names/names-03";
 
 export const ES_CATEGORY_NAMES: Record<string, string> = {
   finanzas: "Finanzas",
@@ -234,6 +235,7 @@ const EXACT_NAMES: Record<string, string> = {
   "calculadora-adhesivo-baldosas": "Calculadora de adhesivo para baldosas",
   ...ES_EXACT_NAMES_01,
   ...ES_EXACT_NAMES_02,
+  ...ES_EXACT_NAMES_03,
 };
 
 const ACCENTED_TERMS: Record<string, string> = {
