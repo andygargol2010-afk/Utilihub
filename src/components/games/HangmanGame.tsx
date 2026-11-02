@@ -218,7 +218,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
     ctx.fillStyle = "#94a3b8";
     ctx.font = "12px system-ui";
     ctx.fillText(`${es ? "Fallos" : "Misses"}: ${misses}/${maxMisses}`, canvas.width / 2, 220);
-    ctx.fillText("utilihub.app", canvas.width / 2, 260);
+    ctx.fillText("www.utilihub.net", canvas.width / 2, 260);
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = `utilihub-hangman-${word.toLowerCase()}.png`;
