@@ -57,3 +57,7 @@ export const CaloriesPerServingCalculatorToolUi = lazy(() =>
 export const ExamAverageCalculatorToolUi = lazy(() =>
   import("../ExamAverageCalculatorTool").then((m) => ({ default: m.ExamAverageCalculatorTool })),
 );
+
+export const KineticEnergyCalculatorToolUi = lazy(() =>
+  import("../KineticEnergyCalculatorTool").then((m) => ({ default: m.KineticEnergyCalculatorTool })),
+);

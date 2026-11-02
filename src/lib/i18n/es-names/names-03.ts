@@ -5,4 +5,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-varianza": "Calculadora de varianza",
   "conversor-pt-a-px": "Conversor de puntos a píxeles",
   "calculadora-promedio-examenes": "Calculadora de promedio de exámenes",
+  "calculadora-energia-cinetica": "Calculadora de energía cinética",
 };

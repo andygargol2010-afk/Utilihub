@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-02 | ciencia | calculadora-energia-cinetica | KineticEnergyCalculatorTool
 - 2026-11-02 | educacion | calculadora-promedio-examenes | ExamAverageCalculatorTool
 - 2026-11-02 | diseno | conversor-pt-a-px | PointsToPxConverterTool
 - 2026-11-02 | matematicas | calculadora-varianza | VarianceCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-10-31 | finanzas | calculadora-horas-extra | OvertimeCalculatorTool
 - 2026-10-31 | finanzas | calculadora-comision-de-venta | SalesCommissionCalculatorTool
 - 2026-10-31 | salud | calculadora-ratio-cintura-altura | WaistToHeightRatioCalculatorTool
-- 2026-10-31 | conversiones | conversor-acres-hectareas | AcresHectaresConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad, calculadora-dias-entre-fechas, calculadora-horas-a-decimal, conversor-zonas-horarias)
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo, calculadora-energia-cinetica)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml, calculadora-calorias-porcion)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura)
@@ -78,6 +78,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-11-02: PRODUCT — calculadora-varianza (matematicas). One tool (default, saturation least-represented). Anti-dupe OK (new dedicated slug; generic entry in math.ts is thin). Practical sample/population variance + mean + SD. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-02: PRODUCT — conversor-pt-a-px (diseno). One tool (default, saturation least-represented). Anti-dupe OK (new slug, no prior pt↔px dedicated converter). Practical typography points to CSS pixels at 96 DPI. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-02: PRODUCT — calculadora-promedio-examenes (educacion). One tool (default, saturation least-represented in RECENT_TOOLS). Anti-dupe OK (new slug). Practical exam/test score average calculator. Complements simple average and grade-needed tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-11-02: PRODUCT — calculadora-energia-cinetica (ciencia). One tool (default, saturation least-represented). Anti-dupe OK (new slug, no prior dedicated kinetic energy tool). Practical E = ½ m v² calculator in SI units. Complements potential energy and force tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 ```
 
 ---
@@ -86,9 +87,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-promedio-examenes
+last_slugs: calculadora-energia-cinetica
 last_deploy: no (branch auto-deploy disabled)
-last_sha: a8db0ce7fdd085e5eddb44a233aa72e3ecbcf2d4
+last_sha: (will be set by this commit)
 ```
 
 <!-- end:tools-builder-state.md -->
