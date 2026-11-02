@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AuraCardComposer } from "@/components/playgrounds/AuraCardComposer";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
@@ -31,6 +31,16 @@ export const Route = createFileRoute("/pt/aura-card")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/aura-card") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/aura-card") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/aura-card") },
+    ],
+    scripts: [
+      interactiveAppJsonLd({
+        kind: "app",
+        name: title.replace(" | UtiliHub", ""),
+        description,
+        path: "/pt/aura-card",
+        locale: "pt",
+        breadcrumbs: [{ name: "Início", path: "/pt" }, { name: title.replace(" | UtiliHub", "") }],
+      }),
     ],
   }),
   component: AuraCardPagePt,

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ColorCascadeFusionGame } from "@/components/games/ColorCascadeFusionGame";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
@@ -31,6 +31,16 @@ export const Route = createFileRoute("/pt/color-cascade-fusion")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/color-cascade-fusion") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/color-cascade-fusion") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/color-cascade-fusion") },
+    ],
+    scripts: [
+      interactiveAppJsonLd({
+        kind: "game",
+        name: title.replace(" | UtiliHub", ""),
+        description,
+        path: "/pt/color-cascade-fusion",
+        locale: "pt",
+        breadcrumbs: [{ name: "Início", path: "/pt" }, { name: title.replace(" | UtiliHub", "") }],
+      }),
     ],
   }),
   component: ColorCascadePagePt,

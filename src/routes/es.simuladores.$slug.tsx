@@ -2,7 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { SimShell } from "@/components/simulators/SimShell";
 import { SimPlayer } from "@/components/simulators/registry";
 import { simBySlug, simName, simSummary } from "@/lib/simulators/catalog";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 
 export const Route = createFileRoute("/es/simuladores/$slug")({
@@ -35,6 +35,16 @@ export const Route = createFileRoute("/es/simuladores/$slug")({
         { rel: "alternate", hrefLang: "es", href: url },
         { rel: "alternate", hrefLang: "en", href: absoluteUrl(`/simulators/${sim.slug}`) },
         { rel: "alternate", hrefLang: "x-default", href: absoluteUrl(`/simulators/${sim.slug}`) },
+      ],
+      scripts: [
+        interactiveAppJsonLd({
+          kind: "simulator",
+          name: simName(sim, "es"),
+          description,
+          path: `/es/simuladores/${sim.slugEs}`,
+          locale: "es",
+          breadcrumbs: [{ name: "Inicio", path: "/es" }, { name: "Simuladores", path: "/es/simuladores" }, { name: simName(sim, "es") }],
+        }),
       ],
     };
   },

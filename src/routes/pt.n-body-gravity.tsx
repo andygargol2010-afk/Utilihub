@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { NBodyGravitySim } from "@/components/playgrounds/NBodyGravitySim";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Simulador de Gravidade N-Corpos | UtiliHub";
@@ -30,6 +30,16 @@ export const Route = createFileRoute("/pt/n-body-gravity")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/n-body-gravity") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/n-body-gravity") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/n-body-gravity") },
+    ],
+    scripts: [
+      interactiveAppJsonLd({
+        kind: "simulator",
+        name: title.replace(" | UtiliHub", ""),
+        description,
+        path: "/pt/n-body-gravity",
+        locale: "pt",
+        breadcrumbs: [{ name: "Início", path: "/pt" }, { name: title.replace(" | UtiliHub", "") }],
+      }),
     ],
   }),
   component: NBodyPagePt,

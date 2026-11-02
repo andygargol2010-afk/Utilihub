@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FluidInkFlowPlayground } from "@/components/playgrounds/FluidInkFlowPlayground";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Playground de Fluxo de Tinta Fluida | UtiliHub";
@@ -30,6 +30,16 @@ export const Route = createFileRoute("/pt/fluid-ink-flow-playground")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/fluid-ink-flow-playground") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/fluid-ink-flow-playground") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/fluid-ink-flow-playground") },
+    ],
+    scripts: [
+      interactiveAppJsonLd({
+        kind: "app",
+        name: title.replace(" | UtiliHub", ""),
+        description,
+        path: "/pt/fluid-ink-flow-playground",
+        locale: "pt",
+        breadcrumbs: [{ name: "Início", path: "/pt" }, { name: title.replace(" | UtiliHub", "") }],
+      }),
     ],
   }),
   component: FluidInkFlowPagePt,

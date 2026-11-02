@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { NeonLayerComposer } from "@/components/playgrounds/NeonLayerComposer";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Compositor de Camadas Neon | UtiliHub";
@@ -30,6 +30,16 @@ export const Route = createFileRoute("/pt/neon-layer-composer")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/neon-layer-composer") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/neon-layer-composer") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/neon-layer-composer") },
+    ],
+    scripts: [
+      interactiveAppJsonLd({
+        kind: "app",
+        name: title.replace(" | UtiliHub", ""),
+        description,
+        path: "/pt/neon-layer-composer",
+        locale: "pt",
+        breadcrumbs: [{ name: "Início", path: "/pt" }, { name: title.replace(" | UtiliHub", "") }],
+      }),
     ],
   }),
   component: NeonLayerPagePt,

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PulseCatch } from "@/components/playgrounds/PulseCatch";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Pulse Catch | UtiliHub";
 const description = cleanDescription(
@@ -29,6 +29,16 @@ export const Route = createFileRoute("/pt/pulse-catch")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/pulse-catch") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/pulse-catch") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/pulse-catch") },
+    ],
+    scripts: [
+      interactiveAppJsonLd({
+        kind: "game",
+        name: title.replace(" | UtiliHub", ""),
+        description,
+        path: "/pt/pulse-catch",
+        locale: "pt",
+        breadcrumbs: [{ name: "Início", path: "/pt" }, { name: title.replace(" | UtiliHub", "") }],
+      }),
     ],
   }),
   component: PulseCatchPagePt,

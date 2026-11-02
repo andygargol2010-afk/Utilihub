@@ -102,7 +102,7 @@ async function buildSpanishToolHead(
               description,
               url,
               applicationCategory: "UtilityApplication",
-              operatingSystem: "Any",
+              operatingSystem: "Web",
               isAccessibleForFree: true,
               offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
               publisher: organizationSchema(),

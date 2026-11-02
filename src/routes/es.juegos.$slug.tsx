@@ -2,7 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { GameShell } from "@/components/games/GameShell";
 import { GamePlayer } from "@/components/games/registry";
 import { gameBySlug, gameName, gameSummary } from "@/lib/games/catalog";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
@@ -36,6 +36,16 @@ export const Route = createFileRoute("/es/juegos/$slug")({
         { rel: "alternate", hrefLang: "es", href: url },
         { rel: "alternate", hrefLang: "en", href: absoluteUrl(`/games/${game.slug}`) },
         { rel: "alternate", hrefLang: "x-default", href: absoluteUrl(`/games/${game.slug}`) },
+      ],
+      scripts: [
+        interactiveAppJsonLd({
+          kind: "game",
+          name: gameName(game, "es"),
+          description,
+          path: `/es/juegos/${game.slugEs}`,
+          locale: "es",
+          breadcrumbs: [{ name: "Inicio", path: "/es" }, { name: "Juegos", path: "/es/juegos" }, { name: gameName(game, "es") }],
+        }),
       ],
     };
   },

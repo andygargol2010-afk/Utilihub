@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AuroraParticlePlayground } from "@/components/playgrounds/AuroraParticlePlayground";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 import { ExperienceShareButton } from "@/components/ExperienceShareButton";
 
 const title = "Playground de Partículas Aurora | UtiliHub";
@@ -30,6 +30,16 @@ export const Route = createFileRoute("/pt/aurora-particle-playground")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/aurora-particle-playground") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/aurora-particle-playground") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/aurora-particle-playground") },
+    ],
+    scripts: [
+      interactiveAppJsonLd({
+        kind: "app",
+        name: title.replace(" | UtiliHub", ""),
+        description,
+        path: "/pt/aurora-particle-playground",
+        locale: "pt",
+        breadcrumbs: [{ name: "Início", path: "/pt" }, { name: title.replace(" | UtiliHub", "") }],
+      }),
     ],
   }),
   component: AuroraParticlePagePt,

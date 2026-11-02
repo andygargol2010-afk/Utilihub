@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SolarSystemScaleExplorer } from "@/components/playgrounds/SolarSystemScaleExplorer";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, cleanDescription, interactiveAppJsonLd, ogImage, SITE_NAME } from "@/lib/seo";
 import { PlaygroundNextStep } from "@/components/playgrounds/PlaygroundNextStep";
 
 const title = "Explorador de Escala do Sistema Solar | UtiliHub";
@@ -30,6 +30,16 @@ export const Route = createFileRoute("/pt/solar-system-scale-explorer")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/solar-system-scale-explorer") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/solar-system-scale-explorer") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/solar-system-scale-explorer") },
+    ],
+    scripts: [
+      interactiveAppJsonLd({
+        kind: "simulator",
+        name: title.replace(" | UtiliHub", ""),
+        description,
+        path: "/pt/solar-system-scale-explorer",
+        locale: "pt",
+        breadcrumbs: [{ name: "Início", path: "/pt" }, { name: title.replace(" | UtiliHub", "") }],
+      }),
     ],
   }),
   component: SolarSystemPagePt,
