@@ -56,3 +56,15 @@ Next ideas (run 319): measure tool, layers/hidden state in autosave+undo, multi-
 Next ideas (run 320): measure snapping to part corners, layers/hidden state in autosave+undo, multi-select, extraction #13.
 
 META run 329 (2026-10-28): backlog refreshed with #32-#39 (roll=1). Recommended next picks by score: #36, #32 (split: selection model first), #39. Texture/bump allowance: last 40+ runs were value runs, so budget is fine; still max 1 in 8.
+
+META run 333 (2026-11-02, roll=1): backlog refreshed from code-level review (no browser audit this run). New open items, by score:
+
+| # | Item | Val | Reach | Eff | Score | Status |
+|---|------|-----|-------|-----|-------|--------|
+| 40 | Persist snap grid + roof-hidden + view in autosave (reload keeps the whole working state) | 3 | 4 | 1 | 12 | open |
+| 41 | Wall-opening presets: one-click "add window/door to selected wall" centred on the wall | 4 | 4 | 3 | 5.3 | open |
+| 42 | Unit toggle m / ft for dimension label, area chips and cost chip (ES/EN locale default) | 3 | 4 | 2 | 6 | open |
+| 43 | Color/finish copy: "apply this finish to all parts of the same kind" button | 3 | 3 | 2 | 4.5 | open |
+| 44 | Print-friendly summary (PDF already exists): add floor-plan PNG and cost chip to it | 2 | 3 | 2 | 3 | open |
+
+Next pick by score: #40, #42, #36, #41, #32 (split selection model first).
