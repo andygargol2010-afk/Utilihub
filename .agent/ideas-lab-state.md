@@ -58,8 +58,20 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: none
-# Closed progress-passport. Next run: IDEATE (two-urn).
+status: active
+idea: Interactive achievement certificate maker. User selects a template (classic diploma, modern badge, playful award), enters name, achievement title, date and optional message. Sees live CSS/SVG preview of the branded certificate. Customizes from color presets. Generates downloadable PNG or copies a shareable URL with encoded parameters that reconstructs the certificate. EN+ES routes. Mobile-first 390px. No canvas or particles; pure form + declarative layout. Growth surface for shareable personal wins.
+id: achievement-certificate-maker
+path_en: /growth/achievement-certificate-maker
+path_es: /es/crecimiento/creador-certificado-logro
+path_seo: n/a
+domain: growth-surfaces
+runs_total: 4
+runs_remaining: 4
+acceptance: User fills the form, sees live certificate preview, then downloads the PNG or copies the deep-link share URL.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): C1 achievement-certificate-maker value=4 share=5 search=3 distinct=4 feas=5 perf=5 total=26; C2 social-invite-composer value=3 share=4 search=2 distinct=3 feas=5 perf=5 total=22; C3 challenge-badge-wall value=4 share=5 search=3 distinct=3 feas=5 perf=5 total=25. Closest-3 for C1: quote-card-maker (text	o card PNG), progress-passport (collection	o PNG), adsense-compliance-kit (form	o score PNG). Primary metaphor: declarative form 	o visual certificate layout. Why not particle-canvas: zero freehand/particles/trails/attractors; discrete fields generate static branded document. IP: n/a (original). Roll math: rand=0.286 < p_fixed=0.35 	o FIXED; weighted random among growth excl seo-locales (total 34) 	o growth-surfaces (w=3). Chosen id=achievement-certificate-maker. Variety: underused form-to-visual, not saturated playground pattern.
+adsense-prep_runs: 6
 ```
 
 <!-- end:ideas-lab-state.md -->
