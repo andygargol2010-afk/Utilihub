@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 95
-runs_total: 95
+last_run: 2026-11-02 run 96
+runs_total: 96
 last_mode: HUNT
-last_fix: E051 Spanish summary/intro English leak (es-summaries WORDS + finance intro)
+last_fix: E052 duplicate catalog imports in part-09 (median/mode/means/overtime)
 last_prevent: n/a
-last_known_focus: E050
-deploy: production READY on b66efb99 (pre-fix; post-push pending)
-notes: Known smoke E050 still 200 dedicated. Discovery: crude phraseTranslate left English in math summaries (valor-absoluto etc.); finance pages used raw EN description. Fixed by expanding translator + routing finance intro through spanishToolSummary (uses SUMMARY_ES). No deploy ERROR. No new PLACEHOLDER/$(cat/registry issues.
+last_known_focus: E031 (smoke clean — no $(cat/PLACEHOLDER)
+deploy: production READY on b66efb99 (E051 fix and this commit pending deploy)
+notes: Known smoke E031 open/recurring still clean (no stubs). Discovery: runtime logs showed new duplicates calculadora-mediana etc. from part-02+part-09; fixed by removing later imports. E051 English leaks still live (deploy lag on previous SHA); no new PLACEHOLDER/$(cat. Split catalog file for capacity.
 ```
 
 <!-- end:error-hunter-state.md -->

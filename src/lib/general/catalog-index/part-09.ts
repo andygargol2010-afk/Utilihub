@@ -11,16 +11,11 @@ import { FLOW_RATE_CALCULATOR_TOOLS } from "../flow-rate-calculator-tool";
 import { LOAN_MONTHLY_PAYMENT_CALCULATOR_TOOLS } from "../loan-monthly-payment-calculator-tool";
 import { QUADRATIC_MEAN_CALCULATOR_TOOLS } from "../quadratic-mean-calculator-tool";
 import { MEAN_ABSOLUTE_DEVIATION_CALCULATOR_TOOLS } from "../mean-absolute-deviation-calculator-tool";
-import { HARMONIC_MEAN_CALCULATOR_TOOLS } from "../harmonic-mean-calculator-tool";
-import { GEOMETRIC_MEAN_CALCULATOR_TOOLS } from "../geometric-mean-calculator-tool";
-import { MEDIAN_CALCULATOR_TOOLS } from "../median-calculator-tool";
 import { STATISTICAL_RANGE_CALCULATOR_TOOLS } from "../statistical-range-calculator-tool";
-import { MODE_CALCULATOR_TOOLS } from "../mode-calculator-tool";
 import { SLEEP_CYCLE_CALCULATOR_TOOLS } from "../sleep-cycle-calculator-tool";
 import { ACRES_HECTARES_CONVERTER_TOOLS } from "../acres-hectares-converter-tool";
 import { WAIST_TO_HEIGHT_RATIO_CALCULATOR_TOOLS } from "../waist-to-height-ratio-calculator-tool";
 import { SALES_COMMISSION_CALCULATOR_TOOLS } from "../sales-commission-calculator-tool";
-import { OVERTIME_CALCULATOR_TOOLS } from "../overtime-calculator-tool";
 import { CALORIES_PER_SERVING_CALCULATOR_TOOLS } from "../calories-per-serving-calculator-tool";
 import { SAVINGS_GOAL_CALCULATOR_TOOLS } from "../savings-goal-calculator-tool";
 import { SQUARE_FEET_METERS_CONVERTER_TOOLS } from "../square-feet-meters-converter-tool";
@@ -37,16 +32,11 @@ export const GENERAL_TOOLS_PART_09 = [
   ...LOAN_MONTHLY_PAYMENT_CALCULATOR_TOOLS,
   ...QUADRATIC_MEAN_CALCULATOR_TOOLS,
   ...MEAN_ABSOLUTE_DEVIATION_CALCULATOR_TOOLS,
-  ...HARMONIC_MEAN_CALCULATOR_TOOLS,
-  ...GEOMETRIC_MEAN_CALCULATOR_TOOLS,
-  ...MEDIAN_CALCULATOR_TOOLS,
   ...STATISTICAL_RANGE_CALCULATOR_TOOLS,
-  ...MODE_CALCULATOR_TOOLS,
   ...SLEEP_CYCLE_CALCULATOR_TOOLS,
   ...ACRES_HECTARES_CONVERTER_TOOLS,
   ...WAIST_TO_HEIGHT_RATIO_CALCULATOR_TOOLS,
   ...SALES_COMMISSION_CALCULATOR_TOOLS,
-  ...OVERTIME_CALCULATOR_TOOLS,
   ...CALORIES_PER_SERVING_CALCULATOR_TOOLS,
   ...SAVINGS_GOAL_CALCULATOR_TOOLS,
   ...SQUARE_FEET_METERS_CONVERTER_TOOLS,
