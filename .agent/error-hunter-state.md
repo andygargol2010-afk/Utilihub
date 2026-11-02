@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 106
-runs_total: 106
+last_run: 2026-11-02 run 107
+runs_total: 107
 last_mode: HUNT
-last_fix: restored NBodyGravitySim.tsx from PLACEHOLDER (E031)
+last_fix: n/a (clean)
 last_prevent: n/a
-last_known_focus: E031 (PLACEHOLDER in playground)
-deploy: production READY on b66efb99; tip 1fd46d9 (NBody restore pending deploy)
-notes: Known smoke E031 caught real regression — NBodyGravitySim.tsx was one-line PLACEHOLDER. Restored full interactive sim from 50e3d456 with PT→ES fallback. Other critical files (registry, homes, summary-es) clean. Discovery: TMB English summary on live due to deploy lag (SUMMARY_ES present in tip); new calculadora-promedio-examenes 404 lag; studios/games/home OK. No other PLACEHOLDER/$(cat.
+last_known_focus: E031 (PLACEHOLDER/$(cat stubs)
+deploy: production READY on tip 1619588a (NeonLayerComposer + summary-es restored)
+notes: Known smoke E031 — critical files clean (NBodyGravitySim 25kB restored prior, registry ~6k, summary-es ~45k with TMB entry, no $(cat/PLACEHOLDER in src). Discovery: live smoke calculadora-ahorro-para-meta, tmb, wacc, promedio-examenes, varianza, /es/n-body-gravity, home, simuladores all 200; no new 404s or broken tools. E051 English leaks ongoing coverage only. No deploy ERROR.
 ```
 
 <!-- end:error-hunter-state.md -->
