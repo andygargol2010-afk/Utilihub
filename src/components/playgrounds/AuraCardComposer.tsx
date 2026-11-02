@@ -49,13 +49,25 @@ const RANDOM_QUOTES_ES = [
   "Sentí la energía",
 ];
 
+const RANDOM_QUOTES_PT = [
+  "Minha aura pessoal",
+  "Irradie sua luz",
+  "Mantenha a curiosidade",
+  "Crie alegria",
+  "Continue brilhando",
+  "Respire magia",
+  "Aproprie-se da sua vibração",
+  "Brilhe forte",
+  "Sinta a energia",
+];
+
 function shortId(seed: string): string {
   let h = 0;
   for (let i = 0; i < seed.length; i++) h = (Math.imul(31, h) + seed.charCodeAt(i)) | 0;
   return Math.abs(h).toString(36).slice(0, 8);
 }
 
-export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
+export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" | "pt" }) {
   useEffect(() => {
     trackEvent("playground_open", { id: "aura-card-share", locale });
   }, [locale]);
@@ -66,7 +78,9 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
   const [density, setDensity] = useState(40);
   const [bloom, setBloom] = useState(12);
   const [bgGradient, setBgGradient] = useState(0);
-  const [quote, setQuote] = useState(locale === "es" ? "Mi aura personal" : "My personal aura");
+  const [quote, setQuote] = useState(
+    locale === "es" ? "Mi aura personal" : locale === "pt" ? "Minha aura pessoal" : "My personal aura"
+  );
   const [exporting, setExporting] = useState(false);
   const animRef = useRef<number>(0);
 
@@ -96,6 +110,18 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
       randomize: "Aleatorizar",
       hint: "Diseñá tu tarjeta de aura — las partículas giran con estelas alrededor de tu texto. La URL es compartible.",
       schemes: { aurora: "Aurora", neon: "Neón", sunset: "Atardecer", cosmic: "Cósmico", ocean: "Océano", magma: "Magma" } as Record<ColorScheme, string>,
+    },
+    pt: {
+      scheme: "Esquema de cor",
+      density: "Densidade de partículas",
+      bloom: "Bloom",
+      bg: "Fundo",
+      quote: "Citação ou nome",
+      export: "Baixar PNG",
+      share: "Compartilhar",
+      randomize: "Aleatorizar",
+      hint: "Projete seu cartão de aura — as partículas giram com rastros ao redor do seu texto. A URL é compartilhável.",
+      schemes: { aurora: "Aurora", neon: "Neon", sunset: "Pôr do sol", cosmic: "Cósmico", ocean: "Oceano", magma: "Magma" } as Record<ColorScheme, string>,
     },
   }[locale];
 
@@ -295,7 +321,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
     setDensity(15 + Math.floor(Math.random() * 60));
     setBloom(4 + Math.floor(Math.random() * 24));
     setBgGradient(Math.floor(Math.random() * 11));
-    const quotes = locale === "es" ? RANDOM_QUOTES_ES : RANDOM_QUOTES_EN;
+    const quotes = locale === "es" ? RANDOM_QUOTES_ES : locale === "pt" ? RANDOM_QUOTES_PT : RANDOM_QUOTES_EN;
     setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
     trackEvent("randomize_click", { id: "aura-card-share", locale });
   };
@@ -408,7 +434,7 @@ export function AuraCardComposer({ locale = "en" }: { locale?: "en" | "es" }) {
             rows={2}
             maxLength={120}
             className="mt-1 w-full rounded border bg-background px-3 py-2 text-sm text-foreground"
-            placeholder={locale === "es" ? "Escribí tu frase o nombre" : "Type your quote or name"}
+            placeholder={locale === "es" ? "Escribí tu frase o nombre" : locale === "pt" ? "Digite sua frase ou nome" : "Type your quote or name"}
           />
         </label>
         <div className="flex gap-2">
