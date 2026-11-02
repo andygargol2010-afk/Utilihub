@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: growth-surfaces
-last_closed_id: achievement-certificate-maker
+last_closed_domain: seo-locales
+last_closed_id: pt-product-parity
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 6
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-02 | seo-locales | pt-product-parity | Full Portuguese (pt-BR) product surface under /pt/ after 11 runs. Partial parity: home, tools/games/simulators indexes, several high-traffic experiences with PT chrome/meta/hreflang. Catalog tool-name translations and remaining experiences incomplete; not registered active. Closed at budget. Next IDEATE.
 - 2026-11-02 | growth-surfaces | achievement-certificate-maker | Interactive achievement certificate maker complete after 4 runs. User selects template (classic diploma, modern badge, playful award), enters name/title/date/message/issued-by, sees live CSS preview with decorative seal, customizes colors, generates branded PNG or copies deep-link URL. Quick-fill presets. EN+ES routes. Mobile-first 390px. Pure form + declarative layout + canvas PNG. No particles. Acceptance met (fills form, sees live preview, downloads PNG or copies share URL).
 - 2026-11-01 | retention-loops | progress-passport | Interactive digital progress passport complete after 4 runs. User earns discrete stamps by completing challenges across kits/games/simulators, pages fill with stamps + progress bar + collection stats. Generate branded PNG of passport/progress, share link with deep-link. EN+ES routes. Mobile-first 390px. CSS stamp book + localStorage. No heavy canvas or particles. Acceptance met (user marks stamp, sees update, shares PNG or link).
 - 2026-11-01 | kits | science-experiment-kit | Interactive kids science experiment kit builder complete after 4 runs. User selects theme from presets (volcano, slime, simple circuit, plant growth), gets discrete materials list, follows multi-step guided assembly with checkoffs and safety tips, sees progress, estimated time, and can generate branded PNG of the completed setup or share link. Challenges for age groups. URL deep-link for theme. EN+ES. Mobile-first 390px. No heavy canvas; CSS + state + checklists. IP-safe original educational assembler. Acceptance met.
@@ -59,19 +60,19 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Full Portuguese (pt-BR) product surface under /pt/ for SEO growth. Build locale home matching current EN/ES structure (hero, value props, experience rail/featured), tools hub entry points, games + simulators index, and high-traffic experiences with full UI strings in Portuguese. No thin shell. Register in seo-locales.ts + registry only when parity bar met. Priority first locale after reset. hreflang + sitemap. Design parity with EN shell. Mobile 390px. Adsterra intact.
-id: pt-product-parity
-path_en: n/a
-path_es: n/a
-path_seo: /pt/...
-domain: seo-locales
-runs_total: 11
-runs_remaining: 0
-acceptance: User visits /pt/ and sees full home structure in Portuguese matching EN parity bar (hero + featured experiences + hubs), not a stub; subsequent runs extend pages_done until active status. Partial parity achieved; more high-traffic experiences and full catalog tool-name translations still needed for active registration.
-share: n/a
-next_step_required: no
-notes: Rubric (1-5): C1 pt-product-parity value=5 share=3 search=5 distinct=5 feas=4 perf=5 total=27; C2 fr-product-parity value=5 share=3 search=4 distinct=5 feas=4 perf=5 total=26; C3 de-product-parity value=5 share=3 search=4 distinct=5 feas=4 perf=5 total=26. Closest-3: previous removed thin pt/fr/de shells (2026-10-28 reset), EN home structure, ES home structure. Primary metaphor: multi-locale routing + full UI translation parity for product surfaces. Why not particle-canvas: growth/seo domain, no interactive canvas; discrete page/route parity. IP: n/a. Roll math: rand=0.892 > p_fixed=0.35 → FLEX; weighted among growth (total 44) → seo-locales (w=10). Chosen id=pt-product-parity (priority queue first). Variety: underused SEO full-parity, not saturated playground. Plan: run 1+ build /pt/ home + core indexes; track pages_done; activate only on full bar. pages_done: /pt/ (home complete with hero, quick access, spotlight, discovery rail, value path, shareables, catalog rest, reviews in PT), /pt/ferramentas (tools hub index with PT chrome + ToolSearch), /pt/jogos (games index with PT chrome + GamesCatalog locale=pt), /pt/simuladores (simulators index with PT chrome, cards using EN names for now), /pt/aurora-particle-playground (full PT UI strings for controls, help, share, meta), /pt/color-cascade-fusion (PT route chrome + meta + hreflang; game component falls back to EN strings inside for now), /pt/n-body-gravity (full PT route chrome + meta + hreflang + component labels for controls/help/share/presets), /pt/neon-layer-composer (full PT route chrome + meta + hreflang + component labels for bloom/symmetry/palette/controls/hint/export), /pt/fluid-ink-flow-playground (full PT route chrome + meta + hreflang + component labels for viscosity/density/gravity/tension/controls/shortcuts/PNG), /pt/aura-card (full PT route chrome + meta + hreflang + AuraCardComposer locale=pt with PT labels/quotes/placeholders), /pt/pulse-catch (full PT route chrome + meta + hreflang; PulseCatch component already supports locale=pt with full PT strings for start/score/combo/best/share/tip/newBest), /pt/daily-progress-constellation (full PT route chrome + meta + hreflang; component currently falls back to EN strings for non-es locales — PT chrome only this run), /pt/return-streak-board (full PT route chrome + meta + hreflang; component falls back to EN for non-es, PT page strings), /pt/solar-system-scale-explorer (full PT route chrome + meta + hreflang + component extended with PT planet names and control labels). Run 11 complete. Parity bar not fully met (more experiences + catalog translations needed); project closed at budget. Next IDEATE.
+status: active
+idea: Interactive classic Othello/Reversi board game. 8x8 grid, players alternate placing discs that flip opponent's discs in straight lines when bracketing them. Valid moves highlighted. Win when board full or no moves; higher disc count wins. Optional simple AI opponent. Levels or just free play. URL deep-link for starting position or seed. Branded PNG of final board. EN+ES routes. Mobile-first 390px. CSS grid + state, no canvas. Traditional public-domain mechanics, generic naming, no branded assets.
+id: othello-classic
+path_en: /games/othello
+path_es: /es/juegos/othello
+path_seo: n/a
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User clicks a valid empty square, sees disc placed and opponent discs flipped, continues until game end, sees winner and score, optionally downloads PNG or copies share URL.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): C1 othello-classic value=5 share=4 search=5 distinct=5 feas=5 perf=5 total=29; C2 checkers-classic value=4 share=4 search=4 distinct=5 feas=5 perf=5 total=27; C3 original-maze-escape value=4 share=3 search=3 distinct=4 feas=4 perf=5 total=23. Closest-3: memory-match-classic (grid flip), connect-four (grid place), bin-packing-sim (grid placement). Primary metaphor: turn-based grid placement with directional flip capture. Why not particle-canvas: discrete rules-based board game, CSS grid clicks, no freehand or trails. IP: traditional Reversi/Othello mechanics (public-domain rules; generic UI and naming; no commercial branded assets or art). Roll math: rand=0.33 < p_fixed=0.35 → FIXED; weighted among growth but variety override to CORE games (underused classic not on site). Chosen id=othello-classic. Variety: breaks particle sandbox cluster, prefers classic high-demand game type.
 adsense-prep_runs: 6
 ```
 
