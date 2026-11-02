@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 99
-runs_total: 99
+last_run: 2026-11-02 run 100
+runs_total: 100
 last_mode: HUNT
 last_fix: n/a (checks OK, no code changes)
 last_prevent: n/a
-last_known_focus: E031 smoke (no $(cat/PLACEHOLDER in src; homes index proper)
-deploy: production READY on b66efb99; tip 925cdba has no deployment yet
-notes: Known smoke: E031 open/recurring but check passed (code search clean, registry/index no stubs). E052 fixed in code. Discovery: code search no PLACEHOLDER/$(cat/"Tool not available" in src; sampled registry and index.tsx proper. Deployments protected, live verify limited. No new errors found. No code fix needed.
+last_known_focus: E031 smoke (code search clean, no PLACEHOLDER/$(cat in src; index.tsx proper; live /es and tools load)
+deploy: production READY on b66efb99; tip 748a928 has no deployment yet
+notes: Known smoke: E031 open/recurring check passed. Discovery: sampled live PNG-to-JPG (image UI + Spanish guide), modelador-3d (correct studio, not house), /es home (no 404). No new errors. No code fix needed.
 ```
 
 <!-- end:error-hunter-state.md -->
