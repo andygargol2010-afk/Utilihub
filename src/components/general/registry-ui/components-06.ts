@@ -61,3 +61,7 @@ export const ExamAverageCalculatorToolUi = lazy(() =>
 export const KineticEnergyCalculatorToolUi = lazy(() =>
   import("../KineticEnergyCalculatorTool").then((m) => ({ default: m.KineticEnergyCalculatorTool })),
 );
+
+export const RomanNumeralsConverterToolUi = lazy(() =>
+  import("../RomanNumeralsConverterTool").then((m) => ({ default: m.RomanNumeralsConverterTool })),
+);
