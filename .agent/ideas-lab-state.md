@@ -71,10 +71,10 @@ path_en: /games/connect-four-classic
 path_es: /es/juegos/conecta-cuatro-clasico
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 share: both
 next_step_required: yes
-notes: Domain roll CORE (games weight 5; variety: different classic from recent sudoku/minesweeper/othello). Candidates: 1. Connect Four (value 5, share 4, search 5, distinct 5, feas 5, perf 4; total 28) closest: othello, minesweeper, sudoku; metaphor: gravity-drop column grid puzzle; not particle-canvas. IP: traditional public-domain gravity drop connect-4 mechanics, generic naming, no Hasbro branding. 2. Checkers (value 4, share 3, search 4, distinct 4, feas 4, perf 4; total 23) closest: othello, memory-match; metaphor: turn-based jump-capture board. IP: traditional. 3. 15-puzzle sliding (value 4, share 3, search 4, distinct 4, feas 5, perf 5; total 25) closest: sudoku; metaphor: tile slide constraint. Chosen: connect-four-classic.
+notes: Domain roll CORE (games weight 5; variety: different classic from recent sudoku/minesweeper/othello). Candidates: 1. Connect Four (value 5, share 4, search 5, distinct 5, feas 5, perf 4; total 28) closest: othello, minesweeper, sudoku; metaphor: gravity-drop column grid puzzle; not particle-canvas. IP: traditional public-domain gravity drop connect-4 mechanics, generic naming, no Hasbro branding. 2. Checkers (value 4, share 3, search 4, distinct 4, feas 4, perf 4; total 23) closest: othello, memory-match; metaphor: turn-based jump-capture board. IP: traditional. 3. 15-puzzle sliding (value 4, share 3, search 4, distinct 4, feas 5, perf 5; total 25) closest: sudoku; metaphor: tile slide constraint. Chosen: connect-four-classic. Run 1 (2026-11-03): core component already playable (drop, AI, modes, undo, share URL/PNG, EN+ES); aligned slugEs to conecta-cuatro-clasico and wired in registry. Routes live.
 ```
 
 <!-- end:ideas-lab-state.md -->
