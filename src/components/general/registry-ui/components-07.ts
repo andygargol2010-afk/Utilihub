@@ -24,3 +24,4 @@ export const TimezoneConverterToolUi = lazy(() => import("../TimezoneConverterTo
 export const VarianceCalculatorToolUi = lazy(() => import("../VarianceCalculatorTool").then((m) => ({ default: m.VarianceCalculatorTool })));
 export const PointsToPxConverterToolUi = lazy(() => import("../PointsToPxConverterTool").then((m) => ({ default: m.PointsToPxConverterTool })));
 export const BodySurfaceAreaCalculatorToolUi = lazy(() => import("../BodySurfaceAreaCalculatorTool").then((m) => ({ default: m.BodySurfaceAreaCalculatorTool })));
+export const TripTotalBudgetCalculatorToolUi = lazy(() => import("../TripTotalBudgetCalculatorTool").then((m) => ({ default: m.TripTotalBudgetCalculatorTool })));

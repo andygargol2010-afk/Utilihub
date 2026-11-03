@@ -6,6 +6,7 @@ import { VARIANCE_CALCULATOR_TOOLS } from "../variance-calculator-tool";
 import { POINTS_TO_PX_CONVERTER_TOOLS } from "../points-to-px-converter-tool";
 import { EXAM_AVERAGE_CALCULATOR_TOOLS } from "../exam-average-calculator-tool";
 import { BODY_SURFACE_AREA_CALCULATOR_TOOLS } from "../body-surface-area-calculator-tool";
+import { TRIP_TOTAL_BUDGET_CALCULATOR_TOOLS } from "../trip-total-budget-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -14,4 +15,5 @@ export const GENERAL_TOOLS_PART_10 = [
   ...POINTS_TO_PX_CONVERTER_TOOLS,
   ...EXAM_AVERAGE_CALCULATOR_TOOLS,
   ...BODY_SURFACE_AREA_CALCULATOR_TOOLS,
+  ...TRIP_TOTAL_BUDGET_CALCULATOR_TOOLS,
 ];

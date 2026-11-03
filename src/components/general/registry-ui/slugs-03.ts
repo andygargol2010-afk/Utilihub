@@ -51,4 +51,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-energia-cinetica": UI.KineticEnergyCalculatorToolUi,
   "conversor-numeros-romanos": UI.RomanNumeralsConverterToolUi,
   "calculadora-superficie-corporal": UI.BodySurfaceAreaCalculatorToolUi,
+  "calculadora-presupuesto-total-viaje": UI.TripTotalBudgetCalculatorToolUi,
 };

@@ -8,4 +8,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-energia-cinetica": "Calculadora de energía cinética",
   "conversor-numeros-romanos": "Conversor de números romanos",
   "calculadora-superficie-corporal": "Calculadora de superficie corporal",
+  "calculadora-presupuesto-total-viaje": "Calculadora de presupuesto total de viaje",
 };
