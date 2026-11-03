@@ -70,11 +70,12 @@ path_es: /es/juegos/sudoku-clasico
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects difficulty, fills cells with numbers, sees conflicts or valid placements, completes the puzzle (or uses undo/pencil), optionally downloads PNG or copies share URL.
 share: both
 next_step_required: yes
 notes: IDEATE: domain roll games (weight 5). 3 candidates scored: 1) sudoku-classic (value 5, share 4, search 5 "play sudoku online", distinct 4 vs recent grids, feas 5, perf 4) total ~27; 2) checkers-classic (value 4, share 3, search 3, distinct 4, feas 5, perf 5) ~24; 3) original constraint-grid puzzle (value 3, share 3, search 2, distinct 5, feas 4, perf 4) ~21. Picked sudoku. Closest-3: minesweeper-classic (grid interact), othello-classic (grid place), connect-four-classic (grid strategy). Primary metaphor: constraint-satisfaction number grid filling. Why not particle-canvas: discrete rules-based puzzle with validation, CSS grid clicks and state, no freehand or trails. IP: traditional sudoku rules (row/column/box uniqueness; generic UI and naming; no branded puzzle sets). Roll math: p_fixed 0.35 not triggered (random ~0.28); FLEX/CORE weighted random selected games. adsense-prep_runs: 6. Next: implement core playable by run 2.
+Run 1 EXECUTE: Core already fully playable on origin (generation, live conflicts, pencil notes, undo, 3 hints, PNG, URL share, EN+ES, mobile 390px). Added timer (starts on first number/hint, stops on win, displayed in UI and PNG). Acceptance met. Next polish or close after remaining runs.
 ```
 
 <!-- end:ideas-lab-state.md -->

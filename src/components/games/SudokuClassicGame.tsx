@@ -105,6 +105,13 @@ function sameBox(r1: number, c1: number, r2: number, c2: number): boolean {
   return Math.floor(r1 / 3) === Math.floor(r2 / 3) && Math.floor(c1 / 3) === Math.floor(c2 / 3);
 }
 
+function formatTime(ms: number): string {
+  const totalSec = Math.floor(ms / 1000);
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
 export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
   const [diff, setDiff] = useState<Diff>("easy");
@@ -119,6 +126,9 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
   const [copied, setCopied] = useState(false);
   const [history, setHistory] = useState<Snapshot[]>([]);
   const [hintsLeft, setHintsLeft] = useState(3);
+  const [startMs, setStartMs] = useState<number | null>(null);
+  const [elapsed, setElapsed] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
 
   const conflictMap = useMemo(() => {
     const m = new Set<string>();
@@ -152,6 +162,9 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
       setPencilMode(false);
       setHistory([]);
       setHintsLeft(3);
+      setStartMs(null);
+      setElapsed(0);
+      setTimerRunning(false);
       updateUrl(nextSeed, d);
     },
     [updateUrl],
@@ -169,6 +182,14 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!timerRunning || startMs === null) return;
+    const id = window.setInterval(() => {
+      setElapsed(Date.now() - startMs);
+    }, 250);
+    return () => window.clearInterval(id);
+  }, [timerRunning, startMs]);
 
   const pushHistory = useCallback(() => {
     setHistory((h) => [
@@ -210,6 +231,11 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
       return;
     }
 
+    if (n > 0 && startMs === null) {
+      setStartMs(Date.now());
+      setTimerRunning(true);
+    }
+
     pushHistory();
     setGrid((g) => {
       const next = g.map((row) => row.slice());
@@ -220,6 +246,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
       const hasAnyConflict = next.some((row, ri) => row.some((_, ci) => hasConflict(next, ri, ci)));
       if (complete && !hasAnyConflict) {
         setWon(true);
+        setTimerRunning(false);
       }
       return next;
     });
@@ -260,6 +287,10 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     }
     if (fixed[r]![c] || grid[r]![c] !== 0) return;
     const correct = solution[r]![c]!;
+    if (startMs === null) {
+      setStartMs(Date.now());
+      setTimerRunning(true);
+    }
     pushHistory();
     setGrid((g) => {
       const next = g.map((row) => row.slice());
@@ -268,7 +299,10 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
         row.every((v, ci) => v !== 0 && v === solution[ri]![ci]),
       );
       const hasAnyConflict = next.some((row, ri) => row.some((_, ci) => hasConflict(next, ri, ci)));
-      if (complete && !hasAnyConflict) setWon(true);
+      if (complete && !hasAnyConflict) {
+        setWon(true);
+        setTimerRunning(false);
+      }
       return next;
     });
     setNotes((prev) => clearRelatedNotes(prev, r, c, correct));
@@ -302,7 +336,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selected, won, pencilMode, grid, notes, fixed, solution]); // put depends on these
+  }, [selected, won, pencilMode, grid, notes, fixed, solution, startMs]); // put depends on these
 
   const shareUrl = useCallback(async () => {
     updateUrl(seed, diff);
@@ -385,8 +419,9 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
 
     ctx.fillStyle = won ? "#fbbf24" : "#94a3b8";
     ctx.font = "bold 16px system-ui, sans-serif";
+    const timeStr = formatTime(elapsed);
     ctx.fillText(
-      won ? (es ? "¡Resuelto!" : "Solved!") : es ? "En progreso" : "In progress",
+      (won ? (es ? "¡Resuelto!" : "Solved!") : es ? "En progreso" : "In progress") + " · " + timeStr,
       canvas.width / 2,
       startY + 9 * cell + 40,
     );
@@ -398,7 +433,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     a.href = canvas.toDataURL("image/png");
     a.download = `utilihub-sudoku-${diff}-${seed}.png`;
     a.click();
-  }, [grid, fixed, conflictMap, notes, won, diff, seed, es]);
+  }, [grid, fixed, conflictMap, notes, won, diff, seed, es, elapsed]);
 
   const status = won
     ? es
@@ -446,7 +481,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
         className={`text-sm font-bold ${won ? "text-amber-300 text-base animate-pulse" : "text-emerald-300/90"}`}
         aria-live="polite"
       >
-        {status}
+        {status} · {formatTime(elapsed)}
       </p>
 
       <div
@@ -524,8 +559,8 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
 
       <p className="text-center text-xs text-emerald-100/60">
         {es
-          ? "Elegí dificultad, rellená números (teclado o botones). Modo lápiz para marcas. Al colocar un número se limpian las marcas relacionadas. Resaltado de fila/columna/caja y números iguales. Deshacer y 3 pistas. Flechas para mover. Conflictos en rojo. Compartí enlace o PNG."
-          : "Pick difficulty, place numbers (keyboard or buttons). Pencil mode for marks. Placing a number clears related marks. Row/col/box and same-number highlights. Undo and 3 hints. Arrows to move. Conflicts in red. Share link or PNG."}
+          ? "Elegí dificultad, rellená números (teclado o botones). Modo lápiz para marcas. Al colocar un número se limpian las marcas relacionadas. Resaltado de fila/columna/caja y números iguales. Deshacer y 3 pistas. Flechas para mover. Conflictos en rojo. Temporizador. Compartí enlace o PNG."
+          : "Pick difficulty, place numbers (keyboard or buttons). Pencil mode for marks. Placing a number clears related marks. Row/col/box and same-number highlights. Undo and 3 hints. Arrows to move. Conflicts in red. Timer. Share link or PNG."}
       </p>
     </div>
   );
