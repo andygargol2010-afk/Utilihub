@@ -13,6 +13,7 @@ import { WAIST_TO_HIP_RATIO_CALCULATOR_TOOLS } from "../waist-to-hip-ratio-calcu
 import { STRAIGHT_LINE_DEPRECIATION_CALCULATOR_TOOLS } from "../straight-line-depreciation-calculator-tool";
 import { CYLINDER_SURFACE_AREA_CALCULATOR_TOOLS } from "../cylinder-surface-area-calculator-tool";
 import { TIME_OF_DAY_DIFFERENCE_CALCULATOR_TOOLS } from "../time-of-day-difference-calculator-tool";
+import { LINE_HEIGHT_CALCULATOR_TOOLS } from "../line-height-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -28,4 +29,5 @@ export const GENERAL_TOOLS_PART_10 = [
   ...STRAIGHT_LINE_DEPRECIATION_CALCULATOR_TOOLS,
   ...CYLINDER_SURFACE_AREA_CALCULATOR_TOOLS,
   ...TIME_OF_DAY_DIFFERENCE_CALCULATOR_TOOLS,
+  ...LINE_HEIGHT_CALCULATOR_TOOLS,
 ];

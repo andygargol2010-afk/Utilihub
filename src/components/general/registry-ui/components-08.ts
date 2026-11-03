@@ -8,3 +8,4 @@ export const StraightLineDepreciationCalculatorToolUi = lazy(() => import("../St
 export const CylinderSurfaceAreaCalculatorToolUi = lazy(() => import("../CylinderSurfaceAreaCalculatorTool").then((m) => ({ default: m.CylinderSurfaceAreaCalculatorTool })));
 export const TimeOfDayDifferenceCalculatorToolUi = lazy(() => import("../TimeOfDayDifferenceCalculatorTool").then((m) => ({ default: m.TimeOfDayDifferenceCalculatorTool })));
 export const McdMcmCalculatorToolUi = lazy(() => import("../McdMcmCalculatorTool").then((m) => ({ default: m.McdMcmCalculatorTool })));
+export const LineHeightCalculatorToolUi = lazy(() => import("../LineHeightCalculatorTool").then((m) => ({ default: m.LineHeightCalculatorTool })));

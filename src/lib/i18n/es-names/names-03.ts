@@ -16,4 +16,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-area-superficie-cilindro": "Calculadora de área de superficie de cilindro",
   "calculadora-diferencia-horas": "Calculadora de diferencia de horas",
   "mcd-mcm": "Calculadora de MCD y MCM",
+  "calculadora-line-height": "Calculadora de altura de línea",
 };
