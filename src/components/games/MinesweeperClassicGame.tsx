@@ -177,6 +177,12 @@ export function MinesweeperClassicGame({ locale = "en" }: { locale?: GameLocale 
     if (ok) {
       setWon(true);
       setBest(writeBestLow(`minesweeper_classic_${diffRef.current}`, secondsRef.current));
+      // Auto-flag all mines for visual win confirmation
+      const flagged = b.map((row) =>
+        row.map((cell) => (cell.mine && cell.flag !== 1 ? { ...cell, flag: 1 as FlagState } : cell)),
+      );
+      setBoard(flagged);
+      boardRef.current = flagged;
     }
   };
 
@@ -416,7 +422,7 @@ export function MinesweeperClassicGame({ locale = "en" }: { locale?: GameLocale 
       </div>
       {(dead || won) && (
         <p className={`text-sm font-bold ${won ? "text-emerald-300" : "text-rose-300"}`}>
-          {won ? (es ? "¡Ganaste!" : "You cleared the board!") : es ? "Boom — mina" : "Boom — mine"}
+          {won ? (es ? `¡Ganaste en ${seconds}s!` : `You cleared the board in ${seconds}s!`) : es ? "Boom — mina" : "Boom — mine"}
         </p>
       )}
       <div className="w-full max-w-full overflow-x-auto">
@@ -471,8 +477,8 @@ export function MinesweeperClassicGame({ locale = "en" }: { locale?: GameLocale 
       </div>
       <p className="text-center text-[11px] text-white/50 max-w-md">
         {es
-          ? "Toque = abrir (o ciclar bandera/❓ si modo ON) · mantener o clic derecho = ciclar bandera → ❓ → vacío · número abierto abre vecinos · cara reinicia · Misma = practicar el mismo tablero · Compartir copia el enlace con semilla. Primer clic siempre seguro."
-          : "Tap = open (or cycle flag/❓ if Flag ON) · hold or right-click = cycle flag → ❓ → empty · open number = chord · face resets · Same = practice same board · Share copies the seeded link. First click always safe."}
+          ? "Toque = abrir (o ciclar bandera/❓ si modo ON) · mantener o clic derecho = ciclar bandera → ❓ → vacío · número abierto abre vecinos · cara reinicia · Misma = practicar el mismo tablero · Compartir copia el enlace con semilla. Primer clic siempre seguro. Al ganar se colocan banderas automáticamente."
+          : "Tap = open (or cycle flag/❓ if Flag ON) · hold or right-click = cycle flag → ❓ → empty · open number = chord · face resets · Same = practice same board · Share copies the seeded link. First click always safe. Flags auto-place on win."}
       </p>
     </div>
   );
