@@ -17,4 +17,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-diferencia-horas": "Calculadora de diferencia de horas",
   "mcd-mcm": "Calculadora de MCD y MCM",
   "calculadora-line-height": "Calculadora de altura de línea",
+  "calculadora-porcentaje-a-letra": "Calculadora de porcentaje a letra",
 };

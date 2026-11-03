@@ -9,3 +9,4 @@ export const CylinderSurfaceAreaCalculatorToolUi = lazy(() => import("../Cylinde
 export const TimeOfDayDifferenceCalculatorToolUi = lazy(() => import("../TimeOfDayDifferenceCalculatorTool").then((m) => ({ default: m.TimeOfDayDifferenceCalculatorTool })));
 export const McdMcmCalculatorToolUi = lazy(() => import("../McdMcmCalculatorTool").then((m) => ({ default: m.McdMcmCalculatorTool })));
 export const LineHeightCalculatorToolUi = lazy(() => import("../LineHeightCalculatorTool").then((m) => ({ default: m.LineHeightCalculatorTool })));
+export const PercentageToLetterGradeCalculatorToolUi = lazy(() => import("../PercentageToLetterGradeCalculatorTool").then((m) => ({ default: m.PercentageToLetterGradeCalculatorTool })));
