@@ -148,12 +148,14 @@ interface Props {
 
 export function HomeValuePath({ locale }: Props) {
   const [explored, setExplored] = useState<Set<string>>(new Set());
-  const [steps, setSteps] = useState<ValueStep[]>(() => pickRandomSteps());
+  // Deterministic first render so SSR and hydration match (React #418); shuffle after mount.
+  const [steps, setSteps] = useState<ValueStep[]>(() => EXPERIENCE_POOL.slice(0, 3));
   const isEs = locale === "es";
   const isPt = locale === "pt";
 
   useEffect(() => {
     setExplored(loadExplored());
+    setSteps(pickRandomSteps());
   }, []);
 
   const refresh = useCallback(() => {

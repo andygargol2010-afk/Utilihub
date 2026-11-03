@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeCatalogSlot } from "@/components/home-catalog-slot";
-import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
+import { absoluteUrl, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
 
 const loadHomeCatalog = () => import("@/components/home-catalog");
 const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeToolCount })));
@@ -70,6 +70,12 @@ export const Route = createFileRoute("/pt/")({
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/") },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({ ...websiteSchema(), url: absoluteUrl("/pt"), inLanguage: "pt" }),
+      },
     ],
   }),
   component: PortugueseHome,
