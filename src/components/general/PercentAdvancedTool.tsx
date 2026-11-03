@@ -247,7 +247,7 @@ export function PercentAdvancedTool({ tool, locale = "en" }: { tool: GeneralTool
           <button
             type="button"
             onClick={() => setMode("markup")}
-            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
+            className={`min-h-11 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
               mode === "markup" ? "bg-primary text-primary-foreground" : "border border-border bg-background"
             }`}
           >
@@ -256,7 +256,7 @@ export function PercentAdvancedTool({ tool, locale = "en" }: { tool: GeneralTool
           <button
             type="button"
             onClick={() => setMode("margin")}
-            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
+            className={`min-h-11 rounded-full px-4 py-1.5 text-sm font-semibold transition ${
               mode === "margin" ? "bg-primary text-primary-foreground" : "border border-border bg-background"
             }`}
           >
@@ -301,7 +301,7 @@ export function PercentAdvancedTool({ tool, locale = "en" }: { tool: GeneralTool
       <button
         type="button"
         onClick={run}
-        className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm"
+        className="min-h-11 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm"
       >
         {es ? "Calcular" : "Calculate"}
       </button>
@@ -312,6 +312,7 @@ export function PercentAdvancedTool({ tool, locale = "en" }: { tool: GeneralTool
         </p>
       )}
 
+      <div aria-live="polite">
       {results && (
         <div className="grid gap-3 sm:grid-cols-3">
           {results.map((r) => (
@@ -323,6 +324,7 @@ export function PercentAdvancedTool({ tool, locale = "en" }: { tool: GeneralTool
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }

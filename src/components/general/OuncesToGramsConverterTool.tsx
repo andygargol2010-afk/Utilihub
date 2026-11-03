@@ -38,7 +38,7 @@ export function OuncesToGramsConverterTool({ locale = "en" }: { tool?: GeneralTo
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
+      <div className="rounded-2xl border bg-muted/30 p-6 space-y-3" aria-live="polite">
         <p className="text-sm text-muted-foreground">{es ? "Gramos" : "Grams"}</p>
         {result?.grams != null ? (
           <p className="text-3xl font-semibold">{result.grams} g</p>
@@ -50,7 +50,7 @@ export function OuncesToGramsConverterTool({ locale = "en" }: { tool?: GeneralTo
       <div className="grid gap-4">
         <label className="block space-y-2 text-sm">
           <span className="font-medium">{es ? "Onzas" : "Ounces"}</span>
-          <input type="number" min="0" step="any" value={ounces} onChange={(e) => setOunces(e.target.value)} className={fieldClass} />
+          <input type="number" inputMode="decimal" min="0" step="any" value={ounces} onChange={(e) => setOunces(e.target.value)} className={fieldClass} />
         </label>
       </div>
 

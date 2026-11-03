@@ -54,4 +54,6 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-presupuesto-total-viaje": UI.TripTotalBudgetCalculatorToolUi,
   "conversor-psi-bar": UI.PsiBarConverterToolUi,
   "calculadora-dosis-cafe": UI.CoffeeDoseCalculatorToolUi,
+  "conversor-kg-libras": UI.KgToLbsConverterToolUi,
+  "conversor-millas-km": UI.MilesToKmConverterToolUi,
 };

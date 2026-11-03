@@ -51,7 +51,7 @@ export function Breadcrumbs({
                   <Link
                     to={item.to}
                     params={item.params as never}
-                    className="rounded-md px-1.5 py-0.5 font-medium transition hover:bg-accent hover:text-primary"
+                    className="relative inline-flex min-w-11 justify-center rounded-md px-1.5 py-0.5 font-medium transition after:absolute after:inset-x-0 after:-inset-y-3 after:content-[''] hover:bg-accent hover:text-primary"
                   >
                     {item.label}
                   </Link>

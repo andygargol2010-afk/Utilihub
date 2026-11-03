@@ -39,15 +39,15 @@ export function ToolPage() {
   return (
     <div className="container-page py-6 sm:py-8">
       <nav aria-label="Breadcrumb" className="flex min-h-9 flex-wrap items-center gap-1 text-sm text-muted-foreground">
-        <Link to="/" className="hover:text-foreground">
+        <Link to="/" className="relative inline-flex min-w-11 justify-center after:absolute after:inset-x-0 after:-inset-y-3 after:content-[''] hover:text-foreground">
           Home
         </Link>
         <span aria-hidden="true">/</span>
-        <Link to="/tools" className="hover:text-foreground">
+        <Link to="/tools" className="relative inline-flex min-w-11 justify-center after:absolute after:inset-x-0 after:-inset-y-3 after:content-[''] hover:text-foreground">
           Tools
         </Link>
         <span aria-hidden="true">/</span>
-        <Link to="/category/$slug" params={{ slug: categoryPublicSlug }} className="hover:text-foreground">
+        <Link to="/category/$slug" params={{ slug: categoryPublicSlug }} className="relative inline-flex min-w-11 justify-center after:absolute after:inset-x-0 after:-inset-y-3 after:content-[''] hover:text-foreground">
           {category.name}
         </Link>
         <span aria-hidden="true">/</span>

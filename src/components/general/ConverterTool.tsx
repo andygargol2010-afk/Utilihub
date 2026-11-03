@@ -193,6 +193,7 @@ export function ConverterTool({ tool, locale = "en" }: { tool: GeneralTool; loca
           value={value}
           onChange={(e) => setValue(e.target.value)}
           className={inputClass}
+          inputMode={tool.slug.includes("rgb") || tool.slug.includes("hex") ? "text" : "decimal"}
           placeholder={tool.slug.includes("rgb") || tool.slug === "conversor-rgb-hex" ? "255, 99, 71" : "100"}
         />
       </label>
@@ -220,14 +221,16 @@ export function ConverterTool({ tool, locale = "en" }: { tool: GeneralTool; loca
           </select>
         </div>
       )}
-      <button type="button" className={btnClass} onClick={convert}>
+      <button type="button" className={`${btnClass} min-h-11`} onClick={convert}>
         {msg("Convert", "Convertir")}
       </button>
+      <div aria-live="polite">
       {out && (
         <output className={`block break-all rounded-2xl border p-4 ${ui ? `${ui.out} font-medium` : "bg-muted/30"}`}>
           {out}
         </output>
       )}
+      </div>
     </div>
   );
 }

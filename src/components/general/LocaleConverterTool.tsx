@@ -12,7 +12,7 @@ import {
 type Locale = "en" | "es";
 
 const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-9 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
+const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
 
 export function LocaleConverterTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
@@ -109,6 +109,7 @@ export function LocaleConverterTool({ locale = "en" }: { tool: GeneralTool; loca
         </label>
       </div>
 
+      <div aria-live="polite">
       {issues.length > 0 ? (
         <ul className="space-y-1 rounded-2xl border border-destructive/40 bg-destructive/5 p-3 text-sm">
           {issues.map((issue) => (
@@ -138,6 +139,7 @@ export function LocaleConverterTool({ locale = "en" }: { tool: GeneralTool; loca
           </button>
         </div>
       ) : null}
+      </div>
     </div>
   );
 }

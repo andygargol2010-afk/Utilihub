@@ -81,7 +81,7 @@ export function BmiCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
   return (
     <div className="mx-auto max-w-lg space-y-4">
       <div className="rounded-2xl border bg-card p-4 sm:p-5 space-y-4">
-        <div>
+        <div aria-live="polite">
           <p className="text-sm text-muted-foreground">
             {es ? "Índice de masa corporal (IMC)" : "Body Mass Index (BMI)"}
           </p>
@@ -180,21 +180,21 @@ export function BmiCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
           <p className="flex flex-wrap gap-x-2 gap-y-1">
             <a
               href={es ? "/es/herramientas/calculadora-calorias-diarias" : "/tools/daily-calories-calculator"}
-              className="underline"
+              className="inline-flex min-h-11 items-center underline"
             >
               {es ? "Calorías diarias" : "Daily calories"}
             </a>
             <span aria-hidden>·</span>
             <a
               href={es ? "/es/herramientas/calculadora-ingesta-agua-diaria" : "/tools/daily-water-intake-calculator"}
-              className="underline"
+              className="inline-flex min-h-11 items-center underline"
             >
               {es ? "Agua diaria" : "Daily water"}
             </a>
             <span aria-hidden>·</span>
             <a
               href={es ? "/es/herramientas/calculadora-peso-ideal" : "/tools/ideal-weight-calculator"}
-              className="underline"
+              className="inline-flex min-h-11 items-center underline"
             >
               {es ? "Peso ideal" : "Ideal weight"}
             </a>

@@ -36,7 +36,7 @@ export function MilesToKmConverterTool({ locale = "en" }: { tool?: GeneralTool; 
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
+      <div className="rounded-2xl border bg-muted/30 p-6 space-y-3" aria-live="polite">
         <p className="text-sm text-muted-foreground">{es ? "Millas a kil\u00f3metros" : "Miles to kilometers"}</p>
         {result ? (
           <p className="text-3xl font-semibold">{result.km} km</p>
@@ -47,7 +47,7 @@ export function MilesToKmConverterTool({ locale = "en" }: { tool?: GeneralTool; 
 
       <label className="block space-y-2 text-sm">
         <span className="font-medium">{es ? "Millas" : "Miles"}</span>
-        <input type="number" step="any" min="0" value={miles} onChange={(e) => setMiles(e.target.value)} className={fieldClass} />
+        <input type="number" inputMode="decimal" step="any" min="0" value={miles} onChange={(e) => setMiles(e.target.value)} className={fieldClass} />
       </label>
 
       <p className="text-sm text-muted-foreground">

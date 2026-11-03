@@ -82,9 +82,9 @@ export function ShareAndExportActions({ title, locale = "en" }: { title: string;
   };
 
   return <div className="mt-4 flex flex-wrap items-center gap-2 border-t pt-4" aria-label={copy.aria}>
-    <button type="button" onClick={runShare} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><Link2 className="size-4"/> {copy.share}</button>
-    <button type="button" onClick={exportPdf} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><FileDown className="size-4"/> {copy.pdf}</button>
-    <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><Download className="size-4"/> {copy.csv}</button>
-    {status && <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary"><Check className="size-3.5"/>{status}</span>}
+    <button type="button" onClick={runShare} className="inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><Link2 className="size-4"/> {copy.share}</button>
+    <button type="button" onClick={exportPdf} className="inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><FileDown className="size-4"/> {copy.pdf}</button>
+    <button type="button" onClick={exportCsv} className="inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold hover:bg-accent"><Download className="size-4"/> {copy.csv}</button>
+    <span role="status" aria-live="polite">{status && <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary"><Check className="size-3.5"/>{status}</span>}</span>
   </div>;
 }

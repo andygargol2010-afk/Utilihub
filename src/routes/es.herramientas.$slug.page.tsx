@@ -44,20 +44,20 @@ export function SpanishToolPage() {
   return (
     <div className="container-page py-6 sm:py-8">
       <nav aria-label="Miga de pan" className="flex min-h-9 flex-wrap items-center gap-1 text-sm text-muted-foreground">
-        <Link to="/es" className="hover:text-foreground">
+        <Link to="/es" className="relative inline-flex min-w-11 justify-center after:absolute after:inset-x-0 after:-inset-y-3 after:content-[''] hover:text-foreground">
           Inicio
         </Link>
         <span aria-hidden="true">/</span>
-        <Link to="/es/herramientas" className="hover:text-foreground">
+        <Link to="/es/herramientas" className="relative inline-flex min-w-11 justify-center after:absolute after:inset-x-0 after:-inset-y-3 after:content-[''] hover:text-foreground">
           Herramientas
         </Link>
         <span aria-hidden="true">/</span>
         {categoryParams ? (
-          <Link to={categoryTo} params={categoryParams} className="hover:text-foreground">
+          <Link to={categoryTo} params={categoryParams} className="relative inline-flex min-w-11 justify-center after:absolute after:inset-x-0 after:-inset-y-3 after:content-[''] hover:text-foreground">
             {categoryName}
           </Link>
         ) : (
-          <Link to={categoryTo} className="hover:text-foreground">
+          <Link to={categoryTo} className="relative inline-flex min-w-11 justify-center after:absolute after:inset-x-0 after:-inset-y-3 after:content-[''] hover:text-foreground">
             {categoryName}
           </Link>
         )}

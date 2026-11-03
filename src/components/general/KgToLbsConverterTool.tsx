@@ -38,7 +38,7 @@ export function KgToLbsConverterTool({ locale = "en" }: { tool?: GeneralTool; lo
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
+      <div className="rounded-2xl border bg-muted/30 p-6 space-y-3" aria-live="polite">
         <p className="text-sm text-muted-foreground">{es ? "Resultado" : "Result"}</p>
         {result?.converted != null ? (
           <p className="text-3xl font-semibold">{result.converted} {fromKg ? "lbs" : "kg"}</p>
@@ -50,7 +50,7 @@ export function KgToLbsConverterTool({ locale = "en" }: { tool?: GeneralTool; lo
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block space-y-2 text-sm">
           <span className="font-medium">{es ? "Valor" : "Value"}</span>
-          <input type="number" value={value} onChange={(e) => setValue(e.target.value)} className={fieldClass} />
+          <input type="number" inputMode="decimal" min="0" step="any" value={value} onChange={(e) => setValue(e.target.value)} className={fieldClass} />
         </label>
         <label className="block space-y-2 text-sm">
           <span className="font-medium">{es ? "De" : "From"}</span>

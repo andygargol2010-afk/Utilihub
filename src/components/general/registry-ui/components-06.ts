@@ -69,3 +69,11 @@ export const RomanNumeralsConverterToolUi = lazy(() =>
 export const CoffeeDoseCalculatorToolUi = lazy(() =>
   import("../CoffeeDoseCalculatorTool").then((m) => ({ default: m.CoffeeDoseCalculatorTool })),
 );
+
+export const KgToLbsConverterToolUi = lazy(() =>
+  import("../KgToLbsConverterTool").then((m) => ({ default: m.KgToLbsConverterTool })),
+);
+
+export const MilesToKmConverterToolUi = lazy(() =>
+  import("../MilesToKmConverterTool").then((m) => ({ default: m.MilesToKmConverterTool })),
+);

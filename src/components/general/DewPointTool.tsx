@@ -194,7 +194,7 @@ export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
           {copy.reset}
         </button>
       </form>
-      <section className="rounded-2xl border bg-card p-4">
+      <section className="rounded-2xl border bg-card p-4" aria-live="polite">
         <h2 className="text-lg font-semibold">{copy.result}</h2>
         {"error" in result ? (
           <p className="mt-3 text-sm text-destructive">{result.error}</p>
