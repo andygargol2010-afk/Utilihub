@@ -30,6 +30,8 @@ import { applyTimeOfDay, loadTimeOfDay, saveTimeOfDay, type LightRig, type TimeO
 import { TimeOfDayPicker } from "./house-modeler/TimeOfDayPicker";
 import { attachScrollFade } from "./house-modeler/scrollFade";
 import { nextSelectableId } from "./house-modeler/cycleSelect";
+import { MatchFinishButton, matchFinishHint, matchFinishToAll } from "./house-modeler/matchFinish";
+import { finishKey } from "./house-modeler/autosave";
 
 type PartKind = "wall" | "floor" | "roof" | "column" | "door" | "window" | "stairs" | "railing" | "chimney" | "beam" | "foundation" | "pergola" | "fence" | "path" | "planter" | "bench" | "lamp";
 type Locale = "en" | "es";
@@ -2984,6 +2986,9 @@ function applyRailingFinish(obj: THREE.Object3D, mats: ReturnType<typeof makeMat
     else if (c.name === "railingKick") c.material = mats.fascia;
   });
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const FINISH_APPLY: Record<PartKind, (o: THREE.Object3D, m: ReturnType<typeof makeMaterials>, f: any) => void> = { wall: applyWallFinish, floor: applyFloorFinish, roof: applyRoofFinish, column: applyColumnFinish, door: applyDoorFinish, window: applyWindowFinish, stairs: applyStairsFinish, railing: applyRailingFinish, chimney: applyChimneyFinish, beam: applyBeamFinish, foundation: applyFoundationFinish, pergola: applyPergolaFinish, fence: applyFenceFinish, path: applyPathFinish, planter: applyPlanterFinish, bench: applyBenchFinish, lamp: applyLampFinish };
 
 function disposeCatalogMaterials(mats: ReturnType<typeof makeMaterials>) {
   const seen = new Set<THREE.Texture>();
@@ -6407,6 +6412,20 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready]);
+  const matchFinishAll = () => {
+    const t = threeRef.current;
+    if (!t) return;
+    const key = (p: ScenePart) => finishKey(p.kind);
+    const n = matchFinishToAll(partsRef.current as (ScenePart & Record<string, unknown>)[], selectedRef.current, (p) => ((findPartObject(p.id) as THREE.Object3D | null)?.userData[key(p)] ?? p[key(p)]) as string | undefined, (p, fin) => {
+      const obj = (findPartObject(p.id) as THREE.Object3D | null);
+      if (!obj || partFrozen(p, layersRef.current)) return false;
+      FINISH_APPLY[p.kind](obj, t.mats, fin);
+      obj.userData[key(p)] = fin;
+      return true;
+    });
+    setFinishRev((r) => r + 1);
+    flashActionHint(matchFinishHint(es, n));
+  };
   const refuseSelection = (needsUnlock = false) => {
     if (!selectedId) {
       flashActionHint(labels.needSel);
@@ -6955,6 +6974,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
           {labels.dup}
           <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">D</kbd>
         </button>
+        <MatchFinishButton es={es} disabled={!selectedId} onClick={() => { if (!refuseSelection()) matchFinishAll(); }} />
         <button
           type="button"
           onClick={() => { if (!refuseSelection()) frameSelected(); }}
@@ -7141,6 +7161,7 @@ export function HouseModeler3D({ locale = "en" }: { tool: GeneralTool; locale?: 
                 {labels.dup}
                 <kbd className="rounded bg-amber-50/15 px-1 font-mono text-[10px] text-amber-100">D</kbd>
               </button>
+              <MatchFinishButton overlay es={es} disabled={!selectedId} onClick={() => { if (!refuseSelection()) matchFinishAll(); }} />
               <button
                 type="button"
                 onClick={() => { if (!refuseSelection()) frameSelected(); }}
