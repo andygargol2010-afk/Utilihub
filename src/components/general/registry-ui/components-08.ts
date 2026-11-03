@@ -11,3 +11,4 @@ export const McdMcmCalculatorToolUi = lazy(() => import("../McdMcmCalculatorTool
 export const LineHeightCalculatorToolUi = lazy(() => import("../LineHeightCalculatorTool").then((m) => ({ default: m.LineHeightCalculatorTool })));
 export const PercentageToLetterGradeCalculatorToolUi = lazy(() => import("../PercentageToLetterGradeCalculatorTool").then((m) => ({ default: m.PercentageToLetterGradeCalculatorTool })));
 export const WordsPerSentenceCalculatorToolUi = lazy(() => import("../WordsPerSentenceCalculatorTool").then((m) => ({ default: m.WordsPerSentenceCalculatorTool })));
+export const GeometricMeanCalculatorToolUi = lazy(() => import("../GeometricMeanCalculatorTool").then((m) => ({ default: m.GeometricMeanCalculatorTool })));

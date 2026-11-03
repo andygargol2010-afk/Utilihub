@@ -6,39 +6,37 @@ type Locale = "en" | "es";
 const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
 const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
 
-function parseList(s: string): number[] {
-  return s
-    .split(/[,;\s]+/)
-    .map((x) => x.trim())
-    .filter(Boolean)
-    .map((x) => parseFloat(x))
-    .filter((n) => Number.isFinite(n));
+function geometricMean(values: number[]): number | { error: string } {
+  if (values.length === 0) return { error: "empty" };
+  if (values.some((v) => !Number.isFinite(v) || v <= 0)) return { error: "positive" };
+  const sumLn = values.reduce((acc, v) => acc + Math.log(v), 0);
+  return Math.exp(sumLn / values.length);
 }
 
 export function GeometricMeanCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
-  const [valuesStr, setValuesStr] = useState("2, 8");
+  const [input, setInput] = useState("2, 8");
   const [copied, setCopied] = useState(false);
 
   const result = useMemo(() => {
-    const values = parseList(valuesStr);
-    if (values.length === 0) return null;
-    if (values.some((v) => !Number.isFinite(v) || v <= 0)) return null;
-    const n = values.length;
-    const product = values.reduce((acc, v) => acc * v, 1);
-    if (!Number.isFinite(product) || product <= 0) return null;
-    const g = Math.pow(product, 1 / n);
-    const rounded = Math.round(g * 10000) / 10000;
-    return { g: rounded, n, product: Math.round(product * 10000) / 10000 };
-  }, [valuesStr]);
+    const nums = input
+      .split(/[,\s]+/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map(Number);
+    const r = geometricMean(nums);
+    if (typeof r === "object") {
+      if (r.error === "empty") return { error: es ? "Ingresa al menos un número" : "Enter at least one number" };
+      return { error: es ? "Todos los valores deben ser positivos" : "All values must be positive" };
+    }
+    return { mean: r, count: nums.length };
+  }, [input, es]);
 
   async function copy() {
-    if (!result) return;
-    const text = es
-      ? `Media geométrica: ${result.g}`
-      : `Geometric mean: ${result.g}`;
+    if (!result || "error" in result) return;
+    const t = result.mean.toFixed(4);
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(t);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -47,51 +45,63 @@ export function GeometricMeanCalculatorTool({ locale = "en" }: { tool?: GeneralT
   }
 
   function reset() {
-    setValuesStr("2, 8");
+    setInput("2, 8");
     setCopied(false);
   }
 
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
-        <p className="text-sm text-muted-foreground">{es ? "Media geométrica" : "Geometric mean"}</p>
-        {result ? (
-          <div>
-            <p className="text-3xl font-semibold">{result.g}</p>
+        <p className="text-sm text-muted-foreground">{es ? "Resultado" : "Result"}</p>
+        {result && !("error" in result) ? (
+          <div className="space-y-1">
+            <p className="text-2xl font-semibold">{result.mean.toFixed(4)}</p>
             <p className="text-sm text-muted-foreground">
-              {es
-                ? `${result.n} valores · producto = ${result.product}`
-                : `${result.n} values · product = ${result.product}`}
+              {es ? `Media geométrica de ${result.count} valores` : `Geometric mean of ${result.count} values`}
             </p>
           </div>
+        ) : result && "error" in result ? (
+          <p className="text-sm text-destructive">{result.error}</p>
         ) : (
-          <p className="text-sm text-muted-foreground">
-            {es ? "Introduce al menos un número positivo finito" : "Enter at least one positive finite number"}
-          </p>
+          <p className="text-sm text-muted-foreground">{es ? "Ingresa números" : "Enter numbers"}</p>
         )}
       </div>
 
-      <label className="block space-y-2 text-sm">
-        <span className="font-medium">{es ? "Números positivos (separados por coma)" : "Positive numbers (comma-separated)"}</span>
-        <input
-          type="text"
-          value={valuesStr}
-          onChange={(e) => setValuesStr(e.target.value)}
-          className={fieldClass}
-          placeholder={es ? "Ej. 2, 8" : "e.g. 2, 8"}
-        />
-      </label>
+      <div className="grid gap-4">
+        <label className="block space-y-2 text-sm">
+          <span className="font-medium">{es ? "Números (separados por coma o espacio)" : "Numbers (comma or space separated)"}</span>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className={fieldClass}
+            placeholder={es ? "ej. 2, 8 o 1 2 4 8" : "e.g. 2, 8 or 1 2 4 8"}
+          />
+        </label>
+      </div>
 
       <p className="text-sm text-muted-foreground">
         {es
-          ? "Calcula (\u03a0 x_i)^(1/n). Útil para tasas de crecimiento, porcentajes o promedios multiplicativos (solo números positivos)."
-          : "Computes (\u03a0 x_i)^(1/n). Useful for growth rates, percentages, or multiplicative averages (positive numbers only)."}
+          ? "Solo números positivos. Se calcula como exp(promedio de logaritmos naturales)."
+          : "Positive numbers only. Calculated as exp(average of natural logs)."}
       </p>
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? "2, 8 → 4" : "2, 8 → 4"}</p>
-        <p>{es ? "1, 2, 4 → 2" : "1, 2, 4 → 2"}</p>
+        <p>2, 8 → 4.0000</p>
+        <p>1, 2, 4, 8 → 2.8284</p>
+      </div>
+
+      <div className="text-sm space-y-1">
+        <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
+        <p>
+          <a href={es ? "/es/herramientas/media-armonica" : "/tools/media-armonica"} className="underline text-primary">
+            {es ? "Media armónica" : "Harmonic mean"}
+          </a>
+          {" · "}
+          <a href={es ? "/es/herramientas/media-ponderada" : "/tools/media-ponderada"} className="underline text-primary">
+            {es ? "Media ponderada" : "Weighted mean"}
+          </a>
+        </p>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -101,19 +111,6 @@ export function GeometricMeanCalculatorTool({ locale = "en" }: { tool?: GeneralT
         <button type="button" className={buttonClass} onClick={reset}>
           {es ? "Reiniciar" : "Reset"}
         </button>
-      </div>
-
-      <div className="text-sm text-muted-foreground space-y-1">
-        <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
-        <p>
-          <a className="underline" href={es ? "/es/tools/calculadora-media-armonica" : "/tools/calculadora-media-armonica"}>
-            {es ? "Media armónica" : "Harmonic mean"}
-          </a>
-          {" · "}
-          <a className="underline" href={es ? "/es/tools/calculadora-promedio-simple" : "/tools/calculadora-promedio-simple"}>
-            {es ? "Promedio simple" : "Simple average"}
-          </a>
-        </p>
       </div>
     </div>
   );
