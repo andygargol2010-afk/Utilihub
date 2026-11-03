@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-03 run 119
-runs_total: 119
+last_run: 2026-11-03 run 120
+runs_total: 120
 last_mode: HUNT
 last_fix: n/a (clean)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean
 deploy: production READY on b66efb99 (no recent ERROR on tip; older ERROR on 918e8c1a ignored)
-notes: Known smoke E031 — registry.tsx full (pickComponent kind-first + dedicated wires for IVA/IMC/etc.), index.tsx and es.index start with import/createFileRoute, no $(cat stubs, PLACEHOLDER only normal UI attrs. Discovery: live checks / (EN+ES home ok), /games/connect-four (interactive board), /tools/3d-house-modeler (full 3D UI with parts/presets/layers), /tools/calculadora-iva (dedicated add/extract UI). No runtime errors. No new open/recurring. No deploy ERROR. Pending: none critical.
+notes: Known smoke E031 — registry.tsx full (pickComponent kind-first + dedicated wires for IVA/IMC/etc.), index.tsx and es.index start with import/createFileRoute, no $(cat stubs, PLACEHOLDER only normal UI attrs. Discovery: live checks / (EN+ES home ok), /games/2048 (interactive tiles), /studio/prism-trail-composer (controls present), /es/herramientas/calculadora-imc (dedicated IMC UI with categories), /es/herramientas/modelador-3d (specific 3D guide). No runtime errors. No new open/recurring. No deploy ERROR. Pending: none critical.
 ```
 
 <!-- end:error-hunter-state.md -->
