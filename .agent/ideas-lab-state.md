@@ -63,7 +63,18 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Interactive classic Connect Four game. 7-column by 6-row grid. Players take turns dropping colored discs into columns; discs fall to lowest open cell by gravity. First to connect 4 horizontally, vertically or diagonally wins. Optional simple AI (random or greedy). Highlight last move, win line. URL deep-link for board state. Branded PNG of board. EN+ES routes. Mobile-first 390px. CSS grid + state. No heavy canvas.
+acceptance: User selects column to drop disc, sees it fall and opponent respond, detects win/draw, can share PNG or URL.
+id: connect-four-classic
+path_en: /games/connect-four-classic
+path_es: /es/juegos/conecta-cuatro-clasico
+domain: games
+runs_total: 4
+runs_remaining: 4
+share: both
+next_step_required: yes
+notes: Domain roll CORE (games weight 5; variety: different classic from recent sudoku/minesweeper/othello). Candidates: 1. Connect Four (value 5, share 4, search 5, distinct 5, feas 5, perf 4; total 28) closest: othello, minesweeper, sudoku; metaphor: gravity-drop column grid puzzle; not particle-canvas. IP: traditional public-domain gravity drop connect-4 mechanics, generic naming, no Hasbro branding. 2. Checkers (value 4, share 3, search 4, distinct 4, feas 4, perf 4; total 23) closest: othello, memory-match; metaphor: turn-based jump-capture board. IP: traditional. 3. 15-puzzle sliding (value 4, share 3, search 4, distinct 4, feas 5, perf 5; total 25) closest: sudoku; metaphor: tile slide constraint. Chosen: connect-four-classic.
 ```
 
 <!-- end:ideas-lab-state.md -->
