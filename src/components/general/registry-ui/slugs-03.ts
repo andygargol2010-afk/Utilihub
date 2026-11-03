@@ -52,4 +52,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "conversor-numeros-romanos": UI.RomanNumeralsConverterToolUi,
   "calculadora-superficie-corporal": UI.BodySurfaceAreaCalculatorToolUi,
   "calculadora-presupuesto-total-viaje": UI.TripTotalBudgetCalculatorToolUi,
+  "conversor-psi-bar": UI.PsiBarConverterToolUi,
 };
