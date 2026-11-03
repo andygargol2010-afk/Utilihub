@@ -70,10 +70,10 @@ path_en: /kits/paper-airplane-kit
 path_es: /es/kits/avion-papel-kit
 domain: kits
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 share: both
 next_step_required: yes
-notes: Domain roll CORE (kits weight 5; variety after recent games closes: sudoku/minesweeper/othello/connect-four). Candidates: 1. Paper airplane kit (value 4, share 4, search 3, distinct 4, feas 5, perf 5; total 25) closest: science-experiment-kit, achievement-certificate-maker, progress-passport; metaphor: step-by-step fold guide with live CSS preview; not particle-canvas. 2. Simple circuit light kit (value 5, share 3, search 4, distinct 4, feas 4, perf 4; total 24) closest: science-experiment-kit; metaphor: component assembly with on/off simulation. 3. Plant watering schedule kit (value 3, share 3, search 3, distinct 3, feas 5, perf 5; total 22) closest: science-experiment-kit. Chosen: paper-airplane-kit. Core by run 2: basic preset + step checkoffs + preview.
+notes: Domain roll CORE (kits weight 5; variety after recent games closes: sudoku/minesweeper/othello/connect-four). Candidates: 1. Paper airplane kit (value 4, share 4, search 3, distinct 4, feas 5, perf 5; total 25) closest: science-experiment-kit, achievement-certificate-maker, progress-passport; metaphor: step-by-step fold guide with live CSS preview; not particle-canvas. 2. Simple circuit light kit (value 5, share 3, search 4, distinct 4, feas 4, perf 4; total 24) closest: science-experiment-kit; metaphor: component assembly with on/off simulation. 3. Plant watering schedule kit (value 3, share 3, search 3, distinct 3, feas 5, perf 5; total 22) closest: science-experiment-kit. Chosen: paper-airplane-kit. Core by run 2: basic preset + step checkoffs + preview. Run 1 done: presets (dart/glider/stunt), checkoff steps, live CSS plane preview that scales/rotates with progress, progress bar, URL deep-link, branded PNG, EN+ES. Next: polish preview, add challenge modes or more designs, safety tips if any, mobile tweaks.
 ```
 
 <!-- end:ideas-lab-state.md -->
