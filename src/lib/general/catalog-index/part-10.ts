@@ -1,4 +1,4 @@
-// GENERAL_TOOLS part 10 — created to keep parts under ~3.5 KB.
+// GENERAL_TOOLS part 10 \u2014 created to keep parts under ~3.5 KB.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import { MPG_L100KM_CONVERTER_TOOLS } from "../mpg-l100km-converter-tool";
 import { TIMEZONE_CONVERTER_TOOLS } from "../timezone-converter-tool";
@@ -11,6 +11,7 @@ import { PSI_BAR_CONVERTER_TOOLS } from "../psi-bar-converter-tool";
 import { COFFEE_DOSE_CALCULATOR_TOOLS } from "../coffee-dose-calculator-tool";
 import { WAIST_TO_HIP_RATIO_CALCULATOR_TOOLS } from "../waist-to-hip-ratio-calculator-tool";
 import { STRAIGHT_LINE_DEPRECIATION_CALCULATOR_TOOLS } from "../straight-line-depreciation-calculator-tool";
+import { CYLINDER_SURFACE_AREA_CALCULATOR_TOOLS } from "../cylinder-surface-area-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -24,4 +25,5 @@ export const GENERAL_TOOLS_PART_10 = [
   ...COFFEE_DOSE_CALCULATOR_TOOLS,
   ...WAIST_TO_HIP_RATIO_CALCULATOR_TOOLS,
   ...STRAIGHT_LINE_DEPRECIATION_CALCULATOR_TOOLS,
+  ...CYLINDER_SURFACE_AREA_CALCULATOR_TOOLS,
 ];

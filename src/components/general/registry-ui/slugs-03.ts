@@ -1,4 +1,4 @@
-// Dedicated UI by slug, part 03 — further split 2026-10-28 to keep files under ~3.5 KB.
+// Dedicated UI by slug, part 03 \u2014 further split 2026-10-28 to keep files under ~3.5 KB.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import type { ToolComp } from "./types";
 import * as UI from "./components";
@@ -58,4 +58,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "conversor-millas-km": UI.MilesToKmConverterToolUi,
   "calculadora-ratio-cintura-cadera": UI.WaistToHipRatioCalculatorToolUi,
   "calculadora-depreciacion-lineal": UI.StraightLineDepreciationCalculatorToolUi,
+  "calculadora-area-superficie-cilindro": UI.CylinderSurfaceAreaCalculatorToolUi,
 };
