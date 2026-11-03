@@ -25,3 +25,4 @@ export const VarianceCalculatorToolUi = lazy(() => import("../VarianceCalculator
 export const PointsToPxConverterToolUi = lazy(() => import("../PointsToPxConverterTool").then((m) => ({ default: m.PointsToPxConverterTool })));
 export const BodySurfaceAreaCalculatorToolUi = lazy(() => import("../BodySurfaceAreaCalculatorTool").then((m) => ({ default: m.BodySurfaceAreaCalculatorTool })));
 export const TripTotalBudgetCalculatorToolUi = lazy(() => import("../TripTotalBudgetCalculatorTool").then((m) => ({ default: m.TripTotalBudgetCalculatorTool })));
+export const PsiBarConverterToolUi = lazy(() => import("../PsiBarConverterTool").then((m) => ({ default: m.PsiBarConverterTool })));
