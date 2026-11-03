@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 111
-runs_total: 111
+last_run: 2026-11-03 run 112
+runs_total: 112
 last_mode: HUNT
 last_fix: n/a (clean; tip has SEO partial-override guards)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs)
-deploy: production READY on b66efb99 (lag vs tip 5fdc00c9 which includes prior SSR/client fix for partial SEO overrides)
-notes: Known smoke E031 — no PLACEHOLDER or $(cat stubs in critical src files (registry.tsx clean, search 0 hits on $(cat, only normal placeholder attrs). Discovery: live production still crashes with "Cannot read properties of undefined (reading 'length')" on /tools/unit-converter, /tools/kinetic-energy-calculator, /tools/miles-to-kilometers-converter (Tool not found page); temperature-converter, calculadora-iva, calculadora-imc, word-counter, password-generator, home all 200 OK. Tip code has defensive resolvedToolSeo / ToolSeoContent (optional chaining + ?? []). No new open errors in tip. No recent deploy ERROR. Pending: deploy of tip to clear production crashes.
+deploy: production READY on b66efb99 (lag vs tip 52d18548 which includes prior SSR/client fix for partial SEO overrides)
+notes: Known smoke E031 — no PLACEHOLDER or $(cat stubs in critical src files (registry.tsx clean, search 0 hits on literal PLACEHOLDER_ or $(cat in src; only normal placeholder attrs and workflow). Discovery: live production still crashes with "Cannot read properties of undefined (reading 'length')" on /tools/unit-converter and /tools/kinetic-energy-calculator (Tool not found page); temperature-converter, calculadora-iva (page 200, Spanish guide), home all 200 OK. Tip code has defensive override?.aboutEs?.length etc in ToolSeoContent. No new open errors in tip. No recent deploy ERROR on branch. Pending: deploy of tip to clear production crashes.
 ```
 
 <!-- end:error-hunter-state.md -->
