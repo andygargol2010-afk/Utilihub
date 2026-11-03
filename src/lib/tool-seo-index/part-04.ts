@@ -7,6 +7,7 @@ import { TOOL_SEO_OVERRIDES_HARMONIC_MEAN } from "../tool-seo-overrides-harmonic
 import { TOOL_SEO_OVERRIDES_TEMPERATURE } from "../tool-seo-overrides-temperature";
 import { TOOL_SEO_OVERRIDES_TRIP_FUEL } from "../tool-seo-overrides-trip-fuel";
 import { TOOL_SEO_OVERRIDES_GSC_QUERIES } from "../tool-seo-overrides-gsc-queries";
+import { TOOL_SEO_OVERRIDES_REFERENCE } from "../tool-seo-overrides-reference";
 
 export const TOOL_SEO_OVERRIDES_PART_04: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_ATTENDANCE,
@@ -15,4 +16,5 @@ export const TOOL_SEO_OVERRIDES_PART_04: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_TEMPERATURE,
   ...TOOL_SEO_OVERRIDES_TRIP_FUEL,
   ...TOOL_SEO_OVERRIDES_GSC_QUERIES,
+  ...TOOL_SEO_OVERRIDES_REFERENCE,
 };

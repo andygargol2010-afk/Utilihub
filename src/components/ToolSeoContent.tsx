@@ -1,6 +1,8 @@
 import type { CatalogTool } from "@/lib/all-tools";
 import { spanishToolName } from "@/lib/i18n/es";
 import { resolvedToolSeo, toolSeoOverride } from "@/lib/tool-seo-overrides";
+import { referenceLinks, toolReference } from "@/lib/tool-reference";
+import { ToolReferenceContent, ToolReferenceLinks } from "./ToolReferenceContent";
 
 /** Spanish guide when a tool has EN catalog copy but no aboutEs/stepsEs/faqEs override. */
 function spanishGuideFallback(
@@ -232,7 +234,12 @@ export function ToolSeoContent({
           : []
       : resolved.faq;
 
-  const hasDetails = about.length > 0 || steps.length > 0 || faq.length > 0;
+  const hasDetails =
+    about.length > 0 ||
+    steps.length > 0 ||
+    faq.length > 0 ||
+    Boolean(toolReference(tool.slug)) ||
+    referenceLinks(tool.slug).length > 0;
   if (!hasDetails) return null;
 
   const guideLabel = locale === "es" ? "Guía de la herramienta" : "Tool guide";
@@ -288,6 +295,7 @@ export function ToolSeoContent({
           </section>
         )}
       </div>
+      <ToolReferenceContent slug={tool.slug} locale={locale} />
       {faq.length > 0 ? (
         <section className="mt-8 max-w-3xl" aria-labelledby="tool-faq-title">
           <h3 id="tool-faq-title" className="text-base font-bold">
@@ -303,6 +311,7 @@ export function ToolSeoContent({
           </dl>
         </section>
       ) : null}
+      <ToolReferenceLinks slug={tool.slug} locale={locale} />
     </article>
   );
 }

@@ -36,6 +36,14 @@ export const TOOL_SEO_OVERRIDES_COCINA: Record<string, ToolSeoOverride> = {
         q: "How many ml is a teaspoon?",
         a: "A US teaspoon is 4.93 ml (often rounded to 5 ml); 1 tablespoon equals 3 teaspoons.",
       },
+      {
+        q: "How many tablespoons are in a cup?",
+        a: "16 US tablespoons make 1 US cup (236.59 ml); 4 tablespoons are ¼ cup (59.15 ml).",
+      },
+      {
+        q: "How many tablespoons is 100 ml?",
+        a: "About 6.76 US tablespoons (100 ÷ 14.79), or 6.67 metric tablespoons (100 ÷ 15).",
+      },
     ],
     faqEs: [
       {
@@ -45,6 +53,14 @@ export const TOOL_SEO_OVERRIDES_COCINA: Record<string, ToolSeoOverride> = {
       {
         q: "¿Cuántos ml tiene una cucharadita?",
         a: "La cucharadita de EE. UU. es 4,93 ml (suele redondearse a 5 ml); 1 cucharada equivale a 3 cucharaditas.",
+      },
+      {
+        q: "¿Cuántas cucharadas tiene una taza?",
+        a: "16 cucharadas de EE. UU. forman 1 taza de EE. UU. (236,59 ml); 4 cucharadas son ¼ de taza (59,15 ml).",
+      },
+      {
+        q: "¿Cuántas cucharadas son 100 ml?",
+        a: "Unas 6,76 cucharadas de EE. UU. (100 ÷ 14,79) o 6,67 cucharadas métricas (100 ÷ 15).",
       },
     ],
   },
