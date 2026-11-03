@@ -15,8 +15,9 @@ const tool = makeTool(
   {
     title: "Arithmetic Mean Calculator — Average of Numbers | UtiliHub",
     description:
-      "Free arithmetic mean calculator. Add the formula (sum of values ÷ count), an example, and unit-free decimals. Enter numbers separated by commas or spaces and get the mean instantly in your browser.".replace(/^Free arithmetic mean calculator\.[^]*?\n?/, ""),
-    summaryEs: "Calcula la media aritmética (promedio) de una lista de números, con la fórmula y un ejemplo.",
+      "Free arithmetic mean calculator with formula and example. Enter numbers separated by commas or spaces and get the mean (sum of values ÷ count) instantly in your browser.",
+    summaryEs:
+      "Calcula la media aritmética (promedio) de una lista de números, con la fórmula y un ejemplo.",
   },
 );
 tool.faq.push(
@@ -25,6 +26,8 @@ tool.faq.push(
     "Mean = (sum of all values) ÷ (number of values). Example: (10 + 20 + 30) ÷ 3 = 20.",
   ),
 );
-tool.faq.push(faq("What is the arithmetic mean?", "The sum of the values divided by the count of values."));
+tool.faq.push(
+  faq("What is the arithmetic mean?", "The sum of the values divided by the count of values."),
+);
 
 export const ARITHMETIC_MEAN_CALCULATOR_TOOLS = [tool];
