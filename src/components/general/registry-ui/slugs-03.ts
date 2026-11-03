@@ -59,4 +59,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-ratio-cintura-cadera": UI.WaistToHipRatioCalculatorToolUi,
   "calculadora-depreciacion-lineal": UI.StraightLineDepreciationCalculatorToolUi,
   "calculadora-area-superficie-cilindro": UI.CylinderSurfaceAreaCalculatorToolUi,
+  "calculadora-diferencia-horas": UI.TimeOfDayDifferenceCalculatorToolUi,
 };
