@@ -57,4 +57,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "conversor-kg-libras": UI.KgToLbsConverterToolUi,
   "conversor-millas-km": UI.MilesToKmConverterToolUi,
   "calculadora-ratio-cintura-cadera": UI.WaistToHipRatioCalculatorToolUi,
+  "calculadora-depreciacion-lineal": UI.StraightLineDepreciationCalculatorToolUi,
 };

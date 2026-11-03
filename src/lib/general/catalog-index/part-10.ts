@@ -10,6 +10,7 @@ import { TRIP_TOTAL_BUDGET_CALCULATOR_TOOLS } from "../trip-total-budget-calcula
 import { PSI_BAR_CONVERTER_TOOLS } from "../psi-bar-converter-tool";
 import { COFFEE_DOSE_CALCULATOR_TOOLS } from "../coffee-dose-calculator-tool";
 import { WAIST_TO_HIP_RATIO_CALCULATOR_TOOLS } from "../waist-to-hip-ratio-calculator-tool";
+import { STRAIGHT_LINE_DEPRECIATION_CALCULATOR_TOOLS } from "../straight-line-depreciation-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -22,4 +23,5 @@ export const GENERAL_TOOLS_PART_10 = [
   ...PSI_BAR_CONVERTER_TOOLS,
   ...COFFEE_DOSE_CALCULATOR_TOOLS,
   ...WAIST_TO_HIP_RATIO_CALCULATOR_TOOLS,
+  ...STRAIGHT_LINE_DEPRECIATION_CALCULATOR_TOOLS,
 ];

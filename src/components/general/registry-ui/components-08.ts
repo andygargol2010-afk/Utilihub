@@ -4,3 +4,4 @@ import { lazy } from "react";
 
 export const CoffeeDoseCalculatorToolUi = lazy(() => import("../CoffeeDoseCalculatorTool").then((m) => ({ default: m.CoffeeDoseCalculatorTool })));
 export const WaistToHipRatioCalculatorToolUi = lazy(() => import("../WaistToHipRatioCalculatorTool").then((m) => ({ default: m.WaistToHipRatioCalculatorTool })));
+export const StraightLineDepreciationCalculatorToolUi = lazy(() => import("../StraightLineDepreciationCalculatorTool").then((m) => ({ default: m.StraightLineDepreciationCalculatorTool })));

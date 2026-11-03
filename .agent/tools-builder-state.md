@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-03 | finanzas | calculadora-depreciacion-lineal | StraightLineDepreciationCalculatorTool
 - 2026-11-03 | salud | calculadora-ratio-cintura-cadera | WaistToHipRatioCalculatorTool
 - 2026-11-03 | hogar | calculadora-dosis-cafe | CoffeeDoseCalculatorTool
 - 2026-11-03 | conversiones | conversor-psi-bar | PsiBarConverterTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-02 | diseno | conversor-pt-a-px | PointsToPxConverterTool
 - 2026-11-02 | matematicas | calculadora-varianza | VarianceCalculatorTool
 - 2026-11-02 | fechas | conversor-zonas-horarias | TimezoneConverterTool
-- 2026-11-01 | conversiones | conversor-mpg-l100km | MpgL100kmConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -46,7 +46,7 @@ texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, p
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala, conversor-pt-a-px)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura, calculadora-superficie-corporal, calculadora-ratio-cintura-cadera)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda, calculadora-promedio-examenes)
-finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta)
+finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta, calculadora-depreciacion-lineal)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico, calculadora-varianza)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras, conversor-acres-hectareas, conversor-pies2-m2, conversor-mpg-l100km, conversor-psi-bar)
 ```
@@ -85,6 +85,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-11-03: PRODUCT — conversor-psi-bar (conversiones). One tool (default, saturation). Anti-dupe OK (new dedicated slug; generic conversor-presion exists but thin). Practical PSI ↔ bar pressure converter for tires, diving, industrial. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-03: PRODUCT — calculadora-dosis-cafe (hogar). One tool (default, saturation least-represented). Anti-dupe OK (new slug). Practical coffee dose calculator (people × g/person). Complements kitchen/cooking tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-03: PRODUCT — calculadora-ratio-cintura-cadera (salud). One tool (default; .md overrides bootstrap 2). Anti-dupe OK (new slug). Practical WHR calculator (waist/hip) for fat distribution. Complements BMI and WHtR. Also fixed missing CoffeeDoseCalculatorToolUi export. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-11-03: PRODUCT — calculadora-depreciacion-lineal (finanzas). One tool (default, saturation least-represented — finanzas 0 in last 12). Anti-dupe OK (new slug, no prior dedicated straight-line depreciation). Practical (cost − salvage) / years. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 ```
 
 ---
@@ -93,7 +94,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-ratio-cintura-cadera
+last_slugs: calculadora-depreciacion-lineal
 last_deploy: no (branch auto-deploy disabled)
 last_sha: PENDING
 ```
