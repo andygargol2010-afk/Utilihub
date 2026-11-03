@@ -65,3 +65,7 @@ export const KineticEnergyCalculatorToolUi = lazy(() =>
 export const RomanNumeralsConverterToolUi = lazy(() =>
   import("../RomanNumeralsConverterTool").then((m) => ({ default: m.RomanNumeralsConverterTool })),
 );
+
+export const CoffeeDoseCalculatorToolUi = lazy(() =>
+  import("../CoffeeDoseCalculatorTool").then((m) => ({ default: m.CoffeeDoseCalculatorTool })),
+);

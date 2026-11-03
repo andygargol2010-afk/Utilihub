@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-03 | hogar | calculadora-dosis-cafe | CoffeeDoseCalculatorTool
 - 2026-11-03 | conversiones | conversor-psi-bar | PsiBarConverterTool
 - 2026-11-02 | viajes | calculadora-presupuesto-total-viaje | TripTotalBudgetCalculatorTool
 - 2026-11-02 | salud | calculadora-superficie-corporal | BodySurfaceAreaCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-02 | fechas | conversor-zonas-horarias | TimezoneConverterTool
 - 2026-11-01 | conversiones | conversor-mpg-l100km | MpgL100kmConverterTool
 - 2026-11-01 | conversiones | conversor-pies2-m2 | SquareFeetMetersConverterTool
-- 2026-11-01 | finanzas | calculadora-ahorro-para-meta | SavingsGoalCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -40,7 +40,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad, calculadora-dias-entre-fechas, calculadora-horas-a-decimal, conversor-zonas-horarias)
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo, calculadora-energia-cinetica)
-hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml, calculadora-calorias-porcion)
+hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml, calculadora-calorias-porcion, calculadora-dosis-cafe)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible, calculadora-presupuesto-total-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura, conversor-numeros-romanos)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala, conversor-pt-a-px)
@@ -83,6 +83,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-11-02: PRODUCT — calculadora-superficie-corporal (salud). One tool (default, saturation least-represented — salud not in last ~12). Anti-dupe OK (new slug, no prior dedicated BSA tool). Practical Du Bois body surface area calculator (cm/kg → m²). Complements BMI and WHtR. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-02: PRODUCT — calculadora-presupuesto-total-viaje (viajes). One tool (default, saturation least-represented). Anti-dupe OK (new slug). Practical total trip budget calculator (transport+lodging+food+misc, optional per-person/day). Complements travel time and fuel tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-03: PRODUCT — conversor-psi-bar (conversiones). One tool (default, saturation). Anti-dupe OK (new dedicated slug; generic conversor-presion exists but thin). Practical PSI ↔ bar pressure converter for tires, diving, industrial. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-11-03: PRODUCT — calculadora-dosis-cafe (hogar). One tool (default, saturation least-represented). Anti-dupe OK (new slug). Practical coffee dose calculator (people × g/person). Complements kitchen/cooking tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 ```
 
 ---
@@ -91,7 +92,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: conversor-psi-bar
+last_slugs: calculadora-dosis-cafe
 last_deploy: no (branch auto-deploy disabled)
 last_sha: PENDING
 ```
