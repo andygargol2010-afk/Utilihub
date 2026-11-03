@@ -175,6 +175,7 @@ Add new entries in the **smallest** file of the matching folder; never rewrite f
 - New catalog tool module: import + `...X_TOOLS,` spread in the smallest `src/lib/general/catalog-index/part-NN.ts` (not in `src/lib/general/index.ts`).
 - New dedicated UI: `export const XToolUi = lazy(() => import("../XTool")...)` in the smallest `src/components/general/registry-ui/components-NN.ts`, and `"slug": UI.XToolUi,` in the smallest `src/components/general/registry-ui/slugs-NN.ts` (registry.tsx no longer has the `if (slug === ...)` chain).
 - New Spanish exact tool name: the smallest `src/lib/i18n/es-names/names-NN.ts` (es.ts must stay > 15 KB because of the restore-es-i18n guard; do not move more out of it).
+- New Spanish one-liner summary: the smaller of `src/lib/i18n/summary-es.ts` / `summary-es-2.ts` (split 2026-11-03; summary-es.ts must keep `...SUMMARY_ES_2`). PixelArtStudio helpers live in `PixelArtStudio.parts.ts`.
 - New SEO override module: import + spread in the smallest `src/lib/tool-seo-index/part-NN.ts` (not in `src/lib/tool-seo-overrides.ts`); entries of the old big override files live in `src/lib/tool-seo-data/`.
 - New Error Hunter catalog entry: the smallest file in `.agent/error-hunter-catalog/` (the root `.agent/error-hunter-catalog.md` is only the header + index).
 - **If the smallest file exceeds ~3.5 KB / ~100 lines, create the next `part-NN` / `names-NN` / `components-NN` / `slugs-NN` file and wire it in its parent with a one-line surgical insert.** Prefer creating the next part early rather than risking truncation.

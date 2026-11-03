@@ -59,10 +59,13 @@ for (const file of walk(srcDir)) {
 }
 
 const MIN_SUMMARY_ES_LINES = 550;
-const summaryEsLines = readFileSync(join(srcDir, "lib/i18n/summary-es.ts"), "utf8").split(/\r?\n/).length;
+// summary-es.ts was split in 2 on 2026-11-03: count both parts and require the spread.
+const summaryEsMain = readFileSync(join(srcDir, "lib/i18n/summary-es.ts"), "utf8");
+const summaryEsLines = summaryEsMain.split(/\r?\n/).length + readFileSync(join(srcDir, "lib/i18n/summary-es-2.ts"), "utf8").split(/\r?\n/).length;
 if (summaryEsLines < MIN_SUMMARY_ES_LINES) {
-  errors.push(`src/lib/i18n/summary-es.ts has ${summaryEsLines} lines (min ${MIN_SUMMARY_ES_LINES})`);
+  errors.push(`src/lib/i18n/summary-es.ts + summary-es-2.ts have ${summaryEsLines} lines (min ${MIN_SUMMARY_ES_LINES})`);
 }
+if (!summaryEsMain.includes("...SUMMARY_ES_2")) errors.push("src/lib/i18n/summary-es.ts must spread ...SUMMARY_ES_2");
 
 function readParts(mainFile, partsDir) {
   const files = [join(srcDir, mainFile)];
