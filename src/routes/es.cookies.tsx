@@ -6,7 +6,7 @@ export const Route = createFileRoute("/es/cookies")({
   head: () => ({
     meta: [
       { title: `Política de Cookies | ${SITE_NAME}` },
-      { name: "description", content: `Política de Cookies de ${SITE_NAME}: analítica, cookies publicitarias, almacenamiento local, métodos de exclusión y procesadores de terceros.` },
+      { name: "description", content: `Política de Cookies de ${SITE_NAME}: analítica, cookies publicitarias (incluyendo Adsterra y posibles socios de Google), almacenamiento local, métodos de exclusión y procesadores de terceros.` },
       { property: "og:title", content: `Política de Cookies | ${SITE_NAME}` },
       { property: "og:description", content: `Cómo ${SITE_NAME} utiliza cookies y tecnologías similares.` },
       { property: "og:url", content: absoluteUrl("/es/cookies") },
@@ -28,7 +28,7 @@ function CookiesPageEs() {
       <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Política de Cookies" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Política de Cookies</h1>
-        <p className="text-sm text-muted-foreground">Última actualización: octubre 2026</p>
+        <p className="text-sm text-muted-foreground">Última actualización: noviembre 2026</p>
         <p>
           Esta Política de Cookies explica cómo <strong>{SITE_NAME}</strong> utiliza cookies y tecnologías similares (como
           el almacenamiento local) cuando visitas el sitio. Complementa nuestra <a href="/es/privacidad">Política de Privacidad</a>. El
@@ -51,12 +51,15 @@ function CookiesPageEs() {
           datos técnicos bajo su propia política de privacidad.
         </p>
 
-        <h3>Publicidad (Adsterra y socios)</h3>
+        <h3>Publicidad (Adsterra y socios, incluyendo posible Google AdSense)</h3>
         <p>
           Para mantener {SITE_NAME} gratuito, mostramos anuncios de <strong>Adsterra</strong> y sus socios publicitarios.
           Estos socios pueden establecer cookies o usar tecnologías similares para entregar y medir anuncios, prevenir fraude
           y (cuando esté permitido) personalizar la publicidad. No controlamos las cookies establecidas por estos terceros. Su
           uso se rige por sus propias políticas.
+        </p>
+        <p>
+          También podemos trabajar con redes publicitarias adicionales como Google AdSense. Los proveedores de terceros, incluyendo Google, usan cookies para servir anuncios basados en visitas previas del usuario a este sitio web u otros sitios. El uso de la cookie publicitaria por parte de Google permite a él y a sus socios servir anuncios a los usuarios basándose en su visita a este sitio y/o a otros sitios en Internet. Los usuarios pueden excluirse del uso de la cookie publicitaria para publicidad basada en intereses visitando Google Ad Settings o aboutads.info.
         </p>
 
         <h3>Preferencias de almacenamiento local</h3>
@@ -75,7 +78,7 @@ function CookiesPageEs() {
           </li>
           <li>
             <strong>Preferencias de publicidad:</strong> Puedes gestionar la publicidad basada en intereses a través de
-            herramientas del sector como la Digital Advertising Alliance (DAA) o su equivalente local, o usando un bloqueador
+            herramientas del sector como la Digital Advertising Alliance (DAA), Google Ad Settings (adssettings.google.com) o aboutads.info, o usando un bloqueador
             de anuncios.
           </li>
           <li>
@@ -95,6 +98,7 @@ function CookiesPageEs() {
         <ul>
           <li><strong>Vercel</strong> — alojamiento, analítica e información de rendimiento.</li>
           <li><strong>Adsterra</strong> y sus socios publicitarios — entrega y medición de anuncios.</li>
+          <li>Posibles socios adicionales como Google (AdSense) — entrega y personalización de anuncios (cuando esté habilitado).</li>
         </ul>
         <p>
           Recomendamos revisar sus políticas de privacidad para más detalles. No vendemos información personal.

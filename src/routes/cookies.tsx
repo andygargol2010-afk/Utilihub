@@ -6,7 +6,7 @@ export const Route = createFileRoute("/cookies")({
   head: () => ({
     meta: [
       { title: `Cookie Policy | ${SITE_NAME}` },
-      { name: "description", content: `Cookie Policy for ${SITE_NAME}: analytics, advertising cookies, local storage, opt-out methods and third-party processors.` },
+      { name: "description", content: `Cookie Policy for ${SITE_NAME}: analytics, advertising cookies (including Adsterra and potential Google partners), local storage, opt-out methods and third-party processors.` },
       { property: "og:title", content: `Cookie Policy | ${SITE_NAME}` },
       { property: "og:description", content: `How ${SITE_NAME} uses cookies and similar technologies.` },
       { property: "og:url", content: absoluteUrl("/cookies") },
@@ -28,7 +28,7 @@ function CookiesPage() {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Cookie Policy" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Cookie Policy</h1>
-        <p className="text-sm text-muted-foreground">Last updated: October 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: November 2026</p>
         <p>
           This Cookie Policy explains how <strong>{SITE_NAME}</strong> uses cookies and similar technologies (such as
           local storage) when you visit the site. It complements our <a href="/privacy">Privacy Policy</a>. The
@@ -51,12 +51,15 @@ function CookiesPage() {
           own privacy policy.
         </p>
 
-        <h3>Advertising (Adsterra and partners)</h3>
+        <h3>Advertising (Adsterra and partners, including potential Google AdSense)</h3>
         <p>
           To keep {SITE_NAME} free, we display advertisements from <strong>Adsterra</strong> and its advertising
           partners. These partners may set cookies or use similar technologies to deliver and measure ads, prevent fraud,
           and (where permitted) personalize advertising. We do not control the cookies set by these third parties. Their
           use is governed by their own policies.
+        </p>
+        <p>
+          We may also work with additional advertising networks such as Google AdSense. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website or other websites. Google's use of the advertising cookie enables it and its partners to serve ads to users based on their visit to this site and/or other sites on the Internet. Users may opt out of the use of the advertising cookie for interest-based advertising by visiting Google Ad Settings or aboutads.info.
         </p>
 
         <h3>Local storage preferences</h3>
@@ -74,7 +77,7 @@ function CookiesPage() {
           </li>
           <li>
             <strong>Advertising preferences:</strong> You can manage interest-based advertising through industry tools
-            such as the Digital Advertising Alliance (DAA) or your local equivalent, or by using an ad blocker.
+            such as the Digital Advertising Alliance (DAA), Google Ad Settings (adssettings.google.com), or aboutads.info, or by using an ad blocker.
           </li>
           <li>
             <strong>Local storage:</strong> Clear site data or local storage for this domain in your browser settings to
@@ -93,6 +96,7 @@ function CookiesPage() {
         <ul>
           <li><strong>Vercel</strong> — hosting, analytics, and performance insights.</li>
           <li><strong>Adsterra</strong> and its advertising partners — ad delivery and measurement.</li>
+          <li>Potential additional partners such as Google (AdSense) — advertising delivery and personalization (where enabled).</li>
         </ul>
         <p>
           We recommend reviewing their privacy policies for full details. We do not sell personal information.
