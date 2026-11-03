@@ -14,7 +14,7 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 
 ```
 last_closed_domain: games
-last_closed_id: sudoku-classic
+last_closed_id: connect-four-classic
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 6
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-03 | games | connect-four-classic | Interactive classic Connect Four game complete after 4 runs. 7x6 grid, drop discs by gravity, connect 4 win, optional AI, hover ghost preview, drop animation, win pulse, move counter, keyboard 1-7, URL deep-link, branded PNG, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (select column, see fall/response, detect win/draw, share PNG/URL). IP: traditional public-domain gravity drop connect-4 mechanics, generic naming, no Hasbro branding.
 - 2026-11-03 | games | sudoku-classic | Interactive classic Sudoku puzzle complete after 4 runs. 9x9 grid with pre-filled cells, user fills remaining with 1-9 ensuring no duplicates in rows, columns, or 3x3 boxes. Live conflict highlighting, optional pencil notes (auto-fill possibles), undo, timer with pause/resume, difficulty presets (easy/medium/hard), URL deep-link for seed, branded PNG of completed grid, remaining-count badges on number pad (disabled at 0), progress indicator. EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (select difficulty, fill cells, see conflicts/valid, complete or use undo/pencil/hints, share PNG/URL). IP: traditional public-domain rules, generic naming, no branded puzzle sets.
 - 2026-11-03 | games | minesweeper-classic | Interactive classic Minesweeper-style grid game complete after 4 runs. Rectangular grid with hidden mines; click to reveal cells showing adjacent mine counts, flood-fill empty areas, flag suspected mines (question marks cycle). Win by revealing all safe or flagging all; lose on mine. Difficulties (easy 9x9/10, medium 16x16/40, hard 16x30/99), first-click safe, URL deep-link, branded PNG, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (reveal/flag, complete or lose, share PNG/URL, face reset, auto-flag on win). IP: traditional public-domain mechanics, generic naming, no Microsoft branding.
 - 2026-11-02 | games | othello-classic | Interactive classic Othello/Reversi board game complete after 4 runs. 8x8 grid, place discs that flip opponents in lines when bracketing, valid moves highlighted, optional simple AI (greedy max-flips), URL deep-link (?b=), branded PNG of board, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (place disc, see flips, AI respond, share PNG/URL). IP: traditional public-domain mechanics, generic naming.
@@ -54,7 +55,6 @@ adsense-prep_runs: 6
 - 2026-11-01 | kits | science-experiment-kit | Interactive kids science experiment kit builder complete after 4 runs. User selects theme from presets (volcano, slime, simple circuit, plant growth), gets discrete materials list, follows multi-step guided assembly with checkoffs and safety tips, sees progress, estimated time, and can generate branded PNG of the completed setup or share link. Challenges for age groups. URL deep-link for theme. EN+ES. Mobile-first 390px. No heavy canvas; CSS + state + checklists. IP-safe original educational assembler. Acceptance met.
 - 2026-11-01 | simulators | bin-packing-sim | Interactive bin packing simulator complete after 4 runs. User selects item sizes from presets, places them into a fixed container via click (CSS grid placement with overlap check), sees live utilization percentage, waste, score. Challenges/goals with restricted sets. URL deep-link (?ch=). Branded PNG of packed result. EN+ES. Mobile-first 390px. No heavy canvas; CSS + state. IP-safe original spatial packing. Acceptance: User selects item, places them, achieves high utilization or completes challenge, shares PNG or link. Run 4 polish: undo last placement, faint grid overlay for guidance, slightly larger bin max, updated instructions.
 - 2026-11-01 | games | memory-match-classic | Classic memory match pairs game complete after 4 runs. Grid of face-down cards; flip two at a time to find matching pairs. Score based on moves and time. Levels with increasing pairs. Presets for themes (animals, numbers, symbols). URL deep-link for seed. Branded PNG of completed board or high score. EN+ES. Mobile-first 390px. No heavy canvas; CSS grid + state. IP-safe traditional mechanics. Acceptance met.
-- 2026-10-31 | adsense-prep | adsense-compliance-kit | Interactive AdSense readiness and compliance kit complete after 4 runs. 10 weighted discrete checks, live score 0-100 + progress bar + readiness badge, presets, per-item tips + suggestions, top missing panel, URL deep-link (?c=), branded PNG scorecard, copy image or download, copy link, reset. EN+ES routes (/growth/adsense-compliance-kit, /es/crecimiento/kit-cumplimiento-adsense), mobile 390px. CWV-safe. Adsterra intact.
 ```
 
 ---
@@ -63,17 +63,17 @@ adsense-prep_runs: 6
 
 ```
 status: active
-idea: Interactive classic Connect Four game. 7-column by 6-row grid. Players take turns dropping colored discs into columns; discs fall to lowest open cell by gravity. First to connect 4 horizontally, vertically or diagonally wins. Optional simple AI (random or greedy). Highlight last move, win line. URL deep-link for board state. Branded PNG of board. EN+ES routes. Mobile-first 390px. CSS grid + state. No heavy canvas.
-acceptance: User selects column to drop disc, sees it fall and opponent respond, detects win/draw, can share PNG or URL.
-id: connect-four-classic
-path_en: /games/connect-four-classic
-path_es: /es/juegos/conecta-cuatro-clasico
-domain: games
+idea: Interactive paper airplane design kit. User selects a preset design (classic dart, glider, stunt), follows multi-step fold instructions with checkoffs and live CSS preview of the plane shape, sees progress, estimated folds, and can generate branded PNG of the finished design or share deep-link URL. Challenges for distance or stunts. EN+ES routes. Mobile-first 390px. CSS illustrations + state + checklists. No heavy canvas. IP-safe original educational paper craft assembler.
+acceptance: User selects preset, follows steps with checkoffs, sees live preview update, generates branded PNG or copies share URL.
+id: paper-airplane-kit
+path_en: /kits/paper-airplane-kit
+path_es: /es/kits/avion-papel-kit
+domain: kits
 runs_total: 4
-runs_remaining: 0
+runs_remaining: 4
 share: both
-next_step_required: no
-notes: Domain roll CORE (games weight 5; variety: different classic from recent sudoku/minesweeper/othello). Candidates: 1. Connect Four (value 5, share 4, search 5, distinct 5, feas 5, perf 4; total 28) closest: othello, minesweeper, sudoku; metaphor: gravity-drop column grid puzzle; not particle-canvas. IP: traditional public-domain gravity drop connect-4 mechanics, generic naming, no Hasbro branding. 2. Checkers (value 4, share 3, search 4, distinct 4, feas 4, perf 4; total 23) closest: othello, memory-match; metaphor: turn-based jump-capture board. IP: traditional. 3. 15-puzzle sliding (value 4, share 3, search 4, distinct 4, feas 5, perf 5; total 25) closest: sudoku; metaphor: tile slide constraint. Chosen: connect-four-classic. Run 1 (2026-11-03): core component already playable (drop, AI, modes, undo, share URL/PNG, EN+ES); aligned slugEs to conecta-cuatro-clasico and wired in registry. Routes live. Run 2 (2026-11-03): added hover/touch ghost disc preview on the lowest open cell of the hovered column (current player color, semi-transparent). Improves drop UX without heavy animation. Core acceptance already met. Run 3 (2026-11-03): added CSS drop-fall animation on last disc, win-cell pulse, and live move counter in status (EN+ES). Improves feedback and shareability. Still CSS-only, no canvas for play. Run 4 (2026-11-03): added keyboard controls (keys 1-7 drop in column) and hover column ring highlight for better UX/accessibility. Final polish. Acceptance fully met. Project complete after 4 runs.
+next_step_required: yes
+notes: Domain roll CORE (kits weight 5; variety after recent games closes: sudoku/minesweeper/othello/connect-four). Candidates: 1. Paper airplane kit (value 4, share 4, search 3, distinct 4, feas 5, perf 5; total 25) closest: science-experiment-kit, achievement-certificate-maker, progress-passport; metaphor: step-by-step fold guide with live CSS preview; not particle-canvas. 2. Simple circuit light kit (value 5, share 3, search 4, distinct 4, feas 4, perf 4; total 24) closest: science-experiment-kit; metaphor: component assembly with on/off simulation. 3. Plant watering schedule kit (value 3, share 3, search 3, distinct 3, feas 5, perf 5; total 22) closest: science-experiment-kit. Chosen: paper-airplane-kit. Core by run 2: basic preset + step checkoffs + preview.
 ```
 
 <!-- end:ideas-lab-state.md -->
