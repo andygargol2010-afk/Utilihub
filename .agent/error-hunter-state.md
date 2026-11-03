@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-03 run 121
-runs_total: 121
+last_run: 2026-11-03 run 122
+runs_total: 122
 last_mode: HUNT
 last_fix: n/a (clean)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean
 deploy: production READY on b66efb99 (no recent ERROR on tip; older ERROR on 918e8c1a ignored)
-notes: Known smoke E031 — registry.tsx full (pickComponent kind-first + dedicated wires for IVA/IMC/etc.), index.tsx and es.index start with import/createFileRoute, no $(cat stubs, PLACEHOLDER only normal UI attrs. Discovery: live checks / (EN+ES home ok), /games/2048 (interactive tiles), /studio/prism-trail-composer (controls present), /tools/temperature-converter (specific SEO + formulas), /es/herramientas/calculadora-iva (page loads), /es/herramientas/modelador-3d (specific 3D guide), /tools/calculator, /finance (tools listed), /tools/png-to-jpg (image guide). No runtime errors. No new open/recurring. No deploy ERROR. Pending: none critical.
+notes: Known smoke E031 — no $(cat or bad PLACEHOLDER in src (search clean); index.tsx starts with import/createFileRoute, DeferredHomeReviews real. Discovery: live /es home ok (978 tools), /games/2048 interactive, /studio/prism-trail-composer controls, /tools/beaufort-wind-scale-converter specific guide, /es/finanzas/calculadora-wacc loads (Spanish), /tools/overtime-pay-calculator generic but functional, /tools/png-to-jpg image guide. No runtime errors. No new open/recurring. No deploy ERROR. Pending: none critical.
 ```
 
 <!-- end:error-hunter-state.md -->
