@@ -77,3 +77,12 @@ export const KgToLbsConverterToolUi = lazy(() =>
 export const MilesToKmConverterToolUi = lazy(() =>
   import("../MilesToKmConverterTool").then((m) => ({ default: m.MilesToKmConverterTool })),
 );
+
+// Restored routes lost in the 2026-10-28 registry split (mode advanced/date, utility and legacy slugs).
+export const AdvancedCalculatorToolUi = lazy(() => import("../AdvancedCalculatorTool").then((m) => ({ default: m.AdvancedCalculatorTool })));
+export const AdvancedDateToolUi = lazy(() => import("../AdvancedDateTool").then((m) => ({ default: m.AdvancedDateTool })));
+export const UtilityAdvancedToolUi = lazy(() => import("../UtilityAdvancedTool").then((m) => ({ default: m.UtilityAdvancedTool })));
+export const SequenceToolUi = lazy(() => import("../SequenceTool").then((m) => ({ default: m.SequenceTool })));
+export const PowerRootToolUi = lazy(() => import("../PowerRootTool").then((m) => ({ default: m.PowerRootTool })));
+export const NormalDistributionToolUi = lazy(() => import("../NormalDistributionTool").then((m) => ({ default: m.NormalDistributionTool })));
+export const PoissonToolUi = lazy(() => import("../PoissonTool").then((m) => ({ default: m.PoissonTool })));

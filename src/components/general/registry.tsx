@@ -31,6 +31,13 @@ import {
   MatrixBinarySuiteToolUi,
   IvaCalculatorToolUi,
   BmiCalculatorToolUi,
+  AdvancedCalculatorToolUi,
+  AdvancedDateToolUi,
+  UtilityAdvancedToolUi,
+  SequenceToolUi,
+  PowerRootToolUi,
+  NormalDistributionToolUi,
+  PoissonToolUi,
 } from "./registry-ui/components";
 
 /**
@@ -69,6 +76,15 @@ function pickComponent(tool: GeneralTool): ToolComp {
   // Dedicated calculator / text / re-wired tools: slug map in ./registry-ui/slugs-NN.ts
   const bySlug = dedicatedUiForSlug(slug);
   if (bySlug) return bySlug;
+  // Restored after the registry split: these fell through to ConfiguredTool / MathTool,
+  // which do not implement their operations ("Operation not available.").
+  if (slug === "secuencias") return SequenceToolUi;
+  if (slug === "potencias-y-raices") return PowerRootToolUi;
+  if (slug === "distribucion-normal") return NormalDistributionToolUi;
+  if (slug === "distribucion-poisson") return PoissonToolUi;
+  if (slug === "propina-y-cuenta-compartida" || slug === "regla-50-30-20" || slug === "horas-decimales") return UtilityAdvancedToolUi;
+  if (mode === "date") return AdvancedDateToolUi;
+  if (mode === "advanced") return AdvancedCalculatorToolUi;
   if (mode === "finance") return FinanceToolUi;
   if (mode === "seo-growth") return SeoGrowthToolUi;
   if (mode === "percent-advanced") return PercentAdvancedToolUi;
