@@ -28,20 +28,20 @@ const DESIGNS: Design[] = [
     stuntScore: 40,
     timeMin: 5,
     stepsEn: [
-      "Fold paper in half lengthwise, crease, open",
-      "Fold top corners to center crease",
-      "Fold top edges to center again",
-      "Fold in half along original crease",
-      "Fold wings down evenly",
-      "Adjust wing angle and launch",
+      "Fold paper in half lengthwise, crease firmly, then open",
+      "Fold top corners to the center crease",
+      "Fold the new top edges to the center again",
+      "Fold in half along the original crease",
+      "Fold wings down evenly on both sides",
+      "Adjust wing angle slightly and launch",
     ],
     stepsEs: [
-      "Dobla el papel por la mitad a lo largo, marca y abre",
+      "Dobla el papel por la mitad a lo largo, marca firmemente y abre",
       "Dobla las esquinas superiores hacia el pliegue central",
-      "Dobla los bordes superiores al centro de nuevo",
+      "Dobla los nuevos bordes superiores al centro de nuevo",
       "Dobla por la mitad a lo largo del pliegue original",
       "Dobla las alas hacia abajo de forma pareja",
-      "Ajusta el ángulo de las alas y lanza",
+      "Ajusta ligeramente el ángulo de las alas y lanza",
     ],
   },
   {
@@ -55,18 +55,18 @@ const DESIGNS: Design[] = [
     stuntScore: 55,
     timeMin: 6,
     stepsEn: [
-      "Fold in half, crease, open",
-      "Fold top corners to center",
-      "Fold top point down to meet bottom",
-      "Fold in half and create wide wings",
-      "Slight upward wing tips for stability",
+      "Fold in half lengthwise, crease, open",
+      "Fold top corners to center crease",
+      "Fold top point down to meet the bottom edge",
+      "Fold in half and create wide, even wings",
+      "Bend wing tips slightly upward for stability",
     ],
     stepsEs: [
-      "Dobla por la mitad, marca y abre",
-      "Dobla las esquinas superiores al centro",
-      "Dobla la punta superior hacia abajo hasta el fondo",
-      "Dobla por la mitad y crea alas anchas",
-      "Punta de alas ligeramente hacia arriba para estabilidad",
+      "Dobla por la mitad a lo largo, marca y abre",
+      "Dobla las esquinas superiores al pliegue central",
+      "Dobla la punta superior hacia abajo hasta el borde inferior",
+      "Dobla por la mitad y crea alas anchas y parejas",
+      "Dobla ligeramente las puntas de las alas hacia arriba para estabilidad",
     ],
   },
   {
@@ -81,21 +81,21 @@ const DESIGNS: Design[] = [
     timeMin: 8,
     stepsEn: [
       "Fold in half lengthwise and open",
-      "Fold top corners inward",
-      "Fold top down once more",
-      "Fold sides to center for body",
-      "Fold in half",
-      "Create smaller elevators on wings",
-      "Test short throws for loops",
+      "Fold top corners inward to center",
+      "Fold the top down once more",
+      "Fold sides to center to form the body",
+      "Fold in half along the center",
+      "Create small elevators by folding wing edges up",
+      "Test short throws to practice loops",
     ],
     stepsEs: [
       "Dobla por la mitad a lo largo y abre",
-      "Dobla las esquinas superiores hacia adentro",
+      "Dobla las esquinas superiores hacia el centro",
       "Dobla la parte superior hacia abajo una vez más",
-      "Dobla los lados al centro para el cuerpo",
-      "Dobla por la mitad",
-      "Crea elevadores más pequeños en las alas",
-      "Prueba lanzamientos cortos para bucles",
+      "Dobla los lados al centro para formar el cuerpo",
+      "Dobla por la mitad a lo largo del centro",
+      "Crea elevadores pequeños doblando los bordes de las alas hacia arriba",
+      "Prueba lanzamientos cortos para practicar bucles",
     ],
   },
   {
@@ -109,13 +109,13 @@ const DESIGNS: Design[] = [
     stuntScore: 60,
     timeMin: 4,
     stepsEn: [
-      "Fold paper in half, crease firmly, open",
+      "Fold paper in half lengthwise, crease firmly, open",
       "Fold both top corners down to meet the center crease, forming a triangle",
       "Fold the new top point down slightly for nose weight",
       "Fold in half and adjust wing angles for balance",
     ],
     stepsEs: [
-      "Dobla el papel por la mitad, marca firmemente y abre",
+      "Dobla el papel por la mitad a lo largo, marca firmemente y abre",
       "Dobla ambas esquinas superiores hacia el pliegue central formando un triángulo",
       "Dobla la nueva punta superior ligeramente hacia abajo para peso en la nariz",
       "Dobla por la mitad y ajusta los ángulos de las alas para equilibrar",
@@ -160,6 +160,8 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
     const done = checked.filter(Boolean).length;
     return { done, total: steps.length, pct: steps.length ? Math.round((done / steps.length) * 100) : 0 };
   }, [checked, steps.length]);
+
+  const nextStepIndex = useMemo(() => checked.findIndex((c) => !c), [checked]);
 
   const challengeScore = useMemo(() => {
     if (challenge === "none" || progress.pct < 100) return 0;
@@ -273,11 +275,13 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <label className="text-sm font-bold">{es ? "Diseño" : "Design"}</label>
+        <label htmlFor="design-select" className="text-sm font-bold">{es ? "Diseño" : "Design"}</label>
         <select
+          id="design-select"
           value={designId}
           onChange={(e) => selectDesign(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-3 text-base"
+          className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-3 text-base min-h-[48px]"
+          aria-describedby="design-desc"
         >
           {DESIGNS.map((d) => (
             <option key={d.id} value={d.id}>
@@ -285,7 +289,7 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
             </option>
           ))}
         </select>
-        <p className="mt-1 text-sm text-muted-foreground">{desc}</p>
+        <p id="design-desc" className="mt-1 text-sm text-muted-foreground">{desc}</p>
         <p className="mt-1 text-xs text-muted-foreground">
           {es ? `Tiempo estimado: ~${design.timeMin} min` : `Estimated time: ~${design.timeMin} min`}
         </p>
@@ -301,30 +305,36 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
         </ul>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card/50 p-4">
+      <div className="rounded-2xl border border-border bg-card/50 p-4" aria-live="polite">
         <div className="flex items-center justify-between text-sm">
           <span className="font-bold">{es ? "Progreso de pliegues" : "Fold progress"}</span>
           <span className="text-muted-foreground">
             {progress.done}/{progress.total} · {progress.pct}% · ~{design.folds} {es ? "pliegues" : "folds"}
           </span>
         </div>
-        <div className="mt-2 h-3 w-full rounded-full bg-muted">
+        <div className="mt-2 h-3 w-full rounded-full bg-muted" role="progressbar" aria-valuenow={progress.pct} aria-valuemin={0} aria-valuemax={100}>
           <div className="h-3 rounded-full bg-primary transition-all" style={{ width: `${progress.pct}%` }} />
         </div>
+        {nextStepIndex >= 0 && (
+          <p className="mt-2 text-xs text-primary font-medium">
+            {es ? `Siguiente paso: ${nextStepIndex + 1}` : `Next step: ${nextStepIndex + 1}`}
+          </p>
+        )}
       </div>
 
       {/* Challenge mode */}
       <div className="rounded-2xl border border-border bg-card/50 p-4">
         <label className="text-sm font-bold">{es ? "Modo reto (opcional)" : "Challenge mode (optional)"}</label>
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label={es ? "Modo de reto" : "Challenge mode"}>
           {(["none", "distance", "stunt"] as const).map((ch) => (
             <button
               key={ch}
               type="button"
               onClick={() => selectChallenge(ch)}
-              className={`rounded-lg px-3 py-2 text-sm font-medium border ${
+              className={`rounded-lg px-4 py-3 text-sm font-medium border min-h-[44px] ${
                 challenge === ch ? "bg-primary text-primary-foreground border-primary" : "bg-secondary border-border"
               }`}
+              aria-pressed={challenge === ch}
             >
               {ch === "none" ? (es ? "Ninguno" : "None") : ch === "distance" ? (es ? "Distancia" : "Distance") : (es ? "Acrobacia" : "Stunt")}
             </button>
@@ -338,7 +348,7 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
           </p>
         )}
         {challenge !== "none" && progress.pct === 100 && (
-          <div className="mt-3 rounded-lg bg-primary/10 p-3 text-center font-bold text-primary">
+          <div className="mt-3 rounded-lg bg-primary/10 p-3 text-center font-bold text-primary" aria-live="polite">
             {es ? "Puntuación del reto" : "Challenge score"}: {challengeScore} / 100
           </div>
         )}
@@ -354,7 +364,8 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
             opacity: 0.4 + completedRatio * 0.6,
             transform: `rotate(${design.id === "stunt" ? -8 : 0}deg) scale(${0.7 + completedRatio * 0.3})`,
           }}
-          aria-hidden
+          role="img"
+          aria-label={es ? `Vista previa del avión ${name}, progreso ${progress.pct}%` : `Preview of ${name} airplane, progress ${progress.pct}%`}
         >
           {/* fuselage / nose */}
           <div
@@ -409,20 +420,29 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
           <button
             type="button"
             onClick={resetSteps}
-            className="text-xs text-muted-foreground underline hover:text-foreground"
+            className="text-xs text-muted-foreground underline hover:text-foreground min-h-[44px] px-2"
           >
             {es ? "Reiniciar pasos" : "Reset steps"}
           </button>
         </div>
-        <div className="mt-3 space-y-3">
+        <p className="mt-1 text-sm text-muted-foreground">
+          {es ? "Marca cada paso al completarlo. El siguiente paso se resalta." : "Check off each step as you complete it. The next step is highlighted."}
+        </p>
+        <div className="mt-3 space-y-3" role="list">
           {steps.map((step, i) => (
-            <label key={i} className="flex items-start gap-4 rounded-xl border border-border p-4 cursor-pointer hover:bg-accent/50">
+            <label
+              key={i}
+              role="listitem"
+              className={`flex items-start gap-4 rounded-xl border p-4 cursor-pointer hover:bg-accent/50 min-h-[60px] ${
+                nextStepIndex === i ? "border-primary bg-primary/5 ring-1 ring-primary" : "border-border"
+              }`}
+            >
               <input
                 type="checkbox"
                 checked={!!checked[i]}
                 onChange={() => toggleStep(i)}
                 className="mt-0.5 size-5 shrink-0"
-                aria-label={`${es ? "Paso" : "Step"} ${i + 1}`}
+                aria-label={`${es ? "Paso" : "Step"} ${i + 1}: ${step}`}
               />
               <span className={checked[i] ? "line-through text-muted-foreground" : ""}>
                 <span className="font-medium">{i + 1}. </span>
@@ -434,7 +454,7 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
       </div>
 
       {progress.pct === 100 && (
-        <div className="rounded-xl bg-primary/10 p-4 text-center font-bold text-primary">
+        <div className="rounded-xl bg-primary/10 p-4 text-center font-bold text-primary" aria-live="assertive">
           {es ? "¡Avión listo para volar!" : "Plane ready to fly!"}
         </div>
       )}
@@ -450,10 +470,10 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
       </div>
 
       <div className="flex flex-wrap gap-3 pt-2">
-        <button type="button" onClick={copyLink} className="rounded-lg bg-secondary px-4 py-3 text-sm font-medium min-w-[120px]">
+        <button type="button" onClick={copyLink} className="rounded-lg bg-secondary px-4 py-3 text-sm font-medium min-w-[120px] min-h-[48px]">
           {copied ? (es ? "¡Enlace copiado!" : "Link copied!") : es ? "Copiar enlace" : "Copy link"}
         </button>
-        <button type="button" onClick={sharePng} className="rounded-lg bg-primary px-4 py-3 text-sm font-medium text-primary-foreground min-w-[140px]">
+        <button type="button" onClick={sharePng} className="rounded-lg bg-primary px-4 py-3 text-sm font-medium text-primary-foreground min-w-[140px] min-h-[48px]">
           {es ? "Descargar PNG" : "Download PNG"}
         </button>
       </div>
