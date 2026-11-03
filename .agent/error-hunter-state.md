@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-02 run 109
-runs_total: 109
+last_run: 2026-11-02 run 110
+runs_total: 110
 last_mode: HUNT
-last_fix: n/a (clean; tip has ebe2335d SSR/client fix for partial SEO overrides)
+last_fix: n/a (clean; tip has prior SSR/client fix for partial SEO overrides)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs)
-deploy: production READY on b66efb99 (lag vs tip d8e2e8a1 / ebe2335d which fixes crashes on unit-converter, kinetic-energy-calculator, miles-to-kilometers-converter)
-notes: Known smoke E031 — no PLACEHOLDER or $(cat stubs in critical src files (registry, summary-es, routes, playgrounds). Discovery: live production still crashes with "Cannot read properties of undefined (reading 'length')" on /tools/unit-converter, /tools/kinetic-energy-calculator, /tools/miles-to-kilometers-converter (Tool not found page); /es/herramientas/calculadora-tmb now shows full Spanish summary and dedicated fields; /es/herramientas/calculadora-iva 200 with dedicated UI; othello-classic 404. No new open errors in tip code. No recent deploy ERROR. Pending: deploy of tip to clear production crashes.
+deploy: production READY on b66efb99 (lag vs tip 809c8e96 which includes fixes for crashes on unit-converter, kinetic-energy-calculator, miles-to-kilometers-converter)
+notes: Known smoke E031 — no PLACEHOLDER or $(cat stubs in critical src files (registry.tsx clean, no matches in src). Discovery: live production still crashes with "Cannot read properties of undefined (reading 'length')" on /tools/unit-converter, /tools/kinetic-energy-calculator, /tools/miles-to-kilometers-converter (Tool not found page); temperature-converter, calculadora-tmb, calculadora-iva, pixelihub, home all 200 OK. New tools like calculadora-superficie-corporal 404 on production (expected, not deployed). No new open errors in tip code. No recent deploy ERROR. Pending: deploy of tip to clear production crashes.
 ```
 
 <!-- end:error-hunter-state.md -->
