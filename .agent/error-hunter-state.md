@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-03 run 113
-runs_total: 113
+last_run: 2026-11-03 run 114
+runs_total: 114
 last_mode: HUNT
-last_fix: n/a (clean; tip has SEO partial-override guards)
+last_fix: n/a (clean)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs)
-deploy: production READY on b66efb99 (lag vs tip 2894b053; tip includes defensive SEO length guards)
-notes: Known smoke E031 — no PLACEHOLDER or $(cat stubs in critical src files (registry.tsx clean, search 0 hits on literal PLACEHOLDER_ or $(cat in src; only normal placeholder attrs). Discovery: live production still crashes with "Cannot read properties of undefined (reading 'length')" on /tools/unit-converter and /tools/kinetic-energy-calculator (Tool not found page); temperature-converter, calculadora-iva (page 200, Spanish guide), home, /es, buscaminas all 200 OK. Tip code has defensive override?.aboutEs?.length etc in ToolSeoContent. No new open errors in tip. No recent deploy ERROR on branch. Pending: deploy of tip to clear production crashes.
+deploy: production READY on b66efb99 (latest on branch; tip now 0b3da77 after ideas-lab commits; no recent ERROR)
+notes: Known smoke E031 — critical files clean (registry.tsx full with pickComponent/kind routes, index.tsx starts with import/createFileRoute, search 0 hits on $(cat, only normal placeholder attrs). Discovery: sampled routes/tools; no new PLACEHOLDER, broken imports, or Tool not available beyond normal fallbacks. No deploy ERROR on recent branch deploys. No new open errors. Pending: none critical.
 ```
 
 <!-- end:error-hunter-state.md -->
