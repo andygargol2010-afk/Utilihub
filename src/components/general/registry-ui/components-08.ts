@@ -1,0 +1,6 @@
+// Lazy tool UIs part 08 — created to keep parts under ~3.5 KB.
+// Add new entries here while this is the smallest file.
+import { lazy } from "react";
+
+export const CoffeeDoseCalculatorToolUi = lazy(() => import("../CoffeeDoseCalculatorTool").then((m) => ({ default: m.CoffeeDoseCalculatorTool })));
+export const WaistToHipRatioCalculatorToolUi = lazy(() => import("../WaistToHipRatioCalculatorTool").then((m) => ({ default: m.WaistToHipRatioCalculatorTool })));

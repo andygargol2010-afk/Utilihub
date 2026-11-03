@@ -56,4 +56,5 @@ export const SLUG_UI_03: Record<string, ToolComp> = {
   "calculadora-dosis-cafe": UI.CoffeeDoseCalculatorToolUi,
   "conversor-kg-libras": UI.KgToLbsConverterToolUi,
   "conversor-millas-km": UI.MilesToKmConverterToolUi,
+  "calculadora-ratio-cintura-cadera": UI.WaistToHipRatioCalculatorToolUi,
 };

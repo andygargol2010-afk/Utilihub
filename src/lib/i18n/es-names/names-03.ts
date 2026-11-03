@@ -11,4 +11,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-presupuesto-total-viaje": "Calculadora de presupuesto total de viaje",
   "conversor-psi-bar": "Conversor de psi a bar",
   "calculadora-dosis-cafe": "Calculadora de dosis de café",
+  "calculadora-ratio-cintura-cadera": "Calculadora de ratio cintura-cadera",
 };
