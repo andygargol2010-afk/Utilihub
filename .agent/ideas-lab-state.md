@@ -62,8 +62,20 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: none
-# No active project. Next run: IDEATE (two-urn).
+status: active
+idea: Enhance the existing Privacy Policy and Cookie Policy (EN + ES) with more comprehensive, structured disclosures covering third-party advertising cookies, data processing practices, user rights, opt-out methods, and language aligned with common AdSense/Google publisher policy expectations. Keep all current Adsterra mentions intact. Improve readability, add clear sections, update last-modified dates, and ensure mobile-friendly layout. This prepares the trust pages for higher readiness without implementing or modifying any ad code.
+id: adsense-policy-readiness
+path_en: /privacy /cookies
+path_es: /es/privacidad /es/cookies
+path_seo: n/a
+domain: adsense-prep
+runs_total: 4
+runs_remaining: 4
+acceptance: User visits /privacy or /cookies (EN or ES), sees expanded structured sections on advertising cookies, third parties, rights and opt-outs; pages remain readable at 390px with no broken layout.
+share: n/a
+next_step_required: yes
+notes: Rubric (1-5): CandA (policy enhance): value=5 share=2 search=3 distinct=4 feas=5 perf=5 total=24. CandB (About/Contact E-E-A-T): value=4 share=2 search=3 distinct=3 feas=5 perf=5 total=22. CandC (expand compliance kit items): value=4 share=3 search=3 distinct=3 feas=4 perf=5 total=22. Closest-3 for A: existing privacy.tsx/cookies.tsx, adsense-compliance-kit, about.tsx. Primary metaphor: declarative content → trust/legal pages. Why not particle-canvas: pure text/policy update, no interactive canvas. Chosen: adsense-policy-readiness. Roll: two-urn FIXED (p=0.148), weights_growth excl seo-locales, selected adsense-prep (11/34). adsense-prep_runs remains 6 until CLOSE.
+adsense-prep_runs: 6
 ```
 
 <!-- end:ideas-lab-state.md -->
