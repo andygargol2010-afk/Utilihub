@@ -25,6 +25,14 @@ function drop(board: Cell[][], col: number, player: Cell): { board: Cell[][]; ro
   return null;
 }
 
+function lowestOpenRow(board: Cell[][], col: number): number | null {
+  if (board[0]![col]) return null;
+  for (let r = ROWS - 1; r >= 0; r--) {
+    if (!board[r]![col]) return r;
+  }
+  return null;
+}
+
 function winningLine(board: Cell[][]): Pos[] | null {
   const dirs = [
     [0, 1],
@@ -145,6 +153,7 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
   const [lastDrop, setLastDrop] = useState<{ r: number; c: number } | null>(null);
   const [moves, setMoves] = useState<number[]>([]);
   const [copied, setCopied] = useState(false);
+  const [hoverCol, setHoverCol] = useState<number | null>(null);
 
   const winCells = useMemo(() => (result && result !== "draw" ? winningLine(board) : null), [board, result]);
   const winKey = useMemo(
@@ -166,6 +175,7 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
     setResult(null);
     setLastDrop(null);
     setMoves([]);
+    setHoverCol(null);
     updateUrl([], mode);
   }, [mode, updateUrl]);
 
@@ -215,6 +225,7 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
       setMoves(nextMoves);
       setBoard(dropped.board);
       setLastDrop({ r: dropped.row, c: col });
+      setHoverCol(null);
       const w = winner(dropped.board);
       if (w) {
         setResult(w);
@@ -333,6 +344,8 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
   else if (mode === "cpu" && turn === 2) status = es ? "CPU pensando…" : "CPU thinking…";
   else status = turn === 1 ? (es ? "Turno: Rojo" : "Turn: Red") : es ? "Turno: Amarillo" : "Turn: Yellow";
 
+  const canInteract = !result && !(mode === "cpu" && turn !== 1);
+
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-3 px-1">
       <div className="flex flex-wrap justify-center gap-2">
@@ -400,8 +413,11 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
             <button
               key={`h-${c}`}
               type="button"
-              disabled={Boolean(result) || (mode === "cpu" && turn !== 1)}
+              disabled={!canInteract}
               onClick={() => playCol(c)}
+              onMouseEnter={() => canInteract && setHoverCol(c)}
+              onMouseLeave={() => setHoverCol(null)}
+              onTouchStart={() => canInteract && setHoverCol(c)}
               className="h-9 rounded-md bg-white/10 text-xs font-bold text-white/80 transition hover:bg-white/20 active:scale-95 disabled:opacity-40 sm:h-10"
               aria-label={es ? `Columna ${c + 1}` : `Column ${c + 1}`}
             >
@@ -416,6 +432,8 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
               row.map((cell, c) => {
                 const isWin = winKey?.has(`${r}-${c}`) ?? false;
                 const isLast = lastDrop && lastDrop.r === r && lastDrop.c === c;
+                const previewRow = hoverCol === c && canInteract ? lowestOpenRow(board, c) : null;
+                const showGhost = previewRow === r && cell === 0;
                 return (
                   <div
                     key={`${r}-${c}`}
@@ -435,6 +453,17 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
                         }}
                       />
                     )}
+                    {showGhost && (
+                      <div
+                        className="absolute inset-1 rounded-full opacity-40"
+                        style={{
+                          background:
+                            turn === 1
+                              ? "radial-gradient(circle at 30% 28%, #fecdd3, #e11d48)"
+                              : "radial-gradient(circle at 30% 28%, #fef3c7, #fbbf24)",
+                        }}
+                      />
+                    )}
                   </div>
                 );
               }),
@@ -445,8 +474,8 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
 
       <p className="text-center text-xs text-emerald-100/60">
         {es
-          ? "Toca una columna para soltar. Conecta 4 en línea. Deshacer, compartir enlace o PNG del tablero."
-          : "Tap a column to drop. Connect 4 in a row. Undo, share the link or download the board PNG."}
+          ? "Toca una columna para soltar. Conecta 4 en línea. Vista previa al pasar el mouse. Deshacer, compartir enlace o PNG del tablero."
+          : "Tap a column to drop. Connect 4 in a row. Hover a column for drop preview. Undo, share the link or download the board PNG."}
       </p>
     </div>
   );
