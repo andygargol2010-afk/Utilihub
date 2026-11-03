@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-03 | ciencia | calculadora-area-superficie-cilindro | CylinderSurfaceAreaCalculatorTool
 - 2026-11-03 | finanzas | calculadora-depreciacion-lineal | StraightLineDepreciationCalculatorTool
 - 2026-11-03 | salud | calculadora-ratio-cintura-cadera | WaistToHipRatioCalculatorTool
 - 2026-11-03 | hogar | calculadora-dosis-cafe | CoffeeDoseCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-02 | educacion | calculadora-promedio-examenes | ExamAverageCalculatorTool
 - 2026-11-02 | diseno | conversor-pt-a-px | PointsToPxConverterTool
 - 2026-11-02 | matematicas | calculadora-varianza | VarianceCalculatorTool
-- 2026-11-02 | fechas | conversor-zonas-horarias | TimezoneConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad, calculadora-dias-entre-fechas, calculadora-horas-a-decimal, conversor-zonas-horarias)
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo, calculadora-energia-cinetica)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo, calculadora-energia-cinetica, calculadora-area-superficie-cilindro)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml, calculadora-calorias-porcion, calculadora-dosis-cafe)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible, calculadora-presupuesto-total-viaje)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura, conversor-numeros-romanos)
@@ -86,6 +86,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-11-03: PRODUCT — calculadora-dosis-cafe (hogar). One tool (default, saturation least-represented). Anti-dupe OK (new slug). Practical coffee dose calculator (people × g/person). Complements kitchen/cooking tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-03: PRODUCT — calculadora-ratio-cintura-cadera (salud). One tool (default; .md overrides bootstrap 2). Anti-dupe OK (new slug). Practical WHR calculator (waist/hip) for fat distribution. Complements BMI and WHtR. Also fixed missing CoffeeDoseCalculatorToolUi export. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 2026-11-03: PRODUCT — calculadora-depreciacion-lineal (finanzas). One tool (default, saturation least-represented — finanzas 0 in last 12). Anti-dupe OK (new slug, no prior dedicated straight-line depreciation). Practical (cost − salvage) / years. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
+2026-11-03: PRODUCT — calculadora-area-superficie-cilindro (ciencia). One tool (default, saturation). Anti-dupe OK (new slug, no prior dedicated cylinder surface area). Practical 2πr(h + r) for closed cylinder. Complements volume and sphere surface tools. EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer pt/fr/de.
 ```
 
 ---
@@ -94,9 +95,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-depreciacion-lineal
+last_slugs: calculadora-area-superficie-cilindro
 last_deploy: no (branch auto-deploy disabled)
-last_sha: PENDING
+last_sha: 425a4c46fd545f79dfb1c2c3e1dcdc1f77d2c191
 ```
 
 <!-- end:tools-builder-state.md -->
