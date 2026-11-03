@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-03 run 115
-runs_total: 115
+last_run: 2026-11-03 run 116
+runs_total: 116
 last_mode: HUNT
 last_fix: n/a (clean)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs)
-deploy: production READY on b66efb99 (tip now 465d0ceb after depreciation tool + ideas-lab; no recent ERROR)
-notes: Known smoke E031 — critical files clean (general/registry.tsx full with pickComponent/kind-first, index.tsx and es.index.tsx start with import/createFileRoute, 0 hits on $(cat/PLACEHOLDER in src). Discovery: sampled games (ConnectFourClassicGame full after recent placeholder restore, catalog+registry wired for conecta-cuatro-clasico), new tool calculadora-depreciacion-lineal imported in catalog-index/part-10.ts and routed under herramientas (usesFinanceRoute false). No broken imports, no Tool/Game not available beyond normal. No deploy ERROR. No new open errors. Pending: none critical.
+deploy: production READY on b66efb99 (tip now 748964ba after ideas-lab ConnectFourClassic restore + depreciation; no recent ERROR; tip not yet deployed)
+notes: Known smoke E031 — critical files clean (general/registry.tsx full with pickComponent/kind-first, index.tsx and es.index.tsx start with import/createFileRoute, 0 hits on $(cat/PLACEHOLDER in src). Discovery: sampled games (ConnectFourClassicGame full and wired), FloorPlanStudio full, new tool calculadora-depreciacion-lineal in part-10 (category finanzas but usesFinanceRoute false → herramientas). No broken imports, no Tool/Game not available beyond normal. No deploy ERROR. No new open errors. Pending: none critical.
 ```
 
 <!-- end:error-hunter-state.md -->
