@@ -63,7 +63,7 @@ const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "connect-four": ConnectFourGame,
   "conecta-4": ConnectFourGame,
   "connect-four-classic": ConnectFourClassicGame,
-  "conecta-cuatro": ConnectFourClassicGame,
+  "conecta-cuatro-clasico": ConnectFourClassicGame,
   minesweeper: MinesweeperGame,
   buscaminas: MinesweeperGame,
   "minesweeper-classic": MinesweeperClassicGame,
