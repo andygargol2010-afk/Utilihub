@@ -1,1 +1,1 @@
-PLACEHOLDER_GAME
+$(cat /tmp/SudokuClassicGame.tsx)
