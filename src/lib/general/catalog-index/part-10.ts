@@ -1,4 +1,4 @@
-// GENERAL_TOOLS part 10 \u2014 created to keep parts under ~3.5 KB.
+// GENERAL_TOOLS part 10 — created to keep parts under ~3.5 KB.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import { MPG_L100KM_CONVERTER_TOOLS } from "../mpg-l100km-converter-tool";
 import { TIMEZONE_CONVERTER_TOOLS } from "../timezone-converter-tool";
@@ -15,6 +15,7 @@ import { CYLINDER_SURFACE_AREA_CALCULATOR_TOOLS } from "../cylinder-surface-area
 import { TIME_OF_DAY_DIFFERENCE_CALCULATOR_TOOLS } from "../time-of-day-difference-calculator-tool";
 import { LINE_HEIGHT_CALCULATOR_TOOLS } from "../line-height-calculator-tool";
 import { PERCENTAGE_TO_LETTER_GRADE_CALCULATOR_TOOLS } from "../percentage-to-letter-grade-calculator-tool";
+import { WORDS_PER_SENTENCE_CALCULATOR_TOOLS } from "../words-per-sentence-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -32,4 +33,5 @@ export const GENERAL_TOOLS_PART_10 = [
   ...TIME_OF_DAY_DIFFERENCE_CALCULATOR_TOOLS,
   ...LINE_HEIGHT_CALCULATOR_TOOLS,
   ...PERCENTAGE_TO_LETTER_GRADE_CALCULATOR_TOOLS,
+  ...WORDS_PER_SENTENCE_CALCULATOR_TOOLS,
 ];

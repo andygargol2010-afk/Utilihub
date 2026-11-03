@@ -6,4 +6,5 @@ import * as UI from "./components";
 export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-line-height": UI.LineHeightCalculatorToolUi,
   "calculadora-porcentaje-a-letra": UI.PercentageToLetterGradeCalculatorToolUi,
+  "calculadora-palabras-por-oracion": UI.WordsPerSentenceCalculatorToolUi,
 };

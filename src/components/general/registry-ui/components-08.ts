@@ -10,3 +10,4 @@ export const TimeOfDayDifferenceCalculatorToolUi = lazy(() => import("../TimeOfD
 export const McdMcmCalculatorToolUi = lazy(() => import("../McdMcmCalculatorTool").then((m) => ({ default: m.McdMcmCalculatorTool })));
 export const LineHeightCalculatorToolUi = lazy(() => import("../LineHeightCalculatorTool").then((m) => ({ default: m.LineHeightCalculatorTool })));
 export const PercentageToLetterGradeCalculatorToolUi = lazy(() => import("../PercentageToLetterGradeCalculatorTool").then((m) => ({ default: m.PercentageToLetterGradeCalculatorTool })));
+export const WordsPerSentenceCalculatorToolUi = lazy(() => import("../WordsPerSentenceCalculatorTool").then((m) => ({ default: m.WordsPerSentenceCalculatorTool })));

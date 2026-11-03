@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-03 | texto | calculadora-palabras-por-oracion | WordsPerSentenceCalculatorTool
 - 2026-11-03 | educacion | calculadora-porcentaje-a-letra | PercentageToLetterGradeCalculatorTool
 - 2026-11-03 | diseno | calculadora-line-height | LineHeightCalculatorTool
 - 2026-11-03 | matematicas | mcd-mcm | McdMcmCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-03 | conversiones | conversor-psi-bar | PsiBarConverterTool
 - 2026-11-02 | viajes | calculadora-presupuesto-total-viaje | TripTotalBudgetCalculatorTool
 - 2026-11-02 | salud | calculadora-superficie-corporal | BodySurfaceAreaCalculatorTool
-- 2026-11-02 | texto | conversor-numeros-romanos | RomanNumeralsConverterTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -42,7 +42,7 @@ fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fecha
 ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo, calculadora-energia-cinetica, calculadora-area-superficie-cilindro)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml, calculadora-calorias-porcion, calculadora-dosis-cafe)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible, calculadora-presupuesto-total-viaje)
-texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura, conversor-numeros-romanos)
+texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura, conversor-numeros-romanos, calculadora-palabras-por-oracion)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala, conversor-pt-a-px, calculadora-line-height)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura, calculadora-superficie-corporal, calculadora-ratio-cintura-cadera)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda, calculadora-promedio-examenes, calculadora-porcentaje-a-letra)
@@ -65,6 +65,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 2026-11-03: PRODUCT — mcd-mcm (matematicas). One tool (default, saturation least-represented). Improved existing generic with dedicated UI. Anti-dupe OK (existing slug, dedicated component). GCD/LCM calculator with Euclidean algorithm. EN+ES UI with 2 examples, validation, related links. SEO locales: defer pt/fr/de.
 2026-11-03: PRODUCT — calculadora-line-height (diseno). One tool (saturation least-represented). New dedicated calculator for recommended line-height (body 1.5 / headings 1.2). EN+ES UI, 2 examples, validation, related links, FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-03: PRODUCT — calculadora-porcentaje-a-letra (educacion). One tool (saturation least-represented in RECENT_TOOLS). New dedicated percentage-to-letter-grade calculator (standard US A–F scale). EN+ES UI, 2 examples (85%→B, 92%→A), validation (0–100), related links, FAQ. Anti-dupe OK (new slug, no prior equivalent). SEO locales: defer.
+2026-11-03: PRODUCT — calculadora-palabras-por-oracion (texto). One tool (saturation, texto less recent in last batch). New dedicated words-per-sentence calculator for readability. EN+ES UI, 2 examples, validation (empty/no sentences), related links (word-counter, reading-time), FAQ. Anti-dupe OK (new slug). SEO locales: defer (none active).
 ```
 
 ---
@@ -73,7 +74,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-porcentaje-a-letra
+last_slugs: calculadora-palabras-por-oracion
 last_deploy: no (branch auto-deploy disabled)
 last_sha: (pending post-push)
 ```

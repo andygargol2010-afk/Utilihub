@@ -19,4 +19,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-line-height": "Calculadora de altura de línea",
   "calculadora-porcentaje-a-letra": "Calculadora de porcentaje a letra",
   "calculadora-trabajo": "Calculadora de trabajo",
+  "calculadora-palabras-por-oracion": "Calculadora de palabras por oración",
 };
