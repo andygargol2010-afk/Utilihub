@@ -14,7 +14,7 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 
 ```
 last_closed_domain: games
-last_closed_id: othello-classic
+last_closed_id: minesweeper-classic
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 6
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-03 | games | minesweeper-classic | Interactive classic Minesweeper-style grid game complete after 4 runs. Rectangular grid with hidden mines; click to reveal cells showing adjacent mine counts, flood-fill empty areas, flag suspected mines (question marks cycle). Win by revealing all safe or flagging all; lose on mine. Difficulties (easy 9x9/10, medium 16x16/40, hard 16x30/99), first-click safe, URL deep-link, branded PNG, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (reveal/flag, complete or lose, share PNG/URL, face reset, auto-flag on win). IP: traditional public-domain mechanics, generic naming, no Microsoft branding.
 - 2026-11-02 | games | othello-classic | Interactive classic Othello/Reversi board game complete after 4 runs. 8x8 grid, place discs that flip opponents in lines when bracketing, valid moves highlighted, optional simple AI (greedy max-flips), URL deep-link (?b=), branded PNG of board, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (place disc, see flips, AI respond, share PNG/URL). IP: traditional public-domain mechanics, generic naming.
 - 2026-11-02 | seo-locales | pt-product-parity | Full Portuguese (pt-BR) product surface under /pt/ after 11 runs. Partial parity: home, tools/games/simulators indexes, several high-traffic experiences with PT chrome/meta/hreflang. Catalog tool-name translations and remaining experiences incomplete; not registered active. Closed at budget. Next IDEATE.
 - 2026-11-02 | growth-surfaces | achievement-certificate-maker | Interactive achievement certificate maker complete after 4 runs. User selects template (classic diploma, modern badge, playful award), enters name/title/date/message/issued-by, sees live CSS preview with decorative seal, customizes colors, generates branded PNG or copies deep-link URL. Quick-fill presets. EN+ES routes. Mobile-first 390px. Pure form + declarative layout + canvas PNG. No particles. Acceptance met (fills form, sees live preview, downloads PNG or copies share URL).
@@ -61,19 +62,19 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive classic Minesweeper-style grid game. Rectangular grid with hidden mines; click to reveal cells showing adjacent mine counts (numbers), flood-fill empty areas, right-click or button to flag suspected mines. Win by revealing all safe cells or correctly flagging all mines; lose on revealing a mine. Difficulty levels (easy 9x9/10, medium 16x16/40, hard). First click safe. URL deep-link for seed/difficulty. Branded PNG of final board. EN+ES routes. Mobile-first 390px. CSS grid + state, no canvas. Traditional public-domain mechanics, generic naming, no Microsoft branding or assets.
-id: minesweeper-classic
-path_en: /games/minesweeper-classic
-path_es: /es/juegos/buscaminas-clasico
+status: active
+idea: Interactive classic Sudoku puzzle. 9x9 grid with pre-filled cells, user fills remaining with 1-9 ensuring no duplicates in rows, columns, or 3x3 boxes. Live conflict highlighting, optional pencil notes, undo, timer, difficulty presets (easy/medium/hard), URL deep-link for seed, branded PNG of completed grid. EN+ES routes. Mobile-first 390px. CSS grid + state, no canvas. Traditional public-domain rules, generic naming.
+id: sudoku-classic
+path_en: /games/sudoku-classic
+path_es: /es/juegos/sudoku-clasico
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 0
-acceptance: User clicks a cell, sees number or flood-reveal, flags mines (or question marks), completes board without hitting mine or sees explosion, optionally downloads PNG or copies share URL. Face button resets. On win, remaining mines auto-flag for visual confirmation.
+runs_remaining: 4
+acceptance: User selects difficulty, fills cells with numbers, sees conflicts or valid placements, completes the puzzle (or uses undo/pencil), optionally downloads PNG or copies share URL.
 share: both
-next_step_required: no
-notes: IDEATE: domain roll games (weight 5). 3 candidates scored: 1) minesweeper-classic (value 5, share 4, search 5 "play minesweeper online", distinct 4, feas 5, perf 4) total ~27; 2) connect-four-classic (value 4, share 4, search 4, distinct 3 vs othello/memory, feas 5, perf 5) ~25; 3) original grid-path puzzle (value 3, share 3, search 2, distinct 5, feas 4, perf 4) ~21. Picked minesweeper. Closest-3: memory-match-classic (grid flip/reveal), othello-classic (grid place), bin-packing-sim (grid placement). Primary metaphor: grid reveal with flood-fill and flagging for mine avoidance. Why not particle-canvas: discrete rules-based board game, CSS grid clicks and state, no freehand or trails. IP: traditional minesweeper-style reveal (adjacent counts, flood fill empty, flag mines; generic UI and naming; no Microsoft Minesweeper branded assets or exact clone of protected expression). Roll math: p_fixed 0.35 not triggered for FIXED; FLEX/CORE weighted toward games after recent closes. adsense-prep_runs: 6. EXECUTE run 1: core already present and playable (difficulties, flood, flags, first-safe, seed URL, PNG, EN+ES, mobile). Added Flag Mode toggle for easier mobile flagging (tap places flag when ON). Acceptance core met. EXECUTE run 2: replaced stub MinesweeperClassicGame.tsx with full implementation. Standard classic sizes (easy 9×9/10, medium 16×16/40, hard 16×30/99). Flag Mode toggle (tap flags when ON). First-click always safe, flood-fill, chord on numbers, long-press flag, seed URL deep-link, branded PNG, EN+ES strings, mobile-first with horizontal scroll for hard. Acceptance: user can select difficulty, reveal/flag cells, complete or lose, share PNG/URL. EXECUTE run 3: added question-mark cycle (flag → ❓ → empty) on right-click / long-press / Flag Mode tap; status face button (😀/🙂/😎/😵) that resets; improved PNG with status emoji and mines-left; updated instructions EN+ES; path_es corrected to buscaminas-clasico. Acceptance enhanced. EXECUTE run 4 (final): on win auto-flag all remaining mines for visual confirmation; win message includes time; instructions updated EN+ES. Acceptance fully met. Ready for CLOSE.
+next_step_required: yes
+notes: IDEATE: domain roll games (weight 5). 3 candidates scored: 1) sudoku-classic (value 5, share 4, search 5 "play sudoku online", distinct 4 vs recent grids, feas 5, perf 4) total ~27; 2) checkers-classic (value 4, share 3, search 3, distinct 4, feas 5, perf 5) ~24; 3) original constraint-grid puzzle (value 3, share 3, search 2, distinct 5, feas 4, perf 4) ~21. Picked sudoku. Closest-3: minesweeper-classic (grid interact), othello-classic (grid place), connect-four-classic (grid strategy). Primary metaphor: constraint-satisfaction number grid filling. Why not particle-canvas: discrete rules-based puzzle with validation, CSS grid clicks and state, no freehand or trails. IP: traditional sudoku rules (row/column/box uniqueness; generic UI and naming; no branded puzzle sets). Roll math: p_fixed 0.35 not triggered (random ~0.28); FLEX/CORE weighted random selected games. adsense-prep_runs: 6. Next: implement core playable by run 2.
 ```
 
 <!-- end:ideas-lab-state.md -->
