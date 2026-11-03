@@ -1,6 +1,6 @@
 import type { CatalogTool } from "@/lib/all-tools";
 import { spanishToolName } from "@/lib/i18n/es";
-import { resolvedToolSeo, toolSeoOverride } from "@/lib/tool-seo-overrides";
+import type { ToolSeoGuideData } from "@/lib/tool-seo-overrides";
 import { referenceLinks, toolReference } from "@/lib/tool-reference";
 import { ToolReferenceContent, ToolReferenceLinks } from "./ToolReferenceContent";
 
@@ -199,12 +199,15 @@ function spanishGuideFallback(
 export function ToolSeoContent({
   tool,
   locale = "en",
+  guide,
 }: {
   tool: CatalogTool;
   locale?: "en" | "es";
+  /** From the route loader (toolSeoGuideData) so the override barrel stays server-side. */
+  guide: ToolSeoGuideData;
 }) {
-  const override = toolSeoOverride(tool.slug);
-  const resolved = resolvedToolSeo(tool);
+  const override = guide;
+  const resolved = guide;
   const displayName = locale === "es" ? spanishToolName(tool) : tool.name;
   const fallbackEs = locale === "es" ? spanishGuideFallback(displayName, tool) : null;
 

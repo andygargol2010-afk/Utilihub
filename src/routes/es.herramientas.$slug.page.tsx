@@ -10,14 +10,16 @@ import type { CatalogTool } from "@/lib/all-tools";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
 import { spanishToolSummary } from "@/lib/i18n/es-summaries";
+import type { ToolSeoGuideData } from "@/lib/tool-seo-overrides";
 import { Route } from "./es.herramientas.$slug";
 
 export function SpanishToolPage() {
-  const { tool, name, categoryName, showcase } = Route.useLoaderData() as {
+  const { tool, name, categoryName, showcase, guide } = Route.useLoaderData() as {
     tool: CatalogTool;
     name: string;
     categoryName: string;
     showcase: boolean;
+    guide: ToolSeoGuideData;
   };
   const categorySlug = tool.category;
   const summaryEs = spanishToolSummary(tool);
@@ -92,7 +94,7 @@ export function SpanishToolPage() {
       <DeferredRelatedTools tool={tool} locale="es" />
 
       {/* ES-only guide: overrides aboutEs/stepsEs/faqEs or spanishGuideFallback — never EN catalog copy */}
-      <ToolSeoContent tool={tool} locale="es" />
+      <ToolSeoContent tool={tool} locale="es" guide={guide} />
     </div>
   );
 }

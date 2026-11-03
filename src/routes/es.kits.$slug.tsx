@@ -8,7 +8,7 @@ import { HomeRenovationBoard } from "@/components/kits/HomeRenovationBoard";
 import { KitchenPrepBoard } from "@/components/kits/KitchenPrepBoard";
 import { ToolCard } from "@/components/ToolCard";
 import { spanishToolName } from "@/lib/i18n/es";
-import { kitBySlug, kitTools, kitEnglishPath } from "@/lib/work-kits";
+import { kitBySlug, kitEnglishPath } from "@/lib/work-kits";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
 
 const KIT_ES: Record<string, { name: string; eyebrow: string; description: string; outcome: string }> = {
@@ -75,8 +75,10 @@ const KIT_ES: Record<string, { name: string; eyebrow: string; description: strin
 };
 
 export const Route = createFileRoute("/es/kits/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const kit = kitBySlug(params.slug);
+    // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+    const { kitTools } = await import("@/lib/work-kits-tools");
     if (!kit) throw notFound();
     return { kit, tools: kitTools(kit) };
   },

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2, FileText, LockKeyhole } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
-import { DOCUMENT_HUB, documentHubTools } from "@/lib/document-hub";
+import { DOCUMENT_HUB } from "@/lib/document-hub";
 import { spanishToolPath } from "@/lib/i18n/es";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
@@ -12,10 +12,14 @@ const description = cleanDescription(
 );
 
 export const Route = createFileRoute("/es/hubs/documentos-y-archivos")({
-  loader: () => ({
-    steps: documentHubTools(DOCUMENT_HUB.steps),
-    alternatives: documentHubTools(DOCUMENT_HUB.alternatives),
-  }),
+  // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+  loader: async () => {
+    const { documentHubTools } = await import("@/lib/document-hub-tools");
+    return {
+      steps: documentHubTools(DOCUMENT_HUB.steps),
+      alternatives: documentHubTools(DOCUMENT_HUB.alternatives),
+    };
+  },
   head: () => ({
     meta: [
       { title },

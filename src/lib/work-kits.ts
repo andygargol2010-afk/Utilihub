@@ -1,4 +1,5 @@
-import { allToolBySlug, type CatalogTool } from "./all-tools";
+// kitTools lives in work-kits-tools.ts: importing all-tools here put the whole
+// catalog in the client entry chunk via kit route loaders and the sitemap route.
 
 export type WorkKit = {
   /** Internal / Spanish path slug (stable for ES routes). */
@@ -104,10 +105,6 @@ export const WORK_KITS: WorkKit[] = [
     toolSlugs: [],
   },
 ];
-
-export function kitTools(kit: WorkKit): CatalogTool[] {
-  return kit.toolSlugs.map(allToolBySlug).filter((tool): tool is CatalogTool => Boolean(tool));
-}
 
 /** Resolve by Spanish slug, English public slug, or legacy alias. */
 export function kitBySlug(slug: string) {

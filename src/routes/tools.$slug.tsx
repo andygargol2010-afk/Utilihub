@@ -18,7 +18,7 @@ export const Route = createFileRoute("/tools/$slug")({
     const tool = toolByEnglishSlug(ALL_TOOLS, params.slug);
     if (!tool) throw notFound();
     const category = ALL_CATEGORIES.find((c) => c.slug === tool.category) ?? null;
-    const { resolvedToolSeo } = await import("@/lib/tool-seo-overrides");
+    const { resolvedToolSeo, toolSeoGuideData } = await import("@/lib/tool-seo-overrides");
     const seo = resolvedToolSeo(tool);
     const { hasToolShowcase } = await import("@/lib/showcase-slugs");
     const categoryView = category ? { slug: category.slug, name: category.name } : null;
@@ -28,6 +28,7 @@ export const Route = createFileRoute("/tools/$slug")({
       category: categoryView,
       categoryPublicSlug: category ? englishCategorySlug(category.slug) : null,
       showcase: hasToolShowcase(tool.slug),
+      guide: toolSeoGuideData(tool),
       seo: { title: seo.title, description: seo.description, faq: seo.faq },
       head,
     };

@@ -9,14 +9,16 @@ import { ToolSeoContent } from "@/components/ToolSeoContent";
 import type { CatalogTool } from "@/lib/all-tools";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
 import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
+import type { ToolSeoGuideData } from "@/lib/tool-seo-overrides";
 import { Route } from "./tools.$slug";
 
 export function ToolPage() {
-  const { tool, category, categoryPublicSlug, showcase } = Route.useLoaderData() as {
+  const { tool, category, categoryPublicSlug, showcase, guide } = Route.useLoaderData() as {
     tool: CatalogTool;
     category: { slug: string; name: string } | null;
     categoryPublicSlug: string | null;
     showcase: boolean;
+    guide: ToolSeoGuideData;
   };
 
   useEffect(() => {
@@ -80,7 +82,7 @@ export function ToolPage() {
       <DeferredAdsterraBanner />
       <DeferredRelatedTools tool={tool} locale="en" />
 
-      <ToolSeoContent tool={tool} locale="en" />
+      <ToolSeoContent tool={tool} locale="en" guide={guide} />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import type { CatalogTool } from "@/lib/all-tools";
+import type { ToolSeoGuideData } from "@/lib/tool-seo-overrides";
 
 const ToolSeoContent = lazy(() =>
   import("./ToolSeoContent").then((m) => ({ default: m.ToolSeoContent })),
@@ -9,14 +10,14 @@ const ToolSeoContent = lazy(() =>
  * SEO guides pull the full override barrel (~500KB source). Keep that chunk
  * off the tool-route graph so the calculator shell can parse without it.
  */
-export function DeferredToolSeo({ tool, locale }: { tool: CatalogTool; locale: "en" | "es" }) {
+export function DeferredToolSeo({ tool, locale, guide }: { tool: CatalogTool; locale: "en" | "es"; guide: ToolSeoGuideData }) {
   return (
     <Suspense
       fallback={
         <div className="mt-10 h-32 rounded-xl border border-border/60 bg-card/40" aria-hidden />
       }
     >
-      <ToolSeoContent tool={tool} locale={locale} />
+      <ToolSeoContent tool={tool} locale={locale} guide={guide} />
     </Suspense>
   );
 }

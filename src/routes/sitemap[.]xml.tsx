@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ALL_CATEGORIES, ALL_TOOLS, toolHref } from "@/lib/all-tools";
+import type { ALL_TOOLS } from "@/lib/all-tools";
 import { isRedirectedToolSlug } from "@/lib/canonical-tool-redirects";
 import { EDUCATION_SUBJECTS } from "@/lib/general/education";
 import { GAMES } from "@/lib/games/catalog";
 import { englishCategoryPath, spanishToolPath } from "@/lib/route-slugs";
 import { SITE_URL } from "@/lib/seo";
 import { SIMULATORS } from "@/lib/simulators/catalog";
-import { toolSeoOverride } from "@/lib/tool-seo-overrides";
 import { WORK_KITS } from "@/lib/work-kits";
 
 /** Escape XML special chars without embedding &entity; literals that get mangled by some editors. */
@@ -63,7 +62,10 @@ const hreflangXml = (entry: SitemapEntry) => {
 };
 
 /** Higher priority for advanced tools, flagship 3D studios and tools with their own written content. */
-function toolPriority(tool: (typeof ALL_TOOLS)[number]): string {
+function toolPriority(
+  tool: (typeof ALL_TOOLS)[number],
+  toolSeoOverride: (slug: string) => unknown,
+): string {
   if (tool.category === "herramientas-avanzadas") return "0.85";
   if (tool.slug === "modelador-casas-3d" || tool.slug === "modelador-3d") return "0.85";
   // Own about/steps/FAQ copy (tool-seo-overrides): prioritise over generic catalog pages.
@@ -74,7 +76,10 @@ function toolPriority(tool: (typeof ALL_TOOLS)[number]): string {
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
-      GET: () => {
+      GET: async () => {
+        // Dynamic: keeps the catalog and SEO barrel out of the client entry chunk.
+        const { ALL_CATEGORIES, ALL_TOOLS, toolHref } = await import("@/lib/all-tools");
+        const { toolSeoOverride } = await import("@/lib/tool-seo-overrides");
         const hubPairs: SitemapEntry[] = [
           ...pair("/", "/es", "1.0", { lastmod: BUILD_DAY }),
           ...pair("/tools", "/es/herramientas", "0.9", { lastmod: BUILD_DAY }),
@@ -145,7 +150,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           if (isRedirectedToolSlug(tool.slug)) return [];
           const enPath = toolHref(tool);
           const esPath = spanishToolPath(tool);
-          return pair(enPath, esPath, toolPriority(tool));
+          return pair(enPath, esPath, toolPriority(tool, toolSeoOverride));
         });
 
         // SEO locales: none active after 2026-10-28 reset (no thin /pt|/fr|/de shells).

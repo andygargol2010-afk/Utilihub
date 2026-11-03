@@ -7,13 +7,15 @@ import { TravelPackingBoard } from "@/components/kits/TravelPackingBoard";
 import { HomeRenovationBoard } from "@/components/kits/HomeRenovationBoard";
 import { KitchenPrepBoard } from "@/components/kits/KitchenPrepBoard";
 import { ToolCard } from "@/components/ToolCard";
-import { kitBySlug, kitTools, kitEnglishPath, kitSpanishPath } from "@/lib/work-kits";
+import { kitBySlug, kitEnglishPath, kitSpanishPath } from "@/lib/work-kits";
 import { englishToolSlug } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 export const Route = createFileRoute("/kits/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const kit = kitBySlug(params.slug);
+    // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+    const { kitTools } = await import("@/lib/work-kits-tools");
     if (!kit) throw notFound();
     return { kit, tools: kitTools(kit) };
   },

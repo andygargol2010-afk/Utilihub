@@ -2,7 +2,6 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
 import { EDUCATION_SUBJECTS, educationTopicTitle } from "@/lib/general/education";
-import { allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
 
 /** Spanish display names for education subjects (slug is shared with EN). */
@@ -88,11 +87,13 @@ function topicTitleEs(topic: string) {
 }
 
 export const Route = createFileRoute("/es/educacion/$subject")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const subject = EDUCATION_SUBJECTS.find(([slug]) => slug === params.subject);
     if (!subject) throw notFound();
     const [slug, nameEn, topics] = subject;
     const name = SUBJECT_NAME_ES[slug] ?? nameEn;
+    // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+    const { allToolsByCategory } = await import("@/lib/all-tools");
     const tools = allToolsByCategory("educacion").filter((tool) =>
       topics.some((topic) => tool.slug === `test-${params.subject}-${topic}`),
     );

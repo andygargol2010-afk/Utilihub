@@ -55,7 +55,12 @@ export function KitReturnRibbon({ toolSlug, locale = "en" }: KitReturnRibbonProp
     setState({ status: "idle", kit: idleKit });
   }, [toolSlug]);
 
-  if (state.status === "pending" || state.status === "absent") return null;
+  if (state.status === "pending") {
+    // Same reserved line as DeferredKitReturnRibbon so mounting does not shift the H1.
+    const inKit = WORK_KITS.some((kit) => kit.toolSlugs.includes(toolSlug));
+    return inKit ? <div className="mt-3 min-h-4" aria-hidden /> : null;
+  }
+  if (state.status === "absent") return null;
 
   const href = es ? kitSpanishPath(state.kit) : kitEnglishPath(state.kit);
   if (state.status === "idle") {

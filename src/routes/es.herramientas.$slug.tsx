@@ -14,7 +14,7 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
     const tool = allToolBySlug(params.slug);
     const { usesFinanceRoute } = await import("@/lib/route-slugs");
     if (!tool || usesFinanceRoute(tool)) throw notFound();
-    const { toolSeoOverride } = await import("@/lib/tool-seo-overrides");
+    const { toolSeoOverride, toolSeoGuideData } = await import("@/lib/tool-seo-overrides");
     const override = toolSeoOverride(tool.slug);
     const { spanishCategoryName, spanishToolName } = await import("@/lib/i18n/es");
     const { hasToolShowcase } = await import("@/lib/showcase-slugs");
@@ -31,6 +31,7 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
       name,
       categoryName,
       showcase: hasToolShowcase(tool.slug),
+      guide: toolSeoGuideData(tool),
       seo,
       head,
     };

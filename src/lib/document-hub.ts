@@ -1,4 +1,7 @@
-import { allToolBySlug, type CatalogTool, toolHref } from "./all-tools";
+// Data only. documentHubTools (step → catalog tool + href) lives in
+// document-hub-tools.ts: importing all-tools here put the whole catalog
+// (~370 KB) in the client entry chunk via the hub route loaders.
+// Import that helper dynamically from loaders, or from component code only.
 
 export type DocumentHubStep = {
   slug: string;
@@ -34,10 +37,3 @@ export const DOCUMENT_HUB = {
     { slug: "nombres-de-archivos-en-lote", title: "Normalize names in bulk", description: "Generate consistent names for file lists or deliverables." },
   ] satisfies DocumentHubStep[],
 };
-
-export function documentHubTools(steps: DocumentHubStep[]): Array<DocumentHubStep & { tool: CatalogTool; href: string }> {
-  return steps.flatMap((step) => {
-    const tool = allToolBySlug(step.slug);
-    return tool ? [{ ...step, tool, href: toolHref(tool) }] : [];
-  });
-}

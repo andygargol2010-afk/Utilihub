@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useState, type ReactNode } from "react";
+import { lazy, memo, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ToolUiFallback } from "@/components/ToolUiFallback";
 import { LazyBoundary } from "@/components/LazyBoundary";
 
@@ -78,10 +78,25 @@ async function loadRenderer(slug: string, locale: Locale): Promise<() => ReactNo
  * Keep the tool-route shell free of catalog registries.
  * Core tools never fetch general/registry. 3D studios fetch registry-3d only.
  * PixeliHub loads PixelArtStudio on demand only.
+ * After hydration React may client-render this boundary again (an update reaches it
+ * while still dehydrated): the SSR tool markup is dropped, "Loading tool…" shows and
+ * the tool re-mounts, shifting everything below it (CLS 0.1-0.2 on mobile). The
+ * wrapper keeps the SSR height as min-height until the tool has mounted on the client.
  */
-export function DeferredToolUi({ slug, locale }: { slug: string; locale: Locale }) {
+export const DeferredToolUi = memo(function DeferredToolUi({ slug, locale }: { slug: string; locale: Locale }) {
   // Bumped by the boundary's Retry: a fresh lazy() re-fetches a chunk that failed.
   const [attempt, setAttempt] = useState(0);
+  const holdRef = useRef<HTMLDivElement>(null);
+  const release = useRef(() => {
+    if (holdRef.current) holdRef.current.style.minHeight = "";
+  });
+  useLayoutEffect(() => {
+    const el = holdRef.current;
+    if (!el || !el.querySelector("[data-tool-ui-ready]")) return;
+    el.style.minHeight = `${el.offsetHeight}px`;
+    const t = window.setTimeout(release.current, 8000);
+    return () => window.clearTimeout(t);
+  }, []);
   const Ui = useMemo(
     () =>
       lazy(async () => {
@@ -89,7 +104,8 @@ export function DeferredToolUi({ slug, locale }: { slug: string; locale: Locale 
         return {
           default: function LoadedToolUi() {
             const node = typeof render === "function" ? render() : render;
-            return <>{node}</>;
+            useEffect(() => release.current(), []);
+            return <div data-tool-ui-ready="">{node}</div>;
           },
         };
       }),
@@ -97,10 +113,12 @@ export function DeferredToolUi({ slug, locale }: { slug: string; locale: Locale 
   );
 
   return (
-    <LazyBoundary locale={locale} onRetry={() => setAttempt((n) => n + 1)}>
-      <Suspense fallback={<ToolUiFallback locale={locale} />}>
-        <Ui />
-      </Suspense>
-    </LazyBoundary>
+    <div ref={holdRef}>
+      <LazyBoundary locale={locale} onRetry={() => setAttempt((n) => n + 1)}>
+        <Suspense fallback={<ToolUiFallback locale={locale} />}>
+          <Ui />
+        </Suspense>
+      </LazyBoundary>
+    </div>
   );
-}
+});

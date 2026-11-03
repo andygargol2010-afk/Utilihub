@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, ClipboardCopy, Link2, RotateCcw, Timer } from "lucide-react";
 import { publicToolPath } from "@/lib/route-slugs";
-import { kitBySlug, kitTools } from "@/lib/work-kits";
+import { kitBySlug } from "@/lib/work-kits";
+import { kitTools } from "@/lib/work-kits-tools";
 
 export type KitBoardStep = { slug: string; label: string };
 

@@ -2,7 +2,8 @@ import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-rout
 import { ArrowRight, BriefcaseBusiness, CheckCircle2, GraduationCap, FileText, Search } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { KitDeskTrail } from "@/components/kits/KitDeskTrail";
-import { WORK_KITS, kitTools } from "@/lib/work-kits";
+import { WORK_KITS } from "@/lib/work-kits";
+import { kitTools } from "@/lib/work-kits-tools";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Goal-based work kits | UtiliHub";

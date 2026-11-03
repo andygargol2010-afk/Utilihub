@@ -59,3 +59,19 @@ export function resolvedToolSeo(tool: {
     faq: o.faq?.length ? o.faq : tool.faq ?? [],
   };
 }
+
+/** Guide copy for one tool, computed in route loaders so the client never imports this barrel. */
+export type ToolSeoGuideData = {
+  about: string[];
+  steps: string[];
+  faq: { q: string; a: string }[];
+  aboutEs?: string[];
+  stepsEs?: string[];
+  faqEs?: { q: string; a: string }[];
+};
+
+export function toolSeoGuideData(tool: Parameters<typeof resolvedToolSeo>[0] & { slug: string }): ToolSeoGuideData {
+  const o = toolSeoOverride(tool.slug);
+  const r = resolvedToolSeo(tool);
+  return { about: r.about, steps: r.steps, faq: r.faq, aboutEs: o?.aboutEs, stepsEs: o?.stepsEs, faqEs: o?.faqEs };
+}

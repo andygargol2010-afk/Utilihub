@@ -2,14 +2,15 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
 import { EDUCATION_SUBJECTS, educationTopicTitle } from "@/lib/general/education";
-import { allToolsByCategory } from "@/lib/all-tools";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
 
 export const Route = createFileRoute("/education/$subject")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const subject = EDUCATION_SUBJECTS.find(([slug]) => slug === params.subject);
     if (!subject) throw notFound();
     const [, name, topics] = subject;
+    // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+    const { allToolsByCategory } = await import("@/lib/all-tools");
     const tools = allToolsByCategory("educacion").filter((tool) =>
       topics.some((topic) => tool.slug === `test-${params.subject}-${topic}`),
     );
