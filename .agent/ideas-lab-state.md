@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: seo-locales
-last_closed_id: pt-product-parity
+last_closed_domain: games
+last_closed_id: othello-classic
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 6
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-02 | games | othello-classic | Interactive classic Othello/Reversi board game complete after 4 runs. 8x8 grid, place discs that flip opponents in lines when bracketing, valid moves highlighted, optional simple AI (greedy max-flips), URL deep-link (?b=), branded PNG of board, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (place disc, see flips, AI respond, share PNG/URL). IP: traditional public-domain mechanics, generic naming.
 - 2026-11-02 | seo-locales | pt-product-parity | Full Portuguese (pt-BR) product surface under /pt/ after 11 runs. Partial parity: home, tools/games/simulators indexes, several high-traffic experiences with PT chrome/meta/hreflang. Catalog tool-name translations and remaining experiences incomplete; not registered active. Closed at budget. Next IDEATE.
 - 2026-11-02 | growth-surfaces | achievement-certificate-maker | Interactive achievement certificate maker complete after 4 runs. User selects template (classic diploma, modern badge, playful award), enters name/title/date/message/issued-by, sees live CSS preview with decorative seal, customizes colors, generates branded PNG or copies deep-link URL. Quick-fill presets. EN+ES routes. Mobile-first 390px. Pure form + declarative layout + canvas PNG. No particles. Acceptance met (fills form, sees live preview, downloads PNG or copies share URL).
 - 2026-11-01 | retention-loops | progress-passport | Interactive digital progress passport complete after 4 runs. User earns discrete stamps by completing challenges across kits/games/simulators, pages fill with stamps + progress bar + collection stats. Generate branded PNG of passport/progress, share link with deep-link. EN+ES routes. Mobile-first 390px. CSS stamp book + localStorage. No heavy canvas or particles. Acceptance met (user marks stamp, sees update, shares PNG or link).
@@ -61,22 +62,18 @@ adsense-prep_runs: 6
 
 ```
 status: active
-idea: Interactive classic Othello/Reversi board game. 8x8 grid, players alternate placing discs that flip opponent's discs in straight lines when bracketing them. Valid moves highlighted. Win when board full or no moves; higher disc count wins. Optional simple AI opponent. Levels or just free play. URL deep-link for starting position or seed. Branded PNG of final board. EN+ES routes. Mobile-first 390px. CSS grid + state, no canvas. Traditional public-domain mechanics, generic naming, no branded assets.
-id: othello-classic
-path_en: /games/othello-classic
-path_es: /es/juegos/othello
+idea: Interactive classic Minesweeper-style grid game. Rectangular grid with hidden mines; click to reveal cells showing adjacent mine counts (numbers), flood-fill empty areas, right-click or button to flag suspected mines. Win by revealing all safe cells or correctly flagging all mines; lose on revealing a mine. Difficulty levels (easy 9x9/10, medium 16x16/40, hard). First click safe. URL deep-link for seed/difficulty. Branded PNG of final board. EN+ES routes. Mobile-first 390px. CSS grid + state, no canvas. Traditional public-domain mechanics, generic naming, no Microsoft branding or assets.
+id: minesweeper-classic
+path_en: /games/minesweeper-classic
+path_es: /es/juegos/buscaminas
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 0
-acceptance: User clicks a valid empty square, sees disc placed and opponent discs flipped, continues until game end, sees winner and score, optionally downloads PNG or copies share URL. With AI: enables Vs AI, plays as Black, sees AI (White) respond with flips.
+runs_remaining: 4
+acceptance: User clicks a cell, sees number or flood-reveal, flags mines, completes board without hitting mine or sees explosion, optionally downloads PNG or copies share URL.
 share: both
 next_step_required: yes
-notes: Run 1 EXECUTE: core playable shipped. CSS 8x8 grid, initial setup, place+flip logic in 8 dirs, valid move highlights, turn/pass, scores, end detection (no moves both sides), undo, new game. EN+ES. Mobile 390px. No AI/PNG/URL yet (planned runs 2-4). IP: traditional Reversi/Othello mechanics (public-domain rules; generic UI and naming; no commercial branded assets or art). Closest-3: memory-match-classic (grid flip), connect-four (grid place), bin-packing-sim (grid placement). Primary metaphor: turn-based grid placement with directional flip capture. Why not particle-canvas: discrete rules-based board game, CSS grid clicks, no freehand or trails.
-Run 2 EXECUTE: added URL deep-link (?b=serialized board|turn) + copy share link button. Loads position on mount if present. Updates URL on move/undo/reset. EN+ES strings. Mobile 390px. IP unchanged. Next: simple AI or branded PNG.
-Run 3 EXECUTE: added branded PNG download of current board (canvas render with UtiliHub header, scores/result, green board + discs, footer URL). Button next to share. EN+ES labels. Mobile 390px considered. IP unchanged. Next (run 4): optional simple AI opponent or final polish.
-Run 4 EXECUTE: added optional simple AI (greedy max-flips) opponent. Toggle button Vs AI / Vs Human. AI plays White, auto-moves after ~700ms delay when its turn. Disables human clicks during AI turn. EN+ES strings updated. Mobile 390px. IP unchanged. Acceptance met (user toggles AI, places disc, sees AI respond and flips). Project complete at budget.
-adsense-prep_runs: 6
+notes: IDEATE: domain roll games (weight 5). 3 candidates scored: 1) minesweeper-classic (value 5, share 4, search 5 "play minesweeper online", distinct 4, feas 5, perf 4) total ~27; 2) connect-four-classic (value 4, share 4, search 4, distinct 3 vs othello/memory, feas 5, perf 5) ~25; 3) original grid-path puzzle (value 3, share 3, search 2, distinct 5, feas 4, perf 4) ~21. Picked minesweeper. Closest-3: memory-match-classic (grid flip/reveal), othello-classic (grid place), bin-packing-sim (grid placement). Primary metaphor: grid reveal with flood-fill and flagging for mine avoidance. Why not particle-canvas: discrete rules-based board game, CSS grid clicks and state, no freehand or trails. IP: traditional minesweeper-style reveal (adjacent counts, flood fill empty, flag mines; generic UI and naming; no Microsoft Minesweeper branded assets or exact clone of protected expression). Roll math: p_fixed 0.35 not triggered for FIXED; FLEX/CORE weighted toward games after recent closes. adsense-prep_runs: 6
 ```
 
 <!-- end:ideas-lab-state.md -->
