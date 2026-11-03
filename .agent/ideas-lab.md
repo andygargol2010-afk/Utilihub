@@ -57,6 +57,17 @@ Reply in **Spanish** at the end of every run (template in ideas-lab-ops.md).
 
 ---
 
+## NO-BREAK GATE (immutable — added 2026-11-03, never edit / weaken / remove)
+Lesson: the 2026-10-28 registry split kept the build green but silently sent 102 tools to `ConfiguredTool` → users saw «Operation not available.» for days. A green build is NOT proof that tools work.
+1. **Routing is frozen.** Never reorder, remove or move below the `ConfiguredToolUi` fallback any branch of `pickComponent` in `src/components/general/registry.tsx`. Only add new slug wires in `registry-ui/slugs-NN.ts` / `components-NN.ts`.
+2. **No refactors/splits/moves of existing code** (registry, catalogs, i18n, shared components) by automations. A split must be proposed in the summary for Andy; never done in a run.
+3. **Guards are sacred.** `npm run validate:catalog` (includes `scripts/validate-tool-routing.mjs`) must pass before every push. Never edit, weaken, skip or delete `scripts/validate-*.mjs`, `scripts/*baseline*.json` or the `validate:*`/`build` scripts in `package.json` to make a check pass.
+4. **Functional smoke before push** when touching `src/components/**`, `src/lib/**` or `src/routes/**`: open ≥3 affected tools on EN and ES, enter values, press the action button. Fail if the page shows «Operation not available», «Operación no disponible», «Tool not available», «no tiene una operación», HTTP 500 or a console error. If you cannot run this check, do not push — report.
+5. **Scope lock.** Touch only files your task needs. Never delete, rename or empty a file you did not create in this run; >5 files outside your own area in one commit → stop and report.
+6. **Out-of-scope breakage:** report it in the summary (file + URL + symptom); do not «fix» it by rewriting someone else's code.
+7. **If your push breaks build or a guard:** `git revert` your own commit in the next step. Never force-push, never reset shared branches, never restore from an older commit than the previous one.
+8. **Summary must list:** files changed, guard output (`✓ tool routing guard OK`), and the smoke URLs tested. Missing evidence = task BLOQUEADA, not HECHA.
+
 ## Out of scope
 
 - Catalog calculators / duplicate `makeTool` wrappers (tools-builder domain).
