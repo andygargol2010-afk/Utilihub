@@ -227,7 +227,15 @@ export function ToolListBrowser<T extends BrowseableTool>({
         <>
           <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
             {shown.map((tool) => (
-              <div key={tool.id}>{renderItem(tool)}</div>
+              <div
+                key={tool.id}
+                style={{
+                  contentVisibility: "auto",
+                  containIntrinsicSize: "0 56px",
+                }}
+              >
+                {renderItem(tool)}
+              </div>
             ))}
           </div>
 
