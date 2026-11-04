@@ -22,3 +22,4 @@ export const OhmsLawCalculatorToolUi = lazy(() => import("../OhmsLawCalculatorTo
 export const MonthsBetweenDatesCalculatorToolUi = lazy(() => import("../MonthsBetweenDatesCalculatorTool").then((m) => ({ default: m.MonthsBetweenDatesCalculatorTool })));
 export const ParallelogramAreaCalculatorToolUi = lazy(() => import("../ParallelogramAreaCalculatorTool").then((m) => ({ default: m.ParallelogramAreaCalculatorTool })));
 export const ModularScaleCalculatorToolUi = lazy(() => import("../ModularScaleCalculatorTool").then((m) => ({ default: m.ModularScaleCalculatorTool })));
+export const TrapezoidAreaCalculatorToolUi = lazy(() => import("../TrapezoidAreaCalculatorTool").then((m) => ({ default: m.TrapezoidAreaCalculatorTool })));

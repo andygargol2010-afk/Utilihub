@@ -90,4 +90,5 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "ley-de-ohm", name: "OhmsLawCalculatorTool", path: "./OhmsLawCalculatorTool", export: "OhmsLawCalculatorTool" },
   { slug: "calculadora-area-paralelogramo", name: "ParallelogramAreaCalculatorTool", path: "./ParallelogramAreaCalculatorTool", export: "ParallelogramAreaCalculatorTool" },
   { slug: "calculadora-escala-modular", name: "ModularScaleCalculatorTool", path: "./ModularScaleCalculatorTool", export: "ModularScaleCalculatorTool" },
+  { slug: "calculadora-area-trapecio", name: "TrapezoidAreaCalculatorTool", path: "./TrapezoidAreaCalculatorTool", export: "TrapezoidAreaCalculatorTool" },
 ] as const;

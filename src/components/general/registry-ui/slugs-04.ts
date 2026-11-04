@@ -18,4 +18,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-meses-entre-fechas": UI.MonthsBetweenDatesCalculatorToolUi,
   "calculadora-area-paralelogramo": UI.ParallelogramAreaCalculatorToolUi,
   "calculadora-escala-modular": UI.ModularScaleCalculatorToolUi,
+  "calculadora-area-trapecio": UI.TrapezoidAreaCalculatorToolUi,
 };
