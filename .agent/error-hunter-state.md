@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-04 run 135
-runs_total: 135
+last_run: 2026-11-04 run 136
+runs_total: 136
 last_mode: HUNT
 last_fix: n/a (0 fixes; checks OK)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean
-deploy: production READY on c20a444 (tip 56bfb025 not yet deployed); no ERROR; live hipotenusa now curated Spanish; calculadora-ley-ohm still mixed; wacc about still English — lag continues
-notes: Known smoke E031 — no $(cat/PLACEHOLDER in src. Discovery: /es/herramientas/modelador-3d OK (not House), /es/herramientas/png-a-jpg OK, /es/herramientas/calculadora-imc OK, /es/herramientas/calculadora-iva OK, /es/juegos/2048 OK, /es OK. E051 coverage ongoing with production lag. No new errors. Pending: deploy catch-up for recent summaryEs.
+deploy: production READY on c20a444 (tip 318abb76 not yet deployed); no ERROR; live hipotenusa curated Spanish; calculadora-ley-ohm still mixed; wacc about still English — lag continues
+notes: Known smoke E031 — no $(cat/PLACEHOLDER in src search. Discovery: /es/herramientas/modelador-3d OK (not House), /es OK, /es/herramientas/calculadora-iva OK, /es/juegos/2048 OK, /es/herramientas/png-a-jpg OK, /es/herramientas/generador-de-contrasenas OK, /es/herramientas/contador-de-palabras OK, /tools/temperature-converter OK, /es/n-body-gravity OK. E051 coverage ongoing with production lag. No new errors. Pending: deploy catch-up for recent summaryEs.
 ```
 
 <!-- end:error-hunter-state.md -->
