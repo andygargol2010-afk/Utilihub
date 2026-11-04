@@ -25,4 +25,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-distancia-haversine": "Calculadora de distancia de círculo máximo",
   "conversor-kcal-kj": "Conversor de kcal a kJ",
   "calculadora-escalado-receta": "Calculadora de escalado de receta",
+  "calculadora-peso-objetivo-imc": "Calculadora de peso objetivo por IMC",
 };

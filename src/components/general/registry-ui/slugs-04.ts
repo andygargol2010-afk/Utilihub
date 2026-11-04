@@ -12,4 +12,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-distancia-haversine": UI.GreatCircleDistanceCalculatorToolUi,
   "conversor-kcal-kj": UI.KcalKjConverterToolUi,
   "calculadora-escalado-receta": UI.RecipeScalerCalculatorToolUi,
+  "calculadora-peso-objetivo-imc": UI.TargetWeightByBmiCalculatorToolUi,
 };

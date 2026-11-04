@@ -16,3 +16,4 @@ export const CagrCalculatorToolUi = lazy(() => import("../CagrCalculatorTool").t
 export const GreatCircleDistanceCalculatorToolUi = lazy(() => import("../GreatCircleDistanceCalculatorTool").then((m) => ({ default: m.GreatCircleDistanceCalculatorTool })));
 export const KcalKjConverterToolUi = lazy(() => import("../KcalKjConverterTool").then((m) => ({ default: m.KcalKjConverterTool })));
 export const RecipeScalerCalculatorToolUi = lazy(() => import("../RecipeScalerCalculatorTool").then((m) => ({ default: m.RecipeScalerCalculatorTool })));
+export const TargetWeightByBmiCalculatorToolUi = lazy(() => import("../TargetWeightByBmiCalculatorTool").then((m) => ({ default: m.TargetWeightByBmiCalculatorTool })));
