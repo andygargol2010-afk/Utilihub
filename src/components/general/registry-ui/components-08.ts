@@ -19,3 +19,4 @@ export const RecipeScalerCalculatorToolUi = lazy(() => import("../RecipeScalerCa
 export const TargetWeightByBmiCalculatorToolUi = lazy(() => import("../TargetWeightByBmiCalculatorTool").then((m) => ({ default: m.TargetWeightByBmiCalculatorTool })));
 export const EffectiveAnnualRateCalculatorToolUi = lazy(() => import("../EffectiveAnnualRateCalculatorTool").then((m) => ({ default: m.EffectiveAnnualRateCalculatorTool })));
 export const OhmsLawCalculatorToolUi = lazy(() => import("../OhmsLawCalculatorTool").then((m) => ({ default: m.OhmsLawCalculatorTool })));
+export const MonthsBetweenDatesCalculatorToolUi = lazy(() => import("../MonthsBetweenDatesCalculatorTool").then((m) => ({ default: m.MonthsBetweenDatesCalculatorTool })));
