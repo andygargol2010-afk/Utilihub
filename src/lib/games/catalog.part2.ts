@@ -299,4 +299,15 @@ export const GAMES: readonly GameDef[] = [
     summaryEs: "Othello / Reversi clásico: colocá fichas para voltear las del rival en línea recta. Movimientos válidos resaltados. Gana quien tenga más fichas.",
     hasScore: false,
   },
+  {
+    slug: "checkers-classic",
+    slugEs: "damas-clasico",
+    nameEn: "Checkers Classic",
+    nameEs: "Damas Clásico",
+    tag: "board",
+    emoji: "⚪",
+    summaryEn: "Classic Checkers / Draughts: diagonal moves, jump captures, promote to kings. Play Red or Black vs AI or a friend. Shareable later.",
+    summaryEs: "Damas / Draughts clásico: movimientos en diagonal, capturas por salto, promoción a reyes. Jugá Rojo o Negro vs IA o amigo.",
+    hasScore: false,
+  },
 ] as const;

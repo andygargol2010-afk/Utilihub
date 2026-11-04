@@ -70,12 +70,11 @@ path_es: /es/juegos/damas-clasico
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects side (red/black), places or moves pieces on the board, sees valid moves and captures/kings, completes a game (win or draw), shares branded PNG or deep-link URL.
 share: both
 next_step_required: yes
-notes: Rubric (1-5): A checkers-classic [value5 share4 search5 distinct4 feas5 perf4 total27] closest: othello-classic (flip board), connect-four-classic (grid drop), tic-tac-toe (3x3 place); metaphor: turn-based grid capture board game with promotion; not particle-canvas (discrete rules, no freehand trails/attractors). B battleship-classic [4/4/4/3/4/4 total23] closest: minesweeper (grid reveal), hangman (guess), memory-match (pairs); metaphor: hidden placement + grid hunt; not particle. C rock-paper-scissors-classic [3/3/4/2/5/5 total22] closest: existing simple games, low distinct. Chosen A. Roll: CORE games (underused relative to recent particle saturations; IP-safe classic with demand). IP: traditional public-domain checkers/draughts rules, generic pieces/colors, no commercial branding. adsense-prep_runs: 7
-adsense-prep_runs: 7
+notes: Rubric (1-5): A checkers-classic [value5 share4 search5 distinct4 feas5 perf4 total27] closest: othello-classic (flip board), connect-four-classic (grid drop), tic-tac-toe (3x3 place); metaphor: turn-based grid capture board game with promotion; not particle-canvas (discrete rules, no freehand trails/attractors). B battleship-classic [4/4/4/3/4/4 total23] closest: minesweeper (grid reveal), hangman (guess), memory-match (pairs); metaphor: hidden placement + grid hunt; not particle. C rock-paper-scissors-classic [3/3/4/2/5/5 total22] closest: existing simple games, low distinct. Chosen A. Roll: CORE games (underused relative to recent particle saturations; IP-safe classic with demand). IP: traditional public-domain checkers/draughts rules, generic pieces/colors, no commercial branding. Run 1 (2026-11-04): playable core shipped — side select (red/black), 8x8 board with men/kings, diagonal moves + jump captures (basic multi), promotion, simple random AI preferring captures, win by no pieces/no moves, EN+ES, mobile grid. Next: URL deep-link + branded PNG + polish/a11y/keyboard. adsense-prep_runs: 7
 ```
 
 <!-- end:ideas-lab-state.md -->
