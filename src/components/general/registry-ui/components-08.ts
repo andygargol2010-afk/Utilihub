@@ -1,14 +1,1 @@
-// Lazy tool UIs part 08 — created to keep parts under ~3.5 KB.
-// Add new entries here while this is the smallest file.
-import { lazy } from "react";
-
-export const CoffeeDoseCalculatorToolUi = lazy(() => import("../CoffeeDoseCalculatorTool").then((m) => ({ default: m.CoffeeDoseCalculatorTool })));
-export const WaistToHipRatioCalculatorToolUi = lazy(() => import("../WaistToHipRatioCalculatorTool").then((m) => ({ default: m.WaistToHipRatioCalculatorTool })));
-export const StraightLineDepreciationCalculatorToolUi = lazy(() => import("../StraightLineDepreciationCalculatorTool").then((m) => ({ default: m.StraightLineDepreciationCalculatorTool })));
-export const CylinderSurfaceAreaCalculatorToolUi = lazy(() => import("../CylinderSurfaceAreaCalculatorTool").then((m) => ({ default: m.CylinderSurfaceAreaCalculatorTool })));
-export const TimeOfDayDifferenceCalculatorToolUi = lazy(() => import("../TimeOfDayDifferenceCalculatorTool").then((m) => ({ default: m.TimeOfDayDifferenceCalculatorTool })));
-export const McdMcmCalculatorToolUi = lazy(() => import("../McdMcmCalculatorTool").then((m) => ({ default: m.McdMcmCalculatorTool })));
-export const LineHeightCalculatorToolUi = lazy(() => import("../LineHeightCalculatorTool").then((m) => ({ default: m.LineHeightCalculatorTool })));
-export const PercentageToLetterGradeCalculatorToolUi = lazy(() => import("../PercentageToLetterGradeCalculatorTool").then((m) => ({ default: m.PercentageToLetterGradeCalculatorTool })));
-export const WordsPerSentenceCalculatorToolUi = lazy(() => import("../WordsPerSentenceCalculatorTool").then((m) => ({ default: m.WordsPerSentenceCalculatorTool })));
-export const GeometricMeanCalculatorToolUi = lazy(() => import("../GeometricMeanCalculatorTool").then((m) => ({ default: m.GeometricMeanCalculatorTool })));
+PLACEHOLDER_COMP
