@@ -19,6 +19,7 @@ import { WORDS_PER_SENTENCE_CALCULATOR_TOOLS } from "../words-per-sentence-calcu
 import { CAGR_CALCULATOR_TOOLS } from "../cagr-calculator-tool";
 import { GREAT_CIRCLE_DISTANCE_CALCULATOR_TOOLS } from "../great-circle-distance-calculator-tool";
 import { KCAL_KJ_CONVERTER_TOOLS } from "../kcal-kj-converter-tool";
+import { RECIPE_SCALER_CALCULATOR_TOOLS } from "../recipe-scaler-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -40,4 +41,5 @@ export const GENERAL_TOOLS_PART_10 = [
   ...CAGR_CALCULATOR_TOOLS,
   ...GREAT_CIRCLE_DISTANCE_CALCULATOR_TOOLS,
   ...KCAL_KJ_CONVERTER_TOOLS,
+  ...RECIPE_SCALER_CALCULATOR_TOOLS,
 ];
