@@ -5,19 +5,28 @@ const tool = makeTool(
   "Parallelogram Area Calculator",
   "matematicas",
   "calculator",
-  "Calculate the area of a parallelogram from base and height using A = base × height.",
+  "Calculate the area of a parallelogram from base and height.",
   [
-    "parallelogram area calculator",
-    "area of a parallelogram",
-    "calculadora area paralelogramo",
-    "área del paralelogramo",
+    "parallelogram area",
+    "area of parallelogram",
+    "calculadora de área de paralelogramo",
+    "área de paralelogramo",
   ],
   {
-    title: "Parallelogram Area Calculator — base × height | UtiliHub",
-    description: "Free parallelogram area calculator. Enter base and height to get the area. Local browser calculation.",
+    title: "Parallelogram Area Calculator — Base × Height | UtiliHub",
+    description: "Free parallelogram area calculator. Enter base and height to get the area instantly. Browser-only, no signup.",
+    summaryEs: "Calcula el área de un paralelogramo a partir de la base y la altura.",
   },
 );
-tool.faq.push(faq("What is the formula?", "Area = base × height."));
-tool.faq.push(faq("Units?", "Area is in square units of the input units."));
+tool.faq.push(
+  faq(
+    "What is the formula for the area of a parallelogram?",
+    "Area = base × height, where height is the perpendicular distance between the bases.",
+  ),
+  faq(
+    "Does it work for rectangles and rhombi?",
+    "Yes. Any parallelogram, including rectangles (right angles) and rhombi, uses the same base × height formula.",
+  ),
+);
 
 export const PARALLELOGRAM_AREA_CALCULATOR_TOOLS = [tool];
