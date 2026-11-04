@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive classic Checkers (Damas / Draughts) board game. 8x8 dark/light squares, players alternate diagonal moves of men, capture by jumping over opponent, promote to king on far rank (kings move backward), optional simple AI, win by capturing all pieces or blocking opponent. Live valid-move highlights, capture multi-jumps, move history, URL deep-link for board seed, branded PNG of board, EN+ES routes, mobile-first 390px. CSS grid + state machine. Acceptance: user picks color, makes legal moves, sees captures and promotions, reaches win/draw, shares PNG or URL.
+id: checkers-classic
+path_en: /games/checkers-classic
+path_es: /es/juegos/damas-clasico
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed memory-match-classic. Next run: IDEATE (two-urn GROWTH). adsense-prep_runs: 7
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User selects side (red/black), places or moves pieces on the board, sees valid moves and captures/kings, completes a game (win or draw), shares branded PNG or deep-link URL.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): A checkers-classic [value5 share4 search5 distinct4 feas5 perf4 total27] closest: othello-classic (flip board), connect-four-classic (grid drop), tic-tac-toe (3x3 place); metaphor: turn-based grid capture board game with promotion; not particle-canvas (discrete rules, no freehand trails/attractors). B battleship-classic [4/4/4/3/4/4 total23] closest: minesweeper (grid reveal), hangman (guess), memory-match (pairs); metaphor: hidden placement + grid hunt; not particle. C rock-paper-scissors-classic [3/3/4/2/5/5 total22] closest: existing simple games, low distinct. Chosen A. Roll: CORE games (underused relative to recent particle saturations; IP-safe classic with demand). IP: traditional public-domain checkers/draughts rules, generic pieces/colors, no commercial branding. adsense-prep_runs: 7
 adsense-prep_runs: 7
 ```
 
