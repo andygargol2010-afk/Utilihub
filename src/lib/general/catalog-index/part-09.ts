@@ -20,6 +20,7 @@ import { CALORIES_PER_SERVING_CALCULATOR_TOOLS } from "../calories-per-serving-c
 import { SAVINGS_GOAL_CALCULATOR_TOOLS } from "../savings-goal-calculator-tool";
 import { SQUARE_FEET_METERS_CONVERTER_TOOLS } from "../square-feet-meters-converter-tool";
 import { TARGET_WEIGHT_BY_BMI_CALCULATOR_TOOLS } from "../target-weight-by-bmi-calculator-tool";
+import { MODULAR_SCALE_CALCULATOR_TOOLS } from "../modular-scale-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -42,4 +43,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...SAVINGS_GOAL_CALCULATOR_TOOLS,
   ...SQUARE_FEET_METERS_CONVERTER_TOOLS,
   ...TARGET_WEIGHT_BY_BMI_CALCULATOR_TOOLS,
+  ...MODULAR_SCALE_CALCULATOR_TOOLS,
 ];
