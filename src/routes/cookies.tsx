@@ -6,7 +6,7 @@ export const Route = createFileRoute("/cookies")({
   head: () => ({
     meta: [
       { title: `Cookie Policy | ${SITE_NAME}` },
-      { name: "description", content: `Cookie Policy for ${SITE_NAME}: analytics, advertising cookies (including Adsterra and potential Google partners), local storage, opt-out methods and third-party processors.` },
+      { name: "description", content: `Cookie Policy for ${SITE_NAME}: analytics, advertising cookies (including Adsterra and potential Google partners), local storage, opt-out methods, third-party processors and retention.` },
       { property: "og:title", content: `Cookie Policy | ${SITE_NAME}` },
       { property: "og:description", content: `How ${SITE_NAME} uses cookies and similar technologies.` },
       { property: "og:url", content: absoluteUrl("/cookies") },
@@ -28,7 +28,7 @@ function CookiesPage() {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Cookie Policy" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Cookie Policy</h1>
-        <p className="text-sm text-muted-foreground">Last updated: November 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: 3 November 2026</p>
         <p>
           This Cookie Policy explains how <strong>{SITE_NAME}</strong> uses cookies and similar technologies (such as
           local storage) when you visit the site. It complements our <a href="/privacy">Privacy Policy</a>. The
@@ -99,7 +99,7 @@ function CookiesPage() {
           <li>Potential additional partners such as Google (AdSense) — advertising delivery and personalization (where enabled).</li>
         </ul>
         <p>
-          We recommend reviewing their privacy policies for full details. We do not sell personal information.
+          We recommend reviewing their privacy policies for full details. We do not sell personal information. Data from these processors is retained according to their policies and our legitimate interests (typically short-term or aggregated).
         </p>
 
         <h2>Updates</h2>

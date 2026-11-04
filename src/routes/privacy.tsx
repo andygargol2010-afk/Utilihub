@@ -6,7 +6,7 @@ export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
       { title: `Privacy policy | ${SITE_NAME}` },
-      { name: "description", content: `Privacy policy and data handling for ${SITE_NAME}, including advertising cookies, third parties, user rights and opt-outs.` },
+      { name: "description", content: `Privacy policy and data handling for ${SITE_NAME}, including advertising cookies, third parties, user rights, opt-outs, retention and legal bases.` },
       { property: "og:title", content: `Privacy policy | ${SITE_NAME}` },
       { property: "og:url", content: absoluteUrl("/privacy") },
       { property: "og:type", content: "website" },
@@ -27,7 +27,7 @@ function PrivacyPage() {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Privacy" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Privacy policy</h1>
-        <p className="text-sm text-muted-foreground">Last updated: November 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: 3 November 2026</p>
         <p>
           This policy explains how <strong>{SITE_NAME}</strong> handles information that may be collected when you
           browse or use the site. {SITE_NAME} is aimed at an international audience and its operator is based in
@@ -72,6 +72,22 @@ function PrivacyPage() {
           <li>Use browser extensions or ad blockers if desired (note that this may affect site functionality and does not remove Adsterra advertising).</li>
           <li>Contact us for data access or deletion requests.</li>
         </ul>
+        <h2>Data retention</h2>
+        <p>
+          Technical and analytics data are retained only as long as needed for the purposes described (typically aggregated or short-term logs). Local storage remains on your device until you clear it. We do not maintain long-term personal profiles.
+        </p>
+        <h2>Legal bases for processing</h2>
+        <p>
+          Processing is based on legitimate interests (site operation, security, analytics), contractual necessity where applicable, or consent for optional features and personalized advertising where required by law.
+        </p>
+        <h2>International data transfers</h2>
+        <p>
+          Data may be processed by providers located outside Argentina or your country (including the EU/EEA or US). We rely on appropriate safeguards such as standard contractual clauses or adequacy decisions where applicable.
+        </p>
+        <h2>Children's privacy</h2>
+        <p>
+          The site is not directed at children under 16. We do not knowingly collect personal information from children. If you believe a child has provided data, contact us for deletion.
+        </p>
         <h2>Use of information</h2>
         <p>
           Information is used to improve the experience, maintain security, analyze general site behavior, optimize

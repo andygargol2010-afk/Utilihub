@@ -1,17 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { SITE_NAME, SITE_URL } from "@/lib/seo";
+import { absoluteUrl, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export const Route = createFileRoute("/es/privacidad")({
   head: () => ({
     meta: [
       { title: `Política de privacidad | ${SITE_NAME}` },
-      { name: "description", content: `Política de privacidad y tratamiento de datos de ${SITE_NAME}, incluyendo cookies publicitarias, terceros, derechos de usuario y exclusiones.` },
+      { name: "description", content: `Política de privacidad y tratamiento de datos de ${SITE_NAME}, incluyendo cookies publicitarias, terceros, derechos de usuario, exclusiones, retención y bases legales.` },
       { property: "og:title", content: `Política de privacidad | ${SITE_NAME}` },
       { property: "og:description", content: `Política de privacidad y tratamiento de datos de ${SITE_NAME}.` },
-      { property: "og:url", content: `${SITE_URL}/es/privacidad` },
+      { property: "og:url", content: absoluteUrl("/es/privacidad") },
+      { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/es/privacidad` }],
+    links: [
+      { rel: "canonical", href: `${SITE_URL}/es/privacidad` },
+      { rel: "alternate", hrefLang: "en", href: absoluteUrl("/privacy") },
+      { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/privacidad") },
+      { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/privacy") },
+    ],
   }),
   component: PrivacidadPage,
 });
@@ -22,7 +28,7 @@ function PrivacidadPage() {
       <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Privacidad" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Política de privacidad</h1>
-        <p className="text-sm text-muted-foreground">Última actualización: noviembre 2026</p>
+        <p className="text-sm text-muted-foreground">Última actualización: 3 de noviembre de 2026</p>
         <p>
           Esta política explica cómo <strong>{SITE_NAME}</strong> trata la información que puede recopilarse al
           navegar o usar el sitio. {SITE_NAME} está dirigido a un público internacional y su operador está basado
@@ -70,6 +76,22 @@ function PrivacidadPage() {
           <li>Usa extensiones de navegador o bloqueadores de anuncios si lo deseas (ten en cuenta que esto puede afectar la funcionalidad del sitio y no elimina la publicidad de Adsterra).</li>
           <li>Contáctanos para solicitudes de acceso o eliminación de datos.</li>
         </ul>
+        <h2>Retención de datos</h2>
+        <p>
+          Los datos técnicos y de analítica se conservan solo el tiempo necesario para los fines descritos (normalmente agregados o registros de corta duración). El almacenamiento local permanece en tu dispositivo hasta que lo borres. No mantenemos perfiles personales a largo plazo.
+        </p>
+        <h2>Bases legales del tratamiento</h2>
+        <p>
+          El tratamiento se basa en intereses legítimos (operación del sitio, seguridad, analítica), necesidad contractual cuando aplica, o consentimiento para funciones opcionales y publicidad personalizada cuando lo exige la ley.
+        </p>
+        <h2>Transferencias internacionales de datos</h2>
+        <p>
+          Los datos pueden ser tratados por proveedores ubicados fuera de Argentina o de tu país (incluyendo la UE/EEE o EE.UU.). Nos basamos en salvaguardas adecuadas como cláusulas contractuales tipo o decisiones de adecuación cuando aplica.
+        </p>
+        <h2>Privacidad de menores</h2>
+        <p>
+          El sitio no está dirigido a menores de 16 años. No recopilamos conscientemente información personal de menores. Si crees que un menor ha proporcionado datos, contáctanos para su eliminación.
+        </p>
         <h2>Uso de la información</h2>
         <p>
           La información se utiliza para mejorar la experiencia, mantener la seguridad, analizar el comportamiento

@@ -6,7 +6,7 @@ export const Route = createFileRoute("/es/cookies")({
   head: () => ({
     meta: [
       { title: `Política de Cookies | ${SITE_NAME}` },
-      { name: "description", content: `Política de Cookies de ${SITE_NAME}: analítica, cookies publicitarias (incluyendo Adsterra y posibles socios de Google), almacenamiento local, métodos de exclusión y procesadores de terceros.` },
+      { name: "description", content: `Política de Cookies de ${SITE_NAME}: analítica, cookies publicitarias (incluyendo Adsterra y posibles socios de Google), almacenamiento local, métodos de exclusión, procesadores de terceros y retención.` },
       { property: "og:title", content: `Política de Cookies | ${SITE_NAME}` },
       { property: "og:description", content: `Cómo ${SITE_NAME} utiliza cookies y tecnologías similares.` },
       { property: "og:url", content: absoluteUrl("/es/cookies") },
@@ -28,7 +28,7 @@ function CookiesPageEs() {
       <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Política de Cookies" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Política de Cookies</h1>
-        <p className="text-sm text-muted-foreground">Última actualización: noviembre 2026</p>
+        <p className="text-sm text-muted-foreground">Última actualización: 3 de noviembre de 2026</p>
         <p>
           Esta Política de Cookies explica cómo <strong>{SITE_NAME}</strong> utiliza cookies y tecnologías similares (como
           el almacenamiento local) cuando visitas el sitio. Complementa nuestra <a href="/es/privacidad">Política de Privacidad</a>. El
@@ -101,7 +101,7 @@ function CookiesPageEs() {
           <li>Posibles socios adicionales como Google (AdSense) — entrega y personalización de anuncios (cuando esté habilitado).</li>
         </ul>
         <p>
-          Recomendamos revisar sus políticas de privacidad para más detalles. No vendemos información personal.
+          Recomendamos revisar sus políticas de privacidad para más detalles. No vendemos información personal. Los datos de estos procesadores se conservan según sus políticas y nuestros intereses legítimos (normalmente a corto plazo o agregados).
         </p>
 
         <h2>Actualizaciones</h2>
