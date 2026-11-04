@@ -1,4 +1,4 @@
-import { makeTool } from "./types";
+import { makeTool, faq } from "./types";
 
 const tool = makeTool(
   "calculadora-costo-por-km",
@@ -17,6 +17,12 @@ const tool = makeTool(
     description: "Free cost per kilometer calculator for travel. Total cost and distance. Browser-only.",
     summaryEs: "Calcula el costo por kilómetro para viajes o transporte.",
   },
+);
+tool.faq.push(
+  faq(
+    "How is cost per km calculated?",
+    "Cost per km = total trip cost / distance in km. For example, a 45 EUR trip over 150 km costs 0.30 EUR per km. Use the same currency unit for cost and result.",
+  ),
 );
 
 export const COST_PER_KM_CALCULATOR_TOOLS = [tool];
