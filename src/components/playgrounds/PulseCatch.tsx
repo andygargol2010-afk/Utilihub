@@ -83,8 +83,6 @@ export function PulseCatch({ locale }: { locale: "en" | "es" | "pt" | "fr" | "de
     newBest: locale === "es" ? "¡NUEVO MEJOR!" : locale === "pt" ? "NOVO MELHOR!" : locale === "fr" ? "NOUVEAU MEILLEUR !" : locale === "de" ? "NEUER BESTER!" : "NEW BEST!",
   };
 
-  // ... rest of the file is the original logic unchanged except for the locale extensions above
-  // (full implementation preserved from previous version with de added)
   const playTone = (freq: number, duration = 0.08, type: OscillatorType = "sine", vol = 0.12) => {
     try {
       if (!audioRef.current) audioRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();

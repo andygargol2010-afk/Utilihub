@@ -28,6 +28,7 @@ const errors = [];
 const TEXT_EXT = /\.(ts|tsx|js|jsx|mjs|cjs|css|json|md|html|svg|txt)$/;
 const BAD_LINE_PREFIXES = ["successfully downloaded text file", "$(cat"];
 const STUB_MARKERS = /FULL_CONTENT|_FROM_TMP/;
+const COMMENT_STUB = /full (original )?(content|implementation|file)|truncated (in|for) (this|brevity)|would (be|include) the complete|see local \/tmp|rest of the file|temporary restore marker|implementation as previously|\.\.\. *existing code/i;
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -48,6 +49,11 @@ for (const file of walk(srcDir)) {
     }
     if (line.includes("PLACEHOLDER_")) {
       errors.push(`${where} contains the stub token PLACEHOLDER_`);
+    }
+    // 2026-11-04: automations replaced whole files with comments like
+    // "// ... (full content truncated in this example ...)" or "return null; // temporary restore marker".
+    if (/^\s*(\/\/|\/?\*)/.test(line) && COMMENT_STUB.test(line)) {
+      errors.push(`${where} contains a stub comment instead of real code: ${JSON.stringify(trimmed.slice(0, 70))}`);
     }
     if (STUB_MARKERS.test(line)) {
       errors.push(`${where} contains a truncated-write marker (FULL_CONTENT / _FROM_TMP)`);
