@@ -10,4 +10,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "media-geometrica": UI.GeometricMeanCalculatorToolUi,
   "calculadora-cagr": UI.CagrCalculatorToolUi,
   "calculadora-distancia-haversine": UI.GreatCircleDistanceCalculatorToolUi,
+  "conversor-kcal-kj": UI.KcalKjConverterToolUi,
 };
