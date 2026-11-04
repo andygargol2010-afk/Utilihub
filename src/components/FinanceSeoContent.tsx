@@ -15,8 +15,7 @@ export function FinanceSeoContent({
 
   const aboutParas = es
     ? seo?.aboutEs ?? [
-        tool.description ||
-          "Esta herramienta realiza un cálculo matemático a partir de los valores que introduces y funciona directamente en el navegador.",
+        "Esta herramienta realiza un cálculo matemático a partir de los valores que introduces y funciona directamente en el navegador.",
       ]
     : seo?.about ?? [
         `${tool.description} This tool runs in the browser and provides a mathematical estimate from the values you enter.`,
