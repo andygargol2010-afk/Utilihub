@@ -20,6 +20,7 @@ import { CAGR_CALCULATOR_TOOLS } from "../cagr-calculator-tool";
 import { GREAT_CIRCLE_DISTANCE_CALCULATOR_TOOLS } from "../great-circle-distance-calculator-tool";
 import { KCAL_KJ_CONVERTER_TOOLS } from "../kcal-kj-converter-tool";
 import { RECIPE_SCALER_CALCULATOR_TOOLS } from "../recipe-scaler-calculator-tool";
+import { EFFECTIVE_ANNUAL_RATE_CALCULATOR_TOOLS } from "../effective-annual-rate-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -42,4 +43,5 @@ export const GENERAL_TOOLS_PART_10 = [
   ...GREAT_CIRCLE_DISTANCE_CALCULATOR_TOOLS,
   ...KCAL_KJ_CONVERTER_TOOLS,
   ...RECIPE_SCALER_CALCULATOR_TOOLS,
+  ...EFFECTIVE_ANNUAL_RATE_CALCULATOR_TOOLS,
 ];
