@@ -17,4 +17,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "ley-de-ohm": UI.OhmsLawCalculatorToolUi,
   "calculadora-meses-entre-fechas": UI.MonthsBetweenDatesCalculatorToolUi,
   "calculadora-area-paralelogramo": UI.ParallelogramAreaCalculatorToolUi,
+  "calculadora-escala-modular": UI.ModularScaleCalculatorToolUi,
 };
