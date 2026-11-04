@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: kits
-last_closed_id: paper-airplane-kit
+last_closed_domain: adsense-prep
+last_closed_id: adsense-policy-readiness
 p_fixed: 0.35
 
 weights_core:
@@ -37,7 +37,7 @@ weights_growth:
   adsense-prep: 11
   seo-locales: 10   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5; RESET 2026-10-28 empty actives
 
-adsense-prep_runs: 6
+adsense-prep_runs: 7
 ```
 
 ---
@@ -45,6 +45,7 @@ adsense-prep_runs: 6
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-03 | adsense-prep | adsense-policy-readiness | Privacy and Cookie Policy (EN+ES) enhanced for AdSense readiness after 4 runs. Expanded structured sections on third-party ad cookies (Adsterra kept intact + potential Google), rights, opt-outs with live links (NAI, aboutads, Ad Settings), data retention, legal bases, international transfers, children's privacy, key points summaries, and a dedicated readiness section. Mobile-friendly prose at 390px. Acceptance met (user sees comprehensive disclosures on /privacy /cookies and ES equivalents). IP: original policy content updates.
 - 2026-11-03 | kits | paper-airplane-kit | Interactive paper airplane design kit complete after 4 runs. User selects preset design (classic dart, glider, stunt, delta wing), follows multi-step fold instructions with checkoffs and live CSS preview of the plane shape, sees progress, estimated folds/time, materials checklist, optional challenges (distance/stunt) with score, generates branded PNG or copies deep-link URL. EN+ES routes, mobile-first 390px. CSS illustrations + state + checklists. Acceptance met (select preset, checkoff steps, preview updates, PNG or share URL). IP: original educational paper craft assembler.
 - 2026-11-03 | games | connect-four-classic | Interactive classic Connect Four game complete after 4 runs. 7x6 grid, drop discs by gravity, connect 4 win, optional AI, hover ghost preview, drop animation, win pulse, move counter, keyboard 1-7, URL deep-link, branded PNG, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (select column, see fall/response, detect win/draw, share PNG/URL). IP: traditional public-domain gravity drop connect-4 mechanics, generic naming, no Hasbro branding.
 - 2026-11-03 | games | sudoku-classic | Interactive classic Sudoku puzzle complete after 4 runs. 9x9 grid with pre-filled cells, user fills remaining with 1-9 ensuring no duplicates in rows, columns, or 3x3 boxes. Live conflict highlighting, optional pencil notes (auto-fill possibles), undo, timer with pause/resume, difficulty presets (easy/medium/hard), URL deep-link for seed, branded PNG of completed grid, remaining-count badges on number pad (disabled at 0), progress indicator. EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (select difficulty, fill cells, see conflicts/valid, complete or use undo/pencil/hints, share PNG/URL). IP: traditional public-domain rules, generic naming, no branded puzzle sets.
@@ -54,7 +55,6 @@ adsense-prep_runs: 6
 - 2026-11-02 | growth-surfaces | achievement-certificate-maker | Interactive achievement certificate maker complete after 4 runs. User selects template (classic diploma, modern badge, playful award), enters name/title/date/message/issued-by, sees live CSS preview with decorative seal, customizes colors, generates branded PNG or copies deep-link URL. Quick-fill presets. EN+ES routes. Mobile-first 390px. Pure form + declarative layout + canvas PNG. No particles. Acceptance met (fills form, sees live preview, downloads PNG or copies share URL).
 - 2026-11-01 | retention-loops | progress-passport | Interactive digital progress passport complete after 4 runs. User earns discrete stamps by completing challenges across kits/games/simulators, pages fill with stamps + progress bar + collection stats. Generate branded PNG of passport/progress, share link with deep-link. EN+ES routes. Mobile-first 390px. CSS stamp book + localStorage. No heavy canvas or particles. Acceptance met (user marks stamp, sees update, shares PNG or link).
 - 2026-11-01 | kits | science-experiment-kit | Interactive kids science experiment kit builder complete after 4 runs. User selects theme from presets (volcano, slime, simple circuit, plant growth), gets discrete materials list, follows multi-step guided assembly with checkoffs and safety tips, sees progress, estimated time, and can generate branded PNG of the completed setup or share link. Challenges for age groups. URL deep-link for theme. EN+ES. Mobile-first 390px. No heavy canvas; CSS + state + checklists. IP-safe original educational assembler. Acceptance met.
-- 2026-11-01 | simulators | bin-packing-sim | Interactive bin packing simulator complete after 4 runs. User selects item sizes from presets, places them into a fixed container via click (CSS grid placement with overlap check), sees live utilization percentage, waste, score. Challenges/goals with restricted sets. URL deep-link (?ch=). Branded PNG of packed result. EN+ES. Mobile-first 390px. No heavy canvas; CSS + state. IP-safe original spatial packing. Acceptance: User selects item, places them, achieves high utilization or completes challenge, shares PNG or link. Run 4 polish: undo last placement, faint grid overlay for guidance, slightly larger bin max, updated instructions.
 ```
 
 ---
@@ -62,20 +62,20 @@ adsense-prep_runs: 6
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Enhance the existing Privacy Policy and Cookie Policy (EN + ES) with more comprehensive, structured disclosures covering third-party advertising cookies, data processing practices, user rights, opt-out methods, and language aligned with common AdSense/Google publisher policy expectations. Keep all current Adsterra mentions intact. Improve readability, add clear sections, update last-modified dates, and ensure mobile-friendly layout. This prepares the trust pages for higher readiness without implementing or modifying any ad code.
-id: adsense-policy-readiness
-path_en: /privacy /cookies
-path_es: /es/privacidad /es/cookies
+status: done
+idea: n/a
+id: n/a
+path_en: n/a
+path_es: n/a
 path_seo: n/a
-domain: adsense-prep
-runs_total: 4
-runs_remaining: 1
-acceptance: User visits /privacy or /cookies (EN or ES), sees expanded structured sections on advertising cookies, third parties, rights and opt-outs; pages remain readable at 390px with no broken layout.
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
 share: n/a
-next_step_required: yes
-notes: Rubric (1-5): CandA (policy enhance): value=5 share=2 search=3 distinct=4 feas=5 perf=5 total=24. CandB (About/Contact E-E-A-T): value=4 share=2 search=3 distinct=3 feas=5 perf=5 total=22. CandC (expand compliance kit items): value=4 share=3 search=3 distinct=3 feas=4 perf=5 total=22. Closest-3 for A: existing privacy.tsx/cookies.tsx, adsense-compliance-kit, about.tsx. Primary metaphor: declarative content → trust/legal pages. Why not particle-canvas: pure text/policy update, no interactive canvas. Chosen: adsense-policy-readiness. Roll: two-urn FIXED (p=0.148), weights_growth excl seo-locales, selected adsense-prep (11/34). adsense-prep_runs remains 6 until CLOSE. Run 1: expanded EN+ES privacy/cookies with third-party ad disclosures (Adsterra kept + potential Google), rights, opt-outs, updated dates. Core readable sections added; further polish possible in remaining runs. Run 2: added structured sections (data retention, legal bases, international transfers, children's privacy), improved readability, consistent hreflang on ES privacy, date updates to 3 Nov 2026. Adsterra intact. Ready for further polish or close. Run 3: added Key points summary sections to all four pages (EN/ES privacy+cookies), expanded opt-out methods with NAI link, improved scannability and AdSense-aligned language. Adsterra mentions kept intact. Pages remain pure text, mobile-friendly via prose.
-adsense-prep_runs: 6
+next_step_required: no
+notes: Closed adsense-policy-readiness after final polish (hyperlinked opt-outs + readiness section). Next run: IDEATE.
+adsense-prep_runs: 7
 ```
 
 <!-- end:ideas-lab-state.md -->

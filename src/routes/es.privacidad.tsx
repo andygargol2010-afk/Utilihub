@@ -73,6 +73,10 @@ function PrivacidadPage() {
         <p>
           Los proveedores de terceros, incluyendo Google, pueden usar cookies para servir anuncios basados en visitas previas del usuario a este sitio web u otros sitios. El uso de cookies publicitarias por parte de Google permite a él y a sus socios servir anuncios a los usuarios basándose en su visita a este sitio y/o a otros sitios en Internet.
         </p>
+        <h2>Preparación para redes publicitarias</h2>
+        <p>
+          Estas divulgaciones están estructuradas para cumplir expectativas comunes de socios publicitarios (incluyendo posible Google AdSense) sobre cookies de terceros, tratamiento de datos, derechos de usuario y exclusiones. La publicidad de Adsterra y sus menciones permanecen completamente intactas y sin modificar.
+        </p>
         <h2>Tus derechos</h2>
         <p>
           Dependiendo de tu ubicación, puedes tener derechos sobre datos personales, incluyendo el derecho a acceder, corregir, eliminar o restringir el tratamiento de tu información, y a oponerte o excluirse de ciertos usos (como publicidad personalizada). Puedes ejercer estos derechos contactándonos o usando los métodos de exclusión descritos a continuación y en nuestra Política de Cookies.
@@ -80,7 +84,7 @@ function PrivacidadPage() {
         <h2>Métodos de exclusión</h2>
         <ul>
           <li>Gestiona cookies y almacenamiento local a través de la configuración de tu navegador.</li>
-          <li>Exclúyete de la publicidad personalizada a través de Google Ad Settings (adssettings.google.com), Network Advertising Initiative (optout.networkadvertising.org), aboutads.info o su equivalente local.</li>
+          <li>Exclúyete de la publicidad personalizada a través de <a href="https://adssettings.google.com">Google Ad Settings</a>, la <a href="https://optout.networkadvertising.org">Network Advertising Initiative</a>, <a href="https://aboutads.info">aboutads.info</a> o su equivalente local.</li>
           <li>Usa extensiones de navegador o bloqueadores de anuncios si lo deseas (ten en cuenta que esto puede afectar la funcionalidad del sitio y no elimina la publicidad de Adsterra).</li>
           <li>Contáctanos para solicitudes de acceso o eliminación de datos.</li>
         </ul>

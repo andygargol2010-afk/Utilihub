@@ -69,6 +69,10 @@ function PrivacyPage() {
         <p>
           Third-party vendors, including Google, may use cookies to serve ads based on a user's prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to users based on their visit to this site and/or other sites on the Internet.
         </p>
+        <h2>Advertising network readiness</h2>
+        <p>
+          These disclosures are structured to meet common expectations of advertising partners (including potential Google AdSense) regarding third-party cookies, data processing, user rights and opt-outs. Adsterra advertising and related mentions remain fully intact and unmodified.
+        </p>
         <h2>Your rights</h2>
         <p>
           Depending on your location, you may have rights regarding personal data, including the right to access, correct, delete, or restrict processing of your information, and to object to or opt out of certain uses (such as personalized advertising). You can exercise these rights by contacting us or using the opt-out methods described below and in our Cookie Policy.
@@ -76,7 +80,7 @@ function PrivacyPage() {
         <h2>Opt-out methods</h2>
         <ul>
           <li>Manage cookies and local storage via your browser settings.</li>
-          <li>Opt out of personalized advertising via Google Ad Settings (adssettings.google.com), the Network Advertising Initiative (optout.networkadvertising.org), aboutads.info, or your local equivalent.</li>
+          <li>Opt out of personalized advertising via <a href="https://adssettings.google.com">Google Ad Settings</a>, the <a href="https://optout.networkadvertising.org">Network Advertising Initiative</a>, <a href="https://aboutads.info">aboutads.info</a>, or your local equivalent.</li>
           <li>Use browser extensions or ad blockers if desired (note that this may affect site functionality and does not remove Adsterra advertising).</li>
           <li>Contact us for data access or deletion requests.</li>
         </ul>

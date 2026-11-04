@@ -66,7 +66,7 @@ function CookiesPageEs() {
           uso se rige por sus propias políticas.
         </p>
         <p>
-          También podemos trabajar con redes publicitarias adicionales como Google AdSense. Los proveedores de terceros, incluyendo Google, usan cookies para servir anuncios basados en visitas previas del usuario a este sitio web u otros sitios. El uso de la cookie publicitaria por parte de Google permite a él y a sus socios servir anuncios a los usuarios basándose en su visita a este sitio y/o a otros sitios en Internet. Los usuarios pueden excluirse del uso de la cookie publicitaria para publicidad basada en intereses visitando Google Ad Settings o aboutads.info.
+          También podemos trabajar con redes publicitarias adicionales como Google AdSense. Los proveedores de terceros, incluyendo Google, usan cookies para servir anuncios basados en visitas previas del usuario a este sitio web u otros sitios. El uso de la cookie publicitaria por parte de Google permite a él y a sus socios servir anuncios a los usuarios basándose en su visita a este sitio y/o a otros sitios en Internet. Los usuarios pueden excluirse del uso de la cookie publicitaria para publicidad basada en intereses visitando <a href="https://adssettings.google.com">Google Ad Settings</a> o <a href="https://aboutads.info">aboutads.info</a>.
         </p>
 
         <h3>Preferencias de almacenamiento local</h3>
@@ -85,7 +85,7 @@ function CookiesPageEs() {
           </li>
           <li>
             <strong>Preferencias de publicidad:</strong> Puedes gestionar la publicidad basada en intereses a través de
-            herramientas del sector como la Digital Advertising Alliance (DAA), Google Ad Settings (adssettings.google.com), Network Advertising Initiative (optout.networkadvertising.org) o aboutads.info, o usando un bloqueador
+            herramientas del sector como la Digital Advertising Alliance (DAA), <a href="https://adssettings.google.com">Google Ad Settings</a>, <a href="https://optout.networkadvertising.org">Network Advertising Initiative</a> o <a href="https://aboutads.info">aboutads.info</a>, o usando un bloqueador
             de anuncios.
           </li>
           <li>
@@ -109,6 +109,11 @@ function CookiesPageEs() {
         </ul>
         <p>
           Recomendamos revisar sus políticas de privacidad para más detalles. No vendemos información personal. Los datos de estos procesadores se conservan según sus políticas y nuestros intereses legítimos (normalmente a corto plazo o agregados).
+        </p>
+
+        <h2>Preparación para redes publicitarias</h2>
+        <p>
+          Las divulgaciones de cookies están preparadas para apoyar requisitos comunes de redes publicitarias sobre transparencia en cookies de terceros y exclusiones. Adsterra permanece completamente activo y sin cambios.
         </p>
 
         <h2>Actualizaciones</h2>

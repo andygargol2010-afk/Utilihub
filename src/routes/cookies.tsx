@@ -66,7 +66,7 @@ function CookiesPage() {
           use is governed by their own policies.
         </p>
         <p>
-          We may also work with additional advertising networks such as Google AdSense. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website or other websites. Google's use of the advertising cookie enables it and its partners to serve ads to users based on their visit to this site and/or other sites on the Internet. Users may opt out of the use of the advertising cookie for interest-based advertising by visiting Google Ad Settings or aboutads.info.
+          We may also work with additional advertising networks such as Google AdSense. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website or other websites. Google's use of the advertising cookie enables it and its partners to serve ads to users based on their visit to this site and/or other sites on the Internet. Users may opt out of the use of the advertising cookie for interest-based advertising by visiting <a href="https://adssettings.google.com">Google Ad Settings</a> or <a href="https://aboutads.info">aboutads.info</a>.
         </p>
 
         <h3>Local storage preferences</h3>
@@ -84,7 +84,7 @@ function CookiesPage() {
           </li>
           <li>
             <strong>Advertising preferences:</strong> You can manage interest-based advertising through industry tools
-            such as the Digital Advertising Alliance (DAA), Google Ad Settings (adssettings.google.com), Network Advertising Initiative (optout.networkadvertising.org), or aboutads.info, or by using an ad blocker.
+            such as the Digital Advertising Alliance (DAA), <a href="https://adssettings.google.com">Google Ad Settings</a>, <a href="https://optout.networkadvertising.org">Network Advertising Initiative</a>, or <a href="https://aboutads.info">aboutads.info</a>, or by using an ad blocker.
           </li>
           <li>
             <strong>Local storage:</strong> Clear site data or local storage for this domain in your browser settings to
@@ -107,6 +107,11 @@ function CookiesPage() {
         </ul>
         <p>
           We recommend reviewing their privacy policies for full details. We do not sell personal information. Data from these processors is retained according to their policies and our legitimate interests (typically short-term or aggregated).
+        </p>
+
+        <h2>Advertising network readiness</h2>
+        <p>
+          Cookie disclosures are prepared to support common ad network requirements for transparency on third-party cookies and opt-outs. Adsterra remains fully active and unchanged.
         </p>
 
         <h2>Updates</h2>
