@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-04 run 134
-runs_total: 134
+last_run: 2026-11-04 run 135
+runs_total: 135
 last_mode: HUNT
-last_fix: src/lib/general/ohms-law-tool.ts (added summaryEs for calculadora-ley-ohm so priority-1 override beats phrase-translate; live still mixed on production c20a444)
+last_fix: n/a (0 fixes; checks OK)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean
-deploy: production READY on c20a444 (no recent ERROR on tip); live /es/herramientas/calculadora-ley-ohm shows mixed "Calculá voltage, current, o resistance using Ohm's law (V = I × R)."; hipotenusa still crude — deploy lag / cache continues
-notes: Known smoke E031 — registry.tsx, no $(cat/bad PLACEHOLDER in critical paths. Discovery: sampled /es/herramientas/ley-de-ohm (OK curated), /es/herramientas/calculadora-ley-ohm (mixed leak), /es/herramientas/hipotenusa (still mixed on prod), /es/herramientas/modelador-3d (OK), /es (OK). E051 coverage ongoing; production lag. No deploy ERROR. Pending: production catch-up for E051.
+deploy: production READY on c20a444 (tip 56bfb025 not yet deployed); no ERROR; live hipotenusa now curated Spanish; calculadora-ley-ohm still mixed; wacc about still English — lag continues
+notes: Known smoke E031 — no $(cat/PLACEHOLDER in src. Discovery: /es/herramientas/modelador-3d OK (not House), /es/herramientas/png-a-jpg OK, /es/herramientas/calculadora-imc OK, /es/herramientas/calculadora-iva OK, /es/juegos/2048 OK, /es OK. E051 coverage ongoing with production lag. No new errors. Pending: deploy catch-up for recent summaryEs.
 ```
 
 <!-- end:error-hunter-state.md -->
