@@ -14,4 +14,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-escalado-receta": UI.RecipeScalerCalculatorToolUi,
   "calculadora-peso-objetivo-imc": UI.TargetWeightByBmiCalculatorToolUi,
   "calculadora-tasa-efectiva-anual": UI.EffectiveAnnualRateCalculatorToolUi,
+  "ley-de-ohm": UI.OhmsLawCalculatorToolUi,
 };
