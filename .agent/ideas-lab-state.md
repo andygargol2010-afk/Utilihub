@@ -65,16 +65,16 @@ adsense-prep_runs: 7
 status: active
 idea: Interactive classic Memory Match (Concentration) card game. User flips two cards at a time on a grid to find matching pairs (emoji or simple geometric icons). Difficulties (4x4 easy, 6x4 medium, 6x6 hard), timer, move counter, efficiency star rating, optional simple themes, URL deep-link for seed/layout, branded PNG of completed board or score card. EN+ES routes, mobile-first 390px. CSS 3D flip + state. Acceptance met when user selects size, matches all pairs, sees win stats, shares PNG or URL. IP: traditional public-domain pair-matching rules, generic naming, no branded card decks or commercial themes.
 id: memory-match-classic
-path_en: /games/memory-match
-path_es: /es/juegos/memory-match
+path_en: /games/memory-match-classic
+path_es: /es/juegos/memoria-pares
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects difficulty, flips cards to match pairs (mismatches flip back, matches stay), completes board or resets, sees timer/moves/stars, shares PNG or deep-link URL.
 share: both
 next_step_required: yes
-notes: Rubric (1-5): Cand1 Memory Match value=4 share=4 search=5 (queries: memory game online, matching cards, concentration game) distinct=4 (closest-3: hangman letter-by-letter, sudoku grid fill, minesweeper cell reveal; primary metaphor: flip-two-to-match pairs on grid; why not particle-canvas: discrete card flip state machine, no freehand or trails) feasibility=5 perf=5. Cand2 Battleship grid-hunt value=4 share=3 search=4 distinct=3 (closest connect-four, minesweeper) metaphor: hidden ship placement. Cand3 Lights Out toggle value=3 share=3 search=3 distinct=4. Chosen memory-match-classic total ~27. Roll math: FLEX (p_fixed 0.35 not hit), growth weights rolled share-hooks in sim but VARIETY MANDATE + last_closed=adsense-prep (GROWTH) + underused classic games prefer games domain. IP check: traditional Concentration/Memory/Pelmanism mechanics, generic emoji/icons, no commercial IP. adsense-prep_runs: 7
+notes: Rubric (1-5): Cand1 Memory Match value=4 share=4 search=5 (queries: memory game online, matching cards, concentration game) distinct=4 (closest-3: hangman letter-by-letter, sudoku grid fill, minesweeper cell reveal; primary metaphor: flip-two-to-match pairs on grid; why not particle-canvas: discrete card flip state machine, no freehand or trails) feasibility=5 perf=5. Cand2 Battleship grid-hunt value=4 share=3 search=4 distinct=3 (closest connect-four, minesweeper) metaphor: hidden ship placement. Cand3 Lights Out toggle value=3 share=3 search=3 distinct=4. Chosen memory-match-classic total ~27. Roll math: FLEX (p_fixed 0.35 not hit), growth weights rolled share-hooks in sim but VARIETY MANDATE + last_closed=adsense-prep (GROWTH) + underused classic games prefer games domain. IP check: traditional Concentration/Memory/Pelmanism mechanics, generic emoji/icons, no commercial IP. Run 1: updated SIZES to 4x4 Easy / 6x4 Medium / 6x6 Hard to match idea. Core flip/match/timer/moves/share/PNG already present. Next: add efficiency star rating. adsense-prep_runs: 7
 adsense-prep_runs: 7
 ```
 
