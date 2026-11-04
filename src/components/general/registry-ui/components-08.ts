@@ -13,3 +13,4 @@ export const PercentageToLetterGradeCalculatorToolUi = lazy(() => import("../Per
 export const WordsPerSentenceCalculatorToolUi = lazy(() => import("../WordsPerSentenceCalculatorTool").then((m) => ({ default: m.WordsPerSentenceCalculatorTool })));
 export const GeometricMeanCalculatorToolUi = lazy(() => import("../GeometricMeanCalculatorTool").then((m) => ({ default: m.GeometricMeanCalculatorTool })));
 export const CagrCalculatorToolUi = lazy(() => import("../CagrCalculatorTool").then((m) => ({ default: m.CagrCalculatorTool })));
+export const GreatCircleDistanceCalculatorToolUi = lazy(() => import("../GreatCircleDistanceCalculatorTool").then((m) => ({ default: m.GreatCircleDistanceCalculatorTool })));

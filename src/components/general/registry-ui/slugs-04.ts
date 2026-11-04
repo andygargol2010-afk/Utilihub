@@ -9,4 +9,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-palabras-por-oracion": UI.WordsPerSentenceCalculatorToolUi,
   "media-geometrica": UI.GeometricMeanCalculatorToolUi,
   "calculadora-cagr": UI.CagrCalculatorToolUi,
+  "calculadora-distancia-haversine": UI.GreatCircleDistanceCalculatorToolUi,
 };

@@ -17,6 +17,7 @@ import { LINE_HEIGHT_CALCULATOR_TOOLS } from "../line-height-calculator-tool";
 import { PERCENTAGE_TO_LETTER_GRADE_CALCULATOR_TOOLS } from "../percentage-to-letter-grade-calculator-tool";
 import { WORDS_PER_SENTENCE_CALCULATOR_TOOLS } from "../words-per-sentence-calculator-tool";
 import { CAGR_CALCULATOR_TOOLS } from "../cagr-calculator-tool";
+import { GREAT_CIRCLE_DISTANCE_CALCULATOR_TOOLS } from "../great-circle-distance-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -36,4 +37,5 @@ export const GENERAL_TOOLS_PART_10 = [
   ...PERCENTAGE_TO_LETTER_GRADE_CALCULATOR_TOOLS,
   ...WORDS_PER_SENTENCE_CALCULATOR_TOOLS,
   ...CAGR_CALCULATOR_TOOLS,
+  ...GREAT_CIRCLE_DISTANCE_CALCULATOR_TOOLS,
 ];
