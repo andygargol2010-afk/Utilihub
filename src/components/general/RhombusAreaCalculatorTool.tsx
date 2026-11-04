@@ -12,19 +12,20 @@ export function RhombusAreaCalculatorTool({ locale = "en" }: { tool?: GeneralToo
   const [d2, setD2] = useState("6");
   const [copied, setCopied] = useState(false);
 
-  const result = useMemo(() => {
+  const area = useMemo(() => {
     const a = parseFloat(d1);
     const b = parseFloat(d2);
     if (isNaN(a) || isNaN(b) || a <= 0 || b <= 0) return null;
-    const area = (a * b) / 2;
-    return { area: Math.round(area * 100) / 100 };
+    return (a * b) / 2;
   }, [d1, d2]);
 
   async function copy() {
-    if (!result) return;
-    const textOut = es ? `Área: ${result.area}` : `Area: ${result.area}`;
+    if (area === null) return;
+    const text = es
+      ? `\u00c1rea del rombo: ${area.toFixed(2)} (diagonales ${d1} y ${d2})`
+      : `Rhombus area: ${area.toFixed(2)} (diagonals ${d1} and ${d2})`;
     try {
-      await navigator.clipboard.writeText(textOut);
+      await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -41,39 +42,48 @@ export function RhombusAreaCalculatorTool({ locale = "en" }: { tool?: GeneralToo
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
-        <p className="text-sm text-muted-foreground">{es ? "Área del rombo" : "Rhombus area"}</p>
-        {result ? (
-          <p className="text-3xl font-semibold">{result.area}</p>
+        <p className="text-sm text-muted-foreground">{es ? "\u00c1rea del rombo" : "Rhombus area"}</p>
+        {area !== null ? (
+          <p className="text-2xl font-semibold font-mono">{area.toFixed(2)}</p>
         ) : (
-          <p className="text-sm text-muted-foreground">{es ? "Introduce diagonales > 0" : "Enter diagonals > 0"}</p>
+          <p className="text-sm text-muted-foreground">
+            {es ? "Las diagonales deben ser > 0" : "Diagonals must be > 0"}
+          </p>
         )}
       </div>
 
-      <div className="grid gap-4">
-        <label className="block space-y-2 text-sm">
-          <span className="font-medium">{es ? "Diagonal 1" : "Diagonal 1"}</span>
-          <input type="number" step="any" min="0" value={d1} onChange={(e) => setD1(e.target.value)} className={fieldClass} />
-        </label>
-        <label className="block space-y-2 text-sm">
-          <span className="font-medium">{es ? "Diagonal 2" : "Diagonal 2"}</span>
-          <input type="number" step="any" min="0" value={d2} onChange={(e) => setD2(e.target.value)} className={fieldClass} />
-        </label>
-      </div>
+      <label className="block space-y-2 text-sm">
+        <span className="font-medium">{es ? "Diagonal 1" : "Diagonal 1"}</span>
+        <input type="number" min="0.01" step="any" value={d1} onChange={(e) => setD1(e.target.value)} className={fieldClass} />
+      </label>
+
+      <label className="block space-y-2 text-sm">
+        <span className="font-medium">{es ? "Diagonal 2" : "Diagonal 2"}</span>
+        <input type="number" min="0.01" step="any" value={d2} onChange={(e) => setD2(e.target.value)} className={fieldClass} />
+      </label>
+
+      <p className="text-sm text-muted-foreground">
+        {es ? "F\u00f3rmula: A = (d1 \u00d7 d2) / 2. Unidades: mismas que las diagonales." : "Formula: A = (d1 \u00d7 d2) / 2. Units: same as diagonals."}
+      </p>
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? "Diagonales 8 y 6 → 24" : "Diagonals 8 and 6 → 24"}</p>
-        <p>{es ? "Diagonales 10 y 5 → 25" : "Diagonals 10 and 5 → 25"}</p>
+        <p>{es ? "Diagonales 10 y 8 \u2192 \u00e1rea 40" : "Diagonals 10 and 8 \u2192 area 40"}</p>
+        <p>{es ? "Diagonales 6 y 4 \u2192 \u00e1rea 12" : "Diagonals 6 and 4 \u2192 area 12"}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
         <button type="button" className={`${buttonClass} bg-primary text-primary-foreground`} onClick={copy}>
-          {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar resultado" : "Copy result"}
+          {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar" : "Copy"}
         </button>
         <button type="button" className={buttonClass} onClick={reset}>
           {es ? "Reiniciar" : "Reset"}
         </button>
       </div>
+
+      <p className="text-xs text-muted-foreground">
+        {es ? "Relacionado: calculadora-area-paralelogramo, calculadora-area-trapecio" : "Related: calculadora-area-paralelogramo, calculadora-area-trapecio"}
+      </p>
     </div>
   );
 }
