@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-04 run 127
-runs_total: 127
-last_mode: HUNT
+last_run: 2026-11-04 run 128
+runs_total: 128
+last_mode: PREVENT
 last_fix: n/a (0 code fixes)
-last_prevent: n/a
+last_prevent: confirmed no soft-limit breaches in catalog chunks; E051 tip fix already present, awaiting production deploy
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean
-deploy: production READY on b66efb99 (no ERROR on recent); tip 3a39f51; FinanceSeoContent ES about never uses tool.description but live still shows EN — deploy lag
-notes: Known smoke E031 — src search clean of $(cat/bad PLACEHOLDER; critical routes real. Discovery: live /es/finanzas/calculadora-wacc about still "Calculate the weighted average cost of capital. Free UtiliHub financial calculator." despite tip fix in FinanceSeoContent.tsx (uses aboutEs or generic ES). /es home, juegos, simuladores, modelador-3d OK. No new open/recurring. No deploy ERROR. Pending: production catch-up for SEO ES finance about; ongoing SUMMARY_ES coverage.
+deploy: production READY on b66efb99 (no recent ERROR); tip f29ce4f includes FinanceSeoContent ES about fix (7fc021c) but not yet deployed — live still shows EN description
+notes: Known smoke E031 — src search clean of $(cat/bad PLACEHOLDER; critical routes real (home, juegos, simuladores, IVA, temp converter OK). Discovery: live /es/finanzas/calculadora-wacc "Sobre esta calculadora" still English raw description due to deploy lag (tip uses aboutEs or generic ES). No new open/recurring. No deploy ERROR. Pending: production catch-up for E051 finance about; ongoing SUMMARY_ES coverage.
 ```
 
 <!-- end:error-hunter-state.md -->
