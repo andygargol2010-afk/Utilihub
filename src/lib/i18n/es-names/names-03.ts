@@ -29,4 +29,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-tasa-efectiva-anual": "Calculadora de tasa efectiva anual",
   "ley-de-ohm": "Calculadora de la ley de Ohm",
   "calculadora-meses-entre-fechas": "Calculadora de meses entre fechas",
+  "calculadora-area-paralelogramo": "Calculadora de área de paralelogramo",
 };

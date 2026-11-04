@@ -20,3 +20,4 @@ export const TargetWeightByBmiCalculatorToolUi = lazy(() => import("../TargetWei
 export const EffectiveAnnualRateCalculatorToolUi = lazy(() => import("../EffectiveAnnualRateCalculatorTool").then((m) => ({ default: m.EffectiveAnnualRateCalculatorTool })));
 export const OhmsLawCalculatorToolUi = lazy(() => import("../OhmsLawCalculatorTool").then((m) => ({ default: m.OhmsLawCalculatorTool })));
 export const MonthsBetweenDatesCalculatorToolUi = lazy(() => import("../MonthsBetweenDatesCalculatorTool").then((m) => ({ default: m.MonthsBetweenDatesCalculatorTool })));
+export const ParallelogramAreaCalculatorToolUi = lazy(() => import("../ParallelogramAreaCalculatorTool").then((m) => ({ default: m.ParallelogramAreaCalculatorTool })));
