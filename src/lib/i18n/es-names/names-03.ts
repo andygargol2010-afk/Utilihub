@@ -1,1 +1,25 @@
-PLACEHOLDER_NAMES
+// Spanish exact tool names, part 03 — created to keep parts under ~3.5 KB.
+// Add new entries in the smallest file of this folder; never rewrite files wholesale.
+export const ES_EXACT_NAMES_03: Record<string, string> = {
+  "conversor-zonas-horarias": "Conversor de zonas horarias",
+  "calculadora-varianza": "Calculadora de varianza",
+  "conversor-pt-a-px": "Conversor de puntos a píxeles",
+  "calculadora-promedio-examenes": "Calculadora de promedio de exámenes",
+  "calculadora-energia-cinetica": "Calculadora de energía cinética",
+  "conversor-numeros-romanos": "Conversor de números romanos",
+  "calculadora-superficie-corporal": "Calculadora de superficie corporal",
+  "calculadora-presupuesto-total-viaje": "Calculadora de presupuesto total de viaje",
+  "conversor-psi-bar": "Conversor de psi a bar",
+  "calculadora-dosis-cafe": "Calculadora de dosis de café",
+  "calculadora-ratio-cintura-cadera": "Calculadora de ratio cintura-cadera",
+  "calculadora-depreciacion-lineal": "Calculadora de depreciación lineal",
+  "calculadora-area-superficie-cilindro": "Calculadora de área de superficie de cilindro",
+  "calculadora-diferencia-horas": "Calculadora de diferencia de horas",
+  "mcd-mcm": "Calculadora de MCD y MCM",
+  "calculadora-line-height": "Calculadora de altura de línea",
+  "calculadora-porcentaje-a-letra": "Calculadora de porcentaje a letra",
+  "calculadora-trabajo": "Calculadora de trabajo",
+  "calculadora-palabras-por-oracion": "Calculadora de palabras por oración",
+  "media-geometrica": "Calculadora de media geométrica",
+  "calculadora-cagr": "Calculadora de CAGR",
+};
