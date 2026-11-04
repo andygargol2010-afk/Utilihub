@@ -88,4 +88,5 @@ export const REGISTRY_ENTRIES_A: readonly RegistryEntry[] = [
   { slug: "calculadora-porcentaje-restante", name: "PercentageRemainingCalculatorTool", path: "./PercentageRemainingCalculatorTool", export: "PercentageRemainingCalculatorTool" },
   { slug: "calculadora-porcentaje-del-total", name: "PercentageOfTotalCalculatorTool", path: "./PercentageOfTotalCalculatorTool", export: "PercentageOfTotalCalculatorTool" },
   { slug: "ley-de-ohm", name: "OhmsLawCalculatorTool", path: "./OhmsLawCalculatorTool", export: "OhmsLawCalculatorTool" },
+  { slug: "calculadora-area-paralelogramo", name: "ParallelogramAreaCalculatorTool", path: "./ParallelogramAreaCalculatorTool", export: "ParallelogramAreaCalculatorTool" },
 ] as const;
