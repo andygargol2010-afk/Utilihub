@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-04 run 131
-runs_total: 131
+last_run: 2026-11-04 run 132
+runs_total: 132
 last_mode: HUNT
-last_fix: n/a (docs only; SUMMARY_ES generators already in tip)
+last_fix: src/lib/i18n/summary-es-2.ts (added exact-slug SUMMARY_ES for hipotenusa and cateto-pitagoras; previous keys used calculadora- prefix)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean
-deploy: production READY on b66efb99 (no recent ERROR); tip bf7038a has SUMMARY_ES for generators + FinanceSeoContent ES about; live /es/finanzas/calculadora-wacc about still EN and generators leak EN — deploy lag continues
-notes: Known smoke E031 — src search clean of $(cat/bad PLACEHOLDER; critical routes real (home /es OK, juegos, simuladores, IVA, temp, modelador-3d OK, IMC dedicated). Discovery: sampled /es/herramientas/generador-codigos (still EN leak on live), /es/herramientas/generador-nombres (EN), /es/juegos/snake (OK), /es/herramientas/calculadora-iva (OK), /es (OK). E051 live lag continues on finance about and generators. No new open/recurring. No deploy ERROR. Pending: production catch-up for E051.
+deploy: production READY on b66efb99 (no recent ERROR); tip c192522 has SUMMARY_ES for hipotenusa + generators; live generators and finance about still EN — deploy lag continues
+notes: Known smoke E031 — registry.tsx, index.tsx, es.index real, no $(cat/bad PLACEHOLDER in critical paths. Discovery: sampled /es/herramientas/hipotenusa (mixed leak, fixed by slug match), /es/herramientas/generador-codigos (still EN on live), /es/juegos/snake (OK), /es (OK), modelador-3d OK. E051 coverage ongoing; production lag. No deploy ERROR. Pending: production catch-up for E051.
 ```
 
 <!-- end:error-hunter-state.md -->
