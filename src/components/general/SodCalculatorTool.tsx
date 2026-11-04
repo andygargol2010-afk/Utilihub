@@ -1,40 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "m" | "ft";
-type Shape = "rect" | "area";
-type PresetId = "us" | "metric" | "half" | "slope";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(value);
-}
-
-type Preset = {
-  id: PresetId;
-  unit: Unit;
-  rollL: string;
-  rollW: string;
-  waste: string;
-  perPallet: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "us", unit: "ft", rollL: "5", rollW: "2", waste: "8", perPallet: "50" },
-  { id: "metric", unit: "m", rollL: "2.5", rollW: "0.4", waste: "8", perPallet: "50" },
-  { id: "half", unit: "m", rollL: "1.25", rollW: "0.4", waste: "8", perPallet: "80" },
-  { id: "slope", unit: "m", rollL: "2.5", rollW: "0.4", waste: "15", perPallet: "50" },
-];
+import { type Locale } from "./SodCalculatorTool.part1";
+import { type Unit, type Shape, parseNum, type Preset, PRESETS, formatNum, type PresetId, buttonClass, inputClass } from "./SodCalculatorTool.part2";
 
 export function SodCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

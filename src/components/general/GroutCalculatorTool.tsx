@@ -1,47 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import type { Locale } from "@/lib/i18n/locale";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const n = Number(value.replace(",", "."));
-  return Number.isFinite(n) ? n : null;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value);
-}
-
-type Unit = "m" | "ft";
-type Mode = "area" | "rect";
-type Grout = "sanded" | "unsanded" | "epoxy";
-
-type Preset = {
-  id: string;
-  unit: Unit;
-  mode: Mode;
-  area: string;
-  length: string;
-  width: string;
-  tileL: string;
-  tileW: string;
-  joint: string;
-  depth: string;
-  grout: Grout;
-  bag: string;
-  waste: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "floor", unit: "m", mode: "rect", area: "12", length: "4", width: "3", tileL: "600", tileW: "600", joint: "2", depth: "10", grout: "sanded", bag: "5", waste: "10" },
-  { id: "subway", unit: "m", mode: "area", area: "4", length: "2", width: "2", tileL: "75", tileW: "150", joint: "3", depth: "8", grout: "unsanded", bag: "2.5", waste: "10" },
-  { id: "mosaic", unit: "m", mode: "area", area: "1.5", length: "1.5", width: "1", tileL: "25", tileW: "25", joint: "2", depth: "4", grout: "unsanded", bag: "1", waste: "15" },
-  { id: "inch", unit: "ft", mode: "rect", area: "100", length: "10", width: "8", tileL: "12", tileW: "12", joint: "0.125", depth: "0.375", grout: "sanded", bag: "10", waste: "10" },
-];
-
-const DENSITY: Record<Grout, number> = { sanded: 1.6, unsanded: 1.5, epoxy: 1.55 };
+import { inputClass } from "./GroutCalculatorTool.part1";
+import { type Unit, type Mode, type Grout, parseNum, DENSITY, type Preset, PRESETS, formatNum, buttonClass } from "./GroutCalculatorTool.part2";
 
 export function GroutCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

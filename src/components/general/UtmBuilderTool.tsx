@@ -1,31 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-
-const MEDIUMS = ["cpc", "email", "social", "referral", "organic", "display"];
-
-function cleanToken(value: string, lower: boolean) {
-  const trimmed = value.trim().replace(/\s+/g, "-");
-  return lower ? trimmed.toLowerCase() : trimmed;
-}
-
-function normalizeUrl(raw: string) {
-  const trimmed = raw.trim();
-  if (!trimmed) return { error: "empty" as const };
-  const withProtocol = /^[a-z][a-z0-9+.-]*:/i.test(trimmed) ? trimmed : `https://${trimmed}`;
-  let url: URL;
-  try {
-    url = new URL(withProtocol);
-  } catch {
-    return { error: "invalid" as const };
-  }
-  if (url.protocol !== "http:" && url.protocol !== "https:") return { error: "protocol" as const };
-  if (!url.hostname || !url.hostname.includes(".")) return { error: "host" as const };
-  return { url };
-}
+import { type Locale } from "./UtmBuilderTool.part1";
+import { normalizeUrl, cleanToken, inputClass, MEDIUMS } from "./UtmBuilderTool.part2";
 
 export function UtmBuilderTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

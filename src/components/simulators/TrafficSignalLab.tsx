@@ -1,15 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const SIZE = 11;
-const CELL = 28;
-const W = SIZE * CELL;
-const H = SIZE * CELL;
-const CENTER = 5;
-
-type Dir = "N" | "S" | "E" | "W";
-type Car = { id: number; dir: Dir; pos: number; waiting: boolean; waitTime: number };
+import { type Car, type Dir, W, H, CENTER, CELL } from "./TrafficSignalLab.part2";
 
 export function TrafficSignalLab({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

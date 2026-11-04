@@ -1,8 +1,5 @@
-// Education bank source; GitHub Actions expands each topic to 20 unique questions after validation.
-import type { EducationDifficulty, EducationLevel } from "./education-engine";
-
-type Q={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
-const q=(text:string,options:string[],answer:string,levels?:EducationLevel[],difficulty?:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+import { type Q } from "./education-bank-a.part1";
+import { q } from "./education-bank-a.part2";
 
 export const EDUCATION_BANK_A:Record<string,Q[]>={
  aritmetica:[q("What is the result of 24 + 18?",["42","40","44","46"],"42"),q("What is the result of 7 × 8?",["56","48","54","64"],"56")],

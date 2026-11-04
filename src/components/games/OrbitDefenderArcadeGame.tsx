@@ -2,60 +2,8 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPoi
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-const W = 360;
-const H = 520;
-const PLANET_R = 28;
-const PLANET_X = W / 2;
-const PLANET_Y = H / 2;
-
-type Asteroid = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  r: number;
-  hue: number;
-  hp: number;
-  rot: number;
-  points: number[];
-};
-
-type Shot = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
-};
-
-type Particle = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  hue: number;
-  size: number;
-};
-
-type PowerUp = {
-  x: number;
-  y: number;
-  kind: "shield" | "rapid" | "slow" | "spread";
-  life: number;
-};
-
-function makeAsteroidShape(r: number) {
-  const pts: number[] = [];
-  const n = 7 + Math.floor(Math.random() * 4);
-  for (let i = 0; i < n; i++) {
-    const a = (i / n) * Math.PI * 2;
-    const rr = r * (0.72 + Math.random() * 0.5);
-    pts.push(Math.cos(a) * rr, Math.sin(a) * rr);
-  }
-  return pts;
-}
+import { W } from "./OrbitDefenderArcadeGame.part1";
+import { type Asteroid, type Shot, type Particle, type PowerUp, H, PLANET_X, PLANET_Y, makeAsteroidShape, PLANET_R } from "./OrbitDefenderArcadeGame.part2";
 
 export function OrbitDefenderArcadeGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";

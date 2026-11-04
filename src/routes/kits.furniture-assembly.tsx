@@ -12,7 +12,7 @@ const description = cleanDescription(
   "Interactive flatpack furniture assembly kit. Select shelf, desk or chair, assemble discrete parts in ordered steps, see live diagram, progress and share PNG or URL.",
 );
 
-export const Route = createFileRoute("/kits/furniture-assembly-kit")({
+export const Route = createFileRoute("/kits/furniture-assembly")({
   head: () => ({
     meta: [
       { title },

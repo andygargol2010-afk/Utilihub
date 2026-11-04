@@ -1,16 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { decodeJwt } from "@/lib/general/jwt";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base font-mono";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const EXAMPLES = [
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-  "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiJhbmEiLCJleHAiOjE2MDAwMDAwMDAsIm5iZiI6MTUwMDAwMDAwMH0.",
-];
+import { type Locale } from "./JwtTool.part1";
+import { EXAMPLES, buttonClass, fieldClass } from "./JwtTool.part2";
 
 export function JwtTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

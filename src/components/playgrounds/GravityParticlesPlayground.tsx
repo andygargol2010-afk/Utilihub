@@ -1,58 +1,8 @@
 "use client";
-
 import { useEffect, useRef, useState, useCallback } from "react";
 import { trackEvent } from "@/lib/analytics";
-
-type Locale = "en" | "es";
-
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  hue: number;
-}
-
-interface Attractor {
-  x: number;
-  y: number;
-  id: number;
-}
-
-interface Star {
-  x: number;
-  y: number;
-  r: number;
-  a: number;
-}
-
-const labels = {
-  en: {
-    count: "Particle count",
-    gravity: "Gravity strength",
-    friction: "Friction",
-    trails: "Trails",
-    clear: "Clear attractors",
-    reset: "Reset particles",
-    share: "Copy share link",
-    copied: "Copied!",
-    help: "Click/tap to place attractors. Drag to move them. Double-click/tap removes nearest. Particles orbit in real time.",
-    attractors: "Attractors",
-  },
-  es: {
-    count: "Cantidad de partículas",
-    gravity: "Fuerza de gravedad",
-    friction: "Fricción",
-    trails: "Estelas",
-    clear: "Limpiar atrayentes",
-    reset: "Reiniciar partículas",
-    share: "Copiar enlace",
-    copied: "¡Copiado!",
-    help: "Clic/toque para colocar atrayentes. Arrastrá para moverlos. Doble clic/toque elimina el más cercano. Las partículas orbitan en tiempo real.",
-    attractors: "Atrayentes",
-  },
-};
+import { type Locale } from "./GravityParticlesPlayground.part1";
+import { labels, type Particle, type Attractor, type Star } from "./GravityParticlesPlayground.part2";
 
 export function GravityParticlesPlayground({ locale }: { locale: Locale }) {
   const t = labels[locale];

@@ -1,70 +1,13 @@
 // TOOL_SEO_OVERRIDES_GAP part 1 — split out of ../tool-seo-overrides-gap.ts on 2026-10-28.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import type { ToolSeoOverride } from "../tool-seo-overrides";
+import { TOOL_SEO_OVERRIDES_GAP_1_PART1 } from "./gap-1.part1";
+import { TOOL_SEO_OVERRIDES_GAP_1_PART2 } from "./gap-1.part2";
+
 
 export const TOOL_SEO_OVERRIDES_GAP_1: Record<string, ToolSeoOverride> = {
-  "codigo-morse": {
-    metaTitle: "Morse Code Translator — Text ↔ Morse Online | UtiliHub",
-    metaTitleEs: "Traductor de código Morse — Texto ↔ Morse online | UtiliHub",
-    metaDescription:
-      "Convert text to Morse code and Morse back to text in your browser. Supports letters, numbers, and common punctuation. Free, private, no signup.",
-    metaDescriptionEs:
-      "Convertí texto a código Morse y Morse a texto en el navegador. Letras, números y puntuación. Gratis, privado, sin registro.",
-    about: [
-      "This Morse code translator works entirely in your browser. Type plain text to get dots and dashes, or paste Morse to decode it back to letters.",
-      "Spaces separate letters; a slash separates words. You can use dots (.), dashes (-), or middle dots (·).",
-      "Nothing is uploaded. Ideal for learning Morse, quick messages, or checking practice drills.",
-    ],
-    aboutEs: [
-      "Este traductor de código Morse funciona en el navegador. Escribí texto plano para obtener puntos y rayas, o pegá Morse para decodificarlo.",
-      "Los espacios separan letras; la barra separa palabras. Podés usar puntos (.), rayas (-) o puntos medios (·).",
-      "Nada se sube a un servidor. Ideal para aprender Morse, mensajes rápidos o verificar ejercicios.",
-    ],
-    steps: [
-      "Paste or type text (to encode) or Morse symbols (to decode).",
-      "Press Process — the tool auto-detects direction from the input.",
-      "Copy the result and use it wherever you need.",
-    ],
-    stepsEs: [
-      "Pegá o escribí texto (para codificar) o símbolos Morse (para decodificar).",
-      "Pulsá Procesar — la herramienta detecta la dirección según la entrada.",
-      "Copiá el resultado y usalo donde lo necesites.",
-    ],
-    faq: [
-      { q: "Does it support Spanish characters?", a: "Accented letters are skipped when encoding. Stick to a–z, 0–9, and common punctuation for best results." },
-      { q: "How are words separated in Morse?", a: "A slash (/) marks a word boundary. Spaces separate individual letter codes." },
-      { q: "Is my text stored?", a: "No. Conversion runs locally in the browser and is never uploaded." },
-    ],
-    faqEs: [
-      { q: "¿Soporta caracteres del español?", a: "Las letras con tilde se omiten al codificar. Usá a–z, 0–9 y puntuación habitual para mejores resultados." },
-      { q: "¿Cómo se separan las palabras en Morse?", a: "Una barra (/) marca el límite de palabra. Los espacios separan códigos de cada letra." },
-      { q: "¿Se guarda mi texto?", a: "No. La conversión corre en el navegador y no se sube a ningún servidor." },
-    ],
-  },
-  "texto-binario": {
-    metaTitle: "Text to Binary Converter — UTF-8 Online | UtiliHub",
-    metaTitleEs: "Conversor de texto a binario — UTF-8 online | UtiliHub",
-    metaDescription: "Convert text to UTF-8 binary and binary back to text. Works offline in the browser. Free and private.",
-    metaDescriptionEs: "Convertí texto a binario UTF-8 y binario a texto. Funciona offline en el navegador. Gratis y privado.",
-    about: [
-      "Encode any string as 8-bit UTF-8 binary groups, or decode a stream of 0s and 1s back into readable text.",
-      "Binary input must be a multiple of 8 bits. Spaces between bytes are optional.",
-    ],
-    aboutEs: [
-      "Codificá cualquier cadena como grupos binarios UTF-8 de 8 bits, o decodificá un flujo de 0 y 1 a texto legible.",
-      "La entrada binaria debe ser múltiplo de 8 bits. Los espacios entre bytes son opcionales.",
-    ],
-    steps: ["Enter text or binary (0/1).", "Press Process.", "Copy the output."],
-    stepsEs: ["Ingresá texto o binario (0/1).", "Pulsá Procesar.", "Copiá el resultado."],
-    faq: [
-      { q: "What encoding is used?", a: "UTF-8, so emojis and non-Latin scripts work when encoding text to binary." },
-      { q: "Why did I get an error on binary input?", a: "Length must be a multiple of 8. Incomplete bytes are rejected." },
-    ],
-    faqEs: [
-      { q: "¿Qué codificación usa?", a: "UTF-8, así que emojis y scripts no latinos funcionan al pasar de texto a binario." },
-      { q: "¿Por qué falla mi binario?", a: "La longitud debe ser múltiplo de 8. Los bytes incompletos se rechazan." },
-    ],
-  },
+  ...TOOL_SEO_OVERRIDES_GAP_1_PART1,
+  ...TOOL_SEO_OVERRIDES_GAP_1_PART2,
   "frecuencia-palabras": {
     metaTitle: "Word Frequency Counter — Rank Words in Text | UtiliHub",
     metaTitleEs: "Contador de frecuencia de palabras | UtiliHub",

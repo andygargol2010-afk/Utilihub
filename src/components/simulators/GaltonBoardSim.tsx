@@ -1,20 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 480;
-const H = 560;
-
-type Ball = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  row: number;
-  col: number;
-  active: boolean;
-  bin?: number;
-};
+import { W } from "./GaltonBoardSim.part1";
+import { type Ball, H } from "./GaltonBoardSim.part2";
 
 export function GaltonBoardSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

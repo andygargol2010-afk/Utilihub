@@ -1,7 +1,5 @@
-import type { EducationDifficulty, EducationLevel } from "../education-engine";
-
-type Q={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
-const q=(text:string,options:string[],answer:string,levels?:EducationLevel[],difficulty?:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+import { type Q } from "./estadistica.part1";
+import { q } from "./estadistica.part2";
 
 export const ESTADISTICA:Q[]=[
  q("What is the average of 4, 6 and 8?",["6","5","7","18"],"6",["primaria"],"facil"),

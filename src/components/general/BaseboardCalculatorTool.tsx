@@ -1,45 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "m" | "ft";
-type Shape = "rect" | "perimeter";
-type PresetId = "metric" | "bedroom" | "long" | "open";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(value);
-}
-
-type Preset = {
-  id: PresetId;
-  unit: Unit;
-  length: string;
-  width: string;
-  perimeter: string;
-  doors: string;
-  doorWidth: string;
-  extra: string;
-  stick: string;
-  waste: string;
-  shoe: boolean;
-};
-
-const PRESETS: Preset[] = [
-  { id: "metric", unit: "m", length: "4", width: "3", perimeter: "14", doors: "1", doorWidth: "0.8", extra: "0", stick: "2.4", waste: "10", shoe: false },
-  { id: "bedroom", unit: "ft", length: "12", width: "10", perimeter: "44", doors: "2", doorWidth: "2.5", extra: "0", stick: "8", waste: "10", shoe: false },
-  { id: "long", unit: "ft", length: "16", width: "12", perimeter: "56", doors: "1", doorWidth: "2.67", extra: "0", stick: "12", waste: "10", shoe: true },
-  { id: "open", unit: "m", length: "8", width: "5", perimeter: "26", doors: "2", doorWidth: "0.9", extra: "3", stick: "3", waste: "12", shoe: true },
-];
+import { type Locale } from "./BaseboardCalculatorTool.part1";
+import { type Unit, type Shape, parseNum, type Preset, PRESETS, formatNum, type PresetId, buttonClass, inputClass } from "./BaseboardCalculatorTool.part2";
 
 export function BaseboardCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

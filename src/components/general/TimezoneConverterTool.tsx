@@ -1,40 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-const COMMON_ZONES = [
-  "UTC",
-  "America/New_York",
-  "America/Los_Angeles",
-  "America/Chicago",
-  "Europe/London",
-  "Europe/Madrid",
-  "Europe/Paris",
-  "Asia/Tokyo",
-  "Asia/Shanghai",
-  "Australia/Sydney",
-];
-
-function formatInZone(date: Date, zone: string, locale: string) {
-  try {
-    return new Intl.DateTimeFormat(locale, {
-      timeZone: zone,
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    }).format(date);
-  } catch {
-    return null;
-  }
-}
+import { type Locale } from "./TimezoneConverterTool.part1";
+import { formatInZone, fieldClass, COMMON_ZONES, buttonClass } from "./TimezoneConverterTool.part2";
 
 export function TimezoneConverterTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

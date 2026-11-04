@@ -1,21 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { matchShoeSize, SHOE_PRESETS, type ShoeSystem } from "@/lib/general/shoe-size";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const SYSTEMS: ShoeSystem[] = ["eu", "uk", "usM", "usW", "cm"];
-
-function systemLabel(system: ShoeSystem, es: boolean) {
-  if (system === "eu") return "EU";
-  if (system === "uk") return "UK";
-  if (system === "usM") return es ? "US hombre" : "US men";
-  if (system === "usW") return es ? "US mujer" : "US women";
-  return es ? "cm (largo del pie)" : "cm (foot length)";
-}
+import { type Locale } from "./ShoeSizeTool.part1";
+import { inputClass, SYSTEMS, systemLabel, buttonClass } from "./ShoeSizeTool.part2";
 
 export function ShoeSizeTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

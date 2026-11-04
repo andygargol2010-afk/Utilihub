@@ -41,27 +41,13 @@ import { TOOL_SEO_OVERRIDES_AIRFRYER } from "../tool-seo-overrides-airfryer";
 import { TOOL_SEO_OVERRIDES_BAKERS } from "../tool-seo-overrides-bakers";
 import { TOOL_SEO_OVERRIDES_DECK } from "../tool-seo-overrides-deck";
 import { TOOL_SEO_OVERRIDES_ROOF } from "../tool-seo-overrides-roof";
+import { TOOL_SEO_OVERRIDES_PART_01_PART1 } from "./part-01.part1";
+import { TOOL_SEO_OVERRIDES_PART_01_PART2 } from "./part-01.part2";
+
 
 export const TOOL_SEO_OVERRIDES_PART_01: Record<string, ToolSeoOverride> = {
-  ...(TOOL_SEO_OVERRIDES_BASE_A as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_BASE_A2 as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_BASE_B as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_BLOCK3 as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_BLOCK4 as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_GROWTH as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_GROWTH_A as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_GROWTH_A2 as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_GROWTH_B1 as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_GROWTH_B2 as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_GROWTH_B3 as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_GAP as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_GOOGLE_PATHS as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_PERCENT as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_ALGEBRA as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_GEOMETRY as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_ARITHMETIC as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_SEQUENCE as Record<string, ToolSeoOverride>),
-  ...(TOOL_SEO_OVERRIDES_TRIG as Record<string, ToolSeoOverride>),
+  ...TOOL_SEO_OVERRIDES_PART_01_PART1,
+  ...TOOL_SEO_OVERRIDES_PART_01_PART2,
   ...(TOOL_SEO_OVERRIDES_EXPLOG as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_MATRIX as Record<string, ToolSeoOverride>),
   ...(TOOL_SEO_OVERRIDES_CORE as Record<string, ToolSeoOverride>),

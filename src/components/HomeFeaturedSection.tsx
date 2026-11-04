@@ -5,17 +5,8 @@ import { GAMES, gameName, gamePath, gameSummary } from "@/lib/games/catalog";
 import { englishToolSlug } from "@/lib/route-slugs";
 import { spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 import { spanishToolSummary } from "@/lib/i18n/es-summaries";
-
-type Locale = "en" | "es";
-
-const FEATURED_TOOL_SLUGS = [
-  "pixelihub",
-  "modelador-casas-3d",
-  "modelador-3d",
-  "png-a-jpg",
-  "unir-pdf",
-  "generador-de-contrasenas",
-];
+import { type Locale } from "./HomeFeaturedSection.part1";
+import { FEATURED_TOOL_SLUGS } from "./HomeFeaturedSection.part2";
 
 export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
   const es = locale === "en" ? false : locale === "es";

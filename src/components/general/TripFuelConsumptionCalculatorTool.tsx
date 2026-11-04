@@ -1,14 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function round2(n: number) {
-  return Math.round(n * 100) / 100;
-}
+import { type Locale } from "./TripFuelConsumptionCalculatorTool.part1";
+import { round2, fieldClass, buttonClass } from "./TripFuelConsumptionCalculatorTool.part2";
 
 export function TripFuelConsumptionCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

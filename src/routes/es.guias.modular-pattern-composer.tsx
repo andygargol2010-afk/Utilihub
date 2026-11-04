@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
-
-const title = "Compositor de Patrones Modulares: Sistemas de Baldosas y Animaciones Procedurales | UtiliHub";
-const description = cleanDescription(
-  "Guía original sobre el Compositor de Patrones Modulares. Coloca baldosas modulares en una cuadrícula con animaciones procedurales en vivo (flujo, pulso, morph, giro), multi-capas con mezcla y opacidad, simetría (espejo, radial), biblioteca de baldosas (geométricas, orgánicas, partículas, hex, blob), paletas y gradientes, controles de reproducción, tamaño de pincel, compartir PNG con branding, deep-link por URL y persistencia en localStorage. Distinto del neon freehand.",
-);
+import { absoluteUrl, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
+import { title } from "./-es.guias.modular-pattern-composer.part1";
+import { description } from "./-es.guias.modular-pattern-composer.part2";
 
 export const Route = createFileRoute("/es/guias/modular-pattern-composer")({
   head: () => ({

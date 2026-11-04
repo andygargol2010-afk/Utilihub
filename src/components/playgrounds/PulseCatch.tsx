@@ -1,43 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-
-type Spark = {
-  id: number;
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  maxLife: number;
-  hue: number;
-  radius: number;
-  trail: { x: number; y: number }[];
-  rare?: boolean;
-};
-
-type Burst = {
-  x: number;
-  y: number;
-  particles: { x: number; y: number; vx: number; vy: number; life: number; hue: number; size?: number }[];
-};
-
-type Floater = {
-  x: number;
-  y: number;
-  text: string;
-  life: number;
-  maxLife: number;
-  hue: number;
-  big?: boolean;
-};
-
-type Ring = {
-  x: number;
-  y: number;
-  r: number;
-  maxR: number;
-  life: number;
-  hue: number;
-};
+import { type Spark } from "./PulseCatch.part1";
+import { type Burst, type Floater, type Ring } from "./PulseCatch.part2";
 
 export function PulseCatch({ locale }: { locale: "en" | "es" | "pt" | "fr" | "de" }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

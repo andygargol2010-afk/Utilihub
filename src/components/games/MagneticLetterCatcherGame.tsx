@@ -1,30 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { GameLocale } from "@/lib/games/catalog";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-type Mode = "arcade" | "zen" | "challenge";
-type Particle = {
-  char: string;
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  caught: boolean;
-  targetX: number;
-  targetY: number;
-  order: number;
-  trail: { x: number; y: number }[];
-};
-
-type Confetti = { x: number; y: number; vx: number; vy: number; life: number; color: string };
-
-interface Props {
-  locale?: GameLocale;
-}
-
-const BEST_KEY = "utilihub-magnetic-letter-best";
-const CANVAS_W = 480;
-const CANVAS_H = 340;
+import { type Mode } from "./MagneticLetterCatcherGame.part1";
+import { type Props, type Particle, type Confetti, BEST_KEY, CANVAS_W, CANVAS_H } from "./MagneticLetterCatcherGame.part2";
 
 export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
   const es = locale === "es";

@@ -1,44 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type YeastKind = "instant" | "active" | "fresh" | "osmo";
-type Unit = "g" | "tsp" | "packet";
-type PresetId = "packet" | "tsp" | "cube25" | "cube42" | "active10";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-/** Weight relative to 1 g instant. Active dry is 25% more; fresh is triple. */
-const FACTOR: Record<YeastKind, number> = {
-  instant: 1,
-  active: 1.25,
-  fresh: 3,
-  osmo: 1,
-};
-
-const GRAMS_PER_TSP: Partial<Record<YeastKind, number>> = {
-  instant: 3.1,
-  active: 2.8,
-  osmo: 3.1,
-};
-
-const PACKET_G = 7;
-const KINDS: YeastKind[] = ["instant", "active", "fresh", "osmo"];
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatAmount(value: number, locale: Locale) {
-  return new Intl.NumberFormat(locale === "es" ? "es" : "en", {
-    maximumFractionDigits: value >= 100 ? 0 : 1,
-    minimumFractionDigits: 0,
-  }).format(value);
-}
+import { type Locale } from "./YeastConverterTool.part1";
+import { type YeastKind, type Unit, type PresetId, parseNum, PACKET_G, GRAMS_PER_TSP, FACTOR, KINDS, formatAmount, buttonClass, inputClass } from "./YeastConverterTool.part2";
 
 export function YeastConverterTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

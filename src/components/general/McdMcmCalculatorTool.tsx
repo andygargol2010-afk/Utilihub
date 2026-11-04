@@ -1,26 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function gcd(a: number, b: number): number {
-  a = Math.abs(Math.floor(a));
-  b = Math.abs(Math.floor(b));
-  while (b !== 0) {
-    const t = b;
-    b = a % b;
-    a = t;
-  }
-  return a;
-}
-
-function lcm(a: number, b: number): number {
-  if (a === 0 || b === 0) return 0;
-  return Math.abs(a * b) / gcd(a, b);
-}
+import { type Locale } from "./McdMcmCalculatorTool.part1";
+import { gcd, lcm, fieldClass, buttonClass } from "./McdMcmCalculatorTool.part2";
 
 export function McdMcmCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

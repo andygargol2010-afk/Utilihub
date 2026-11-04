@@ -1,21 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 480;
-const H = 380;
-const PIVOT_X = W / 2;
-const PIVOT_Y = 48;
-const TRAIL_MAX = 240;
-const PX_PER_M = 140;
-const DT = 1 / 90;
-const TWIN_DELTA = 0.0015;
-
-const PRESETS = {
-  classic: { th1: Math.PI / 2, th2: 0, labelEn: "Classic", labelEs: "Clásico" },
-  butterfly: { th1: Math.PI * 0.85, th2: Math.PI * 0.35, labelEn: "Butterfly", labelEs: "Mariposa" },
-  low: { th1: Math.PI * 0.35, th2: Math.PI * 0.15, labelEn: "Low energy", labelEs: "Baja energía" },
-} as const;
+import { W } from "./DoublePendulumSim.part1";
+import { TWIN_DELTA, PRESETS, PX_PER_M, PIVOT_X, PIVOT_Y, DT, TRAIL_MAX, H } from "./DoublePendulumSim.part2";
 
 export function DoublePendulumSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

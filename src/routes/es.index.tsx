@@ -1,45 +1,11 @@
-import { lazy, Suspense, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeCatalogSlot } from "@/components/home-catalog-slot";
 import { absoluteUrl, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
-
-const loadHomeCatalog = () => import("@/components/home-catalog");
-const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeToolCount })));
-const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
-const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
-
-const ExperienceDiscoveryRail = lazy(() =>
-  import("@/components/ExperienceDiscoveryRail").then((m) => ({ default: m.ExperienceDiscoveryRail })),
-);
-
-const HomeValuePath = lazy(() =>
-  import("@/components/HomeValuePath").then((m) => ({ default: m.HomeValuePath })),
-);
-
-const DailyExperienceSpotlight = lazy(() =>
-  import("@/components/DailyExperienceSpotlight").then((m) => ({ default: m.DailyExperienceSpotlight })),
-);
-
-const RANDOM_EXPERIENCES_ES = [
-  "/es/aurora-particle-playground",
-  "/es/pulse-catch",
-  "/es/studio/compositor-estela-prisma",
-  "/es/color-cascade-fusion",
-  "/es/solar-system-scale-explorer",
-  "/es/daily-progress-constellation",
-  "/es/return-streak-board",
-];
-
-function goRandomExperienceEs() {
-  const path = RANDOM_EXPERIENCES_ES[Math.floor(Math.random() * RANDOM_EXPERIENCES_ES.length)];
-  window.location.href = path;
-}
-
-const titleEs = "UtiliHub · Herramientas online, studios 3D y juegos";
-const descriptionEs =
-  "Herramientas online gratis, modelador de casas 3D y juegos en el navegador. Calculá, convertí, diseñá y jugá — sin registro.";
+import { loadHomeCatalog } from "./-es.index.part1";
+import { titleEs, descriptionEs, goRandomExperienceEs, HomeToolCount, HomeSearch, DailyExperienceSpotlight, ExperienceDiscoveryRail, HomeValuePath, HomeCatalogRest } from "./-es.index.part2";
 
 export const Route = createFileRoute("/es/")({
   head: () => ({

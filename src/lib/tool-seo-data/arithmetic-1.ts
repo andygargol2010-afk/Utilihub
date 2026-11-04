@@ -1,92 +1,13 @@
 // TOOL_SEO_OVERRIDES_ARITHMETIC part 1 — split out of ../tool-seo-overrides-arithmetic.ts on 2026-10-28.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import type { ToolSeoOverrideArithmetic } from "../tool-seo-overrides-arithmetic";
+import { TOOL_SEO_OVERRIDES_ARITHMETIC_1_PART1 } from "./arithmetic-1.part1";
+import { TOOL_SEO_OVERRIDES_ARITHMETIC_1_PART2 } from "./arithmetic-1.part2";
+
 
 export const TOOL_SEO_OVERRIDES_ARITHMETIC_1: Record<string, ToolSeoOverrideArithmetic> = {
-  "factorizacion-prima": {
-    metaTitle: "Prime Factorization Calculator — Factor Tree Online | UtiliHub",
-    metaTitleEs: "Calculadora de factorización prima — árbol de factores | UtiliHub",
-    metaDescription:
-      "Factor any integer ≥ 2 into primes with exponents (360 = 2³ × 3² × 5). Free prime factor tool.",
-    metaDescriptionEs:
-      "Factorizá cualquier entero ≥ 2 en primos con exponentes (360 = 2³ × 3² × 5). Gratis.",
-    about: [
-      "Prime factorization expresses a number as a product of primes raised to powers.",
-      "Essential for LCM, GCD, simplifying fractions, and radicals.",
-      "Results show the compact product form and a count of distinct primes.",
-    ],
-    aboutEs: [
-      "La factorización prima escribe un número como producto de primos elevados a potencias.",
-      "Clave para MCM, MCD, simplificar fracciones y radicales.",
-      "El resultado muestra el producto compacto y cuántos primos distintos hay.",
-    ],
-    steps: ["Enter an integer n ≥ 2.", "Calculate the prime factorization.", "Use the check line to confirm the product."],
-    stepsEs: ["Ingresá un entero n ≥ 2.", "Calculá la factorización prima.", "Usá la línea de verificación para confirmar el producto."],
-    faq: [
-      { q: "Is 1 allowed?", a: "No — 1 is not a product of primes." },
-      { q: "Large numbers?", a: "Very large inputs may be slow in the browser." },
-    ],
-    faqEs: [
-      { q: "¿Se permite el 1?", a: "No: 1 no es producto de primos." },
-      { q: "¿Números grandes?", a: "Entradas muy grandes pueden ser lentas en el navegador." },
-    ],
-  },
-  "es-primo": {
-    metaTitle: "Is Prime Number Calculator — Test & Next Prime | UtiliHub",
-    metaTitleEs: "Calculadora ¿es primo? — test y siguiente primo | UtiliHub",
-    metaDescription:
-      "Check if an integer is prime and find the next prime ≥ n or > n. Fast trial-division test.",
-    metaDescriptionEs:
-      "Comprobá si un entero es primo y encontrá el siguiente primo ≥ n o > n. Test rápido por división.",
-    about: [
-      "Primes have exactly two positive divisors: 1 and themselves.",
-      "The tool labels n as prime, composite, or neither (for n ≤ 1).",
-      "Next-prime helpers are useful for hashing examples and number-theory drills.",
-    ],
-    aboutEs: [
-      "Los primos tienen exactamente dos divisores positivos: 1 y ellos mismos.",
-      "La herramienta etiqueta n como primo, compuesto o ninguno (n ≤ 1).",
-      "Los botones de siguiente primo sirven para ejercicios de teoría de números.",
-    ],
-    steps: ["Enter an integer.", "Read prime/composite status.", "Use the next-prime cards as needed."],
-    stepsEs: ["Ingresá un entero.", "Leé si es primo o compuesto.", "Usá las tarjetas de siguiente primo si hace falta."],
-    faq: [
-      { q: "Is 2 prime?", a: "Yes — the only even prime." },
-      { q: "Negatives?", a: "Primality is defined for positive integers; the tool uses |n|." },
-    ],
-    faqEs: [
-      { q: "¿El 2 es primo?", a: "Sí: el único primo par." },
-      { q: "¿Negativos?", a: "La primalidad se define en enteros positivos; se usa |n|." },
-    ],
-  },
-  "raiz-cubica": {
-    metaTitle: "Cube Root Calculator — ∛x for Any Real Number | UtiliHub",
-    metaTitleEs: "Calculadora de raíz cúbica — ∛x para cualquier real | UtiliHub",
-    metaDescription:
-      "Real cube root of any number, including negatives. Verification by cubing the result. Free ∛ tool.",
-    metaDescriptionEs:
-      "Raíz cúbica real de cualquier número, incluidos negativos. Verificación al elevar al cubo. Gratis.",
-    about: [
-      "Every real number has a unique real cube root.",
-      "Negative inputs map to negative roots (∛(−8) = −2).",
-      "A verification card cubes the root so you can spot rounding error.",
-    ],
-    aboutEs: [
-      "Todo real tiene una única raíz cúbica real.",
-      "Las entradas negativas dan raíces negativas (∛(−8) = −2).",
-      "Una tarjeta de verificación eleva la raíz al cubo para ver el error de redondeo.",
-    ],
-    steps: ["Enter any real x.", "Read ∛x.", "Confirm with the root³ card."],
-    stepsEs: ["Ingresá cualquier real x.", "Leé ∛x.", "Confirmá con la tarjeta root³."],
-    faq: [
-      { q: "Complex roots?", a: "This tool returns only the principal real root." },
-      { q: "Difference from square root?", a: "Square roots of negatives are not real; cube roots are." },
-    ],
-    faqEs: [
-      { q: "¿Raíces complejas?", a: "Solo devolvemos la raíz real principal." },
-      { q: "¿Diferencia con la raíz cuadrada?", a: "La cuadrada de un negativo no es real; la cúbica sí." },
-    ],
-  },
+  ...TOOL_SEO_OVERRIDES_ARITHMETIC_1_PART1,
+  ...TOOL_SEO_OVERRIDES_ARITHMETIC_1_PART2,
   "multiplicacion-cruzada": {
     metaTitle: "Cross Multiplication Calculator — Solve a/b = c/d | UtiliHub",
     metaTitleEs: "Calculadora multiplicación cruzada — despejar a/b = c/d | UtiliHub",

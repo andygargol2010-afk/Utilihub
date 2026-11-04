@@ -1,61 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
-import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-type Device = "convex-lens" | "concave-lens" | "concave-mirror" | "convex-mirror";
-
-const W = 560;
-const H = 340;
-const AXIS_Y = H / 2 + 8;
-const ELEM_X = 300;
-
-function setupCanvas(canvas: HTMLCanvasElement) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
-  canvas.width = Math.round(W * dpr);
-  canvas.height = Math.round(H * dpr);
-  const ctx = canvas.getContext("2d");
-  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  return ctx;
-}
-
-function uToX(uCm: number) {
-  return ELEM_X - uCm * 2.15;
-}
-function vToX(vCm: number, isMirror: boolean) {
-  return isMirror ? ELEM_X - vCm * 2.15 : ELEM_X + vCm * 2.15;
-}
-
-function computeImage(device: Device, u: number, fAbs: number) {
-  const converging = device === "convex-lens" || device === "concave-mirror";
-  const f = converging ? fAbs : -fAbs;
-  const isMirror = device.includes("mirror");
-  if (Math.abs(u - f) < 0.05) {
-    return { v: Infinity as number, m: Infinity as number, real: false, inverted: false, atInfinity: true, f, isMirror };
-  }
-  const v = 1 / (1 / f - 1 / u);
-  const m = -v / u;
-  return { v, m, real: v > 0, inverted: m < 0, atInfinity: false, f, isMirror };
-}
-
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
-}
-
-function deviceLabel(d: Device, es: boolean) {
-  const map: Record<Device, [string, string]> = {
-    "convex-lens": ["Convex lens", "Lente convergente"],
-    "concave-lens": ["Concave lens", "Lente divergente"],
-    "concave-mirror": ["Concave mirror", "Espejo cóncavo"],
-    "convex-mirror": ["Convex mirror", "Espejo convexo"],
-  };
-  return es ? map[d][1] : map[d][0];
-}
+import { SimSecondaryButton } from "./SimShell";
+import { type Device } from "./OpticsSim.part1";
+import { computeImage, setupCanvas, W, H, AXIS_Y, uToX, ELEM_X, vToX, roundRect, deviceLabel } from "./OpticsSim.part2";
 
 export function OpticsSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

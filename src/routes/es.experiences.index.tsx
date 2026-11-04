@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
-
-const title = "Hub de Experiencias | UtiliHub";
-const description = cleanDescription(
-  "Descubrí playgrounds, simuladores, juegos y estudios interactivos. Mini-previews en vivo, compartible, amigable en móvil.",
-);
+import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
+import { title } from "./-es.experiences.index.part1";
+import { description } from "./-es.experiences.index.part2";
 
 export const Route = createFileRoute("/es/experiences/")({
   head: () => ({

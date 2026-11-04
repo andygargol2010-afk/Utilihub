@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent, lazy, Suspense } from "react";
+import { useEffect, useMemo, useState, type FormEvent, Suspense } from "react";
 import { Search, SlidersHorizontal, Star, Tag } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
@@ -6,39 +6,8 @@ import { Button } from "@/components/ui/button";
 import { ALL_CATEGORIES, ALL_TOOLS, toolHref, type CatalogTool } from "@/lib/all-tools";
 import { useFavorites } from "@/hooks/use-favorites";
 import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
-
-function normalize(s: string) {
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-}
-const STOP = new Set([
-  "de",
-  "la",
-  "el",
-  "los",
-  "las",
-  "para",
-  "por",
-  "un",
-  "una",
-  "y",
-  "o",
-  "en",
-  "the",
-  "a",
-  "an",
-  "and",
-  "or",
-  "for",
-  "to",
-  "of",
-  "in",
-]);
-
-const PAGE_SIZE = 30;
-
-// ToolCard pulls CompactToolRow + catalog bits. Keep it off the ToolSearch chunk;
-// the first paint uses StaticListing, and the interactive list waits for idle.
-const ToolCard = lazy(() => import("@/components/ToolCard").then((m) => ({ default: m.ToolCard })));
+import { normalize } from "./ToolSearch.part1";
+import { PAGE_SIZE, STOP, ToolCard } from "./ToolSearch.part2";
 
 export function ToolSearch({
   initialCategory,

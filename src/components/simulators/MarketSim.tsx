@@ -1,19 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton } from "./SimShell";
-
-const W = 560;
-const H = 340;
-
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
-}
+import { W } from "./MarketSim.part1";
+import { H, roundRect } from "./MarketSim.part2";
 
 export function MarketSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

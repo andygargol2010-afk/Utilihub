@@ -1,53 +1,7 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import { type PlaygroundLocale } from "@/lib/playgrounds/next-step";
-
-const STORAGE_KEY = "utilihub-daily-constellation-v1";
-
-type Star = { x: number; y: number; lit: boolean; id: number; size?: number; litAt?: number };
-type ConstellationData = {
-  stars: Star[];
-  lastVisit: number;
-  totalDays: number;
-  name?: string;
-};
-
-function loadData(): ConstellationData {
-  if (typeof window === "undefined") return { stars: [], lastVisit: 0, totalDays: 0 };
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { stars: [], lastVisit: 0, totalDays: 0 };
-    return JSON.parse(raw);
-  } catch {
-    return { stars: [], lastVisit: 0, totalDays: 0 };
-  }
-}
-
-function saveData(data: ConstellationData) {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch {}
-}
-
-function isSameDay(a: number, b: number) {
-  const da = new Date(a);
-  const db = new Date(b);
-  return da.getFullYear() === db.getFullYear() && da.getMonth() === db.getMonth() && da.getDate() === db.getDate();
-}
-
-function suggestName(days: number, es: boolean): string {
-  if (days >= 21) return es ? "Constelación del Habitante" : "Habitant's Constellation";
-  if (days >= 14) return es ? "Constelación del Viajero" : "Traveler's Constellation";
-  if (days >= 7) return es ? "Constelación de la Semana" : "Week's Constellation";
-  if (days >= 3) return es ? "Constelación Naciente" : "Rising Constellation";
-  return es ? "Mi Constelación" : "My Constellation";
-}
-
-function isMilestone(days: number): boolean {
-  return [3, 7, 14, 21, 30].includes(days);
-}
+import { type ConstellationData, type Star, loadData, isSameDay, saveData, suggestName, isMilestone } from "./DailyProgressConstellation.part2";
 
 export function DailyProgressConstellation({ locale = "en" }: { locale?: PlaygroundLocale }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

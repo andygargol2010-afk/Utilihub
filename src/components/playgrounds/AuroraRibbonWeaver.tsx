@@ -1,25 +1,10 @@
 "use client";
-
 import { useCallback, useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import { absoluteUrl } from "@/lib/seo";
 import { ExperienceShareButton } from "@/components/ExperienceShareButton";
-
-type Locale = "en" | "es";
-type Point = { x: number; y: number };
-type Path = { points: Point[]; hueBase: number };
-
-interface Particle {
-  pathIndex: number;
-  ribbonIndex: number;
-  t: number;
-  speed: number;
-  size: number;
-  hueOffset: number;
-}
-
-const AURORA_HUES = [180, 200, 220, 260, 300, 320, 140, 160];
-const STORAGE_KEY = "utilihub_aurora_ribbon_weaver_v1";
+import { type Locale } from "./AuroraRibbonWeaver.part1";
+import { type Path, type Particle, type Point, STORAGE_KEY, AURORA_HUES } from "./AuroraRibbonWeaver.part2";
 
 export function AuroraRibbonWeaver({ locale = "en" }: { locale?: Locale }) {
   useEffect(() => {

@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
-
-const title = "Particle Physics in the Browser: Gravity, Attraction & Systems | UtiliHub";
-const description = cleanDescription(
-  "Original guide to particle simulations in the browser. Learn how gravity, attraction forces and particle systems work with formulas, visual explanations and live examples. Try Gravity Particles Playground and River of Light.",
-);
+import { absoluteUrl, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
+import { title } from "./-guides.particle-physics.part1";
+import { description } from "./-guides.particle-physics.part2";
 
 export const Route = createFileRoute("/guides/particle-physics")({
   head: () => ({

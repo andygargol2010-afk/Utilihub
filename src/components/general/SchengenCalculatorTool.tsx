@@ -1,24 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import {
-  addDays,
-  calculateSchengen,
-  formatIso,
-  newStayId,
-  parseIso,
-  todayIso,
-  validateSchengen,
-  type SchengenStay,
-} from "@/lib/general/schengen";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function stay(entry: string, exit: string): SchengenStay {
-  return { id: newStayId(), entry, exit };
-}
+import { addDays, calculateSchengen, formatIso, parseIso, todayIso, validateSchengen, type SchengenStay } from "@/lib/general/schengen";
+import { type Locale } from "./SchengenCalculatorTool.part1";
+import { stay, buttonClass, inputClass } from "./SchengenCalculatorTool.part2";
 
 export function SchengenCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

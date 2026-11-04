@@ -1,41 +1,7 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
-
-type Locale = "en" | "es";
-
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-}
-
-const labels = {
-  en: {
-    count: "Particles",
-    gravity: "Gravity",
-    friction: "Friction",
-    trails: "Trails",
-    mode: "Mouse",
-    attract: "Attract",
-    repel: "Repel",
-    reset: "Reset",
-    colorVel: "Color by speed",
-  },
-  es: {
-    count: "Partículas",
-    gravity: "Gravedad",
-    friction: "Fricción",
-    trails: "Estelas",
-    mode: "Mouse",
-    attract: "Atraer",
-    repel: "Repeler",
-    reset: "Reiniciar",
-    colorVel: "Color por velocidad",
-  },
-};
+import { type Locale } from "./ParticlesPlayground.part1";
+import { labels, type Particle } from "./ParticlesPlayground.part2";
 
 export function ParticlesPlayground({ locale }: { locale: Locale }) {
   const t = labels[locale];

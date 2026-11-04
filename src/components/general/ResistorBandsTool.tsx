@@ -1,29 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import {
-  COLOR_HEX,
-  DIGIT_COLORS,
-  MULTIPLIER_COLORS,
-  RESISTOR_PRESETS,
-  TCR_COLORS,
-  TOLERANCE_COLORS,
-  colorLabel,
-  decodeResistor,
-  formatOhms,
-  type BandColor,
-  type BandCount,
-} from "@/lib/general/resistor-bands";
-
-type Locale = "en" | "es";
-
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const ROLE_COLORS: Record<"digit" | "multiplier" | "tolerance" | "tcr", BandColor[]> = {
-  digit: DIGIT_COLORS,
-  multiplier: MULTIPLIER_COLORS,
-  tolerance: TOLERANCE_COLORS,
-  tcr: TCR_COLORS,
-};
+import { COLOR_HEX, RESISTOR_PRESETS, TOLERANCE_COLORS, colorLabel, decodeResistor, formatOhms, type BandColor, type BandCount } from "@/lib/general/resistor-bands";
+import { type Locale } from "./ResistorBandsTool.part1";
+import { buttonClass, ROLE_COLORS } from "./ResistorBandsTool.part2";
 
 export function ResistorBandsTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

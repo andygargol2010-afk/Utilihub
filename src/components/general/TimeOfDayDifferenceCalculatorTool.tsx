@@ -1,19 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function parseTime(s: string): { h: number; m: number } | null {
-  const m = s.trim().match(/^(\d{1,2}):(\d{2})$/);
-  if (!m) return null;
-  const h = parseInt(m[1], 10);
-  const min = parseInt(m[2], 10);
-  if (h < 0 || h > 23 || min < 0 || min > 59) return null;
-  return { h, m: min };
-}
+import { type Locale } from "./TimeOfDayDifferenceCalculatorTool.part1";
+import { parseTime, fieldClass, buttonClass } from "./TimeOfDayDifferenceCalculatorTool.part2";
 
 export function TimeOfDayDifferenceCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

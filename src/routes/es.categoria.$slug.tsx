@@ -1,30 +1,12 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { spanishCategoryName } from "@/lib/i18n/es";
 import { englishCategoryPath } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
 import type { CatalogTool } from "@/lib/all-tools";
-
-const ToolListBrowser = lazy(() =>
-  import("@/components/ToolListBrowser").then((m) => ({ default: m.ToolListBrowser })),
-);
-
-// Same as the English category route: ToolCard pulls CompactToolRow + all-tools.
-// The listing Suspense already reserves the slot, so the card chunk can wait.
-const ToolCard = lazy(() =>
-  import("@/components/ToolCard").then((m) => ({ default: m.ToolCard })),
-);
-
-type CategoryPayload = {
-  slug: string;
-  name: string;
-  title: string;
-  description: string;
-  intro: string;
-};
-
-type Neighbor = { slug: string };
+import { ToolListBrowser } from "./-es.categoria.$slug.part1";
+import { type CategoryPayload, type Neighbor, ToolCard } from "./-es.categoria.$slug.part2";
 
 export const Route = createFileRoute("/es/categoria/$slug")({
   loader: async ({ params }) => {

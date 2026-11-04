@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
-
-const title = "Compound Interest Explained: Formulas, Examples & Growth Table | UtiliHub";
-const description = cleanDescription(
-  "Original guide to compound interest. Learn how it works with clear formulas, practical examples, a growth table, and a simple visual. Link to the free UtiliHub compound interest calculator.",
-);
+import { absoluteUrl, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
+import { title } from "./-guides.compound-interest.part1";
+import { description } from "./-guides.compound-interest.part2";
 
 export const Route = createFileRoute("/guides/compound-interest")({
   head: () => ({

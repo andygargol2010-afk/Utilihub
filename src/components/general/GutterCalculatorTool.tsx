@@ -1,43 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "m" | "ft";
-type Layout = "closed" | "two" | "one" | "custom";
-type PresetId = "metric" | "us" | "front" | "rain";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(value);
-}
-
-type Preset = {
-  id: PresetId;
-  unit: Unit;
-  layout: Layout;
-  length: string;
-  width: string;
-  section: string;
-  hanger: string;
-  downspout: string;
-  waste: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "metric", unit: "m", layout: "closed", length: "10", width: "8", section: "3", hanger: "0.6", downspout: "10", waste: "8" },
-  { id: "us", unit: "ft", layout: "closed", length: "40", width: "30", section: "10", hanger: "2", downspout: "30", waste: "8" },
-  { id: "front", unit: "m", layout: "two", length: "12", width: "8", section: "3", hanger: "0.6", downspout: "10", waste: "10" },
-  { id: "rain", unit: "ft", layout: "closed", length: "40", width: "30", section: "10", hanger: "1.5", downspout: "20", waste: "10" },
-];
+import { type Locale } from "./GutterCalculatorTool.part1";
+import { type Unit, type Layout, parseNum, type Preset, PRESETS, formatNum, type PresetId, buttonClass, inputClass } from "./GutterCalculatorTool.part2";
 
 export function GutterCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

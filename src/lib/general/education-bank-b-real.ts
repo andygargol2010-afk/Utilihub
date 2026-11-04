@@ -1,7 +1,5 @@
-import type { EducationDifficulty, EducationLevel } from "./education-engine";
-
-type Q={text:string;options:string[];answer:string;levels:EducationLevel[];difficulty:EducationDifficulty};
-const q=(text:string,options:string[],answer:string,levels:EducationLevel[],difficulty:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+import { type Q } from "./education-bank-b-real.part1";
+import { q } from "./education-bank-b-real.part2";
 
 export const MAPAS:Q[]=[
  q("What does a map scale represent?",["The ratio between a map distance and the real distance","Maximum altitude","Average temperature","Age of the map"],"The ratio between a map distance and the real distance",["universidad"],"dificil"),

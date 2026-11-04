@@ -1,25 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function countWords(text: string): number {
-  return text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
-}
-
-function formatMinutes(minutes: number, es: boolean): string {
-  if (minutes < 1) {
-    const secs = Math.round(minutes * 60);
-    return es ? `${secs} s` : `${secs}s`;
-  }
-  const m = Math.floor(minutes);
-  const s = Math.round((minutes - m) * 60);
-  if (s === 0) return es ? `${m} min` : `${m} min`;
-  return es ? `${m} min ${s} s` : `${m}m ${s}s`;
-}
+import { type Locale } from "./ReadingTimeTool.part1";
+import { countWords, formatMinutes, fieldClass, buttonClass } from "./ReadingTimeTool.part2";
 
 export function ReadingTimeTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

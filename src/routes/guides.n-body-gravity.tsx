@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
-
-const title = "Interactive N-Body Gravity Simulations in the Browser | UtiliHub";
-const description = cleanDescription(
-  "Original guide to N-body and multi-attractor gravity simulations. Newtonian force summation, soft collisions, fading trails, body glow, presets (binary, mini-solar, chaotic, figure-8), zoom/pan, performance caps. Live N-Body Gravity Simulator explained with formulas and intuition.",
-);
+import { absoluteUrl, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
+import { title } from "./-guides.n-body-gravity.part1";
+import { description } from "./-guides.n-body-gravity.part2";
 
 export const Route = createFileRoute("/guides/n-body-gravity")({
   head: () => ({

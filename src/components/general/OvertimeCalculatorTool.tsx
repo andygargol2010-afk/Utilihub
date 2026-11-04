@@ -1,10 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
+import { type Locale } from "./OvertimeCalculatorTool.part1";
+import { fieldClass, buttonClass } from "./OvertimeCalculatorTool.part2";
 
 export function OvertimeCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

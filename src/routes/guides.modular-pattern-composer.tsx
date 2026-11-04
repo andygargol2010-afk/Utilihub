@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
-
-const title = "Modular Pattern Composer: Tile Systems and Live Procedural Animations | UtiliHub";
-const description = cleanDescription(
-  "Original guide to the Modular Pattern Composer. Place modular tiles on a grid with live procedural animations (flow, pulse, morph, spin), multi-layer blend and opacity, symmetry (mirror, radial), tile library (geometric, organic, particle, hex, blob), color palettes and gradients, playback controls, brush size, PNG share with branding, URL deep-link and localStorage persistence. Distinct from freehand neon.",
-);
+import { absoluteUrl, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
+import { title } from "./-guides.modular-pattern-composer.part1";
+import { description } from "./-guides.modular-pattern-composer.part2";
 
 export const Route = createFileRoute("/guides/modular-pattern-composer")({
   head: () => ({

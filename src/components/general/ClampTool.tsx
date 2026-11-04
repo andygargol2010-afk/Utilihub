@@ -1,13 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { buildClamp } from "@/lib/general/clamp";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const EXAMPLE = { minPx: "16", maxPx: "24", minVw: "320", maxVw: "1200", root: "16" };
+import { type Locale } from "./ClampTool.part1";
+import { EXAMPLE, fieldClass, buttonClass } from "./ClampTool.part2";
 
 export function ClampTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

@@ -1,13 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { decodeUlid, generateUlids } from "@/lib/general/ulid";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const EXAMPLES = ["01ARZ3NDEKTSV4RRFFQ69G5FAV", "01HF7YAT00041061050R3GG28A"];
+import { type Locale } from "./UlidTool.part1";
+import { EXAMPLES, buttonClass, fieldClass } from "./UlidTool.part2";
 
 export function UlidTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

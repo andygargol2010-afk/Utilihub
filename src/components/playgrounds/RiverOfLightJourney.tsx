@@ -1,16 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
-
-type Point = { x: number; y: number };
-type Particle = {
-  t: number; // progress 0..1 along path
-  speed: number;
-  size: number;
-  life: number;
-  color: string;
-};
-
-const PALETTE = ["#00f5ff", "#7cff6b", "#ffd700", "#ff2d95", "#b388ff", "#ffffff", "#ff6b35", "#4fc3f7"];
+import { type Point } from "./RiverOfLightJourney.part1";
+import { type Particle, PALETTE } from "./RiverOfLightJourney.part2";
 
 export function RiverOfLightJourney({ locale = "en" }: { locale?: "en" | "es" }) {
   useEffect(() => {

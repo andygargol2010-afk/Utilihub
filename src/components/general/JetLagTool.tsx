@@ -1,11 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { laPreset, londonPreset, parseClock, planJetLag } from "@/lib/general/jetlag";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
+import { type Locale } from "./JetLagTool.part1";
+import { buttonClass, inputClass } from "./JetLagTool.part2";
 
 export function JetLagTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

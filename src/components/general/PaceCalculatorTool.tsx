@@ -1,37 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function parseTime(str: string): number | null {
-  // Accept mm:ss or h:mm:ss or minutes as number
-  const cleaned = str.trim();
-  if (!cleaned) return null;
-  if (/^\d+(\.\d+)?$/.test(cleaned)) return parseFloat(cleaned) * 60; // minutes to seconds
-  const parts = cleaned.split(":").map((p) => parseInt(p, 10));
-  if (parts.some(isNaN)) return null;
-  if (parts.length === 2) return parts[0] * 60 + parts[1];
-  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
-  return null;
-}
-
-function formatTime(seconds: number): string {
-  if (!isFinite(seconds) || seconds < 0) return "—";
-  const total = Math.round(seconds);
-  const h = Math.floor(total / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
-  if (h > 0) return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-  return `${m}:${s.toString().padStart(2, "0")}`;
-}
-
-function formatPace(secondsPerUnit: number): string {
-  if (!isFinite(secondsPerUnit) || secondsPerUnit <= 0) return "—";
-  return formatTime(secondsPerUnit);
-}
+import { type Locale } from "./PaceCalculatorTool.part1";
+import { parseTime, formatPace, formatTime, buttonClass, fieldClass } from "./PaceCalculatorTool.part2";
 
 export function PaceCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

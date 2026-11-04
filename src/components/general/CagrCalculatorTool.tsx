@@ -1,17 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function cagr(initial: number, final: number, years: number): number | { error: string } {
-  if (!Number.isFinite(initial) || initial <= 0) return { error: "initial" };
-  if (!Number.isFinite(final) || final <= 0) return { error: "final" };
-  if (!Number.isFinite(years) || years <= 0) return { error: "years" };
-  return Math.pow(final / initial, 1 / years) - 1;
-}
+import { type Locale } from "./CagrCalculatorTool.part1";
+import { cagr, fieldClass, buttonClass } from "./CagrCalculatorTool.part2";
 
 export function CagrCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

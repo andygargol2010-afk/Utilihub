@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
-
-const title = "Física de Partículas en el Navegador: Gravedad, Atracción y Sistemas | UtiliHub";
-const description = cleanDescription(
-  "Guía original sobre simulaciones de partículas en el navegador. Aprende cómo funcionan la gravedad, las fuerzas de atracción y los sistemas de partículas con fórmulas, explicaciones visuales y ejemplos en vivo. Prueba Gravity Particles y Río de Luz.",
-);
+import { absoluteUrl, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
+import { title } from "./-es.guias.fisica-particulas.part1";
+import { description } from "./-es.guias.fisica-particulas.part2";
 
 export const Route = createFileRoute("/es/guias/fisica-particulas")({
   head: () => ({

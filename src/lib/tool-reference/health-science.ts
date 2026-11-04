@@ -1,6 +1,9 @@
 // Reference content for BMI (calculadora-imc) and dew point (calculadora-punto-rocio).
 // Add entries surgically; never rewrite this file wholesale.
 import type { ToolReference } from "./types";
+import { DEW_POINT_REFERENCE_PART1 } from "./health-science.part1";
+import { DEW_POINT_REFERENCE_PART2 } from "./health-science.part2";
+
 
 export const BMI_REFERENCE: ToolReference = {
   formula: {
@@ -56,41 +59,8 @@ export const BMI_REFERENCE: ToolReference = {
 };
 
 export const DEW_POINT_REFERENCE: ToolReference = {
-  formula: {
-    title: { en: "Dew point formula (Magnus)", es: "Fórmula del punto de rocío (Magnus)" },
-    lines: [
-      {
-        en: "γ = ln(RH ÷ 100) + (17.625 × T) ÷ (243.04 + T)",
-        es: "γ = ln(HR ÷ 100) + (17,625 × T) ÷ (243,04 + T)",
-      },
-      { en: "Dew point Td = 243.04 × γ ÷ (17.625 − γ)", es: "Punto de rocío Td = 243,04 × γ ÷ (17,625 − γ)" },
-      {
-        en: "T is air temperature in °C and RH is relative humidity in %. Valid over liquid water; below 0 °C it is not the frost point.",
-        es: "T es la temperatura del aire en °C y HR la humedad relativa en %. Vale sobre agua líquida; bajo 0 °C no es el punto de escarcha.",
-      },
-    ],
-  },
-  table: {
-    caption: {
-      en: "Dew point (°C) by air temperature and relative humidity",
-      es: "Punto de rocío (°C) según temperatura del aire y humedad relativa",
-    },
-    headers: [
-      { en: "Relative humidity", es: "Humedad relativa" },
-      { en: "20 °C", es: "20 °C" },
-      { en: "25 °C", es: "25 °C" },
-      { en: "30 °C", es: "30 °C" },
-    ],
-    rows: [
-      { en: ["30 %", "1.9", "6.2", "10.5"], es: ["30 %", "1,9", "6,2", "10,5"] },
-      { en: ["40 %", "6.0", "10.5", "14.9"], es: ["40 %", "6,0", "10,5", "14,9"] },
-      { en: ["50 %", "9.3", "13.9", "18.4"], es: ["50 %", "9,3", "13,9", "18,4"] },
-      { en: ["60 %", "12.0", "16.7", "21.4"], es: ["60 %", "12,0", "16,7", "21,4"] },
-      { en: ["70 %", "14.4", "19.1", "23.9"], es: ["70 %", "14,4", "19,1", "23,9"] },
-      { en: ["80 %", "16.4", "21.3", "26.2"], es: ["80 %", "16,4", "21,3", "26,2"] },
-      { en: ["90 %", "18.3", "23.2", "28.2"], es: ["90 %", "18,3", "23,2", "28,2"] },
-    ],
-  },
+  ...DEW_POINT_REFERENCE_PART1,
+  ...DEW_POINT_REFERENCE_PART2,
   examples: [
     {
       en: "20 °C and 65 % RH: γ = ln(0.65) + 352.5 ÷ 263.04 = −0.431 + 1.340 = 0.909 → Td = 243.04 × 0.909 ÷ 16.716 ≈ 13.2 °C. Surfaces colder than 13 °C will collect condensation.",

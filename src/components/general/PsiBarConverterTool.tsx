@@ -1,14 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "psi" | "bar";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-const PSI_TO_BAR = 0.0689476;
-const BAR_TO_PSI = 14.5038;
+import { type Locale } from "./PsiBarConverterTool.part1";
+import { type Unit, PSI_TO_BAR, BAR_TO_PSI, fieldClass, buttonClass } from "./PsiBarConverterTool.part2";
 
 export function PsiBarConverterTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

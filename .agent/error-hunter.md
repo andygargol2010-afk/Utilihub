@@ -47,6 +47,7 @@ Lesson: the 2026-10-28 registry split kept the build green but silently sent 102
 6. **Out-of-scope breakage:** report it in the summary (file + URL + symptom); do not «fix» it by rewriting someone else's code.
 7. **If your push breaks build or a guard:** `git revert` your own commit in the next step. Never force-push, never reset shared branches, never restore from an older commit than the previous one.
 8. **Summary must list:** files changed, guard output (`✓ tool routing guard OK`), and the smoke URLs tested. Missing evidence = task BLOQUEADA, not HECHA.
+9. **3-part split (2026-11-04).** Files >5 KB were split into `X.part1.ts(x)`, `X.part2.ts(x)` and `X.ts(x)` (routes: `-x.part1.tsx`, ignored by the router). `X` re-exports everything — keep importing from `X`. Edit the part that contains the code; add new data entries to the smallest part. Never merge parts back, never re-split, never create `.part3`. Part files must import only from earlier parts (part2 ← part1, X ← both) — no cycles.
 
 ## MODE (pick once per run)
 

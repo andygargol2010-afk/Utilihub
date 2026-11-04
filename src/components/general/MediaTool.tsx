@@ -2,22 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { getToolShowcase } from "@/lib/tool-showcase";
 import { showcaseUi } from "@/lib/showcase-ui";
-
-const download = (blob: Blob, name: string) => {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = name;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-};
-const readBytes = (file: File) => file.arrayBuffer();
-const loadImage = (file: File) => new Promise<HTMLImageElement>((resolve,reject)=>{const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Could not read the image."))};img.src=url});
-const canvasBlob=(canvas:HTMLCanvasElement,type:string,quality=0.9)=>new Promise<Blob>((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error("Could not generate the image.")),type,quality));
-const rotatedBounds=(width:number,height:number,angle:number)=>{const r=Math.abs(angle%360)*Math.PI/180;return{width:Math.ceil(Math.abs(width*Math.cos(r))+Math.abs(height*Math.sin(r))),height:Math.ceil(Math.abs(width*Math.sin(r))+Math.abs(height*Math.cos(r)))}};
-
-const ES_ACTIONS:Record<string,string>={"redimensionar-imagen":"Redimensionar","comprimir-imagen":"Comprimir","png-a-jpg":"Convertir a JPG","jpg-a-png":"Convertir a PNG","webp-a-jpg":"Convertir a JPG","jpg-a-webp":"Convertir a WebP",favicon:"Generar favicon","recortar-imagen":"Recortar","rotar-imagen":"Rotar","escala-grises":"Convertir a escala de grises","color-dominante":"Analizar color","unir-pdf":"Unir PDFs","dividir-pdf":"Extraer página","imagenes-a-pdf":"Crear PDF","pdf-a-imagenes":"Convertir a imágenes","rotar-pdf":"Rotar PDF","reordenar-pdf":"Reordenar páginas","extraer-texto-pdf":"Extraer texto"};
-const translateError=(message:string)=>({"Could not read the image.":"No se pudo leer la imagen.","Could not generate the image.":"No se pudo generar la imagen.","Select at least one file.":"Selecciona al menos un archivo.","Enter valid width and height.":"Introduce un ancho y una altura válidos.","Enter a valid angle.":"Introduce un ángulo válido.","Canvas not available.":"Canvas no disponible.","Select at least two PDFs.":"Selecciona al menos dos PDFs.","Invalid page.":"Página no válida.","Unrecognized PDF operation.":"Operación PDF no reconocida.","Could not process the file.":"No se pudo procesar el archivo."}[message]??message);
+import { download } from "./MediaTool.part1";
+import { loadImage, rotatedBounds, canvasBlob, readBytes, translateError, ES_ACTIONS } from "./MediaTool.part2";
 
 export function MediaTool({tool,locale="en"}:{tool:GeneralTool;locale?:"en"|"es"}) {
   const es=locale==="es"; const showcase=getToolShowcase(tool.slug); const ui=showcaseUi(showcase?.accent);

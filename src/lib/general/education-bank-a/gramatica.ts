@@ -1,7 +1,5 @@
-import type { EducationDifficulty, EducationLevel } from "../education-engine";
-
-type Q={text:string;options:string[];answer:string;levels:EducationLevel[];difficulty:EducationDifficulty};
-const q=(text:string,options:string[],answer:string,levels:EducationLevel[],difficulty:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+import { type Q } from "./gramatica.part1";
+import { q } from "./gramatica.part2";
 
 export const GRAMATICA:Q[]=[
 q("Which word is the noun in «La casa grande tiene ventanas»?",["casa","grande","tiene","ventanas"],"casa",["primaria"],"facil"),

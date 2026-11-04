@@ -1,19 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
-
-type Point = { x: number; y: number };
-type Particle = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  maxLife: number;
-  size: number;
-  color: string;
-};
-
-const PALETTE = ["#ff2d95", "#00f5ff", "#ffd700", "#7cff6b", "#b388ff", "#ff6b35", "#ffffff", "#ff3b30"];
+import { type Point } from "./GlowTrailComposer.part1";
+import { type Particle, PALETTE } from "./GlowTrailComposer.part2";
 
 export function GlowTrailComposer({ locale = "en" }: { locale?: "en" | "es" }) {
   useEffect(() => {

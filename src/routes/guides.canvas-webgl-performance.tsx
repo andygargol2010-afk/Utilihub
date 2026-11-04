@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
-
-const title = "Canvas & WebGL Performance for Interactive Web Experiences | UtiliHub";
-const description = cleanDescription(
-  "Original guide to keeping particle systems, physics sims and playgrounds at smooth 60fps. requestAnimationFrame, object pooling, devicePixelRatio, reduced motion, mobile budgets and Performance API measurement.",
-);
+import { absoluteUrl, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
+import { title } from "./-guides.canvas-webgl-performance.part1";
+import { description } from "./-guides.canvas-webgl-performance.part2";
 
 export const Route = createFileRoute("/guides/canvas-webgl-performance")({
   head: () => ({

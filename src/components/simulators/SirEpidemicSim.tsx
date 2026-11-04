@@ -1,13 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 560;
-const H = 300;
-const HIST = 280;
-const N = 1000;
-
-type SIR = { s: number; i: number; r: number };
+import { W } from "./SirEpidemicSim.part1";
+import { type SIR, N, HIST, H } from "./SirEpidemicSim.part2";
 
 export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

@@ -1,27 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "C" | "F" | "K";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function toCelsius(value: number, from: Unit): number {
-  if (from === "C") return value;
-  if (from === "F") return ((value - 32) * 5) / 9;
-  return value - 273.15;
-}
-
-function fromCelsius(celsius: number, to: Unit): number {
-  if (to === "C") return celsius;
-  if (to === "F") return (celsius * 9) / 5 + 32;
-  return celsius + 273.15;
-}
-
-function round(n: number) {
-  return Math.round(n * 100) / 100;
-}
+import { type Locale } from "./TemperatureConverterTool.part1";
+import { type Unit, toCelsius, round, fromCelsius, fieldClass, buttonClass } from "./TemperatureConverterTool.part2";
 
 export function TemperatureConverterTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

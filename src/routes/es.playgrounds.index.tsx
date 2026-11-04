@@ -1,10 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
-
-const title = "Playgrounds | UtiliHub";
-const description = cleanDescription(
-  "Playgrounds visuales interactivos en el navegador. Experimentá con partículas, física y controles en vivo.",
-);
+import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
+import { title } from "./-es.playgrounds.index.part1";
+import { description } from "./-es.playgrounds.index.part2";
 
 export const Route = createFileRoute("/es/playgrounds/")({
   head: () => ({

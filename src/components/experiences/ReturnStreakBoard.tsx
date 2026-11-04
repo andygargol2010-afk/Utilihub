@@ -1,86 +1,8 @@
 "use client";
-
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { PLAYGROUNDS, playgroundPath, playgroundName, type PlaygroundLocale } from "@/lib/playgrounds/next-step";
-
-const STORAGE_KEY = "utilihub-return-streak-v1";
-
-type StreakData = {
-  lastVisit: number;
-  streak: number;
-  longestStreak: number;
-  totalVisits: number;
-  visits: Record<string, number>; // id -> last timestamp
-  visitDates: string[]; // YYYY-MM-DD, recent days
-};
-
-const POPULAR = PLAYGROUNDS.slice(0, 10);
-
-const MILESTONES = [3, 7, 14, 30] as const;
-
-function todayKey(): string {
-  const d = new Date();
-  return d.toISOString().slice(0, 10);
-}
-
-function loadData(): StreakData {
-  if (typeof window === "undefined")
-    return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {}, visitDates: [] };
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {}, visitDates: [] };
-    const parsed = JSON.parse(raw);
-    return {
-      lastVisit: parsed.lastVisit ?? 0,
-      streak: parsed.streak ?? 0,
-      longestStreak: parsed.longestStreak ?? parsed.streak ?? 0,
-      totalVisits: parsed.totalVisits ?? 0,
-      visits: parsed.visits ?? {},
-      visitDates: Array.isArray(parsed.visitDates) ? parsed.visitDates : [],
-    };
-  } catch {
-    return { lastVisit: 0, streak: 0, longestStreak: 0, totalVisits: 0, visits: {}, visitDates: [] };
-  }
-}
-
-function saveData(data: StreakData) {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch {
-    /* ignore */
-  }
-}
-
-function isSameDay(a: number, b: number) {
-  const da = new Date(a);
-  const db = new Date(b);
-  return da.getFullYear() === db.getFullYear() && da.getMonth() === db.getMonth() && da.getDate() === db.getDate();
-}
-
-function daysBetween(a: number, b: number) {
-  return Math.floor(Math.abs(a - b) / 86400000);
-}
-
-function nextMilestone(streak: number): number | null {
-  for (const m of MILESTONES) {
-    if (streak < m) return m;
-  }
-  return null;
-}
-
-function getWeekDays(): Date[] {
-  const days: Date[] = [];
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    days.push(d);
-  }
-  return days;
-}
+import { playgroundPath, playgroundName, type PlaygroundLocale } from "@/lib/playgrounds/next-step";
+import { type StreakData, loadData, isSameDay, daysBetween, todayKey, saveData, POPULAR, nextMilestone, MILESTONES, getWeekDays } from "./ReturnStreakBoard.part2";
 
 export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale }) {
   const [data, setData] = useState<StreakData>({

@@ -1,35 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
-
-type Point = { x: number; y: number };
-type Layer = {
-  id: number;
-  points: Point[];
-  color: string;
-  opacity: number;
-  created: number;
-  fade: number;
-};
-type Particle = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  maxLife: number;
-  size: number;
-  color: string;
-};
-
-type Palette = "neon" | "aurora" | "sunset" | "cyber";
-type Symmetry = "none" | "mirror" | "radial" | "kaleido";
-
-const PALETTES: Record<Palette, string[]> = {
-  neon: ["#ff00ff", "#00ffff", "#39ff14", "#ff073a", "#fe019a", "#0ff0fc"],
-  aurora: ["#7df9ff", "#b388ff", "#80ffdb", "#c77dff", "#48bfe3", "#64dfdf"],
-  sunset: ["#ff6b6b", "#ff8e53", "#ffd93d", "#ff6b9d", "#c44569", "#f8b500"],
-  cyber: ["#00f5ff", "#ff00aa", "#b026ff", "#00ff9f", "#ffea00", "#ff2e97"],
-};
+import { type Point } from "./NeonLayerComposer.part1";
+import { type Layer, type Particle, type Symmetry, type Palette, PALETTES } from "./NeonLayerComposer.part2";
 
 export function NeonLayerComposer({ locale = "en" }: { locale?: "en" | "es" | "pt" }) {
   useEffect(() => {
@@ -570,4 +542,3 @@ export function NeonLayerComposer({ locale = "en" }: { locale?: "en" | "es" | "p
     </div>
   );
 }
-

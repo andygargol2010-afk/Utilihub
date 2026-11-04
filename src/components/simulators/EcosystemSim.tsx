@@ -1,12 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 560;
-const H = 320;
-const HIST = 180;
-
-type State = { plants: number; herb: number; pred: number };
+import { W } from "./EcosystemSim.part1";
+import { type State, HIST, H } from "./EcosystemSim.part2";
 
 export function EcosystemSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

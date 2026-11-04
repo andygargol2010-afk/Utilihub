@@ -1,37 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type LayoutId = "straight" | "wide" | "vinyl" | "herringbone";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(value);
-}
-
-type Preset = {
-  id: LayoutId;
-  lengthMm: string;
-  widthMm: string;
-  packM2: string;
-  waste: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "straight", lengthMm: "1380", widthMm: "193", packM2: "2.22", waste: "8" },
-  { id: "wide", lengthMm: "1524", widthMm: "228", packM2: "2.16", waste: "8" },
-  { id: "vinyl", lengthMm: "1220", widthMm: "180", packM2: "2.2", waste: "8" },
-  { id: "herringbone", lengthMm: "600", widthMm: "100", packM2: "1.44", waste: "15" },
-];
+import { type Locale } from "./FlooringCalculatorTool.part1";
+import { PRESETS, parseNum, type Preset, formatNum, type LayoutId, buttonClass, inputClass } from "./FlooringCalculatorTool.part2";
 
 export function FlooringCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

@@ -2,27 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-const PADS = [
-  { id: 0, labelEn: "Red", labelEs: "Rojo", bg: "#dc2626", active: "#f87171", freq: 329.63, key: "1" },
-  { id: 1, labelEn: "Green", labelEs: "Verde", bg: "#16a34a", active: "#4ade80", freq: 392.0, key: "2" },
-  { id: 2, labelEn: "Blue", labelEs: "Azul", bg: "#2563eb", active: "#60a5fa", freq: 440.0, key: "3" },
-  { id: 3, labelEn: "Yellow", labelEs: "Amarillo", bg: "#ca8a04", active: "#facc15", freq: 493.88, key: "4" },
-] as const;
-
-type Status = "idle" | "playing" | "input" | "over";
-type Difficulty = "easy" | "normal" | "hard";
-
-const SPEED: Record<Difficulty, number> = { easy: 1.45, normal: 1, hard: 0.65 };
-
-function mulberry32(seed: number) {
-  return function () {
-    let t = (seed += 0x6d2b79f5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+import { PADS } from "./SimonSequenceMemoryGame.part1";
+import { type Status, type Difficulty, SPEED, mulberry32 } from "./SimonSequenceMemoryGame.part2";
 
 export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";

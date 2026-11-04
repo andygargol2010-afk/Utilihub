@@ -1,19 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import {
-  computeWindChill,
-  emptyWindChill,
-  formatTemp,
-  nwsPreset,
-  validateWindChill,
-  walkPreset,
-  type WindChillInput,
-} from "@/lib/general/wind-chill";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
+import { computeWindChill, emptyWindChill, formatTemp, nwsPreset, validateWindChill, walkPreset, type WindChillInput } from "@/lib/general/wind-chill";
+import { type Locale } from "./WindChillTool.part1";
+import { buttonClass, inputClass } from "./WindChillTool.part2";
 
 export function WindChillTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

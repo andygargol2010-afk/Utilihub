@@ -1,80 +1,13 @@
 // TOOL_SEO_OVERRIDES_GEOMETRY part 2 — split out of ../tool-seo-overrides-geometry.ts on 2026-10-28.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import type { ToolSeoOverrideGeometry } from "../tool-seo-overrides-geometry";
+import { TOOL_SEO_OVERRIDES_GEOMETRY_2_PART1 } from "./geometry-2.part1";
+import { TOOL_SEO_OVERRIDES_GEOMETRY_2_PART2 } from "./geometry-2.part2";
+
 
 export const TOOL_SEO_OVERRIDES_GEOMETRY_2: Record<string, ToolSeoOverrideGeometry> = {
-  "distancia-dos-puntos": {
-    metaTitle: "Distance Between Two Points Calculator — 2D Formula | UtiliHub",
-    metaTitleEs: "Calculadora distancia entre dos puntos — fórmula 2D | UtiliHub",
-    metaDescription:
-      "Euclidean distance √[(x₂−x₁)²+(y₂−y₁)²] plus Δx and Δy. Free coordinate-geometry tool.",
-    metaDescriptionEs:
-      "Distancia euclídea √[(x₂−x₁)²+(y₂−y₁)²] más Δx y Δy. Herramienta de geometría analítica gratis.",
-    about: [
-      "The distance formula is the Pythagorean theorem applied to coordinate differences.",
-      "Δx and Δy are shown so you can inspect horizontal and vertical components.",
-      "Pair it with the midpoint tool for full segment analysis.",
-    ],
-    aboutEs: [
-      "La fórmula de la distancia es Pitágoras aplicado a las diferencias de coordenadas.",
-      "Se muestran Δx y Δy para ver las componentes horizontal y vertical.",
-      "Combinála con el punto medio para analizar el segmento completo.",
-    ],
-    steps: [
-      "Enter (x₁, y₁) and (x₂, y₂).",
-      "Calculate distance and deltas.",
-      "Keep both points in the same unit system.",
-    ],
-    stepsEs: [
-      "Ingresá (x₁, y₁) y (x₂, y₂).",
-      "Calculá la distancia y los deltas.",
-      "Mantené ambos puntos en el mismo sistema de unidades.",
-    ],
-    faq: [
-      { q: "3D points?", a: "Add (z₂−z₁)² under the square root; this tool is planar." },
-      { q: "Order of points?", a: "Distance does not change if you swap the endpoints." },
-    ],
-    faqEs: [
-      { q: "¿Puntos 3D?", a: "Sumá (z₂−z₁)² bajo la raíz; esta herramienta es plana." },
-      { q: "¿Orden de los puntos?", a: "La distancia no cambia si intercambiás los extremos." },
-    ],
-  },
-  "punto-medio": {
-    metaTitle: "Midpoint Calculator — Average of Two Coordinates | UtiliHub",
-    metaTitleEs: "Calculadora de punto medio — promedio de coordenadas | UtiliHub",
-    metaDescription:
-      "Find the midpoint ((x₁+x₂)/2, (y₁+y₂)/2) of a segment. Free analytic geometry helper.",
-    metaDescriptionEs:
-      "Obtené el punto medio ((x₁+x₂)/2, (y₁+y₂)/2) de un segmento. Ayuda de geometría analítica gratis.",
-    about: [
-      "The midpoint averages each coordinate of the endpoints.",
-      "It is also the center of the circle that has the segment as diameter.",
-      "Use alongside the distance formula for segment length and center.",
-    ],
-    aboutEs: [
-      "El punto medio promedia cada coordenada de los extremos.",
-      "También es el centro del círculo que tiene el segmento como diámetro.",
-      "Usalo junto con la distancia para longitud y centro del segmento.",
-    ],
-    steps: [
-      "Enter both endpoints.",
-      "Read the midpoint x and y.",
-      "Combine with distance if you need the length too.",
-    ],
-    stepsEs: [
-      "Ingresá ambos extremos.",
-      "Leé el punto medio en x e y.",
-      "Combiná con la distancia si también necesitás la longitud.",
-    ],
-    faq: [
-      { q: "Unique midpoint?", a: "Yes — every segment has exactly one." },
-      { q: "3D?", a: "Average z as well; this tool covers the plane." },
-    ],
-    faqEs: [
-      { q: "¿Punto medio único?", a: "Sí: cada segmento tiene exactamente uno." },
-      { q: "¿3D?", a: "Promediá también z; esta herramienta cubre el plano." },
-    ],
-  },
+  ...TOOL_SEO_OVERRIDES_GEOMETRY_2_PART1,
+  ...TOOL_SEO_OVERRIDES_GEOMETRY_2_PART2,
   "area-poligono-regular": {
     metaTitle: "Regular Polygon Area Calculator — n Sides × Side Length | UtiliHub",
     metaTitleEs: "Calculadora área polígono regular — n lados × longitud | UtiliHub",

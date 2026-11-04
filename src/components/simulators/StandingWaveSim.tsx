@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 420;
-const H = 280;
-const STRING_Y = 140;
-const LENGTH_M = 1.2;
+import { W } from "./StandingWaveSim.part1";
+import { LENGTH_M, H, STRING_Y } from "./StandingWaveSim.part2";
 
 export function StandingWaveSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

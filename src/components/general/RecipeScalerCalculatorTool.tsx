@@ -1,16 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function scale(original: number, factor: number): number | { error: string } {
-  if (!Number.isFinite(original) || original <= 0) return { error: "original" };
-  if (!Number.isFinite(factor) || factor <= 0) return { error: "factor" };
-  return original * factor;
-}
+import { type Locale } from "./RecipeScalerCalculatorTool.part1";
+import { scale, buttonClass, fieldClass } from "./RecipeScalerCalculatorTool.part2";
 
 export function RecipeScalerCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

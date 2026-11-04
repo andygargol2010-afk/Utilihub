@@ -1,23 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
-
-type Tile = { type: string; color: string; phase: number };
-type Layer = { id: number; tiles: (Tile | null)[][]; opacity: number; blend: string };
-
-type Palette = "neon" | "aurora" | "sunset" | "cyber";
-type Symmetry = "none" | "mirror" | "radial";
-type Anim = "flow" | "pulse" | "morph";
-
-const PALETTES: Record<Palette, string[]> = {
-  neon: ["#ff00ff", "#00ffff", "#39ff14", "#ff073a", "#fe019a", "#0ff0fc"],
-  aurora: ["#7df9ff", "#b388ff", "#80ffdb", "#c77dff", "#48bfe3", "#64dfdf"],
-  sunset: ["#ff6b6b", "#ff8e53", "#ffd93d", "#ff6b9d", "#c44569", "#f8b500"],
-  cyber: ["#00f5ff", "#ff00aa", "#b026ff", "#00ff9f", "#ffea00", "#ff2e97"],
-};
-
-const TILE_TYPES = ["square", "circle", "triangle", "cross", "particle"];
-
-const GRID = 12;
+import { type Tile } from "./ModularPatternComposer.part1";
+import { type Layer, type Palette, type Symmetry, type Anim, PALETTES, GRID } from "./ModularPatternComposer.part2";
 
 export function ModularPatternComposer({ locale = "en" }: { locale?: "en" | "es" }) {
   useEffect(() => {

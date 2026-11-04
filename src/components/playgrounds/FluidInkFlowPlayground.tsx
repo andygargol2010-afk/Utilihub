@@ -1,63 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Download, Pause, Play, Shuffle, Trash2 } from "lucide-react";
-
-type Point = { x: number; y: number; color: string };
-type Stroke = { id: string; points: Point[] };
-type Particle = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  color: string;
-  life: number;
-  maxLife: number;
-};
-
-type Props = { locale: "en" | "es" | "fr" | "de" | "pt" };
-
-const STORAGE_KEY = "utilihub-fluid-ink-flow-v1";
-
-function hexToRgb(hex: string): [number, number, number] {
-  const h = hex.replace("#", "");
-  const n = parseInt(h.length === 3 ? h.split("").map((c) => c + c).join("") : h, 16);
-  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-}
-
-function rgbToHex(r: number, g: number, b: number): string {
-  const to = (v: number) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0");
-  return `#${to(r)}${to(g)}${to(b)}`;
-}
-
-function blendHex(a: string, b: string, t: number): string {
-  const [ar, ag, ab] = hexToRgb(a);
-  const [br, bg, bb] = hexToRgb(b);
-  return rgbToHex(ar + (br - ar) * t, ag + (bg - ag) * t, ab + (bb - ab) * t);
-}
-
-function encodeStrokes(strokes: Stroke[]): string {
-  try {
-    const slim = strokes.map((s) => ({
-      id: s.id,
-      points: s.points.map((p) => [Math.round(p.x), Math.round(p.y), p.color]),
-    }));
-    return btoa(unescape(encodeURIComponent(JSON.stringify(slim))));
-  } catch {
-    return "";
-  }
-}
-
-function decodeStrokes(raw: string): Stroke[] {
-  try {
-    const json = decodeURIComponent(escape(atob(raw)));
-    const slim = JSON.parse(json) as { id: string; points: [number, number, string][] }[];
-    return slim.map((s) => ({
-      id: s.id,
-      points: s.points.map(([x, y, color]) => ({ x, y, color })),
-    }));
-  } catch {
-    return [];
-  }
-}
+import { type Props, type Stroke, type Particle, encodeStrokes, STORAGE_KEY, decodeStrokes, hexToRgb, rgbToHex } from "./FluidInkFlowPlayground.part2";
 
 export function FluidInkFlowPlayground({ locale }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);

@@ -1,41 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-type Boid = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  hue: number;
-  trail: { x: number; y: number; a: number }[];
-};
-
-const W = 520;
-const H = 380;
-const MAX_BOIDS = 140;
-const TRAIL_MAX = 18;
-
-const PRESETS = [
-  { id: "school", en: "School", es: "Cardumen", sep: 1.2, align: 1.4, coh: 1.3, speed: 1.1, perc: 85, wander: 0.3 },
-  { id: "scatter", en: "Scatter", es: "Dispersar", sep: 2.0, align: 0.4, coh: 0.3, speed: 1.0, perc: 60, wander: 0.8 },
-  { id: "tight", en: "Tight", es: "Compacto", sep: 0.8, align: 1.1, coh: 1.6, speed: 0.8, perc: 45, wander: 0.2 },
-  { id: "free", en: "Free", es: "Libre", sep: 1.4, align: 1.0, coh: 1.0, speed: 1.0, perc: 70, wander: 0.5 },
-  { id: "swirl", en: "Swirl", es: "Remolino", sep: 0.9, align: 1.6, coh: 0.7, speed: 1.3, perc: 95, wander: 0.4 },
-];
-
-function makeBoid(x?: number, y?: number): Boid {
-  const ang = Math.random() * Math.PI * 2;
-  const sp = 1.2 + Math.random() * 1.4;
-  return {
-    x: x ?? Math.random() * W,
-    y: y ?? Math.random() * H,
-    vx: Math.cos(ang) * sp,
-    vy: Math.sin(ang) * sp,
-    hue: 180 + Math.random() * 80,
-    trail: [],
-  };
-}
+import { type Boid } from "./BoidsFlockingLab.part1";
+import { W, H, makeBoid, MAX_BOIDS, PRESETS, TRAIL_MAX } from "./BoidsFlockingLab.part2";
 
 export function BoidsFlockingLab({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

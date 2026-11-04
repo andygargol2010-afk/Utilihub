@@ -1,31 +1,12 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
 import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
 import { englishCategorySlug, englishToolSlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
 import type { CatalogTool } from "@/lib/all-tools";
-
-const ToolListBrowser = lazy(() =>
-  import("@/components/ToolListBrowser").then((m) => ({ default: m.ToolListBrowser })),
-);
-
-// ToolCard → CompactToolRow statically pulls ALL_CATEGORIES, i18n, favorites,
-// and route-slugs. Keep that off the category route chunk so the shell hydrates
-// without the catalog module; the list Suspense already reserves the slot.
-const ToolCard = lazy(() =>
-  import("@/components/ToolCard").then((m) => ({ default: m.ToolCard })),
-);
-
-type CategoryPayload = {
-  slug: string;
-  name: string;
-  title: string;
-  description: string;
-  intro: string;
-};
-
-type Neighbor = { slug: string; name: string };
+import { ToolListBrowser } from "./-category.$slug.part1";
+import { type CategoryPayload, type Neighbor, ToolCard } from "./-category.$slug.part2";
 
 export const Route = createFileRoute("/category/$slug")({
   loader: async ({ params }) => {

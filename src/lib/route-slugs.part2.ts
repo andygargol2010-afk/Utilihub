@@ -1,0 +1,126 @@
+// Part 2 of 3 — split from route-slugs.ts on 2026-11-04. Edit here; route-slugs.ts re-exports.
+import type { CatalogTool } from "./all-tools";
+import { CANONICAL_TOOL_REDIRECTS } from "./canonical-tool-redirects";
+import { slugify, usesFinanceRoute, type PublicLocale, englishEntries, englishCollisions } from "./route-slugs.part1";
+
+export let indexedToolsRef: readonly CatalogTool[] | null = null;
+
+export const ENGLISH_CATEGORY_SLUGS: Record<string, string> = {
+  finanzas: "finance",
+  matematicas: "math",
+  texto: "text",
+  desarrollo: "developer",
+  conversiones: "converters",
+  fechas: "date-time",
+  generadores: "generators",
+  diseno: "design-color",
+  "herramientas-avanzadas": "advanced-tools",
+  seguridad: "security",
+  ciencia: "science",
+  productividad: "productivity",
+  educacion: "education",
+  cocina: "cooking",
+  viajes: "travel",
+  hogar: "home",
+  utilidades: "utilities",
+  salud: "health",
+};
+
+export const INTERNAL_CATEGORY_BY_ENGLISH_SLUG = new Map(
+  Object.entries(ENGLISH_CATEGORY_SLUGS).map(([internal, english]) => [english, internal]),
+);
+
+export function englishToolSlug(tool: Pick<CatalogTool, "name">) {
+  return slugify(tool.name);
+}
+
+export function spanishToolSlug(tool: Pick<CatalogTool, "slug">) {
+  return tool.slug;
+}
+
+export function englishToolPath(tool: Pick<CatalogTool, "name" | "category"> & { slug?: string }) {
+  const redirect = tool.slug ? CANONICAL_TOOL_REDIRECTS[tool.slug] : undefined;
+  if (redirect) return redirect.en;
+  const slug = englishToolSlug(tool);
+  return usesFinanceRoute(tool) ? `/finance/${slug}` : `/tools/${slug}`;
+}
+
+export function spanishToolPath(tool: Pick<CatalogTool, "slug" | "category">) {
+  const redirect = CANONICAL_TOOL_REDIRECTS[tool.slug];
+  if (redirect) return redirect.es;
+  return usesFinanceRoute(tool) ? `/es/finanzas/${tool.slug}` : `/es/herramientas/${tool.slug}`;
+}
+
+export function publicToolPath(tool: CatalogTool, locale: PublicLocale = "en") {
+  return locale === "es" ? spanishToolPath(tool) : englishToolPath(tool);
+}
+
+/**
+ * TanStack route `to` + `params` for a catalog tool (handles finance vs tools, EN vs ES).
+ * Avoids casting `/tools/$slug` when the real path is `/finance/...`.
+ */
+export function publicToolLink(
+  tool: Pick<CatalogTool, "name" | "slug" | "category">,
+  locale: PublicLocale = "en",
+): { to: string; params: { slug: string } } {
+  const redirect = CANONICAL_TOOL_REDIRECTS[tool.slug];
+  if (redirect) {
+    return locale === "es"
+      ? { to: "/es/herramientas/$slug", params: { slug: redirect.esSlug } }
+      : { to: "/tools/$slug", params: { slug: redirect.enSlug } };
+  }
+  if (locale === "es") {
+    if (usesFinanceRoute(tool)) {
+      return { to: "/es/finanzas/$slug", params: { slug: tool.slug } };
+    }
+    return { to: "/es/herramientas/$slug", params: { slug: tool.slug } };
+  }
+  if (usesFinanceRoute(tool)) {
+    return { to: "/finance/$slug", params: { slug: englishToolSlug(tool) } };
+  }
+  return { to: "/tools/$slug", params: { slug: englishToolSlug(tool) } };
+}
+
+export function englishCategorySlug(internalCategorySlug: string) {
+  return ENGLISH_CATEGORY_SLUGS[internalCategorySlug] ?? internalCategorySlug;
+}
+
+export function internalCategorySlugFromEnglish(publicCategorySlug: string) {
+  return INTERNAL_CATEGORY_BY_ENGLISH_SLUG.get(publicCategorySlug) ?? publicCategorySlug;
+}
+
+export function englishCategoryPath(internalCategorySlug: string) {
+  return `/category/${englishCategorySlug(internalCategorySlug)}`;
+}
+
+export function buildEnglishToolIndex(tools: readonly CatalogTool[]) {
+  if (indexedToolsRef === tools && englishEntries.size) {
+    return new Map(englishEntries);
+  }
+
+  englishEntries.clear();
+  englishCollisions.clear();
+
+  for (const tool of tools) {
+    const slug = englishToolSlug(tool);
+    const previous = englishEntries.get(slug);
+    if (previous) {
+      const names = englishCollisions.get(slug) ?? [previous.name];
+      names.push(tool.name);
+      englishCollisions.set(slug, names);
+      continue;
+    }
+    englishEntries.set(slug, tool);
+    if (!englishEntries.has(tool.slug)) {
+      englishEntries.set(tool.slug, tool);
+    }
+  }
+
+  if (englishCollisions.size && typeof console !== "undefined") {
+    const details = [...englishCollisions.entries()].map(([slug, names]) => `${slug}: ${names.join(" | ")}`);
+    console.warn(`UtiliHub route slug collision (kept first): ${details.join("; ")}`);
+  }
+
+  indexedToolsRef = tools;
+  return new Map(englishEntries);
+}

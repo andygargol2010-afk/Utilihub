@@ -2,21 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-
-const navLink = "rounded-full px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent";
-const activeNav = { className: "bg-accent text-primary ring-1 ring-primary/70" };
-const mobileLink = "min-h-11 rounded-lg px-3 py-2.5 text-sm font-bold hover:bg-accent";
-const mobileMuted =
-  "min-h-11 rounded-lg px-3 py-2.5 text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground";
-
-/** Atajos de categoría en el desplegable Explorar */
-const BROWSE = [
-  { href: "/es/categoria/herramientas-avanzadas", label: "Herramientas avanzadas" },
-  { href: "/es/categoria/matematicas", label: "Matemáticas" },
-  { href: "/es/categoria/texto", label: "Texto" },
-  { href: "/es/categoria/desarrollo", label: "Desarrollo" },
-  { href: "/es/finanzas", label: "Finanzas" },
-] as const;
+import { navLink } from "./SpanishSiteHeader.part1";
+import { activeNav, BROWSE, mobileLink, mobileMuted } from "./SpanishSiteHeader.part2";
 
 export function SpanishSiteHeader() {
   const [open, setOpen] = useState(false);

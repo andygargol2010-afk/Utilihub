@@ -1,18 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import {
-  LOCALE_PRESETS,
-  defaultLocaleInput,
-  describeSeparator,
-  formatForLocale,
-  validateLocaleInput,
-  type LocaleFormatInput,
-} from "@/lib/general/locale-format";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
+import { LOCALE_PRESETS, defaultLocaleInput, describeSeparator, formatForLocale, validateLocaleInput, type LocaleFormatInput } from "@/lib/general/locale-format";
+import { type Locale } from "./LocaleConverterTool.part1";
+import { buttonClass, inputClass } from "./LocaleConverterTool.part2";
 
 export function LocaleConverterTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

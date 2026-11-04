@@ -1,25 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { APA_PRESETS, buildCitation, type CitationInput, type CitationKind } from "@/lib/general/apa-citation";
-
-type Locale = "en" | "es";
-
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-const fieldClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-
-const EMPTY: CitationInput = {
-  kind: "webpage",
-  authors: "",
-  year: "",
-  month: "",
-  day: "",
-  title: "",
-  container: "",
-  volume: "",
-  issue: "",
-  pages: "",
-  url: "",
-};
+import { type Locale } from "./ApaCitationTool.part1";
+import { buttonClass, EMPTY, fieldClass } from "./ApaCitationTool.part2";
 
 export function ApaCitationTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

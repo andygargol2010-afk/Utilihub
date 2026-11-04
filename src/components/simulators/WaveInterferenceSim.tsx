@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 420;
-const H = 320;
+import { W } from "./WaveInterferenceSim.part1";
+import { H } from "./WaveInterferenceSim.part2";
 
 export function WaveInterferenceSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

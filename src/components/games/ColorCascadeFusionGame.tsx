@@ -1,30 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
-
-const W = 360;
-const H = 520;
-const COLORS = ["#ef4444", "#f97316", "#eab308", "#22c55e", "#3b82f6", "#a855f7"];
-const ORB_R = 18;
-const COMBO_WINDOW_MS = 2800;
-
-type Power = "none" | "bomb" | "freeze" | "multi";
-type Orb = { id: number; x: number; y: number; vy: number; color: string; size: number; fused: boolean; power: Power };
-type Particle = { x: number; y: number; vx: number; vy: number; life: number; color: string };
-type ScorePopup = { x: number; y: number; text: string; life: number; color: string };
-
-function playTone(ctx: AudioContext, freq: number, dur: number, type: OscillatorType = "sine", vol = 0.12) {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, ctx.currentTime);
-  gain.gain.setValueAtTime(vol, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.start();
-  osc.stop(ctx.currentTime + dur);
-}
+import { W } from "./ColorCascadeFusionGame.part1";
+import { type Orb, type Particle, type ScorePopup, playTone, COLORS, type Power, ORB_R, H, COMBO_WINDOW_MS } from "./ColorCascadeFusionGame.part2";
 
 export function ColorCascadeFusionGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";

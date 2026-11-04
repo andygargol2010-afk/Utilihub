@@ -1,80 +1,13 @@
 // TOOL_SEO_OVERRIDES_GEOMETRY part 1 — split out of ../tool-seo-overrides-geometry.ts on 2026-10-28.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import type { ToolSeoOverrideGeometry } from "../tool-seo-overrides-geometry";
+import { TOOL_SEO_OVERRIDES_GEOMETRY_1_PART1 } from "./geometry-1.part1";
+import { TOOL_SEO_OVERRIDES_GEOMETRY_1_PART2 } from "./geometry-1.part2";
+
 
 export const TOOL_SEO_OVERRIDES_GEOMETRY_1: Record<string, ToolSeoOverrideGeometry> = {
-  "formula-heron": {
-    metaTitle: "Heron's Formula Calculator — Triangle Area from 3 Sides | UtiliHub",
-    metaTitleEs: "Calculadora fórmula de Herón — área con 3 lados | UtiliHub",
-    metaDescription:
-      "Compute triangle area with Heron's formula: √[s(s−a)(s−b)(s−c)]. No height needed. Free, instant.",
-    metaDescriptionEs:
-      "Área del triángulo con la fórmula de Herón: √[s(s−a)(s−b)(s−c)]. Sin altura. Gratis e instantáneo.",
-    about: [
-      "Heron's formula finds area from three side lengths alone using the semi-perimeter s.",
-      "It works for any non-degenerate triangle: scalene, isosceles, or equilateral.",
-      "The tool also shows s and the perimeter so you can verify the triangle inequality.",
-    ],
-    aboutEs: [
-      "La fórmula de Herón obtiene el área solo con los tres lados usando el semiperímetro s.",
-      "Vale para cualquier triángulo no degenerado: escaleno, isósceles o equilátero.",
-      "También muestra s y el perímetro para verificar la desigualdad triangular.",
-    ],
-    steps: [
-      "Enter sides a, b, and c in the same unit.",
-      "Calculate area and semi-perimeter.",
-      "If the sides cannot form a triangle, fix the lengths.",
-    ],
-    stepsEs: [
-      "Ingresá los lados a, b y c en la misma unidad.",
-      "Calculá el área y el semiperímetro.",
-      "Si no forman un triángulo, corregí las longitudes.",
-    ],
-    faq: [
-      { q: "Need the height?", a: "No — that is the point of Heron's formula." },
-      { q: "Triangle inequality?", a: "Each side must be shorter than the sum of the other two." },
-    ],
-    faqEs: [
-      { q: "¿Hace falta la altura?", a: "No: esa es la ventaja de Herón." },
-      { q: "¿Desigualdad triangular?", a: "Cada lado debe ser menor que la suma de los otros dos." },
-    ],
-  },
-  "triangulo-rectangulo": {
-    metaTitle: "Right Triangle Calculator — Legs, Hypotenuse & Angles | UtiliHub",
-    metaTitleEs: "Calculadora triángulo rectángulo — catetos, hipotenusa y ángulos | UtiliHub",
-    metaDescription:
-      "Solve a right triangle from two legs or leg + hypotenuse. Get the missing side, area, and acute angles.",
-    metaDescriptionEs:
-      "Resolvé un triángulo rectángulo con dos catetos o cateto + hipotenusa. Lado faltante, área y ángulos agudos.",
-    about: [
-      "Pythagoras links the legs and hypotenuse; inverse trig recovers the acute angles.",
-      "Toggle between two-legs mode and leg-plus-hypotenuse mode depending on what you know.",
-      "Common in framing, ramps, and vector magnitude problems.",
-    ],
-    aboutEs: [
-      "Pitágoras relaciona catetos e hipotenusa; la trigometría inversa recupera los ángulos agudos.",
-      "Elegí el modo según si conocés dos catetos o un cateto y la hipotenusa.",
-      "Útil en estructuras, rampas y magnitudes de vectores.",
-    ],
-    steps: [
-      "Select mode: two legs, or leg + hypotenuse.",
-      "Enter the known lengths.",
-      "Read the missing side, area, and angles.",
-    ],
-    stepsEs: [
-      "Elegí el modo: dos catetos, o cateto + hipotenusa.",
-      "Ingresá las longitudes conocidas.",
-      "Leé el lado faltante, el área y los ángulos.",
-    ],
-    faq: [
-      { q: "Where is the right angle?", a: "Between the two legs a and b; the hypotenuse is opposite it." },
-      { q: "Angle unit?", a: "Degrees." },
-    ],
-    faqEs: [
-      { q: "¿Dónde está el ángulo recto?", a: "Entre los catetos a y b; la hipotenusa es el lado opuesto." },
-      { q: "¿Unidad de ángulos?", a: "Grados." },
-    ],
-  },
+  ...TOOL_SEO_OVERRIDES_GEOMETRY_1_PART1,
+  ...TOOL_SEO_OVERRIDES_GEOMETRY_1_PART2,
   "ley-de-senos": {
     metaTitle: "Law of Sines Calculator — a/sin(A) = b/sin(B) | UtiliHub",
     metaTitleEs: "Calculadora ley de senos — a/sen(A) = b/sen(B) | UtiliHub",

@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
-
-const title = "Interés Compuesto Explicado: Fórmulas, Ejemplos y Tabla de Crecimiento | UtiliHub";
-const description = cleanDescription(
-  "Guía original sobre interés compuesto. Aprende cómo funciona con fórmulas claras, ejemplos prácticos, tabla de crecimiento y visual simple. Enlace a la calculadora gratuita de interés compuesto de UtiliHub.",
-);
+import { absoluteUrl, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
+import { title } from "./-es.guias.interes-compuesto.part1";
+import { description } from "./-es.guias.interes-compuesto.part2";
 
 export const Route = createFileRoute("/es/guias/interes-compuesto")({
   head: () => ({

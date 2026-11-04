@@ -1,31 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function parseNumbers(raw: string): number[] {
-  return raw
-    .split(/[,\s]+/)
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .map(Number)
-    .filter((n) => !Number.isNaN(n) && Number.isFinite(n));
-}
-
-function mean(nums: number[]) {
-  return nums.reduce((a, b) => a + b, 0) / nums.length;
-}
-
-function variance(nums: number[], sample: boolean) {
-  if (nums.length < (sample ? 2 : 1)) return null;
-  const m = mean(nums);
-  const sumSq = nums.reduce((acc, n) => acc + (n - m) ** 2, 0);
-  const denom = sample ? nums.length - 1 : nums.length;
-  return sumSq / denom;
-}
+import { type Locale } from "./VarianceCalculatorTool.part1";
+import { parseNumbers, mean, variance, fieldClass, buttonClass } from "./VarianceCalculatorTool.part2";
 
 export function VarianceCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

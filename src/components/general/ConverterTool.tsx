@@ -2,57 +2,8 @@ import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { getToolShowcase } from "@/lib/tool-showcase";
 import { showcaseUi } from "@/lib/showcase-ui";
-
-const units: Record<string, Record<string, number>> = {
-  area: { "m²": 1, "km²": 1e6, "ft²": 0.092903, acres: 4046.8564224, ha: 10000 },
-  volume: { L: 1, mL: 0.001, gal: 3.785411784, "m³": 1000 },
-  speed: { "km/h": 1, mph: 1.609344, "m/s": 3.6, kn: 1.852 },
-  energy: { J: 1, cal: 4.184, kWh: 3600000, BTU: 1055.05585262 },
-  power: { W: 1, kW: 1000, hp: 745.699872 },
-  pressure: { Pa: 1, bar: 100000, atm: 101325, psi: 6894.757293 },
-  frequency: { Hz: 1, kHz: 1000, MHz: 1e6, GHz: 1e9 },
-  data: { bit: 1, byte: 8, KB: 8000, MB: 8e6, GB: 8e9, TB: 8e12 },
-};
-const sets: Record<string, string[]> = {
-  area: ["m²", "km²", "ft²", "acres", "ha"],
-  volume: ["L", "mL", "gal", "m³"],
-  speed: ["km/h", "mph", "m/s", "kn"],
-  energy: ["J", "cal", "kWh", "BTU"],
-  power: ["W", "kW", "hp"],
-  pressure: ["Pa", "bar", "atm", "psi"],
-  frequency: ["Hz", "kHz", "MHz", "GHz"],
-  data: ["bit", "byte", "KB", "MB", "GB", "TB"],
-};
-const hexToRgb = (v: string) => {
-  const h = v.replace(/^#/, "");
-  if (!/^[0-9a-f]{6}$/i.test(h)) return null;
-  return { r: parseInt(h.slice(0, 2), 16), g: parseInt(h.slice(2, 4), 16), b: parseInt(h.slice(4, 6), 16) };
-};
-const rgbToHsl = (r: number, g: number, b: number) => {
-  r /= 255;
-  g /= 255;
-  b /= 255;
-  const max = Math.max(r, g, b),
-    min = Math.min(r, g, b),
-    d = max - min;
-  let h = 0,
-    s = 0;
-  const l = (max + min) / 2;
-  if (d) {
-    s = d / (1 - Math.abs(2 * l - 1));
-    switch (max) {
-      case r:
-        h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-        break;
-      case g:
-        h = ((b - r) / d + 2) / 6;
-        break;
-      default:
-        h = ((r - g) / d + 4) / 6;
-    }
-  }
-  return { h: h * 360, s: s * 100, l: l * 100 };
-};
+import { units } from "./ConverterTool.part1";
+import { sets, hexToRgb, rgbToHsl } from "./ConverterTool.part2";
 
 export function ConverterTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
   const [value, setValue] = useState("");

@@ -1,33 +1,9 @@
 import { startTransition, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Search, Tag } from "lucide-react";
 import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
-
-export type BrowseableTool = {
-  id: string;
-  name: string;
-  /** Extra text used only for filtering (summary, keywords…). */
-  searchText?: string;
-  slug?: string;
-  keywords?: string[];
-  kind?: string;
-  summary?: string;
-  category?: string;
-};
-
-function normalize(s: string) {
-  return s
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim();
-}
-
-function letterOf(name: string) {
-  const ch = normalize(name).charAt(0);
-  return ch >= "a" && ch <= "z" ? ch.toUpperCase() : "#";
-}
-
-const PAGE_SIZE = 20;
+import { type BrowseableTool } from "./ToolListBrowser.part1";
+import { PAGE_SIZE, normalize, letterOf } from "./ToolListBrowser.part2";
+export type { BrowseableTool } from "./ToolListBrowser.part1";
 
 /**
  * Mobile-friendly tool list: local search, intent tags, A–Z jump, progressive reveal.

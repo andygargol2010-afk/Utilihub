@@ -1,26 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function parseTime(timeStr: string): number | null {
-  const match = timeStr.match(/^(\d{1,2}):(\d{2})$/);
-  if (!match) return null;
-  const h = parseInt(match[1], 10);
-  const m = parseInt(match[2], 10);
-  if (h < 0 || h > 23 || m < 0 || m > 59) return null;
-  return h * 60 + m;
-}
-
-function formatTime(minutes: number): string {
-  const total = ((minutes % (24 * 60)) + (24 * 60)) % (24 * 60);
-  const h = Math.floor(total / 60);
-  const m = total % 60;
-  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
-}
+import { type Locale } from "./SleepCycleCalculatorTool.part1";
+import { parseTime, formatTime, fieldClass, buttonClass } from "./SleepCycleCalculatorTool.part2";
 
 export function SleepCycleCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

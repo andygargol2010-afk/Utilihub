@@ -1,34 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits }).format(value);
-}
-
-type Preset = {
-  id: string;
-  length: string;
-  height: string;
-  openings: string;
-  ceiling: boolean;
-  depth: string;
-  widthCm: string;
-  lengthCm: string;
-  layers: string;
-  waste: string;
-};
+import { type Locale } from "./DrywallCalculatorTool.part1";
+import { type Preset, parseNum, formatNum, buttonClass, inputClass } from "./DrywallCalculatorTool.part2";
 
 export function DrywallCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

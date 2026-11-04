@@ -1,42 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 520;
-const H = 340;
-const ORIGIN_X = 48;
-const ORIGIN_Y = H - 36;
-const SCALE = 2.35; // px per meter
-const DT = 1 / 120;
-const TRAIL_MAX = 400;
-
-type Point = { x: number; y: number };
-
-function idealRange(v0: number, angleDeg: number, g: number) {
-  const th = (angleDeg * Math.PI) / 180;
-  return (v0 * v0 * Math.sin(2 * th)) / g;
-}
-function idealHeight(v0: number, angleDeg: number, g: number) {
-  const th = (angleDeg * Math.PI) / 180;
-  return (v0 * v0 * Math.sin(th) * Math.sin(th)) / (2 * g);
-}
-function idealTime(v0: number, angleDeg: number, g: number) {
-  const th = (angleDeg * Math.PI) / 180;
-  return (2 * v0 * Math.sin(th)) / g;
-}
-
-function setupCanvas(canvas: HTMLCanvasElement) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
-  canvas.width = Math.round(W * dpr);
-  canvas.height = Math.round(H * dpr);
-  const ctx = canvas.getContext("2d");
-  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  return ctx;
-}
-
-function worldToScreen(x: number, y: number): Point {
-  return { x: ORIGIN_X + x * SCALE, y: ORIGIN_Y - y * SCALE };
-}
+import { W } from "./ProjectileSim.part1";
+import { type Point, idealTime, setupCanvas, DT, TRAIL_MAX, H, ORIGIN_Y, ORIGIN_X, SCALE, worldToScreen, idealRange, idealHeight } from "./ProjectileSim.part2";
 
 export function ProjectileSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

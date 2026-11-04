@@ -2,79 +2,8 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPoi
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-const W = 360;
-const H = 480;
-const BAR_W = 72;
-const BAR_H = 12;
-const BAR_Y = H - 36;
-
-type PulseKind = "normal" | "rare" | "life" | "power-magnet" | "power-slow" | "power-multi" | "power-shield";
-
-type Pulse = {
-  x: number;
-  y: number;
-  vy: number;
-  r: number;
-  kind: PulseKind;
-  hue: number;
-  trail: { x: number; y: number }[];
-};
-
-type Particle = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  hue: number;
-  size: number;
-};
-
-type ScorePopup = {
-  x: number;
-  y: number;
-  text: string;
-  life: number;
-  color: string;
-};
-
-type Announcement = {
-  text: string;
-  life: number;
-  color: string;
-};
-
-type Star = {
-  x: number;
-  y: number;
-  size: number;
-  phase: number;
-  speed: number;
-};
-
-type Shockwave = {
-  x: number;
-  y: number;
-  r: number;
-  maxR: number;
-  life: number;
-  hue: number;
-};
-
-function makeStars(n: number): Star[] {
-  const out: Star[] = [];
-  for (let i = 0; i < n; i++) {
-    out.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      size: 0.6 + Math.random() * 1.4,
-      phase: Math.random() * Math.PI * 2,
-      speed: 0.02 + Math.random() * 0.04,
-    });
-  }
-  return out;
-}
+import { W } from "./PulseCatchArenaGame.part1";
+import { type Announcement, type Pulse, type Particle, type ScorePopup, type Star, makeStars, type Shockwave, BAR_W, type PulseKind, H, BAR_Y, BAR_H } from "./PulseCatchArenaGame.part2";
 
 export function PulseCatchArenaGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";

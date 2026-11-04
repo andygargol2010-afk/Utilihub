@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { AdsterraBanner } from "@/components/AdsterraBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
-
-const title = "Rendimiento de Canvas y WebGL para Experiencias Web Interactivas | UtiliHub";
-const description = cleanDescription(
-  "Guía original para mantener sistemas de partículas, simulaciones físicas y playgrounds a 60fps fluidos. requestAnimationFrame, object pooling, devicePixelRatio, reduced motion, presupuestos móviles y medición con Performance API.",
-);
+import { absoluteUrl, ogImage, SITE_NAME, hreflangLinks } from "@/lib/seo";
+import { title } from "./-es.guias.rendimiento-canvas-webgl.part1";
+import { description } from "./-es.guias.rendimiento-canvas-webgl.part2";
 
 export const Route = createFileRoute("/es/guias/rendimiento-canvas-webgl")({
   head: () => ({

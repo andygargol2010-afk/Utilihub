@@ -1,13 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { estimatePasswordEntropy } from "@/lib/general/password-entropy";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base font-mono";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const EXAMPLES = ["Tr0ub4dor&3", "correcthorsebatterystaple"];
+import { type Locale } from "./PasswordEntropyTool.part1";
+import { EXAMPLES, buttonClass, fieldClass } from "./PasswordEntropyTool.part2";
 
 export function PasswordEntropyTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

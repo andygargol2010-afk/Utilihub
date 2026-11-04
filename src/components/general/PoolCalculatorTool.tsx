@@ -1,37 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Shape = "rect" | "round" | "oval";
-type Unit = "m" | "ft";
-type Chlorine = "liquid125" | "liquid6" | "cal65" | "tri90";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-
-const FT = 0.3048;
-const LITER_PER_M3 = 1000;
-const US_GAL_PER_L = 1 / 3.785411784;
-const UK_GAL_PER_L = 1 / 4.54609;
-
-/** Ounces of product to raise 10,000 US gallons by 1 ppm FC. Industry rule of thumb. */
-const DOSE_PER_10K_PPM: Record<Chlorine, { oz: number; liquid: boolean }> = {
-  liquid125: { oz: 10.7, liquid: true },
-  liquid6: { oz: 22.4, liquid: true },
-  cal65: { oz: 2, liquid: false },
-  tri90: { oz: 1.5, liquid: false },
-};
-
-function parseNum(value: string) {
-  const n = Number(String(value).trim().replace(",", "."));
-  return Number.isFinite(n) ? n : NaN;
-}
-
-function fmt(n: number, locale: Locale, digits = 1) {
-  return n.toLocaleString(locale === "es" ? "es-AR" : "en-US", {
-    maximumFractionDigits: digits,
-    minimumFractionDigits: digits,
-  });
-}
+import { type Locale } from "./PoolCalculatorTool.part1";
+import { type Shape, type Unit, type Chlorine, parseNum, FT, LITER_PER_M3, US_GAL_PER_L, UK_GAL_PER_L, DOSE_PER_10K_PPM, fmt, inputClass } from "./PoolCalculatorTool.part2";
 
 export function PoolCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

@@ -1,16 +1,12 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
-import { ArrowRight, BriefcaseBusiness, CheckCircle2, GraduationCap, FileText, Search } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { KitDeskTrail } from "@/components/kits/KitDeskTrail";
 import { WORK_KITS } from "@/lib/work-kits";
 import { kitTools } from "@/lib/work-kits-tools";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage, SITE_NAME } from "@/lib/seo";
-
-const title = "Goal-based work kits | UtiliHub";
-const description = cleanDescription(
-  "Free online tool kits for freelancers, SEO and content, documents, and students. Chain multiple utilities with no signup.",
-);
-const icons = [BriefcaseBusiness, Search, FileText, GraduationCap];
+import { absoluteUrl, breadcrumbSchema, hreflangLinks, ogImage, SITE_NAME } from "@/lib/seo";
+import { title } from "./-kits.part1";
+import { description, icons } from "./-kits.part2";
 
 export const Route = createFileRoute("/kits")({
   // Layout route: only the hub itself emits canonical/hreflang, so /kits/<slug> keeps its own self-canonical.

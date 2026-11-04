@@ -2,34 +2,8 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPoi
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-const W = 360,
-  H = 220,
-  PADDLE_H = 48,
-  PADDLE_W = 8,
-  BALL = 8,
-  WIN = 7;
-type Diff = "easy" | "medium" | "hard";
-
-const DIFF = {
-  easy: { ball: 2.3, cpuSpeed: 1.55, error: 28, reactFrom: 0.28, maxBall: 3.4 },
-  medium: { ball: 2.85, cpuSpeed: 2.15, error: 14, reactFrom: 0.42, maxBall: 4.2 },
-  hard: { ball: 3.5, cpuSpeed: 3.1, error: 5, reactFrom: 0.52, maxBall: 5.2 },
-} as const;
-
-type Ctx2D = CanvasRenderingContext2D & {
-  roundRect?(x: number, y: number, w: number, h: number, radii?: number | number[]): void;
-};
-
-function fillRoundRect(ctx: Ctx2D, x: number, y: number, w: number, h: number, r: number) {
-  if (typeof ctx.roundRect === "function") {
-    ctx.beginPath();
-    ctx.roundRect(x, y, w, h, r);
-    ctx.fill();
-  } else {
-    ctx.fillRect(x, y, w, h);
-  }
-}
+import { H, PADDLE_H, W, BALL, PADDLE_W, WIN } from "./PongGame.part1";
+import { type Diff, DIFF, fillRoundRect, type Ctx2D } from "./PongGame.part2";
 
 export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" | "de" }) {
   const es = locale === "es";

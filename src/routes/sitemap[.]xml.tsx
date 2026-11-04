@@ -7,71 +7,8 @@ import { englishCategoryPath, spanishToolPath } from "@/lib/route-slugs";
 import { SITE_URL } from "@/lib/seo";
 import { SIMULATORS } from "@/lib/simulators/catalog";
 import { WORK_KITS } from "@/lib/work-kits";
-
-/** Escape XML special chars without embedding &entity; literals that get mangled by some editors. */
-const escapeXml = (value: string) => {
-  let out = "";
-  for (let i = 0; i < value.length; i++) {
-    const c = value[i];
-    if (c === "&") out += "&" + "amp;";
-    else if (c === "<") out += "&" + "lt;";
-    else if (c === ">") out += "&" + "gt;";
-    else if (c === '"') out += "&" + "quot;";
-    else if (c === "'") out += "&" + "apos;";
-    else out += c;
-  }
-  return out;
-};
-
-type SitemapEntry = {
-  path: string;
-  priority: string;
-  /** ISO date (YYYY-MM-DD). Only set when known real; never invent per-tool dates. */
-  lastmod?: string;
-  alternates?: Array<{ lang: string; path: string }>;
-};
-
-/** Build/deploy day for hub lastmod only (not individual tools). */
-const BUILD_DAY = new Date().toISOString().slice(0, 10);
-
-const pair = (
-  enPath: string,
-  esPath: string,
-  priority: string,
-  opts?: { lastmod?: string },
-): SitemapEntry[] => {
-  const alternates = [
-    { lang: "en", path: enPath },
-    { lang: "es", path: esPath },
-    { lang: "x-default", path: enPath },
-  ];
-  return [
-    { path: enPath, priority, lastmod: opts?.lastmod, alternates },
-    { path: esPath, priority, lastmod: opts?.lastmod, alternates },
-  ];
-};
-
-const hreflangXml = (entry: SitemapEntry) => {
-  if (!entry.alternates?.length) return "";
-  return entry.alternates
-    .map(
-      (alt) =>
-        `<xhtml:link rel="alternate" hreflang="${escapeXml(alt.lang)}" href="${escapeXml(`${SITE_URL}${alt.path}`)}"/>`,
-    )
-    .join("");
-};
-
-/** Higher priority for advanced tools, flagship 3D studios and tools with their own written content. */
-function toolPriority(
-  tool: (typeof ALL_TOOLS)[number],
-  toolSeoOverride: (slug: string) => unknown,
-): string {
-  if (tool.category === "herramientas-avanzadas") return "0.85";
-  if (tool.slug === "modelador-casas-3d" || tool.slug === "modelador-3d") return "0.85";
-  // Own about/steps/FAQ copy (tool-seo-overrides): prioritise over generic catalog pages.
-  if (toolSeoOverride(tool.slug)) return "0.8";
-  return "0.6";
-}
+import { escapeXml } from "./-sitemap[.]xml.part1";
+import { type SitemapEntry, pair, BUILD_DAY, toolPriority, hreflangXml } from "./-sitemap[.]xml.part2";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {

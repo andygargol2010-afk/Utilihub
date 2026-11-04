@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent, lazy, Suspense } from "react";
+import { useEffect, useMemo, useState, type FormEvent, Suspense } from "react";
 import { Search, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,16 +7,8 @@ import { useFavorites } from "@/hooks/use-favorites";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 import { spanishToolSummary } from "@/lib/i18n/es-summaries";
 import { toolMatchesTag } from "@/lib/tool-tags";
-
-function normalize(s: string) {
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-}
-const STOP = new Set(["de", "la", "el", "los", "las", "para", "por", "un", "una", "y", "o", "en", "the", "a", "an", "and", "or", "for", "to", "of", "in"]);
-const categoryButtonClass = "min-h-11 shrink-0 rounded-full px-3 text-xs font-semibold";
-const PAGE_SIZE = 30;
-
-// Same as EN: keep ToolCard (and its row/catalog deps) off the SpanishToolSearch chunk.
-const ToolCard = lazy(() => import("@/components/ToolCard").then((m) => ({ default: m.ToolCard })));
+import { normalize } from "./SpanishToolSearch.part1";
+import { PAGE_SIZE, STOP, categoryButtonClass, ToolCard } from "./SpanishToolSearch.part2";
 
 export function SpanishToolSearch({ initialCategory, compactHome = false }: { initialCategory?: string; compactHome?: boolean }) {
   const [query, setQuery] = useState("");

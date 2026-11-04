@@ -1,27 +1,8 @@
 "use client";
-
 import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-const DEG = Math.PI / 180;
-
-function parse(v: string) {
-  return Number(String(v).trim().replace(",", "."));
-}
-function fmt(n: number, d = 8) {
-  if (!Number.isFinite(n)) return "—";
-  if (Math.abs(n) < 1e-12) return "0";
-  if (Number.isInteger(n) && Math.abs(n) < 1e12) return String(n);
-  return n.toFixed(d).replace(/\.?0+$/, "");
-}
-type Card = { label: string; value: string };
-
-function normDeg(deg: number) {
-  let x = deg % 360;
-  if (x < 0) x += 360;
-  return x;
-}
+import { type Locale } from "./TrigSuiteTool.part1";
+import { type Card, parse, DEG, fmt, normDeg } from "./TrigSuiteTool.part2";
 
 export function TrigSuiteTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

@@ -1,47 +1,13 @@
-import { lazy, Suspense, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeCatalogSlot } from "@/components/home-catalog-slot";
 import { AdBanner } from "@/components/AdBanner";
-import { absoluteUrl, cleanDescription, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
+import { absoluteUrl, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
+import { loadHomeCatalog } from "./-index.part1";
+import { title, description, goRandomExperience, HomeToolCount, HomeSearch, DailyExperienceSpotlight, ExperienceDiscoveryRail, HomeValuePath, HomeCatalogRest } from "./-index.part2";
 
-const loadHomeCatalog = () => import("@/components/home-catalog");
-const HomeToolCount = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeToolCount })));
-const HomeSearch = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeSearch })));
-const HomeCatalogRest = lazy(() => loadHomeCatalog().then((m) => ({ default: m.HomeCatalogRest })));
-
-const ExperienceDiscoveryRail = lazy(() =>
-  import("@/components/ExperienceDiscoveryRail").then((m) => ({ default: m.ExperienceDiscoveryRail })),
-);
-
-const HomeValuePath = lazy(() =>
-  import("@/components/HomeValuePath").then((m) => ({ default: m.HomeValuePath })),
-);
-
-const DailyExperienceSpotlight = lazy(() =>
-  import("@/components/DailyExperienceSpotlight").then((m) => ({ default: m.DailyExperienceSpotlight })),
-);
-
-const RANDOM_EXPERIENCES = [
-  "/aurora-particle-playground",
-  "/pulse-catch",
-  "/studio/prism-trail-composer",
-  "/color-cascade-fusion",
-  "/solar-system-scale-explorer",
-  "/daily-progress-constellation",
-  "/return-streak-board",
-];
-
-function goRandomExperience() {
-  const path = RANDOM_EXPERIENCES[Math.floor(Math.random() * RANDOM_EXPERIENCES.length)];
-  window.location.href = path;
-}
-
-const title = "UtiliHub · Free online tools, 3D studios & games";
-const description = cleanDescription(
-  "Free online tools, advanced 3D house modeler, and browser games. Calculate, convert, build, and play — no signup.",
-);
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [

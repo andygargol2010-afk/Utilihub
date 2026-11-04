@@ -1,24 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { fromDecimal, fromDms } from "@/lib/general/coordinates";
-
-type Locale = "en" | "es";
-type Mode = "decimal" | "dms";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const MADRID = { lat: "40.4168", lon: "-3.7038" };
-const BARCELONA = {
-  latDeg: "41",
-  latMin: "24",
-  latSec: "12.20",
-  latH: "N" as const,
-  lonDeg: "2",
-  lonMin: "10",
-  lonSec: "26.50",
-  lonH: "E" as const,
-};
+import { type Locale } from "./CoordinatesTool.part1";
+import { type Mode, MADRID, BARCELONA, buttonClass, fieldClass } from "./CoordinatesTool.part2";
 
 export function CoordinatesTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

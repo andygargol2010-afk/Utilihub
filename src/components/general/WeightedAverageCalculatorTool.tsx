@@ -1,19 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-
-function parseList(s: string): number[] {
-  return s
-    .split(/[,;\s]+/)
-    .map((x) => x.trim())
-    .filter(Boolean)
-    .map((x) => parseFloat(x))
-    .filter((n) => Number.isFinite(n));
-}
+import { type Locale } from "./WeightedAverageCalculatorTool.part1";
+import { parseList, fieldClass, buttonClass } from "./WeightedAverageCalculatorTool.part2";
 
 export function WeightedAverageCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

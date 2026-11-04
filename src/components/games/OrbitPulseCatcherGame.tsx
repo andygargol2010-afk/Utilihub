@@ -2,54 +2,8 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPoi
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-const W = 400;
-const H = 480;
-const CX = W / 2;
-const CY = H / 2 - 20;
-const INNER_R = 48;
-const OUTER_R = 160;
-const BASE_ZONES = 4;
-const MAX_ZONES = 8;
-const ZONE_COLORS = [200, 30, 120, 280, 50, 160, 310, 80]; // hues up to 8
-
-type Pulse = {
-  angle: number;
-  radius: number;
-  speed: number;
-  hue: number;
-  zone: number;
-  life: number;
-  trail: { x: number; y: number }[];
-  scale: number;
-  isPowerup?: boolean;
-};
-
-type Particle = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  hue: number;
-  size: number;
-  type: "spark" | "ring";
-};
-
-type CatchRing = {
-  x: number;
-  y: number;
-  r: number;
-  life: number;
-  hue: number;
-};
-
-type TouchRipple = {
-  x: number;
-  y: number;
-  r: number;
-  life: number;
-};
+import { W } from "./OrbitPulseCatcherGame.part1";
+import { type Pulse, type Particle, type CatchRing, type TouchRipple, BASE_ZONES, MAX_ZONES, CX, CY, INNER_R, OUTER_R, ZONE_COLORS, H } from "./OrbitPulseCatcherGame.part2";
 
 export function OrbitPulseCatcherGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";

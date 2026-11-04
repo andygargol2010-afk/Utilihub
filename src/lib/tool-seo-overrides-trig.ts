@@ -1,3 +1,5 @@
+import { TOOL_SEO_OVERRIDES_TRIG_PART1 } from "./tool-seo-overrides-trig.part1";
+import { TOOL_SEO_OVERRIDES_TRIG_PART2 } from "./tool-seo-overrides-trig.part2";
 /** Unique SEO for trig-suite calculators. */
 
 export type ToolSeoOverrideTrig = {
@@ -14,30 +16,8 @@ export type ToolSeoOverrideTrig = {
 };
 
 export const TOOL_SEO_OVERRIDES_TRIG: Record<string, ToolSeoOverrideTrig> = {
-  "circulo-unitario": {
-    metaTitle: "Unit Circle Calculator — sin cos tan from Angle | UtiliHub",
-    metaTitleEs: "Calculadora círculo unitario — sen cos tan | UtiliHub",
-    metaDescription: "Enter degrees to get sin, cos, tan and the (x,y) point on the unit circle.",
-    metaDescriptionEs: "Ingresá grados y obtené sen, cos, tan y el punto (x,y) en el círculo unitario.",
-    about: ["On the unit circle, angle θ maps to (cos θ, sin θ).", "Tan is sin/cos when defined.", "Any real degree measure is accepted."],
-    aboutEs: ["En el círculo unitario, θ se mapea a (cos θ, sen θ).", "Tan es sen/cos cuando está definida.", "Se acepta cualquier medida en grados."],
-    steps: ["Enter the angle in degrees.", "Read sin, cos, tan and coordinates.", "Watch for undefined tan at odd multiples of 90°."],
-    stepsEs: ["Ingresá el ángulo en grados.", "Leé sen, cos, tan y coordenadas.", "Cuidado con tan indefinida en múltiplos impares de 90°."],
-    faq: [{ q: "Radians input?", a: "Convert with the degrees↔radians tool first." }, { q: "Negative angles?", a: "Supported." }],
-    faqEs: [{ q: "¿Entrada en radianes?", a: "Convertí antes con grados↔radianes." }, { q: "¿Ángulos negativos?", a: "Sí." }],
-  },
-  "grados-radianes": {
-    metaTitle: "Degrees to Radians Converter — and Back | UtiliHub",
-    metaTitleEs: "Conversor grados a radianes — y viceversa | UtiliHub",
-    metaDescription: "Convert degrees ↔ radians with numeric output and π multiples.",
-    metaDescriptionEs: "Convertí grados ↔ radianes con salida numérica y múltiplos de π.",
-    about: ["π radians equal 180 degrees.", "Converts in both directions.", "Companion for every trig problem."],
-    aboutEs: ["π radianes equivalen a 180 grados.", "Convierte en ambos sentidos.", "Compañero de todo problema de trigonometría."],
-    steps: ["Choose direction.", "Enter the value.", "Read the converted result."],
-    stepsEs: ["Elegí la dirección.", "Ingresá el valor.", "Leé el resultado."],
-    faq: [{ q: "Negative values?", a: "Fully supported." }],
-    faqEs: [{ q: "¿Valores negativos?", a: "Totalmente soportados." }],
-  },
+  ...TOOL_SEO_OVERRIDES_TRIG_PART1,
+  ...TOOL_SEO_OVERRIDES_TRIG_PART2,
   "angulo-referencia": {
     metaTitle: "Reference Angle Calculator | UtiliHub",
     metaTitleEs: "Calculadora ángulo de referencia | UtiliHub",

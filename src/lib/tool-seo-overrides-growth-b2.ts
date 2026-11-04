@@ -1,104 +1,12 @@
 /** SEO-growth overrides part b2. */
 import type { ToolSeoOverrideGrowth } from "./tool-seo-overrides-growth";
+import { TOOL_SEO_OVERRIDES_GROWTH_B2_PART1 } from "./tool-seo-overrides-growth-b2.part1";
+import { TOOL_SEO_OVERRIDES_GROWTH_B2_PART2 } from "./tool-seo-overrides-growth-b2.part2";
+
 
 export const TOOL_SEO_OVERRIDES_GROWTH_B2: Record<string, ToolSeoOverrideGrowth> = {
-  "pago-tarjeta-credito": {
-    metaTitle: "Credit Card Payoff Calculator — Months & Interest | UtiliHub",
-    metaTitleEs: "Calculadora de pago de tarjeta de crédito | UtiliHub",
-    metaDescription:
-      "Estimate how many months and how much interest you pay to clear a revolving balance at a fixed monthly payment and APR.",
-    metaDescriptionEs:
-      "Estimá en cuántos meses y con cuánto interés cancelás un saldo rotativo con pago mensual fijo y tasa anual.",
-    about: [
-      "Credit cards charge interest on revolving balances. A fixed payment must exceed the monthly interest or the balance never falls.",
-      "We simulate month-by-month interest accrual and payments until the balance is cleared (or a safety month cap is hit).",
-      "Fees, promotional rates, and minimum-payment rules differ by issuer—treat the output as a planning model.",
-    ],
-    aboutEs: [
-      "Las tarjetas cobran interés sobre el saldo rotativo. El pago fijo debe superar el interés mensual o el saldo no baja.",
-      "Simulamos mes a mes el interés y los pagos hasta liquidar el saldo (o alcanzar un tope de seguridad de meses).",
-      "Comisiones, tasas promocionales y mínimos varían por emisor: tomá el resultado como modelo de planificación.",
-    ],
-    steps: [
-      "Enter current balance, annual rate %, and monthly payment.",
-      "Calculate months to payoff and total interest.",
-      "Try a higher payment to see interest saved.",
-    ],
-    stepsEs: [
-      "Ingresá saldo, tasa anual % y pago mensual.",
-      "Calculá meses hasta cancelar e interés total.",
-      "Probá un pago mayor para ver el interés ahorrado.",
-    ],
-    faq: [
-      {
-        q: "Payment too low error?",
-        a: "If the payment is less than or equal to the first month’s interest, the balance grows. Raise the payment.",
-      },
-      {
-        q: "Daily vs monthly compounding?",
-        a: "This model uses a simple monthly rate (APR/12). Card statements may use daily balances; results can differ slightly.",
-      },
-    ],
-    faqEs: [
-      {
-        q: "¿Error de pago demasiado bajo?",
-        a: "Si el pago es menor o igual al interés del primer mes, el saldo crece. Subí el pago.",
-      },
-      {
-        q: "¿Interés diario o mensual?",
-        a: "El modelo usa tasa mensual simple (TEA/12). Los resúmenes pueden usar saldo diario; puede haber pequeñas diferencias.",
-      },
-    ],
-  },
-
-  "cron-generator": {
-    metaTitle: "Cron Expression Helper — Common Schedules | UtiliHub",
-    metaTitleEs: "Ayuda de expresiones cron — horarios habituales | UtiliHub",
-    metaDescription:
-      "Build or decode common cron expressions for every minute, hour, day, or weekday schedules. Free, in-browser.",
-    metaDescriptionEs:
-      "Armá o interpretá expresiones cron habituales: cada minuto, hora, día o días de la semana. Gratis, en el navegador.",
-    about: [
-      "Cron strings define when jobs run on Unix-style schedulers. Fields usually cover minute, hour, day of month, month, and day of week.",
-      "This helper focuses on common patterns (hourly, daily, weekdays) so you can copy a working expression quickly.",
-      "Syntax differs slightly between crontab, systemd timers, and cloud schedulers—always verify against your runtime docs.",
-    ],
-    aboutEs: [
-      "Las cadenas cron definen cuándo corren tareas en planificadores tipo Unix. Los campos cubren minuto, hora, día del mes, mes y día de la semana.",
-      "Esta ayuda se centra en patrones habituales (cada hora, diario, días hábiles) para copiar una expresión usable.",
-      "La sintaxis varía entre crontab, systemd y planificadores en la nube: verificá la documentación de tu runtime.",
-    ],
-    steps: [
-      "Choose a schedule pattern or enter fields.",
-      "Copy the generated cron expression.",
-      "Test it in your scheduler’s dry-run or next-run preview if available.",
-    ],
-    stepsEs: [
-      "Elegí un patrón o completá los campos.",
-      "Copiá la expresión cron generada.",
-      "Probalá en el dry-run o vista previa de tu planificador si existe.",
-    ],
-    faq: [
-      {
-        q: "Five vs six fields?",
-        a: "Classic crontab uses five fields. Some systems add a seconds field at the front—check which your tool expects.",
-      },
-      {
-        q: "Timezone?",
-        a: "Cron usually follows the host timezone. Cloud jobs often need an explicit TZ setting.",
-      },
-    ],
-    faqEs: [
-      {
-        q: "¿Cinco o seis campos?",
-        a: "El crontab clásico usa cinco. Algunos sistemas agregan segundos al inicio: confirmá qué espera tu herramienta.",
-      },
-      {
-        q: "¿Zona horaria?",
-        a: "Cron suele seguir la TZ del host. En la nube a menudo hay que definir TZ explícita.",
-      },
-    ],
-  },
+  ...TOOL_SEO_OVERRIDES_GROWTH_B2_PART1,
+  ...TOOL_SEO_OVERRIDES_GROWTH_B2_PART2,
 
   "calculadora-subnet": {
     metaTitle: "Subnet Calculator — CIDR Network & Broadcast | UtiliHub",

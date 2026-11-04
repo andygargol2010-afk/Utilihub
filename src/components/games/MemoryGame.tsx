@@ -2,22 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestLow, writeBestLow } from "@/lib/games/scores";
 import { GamePrimaryButton } from "./GameShell";
-
-const ICONS = ["🍎", "🍋", "🍇", "🍒", "🥝", "🍑", "🍉", "🍍"];
-
-type Card = { id: number; icon: string; flipped: boolean; matched: boolean };
-
-function buildDeck(): Card[] {
-  const pairs = ICONS.flatMap((icon, i) => [
-    { id: i * 2, icon, flipped: false, matched: false },
-    { id: i * 2 + 1, icon, flipped: false, matched: false },
-  ]);
-  for (let i = pairs.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [pairs[i], pairs[j]] = [pairs[j]!, pairs[i]!];
-  }
-  return pairs;
-}
+import { ICONS } from "./MemoryGame.part1";
+import { type Card, buildDeck } from "./MemoryGame.part2";
 
 export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";

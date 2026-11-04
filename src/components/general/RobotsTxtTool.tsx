@@ -1,30 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import {
-  allowAllDraft,
-  blockAiDraft,
-  blockAllDraft,
-  buildRobotsTxt,
-  emptyGroup,
-  emptyRule,
-  pathDecision,
-  publicSiteDraft,
-  validateDraft,
-  type RobotsDraft,
-  type RobotsGroup,
-} from "@/lib/general/robots-txt";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const PRESETS: { id: string; label: string; labelEs: string; draft: () => RobotsDraft }[] = [
-  { id: "allow", label: "Allow all", labelEs: "Permitir todo", draft: allowAllDraft },
-  { id: "block", label: "Block all", labelEs: "Bloquear todo", draft: blockAllDraft },
-  { id: "public", label: "Public site", labelEs: "Sitio público", draft: publicSiteDraft },
-  { id: "ai", label: "Block AI crawlers", labelEs: "Bloquear bots de IA", draft: blockAiDraft },
-];
+import { allowAllDraft, buildRobotsTxt, emptyGroup, emptyRule, pathDecision, publicSiteDraft, validateDraft, type RobotsDraft, type RobotsGroup } from "@/lib/general/robots-txt";
+import { type Locale } from "./RobotsTxtTool.part1";
+import { PRESETS, buttonClass, inputClass } from "./RobotsTxtTool.part2";
 
 export function RobotsTxtTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

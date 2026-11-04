@@ -1,117 +1,12 @@
 import type { ToolSeoOverride } from "./tool-seo-overrides";
+import { TOOL_SEO_OVERRIDES_GSC_QUERIES_PART1 } from "./tool-seo-overrides-gsc-queries.part1";
+import { TOOL_SEO_OVERRIDES_GSC_QUERIES_PART2 } from "./tool-seo-overrides-gsc-queries.part2";
+
 
 /** GSC top queries by impressions+clicks (2026-10-31). One cycle SEO batch. */
 export const TOOL_SEO_OVERRIDES_GSC_QUERIES: Record<string, ToolSeoOverride> = {
-  "conversor-locale": {
-    metaTitle: "Locale Converter Online — Dates, Numbers & Money | UtiliHub",
-    metaTitleEs: "Locale converter online — fechas, números, moneda | UtiliHub",
-    metaDescription:
-      "Locale converter online: see how dates, numbers and currency look in en-US, es-MX, de-DE, ja-JP or any BCP 47 tag. Free and instant. Try a locale now.",
-    metaDescriptionEs:
-      "Locale converter online: mirá cómo se ven fechas, números y monedas en es-ES, es-MX, en-US, de-DE o cualquier locale BCP 47. Gratis. Probalo ahora.",
-    about: [
-      "People search for “locale converter online” and “locale online” when they need to see how a date, number or amount looks in another country format before shipping UI or documents.",
-      "A BCP 47 locale tag (en-US, es-AR, pt-BR, zh-Hans) controls separators, order of day/month, and where the currency symbol goes.",
-      "This tool uses the browser Intl API so the preview matches toLocaleString() and production front-ends.",
-    ],
-    aboutEs: [
-      "Quien busca “locale converter online” o “locale online” quiere ver cómo queda una fecha, un número o un importe en el formato de otro país antes de publicar UI o documentos.",
-      "Una etiqueta BCP 47 (es-AR, en-US, pt-BR, zh-Hans) define separadores, orden día/mes y posición del símbolo de moneda.",
-      "Usa la API Intl del navegador: el resultado coincide con toLocaleString() y con front-ends en producción.",
-    ],
-    faq: [
-      {
-        q: "What is a locale converter online?",
-        a: "It formats the same date, number and currency value under different BCP 47 locales so you can compare en-US, es-MX, de-DE and others side by side.",
-      },
-      {
-        q: "Is this locale converter free?",
-        a: "Yes. It runs fully in your browser with no signup and no upload.",
-      },
-    ],
-    faqEs: [
-      {
-        q: "¿Qué es un locale converter online?",
-        a: "Formatea la misma fecha, número e importe bajo distintos locales BCP 47 para comparar es-ES, en-US, de-DE, etc.",
-      },
-      {
-        q: "¿Es gratis el locale converter?",
-        a: "Sí. Corre en el navegador, sin registro y sin subir datos.",
-      },
-    ],
-  },
-  "conversor-de-unidades": {
-    metaTitle: "Unit Converter — Length, Weight, Temp & More | UtiliHub",
-    metaTitleEs: "Conversor de unidades — longitud, peso y más | UtiliHub",
-    metaDescription:
-      "Free unit converter for length, weight, temperature, volume, area and time. Get instant metric ↔ imperial results in your browser. Pick units and convert.",
-    metaDescriptionEs:
-      "Conversor de unidades gratis: longitud, peso, temperatura, volumen, área y tiempo. Resultados métricos ↔ imperiales al instante. Elegí unidades y convertí.",
-    about: [
-      "A unit converter applies fixed international factors between metric and common imperial units so you can switch length, mass, temperature, volume, area and time in one place.",
-      "Typical searches include “unit converter”, “convert units” and “online converter” when someone needs a quick, trustworthy conversion without installing an app.",
-    ],
-    aboutEs: [
-      "Un conversor de unidades aplica factores internacionales fijos entre el sistema métrico y unidades imperiales habituales: longitud, masa, temperatura, volumen, área y tiempo.",
-      "Las búsquedas “unit converter” y “conversor de unidades” suelen buscar una conversión rápida y fiable sin instalar nada.",
-    ],
-    faq: [
-      {
-        q: "Is this unit converter free?",
-        a: "Yes. All conversions run locally in the browser.",
-      },
-      {
-        q: "Which quantities can I convert?",
-        a: "Length, mass, temperature, volume, area and time with common metric and imperial units.",
-      },
-    ],
-    faqEs: [
-      {
-        q: "¿El conversor de unidades es gratis?",
-        a: "Sí. Todo el cálculo corre en el navegador.",
-      },
-      {
-        q: "¿Qué magnitudes puedo convertir?",
-        a: "Longitud, masa, temperatura, volumen, área y tiempo, con unidades métricas e imperiales habituales.",
-      },
-    ],
-  },
-  "conversor-millas-km": {
-    metaTitle: "Miles to Km Converter — 1 mile = 1.609344 km | UtiliHub",
-    metaTitleEs: "Millas a km — conversor de millas a kilómetros | UtiliHub",
-    metaDescription:
-      "Convert miles to km instantly: 1 mile = 1.609344 km. Free miles to kilometers converter for running, maps and road trips. Enter miles and get km now.",
-    metaDescriptionEs:
-      "Convertí millas a km al instante: 1 milla = 1,609344 km. Conversor gratis de millas a kilómetros para carreras, mapas y viajes. Ingresá las millas y listo.",
-    about: [
-      "Miles to km is one of the most common distance conversions: multiply miles by 1.609344 to get kilometers (exact international mile).",
-      "Use it for road trips, running routes, aviation charts or any map that mixes US customary and metric units.",
-    ],
-    aboutEs: [
-      "Millas a km es una de las conversiones de distancia más buscadas: multiplicá millas por 1,609344 para obtener kilómetros (milla internacional exacta).",
-      "Útil para viajes en ruta, running, cartas aeronáuticas o mapas que mezclan unidades US y métricas.",
-    ],
-    faq: [
-      {
-        q: "How many km is 1 mile?",
-        a: "Exactly 1.609344 kilometers per international mile.",
-      },
-      {
-        q: "How do I convert miles to km?",
-        a: "Multiply the number of miles by 1.609344. Example: 10 miles × 1.609344 = 16.09344 km.",
-      },
-    ],
-    faqEs: [
-      {
-        q: "¿Cuántos km es 1 milla?",
-        a: "Exactamente 1,609344 kilómetros por milla internacional.",
-      },
-      {
-        q: "¿Cómo convertir millas a km?",
-        a: "Multiplicá las millas por 1,609344. Ejemplo: 10 millas × 1,609344 = 16,09344 km.",
-      },
-    ],
-  },
+  ...TOOL_SEO_OVERRIDES_GSC_QUERIES_PART1,
+  ...TOOL_SEO_OVERRIDES_GSC_QUERIES_PART2,
   "calculadora-tiempo-de-lectura": {
     metaTitle: "Words to Minutes — Reading Time Calculator (WPM) | UtiliHub",
     metaTitleEs: "Palabras a minutos — calculadora de tiempo de lectura (PPM) | UtiliHub",

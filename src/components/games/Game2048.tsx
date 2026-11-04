@@ -2,22 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton } from "./GameShell";
-
-type Dir = "L" | "R" | "U" | "D";
-
-type Tile = {
-  id: number;
-  value: number;
-  r: number;
-  c: number;
-  born?: boolean;
-  merged?: boolean;
-};
-
-const GAP = 10;
-const CELL = 72;
-const PAD = 12;
-const BOARD = PAD * 2 + CELL * 4 + GAP * 3;
+import { type Dir } from "./Game2048.part1";
+import { PAD, CELL, GAP, type Tile, BOARD } from "./Game2048.part2";
 
 let nextId = 1;
 function uid() {

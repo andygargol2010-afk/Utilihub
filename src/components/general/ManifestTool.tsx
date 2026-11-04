@@ -1,41 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { buildManifest, type ManifestDisplay, type ManifestOrientation } from "@/lib/general/manifest";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const EXAMPLE = {
-  name: "UtiliHub",
-  shortName: "Hub",
-  description: "Browser tools",
-  startUrl: "/",
-  scope: "/",
-  display: "standalone" as ManifestDisplay,
-  orientation: "" as ManifestOrientation,
-  themeColor: "#0f766e",
-  backgroundColor: "#f8fafc",
-  lang: "en",
-  iconSrc: "",
-  iconSizes: "",
-};
-
-const EMPTY = {
-  name: "",
-  shortName: "",
-  description: "",
-  startUrl: "/",
-  scope: "",
-  display: "standalone" as ManifestDisplay,
-  orientation: "" as ManifestOrientation,
-  themeColor: "",
-  backgroundColor: "",
-  lang: "",
-  iconSrc: "",
-  iconSizes: "",
-};
+import { type Locale } from "./ManifestTool.part1";
+import { EXAMPLE, EMPTY, fieldClass, buttonClass } from "./ManifestTool.part2";
 
 export function ManifestTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

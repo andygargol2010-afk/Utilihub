@@ -1,0 +1,5 @@
+// Part 2 of 3 — split from education-bank-b.ts on 2026-11-04. Edit here; education-bank-b.ts re-exports.
+import type { EducationDifficulty, EducationLevel } from "./education-engine";
+import { type Q } from "./education-bank-b.part1";
+
+export const q=(text:string,options:string[],answer:string,levels?:EducationLevel[],difficulty?:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});

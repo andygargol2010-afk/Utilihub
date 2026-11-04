@@ -4,12 +4,9 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
 import { DOCUMENT_HUB } from "@/lib/document-hub";
 import { spanishToolPath } from "@/lib/i18n/es";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
-
-const title = "Documentos y archivos: herramientas gratis | UtiliHub";
-const description = cleanDescription(
-  "Prepará, convertí y organizá documentos y archivos con herramientas online gratuitas. Procesamiento local, sin registro.",
-);
+import { absoluteUrl, breadcrumbSchema, ogImage } from "@/lib/seo";
+import { title } from "./-es.hubs.documentos-y-archivos.part1";
+import { description } from "./-es.hubs.documentos-y-archivos.part2";
 
 export const Route = createFileRoute("/es/hubs/documentos-y-archivos")({
   // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.

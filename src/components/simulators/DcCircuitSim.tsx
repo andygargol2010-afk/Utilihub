@@ -1,29 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-type Topology = "series" | "parallel";
-const W = 540;
-const H = 320;
-
-function setupCanvas(canvas: HTMLCanvasElement) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
-  canvas.width = Math.round(W * dpr);
-  canvas.height = Math.round(H * dpr);
-  const ctx = canvas.getContext("2d");
-  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  return ctx;
-}
-
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
-}
+import { type Topology } from "./DcCircuitSim.part1";
+import { setupCanvas, W, H, roundRect } from "./DcCircuitSim.part2";
 
 export function DcCircuitSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

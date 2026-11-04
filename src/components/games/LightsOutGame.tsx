@@ -1,42 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { GamePrimaryButton } from "./GameShell";
-
-const SIZE = 5;
-
-type Board = boolean[]; // true = on (lit)
-
-function idx(r: number, c: number) {
-  return r * SIZE + c;
-}
-
-function neighbors(i: number): number[] {
-  const r = Math.floor(i / SIZE);
-  const c = i % SIZE;
-  const out = [i];
-  if (r > 0) out.push(idx(r - 1, c));
-  if (r < SIZE - 1) out.push(idx(r + 1, c));
-  if (c > 0) out.push(idx(r, c - 1));
-  if (c < SIZE - 1) out.push(idx(r, c + 1));
-  return out;
-}
-
-function toggleAt(board: Board, i: number): Board {
-  const next = board.slice();
-  for (const n of neighbors(i)) next[n] = !next[n];
-  return next;
-}
-
-function randomSolvable(): Board {
-  let board: Board = Array(SIZE * SIZE).fill(false);
-  const moves = 8 + Math.floor(Math.random() * 12);
-  for (let k = 0; k < moves; k++) {
-    const i = Math.floor(Math.random() * board.length);
-    board = toggleAt(board, i);
-  }
-  if (board.every((b) => !b)) return randomSolvable();
-  return board;
-}
+import { SIZE } from "./LightsOutGame.part1";
+import { type Board, randomSolvable, toggleAt } from "./LightsOutGame.part2";
 
 export function LightsOutGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";

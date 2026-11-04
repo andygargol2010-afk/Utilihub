@@ -1,13 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
-const primaryBtn = `${buttonClass} bg-primary text-primary-foreground`;
-
-type Phase = "work" | "shortBreak" | "longBreak";
+import { type Locale } from "./PomodoroTimerTool.part1";
+import { type Phase, primaryBtn, buttonClass, fieldClass } from "./PomodoroTimerTool.part2";
 
 export function PomodoroTimerTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

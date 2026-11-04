@@ -1,38 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import type { Locale } from "@/lib/i18n/locale";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const n = Number(value.replace(",", "."));
-  return Number.isFinite(n) ? n : null;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits }).format(value);
-}
-
-type Direction = "length" | "width";
-
-type Preset = {
-  id: string;
-  length: string;
-  width: string;
-  board: string;
-  gap: string;
-  stock: string;
-  spacing: string;
-  waste: string;
-  direction: Direction;
-};
-
-const PRESETS: Preset[] = [
-  { id: "patio", length: "3.6", width: "2.4", board: "140", gap: "5", stock: "3.6", direction: "length", spacing: "400", waste: "10" },
-  { id: "family", length: "4.8", width: "3.6", board: "140", gap: "5", stock: "4.8", direction: "length", spacing: "400", waste: "12" },
-  { id: "wide", length: "6", width: "4", board: "90", gap: "5", stock: "3", direction: "width", spacing: "600", waste: "15" },
-];
+import { inputClass } from "./DeckCalculatorTool.part1";
+import { type Direction, parseNum, type Preset, PRESETS, formatNum, buttonClass } from "./DeckCalculatorTool.part2";
 
 export function DeckCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

@@ -1,56 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import { EDUCATION_SUBJECTS, educationTopicTitle } from "@/lib/general/education";
-import {
-  generateEducationTest,
-  type EducationDifficulty,
-  type EducationLevel,
-  type GeneratedQuestion,
-} from "@/lib/general/education-engine";
+import { educationTopicTitle } from "@/lib/general/education";
+import { generateEducationTest, type EducationDifficulty, type EducationLevel, type GeneratedQuestion } from "@/lib/general/education-engine";
 import { useDailyStreak } from "@/hooks/use-daily-streak";
-
-const LEVELS: Array<[EducationLevel, string]> = [
-  ["primaria", "Primary"],
-  ["secundaria", "Secondary"],
-  ["universidad", "University"],
-];
-const DIFFICULTIES: Array<[EducationDifficulty, string]> = [
-  ["facil", "Easy"],
-  ["media", "Medium"],
-  ["dificil", "Hard"],
-];
-const ES_LEVELS: Record<string, string> = { Primary: "Primaria", Secondary: "Secundaria", University: "Universidad" };
-const ES_DIFFICULTIES: Record<string, string> = { Easy: "Fácil", Medium: "Media", Hard: "Difícil" };
-
-/** Map tool config topic → question-bank key (subject-aware for collisions like energia). */
-function resolveBankTopic(subjectSlug: string, topicSlug: string): string {
-  if (subjectSlug === "fisica" && topicSlug === "energia") return "energia-fisica";
-  if (subjectSlug === "ciencias-naturales" && topicSlug === "energia") return "energia-naturales";
-  return topicSlug;
-}
-
-function subjectDisplayName(subjectSlug: string, locale: "en" | "es"): string {
-  const row = EDUCATION_SUBJECTS.find(([slug]) => slug === subjectSlug);
-  if (!row) return educationTopicTitle(subjectSlug);
-  if (locale === "es") {
-    const esNames: Record<string, string> = {
-      matematicas: "Matemáticas",
-      lengua: "Lengua y literatura",
-      fisica: "Física",
-      quimica: "Química",
-      biologia: "Biología",
-      historia: "Historia",
-      geografia: "Geografía",
-      ingles: "Inglés",
-      informatica: "Informática",
-      economia: "Economía",
-      filosofia: "Filosofía",
-      "ciencias-naturales": "Ciencias naturales",
-    };
-    return esNames[subjectSlug] ?? educationTopicTitle(subjectSlug);
-  }
-  return row[1];
-}
+import { LEVELS } from "./EducationTool.part1";
+import { resolveBankTopic, subjectDisplayName, ES_LEVELS, DIFFICULTIES, ES_DIFFICULTIES } from "./EducationTool.part2";
 
 export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
   const es = locale === "es";

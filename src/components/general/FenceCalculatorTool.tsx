@@ -1,41 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import type { Locale } from "@/lib/i18n/locale";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const n = Number(value.replace(",", "."));
-  return Number.isFinite(n) ? n : null;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits }).format(value);
-}
-
-type Mode = "picket" | "panel";
-
-type Preset = {
-  id: string;
-  length: string;
-  spacing: string;
-  gates: string;
-  gateWidth: string;
-  mode: Mode;
-  board: string;
-  gap: string;
-  panel: string;
-  rails: string;
-  waste: string;
-  bags: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "privacy", length: "12", spacing: "1.8", gates: "1", gateWidth: "1", mode: "picket", board: "140", gap: "0", panel: "1.8", rails: "3", waste: "10", bags: "1" },
-  { id: "gapped", length: "15", spacing: "2.4", gates: "1", gateWidth: "0.9", mode: "picket", board: "90", gap: "15", panel: "1.8", rails: "2", waste: "8", bags: "1" },
-  { id: "panel", length: "18", spacing: "1.8", gates: "1", gateWidth: "1", mode: "panel", board: "140", gap: "0", panel: "1.8", rails: "0", waste: "5", bags: "2" },
-];
+import { inputClass } from "./FenceCalculatorTool.part1";
+import { type Mode, parseNum, type Preset, PRESETS, formatNum, buttonClass } from "./FenceCalculatorTool.part2";
 
 export function FenceCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

@@ -1,23 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  BASE_SIZE, HISTORY_MAX, OBJECT_MAX, NAME_PAIR, STORAGE_KEY,
-  clampPos, clampSize, degToRad, makeGeometry, makeMaterial, normDeg, radToDeg, snapVal,
-  type ShapeKind, type MatPreset, UNIT_CM,
-} from "./modeler3d-helpers";
+import { BASE_SIZE, HISTORY_MAX, OBJECT_MAX, NAME_PAIR, STORAGE_KEY, clampPos, clampSize, degToRad, makeGeometry, makeMaterial, normDeg, radToDeg, snapVal, type ShapeKind, type MatPreset, UNIT_CM } from "./modeler3d-helpers";
 import { makeAlignApi } from "./modeler3d-align";
-import {
-  readNamedScenes, saveNamedSceneEntry, removeNamedScene,
-  tryDecodeShareFromHash, buildShareUrl, scenePresets,
-} from "./modeler3d-scenes";
-
-type SceneObj = { id: string; name: string; kind: ShapeKind; color: string; matPreset?: MatPreset };
-type MeshSnapshot = { id: string; name: string; kind: ShapeKind; color: string; matPreset?: MatPreset; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
-type GroupSnap = { id: string; name: string; childIds: string[]; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
-type HistoryEntry = { meshes: MeshSnapshot[]; groups: GroupSnap[] };
-type ClipItem = { kind: ShapeKind; color: string; matPreset?: MatPreset; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
-
-let _id = 0;
-const nextId = () => `m${Date.now().toString(36)}${(_id++).toString(36)}`;
+import { readNamedScenes, saveNamedSceneEntry, removeNamedScene, tryDecodeShareFromHash, buildShareUrl, scenePresets } from "./modeler3d-scenes";
+import { type SceneObj } from "./modeler3d-core.part1";
+import { type HistoryEntry, type ClipItem, type MeshSnapshot, type GroupSnap, nextId } from "./modeler3d-core.part2";
 
 export function useModelerCore(locale: "en" | "es" = "en") {
   const es = locale === "es";

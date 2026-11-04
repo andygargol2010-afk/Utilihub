@@ -34,5 +34,18 @@ for (const f of fs.readdirSync("src/lib/general").filter((n) => n.endsWith(".ts"
   for (const m of txt.matchAll(/\],"([a-z0-9-]+)"\)/g)) if (!adv.has(m[1])) errors.push(`${f}: advanced operation "${m[1]}" has no case in AdvancedCalculatorTool`);
 }
 
+// 3-part split (2026-11-04): part1 must not import part2/main; part2 must not import main (value imports).
+const walkDir = (d, out = []) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const f = `${d}/${e.name}`; if (e.isDirectory()) walkDir(f, out); else if (/\.part[12]\.tsx?$/.test(e.name)) out.push(f); } return out; };
+for (const f of walkDir("src")) {
+  const m = f.match(/([^/]+)\.part([12])\.tsx?$/); const base = m[1].replace(/^-/, ""); const k = Number(m[2]);
+  for (const im of fs.readFileSync(f, "utf8").matchAll(/^import\s+(type\s+)?[^;]*?from\s+["']\.\/([^"']+)["']/gm)) {
+    if (im[1]) continue;
+    const t = im[2].replace(/^-/, "");
+    if (t === base || (k === 1 && t === `${base}.part2`)) errors.push(`${f}: imports later part "./${im[2]}" (import cycle)`);
+  }
+  const mainTs = f.replace(/\.part[12](\.tsx?)$/, "$1").replace(/\/-([^/]+)$/, "/$1");
+  if (!fs.existsSync(mainTs)) errors.push(`${f}: main file ${mainTs} is missing`);
+}
+
 if (errors.length) { console.error("✖ tool routing guard:\n  " + errors.join("\n  ")); process.exit(1); }
 console.log("✓ tool routing guard OK");
