@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-03 | conversiones | conversor-kcal-kj | KcalKjConverterTool
 - 2026-11-03 | viajes | calculadora-distancia-haversine | GreatCircleDistanceCalculatorTool
 - 2026-11-03 | finanzas | calculadora-cagr | CagrCalculatorTool
 - 2026-11-03 | matematicas | media-geometrica | GeometricMeanCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-03 | ciencia | calculadora-area-superficie-cilindro | CylinderSurfaceAreaCalculatorTool
 - 2026-11-03 | finanzas | calculadora-depreciacion-lineal | StraightLineDepreciationCalculatorTool
 - 2026-11-03 | salud | calculadora-ratio-cintura-cadera | WaistToHipRatioCalculatorTool
-- 2026-11-03 | hogar | calculadora-dosis-cafe | CoffeeDoseCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -48,7 +48,7 @@ salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda, calculadora-promedio-examenes, calculadora-porcentaje-a-letra)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta, calculadora-depreciacion-lineal, calculadora-cagr)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico, calculadora-varianza, mcd-mcm, media-geometrica)
-conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras, conversor-acres-hectareas, conversor-pies2-m2, conversor-mpg-l100km, conversor-psi-bar)
+conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras, conversor-acres-hectareas, conversor-pies2-m2, conversor-mpg-l100km, conversor-psi-bar, conversor-kcal-kj)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-11-03: PRODUCT — conversor-kcal-kj (conversiones). One tool (saturation least-represented). New dedicated kcal ↔ kJ converter (1 kcal = 4.184 kJ). EN+ES UI with 2 examples, validation (non-negative), related links, FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-03: PRODUCT — calculadora-distancia-haversine (viajes). One tool (saturation least-represented). New dedicated great-circle (Haversine) distance calculator between lat/lon. EN+ES UI with 2 examples, validation (ranges), related links (tiempo-viaje, velocidad-media), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-03: PRODUCT — calculadora-cagr (finanzas). One tool (saturation least-represented). New dedicated CAGR calculator. EN+ES UI with 2 examples, validation (positive values), related links (compound/simple interest), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-03: PRODUCT — media-geometrica (matematicas). One tool (saturation least-represented). Improved existing generic with dedicated UI. Anti-dupe OK (existing slug, dedicated component). Geometric mean calculator (positive numbers, exp(avg ln)). EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer.
@@ -77,9 +78,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-distancia-haversine
+last_slugs: conversor-kcal-kj
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (pending post-push)
+last_sha: fdedcaa6cc7d3d433921185b7a39ebbe054bcbbd
 ```
 
 <!-- end:tools-builder-state.md -->
