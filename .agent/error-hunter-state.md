@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-03 run 122
-runs_total: 122
+last_run: 2026-11-03 run 123
+runs_total: 123
 last_mode: HUNT
 last_fix: n/a (clean)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean
 deploy: production READY on b66efb99 (no recent ERROR on tip; older ERROR on 918e8c1a ignored)
-notes: Known smoke E031 — no $(cat or bad PLACEHOLDER in src (search clean); index.tsx starts with import/createFileRoute, DeferredHomeReviews real. Discovery: live /es home ok (978 tools), /games/2048 interactive, /studio/prism-trail-composer controls, /tools/beaufort-wind-scale-converter specific guide, /es/finanzas/calculadora-wacc loads (Spanish), /tools/overtime-pay-calculator generic but functional, /tools/png-to-jpg image guide. No runtime errors. No new open/recurring. No deploy ERROR. Pending: none critical.
+notes: Known smoke E031 — no $(cat or bad PLACEHOLDER in src (search clean); index.tsx starts with import/createFileRoute, DeferredHomeReviews real. Discovery: live /es home ok (982 tools), /games page lists 27 games, /games/2048 interactive, /studio/prism-trail-composer controls, /es/herramientas/calculadora-iva specific guide + loading, /es/herramientas/calculadora-imc dedicated UI (24.2 normal), /es/herramientas/png-a-jpg image guide, /es/herramientas/calculadora-raiz-cubica dedicated (2), /es/herramientas/modelador-3d proper studio (not house), /es/finanzas/calculadora-wacc loads Spanish. No runtime errors. No new open/recurring. No deploy ERROR. Pending: none critical.
 ```
 
 <!-- end:error-hunter-state.md -->
