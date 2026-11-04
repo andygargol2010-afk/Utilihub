@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-04 | salud | calculadora-peso-objetivo-imc | TargetWeightByBmiCalculatorTool
 - 2026-11-04 | hogar/cocina | calculadora-escalado-receta | RecipeScalerCalculatorTool
 - 2026-11-03 | conversiones | conversor-kcal-kj | KcalKjConverterTool
 - 2026-11-03 | viajes | calculadora-distancia-haversine | GreatCircleDistanceCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-03 | matematicas | mcd-mcm | McdMcmCalculatorTool
 - 2026-11-03 | fechas | calculadora-diferencia-horas | TimeOfDayDifferenceCalculatorTool
 - 2026-11-03 | ciencia | calculadora-area-superficie-cilindro | CylinderSurfaceAreaCalculatorTool
-- 2026-11-03 | finanzas | calculadora-depreciacion-lineal | StraightLineDepreciationCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -44,7 +44,7 @@ hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-ga
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible, calculadora-presupuesto-total-viaje, calculadora-distancia-haversine)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura, conversor-numeros-romanos, calculadora-palabras-por-oracion)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala, conversor-pt-a-px, calculadora-line-height)
-salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura, calculadora-superficie-corporal, calculadora-ratio-cintura-cadera)
+salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura, calculadora-superficie-corporal, calculadora-ratio-cintura-cadera, calculadora-peso-objetivo-imc)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda, calculadora-promedio-examenes, calculadora-porcentaje-a-letra)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta, calculadora-depreciacion-lineal, calculadora-cagr)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico, calculadora-varianza, mcd-mcm, media-geometrica)
@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-11-04: PRODUCT — calculadora-peso-objetivo-imc (salud). One tool (saturation least-represented). New dedicated target weight from height + desired BMI. EN+ES UI with 2 examples, validation (height 100-250, BMI 15-40), related links (imc, peso-ideal), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-04: PRODUCT — calculadora-escalado-receta (hogar/cocina). One tool (saturation least-represented). New dedicated recipe scaler (factor or servings). EN+ES UI with 2 examples, validation (positive), related links, FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-03: PRODUCT — conversor-kcal-kj (conversiones). One tool (saturation least-represented). New dedicated kcal ↔ kJ converter (1 kcal = 4.184 kJ). EN+ES UI with 2 examples, validation (non-negative), related links, FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-03: PRODUCT — calculadora-distancia-haversine (viajes). One tool (saturation least-represented). New dedicated great-circle (Haversine) distance calculator between lat/lon. EN+ES UI with 2 examples, validation (ranges), related links (tiempo-viaje, velocidad-media), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
@@ -79,9 +80,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-escalado-receta
+last_slugs: calculadora-peso-objetivo-imc
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (pending post-push)
+last_sha: 6c18fa842f11c0401c7484f9843cfd588ea3e1b0
 ```
 
 <!-- end:tools-builder-state.md -->
