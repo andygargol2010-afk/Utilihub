@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-04 run 125
-runs_total: 125
+last_run: 2026-11-04 run 126
+runs_total: 126
 last_mode: HUNT
-last_fix: FinanceSeoContent.tsx ES about never falls back to tool.description (English) — SHA 7fc021c8
+last_fix: n/a (0 code fixes)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean
-deploy: production READY on b66efb99 (no recent ERROR on tip; older ERROR on 918e8c1a ignored); tip 7062307b after fixes
-notes: Known smoke E031 — no $(cat or bad PLACEHOLDER in src (search clean); critical files real. Discovery: live /es/finanzas/amortizacion-de-prestamo about showed raw EN description (fixed); /es/herramientas/consumo-por-distancia header mixed "Calculá fuel consumption..." (phrase-translate, SEO overrides in prior tip); calculadora-diferencia-horas 404 (deploy lag on newer tools); /es/juegos/2048 loads (Cargando… expected). No new open/recurring. No deploy ERROR. Pending: wait deploy for tip fixes and newest tools; ongoing SUMMARY_ES coverage for mixed summaries.
+deploy: production READY on b66efb99 (no ERROR on recent); tip d7e05401 after catalog/state; FinanceSeoContent fix still lagging on live
+notes: Known smoke E031 — search src clean of $(cat/PLACEHOLDER; critical routes real. Discovery: live /es/finanzas/calculadora-wacc and amortizacion-de-prestamo still show EN about ("Calculate the weighted...") despite tip FinanceSeoContent never falling back to tool.description — pure deploy lag. /es home, 2048, modelador-3d, n-body OK. No new open/recurring. No deploy ERROR. Pending: wait production catch-up for SEO ES about; ongoing SUMMARY_ES / financeSeo coverage.
 ```
 
 <!-- end:error-hunter-state.md -->
