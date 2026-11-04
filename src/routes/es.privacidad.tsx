@@ -34,6 +34,14 @@ function PrivacidadPage() {
           navegar o usar el sitio. {SITE_NAME} está dirigido a un público internacional y su operador está basado
           en Argentina. Para detalles sobre cookies y tecnologías similares, consulta nuestra <a href="/es/cookies">Política de Cookies</a>.
         </p>
+        <h2>Puntos clave</h2>
+        <ul>
+          <li>No se requieren cuentas; las herramientas procesan datos localmente en tu navegador.</li>
+          <li>No vendemos datos personales.</li>
+          <li>Socios publicitarios de terceros (incluyendo Adsterra y potencialmente Google AdSense) pueden establecer cookies para entrega, medición y personalización de anuncios cuando esté permitido.</li>
+          <li>Puedes controlar o excluirte de la publicidad personalizada mediante la configuración del navegador o herramientas del sector (ver Métodos de exclusión).</li>
+          <li>Contáctanos para cualquier solicitud de derechos sobre datos.</li>
+        </ul>
         <h2>Información que podemos tratar</h2>
         <p>
           Podemos tratar datos técnicos básicos de navegación, como tipo de navegador, sistema operativo, idioma,
@@ -72,7 +80,7 @@ function PrivacidadPage() {
         <h2>Métodos de exclusión</h2>
         <ul>
           <li>Gestiona cookies y almacenamiento local a través de la configuración de tu navegador.</li>
-          <li>Exclúyete de la publicidad personalizada a través de Google Ad Settings (adssettings.google.com) o herramientas del sector como aboutads.info o su equivalente local.</li>
+          <li>Exclúyete de la publicidad personalizada a través de Google Ad Settings (adssettings.google.com), Network Advertising Initiative (optout.networkadvertising.org), aboutads.info o su equivalente local.</li>
           <li>Usa extensiones de navegador o bloqueadores de anuncios si lo deseas (ten en cuenta que esto puede afectar la funcionalidad del sitio y no elimina la publicidad de Adsterra).</li>
           <li>Contáctanos para solicitudes de acceso o eliminación de datos.</li>
         </ul>

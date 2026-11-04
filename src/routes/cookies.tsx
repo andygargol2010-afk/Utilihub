@@ -34,6 +34,13 @@ function CookiesPage() {
           local storage) when you visit the site. It complements our <a href="/privacy">Privacy Policy</a>. The
           operator is based in Argentina and the site serves an international audience.
         </p>
+        <h2>Key points</h2>
+        <ul>
+          <li>Analytics cookies from Vercel for aggregated performance insights.</li>
+          <li>Advertising cookies from Adsterra and potentially Google AdSense for delivery and measurement.</li>
+          <li>Local storage for preferences that stay on your device.</li>
+          <li>Easy opt-out options via browser or industry preference tools.</li>
+        </ul>
 
         <h2>What are cookies?</h2>
         <p>
@@ -77,7 +84,7 @@ function CookiesPage() {
           </li>
           <li>
             <strong>Advertising preferences:</strong> You can manage interest-based advertising through industry tools
-            such as the Digital Advertising Alliance (DAA), Google Ad Settings (adssettings.google.com), or aboutads.info, or by using an ad blocker.
+            such as the Digital Advertising Alliance (DAA), Google Ad Settings (adssettings.google.com), Network Advertising Initiative (optout.networkadvertising.org), or aboutads.info, or by using an ad blocker.
           </li>
           <li>
             <strong>Local storage:</strong> Clear site data or local storage for this domain in your browser settings to

@@ -33,6 +33,14 @@ function PrivacyPage() {
           browse or use the site. {SITE_NAME} is aimed at an international audience and its operator is based in
           Argentina. For details on cookies and similar technologies, see our <a href="/cookies">Cookie Policy</a>.
         </p>
+        <h2>Key points</h2>
+        <ul>
+          <li>No accounts required; tools process data locally in your browser.</li>
+          <li>We do not sell personal data.</li>
+          <li>Third-party advertising partners (including Adsterra and potentially Google AdSense) may set cookies for ad delivery, measurement and personalization where permitted.</li>
+          <li>You can control or opt out of personalized advertising via browser settings or industry tools (see Opt-out methods).</li>
+          <li>Contact us for any data rights requests.</li>
+        </ul>
         <h2>Information we may process</h2>
         <p>
           We may process basic technical browsing data, such as browser type, operating system, language, pages visited,
@@ -68,7 +76,7 @@ function PrivacyPage() {
         <h2>Opt-out methods</h2>
         <ul>
           <li>Manage cookies and local storage via your browser settings.</li>
-          <li>Opt out of personalized advertising via Google Ad Settings (adssettings.google.com) or industry tools such as aboutads.info or your local equivalent.</li>
+          <li>Opt out of personalized advertising via Google Ad Settings (adssettings.google.com), the Network Advertising Initiative (optout.networkadvertising.org), aboutads.info, or your local equivalent.</li>
           <li>Use browser extensions or ad blockers if desired (note that this may affect site functionality and does not remove Adsterra advertising).</li>
           <li>Contact us for data access or deletion requests.</li>
         </ul>

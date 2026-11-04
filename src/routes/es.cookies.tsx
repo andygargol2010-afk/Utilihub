@@ -34,6 +34,13 @@ function CookiesPageEs() {
           el almacenamiento local) cuando visitas el sitio. Complementa nuestra <a href="/es/privacidad">Política de Privacidad</a>. El
           operador tiene base en Argentina y el sitio se dirige a un público internacional.
         </p>
+        <h2>Puntos clave</h2>
+        <ul>
+          <li>Cookies de analítica de Vercel para insights de rendimiento agregados.</li>
+          <li>Cookies publicitarias de Adsterra y potencialmente Google AdSense para entrega y medición.</li>
+          <li>Almacenamiento local para preferencias que permanecen en tu dispositivo.</li>
+          <li>Opciones de exclusión sencillas mediante navegador o herramientas de preferencias del sector.</li>
+        </ul>
 
         <h2>¿Qué son las cookies?</h2>
         <p>
@@ -78,7 +85,7 @@ function CookiesPageEs() {
           </li>
           <li>
             <strong>Preferencias de publicidad:</strong> Puedes gestionar la publicidad basada en intereses a través de
-            herramientas del sector como la Digital Advertising Alliance (DAA), Google Ad Settings (adssettings.google.com) o aboutads.info, o usando un bloqueador
+            herramientas del sector como la Digital Advertising Alliance (DAA), Google Ad Settings (adssettings.google.com), Network Advertising Initiative (optout.networkadvertising.org) o aboutads.info, o usando un bloqueador
             de anuncios.
           </li>
           <li>
