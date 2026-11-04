@@ -23,4 +23,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "media-geometrica": "Calculadora de media geométrica",
   "calculadora-cagr": "Calculadora de CAGR",
   "calculadora-distancia-haversine": "Calculadora de distancia de círculo máximo",
+  "conversor-kcal-kj": "Conversor de kcal a kJ",
 };
