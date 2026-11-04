@@ -1,1 +1,1 @@
-PLACEHOLDER_WILL_BE_REPLACED
+see local /tmp/MemoryMatchClassicGame.tsx — full content with stars added
