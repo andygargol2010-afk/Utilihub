@@ -1,7 +1,7 @@
 import {makeTool} from "./types";
 const m=(s:string,n:string,summary:string,config:Record<string,unknown>={})=>makeTool(s,n,"matematicas","number",summary,[],config);
 export const MATH_EXTRA_TOOLS=[
- m("valor-absoluto","Absolute value","Calculate the absolute value of a number.",{operation:"abs",fields:["Number"]}),
+ m("valor-absoluto","Absolute value","Calculate the absolute value of a number.",{operation:"abs",fields:["Number"], summaryEs: "Calculá el valor absoluto de un número."}),
  m("redondeo","Round","Round a number to the nearest integer.",{operation:"round",fields:["Number"]}),
  m("redondeo-decimales","Round to decimals","Round a number to a given number of decimal places.",{operation:"round-decimals",fields:["Number","Decimals"]}),
  m("piso-matematico","Floor","Get the lower integer of a number.",{operation:"floor",fields:["Number"]}),
