@@ -30,4 +30,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "ley-de-ohm": "Calculadora de la ley de Ohm",
   "calculadora-meses-entre-fechas": "Calculadora de meses entre fechas",
   "calculadora-area-paralelogramo": "Calculadora de área de paralelogramo",
+  "calculadora-escala-modular": "Calculadora de escala modular",
 };
