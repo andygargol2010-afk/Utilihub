@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-04 run 128
-runs_total: 128
-last_mode: PREVENT
+last_run: 2026-11-04 run 129
+runs_total: 129
+last_mode: HUNT
 last_fix: n/a (0 code fixes)
-last_prevent: confirmed no soft-limit breaches in catalog chunks; E051 tip fix already present, awaiting production deploy
+last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean
-deploy: production READY on b66efb99 (no recent ERROR); tip f29ce4f includes FinanceSeoContent ES about fix (7fc021c) but not yet deployed — live still shows EN description
-notes: Known smoke E031 — src search clean of $(cat/bad PLACEHOLDER; critical routes real (home, juegos, simuladores, IVA, temp converter OK). Discovery: live /es/finanzas/calculadora-wacc "Sobre esta calculadora" still English raw description due to deploy lag (tip uses aboutEs or generic ES). No new open/recurring. No deploy ERROR. Pending: production catch-up for E051 finance about; ongoing SUMMARY_ES coverage.
+deploy: production READY on b66efb99 (no recent ERROR); tip 551015f4 includes FinanceSeoContent ES about fix but live still shows EN description on /es/finanzas/calculadora-wacc — deploy lag
+notes: Known smoke E031 — src search clean of $(cat/bad PLACEHOLDER; critical routes real (home, juegos, simuladores, IVA, temp converter, modelador-3d OK). Discovery: sampled /es, /es/juegos/2048, /es/herramientas/modelador-3d, /es/n-body-gravity, /es/herramientas/calculadora-imc, /es/herramientas/png-a-jpg — all load correctly, kind-aware UI/SEO, no 404/crash. E051 live lag continues. No new open/recurring. No deploy ERROR. Pending: production catch-up for E051 finance about; ongoing SUMMARY_ES coverage.
 ```
 
 <!-- end:error-hunter-state.md -->
