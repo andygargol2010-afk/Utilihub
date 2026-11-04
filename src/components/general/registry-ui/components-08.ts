@@ -21,3 +21,4 @@ export const EffectiveAnnualRateCalculatorToolUi = lazy(() => import("../Effecti
 export const OhmsLawCalculatorToolUi = lazy(() => import("../OhmsLawCalculatorTool").then((m) => ({ default: m.OhmsLawCalculatorTool })));
 export const MonthsBetweenDatesCalculatorToolUi = lazy(() => import("../MonthsBetweenDatesCalculatorTool").then((m) => ({ default: m.MonthsBetweenDatesCalculatorTool })));
 export const ParallelogramAreaCalculatorToolUi = lazy(() => import("../ParallelogramAreaCalculatorTool").then((m) => ({ default: m.ParallelogramAreaCalculatorTool })));
+export const ModularScaleCalculatorToolUi = lazy(() => import("../ModularScaleCalculatorTool").then((m) => ({ default: m.ModularScaleCalculatorTool })));
