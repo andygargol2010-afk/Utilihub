@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-04 | matematicas | calculadora-area-paralelogramo | ParallelogramAreaCalculatorTool
 - 2026-11-04 | fechas/tiempo | calculadora-meses-entre-fechas | MonthsBetweenDatesCalculatorTool
 - 2026-11-04 | ciencia/física | ley-de-ohm | OhmsLawCalculatorTool
 - 2026-11-04 | finanzas | calculadora-tasa-efectiva-anual | EffectiveAnnualRateCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-03 | matematicas | media-geometrica | GeometricMeanCalculatorTool
 - 2026-11-03 | texto | calculadora-palabras-por-oracion | WordsPerSentenceCalculatorTool
 - 2026-11-03 | educacion | calculadora-porcentaje-a-letra | PercentageToLetterGradeCalculatorTool
-- 2026-11-03 | diseno | calculadora-line-height | LineHeightCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -47,7 +47,7 @@ diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-d
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura, calculadora-superficie-corporal, calculadora-ratio-cintura-cadera, calculadora-peso-objetivo-imc)
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda, calculadora-promedio-examenes, calculadora-porcentaje-a-letra)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta, calculadora-depreciacion-lineal, calculadora-cagr, calculadora-tasa-efectiva-anual)
-matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico, calculadora-varianza, mcd-mcm, media-geometrica)
+matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico, calculadora-varianza, mcd-mcm, media-geometrica, calculadora-area-paralelogramo)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras, conversor-acres-hectareas, conversor-pies2-m2, conversor-mpg-l100km, conversor-psi-bar, conversor-kcal-kj)
 ```
 
@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-11-04: PRODUCT — calculadora-area-paralelogramo (matematicas, least-represented). New dedicated parallelogram area = base × height. EN+ES UI with 2 examples, validation (positive), related links (area-rectangulo, area-triangulo), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-04: PRODUCT — calculadora-meses-entre-fechas (fechas/tiempo, least-represented). New dedicated months + remaining days calculator. EN+ES UI with 2 examples, validation (valid dates), related links (dias-entre-fechas, edad), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-04: PRODUCT — ley-de-ohm (ciencia/física). Improved existing generic ScienceTool with dedicated UI (solve for V/I/R). EN+ES UI with 2 examples, validation (non-negative, positive divisors), related links (potencia-electrica, resistencias-serie), FAQ. Anti-dupe OK (existing slug, dedicated component). SEO locales: defer.
 2026-11-04: PRODUCT — calculadora-tasa-efectiva-anual (finanzas). One tool (saturation least-represented). New dedicated EAR from nominal rate + compounding periods. EN+ES UI with 2 examples, validation (0-100%, 1-365), related links (compound/simple interest), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
@@ -83,9 +84,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-meses-entre-fechas
+last_slugs: calculadora-area-paralelogramo
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (to be filled after commit)
+last_sha: 6d9622ac8791a14112429706f3b3fe5e155fc514
 ```
 
 <!-- end:tools-builder-state.md -->
