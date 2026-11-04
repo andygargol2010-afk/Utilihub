@@ -18,6 +18,7 @@ const tool = makeTool(
     title: "Ohm's Law Calculator — Voltage, Current, Resistance | UtiliHub",
     description:
       "Free Ohm's law calculator. Enter any two of voltage (V), current (I), or resistance (R) to find the third. Instant local calculation, no signup.",
+    summaryEs: "Calculá tensión, corriente o resistencia con la ley de Ohm (V = I × R). Funciona por completo en el navegador.",
   },
 );
 tool.faq.push(
