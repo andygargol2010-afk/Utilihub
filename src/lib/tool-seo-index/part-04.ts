@@ -9,6 +9,7 @@ import { TOOL_SEO_OVERRIDES_TRIP_FUEL } from "../tool-seo-overrides-trip-fuel";
 import { TOOL_SEO_OVERRIDES_GSC_QUERIES } from "../tool-seo-overrides-gsc-queries";
 import { TOOL_SEO_OVERRIDES_REFERENCE } from "../tool-seo-overrides-reference";
 import { TOOL_SEO_OVERRIDES_WORK } from "../tool-seo-overrides-work";
+import { TOOL_SEO_OVERRIDES_POWER } from "../tool-seo-overrides-power";
 
 export const TOOL_SEO_OVERRIDES_PART_04: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_ATTENDANCE,
@@ -19,4 +20,5 @@ export const TOOL_SEO_OVERRIDES_PART_04: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_GSC_QUERIES,
   ...TOOL_SEO_OVERRIDES_REFERENCE,
   ...TOOL_SEO_OVERRIDES_WORK,
+  ...TOOL_SEO_OVERRIDES_POWER,
 };
