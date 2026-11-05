@@ -22,4 +22,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-area-rombo": UI.RhombusAreaCalculatorToolUi,
   "calculadora-palabras-unicas": UI.UniqueWordsCalculatorToolUi,
   "calculadora-letra-a-porcentaje": UI.LetterToPercentageCalculatorToolUi,
+  "calculadora-tiempo-estimado-llegada": UI.EstimatedArrivalTimeCalculatorToolUi,
 };
