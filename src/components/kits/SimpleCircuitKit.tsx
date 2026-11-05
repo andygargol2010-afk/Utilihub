@@ -28,6 +28,8 @@ const LABELS = {
   es: { battery: "Batería", switch: "Interruptor", resistor: "Resistencia", led: "LED", wire: "Cable" },
 };
 
+const OHMS_OPTIONS = [50, 100, 220, 470, 1000];
+
 export function SimpleCircuitKit({ locale }: { locale: Locale }) {
   const es = locale === "es";
   const steps = es ? STEPS_ES : STEPS_EN;
@@ -66,7 +68,15 @@ export function SimpleCircuitKit({ locale }: { locale: Locale }) {
     if (mode !== "place" || !selected) return;
     setGrid((prev) => {
       const next = prev.map((row) => row.map((cell) => ({ ...cell })));
-      next[r][c] = { type: selected, closed: selected === "switch" ? true : undefined, ohms: selected === "resistor" ? 100 : undefined };
+      if (selected === "resistor" && next[r][c].type === "resistor") {
+        // cycle ohms
+        const current = next[r][c].ohms || 100;
+        const idx = OHMS_OPTIONS.indexOf(current);
+        const nextOhm = OHMS_OPTIONS[(idx + 1) % OHMS_OPTIONS.length];
+        next[r][c].ohms = nextOhm;
+      } else {
+        next[r][c] = { type: selected, closed: selected === "switch" ? true : undefined, ohms: selected === "resistor" ? 100 : undefined };
+      }
       return next;
     });
     setTimeout(updateUrl, 0);
@@ -91,6 +101,16 @@ export function SimpleCircuitKit({ locale }: { locale: Locale }) {
     }
   };
 
+  const resetAll = () => {
+    setGrid(Array.from({ length: GRID }, () => Array.from({ length: GRID }, () => ({ type: null }))));
+    setWires(new Set());
+    setChecked(new Array(steps.length).fill(false));
+    setWireFrom(null);
+    setTestResult(null);
+    setMode("place");
+    window.history.replaceState(null, "", window.location.pathname);
+  };
+
   const progress = useMemo(() => {
     const done = checked.filter(Boolean).length;
     return { done, total: steps.length, pct: Math.round((done / steps.length) * 100) };
@@ -106,20 +126,35 @@ export function SimpleCircuitKit({ locale }: { locale: Locale }) {
     const connected = wires.size >= 3;
     const complete = hasBattery && hasSwitch && hasRes && hasLed && switchClosed && connected;
     const R = comps.find((c) => c.type === "resistor")?.ohms || 100;
-    const bright = complete ? Math.max(0.2, Math.min(1, 200 / R)) : 0;
-    return { complete, bright, hasBattery, hasSwitch, hasRes, hasLed, switchClosed, connected };
+    const bright = complete ? Math.max(0.15, Math.min(1, 220 / R)) : 0;
+    return { complete, bright, hasBattery, hasSwitch, hasRes, hasLed, switchClosed, connected, R };
   }, [grid, wires]);
+
+  // Auto-check guided steps based on state
+  useEffect(() => {
+    if (uiMode !== "guided") return;
+    setChecked((prev) => {
+      const next = [...prev];
+      next[0] = circuitStatus.hasBattery;
+      next[1] = circuitStatus.hasSwitch;
+      next[2] = circuitStatus.hasRes;
+      next[3] = circuitStatus.hasLed;
+      next[4] = circuitStatus.connected;
+      next[5] = circuitStatus.complete;
+      return next;
+    });
+  }, [circuitStatus, uiMode]);
 
   useEffect(() => {
     if (circuitStatus.complete) {
       const msg = es
-        ? `Circuito cerrado. LED encendido (brillo ~${Math.round(circuitStatus.bright * 100)}%)`
-        : `Circuit closed. LED on (brightness ~${Math.round(circuitStatus.bright * 100)}%)`;
+        ? `Circuito cerrado. LED encendido (brillo ~${Math.round(circuitStatus.bright * 100)}%, R=${circuitStatus.R}Ω)`
+        : `Circuit closed. LED on (brightness ~${Math.round(circuitStatus.bright * 100)}%, R=${circuitStatus.R}Ω)`;
       setTestResult(msg);
     } else if (testResult && !circuitStatus.complete) {
       setTestResult(null);
     }
-  }, [circuitStatus.complete, circuitStatus.bright, es]);
+  }, [circuitStatus.complete, circuitStatus.bright, circuitStatus.R, es]);
 
   const toggleStep = (i: number) => {
     setChecked((prev) => {
@@ -176,6 +211,20 @@ export function SimpleCircuitKit({ locale }: { locale: Locale }) {
         }
       }
     }
+    // simple wires on PNG
+    ctx.strokeStyle = "#22d3ee";
+    ctx.lineWidth = 2;
+    wires.forEach((key) => {
+      const [r1, c1, r2, c2] = key.split("-").map(Number);
+      const x1 = 40 + c1 * 120 + 50;
+      const y1 = 120 + r1 * 80 + 30;
+      const x2 = 40 + c2 * 120 + 50;
+      const y2 = 120 + r2 * 80 + 30;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    });
     ctx.fillStyle = "#64748b";
     ctx.fillText("utilihub.com", 30, 470);
     const a = document.createElement("a");
@@ -193,14 +242,33 @@ export function SimpleCircuitKit({ locale }: { locale: Locale }) {
   ];
 
   const challenges = es
-    ? ["Haz el LED lo más brillante posible", "Usa el mínimo de cables", "Abre y cierra el interruptor rápidamente"]
-    : ["Make the LED as bright as possible", "Use the fewest wires", "Open and close the switch quickly"];
+    ? ["Haz el LED lo más brillante posible (menor R)", "Usa el mínimo de cables", "Abre y cierra el interruptor rápidamente"]
+    : ["Make the LED as bright as possible (lower R)", "Use the fewest wires", "Open and close the switch quickly"];
+
+  // Wire lines for SVG overlay
+  const wireLines = useMemo(() => {
+    const lines: { x1: number; y1: number; x2: number; y2: number }[] = [];
+    wires.forEach((key) => {
+      const parts = key.split("-").map(Number);
+      if (parts.length === 4) {
+        const [r1, c1, r2, c2] = parts;
+        lines.push({
+          x1: (c1 + 0.5) * 100 / GRID,
+          y1: (r1 + 0.5) * 100 / GRID,
+          x2: (c2 + 0.5) * 100 / GRID,
+          y2: (r2 + 0.5) * 100 / GRID,
+        });
+      }
+    });
+    return lines;
+  }, [wires]);
 
   return (
     <div className="space-y-6 max-w-2xl">
       <div className="flex flex-wrap gap-2">
         <button type="button" onClick={() => setUiMode("guided")} className={`rounded-lg px-4 py-3 text-sm font-medium border min-h-[44px] ${uiMode === "guided" ? "bg-primary text-primary-foreground border-primary" : "bg-secondary border-border"}`}>{es ? "Guiado" : "Guided"}</button>
         <button type="button" onClick={() => setUiMode("free")} className={`rounded-lg px-4 py-3 text-sm font-medium border min-h-[44px] ${uiMode === "free" ? "bg-primary text-primary-foreground border-primary" : "bg-secondary border-border"}`}>{es ? "Libre" : "Free"}</button>
+        <button type="button" onClick={resetAll} className="rounded-lg px-4 py-3 text-sm font-medium border min-h-[44px] bg-secondary border-border">{es ? "Reiniciar" : "Reset"}</button>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -232,6 +300,7 @@ export function SimpleCircuitKit({ locale }: { locale: Locale }) {
             </li>
           ))}
         </ul>
+        <p className="mt-2 text-xs text-muted-foreground">{es ? "Tip: toca una resistencia existente para cambiar ohms." : "Tip: tap an existing resistor to cycle ohms."}</p>
       </div>
 
       {uiMode === "guided" && (
@@ -246,29 +315,45 @@ export function SimpleCircuitKit({ locale }: { locale: Locale }) {
         </div>
       )}
 
-      <div className="relative grid gap-1" style={{ gridTemplateColumns: `repeat(${GRID}, 1fr)` }}>
-        {grid.map((row, r) =>
-          row.map((cell, c) => {
-            const isLedOn = cell.type === "led" && circuitStatus.complete;
-            return (
-              <button
-                key={`${r}-${c}`}
-                type="button"
-                onClick={() => (mode === "place" ? place(r, c) : startWire(r, c))}
-                onDoubleClick={() => toggleSwitch(r, c)}
-                className={`aspect-square rounded border text-xs font-medium min-h-[60px] relative ${
-                  cell.type ? "bg-sky-500/20 border-sky-400" : "bg-muted/30 border-border"
-                } ${wireFrom?.r === r && wireFrom?.c === c ? "ring-2 ring-primary" : ""} ${isLedOn ? "shadow-[0_0_12px_#fbbf24]" : ""}`}
-                style={isLedOn ? { backgroundColor: `rgba(251, 191, 36, ${circuitStatus.bright * 0.4})` } : {}}
-              >
-                {cell.type ? labels[cell.type as keyof typeof labels] : ""}
-                {cell.type === "switch" && (cell.closed ? " ON" : " OFF")}
-                {cell.type === "resistor" && ` ${cell.ohms}Ω`}
-                {isLedOn && <span className="absolute -top-1 -right-1 text-yellow-400 text-lg">✨</span>}
-              </button>
-            );
-          })
-        )}
+      <div className="relative">
+        <div className="relative grid gap-1" style={{ gridTemplateColumns: `repeat(${GRID}, 1fr)` }}>
+          {grid.map((row, r) =>
+            row.map((cell, c) => {
+              const isLedOn = cell.type === "led" && circuitStatus.complete;
+              return (
+                <button
+                  key={`${r}-${c}`}
+                  type="button"
+                  onClick={() => (mode === "place" ? place(r, c) : startWire(r, c))}
+                  onDoubleClick={() => toggleSwitch(r, c)}
+                  className={`aspect-square rounded border text-xs font-medium min-h-[60px] relative ${
+                    cell.type ? "bg-sky-500/20 border-sky-400" : "bg-muted/30 border-border"
+                  } ${wireFrom?.r === r && wireFrom?.c === c ? "ring-2 ring-primary" : ""} ${isLedOn ? "shadow-[0_0_12px_#fbbf24]" : ""}`}
+                  style={isLedOn ? { backgroundColor: `rgba(251, 191, 36, ${circuitStatus.bright * 0.4})` } : {}}
+                >
+                  {cell.type ? labels[cell.type as keyof typeof labels] : ""}
+                  {cell.type === "switch" && (cell.closed ? " ON" : " OFF")}
+                  {cell.type === "resistor" && ` ${cell.ohms}Ω`}
+                  {isLedOn && <span className="absolute -top-1 -right-1 text-yellow-400 text-lg">✨</span>}
+                </button>
+              );
+            })
+          )}
+        </div>
+        <svg className="absolute inset-0 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+          {wireLines.map((line, i) => (
+            <line
+              key={i}
+              x1={`${line.x1}%`}
+              y1={`${line.y1}%`}
+              x2={`${line.x2}%`}
+              y2={`${line.y2}%`}
+              stroke="#22d3ee"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          ))}
+        </svg>
       </div>
 
       <p className="text-xs text-muted-foreground">{es ? `Cables: ${wires.size}` : `Wires: ${wires.size}`}</p>
