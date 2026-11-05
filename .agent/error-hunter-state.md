@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 142
-runs_total: 142
+last_run: 2026-11-05 run 143
+runs_total: 143
 last_mode: HUNT
 last_fix: n/a (checks OK, no code change)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no $(cat in src, registry.tsx real with pickComponent/buildLazyRegistry, index.tsx starts with import/createFileRoute)
-deploy: production READY on c20a444; tip eae22c34 (ideas-lab population-dynamics fixes) not yet deployed; no ERROR in recent deploys; www.utilihub.net home OK, calculadora-area-trapecio dedicated UI Spanish, calculadora-ley-ohm still mixed E051 due to lag, population-dynamics-simulator 404 (expected, tip not live)
-notes: Known smoke E031 clean. Registry healthy. Discovery: sampled calculadora-area-trapecio (good dedicated Spanish UI), population-dynamics-simulator (404 expected), n-body, generador-codigos (Spanish now). E051 still mixed on live ley-ohm ("Calculá voltage, current, o resistance..."). No new broken patterns or $(cat in src. Pending: deploy of tip to clear E051 lag and surface new tools.
+deploy: production READY on c20a444; tip 5878944e (ideas-lab population-dynamics fixes) not yet deployed; no ERROR in recent deploys; www.utilihub.net home OK, calculadora-area-trapecio dedicated UI Spanish, calculadora-ley-ohm and generador-codigos still mixed E051 due to lag, population-dynamics-simulator 404 (expected, tip not live), 3d-modeler OK (not HouseModeler)
+notes: Known smoke E031 clean. Registry healthy. Discovery: sampled calculadora-area-trapecio (good dedicated Spanish UI), ley-de-ohm (good Spanish), generador-codigos (mixed E051 lag), 3d-modeler (correct studio), home OK, games/2048 OK. No new broken patterns or $(cat in src. Pending: deploy of tip to clear E051 lag and surface new tools.
 ```
 
 <!-- end:error-hunter-state.md -->
