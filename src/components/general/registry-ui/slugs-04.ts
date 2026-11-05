@@ -21,4 +21,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-area-trapecio": UI.TrapezoidAreaCalculatorToolUi,
   "calculadora-area-rombo": UI.RhombusAreaCalculatorToolUi,
   "calculadora-palabras-unicas": UI.UniqueWordsCalculatorToolUi,
+  "calculadora-letra-a-porcentaje": UI.LetterToPercentageCalculatorToolUi,
 };

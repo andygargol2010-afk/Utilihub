@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-05 | educacion | calculadora-letra-a-porcentaje | LetterToPercentageCalculatorTool
 - 2026-11-05 | texto | calculadora-palabras-unicas | UniqueWordsCalculatorTool
 - 2026-11-04 | matematicas | calculadora-area-rombo | RhombusAreaCalculatorTool
 - 2026-11-04 | matematicas | calculadora-area-trapecio | TrapezoidAreaCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-04 | salud | calculadora-peso-objetivo-imc | TargetWeightByBmiCalculatorTool
 - 2026-11-04 | hogar/cocina | calculadora-escalado-receta | RecipeScalerCalculatorTool
 - 2026-11-03 | conversiones | conversor-kcal-kj | KcalKjConverterTool
-- 2026-11-03 | viajes | calculadora-distancia-haversine | GreatCircleDistanceCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -45,7 +45,7 @@ viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura, conversor-numeros-romanos, calculadora-palabras-por-oracion, calculadora-palabras-unicas)
 diseno: recent (contraste-color, paleta-complementaria, dpi, calculadora-ratio-dorado, calculadora-px-a-rem, calculadora-relacion-aspecto, calculadora-factor-de-escala, conversor-pt-a-px, calculadora-line-height, calculadora-escala-modular)
 salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias, horas-sueno, calculadora-imc, calculadora-ingesta-agua-diaria, calculadora-frecuencia-cardiaca-objetivo, calculadora-ciclo-sueno, calculadora-ratio-cintura-altura, calculadora-superficie-corporal, calculadora-ratio-cintura-cadera, calculadora-peso-objetivo-imc)
-educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda, calculadora-promedio-examenes, calculadora-porcentaje-a-letra)
+educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda, calculadora-promedio-examenes, calculadora-porcentaje-a-letra, calculadora-letra-a-porcentaje)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta, calculadora-depreciacion-lineal, calculadora-cagr, calculadora-tasa-efectiva-anual)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico, calculadora-varianza, mcd-mcm, media-geometrica, calculadora-area-paralelogramo, calculadora-area-trapecio, calculadora-area-rombo)
 conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras, conversor-acres-hectareas, conversor-pies2-m2, conversor-mpg-l100km, conversor-psi-bar, conversor-kcal-kj)
@@ -62,20 +62,9 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-11-05: PRODUCT — calculadora-letra-a-porcentaje (educacion, saturation least-represented). New dedicated letter-grade to typical % converter (US scale with +/-). EN+ES UI with 2 examples, validation (known letters), related links (porcentaje-a-letra, nota-necesaria), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-05: PRODUCT — calculadora-palabras-unicas (texto, saturation least-represented). New dedicated unique-words count + ratio. EN+ES UI with 2 examples, validation (non-empty), related links (lineas, longitud-promedio-palabra), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-04: PRODUCT — calculadora-area-rombo (matematicas, saturation least-ish). New dedicated UI for rhombus area = (d1×d2)/2. EN+ES UI with 2 examples, validation (positive), related links (area-paralelogramo, area-trapecio). Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-04: PRODUCT — calculadora-area-trapecio (matematicas, improve existing generic). New dedicated UI for trapezoid area = ((a+b)/2)×h. EN+ES UI with 2 examples, validation (positive), related links (area-rectangulo, area-paralelogramo). Anti-dupe OK (existing slug, dedicated component). SEO locales: defer.
-2026-11-04: PRODUCT — calculadora-escala-modular (diseno, least-represented). New dedicated modular typography scale (base × ratio^step). EN+ES UI with 2 examples, validation (base>0, ratio>1, steps 0-12), related links (px-a-rem, line-height), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-04: PRODUCT — calculadora-area-paralelogramo (matematicas, least-represented). New dedicated parallelogram area = base × height. EN+ES UI with 2 examples, validation (positive), related links (area-rectangulo, area-triangulo), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-04: PRODUCT — calculadora-meses-entre-fechas (fechas/tiempo, least-represented). New dedicated months + remaining days calculator. EN+ES UI with 2 examples, validation (valid dates), related links (dias-entre-fechas, edad), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-04: PRODUCT — ley-de-ohm (ciencia/física). Improved existing generic ScienceTool with dedicated UI (solve for V/I/R). EN+ES UI with 2 examples, validation (non-negative, positive divisors), related links (potencia-electrica, resistencias-serie), FAQ. Anti-dupe OK (existing slug, dedicated component). SEO locales: defer.
-2026-11-04: PRODUCT — calculadora-tasa-efectiva-anual (finanzas). One tool (saturation least-represented). New dedicated EAR from nominal rate + compounding periods. EN+ES UI with 2 examples, validation (0-100%, 1-365), related links (compound/simple interest), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-04: PRODUCT — calculadora-peso-objetivo-imc (salud). One tool (saturation least-represented). New dedicated target weight from height + desired BMI. EN+ES UI with 2 examples, validation (height 100-250, BMI 15-40), related links (imc, peso-ideal), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-03: PRODUCT — calculadora-escalado-receta (hogar/cocina). One tool (saturation least-represented). New dedicated recipe scaler (factor or servings). EN+ES UI with 2 examples, validation (positive), related links, FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-03: PRODUCT — conversor-kcal-kj (conversiones). One tool (saturation least-represented). New dedicated kcal ↔ kJ converter (1 kcal = 4.184 kJ). EN+ES UI with 2 examples, validation (non-negative), related links, FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-03: PRODUCT — calculadora-distancia-haversine (viajes). One tool (saturation least-represented). New dedicated great-circle (Haversine) distance calculator between lat/lon. EN+ES UI with 2 examples, validation (ranges), related links (tiempo-viaje, velocidad-media), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-03: PRODUCT — calculadora-cagr (finanzas). One tool (saturation least-represented). New dedicated CAGR calculator. EN+ES UI with 2 examples, validation (positive values), related links (compound/simple interest), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-03: PRODUCT — media-geometrica (matematicas). One tool (saturation least-represented). Improved existing generic with dedicated UI. Anti-dupe OK (existing slug, dedicated component). Geometric mean calculator (positive numbers, exp(avg ln)). EN+ES UI with 2 examples, validation, related links, FAQ. SEO locales: defer.
 ```
 
 ---
@@ -84,7 +73,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-palabras-unicas
+last_slugs: calculadora-letra-a-porcentaje
 last_deploy: no (branch auto-deploy disabled)
 last_sha: (pending this commit)
 ```

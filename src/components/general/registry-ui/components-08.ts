@@ -25,3 +25,4 @@ export const ModularScaleCalculatorToolUi = lazy(() => import("../ModularScaleCa
 export const TrapezoidAreaCalculatorToolUi = lazy(() => import("../TrapezoidAreaCalculatorTool").then((m) => ({ default: m.TrapezoidAreaCalculatorTool })));
 export const RhombusAreaCalculatorToolUi = lazy(() => import("../RhombusAreaCalculatorTool").then((m) => ({ default: m.RhombusAreaCalculatorTool })));
 export const UniqueWordsCalculatorToolUi = lazy(() => import("../UniqueWordsCalculatorTool").then((m) => ({ default: m.UniqueWordsCalculatorTool })));
+export const LetterToPercentageCalculatorToolUi = lazy(() => import("../LetterToPercentageCalculatorTool").then((m) => ({ default: m.LetterToPercentageCalculatorTool })));

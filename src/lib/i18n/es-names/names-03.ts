@@ -34,4 +34,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-area-trapecio": "Calculadora de área de trapecio",
   "calculadora-area-rombo": "Calculadora de área de rombo",
   "calculadora-palabras-unicas": "Calculadora de palabras únicas",
+  "calculadora-letra-a-porcentaje": "Calculadora de letra a porcentaje",
 };
