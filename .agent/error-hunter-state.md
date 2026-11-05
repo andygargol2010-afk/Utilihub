@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 140
-runs_total: 140
+last_run: 2026-11-05 run 141
+runs_total: 141
 last_mode: HUNT
 last_fix: n/a (checks OK, no code change)
 last_prevent: n/a
-last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no $(cat in src, no bad PLACEHOLDER in registry/routes)
-deploy: production READY on c20a444 (latest listed); tip 23742ba (new unique-words tool) not yet deployed; no ERROR in recent deploys; www.utilihub.net home and tools OK (alias 404 note was outdated)
-notes: Known smoke E031 clean. Registry healthy. index/es.index real. Discovery: new tool calculadora-palabras-unicas wired with summaryEs + dedicated UI on tip (not live yet). Sampled games/studio/n-body/iva OK. ES summaries still mixed on live production due to deploy lag (code already has summaryEs for valor-absoluto/ohms/etc). No new broken patterns. Pending: deploy of tip; continue E051 coverage on live once deployed.
+last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no $(cat in src, registry.tsx real, index.tsx starts with import)
+deploy: production READY on c20a444; tip 2f164ada (potencia-electrica SEO) not yet deployed; no ERROR in recent deploys; www.utilihub.net home/n-body/generador-codigos OK
+notes: Known smoke E031 clean. Registry healthy (pickComponent/buildLazyRegistry present, no PLACEHOLDER). index.tsx real content. Discovery: sampled n-body-gravity, generador-codigos, boids-flocking-lab, valor-absoluto, calculadora-palabras-unicas (404 as expected — not on live production yet). E051 still mixed on live valor-absoluto ("Calculá absoluto valor de número.") due to deploy lag. No new broken patterns or $(cat. Pending: deploy of tip; continue E051 coverage once deployed.
 ```
 
 <!-- end:error-hunter-state.md -->
