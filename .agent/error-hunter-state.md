@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-04 run 137
-runs_total: 137
+last_run: 2026-11-04 run 138
+runs_total: 138
 last_mode: HUNT
-last_fix: summaryEs for valor-absoluto (math-extra.ts) + generador-codigos (misc.ts) — SHAs 2d65b871 + fcf9c4b5
+last_fix: n/a (no new code fix; previous summaryEs not yet live)
 last_prevent: n/a
-last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no hits in src)
-deploy: production READY on c20a444 (tip fcf9c4b5 not yet deployed); no ERROR; live leaks persist on c20a444 (ley-ohm mixed, wacc about EN, valor-absoluto/generador-codigos mixed) — lag continues
-notes: Known smoke E031 clean. Discovery: /es OK, /es/herramientas/modelador-3d OK (not House), /es/juegos/snake OK, /es/finanzas/calculadora-wacc about still EN, /es/herramientas/valor-absoluto mixed, /es/herramientas/generador-codigos mixed, /es/herramientas/calculadora-ley-ohm mixed. Fixed 2 summaryEs. Pending: deploy catch-up for recent summaryEs and FinanceSeoContent generic ES about.
+last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no hits in src or .agent)
+deploy: production READY on c20a444 (tip a5782a15 not yet deployed); no ERROR; live leaks persist on c20a444 (ley-ohm mixed, wacc about EN, valor-absoluto/generador-codigos mixed) — lag continues
+notes: Known smoke E031 clean (no $(cat, no bad PLACEHOLDER). Registry healthy (kind-first, no PLACEHOLDER). Homes OK. Discovery: /es/herramientas/modelador-3d OK (not House), /es/herramientas/modelador-casas-3d OK, /es/herramientas/png-a-jpg and /comprimir-imagen kind-aware guides, /es/juegos/snake and /pacman OK. Pending: deploy catch-up for recent summaryEs fixes and FinanceSeoContent generic ES about.
 ```
 
 <!-- end:error-hunter-state.md -->
