@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-04 run 138
-runs_total: 138
+last_run: 2026-11-05 run 139
+runs_total: 139
 last_mode: HUNT
-last_fix: n/a (no new code fix; previous summaryEs not yet live)
+last_fix: n/a (checks OK, no code change)
 last_prevent: n/a
-last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no hits in src or .agent)
-deploy: production READY on c20a444 (tip a5782a15 not yet deployed); no ERROR; live leaks persist on c20a444 (ley-ohm mixed, wacc about EN, valor-absoluto/generador-codigos mixed) — lag continues
-notes: Known smoke E031 clean (no $(cat, no bad PLACEHOLDER). Registry healthy (kind-first, no PLACEHOLDER). Homes OK. Discovery: /es/herramientas/modelador-3d OK (not House), /es/herramientas/modelador-casas-3d OK, /es/herramientas/png-a-jpg and /comprimir-imagen kind-aware guides, /es/juegos/snake and /pacman OK. Pending: deploy catch-up for recent summaryEs fixes and FinanceSeoContent generic ES about.
+last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no $(cat in src, no bad PLACEHOLDER in registry/routes)
+deploy: production READY on c20a444 (latest listed); tip ~8a68290 not yet deployed (branch deploymentEnabled:false in vercel.json); no ERROR in recent deploys; main utilihub.vercel.app returns 404 NOT_FOUND
+notes: Known smoke E031 clean. Registry.tsx healthy (kind-first routing, no PLACEHOLDER). index.tsx and es.index.tsx real content (no $(cat stubs). Discovery: ohms-law-tool has summaryEs; no new broken patterns found in sampled paths. Pending: deploy lag for tip; investigate why production alias 404s; continue ES summary coverage (E051).
 ```
 
 <!-- end:error-hunter-state.md -->
