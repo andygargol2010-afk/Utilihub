@@ -70,11 +70,11 @@ path_es: /es/kit-circuito-simple
 path_seo: n/a
 domain: kits
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: user places and connects components, sees circuit complete and LED light (or error), shares PNG/URL
 share: both
 next_step_required: yes
-notes: IDEATE: 3 candidates scored (value/share/search/distinct/feas/perf). 1) simple-circuit-kit (kits) 5/4/4/5/4/4 total 26. Closest: paper-airplane-kit (multi-step discrete checkoff+preview), any existing visualizers none for circuits. Metaphor: discrete parts + connection assembler. Why not particle-canvas: guided discrete components with cause-effect readout (lights), not freehand trails. 2) battleship-classic (games) 5/4/5/4/4/4 total 26. Closest: minesweeper (grid reveal), checkers (board). Metaphor: turn-based grid hunt. IP: traditional public-domain grid hunt mechanics, generic naming, no commercial branding. 3) choice-story-journey quality-lift or new (journeys) 4/3/3/4/4/5 total 23. Closest: existing ChoiceStoryJourney. Metaphor: ordered narrative stages. Chosen simple-circuit-kit for underused kits domain (only paper-airplane recent), educational value, distinct from saturated games and particle playgrounds. Roll: CORE kits for balance after recent games/simulators. IP: original educational assembler, generic components.
+notes: IDEATE: 3 candidates scored (value/share/search/distinct/feas/perf). 1) simple-circuit-kit (kits) 5/4/4/5/4/4 total 26. Closest: paper-airplane-kit (multi-step discrete checkoff+preview), any existing visualizers none for circuits. Metaphor: discrete parts + connection assembler. Why not particle-canvas: guided discrete components with cause-effect readout (lights), not freehand trails. 2) battleship-classic (games) 5/4/5/4/4/4 total 26. Closest: minesweeper (grid reveal), checkers (board). Metaphor: turn-based grid hunt. IP: traditional public-domain grid hunt mechanics, generic naming, no commercial branding. 3) choice-story-journey quality-lift or new (journeys) 4/3/3/4/4/5 total 23. Closest: existing ChoiceStoryJourney. Metaphor: ordered narrative stages. Chosen simple-circuit-kit for underused kits domain (only paper-airplane recent), educational value, distinct from saturated games and particle playgrounds. Roll: CORE kits for balance after recent games/simulators. IP: original educational assembler, generic components. EXECUTE run 1: core grid place/wire/test + guided steps + PNG/URL + EN/ES routes. Core playable (place comps, connect, test lights).
 adsense-prep_runs: 7
 ```
 
