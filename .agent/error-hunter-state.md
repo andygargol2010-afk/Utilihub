@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 145
-runs_total: 145
+last_run: 2026-11-05 run 146
+runs_total: 146
 last_mode: HUNT
-last_fix: n/a (checks OK, no code change)
+last_fix: E053 education quiz tools English leak on ES (summaryEs added in education.ts)
 last_prevent: n/a
-last_known_focus: E051 (mixed ES summaries — live still mixed on calculadora-ley-ohm / generador-codigos due to production deploy lag on c20a444; tip 460ee20 has summaryEs)
-deploy: production READY on c20a444; tip 460ee20; no recent ERROR; www.utilihub.net home OK, modelador-3d correct studio (not House), games/2048 OK, generador-codigos mixed lag, ley-ohm mixed lag
-notes: Known smoke E001-E050 clean (registry healthy, no PLACEHOLDER/$(cat). Discovery: sampled modelador-3d (correct Modeler3DStudio), games/2048 OK, generador-codigos (mixed E051 lag), calculadora-ley-ohm (mixed E051 lag), 3d-house-modeler guide OK. No new broken patterns. Pending: deploy of tip to clear E051 lag.
+last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; E051 lag on production c20a444
+deploy: production READY on c20a444; tip now f70953f (E053 fix); no recent ERROR; www.utilihub.net home OK, modelador-3d correct studio, games/2048 OK, generador-codigos Spanish, calculadora-ley-ohm mixed lag, education quizzes English (fixed in tip)
+notes: Known smoke E001-E052 clean (registry healthy, no PLACEHOLDER/$(cat). Discovery: sampled modelador-3d (correct), games/2048 OK, education quiz test-filosofia-filosofia-politica (English leak — fixed E053), ley-ohm mixed lag, unir-pdf OK. Pending: deploy of tip to clear E051 lag and E053.
 ```
 
 <!-- end:error-hunter-state.md -->
