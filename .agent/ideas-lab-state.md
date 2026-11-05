@@ -62,8 +62,20 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: none
-# Project checkers-classic closed after final polish. Next run: IDEATE.
+status: active
+idea: Interactive population dynamics simulator. User sets initial population, birth rate, death rate, and carrying capacity. Runs discrete generations to see live SVG chart of population over time (logistic growth), phase indicators (growth/decline/stable), and key stats (peak, generations to capacity). Compare two scenarios side-by-side. EN+ES routes. Mobile-first 390px. SVG chart + state + params. No particles. Acceptance: user sets params, runs sim, sees curve and stats, shares branded PNG or deep-link URL.
+id: population-dynamics-simulator
+path_en: /population-dynamics-simulator
+path_es: /es/simulador-dinamica-poblacional
+path_seo: n/a
+domain: simulators
+runs_total: 4
+runs_remaining: 4
+acceptance: user sets birth/death/capacity/initial, runs generations, sees live logistic growth chart + stats, shares PNG/URL
+share: both
+next_step_required: yes
+notes: Rubric (1-5): C1 population-dynamics-simulator (value 4, share 4, search 3, distinct 4, feas 5, perf 4) total 24. Closest: n-body-gravity (physics sim), compound-interest guide (growth curve), daily-progress-constellation (progress visual). Primary metaphor: parameter-driven discrete-generation cause-effect model with SVG readout. Why not particle-canvas: logistic chart + stats panels, no freehand trails/attractors. C2 spring-oscillator-simulator (4,3,3,3,4,4) total 21. Closest: echo-wave, orbit-pulse, n-body. Metaphor: single physical oscillator + graph. Why not: one mass + spring visual, no field particles. C3 traffic-flow-simulator (4,3,4,4,4,3) total 22. Closest: n-body, aurora-particle, color-cascade. Metaphor: agent-based discrete vehicles on lanes with rules. Why not: rule-based cars, no particle trails. Chosen: C1 (highest score, underused simulators domain, strong variety). Roll: CORE weighted (total 32), pick simulators (weight 4; last closed games so prefer non-games). IP: n/a (original model).
+adsense-prep_runs: 7
 ```
 
 <!-- end:ideas-lab-state.md -->
