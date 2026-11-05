@@ -24,4 +24,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-letra-a-porcentaje": UI.LetterToPercentageCalculatorToolUi,
   "calculadora-tiempo-estimado-llegada": UI.EstimatedArrivalTimeCalculatorToolUi,
   "conversor-grados-a-radianes": UI.DegreesToRadiansConverterToolUi,
+  "calculadora-arroz-crudo-a-cocido": UI.UncookedToCookedRiceCalculatorToolUi,
 };

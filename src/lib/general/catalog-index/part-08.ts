@@ -22,6 +22,7 @@ import { SUCCESSIVE_DISCOUNT_CALCULATOR_TOOLS } from "../successive-discount-cal
 import { MARKUP_CALCULATOR_TOOLS } from "../markup-calculator-tool";
 import { RHOMBUS_AREA_CALCULATOR_TOOLS } from "../rhombus-area-calculator-tool";
 import { ESTIMATED_ARRIVAL_TIME_CALCULATOR_TOOLS } from "../estimated-arrival-time-calculator-tool";
+import { UNCOOKED_TO_COOKED_RICE_CALCULATOR_TOOLS } from "../uncooked-to-cooked-rice-calculator-tool";
 
 export const GENERAL_TOOLS_PART_08 = [
   ...CIRCLE_CIRCUMFERENCE_CALCULATOR_TOOLS,
@@ -46,4 +47,5 @@ export const GENERAL_TOOLS_PART_08 = [
   ...MARKUP_CALCULATOR_TOOLS,
   ...RHOMBUS_AREA_CALCULATOR_TOOLS,
   ...ESTIMATED_ARRIVAL_TIME_CALCULATOR_TOOLS,
+  ...UNCOOKED_TO_COOKED_RICE_CALCULATOR_TOOLS,
 ];

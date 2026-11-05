@@ -37,4 +37,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-letra-a-porcentaje": "Calculadora de letra a porcentaje",
   "calculadora-tiempo-estimado-llegada": "Calculadora de tiempo estimado de llegada",
   "conversor-grados-a-radianes": "Conversor de grados a radianes",
+  "calculadora-arroz-crudo-a-cocido": "Calculadora de arroz crudo a cocido",
 };
