@@ -17,7 +17,13 @@ export const Route = createFileRoute("/es/viajes")({
       { property: "og:image", content: ogImage() },
       { property: "og:site_name", content: SITE_NAME },
     ],
-    links: [{ rel: "canonical", href: absoluteUrl("/es/viajes") }, ...hreflangLinks("/journeys", "/es/viajes")],
+    links: [
+      { rel: "canonical", href: absoluteUrl("/es/viajes") },
+      { rel: "alternate", hrefLang: "en", href: absoluteUrl("/journeys") },
+      { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/viajes") },
+      { rel: "alternate", hrefLang: "pt", href: absoluteUrl("/pt/jornadas") },
+      { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/journeys") },
+    ],
   }),
   component: ViajesIndex,
 });
