@@ -30,6 +30,7 @@ export const Route = createFileRoute("/es/kit-circuito-simple")({
       { rel: "canonical", href: absoluteUrl("/es/kit-circuito-simple") },
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/kit-circuito-simple") },
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/simple-circuit-kit") },
+      { rel: "alternate", hrefLang: "pt", href: absoluteUrl("/pt/kit-circuito-simples") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/simple-circuit-kit") },
     ],
   }),

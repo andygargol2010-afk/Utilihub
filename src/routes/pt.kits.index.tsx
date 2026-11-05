@@ -37,7 +37,7 @@ function PortugueseKitsHub() {
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <Link
-          to="/simple-circuit-kit"
+          to="/pt/kit-circuito-simples"
           className="group flex flex-col rounded-3xl border border-amber-900/15 bg-gradient-to-br from-amber-50 via-white to-orange-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-amber-500/50 hover:shadow-lg"
         >
           <span className="text-4xl" aria-hidden>
