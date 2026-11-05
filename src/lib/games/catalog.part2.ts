@@ -1,1 +1,1 @@
-PLACEHOLDER_CAT
+see /tmp
