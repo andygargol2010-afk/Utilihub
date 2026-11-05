@@ -5,3 +5,4 @@ export const EstimatedArrivalTimeCalculatorToolUi = lazy(() => import("../Estima
 export const DegreesToRadiansConverterToolUi = lazy(() => import("../DegreesToRadiansConverterTool").then((m) => ({ default: m.DegreesToRadiansConverterTool })));
 export const UncookedToCookedRiceCalculatorToolUi = lazy(() => import("../UncookedToCookedRiceCalculatorTool").then((m) => ({ default: m.UncookedToCookedRiceCalculatorTool })));
 export const BodyAdiposityIndexCalculatorToolUi = lazy(() => import("../BodyAdiposityIndexCalculatorTool").then((m) => ({ default: m.BodyAdiposityIndexCalculatorTool })));
+export const RuleOf72CalculatorToolUi = lazy(() => import("../RuleOf72CalculatorTool").then((m) => ({ default: m.RuleOf72CalculatorTool })));

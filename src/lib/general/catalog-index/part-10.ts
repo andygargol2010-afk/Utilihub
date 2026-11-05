@@ -24,6 +24,7 @@ import { EFFECTIVE_ANNUAL_RATE_CALCULATOR_TOOLS } from "../effective-annual-rate
 import { MONTHS_BETWEEN_DATES_CALCULATOR_TOOLS } from "../months-between-dates-calculator-tool";
 import { PARALLELOGRAM_AREA_CALCULATOR_TOOLS } from "../parallelogram-area-calculator-tool";
 import { UNIQUE_WORDS_CALCULATOR_TOOLS } from "../unique-words-calculator-tool";
+import { RULE_OF_72_CALCULATOR_TOOLS } from "../rule-of-72-calculator-tool";
 
 export const GENERAL_TOOLS_PART_10 = [
   ...MPG_L100KM_CONVERTER_TOOLS,
@@ -50,4 +51,5 @@ export const GENERAL_TOOLS_PART_10 = [
   ...MONTHS_BETWEEN_DATES_CALCULATOR_TOOLS,
   ...PARALLELOGRAM_AREA_CALCULATOR_TOOLS,
   ...UNIQUE_WORDS_CALCULATOR_TOOLS,
+  ...RULE_OF_72_CALCULATOR_TOOLS,
 ];
