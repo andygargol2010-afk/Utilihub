@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 139
-runs_total: 139
+last_run: 2026-11-05 run 140
+runs_total: 140
 last_mode: HUNT
 last_fix: n/a (checks OK, no code change)
 last_prevent: n/a
 last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no $(cat in src, no bad PLACEHOLDER in registry/routes)
-deploy: production READY on c20a444 (latest listed); tip ~8a68290 not yet deployed (branch deploymentEnabled:false in vercel.json); no ERROR in recent deploys; main utilihub.vercel.app returns 404 NOT_FOUND
-notes: Known smoke E031 clean. Registry.tsx healthy (kind-first routing, no PLACEHOLDER). index.tsx and es.index.tsx real content (no $(cat stubs). Discovery: ohms-law-tool has summaryEs; no new broken patterns found in sampled paths. Pending: deploy lag for tip; investigate why production alias 404s; continue ES summary coverage (E051).
+deploy: production READY on c20a444 (latest listed); tip 23742ba (new unique-words tool) not yet deployed; no ERROR in recent deploys; www.utilihub.net home and tools OK (alias 404 note was outdated)
+notes: Known smoke E031 clean. Registry healthy. index/es.index real. Discovery: new tool calculadora-palabras-unicas wired with summaryEs + dedicated UI on tip (not live yet). Sampled games/studio/n-body/iva OK. ES summaries still mixed on live production due to deploy lag (code already has summaryEs for valor-absoluto/ohms/etc). No new broken patterns. Pending: deploy of tip; continue E051 coverage on live once deployed.
 ```
 
 <!-- end:error-hunter-state.md -->
