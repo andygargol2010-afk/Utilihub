@@ -253,7 +253,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         const seen = new Set<string>();
         const paths: SitemapEntry[] = [];
         for (const entry of pathsRaw) {
-          if (seen has(entry.path)) continue;
+          if (seen.has(entry.path)) continue;
           seen.add(entry.path);
           paths.push(entry);
         }
