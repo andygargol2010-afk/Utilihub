@@ -70,11 +70,11 @@ path_es: /es/simulador-dinamica-poblacional
 path_seo: n/a
 domain: simulators
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: user sets birth/death/capacity/initial, runs generations, sees live logistic growth chart + stats, shares PNG/URL
 share: both
 next_step_required: yes
-notes: Run 1/4 EXECUTE: core interactive shipped (params A/B, discrete logistic sim, live SVG chart, phase/peak/gens-to-cap stats, compare toggle, URL deep-link, PNG export via canvas). EN+ES routes + component. Mobile 390px considered (responsive grid, overflow-x). No particles. Closest still n-body / compound-interest. Next: polish chart axes/labels, presets, a11y, better PNG branding.
+notes: Run 2/4 EXECUTE: polished chart (axes, ticks, capacity line, aria-label), added 4 presets (rapid/stable/decline/overshoot), improved a11y on inputs, better branded PNG (UtiliHub header, date, phase). EN+ES already present. Mobile 390px ok. Next: more polish or close after run 4.
 adsense-prep_runs: 7
 ```
 
