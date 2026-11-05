@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 152
-runs_total: 152
+last_run: 2026-11-05 run 153
+runs_total: 153
 last_mode: HUNT
 last_fix: n/a (docs only)
 last_prevent: n/a
-last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat in src or .agent, registry.tsx real, index/es.index start with import)
-deploy: production READY on c20a444; tip 07c600b has no deploy yet; old ERROR on 918e8c1 (E049 already fixed); www.utilihub.net home OK, modelador-3d correct studio, games/2048 OK, generador-codigos Spanish, calculadora-letra-a-porcentaje 404 (lag), ley-ohm/wacc still mixed English (deploy lag)
-notes: Known smoke E001-E053 clean (registry healthy, no PLACEHOLDER/$(cat). Discovery: sampled ES home, modelador-3d (correct), 2048 OK, generador-codigos Spanish, IVA OK, new tool calculadora-letra-a-porcentaje 404 on live (tip not deployed), wacc/ley-ohm still mixed English (lag). No new code bugs. Pending: deploy of tip to clear lag.
+last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat in src, registry.tsx real with pickComponent, index/es.index start with import)
+deploy: production READY on c20a444; tip b559cae (new conversor-grados-a-radianes) has no deploy yet; old ERROR on 918e8c1 (E049 already fixed); www.utilihub.net home OK, modelador-3d correct studio, IVA/generador-codigos/ley-ohm OK (Spanish), new tools 404 due to lag
+notes: Known smoke E001-E053 clean (registry healthy, no PLACEHOLDER/$(cat). Discovery: sampled ES home, modelador-3d (correct), IVA (loads), generador-codigos Spanish, ley-ohm improved, new conversor-grados-a-radianes not live yet (deploy lag). No new code bugs. Pending: deploy of tip to clear lag.
 ```
 
 <!-- end:error-hunter-state.md -->
