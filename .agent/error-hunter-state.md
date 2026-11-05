@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 154
-runs_total: 154
+last_run: 2026-11-05 run 155
+runs_total: 155
 last_mode: HUNT
-last_fix: n/a (docs only)
+last_fix: n/a
 last_prevent: n/a
-last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat in src search, registry healthy)
-deploy: production READY on c20a444; tip abeea9e2 (ideas-lab sitemap restore) has no deploy yet; old ERROR on 918e8c1 (E049 already fixed); www.utilihub.net home OK, modelador-3d correct studio, IVA/generador-codigos OK Spanish, ley-ohm and education quizzes still leak English due to deploy lag (tip has summaryEs)
-notes: Known smoke E001-E053 clean (no PLACEHOLDER/$(cat in critical paths). Discovery: sampled ES home, modelador-3d (correct), IVA (loads), generador-codigos Spanish, ley-ohm and education quizzes show residual English on live production (lag). No new code bugs. Pending: deploy of tip abeea9e2 to clear lag on E051/E053.
+last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat/PLACEHOLDER in src; registry.tsx healthy with pickComponent/GENERAL_TOOL_UI)
+deploy: production READY on c20a444 (latest for branch); tip aba41fe (docs/state); old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio (not House), IVA Spanish dedicated summary, generador-codigos Spanish.
+notes: Known smoke E001-E053 + E031 clean (registry, index, no stubs). Discovery: sampled /es, modelador-3d, IVA, generador-codigos — all 200, correct Spanish content, no crash. No new code bugs, no deploy ERROR. No fixes needed.
 ```
 
 <!-- end:error-hunter-state.md -->
