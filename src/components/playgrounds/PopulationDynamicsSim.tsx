@@ -24,6 +24,14 @@ const labels = {
     shareUrl: "Copy share URL",
     downloadPng: "Download PNG",
     copied: "Copied!",
+    presets: "Presets",
+    rapid: "Rapid growth",
+    stablePreset: "Stable",
+    declinePreset: "Decline",
+    overshoot: "Overshoot",
+    chartAria: "Population over generations chart",
+    axisGen: "Generations",
+    axisPop: "Population",
   },
   es: {
     initial: "Población inicial",
@@ -44,6 +52,14 @@ const labels = {
     shareUrl: "Copiar URL de compartir",
     downloadPng: "Descargar PNG",
     copied: "¡Copiado!",
+    presets: "Preajustes",
+    rapid: "Crecimiento rápido",
+    stablePreset: "Estable",
+    declinePreset: "Declive",
+    overshoot: "Sobrepaso",
+    chartAria: "Gráfico de población a lo largo de las generaciones",
+    axisGen: "Generaciones",
+    axisPop: "Población",
   },
 };
 
@@ -72,6 +88,13 @@ function getStats(data: number[], capacity: number) {
   return { peak, peakIdx, gensToCap, phase, last };
 }
 
+const PRESETS = {
+  rapid: { initial: 50, birth: 0.45, death: 0.05, capacity: 1200, gens: 60 },
+  stable: { initial: 800, birth: 0.12, death: 0.12, capacity: 1000, gens: 40 },
+  decline: { initial: 900, birth: 0.05, death: 0.25, capacity: 1000, gens: 50 },
+  overshoot: { initial: 200, birth: 0.6, death: 0.1, capacity: 600, gens: 70 },
+};
+
 export function PopulationDynamicsSim({ locale }: { locale: Locale }) {
   const t = labels[locale] || labels.en;
   useEffect(() => {
@@ -91,18 +114,26 @@ export function PopulationDynamicsSim({ locale }: { locale: Locale }) {
   const maxY = Math.max(paramsA.capacity, paramsB.capacity, ...dataA, ...dataB) * 1.1;
   const width = 600;
   const height = 280;
+  const padL = 48;
+  const padB = 36;
+  const plotW = width - padL - 12;
+  const plotH = height - padB - 16;
 
   const toPath = (data: number[]) => {
     if (data.length < 2) return "";
-    const step = width / (data.length - 1);
+    const step = plotW / (data.length - 1);
     return data
-      .map((v, i) => `${i === 0 ? "M" : "L"} ${(i * step).toFixed(1)} ${(height - (v / maxY) * height).toFixed(1)}`)
+      .map((v, i) => `${i === 0 ? "M" : "L"} ${(padL + i * step).toFixed(1)} ${(16 + plotH - (v / maxY) * plotH).toFixed(1)}`)
       .join(" ");
   };
 
   const updateParam = (which: "A" | "B", key: string, value: number) => {
     const setter = which === "A" ? setParamsA : setParamsB;
     setter((p) => ({ ...p, [key]: value }));
+  };
+
+  const applyPreset = (key: keyof typeof PRESETS) => {
+    setParamsA({ ...PRESETS[key] });
   };
 
   const shareUrl = () => {
@@ -118,24 +149,28 @@ export function PopulationDynamicsSim({ locale }: { locale: Locale }) {
 
   const downloadPng = () => {
     const canvas = document.createElement("canvas");
-    canvas.width = 800;
-    canvas.height = 500;
+    canvas.width = 900;
+    canvas.height = 560;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, 800, 500);
-    ctx.fillStyle = "#e2e8f0";
-    ctx.font = "bold 24px system-ui";
-    ctx.fillText(locale === "es" ? "Dinámica Poblacional" : "Population Dynamics", 40, 40);
+    ctx.fillRect(0, 0, 900, 560);
+    ctx.fillStyle = "#22d3ee";
+    ctx.font = "bold 28px system-ui, sans-serif";
+    ctx.fillText(locale === "es" ? "Dinámica Poblacional" : "Population Dynamics", 40, 48);
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "16px system-ui, sans-serif";
+    ctx.fillText("UtiliHub · ideas-lab", 40, 76);
     ctx.strokeStyle = "#334155";
-    ctx.strokeRect(40, 60, 720, 340);
+    ctx.lineWidth = 1;
+    ctx.strokeRect(40, 100, 820, 360);
     const drawLine = (data: number[], color: string) => {
       ctx.beginPath();
       ctx.strokeStyle = color;
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2.8;
       data.forEach((v, i) => {
-        const x = 40 + (i / (data.length - 1)) * 720;
-        const y = 400 - (v / maxY) * 340;
+        const x = 40 + (i / (data.length - 1)) * 820;
+        const y = 460 - (v / maxY) * 360;
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       });
@@ -143,10 +178,13 @@ export function PopulationDynamicsSim({ locale }: { locale: Locale }) {
     };
     drawLine(dataA, "#22d3ee");
     if (compare) drawLine(dataB, "#f472b6");
-    ctx.fillStyle = "#94a3b8";
-    ctx.font = "14px system-ui";
-    ctx.fillText(`Peak A: ${statsA.peak.toFixed(0)}`, 40, 440);
-    if (compare) ctx.fillText(`Peak B: ${statsB.peak.toFixed(0)}`, 40, 460);
+    ctx.fillStyle = "#e2e8f0";
+    ctx.font = "14px system-ui, sans-serif";
+    ctx.fillText(`${t.peak} A: ${statsA.peak.toFixed(0)} · ${t.phase}: ${t[statsA.phase as keyof typeof t]}`, 40, 490);
+    if (compare) ctx.fillText(`${t.peak} B: ${statsB.peak.toFixed(0)} · ${t.phase}: ${t[statsB.phase as keyof typeof t]}`, 40, 510);
+    ctx.fillStyle = "#64748b";
+    ctx.font = "12px system-ui, sans-serif";
+    ctx.fillText(new Date().toISOString().slice(0, 10), 40, 540);
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = "population-dynamics.png";
@@ -180,6 +218,7 @@ export function PopulationDynamicsSim({ locale }: { locale: Locale }) {
             min={0}
             value={params[key]}
             onChange={(e) => updateParam(which, key, parseFloat(e.target.value) || 0)}
+            aria-label={t[key === "gens" ? "generations" : key]}
             className="mt-1 w-full rounded border border-border bg-background px-2 py-1 text-sm"
           />
         </label>
@@ -189,6 +228,19 @@ export function PopulationDynamicsSim({ locale }: { locale: Locale }) {
 
   return (
     <div className="space-y-6">
+      <div className="flex flex-wrap gap-2">
+        <span className="text-xs font-semibold text-muted-foreground self-center">{t.presets}:</span>
+        {(Object.keys(PRESETS) as (keyof typeof PRESETS)[]).map((k) => (
+          <button
+            key={k}
+            type="button"
+            onClick={() => applyPreset(k)}
+            className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold hover:bg-accent"
+          >
+            {t[k === "stable" ? "stablePreset" : k === "decline" ? "declinePreset" : k]}
+          </button>
+        ))}
+      </div>
       <div className="grid gap-4 md:grid-cols-2">
         <ParamControls which="A" params={paramsA} />
         {compare && <ParamControls which="B" params={paramsB} />}
@@ -209,11 +261,30 @@ export function PopulationDynamicsSim({ locale }: { locale: Locale }) {
         </button>
       </div>
       <div className="overflow-x-auto rounded-2xl border border-border bg-card p-4">
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full max-w-full" style={{ minWidth: "320px" }}>
+        <svg
+          viewBox={`0 0 ${width} ${height}`}
+          className="w-full max-w-full"
+          style={{ minWidth: "320px" }}
+          role="img"
+          aria-label={t.chartAria}
+        >
           <rect width={width} height={height} fill="#0f172a" />
+          <line x1={padL} y1={16} x2={padL} y2={16 + plotH} stroke="#475569" />
+          <line x1={padL} y1={16 + plotH} x2={padL + plotW} y2={16 + plotH} stroke="#475569" />
+          <text x={padL - 8} y={12} fill="#94a3b8" fontSize="10" textAnchor="end">{Math.round(maxY)}</text>
+          <text x={padL - 8} y={16 + plotH} fill="#94a3b8" fontSize="10" textAnchor="end">0</text>
+          <text x={padL + plotW / 2} y={height - 6} fill="#94a3b8" fontSize="11" textAnchor="middle">{t.axisGen}</text>
+          <text x={12} y={16 + plotH / 2} fill="#94a3b8" fontSize="11" textAnchor="middle" transform={`rotate(-90 12 ${16 + plotH / 2})`}>{t.axisPop}</text>
           <path d={toPath(dataA)} fill="none" stroke="#22d3ee" strokeWidth="2.5" />
           {compare && <path d={toPath(dataB)} fill="none" stroke="#f472b6" strokeWidth="2.5" />}
-          <line x1="0" y1={height - (paramsA.capacity / maxY) * height} x2={width} y2={height - (paramsA.capacity / maxY) * height} stroke="#64748b" strokeDasharray="4" />
+          <line
+            x1={padL}
+            y1={16 + plotH - (paramsA.capacity / maxY) * plotH}
+            x2={padL + plotW}
+            y2={16 + plotH - (paramsA.capacity / maxY) * plotH}
+            stroke="#64748b"
+            strokeDasharray="4"
+          />
         </svg>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
