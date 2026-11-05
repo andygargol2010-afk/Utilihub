@@ -36,4 +36,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-palabras-unicas": "Calculadora de palabras únicas",
   "calculadora-letra-a-porcentaje": "Calculadora de letra a porcentaje",
   "calculadora-tiempo-estimado-llegada": "Calculadora de tiempo estimado de llegada",
+  "conversor-grados-a-radianes": "Conversor de grados a radianes",
 };

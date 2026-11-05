@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-05 | conversiones | conversor-grados-a-radianes | DegreesToRadiansConverterTool
 - 2026-11-05 | viajes | calculadora-tiempo-estimado-llegada | EstimatedArrivalTimeCalculatorTool
 - 2026-11-05 | educacion | calculadora-letra-a-porcentaje | LetterToPercentageCalculatorTool
 - 2026-11-05 | texto | calculadora-palabras-unicas | UniqueWordsCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-04 | ciencia/física | ley-de-ohm | OhmsLawCalculatorTool
 - 2026-11-04 | finanzas | calculadora-tasa-efectiva-anual | EffectiveAnnualRateCalculatorTool
 - 2026-11-04 | salud | calculadora-peso-objetivo-imc | TargetWeightByBmiCalculatorTool
-- 2026-11-04 | hogar/cocina | calculadora-escalado-receta | RecipeScalerCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -48,7 +48,7 @@ salud: recent (frecuencia-cardiaca-maxima, tmb, peso-saludable, calorias-diarias
 educacion: recent (media-aritmetica, media-ponderada, nota-necesaria, desviacion-estandar, moda, media-geometrica, media-armonica, calculadora-gpa, calculadora-porcentaje-asistencia, calculadora-promedio-simple, calculadora-media-ponderada, calculadora-moda, calculadora-promedio-examenes, calculadora-porcentaje-a-letra, calculadora-letra-a-porcentaje)
 finanzas: recent (descuento-porcentaje, ahorro-mensual, roi, interes-compuesto, aumento-salarial, porcentaje-aumento, calculadora-descuento, calculadora-gasto-diario, calculadora-interes-diario, calculadora-propina, calculadora-iva, calculadora-presupuesto-mensual, calculadora-interes-simple, calculadora-descuento-sucesivo, calculadora-markup, calculadora-precio-por-unidad, calculadora-tasa-de-ahorro, calculadora-cuota-prestamo, calculadora-comision-de-venta, calculadora-horas-extra, calculadora-ahorro-para-meta, calculadora-depreciacion-lineal, calculadora-cagr, calculadora-tasa-efectiva-anual)
 matematicas: recent (calculadora-porcentaje-del-total, calculadora-porcentaje-restante, calculadora-cambio-porcentual, calculadora-regla-de-tres, calculadora-porcentaje-de-numero, calculadora-media-cuadratica, calculadora-desviacion-absoluta-media, calculadora-media-armonica, calculadora-media-geometrica, calculadora-mediana, calculadora-rango-estadistico, calculadora-varianza, mcd-mcm, media-geometrica, calculadora-area-paralelogramo, calculadora-area-trapecio, calculadora-area-rombo)
-conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras, conversor-acres-hectareas, conversor-pies2-m2, conversor-mpg-l100km, conversor-psi-bar, conversor-kcal-kj)
+conversiones: recent (peso, velocidad, rgb-hex, kg-libras, onzas-gramos, litros-galones, millas-km, conversor-bytes, conversor-metros-pies, conversor-celsius-a-fahrenheit, conversor-pulgadas-cm, conversor-yardas-metros, conversor-kmh-ms, conversor-gramos-libras, conversor-acres-hectareas, conversor-pies2-m2, conversor-mpg-l100km, conversor-psi-bar, conversor-kcal-kj, conversor-grados-a-radianes)
 ```
 
 After shipping, bump the relevant lines (e.g. `recent` / count in notes).
@@ -62,10 +62,10 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-11-05: PRODUCT — conversor-grados-a-radianes (conversiones, saturation least-represented). New dedicated degrees→radians converter with π multiple. EN+ES UI with 2 examples, validation (finite), related links (conversor-angulos, calculadora-hipotenusa), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-05: PRODUCT — calculadora-tiempo-estimado-llegada (viajes). New dedicated ETA from distance/speed. EN+ES UI with 2 examples, validation (positive), related links (distancia-haversine, costo-por-km), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-05: PRODUCT — calculadora-letra-a-porcentaje (educacion, saturation least-represented). New dedicated letter-grade to typical % converter (US scale with +/-). EN+ES UI with 2 examples, validation (known letters), related links (porcentaje-a-letra, nota-necesaria), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-05: PRODUCT — calculadora-palabras-unicas (texto, saturation least-represented). New dedicated unique-words count + ratio. EN+ES UI with 2 examples, validation (non-empty), related links (lineas, longitud-promedio-palabra), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
-2026-11-04: PRODUCT — calculadora-area-rombo (matematicas, saturation least-ish). New dedicated UI for rhombus area = (d1×d2)/2. EN+ES UI with 2 examples, validation (positive), related links (area-paralelogramo, area-trapecio). Anti-dupe OK (new slug). SEO locales: defer.
 ```
 
 ---
@@ -74,7 +74,7 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-tiempo-estimado-llegada
+last_slugs: conversor-grados-a-radianes
 last_deploy: no (branch auto-deploy disabled)
 last_sha: (pending this commit)
 ```

@@ -22,6 +22,7 @@ import { SQUARE_FEET_METERS_CONVERTER_TOOLS } from "../square-feet-meters-conver
 import { TARGET_WEIGHT_BY_BMI_CALCULATOR_TOOLS } from "../target-weight-by-bmi-calculator-tool";
 import { MODULAR_SCALE_CALCULATOR_TOOLS } from "../modular-scale-calculator-tool";
 import { LETTER_TO_PERCENTAGE_CALCULATOR_TOOLS } from "../letter-to-percentage-calculator-tool";
+import { DEGREES_TO_RADIANS_CONVERTER_TOOLS } from "../degrees-to-radians-converter-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -46,4 +47,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...TARGET_WEIGHT_BY_BMI_CALCULATOR_TOOLS,
   ...MODULAR_SCALE_CALCULATOR_TOOLS,
   ...LETTER_TO_PERCENTAGE_CALCULATOR_TOOLS,
+  ...DEGREES_TO_RADIANS_CONVERTER_TOOLS,
 ];
