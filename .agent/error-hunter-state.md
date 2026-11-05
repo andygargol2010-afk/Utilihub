@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 146
-runs_total: 146
+last_run: 2026-11-05 run 147
+runs_total: 147
 last_mode: HUNT
-last_fix: E053 education quiz tools English leak on ES (summaryEs added in education.ts)
+last_fix: n/a (docs only)
 last_prevent: n/a
-last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; E051 lag on production c20a444
-deploy: production READY on c20a444; tip now f70953f (E053 fix); no recent ERROR; www.utilihub.net home OK, modelador-3d correct studio, games/2048 OK, generador-codigos Spanish, calculadora-ley-ohm mixed lag, education quizzes English (fixed in tip)
-notes: Known smoke E001-E052 clean (registry healthy, no PLACEHOLDER/$(cat). Discovery: sampled modelador-3d (correct), games/2048 OK, education quiz test-filosofia-filosofia-politica (English leak — fixed E053), ley-ohm mixed lag, unir-pdf OK. Pending: deploy of tip to clear E051 lag and E053.
+last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; E051/E053 lag on production c20a444
+deploy: production READY on c20a444; tip ff25d48 has E053 summaryEs and prior fixes; no recent ERROR; www.utilihub.net home OK, modelador-3d correct studio, games/2048 OK, generador-codigos English, calculadora-ley-ohm mixed, education quizzes mixed, iva OK
+notes: Known smoke E001-E052 clean (registry healthy, no PLACEHOLDER/$(cat). Discovery: sampled home, modelador-3d (correct), games/2048 OK, education quiz (still mixed lag), ley-ohm mixed lag, generador-codigos English, wacc partial English, iva OK. No new broken patterns or PLACEHOLDER. Pending: deploy of tip to clear E051/E053 lag.
 ```
 
 <!-- end:error-hunter-state.md -->
