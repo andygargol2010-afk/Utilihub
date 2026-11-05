@@ -25,4 +25,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-tiempo-estimado-llegada": UI.EstimatedArrivalTimeCalculatorToolUi,
   "conversor-grados-a-radianes": UI.DegreesToRadiansConverterToolUi,
   "calculadora-arroz-crudo-a-cocido": UI.UncookedToCookedRiceCalculatorToolUi,
+  "calculadora-indice-adiposidad-corporal": UI.BodyAdiposityIndexCalculatorToolUi,
 };

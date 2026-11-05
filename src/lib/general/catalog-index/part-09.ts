@@ -23,6 +23,7 @@ import { TARGET_WEIGHT_BY_BMI_CALCULATOR_TOOLS } from "../target-weight-by-bmi-c
 import { MODULAR_SCALE_CALCULATOR_TOOLS } from "../modular-scale-calculator-tool";
 import { LETTER_TO_PERCENTAGE_CALCULATOR_TOOLS } from "../letter-to-percentage-calculator-tool";
 import { DEGREES_TO_RADIANS_CONVERTER_TOOLS } from "../degrees-to-radians-converter-tool";
+import { BODY_ADIPOSITY_INDEX_CALCULATOR_TOOLS } from "../body-adiposity-index-calculator-tool";
 
 export const GENERAL_TOOLS_PART_09 = [
   ...UNIT_PRICE_CALCULATOR_TOOLS,
@@ -48,4 +49,5 @@ export const GENERAL_TOOLS_PART_09 = [
   ...MODULAR_SCALE_CALCULATOR_TOOLS,
   ...LETTER_TO_PERCENTAGE_CALCULATOR_TOOLS,
   ...DEGREES_TO_RADIANS_CONVERTER_TOOLS,
+  ...BODY_ADIPOSITY_INDEX_CALCULATOR_TOOLS,
 ];
