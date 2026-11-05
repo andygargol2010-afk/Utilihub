@@ -60,7 +60,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           const enPath = englishCategoryPath(category.slug);
           const esPath = `/es/categoria/${category.slug}`;
           let priority = "0.8";
-          if (category.slug === "herramientas-avanzadas") priority = "0.95";
+          if (category.slug === "herramientas-avancadas") priority = "0.95";
           else if (category.slug === "educacion") priority = "0.9";
           return pair(enPath, esPath, priority);
         });
@@ -90,8 +90,97 @@ export const Route = createFileRoute("/sitemap.xml")({
           return pair(enPath, esPath, toolPriority(tool, toolSeoOverride));
         });
 
-        // SEO locales: none active after 2026-10-28 reset (no thin /pt|/fr|/de shells).
-        const seoLocaleEntries: SitemapEntry[] = [];
+        // SEO locales: PT product-parity pages (not yet marked active until full bar).
+        const seoLocaleEntries: SitemapEntry[] = [
+          {
+            path: "/pt",
+            priority: "1.0",
+            lastmod: BUILD_DAY,
+            alternates: [
+              { lang: "pt", path: "/pt" },
+              { lang: "en", path: "/" },
+              { lang: "es", path: "/es" },
+              { lang: "x-default", path: "/" },
+            ],
+          },
+          {
+            path: "/pt/ferramentas",
+            priority: "0.9",
+            lastmod: BUILD_DAY,
+            alternates: [
+              { lang: "pt", path: "/pt/ferramentas" },
+              { lang: "en", path: "/tools" },
+              { lang: "es", path: "/es/herramientas" },
+              { lang: "x-default", path: "/tools" },
+            ],
+          },
+          {
+            path: "/pt/jogos",
+            priority: "0.95",
+            lastmod: BUILD_DAY,
+            alternates: [
+              { lang: "pt", path: "/pt/jogos" },
+              { lang: "en", path: "/games" },
+              { lang: "es", path: "/es/juegos" },
+              { lang: "x-default", path: "/games" },
+            ],
+          },
+          {
+            path: "/pt/simuladores",
+            priority: "0.9",
+            lastmod: BUILD_DAY,
+            alternates: [
+              { lang: "pt", path: "/pt/simuladores" },
+              { lang: "en", path: "/simulators" },
+              { lang: "es", path: "/es/simuladores" },
+              { lang: "x-default", path: "/simulators" },
+            ],
+          },
+          {
+            path: "/pt/privacidade",
+            priority: "0.3",
+            lastmod: BUILD_DAY,
+            alternates: [
+              { lang: "pt", path: "/pt/privacidade" },
+              { lang: "en", path: "/privacy" },
+              { lang: "es", path: "/es/privacidad" },
+              { lang: "x-default", path: "/privacy" },
+            ],
+          },
+          {
+            path: "/pt/cookies",
+            priority: "0.3",
+            lastmod: BUILD_DAY,
+            alternates: [
+              { lang: "pt", path: "/pt/cookies" },
+              { lang: "en", path: "/cookies" },
+              { lang: "es", path: "/es/cookies" },
+              { lang: "x-default", path: "/cookies" },
+            ],
+          },
+          {
+            path: "/pt/contato",
+            priority: "0.3",
+            lastmod: BUILD_DAY,
+            alternates: [
+              { lang: "pt", path: "/pt/contato" },
+              { lang: "en", path: "/contact" },
+              { lang: "es", path: "/es/contacto" },
+              { lang: "x-default", path: "/contact" },
+            ],
+          },
+          {
+            path: "/pt/sobre",
+            priority: "0.3",
+            lastmod: BUILD_DAY,
+            alternates: [
+              { lang: "pt", path: "/pt/sobre" },
+              { lang: "en", path: "/about" },
+              { lang: "es", path: "/es/sobre" },
+              { lang: "x-default", path: "/about" },
+            ],
+          },
+        ];
 
         const pathsRaw = [
           ...hubPairs,
