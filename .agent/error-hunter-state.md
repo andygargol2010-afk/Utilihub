@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 149
-runs_total: 149
+last_run: 2026-11-05 run 150
+runs_total: 150
 last_mode: HUNT
 last_fix: n/a (docs only)
 last_prevent: n/a
 last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat in src, registry.tsx real)
-deploy: production READY on c20a444; tip 8550568 has no deploy yet; no recent ERROR; www.utilihub.net home OK, modelador-3d correct studio, games/2048 OK, generador-codigos Spanish, calculadora-ley-ohm still mixed (deploy lag)
-notes: Known smoke E001-E053 clean (registry healthy, no PLACEHOLDER/$(cat). Discovery: sampled home, modelador-3d (correct), games/2048 OK, generador-codigos Spanish on live, ley-ohm still mixed (deploy lag on tip), no new broken patterns or PLACEHOLDER. Pending: deploy of tip to clear remaining lag.
+deploy: production READY on c20a444; tip c9ac0bab has no deploy yet; old ERROR on 918e8c1 (E049 already fixed); www.utilihub.net home OK, modelador-3d correct studio, games/2048 OK, generador-codigos Spanish, calculadora-letra-a-porcentaje 404 (lag), ley-ohm/wacc/education quizzes still mixed (deploy lag)
+notes: Known smoke E001-E053 clean (registry healthy, no PLACEHOLDER/$(cat). Discovery: sampled ES home, modelador-3d (correct), 2048 OK, generador-codigos Spanish, new tool calculadora-letra-a-porcentaje 404 on live (tip not deployed), wacc/education still mixed English (lag), IVA OK. No new code bugs. Pending: deploy of tip to clear lag.
 ```
 
 <!-- end:error-hunter-state.md -->
