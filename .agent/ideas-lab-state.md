@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: (closed 2026-11-05)
-id: population-dynamics-simulator
-path_en: /population-dynamics-simulator
-path_es: /es/simulador-dinamica-poblacional
+status: active
+idea: Interactive simple circuit kit. User places basic components (battery, switch, resistor, LED) on a grid or free canvas, connects them with wires, sees live feedback if the circuit is closed and the LED lights (with brightness based on resistance). Guided mode with step checkoffs for simple series circuit, free mode for experimentation. Materials checklist, progress, optional challenges. Branded PNG of the assembled circuit + URL deep-link with component positions. EN+ES, mobile-first 390px. CSS + state, no heavy deps.
+id: simple-circuit-kit
+path_en: /simple-circuit-kit
+path_es: /es/kit-circuito-simple
 path_seo: n/a
-domain: simulators
+domain: kits
 runs_total: 4
-runs_remaining: 0
-acceptance: user sets birth/death/capacity/initial, runs generations, sees live logistic growth chart + stats, shares PNG/URL
+runs_remaining: 4
+acceptance: user places and connects components, sees circuit complete and LED light (or error), shares PNG/URL
 share: both
-next_step_required: no
-notes: Run 4/4 EXECUTE+CLOSE: final polish (legend under chart, Reset button to defaults, slightly tighter mobile padding on chart container, larger touch targets on inputs). All acceptance criteria met. Closed. Next IDEATE.
+next_step_required: yes
+notes: IDEATE: 3 candidates scored (value/share/search/distinct/feas/perf). 1) simple-circuit-kit (kits) 5/4/4/5/4/4 total 26. Closest: paper-airplane-kit (multi-step discrete checkoff+preview), any existing visualizers none for circuits. Metaphor: discrete parts + connection assembler. Why not particle-canvas: guided discrete components with cause-effect readout (lights), not freehand trails. 2) battleship-classic (games) 5/4/5/4/4/4 total 26. Closest: minesweeper (grid reveal), checkers (board). Metaphor: turn-based grid hunt. IP: traditional public-domain grid hunt mechanics, generic naming, no commercial branding. 3) choice-story-journey quality-lift or new (journeys) 4/3/3/4/4/5 total 23. Closest: existing ChoiceStoryJourney. Metaphor: ordered narrative stages. Chosen simple-circuit-kit for underused kits domain (only paper-airplane recent), educational value, distinct from saturated games and particle playgrounds. Roll: CORE kits for balance after recent games/simulators. IP: original educational assembler, generic components.
 adsense-prep_runs: 7
 ```
 
