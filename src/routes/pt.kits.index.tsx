@@ -52,7 +52,7 @@ function PortugueseKitsHub() {
         </Link>
 
         <Link
-          to="/kits/paper-airplane-kit"
+          to="/pt/kit-aviao-papel"
           className="group flex flex-col rounded-3xl border border-sky-900/15 bg-gradient-to-br from-sky-50 via-white to-indigo-50/80 p-6 shadow-sm transition hover:-translate-y-1 hover:border-sky-500/50 hover:shadow-lg"
         >
           <span className="text-4xl" aria-hidden>

@@ -70,11 +70,11 @@ path_es: n/a
 path_seo: /pt/...
 domain: seo-locales
 runs_total: 12
-runs_remaining: 3
+runs_remaining: 2
 acceptance: User visits /pt/ and sees full EN-parity home + key hubs/experiences in Portuguese; hreflang/sitemap present; pages_done tracked; not a minimal shell.
 share: n/a
 next_step_required: yes
-notes: Rubric A(pt)=25 B(fr)=23 C(de)=22. Closest-3: EN home/tools/games, ES equivalents, deleted 2026-10-28 thin shells. Primary metaphor: full locale product tree. Why not particle-canvas: not a playground. IP: n/a. Chosen pt (priority #1, highest score). Roll: FLEX weighted (seo-locales 10). Parity plan: home + tools hub + games/sim indexes + high-traffic experiences + legal pages; update registry + seo-locales.ts on activation. Min 11 runs. pages_done: /pt/, /pt/ferramentas, /pt/jogos, /pt/simuladores, /pt/privacidade, /pt/cookies, /pt/contato, /pt/sobre, /pt/playgrounds, /pt/kits, /pt/jornadas, /pt/kit-circuito-simples, /pt/simulador-dinamica-populacional, /pt/jogos/$slug (dynamic route enabling all catalog games under PT with locale=pt strings where supported; uses EN slugs). Added dynamic PT games route so /pt/jogos/ index links resolve. Next: more dedicated PT experiences or sitemap/hreflang updates. This run: attempted sitemap expansion but restored previous blob after placeholder error; no net change to pages. Acceptance: sitemap remains intact.
+notes: Rubric A(pt)=25 B(fr)=23 C(de)=22. Closest-3: EN home/tools/games, ES equivalents, deleted 2026-10-28 thin shells. Primary metaphor: full locale product tree. Why not particle-canvas: not a playground. IP: n/a. Chosen pt (priority #1, highest score). Roll: FLEX weighted (seo-locales 10). Parity plan: home + tools hub + games/sim indexes + high-traffic experiences + legal pages; update registry + seo-locales.ts on activation. Min 11 runs. pages_done: /pt/, /pt/ferramentas, /pt/jogos, /pt/simuladores, /pt/privacidade, /pt/cookies, /pt/contato, /pt/sobre, /pt/playgrounds, /pt/kits, /pt/jornadas, /pt/kit-circuito-simples, /pt/simulador-dinamica-populacional, /pt/jogos/$slug (dynamic route enabling all catalog games under PT with locale=pt strings where supported; uses EN slugs), /pt/kit-aviao-papel. Added dedicated PT page for paper airplane kit with hreflang. Next: more dedicated PT experiences or full PT strings for kits. Acceptance: user can open /pt/kit-aviao-papel and see the interactive kit.
 adsense-prep_runs: 7
 ```
 
