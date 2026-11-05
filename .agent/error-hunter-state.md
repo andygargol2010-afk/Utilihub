@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 141
-runs_total: 141
+last_run: 2026-11-05 run 142
+runs_total: 142
 last_mode: HUNT
 last_fix: n/a (checks OK, no code change)
 last_prevent: n/a
-last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no $(cat in src, registry.tsx real, index.tsx starts with import)
-deploy: production READY on c20a444; tip 2f164ada (potencia-electrica SEO) not yet deployed; no ERROR in recent deploys; www.utilihub.net home/n-body/generador-codigos OK
-notes: Known smoke E031 clean. Registry healthy (pickComponent/buildLazyRegistry present, no PLACEHOLDER). index.tsx real content. Discovery: sampled n-body-gravity, generador-codigos, boids-flocking-lab, valor-absoluto, calculadora-palabras-unicas (404 as expected — not on live production yet). E051 still mixed on live valor-absoluto ("Calculá absoluto valor de número.") due to deploy lag. No new broken patterns or $(cat. Pending: deploy of tip; continue E051 coverage once deployed.
+last_known_focus: E031 (PLACEHOLDER/$(cat stubs) — smoke clean, no $(cat in src, registry.tsx real with pickComponent/buildLazyRegistry, index.tsx starts with import/createFileRoute)
+deploy: production READY on c20a444; tip eae22c34 (ideas-lab population-dynamics fixes) not yet deployed; no ERROR in recent deploys; www.utilihub.net home OK, calculadora-area-trapecio dedicated UI Spanish, calculadora-ley-ohm still mixed E051 due to lag, population-dynamics-simulator 404 (expected, tip not live)
+notes: Known smoke E031 clean. Registry healthy. Discovery: sampled calculadora-area-trapecio (good dedicated Spanish UI), population-dynamics-simulator (404 expected), n-body, generador-codigos (Spanish now). E051 still mixed on live ley-ohm ("Calculá voltage, current, o resistance..."). No new broken patterns or $(cat in src. Pending: deploy of tip to clear E051 lag and surface new tools.
 ```
 
 <!-- end:error-hunter-state.md -->
