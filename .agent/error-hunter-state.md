@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 155
-runs_total: 155
+last_run: 2026-11-05 run 156
+runs_total: 156
 last_mode: HUNT
 last_fix: n/a
 last_prevent: n/a
 last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat/PLACEHOLDER in src; registry.tsx healthy with pickComponent/GENERAL_TOOL_UI)
-deploy: production READY on c20a444 (latest for branch); tip aba41fe (docs/state); old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio (not House), IVA Spanish dedicated summary, generador-codigos Spanish.
-notes: Known smoke E001-E053 + E031 clean (registry, index, no stubs). Discovery: sampled /es, modelador-3d, IVA, generador-codigos — all 200, correct Spanish content, no crash. No new code bugs, no deploy ERROR. No fixes needed.
+deploy: production READY on c20a444 (latest for branch); tip docs/state after this; old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio (not House), IVA Spanish dedicated summary, generador-codigos Spanish, WACC Spanish.
+notes: Known smoke E001-E053 + E031 clean (registry, index, no stubs). Discovery: sampled /es, modelador-3d, IVA, generador-codigos, WACC, juegos index (JS-rendered, content present via search) — all 200, correct Spanish content, no crash. No new code bugs, no deploy ERROR. No fixes needed.
 ```
 
 <!-- end:error-hunter-state.md -->
