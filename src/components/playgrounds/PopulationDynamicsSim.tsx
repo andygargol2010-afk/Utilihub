@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
-type Locale = "en" | "es";
+type Locale = "en" | "es" | "pt";
 
 const labels = {
   en: {
@@ -72,6 +72,40 @@ const labels = {
     gen: "Gen",
     reset: "Reiniciar",
     legend: "Leyenda",
+  },
+  pt: {
+    initial: "População inicial",
+    birth: "Taxa de natalidade (por gen)",
+    death: "Taxa de mortalidade (por gen)",
+    capacity: "Capacidade de carga",
+    generations: "Gerações",
+    run: "Executar simulação",
+    scenarioA: "Cenário A",
+    scenarioB: "Cenário B",
+    compare: "Comparar",
+    phase: "Fase",
+    growth: "Crescimento",
+    decline: "Declínio",
+    stable: "Estável",
+    peak: "População máxima",
+    gensToCap: "Gerações até a capacidade",
+    shareUrl: "Copiar URL de compartilhamento",
+    downloadPng: "Baixar PNG",
+    copied: "Copiado!",
+    presets: "Predefinições",
+    rapid: "Crescimento rápido",
+    stablePreset: "Estável",
+    declinePreset: "Declínio",
+    overshoot: "Ultrapassagem",
+    chartAria: "Gráfico de população ao longo das gerações",
+    axisGen: "Gerações",
+    axisPop: "População",
+    netRate: "Taxa líquida de crescimento r",
+    animate: "Animar",
+    stop: "Parar",
+    gen: "Gen",
+    reset: "Redefinir",
+    legend: "Legenda",
   },
 };
 
@@ -186,7 +220,8 @@ export function PopulationDynamicsSim({ locale }: { locale: Locale }) {
     ctx.fillRect(0, 0, 900, 560);
     ctx.fillStyle = "#22d3ee";
     ctx.font = "bold 28px system-ui, sans-serif";
-    ctx.fillText(locale === "es" ? "Dinámica Poblacional" : "Population Dynamics", 40, 48);
+    const title = locale === "es" ? "Dinámica Poblacional" : locale === "pt" ? "Dinâmica Populacional" : "Population Dynamics";
+    ctx.fillText(title, 40, 48);
     ctx.fillStyle = "#94a3b8";
     ctx.font = "16px system-ui, sans-serif";
     ctx.fillText("UtiliHub · ideas-lab", 40, 76);
