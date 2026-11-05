@@ -62,7 +62,20 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: closed
+status: active
+idea: Full product-parity Portuguese (pt-BR bias) locale surface under /pt/... matching current EN home structure, tools hubs, games/simulators indexes, high-traffic experiences, legal/privacy/contact, hreflang + sitemap. No thin shell. Register active only when parity bar met. Load registry + seo-locales.ts each run.
+id: pt-product-parity
+path_en: n/a
+path_es: n/a
+path_seo: /pt/...
+domain: seo-locales
+runs_total: 12
+runs_remaining: 12
+acceptance: User visits /pt/ and sees full EN-parity home + key hubs/experiences in Portuguese; hreflang/sitemap present; pages_done tracked; not a minimal shell.
+share: n/a
+next_step_required: yes
+notes: Rubric A(pt)=25 B(fr)=23 C(de)=22. Closest-3: EN home/tools/games, ES equivalents, deleted 2026-10-28 thin shells. Primary metaphor: full locale product tree. Why not particle-canvas: not a playground. IP: n/a. Chosen pt (priority #1, highest score). Roll: FLEX weighted (seo-locales 10). Parity plan: home + tools hub + games/sim indexes + high-traffic experiences + legal pages; update registry + seo-locales.ts on activation. Min 11 runs.
+adsense-prep_runs: 7
 ```
 
 <!-- end:ideas-lab-state.md -->
