@@ -4,11 +4,14 @@ export type Design = {
   id: string;
   nameEn: string;
   nameEs: string;
+  namePt: string;
   stepsEn: string[];
   stepsEs: string[];
+  stepsPt: string[];
   folds: number;
   descEn: string;
   descEs: string;
+  descPt: string;
   distanceScore: number;
   stuntScore: number;
   timeMin: number;
@@ -19,8 +22,10 @@ export const DESIGNS: Design[] = [
     id: "dart",
     nameEn: "Classic Dart",
     nameEs: "Dardo clásico",
+    namePt: "Dardo clássico",
     descEn: "Fast, pointed nose for distance.",
     descEs: "Nariz puntiaguda y rápida para distancia.",
+    descPt: "Nariz pontiagudo e rápido para distância.",
     folds: 6,
     distanceScore: 90,
     stuntScore: 40,
@@ -41,13 +46,23 @@ export const DESIGNS: Design[] = [
       "Dobla las alas hacia abajo de forma pareja",
       "Ajusta ligeramente el ángulo de las alas y lanza",
     ],
+    stepsPt: [
+      "Dobre o papel ao meio no sentido do comprimento, marque firmemente e abra",
+      "Dobre os cantos superiores em direção ao vinco central",
+      "Dobre as novas bordas superiores para o centro novamente",
+      "Dobre ao meio ao longo do vinco original",
+      "Dobre as asas para baixo de forma uniforme",
+      "Ajuste ligeiramente o ângulo das asas e lance",
+    ],
   },
   {
     id: "glider",
     nameEn: "Glider",
     nameEs: "Planeador",
+    namePt: "Planador",
     descEn: "Wider wings for smooth, long glides.",
     descEs: "Alas más anchas para planeos largos y suaves.",
+    descPt: "Asas mais largas para planeios longos e suaves.",
     folds: 5,
     distanceScore: 75,
     stuntScore: 55,
@@ -66,13 +81,22 @@ export const DESIGNS: Design[] = [
       "Dobla por la mitad y crea alas anchas y parejas",
       "Dobla ligeramente las puntas de las alas hacia arriba para estabilidad",
     ],
+    stepsPt: [
+      "Dobre ao meio no sentido do comprimento, marque e abra",
+      "Dobre os cantos superiores ao vinco central",
+      "Dobre a ponta superior para baixo até a borda inferior",
+      "Dobre ao meio e crie asas largas e uniformes",
+      "Dobre ligeiramente as pontas das asas para cima para estabilidade",
+    ],
   },
   {
     id: "stunt",
     nameEn: "Stunt Plane",
     nameEs: "Avión de acrobacias",
+    namePt: "Avião de acrobacias",
     descEn: "Loops and tricks with balanced folds.",
     descEs: "Bucles y trucos con pliegues equilibrados.",
+    descPt: "Loops e truques com dobras equilibradas.",
     folds: 7,
     distanceScore: 50,
     stuntScore: 85,
@@ -95,13 +119,24 @@ export const DESIGNS: Design[] = [
       "Crea elevadores pequeños doblando los bordes de las alas hacia arriba",
       "Prueba lanzamientos cortos para practicar bucles",
     ],
+    stepsPt: [
+      "Dobre ao meio no sentido do comprimento e abra",
+      "Dobre os cantos superiores para dentro em direção ao centro",
+      "Dobre a parte superior para baixo mais uma vez",
+      "Dobre os lados para o centro para formar o corpo",
+      "Dobre ao meio ao longo do centro",
+      "Crie elevadores pequenos dobrando as bordas das asas para cima",
+      "Teste lançamentos curtos para praticar loops",
+    ],
   },
   {
     id: "delta",
     nameEn: "Delta Wing",
     nameEs: "Ala delta",
+    namePt: "Asa delta",
     descEn: "Simple triangular shape, stable and easy for beginners.",
     descEs: "Forma triangular simple, estable y fácil para principiantes.",
+    descPt: "Forma triangular simples, estável e fácil para iniciantes.",
     folds: 4,
     distanceScore: 65,
     stuntScore: 60,
@@ -117,6 +152,12 @@ export const DESIGNS: Design[] = [
       "Dobla ambas esquinas superiores hacia el pliegue central formando un triángulo",
       "Dobla la nueva punta superior ligeramente hacia abajo para peso en la nariz",
       "Dobla por la mitad y ajusta los ángulos de las alas para equilibrar",
+    ],
+    stepsPt: [
+      "Dobre o papel ao meio no sentido do comprimento, marque firmemente e abra",
+      "Dobre ambos os cantos superiores para o vinco central formando um triângulo",
+      "Dobre a nova ponta superior ligeiramente para baixo para peso no nariz",
+      "Dobre ao meio e ajuste os ângulos das asas para equilibrar",
     ],
   },
 ];

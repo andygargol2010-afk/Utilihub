@@ -4,15 +4,16 @@ import { DESIGNS } from "./PaperAirplaneKit.part2";
 
 export function PaperAirplaneKit({ locale }: { locale: Locale }) {
   const es = locale === "es";
+  const pt = locale === "pt";
   const [designId, setDesignId] = useState(DESIGNS[0].id);
   const [checked, setChecked] = useState<boolean[]>([]);
   const [copied, setCopied] = useState(false);
   const [challenge, setChallenge] = useState<"distance" | "stunt" | "none">("none");
 
   const design = DESIGNS.find((d) => d.id === designId) || DESIGNS[0];
-  const steps = es ? design.stepsEs : design.stepsEn;
-  const name = es ? design.nameEs : design.nameEn;
-  const desc = es ? design.descEs : design.descEn;
+  const steps = pt ? design.stepsPt : es ? design.stepsEs : design.stepsEn;
+  const name = pt ? design.namePt : es ? design.nameEs : design.nameEn;
+  const desc = pt ? design.descPt : es ? design.descEs : design.descEn;
 
   useEffect(() => {
     setChecked(new Array(steps.length).fill(false));
@@ -95,12 +96,12 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
     ctx.fillText(name, 40, 70);
     ctx.font = "16px system-ui, sans-serif";
     ctx.fillStyle = "#94a3b8";
-    ctx.fillText(es ? "Kit de avión de papel" : "Paper Airplane Kit", 40, 100);
+    ctx.fillText(pt ? "Kit de avião de papel" : es ? "Kit de avión de papel" : "Paper Airplane Kit", 40, 100);
     ctx.fillStyle = "#22c55e";
     ctx.font = "bold 18px system-ui, sans-serif";
-    ctx.fillText(`${es ? "Progreso" : "Progress"}: ${progress.pct}% (${progress.done}/${progress.total})`, 40, 140);
+    ctx.fillText(`${pt ? "Progresso" : es ? "Progreso" : "Progress"}: ${progress.pct}% (${progress.done}/${progress.total})`, 40, 140);
     if (challenge !== "none" && progress.pct === 100) {
-      ctx.fillText(`${es ? "Reto" : "Challenge"}: ${challenge === "distance" ? (es ? "Distancia" : "Distance") : (es ? "Acrobacia" : "Stunt")} · ${challengeScore}`, 40, 170);
+      ctx.fillText(`${pt ? "Desafio" : es ? "Reto" : "Challenge"}: ${challenge === "distance" ? (pt ? "Distância" : es ? "Distancia" : "Distance") : (pt ? "Acrobacia" : es ? "Acrobacia" : "Stunt")} · ${challengeScore}`, 40, 170);
     }
     // simple plane silhouette
     ctx.fillStyle = "#38bdf8";
@@ -133,7 +134,14 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
   const noseLength = design.id === "dart" ? 120 : design.id === "delta" ? 100 : 90;
   const completedRatio = progress.pct / 100;
 
-  const safetyTips = es
+  const safetyTips = pt
+    ? [
+        "Use papel leve (carta ou A4) e dobre com cuidado para não rasgar.",
+        "Não lance em direção a pessoas, janelas ou tetos.",
+        "Teste em espaços abertos e seguros.",
+        "Supervise crianças pequenas durante a dobragem e o lançamento.",
+      ]
+    : es
     ? [
         "Usa papel ligero (carta o A4) y pliega con cuidado para no rasgar.",
         "No lances hacia personas, ventanas o techos.",
@@ -147,14 +155,16 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
         "Supervise young children during folding and launching.",
       ];
 
-  const materials = es
+  const materials = pt
+    ? ["1 folha de papel carta ou A4", "Superfície plana para dobrar", "Espaço aberto para testar (opcional)"]
+    : es
     ? ["1 hoja de papel carta o A4", "Superficie plana para plegar", "Espacio abierto para probar (opcional)"]
     : ["1 sheet of letter or A4 paper", "Flat surface for folding", "Open space to test (optional)"];
 
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <label htmlFor="design-select" className="text-sm font-bold">{es ? "Diseño" : "Design"}</label>
+        <label htmlFor="design-select" className="text-sm font-bold">{pt ? "Design" : es ? "Diseño" : "Design"}</label>
         <select
           id="design-select"
           value={designId}
@@ -164,19 +174,19 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
         >
           {DESIGNS.map((d) => (
             <option key={d.id} value={d.id}>
-              {es ? d.nameEs : d.nameEn}
+              {pt ? d.namePt : es ? d.nameEs : d.nameEn}
             </option>
           ))}
         </select>
         <p id="design-desc" className="mt-1 text-sm text-muted-foreground">{desc}</p>
         <p className="mt-1 text-xs text-muted-foreground">
-          {es ? `Tiempo estimado: ~${design.timeMin} min` : `Estimated time: ~${design.timeMin} min`}
+          {pt ? `Tempo estimado: ~${design.timeMin} min` : es ? `Tiempo estimado: ~${design.timeMin} min` : `Estimated time: ~${design.timeMin} min`}
         </p>
       </div>
 
       {/* Materials */}
       <div className="rounded-2xl border border-border bg-card/50 p-4">
-        <h3 className="font-bold text-sm">{es ? "Materiales" : "Materials"}</h3>
+        <h3 className="font-bold text-sm">{pt ? "Materiais" : es ? "Materiales" : "Materials"}</h3>
         <ul className="mt-2 space-y-1 text-sm text-muted-foreground list-disc pl-5">
           {materials.map((m, i) => (
             <li key={i}>{m}</li>
@@ -186,9 +196,9 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
 
       <div className="rounded-2xl border border-border bg-card/50 p-4" aria-live="polite">
         <div className="flex items-center justify-between text-sm">
-          <span className="font-bold">{es ? "Progreso de pliegues" : "Fold progress"}</span>
+          <span className="font-bold">{pt ? "Progresso de dobras" : es ? "Progreso de pliegues" : "Fold progress"}</span>
           <span className="text-muted-foreground">
-            {progress.done}/{progress.total} · {progress.pct}% · ~{design.folds} {es ? "pliegues" : "folds"}
+            {progress.done}/{progress.total} · {progress.pct}% · ~{design.folds} {pt ? "dobras" : es ? "pliegues" : "folds"}
           </span>
         </div>
         <div className="mt-2 h-3 w-full rounded-full bg-muted" role="progressbar" aria-valuenow={progress.pct} aria-valuemin={0} aria-valuemax={100}>
@@ -196,15 +206,15 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
         </div>
         {nextStepIndex >= 0 && (
           <p className="mt-2 text-xs text-primary font-medium">
-            {es ? `Siguiente paso: ${nextStepIndex + 1}` : `Next step: ${nextStepIndex + 1}`}
+            {pt ? `Próximo passo: ${nextStepIndex + 1}` : es ? `Siguiente paso: ${nextStepIndex + 1}` : `Next step: ${nextStepIndex + 1}`}
           </p>
         )}
       </div>
 
       {/* Challenge mode */}
       <div className="rounded-2xl border border-border bg-card/50 p-4">
-        <label className="text-sm font-bold">{es ? "Modo reto (opcional)" : "Challenge mode (optional)"}</label>
-        <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label={es ? "Modo de reto" : "Challenge mode"}>
+        <label className="text-sm font-bold">{pt ? "Modo desafio (opcional)" : es ? "Modo reto (opcional)" : "Challenge mode (optional)"}</label>
+        <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label={pt ? "Modo de desafio" : es ? "Modo de reto" : "Challenge mode"}>
           {(["none", "distance", "stunt"] as const).map((ch) => (
             <button
               key={ch}
@@ -215,20 +225,22 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
               }`}
               aria-pressed={challenge === ch}
             >
-              {ch === "none" ? (es ? "Ninguno" : "None") : ch === "distance" ? (es ? "Distancia" : "Distance") : (es ? "Acrobacia" : "Stunt")}
+              {ch === "none" ? (pt ? "Nenhum" : es ? "Ninguno" : "None") : ch === "distance" ? (pt ? "Distância" : es ? "Distancia" : "Distance") : (pt ? "Acrobacia" : es ? "Acrobacia" : "Stunt")}
             </button>
           ))}
         </div>
         {challenge !== "none" && (
           <p className="mt-2 text-sm text-muted-foreground">
-            {es
+            {pt
+              ? `Complete todos os passos para ver sua pontuação de ${challenge === "distance" ? "distância" : "acrobacia"}.`
+              : es
               ? `Completa todos los pasos para ver tu puntuación de ${challenge === "distance" ? "distancia" : "acrobacia"}.`
               : `Complete all steps to see your ${challenge} score.`}
           </p>
         )}
         {challenge !== "none" && progress.pct === 100 && (
           <div className="mt-3 rounded-lg bg-primary/10 p-3 text-center font-bold text-primary" aria-live="polite">
-            {es ? "Puntuación del reto" : "Challenge score"}: {challengeScore} / 100
+            {pt ? "Pontuação do desafio" : es ? "Puntuación del reto" : "Challenge score"}: {challengeScore} / 100
           </div>
         )}
       </div>
@@ -244,7 +256,7 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
             transform: `rotate(${design.id === "stunt" ? -8 : 0}deg) scale(${0.7 + completedRatio * 0.3})`,
           }}
           role="img"
-          aria-label={es ? `Vista previa del avión ${name}, progreso ${progress.pct}%` : `Preview of ${name} airplane, progress ${progress.pct}%`}
+          aria-label={pt ? `Prévia do avião ${name}, progresso ${progress.pct}%` : es ? `Vista previa del avión ${name}, progreso ${progress.pct}%` : `Preview of ${name} airplane, progress ${progress.pct}%`}
         >
           {/* fuselage / nose */}
           <div
@@ -295,17 +307,17 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
 
       <div>
         <div className="flex items-center justify-between">
-          <h2 className="font-bold text-lg">{es ? "Pasos de plegado" : "Fold steps"}</h2>
+          <h2 className="font-bold text-lg">{pt ? "Passos de dobragem" : es ? "Pasos de plegado" : "Fold steps"}</h2>
           <button
             type="button"
             onClick={resetSteps}
             className="text-xs text-muted-foreground underline hover:text-foreground min-h-[44px] px-2"
           >
-            {es ? "Reiniciar pasos" : "Reset steps"}
+            {pt ? "Reiniciar passos" : es ? "Reiniciar pasos" : "Reset steps"}
           </button>
         </div>
         <p className="mt-1 text-sm text-muted-foreground">
-          {es ? "Marca cada paso al completarlo. El siguiente paso se resalta." : "Check off each step as you complete it. The next step is highlighted."}
+          {pt ? "Marque cada passo ao completá-lo. O próximo passo é destacado." : es ? "Marca cada paso al completarlo. El siguiente paso se resalta." : "Check off each step as you complete it. The next step is highlighted."}
         </p>
         <div className="mt-3 space-y-3" role="list">
           {steps.map((step, i) => (
@@ -321,7 +333,7 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
                 checked={!!checked[i]}
                 onChange={() => toggleStep(i)}
                 className="mt-0.5 size-5 shrink-0"
-                aria-label={`${es ? "Paso" : "Step"} ${i + 1}: ${step}`}
+                aria-label={`${pt ? "Passo" : es ? "Paso" : "Step"} ${i + 1}: ${step}`}
               />
               <span className={checked[i] ? "line-through text-muted-foreground" : ""}>
                 <span className="font-medium">{i + 1}. </span>
@@ -334,13 +346,13 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
 
       {progress.pct === 100 && (
         <div className="rounded-xl bg-primary/10 p-4 text-center font-bold text-primary" aria-live="assertive">
-          {es ? "¡Avión listo para volar!" : "Plane ready to fly!"}
+          {pt ? "Avião pronto para voar!" : es ? "¡Avión listo para volar!" : "Plane ready to fly!"}
         </div>
       )}
 
       {/* Safety tips */}
       <div className="rounded-2xl border border-border bg-card/50 p-4">
-        <h3 className="font-bold text-sm">{es ? "Consejos de seguridad" : "Safety tips"}</h3>
+        <h3 className="font-bold text-sm">{pt ? "Dicas de segurança" : es ? "Consejos de seguridad" : "Safety tips"}</h3>
         <ul className="mt-2 space-y-1 text-sm text-muted-foreground list-disc pl-5">
           {safetyTips.map((tip, i) => (
             <li key={i}>{tip}</li>
@@ -350,10 +362,10 @@ export function PaperAirplaneKit({ locale }: { locale: Locale }) {
 
       <div className="flex flex-wrap gap-3 pt-2">
         <button type="button" onClick={copyLink} className="rounded-lg bg-secondary px-4 py-3 text-sm font-medium min-w-[120px] min-h-[48px]">
-          {copied ? (es ? "¡Enlace copiado!" : "Link copied!") : es ? "Copiar enlace" : "Copy link"}
+          {copied ? (pt ? "Link copiado!" : es ? "¡Enlace copiado!" : "Link copied!") : pt ? "Copiar link" : es ? "Copiar enlace" : "Copy link"}
         </button>
         <button type="button" onClick={sharePng} className="rounded-lg bg-primary px-4 py-3 text-sm font-medium text-primary-foreground min-w-[140px] min-h-[48px]">
-          {es ? "Descargar PNG" : "Download PNG"}
+          {pt ? "Baixar PNG" : es ? "Descargar PNG" : "Download PNG"}
         </button>
       </div>
     </div>

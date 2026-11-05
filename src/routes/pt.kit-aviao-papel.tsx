@@ -48,7 +48,7 @@ function KitAviaoPagePt() {
         </p>
       </header>
       <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-muted" />}>
-        <PaperAirplaneKit locale="en" />
+        <PaperAirplaneKit locale="pt" />
       </Suspense>
       <div className="mt-10">
         <AdsterraBanner />
