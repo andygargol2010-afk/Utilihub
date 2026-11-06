@@ -20,7 +20,6 @@ import { SIMPLE_AVERAGE_CALCULATOR_TOOLS } from "../simple-average-calculator-to
 import { SCALE_FACTOR_CALCULATOR_TOOLS } from "../scale-factor-calculator-tool";
 import { SUCCESSIVE_DISCOUNT_CALCULATOR_TOOLS } from "../successive-discount-calculator-tool";
 import { MARKUP_CALCULATOR_TOOLS } from "../markup-calculator-tool";
-import { RHOMBUS_AREA_CALCULATOR_TOOLS } from "../rhombus-area-calculator-tool";
 import { ESTIMATED_ARRIVAL_TIME_CALCULATOR_TOOLS } from "../estimated-arrival-time-calculator-tool";
 import { UNCOOKED_TO_COOKED_RICE_CALCULATOR_TOOLS } from "../uncooked-to-cooked-rice-calculator-tool";
 import { ORIGINAL_PRICE_FROM_DISCOUNT_CALCULATOR_TOOLS } from "../original-price-from-discount-calculator-tool";
@@ -46,7 +45,6 @@ export const GENERAL_TOOLS_PART_08 = [
   ...SCALE_FACTOR_CALCULATOR_TOOLS,
   ...SUCCESSIVE_DISCOUNT_CALCULATOR_TOOLS,
   ...MARKUP_CALCULATOR_TOOLS,
-  ...RHOMBUS_AREA_CALCULATOR_TOOLS,
   ...ESTIMATED_ARRIVAL_TIME_CALCULATOR_TOOLS,
   ...UNCOOKED_TO_COOKED_RICE_CALCULATOR_TOOLS,
   ...ORIGINAL_PRICE_FROM_DISCOUNT_CALCULATOR_TOOLS,
