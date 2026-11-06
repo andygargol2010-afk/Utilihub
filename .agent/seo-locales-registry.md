@@ -77,4 +77,32 @@ EN and ES do not count.
 9. Keep `pages_done` accurate so later runs can update existing locales when the rest of the site moves forward.
 10. After EN/ES design or catalog changes: prefer **updating** active locales over inventing new thin pages.
 
+## Definition of done — new or updated locale (added 2026-11-06, Tarea 24; lessons from the /pt fix 7fd39fea)
+
+Mandatory before marking a locale `active` **or** closing a `seo-locales` project. If any item fails, the locale stays `in-progress` and the project stays open.
+
+**(A) Checklist**
+1. Header and footer COMPLETE, with the same nav as EN (`SiteHeader`/`SiteFooter`). **Forbidden:** `*MinimalHeader` / `*MinimalFooter` or any header without `<nav>` (pt shipped with 0 nav links until 7fd39fea).
+2. Language picker includes the new locale on EN, on ES and on the new locale; each option uses that page's hreflang target.
+3. Every visible string translated, including strings that come from catalogs (games, simulators, playgrounds, kits, studios, featured tools), category/tag labels, buttons, FAQ, meta title/description, og:title/og:description, img alt, aria-label and PNG/share texts. Catalog strings live in small modules `src/lib/i18n/<locale>-*.ts` with fallback to EN (pattern: pt-games.ts, pt-simulators.ts, pt-featured.ts, pt-site-chrome.ts).
+4. hreflang reciprocal EN ↔ ES ↔ new + `x-default`, only to routes that exist (verify the real route file, e.g. es.acerca.tsx, never guess slugs like /es/sobre or /es/contato).
+5. Internal links on locale pages point to locale routes that exist, or to EN when there is no locale version (no invented /<code>/categoria/*, /<code>/ferramentas/<slug>).
+6. sitemap: every `<loc>` and every `xhtml:link` alternate returns 200 (scripts/check-sitemap-links.mjs, postbuild).
+7. JSON-LD with the correct `inLanguage` (BCP-47) on every locale page; `<html lang>` and `dir` correct.
+
+**(B) Work order:** 1) shared chrome (header, footer, language picker, catalog strings in `src/lib/i18n/<locale>-*.ts`) → 2) hubs (home, tools, games, simulators, playgrounds, kits, journeys) → 3) product pages. Do not ship product pages while the chrome or hubs still fail (A).
+
+**(C) Gate every run:** `node scripts/check-locale.mjs --locale=<code>` (generic version of check-pt-locale.mjs) **and** `node scripts/check-sitemap-links.mjs` (also runs as postbuild). If either fails: no product push; fix it in the same run or record the run as FIX with the failing output.
+
+**(D) No restores from memory:** never "restore" sitemap, state files or catalogs (`src/routes/sitemap[.]xml.tsx`, `.agent/*-state.md`, `src/lib/games/catalog*.ts`) from model memory. Restore ONLY from the immediately previous commit (`git show <sha>^:<path>`), re-apply the minimal change, and write the SHA used in the run summary. (Past damage: 97c20838/abeea9e2/151b3a9c broke pt alternates; 424da00b, f1342c63, 4f7b89e8 emptied the games catalog.)
+
+**(E) Copy into the run summary (one [x]/[ ] per item of (A)):**
+```
+[ ] header+footer full nav (no Minimal*)   [ ] picker EN/ES/<code> on all three
+[ ] all visible + catalog strings translated (meta, og, alt, FAQ, buttons, share)
+[ ] hreflang reciprocal + x-default to existing routes   [ ] internal links 200
+[ ] sitemap loc+alternates 200   [ ] JSON-LD inLanguage + html lang/dir
+[ ] check-locale --locale=<code> PASS (paste last 2 lines)   [ ] check-sitemap-links PASS
+```
+
 <!-- end:seo-locales-registry.md -->

@@ -8,6 +8,7 @@ Load order every run:
 3. `.agent/ideas-lab-ops.md` (MODE, quality, procedures)
 
 Also load when domain is `seo-locales` or shipping multi-locale: `.agent/seo-locales-registry.md`.
+Multi-locale work must meet "Definition of done — new or updated locale" in `.agent/seo-locales-registry.md` (checks: `scripts/check-locale.mjs --locale=<code>` + `scripts/check-sitemap-links.mjs`; no restores from memory).
 
 **Truncation protocol (all agent files):**  
 If a read is incomplete (missing end marker, mid-sentence cut, or tool truncation), do **not** invent the tail. Re-fetch; then section-by-section reads; if still incomplete stop and report in Spanish. Prefer further splits under `.agent/` over one oversized file.

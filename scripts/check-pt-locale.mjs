@@ -8,6 +8,8 @@
  *   node scripts/check-pt-locale.mjs                 # starts `vite preview`, checks, stops it
  *   node scripts/check-pt-locale.mjs http://host:p   # check an already running server
  *
+ *   node scripts/check-locale.mjs --locale=<code>    # same check for any /<code> SEO locale (default pt)
+ *
  * Word list is intentionally conservative (phrases that are never valid pt-BR).
  * Brand / technical exceptions (UtiliHub, PNG, 3D, CSV, PDF, WebGL...) are not in the list.
  */
@@ -23,7 +25,8 @@ const ENGLISH = [
 ];
 /** Proper names / API names that are correct inside pt-BR text ("Puzzle" and "Arcade" are also valid pt-BR). */
 const EXCEPTIONS = ["Web Share", "Google Ad Settings", "View UtiliHub in English", "Ver UtiliHub en español"];
-const PT_PATH = /^\/pt(\/|$)/;
+const LOCALE = (process.argv.find((a) => a.startsWith("--locale="))?.slice(9) || "pt").replace(/[^a-z-]/gi, "");
+const PT_PATH = new RegExp(`^\\/${LOCALE}(\\/|$)`);
 
 const argBase = process.argv.slice(2).find((a) => !a.startsWith("--"));
 const port = Number(process.env.PT_LOCALE_CHECK_PORT || 4181);
@@ -88,7 +91,7 @@ async function main() {
   const paths = [...new Set([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => toPath(m[1].trim())))].filter((p) =>
     PT_PATH.test(p),
   );
-  if (!paths.length) throw new Error("no /pt URLs in sitemap.xml");
+  if (!paths.length) throw new Error(`no /${LOCALE} URLs in sitemap.xml`);
   let failed = 0;
   let total = 0;
   const linkedFrom = new Map();
@@ -119,8 +122,8 @@ async function main() {
     }
   }
   if (broken) failed++;
-  console.log(`check-pt-locale: internal links ${linkedFrom.size - broken}/${linkedFrom.size} return 200`);
-  console.log(`check-pt-locale: ${paths.length} /pt URLs, ${paths.length - failed} OK, ${failed} FAIL, ${total} english hits`);
+  console.log(`check-locale[${LOCALE}]: internal links ${linkedFrom.size - broken}/${linkedFrom.size} return 200`);
+  console.log(`check-locale[${LOCALE}]: ${paths.length} /${LOCALE} URLs, ${paths.length - failed} OK, ${failed} FAIL, ${total} english hits`);
   if (failed) process.exitCode = 1;
 }
 

@@ -158,6 +158,9 @@ UtiliHub already has examples like snake, 2048, and tic-tac-toe (3 en raya). A p
 6. Mark locale `active` in registry + `SEO_LOCALES_ACTIVE` only when parity bar is met.
 7. CAP 5 active SEO locales; then set `weights_growth.seo-locales = 0`.
 8. EN+ES checklist rows still apply for any dual-language touch; SEO locale pages themselves use the target language strings.
+9. **Definition of done (2026-11-06, Tarea 24):** before marking a locale `active` or closing the project, every item of "Definition of done — new or updated locale" in `.agent/seo-locales-registry.md` (A–E) must be [x]. Work order: shared chrome → hubs → product pages. `*MinimalHeader`/`*MinimalFooter` are forbidden.
+10. **Gate per run:** `node scripts/check-locale.mjs --locale=<code>` + `node scripts/check-sitemap-links.mjs` must PASS; otherwise no product push (fix in the run or record it as FIX with the output).
+11. **No restores from memory** of sitemap, state or catalogs: only `git show <sha>^:<path>` of the immediately previous commit + minimal re-apply; write the SHA in the summary. Copy the (E) checklist into the Spanish summary.
 
 ### IDEATE idea template
 
