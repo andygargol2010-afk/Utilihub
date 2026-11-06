@@ -82,7 +82,7 @@ function pickComponent(tool: GeneralTool): ToolComp {
   if (slug === "potencias-y-raices") return PowerRootToolUi;
   if (slug === "distribucion-normal") return NormalDistributionToolUi;
   if (slug === "distribucion-poisson") return PoissonToolUi;
-  if (slug === "propina-y-cuenta-compartida" || slug === "regla-50-30-20" || slug === "horas-decimales") return UtilityAdvancedToolUi;
+  if (slug === "propina-y-cuenta-compartida" || slug === "calculadora-propina-compartida" || slug === "regla-50-30-20" || slug === "horas-decimales") return UtilityAdvancedToolUi;
   if (mode === "date") return AdvancedDateToolUi;
   if (mode === "advanced") return AdvancedCalculatorToolUi;
   if (mode === "finance") return FinanceToolUi;
