@@ -128,7 +128,7 @@ export function brailleToText(raw: string): BrailleResult {
     if (char === CAPITAL_SIGN) {
       const next = chars[i + 1];
       const letter = next ? FROM_CELL[next] : undefined;
-      if (!letter || letter.length !== 1 || letter < "a" || (letter > "z" && letter !== "ñ")) {
+      if (!letter || letter.length !== 1 || !Object.prototype.hasOwnProperty.call(LETTERS, letter)) {
         return { status: "invalid", issue: "cell", detail: CAPITAL_SIGN };
       }
       output += letter.toUpperCase();
