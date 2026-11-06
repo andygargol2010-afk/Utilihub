@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 159
-runs_total: 159
+last_run: 2026-11-06 run 160
+runs_total: 160
 last_mode: HUNT
 last_fix: n/a
 last_prevent: n/a
 last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat in src; PLACEHOLDER hits are CSS/placeholder text only; registry.tsx and index/es.index real)
-deploy: production READY on c20a444 (latest for branch); tip 423475e not yet deployed; old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio, IVA 200, generador-codigos Spanish, juegos/2048 OK. calculadora-ley-ohm still mixed English on live (deploy lag; tip has summaryEs). New tool calculadora-precio-original-descuento 404 on live (expected, not in deployed SHA).
-notes: Known smoke E001-E053 + E031 clean (no stubs, registry healthy, indexes start with import). Discovery: sampled /es, modelador-3d, IVA, generador-codigos, juegos/2048, calculadora-ley-ohm, new tool — all 200 or expected 404 due to lag. New tool wired correctly in tip (part-08 + slugs-04 + category finanzas OK per usesFinanceRoute). No new code bugs, no deploy ERROR. No fixes needed.
+deploy: production READY on c20a444 (latest for branch); tip ~423475e not yet deployed; old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio, IVA 200 Spanish, generador-codigos Spanish, juegos/2048 OK. calculadora-ley-ohm still mixed English on live (deploy lag; tip has summaryEs). New tool calculadora-precio-original-descuento 404 on live (expected, not in deployed SHA; tip wires it under /es/herramientas per usesFinanceRoute).
+notes: Known smoke E001-E053 + E031 clean (no stubs, registry healthy, indexes start with import). Discovery: sampled /es, modelador-3d, IVA, generador-codigos, juegos/2048, calculadora-ley-ohm, new tool wiring — all 200 or expected 404 due to lag. New tool wired correctly in tip (part-08 + category finanzas OK per usesFinanceRoute). No new code bugs, no deploy ERROR. No fixes needed.
 ```
 
 <!-- end:error-hunter-state.md -->
