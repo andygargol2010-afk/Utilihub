@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: kits
-last_closed_id: simple-circuit-kit
+last_closed_domain: seo-locales
+last_closed_id: pt-product-parity
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 7
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-05 | seo-locales | pt-product-parity | Full product-parity Portuguese (pt-BR) locale surface under /pt/... complete after 12 runs. Home, tools hub, games/sim indexes, playgrounds/kits/journeys, legal/privacy/contact/sobre, dedicated high-traffic experiences (circuit kit, population sim, paper airplane kit), dynamic /pt/jogos/$slug for all catalog games with locale=pt where supported, hreflang + sitemap. EN-parity structure met; not a thin shell. Acceptance met (user visits /pt/ sees full hubs/experiences in Portuguese). IP: n/a.
 - 2026-11-05 | kits | simple-circuit-kit | Interactive simple circuit kit complete after 4 runs. User places battery/switch/resistor/LED on 4x4 grid, connects with wires (visual SVG lines), sees live LED light + brightness by ohms (cycle 50-1000), guided mode with auto-check steps + progress, free mode, materials checklist, challenges, reset, URL deep-link (?g=), branded PNG. EN+ES routes, mobile-first 390px. Final polish: legend with symbols, tighter mobile gaps/fonts, animated wires on complete, a11y labels. Acceptance met (place/connect/test lights, share PNG/URL). IP: original educational discrete parts assembler, generic components, no branded kits.
 - 2026-11-05 | simulators | population-dynamics-simulator | Interactive population dynamics simulator complete after 4 runs. User sets initial population, birth/death rates, carrying capacity; discrete generations show live SVG logistic growth chart with phase (growth/decline/stable), peak, gens to capacity. Compare two scenarios, Animate/Stop step reveal, presets, net rate r, K line, grid, generation counter, branded PNG + URL deep-link. EN+ES routes, mobile-first 390px. Final polish: legend, Reset button, slightly tighter mobile padding. Acceptance met (set params, run/see curve+stats, share PNG/URL). IP: original educational logistic growth model, generic params, no branded datasets.
 - 2026-11-04 | games | checkers-classic | Interactive classic Checkers (Damas / Draughts) complete after 4 runs. 8x8 board, diagonal moves, jump captures with multi-jump chains, promotion to king, optional AI preferring long captures, move counter, undo, URL deep-link (?b=), branded PNG with moves, keyboard nav + a11y, EN+ES, mobile-first 390px. Acceptance met (select side, make legal moves/captures/kings, win by no pieces or no moves, share PNG/URL). IP: traditional public-domain checkers/draughts rules, generic pieces/colors, no commercial branding.
@@ -54,7 +55,6 @@ adsense-prep_runs: 7
 - 2026-11-03 | games | connect-four-classic | Interactive classic Connect Four game complete after 4 runs. 7x6 grid, drop discs by gravity, connect 4 win, optional AI, hover ghost preview, drop animation, win pulse, move counter, keyboard 1-7, URL deep-link, branded PNG, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (select column, see fall/response, detect win/draw, share PNG/URL). IP: traditional public-domain gravity drop connect-4 mechanics, generic naming, no Hasbro branding.
 - 2026-11-03 | games | sudoku-classic | Interactive classic Sudoku puzzle complete after 4 runs. 9x9 grid with pre-filled cells, user fills remaining with 1-9 ensuring no duplicates in rows, columns, or 3x3 boxes. Live conflict highlighting, optional pencil notes (auto-fill possibles), undo, timer with pause/resume, difficulty presets (easy/medium/hard), URL deep-link for seed, branded PNG of completed grid, remaining-count badges on number pad (disabled at 0), progress indicator. EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (select difficulty, fill cells, see conflicts/valid, complete or use undo/pencil/hints, share PNG/URL). IP: traditional public-domain rules, generic naming, no branded puzzle sets.
 - 2026-11-03 | games | minesweeper-classic | Interactive classic Minesweeper-style grid game complete after 4 runs. Rectangular grid with hidden mines; click to reveal cells showing adjacent mine counts, flood-fill empty areas, flag suspected mines (question marks cycle). Win by revealing all safe or flagging all; lose on mine. Difficulties (easy 9x9/10, medium 16x16/40, hard 16x30/99), first-click safe, URL deep-link, branded PNG, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (reveal/flag, complete or lose, share PNG/URL, face reset, auto-flag on win). IP: traditional public-domain mechanics, generic naming, no Microsoft branding.
-- 2026-11-02 | games | othello-classic | Interactive classic Othello/Reversi board game complete after 4 runs. 8x8 grid, place discs that flip opponents in lines when bracketing, valid moves highlighted, optional simple AI (greedy max-flips), URL deep-link (?b=), branded PNG of board, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (place disc, see flips, AI respond, share PNG/URL). IP: traditional public-domain mechanics, generic naming.
 ```
 
 ---
@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Full product-parity Portuguese (pt-BR bias) locale surface under /pt/... matching current EN home structure, tools hubs, games/simulators indexes, high-traffic experiences, legal/privacy/contact, hreflang + sitemap. No thin shell. Register active only when parity bar met. Load registry + seo-locales.ts each run.
-id: pt-product-parity
+status: done
+idea: (closed)
+id: none
 path_en: n/a
 path_es: n/a
-path_seo: /pt/...
-domain: seo-locales
-runs_total: 12
-runs_remaining: 1
-acceptance: User visits /pt/ and sees full EN-parity home + key hubs/experiences in Portuguese; hreflang/sitemap present; pages_done tracked; not a minimal shell.
+path_seo: n/a
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
 share: n/a
-next_step_required: yes
-notes: Rubric A(pt)=25 B(fr)=23 C(de)=22. Closest-3: EN home/tools/games, ES equivalents, deleted 2026-10-28 thin shells. Primary metaphor: full locale product tree. Why not particle-canvas: not a playground. IP: n/a. Chosen pt (priority #1, highest score). Roll: FLEX weighted (seo-locales 10). Parity plan: home + tools hub + games/sim indexes + high-traffic experiences + legal pages; update registry + seo-locales.ts on activation. Min 11 runs. pages_done: /pt/, /pt/ferramentas, /pt/jogos, /pt/simuladores, /pt/privacidade, /pt/cookies, /pt/contato, /pt/sobre, /pt/playgrounds, /pt/kits, /pt/jornadas, /pt/kit-circuito-simples, /pt/simulador-dinamica-populacional, /pt/jogos/$slug (dynamic route enabling all catalog games under PT with locale=pt strings where supported; uses EN slugs), /pt/kit-aviao-papel. Added dedicated PT page for paper airplane kit with hreflang. This run: added full PT string support to PaperAirplaneKit component (name/steps/desc + all UI labels in pt-BR) and wired locale="pt" on the route. Acceptance: user can open /pt/kit-aviao-papel and see the interactive kit fully in Portuguese.
+next_step_required: no
+notes: Closed pt-product-parity. Next IDEATE will roll new domain.
 adsense-prep_runs: 7
 ```
 
