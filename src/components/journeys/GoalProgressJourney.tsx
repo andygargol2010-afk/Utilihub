@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Locale, type CategoryId, CATEGORIES } from "./GoalProgressJourney.part1";
 
 const CATEGORY_RECS: Record<CategoryId, { label: Record<Locale, string>; href: string }[]> = {
@@ -21,6 +21,7 @@ const CATEGORY_RECS: Record<CategoryId, { label: Record<Locale, string>; href: s
 };
 
 export function GoalProgressJourney({ locale }: { locale: Locale }) {
+  const progressRef = useRef<HTMLDivElement>(null);
   const [categoryId, setCategoryId] = useState<CategoryId | null>(() => {
     if (typeof window === "undefined") return null;
     const p = new URLSearchParams(window.location.search).get("cat");
@@ -81,6 +82,12 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
     window.history.replaceState({}, "", url.toString());
   }, [categoryId, checked, choices]);
 
+  useEffect(() => {
+    if (category && progressRef.current) {
+      progressRef.current.focus();
+    }
+  }, [category]);
+
   const toggle = useCallback((key: string) => {
     setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
   }, []);
@@ -110,11 +117,11 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
     if (!category || !allDone) return;
     const canvas = document.createElement("canvas");
     canvas.width = 800;
-    canvas.height = 540;
+    canvas.height = 560;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, 800, 540);
+    ctx.fillRect(0, 0, 800, 560);
     ctx.fillStyle = "#22d3ee";
     ctx.font = "bold 32px system-ui, sans-serif";
     ctx.fillText(locale === "es" ? "Recorrido completado" : "Journey complete", 40, 80);
@@ -123,9 +130,16 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
     ctx.fillText(category.name[locale], 40, 140);
     ctx.font = "20px system-ui, sans-serif";
     ctx.fillText(`${progressPct}% · ${doneCount}/${totalItems}`, 40, 190);
+    const choiceSummary = Object.keys(choices).length
+      ? (locale === "es" ? "Elecciones: " : "Choices: ") + Object.values(choices).slice(0, 3).join(", ")
+      : "";
+    if (choiceSummary) {
+      ctx.font = "16px system-ui, sans-serif";
+      ctx.fillText(choiceSummary, 40, 230);
+    }
     ctx.fillStyle = "#94a3b8";
     ctx.font = "16px system-ui, sans-serif";
-    ctx.fillText("UtiliHub · Goal Progress Journey", 40, 460);
+    ctx.fillText("UtiliHub · Goal Progress Journey", 40, 480);
     const link = document.createElement("a");
     link.download = `goal-progress-${categoryId}.png`;
     link.href = canvas.toDataURL("image/png");
@@ -134,19 +148,20 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
 
   if (!category) {
     return (
-      <div className="space-y-6 max-w-2xl">
+      <div className="space-y-6 max-w-2xl" role="region" aria-label={locale === "es" ? "Selector de categoría" : "Category selector"}>
         <p className="text-lg">
           {locale === "es"
             ? "Elige una categoría de objetivo para empezar tu recorrido."
             : "Choose a goal category to start your journey."}
         </p>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2" role="listbox" aria-label={locale === "es" ? "Categorías" : "Categories"}>
           {CATEGORIES.map((c) => (
             <button
               key={c.id}
               type="button"
               onClick={() => setCategoryId(c.id)}
-              className="min-h-12 rounded-xl border border-border bg-card p-4 text-left font-medium hover:bg-accent/50"
+              className="min-h-12 rounded-xl border border-border bg-card p-4 text-left font-medium hover:bg-accent/50 focus:outline-none focus:ring-2 focus:ring-primary"
+              aria-label={c.name[locale]}
             >
               {c.name[locale]}
             </button>
@@ -159,9 +174,9 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
   const recs = CATEGORY_RECS[category.id] || [];
 
   return (
-    <div className="space-y-5 max-w-2xl sm:space-y-6">
-      <div>
-        <p className="text-sm font-semibold text-primary">{category.name[locale]}</p>
+    <div className="space-y-5 max-w-2xl sm:space-y-6" role="main">
+      <div ref={progressRef} tabIndex={-1} className="outline-none">
+        <p className="text-sm font-semibold text-primary" id="journey-title">{category.name[locale]}</p>
         <div className="mt-2 flex items-center gap-3">
           <div
             className="h-3 flex-1 overflow-hidden rounded-full bg-muted"
@@ -169,13 +184,15 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
             aria-valuenow={progressPct}
             aria-valuemin={0}
             aria-valuemax={100}
+            aria-labelledby="journey-title"
+            aria-live="polite"
           >
             <div
               className="h-full bg-primary transition-all"
               style={{ width: `${progressPct}%` }}
             />
           </div>
-          <span className="text-sm font-bold tabular-nums">{progressPct}%</span>
+          <span className="text-sm font-bold tabular-nums" aria-hidden="true">{progressPct}%</span>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
           {doneCount} / {totalItems} {locale === "es" ? "pasos" : "steps"}
@@ -196,16 +213,16 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
                 : "Longer blocks when you have focus."
               : stage.tip[locale];
         return (
-          <div key={stage.id} className="rounded-2xl border border-border bg-card p-3 shadow-sm sm:p-4">
-            <h3 className="font-bold">
+          <div key={stage.id} className="rounded-2xl border border-border bg-card p-3 shadow-sm sm:p-4" role="group" aria-labelledby={`stage-${stage.id}`}>
+            <h3 className="font-bold" id={`stage-${stage.id}`}>
               {si + 1}. {stage.title[locale]}
             </h3>
             <p className="mt-1 text-sm text-muted-foreground">{branchedTip}</p>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap gap-2" role="radiogroup" aria-label={locale === "es" ? "Estilo de etapa" : "Stage style"}>
               <button
                 type="button"
                 onClick={() => setChoice(choiceKey, "short")}
-                className={`min-h-9 rounded-lg px-3 py-1 text-sm font-medium ${selected === "short" ? "bg-primary text-primary-foreground" : "bg-secondary"}`}
+                className={`min-h-9 rounded-lg px-3 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary ${selected === "short" ? "bg-primary text-primary-foreground" : "bg-secondary"}`}
                 aria-pressed={selected === "short"}
               >
                 {locale === "es" ? "Corto" : "Short"}
@@ -213,7 +230,7 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
               <button
                 type="button"
                 onClick={() => setChoice(choiceKey, "deep")}
-                className={`min-h-9 rounded-lg px-3 py-1 text-sm font-medium ${selected === "deep" ? "bg-primary text-primary-foreground" : "bg-secondary"}`}
+                className={`min-h-9 rounded-lg px-3 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary ${selected === "deep" ? "bg-primary text-primary-foreground" : "bg-secondary"}`}
                 aria-pressed={selected === "deep"}
               >
                 {locale === "es" ? "Profundo" : "Deep"}
@@ -246,7 +263,7 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
       })}
 
       {allDone && (
-        <div className="rounded-2xl border border-primary/40 bg-accent/40 p-4 text-center sm:p-5">
+        <div className="rounded-2xl border border-primary/40 bg-accent/40 p-4 text-center sm:p-5" role="region" aria-label={locale === "es" ? "Completado" : "Completed"}>
           <h2 className="text-xl font-black">
             {locale === "es" ? "¡Recorrido completado!" : "Journey complete!"}
           </h2>
@@ -278,14 +295,14 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
             <button
               type="button"
               onClick={downloadPng}
-              className="min-h-11 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground"
+              className="min-h-11 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             >
               {locale === "es" ? "Descargar PNG" : "Download PNG"}
             </button>
             <button
               type="button"
               onClick={copyLink}
-              className="min-h-11 rounded-lg bg-secondary px-4 py-2.5 text-sm font-bold"
+              className="min-h-11 rounded-lg bg-secondary px-4 py-2.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary"
             >
               {copied
                 ? locale === "es"
@@ -298,7 +315,7 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
             <button
               type="button"
               onClick={reset}
-              className="min-h-11 rounded-lg bg-accent px-4 py-2.5 text-sm font-bold"
+              className="min-h-11 rounded-lg bg-accent px-4 py-2.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary"
             >
               {locale === "es" ? "Empezar otro" : "Start another"}
             </button>
@@ -309,7 +326,7 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
       <button
         type="button"
         onClick={reset}
-        className="min-h-10 rounded-lg bg-secondary px-3 py-2 text-sm font-medium"
+        className="min-h-10 rounded-lg bg-secondary px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary"
       >
         {locale === "es" ? "Cambiar categoría" : "Change category"}
       </button>

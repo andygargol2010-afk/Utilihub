@@ -62,7 +62,7 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: done
 idea: Interactive multi-stage personal goal progress journey. User chooses a goal category (learn a skill, build a habit, save for a goal, improve fitness), sets parameters, then advances through 5-7 ordered stages with checklists, binary/multi choices that branch tips and outcomes, sees live progress bar and percentage, related tool recommendations, and on completion a branded summary card with stats and next steps. Generates canvas PNG of the journey card + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y. Acceptance met when user selects category, completes stages, sees final card, shares PNG or URL.
 id: goal-progress-journey
 path_en: /journeys/goal-progress
@@ -70,10 +70,10 @@ path_es: /es/jornadas/progreso-objetivo
 path_seo: n/a
 domain: journeys
 runs_total: 4
-runs_remaining: 1
+runs_remaining: 0
 acceptance: User selects goal category and params, progresses through stages with checks and choices, sees progress updates and final branded card with recs, shares PNG or URL.
 share: both
-next_step_required: yes
+next_step_required: no
 notes: Domain roll: CORE journeys (weight 5; variety prefer underused vs recent games/kits/simulators/share-hooks; last_closed share-hooks). Rubric for 3 candidates:
 A) goal-progress-journey (chosen): value 4, share 4, search 3, distinct 4, feas 5, perf 4 (total 24). Closest-3: ChoiceStoryJourney (narrative choices), CelebrationJourney (progress milestones), paper-airplane-kit (multi-step checklists). Primary metaphor: ordered stages with branching choices and progress tracking. Why not particle-canvas: form/checklist stages + SVG progress, no freehand or particles.
 B) history-timeline-journey: value 4, share 3, search 4, distinct 3, feas 4, perf 4 (total 22). Closest: WaypointRiverComposer, ColorHarmonyJourney, population-dynamics-simulator. Metaphor: interactive timeline placement and causal links. Why not: timeline cards not canvas particles.
@@ -82,6 +82,7 @@ IP: original educational goal-progress tracker with generic stages; no branded f
 Run 1 (2026-11-06): core shipped — 4 categories, 5 stages each with 2 checklist items, live % progress bar, URL deep-link (?cat & ?c), completion summary + copy link, EN+ES routes, mobile-first. Next: choices that branch tips, more stages/params, branded PNG card, a11y polish.
 Run 2 (2026-11-06): branching choices (Short/Deep per stage) that update the tip shown; choices deep-linked (?ch); branded canvas PNG download of completion card with category, % and stats; EN+ES, mobile 390px considered, a11y pressed states. Next: related tool recs on card, tighter mobile, more stage variety or params.
 Run 3 (2026-11-06): related tool recommendations shown on completion card (2 per category, EN+ES labels, locale-aware links); slightly tighter mobile padding on stages/card; PNG height adjusted. Next: final a11y/polish or stage variety if needed for close.
+Run 4 (2026-11-06): final a11y polish — progressbar aria-live polite, focus management on category select (progress ref), radiogroup on choices, focus rings, region labels, PNG includes choice summary. Acceptance met. Ready for CLOSE.
 adsense-prep_runs: 7
 ```
 
