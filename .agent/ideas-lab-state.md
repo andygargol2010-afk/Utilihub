@@ -70,7 +70,7 @@ path_es: /es/estudio/compositor-linea-tiempo
 path_seo: n/a
 domain: studio-composition
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User adds and reorders event cards, sees live SVG timeline update, generates branded PNG or copies deep-link URL.
 share: both
 next_step_required: yes
