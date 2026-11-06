@@ -22,7 +22,6 @@ import { KCAL_KJ_CONVERTER_TOOLS } from "../kcal-kj-converter-tool";
 import { RECIPE_SCALER_CALCULATOR_TOOLS } from "../recipe-scaler-calculator-tool";
 import { EFFECTIVE_ANNUAL_RATE_CALCULATOR_TOOLS } from "../effective-annual-rate-calculator-tool";
 import { MONTHS_BETWEEN_DATES_CALCULATOR_TOOLS } from "../months-between-dates-calculator-tool";
-import { PARALLELOGRAM_AREA_CALCULATOR_TOOLS } from "../parallelogram-area-calculator-tool";
 import { UNIQUE_WORDS_CALCULATOR_TOOLS } from "../unique-words-calculator-tool";
 import { RULE_OF_72_CALCULATOR_TOOLS } from "../rule-of-72-calculator-tool";
 import { CENTRIPETAL_FORCE_CALCULATOR_TOOLS } from "../centripetal-force-calculator-tool";
@@ -50,7 +49,6 @@ export const GENERAL_TOOLS_PART_10 = [
   ...RECIPE_SCALER_CALCULATOR_TOOLS,
   ...EFFECTIVE_ANNUAL_RATE_CALCULATOR_TOOLS,
   ...MONTHS_BETWEEN_DATES_CALCULATOR_TOOLS,
-  ...PARALLELOGRAM_AREA_CALCULATOR_TOOLS,
   ...UNIQUE_WORDS_CALCULATOR_TOOLS,
   ...RULE_OF_72_CALCULATOR_TOOLS,
   ...CENTRIPETAL_FORCE_CALCULATOR_TOOLS,
