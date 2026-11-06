@@ -21,7 +21,7 @@ export const DailyExperienceSpotlight = lazy(() =>
 export const RANDOM_EXPERIENCES_PT = [
   "/pt/aurora-particle-playground",
   "/pt/pulse-catch",
-  "/pt/studio/compositor-estela-prisma",
+  "/studio/prism-trail-composer",
   "/pt/color-cascade-fusion",
   "/pt/solar-system-scale-explorer",
   "/pt/daily-progress-constellation",

@@ -8,15 +8,19 @@ import { toolHref } from "@/lib/all-tools";
 import { useFavorites } from "@/hooks/use-favorites";
 import { facetsWithCounts, toolMatchesTag } from "@/lib/tool-tags";
 import { normalize } from "./ToolSearch.part1";
+import { TOOL_SEARCH_LABELS } from "@/lib/i18n/pt-tool-search";
 import { PAGE_SIZE, STOP, ToolCard } from "./ToolSearch.part2";
 
 export function ToolSearch({
   initialCategory,
   compactHome = false,
+  locale = "en",
 }: {
   initialCategory?: string;
   compactHome?: boolean;
+  locale?: "en" | "pt";
 }) {
+  const L = TOOL_SEARCH_LABELS[locale];
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -143,15 +147,15 @@ export function ToolSearch({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onInput={(e) => setQuery(e.currentTarget.value)}
-            placeholder="Search a tool…"
-            aria-label="Search tools by name, description, or keyword"
+            placeholder={L.placeholder}
+            aria-label={L.searchAria}
             className="h-12 rounded-lg border-transparent bg-card pl-11 text-base shadow-none focus-visible:border-primary/40"
           />
           {compactHome && compactResults.length > 0 && (
             <div
               className="absolute inset-x-0 top-[calc(100%+0.5rem)] z-30 overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lift"
               role="listbox"
-              aria-label="Search results"
+              aria-label={L.results}
             >
               {compactResults.map((tool) => (
                 <Link
@@ -171,14 +175,14 @@ export function ToolSearch({
               className="absolute inset-x-0 top-[calc(100%+0.5rem)] z-30 rounded-xl border border-border bg-card p-4 text-center text-sm text-muted-foreground shadow-lift"
               role="status"
             >
-              No tools found for «{query}».
+              {L.noneFor} «{query}».
             </div>
           )}
         </form>
         {!compactHome && (
           <div
             className="mt-2 flex items-center gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            aria-label="Filter by category"
+            aria-label={L.byCategory}
           >
             <SlidersHorizontal className="size-4 shrink-0 text-muted-foreground" />
             <Button
@@ -188,7 +192,7 @@ export function ToolSearch({
               onClick={() => setCategory("all")}
               className={categoryButtonClass}
             >
-              All
+              {L.all}
             </Button>
             {ALL_CATEGORIES.map((c) => (
               <Button
@@ -207,7 +211,7 @@ export function ToolSearch({
         {!compactHome && facets.length > 0 && (
           <div
             className="mt-1.5 flex items-center gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            aria-label="Filter by topic"
+            aria-label={L.byTopic}
           >
             <Tag className="size-4 shrink-0 text-muted-foreground" />
             <Button
@@ -217,7 +221,7 @@ export function ToolSearch({
               onClick={() => setTag("all")}
               className={categoryButtonClass}
             >
-              Topics
+              {L.topics}
             </Button>
             {facets.map((f) => (
               <Button
@@ -247,7 +251,7 @@ export function ToolSearch({
           <div className="mb-2 flex items-center gap-2">
             <Star className="size-4 fill-highlight text-highlight" />
             <h2 id="favorites" className="text-sm font-bold">
-              Your favorites
+              {L.favorites}
             </h2>
           </div>
           <Suspense fallback={null}>
@@ -265,7 +269,7 @@ export function ToolSearch({
             <StaticListing tools={staticTools} />
           ) : results.length === 0 ? (
             <p className="rounded-xl border border-dashed border-border bg-surface p-8 text-center text-sm text-muted-foreground">
-              No tools match «{query || tag}».
+              {L.noneMatch} «{query || tag}».
             </p>
           ) : (
             <Suspense fallback={<StaticListing tools={staticTools} />}>

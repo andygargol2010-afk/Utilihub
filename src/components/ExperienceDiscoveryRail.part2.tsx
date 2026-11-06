@@ -33,7 +33,7 @@ export const EXPERIENCES: Experience[] = [
     id: "prism-trail-composer",
     pathEn: "/studio/prism-trail-composer",
     pathEs: "/es/studio/compositor-estela-prisma",
-    pathPt: "/pt/studio/compositor-estela-prisma",
+    pathPt: "/studio/prism-trail-composer",
     titleEn: "Prism Trail Composer",
     titleEs: "Compositor de Estela Prisma",
     titlePt: "Compositor de Estela Prisma",

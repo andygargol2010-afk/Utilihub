@@ -8,6 +8,8 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SpanishSiteHeader } from "@/components/SpanishSiteHeader";
 import { SpanishSiteFooter } from "@/components/SpanishSiteFooter";
+import { PortugueseSiteHeader } from "@/components/PortugueseSiteHeader";
+import { PortugueseSiteFooter } from "@/components/PortugueseSiteFooter";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 import { AdsConfigContext, ADS_OFF, type AdsConfig } from "@/lib/ads-config";
@@ -119,26 +121,6 @@ function DeferredInsights() {
   );
 }
 
-function PortugueseMinimalHeader() {
-  return (
-    <header className="border-b border-border/70 bg-background/95">
-      <div className="container-page flex h-14 items-center">
-        <a href="/pt" className="text-lg font-black tracking-tight">
-          UtiliHub
-        </a>
-      </div>
-    </header>
-  );
-}
-
-function PortugueseMinimalFooter() {
-  return (
-    <footer className="border-t border-border/70 py-6 text-center text-xs text-muted-foreground">
-      UtiliHub · Português (pt-BR) · SEO locale
-    </footer>
-  );
-}
-
 function FrenchMinimalHeader() {
   return (
     <header className="border-b border-border/70 bg-background/95">
@@ -174,7 +156,7 @@ function RootComponent() {
         {isFrench ? (
           <FrenchMinimalHeader />
         ) : isPortuguese ? (
-          <PortugueseMinimalHeader />
+          <PortugueseSiteHeader />
         ) : isSpanish ? (
           <SpanishSiteHeader />
         ) : (
@@ -186,7 +168,7 @@ function RootComponent() {
         {isFrench ? (
           <FrenchMinimalFooter />
         ) : isPortuguese ? (
-          <PortugueseMinimalFooter />
+          <PortugueseSiteFooter />
         ) : isSpanish ? (
           <SpanishSiteFooter />
         ) : (

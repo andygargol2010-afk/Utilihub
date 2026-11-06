@@ -70,7 +70,7 @@ export const POOL: SpotlightExp[] = [
     id: "prism-trail-composer",
     pathEn: "/studio/prism-trail-composer",
     pathEs: "/es/studio/compositor-estela-prisma",
-    pathPt: "/pt/studio/compositor-estela-prisma",
+    pathPt: "/studio/prism-trail-composer",
     titleEn: "Prism Trail",
     titleEs: "Estela Prisma",
     titlePt: "Estela Prisma",

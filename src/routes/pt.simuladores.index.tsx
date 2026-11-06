@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { SIMULATORS, simBadge, simSummary, simTagLabel, type SimTheme } from "@/lib/simulators/catalog";
+import { SIMULATORS, simBadge, simName, simSummary, simTagLabel, type SimTheme } from "@/lib/simulators/catalog";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 const title = "Simuladores gráficos grátis | UtiliHub";
@@ -79,14 +79,14 @@ function SimulatorsHubPt() {
                   {sim.emoji}
                 </span>
                 <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${BADGE[sim.theme]}`}>
-                  {simBadge(sim, "en")}
+                  {simBadge(sim, "pt")}
                 </span>
               </div>
               <span className="mt-3 text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                {simTagLabel(sim.tag, "en")}
+                {simTagLabel(sim.tag, "pt")}
               </span>
-              <span className="mt-1 text-xl font-bold text-slate-900">{sim.nameEn}</span>
-              <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{simSummary(sim, "en")}</span>
+              <span className="mt-1 text-xl font-bold text-slate-900">{simName(sim, "pt")}</span>
+              <span className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{simSummary(sim, "pt")}</span>
               <span className={`mt-5 text-sm font-bold ${CTA[sim.theme]}`}>Abrir simulador →</span>
             </Link>
           ))}

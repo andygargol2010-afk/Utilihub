@@ -1,5 +1,6 @@
 import { type SimDef, type SimLocale, type SimTag } from "./catalog.part1";
 import { SIMULATORS } from "./catalog.part2";
+import { PT_SIMULATORS, PT_SIM_TAGS } from "@/lib/i18n/pt-simulators";
 export type { SimLocale, SimTag, SimTheme, SimDef } from "./catalog.part1";
 export { SIMULATORS } from "./catalog.part2";
 
@@ -35,18 +36,22 @@ export function simPath(sim: SimDef, locale: SimLocale = "en") {
 }
 
 export function simName(sim: SimDef, locale: SimLocale = "en") {
+  if (locale === "pt") return PT_SIMULATORS[sim.slug]?.name ?? sim.nameEn;
   return locale === "es" ? sim.nameEs : sim.nameEn;
 }
 
 export function simSummary(sim: SimDef, locale: SimLocale = "en") {
+  if (locale === "pt") return PT_SIMULATORS[sim.slug]?.summary ?? sim.summaryEn;
   return locale === "es" ? sim.summaryEs : sim.summaryEn;
 }
 
 export function simBadge(sim: SimDef, locale: SimLocale = "en") {
+  if (locale === "pt") return PT_SIMULATORS[sim.slug]?.badge ?? sim.badgeEn;
   return locale === "es" ? sim.badgeEs : sim.badgeEn;
 }
 
 export function simTagLabel(tag: SimTag, locale: SimLocale = "en") {
+  if (locale === "pt") return PT_SIM_TAGS[tag];
   if (locale === "es") {
     return tag === "physics" ? "Física" : tag === "chemistry" ? "Química" : "Matemática";
   }

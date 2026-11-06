@@ -6,6 +6,7 @@ import { RecentToolsSection } from "@/components/RecentToolsSection";
 import { ALL_CATEGORIES, allToolsByCategory, allCategoryBySlug } from "@/lib/all-tools";
 import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
 import { englishCategorySlug, englishToolSlug } from "@/lib/route-slugs";
+import { PT_CATEGORY_NAMES, PT_QUICK_TOOL_NAMES } from "@/lib/i18n/pt-featured";
 import { quickTools, CATEGORY_BLURB_ES, categoryHrefEs, CATEGORY_BLURB_PT, categoryHrefPt } from "./home-catalog.part2";
 export { HomeToolCount, HomeSearch } from "./home-catalog.part2";
 
@@ -141,8 +142,8 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
               return (
                 <Link
                   key={tool.slug}
-                  to={tool.category === "finanzas" ? "/pt/financas/$slug" : "/pt/ferramentas/$slug"}
-                  params={{ slug: tool.slug }}
+                  to={tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug"}
+                  params={{ slug: englishToolSlug(tool) }}
                   className={
                     isPixel
                       ? "card-hover group rounded-xl border border-rose-500/35 bg-gradient-to-br from-rose-500/10 via-card to-card p-4 hover:-translate-y-0.5 hover:border-rose-500/50 hover:shadow-lift"
@@ -150,10 +151,10 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
                   }
                 >
                   <span className={`text-xs font-bold uppercase tracking-wide ${isPixel ? "text-rose-500" : "text-primary"}`}>
-                    {isPixel ? "Pixel art" : (CATEGORY_BLURB_PT[tool.category] ? tool.category : tool.category)}
+                    {isPixel ? "Pixel art" : (PT_CATEGORY_NAMES[tool.category] ?? tool.category)}
                   </span>
                   <h3 className={`mt-2 font-bold ${isPixel ? "group-hover:text-rose-500" : "group-hover:text-primary"}`}>
-                    {tool.name}
+                    {PT_QUICK_TOOL_NAMES[tool.slug] ?? tool.name}
                   </h3>
                   <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
                     {isPixel
@@ -195,7 +196,7 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
                 >
                   <span>
                     <span className="block font-bold group-hover:text-primary">
-                      {category.name}
+                      {PT_CATEGORY_NAMES[category.slug] ?? category.name}
                     </span>
                     <span className="mt-0.5 block text-xs text-muted-foreground">{blurb}</span>
                   </span>

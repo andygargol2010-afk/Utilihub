@@ -103,7 +103,7 @@ function PortugueseToolsIndex() {
       </p>
       <div className="mt-8">
         <Suspense fallback={<ListingSlot />}>
-          <ToolSearch />
+          <ToolSearch locale="pt" />
         </Suspense>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { type GameDef, type GameLocale, type GameTag } from "./catalog.part1";
 import { GAMES } from "./catalog.part2";
 export type { GameLocale, GameTag, GameDef } from "./catalog.part1";
 export { GAMES } from "./catalog.part2";
+import { PT_GAMES, PT_GAME_TAGS } from "@/lib/i18n/pt-games";
 
 /** Next-step games for retention (first = primary). Keys = EN slug. */
 export const GAME_JOURNEYS: Record<string, string[]> = {
@@ -55,18 +56,22 @@ export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | u
 }
 
 export function gamePath(game: GameDef, locale: GameLocale = "en") {
+  if (locale === "pt") return `/pt/jogos/${game.slug}`;
   return locale === "es" ? `/es/juegos/${game.slugEs}` : `/games/${game.slug}`;
 }
 
 export function gameName(game: GameDef, locale: GameLocale = "en") {
+  if (locale === "pt") return PT_GAMES[game.slug]?.name ?? game.nameEn;
   return locale === "es" ? game.nameEs : game.nameEn;
 }
 
 export function gameSummary(game: GameDef, locale: GameLocale = "en") {
+  if (locale === "pt") return PT_GAMES[game.slug]?.summary ?? game.summaryEn;
   return locale === "es" ? game.summaryEs : game.summaryEn;
 }
 
 export function tagLabel(tag: GameTag, locale: GameLocale = "en") {
+  if (locale === "pt") return PT_GAME_TAGS[tag as keyof typeof PT_GAME_TAGS] ?? tag;
   if (locale === "es") {
     return tag === "puzzle" ? "Puzzle" : tag === "arcade" ? "Arcade" : "Tablero";
   }

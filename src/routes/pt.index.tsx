@@ -91,8 +91,8 @@ function PortugueseHome() {
                 🎲 Experiência aleatória
               </button>
               <Link
-                to="/pt/categoria/$slug"
-                params={{ slug: "ferramentas-avancadas" }}
+                to="/category/$slug"
+                params={{ slug: "advanced-tools" }}
                 className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:opacity-95"
               >
                 Explorar avançadas <ArrowRight className="size-4" />
@@ -141,8 +141,8 @@ function PortugueseHome() {
               </div>
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
                 <Link
-                  to="/pt/categoria/$slug"
-                  params={{ slug: "ferramentas-avancadas" }}
+                  to="/category/$slug"
+                  params={{ slug: "advanced-tools" }}
                   className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-2.5 hover:border-primary/50 hover:bg-primary/10"
                 >
                   Avançadas
@@ -154,28 +154,28 @@ function PortugueseHome() {
                   Jogos
                 </Link>
                 <Link
-                  to="/pt/categoria/$slug"
-                  params={{ slug: "matematica" }}
+                  to="/category/$slug"
+                  params={{ slug: "math" }}
                   className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
                 >
                   Matemática
                 </Link>
                 <Link
-                  to="/pt/financas"
+                  to="/finance"
                   className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
                 >
                   Finanças
                 </Link>
                 <Link
-                  to="/pt/categoria/$slug"
-                  params={{ slug: "texto" }}
+                  to="/category/$slug"
+                  params={{ slug: "text" }}
                   className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
                 >
                   Texto
                 </Link>
                 <Link
-                  to="/pt/categoria/$slug"
-                  params={{ slug: "conversoes" }}
+                  to="/category/$slug"
+                  params={{ slug: "converters" }}
                   className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
                 >
                   Conversores
@@ -208,7 +208,7 @@ function PortugueseHome() {
             <Link to="/pt/neon-layer-composer" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Camadas Neon</Link>
             <Link to="/pt/n-body-gravity" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Gravidade N-Corpos</Link>
             <Link to="/pt/color-cascade-fusion" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Cascata de Cor</Link>
-            <Link to="/pt/studio/compositor-estela-prisma" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Estela Prisma</Link>
+            <Link to="/studio/prism-trail-composer" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Estela Prisma</Link>
             <Link to="/pt/aura-card" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Cartão de Aura</Link>
           </div>
         </div>

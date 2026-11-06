@@ -3,6 +3,7 @@ import { SpanishToolSearch } from "@/components/SpanishToolSearch";
 import { ToolSearch } from "@/components/ToolSearch";
 import { ALL_TOOLS } from "@/lib/all-tools";
 import { QUICK_TOOL_SLUGS } from "./home-catalog.part1";
+import { englishCategorySlug } from "@/lib/route-slugs";
 
 /** Short ES blurbs for home category cards (catalog descriptions are English-only). */
 export const CATEGORY_BLURB_ES: Record<string, string> = {
@@ -51,9 +52,10 @@ export function categoryHrefEs(slug: string) {
   return `/es/categoria/${slug}`;
 }
 
+/** No PT category hubs exist yet: link to the EN hub. */
 export function categoryHrefPt(slug: string) {
-  if (slug === "finanzas") return "/pt/financas";
-  return `/pt/categoria/${slug}`;
+  if (slug === "finanzas") return "/finance";
+  return `/category/${englishCategorySlug(slug)}`;
 }
 
 export function quickTools() {

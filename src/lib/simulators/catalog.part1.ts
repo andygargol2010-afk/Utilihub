@@ -1,6 +1,6 @@
 // Part 1 of 3 — split from catalog.ts on 2026-11-04. Edit here; catalog.ts re-exports.
 
-export type SimLocale = "en" | "es";
+export type SimLocale = "en" | "es" | "pt";
 
 export type SimTag = "physics" | "chemistry" | "math";
 
