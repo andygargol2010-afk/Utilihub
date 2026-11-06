@@ -16,16 +16,15 @@ When EN/ES ship new high-traffic experiences later: check **Active locales** and
 
 Order = preferred pick when domain rolls:
 
-1. `pt` — Portuguese (pt-BR bias for copy)
-2. `fr` — French
-3. `de` — German
-4. `ar` — Arabic (`dir=rtl` required)
-5. `hi` — Hindi
-6. `id` — Indonesian
-7. `ja` — Japanese
-8. `ko` — Korean
-9. `it` — Italian
-10. `nl` — Dutch
+1. `fr` — French
+2. `de` — German
+3. `ar` — Arabic (`dir=rtl` required)
+4. `hi` — Hindi
+5. `id` — Indonesian
+6. `ja` — Japanese
+7. `ko` — Korean
+8. `it` — Italian
+9. `nl` — Dutch
 
 Do **not** add EN or ES here — those are first-class product locales with nav.
 
@@ -35,7 +34,7 @@ Do **not** add EN or ES here — those are first-class product locales with nav.
 
 | code | BCP-47 | dir | status | prefix | pages_done (paths) | notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| *(none — reset 2026-10-28)* | | | | | | |
+| pt | pt-BR | ltr | active | /pt | /pt/, /pt/ferramentas, /pt/jogos, /pt/simuladores, /pt/privacidade, /pt/cookies, /pt/contato, /pt/sobre, /pt/playgrounds, /pt/kits, /pt/jornadas, /pt/kit-circuito-simples, /pt/simulador-dinamica-populacional, /pt/jogos/$slug, /pt/kit-aviao-papel + dynamic games | Full parity bar met after 12 runs. Home + hubs + experiences + legal + hreflang. |
 
 ---
 
