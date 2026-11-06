@@ -165,7 +165,7 @@ export const Route = createFileRoute("/sitemap.xml")({
             alternates: [
               { lang: "pt", path: "/pt/contato" },
               { lang: "en", path: "/contact" },
-              { lang: "es", path: "/es/contato" },
+              { lang: "es", path: "/es/contacto" },
               { lang: "x-default", path: "/contact" },
             ],
           },
@@ -176,7 +176,7 @@ export const Route = createFileRoute("/sitemap.xml")({
             alternates: [
               { lang: "pt", path: "/pt/sobre" },
               { lang: "en", path: "/about" },
-              { lang: "es", path: "/es/sobre" },
+              { lang: "es", path: "/es/acerca" },
               { lang: "x-default", path: "/about" },
             ],
           },
@@ -219,9 +219,9 @@ export const Route = createFileRoute("/sitemap.xml")({
             lastmod: BUILD_DAY,
             alternates: [
               { lang: "pt", path: "/pt/kit-circuito-simples" },
-              { lang: "en", path: "/kits/simple-circuit-kit" },
-              { lang: "es", path: "/es/kits/kit-circuito-simples" },
-              { lang: "x-default", path: "/kits/simple-circuit-kit" },
+              { lang: "en", path: "/simple-circuit-kit" },
+              { lang: "es", path: "/es/kit-circuito-simple" },
+              { lang: "x-default", path: "/simple-circuit-kit" },
             ],
           },
           {
@@ -230,9 +230,9 @@ export const Route = createFileRoute("/sitemap.xml")({
             lastmod: BUILD_DAY,
             alternates: [
               { lang: "pt", path: "/pt/simulador-dinamica-populacional" },
-              { lang: "en", path: "/simulators/population-dynamics-simulator" },
-              { lang: "es", path: "/es/simuladores/simulador-dinamica-populacional" },
-              { lang: "x-default", path: "/simulators/population-dynamics-simulator" },
+              { lang: "en", path: "/population-dynamics-simulator" },
+              { lang: "es", path: "/es/simulador-dinamica-poblacional" },
+              { lang: "x-default", path: "/population-dynamics-simulator" },
             ],
           },
         ];

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "node scripts/write-og-png.mjs && npm run validate:catalog && npm run validate:registry && vite build",
+    "postbuild": "node scripts/check-sitemap-links.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",

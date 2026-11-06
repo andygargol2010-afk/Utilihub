@@ -93,6 +93,16 @@ if (registryLines < baseline.minRegistryLines) {
   errors.push(`src/components/general/registry.tsx + registry-ui/ have ${registryLines} lines (baseline min ${baseline.minRegistryLines})`);
 }
 
+// Games catalog was emptied several times by bad automated "restores" (424da00b, f1342c63, 4f7b89e8).
+const MIN_GAMES = 30;
+const gamesDir = join(srcDir, "lib/games");
+const gameEntries = readdirSync(gamesDir)
+  .filter((name) => /^catalog.*\.ts$/.test(name))
+  .reduce((n, name) => n + (readFileSync(join(gamesDir, name), "utf8").match(/^\s*slugEs:\s*["'`]/gm) || []).length, 0);
+if (gameEntries < MIN_GAMES) {
+  errors.push(`src/lib/games/catalog*.ts have ${gameEntries} game entries (min ${MIN_GAMES})`);
+}
+
 let toolCount = null;
 try {
   const { build } = createRequire(join(root, "package.json"))("esbuild");
@@ -153,5 +163,5 @@ if (errors.length) {
 }
 
 console.log(
-  `validate-catalog-size PASS: ALL_TOOLS=${toolCount} (min ${baseline.minTools}), indexImports=${indexImports} (min ${baseline.minIndexImports}), registryLines=${registryLines} (min ${baseline.minRegistryLines}), summary-es.ts=${summaryEsLines} lines (min ${MIN_SUMMARY_ES_LINES}), no corrupted-write markers or stubs in src/`,
+  `validate-catalog-size PASS: ALL_TOOLS=${toolCount} (min ${baseline.minTools}), games=${gameEntries} (min ${MIN_GAMES}), indexImports=${indexImports} (min ${baseline.minIndexImports}), registryLines=${registryLines} (min ${baseline.minRegistryLines}), summary-es.ts=${summaryEsLines} lines (min ${MIN_SUMMARY_ES_LINES}), no corrupted-write markers or stubs in src/`,
 );
