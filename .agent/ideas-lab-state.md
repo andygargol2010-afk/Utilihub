@@ -62,7 +62,24 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: none
+status: active
+idea: Interactive multi-stage personal goal progress journey. User chooses a goal category (learn a skill, build a habit, save for a goal, improve fitness), sets parameters, then advances through 5-7 ordered stages with checklists, binary/multi choices that branch tips and outcomes, sees live progress bar and percentage, related tool recommendations, and on completion a branded summary card with stats and next steps. Generates canvas PNG of the journey card + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y. Acceptance met when user selects category, completes stages, sees final card, shares PNG or URL.
+id: goal-progress-journey
+path_en: /journeys/goal-progress
+path_es: /es/jornadas/progreso-objetivo
+path_seo: n/a
+domain: journeys
+runs_total: 4
+runs_remaining: 4
+acceptance: User selects goal category and params, progresses through stages with checks and choices, sees progress updates and final branded card with recs, shares PNG or URL.
+share: both
+next_step_required: yes
+notes: Domain roll: CORE journeys (weight 5; variety prefer underused vs recent games/kits/simulators/share-hooks; last_closed share-hooks). Rubric for 3 candidates:
+A) goal-progress-journey (chosen): value 4, share 4, search 3, distinct 4, feas 5, perf 4 (total 24). Closest-3: ChoiceStoryJourney (narrative choices), CelebrationJourney (progress milestones), paper-airplane-kit (multi-step checklists). Primary metaphor: ordered stages with branching choices and progress tracking. Why not particle-canvas: form/checklist stages + SVG progress, no freehand or particles.
+B) history-timeline-journey: value 4, share 3, search 4, distinct 3, feas 4, perf 4 (total 22). Closest: WaypointRiverComposer, ColorHarmonyJourney, population-dynamics-simulator. Metaphor: interactive timeline placement and causal links. Why not: timeline cards not canvas particles.
+C) habit-week-simulator-journey: value 3, share 3, search 3, distinct 3, feas 5, perf 5 (total 22). Closest: simple-circuit-kit guided mode, CelebrationJourney, utili-type-quiz. Metaphor: simulated week of daily decisions. Why not: sequential daily cards.
+IP: original educational goal-progress tracker with generic stages; no branded frameworks. Chosen id: goal-progress-journey. Roll: CORE fixed-ish by variety (p_fixed 0.35 but underused domain). Quality bar: stages complete by run 2, share by run 4.
+adsense-prep_runs: 7
 ```
 
 <!-- end:ideas-lab-state.md -->
