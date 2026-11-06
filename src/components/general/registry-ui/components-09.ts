@@ -8,3 +8,4 @@ export const BodyAdiposityIndexCalculatorToolUi = lazy(() => import("../BodyAdip
 export const RuleOf72CalculatorToolUi = lazy(() => import("../RuleOf72CalculatorTool").then((m) => ({ default: m.RuleOf72CalculatorTool })));
 export const OriginalPriceFromDiscountCalculatorToolUi = lazy(() => import("../OriginalPriceFromDiscountCalculatorTool").then((m) => ({ default: m.OriginalPriceFromDiscountCalculatorTool })));
 export const CentripetalForceCalculatorToolUi = lazy(() => import("../CentripetalForceCalculatorTool").then((m) => ({ default: m.CentripetalForceCalculatorTool })));
+export const PasswordGeneratorToolUi = lazy(() => import("../PasswordGeneratorTool").then((m) => ({ default: m.PasswordGeneratorTool })));
