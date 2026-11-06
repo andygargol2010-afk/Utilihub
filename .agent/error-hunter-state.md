@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-06 run 163
-runs_total: 163
+last_run: 2026-11-06 run 164
+runs_total: 164
 last_mode: HUNT
 last_fix: n/a
 last_prevent: n/a
 last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat in src; PLACEHOLDER hits are CSS/placeholder text only; registry.tsx and index/es.index real)
-deploy: production READY on c20a444 (latest for branch); tip 2b53a941 not yet deployed; old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio, pixelihub 200, juegos list + 2048 OK Spanish, calculadora-iva / generador-codigos / modelador-casas-3d / finanzas/wacc 200 Spanish. calculadora-ley-ohm still mixed English on live (deploy lag; tip ohms-law-tool.ts has summaryEs).
-notes: Known smoke E001-E053 + E031 clean (no stubs, registry healthy, indexes start with import). Discovery: sampled juegos/list + 2048, calculadora-iva, generador-codigos, modelador-casas-3d, finanzas/calculadora-wacc, home routes — all 200 expected content. No new code bugs, no deploy ERROR. No fixes needed.
+deploy: production READY on c20a444 (latest for branch); tip 377926b5 not yet deployed; old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio, pixelihub 200, juegos list + 2048 OK Spanish, calculadora-iva / generador-codigos / modelador-casas-3d / finanzas/wacc 200 Spanish. calculadora-ley-ohm still mixed English on live (deploy lag; tip ohms-law-tool.ts has summaryEs). valor-absoluto still phrase-translate leak on live.
+notes: Known smoke E001-E053 + E031 clean (no stubs, registry healthy, indexes start with import). Discovery: sampled juegos/list + 2048, calculadora-ley-ohm (lag), valor-absoluto (phrase leak known), modelador-3d, home, png-a-jpg, simuladores — all 200 expected content. No new code bugs, no deploy ERROR. No fixes needed.
 ```
 
 <!-- end:error-hunter-state.md -->
