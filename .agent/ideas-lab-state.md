@@ -70,7 +70,7 @@ path_es: /es/estudio/compositor-linea-tiempo
 path_seo: n/a
 domain: studio-composition
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: User adds and reorders event cards, sees live SVG timeline update, generates branded PNG or copies deep-link URL.
 share: both
 next_step_required: yes
@@ -79,6 +79,7 @@ A) timeline-event-composer (chosen): value 4, share 4, search 3, distinct 4, fea
 B) mindmap-node-composer: value 4, share 4, search 3, distinct 4, feas 4, perf 4 (total 23). Closest: simple-circuit-kit (connect wires), ColorHarmonyJourney, population-dynamics-simulator (visual readout). Metaphor: declarative node linking → diagram. Why not: SVG nodes/edges, no particles.
 C) palette-harmony-composer: value 3, share 3, search 3, distinct 3, feas 5, perf 5 (total 22). Closest: ColorHarmonyJourney, simple-circuit-kit, paper-airplane-kit. Metaphor: parameter selection → generated palette. Why not: color picker UI not canvas particles.
 IP: original educational timeline assembler with generic events; no branded frameworks. Chosen id: timeline-event-composer. Roll: CORE underused studio-composition. Quality bar: core add/reorder/timeline by run 2, share by run 4.
+Run 2/4 done: shipped EN+ES routes + TimelineEventComposer with form add (title/desc/date/tag), up/down reorder buttons (a11y), live vertical SVG timeline with connecting line and labels, URL deep-link (?tl= base64). Mobile 390px stacked grid considered. Lazy-loaded. Core acceptance partially met (add/reorder/live timeline); share PNG next.
 adsense-prep_runs: 7
 ```
 
