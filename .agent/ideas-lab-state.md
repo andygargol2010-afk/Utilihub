@@ -70,11 +70,11 @@ path_es: /es/compartir/utili-type-quiz
 path_seo: n/a
 domain: share-hooks
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User answers quiz questions, sees personalized type card with description and recommendations, shares PNG or URL.
 share: both
 next_step_required: yes
-notes: Rubric (1-5): C1 utili-type-quiz: val4 share5 search4 dist4 feas5 perf5 total27. Closest-3: memory-match-classic (theme select), paper-airplane-kit (preset), population-sim (params). Metaphor: sequential preference questions → archetype result card. Not particle-canvas: discrete Q&A cards, no freehand trails. IP: original educational personality quiz, generic types. C2 daily-challenge-sharer: val4 share4 search3 dist3 feas4 perf4 total22. Closest: existing game challenges. Metaphor: daily mini-task → shareable score badge. C3 result-poster-maker: val3 share5 search3 dist3 feas5 perf5 total24. Closest: game PNG exports. Metaphor: form inputs → branded poster. Chosen: utili-type-quiz (highest share + distinct). Roll: FLEX share-hooks (r≈0.64 > p_fixed 0.35). Variety: breaks grid-game cluster with quiz→card flow. 
+notes: Rubric (1-5): C1 utili-type-quiz: val4 share5 search4 dist4 feas5 perf5 total27. Closest-3: memory-match-classic (theme select), paper-airplane-kit (preset), population-sim (params). Metaphor: sequential preference questions → archetype result card. Not particle-canvas: discrete Q&A cards, no freehand trails. IP: original educational personality quiz, generic types. C2 daily-challenge-sharer: val4 share4 search3 dist3 feas4 perf4 total22. Closest: existing game challenges. Metaphor: daily mini-task → shareable score badge. C3 result-poster-maker: val3 share5 search3 dist3 feas5 perf5 total24. Closest: game PNG exports. Metaphor: form inputs → branded poster. Chosen: utili-type-quiz (highest share + distinct). Roll: FLEX share-hooks (r≈0.64 > p_fixed 0.35). Variety: breaks grid-game cluster with quiz→card flow. Run 1 (2026-11-06): core 8-question flow + progress + result card with recommendations + copy-link shipped. PNG and deep-link seed next.
 adsense-prep_runs: 7
 ```
 
