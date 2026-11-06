@@ -7,3 +7,4 @@ export const UncookedToCookedRiceCalculatorToolUi = lazy(() => import("../Uncook
 export const BodyAdiposityIndexCalculatorToolUi = lazy(() => import("../BodyAdiposityIndexCalculatorTool").then((m) => ({ default: m.BodyAdiposityIndexCalculatorTool })));
 export const RuleOf72CalculatorToolUi = lazy(() => import("../RuleOf72CalculatorTool").then((m) => ({ default: m.RuleOf72CalculatorTool })));
 export const OriginalPriceFromDiscountCalculatorToolUi = lazy(() => import("../OriginalPriceFromDiscountCalculatorTool").then((m) => ({ default: m.OriginalPriceFromDiscountCalculatorTool })));
+export const CentripetalForceCalculatorToolUi = lazy(() => import("../CentripetalForceCalculatorTool").then((m) => ({ default: m.CentripetalForceCalculatorTool })));

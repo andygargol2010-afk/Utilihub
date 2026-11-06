@@ -28,4 +28,5 @@ export const SLUG_UI_04: Record<string, ToolComp> = {
   "calculadora-indice-adiposidad-corporal": UI.BodyAdiposityIndexCalculatorToolUi,
   "calculadora-regla-del-72": UI.RuleOf72CalculatorToolUi,
   "calculadora-precio-original-descuento": UI.OriginalPriceFromDiscountCalculatorToolUi,
+  "calculadora-fuerza-centripeta": UI.CentripetalForceCalculatorToolUi,
 };
