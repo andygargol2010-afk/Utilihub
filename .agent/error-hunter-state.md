@@ -21,13 +21,13 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-05 run 157
-runs_total: 157
+last_run: 2026-11-05 run 158
+runs_total: 158
 last_mode: HUNT
 last_fix: n/a
 last_prevent: n/a
 last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat/PLACEHOLDER in src; registry.tsx healthy with pickComponent/GENERAL_TOOL_UI)
-deploy: production READY on c20a444 (latest for branch); tip docs/state after this; old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio (not House), IVA Spanish dedicated summary, generador-codigos Spanish, WACC Spanish. calculadora-ley-ohm still shows mixed English phrase-translate on live (deploy lag; tip ohms-law-tool.ts has summaryEs).
+deploy: production READY on c20a444 (latest for branch); tip 444e124 not yet deployed; old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio (not House), IVA Spanish dedicated summary, generador-codigos Spanish, WACC Spanish. calculadora-ley-ohm still shows mixed English phrase-translate on live (deploy lag; tip ohms-law-tool.ts has summaryEs).
 notes: Known smoke E001-E053 + E031 clean (registry, index, no stubs). Discovery: sampled /es, modelador-3d, IVA, generador-codigos, WACC, juegos/2048, calculadora-ley-ohm — all 200, no crash, correct dedicated UI where expected. Mixed summary on ley-ohm is known E051 lag (summaryEs present in tip). No new code bugs, no deploy ERROR. No fixes needed.
 ```
 
