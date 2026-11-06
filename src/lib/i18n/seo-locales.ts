@@ -22,7 +22,6 @@ export type SeoLocale = {
 
 /** Priority order for Ideas Lab domain `seo-locales` when activating a new language. */
 export const SEO_LOCALE_PRIORITY: readonly string[] = [
-  "pt",
   "fr",
   "de",
   "ar",
@@ -36,9 +35,17 @@ export const SEO_LOCALE_PRIORITY: readonly string[] = [
 
 /**
  * Active SEO locales (shipped route trees with parity bar met).
- * Empty after 2026-10-28 reset — no thin shells.
+ * pt activated 2026-11-05 after full product-parity project.
  */
-export const SEO_LOCALES_ACTIVE: readonly SeoLocale[] = [] as const;
+export const SEO_LOCALES_ACTIVE: readonly SeoLocale[] = [
+  {
+    code: "pt",
+    bcp47: "pt-BR",
+    dir: "ltr",
+    labelEn: "Portuguese (Brazil)",
+    status: "active",
+  },
+] as const;
 
 export function seoLocaleByCode(code: string): SeoLocale | undefined {
   return SEO_LOCALES_ACTIVE.find((l) => l.code === code);
