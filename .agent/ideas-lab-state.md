@@ -70,7 +70,7 @@ path_es: /es/jornadas/progreso-objetivo
 path_seo: n/a
 domain: journeys
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects goal category and params, progresses through stages with checks and choices, sees progress updates and final branded card with recs, shares PNG or URL.
 share: both
 next_step_required: yes
@@ -79,6 +79,7 @@ A) goal-progress-journey (chosen): value 4, share 4, search 3, distinct 4, feas 
 B) history-timeline-journey: value 4, share 3, search 4, distinct 3, feas 4, perf 4 (total 22). Closest: WaypointRiverComposer, ColorHarmonyJourney, population-dynamics-simulator. Metaphor: interactive timeline placement and causal links. Why not: timeline cards not canvas particles.
 C) habit-week-simulator-journey: value 3, share 3, search 3, distinct 3, feas 5, perf 5 (total 22). Closest: simple-circuit-kit guided mode, CelebrationJourney, utili-type-quiz. Metaphor: simulated week of daily decisions. Why not: sequential daily cards.
 IP: original educational goal-progress tracker with generic stages; no branded frameworks. Chosen id: goal-progress-journey. Roll: CORE fixed-ish by variety (p_fixed 0.35 but underused domain). Quality bar: stages complete by run 2, share by run 4.
+Run 1 (2026-11-06): core shipped — 4 categories, 5 stages each with 2 checklist items, live % progress bar, URL deep-link (?cat & ?c), completion summary + copy link, EN+ES routes, mobile-first. Next: choices that branch tips, more stages/params, branded PNG card, a11y polish.
 adsense-prep_runs: 7
 ```
 
