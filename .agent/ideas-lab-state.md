@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: share-hooks
-last_closed_id: utili-type-quiz
+last_closed_domain: journeys
+last_closed_id: goal-progress-journey
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 7
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-06 | journeys | goal-progress-journey | Interactive multi-stage personal goal progress journey. User chooses a goal category (learn a skill, build a habit, save for a goal, improve fitness), sets parameters, then advances through 5-7 ordered stages with checklists, binary/multi choices that branch tips and outcomes, sees live progress bar and percentage, related tool recommendations, and on completion a branded summary card with stats and next steps. Generates canvas PNG of the journey card + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y. Acceptance met when user selects category, completes stages, sees final card, shares PNG or URL. IP: original educational goal-progress tracker with generic stages; no branded frameworks.
 - 2026-11-06 | share-hooks | utili-type-quiz | Interactive multi-question preference quiz that reveals a personalized "Utili Type" archetype complete after 4 runs. User answers 8-10 binary/multi-choice questions about favorite activities/tools, sees progressive progress bar, ends with branded result card (type name, short description, matching tool/game recommendations), generates canvas PNG + deep-link URL for sharing. EN+ES routes, mobile-first 390px, a11y keyboard nav + ARIA. Acceptance met (answers quiz, sees type card with recs, shares PNG or URL). IP: original educational personality quiz, generic types.
 - 2026-11-06 | games | battleship-classic | Interactive classic Battleship (Hundir la flota) complete after 4 runs. User places ships (manual/random) on 10x10 grid, shoots opponent grid (AI hunt), sees hit/miss/sink, wins by clearing fleet. Keyboard nav, ghost preview, win animation, canvas PNG of both boards, URL deep-link, EN+ES, mobile-first 390px. Acceptance met (place/random, shoot, hit/miss/sink, win, share PNG/URL). IP: traditional public-domain Battleship mechanics, generic naming/assets.
 - 2026-11-05 | seo-locales | pt-product-parity | Full product-parity Portuguese (pt-BR) locale surface under /pt/... complete after 12 runs. Home, tools hub, games/sim indexes, playgrounds/kits/journeys, legal/privacy/contact/sobre, dedicated high-traffic experiences (circuit kit, population sim, paper airplane kit), dynamic /pt/jogos/$slug for all catalog games with locale=pt where supported, hreflang + sitemap. EN-parity structure met; not a thin shell. Acceptance met (user visits /pt/ sees full hubs/experiences in Portuguese). IP: n/a.
@@ -54,7 +55,6 @@ adsense-prep_runs: 7
 - 2026-11-04 | games | memory-match-classic | Interactive classic Memory Match (Concentration) complete after 4 runs. User selects difficulty (4x4/6x4/6x6), theme (fruits/animals/numbers/symbols), flips two cards to match pairs with CSS 3D, timer, moves, efficiency stars (1-5), keyboard nav + a11y, URL deep-link seed, branded PNG, EN+ES, mobile-first 390px with tighter gaps/fonts on small screens. Acceptance met (select size, match all, see stats/stars, share PNG/URL). IP: traditional public-domain pair-matching, generic emoji, no commercial decks.
 - 2026-11-03 | adsense-prep | adsense-policy-readiness | Privacy and Cookie Policy (EN+ES) enhanced for AdSense readiness after 4 runs. Expanded structured sections on third-party ad cookies (Adsterra kept intact + potential Google), rights, opt-outs with live links (NAI, aboutads, Ad Settings), data retention, legal bases, international transfers, children's privacy, key points summaries, and a dedicated readiness section. Mobile-friendly prose at 390px. Acceptance met (user sees comprehensive disclosures on /privacy /cookies and ES equivalents). IP: original policy content updates.
 - 2026-11-03 | kits | paper-airplane-kit | Interactive paper airplane design kit complete after 4 runs. User selects preset design (classic dart, glider, stunt, delta wing), follows multi-step fold instructions with checkoffs and live CSS preview of the plane shape, sees progress, estimated folds/time, materials checklist, optional challenges (distance/stunt) with score, generates branded PNG or copies deep-link URL. EN+ES routes, mobile-first 390px. CSS illustrations + state + checklists. Acceptance met (select preset, checkoff steps, preview updates, PNG or share URL). IP: original educational paper craft assembler.
-- 2026-11-03 | games | connect-four-classic | Interactive classic Connect Four game complete after 4 runs. 7x6 grid, drop discs by gravity, connect 4 win, optional AI, hover ghost preview, drop animation, win pulse, move counter, keyboard 1-7, URL deep-link, branded PNG, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (select column, see fall/response, detect win/draw, share PNG/URL). IP: traditional public-domain gravity drop connect-4 mechanics, generic naming, no Hasbro branding.
 ```
 
 ---
@@ -62,27 +62,23 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive multi-stage personal goal progress journey. User chooses a goal category (learn a skill, build a habit, save for a goal, improve fitness), sets parameters, then advances through 5-7 ordered stages with checklists, binary/multi choices that branch tips and outcomes, sees live progress bar and percentage, related tool recommendations, and on completion a branded summary card with stats and next steps. Generates canvas PNG of the journey card + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y. Acceptance met when user selects category, completes stages, sees final card, shares PNG or URL.
-id: goal-progress-journey
-path_en: /journeys/goal-progress
-path_es: /es/jornadas/progreso-objetivo
+status: active
+idea: Interactive timeline event composer. User adds 5-10 event cards (title, short description, optional date/tag), reorders them by drag or buttons, sees a live vertical SVG timeline with connecting lines, and on finish generates a branded summary card PNG with the timeline visual + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y for add/reorder. Acceptance met when user adds events, reorders, sees live timeline, shares PNG or URL.
+id: timeline-event-composer
+path_en: /studio/timeline-composer
+path_es: /es/estudio/compositor-linea-tiempo
 path_seo: n/a
-domain: journeys
+domain: studio-composition
 runs_total: 4
-runs_remaining: 0
-acceptance: User selects goal category and params, progresses through stages with checks and choices, sees progress updates and final branded card with recs, shares PNG or URL.
+runs_remaining: 4
+acceptance: User adds and reorders event cards, sees live SVG timeline update, generates branded PNG or copies deep-link URL.
 share: both
-next_step_required: no
-notes: Domain roll: CORE journeys (weight 5; variety prefer underused vs recent games/kits/simulators/share-hooks; last_closed share-hooks). Rubric for 3 candidates:
-A) goal-progress-journey (chosen): value 4, share 4, search 3, distinct 4, feas 5, perf 4 (total 24). Closest-3: ChoiceStoryJourney (narrative choices), CelebrationJourney (progress milestones), paper-airplane-kit (multi-step checklists). Primary metaphor: ordered stages with branching choices and progress tracking. Why not particle-canvas: form/checklist stages + SVG progress, no freehand or particles.
-B) history-timeline-journey: value 4, share 3, search 4, distinct 3, feas 4, perf 4 (total 22). Closest: WaypointRiverComposer, ColorHarmonyJourney, population-dynamics-simulator. Metaphor: interactive timeline placement and causal links. Why not: timeline cards not canvas particles.
-C) habit-week-simulator-journey: value 3, share 3, search 3, distinct 3, feas 5, perf 5 (total 22). Closest: simple-circuit-kit guided mode, CelebrationJourney, utili-type-quiz. Metaphor: simulated week of daily decisions. Why not: sequential daily cards.
-IP: original educational goal-progress tracker with generic stages; no branded frameworks. Chosen id: goal-progress-journey. Roll: CORE fixed-ish by variety (p_fixed 0.35 but underused domain). Quality bar: stages complete by run 2, share by run 4.
-Run 1 (2026-11-06): core shipped — 4 categories, 5 stages each with 2 checklist items, live % progress bar, URL deep-link (?cat & ?c), completion summary + copy link, EN+ES routes, mobile-first. Next: choices that branch tips, more stages/params, branded PNG card, a11y polish.
-Run 2 (2026-11-06): branching choices (Short/Deep per stage) that update the tip shown; choices deep-linked (?ch); branded canvas PNG download of completion card with category, % and stats; EN+ES, mobile 390px considered, a11y pressed states. Next: related tool recs on card, tighter mobile, more stage variety or params.
-Run 3 (2026-11-06): related tool recommendations shown on completion card (2 per category, EN+ES labels, locale-aware links); slightly tighter mobile padding on stages/card; PNG height adjusted. Next: final a11y/polish or stage variety if needed for close.
-Run 4 (2026-11-06): final a11y polish — progressbar aria-live polite, focus management on category select (progress ref), radiogroup on choices, focus rings, region labels, PNG includes choice summary. Acceptance met. Ready for CLOSE.
+next_step_required: yes
+notes: Domain roll: CORE studio-composition (weight 3; underused vs recent journeys/games/kits/simulators/share-hooks; last_closed journeys; variety prefer non-particle, non-recent domains). Rubric for 3 candidates:
+A) timeline-event-composer (chosen): value 4, share 4, search 3, distinct 4, feas 5, perf 4 (total 24). Closest-3: goal-progress-journey (ordered stages/progress), WaypointRiverComposer (if exists, narrative waypoints), history-timeline-journey (from prior notes). Primary metaphor: ordered timeline placement and narrative linking. Why not particle-canvas: form/cards + SVG timeline lines, no freehand or particles.
+B) mindmap-node-composer: value 4, share 4, search 3, distinct 4, feas 4, perf 4 (total 23). Closest: simple-circuit-kit (connect wires), ColorHarmonyJourney, population-dynamics-simulator (visual readout). Metaphor: declarative node linking → diagram. Why not: SVG nodes/edges, no particles.
+C) palette-harmony-composer: value 3, share 3, search 3, distinct 3, feas 5, perf 5 (total 22). Closest: ColorHarmonyJourney, simple-circuit-kit, paper-airplane-kit. Metaphor: parameter selection → generated palette. Why not: color picker UI not canvas particles.
+IP: original educational timeline assembler with generic events; no branded frameworks. Chosen id: timeline-event-composer. Roll: CORE underused studio-composition. Quality bar: core add/reorder/timeline by run 2, share by run 4.
 adsense-prep_runs: 7
 ```
 
