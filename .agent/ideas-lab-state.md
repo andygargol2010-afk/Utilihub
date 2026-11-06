@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: seo-locales
-last_closed_id: pt-product-parity
+last_closed_domain: games
+last_closed_id: battleship-classic
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 7
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-06 | games | battleship-classic | Interactive classic Battleship (Hundir la flota) complete after 4 runs. User places ships (manual/random) on 10x10 grid, shoots opponent grid (AI hunt), sees hit/miss/sink, wins by clearing fleet. Keyboard nav, ghost preview, win animation, canvas PNG of both boards, URL deep-link, EN+ES, mobile-first 390px. Acceptance met (place/random, shoot, hit/miss/sink, win, share PNG/URL). IP: traditional public-domain Battleship mechanics, generic naming/assets.
 - 2026-11-05 | seo-locales | pt-product-parity | Full product-parity Portuguese (pt-BR) locale surface under /pt/... complete after 12 runs. Home, tools hub, games/sim indexes, playgrounds/kits/journeys, legal/privacy/contact/sobre, dedicated high-traffic experiences (circuit kit, population sim, paper airplane kit), dynamic /pt/jogos/$slug for all catalog games with locale=pt where supported, hreflang + sitemap. EN-parity structure met; not a thin shell. Acceptance met (user visits /pt/ sees full hubs/experiences in Portuguese). IP: n/a.
 - 2026-11-05 | kits | simple-circuit-kit | Interactive simple circuit kit complete after 4 runs. User places battery/switch/resistor/LED on 4x4 grid, connects with wires (visual SVG lines), sees live LED light + brightness by ohms (cycle 50-1000), guided mode with auto-check steps + progress, free mode, materials checklist, challenges, reset, URL deep-link (?g=), branded PNG. EN+ES routes, mobile-first 390px. Final polish: legend with symbols, tighter mobile gaps/fonts, animated wires on complete, a11y labels. Acceptance met (place/connect/test lights, share PNG/URL). IP: original educational discrete parts assembler, generic components, no branded kits.
 - 2026-11-05 | simulators | population-dynamics-simulator | Interactive population dynamics simulator complete after 4 runs. User sets initial population, birth/death rates, carrying capacity; discrete generations show live SVG logistic growth chart with phase (growth/decline/stable), peak, gens to capacity. Compare two scenarios, Animate/Stop step reveal, presets, net rate r, K line, grid, generation counter, branded PNG + URL deep-link. EN+ES routes, mobile-first 390px. Final polish: legend, Reset button, slightly tighter mobile padding. Acceptance met (set params, run/see curve+stats, share PNG/URL). IP: original educational logistic growth model, generic params, no branded datasets.
@@ -54,7 +55,6 @@ adsense-prep_runs: 7
 - 2026-11-03 | kits | paper-airplane-kit | Interactive paper airplane design kit complete after 4 runs. User selects preset design (classic dart, glider, stunt, delta wing), follows multi-step fold instructions with checkoffs and live CSS preview of the plane shape, sees progress, estimated folds/time, materials checklist, optional challenges (distance/stunt) with score, generates branded PNG or copies deep-link URL. EN+ES routes, mobile-first 390px. CSS illustrations + state + checklists. Acceptance met (select preset, checkoff steps, preview updates, PNG or share URL). IP: original educational paper craft assembler.
 - 2026-11-03 | games | connect-four-classic | Interactive classic Connect Four game complete after 4 runs. 7x6 grid, drop discs by gravity, connect 4 win, optional AI, hover ghost preview, drop animation, win pulse, move counter, keyboard 1-7, URL deep-link, branded PNG, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (select column, see fall/response, detect win/draw, share PNG/URL). IP: traditional public-domain gravity drop connect-4 mechanics, generic naming, no Hasbro branding.
 - 2026-11-03 | games | sudoku-classic | Interactive classic Sudoku puzzle complete after 4 runs. 9x9 grid with pre-filled cells, user fills remaining with 1-9 ensuring no duplicates in rows, columns, or 3x3 boxes. Live conflict highlighting, optional pencil notes (auto-fill possibles), undo, timer with pause/resume, difficulty presets (easy/medium/hard), URL deep-link for seed, branded PNG of completed grid, remaining-count badges on number pad (disabled at 0), progress indicator. EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (select difficulty, fill cells, see conflicts/valid, complete or use undo/pencil/hints, share PNG/URL). IP: traditional public-domain rules, generic naming, no branded puzzle sets.
-- 2026-11-03 | games | minesweeper-classic | Interactive classic Minesweeper-style grid game complete after 4 runs. Rectangular grid with hidden mines; click to reveal cells showing adjacent mine counts, flood-fill empty areas, flag suspected mines (question marks cycle). Win by revealing all safe or flagging all; lose on mine. Difficulties (easy 9x9/10, medium 16x16/40, hard 16x30/99), first-click safe, URL deep-link, branded PNG, EN+ES routes, mobile-first 390px. CSS grid + state. Acceptance met (reveal/flag, complete or lose, share PNG/URL, face reset, auto-flag on win). IP: traditional public-domain mechanics, generic naming, no Microsoft branding.
 ```
 
 ---
@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive classic Battleship (Hundir la flota) grid game. User places ships on own grid (or random), takes turns shooting opponent's grid (AI or local hotseat), sees hits/misses, sinks ships, wins by sinking all. Optional AI with basic targeting, ship placement validation, URL deep-link for setup, branded PNG of board state, EN+ES, mobile-first 390px grid. Core by run 2: place + shoot loop with win detection.
-id: battleship-classic
-path_en: /games/battleship-classic
-path_es: /es/juegos/battleship-classic
+status: active
+idea: Interactive multi-question preference quiz that reveals a personalized "Utili Type" archetype (e.g. Circuit Builder, Strategy Master, Simulator Fan). User answers 8-10 binary or multi-choice questions about favorite activities/tools, sees progressive progress bar, ends with branded result card showing type name, short description, matching tool/game recommendations, and generates canvas PNG + deep-link URL for sharing. EN+ES routes, mobile-first 390px. Core by run 2: question flow + result screen.
+id: utili-type-quiz
+path_en: /share/utili-type-quiz
+path_es: /es/compartir/utili-type-quiz
 path_seo: n/a
-domain: games
+domain: share-hooks
 runs_total: 4
-runs_remaining: 0
-acceptance: User places or randomizes ships, takes shots on enemy grid, sees hit/miss/sink feedback, wins by sinking all ships, shares PNG or URL.
+runs_remaining: 4
+acceptance: User answers quiz questions, sees personalized type card with description and recommendations, shares PNG or URL.
 share: both
-next_step_required: no
-notes: Rubric (1-5): C1 battleship-classic: val5 share4 search5 dist4 feas5 perf4 total27. Closest-3: minesweeper-classic (grid reveal), connect-four-classic (grid turns), checkers-classic (board strategy). Metaphor: turn-based dual-grid placement + shot hunting. Not particle-canvas: discrete grid rules, no freehand trails. IP: traditional Battleship/Hunt the ships mechanics, generic ship lengths/colors, no Hasbro or branded assets. C2 hangman-classic: val4 share3 search4 dist4 feas5 perf5 total25. Closest: word tools, memory. Metaphor: letter-by-letter guess with progressive fail stages. IP: traditional hangman. C3 simon-sequence-memory: val4 share3 search4 dist4 feas5 perf5 total25. Closest: memory-match. Metaphor: color sequence watch-and-repeat. IP: traditional Simon-style. Chosen: battleship-classic (highest). Roll: CORE games (underused relative to recent, high search demand for classic). Variety: distinct from particle sandboxes and prior grid games by dual-board ship-sink loop. Run 1 done: core component with placement (manual/random), 10x10 dual grids, shoot loop, hit/miss, basic win detection, EN+ES strings, mobile grids. Registered in catalog + registry. Run 2 done: AI random response after player shot, shot counters, basic fleet-clear win/lose, canvas PNG export of both boards, URL seed param + clipboard share, tighter mobile grid. Run 3 done: per-ship sunk detection + darker sunk visual + ring, smarter hunt AI (neighbors after hit, else random), improved a11y labels (coord + state, role=grid, aria-live status), disabled buttons outside phase. Run 4 done: keyboard navigation (arrows + Enter/Space on grids), placement ghost preview on hover, win pulse/bounce animation. Acceptance met (place/random, shoot, hit/miss/sink, win, share PNG/URL, keyboard usable). IP: traditional public-domain Battleship mechanics, generic naming/assets.
+next_step_required: yes
+notes: Rubric (1-5): C1 utili-type-quiz: val4 share5 search4 dist4 feas5 perf5 total27. Closest-3: memory-match-classic (theme select), paper-airplane-kit (preset), population-sim (params). Metaphor: sequential preference questions → archetype result card. Not particle-canvas: discrete Q&A cards, no freehand trails. IP: original educational personality quiz, generic types. C2 daily-challenge-sharer: val4 share4 search3 dist3 feas4 perf4 total22. Closest: existing game challenges. Metaphor: daily mini-task → shareable score badge. C3 result-poster-maker: val3 share5 search3 dist3 feas5 perf5 total24. Closest: game PNG exports. Metaphor: form inputs → branded poster. Chosen: utili-type-quiz (highest share + distinct). Roll: FLEX share-hooks (r≈0.64 > p_fixed 0.35). Variety: breaks grid-game cluster with quiz→card flow. 
 adsense-prep_runs: 7
 ```
 
