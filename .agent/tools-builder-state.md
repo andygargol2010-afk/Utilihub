@@ -14,6 +14,7 @@ Identity: `andygargol2010-afk` / `andygargol2010@gmail.com`.
 Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 
 ```
+- 2026-11-05 | ciencia/física | calculadora-fuerza-centripeta | CentripetalForceCalculatorTool
 - 2026-11-05 | finanzas | calculadora-precio-original-descuento | OriginalPriceFromDiscountCalculatorTool
 - 2026-11-05 | finanzas | calculadora-regla-del-72 | RuleOf72CalculatorTool
 - 2026-11-05 | salud | calculadora-indice-adiposidad-corporal | BodyAdiposityIndexCalculatorTool
@@ -25,7 +26,6 @@ Format: `- YYYY-MM-DD | cluster | slug | ComponentName`
 - 2026-11-04 | matematicas | calculadora-area-rombo | RhombusAreaCalculatorTool
 - 2026-11-04 | matematicas | calculadora-area-trapecio | TrapezoidAreaCalculatorTool
 - 2026-11-04 | diseno | calculadora-escala-modular | ModularScaleCalculatorTool
-- 2026-11-04 | matematicas | calculadora-area-paralelogramo | ParallelogramAreaCalculatorTool
 ```
 
 Update this block when you ship. Drop entries beyond 12.
@@ -39,7 +39,7 @@ Two tools in the **same** PRODUCT run must **not** share a cluster.
 
 ```
 fechas/tiempo: recent (dias-hasta-fecha, semanas-entre-fechas, horas-entre-fechas, dias-habiles, calculadora-dias-vacaciones, calculadora-edad, calculadora-dias-entre-fechas, calculadora-horas-a-decimal, conversor-zonas-horarias, calculadora-diferencia-horas, calculadora-meses-entre-fechas)
-ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo, calculadora-energia-cinetica, calculadora-area-superficie-cilindro, ley-de-ohm)
+ciencia/física: recent (fuerza, volumen-esfera, volumen-cilindro, densidad, area-circulo, area-rectangulo, circunferencia, volumen-piramide, volumen-prisma-rectangular, volumen-cubo, energia-potencial, trabajo, potencia-electrica, volumen-cono, area-superficie-esfera, caudal, calculadora-presion-atmosferica, calculadora-velocidad-distancia-tiempo, calculadora-densidad, calculadora-area-triangulo, calculadora-hipotenusa, conversor-celsius-kelvin, calculadora-caudal, calculadora-perimetro-rectangulo, calculadora-energia-cinetica, calculadora-area-superficie-cilindro, ley-de-ohm, calculadora-fuerza-centripeta)
 hogar/cocina: recent (ratio-cafe, consumo-agua, consumo-electricidad, consumo-gas, calculadora-agua-arroz, calculadora-area-rectangular, calculadora-costo-kwh, calculadora-volumen-tanque, calculadora-porciones-pizza, conversor-cucharadas-ml, conversor-onzas-ml, conversor-tazas-ml, calculadora-calorias-porcion, calculadora-dosis-cafe, calculadora-escalado-receta, calculadora-arroz-crudo-a-cocido)
 viajes: recent (tiempo-viaje, costo-combustible, presupuesto-viaje, tiempo-vuelo, calculadora-consumo-viaje, calculadora-presupuesto-diario-viaje, calculadora-costo-por-km, calculadora-costo-litro-combustible, calculadora-presupuesto-total-viaje, calculadora-distancia-haversine, calculadora-tiempo-estimado-llegada)
 texto: recent (oraciones, parrafos, frecuencia, vocales, consonantes, silabas, palabras-unicas, frecuencia-letras, contador-lineas, conversor-texto-slug, calculadora-longitud-promedio-palabra, conversor-texto-caso, calculadora-oraciones-por-parrafo, calculadora-tiempo-de-lectura, conversor-numeros-romanos, calculadora-palabras-por-oracion, calculadora-palabras-unicas)
@@ -62,6 +62,7 @@ PRODUCT target: 1 tool/run (default); quality bar identical; 2 only if both smal
 Registry anti-wipe remains the highest-priority safety rule. registry.tsx is large (~52 KB); do not full-rewrite (>40 KB rule). Append to entries-a/b only.
 Bootstrap automation prompt only points here — expand rules in tools-builder.md / ops.
 POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory up to 3 expansion rounds (≥4 new ideas each). Forbidden to ship 0 after only the first batch. Saturation escape: when all clusters recent, pick least-represented in RECENT_TOOLS (still distinct clusters). See tools-builder-ops.md §PRODUCT step 4.
+2026-11-05: PRODUCT — calculadora-fuerza-centripeta (ciencia/física, saturation least-represented). New dedicated centripetal force F=mv²/r. EN+ES UI with 2 examples, validation (positive mass/radius, non-neg velocity), related links (energia-cinetica, ley-de-ohm), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-05: PRODUCT — calculadora-precio-original-descuento (finanzas, saturation least-represented). New dedicated original price from final + discount %. EN+ES UI with 2 examples, validation (positive final, discount 0-99.99), related links (descuento, markup), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-05: PRODUCT — calculadora-regla-del-72 (finanzas, saturation least-represented). New dedicated Rule of 72 years-to-double + exact compare. EN+ES UI with 2 examples, validation (positive finite), related links (interes-compuesto, cagr), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
 2026-11-05: PRODUCT — calculadora-indice-adiposidad-corporal (salud, saturation least-represented). New dedicated BAI from hip + height. EN+ES UI with 2 examples, validation (positive finite), related links (imc, ratio-cintura-altura), FAQ. Anti-dupe OK (new slug). SEO locales: defer.
@@ -78,9 +79,9 @@ POLICY 2026-10-17: if <2 candidates pass filters after first batch → mandatory
 
 ```
 last_mode: PRODUCT
-last_slugs: calculadora-precio-original-descuento
+last_slugs: calculadora-fuerza-centripeta
 last_deploy: no (branch auto-deploy disabled)
-last_sha: (pending this commit)
+last_sha: 279d6c50ac0384ebc6c539befcd794f4f14f3195
 ```
 
 <!-- end:tools-builder-state.md -->
