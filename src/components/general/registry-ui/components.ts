@@ -8,3 +8,4 @@ export * from "./components-06";
 export * from "./components-07";
 export * from "./components-08";
 export * from "./components-09";
+export * from "./components-10";

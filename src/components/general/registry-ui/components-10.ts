@@ -1,0 +1,42 @@
+// Lazy tool UIs part 10 — components that existed but were never registered (wired 2026-11-06).
+// Add new entries in the smallest file of this folder; never rewrite files wholesale.
+import { lazy } from "react";
+
+export const MonthlySavingsCalculatorToolUi = lazy(() => import("../MonthlySavingsCalculatorTool").then((m) => ({ default: m.MonthlySavingsCalculatorTool })));
+export const SquareAreaCalculatorToolUi = lazy(() => import("../SquareAreaCalculatorTool").then((m) => ({ default: m.SquareAreaCalculatorTool })));
+export const EllipseAreaCalculatorToolUi = lazy(() => import("../EllipseAreaCalculatorTool").then((m) => ({ default: m.EllipseAreaCalculatorTool })));
+export const HexagonAreaCalculatorToolUi = lazy(() => import("../HexagonAreaCalculatorTool").then((m) => ({ default: m.HexagonAreaCalculatorTool })));
+export const PentagonAreaCalculatorToolUi = lazy(() => import("../PentagonAreaCalculatorTool").then((m) => ({ default: m.PentagonAreaCalculatorTool })));
+export const SalaryRaiseCalculatorToolUi = lazy(() => import("../SalaryRaiseCalculatorTool").then((m) => ({ default: m.SalaryRaiseCalculatorTool })));
+export const TileCalculatorToolUi = lazy(() => import("../TileCalculatorTool").then((m) => ({ default: m.TileCalculatorTool })));
+export const ElectricityConsumptionToolUi = lazy(() => import("../ElectricityConsumptionTool").then((m) => ({ default: m.ElectricityConsumptionTool })));
+export const GasConsumptionCalculatorToolUi = lazy(() => import("../GasConsumptionCalculatorTool").then((m) => ({ default: m.GasConsumptionCalculatorTool })));
+export const FuelCostCalculatorToolUi = lazy(() => import("../FuelCostCalculatorTool").then((m) => ({ default: m.FuelCostCalculatorTool })));
+export const KwhCostCalculatorToolUi = lazy(() => import("../KwhCostCalculatorTool").then((m) => ({ default: m.KwhCostCalculatorTool })));
+export const FuelLiterCostCalculatorToolUi = lazy(() => import("../FuelLiterCostCalculatorTool").then((m) => ({ default: m.FuelLiterCostCalculatorTool })));
+export const DiscountPercentageCalculatorToolUi = lazy(() => import("../DiscountPercentageCalculatorTool").then((m) => ({ default: m.DiscountPercentageCalculatorTool })));
+export const DaysUntilDateCalculatorToolUi = lazy(() => import("../DaysUntilDateCalculatorTool").then((m) => ({ default: m.DaysUntilDateCalculatorTool })));
+export const VacationDaysCalculatorToolUi = lazy(() => import("../VacationDaysCalculatorTool").then((m) => ({ default: m.VacationDaysCalculatorTool })));
+export const PotentialEnergyCalculatorToolUi = lazy(() => import("../PotentialEnergyCalculatorTool").then((m) => ({ default: m.PotentialEnergyCalculatorTool })));
+export const MaxHeartRateCalculatorToolUi = lazy(() => import("../MaxHeartRateCalculatorTool").then((m) => ({ default: m.MaxHeartRateCalculatorTool })));
+export const DailySpendingCalculatorToolUi = lazy(() => import("../DailySpendingCalculatorTool").then((m) => ({ default: m.DailySpendingCalculatorTool })));
+export const StudyHoursCalculatorToolUi = lazy(() => import("../StudyHoursCalculatorTool").then((m) => ({ default: m.StudyHoursCalculatorTool })));
+export const TimeToGoalCalculatorToolUi = lazy(() => import("../TimeToGoalCalculatorTool").then((m) => ({ default: m.TimeToGoalCalculatorTool })));
+export const SleepHoursCalculatorToolUi = lazy(() => import("../SleepHoursCalculatorTool").then((m) => ({ default: m.SleepHoursCalculatorTool })));
+export const GradeNeededCalculatorToolUi = lazy(() => import("../GradeNeededCalculatorTool").then((m) => ({ default: m.GradeNeededCalculatorTool })));
+export const PaintCalculatorToolUi = lazy(() => import("../PaintCalculatorTool").then((m) => ({ default: m.PaintCalculatorTool })));
+export const PercentageIncreaseCalculatorToolUi = lazy(() => import("../PercentageIncreaseCalculatorTool").then((m) => ({ default: m.PercentageIncreaseCalculatorTool })));
+export const PercentageCompleteCalculatorToolUi = lazy(() => import("../PercentageCompleteCalculatorTool").then((m) => ({ default: m.PercentageCompleteCalculatorTool })));
+export const PercentageOfTotalCalculatorToolUi = lazy(() => import("../PercentageOfTotalCalculatorTool").then((m) => ({ default: m.PercentageOfTotalCalculatorTool })));
+export const PercentageRemainingCalculatorToolUi = lazy(() => import("../PercentageRemainingCalculatorTool").then((m) => ({ default: m.PercentageRemainingCalculatorTool })));
+export const PizzaPortionsCalculatorToolUi = lazy(() => import("../PizzaPortionsCalculatorTool").then((m) => ({ default: m.PizzaPortionsCalculatorTool })));
+export const MonthlyBudgetCalculatorToolUi = lazy(() => import("../MonthlyBudgetCalculatorTool").then((m) => ({ default: m.MonthlyBudgetCalculatorTool })));
+export const TravelBudgetCalculatorToolUi = lazy(() => import("../TravelBudgetCalculatorTool").then((m) => ({ default: m.TravelBudgetCalculatorTool })));
+export const CoffeeRatioCalculatorToolUi = lazy(() => import("../CoffeeRatioCalculatorTool").then((m) => ({ default: m.CoffeeRatioCalculatorTool })));
+export const WeeksBetweenDatesCalculatorToolUi = lazy(() => import("../WeeksBetweenDatesCalculatorTool").then((m) => ({ default: m.WeeksBetweenDatesCalculatorTool })));
+export const PythagoreanCalculatorToolUi = lazy(() => import("../PythagoreanCalculatorTool").then((m) => ({ default: m.PythagoreanCalculatorTool })));
+export const DailyAverageSpeedCalculatorToolUi = lazy(() => import("../DailyAverageSpeedCalculatorTool").then((m) => ({ default: m.DailyAverageSpeedCalculatorTool })));
+export const TankVolumeCalculatorToolUi = lazy(() => import("../TankVolumeCalculatorTool").then((m) => ({ default: m.TankVolumeCalculatorTool })));
+export const UniqueWordsCounterToolUi = lazy(() => import("../UniqueWordsCounterTool").then((m) => ({ default: m.UniqueWordsCounterTool })));
+export const TextToSlugConverterToolUi = lazy(() => import("../TextToSlugConverterTool").then((m) => ({ default: m.TextToSlugConverterTool })));
+export const LoremIpsumGeneratorToolUi = lazy(() => import("../LoremIpsumGeneratorTool").then((m) => ({ default: m.LoremIpsumGeneratorTool })));

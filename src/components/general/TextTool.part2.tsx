@@ -79,6 +79,18 @@ export function process(slug: string, text: string, second: string, replacement:
       const doc = new DOMParser().parseFromString(text, "text/html");
       return doc.body.textContent ?? "";
     }
+    // Restored 2026-11-06: these slugs were routed here but had lost their cases.
+    case "checklist":
+      return text.split(/\r?\n/).map((x) => x.trim()).filter(Boolean).map((x) => `- [ ] ${x}`).join("\n");
+    case "markdown-tabla": {
+      const rows = text.split(/\r?\n/).filter((r) => r.trim()).map((r) => r.split(r.includes("\t") ? "\t" : /\s{2,}|,/).map((c) => c.trim()));
+      if (!rows.length) return "";
+      const cols = Math.max(...rows.map((r) => r.length));
+      const line = (r: string[]) => `| ${Array.from({ length: cols }, (_, i) => r[i] ?? "").join(" | ")} |`;
+      return [line(rows[0]!), `| ${Array(cols).fill("---").join(" | ")} |`, ...rows.slice(1).map(line)].join("\n");
+    }
+    case "generador-nombres-archivos":
+      return text.split(/\r?\n/).map((x) => x.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9.]+/g, "-").replace(/^-+|-+$/g, "")).filter(Boolean).join("\n");
     default:
       throw new Error(`Text tool not implemented: ${slug}`);
   }

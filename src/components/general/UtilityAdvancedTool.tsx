@@ -7,6 +7,8 @@ export function UtilityAdvancedTool({ tool, locale = "en" }: { tool: GeneralTool
   const [values, setValues] = useState(["", "", ""]);
   const [out, setOut] = useState("");
   const es = locale === "es";
+  // calculadora-propina-compartida shares the bill/tip/people flow.
+  const slug = tool.slug === "calculadora-propina-compartida" ? "propina-y-cuenta-compartida" : tool.slug;
   const showcase = getToolShowcase(tool.slug);
   const ui = showcaseUi(showcase?.accent);
   const n = (value: string) => Number(value.replace(",", "."));
@@ -14,17 +16,17 @@ export function UtilityAdvancedTool({ tool, locale = "en" }: { tool: GeneralTool
   const process = () => {
     const nums = values.map(n);
     if (nums.some((value) => !Number.isFinite(value))) { setOut(es ? "Completa todos los valores con números válidos." : "Fill all values with valid numbers."); return; }
-    if (tool.slug === "propina-y-cuenta-compartida") {
+    if (slug === "propina-y-cuenta-compartida") {
       const [bill, tip, people] = nums;
       if (bill < 0 || tip < 0 || people <= 0) { setOut(es ? "La cuenta y la propina no pueden ser negativas, y el número de personas debe ser mayor que 0." : "Bill and tip cannot be negative, and people must be greater than 0."); return; }
       const total = bill * (1 + tip / 100); setOut(es ? `Total con propina: ${total.toFixed(2)}\nImporte por persona: ${(total / Math.floor(people)).toFixed(2)}\nPropina total: ${(bill * tip / 100).toFixed(2)}` : `Total with tip: ${total.toFixed(2)}\nAmount per person: ${(total / Math.floor(people)).toFixed(2)}\nTotal tip: ${(bill * tip / 100).toFixed(2)}`); return;
     }
-    if (tool.slug === "regla-50-30-20") {
+    if (slug === "regla-50-30-20") {
       const [income, needs, wants] = nums;
       if (income <= 0 || needs < 0 || wants < 0 || needs + wants > 100) { setOut(es ? "Los ingresos deben ser positivos y los porcentajes no pueden superar el 100 %." : "Income must be positive and percentages cannot exceed 100%."); return; }
       const savings = 100 - needs - wants; setOut(es ? `Necesidades: ${(income * needs / 100).toFixed(2)}\nDeseos: ${(income * wants / 100).toFixed(2)}\nAhorro disponible: ${(income * savings / 100).toFixed(2)}\nDistribución restante: ${savings.toFixed(2)} %` : `Needs: ${(income * needs / 100).toFixed(2)}\nWants: ${(income * wants / 100).toFixed(2)}\nAvailable savings: ${(income * savings / 100).toFixed(2)}\nRemaining distribution: ${savings.toFixed(2)} %`); return;
     }
-    if (tool.slug === "horas-decimales") {
+    if (slug === "horas-decimales") {
       const [hours, minutes, seconds] = nums;
       if (hours < 0 || minutes < 0 || minutes >= 60 || seconds < 0 || seconds >= 60) { setOut(es ? "Las horas no pueden ser negativas y minutos/segundos deben estar entre 0 y 59." : "Hours cannot be negative and minutes/seconds must be between 0 and 59."); return; }
       const decimal = hours + minutes / 60 + seconds / 3600;
@@ -35,11 +37,11 @@ export function UtilityAdvancedTool({ tool, locale = "en" }: { tool: GeneralTool
   };
 
   const labels =
-    tool.slug === "propina-y-cuenta-compartida"
+    slug === "propina-y-cuenta-compartida"
       ? es
         ? ["Cuenta", "Propina %", "Personas"]
         : ["Bill", "Tip %", "People"]
-      : tool.slug === "regla-50-30-20"
+      : slug === "regla-50-30-20"
         ? es
           ? ["Ingresos", "Necesidades %", "Deseos %"]
           : ["Income", "Needs %", "Wants %"]

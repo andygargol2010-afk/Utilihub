@@ -2,7 +2,6 @@
 // Add new entries here while this is the smallest file.
 import { lazy } from "react";
 
-export const CoffeeDoseCalculatorToolUi = lazy(() => import("../CoffeeDoseCalculatorTool").then((m) => ({ default: m.CoffeeDoseCalculatorTool })));
 export const WaistToHipRatioCalculatorToolUi = lazy(() => import("../WaistToHipRatioCalculatorTool").then((m) => ({ default: m.WaistToHipRatioCalculatorTool })));
 export const StraightLineDepreciationCalculatorToolUi = lazy(() => import("../StraightLineDepreciationCalculatorTool").then((m) => ({ default: m.StraightLineDepreciationCalculatorTool })));
 export const CylinderSurfaceAreaCalculatorToolUi = lazy(() => import("../CylinderSurfaceAreaCalculatorTool").then((m) => ({ default: m.CylinderSurfaceAreaCalculatorTool })));
@@ -11,7 +10,6 @@ export const McdMcmCalculatorToolUi = lazy(() => import("../McdMcmCalculatorTool
 export const LineHeightCalculatorToolUi = lazy(() => import("../LineHeightCalculatorTool").then((m) => ({ default: m.LineHeightCalculatorTool })));
 export const PercentageToLetterGradeCalculatorToolUi = lazy(() => import("../PercentageToLetterGradeCalculatorTool").then((m) => ({ default: m.PercentageToLetterGradeCalculatorTool })));
 export const WordsPerSentenceCalculatorToolUi = lazy(() => import("../WordsPerSentenceCalculatorTool").then((m) => ({ default: m.WordsPerSentenceCalculatorTool })));
-export const GeometricMeanCalculatorToolUi = lazy(() => import("../GeometricMeanCalculatorTool").then((m) => ({ default: m.GeometricMeanCalculatorTool })));
 export const CagrCalculatorToolUi = lazy(() => import("../CagrCalculatorTool").then((m) => ({ default: m.CagrCalculatorTool })));
 export const GreatCircleDistanceCalculatorToolUi = lazy(() => import("../GreatCircleDistanceCalculatorTool").then((m) => ({ default: m.GreatCircleDistanceCalculatorTool })));
 export const KcalKjConverterToolUi = lazy(() => import("../KcalKjConverterTool").then((m) => ({ default: m.KcalKjConverterTool })));
@@ -20,9 +18,7 @@ export const TargetWeightByBmiCalculatorToolUi = lazy(() => import("../TargetWei
 export const EffectiveAnnualRateCalculatorToolUi = lazy(() => import("../EffectiveAnnualRateCalculatorTool").then((m) => ({ default: m.EffectiveAnnualRateCalculatorTool })));
 export const OhmsLawCalculatorToolUi = lazy(() => import("../OhmsLawCalculatorTool").then((m) => ({ default: m.OhmsLawCalculatorTool })));
 export const MonthsBetweenDatesCalculatorToolUi = lazy(() => import("../MonthsBetweenDatesCalculatorTool").then((m) => ({ default: m.MonthsBetweenDatesCalculatorTool })));
-export const ParallelogramAreaCalculatorToolUi = lazy(() => import("../ParallelogramAreaCalculatorTool").then((m) => ({ default: m.ParallelogramAreaCalculatorTool })));
 export const ModularScaleCalculatorToolUi = lazy(() => import("../ModularScaleCalculatorTool").then((m) => ({ default: m.ModularScaleCalculatorTool })));
-export const TrapezoidAreaCalculatorToolUi = lazy(() => import("../TrapezoidAreaCalculatorTool").then((m) => ({ default: m.TrapezoidAreaCalculatorTool })));
 export const RhombusAreaCalculatorToolUi = lazy(() => import("../RhombusAreaCalculatorTool").then((m) => ({ default: m.RhombusAreaCalculatorTool })));
 export const UniqueWordsCalculatorToolUi = lazy(() => import("../UniqueWordsCalculatorTool").then((m) => ({ default: m.UniqueWordsCalculatorTool })));
 export const LetterToPercentageCalculatorToolUi = lazy(() => import("../LetterToPercentageCalculatorTool").then((m) => ({ default: m.LetterToPercentageCalculatorTool })));

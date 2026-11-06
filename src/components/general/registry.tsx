@@ -128,6 +128,12 @@ function pickComponent(tool: GeneralTool): ToolComp {
     return ConfiguredToolUi;
   }
 
+  // Restored 2026-11-06 (original routing): developer tools and numeric formula tools
+  // have their implementations in DevTool / FormulaTool; kind routes below sent them
+  // to TextTool / MathTool / GeneratorTool → "not implemented".
+  if (category === "desarrollo" || category === "dev") return DevToolUi;
+  if (kind === "number") return FormulaToolUi;
+
   // 5) Kind routes
   if (kind === "converter" || kind === "conversion" || kind === "unit") return ConverterToolUi;
   if (kind === "text" || kind === "code" || kind === "encode") return TextToolUi;

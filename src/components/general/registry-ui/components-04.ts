@@ -202,9 +202,6 @@ export const SlugGeneratorToolUi = lazy(() =>
   import("../SlugGeneratorTool").then((m) => ({ default: m.SlugGeneratorTool })),
 );
 
-export const TriangleAreaCalculatorToolUi = lazy(() =>
-  import("../TriangleAreaCalculatorTool").then((m) => ({ default: m.TriangleAreaCalculatorTool })),
-);
 
 export const SimpleAverageCalculatorToolUi = lazy(() =>
   import("../SimpleAverageCalculatorTool").then((m) => ({ default: m.SimpleAverageCalculatorTool })),

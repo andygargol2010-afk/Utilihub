@@ -47,5 +47,31 @@ for (const f of walkDir("src")) {
   if (!fs.existsSync(mainTs)) errors.push(`${f}: main file ${mainTs} is missing`);
 }
 
+// Registry barrels (2026-11-06): duplicate names across components-NN.ts make `export *`
+// drop the name silently (UI.X === undefined → tool falls back to a generic UI that throws
+// "not implemented"). Also every UI.X used in slugs-NN.ts must exist, and every part must be wired.
+{
+  const dir = "src/components/general/registry-ui";
+  const files = fs.readdirSync(dir);
+  const exp = new Map();
+  for (const f of files.filter((n) => /^components-\d+\.ts$/.test(n))) {
+    for (const m of fs.readFileSync(`${dir}/${f}`, "utf8").matchAll(/^export const (\w+)/gm)) {
+      if (exp.has(m[1])) errors.push(`registry-ui: ${m[1]} exported in both ${exp.get(m[1])} and ${f} (export * drops it → undefined)`);
+      else exp.set(m[1], f);
+    }
+    if (!fs.readFileSync(`${dir}/components.ts`, "utf8").includes(`"./${f.replace(/\.ts$/, "")}"`)) errors.push(`registry-ui: ${f} not re-exported from components.ts`);
+  }
+  const slugsIdx = fs.readFileSync(`${dir}/slugs.ts`, "utf8");
+  const seenSlug = new Map();
+  for (const f of files.filter((n) => /^slugs-\d+\.ts$/.test(n))) {
+    const t = fs.readFileSync(`${dir}/${f}`, "utf8");
+    const name = (t.match(/export const (SLUG_UI_\d+)/) || [])[1];
+    if (!name || !new RegExp(`\\[[^\\]]*\\b${name}\\b[^\\]]*\\]`).test(slugsIdx)) errors.push(`registry-ui: ${f} is not listed in SLUG_UI_PARTS (slugs.ts)`);
+    for (const m of t.matchAll(/^\s*"([^"]+)":\s*UI\.(\w+)/gm)) {
+      if (!exp.has(m[2])) errors.push(`registry-ui: ${f} maps "${m[1]}" to UI.${m[2]}, which is not exported`);
+    }
+  }
+}
+
 if (errors.length) { console.error("✖ tool routing guard:\n  " + errors.join("\n  ")); process.exit(1); }
 console.log("✓ tool routing guard OK");
