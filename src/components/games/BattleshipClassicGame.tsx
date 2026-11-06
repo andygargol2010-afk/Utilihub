@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
 
 type CellState = "empty" | "ship" | "hit" | "miss" | "sunk";
 type Phase = "placement" | "playing" | "over";
+type Pos = [number, number];
+type Ship = { id: string; cells: Pos[]; sunk: boolean };
 
 const SIZE = 10;
 const SHIPS = [
@@ -27,18 +29,21 @@ function canPlace(board: CellState[][], r: number, c: number, len: number, horiz
   return true;
 }
 
-function placeShip(board: CellState[][], r: number, c: number, len: number, horiz: boolean): CellState[][] {
+function placeShipCells(board: CellState[][], r: number, c: number, len: number, horiz: boolean): { board: CellState[][]; cells: Pos[] } {
   const next = board.map((row) => [...row]);
+  const cells: Pos[] = [];
   for (let i = 0; i < len; i++) {
     const rr = horiz ? r : r + i;
     const cc = horiz ? c + i : c;
     next[rr]![cc] = "ship";
+    cells.push([rr, cc]);
   }
-  return next;
+  return { board: next, cells };
 }
 
-function randomPlace(): CellState[][] {
+function randomPlace(): { board: CellState[][]; ships: Ship[] } {
   let board = makeEmpty();
+  const ships: Ship[] = [];
   for (const ship of SHIPS) {
     let placed = false;
     let attempts = 0;
@@ -49,23 +54,26 @@ function randomPlace(): CellState[][] {
       const r = Math.floor(Math.random() * maxR);
       const c = Math.floor(Math.random() * maxC);
       if (canPlace(board, r, c, ship.len, horiz)) {
-        board = placeShip(board, r, c, ship.len, horiz);
+        const res = placeShipCells(board, r, c, ship.len, horiz);
+        board = res.board;
+        ships.push({ id: ship.id, cells: res.cells, sunk: false });
         placed = true;
       }
       attempts++;
     }
   }
-  return board;
+  return { board, ships };
 }
 
-function countShips(board: CellState[][]): number {
-  return board.flat().filter((x) => x === "ship").length;
-}
-
-function markSunkIfComplete(board: CellState[][], hidden: CellState[][]): CellState[][] {
+function markSunkOnBoard(board: CellState[][], ships: Ship[]): CellState[][] {
   const next = board.map((row) => [...row]);
-  // Simple: if all ship cells around a hit are hit, mark sunk (basic flood per ship not tracked yet)
-  // For run 2: mark all hits as sunk when fleet is fully hit (visual on win)
+  for (const ship of ships) {
+    if (ship.sunk) {
+      for (const [r, c] of ship.cells) {
+        next[r]![c] = "sunk";
+      }
+    }
+  }
   return next;
 }
 
@@ -75,6 +83,8 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
   const [ownBoard, setOwnBoard] = useState<CellState[][]>(makeEmpty);
   const [enemyBoard, setEnemyBoard] = useState<CellState[][]>(makeEmpty);
   const [enemyHidden, setEnemyHidden] = useState<CellState[][]>(makeEmpty);
+  const [ownShips, setOwnShips] = useState<Ship[]>([]);
+  const [enemyShips, setEnemyShips] = useState<Ship[]>([]);
   const [currentShip, setCurrentShip] = useState(0);
   const [horiz, setHoriz] = useState(true);
   const [message, setMessage] = useState(es ? "Colocá tus barcos" : "Place your ships");
@@ -83,12 +93,16 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
   const [aiShots, setAiShots] = useState(0);
   const [copied, setCopied] = useState(false);
   const [seed, setSeed] = useState<number | null>(null);
+  const [aiHunt, setAiHunt] = useState<Pos[]>([]);
+  const [aiLastHit, setAiLastHit] = useState<Pos | null>(null);
 
   const reset = () => {
     setPhase("placement");
     setOwnBoard(makeEmpty());
     setEnemyBoard(makeEmpty());
     setEnemyHidden(makeEmpty());
+    setOwnShips([]);
+    setEnemyShips([]);
     setCurrentShip(0);
     setHoriz(true);
     setMessage(es ? "Colocá tus barcos" : "Place your ships");
@@ -96,10 +110,14 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
     setShots(0);
     setAiShots(0);
     setSeed(null);
+    setAiHunt([]);
+    setAiLastHit(null);
   };
 
   const randomOwn = () => {
-    setOwnBoard(randomPlace());
+    const res = randomPlace();
+    setOwnBoard(res.board);
+    setOwnShips(res.ships);
     setCurrentShip(SHIPS.length);
     setMessage(es ? "Barcos al azar. Listo." : "Ships random. Ready.");
   };
@@ -108,8 +126,9 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
     if (currentShip < SHIPS.length) return;
     const s = Math.floor(Math.random() * 1e9);
     setSeed(s);
-    // Deterministic-ish enemy for share later
-    setEnemyHidden(randomPlace());
+    const enemy = randomPlace();
+    setEnemyHidden(enemy.board);
+    setEnemyShips(enemy.ships);
     setPhase("playing");
     setMessage(es ? "¡Dispará!" : "Fire!");
     const url = new URL(window.location.href);
@@ -119,12 +138,14 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
 
   const placeAt = (r: number, c: number) => {
     if (phase !== "placement" || currentShip >= SHIPS.length) return;
-    const ship = SHIPS[currentShip]!;
-    if (!canPlace(ownBoard, r, c, ship.len, horiz)) {
+    const shipDef = SHIPS[currentShip]!;
+    if (!canPlace(ownBoard, r, c, shipDef.len, horiz)) {
       setMessage(es ? "No se puede colocar" : "Cannot place");
       return;
     }
-    setOwnBoard(placeShip(ownBoard, r, c, ship.len, horiz));
+    const res = placeShipCells(ownBoard, r, c, shipDef.len, horiz);
+    setOwnBoard(res.board);
+    setOwnShips((prev) => [...prev, { id: shipDef.id, cells: res.cells, sunk: false }]);
     setCurrentShip((s) => s + 1);
     setMessage(
       currentShip + 1 >= SHIPS.length
@@ -137,17 +158,43 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
     );
   };
 
+  const checkAndMarkSunk = (ships: Ship[], board: CellState[][], isOwn: boolean) => {
+    let changed = false;
+    const nextShips = ships.map((ship) => {
+      if (ship.sunk) return ship;
+      const allHit = ship.cells.every(([rr, cc]) => board[rr]![cc] === "hit" || board[rr]![cc] === "sunk");
+      if (allHit) {
+        changed = true;
+        return { ...ship, sunk: true };
+      }
+      return ship;
+    });
+    if (changed) {
+      const marked = markSunkOnBoard(board, nextShips);
+      if (isOwn) {
+        setOwnShips(nextShips);
+        setOwnBoard(marked);
+      } else {
+        setEnemyShips(nextShips);
+        setEnemyBoard(marked);
+      }
+      return nextShips.every((s) => s.sunk);
+    }
+    return ships.every((s) => s.sunk);
+  };
+
   const aiShoot = useCallback(() => {
     if (phase !== "playing" || winner) return;
-    // Simple random AI: pick unshot cell on ownBoard
-    const candidates: [number, number][] = [];
-    for (let r = 0; r < SIZE; r++) {
-      for (let c = 0; c < SIZE; c++) {
-        if (ownBoard[r]![c] === "empty" || ownBoard[r]![c] === "ship") {
-          // treat ship as not yet shot from AI view; shots mark hit/miss
-          if (ownBoard[r]![c] !== "hit" && ownBoard[r]![c] !== "miss" && ownBoard[r]![c] !== "sunk") {
-            candidates.push([r, c]);
-          }
+    let candidates: Pos[] = [];
+    if (aiHunt.length > 0) {
+      candidates = aiHunt.filter(([r, c]) => ownBoard[r]![c] !== "hit" && ownBoard[r]![c] !== "miss" && ownBoard[r]![c] !== "sunk");
+    }
+    if (candidates.length === 0) {
+      // random unshot
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          const st = ownBoard[r]![c]!;
+          if (st === "empty" || st === "ship") candidates.push([r, c]);
         }
       }
     }
@@ -161,14 +208,26 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
     });
     setAiShots((s) => s + 1);
     setMessage(hit ? (es ? "IA impactó" : "AI hit") : es ? "IA agua" : "AI miss");
-    // Check AI win: no more ship cells on own
-    const remaining = countShips(ownBoard) - (hit ? 1 : 0);
-    if (hit && remaining <= 0) {
-      setWinner("ai");
-      setPhase("over");
-      setMessage(es ? "IA ganó" : "AI won");
+
+    if (hit) {
+      setAiLastHit([r, c]);
+      const dirs: Pos[] = [[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
+      const nextHunt = dirs.filter(([rr,cc]) => rr>=0 && rr<SIZE && cc>=0 && cc<SIZE && (ownBoard[rr]![cc]==="empty" || ownBoard[rr]![cc]==="ship"));
+      setAiHunt(nextHunt);
+    } else {
+      setAiHunt((h) => h.filter(([rr,cc]) => !(rr===r && cc===c)));
     }
-  }, [phase, winner, ownBoard, es]);
+
+    // check sunk after state update via timeout-ish (simple recheck)
+    setTimeout(() => {
+      const allSunk = checkAndMarkSunk(ownShips, ownBoard, true);
+      if (allSunk) {
+        setWinner("ai");
+        setPhase("over");
+        setMessage(es ? "IA ganó" : "AI won");
+      }
+    }, 50);
+  }, [phase, winner, ownBoard, ownShips, aiHunt, es]);
 
   const shoot = (r: number, c: number) => {
     if (phase !== "playing" || winner) return;
@@ -181,23 +240,35 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
     });
     setShots((s) => s + 1);
     setMessage(hit ? (es ? "¡Impacto!" : "Hit!") : es ? "Agua" : "Miss");
-    const remainingEnemy = countShips(enemyHidden) - (hit ? 1 : 0);
-    if (hit && remainingEnemy <= 0) {
-      setWinner("player");
-      setPhase("over");
-      setMessage(es ? "¡Ganaste!" : "You won!");
-      return;
-    }
-    // AI responds
-    setTimeout(() => aiShoot(), 450);
+
+    setTimeout(() => {
+      const allSunk = checkAndMarkSunk(enemyShips, enemyBoard, false);
+      if (allSunk) {
+        setWinner("player");
+        setPhase("over");
+        setMessage(es ? "¡Ganaste!" : "You won!");
+        return;
+      }
+      setTimeout(() => aiShoot(), 450);
+    }, 50);
   };
 
   const cellClass = (state: CellState, isOwn: boolean) => {
     if (state === "hit") return "bg-rose-500";
-    if (state === "sunk") return "bg-rose-700";
+    if (state === "sunk") return "bg-rose-700 ring-1 ring-rose-400";
     if (state === "miss") return "bg-sky-400/50";
     if (state === "ship" && isOwn) return "bg-slate-500";
     return "bg-slate-800/70 hover:bg-slate-700";
+  };
+
+  const ariaFor = (state: CellState, r: number, c: number, isOwn: boolean) => {
+    const loc = es ? (isOwn ? "propia" : "enemiga") : (isOwn ? "own" : "enemy");
+    const st =
+      state === "hit" ? (es ? "impacto" : "hit") :
+      state === "sunk" ? (es ? "hundido" : "sunk") :
+      state === "miss" ? (es ? "agua" : "miss") :
+      state === "ship" ? (es ? "barco" : "ship") : (es ? "vacío" : "empty");
+    return `${loc} ${r+1}-${String.fromCharCode(65+c)} ${st}`;
   };
 
   const shareUrl = useCallback(async () => {
@@ -236,13 +307,15 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
           const x = ox + c * cell;
           const y = 48 + r * cell;
           ctx.fillStyle =
-            st === "hit" || st === "sunk"
-              ? "#f43f5e"
-              : st === "miss"
-                ? "#38bdf8"
-                : st === "ship"
-                  ? "#64748b"
-                  : "#1e293b";
+            st === "sunk"
+              ? "#be123c"
+              : st === "hit"
+                ? "#f43f5e"
+                : st === "miss"
+                  ? "#38bdf8"
+                  : st === "ship"
+                    ? "#64748b"
+                    : "#1e293b";
           ctx.fillRect(x + 1, y + 1, cell - 2, cell - 2);
         }
       }
@@ -280,13 +353,15 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
           {es ? "Disparos" : "Shots"}: {shots} / {es ? "IA" : "AI"} {aiShots}
         </span>
       </div>
-      <p className="text-sm font-semibold text-emerald-100">{message}</p>
+      <p className="text-sm font-semibold text-emerald-100" role="status" aria-live="polite">{message}</p>
       <div className="flex flex-col gap-4 sm:flex-row">
         <div>
           <p className="text-xs text-center mb-1">{es ? "Tu flota" : "Your fleet"}</p>
           <div
             className="grid gap-px bg-slate-900 p-1 rounded"
             style={{ gridTemplateColumns: `repeat(10, minmax(18px,1fr))` }}
+            role="grid"
+            aria-label={es ? "Tu flota" : "Your fleet"}
           >
             {ownBoard.map((row, r) =>
               row.map((cell, c) => (
@@ -295,7 +370,8 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
                   type="button"
                   onClick={() => placeAt(r, c)}
                   className={`aspect-square rounded-sm ${cellClass(cell, true)}`}
-                  aria-label={`own ${r}-${c}`}
+                  aria-label={ariaFor(cell, r, c, true)}
+                  disabled={phase !== "placement"}
                 />
               )),
             )}
@@ -306,6 +382,8 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
           <div
             className="grid gap-px bg-slate-900 p-1 rounded"
             style={{ gridTemplateColumns: `repeat(10, minmax(18px,1fr))` }}
+            role="grid"
+            aria-label={es ? "Grilla enemiga" : "Enemy grid"}
           >
             {enemyBoard.map((row, r) =>
               row.map((cell, c) => (
@@ -314,7 +392,8 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
                   type="button"
                   onClick={() => shoot(r, c)}
                   className={`aspect-square rounded-sm ${cellClass(cell, false)}`}
-                  aria-label={`enemy ${r}-${c}`}
+                  aria-label={ariaFor(cell, r, c, false)}
+                  disabled={phase !== "playing"}
                 />
               )),
             )}
@@ -322,7 +401,7 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
         </div>
       </div>
       {winner && (
-        <p className="font-bold text-emerald-300">
+        <p className="font-bold text-emerald-300" role="status">
           {winner === "player" ? (es ? "¡Victoria!" : "Victory!") : es ? "Derrota" : "Defeat"}
         </p>
       )}
