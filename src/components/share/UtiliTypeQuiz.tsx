@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 
 type Locale = "en" | "es";
 
@@ -150,6 +150,7 @@ export function UtiliTypeQuiz({ locale = "en" }: { locale?: Locale }) {
   const [done, setDone] = useState(false);
   const [forcedType, setForcedType] = useState<TypeKey | null>(null);
   const [copied, setCopied] = useState(false);
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const total = QUESTIONS.length;
   const progress = done ? 100 : Math.round((step / total) * 100);
@@ -161,6 +162,12 @@ export function UtiliTypeQuiz({ locale = "en" }: { locale?: Locale }) {
       setDone(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (!done && optionRefs.current[0]) {
+      optionRefs.current[0]?.focus();
+    }
+  }, [step, done]);
 
   const bestKey = useMemo((): TypeKey => {
     if (forcedType) return forcedType;
@@ -297,27 +304,27 @@ export function UtiliTypeQuiz({ locale = "en" }: { locale?: Locale }) {
   if (done && result) {
     return (
       <div className="mx-auto max-w-lg space-y-6">
-        <div className="rounded-2xl border bg-card p-6 text-center shadow-sm">
+        <div role="region" aria-live="polite" aria-label={t("Quiz result", "Resultado del quiz")} className="rounded-2xl border bg-card p-6 text-center shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-cyan-600">{t("Your Utili Type", "Tu Tipo Utili")}</p>
           <h2 className="mt-2 text-3xl font-black">{result.name[locale]}</h2>
           <p className="mt-3 text-muted-foreground">{result.desc[locale]}</p>
           <div className="mt-6 space-y-2 text-left">
             <p className="text-sm font-semibold">{t("Recommended for you", "Recomendado para ti")}</p>
             {result.recs.map((r) => (
-              <a key={r.slug} href={r.slug} className="block rounded-lg bg-muted/50 px-3 py-2 text-sm hover:bg-muted">
+              <a key={r.slug} href={r.slug} className="block rounded-lg bg-muted/50 px-3 py-2 text-sm hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">
                 → {r.name[locale]}
               </a>
             ))}
           </div>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row">
-          <button onClick={restart} className="flex-1 rounded-xl bg-primary px-4 py-3 font-semibold text-primary-foreground">
+          <button type="button" onClick={restart} className="flex-1 rounded-xl bg-primary px-4 py-3 font-semibold text-primary-foreground min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">
             {t("Take again", "Hacer de nuevo")}
           </button>
-          <button onClick={copyShare} className="flex-1 rounded-xl border px-4 py-3 font-semibold">
+          <button type="button" onClick={copyShare} className="flex-1 rounded-xl border px-4 py-3 font-semibold min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">
             {copied ? t("Copied!", "¡Copiado!") : t("Copy share link", "Copiar enlace")}
           </button>
-          <button onClick={exportPng} className="flex-1 rounded-xl border px-4 py-3 font-semibold">
+          <button type="button" onClick={exportPng} className="flex-1 rounded-xl border px-4 py-3 font-semibold min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500">
             {t("Download PNG", "Descargar PNG")}
           </button>
         </div>
@@ -337,18 +344,41 @@ export function UtiliTypeQuiz({ locale = "en" }: { locale?: Locale }) {
           <span>{t("Question", "Pregunta")} {step + 1} / {total}</span>
           <span>{progress}%</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-muted">
+        <div
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={t("Quiz progress", "Progreso del quiz")}
+          className="h-2 overflow-hidden rounded-full bg-muted"
+        >
           <div className="h-full bg-cyan-500 transition-all" style={{ width: `${progress}%` }} />
         </div>
       </div>
       <div className="rounded-2xl border bg-card p-6 shadow-sm">
         <h2 className="text-xl font-bold">{q.text[locale]}</h2>
-        <div className="mt-6 space-y-3">
+        <div className="mt-6 space-y-3" role="group" aria-label={t("Answer options", "Opciones de respuesta")}>
           {q.options.map((opt, i) => (
             <button
               key={i}
+              type="button"
+              ref={(el) => {
+                optionRefs.current[i] = el;
+              }}
               onClick={() => onAnswer(opt.scores)}
-              className="w-full rounded-xl border bg-background px-4 py-4 text-left text-base font-medium transition hover:border-cyan-500 hover:bg-cyan-50 dark:hover:bg-cyan-950"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  e.preventDefault();
+                  const next = optionRefs.current[(i + 1) % q.options.length];
+                  next?.focus();
+                } else if (e.key === "ArrowUp") {
+                  e.preventDefault();
+                  const prev = optionRefs.current[(i - 1 + q.options.length) % q.options.length];
+                  prev?.focus();
+                }
+              }}
+              className="w-full rounded-xl border bg-background px-4 py-4 text-left text-base font-medium transition hover:border-cyan-500 hover:bg-cyan-50 dark:hover:bg-cyan-950 min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              aria-label={opt.label[locale]}
             >
               {opt.label[locale]}
             </button>
