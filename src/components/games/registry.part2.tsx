@@ -24,6 +24,9 @@ export const CheckersClassicGame = lazy(() =>
 export const BattleshipClassicGame = lazy(() =>
   import("./BattleshipClassicGame").then((m) => ({ default: m.BattleshipClassicGame })),
 );
+export const FighterslandGame = lazy(() =>
+  import("./FighterslandGame").then((m) => ({ default: m.FighterslandGame })),
+);
 
 export const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "tic-tac-toe": TicTacToeGame,
@@ -76,4 +79,5 @@ export const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "checkers-classic": CheckersClassicGame,
   "damas-clasico": CheckersClassicGame,
   "battleship-classic": BattleshipClassicGame,
+  fightersland: FighterslandGame,
 };
