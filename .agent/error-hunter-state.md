@@ -21,14 +21,14 @@ Load: `error-hunter-state.md` → `error-hunter.md` → `error-hunter-catalog.md
 - `runs_total`: increment by 1 every run (~20% SEO when `runs_total % 5 === 0`)
 
 ```
-last_run: 2026-11-06 run 165
-runs_total: 165
+last_run: 2026-11-06 run 166
+runs_total: 166
 last_mode: HUNT
-last_fix: n/a
+last_fix: E054 (catalog duplicate slugs calculadora-area-rombo + calculadora-area-paralelogramo)
 last_prevent: n/a
 last_known_focus: E031 (recurring $(cat/PLACEHOLDER) — critical files clean; no $(cat in src; PLACEHOLDER hits are CSS/placeholder text only; registry.tsx real with pickComponent/GENERAL_TOOL_UI, indexes start with import)
-deploy: production READY on c20a444 (latest for branch); tip 72ee73cf not yet deployed; old ERROR on 918e8c1 already fixed (E049); www.utilihub.net /es home OK Spanish, modelador-3d correct studio, pixelihub 200, juegos list + 2048 OK Spanish, calculadora-iva / generador-codigos / modelador-casas-3d / finanzas/wacc 200 Spanish. calculadora-ley-ohm still mixed English on live (deploy lag; tip ohms-law-tool.ts has summaryEs). valor-absoluto still phrase-translate leak on live. education quizzes mixed on live.
-notes: Known smoke E001-E053 + E031 clean (no stubs, registry healthy, indexes start with import). Discovery: sampled juegos/list + 2048, calculadora-ley-ohm (lag), valor-absoluto (phrase leak known), modelador-3d, home, png-a-jpg, simuladores, education quiz — all 200 expected content. No new code bugs, no deploy ERROR. No fixes needed.
+deploy: production READY on 781c25f (latest for branch before this run); post-fix commits b394a4e / e46d6dfa / 839c30a on tip. www.utilihub.net /es home OK Spanish, 3d-modeler correct, pixelihub 200, juegos/2048 OK Spanish, calculadora-iva OK Spanish. calculadora-ley-ohm still shows phrase-translate mix on live (summaryEs present in tip ohms-law-tool.ts but not applied — possible cache or serialization). valor-absoluto now correct Spanish. No deploy ERROR.
+notes: Known smoke E001-E053 + E031 clean (no stubs). Discovery: runtime logs showed new duplicates calculadora-area-rombo (part-01+08) and calculadora-area-paralelogramo (part-08+10). Fixed by removing later imports. Sampled home, IVA, 3D, 2048, ley-ohm, valor-absoluto — 200 expected except known summary mix. No other new bugs.
 ```
 
 <!-- end:error-hunter-state.md -->
