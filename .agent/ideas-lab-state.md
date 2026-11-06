@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: (closed)
-id: none
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive classic Battleship (Hundir la flota) grid game. User places ships on own grid (or random), takes turns shooting opponent's grid (AI or local hotseat), sees hits/misses, sinks ships, wins by sinking all. Optional AI with basic targeting, ship placement validation, URL deep-link for setup, branded PNG of board state, EN+ES, mobile-first 390px grid. Core by run 2: place + shoot loop with win detection.
+id: battleship-classic
+path_en: /games/battleship-classic
+path_es: /es/juegos/battleship-classic
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed pt-product-parity. Next IDEATE will roll new domain.
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User places or randomizes ships, takes shots on enemy grid, sees hit/miss/sink feedback, wins by sinking all ships, shares PNG or URL.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): C1 battleship-classic: val5 share4 search5 dist4 feas5 perf4 total27. Closest-3: minesweeper-classic (grid reveal), connect-four-classic (grid turns), checkers-classic (board strategy). Metaphor: turn-based dual-grid placement + shot hunting. Not particle-canvas: discrete grid rules, no freehand trails. IP: traditional Battleship/Hunt the ships mechanics, generic ship lengths/colors, no Hasbro or branded assets. C2 hangman-classic: val4 share3 search4 dist4 feas5 perf5 total25. Closest: word tools, memory. Metaphor: letter-by-letter guess with progressive fail stages. IP: traditional hangman. C3 simon-sequence-memory: val4 share3 search4 dist4 feas5 perf5 total25. Closest: memory-match. Metaphor: color sequence watch-and-repeat. IP: traditional Simon-style. Chosen: battleship-classic (highest). Roll: CORE games (underused relative to recent, high search demand for classic). Variety: distinct from particle sandboxes and prior grid games by dual-board ship-sink loop.
 adsense-prep_runs: 7
 ```
 
