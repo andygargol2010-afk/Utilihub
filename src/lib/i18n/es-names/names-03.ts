@@ -40,4 +40,5 @@ export const ES_EXACT_NAMES_03: Record<string, string> = {
   "calculadora-arroz-crudo-a-cocido": "Calculadora de arroz crudo a cocido",
   "calculadora-indice-adiposidad-corporal": "Calculadora de índice de adiposidad corporal",
   "calculadora-regla-del-72": "Calculadora de la Regla del 72",
+  "calculadora-precio-original-descuento": "Calculadora de precio original a partir de descuento",
 };
