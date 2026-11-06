@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: none
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive classic Minesweeper (Buscaminas). User selects difficulty (Beginner 9x9 with 10 mines, Intermediate 16x16 with 40, Expert 16x30 with 99), left-clicks to reveal cells (number or empty cascade), right-click or dedicated button to flag/unflag suspected mines, sees live timer and remaining mine count. Win by revealing all safe cells; lose on mine reveal with board expose. Keyboard navigation (arrow keys + Enter/Space), URL deep-link with seed for reproducible board, branded PNG export of the board state, Reset. EN+ES routes and copy, mobile-first layout at 390px with touch-friendly cells.
+id: minesweeper-classic
+path_en: /games/minesweeper
+path_es: /es/juegos/buscaminas
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed timeline-event-composer. Ready for next IDEATE.
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User selects difficulty, reveals safe cells and flags mines without hitting one, sees timer and count, wins or loses with clear feedback, and shares PNG or deep-link URL.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): minesweeper-classic: value=5 share=4 search=5 distinct=4 feas=5 perf=5 total=28. Closest-3: battleship-classic (grid placement/shot), checkers-classic (grid moves), memory-match-classic (grid cards). Primary metaphor: "minefield cell reveal and flag puzzle". Why not particle-canvas: discrete fixed grid with deterministic reveal logic and bomb avoidance win condition, no freehand or particles. IP: traditional public-domain Minesweeper rules (numbers, cascade, flags); generic UI/naming; no Microsoft or branded assets. connect-four-classic: value=5 share=4 search=4 distinct=4 feas=5 perf=5 total=27. Closest-3: battleship, checkers, memory-match. Metaphor: "gravity-drop connect-four". IP: traditional Connect Four mechanics, generic. original-box-push-puzzle: value=4 share=3 search=3 distinct=5 feas=4 perf=5 total=24. Closest-3: memory-match, battleship, checkers. Metaphor: "level-based box pushing constraint solver". IP: original levels on generic sokoban-like rules. Chosen minesweeper-classic (highest score + search demand). Domain roll: CORE games (weight 5; variety preferred over high-weight playgrounds given recent interactive closes; p_fixed not applied as CORE selected). adsense-prep_runs: 7
 adsense-prep_runs: 7
 ```
 
