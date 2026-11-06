@@ -16,6 +16,15 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
       return {};
     }
   });
+  const [choices, setChoices] = useState<Record<string, string>>(() => {
+    if (typeof window === "undefined") return {};
+    try {
+      const raw = new URLSearchParams(window.location.search).get("ch");
+      return raw ? JSON.parse(decodeURIComponent(raw)) : {};
+    } catch {
+      return {};
+    }
+  });
   const [copied, setCopied] = useState(false);
 
   const category = useMemo(
@@ -45,16 +54,26 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
     } else {
       url.searchParams.delete("c");
     }
+    if (Object.keys(choices).length) {
+      url.searchParams.set("ch", encodeURIComponent(JSON.stringify(choices)));
+    } else {
+      url.searchParams.delete("ch");
+    }
     window.history.replaceState({}, "", url.toString());
-  }, [categoryId, checked]);
+  }, [categoryId, checked, choices]);
 
   const toggle = useCallback((key: string) => {
     setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
   }, []);
 
+  const setChoice = useCallback((stageId: string, value: string) => {
+    setChoices((prev) => ({ ...prev, [stageId]: value }));
+  }, []);
+
   const reset = () => {
     setCategoryId(null);
     setChecked({});
+    setChoices({});
   };
 
   const copyLink = async () => {
@@ -66,6 +85,32 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
     } catch {
       /* ignore */
     }
+  };
+
+  const downloadPng = () => {
+    if (!category || !allDone) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = 800;
+    canvas.height = 500;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, 800, 500);
+    ctx.fillStyle = "#22d3ee";
+    ctx.font = "bold 32px system-ui, sans-serif";
+    ctx.fillText(locale === "es" ? "Recorrido completado" : "Journey complete", 40, 80);
+    ctx.fillStyle = "#e2e8f0";
+    ctx.font = "24px system-ui, sans-serif";
+    ctx.fillText(category.name[locale], 40, 140);
+    ctx.font = "20px system-ui, sans-serif";
+    ctx.fillText(`${progressPct}% · ${doneCount}/${totalItems}`, 40, 190);
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "16px system-ui, sans-serif";
+    ctx.fillText("UtiliHub · Goal Progress Journey", 40, 420);
+    const link = document.createElement("a");
+    link.download = `goal-progress-${categoryId}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
   };
 
   if (!category) {
@@ -116,36 +161,68 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
         </p>
       </div>
 
-      {category.stages.map((stage, si) => (
-        <div key={stage.id} className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-          <h3 className="font-bold">
-            {si + 1}. {stage.title[locale]}
-          </h3>
-          <p className="mt-1 text-sm text-muted-foreground">{stage.tip[locale]}</p>
-          <ul className="mt-3 space-y-2">
-            {stage.items.map((item) => {
-              const key = `${stage.id}-${item.id}`;
-              const isChecked = !!checked[key];
-              return (
-                <li key={item.id}>
-                  <label className="flex min-h-10 cursor-pointer items-start gap-3 rounded-lg p-2 hover:bg-muted/50">
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={() => toggle(key)}
-                      className="mt-1 h-4 w-4 rounded border-border"
-                      aria-label={item.text[locale]}
-                    />
-                    <span className={isChecked ? "line-through text-muted-foreground" : ""}>
-                      {item.text[locale]}
-                    </span>
-                  </label>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
+      {category.stages.map((stage, si) => {
+        const choiceKey = stage.id;
+        const selected = choices[choiceKey] || "";
+        const branchedTip =
+          selected === "short"
+            ? locale === "es"
+              ? "Sesiones cortas y frecuentes funcionan mejor."
+              : "Short frequent sessions work better."
+            : selected === "deep"
+              ? locale === "es"
+                ? "Bloques más largos cuando tengas foco."
+                : "Longer blocks when you have focus."
+              : stage.tip[locale];
+        return (
+          <div key={stage.id} className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+            <h3 className="font-bold">
+              {si + 1}. {stage.title[locale]}
+            </h3>
+            <p className="mt-1 text-sm text-muted-foreground">{branchedTip}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setChoice(choiceKey, "short")}
+                className={`min-h-9 rounded-lg px-3 py-1 text-sm font-medium ${selected === "short" ? "bg-primary text-primary-foreground" : "bg-secondary"}`}
+                aria-pressed={selected === "short"}
+              >
+                {locale === "es" ? "Corto" : "Short"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setChoice(choiceKey, "deep")}
+                className={`min-h-9 rounded-lg px-3 py-1 text-sm font-medium ${selected === "deep" ? "bg-primary text-primary-foreground" : "bg-secondary"}`}
+                aria-pressed={selected === "deep"}
+              >
+                {locale === "es" ? "Profundo" : "Deep"}
+              </button>
+            </div>
+            <ul className="mt-3 space-y-2">
+              {stage.items.map((item) => {
+                const key = `${stage.id}-${item.id}`;
+                const isChecked = !!checked[key];
+                return (
+                  <li key={item.id}>
+                    <label className="flex min-h-10 cursor-pointer items-start gap-3 rounded-lg p-2 hover:bg-muted/50">
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggle(key)}
+                        className="mt-1 h-4 w-4 rounded border-border"
+                        aria-label={item.text[locale]}
+                      />
+                      <span className={isChecked ? "line-through text-muted-foreground" : ""}>
+                        {item.text[locale]}
+                      </span>
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      })}
 
       {allDone && (
         <div className="rounded-2xl border border-primary/40 bg-accent/40 p-5 text-center">
@@ -154,10 +231,17 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
           </h2>
           <p className="mt-2 text-muted-foreground">
             {locale === "es"
-              ? "Has marcado todos los pasos. Comparte tu progreso o empieza otro objetivo."
-              : "You checked every step. Share your progress or start another goal."}
+              ? "Has marcado todos los pasos. Comparte tu tarjeta o enlace."
+              : "You checked every step. Share your card or link."}
           </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-center">
+            <button
+              type="button"
+              onClick={downloadPng}
+              className="min-h-11 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground"
+            >
+              {locale === "es" ? "Descargar PNG" : "Download PNG"}
+            </button>
             <button
               type="button"
               onClick={copyLink}
