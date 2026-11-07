@@ -1,7 +1,11 @@
 // Part 2 of 3 — split from registry.tsx on 2026-11-04. Edit here; registry.tsx re-exports.
 import { lazy, type ComponentType } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
-import { TicTacToeGame, MemoryGame, SnakeGame, Game2048, ConnectFourGame, ConnectFourClassicGame, MinesweeperGame, MinesweeperClassicGame, HangmanGame, PongGame, SudokuGame, SudokuClassicGame, PacManGame, TetrisGame, CodeTypeRaceGame, FormulaMemoryGame, BudgetSurvivorGame, PathfinderGame, RefractionChallengeGame, LightsOutGame, MagneticLetterCatcherGame, PulseCatchArenaGame } from "./registry.part1";
+// ConnectFourClassicGame.tsx lost its content (0-byte file): its lazy export resolves to
+// undefined and crashes /games/connect-four-classic and /es/juegos/conecta-cuatro-clasico.
+// Both slugs temporarily map to the working ConnectFourGame implementation until the
+// classic source file is restored.
+import { TicTacToeGame, MemoryGame, SnakeGame, Game2048, ConnectFourGame, MinesweeperGame, MinesweeperClassicGame, HangmanGame, PongGame, SudokuGame, SudokuClassicGame, PacManGame, TetrisGame, CodeTypeRaceGame, FormulaMemoryGame, BudgetSurvivorGame, PathfinderGame, RefractionChallengeGame, LightsOutGame, MagneticLetterCatcherGame, PulseCatchArenaGame } from "./registry.part1";
 
 export const OrbitDefenderArcadeGame = lazy(() =>
   import("./OrbitDefenderArcadeGame").then((m) => ({ default: m.OrbitDefenderArcadeGame })),
@@ -37,8 +41,8 @@ export const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "2048": Game2048,
   "connect-four": ConnectFourGame,
   "conecta-4": ConnectFourGame,
-  "connect-four-classic": ConnectFourClassicGame,
-  "conecta-cuatro-clasico": ConnectFourClassicGame,
+  "connect-four-classic": ConnectFourGame,
+  "conecta-cuatro-clasico": ConnectFourGame,
   minesweeper: MinesweeperGame,
   buscaminas: MinesweeperGame,
   "minesweeper-classic": MinesweeperClassicGame,
