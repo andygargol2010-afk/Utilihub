@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a (closed)
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive molecule builder kit. User places common atoms (C, H, O, N, etc.) on a grid or free canvas, connects them with single/double/triple bonds using visual SVG lines, sees live molecular formula, estimated molar mass, simple 2D structure diagram, guided challenges to build target molecules (water, CO2, methane), free mode, reset, materials/atom legend, branded PNG of the molecule + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y. Core by run 2: place atoms + connect + live formula.
+id: molecule-builder-kit
+path_en: /kits/molecule-builder
+path_es: /es/kits/constructor-moleculas
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed minesweeper-classic. Ready for next IDEATE.
+domain: kits
+runs_total: 4
+runs_remaining: 4
+acceptance: User places atoms, connects bonds, sees live formula + structure, completes a challenge, shares branded PNG or URL.
+share: both
+next_step_required: yes
+notes: Rubric scores (value/share/search/distinct/feas/perf): Cand1 molecule-builder-kit 4/4/3/4/4/4 total 23 (closest: simple-circuit-kit, timeline-event-composer, population-dynamics-simulator; metaphor: discrete atomic parts + bond connections assembler; not particle-canvas because grid atoms and discrete bonds, no freehand trails/attractors). Cand2 solar-system-orbit-sim 4/4/3/4/3/3 total 21 (closest: population-dynamics, magnetic if any; metaphor: parameter-driven orbital mechanics; not particle). Cand3 solitaire-klondike-classic 5/4/5/3/4/4 total 25 but games recent + IP traditional ok but variety prefers kits (closest: memory-match, checkers; metaphor: card sorting solitaire). Roll: FLEX (p_fixed 0.35 not hit), selected kits (weight 5) for balance after recent games closes and to avoid playgrounds particle saturation. Chosen molecule-builder-kit. IP: original educational chemistry assembler, generic atoms, no branded kits or software.
 adsense-prep_runs: 7
 ```
 
