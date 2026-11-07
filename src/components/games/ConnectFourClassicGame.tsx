@@ -15,6 +15,7 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
   const [moves, setMoves] = useState<number[]>([]);
   const [copied, setCopied] = useState(false);
   const [hoverCol, setHoverCol] = useState<number | null>(null);
+  const [selectedCol, setSelectedCol] = useState(3);
   const [animating, setAnimating] = useState(false);
 
   const winCells = useMemo(() => (result && result !== "draw" ? winningLine(board) : null), [board, result]);
@@ -38,6 +39,7 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
     setLastDrop(null);
     setMoves([]);
     setHoverCol(null);
+    setSelectedCol(3);
     setAnimating(false);
     updateUrl([], mode);
   }, [mode, updateUrl]);
@@ -90,6 +92,7 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
       setBoard(dropped.board);
       setLastDrop({ r: dropped.row, c: col });
       setHoverCol(null);
+      setSelectedCol(col);
       setAnimating(true);
       window.setTimeout(() => setAnimating(false), 400);
       const w = winner(dropped.board);
@@ -218,15 +221,26 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!canInteract) return;
-      const n = parseInt(e.key, 10);
-      if (n >= 1 && n <= COLS) {
+      if (e.key === "ArrowLeft") {
         e.preventDefault();
-        playCol(n - 1);
+        setSelectedCol((c) => Math.max(0, c - 1));
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        setSelectedCol((c) => Math.min(COLS - 1, c + 1));
+      } else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        playCol(selectedCol);
+      } else {
+        const n = parseInt(e.key, 10);
+        if (n >= 1 && n <= COLS) {
+          e.preventDefault();
+          playCol(n - 1);
+        }
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [canInteract, playCol]);
+  }, [canInteract, playCol, selectedCol]);
 
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-3 px-1">
@@ -312,7 +326,9 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
               onMouseEnter={() => canInteract && setHoverCol(c)}
               onMouseLeave={() => setHoverCol(null)}
               onTouchStart={() => canInteract && setHoverCol(c)}
-              className="h-9 rounded-md bg-white/10 text-xs font-bold text-white/80 transition hover:bg-white/20 active:scale-95 disabled:opacity-40 sm:h-10"
+              className={`h-9 rounded-md bg-white/10 text-xs font-bold text-white/80 transition hover:bg-white/20 active:scale-95 disabled:opacity-40 sm:h-10 ${
+                selectedCol === c ? "ring-2 ring-amber-400" : ""
+              }`}
               aria-label={es ? `Columna ${c + 1}` : `Column ${c + 1}`}
             >
               ▼
@@ -326,13 +342,13 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
               row.map((cell, c) => {
                 const isWin = winKey?.has(`${r}-${c}`) ?? false;
                 const isLast = lastDrop && lastDrop.r === r && lastDrop.c === c;
-                const previewRow = hoverCol === c && canInteract ? lowestOpenRow(board, c) : null;
+                const previewRow = (hoverCol === c || selectedCol === c) && canInteract ? lowestOpenRow(board, c) : null;
                 const showGhost = previewRow === r && cell === 0;
                 return (
                   <div
                     key={`${r}-${c}`}
                     className={`relative flex h-9 w-9 items-center justify-center rounded-full sm:h-11 sm:w-11 ${
-                      hoverCol === c && canInteract ? "ring-2 ring-sky-400/70" : ""
+                      (hoverCol === c || selectedCol === c) && canInteract ? "ring-2 ring-sky-400/70" : ""
                     }`}
                     style={{ background: "#0c1e33" }}
                   >
@@ -370,8 +386,8 @@ export function ConnectFourClassicGame({ locale = "en" }: { locale?: GameLocale 
 
       <p className="text-center text-xs text-emerald-100/60">
         {es
-          ? "Toca una columna o teclas 1-7 para soltar. Conecta 4 en línea. Vista previa al pasar el mouse. Disco cae con animación. Contador de jugadas. Deshacer, compartir enlace o PNG del tablero."
-          : "Tap a column or press keys 1-7 to drop. Connect 4 in a row. Hover a column for drop preview. Disc falls with animation. Move counter. Undo, share the link or download the board PNG."}
+          ? "Toca una columna o teclas 1-7 para soltar. Flechas ←→ seleccionan columna + Enter/Espacio suelta. Conecta 4 en línea. Vista previa al pasar el mouse o seleccionar. Disco cae con animación. Contador de jugadas. Deshacer, compartir enlace o PNG del tablero."
+          : "Tap a column or press keys 1-7 to drop. Arrow keys select column + Enter/Space drops. Connect 4 in a row. Hover or select a column for drop preview. Disc falls with animation. Move counter. Undo, share the link or download the board PNG."}
       </p>
     </div>
   );

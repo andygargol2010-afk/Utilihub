@@ -70,11 +70,11 @@ path_es: /es/juegos/connect-four-classic
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects side, drops pieces (click/tap or keyboard), sees gravity + win/lose detection with highlight, can share PNG or URL deep-link.
 share: both
 next_step_required: yes
-notes: Rubric (1-5): C1 connect-four-classic: value=4 share=3 search=5 distinct=5 feas=5 perf=5 total=27. Closest-3: minesweeper (reveal cascade), checkers (grid moves), battleship (grid shots). Primary metaphor: turn-based gravity-drop grid puzzle with 4-in-a-row win condition. Why not particle-canvas: discrete grid placement + rules + win/lose, no freehand trails/attractors. IP: traditional public-domain Connect Four gravity drops and 4-in-a-row; generic UI/naming; no Hasbro or branded assets. C2 memory-match-cards: 4/4/4/4/5/5=26. Metaphor: flip-match pairs on card grid. C3 original sliding-puzzle: 3/3/3/4/5/5=23. Picked C1 (highest, strong demand "play connect 4 online", distinct from recent grid games). Roll: CORE games (weight 6, variety prefer underused vs playgrounds; last closed kits). adsense-prep_runs: 7
+notes: Rubric (1-5): C1 connect-four-classic: value=4 share=3 search=5 distinct=5 feas=5 perf=5 total=27. Closest-3: minesweeper (reveal cascade), checkers (grid moves), battleship (grid shots). Primary metaphor: turn-based gravity-drop grid puzzle with 4-in-a-row win condition. Why not particle-canvas: discrete grid placement + rules + win/lose, no freehand trails/attractors. IP: traditional public-domain Connect Four gravity drops and 4-in-a-row; generic UI/naming; no Hasbro or branded assets. C2 memory-match-cards: 4/4/4/4/5/5=26. Metaphor: flip-match pairs on card grid. C3 original sliding-puzzle: 3/3/3/4/5/5=23. Picked C1 (highest, strong demand "play connect 4 online", distinct from recent grid games). Roll: CORE games (weight 6, variety prefer underused vs playgrounds; last closed kits). adsense-prep_runs: 7. Run 1/4: core fully implemented (drop, gravity, win highlight, AI easy/med/hard, undo, URL ?moves=, branded PNG, EN+ES, mobile 390px, 1-7 keys). Added arrow-key column select + Enter drop for better a11y. Acceptance core met early.
 adsense-prep_runs: 7
 ```
 
