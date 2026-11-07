@@ -29,7 +29,7 @@ export const BattleshipClassicGame = lazy(() =>
   import("./BattleshipClassicGame").then((m) => ({ default: m.BattleshipClassicGame })),
 );
 export const FighterslandGame = lazy(() =>
-  import("./FighterslandGame").then((m) => ({ default: m.FighterslandGame })),
+  import("@/games/fightersland").then((m) => ({ default: m.FighterslandGame })),
 );
 
 export const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
