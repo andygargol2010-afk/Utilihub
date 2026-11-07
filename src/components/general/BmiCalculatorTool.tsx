@@ -145,21 +145,21 @@ export function BmiCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
           <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
           <p className="flex flex-wrap gap-x-2 gap-y-1">
             <a
-              href={es ? "/es/herramientas/calculadora-calorias-diarias" : "/tools/daily-calories-calculator"}
+              href={es ? "/es/herramientas/calculadora-calorias-diarias" : "/tools/calculadora-calorias-diarias"}
               className="inline-flex min-h-11 items-center underline"
             >
               {es ? "Calorías diarias" : "Daily calories"}
             </a>
             <span aria-hidden>·</span>
             <a
-              href={es ? "/es/herramientas/calculadora-ingesta-agua-diaria" : "/tools/daily-water-intake-calculator"}
+              href={es ? "/es/herramientas/calculadora-ingesta-agua-diaria" : "/tools/calculadora-ingesta-agua-diaria"}
               className="inline-flex min-h-11 items-center underline"
             >
               {es ? "Agua diaria" : "Daily water"}
             </a>
             <span aria-hidden>·</span>
             <a
-              href={es ? "/es/herramientas/calculadora-peso-ideal" : "/tools/ideal-weight-calculator"}
+              href={es ? "/es/herramientas/calculadora-peso-saludable" : "/tools/calculadora-peso-saludable"}
               className="inline-flex min-h-11 items-center underline"
             >
               {es ? "Peso ideal" : "Ideal weight"}
