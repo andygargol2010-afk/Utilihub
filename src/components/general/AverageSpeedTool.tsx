@@ -19,7 +19,8 @@ export function AverageSpeedTool({ locale = "en" }: { tool?: GeneralTool; locale
   const m = parseFloat(minutes) || 0;
   const totalHours = h + m / 60;
 
-  const speed = totalHours > 0 ? d / totalHours : 0;
+  const hasTime = totalHours > 0;
+  const speed = hasTime ? d / totalHours : 0;
   const speedMph = unit === "km" ? speed * 0.621371 : speed;
   const speedKmh = unit === "mi" ? speed * 1.60934 : speed;
 
@@ -28,9 +29,13 @@ export function AverageSpeedTool({ locale = "en" }: { tool?: GeneralTool; locale
   const secondary = unit === "km" ? speedMph : speedKmh;
   const secondaryUnit = unit === "km" ? "mph" : "km/h";
 
-  const result = es
-    ? `Velocidad media: ${primary.toFixed(2)} ${primaryUnit} (${secondary.toFixed(2)} ${secondaryUnit})`
-    : `Average speed: ${primary.toFixed(2)} ${primaryUnit} (${secondary.toFixed(2)} ${secondaryUnit})`;
+  const result = !hasTime
+    ? es
+      ? "Velocidad media: ingresá un tiempo mayor que cero."
+      : "Average speed: enter a time greater than zero."
+    : es
+      ? `Velocidad media: ${primary.toFixed(2)} ${primaryUnit} (${secondary.toFixed(2)} ${secondaryUnit})`
+      : `Average speed: ${primary.toFixed(2)} ${primaryUnit} (${secondary.toFixed(2)} ${secondaryUnit})`;
 
   async function copy() {
     try {
@@ -52,10 +57,18 @@ export function AverageSpeedTool({ locale = "en" }: { tool?: GeneralTool; locale
     <div className="space-y-6">
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-2">
         <p className="text-sm text-muted-foreground">{es ? "Velocidad media" : "Average speed"}</p>
-        <p className="text-3xl font-semibold">{primary.toFixed(2)} {primaryUnit}</p>
-        <p className="text-sm text-muted-foreground">
-          {secondary.toFixed(2)} {secondaryUnit}
-        </p>
+        {hasTime ? (
+          <>
+            <p className="text-3xl font-semibold">{primary.toFixed(2)} {primaryUnit}</p>
+            <p className="text-sm text-muted-foreground">
+              {secondary.toFixed(2)} {secondaryUnit}
+            </p>
+          </>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            {es ? "Ingresá un tiempo mayor que cero para calcular la velocidad." : "Enter a time greater than zero to calculate the speed."}
+          </p>
+        )}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
