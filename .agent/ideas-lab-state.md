@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive classic Connect Four (Cuatro en línea). User selects color, takes turns dropping pieces into a 7x6 grid (gravity), first to get 4 in a row (horiz/vert/diag) wins. Optional simple AI opponent. Keyboard nav, win detection + highlight, undo, URL deep-link for board state, branded PNG of final board, EN+ES routes, mobile-first 390px with large touch cells, a11y labels + aria-live for moves.
+ id: connect-four-classic
+path_en: /games/connect-four-classic
+path_es: /es/juegos/connect-four-classic
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed molecule-builder-kit after 4/4. Final polish applied (color atoms, mobile, PNG). Acceptance fully met. Ready for next IDEATE.
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User selects side, drops pieces (click/tap or keyboard), sees gravity + win/lose detection with highlight, can share PNG or URL deep-link.
+share: both
+next_step_required: yes
+notes: Rubric (1-5): C1 connect-four-classic: value=4 share=3 search=5 distinct=5 feas=5 perf=5 total=27. Closest-3: minesweeper (reveal cascade), checkers (grid moves), battleship (grid shots). Primary metaphor: turn-based gravity-drop grid puzzle with 4-in-a-row win condition. Why not particle-canvas: discrete grid placement + rules + win/lose, no freehand trails/attractors. IP: traditional public-domain Connect Four gravity drops and 4-in-a-row; generic UI/naming; no Hasbro or branded assets. C2 memory-match-cards: 4/4/4/4/5/5=26. Metaphor: flip-match pairs on card grid. C3 original sliding-puzzle: 3/3/3/4/5/5=23. Picked C1 (highest, strong demand "play connect 4 online", distinct from recent grid games). Roll: CORE games (weight 6, variety prefer underused vs playgrounds; last closed kits). adsense-prep_runs: 7
 adsense-prep_runs: 7
 ```
 
