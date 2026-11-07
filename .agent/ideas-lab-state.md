@@ -13,14 +13,14 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: studio-composition
-last_closed_id: timeline-event-composer
+last_closed_domain: games
+last_closed_id: minesweeper-classic
 p_fixed: 0.35
 
 weights_core:
   kits: 5
   journeys: 5
-  games: 5
+  games: 6
   simulators: 4
   studio-composition: 3
   playgrounds: 8
@@ -45,6 +45,7 @@ adsense-prep_runs: 7
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-07 | games | minesweeper-classic | Interactive classic Minesweeper (Buscaminas) complete after 4 runs. User selects difficulty (Easy 9x9/10, Medium 16x16/40, Hard 16x30/99), reveals cells with cascade on empty, flags/questions, timer + mines left, win by all safe open or lose with full expose. Keyboard nav (arrows + Enter/Space/F), seeded URL deep-link, branded PNG, EN+ES, mobile-first 390px with 22px cells, legend, a11y grid roles + aria-live. Acceptance met (select, reveal/flag, win/lose feedback, share PNG/URL). IP: traditional public-domain Minesweeper rules (numbers, cascade, flags); generic UI/naming; no Microsoft or branded assets.
 - 2026-11-06 | studio-composition | timeline-event-composer | Interactive timeline event composer complete after 4 runs. User adds 5-10 event cards (title, short description, optional date/tag), reorders by buttons, sees live vertical SVG timeline with connecting lines, generates branded summary card PNG with timeline visual + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y, max limit, Reset, Enter to add, aria-live. Acceptance met (add/reorder/live timeline/share PNG+URL). IP: original educational timeline assembler with generic events; no branded frameworks.
 - 2026-11-06 | journeys | goal-progress-journey | Interactive multi-stage personal goal progress journey. User chooses a goal category (learn a skill, build a habit, save for a goal, improve fitness), sets parameters, then advances through 5-7 ordered stages with checklists, binary/multi choices that branch tips and outcomes, sees live progress bar and percentage, related tool recommendations, and on completion a branded summary card with stats and next steps. Generates canvas PNG of the journey card + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y. Acceptance met when user selects category, completes stages, sees final card, shares PNG or URL. IP: original educational goal-progress tracker with generic stages; no branded frameworks.
 - 2026-11-06 | share-hooks | utili-type-quiz | Interactive multi-question preference quiz that reveals a personalized "Utili Type" archetype complete after 4 runs. User answers 8-10 binary/multi-choice questions about favorite activities/tools, sees progressive progress bar, ends with branded result card (type name, short description, matching tool/game recommendations), generates canvas PNG + deep-link URL for sharing. EN+ES routes, mobile-first 390px, a11y keyboard nav + ARIA. Acceptance met (answers quiz, sees type card with recs, shares PNG or URL). IP: original educational personality quiz, generic types.
@@ -54,7 +55,6 @@ adsense-prep_runs: 7
 - 2026-11-05 | simulators | population-dynamics-simulator | Interactive population dynamics simulator complete after 4 runs. User sets initial population, birth/death rates, carrying capacity; discrete generations show live SVG logistic growth chart with phase (growth/decline/stable), peak, gens to capacity. Compare two scenarios, Animate/Stop step reveal, presets, net rate r, K line, grid, generation counter, branded PNG + URL deep-link. EN+ES routes, mobile-first 390px. Final polish: legend, Reset button, slightly tighter mobile padding. Acceptance met (set params, run/see curve+stats, share PNG/URL). IP: original educational logistic growth model, generic params, no branded datasets.
 - 2026-11-04 | games | checkers-classic | Interactive classic Checkers (Damas / Draughts) complete after 4 runs. 8x8 board, diagonal moves, jump captures with multi-jump chains, promotion to king, optional AI preferring long captures, move counter, undo, URL deep-link (?b=), branded PNG with moves, keyboard nav + a11y, EN+ES, mobile-first 390px. Acceptance met (select side, make legal moves/captures/kings, win by no pieces or no moves, share PNG/URL). IP: traditional public-domain checkers/draughts rules, generic pieces/colors, no commercial branding.
 - 2026-11-04 | games | memory-match-classic | Interactive classic Memory Match (Concentration) complete after 4 runs. User selects difficulty (4x4/6x4/6x6), theme (fruits/animals/numbers/symbols), flips two cards to match pairs with CSS 3D, timer, moves, efficiency stars (1-5), keyboard nav + a11y, URL deep-link seed, branded PNG, EN+ES, mobile-first 390px with tighter gaps/fonts on small screens. Acceptance met (select size, match all, see stats/stars, share PNG/URL). IP: traditional public-domain pair-matching, generic emoji, no commercial decks.
-- 2026-11-03 | adsense-prep | adsense-policy-readiness | Privacy and Cookie Policy (EN+ES) enhanced for AdSense readiness after 4 runs. Expanded structured sections on third-party ad cookies (Adsterra kept intact + potential Google), rights, opt-outs with live links (NAI, aboutads, Ad Settings), data retention, legal bases, international transfers, children's privacy, key points summaries, and a dedicated readiness section. Mobile-friendly prose at 390px. Acceptance met (user sees comprehensive disclosures on /privacy /cookies and ES equivalents). IP: original policy content updates.
 ```
 
 ---
@@ -62,22 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Interactive classic Minesweeper (Buscaminas). User selects difficulty (Beginner 9x9 with 10 mines, Intermediate 16x16 with 40, Expert 16x30 with 99), left-clicks to reveal cells (number or empty cascade), right-click or dedicated button to flag/unflag suspected mines, sees live timer and remaining mine count. Win by revealing all safe cells; lose on mine reveal with board expose. Keyboard navigation (arrow keys + Enter/Space), URL deep-link with seed for reproducible board, branded PNG export of the board state, Reset. EN+ES routes and copy, mobile-first layout at 390px with touch-friendly cells.
-id: minesweeper-classic
-path_en: /games/minesweeper-classic
-path_es: /es/juegos/buscaminas-clasico
+status: done
+idea: n/a (closed)
+id: n/a
+path_en: n/a
+path_es: n/a
 path_seo: n/a
-domain: games
-runs_total: 4
-runs_remaining: 1
-acceptance: User selects difficulty, reveals safe cells and flags mines without hitting one, sees timer and count, wins or loses with clear feedback, and shares PNG or deep-link URL. Keyboard nav supported.
-share: both
-next_step_required: yes
-notes: Rubric (1-5): minesweeper-classic: value=5 share=4 search=5 distinct=4 feas=5 perf=5 total=28. Closest-3: battleship-classic (grid placement/shot), checkers-classic (grid moves), memory-match-classic (grid cards). Primary metaphor: "minefield cell reveal and flag puzzle". Why not particle-canvas: discrete fixed grid with deterministic reveal logic and bomb avoidance win condition, no freehand or particles. IP: traditional public-domain Minesweeper rules (numbers, cascade, flags); generic UI/naming; no Microsoft or branded assets. connect-four-classic: value=5 share=4 search=4 distinct=4 feas=5 perf=5 total=27. Closest-3: battleship, checkers, memory-match. Metaphor: "gravity-drop connect-four". IP: traditional Connect Four mechanics, generic. original-box-push-puzzle: value=4 share=3 search=3 distinct=5 feas=4 perf=5 total=24. Closest-3: memory-match, battleship, checkers. Metaphor: "level-based box pushing constraint solver". IP: original levels on generic sokoban-like rules. Chosen minesweeper-classic (highest score + search demand). Domain roll: CORE games (weight 5; variety preferred over high-weight playgrounds given recent interactive closes; p_fixed not applied as CORE selected). adsense-prep_runs: 7
-Run 1/4 EXECUTE: Added full keyboard navigation (arrow keys move green focus ring, Enter/Space opens or flags per mode, F cycles flag). Core already present (diff select, reveal/cascade, flags, timer, mines left, win/lose expose, PNG export, seeded URL deep-link, EN+ES, mobile 390px). Acceptance mostly met; keyboard now complete. Next: further a11y polish or mobile tweaks if needed.
-Run 2/4 EXECUTE: Increased min cell size to 22px for better touch targets at 390px (hard mode still scrolls). Added role=grid + aria-row/colindex on cells, detailed state-aware aria-labels, and aria-live polite region for mines left / win / lose status. Keyboard preventDefault improved. Acceptance further met for mobile a11y. Next: final polish if needed or close.
-Run 3/4 EXECUTE: Added compact symbol legend (flag/question/mine) below board. Tighter mobile control gaps (text-xs sm:text-sm, gap-1.5). Enhanced focus ring with subtle box-shadow. Refined help text. Acceptance further polished for clarity and mobile. Next: final review or close.
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
+share: n/a
+next_step_required: no
+notes: Closed minesweeper-classic. Ready for next IDEATE.
 adsense-prep_runs: 7
 ```
 
