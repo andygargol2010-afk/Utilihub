@@ -70,13 +70,14 @@ path_es: /es/juegos/buscaminas-clasico
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 2
+runs_remaining: 1
 acceptance: User selects difficulty, reveals safe cells and flags mines without hitting one, sees timer and count, wins or loses with clear feedback, and shares PNG or deep-link URL. Keyboard nav supported.
 share: both
 next_step_required: yes
 notes: Rubric (1-5): minesweeper-classic: value=5 share=4 search=5 distinct=4 feas=5 perf=5 total=28. Closest-3: battleship-classic (grid placement/shot), checkers-classic (grid moves), memory-match-classic (grid cards). Primary metaphor: "minefield cell reveal and flag puzzle". Why not particle-canvas: discrete fixed grid with deterministic reveal logic and bomb avoidance win condition, no freehand or particles. IP: traditional public-domain Minesweeper rules (numbers, cascade, flags); generic UI/naming; no Microsoft or branded assets. connect-four-classic: value=5 share=4 search=4 distinct=4 feas=5 perf=5 total=27. Closest-3: battleship, checkers, memory-match. Metaphor: "gravity-drop connect-four". IP: traditional Connect Four mechanics, generic. original-box-push-puzzle: value=4 share=3 search=3 distinct=5 feas=4 perf=5 total=24. Closest-3: memory-match, battleship, checkers. Metaphor: "level-based box pushing constraint solver". IP: original levels on generic sokoban-like rules. Chosen minesweeper-classic (highest score + search demand). Domain roll: CORE games (weight 5; variety preferred over high-weight playgrounds given recent interactive closes; p_fixed not applied as CORE selected). adsense-prep_runs: 7
 Run 1/4 EXECUTE: Added full keyboard navigation (arrow keys move green focus ring, Enter/Space opens or flags per mode, F cycles flag). Core already present (diff select, reveal/cascade, flags, timer, mines left, win/lose expose, PNG export, seeded URL deep-link, EN+ES, mobile 390px). Acceptance mostly met; keyboard now complete. Next: further a11y polish or mobile tweaks if needed.
 Run 2/4 EXECUTE: Increased min cell size to 22px for better touch targets at 390px (hard mode still scrolls). Added role=grid + aria-row/colindex on cells, detailed state-aware aria-labels, and aria-live polite region for mines left / win / lose status. Keyboard preventDefault improved. Acceptance further met for mobile a11y. Next: final polish if needed or close.
+Run 3/4 EXECUTE: Added compact symbol legend (flag/question/mine) below board. Tighter mobile control gaps (text-xs sm:text-sm, gap-1.5). Enhanced focus ring with subtle box-shadow. Refined help text. Acceptance further polished for clarity and mobile. Next: final review or close.
 adsense-prep_runs: 7
 ```
 

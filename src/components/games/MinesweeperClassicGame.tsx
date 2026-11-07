@@ -336,9 +336,9 @@ export function MinesweeperClassicGame({ locale = "en" }: { locale?: GameLocale 
           background: linear-gradient(160deg, #1e293b, #0f172a);
           box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 8px 24px rgba(0,0,0,0.35);
         }
-        .mines-focus { outline: 2px solid #10b981; outline-offset: 1px; z-index: 1; }
+        .mines-focus { outline: 2px solid #10b981; outline-offset: 1px; z-index: 1; box-shadow: 0 0 0 2px rgba(16,185,129,0.35); }
       `}</style>
-      <div className="flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-emerald-100/90">
+      <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-emerald-100/90">
         <button
           type="button"
           onClick={() => reset()}
@@ -446,10 +446,15 @@ export function MinesweeperClassicGame({ locale = "en" }: { locale?: GameLocale 
           )}
         </div>
       </div>
+      <div className="flex flex-wrap justify-center gap-3 text-xs text-white/60 mt-1">
+        <span>🚩 {es ? "bandera" : "flag"}</span>
+        <span>❓ {es ? "duda" : "question"}</span>
+        <span>💣 {es ? "mina" : "mine"}</span>
+      </div>
       <p className="text-center text-[11px] text-white/50 max-w-md">
         {es
-          ? "Toque = abrir (o ciclar bandera/❓ si modo ON) · mantener o clic derecho = ciclar bandera → ❓ → vacio · numero abierto abre vecinos · cara reinicia · Misma = practicar el mismo tablero · Compartir copia el enlace con semilla. Primer clic siempre seguro. Al ganar se colocan banderas automaticamente. Teclado: flechas mueven foco, Enter/Espacio abre o bandera, F cicla bandera. Celdas mas grandes en movil para mejor toque."
-          : "Tap = open (or cycle flag/❓ if Flag ON) · hold or right-click = cycle flag → ❓ → empty · open number = chord · face resets · Same = practice same board · Share copies the seeded link. First click always safe. Flags auto-place on win. Keyboard: arrows move focus, Enter/Space open or flag, F cycles flag. Larger cells on mobile for better touch targets."}
+          ? "Toque = abrir (o ciclar bandera/\u2753 si modo ON) · mantener o clic derecho = ciclar bandera → \u2753 → vacio · numero abierto abre vecinos · cara reinicia · Misma = practicar el mismo tablero · Compartir copia el enlace con semilla. Primer clic siempre seguro. Al ganar se colocan banderas automaticamente. Teclado: flechas mueven foco, Enter/Espacio abre o bandera, F cicla bandera."
+          : "Tap = open (or cycle flag/\u2753 if Flag ON) · hold or right-click = cycle flag → \u2753 → empty · open number = chord · face resets · Same = practice same board · Share copies the seeded link. First click always safe. Flags auto-place on win. Keyboard: arrows move focus, Enter/Space open or flag, F cycles flag."}
       </p>
     </div>
   );
