@@ -22,7 +22,7 @@ const tool = makeTool(
 tool.faq.push(
   faq(
     "How is average word length calculated?",
-    "Total characters in all words divided by the number of words (spaces and punctuation are ignored for word splitting).",
+    "Total characters in all words divided by the number of words. Words are separated by spaces only; punctuation attached to a word counts toward its length.",
   ),
 );
 
