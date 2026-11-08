@@ -78,8 +78,8 @@ export function AcresHectaresConverterTool({ locale = "en" }: { tool?: GeneralTo
 
       <div className="text-sm space-y-1">
         <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
-        <p><a href={es ? "/es/herramientas/conversor-millas-km" : "/tools/conversor-millas-km"} className="underline">{es ? "Conversor millas a km" : "Miles to km converter"}</a></p>
-        <p><a href={es ? "/es/herramientas/calculadora-area-rectangular" : "/tools/calculadora-area-rectangular"} className="underline">{es ? "Calculadora de área rectangular" : "Rectangle area calculator"}</a></p>
+        <p><a href={es ? "/es/herramientas/millas-kilometros-viaje" : "/tools/millas-kilometros-viaje"} className="underline">{es ? "Conversor millas a km" : "Miles to km converter"}</a></p>
+        <p><a href={es ? "/es/herramientas/area-rectangulo" : "/tools/area-rectangulo"} className="underline">{es ? "Área de un rectángulo" : "Rectangle area"}</a></p>
       </div>
 
       <div className="flex flex-wrap gap-2">
