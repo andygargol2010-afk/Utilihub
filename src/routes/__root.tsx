@@ -2,20 +2,22 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, createRootRouteWithContext, HeadContent, Scripts, useLocation } from "@tanstack/react-router";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import "../styles.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { SpanishSiteHeader } from "@/components/SpanishSiteHeader";
-import { SpanishSiteFooter } from "@/components/SpanishSiteFooter";
-import { PortugueseSiteHeader } from "@/components/PortugueseSiteHeader";
-import { PortugueseSiteFooter } from "@/components/PortugueseSiteFooter";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 import { AdsConfigContext, ADS_OFF, type AdsConfig } from "@/lib/ads-config";
 import { getAdsConfig } from "@/lib/ads-edge";
 import { NotFound, useIsSpanish, useIsPortuguese, useIsFrench } from "./-__root.part1";
 import { ErrorComponent } from "./-__root.part2";
+
+// Locale chrome is only needed on /es and /pt. Keep it out of the EN root chunk.
+const SpanishSiteHeader = lazy(() => import("@/components/SpanishSiteHeader").then((m) => ({ default: m.SpanishSiteHeader })));
+const SpanishSiteFooter = lazy(() => import("@/components/SpanishSiteFooter").then((m) => ({ default: m.SpanishSiteFooter })));
+const PortugueseSiteHeader = lazy(() => import("@/components/PortugueseSiteHeader").then((m) => ({ default: m.PortugueseSiteHeader })));
+const PortugueseSiteFooter = lazy(() => import("@/components/PortugueseSiteFooter").then((m) => ({ default: m.PortugueseSiteFooter })));
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   loader: async (): Promise<{ ads: AdsConfig }> => {
@@ -153,27 +155,31 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AdsConfigContext.Provider value={ads}>
       <FavoritesProvider>
-        {isFrench ? (
-          <FrenchMinimalHeader />
-        ) : isPortuguese ? (
-          <PortugueseSiteHeader />
-        ) : isSpanish ? (
-          <SpanishSiteHeader />
-        ) : (
-          <SiteHeader />
-        )}
+        <Suspense fallback={null}>
+          {isFrench ? (
+            <FrenchMinimalHeader />
+          ) : isPortuguese ? (
+            <PortugueseSiteHeader />
+          ) : isSpanish ? (
+            <SpanishSiteHeader />
+          ) : (
+            <SiteHeader />
+          )}
+        </Suspense>
         <main id="main-content">
           <Outlet />
         </main>
-        {isFrench ? (
-          <FrenchMinimalFooter />
-        ) : isPortuguese ? (
-          <PortugueseSiteFooter />
-        ) : isSpanish ? (
-          <SpanishSiteFooter />
-        ) : (
-          <SiteFooter />
-        )}
+        <Suspense fallback={null}>
+          {isFrench ? (
+            <FrenchMinimalFooter />
+          ) : isPortuguese ? (
+            <PortugueseSiteFooter />
+          ) : isSpanish ? (
+            <SpanishSiteFooter />
+          ) : (
+            <SiteFooter />
+          )}
+        </Suspense>
         <DeferredInsights />
       </FavoritesProvider>
       </AdsConfigContext.Provider>
