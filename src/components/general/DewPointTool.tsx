@@ -223,7 +223,7 @@ export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
                       ["< 10 °C", "Seco / fresco"],
                       ["10 – 16 °C", "Cómodo"],
                       ["16 – 18 °C", "Ligeramente húmedo"],
-                      ["18 – 21 °C", "Bocho"],
+                      ["18 – 21 °C", "Bochornoso"],
                       ["21 – 24 °C", "Muy húmedo"],
                       ["> 24 °C", "Opresivo"],
                     ]
