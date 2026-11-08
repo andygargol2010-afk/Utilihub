@@ -258,4 +258,17 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEs:
       "Empacá rectángulos en un contenedor fijo. Hacé clic para colocar tamaños, evitá solapamientos, maximizá la utilización %.",
   },
+  {
+    slug: "predator-prey-simulator",
+    slugEs: "simulador-depredador-presa",
+    nameEn: "Predator-Prey Simulator",
+    nameEs: "Simulador Depredador-Presa",
+    tag: "math",
+    theme: "lab",
+    emoji: "🦊",
+    badgeEn: "Lotka-Volterra",
+    badgeEs: "Lotka-Volterra",
+    summaryEn: "Interactive Lotka-Volterra: set prey/predator initials and rates (growth, predation, conversion, death). Watch discrete generations on a dual-line SVG chart. See oscillating, stable or extinct phases, peaks, and current counts. Presets, animate, share PNG or URL.",
+    summaryEs: "Lotka-Volterra interactivo: fijá iniciales de presas/depredadores y tasas (crecimiento, depredación, conversión, muerte). Mirá generaciones discretas en gráfico SVG de dos líneas. Fases oscilante/estable/extinto, picos y conteos actuales. Preajustes, animar, compartir PNG o URL.",
+  },
 ] as const;

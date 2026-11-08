@@ -66,15 +66,15 @@ status: active
 idea: Interactive predator-prey (Lotka-Volterra) population simulator. User sets initial prey/predator counts, growth rate of prey, predation rate, predator death rate, conversion efficiency. Discrete generations show live SVG dual-line or phase-space chart of both populations oscillating or stabilizing, phase label (oscillating/stable/extinct), peak values, current gen. Presets (balanced, prey boom, predator crash), Animate/Stop step reveal, Reset, URL deep-link (?params=), branded PNG of chart + stats. EN+ES routes, mobile-first 390px, keyboard controls, a11y labels + aria-live for generation updates.
 id: predator-prey-simulator
 path_en: /simulators/predator-prey-simulator
-path_es: /es/simuladores/predator-prey-simulator
+path_es: /es/simuladores/simulador-depredador-presa
 path_seo: n/a
 domain: simulators
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User sets parameters (or picks preset), runs/animates generations, sees live oscillating chart + phase/peaks, can share branded PNG or deep-link URL.
 share: both
 next_step_required: yes
-notes: Rubric (1-5): C1 predator-prey= value4 share3 search3 distinct4 feas5 perf5 total24 (chosen); C2 SIR-epidemic=4/3/4/3/5/5=24; C3 traffic-signal=4/4/3/4/4/3=22. Closest-3 for chosen: population-dynamics-simulator (logistic params→chart), simple-circuit-kit (live feedback), timeline-event-composer. Primary metaphor: discrete compartment model parameters → live dual-population SVG chart + phase stats. Why not particle-canvas clone: pure parameter-driven chart readout and discrete generations, no freehand drawing, particles, trails or attractors. IP: original educational Lotka-Volterra implementation with generic rates; no branded datasets or software. Roll: FLEX simulators (underused vs recent games/kits). Core by run 2 required.
+notes: Rubric (1-5): C1 predator-prey= value4 share3 search3 distinct4 feas5 perf5 total24 (chosen); C2 SIR-epidemic=4/3/4/3/5/5=24; C3 traffic-signal=4/4/3/4/4/3=22. Closest-3 for chosen: population-dynamics-simulator (logistic params→chart), simple-circuit-kit (live feedback), timeline-event-composer. Primary metaphor: discrete compartment model parameters → live dual-population SVG chart + phase stats. Why not particle-canvas clone: pure parameter-driven chart readout and discrete generations, no freehand drawing, particles, trails or attractors. IP: original educational Lotka-Volterra implementation with generic rates; no branded datasets or software. Roll: FLEX simulators (underused vs recent games/kits). Core by run 2 required. Run 1 (2026-11-08): core shipped — params form, discrete LV step, dual SVG lines (prey/pred), phase detection, presets, animate/stop, URL deep-link, branded PNG, EN+ES labels, mobile 390px, aria-live. Catalog + registry wired.
 adsense-prep_runs: 7
 ```
 

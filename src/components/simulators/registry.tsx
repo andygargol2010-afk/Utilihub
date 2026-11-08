@@ -19,6 +19,7 @@ const ReactionDiffusionLab = lazy(() => import("./ReactionDiffusionLab").then((m
 const LogisticChaosLab = lazy(() => import("./LogisticChaosLab").then((m) => ({ default: m.LogisticChaosLab })));
 const TrafficSignalLab = lazy(() => import("./TrafficSignalLab").then((m) => ({ default: m.TrafficSignalLab })));
 const BinPackingSim = lazy(() => import("./BinPackingSim").then((m) => ({ default: m.BinPackingSim })));
+const PredatorPreySim = lazy(() => import("./PredatorPreySim").then((m) => ({ default: m.PredatorPreySim })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -57,6 +58,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "laboratorio-semaforos": TrafficSignalLab,
   "bin-packing": BinPackingSim,
   "empaque-cajas": BinPackingSim,
+  "predator-prey-simulator": PredatorPreySim,
+  "simulador-depredador-presa": PredatorPreySim,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {
