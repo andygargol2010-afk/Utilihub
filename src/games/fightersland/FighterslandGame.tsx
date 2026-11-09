@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { CHARACTERS, type Fighter, type AttackType, GROUND_Y, ARENA_WIDTH, ARENA_HEIGHT, type CharacterDef } from './types';
+import { CHARACTERS, MAPS, type Fighter, type AttackType, GROUND_Y, ARENA_WIDTH, ARENA_HEIGHT, type CharacterDef, type MapDef } from './types';
 
 function createFighter(char: CharacterDef, x: number, isPlayer: boolean): Fighter {
   return {
@@ -29,6 +29,7 @@ export function FighterslandGame() {
   const aiRef = useRef<Fighter | null>(null);
   const [playerChar, setPlayerChar] = useState<CharacterDef | null>(null);
   const [aiChar, setAiChar] = useState<CharacterDef | null>(null);
+  const [selectedMap, setSelectedMap] = useState<MapDef>(MAPS[0]);
   const [round, setRound] = useState(1);
   const [playerWins, setPlayerWins] = useState(0);
   const [aiWins, setAiWins] = useState(0);
@@ -211,7 +212,7 @@ export function FighterslandGame() {
         a.state = 'ko';
         winsRef.current.player += 1;
         setPlayerWins(winsRef.current.player);
-        setMessage(winsRef.current.player >= 2 ? '¡Tú ganas el match!' : '¡Tú ganas el round!');
+        setMessage(winsRef.current.player >= 2 ? '\u00a1T\u00fa ganas el match!' : '\u00a1T\u00fa ganas el round!');
         if (winsRef.current.player >= 2) setGameOver(true);
         setForce(f => f + 1);
       }
@@ -223,11 +224,11 @@ export function FighterslandGame() {
         shake.current *= 0.82;
         if (shake.current < 0.5) shake.current = 0;
       }
-      draw(ctx, playerRef.current, aiRef.current, shake.current);
+      draw(ctx, playerRef.current, aiRef.current, shake.current, selectedMap);
     }
 
     raf.current = requestAnimationFrame(loop);
-  }, [gameOver, inSelect]);
+  }, [gameOver, inSelect, selectedMap]);
 
   useEffect(() => {
     raf.current = requestAnimationFrame(loop);
@@ -253,8 +254,8 @@ export function FighterslandGame() {
     return (
       <div className="relative w-full h-[calc(100vh-56px)] bg-slate-900 flex flex-col items-center justify-center overflow-hidden text-white">
         <h1 className="text-3xl font-bold mb-2 text-amber-400">Fightersland</h1>
-        <p className="mb-6 text-slate-300">Elige tu fighter (IA recibe uno aleatorio)</p>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl px-4">
+        <p className="mb-4 text-slate-300">Elige tu fighter (IA recibe uno aleatorio)</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl px-4 mb-6">
           {CHARACTERS.map(c => (
             <button
               key={c.id}
@@ -268,11 +269,23 @@ export function FighterslandGame() {
             </button>
           ))}
         </div>
+        <p className="mb-2 text-slate-300">Elige mapa</p>
+        <div className="flex gap-4 mb-4">
+          {MAPS.map(m => (
+            <button
+              key={m.id}
+              onClick={() => setSelectedMap(m)}
+              className={`px-4 py-2 rounded border-2 ${selectedMap.id === m.id ? 'border-amber-500 bg-slate-700' : 'border-slate-600 bg-slate-800'}`}
+            >
+              {m.name}
+            </button>
+          ))}
+        </div>
         {showTutorial && (
           <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-10">
             <div className="bg-slate-800 p-6 rounded-lg text-center max-w-md">
               <h2 className="text-xl font-bold mb-3">Fightersland - Tutorial</h2>
-              <p className="mb-2 text-sm">A/D o flechas: mover<br />J/K/L: golpes rápido/medio/fuerte (mantén para charge)<br />S: bloquear<br />Shift/Espacio: esquivar atrás</p>
+              <p className="mb-2 text-sm">A/D o flechas: mover<br />J/K/L: golpes r\u00e1pido/medio/fuerte (mant\u00e9n para charge)<br />S: bloquear<br />Shift/Espacio: esquivar atr\u00e1s</p>
               <p className="mb-4 text-xs opacity-80">Mejor de 3 rounds. Personajes 100% ficticios. Sin sangre.</p>
               <button onClick={skipTutorial} className="px-4 py-2 bg-amber-600 hover:bg-amber-500 rounded font-bold">Saltar</button>
             </div>
@@ -292,12 +305,12 @@ export function FighterslandGame() {
         style={{ imageRendering: 'pixelated' }}
       />
       <div className="absolute top-2 left-4 text-white text-sm font-mono">
-        {message} | {playerChar?.name ?? 'P'} {playerWins} - {aiWins} {aiChar?.name ?? 'AI'} | R{round}
+        {message} | {playerChar?.name ?? 'P'} {playerWins} - {aiWins} {aiChar?.name ?? 'AI'} | R{round} | {selectedMap.name}
       </div>
       {gameOver && (
         <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10">
           <div className="bg-slate-800 p-6 rounded-lg text-center text-white">
-            <h2 className="text-2xl font-bold mb-4">{winsRef.current.player >= 2 ? '¡Victoria!' : 'Derrota'}</h2>
+            <h2 className="text-2xl font-bold mb-4">{winsRef.current.player >= 2 ? '\u00a1Victoria!' : 'Derrota'}</h2>
             <button
               onClick={() => setInSelect(true)}
               className="px-6 py-2 bg-amber-600 hover:bg-amber-500 rounded font-bold"
@@ -323,16 +336,16 @@ export function FighterslandGame() {
   );
 }
 
-function draw(ctx: CanvasRenderingContext2D, p: Fighter, a: Fighter, shakeAmt: number) {
+function draw(ctx: CanvasRenderingContext2D, p: Fighter, a: Fighter, shakeAmt: number, map: MapDef) {
   ctx.save();
   if (shakeAmt > 0) {
     ctx.translate((Math.random() - 0.5) * shakeAmt, (Math.random() - 0.5) * shakeAmt);
   }
-  ctx.fillStyle = '#1e293b';
+  ctx.fillStyle = map.bg;
   ctx.fillRect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
-  ctx.fillStyle = '#334155';
+  ctx.fillStyle = map.ground;
   ctx.fillRect(0, GROUND_Y + 20, ARENA_WIDTH, 120);
-  ctx.strokeStyle = '#475569';
+  ctx.strokeStyle = map.lines;
   for (let i = 0; i < 5; i++) {
     ctx.beginPath();
     ctx.moveTo(0, GROUND_Y + 30 + i * 18);
