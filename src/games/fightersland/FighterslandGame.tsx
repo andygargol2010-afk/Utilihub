@@ -34,26 +34,34 @@ export function FighterslandGame() {
   const [playerWins, setPlayerWins] = useState(0);
   const [aiWins, setAiWins] = useState(0);
   const [showTutorial, setShowTutorial] = useState(true);
-  const [message, setMessage] = useState('Elige tu fighter');
+  const [message, setMessage] = useState('Elige modo y fighter');
   const [force, setForce] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [inSelect, setInSelect] = useState(true);
+  const [mode, setMode] = useState<'vsai' | '2p'>('vsai');
+  const [p2CharSelect, setP2CharSelect] = useState<CharacterDef | null>(null);
   const keys = useRef<Set<string>>(new Set());
   const raf = useRef<number>(0);
   const lastChargeKey = useRef<AttackType | null>(null);
+  const lastChargeKeyP2 = useRef<AttackType | null>(null);
   const hitstop = useRef(0);
   const shake = useRef(0);
   const winsRef = useRef({ player: 0, ai: 0 });
 
   const skipTutorial = useCallback(() => setShowTutorial(false), []);
 
-  const startFight = useCallback((pChar: CharacterDef) => {
-    const others = CHARACTERS.filter(c => c.id !== pChar.id);
-    const aChar = others[Math.floor(Math.random() * others.length)];
+  const startFight = useCallback((pChar: CharacterDef, p2Char?: CharacterDef) => {
+    let aChar: CharacterDef;
+    if (mode === '2p' && p2Char) {
+      aChar = p2Char;
+    } else {
+      const others = CHARACTERS.filter(c => c.id !== pChar.id);
+      aChar = others[Math.floor(Math.random() * others.length)];
+    }
     setPlayerChar(pChar);
     setAiChar(aChar);
     playerRef.current = createFighter(pChar, 200, true);
-    aiRef.current = createFighter(aChar, 700, false);
+    aiRef.current = createFighter(aChar, 700, mode === '2p');
     setInSelect(false);
     setMessage('Round 1');
     setRound(1);
@@ -62,13 +70,13 @@ export function FighterslandGame() {
     winsRef.current = { player: 0, ai: 0 };
     setGameOver(false);
     setForce(f => f + 1);
-  }, []);
+  }, [mode]);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       const k = e.key.toLowerCase();
       keys.current.add(k);
-      if (['j', 'k', 'l', 's', 'a', 'd', ' '].includes(k)) e.preventDefault();
+      if (['j', 'k', 'l', 's', 'a', 'd', ' ', 'u', 'i', 'o', 'arrowleft', 'arrowright', 'arrowdown', 'enter'].includes(k)) e.preventDefault();
     };
     const up = (e: KeyboardEvent) => keys.current.delete(e.key.toLowerCase());
     window.addEventListener('keydown', down);
@@ -98,7 +106,7 @@ export function FighterslandGame() {
     return true;
   };
 
-  const updateFighter = (f: Fighter, isAI: boolean, opponent: Fighter) => {
+  const updateFighter = (f: Fighter, isAI: boolean, opponent: Fighter, isP2 = false) => {
     if (hitstop.current > 0) return;
     if (f.state === 'ko' || f.hitstunTimer > 0) {
       f.hitstunTimer = Math.max(0, f.hitstunTimer - 1);
@@ -109,23 +117,32 @@ export function FighterslandGame() {
     }
 
     if (!isAI) {
-      if (keys.current.has('a') || keys.current.has('arrowleft')) {
+      const moveLeft = isP2 ? 'arrowleft' : 'a';
+      const moveRight = isP2 ? 'arrowright' : 'd';
+      const blockKey = isP2 ? 'arrowdown' : 's';
+      const dodgeKey = isP2 ? 'enter' : ' ';
+      const fastKey = isP2 ? 'u' : 'j';
+      const medKey = isP2 ? 'i' : 'k';
+      const strongKey = isP2 ? 'o' : 'l';
+      const chargeRef = isP2 ? lastChargeKeyP2 : lastChargeKey;
+
+      if (keys.current.has(moveLeft)) {
         f.x = Math.max(40, f.x - 4.2);
         f.facing = -1;
         f.state = 'walk';
-      } else if (keys.current.has('d') || keys.current.has('arrowright')) {
+      } else if (keys.current.has(moveRight)) {
         f.x = Math.min(ARENA_WIDTH - 40, f.x + 4.2);
         f.facing = 1;
         f.state = 'walk';
       } else if (f.state === 'walk') f.state = 'idle';
 
-      if ((keys.current.has('shift') || keys.current.has(' ')) && f.dodgeTimer <= 0 && f.state !== 'attack') {
+      if (keys.current.has(dodgeKey) && f.dodgeTimer <= 0 && f.state !== 'attack') {
         f.state = 'dodge';
         f.dodgeTimer = 22;
         f.vx = f.facing * -8;
       }
 
-      if (keys.current.has('s') && f.state !== 'attack' && f.dodgeTimer <= 0) {
+      if (keys.current.has(blockKey) && f.state !== 'attack' && f.dodgeTimer <= 0) {
         f.state = 'block';
         f.blockTimer = 14;
       } else if (f.blockTimer > 0) {
@@ -133,15 +150,15 @@ export function FighterslandGame() {
         if (f.blockTimer <= 0 && f.state === 'block') f.state = 'idle';
       }
 
-      const atkKey = keys.current.has('j') ? 'fast' as AttackType : keys.current.has('k') ? 'medium' : keys.current.has('l') ? 'strong' : null;
+      const atkKey = keys.current.has(fastKey) ? 'fast' as AttackType : keys.current.has(medKey) ? 'medium' : keys.current.has(strongKey) ? 'strong' : null;
       if (atkKey && f.state !== 'attack' && f.dodgeTimer <= 0 && f.blockTimer <= 0) {
         f.isCharging = true;
         f.charge = Math.min(55, f.charge + 1.4);
-        lastChargeKey.current = atkKey;
+        chargeRef.current = atkKey;
       } else if (f.isCharging && !atkKey) {
         const mult = 1 + f.charge / 32;
         f.state = 'attack';
-        f.attackType = lastChargeKey.current || 'fast';
+        f.attackType = chargeRef.current || 'fast';
         f.attackTimer = Math.floor(16 * mult);
         f.isCharging = false;
       }
@@ -197,14 +214,15 @@ export function FighterslandGame() {
       const p = playerRef.current;
       const a = aiRef.current;
 
-      updateFighter(p, false, a);
-      updateFighter(a, true, p);
+      updateFighter(p, false, a, false);
+      updateFighter(a, mode !== '2p', p, mode === '2p');
 
       if (p.hp <= 0 && p.state !== 'ko') {
         p.state = 'ko';
         winsRef.current.ai += 1;
         setAiWins(winsRef.current.ai);
-        setMessage(winsRef.current.ai >= 2 ? 'AI gana el match!' : 'AI gana el round!');
+        const winner = mode === '2p' ? (aiChar?.name ?? 'P2') : 'AI';
+        setMessage(winsRef.current.ai >= 2 ? `${winner} gana el match!` : `${winner} gana el round!`);
         if (winsRef.current.ai >= 2) setGameOver(true);
         setForce(f => f + 1);
       }
@@ -212,7 +230,8 @@ export function FighterslandGame() {
         a.state = 'ko';
         winsRef.current.player += 1;
         setPlayerWins(winsRef.current.player);
-        setMessage(winsRef.current.player >= 2 ? '\u00a1T\u00fa ganas el match!' : '\u00a1T\u00fa ganas el round!');
+        const winner = mode === '2p' ? (playerChar?.name ?? 'P1') : 'T\u00fa';
+        setMessage(winsRef.current.player >= 2 ? `\u00a1${winner} ganas el match!` : `\u00a1${winner} ganas el round!`);
         if (winsRef.current.player >= 2) setGameOver(true);
         setForce(f => f + 1);
       }
@@ -228,7 +247,7 @@ export function FighterslandGame() {
     }
 
     raf.current = requestAnimationFrame(loop);
-  }, [gameOver, inSelect, selectedMap]);
+  }, [gameOver, inSelect, selectedMap, mode, playerChar, aiChar]);
 
   useEffect(() => {
     raf.current = requestAnimationFrame(loop);
@@ -236,11 +255,11 @@ export function FighterslandGame() {
   }, [loop]);
 
   useEffect(() => {
-    if (!inSelect && (playerRef.current?.hp ?? 1) <= 0 || (aiRef.current?.hp ?? 1) <= 0 && !gameOver) {
+    if (!inSelect && !gameOver && ((playerRef.current?.hp ?? 1) <= 0 || (aiRef.current?.hp ?? 1) <= 0)) {
       const t = setTimeout(() => {
         if (winsRef.current.player < 2 && winsRef.current.ai < 2 && playerChar && aiChar) {
           playerRef.current = createFighter(playerChar, 200, true);
-          aiRef.current = createFighter(aiChar, 700, false);
+          aiRef.current = createFighter(aiChar, 700, mode === '2p');
           setRound(r => r + 1);
           setMessage(`Round ${round + 1}`);
           setForce(f => f + 1);
@@ -248,18 +267,27 @@ export function FighterslandGame() {
       }, 2200);
       return () => clearTimeout(t);
     }
-  }, [force, round, gameOver, inSelect, playerChar, aiChar]);
+  }, [force, round, gameOver, inSelect, playerChar, aiChar, mode]);
 
   if (inSelect) {
     return (
       <div className="relative w-full h-[calc(100vh-56px)] bg-slate-900 flex flex-col items-center justify-center overflow-hidden text-white">
         <h1 className="text-3xl font-bold mb-2 text-amber-400">Fightersland</h1>
-        <p className="mb-4 text-slate-300">Elige tu fighter (IA recibe uno aleatorio)</p>
+        <p className="mb-2 text-slate-300">Modo</p>
+        <div className="flex gap-4 mb-4">
+          <button onClick={() => setMode('vsai')} className={`px-4 py-2 rounded border-2 ${mode === 'vsai' ? 'border-amber-500 bg-slate-700' : 'border-slate-600'}`}>Vs IA</button>
+          <button onClick={() => setMode('2p')} className={`px-4 py-2 rounded border-2 ${mode === '2p' ? 'border-amber-500 bg-slate-700' : 'border-slate-600'}`}>2 Jugadores Local</button>
+        </div>
+        <p className="mb-4 text-slate-300">{mode === 'vsai' ? 'Elige tu fighter (IA aleatoria)' : 'Elige P1 y P2'}</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl px-4 mb-6">
           {CHARACTERS.map(c => (
             <button
               key={c.id}
-              onClick={() => startFight(c)}
+              onClick={() => {
+                if (mode === 'vsai') startFight(c);
+                else if (!p2CharSelect) setP2CharSelect(c);
+                else startFight(p2CharSelect, c); // wait, better flow
+              }}
               className="p-4 rounded-lg border-2 border-slate-600 hover:border-amber-500 bg-slate-800 text-left transition"
               style={{ borderColor: c.color }}
             >
@@ -269,6 +297,9 @@ export function FighterslandGame() {
             </button>
           ))}
         </div>
+        {mode === '2p' && p2CharSelect && (
+          <p className="mb-2">P1: {p2CharSelect.name} seleccionado. Ahora elige P2.</p>
+        )}
         <p className="mb-2 text-slate-300">Elige mapa</p>
         <div className="flex gap-4 mb-4">
           {MAPS.map(m => (
@@ -285,8 +316,8 @@ export function FighterslandGame() {
           <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-10">
             <div className="bg-slate-800 p-6 rounded-lg text-center max-w-md">
               <h2 className="text-xl font-bold mb-3">Fightersland - Tutorial</h2>
-              <p className="mb-2 text-sm">A/D o flechas: mover<br />J/K/L: golpes r\u00e1pido/medio/fuerte (mant\u00e9n para charge)<br />S: bloquear<br />Shift/Espacio: esquivar atr\u00e1s</p>
-              <p className="mb-4 text-xs opacity-80">Mejor de 3 rounds. Personajes 100% ficticios. Sin sangre.</p>
+              <p className="mb-2 text-sm">P1: A/D mover, J/K/L golpes (mant\u00e9n charge), S bloquear, Espacio esquivar<br />P2 (local): Flechas izq/der, U/I/O golpes, Abajo bloquear, Enter esquivar</p>
+              <p className="mb-4 text-xs opacity-80">Mejor de 3 rounds. Personajes 100% ficticios. Sin sangre. Offline only.</p>
               <button onClick={skipTutorial} className="px-4 py-2 bg-amber-600 hover:bg-amber-500 rounded font-bold">Saltar</button>
             </div>
           </div>
@@ -305,14 +336,14 @@ export function FighterslandGame() {
         style={{ imageRendering: 'pixelated' }}
       />
       <div className="absolute top-2 left-4 text-white text-sm font-mono">
-        {message} | {playerChar?.name ?? 'P'} {playerWins} - {aiWins} {aiChar?.name ?? 'AI'} | R{round} | {selectedMap.name}
+        {message} | {playerChar?.name ?? 'P1'} {playerWins} - {aiWins} {aiChar?.name ?? (mode === '2p' ? 'P2' : 'AI')} | R{round} | {selectedMap.name} | {mode}
       </div>
       {gameOver && (
         <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10">
           <div className="bg-slate-800 p-6 rounded-lg text-center text-white">
-            <h2 className="text-2xl font-bold mb-4">{winsRef.current.player >= 2 ? '\u00a1Victoria!' : 'Derrota'}</h2>
+            <h2 className="text-2xl font-bold mb-4">{winsRef.current.player >= 2 ? '\u00a1Victoria P1!' : 'Victoria P2/AI'}</h2>
             <button
-              onClick={() => setInSelect(true)}
+              onClick={() => { setInSelect(true); setP2CharSelect(null); }}
               className="px-6 py-2 bg-amber-600 hover:bg-amber-500 rounded font-bold"
             >
               Volver a seleccionar
