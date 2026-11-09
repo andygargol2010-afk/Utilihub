@@ -36,19 +36,19 @@ export function BeaufortTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
   const status =
     result.status === "empty"
       ? es
-        ? "La velocidad está vacía. No se inventa una fuerza."
-        : "The speed is empty. No force is invented."
+        ? "Introduce una velocidad para calcular la fuerza."
+        : "Enter a wind speed to calculate the force."
       : result.status === "invalid"
         ? result.error === "negative"
           ? es
-            ? "La velocidad no puede ser negativa. No se inventa una fuerza."
-            : "Speed cannot be negative. No force is invented."
+            ? "La velocidad no puede ser negativa."
+            : "Speed cannot be negative."
           : es
-            ? "Ingresá un número. No se inventa una fuerza."
-            : "Enter a number. No force is invented."
+            ? "Ingresa un número válido."
+            : "Enter a valid number."
         : es
-          ? `Fuerza ${result.force} lista. No se inventó una fuerza 13.`
-          : `Force ${result.force} ready. Force 13 was not invented.`;
+          ? `Fuerza ${result.force} calculada según la escala WMO (0-12).`
+          : `Force ${result.force} calculated on the WMO scale (0-12).`;
 
   return (
     <div className="space-y-4">
