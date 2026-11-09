@@ -35,6 +35,50 @@ export const CHARACTERS: CharacterDef[] = [
       strong: 'spin',
     },
   },
+  {
+    id: 'viking',
+    name: 'Bjorn the Frost',
+    color: '#8e44ad',
+    accent: '#ecf0f1',
+    attackAnim: {
+      fast: 'axe',
+      medium: 'bash',
+      strong: 'charge',
+    },
+  },
+  {
+    id: 'storm',
+    name: 'Aetherion Storm',
+    color: '#2980b9',
+    accent: '#f39c12',
+    attackAnim: {
+      fast: 'bolt',
+      medium: 'wave',
+      strong: 'tempest',
+    },
+  },
+  {
+    id: 'grove',
+    name: 'Thornroot Grove',
+    color: '#27ae60',
+    accent: '#f1c40f',
+    attackAnim: {
+      fast: 'vine',
+      medium: 'root',
+      strong: 'bloom',
+    },
+  },
+  {
+    id: 'ember',
+    name: 'Emberclaw Forge',
+    color: '#e67e22',
+    accent: '#e74c3c',
+    attackAnim: {
+      fast: 'claw',
+      medium: 'flame',
+      strong: 'erupt',
+    },
+  },
 ];
 
 export interface Fighter {
