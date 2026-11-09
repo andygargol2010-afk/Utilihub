@@ -42,6 +42,7 @@ export function FighterslandGame() {
   const lastChargeKey = useRef<AttackType | null>(null);
   const hitstop = useRef(0);
   const shake = useRef(0);
+  const winsRef = useRef({ player: 0, ai: 0 });
 
   const skipTutorial = useCallback(() => setShowTutorial(false), []);
 
@@ -70,12 +71,12 @@ export function FighterslandGame() {
     const dmg = Math.floor(base * chargeMult);
     defender.hp = Math.max(0, defender.hp - dmg);
     defender.state = defender.hp <= 0 ? 'ko' : 'hitstun';
-    defender.hitstunTimer = 18 + Math.floor(attacker.charge / 10);
-    defender.vx = attacker.facing * (5 + attacker.charge / 15);
+    defender.hitstunTimer = 20 + Math.floor(attacker.charge / 8);
+    defender.vx = attacker.facing * (6 + attacker.charge / 12);
     defender.charge = 0;
     defender.isCharging = false;
-    hitstop.current = 6 + Math.floor(attacker.charge / 20);
-    shake.current = 4 + attacker.charge / 25;
+    hitstop.current = 8 + Math.floor(attacker.charge / 15);
+    shake.current = 5 + attacker.charge / 20;
     return true;
   };
 
@@ -84,7 +85,7 @@ export function FighterslandGame() {
     if (f.state === 'ko' || f.hitstunTimer > 0) {
       f.hitstunTimer = Math.max(0, f.hitstunTimer - 1);
       f.x = Math.max(40, Math.min(ARENA_WIDTH - 40, f.x + f.vx));
-      f.vx *= 0.78;
+      f.vx *= 0.75;
       if (f.hitstunTimer <= 0 && f.hp > 0) f.state = 'idle';
       return;
     }
@@ -108,7 +109,7 @@ export function FighterslandGame() {
 
       if (keys.current.has('s') && f.state !== 'attack' && f.dodgeTimer <= 0) {
         f.state = 'block';
-        f.blockTimer = 12;
+        f.blockTimer = 14;
       } else if (f.blockTimer > 0) {
         f.blockTimer--;
         if (f.blockTimer <= 0 && f.state === 'block') f.state = 'idle';
@@ -123,26 +124,29 @@ export function FighterslandGame() {
         const mult = 1 + f.charge / 32;
         f.state = 'attack';
         f.attackType = lastChargeKey.current || 'fast';
-        f.attackTimer = Math.floor(15 * mult);
+        f.attackTimer = Math.floor(16 * mult);
         f.isCharging = false;
       }
     } else {
       const dist = opponent.x - f.x;
       const absDist = Math.abs(dist);
-      if (absDist > 95) {
-        f.x += Math.sign(dist) * 2.6;
+      if (absDist > 90) {
+        f.x += Math.sign(dist) * 2.8;
         f.facing = Math.sign(dist) as 1 | -1;
         f.state = 'walk';
       } else {
         f.state = 'idle';
-        if (Math.random() < 0.05 && f.attackTimer <= 0 && f.dodgeTimer <= 0) {
+        if (Math.random() < 0.06 && f.attackTimer <= 0 && f.dodgeTimer <= 0) {
           const types: AttackType[] = ['fast', 'medium', 'strong'];
           f.state = 'attack';
           f.attackType = types[Math.floor(Math.random() * 3)];
           f.attackTimer = 16;
-          f.charge = Math.random() < 0.35 ? 25 : 0;
+          f.charge = Math.random() < 0.4 ? 20 + Math.random() * 20 : 0;
         }
-        if (Math.random() < 0.03 && opponent.state === 'attack') f.state = 'block';
+        if (Math.random() < 0.04 && opponent.state === 'attack') {
+          f.state = 'block';
+          f.blockTimer = 10;
+        }
       }
     }
 
@@ -154,7 +158,7 @@ export function FighterslandGame() {
 
     if (f.state === 'attack') {
       f.attackTimer--;
-      if (f.attackTimer > 5 && f.attackTimer < 11 && Math.abs(f.x - opponent.x) < 80) {
+      if (f.attackTimer > 4 && f.attackTimer < 12 && Math.abs(f.x - opponent.x) < 85) {
         applyHit(f, opponent);
       }
       if (f.attackTimer <= 0) {
@@ -180,18 +184,18 @@ export function FighterslandGame() {
 
       if (p.hp <= 0 && p.state !== 'ko') {
         p.state = 'ko';
-        const newWins = aiWins + 1;
-        setAiWins(newWins);
-        setMessage(newWins >= 2 ? 'AI gana el match!' : 'AI gana el round!');
-        if (newWins >= 2) setGameOver(true);
+        winsRef.current.ai += 1;
+        setAiWins(winsRef.current.ai);
+        setMessage(winsRef.current.ai >= 2 ? 'AI gana el match!' : 'AI gana el round!');
+        if (winsRef.current.ai >= 2) setGameOver(true);
         setForce(f => f + 1);
       }
       if (a.hp <= 0 && a.state !== 'ko') {
         a.state = 'ko';
-        const newWins = playerWins + 1;
-        setPlayerWins(newWins);
-        setMessage(newWins >= 2 ? '¡Tú ganas el match!' : '¡Tú ganas el round!');
-        if (newWins >= 2) setGameOver(true);
+        winsRef.current.player += 1;
+        setPlayerWins(winsRef.current.player);
+        setMessage(winsRef.current.player >= 2 ? '¡Tú ganas el match!' : '¡Tú ganas el round!');
+        if (winsRef.current.player >= 2) setGameOver(true);
         setForce(f => f + 1);
       }
     }
@@ -199,14 +203,14 @@ export function FighterslandGame() {
     const ctx = canvasRef.current?.getContext('2d');
     if (ctx) {
       if (shake.current > 0) {
-        shake.current *= 0.85;
+        shake.current *= 0.82;
         if (shake.current < 0.5) shake.current = 0;
       }
       draw(ctx, playerRef.current, aiRef.current, shake.current);
     }
 
     raf.current = requestAnimationFrame(loop);
-  }, [aiWins, playerWins, gameOver]);
+  }, [gameOver]);
 
   useEffect(() => {
     raf.current = requestAnimationFrame(loop);
@@ -216,17 +220,17 @@ export function FighterslandGame() {
   useEffect(() => {
     if ((playerRef.current.hp <= 0 || aiRef.current.hp <= 0) && !gameOver) {
       const t = setTimeout(() => {
-        if (playerWins < 2 && aiWins < 2) {
+        if (winsRef.current.player < 2 && winsRef.current.ai < 2) {
           playerRef.current = createFighter(PLAYER_CHAR, 200, true);
           aiRef.current = createFighter(AI_CHAR, 700, false);
           setRound(r => r + 1);
           setMessage(`Round ${round + 1}`);
           setForce(f => f + 1);
         }
-      }, 2000);
+      }, 2200);
       return () => clearTimeout(t);
     }
-  }, [force, round, gameOver, playerWins, aiWins]);
+  }, [force, round, gameOver]);
 
   return (
     <div className="relative w-full h-[calc(100vh-56px)] bg-slate-900 flex flex-col items-center justify-center overflow-hidden">
@@ -273,7 +277,6 @@ function draw(ctx: CanvasRenderingContext2D, p: Fighter, a: Fighter, shakeAmt: n
   ctx.fillRect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
   ctx.fillStyle = '#334155';
   ctx.fillRect(0, GROUND_Y + 20, ARENA_WIDTH, 120);
-  // simple floor lines for map feel
   ctx.strokeStyle = '#475569';
   for (let i = 0; i < 5; i++) {
     ctx.beginPath();
@@ -281,6 +284,7 @@ function draw(ctx: CanvasRenderingContext2D, p: Fighter, a: Fighter, shakeAmt: n
     ctx.lineTo(ARENA_WIDTH, GROUND_Y + 30 + i * 18);
     ctx.stroke();
   }
+  // HP bars
   ctx.fillStyle = '#334155';
   ctx.fillRect(20, 20, 300, 18);
   ctx.fillStyle = '#ef4444';
@@ -299,29 +303,58 @@ function drawFighter(ctx: CanvasRenderingContext2D, f: Fighter) {
   ctx.save();
   ctx.translate(x, y);
   ctx.scale(facing, 1);
+  // Body
   ctx.fillStyle = char.color;
-  ctx.fillRect(-12, -50, 24, 40);
+  ctx.fillRect(-14, -48, 28, 42);
+  // Head
   ctx.fillStyle = char.accent;
-  ctx.fillRect(-8, -68, 16, 16);
+  ctx.fillRect(-10, -70, 20, 18);
+  // Simple face pixel
+  ctx.fillStyle = '#111';
+  ctx.fillRect(-4, -64, 3, 3);
+  ctx.fillRect(2, -64, 3, 3);
+
+  const anim = f.attackType && char.attackAnim ? char.attackAnim[f.attackType] : 'thrust';
+
   if (state === 'attack') {
     ctx.fillStyle = '#fbbf24';
-    const len = 22 + (f.charge || 0) / 2;
-    ctx.fillRect(8, -32, len, 8);
+    const chargeBoost = (f.charge || 0) / 3;
+    if (anim === 'thrust' || anim === 'jab' || anim === 'bolt' || anim === 'vine' || anim === 'claw' || anim === 'axe') {
+      ctx.fillRect(10, -34, 28 + chargeBoost, 6);
+    } else if (anim === 'slash' || anim === 'kick' || anim === 'wave' || anim === 'root' || anim === 'flame' || anim === 'bash') {
+      ctx.fillRect(8, -42, 22 + chargeBoost / 2, 14);
+      ctx.fillRect(14, -28, 18, 8);
+    } else {
+      // strong / overhead / spin / etc
+      ctx.fillRect(6, -56, 16 + chargeBoost / 2, 10);
+      ctx.fillRect(12, -40, 26 + chargeBoost, 8);
+    }
   }
   if (state === 'block') {
     ctx.fillStyle = '#60a5fa';
-    ctx.fillRect(6, -42, 10, 32);
+    ctx.fillRect(8, -46, 12, 36);
   }
   if (state === 'hitstun') {
     ctx.fillStyle = '#f87171';
-    ctx.fillRect(-4, -20, 8, 8);
+    ctx.globalAlpha = 0.8;
+    ctx.fillRect(-6, -30, 12, 12);
+    ctx.globalAlpha = 1;
+  }
+  if (state === 'dodge') {
+    ctx.globalAlpha = 0.6;
   }
   if (f.isCharging) {
     ctx.fillStyle = '#facc15';
-    ctx.globalAlpha = 0.7;
-    const w = 8 + f.charge;
-    ctx.fillRect(-w / 2, -82, w, 5);
+    ctx.globalAlpha = 0.75;
+    const w = 10 + f.charge * 0.8;
+    ctx.fillRect(-w / 2, -86, w, 6);
     ctx.globalAlpha = 1;
+    // telegraph sparks
+    if (f.charge > 30) {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(-4, -92, 3, 3);
+      ctx.fillRect(4, -94, 3, 3);
+    }
   }
   ctx.restore();
 }
