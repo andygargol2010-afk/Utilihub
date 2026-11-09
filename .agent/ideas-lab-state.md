@@ -70,7 +70,7 @@ path_es: /es/juegos/hangman-classic
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User selects category, guesses letters, sees progressive SVG hangman and revealed word, reaches win or lose state with stats, shares PNG or URL.
 share: both
 next_step_required: yes
@@ -79,6 +79,7 @@ notes: Domain roll: FLEX (p_fixed 0.35 not hit in sim), weighted among core+grow
 2. sudoku-player: value 4, share 3, search 5, distinct 4, feas 4, perf 5. Total 25. Closest: minesweeper, connect-four. Metaphor: constraint grid fill. IP: traditional sudoku rules, generic.
 3. checkers-classic: value 4, share 4, search 4, distinct 4, feas 4, perf 5. Total 25. Closest: connect-four, battleship. Metaphor: turn-based jumps board. IP: traditional draughts, generic pieces.
 Rejected particle patterns. Core by run 2: basic guess + SVG progress + win/lose.
+Run 1: added catalog entry for hangman-classic (slugEs same), wired in registry MAP to existing HangmanGame component. Playable core available at /games/hangman-classic. Next: polish SVG, categories if needed, a11y, PNG branding.
 adsense-prep_runs: 7
 ```
 
