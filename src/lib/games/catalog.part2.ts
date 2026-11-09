@@ -91,6 +91,17 @@ export const GAMES: readonly GameDef[] = [
     hasScore: false,
   },
   {
+    slug: "hangman-classic",
+    slugEs: "hangman-classic",
+    nameEn: "Hangman Classic",
+    nameEs: "Ahorcado Clásico",
+    tag: "puzzle",
+    emoji: "🔤",
+    summaryEn: "Interactive classic Hangman. Select category, guess letters, progressive SVG hangman, win/lose with stats, share PNG or URL.",
+    summaryEs: "Ahorcado clásico interactivo. Seleccioná categoría, adiviná letras, figura SVG progresiva, ganar/perder con stats, compartir PNG o URL.",
+    hasScore: false,
+  },
+  {
     slug: "snake",
     slugEs: "snake",
     nameEn: "Snake",
