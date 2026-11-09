@@ -1,54 +1,16 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
-import { ArrowRight, BriefcaseBusiness, CheckCircle2, GraduationCap, FileText, Search } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { WORK_KITS, kitTools } from "@/lib/work-kits";
-import { absoluteUrl, breadcrumbSchema, ogImage, SITE_NAME } from "@/lib/seo";
-
-const KIT_ES: Record<string, { name: string; eyebrow: string; description: string; outcome: string }> = {
-  freelancers: {
-    name: "Kit para freelancers",
-    eyebrow: "Trabajá y entregá mejor",
-    description: "Prepará una entrega profesional: revisá texto, organizá archivos, ajustá imágenes y calculá montos.",
-    outcome: "De una idea a una entrega clara lista para compartir.",
-  },
-  "seo-y-contenido": {
-    name: "SEO y contenido",
-    eyebrow: "Investigá y publicá",
-    description: "Limpiá y prepará contenido para una página: extensión, URL, expresiones y markup más liviano.",
-    outcome: "Contenido más claro, consistente y fácil de publicar.",
-  },
-  "preparar-documentos": {
-    name: "Preparar documentos",
-    eyebrow: "Antes de enviar",
-    description: "Validá datos, convertí formatos y organizá PDFs e imágenes directamente en el navegador.",
-    outcome: "Documentos más limpios y compatibles, listos para entregar.",
-  },
-  "archivos-y-formatos": {
-    name: "Archivos y formatos",
-    eyebrow: "Convertí sin subir archivos",
-    description: "Resolvé las conversiones más comunes entre imágenes, PDF, datos y unidades de almacenamiento.",
-    outcome: "El formato correcto para cada destino, con procesamiento local.",
-  },
-  "desarrollo-web": {
-    name: "Desarrollo web",
-    eyebrow: "Depurá y transformá datos",
-    description: "Formateá, validá, codificá y transformá datos y snippets web sin salir del navegador.",
-    outcome: "Datos legibles y formatos listos para integrar.",
-  },
-  estudiantes: {
-    name: "Kit para estudiantes",
-    eyebrow: "Estudiá con foco",
-    description: "Resolvé cálculos, organizá fechas y prepará materiales de estudio con utilidades rápidas.",
-    outcome: "Más tiempo para entender y menos en tareas repetitivas.",
-  },
-};
-
-const title = "Kits por objetivo | UtiliHub";
-const description = "Kits gratuitos de herramientas online para freelancers, SEO, documentos y estudiantes. Sin registro.";
-const icons = [BriefcaseBusiness, Search, FileText, GraduationCap];
+import { KitDeskTrail } from "@/components/kits/KitDeskTrail";
+import { WORK_KITS } from "@/lib/work-kits";
+import { kitTools } from "@/lib/work-kits-tools";
+import { absoluteUrl, breadcrumbSchema, ogImage } from "@/lib/seo";
+import { KIT_ES } from "./-es.kits.part1";
+import { title, description, icons } from "./-es.kits.part2";
 
 export const Route = createFileRoute("/es/kits")({
-  head: () => ({
+  // Layout route: only the hub itself emits canonical/hreflang, so /es/kits/<slug> keeps its own self-canonical.
+  head: ({ matches }) => ({
     meta: [
       { title },
       { name: "description", content: description },
@@ -59,11 +21,14 @@ export const Route = createFileRoute("/es/kits")({
       { property: "og:url", content: absoluteUrl("/es/kits") },
       { property: "og:image", content: ogImage() },
     ],
-    links: [
-      { rel: "canonical", href: absoluteUrl("/es/kits") },
-      { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/kits") },
-      { rel: "alternate", hrefLang: "en", href: absoluteUrl("/kits") },
-    ],
+    links:
+      matches[matches.length - 1]?.routeId === "/es/kits"
+        ? [
+            { rel: "canonical", href: absoluteUrl("/es/kits") },
+            { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/kits") },
+            { rel: "alternate", hrefLang: "en", href: absoluteUrl("/kits") },
+          ]
+        : [],
     scripts: [{ type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@graph": [{ "@type": "CollectionPage", name: title, description, url: absoluteUrl("/es/kits") }, breadcrumbSchema([{ name: "Inicio", path: "/es" }, { name: "Kits" }])] }) }],
   }),
   component: SpanishKitsPage,
@@ -97,6 +62,7 @@ function SpanishKitsPage() {
               <h2 className="mt-1 text-xl font-black group-hover:text-primary">{es.name}</h2>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{es.description}</p>
               <p className="mt-4 text-sm font-semibold">{es.outcome}</p>
+              <KitDeskTrail kitSlug={kit.slug} stepCount={tools.length} locale="es" />
               <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary">Abrir kit <ArrowRight className="size-4" /></span>
             </Link>
           );

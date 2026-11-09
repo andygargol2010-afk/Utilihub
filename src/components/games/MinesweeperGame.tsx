@@ -2,81 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent as R
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestLow, writeBestLow } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-type Diff = "easy" | "medium" | "hard";
-const CONFIG: Record<Diff, { rows: number; cols: number; mines: number }> = {
-  easy: { rows: 9, cols: 9, mines: 10 },
-  medium: { rows: 12, cols: 12, mines: 25 },
-  hard: { rows: 16, cols: 16, mines: 40 },
-};
-
-type Cell = {
-  mine: boolean;
-  open: boolean;
-  flag: boolean;
-  n: number;
-};
-
-function neighbors(r: number, c: number, rows: number, cols: number) {
-  const out: [number, number][] = [];
-  for (let dr = -1; dr <= 1; dr++) {
-    for (let dc = -1; dc <= 1; dc++) {
-      if (!dr && !dc) continue;
-      const rr = r + dr;
-      const cc = c + dc;
-      if (rr >= 0 && rr < rows && cc >= 0 && cc < cols) out.push([rr, cc]);
-    }
-  }
-  return out;
-}
-
-function makeEmpty(rows: number, cols: number): Cell[][] {
-  return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => ({ mine: false, open: false, flag: false, n: 0 })),
-  );
-}
-
-function placeMines(board: Cell[][], mines: number, safeR: number, safeC: number): Cell[][] {
-  const rows = board.length;
-  const cols = board[0]!.length;
-  const next = board.map((row) => row.map((c) => ({ ...c })));
-  let placed = 0;
-  let guard = 0;
-  while (placed < mines && guard < 5000) {
-    guard++;
-    const r = Math.floor(Math.random() * rows);
-    const c = Math.floor(Math.random() * cols);
-    if ((r === safeR && c === safeC) || next[r]![c]!.mine) continue;
-    if (Math.abs(r - safeR) <= 1 && Math.abs(c - safeC) <= 1) continue;
-    next[r]![c]!.mine = true;
-    placed++;
-  }
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      if (next[r]![c]!.mine) continue;
-      next[r]![c]!.n = neighbors(r, c, rows, cols).filter(([rr, cc]) => next[rr]![cc]!.mine).length;
-    }
-  }
-  return next;
-}
-
-function floodOpen(board: Cell[][], r: number, c: number): Cell[][] {
-  const rows = board.length;
-  const cols = board[0]!.length;
-  const next = board.map((row) => row.map((cell) => ({ ...cell })));
-  const stack: [number, number][] = [[r, c]];
-  while (stack.length) {
-    const [cr, cc] = stack.pop()!;
-    const cell = next[cr]![cc]!;
-    if (cell.open || cell.flag) continue;
-    cell.open = true;
-    if (cell.mine || cell.n > 0) continue;
-    for (const [nr, nc] of neighbors(cr, cc, rows, cols)) {
-      if (!next[nr]![nc]!.open && !next[nr]![nc]!.flag) stack.push([nr, nc]);
-    }
-  }
-  return next;
-}
+import { type Diff } from "./MinesweeperGame.part1";
+import { CONFIG, makeEmpty, type Cell, placeMines, floodOpen, neighbors } from "./MinesweeperGame.part2";
 
 export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
@@ -88,6 +15,8 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   const [won, setWon] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [best, setBest] = useState<number | null>(null);
+  const [seed, setSeed] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
   const longPressRef = useRef<{ r: number; c: number; t: number } | null>(null);
   const longFiredRef = useRef(false);
   const boardRef = useRef(board);
@@ -96,6 +25,20 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   boardRef.current = board;
   secondsRef.current = seconds;
   diffRef.current = diff;
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const d = params.get("diff") as Diff | null;
+    if (d && CONFIG[d]) {
+      setDiff(d);
+      setBoard(makeEmpty(CONFIG[d].rows, CONFIG[d].cols));
+    }
+    const s = params.get("seed");
+    if (s) {
+      const n = parseInt(s, 10);
+      if (!Number.isNaN(n)) setSeed(n);
+    }
+  }, []);
 
   useEffect(() => {
     setBest(readBestLow(`minesweeper_${diff}`));
@@ -110,6 +53,14 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   const flags = useMemo(() => board.flat().filter((c) => c.flag).length, [board]);
   const minesLeft = cfg.mines - flags;
 
+  const updateUrl = useCallback((d: Diff, s: number | null) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("diff", d);
+    if (s != null) url.searchParams.set("seed", String(s));
+    else url.searchParams.delete("seed");
+    window.history.replaceState(null, "", url);
+  }, []);
+
   const reset = useCallback(
     (d: Diff = diff) => {
       const c = CONFIG[d];
@@ -119,9 +70,21 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
       setDead(false);
       setWon(false);
       setSeconds(0);
+      setSeed(null);
+      updateUrl(d, null);
     },
-    [diff],
+    [diff, updateUrl],
   );
+
+  const practiceSame = useCallback(() => {
+    if (seed == null) return;
+    const c = CONFIG[diff];
+    setBoard(makeEmpty(c.rows, c.cols));
+    setStarted(false);
+    setDead(false);
+    setWon(false);
+    setSeconds(0);
+  }, [diff, seed]);
 
   const checkWin = (b: Cell[][]) => {
     const ok = b.every((row) => row.every((cell) => cell.mine || cell.open));
@@ -134,8 +97,14 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
   const openAt = (r: number, c: number) => {
     if (dead || won) return;
     let cur = boardRef.current;
+    let currentSeed = seed;
     if (!started) {
-      cur = placeMines(cur, cfg.mines, r, c);
+      if (currentSeed == null) {
+        currentSeed = Math.floor(Math.random() * 1e9);
+        setSeed(currentSeed);
+        updateUrl(diff, currentSeed);
+      }
+      cur = placeMines(cur, cfg.mines, r, c, currentSeed);
       setStarted(true);
     }
     const cell = cur[r]![c]!;
@@ -220,8 +189,77 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
     longPressRef.current = null;
   };
 
+  const shareUrl = useCallback(async () => {
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // fallback silent
+    }
+  }, []);
+
+  const exportPng = useCallback(() => {
+    const rows = board.length;
+    const cols = board[0]?.length || 0;
+    if (!rows || !cols) return;
+    const cellSize = 32;
+    const pad = 24;
+    const headerH = 48;
+    const footerH = 32;
+    const canvas = document.createElement("canvas");
+    canvas.width = cols * cellSize + pad * 2;
+    canvas.height = rows * cellSize + pad * 2 + headerH + footerH;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    // background
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // header
+    ctx.fillStyle = "#10b981";
+    ctx.font = "bold 18px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(es ? "Buscaminas · UtiliHub" : "Minesweeper · UtiliHub", canvas.width / 2, 28);
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "12px system-ui, sans-serif";
+    ctx.fillText(`${es ? "Dificultad" : "Difficulty"}: ${diff} · ${seconds}s`, canvas.width / 2, 46);
+    // board
+    const ox = pad;
+    const oy = pad + headerH;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const cell = board[r]![c]!;
+        const x = ox + c * cellSize;
+        const y = oy + r * cellSize;
+        ctx.fillStyle = cell.open ? "#1e293b" : "#475569";
+        ctx.fillRect(x + 1, y + 1, cellSize - 2, cellSize - 2);
+        if (cell.open && cell.mine) {
+          ctx.font = "20px system-ui";
+          ctx.fillText("💣", x + cellSize / 2, y + cellSize / 2 + 6);
+        } else if (cell.flag) {
+          ctx.font = "20px system-ui";
+          ctx.fillText("🚩", x + cellSize / 2, y + cellSize / 2 + 6);
+        } else if (cell.open && cell.n > 0) {
+          const colors = ["", "#38bdf8", "#34d399", "#fb7185", "#a78bfa", "#fbbf24", "#22d3ee", "#f472b6", "#ffffff"];
+          ctx.fillStyle = colors[cell.n] || "#fff";
+          ctx.font = "bold 16px system-ui";
+          ctx.fillText(String(cell.n), x + cellSize / 2, y + cellSize / 2 + 5);
+        }
+      }
+    }
+    // footer
+    ctx.fillStyle = "#64748b";
+    ctx.font = "11px system-ui";
+    ctx.fillText("utilihub.app", canvas.width / 2, canvas.height - 12);
+    const a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = `utilihub-minesweeper-${diff}-${seed ?? "board"}.png`;
+    a.click();
+  }, [board, diff, seconds, es, seed]);
+
   return (
-    <div className="mx-auto flex max-w-lg flex-col items-center gap-3">
+    <div className="mx-auto flex max-w-lg flex-col items-center gap-3 px-2 sm:px-0">
       <style>{`
         @keyframes mines-open {
           from { transform: scale(0.7); opacity: 0.3; }
@@ -260,6 +298,15 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
           </span>
         )}
         <GamePrimaryButton onClick={() => reset()}>{es ? "Nuevo" : "New"}</GamePrimaryButton>
+        {seed != null && (
+          <GameSecondaryButton onClick={practiceSame}>
+            {es ? "Misma" : "Same"}
+          </GameSecondaryButton>
+        )}
+        <GameSecondaryButton onClick={exportPng}>{es ? "PNG" : "PNG"}</GameSecondaryButton>
+        <GameSecondaryButton onClick={shareUrl}>
+          {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}
+        </GameSecondaryButton>
       </div>
       {(dead || won) && (
         <p className={`text-sm font-bold ${won ? "text-emerald-300" : "text-rose-300"}`}>
@@ -267,7 +314,7 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
         </p>
       )}
       <div
-        className="mines-board grid gap-0.5 rounded-xl p-2.5 select-none touch-manipulation"
+        className="mines-board grid w-full max-w-full gap-px rounded-xl p-1.5 select-none touch-manipulation sm:gap-0.5 sm:p-2.5"
         style={{ gridTemplateColumns: `repeat(${cfg.cols}, minmax(0, 1fr))` }}
       >
         {board.map((row, r) =>
@@ -299,7 +346,8 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
                 onPointerUp={() => onPointerUp(r, c)}
                 onPointerLeave={onPointerCancel}
                 onPointerCancel={onPointerCancel}
-                className={`flex h-7 w-7 items-center justify-center rounded-sm text-xs font-bold transition-colors sm:h-8 sm:w-8 ${cls} ${show ? "mines-open" : ""}`}
+                className={`flex aspect-square items-center justify-center rounded-[2px] text-[10px] font-bold transition-colors sm:rounded-sm sm:text-xs ${cls} ${show ? "mines-open" : ""}`}
+                aria-label={es ? `celda ${r + 1}-${c + 1}` : `cell ${r + 1}-${c + 1}`}
               >
                 {label}
               </button>
@@ -309,8 +357,8 @@ export function MinesweeperGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
       <p className="text-center text-[11px] text-white/50">
         {es
-          ? "Toque = abrir · mantener = bandera · número abierto = acorde"
-          : "Tap = open · hold = flag · open number = chord"}
+          ? "Toque = abrir · mantener = poner bandera · número abierto abre vecinos · Misma = practicar el mismo tablero · Compartir copia el enlace con semilla"
+          : "Tap = open · hold = flag · open number = chord · Same = practice same board · Share copies the seeded link"}
       </p>
     </div>
   );

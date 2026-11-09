@@ -1,0 +1,10 @@
+{
+  "status": "active",
+  "idea": "Shareable Particle Postcard. Arrange 3-6 attractors on canvas, add short message, watch unique particle orbits form a postcard scene, tunable glow/friction, EN/ES labels, shareable URL with state+message, mobile-friendly, high visual payoff. Encourages social sharing for traffic growth.",
+  "domain": "growth-traffic-share",
+  "runs_total": 5,
+  "runs_remaining": 5,
+  "acceptance": "Postcard page live with click/drag attractors, message input, live particles, at least 2 controls, EN/ES, shareable URL (hash or params), mobile OK, polished visual, no HouseModeler3D. Deploy READY. Ads intact.",
+  "notes": "IDEATED 2026-10-13 under GROWTH (U=0.33 <0.50, catalog=playground-experience, method=uniform). Previous Gravity Particles closed. Prefer shareable experiences over calculators.",
+  "catalog": "playground-experience (not catalog calculator)"
+}

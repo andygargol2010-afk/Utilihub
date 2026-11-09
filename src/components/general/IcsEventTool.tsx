@@ -1,26 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import {
-  allDayPreset,
-  buildIcs,
-  emptyIcsInput,
-  exclusiveAllDayEnd,
-  meetingPreset,
-  validateIcs,
-  weeklyPreset,
-  type IcsInput,
-} from "@/lib/general/ics-event";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-const PRESETS: { id: string; label: string; labelEs: string; draft: () => IcsInput }[] = [
-  { id: "meeting", label: "1.5 h meeting", labelEs: "Reunión de 1,5 h", draft: meetingPreset },
-  { id: "day", label: "All-day marker", labelEs: "Día completo", draft: allDayPreset },
-  { id: "weekly", label: "Weekly standup", labelEs: "Standup semanal", draft: weeklyPreset },
-];
+import { buildIcs, emptyIcsInput, exclusiveAllDayEnd, meetingPreset, validateIcs, type IcsInput } from "@/lib/general/ics-event";
+import { type Locale } from "./IcsEventTool.part1";
+import { PRESETS, buttonClass, inputClass } from "./IcsEventTool.part2";
 
 export function IcsEventTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

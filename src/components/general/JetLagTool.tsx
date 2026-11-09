@@ -1,11 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { laPreset, londonPreset, parseClock, planJetLag } from "@/lib/general/jetlag";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
+import { type Locale } from "./JetLagTool.part1";
+import { buttonClass, inputClass } from "./JetLagTool.part2";
 
 export function JetLagTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
@@ -59,7 +56,7 @@ export function JetLagTool({ locale = "en" }: { tool: GeneralTool; locale?: Loca
       ? es ? "Los días previos no pueden ser negativos." : "Days before the flight cannot be negative."
       : plan.error === "range"
         ? es ? "Offsets entre −12 y +14. La hora es HH:MM. El tope diario es 0–4 h." : "Offsets must be −12 to +14. Time is HH:MM. Daily cap is 0–4 h."
-        : es ? "Completá números válidos. Vacío o NaN no arma el plan." : "Enter valid numbers. Empty or NaN does not build a plan."
+        : es ? "Introduce números válidos. Los campos vacíos o inválidos no permiten crear el plan." : "Enter valid numbers. Empty or invalid fields do not build a plan."
     : "";
 
   return (

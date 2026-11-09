@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { Clock3 } from "lucide-react";
-import { ALL_TOOLS, toolHref } from "@/lib/all-tools";
+import { ALL_TOOLS } from "@/lib/all-tools";
 import { useRecentTools } from "@/hooks/use-recent-tools";
 import { spanishToolName } from "@/lib/i18n/es";
-import { englishToolSlug } from "@/lib/route-slugs";
+import { spanishToolSummary } from "@/lib/i18n/es-summaries";
+import { publicToolLink } from "@/lib/route-slugs";
 
 export function RecentToolsSection({ locale = "en" }: { locale?: "en" | "es" }) {
   const { recent, ready } = useRecentTools();
@@ -24,12 +25,12 @@ export function RecentToolsSection({ locale = "en" }: { locale?: "en" | "es" }) 
         {tools.map((tool) => tool ? (
           <Link
             key={tool.slug}
-            to={isSpanish ? (tool.category === "finanzas" ? "/es/finanzas/$slug" : "/es/herramientas/$slug") : (tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug")}
-            params={{ slug: isSpanish ? tool.slug : englishToolSlug(tool) }}
+            to={publicToolLink(tool, isSpanish ? "es" : "en").to as "/tools/$slug"}
+            params={publicToolLink(tool, isSpanish ? "es" : "en").params}
             className="surface-card group p-4 transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lift"
           >
             <p className="font-bold group-hover:text-primary">{isSpanish ? spanishToolName(tool) : tool.name}</p>
-            <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{tool.summary}</p>
+            <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{isSpanish ? spanishToolSummary(tool) : tool.summary}</p>
           </Link>
         ) : null)}
       </div>

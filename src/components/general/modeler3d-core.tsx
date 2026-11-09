@@ -1,23 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  BASE_SIZE, HISTORY_MAX, OBJECT_MAX, NAME_PAIR, STORAGE_KEY,
-  clampPos, clampSize, degToRad, makeGeometry, makeMaterial, normDeg, radToDeg, snapVal,
-  type ShapeKind, type MatPreset, UNIT_CM,
-} from "./modeler3d-helpers";
+import { BASE_SIZE, HISTORY_MAX, OBJECT_MAX, NAME_PAIR, STORAGE_KEY, clampPos, clampSize, degToRad, makeGeometry, makeMaterial, normDeg, radToDeg, snapVal, type ShapeKind, type MatPreset, UNIT_CM } from "./modeler3d-helpers";
 import { makeAlignApi } from "./modeler3d-align";
-import {
-  readNamedScenes, saveNamedSceneEntry, removeNamedScene,
-  tryDecodeShareFromHash, buildShareUrl, scenePresets,
-} from "./modeler3d-scenes";
-
-type SceneObj = { id: string; name: string; kind: ShapeKind; color: string; matPreset?: MatPreset };
-type MeshSnapshot = { id: string; name: string; kind: ShapeKind; color: string; matPreset?: MatPreset; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
-type GroupSnap = { id: string; name: string; childIds: string[]; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
-type HistoryEntry = { meshes: MeshSnapshot[]; groups: GroupSnap[] };
-type ClipItem = { kind: ShapeKind; color: string; matPreset?: MatPreset; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] };
-
-let _id = 0;
-const nextId = () => `m${Date.now().toString(36)}${(_id++).toString(36)}`;
+import { readNamedScenes, saveNamedSceneEntry, removeNamedScene, tryDecodeShareFromHash, buildShareUrl, scenePresets } from "./modeler3d-scenes";
+import { type SceneObj } from "./modeler3d-core.part1";
+import { type HistoryEntry, type ClipItem, type MeshSnapshot, type GroupSnap, nextId } from "./modeler3d-core.part2";
 
 export function useModelerCore(locale: "en" | "es" = "en") {
   const es = locale === "es";
@@ -204,6 +190,18 @@ export function useModelerCore(locale: "en" | "es" = "en") {
 
   const clearSelection = useCallback(() => {
     selectMesh(null);
+  }, [selectMesh]);
+
+  const selectAll = useCallback(() => {
+    const t = threeRef.current;
+    if (!t) return;
+    const inGroup = new Set<string>();
+    for (const g of groupsRef.current.values()) for (const c of g.childIds) inGroup.add(c);
+    const ids = [...Array.from(t.meshes.keys()).filter((id: string) => !inGroup.has(id)), ...Array.from(groupsRef.current.keys())] as string[];
+    if (!ids.length) return;
+    const primary = ids[ids.length - 1]!;
+    selectMesh(primary);
+    selectedIdsRef.current = ids; setSelectedIds(ids);
   }, [selectMesh]);
 
   const setMode = useCallback((m: "translate" | "rotate" | "scale") => {
@@ -545,6 +543,7 @@ export function useModelerCore(locale: "en" | "es" = "en") {
   }, [pushHistory, selectMesh]);
 
   const saveScene = useCallback(() => {
+    if (!threeRef.current) return;
     try {
       const data = snapshot();
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -646,6 +645,31 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     a.click();
     URL.revokeObjectURL(a.href);
   }, [snapshot]);
+
+  const importJSON = useCallback(() => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "application/json,.json";
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file || file.size > 5_000_000) return;
+      try {
+        const data = JSON.parse(await file.text()) as HistoryEntry;
+        if (!Array.isArray(data?.meshes) || !data.meshes.length) throw new Error("empty");
+        if (objectsRef.current.length > 0 && !window.confirm(es ? "¿Reemplazar la escena actual por el archivo?" : "Replace the current scene with this file?")) return;
+        const entry = { meshes: data.meshes, groups: Array.isArray(data.groups) ? data.groups : [] } as HistoryEntry;
+        pushHistory();
+        restoreSnapshot(entry);
+        historyRef.current = [...historyRef.current.slice(0, histIdxRef.current + 1), entry];
+        histIdxRef.current = historyRef.current.length - 1;
+        setCanUndo(histIdxRef.current > 0);
+        setCanRedo(false);
+      } catch {
+        window.alert(es ? "Archivo JSON de escena no válido." : "Not a valid scene JSON file.");
+      }
+    };
+    input.click();
+  }, [es, pushHistory, restoreSnapshot]);
 
   const exportSTL = useCallback(async () => {
     const t = threeRef.current;
@@ -776,8 +800,8 @@ export function useModelerCore(locale: "en" | "es" = "en") {
     modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, nudgeSelected, setSizeAxis,
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
-    copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL, exportPNG, exportGLB,
-    clearSelection, dropToFloor, alignSelection, objectLimitMsg,
+    copySelected, cutSelected, pasteClipboard, exportJSON, importJSON, exportSTL, exportPNG, exportGLB,
+    clearSelection, selectAll, dropToFloor, alignSelection, objectLimitMsg,
     matPreset, applyMatPreset, UNIT_CM,
     listNamedScenes, saveNamedScene, loadNamedScene, deleteNamedScene, copyShareLink, applyPreset,
   };

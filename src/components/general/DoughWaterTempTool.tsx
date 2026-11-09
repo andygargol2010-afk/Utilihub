@@ -1,34 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "C" | "F";
-type PresetId = "hand" | "stand" | "spiral" | "us78";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function toF(c: number) {
-  return (c * 9) / 5 + 32;
-}
-
-function toC(f: number) {
-  return ((f - 32) * 5) / 9;
-}
-
-function formatTemp(value: number, locale: Locale) {
-  return new Intl.NumberFormat(locale === "es" ? "es" : "en", {
-    maximumFractionDigits: 1,
-    minimumFractionDigits: 0,
-  }).format(value);
-}
+import { type Locale } from "./DoughWaterTempTool.part1";
+import { type Unit, type PresetId, toF, toC, parseNum, formatTemp, buttonClass, inputClass } from "./DoughWaterTempTool.part2";
 
 export function DoughWaterTempTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

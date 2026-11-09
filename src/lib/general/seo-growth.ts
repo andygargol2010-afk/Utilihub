@@ -71,11 +71,20 @@ export const SEO_GROWTH_TOOLS = [
     "sleep cycle",
     "ciclos de sueño",
   ]),
-  t("pago-tarjeta-credito", "Credit card payoff calculator", "utilidades", "number", "Estimate months and interest to pay off a credit card balance.", [
-    "credit card payoff",
-    "card debt calculator",
-    "pago tarjeta",
-  ]),
+  makeTool(
+    "pago-tarjeta-credito",
+    "Credit card payoff calculator",
+    "utilidades",
+    "number",
+    "Estimate months and interest to pay off a credit card balance.",
+    ["credit card payoff", "card debt calculator", "pago tarjeta", "credit card minimum payment"],
+    {
+      mode: "seo-growth",
+      title: "Credit Card Payoff Calculator — Months & Interest | UtiliHub",
+      description:
+        "Estimate how many months it takes to pay off a credit card balance and how much interest you pay, from balance, APR, and monthly payment. Free, local, no signup.",
+    },
+  ),
   t("cron-generator", "Cron expression helper", "desarrollo", "code", "Build and explain common cron schedules.", [
     "cron expression",
     "cron generator",
@@ -91,8 +100,7 @@ export const SEO_GROWTH_TOOLS = [
     "tiempo de lectura",
     "words per minute",
   ]),
-  t("validador-luhn", "Luhn check digit validator", "seguridad", "number", "Validate a number sequence with the Luhn algorithm (local only).",
-    ["luhn", "check digit", "card validation"]),
+  // validador-luhn lives in luhn-tool.ts (dedicated UI + brand guess). Do not re-register here.
   t("punto-equilibrio-unidades", "Break-even units calculator", "utilidades", "number", "Find units to sell to cover fixed and variable costs.", [
     "break even",
     "punto de equilibrio",

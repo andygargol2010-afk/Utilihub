@@ -1,7 +1,5 @@
-import type { EducationDifficulty, EducationLevel } from "../education-engine";
-
-type Q={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
-const q=(text:string,options:string[],answer:string,levels?:EducationLevel[],difficulty?:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+import { type Q } from "./calculo.part1";
+import { q } from "./calculo.part2";
 
 export const CALCULO:Q[]=[
 q("What is the derivative of x²?",["2x","x","x²","2"],"2x",["primaria"],"facil"),

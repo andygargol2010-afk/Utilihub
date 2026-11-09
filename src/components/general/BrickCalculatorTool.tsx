@@ -1,46 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "m" | "ft";
-type Layout = "wall" | "area";
-type PresetId = "modular" | "solid" | "hollow" | "uk";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(value);
-}
-
-type Preset = {
-  id: PresetId;
-  unit: Unit;
-  layout: Layout;
-  length: string;
-  height: string;
-  openings: string;
-  brickL: string;
-  brickH: string;
-  brickD: string;
-  joint: string;
-  waste: string;
-  bagYield: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "modular", unit: "ft", layout: "wall", length: "20", height: "8", openings: "20", brickL: "7.625", brickH: "2.25", brickD: "3.625", joint: "0.375", waste: "10", bagYield: "0.65" },
-  { id: "solid", unit: "m", layout: "wall", length: "5", height: "2.5", openings: "1.5", brickL: "24", brickH: "5.2", brickD: "11.5", joint: "1", waste: "8", bagYield: "0.015" },
-  { id: "hollow", unit: "m", layout: "wall", length: "6", height: "2.6", openings: "2", brickL: "24", brickH: "11.5", brickD: "11.5", joint: "1", waste: "8", bagYield: "0.015" },
-  { id: "uk", unit: "m", layout: "wall", length: "5", height: "2.4", openings: "1.2", brickL: "21.5", brickH: "6.5", brickD: "10.25", joint: "1", waste: "10", bagYield: "0.015" },
-];
+import { type Locale } from "./BrickCalculatorTool.part1";
+import { type Unit, type Layout, parseNum, type Preset, PRESETS, formatNum, type PresetId, buttonClass, inputClass } from "./BrickCalculatorTool.part2";
 
 export function BrickCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

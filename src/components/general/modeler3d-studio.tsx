@@ -14,8 +14,8 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     modeRef, gridRef, pushHistory, setPosAxis, setRotAxis, endTransformEdit, nudgeSelected, setSizeAxis,
     addShape, deleteSelected, applyColor, groupSelected, ungroupSelected, undo, redo, toggleFullscreen,
     setSelectedId, setSelectedIds, readTransform, loadScene, saveScene, clearScene,
-    copySelected, cutSelected, pasteClipboard, exportJSON, exportSTL, exportPNG, exportGLB,
-    clearSelection, dropToFloor, alignSelection, objectLimitMsg,
+    copySelected, cutSelected, pasteClipboard, exportJSON, importJSON, exportSTL, exportPNG, exportGLB,
+    clearSelection, selectAll, dropToFloor, alignSelection, objectLimitMsg,
     matPreset, applyMatPreset, UNIT_CM,
     listNamedScenes, saveNamedScene, loadNamedScene, deleteNamedScene, copyShareLink, applyPreset,
   } = core;
@@ -54,8 +54,18 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
 
   useEffect(() => {
     const onUnload = () => { try { saveScene(); } catch { /* */ } };
+    // Autosave: the live scene (incl. final drag positions) every 2 s, so a mobile tab kill never loses work.
+    const tick = window.setInterval(onUnload, 2000);
+    const onHide = () => { if (document.visibilityState === "hidden") onUnload(); };
     window.addEventListener("beforeunload", onUnload);
-    return () => window.removeEventListener("beforeunload", onUnload);
+    window.addEventListener("pagehide", onUnload);
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      window.clearInterval(tick);
+      window.removeEventListener("beforeunload", onUnload);
+      window.removeEventListener("pagehide", onUnload);
+      document.removeEventListener("visibilitychange", onHide);
+    };
   }, [saveScene]);
 
   useModelerThreeInit({
@@ -76,6 +86,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
       if (mod && (e.key === "c" || e.key === "C")) { e.preventDefault(); copySelected(); return; }
       if (mod && (e.key === "x" || e.key === "X")) { e.preventDefault(); cutSelected(); return; }
       if (mod && (e.key === "v" || e.key === "V")) { e.preventDefault(); pasteClipboard(); return; }
+      if (mod && (e.key === "a" || e.key === "A")) { e.preventDefault(); selectAll(); return; }
       if (mod && (e.key === "d" || e.key === "D")) { e.preventDefault(); copySelected(); pasteClipboard(); return; }
       if (mod) return;
       if (e.key === "Escape") { e.preventDefault(); clearSelection(); setCtxMenu(null); setShowHelp(false); setShowScenes(false); return; }
@@ -99,7 +110,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [snap, undo, redo, groupSelected, ungroupSelected, copySelected, cutSelected, pasteClipboard, deleteSelected, setMode, nudgeSelected, clearSelection, setCtxMenu]);
+  }, [snap, undo, redo, groupSelected, ungroupSelected, copySelected, cutSelected, pasteClipboard, deleteSelected, selectAll, setMode, nudgeSelected, clearSelection, setCtxMenu]);
 
   return (
     <div ref={studioRef} className={`relative w-full overflow-hidden bg-[#0a0610] ${fullscreen ? "fixed inset-0 z-50 h-full rounded-none border-0" : "min-h-[520px] h-[min(75vh,720px)] rounded-xl border border-rose-500/25 shadow-[0_0_40px_rgba(244,63,94,0.08)]"}`}>
@@ -121,6 +132,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
             <li><kbd className="rounded bg-white/10 px-1">S</kbd> — {es ? "Escalar" : "Scale"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Del</kbd> — {es ? "Eliminar" : "Delete"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Esc</kbd> — {es ? "Deseleccionar" : "Deselect"}</li>
+            <li><kbd className="rounded bg-white/10 px-1">Ctrl+A</kbd> — {es ? "Seleccionar todo" : "Select all"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Ctrl+D</kbd> — {es ? "Duplicar" : "Duplicate"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Ctrl+C/X/V</kbd> — {es ? "Copiar / cortar / pegar" : "Copy / cut / paste"}</li>
             <li><kbd className="rounded bg-white/10 px-1">Ctrl+Z</kbd> / <kbd className="rounded bg-white/10 px-1">Ctrl+Y</kbd> — {es ? "Deshacer / rehacer" : "Undo / redo"}</li>
@@ -222,6 +234,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
             <button type="button" onClick={ungroupSelected} disabled={!selectedIds.some((id) => groupIds.includes(id))} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs">{es ? "Desagrupar" : "Ungroup"}</button>
             <button type="button" onClick={deleteSelected} disabled={selectedIds.length === 0} className="rounded-lg border border-rose-500/40 bg-rose-950/60 px-2 py-1.5 text-[11px] font-semibold text-rose-100 hover:bg-rose-900/70 disabled:opacity-35 sm:text-xs">{es ? "Eliminar" : "Delete"}</button>
             <button type="button" onClick={() => { copySelected(); pasteClipboard(); }} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs" title="Ctrl+D">{es ? "Duplicar" : "Duplicate"}</button>
+            <button type="button" onClick={selectAll} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs" title="Ctrl+A">{es ? "Todo" : "Select all"}</button>
             <button type="button" onClick={dropToFloor} disabled={selectedIds.length === 0} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 disabled:opacity-35 sm:text-xs">{es ? "Piso" : "Floor"}</button>
             <button type="button" onClick={() => setShowHelp((v) => !v)} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs" title={es ? "Atajos" : "Shortcuts"}>?</button>
             <span className="mx-0.5 hidden h-5 w-px bg-white/15 sm:inline-block" />
@@ -235,6 +248,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
             </button>
             <button type="button" title={es ? "Borrar escena" : "Clear scene"} onClick={() => { if (window.confirm(es ? "¿Borrar toda la escena?" : "Clear entire scene?")) clearScene(); }} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">{es ? "Limpiar" : "Clear"}</button>
             <button type="button" title="Export JSON" onClick={exportJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">JSON</button>
+            <button type="button" title={es ? "Abrir escena desde archivo JSON" : "Open scene from JSON file"} onClick={importJSON} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">{es ? "Abrir" : "Open"}</button>
             <button type="button" title="Export STL" onClick={exportSTL} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">STL</button>
             <button type="button" title={es ? "Captura PNG" : "Screenshot PNG"} onClick={exportPNG} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">PNG</button>
             <button type="button" title={es ? "Exportar GLB" : "Export GLB"} onClick={exportGLB} className="rounded-lg border border-white/10 bg-white/10 px-2 py-1.5 text-[11px] font-semibold text-rose-50 hover:bg-white/15 sm:text-xs">GLB</button>
@@ -255,13 +269,13 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
         </div>
 
         {/* Left: design toolbar — shapes, color, material */}
-        <div className="pointer-events-none absolute bottom-16 left-1.5 top-12 z-10 flex max-h-[calc(100%-5rem)] w-[5.5rem] flex-col sm:left-2.5 sm:top-14 sm:w-[6.25rem]">
+        <div className="pointer-events-none absolute bottom-16 left-1.5 top-12 z-10 flex max-h-[calc(100%-5rem)] w-[6.75rem] flex-col sm:left-2.5 sm:top-14 sm:w-[6.25rem]">
           <div className="pointer-events-auto flex max-h-full flex-col gap-2 overflow-y-auto rounded-xl border border-white/10 bg-black/85 p-1.5 shadow-lg backdrop-blur-md">
             <div className="flex flex-col items-center gap-1">
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Formas" : "Shapes"}</span>
               <div className="grid grid-cols-2 gap-1">
                 {shapeList(es).map((s) => (
-                  <button key={s.kind} type="button" onClick={() => addShape(s.kind)} title={s.label} className="flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-sm font-semibold text-rose-50 hover:bg-rose-500/30 sm:size-9">
+                  <button key={s.kind} type="button" onClick={() => addShape(s.kind)} title={s.label} className="flex size-10 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-base font-semibold text-rose-50 hover:bg-rose-500/30 sm:size-9 sm:text-sm">
                     <span>{s.icon}</span>
                   </button>
                 ))}
@@ -272,9 +286,9 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Color" : "Color"}</span>
               <div className="grid grid-cols-3 gap-1">
                 {COLORS.map((c) => (
-                  <button key={c} type="button" title={c} onClick={() => applyColor(c)} className={`size-5 rounded-full border-2 transition sm:size-6 ${color.toLowerCase() === c.toLowerCase() ? "scale-110 border-white ring-2 ring-white/30" : "border-black/30 hover:scale-105"}`} style={{ backgroundColor: c }} />
+                  <button key={c} type="button" title={c} onClick={() => applyColor(c)} className={`size-7 rounded-full border-2 transition sm:size-6 ${color.toLowerCase() === c.toLowerCase() ? "scale-110 border-white ring-2 ring-white/30" : "border-black/30 hover:scale-105"}`} style={{ backgroundColor: c }} />
                 ))}
-                <label title={es ? "Color personalizado" : "Custom color"} className="relative flex size-5 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-white/40 bg-white/10 hover:border-white/70 sm:size-6">
+                <label title={es ? "Color personalizado" : "Custom color"} className="relative flex size-7 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-white/40 bg-white/10 hover:border-white/70 sm:size-6">
                   <span className="pointer-events-none text-[10px] font-bold text-rose-50">+</span>
                   <input type="color" value={/^#[0-9a-fA-F]{6}$/.test(color) ? color : "#a78bfa"} onChange={(e) => applyColor(e.target.value)} className="absolute inset-0 cursor-pointer opacity-0" />
                 </label>
@@ -285,7 +299,7 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
               <span className="text-[9px] font-bold uppercase tracking-wide text-rose-200/50">{es ? "Material" : "Material"}</span>
               <div className="flex w-full flex-col gap-1">
                 {matPresetList(es).map((p) => (
-                  <button key={p.id} type="button" onClick={() => applyMatPreset(p.id)} className={`w-full rounded-lg border px-1 py-1 text-[10px] font-semibold ${matPreset === p.id ? "border-rose-400 bg-rose-500/30 text-rose-50" : "border-white/10 bg-white/10 text-rose-100/80 hover:bg-white/15"}`}>{p.label}</button>
+                  <button key={p.id} type="button" onClick={() => applyMatPreset(p.id)} className={`w-full rounded-lg border px-1 py-2 text-[11px] font-semibold sm:py-1 sm:text-[10px] ${matPreset === p.id ? "border-rose-400 bg-rose-500/30 text-rose-50" : "border-white/10 bg-white/10 text-rose-100/80 hover:bg-white/15"}`}>{p.label}</button>
                 ))}
               </div>
             </div>
@@ -384,3 +398,4 @@ export function Modeler3DStudio({ locale = "en" }: { tool: GeneralTool; locale?:
     </div>
   );
 }
+

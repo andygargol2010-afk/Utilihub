@@ -2,137 +2,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-type Lens = { x: number; y: number; r: number; strength: number };
-type Block = { x: number; y: number; w: number; h: number };
-type Level = {
-  lenses: Lens[];
-  blocks: Block[];
-  target: { x: number; y: number; r: number };
-  hintEn: string;
-  hintEs: string;
-};
-
-const W = 480;
-const H = 280;
-const ORIGIN = { x: 24, y: H / 2 };
-
-const LEVELS: Level[] = [
-  {
-    lenses: [],
-    blocks: [],
-    target: { x: 430, y: 140, r: 18 },
-    hintEn: "Straight shot — aim carefully.",
-    hintEs: "Tiro directo — apuntá con cuidado.",
-  },
-  {
-    lenses: [{ x: 240, y: 140, r: 42, strength: 0.045 }],
-    blocks: [],
-    target: { x: 430, y: 70, r: 18 },
-    hintEn: "One lens bends the beam toward its center.",
-    hintEs: "Una lente dobla el rayo hacia su centro.",
-  },
-  {
-    lenses: [
-      { x: 170, y: 100, r: 36, strength: 0.05 },
-      { x: 300, y: 180, r: 36, strength: 0.05 },
-    ],
-    blocks: [{ x: 250, y: 40, w: 20, h: 80 }],
-    target: { x: 430, y: 210, r: 18 },
-    hintEn: "Two lenses + a blocker. Thread the gap.",
-    hintEs: "Dos lentes y un obstáculo. Pasá por el hueco.",
-  },
-  {
-    lenses: [
-      { x: 150, y: 80, r: 34, strength: 0.055 },
-      { x: 250, y: 200, r: 34, strength: 0.055 },
-      { x: 340, y: 110, r: 30, strength: 0.05 },
-    ],
-    blocks: [
-      { x: 200, y: 120, w: 18, h: 100 },
-      { x: 300, y: 40, w: 18, h: 70 },
-    ],
-    target: { x: 440, y: 200, r: 16 },
-    hintEn: "Three lenses. Small target.",
-    hintEs: "Tres lentes. Blanco chico.",
-  },
-  {
-    lenses: [
-      { x: 160, y: 140, r: 40, strength: 0.06 },
-      { x: 280, y: 70, r: 32, strength: 0.05 },
-      { x: 280, y: 210, r: 32, strength: 0.05 },
-    ],
-    blocks: [
-      { x: 220, y: 0, w: 16, h: 100 },
-      { x: 220, y: 180, w: 16, h: 100 },
-      { x: 350, y: 100, w: 16, h: 80 },
-    ],
-    target: { x: 440, y: 140, r: 15 },
-    hintEn: "Final: navigate the corridor.",
-    hintEs: "Final: navegá el corredor.",
-  },
-];
-
-function castRay(angleDeg: number, level: Level): { points: { x: number; y: number }[]; hit: boolean } {
-  const rad = (angleDeg * Math.PI) / 180;
-  let x = ORIGIN.x;
-  let y = ORIGIN.y;
-  let vx = Math.cos(rad);
-  let vy = Math.sin(rad);
-  const points = [{ x, y }];
-  const step = 2;
-  const inside = new Set<number>();
-
-  for (let i = 0; i < 900; i++) {
-    x += vx * step;
-    y += vy * step;
-    if (i % 2 === 0) points.push({ x, y });
-
-    if (x < 0 || x > W || y < 0 || y > H) break;
-
-    for (const b of level.blocks) {
-      if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
-        return { points, hit: false };
-      }
-    }
-
-    const t = level.target;
-    if ((x - t.x) ** 2 + (y - t.y) ** 2 <= t.r ** 2) {
-      points.push({ x: t.x, y: t.y });
-      return { points, hit: true };
-    }
-
-    level.lenses.forEach((lens, idx) => {
-      const dx = x - lens.x;
-      const dy = y - lens.y;
-      const dist = Math.hypot(dx, dy);
-      if (dist < lens.r) {
-        if (!inside.has(idx)) {
-          inside.add(idx);
-          const tx = lens.x - x;
-          const ty = lens.y - y;
-          const tl = Math.hypot(tx, ty) || 1;
-          const nx = tx / tl;
-          const ny = ty / tl;
-          const factor = lens.strength * (1 - dist / lens.r);
-          vx += nx * factor * 12;
-          vy += ny * factor * 12;
-          const len = Math.hypot(vx, vy) || 1;
-          vx /= len;
-          vy /= len;
-        }
-      } else {
-        inside.delete(idx);
-      }
-    });
-  }
-
-  return { points, hit: false };
-}
+import { trackEvent } from "@/lib/analytics";
+import { type Particle, LEVELS, readProgress, castRay, W, H, ORIGIN, spawnSparks, writeProgress } from "./RefractionChallengeGame.part2";
 
 export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const rafRef = useRef<number>(0);
   const [levelIdx, setLevelIdx] = useState(0);
   const [angle, setAngle] = useState(0);
   const [shots, setShots] = useState(0);
@@ -140,14 +17,55 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
   const [result, setResult] = useState<"idle" | "hit" | "miss">("idle");
   const [best, setBest] = useState(0);
   const [cleared, setCleared] = useState(false);
+  const [particleTick, setParticleTick] = useState(0);
+  const [exporting, setExporting] = useState(false);
+  const [maxCleared, setMaxCleared] = useState(-1);
+  const [progressLoaded, setProgressLoaded] = useState(false);
 
   const level = LEVELS[levelIdx]!;
 
+  // Load best score + progress once
   useEffect(() => {
     setBest(readBestScore("refraction-challenge"));
+    const prog = readProgress();
+    setMaxCleared(prog.maxCleared);
+    if (prog.maxCleared >= 0) {
+      // Resume at next uncleared level (or last if all cleared)
+      const resumeIdx = Math.min(prog.maxCleared + 1, LEVELS.length - 1);
+      setLevelIdx(resumeIdx);
+      setShots(prog.shots);
+      if (prog.maxCleared >= LEVELS.length - 1) {
+        setCleared(true);
+      }
+    }
+    setProgressLoaded(true);
   }, []);
 
   const path = useMemo(() => castRay(angle, level), [angle, level]);
+
+  // Particle animation loop (modest count, CWV-safe)
+  useEffect(() => {
+    let last = performance.now();
+    const loop = (now: number) => {
+      const dt = Math.min(0.033, (now - last) / 1000);
+      last = now;
+      const ps = particlesRef.current;
+      if (ps.length > 0) {
+        for (let i = ps.length - 1; i >= 0; i--) {
+          const p = ps[i]!;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.04;
+          p.life -= dt / p.maxLife;
+          if (p.life <= 0) ps.splice(i, 1);
+        }
+        setParticleTick((t) => t + 1);
+      }
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -221,15 +139,27 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
     ctx.arc(ORIGIN.x, ORIGIN.y, 8, 0, Math.PI * 2);
     ctx.fill();
 
-    if (!fired) {
-      const rad = (angle * Math.PI) / 180;
-      ctx.strokeStyle = "rgba(52,211,153,0.25)";
-      ctx.setLineDash([6, 6]);
+    // Live full-path preview while aiming (elevated standard vs peers)
+    if (!fired && path.points.length > 1) {
+      ctx.strokeStyle = path.hit ? "rgba(110,231,183,0.55)" : "rgba(251,191,36,0.4)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 6]);
       ctx.beginPath();
-      ctx.moveTo(ORIGIN.x, ORIGIN.y);
-      ctx.lineTo(ORIGIN.x + Math.cos(rad) * 80, ORIGIN.y + Math.sin(rad) * 80);
+      ctx.moveTo(path.points[0]!.x, path.points[0]!.y);
+      for (let i = 1; i < path.points.length; i++) {
+        ctx.lineTo(path.points[i]!.x, path.points[i]!.y);
+      }
       ctx.stroke();
       ctx.setLineDash([]);
+
+      // Short solid aim indicator near origin
+      const rad = (angle * Math.PI) / 180;
+      ctx.strokeStyle = "rgba(52,211,153,0.85)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(ORIGIN.x, ORIGIN.y);
+      ctx.lineTo(ORIGIN.x + Math.cos(rad) * 36, ORIGIN.y + Math.sin(rad) * 36);
+      ctx.stroke();
     }
 
     if (fired && path.points.length > 1) {
@@ -245,18 +175,47 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
       ctx.stroke();
       ctx.shadowBlur = 0;
     }
-  }, [angle, fired, level, path, result]);
+
+    // Draw spark particles
+    const ps = particlesRef.current;
+    for (const p of ps) {
+      const alpha = Math.max(0, p.life);
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * alpha, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }, [angle, fired, level, path, result, particleTick]);
 
   const fire = () => {
-    const { hit } = castRay(angle, level);
+    const cast = castRay(angle, level);
     const nextShots = shots + 1;
     setFired(true);
     setShots(nextShots);
-    setResult(hit ? "hit" : "miss");
-    if (hit && levelIdx >= LEVELS.length - 1) {
-      setCleared(true);
-      const score = Math.max(1, 1000 - nextShots * 40);
-      setBest(writeBestScore("refraction-challenge", score));
+    setResult(cast.hit ? "hit" : "miss");
+
+    // Spark bursts on lens refraction points
+    for (const rp of cast.refractionPoints) {
+      spawnSparks(particlesRef.current, rp.x, rp.y, 8, "#7dd3fc", 2.2);
+    }
+    // Spark burst on target hit
+    if (cast.hit) {
+      const t = level.target;
+      spawnSparks(particlesRef.current, t.x, t.y, 16, "#6ee7b7", 2.8);
+      spawnSparks(particlesRef.current, t.x, t.y, 8, "#fde68a", 1.6);
+
+      // Persist progress: this level cleared
+      const newMax = Math.max(maxCleared, levelIdx);
+      setMaxCleared(newMax);
+      writeProgress(newMax, nextShots);
+
+      if (levelIdx >= LEVELS.length - 1) {
+        setCleared(true);
+        const score = Math.max(1, 1000 - nextShots * 40);
+        setBest(writeBestScore("refraction-challenge", score));
+      }
     }
   };
 
@@ -266,12 +225,14 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
       setFired(false);
       setResult("idle");
       setAngle(0);
+      particlesRef.current = [];
     }
   };
 
   const resetLevel = () => {
     setFired(false);
     setResult("idle");
+    particlesRef.current = [];
   };
 
   const restart = () => {
@@ -281,10 +242,53 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
     setFired(false);
     setResult("idle");
     setCleared(false);
+    setMaxCleared(-1);
+    particlesRef.current = [];
+    writeProgress(-1, 0);
+  };
+
+  const exportPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas || result !== "hit") return;
+    setExporting(true);
+    try {
+      const off = document.createElement("canvas");
+      off.width = canvas.width;
+      off.height = canvas.height;
+      const octx = off.getContext("2d");
+      if (!octx) return;
+      octx.drawImage(canvas, 0, 0);
+      octx.fillStyle = "rgba(255,255,255,0.92)";
+      octx.font = "bold 14px system-ui, sans-serif";
+      octx.textAlign = "left";
+      octx.fillText("utilihub.com", 12, off.height - 14);
+      octx.font = "11px system-ui, sans-serif";
+      octx.fillText(
+        `${es ? "Nivel" : "Level"} ${levelIdx + 1} · ${shots} ${es ? "disparos" : "shots"}`,
+        12,
+        off.height - 30
+      );
+      octx.font = "bold 16px system-ui, sans-serif";
+      octx.textAlign = "center";
+      octx.fillText(es ? "Desafío de refracción" : "Refraction Challenge", off.width / 2, 22);
+      const dataUrl = off.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = `refraction-challenge-level-${levelIdx + 1}.png`;
+      a.click();
+      trackEvent("game_share", { slug: "refraction-challenge", type: "png", locale });
+    } finally {
+      setExporting(false);
+    }
   };
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-3">
+      <style>{`
+        .refraction-frame {
+          background: radial-gradient(ellipse at 50% 0%, rgba(34,211,238,0.1), transparent 55%);
+        }
+      `}</style>
       <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-emerald-100/80">
         <span>
           {es ? "Nivel" : "Level"}{" "}
@@ -302,11 +306,21 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
         )}
       </div>
 
+      {progressLoaded && maxCleared >= 0 && !cleared && (
+        <p className="text-center text-xs text-cyan-200/70">
+          {es
+            ? `Progreso guardado · nivel ${maxCleared + 1} completado`
+            : `Progress saved · level ${maxCleared + 1} cleared`}
+        </p>
+      )}
+
       <p className="text-center text-xs text-white/55">{es ? level.hintEs : level.hintEn}</p>
 
-      <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+      <div className="refraction-frame overflow-hidden rounded-2xl border border-cyan-500/25 bg-black/50 shadow-[0_16px_40px_rgba(0,0,0,0.45),0_0_30px_rgba(34,211,238,0.08)]">
         <canvas
           ref={canvasRef}
+          role="img"
+          aria-label={es ? `Nivel ${levelIdx + 1}: lentes, obstáculos y blanco del láser` : `Level ${levelIdx + 1}: lenses, blockers and laser target`}
           width={W}
           height={H}
           className="h-auto w-full touch-none"
@@ -327,6 +341,7 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
             if (fired) {
               setFired(false);
               setResult("idle");
+              particlesRef.current = [];
             }
           }}
           className="mt-1 w-full accent-emerald-400"
@@ -339,6 +354,11 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
         )}
         {result === "hit" && levelIdx < LEVELS.length - 1 && (
           <GamePrimaryButton onClick={next}>{es ? "Siguiente nivel" : "Next level"}</GamePrimaryButton>
+        )}
+        {result === "hit" && (
+          <GameSecondaryButton onClick={exportPng} disabled={exporting}>
+            {es ? "Compartir PNG" : "Share PNG"}
+          </GameSecondaryButton>
         )}
         {result === "miss" && (
           <GameSecondaryButton onClick={resetLevel}>{es ? "Reintentar" : "Retry"}</GameSecondaryButton>

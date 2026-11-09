@@ -1,45 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import type { Locale } from "@/lib/i18n/locale";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const n = Number(value.replace(",", "."));
-  return Number.isFinite(n) ? n : null;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value);
-}
-
-type Unit = "m" | "ft";
-type Mode = "area" | "rect";
-type Notch = "3" | "6" | "8" | "10" | "12" | "15";
-
-type Preset = {
-  id: string;
-  unit: Unit;
-  mode: Mode;
-  area: string;
-  length: string;
-  width: string;
-  notch: Notch;
-  bag: string;
-  waste: string;
-  butter: boolean;
-};
-
-const PRESETS: Preset[] = [
-  { id: "wall", unit: "m", mode: "rect", area: "8", length: "4", width: "2", notch: "6", bag: "25", waste: "10", butter: false },
-  { id: "floor", unit: "m", mode: "rect", area: "12", length: "4", width: "3", notch: "10", bag: "25", waste: "10", butter: false },
-  { id: "large", unit: "m", mode: "area", area: "18", length: "6", width: "3", notch: "12", bag: "25", waste: "10", butter: true },
-  { id: "mosaic", unit: "m", mode: "area", area: "4", length: "2", width: "2", notch: "3", bag: "5", waste: "15", butter: false },
-];
-
-const RATE: Record<Notch, number> = { "3": 1.5, "6": 3, "8": 4, "10": 5, "12": 6.5, "15": 8 };
-const BUTTER_KG = 1;
+import { inputClass } from "./ThinsetCalculatorTool.part1";
+import { type Unit, type Mode, type Notch, parseNum, RATE, BUTTER_KG, type Preset, PRESETS, formatNum, buttonClass } from "./ThinsetCalculatorTool.part2";
 
 export function ThinsetCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

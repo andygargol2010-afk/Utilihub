@@ -48,11 +48,41 @@ for (const [slug, locations] of slugMap) {
   }
 }
 
+// Catalog registration paths that end up in GENERAL_TOOLS:
+// - makeTool("slug", ...)
+// - wrappers t/text/dev/growth("slug", ...) that call makeTool
+// Missing wrappers previously allowed seo-growth + dedicated tools to share a slug
+// and only fail at runtime (HTTP 500 catalog integrity error).
+const makeToolMap = new Map();
+const registerPatterns = [
+  /\bmakeTool\(\s*["']([a-z0-9-]+)["']/g,
+  /\b(?:t|text|dev|growth)\(\s*["']([a-z0-9-]+)["']/g,
+];
+for (const { file, text } of libSources) {
+  for (const pattern of registerPatterns) {
+    pattern.lastIndex = 0;
+    for (const match of text.matchAll(pattern)) {
+      const slug = match[1];
+      const list = makeToolMap.get(slug) ?? [];
+      list.push(file);
+      makeToolMap.set(slug, list);
+    }
+  }
+}
+for (const [slug, locations] of makeToolMap) {
+  const unique = [...new Set(locations)];
+  if (unique.length > 1) {
+    errors.push(
+      `slug duplicado en makeTool/wrappers: ${slug} (${unique.map((p) => path.relative(process.cwd(), p)).join(", ")})`,
+    );
+  }
+}
+
 // Heuristic tool count is incomplete (many catalog entries lack fields/faq markers).
 // Do NOT fail the build on this — the live ALL_TOOLS.length in the app is authoritative.
 // Marketing copy "500+" is still desirable; log a warning only.
 const MIN_TOOLS_HINT = 500;
-const heuristicToolCount = slugMap.size;
+const heuristicToolCount = Math.max(slugMap.size, makeToolMap.size);
 if (heuristicToolCount < MIN_TOOLS_HINT) {
   warnings.push(
     `Heurística de tools (${heuristicToolCount}) < ${MIN_TOOLS_HINT}. No falla el build: el contador real es ALL_TOOLS en runtime.`,
@@ -101,5 +131,5 @@ if (errors.length) {
   process.exit(1);
 }
 console.log(
-  `Catalog validator OK: ${files.length} archivos, heurística ${heuristicToolCount} tools, ${configuredOps.size} operations.`,
+  `Catalog validator OK: ${files.length} archivos, heurística ${heuristicToolCount} tools, ${configuredOps.size} operations, ${makeToolMap.size} registered slugs.`,
 );

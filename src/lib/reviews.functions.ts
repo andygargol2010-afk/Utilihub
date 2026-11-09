@@ -76,7 +76,7 @@ export const listPublicReviews = createServerFn({ method: "GET" }).handler(
 );
 
 export const submitReview = createServerFn({ method: "POST" })
-  .inputValidator((data: SubmitReviewInput) => data)
+  .validator((data: SubmitReviewInput) => data)
   .handler(
     async ({
       data,
@@ -107,7 +107,7 @@ export const submitReview = createServerFn({ method: "POST" })
 
 /** Admin-only: list stored reviews (requires REVIEWS_ADMIN_TOKEN). */
 export const listAdminReviews = createServerFn({ method: "POST" })
-  .inputValidator((data: { token: string }) => data)
+  .validator((data: { token: string }) => data)
   .handler(
     async ({
       data,
@@ -133,7 +133,7 @@ export const listAdminReviews = createServerFn({ method: "POST" })
 
 /** Admin-only: publish a public reply on a stored review. */
 export const replyToReview = createServerFn({ method: "POST" })
-  .inputValidator((data: ReplyToReviewInput) => data)
+  .validator((data: ReplyToReviewInput) => data)
   .handler(
     async ({
       data,

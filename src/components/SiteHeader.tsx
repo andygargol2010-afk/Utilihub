@@ -2,24 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-
-const linkClass =
-  "rounded-full px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent";
-const activeClass = {
-  className: "bg-accent text-primary ring-1 ring-primary/70",
-};
-const mobileLink = "min-h-11 rounded-lg px-3 py-2.5 text-sm font-bold hover:bg-accent";
-const mobileMuted =
-  "min-h-11 rounded-lg px-3 py-2.5 text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground";
-
-/** Primary category shortcuts in the Browse dropdown */
-const BROWSE = [
-  { href: "/category/advanced-tools", label: "Advanced tools" },
-  { href: "/category/math", label: "Math" },
-  { href: "/category/text", label: "Text" },
-  { href: "/category/developer", label: "Developer" },
-  { href: "/finance", label: "Finance" },
-] as const;
+import { linkClass } from "./SiteHeader.part1";
+import { activeClass, BROWSE, mobileLink, mobileMuted } from "./SiteHeader.part2";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -61,14 +45,20 @@ export function SiteHeader() {
           <Link to="/tools" className={linkClass} activeProps={activeClass}>
             Tools
           </Link>
-          <a href="/category/advanced-tools" className={linkClass}>
+          <Link to="/category/advanced-tools" className={linkClass} activeProps={activeClass}>
             Advanced
-          </a>
+          </Link>
           <Link to="/kits" className={linkClass} activeProps={activeClass}>
             Kits
           </Link>
           <Link to="/simulators" className={linkClass} activeProps={activeClass}>
             Simulators
+          </Link>
+          <Link to="/playgrounds" className={linkClass} activeProps={activeClass}>
+            Playgrounds
+          </Link>
+          <Link to="/experiences" className={linkClass} activeProps={activeClass}>
+            Experiences
           </Link>
           <Link to="/games" className={linkClass} activeProps={activeClass}>
             Games
@@ -140,14 +130,20 @@ export function SiteHeader() {
             <Link to="/tools" onClick={() => setOpen(false)} className={mobileLink}>
               Tools
             </Link>
-            <a href="/category/advanced-tools" onClick={() => setOpen(false)} className={mobileLink}>
+            <Link to="/category/advanced-tools" onClick={() => setOpen(false)} className={mobileLink}>
               Advanced tools
-            </a>
+            </Link>
             <Link to="/kits" onClick={() => setOpen(false)} className={mobileLink}>
               Kits
             </Link>
             <Link to="/simulators" onClick={() => setOpen(false)} className={mobileLink}>
               Simulators
+            </Link>
+            <Link to="/playgrounds" onClick={() => setOpen(false)} className={mobileLink}>
+              Playgrounds
+            </Link>
+            <Link to="/experiences" onClick={() => setOpen(false)} className={mobileLink}>
+              Experiences
             </Link>
             <Link to="/games" onClick={() => setOpen(false)} className={mobileLink}>
               Games

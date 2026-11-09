@@ -1,6 +1,5 @@
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
-import { allToolBySlug } from "@/lib/all-tools";
-import { englishToolPath, englishToolSlug } from "@/lib/route-slugs";
+import { englishToolPath, englishToolSlug, usesFinanceRoute } from "@/lib/route-slugs";
 
 /**
  * Legacy Spanish path without /es prefix.
@@ -8,9 +7,11 @@ import { englishToolPath, englishToolSlug } from "@/lib/route-slugs";
  * (and stops reporting transient 5xx on these old paths).
  */
 export const Route = createFileRoute("/herramientas/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
+    // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+    const { allToolBySlug } = await import("@/lib/all-tools");
     const tool = allToolBySlug(params.slug);
-    if (!tool || tool.category === "finanzas") throw notFound();
+    if (!tool || usesFinanceRoute(tool)) throw notFound();
     throw redirect({
       to: englishToolPath(tool) as "/tools/$slug",
       params: { slug: englishToolSlug(tool) },

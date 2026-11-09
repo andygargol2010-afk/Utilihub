@@ -1,45 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "m" | "ft";
-type Layout = "walls" | "attic" | "area";
-type PresetId = "r13" | "attic" | "panel" | "roll";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(value);
-}
-
-type Preset = {
-  id: PresetId;
-  unit: Unit;
-  layout: Layout;
-  length: string;
-  width: string;
-  walls: string;
-  openings: string;
-  pieceW: string;
-  pieceL: string;
-  perPack: string;
-  waste: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "r13", unit: "ft", layout: "walls", length: "40", width: "8", walls: "4", openings: "48", pieceW: "1.25", pieceL: "7.75", perPack: "10", waste: "10" },
-  { id: "attic", unit: "ft", layout: "attic", length: "40", width: "30", walls: "1", openings: "0", pieceW: "1.25", pieceL: "32", perPack: "1", waste: "10" },
-  { id: "panel", unit: "m", layout: "walls", length: "4", width: "2.4", walls: "4", openings: "4", pieceW: "0.6", pieceL: "1.2", perPack: "8", waste: "10" },
-  { id: "roll", unit: "m", layout: "attic", length: "8", width: "6", walls: "1", openings: "0", pieceW: "0.6", pieceL: "10", perPack: "1", waste: "8" },
-];
+import { type Locale } from "./InsulationCalculatorTool.part1";
+import { type Unit, type Layout, parseNum, type Preset, PRESETS, formatNum, type PresetId, buttonClass, inputClass } from "./InsulationCalculatorTool.part2";
 
 export function InsulationCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

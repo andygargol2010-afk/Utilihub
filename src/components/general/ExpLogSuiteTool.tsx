@@ -1,23 +1,8 @@
 "use client";
-
 import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-function parse(v: string) {
-  return Number(String(v).trim().replace(",", "."));
-}
-
-function fmt(n: number, d = 10) {
-  if (!Number.isFinite(n)) return "—";
-  if (Math.abs(n) < 1e-15) return "0";
-  if (Number.isInteger(n) && Math.abs(n) < 1e12) return String(n);
-  if (Math.abs(n) >= 1e12 || (Math.abs(n) > 0 && Math.abs(n) < 1e-6)) return n.toExponential(6);
-  return n.toPrecision(d).replace(/\.?0+$/, "");
-}
-
-type Card = { label: string; value: string };
+import { type Locale } from "./ExpLogSuiteTool.part1";
+import { type Card, parse, fmt } from "./ExpLogSuiteTool.part2";
 
 export function ExpLogSuiteTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

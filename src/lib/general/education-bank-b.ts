@@ -1,7 +1,5 @@
-import type { EducationDifficulty, EducationLevel } from "./education-engine";
-
-type Q={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
-const q=(text:string,options:string[],answer:string,levels?:EducationLevel[],difficulty?:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+import { type Q } from "./education-bank-b.part1";
+import { q } from "./education-bank-b.part2";
 
 export const EDUCATION_BANK_B:Record<string,Q[]>={
  mapas:[q("What does a map scale represent?",["Ratio between map distance and real distance","Height of a mountain","Average temperature","Population density"],"Ratio between map distance and real distance"),q("Which imaginary line divides Earth into northern and southern hemispheres?",["Equator","Greenwich Meridian","Tropic of Cancer","Arctic Circle"],"Equator")],

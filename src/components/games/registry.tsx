@@ -1,58 +1,6 @@
-import { lazy, Suspense, type ComponentType } from "react";
+import { Suspense } from "react";
 import type { GameDef, GameLocale } from "@/lib/games/catalog";
-
-const TicTacToeGame = lazy(() => import("./TicTacToeGame").then((m) => ({ default: m.TicTacToeGame })));
-const MemoryGame = lazy(() => import("./MemoryGame").then((m) => ({ default: m.MemoryGame })));
-const SnakeGame = lazy(() => import("./SnakeGame").then((m) => ({ default: m.SnakeGame })));
-const Game2048 = lazy(() => import("./Game2048").then((m) => ({ default: m.Game2048 })));
-const ConnectFourGame = lazy(() => import("./ConnectFourGame").then((m) => ({ default: m.ConnectFourGame })));
-const MinesweeperGame = lazy(() => import("./MinesweeperGame").then((m) => ({ default: m.MinesweeperGame })));
-const PongGame = lazy(() => import("./PongGame").then((m) => ({ default: m.PongGame })));
-const SudokuGame = lazy(() => import("./SudokuGame").then((m) => ({ default: m.SudokuGame })));
-const PacManGame = lazy(() => import("./PacManGame").then((m) => ({ default: m.PacManGame })));
-const TetrisGame = lazy(() => import("./TetrisGame").then((m) => ({ default: m.TetrisGame })));
-const CodeTypeRaceGame = lazy(() =>
-  import("./CodeTypeRaceGame").then((m) => ({ default: m.CodeTypeRaceGame })),
-);
-const FormulaMemoryGame = lazy(() =>
-  import("./FormulaMemoryGame").then((m) => ({ default: m.FormulaMemoryGame })),
-);
-const BudgetSurvivorGame = lazy(() =>
-  import("./BudgetSurvivorGame").then((m) => ({ default: m.BudgetSurvivorGame })),
-);
-const PathfinderGame = lazy(() =>
-  import("./PathfinderGame").then((m) => ({ default: m.PathfinderGame })),
-);
-const RefractionChallengeGame = lazy(() =>
-  import("./RefractionChallengeGame").then((m) => ({ default: m.RefractionChallengeGame })),
-);
-
-const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
-  "tic-tac-toe": TicTacToeGame,
-  "tres-en-raya": TicTacToeGame,
-  memory: MemoryGame,
-  memoria: MemoryGame,
-  snake: SnakeGame,
-  "2048": Game2048,
-  "connect-four": ConnectFourGame,
-  "conecta-4": ConnectFourGame,
-  minesweeper: MinesweeperGame,
-  buscaminas: MinesweeperGame,
-  pong: PongGame,
-  sudoku: SudokuGame,
-  pacman: PacManGame,
-  tetris: TetrisGame,
-  "code-type-race": CodeTypeRaceGame,
-  "carrera-de-codigo": CodeTypeRaceGame,
-  "formula-memory": FormulaMemoryGame,
-  "memoria-formulas": FormulaMemoryGame,
-  "budget-survivor": BudgetSurvivorGame,
-  "supervivencia-presupuesto": BudgetSurvivorGame,
-  pathfinder: PathfinderGame,
-  "busca-caminos": PathfinderGame,
-  "refraction-challenge": RefractionChallengeGame,
-  "desafio-refraccion": RefractionChallengeGame,
-};
+import { MAP } from "./registry.part2";
 
 export function GamePlayer({ game, locale = "en" }: { game: GameDef; locale?: GameLocale }) {
   const Comp = MAP[game.slug] ?? MAP[game.slugEs];

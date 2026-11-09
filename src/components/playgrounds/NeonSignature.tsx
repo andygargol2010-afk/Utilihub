@@ -1,0 +1,426 @@
+"use client";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { type Locale } from "./NeonSignature.part1";
+import { labels, type SceneId, type FontId, type Spark, drawBrickWall, drawCyberGrid, hashString, fontStack, PRESETS, SCENES, FONTS } from "./NeonSignature.part2";
+
+export function NeonSignature({ locale }: { locale: Locale }) {
+  const t = labels[locale];
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [text, setText] = useState("Neon Sign");
+  const [hue, setHue] = useState(180);
+  const [intensity, setIntensity] = useState(60);
+  const [flicker, setFlicker] = useState(30);
+  const [scene, setScene] = useState<SceneId>("void");
+  const [font, setFont] = useState<FontId>("block");
+  const [copied, setCopied] = useState(false);
+  const paramsRef = useRef({ text, hue, intensity, flicker, scene, font });
+  const timeRef = useRef(0);
+  const hydrated = useRef(false);
+  const urlTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const flickerSeed = useRef(Math.random());
+  const igniteStartRef = useRef(0);
+  const prevTextRef = useRef(text);
+  const sparksRef = useRef<Spark[]>([]);
+
+  useEffect(() => {
+    if (hydrated.current) return;
+    hydrated.current = true;
+    const sp = new URLSearchParams(window.location.search);
+    const tParam = sp.get("t");
+    const hParam = sp.get("h");
+    const iParam = sp.get("i");
+    const fParam = sp.get("f");
+    const bParam = sp.get("b");
+    const fontParam = sp.get("fnt");
+    if (tParam) setText(tParam.slice(0, 20));
+    if (hParam) {
+      const n = parseInt(hParam, 10);
+      if (!Number.isNaN(n) && n >= 0 && n <= 360) setHue(n);
+    }
+    if (iParam) {
+      const n = parseInt(iParam, 10);
+      if (!Number.isNaN(n) && n >= 20 && n <= 100) setIntensity(n);
+    }
+    if (fParam) {
+      const n = parseInt(fParam, 10);
+      if (!Number.isNaN(n) && n >= 0 && n <= 80) setFlicker(n);
+    }
+    if (bParam === "brick" || bParam === "cyber" || bParam === "void") {
+      setScene(bParam);
+    }
+    if (fontParam === "script" || fontParam === "condensed" || fontParam === "block") {
+      setFont(fontParam);
+    }
+  }, []);
+
+  useEffect(() => {
+    paramsRef.current = { text, hue, intensity, flicker, scene, font };
+    if (text !== prevTextRef.current) {
+      igniteStartRef.current = timeRef.current;
+      prevTextRef.current = text;
+    }
+  }, [text, hue, intensity, flicker, scene, font]);
+
+  useEffect(() => {
+    if (!hydrated.current) return;
+    if (urlTimerRef.current) clearTimeout(urlTimerRef.current);
+    urlTimerRef.current = setTimeout(() => {
+      const params = new URLSearchParams();
+      if (text.trim()) params.set("t", text.trim().slice(0, 20));
+      params.set("h", String(hue));
+      params.set("i", String(intensity));
+      params.set("f", String(flicker));
+      if (scene !== "void") params.set("b", scene);
+      if (font !== "block") params.set("fnt", font);
+      const qs = params.toString();
+      const next = `${window.location.pathname}?${qs}`;
+      if (window.location.search !== `?${qs}`) {
+        window.history.replaceState(null, "", next);
+      }
+    }, 280);
+    return () => {
+      if (urlTimerRef.current) clearTimeout(urlTimerRef.current);
+    };
+  }, [text, hue, intensity, flicker, scene, font]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let raf = 0;
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const draw = () => {
+      const { text: txt, hue: h, intensity: intens, flicker: flick, scene: sc, font: ft } = paramsRef.current;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const hgt = canvas.height / dpr;
+      timeRef.current += 0.016;
+      const tme = timeRef.current;
+
+      if (sc === "brick") {
+        drawBrickWall(ctx, w, hgt);
+      } else if (sc === "cyber") {
+        drawCyberGrid(ctx, w, hgt, tme);
+      } else {
+        ctx.fillStyle = "#07090f";
+        ctx.fillRect(0, 0, w, hgt);
+      }
+
+      const display = (txt || "Neon").slice(0, 20).toUpperCase();
+      const baseHue = h;
+      const hsh = hashString(txt || "Neon");
+      const effectiveHue = (baseHue + (hsh % 40) - 20 + 360) % 360;
+
+      const sinceIgnite = tme - igniteStartRef.current;
+      const ignite = Math.min(1, sinceIgnite / 0.7);
+
+      let glowMul = 1;
+      if (flick > 0) {
+        const noise = Math.sin(tme * 12 + flickerSeed.current * 10) * 0.5 + Math.sin(tme * 7.3) * 0.3;
+        const flickerChance = flick / 100;
+        if (Math.random() < flickerChance * 0.15) {
+          glowMul = 0.35 + Math.random() * 0.4;
+        } else {
+          glowMul = 0.85 + noise * (flick / 200);
+        }
+      }
+      glowMul *= ignite;
+
+      const charFactor = ft === "condensed" ? 0.55 : ft === "script" ? 0.82 : 0.72;
+      const fontSize = Math.min(72, Math.max(28, w / (display.length * charFactor)));
+      ctx.font = fontStack(ft, fontSize);
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+
+      const cx = w / 2;
+      const cy = hgt / 2;
+
+      const washR = Math.max(w, hgt) * 0.55;
+      const wash = ctx.createRadialGradient(cx, cy, 0, cx, cy, washR);
+      const washA = 0.22 * (intens / 60) * glowMul;
+      wash.addColorStop(0, `hsla(${effectiveHue}, 90%, 45%, ${washA})`);
+      wash.addColorStop(0.45, `hsla(${effectiveHue}, 70%, 30%, ${washA * 0.35})`);
+      wash.addColorStop(1, "hsla(0, 0%, 0%, 0)");
+      ctx.fillStyle = wash;
+      ctx.fillRect(0, 0, w, hgt);
+
+      const glowLayers = [
+        { blur: 48, alpha: 0.18, line: ft === "script" ? 8 : 10 },
+        { blur: 28, alpha: 0.28, line: ft === "script" ? 5.5 : 7 },
+        { blur: 14, alpha: 0.4, line: ft === "script" ? 4 : 5 },
+        { blur: 6, alpha: 0.55, line: ft === "script" ? 2.8 : 3.5 },
+        { blur: 2, alpha: 0.75, line: ft === "script" ? 1.6 : 2 },
+      ];
+      for (const layer of glowLayers) {
+        const blur = layer.blur * (intens / 60) * glowMul;
+        const alpha = layer.alpha * glowMul;
+        ctx.shadowColor = `hsla(${effectiveHue}, 100%, 58%, ${alpha})`;
+        ctx.shadowBlur = blur;
+        ctx.strokeStyle = `hsla(${effectiveHue}, 100%, 68%, ${Math.min(1, alpha + 0.25)})`;
+        ctx.lineWidth = layer.line;
+        ctx.strokeText(display, cx, cy);
+      }
+
+      // Glass tube core: bright fill + thin glass rim + specular highlight offset upward
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = `hsl(${effectiveHue}, 100%, 96%)`;
+      ctx.fillText(display, cx, cy);
+      ctx.strokeStyle = `hsl(${effectiveHue}, 100%, 78%)`;
+      ctx.lineWidth = ft === "script" ? 1.4 : 1.8;
+      ctx.strokeText(display, cx, cy);
+
+      // Specular glass rim (cool white edge slightly above the tube)
+      ctx.globalAlpha = 0.55 * glowMul;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+      ctx.lineWidth = ft === "script" ? 0.9 : 1.15;
+      ctx.strokeText(display, cx, cy - fontSize * 0.045);
+      ctx.globalAlpha = 1;
+
+      // Soft floor reflection
+      ctx.globalAlpha = 0.18 * glowMul;
+      ctx.fillStyle = `hsl(${effectiveHue}, 85%, 52%)`;
+      ctx.fillText(display, cx, cy + fontSize * 0.58);
+      ctx.globalAlpha = 1;
+
+      // Electric sparks when flicker is elevated
+      const sparks = sparksRef.current;
+      if (flick > 18 && glowMul > 0.5 && Math.random() < (flick / 100) * 0.22) {
+        const metrics = ctx.measureText(display);
+        const tw = metrics.width || fontSize * display.length * 0.55;
+        const sx = cx + (Math.random() - 0.5) * tw * 0.95;
+        const sy = cy + (Math.random() - 0.5) * fontSize * 0.7;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 40 + Math.random() * 90;
+        sparks.push({
+          x: sx,
+          y: sy,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 20,
+          life: 0,
+          maxLife: 0.18 + Math.random() * 0.22,
+        });
+        if (sparks.length > 28) sparks.splice(0, sparks.length - 28);
+      }
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.life += 0.016;
+        if (s.life >= s.maxLife) {
+          sparks.splice(i, 1);
+          continue;
+        }
+        const p = 1 - s.life / s.maxLife;
+        s.x += s.vx * 0.016;
+        s.y += s.vy * 0.016;
+        s.vy += 180 * 0.016;
+        ctx.globalAlpha = p * glowMul;
+        ctx.fillStyle = `hsla(${effectiveHue}, 100%, ${70 + p * 25}%, 1)`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 1.2 + p * 2.2, 0, Math.PI * 2);
+        ctx.fill();
+        // short trail
+        ctx.strokeStyle = `hsla(${effectiveHue}, 100%, 85%, ${0.5 * p})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.vx * 0.012, s.y - s.vy * 0.012);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      const vig = ctx.createRadialGradient(cx, cy, Math.min(w, hgt) * 0.25, cx, cy, Math.max(w, hgt) * 0.72);
+      vig.addColorStop(0, "rgba(0,0,0,0)");
+      vig.addColorStop(1, "rgba(0,0,0,0.55)");
+      ctx.fillStyle = vig;
+      ctx.fillRect(0, 0, w, hgt);
+
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const off = document.createElement("canvas");
+    off.width = canvas.width;
+    off.height = canvas.height;
+    const octx = off.getContext("2d");
+    if (!octx) return;
+    octx.drawImage(canvas, 0, 0);
+    octx.font = "12px system-ui";
+    octx.fillStyle = "rgba(255,255,255,0.35)";
+    octx.textAlign = "right";
+    octx.fillText("UtiliHub · Neon Sign", off.width - 14, off.height - 14);
+    const a = document.createElement("a");
+    a.download = `neon-${(text || "sign").slice(0, 10).replace(/\s+/g, "-")}.png`;
+    a.href = off.toDataURL("image/png");
+    a.click();
+  };
+
+  const buildUrl = useCallback(() => {
+    const params = new URLSearchParams();
+    if (text.trim()) params.set("t", text.trim().slice(0, 20));
+    params.set("h", String(hue));
+    params.set("i", String(intensity));
+    params.set("f", String(flicker));
+    if (scene !== "void") params.set("b", scene);
+    if (font !== "block") params.set("fnt", font);
+    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  }, [text, hue, intensity, flicker, scene, font]);
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(buildUrl());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      prompt(locale === "es" ? "Copiá:" : "Copy:", buildUrl());
+    }
+  };
+
+  const nativeShare = async () => {
+    const url = buildUrl();
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: locale === "es" ? "Estudio de Firma Neón" : "Neon Signature Studio",
+          text: text,
+          url,
+        });
+      } catch {
+        // cancelled
+      }
+    } else {
+      copyLink();
+    }
+  };
+
+  return (
+    <div className="space-y-5">
+      <div className="rounded-2xl border border-fuchsia-500/20 bg-gradient-to-br from-fuchsia-50/70 via-white to-pink-50/40 p-4 dark:from-fuchsia-950/30 dark:via-background dark:to-pink-950/20">
+        <label className="flex flex-col gap-2 text-sm">
+          <span className="font-semibold">{t.message}</span>
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value.slice(0, 20))}
+            placeholder={t.placeholder}
+            className="rounded-xl border border-border bg-background px-4 py-3 text-base shadow-sm outline-none ring-primary/30 focus:ring-2"
+            maxLength={20}
+            autoComplete="off"
+          />
+        </label>
+        <p className="mt-2 text-xs text-muted-foreground">{t.help}</p>
+      </div>
+
+      <div>
+        <p className="mb-2 text-xs font-medium">{t.presets}</p>
+        <div className="flex flex-wrap gap-2">
+          {PRESETS.map((p) => (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => setHue(p.hue)}
+              className="rounded-full border border-border/60 bg-background px-3 py-1 text-xs font-semibold hover:border-fuchsia-500/50"
+              style={{ boxShadow: `0 0 0 2px hsl(${p.hue} 90% 55% / 0.35)` }}
+            >
+              {locale === "es" ? p.labelEs : p.labelEn}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-2 text-xs font-medium">{t.scenes}</p>
+        <div className="flex flex-wrap gap-2">
+          {SCENES.map((s) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => setScene(s.id)}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
+                scene === s.id
+                  ? "border-fuchsia-500/60 bg-fuchsia-50 text-fuchsia-900 dark:bg-fuchsia-950/50 dark:text-fuchsia-100"
+                  : "border-border/60 bg-background hover:border-fuchsia-500/40"
+              }`}
+            >
+              {locale === "es" ? s.labelEs : s.labelEn}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-2 text-xs font-medium">{t.fonts}</p>
+        <div className="flex flex-wrap gap-2">
+          {FONTS.map((f) => (
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => setFont(f.id)}
+              className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
+                font === f.id
+                  ? "border-fuchsia-500/60 bg-fuchsia-50 text-fuchsia-900 dark:bg-fuchsia-950/50 dark:text-fuchsia-100"
+                  : "border-border/60 bg-background hover:border-fuchsia-500/40"
+              }`}
+            >
+              {locale === "es" ? f.labelEs : f.labelEn}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-3">
+        <label className="flex flex-col gap-1 text-xs font-medium">
+          {t.hue}
+          <input type="range" min={0} max={360} value={hue} onChange={(e) => setHue(+e.target.value)} className="accent-fuchsia-500" />
+          <span className="text-muted-foreground">{hue}°</span>
+        </label>
+        <label className="flex flex-col gap-1 text-xs font-medium">
+          {t.intensity}
+          <input type="range" min={20} max={100} value={intensity} onChange={(e) => setIntensity(+e.target.value)} className="accent-fuchsia-500" />
+          <span className="text-muted-foreground">{intensity}</span>
+        </label>
+        <label className="flex flex-col gap-1 text-xs font-medium">
+          {t.flicker}
+          <input type="range" min={0} max={80} value={flicker} onChange={(e) => setFlicker(+e.target.value)} className="accent-fuchsia-500" />
+          <span className="text-muted-foreground">{flicker}</span>
+        </label>
+      </div>
+
+      <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-[#07090f] shadow-inner">
+        <canvas ref={canvasRef} className="h-[min(52vh,420px)] w-full touch-none" />
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <button type="button" onClick={copyLink} className="rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-semibold hover:bg-muted">
+          {copied ? t.copied : t.copy}
+        </button>
+        <button type="button" onClick={nativeShare} className="rounded-xl border border-fuchsia-500/40 bg-fuchsia-50 px-4 py-2.5 text-sm font-semibold text-fuchsia-800 hover:bg-fuchsia-100 dark:bg-fuchsia-950/40 dark:text-fuchsia-100 dark:hover:bg-fuchsia-900/50">
+          {t.share}
+        </button>
+        <button type="button" onClick={downloadPng} className="rounded-xl bg-fuchsia-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-fuchsia-700">
+          {t.download}
+        </button>
+      </div>
+    </div>
+  );
+}

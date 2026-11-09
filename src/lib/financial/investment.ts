@@ -1,25 +1,7 @@
 import type { FinancialDefinition } from "./types";
 import { money, num, pct, financialValue } from "./types";
-
-const f = (key: string, label: string, defaultValue: number, unit = "") => ({
-  key,
-  label,
-  defaultValue,
-  unit,
-});
-
-const futureDca = (
-  initial: number,
-  monthly: number,
-  annualRate: number,
-  months: number,
-) => {
-  const r = annualRate / 100 / 12;
-  if (months <= 0) return initial;
-  if (r === 0) return initial + monthly * months;
-  const factor = Math.pow(1 + r, months);
-  return initial * factor + monthly * (factor - 1) / r;
-};
+import { f } from "./investment.part1";
+import { futureDca } from "./investment.part2";
 
 export const INVESTMENT_TOOLS: FinancialDefinition[] = [
   {

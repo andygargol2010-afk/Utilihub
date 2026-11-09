@@ -1,46 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import type { Locale } from "@/lib/i18n/locale";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const n = Number(value.replace(",", "."));
-  return Number.isFinite(n) ? n : null;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value);
-}
-
-type Unit = "m" | "ft";
-type Shape = "rect" | "area";
-type Material = "plywood" | "osb" | "mdf";
-
-type Preset = {
-  id: string;
-  unit: Unit;
-  shape: Shape;
-  length: string;
-  width: string;
-  area: string;
-  openings: string;
-  sheetL: string;
-  sheetW: string;
-  thickness: string;
-  material: Material;
-  waste: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "subfloor", unit: "ft", shape: "rect", length: "12", width: "10", area: "120", openings: "0", sheetL: "8", sheetW: "4", thickness: "0.75", material: "osb", waste: "10" },
-  { id: "sheathing", unit: "ft", shape: "rect", length: "24", width: "8", area: "192", openings: "28", sheetL: "8", sheetW: "4", thickness: "0.4375", material: "osb", waste: "12" },
-  { id: "cabinet", unit: "m", shape: "area", length: "2.4", width: "1.2", area: "6.5", openings: "0", sheetL: "2.44", sheetW: "1.22", thickness: "18", material: "mdf", waste: "15" },
-  { id: "metric", unit: "m", shape: "rect", length: "5", width: "3.2", area: "16", openings: "1.8", sheetL: "2.5", sheetW: "1.25", thickness: "18", material: "plywood", waste: "10" },
-];
-
-const DENSITY: Record<Material, number> = { plywood: 550, osb: 650, mdf: 750 };
+import { inputClass } from "./SheetCalculatorTool.part1";
+import { type Unit, type Shape, type Material, parseNum, DENSITY, type Preset, PRESETS, formatNum, buttonClass } from "./SheetCalculatorTool.part2";
 
 export function SheetCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

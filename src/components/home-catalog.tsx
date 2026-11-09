@@ -1,0 +1,307 @@
+import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
+import { HomeFeaturedSection } from "@/components/HomeFeaturedSection";
+import { RecentToolsSection } from "@/components/RecentToolsSection";
+import { ALL_CATEGORIES, allToolsByCategory, allCategoryBySlug } from "@/lib/all-tools";
+import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
+import { englishCategorySlug, englishToolSlug } from "@/lib/route-slugs";
+import { PT_CATEGORY_NAMES, PT_QUICK_TOOL_NAMES } from "@/lib/i18n/pt-featured";
+import { quickTools, CATEGORY_BLURB_ES, categoryHrefEs, CATEGORY_BLURB_PT, categoryHrefPt } from "./home-catalog.part2";
+export { HomeToolCount, HomeSearch } from "./home-catalog.part2";
+
+export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
+  const categories = ALL_CATEGORIES.slice(0, 9);
+  const tools = quickTools();
+  if (locale === "es") {
+    return (
+      <>
+        <HomeFeaturedSection locale="es" />
+        <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="es-shortcuts-title">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Empieza aquí</p>
+              <h2 id="es-shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
+                Enlaces rápidos
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Las herramientas más prácticas para empezar sin recorrer todo el catálogo.
+              </p>
+            </div>
+            <Link
+              to="/es/herramientas"
+              className="hidden min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent sm:inline-flex"
+            >
+              Ver catálogo <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {tools.map((tool) => {
+              const isPixel = tool.slug === "pixelihub";
+              return (
+                <Link
+                  key={tool.slug}
+                  to={spanishToolPath(tool) as never}
+                  className={
+                    isPixel
+                      ? "card-hover group rounded-xl border border-rose-500/35 bg-gradient-to-br from-rose-500/10 via-card to-card p-4 hover:-translate-y-0.5 hover:border-rose-500/50 hover:shadow-lift"
+                      : "card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
+                  }
+                >
+                  <span className={`text-xs font-bold uppercase tracking-wide ${isPixel ? "text-rose-500" : "text-primary"}`}>
+                    {isPixel ? "Pixel art" : spanishCategoryName(tool.category)}
+                  </span>
+                  <h3 className={`mt-2 font-bold ${isPixel ? "group-hover:text-rose-500" : "group-hover:text-primary"}`}>
+                    {spanishToolName(tool)}
+                  </h3>
+                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                    {isPixel
+                      ? "Estudio de pixel art en el navegador: capas, paletas y PNG."
+                      : (CATEGORY_BLURB_ES[tool.category] ?? "Herramienta gratuita en el navegador.")}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+        <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="es-explore-categories">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explora por objetivo</p>
+              <h2 id="es-explore-categories" className="mt-1 text-2xl font-black">
+                Todas las categorías
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Colecciones de herramientas organizadas por tipo de tarea.
+              </p>
+            </div>
+            <Link
+              to="/es/herramientas"
+              className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent"
+            >
+              Ver todas <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category) => {
+              const count = allToolsByCategory(category.slug).length;
+              const blurb =
+                CATEGORY_BLURB_ES[category.slug] ??
+                `Herramientas de ${spanishCategoryName(category.slug).toLowerCase()}.`;
+              return (
+                <a
+                  key={category.slug}
+                  href={categoryHrefEs(category.slug)}
+                  className="card-hover group flex min-h-16 items-center justify-between rounded-xl border border-border/70 bg-card px-4 py-3 hover:border-primary/20 hover:bg-accent"
+                >
+                  <span>
+                    <span className="block font-bold group-hover:text-primary">
+                      {spanishCategoryName(category.slug)}
+                    </span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">{blurb}</span>
+                  </span>
+                  <span className="ml-3 shrink-0 rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">
+                    {count}
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+        <FavoriteToolsSection locale="es" />
+        <RecentToolsSection locale="es" />
+      </>
+    );
+  }
+
+  if (locale === "pt") {
+    return (
+      <>
+        <HomeFeaturedSection locale="pt" />
+        <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="pt-shortcuts-title">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Comece aqui</p>
+              <h2 id="pt-shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
+                Links rápidos
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                As ferramentas mais práticas para começar sem percorrer todo o catálogo.
+              </p>
+            </div>
+            <Link
+              to="/pt/ferramentas"
+              className="hidden min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent sm:inline-flex"
+            >
+              Ver catálogo <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {tools.map((tool) => {
+              const isPixel = tool.slug === "pixelihub";
+              return (
+                <Link
+                  key={tool.slug}
+                  to={tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug"}
+                  params={{ slug: englishToolSlug(tool) }}
+                  className={
+                    isPixel
+                      ? "card-hover group rounded-xl border border-rose-500/35 bg-gradient-to-br from-rose-500/10 via-card to-card p-4 hover:-translate-y-0.5 hover:border-rose-500/50 hover:shadow-lift"
+                      : "card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
+                  }
+                >
+                  <span className={`text-xs font-bold uppercase tracking-wide ${isPixel ? "text-rose-500" : "text-primary"}`}>
+                    {isPixel ? "Pixel art" : (PT_CATEGORY_NAMES[tool.category] ?? tool.category)}
+                  </span>
+                  <h3 className={`mt-2 font-bold ${isPixel ? "group-hover:text-rose-500" : "group-hover:text-primary"}`}>
+                    {PT_QUICK_TOOL_NAMES[tool.slug] ?? tool.name}
+                  </h3>
+                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                    {isPixel
+                      ? "Estúdio de pixel art no navegador: camadas, paletas e PNG."
+                      : (CATEGORY_BLURB_PT[tool.category] ?? "Ferramenta gratuita no navegador.")}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+        <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="pt-explore-categories">
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explore por objetivo</p>
+              <h2 id="pt-explore-categories" className="mt-1 text-2xl font-black">
+                Todas as categorias
+              </h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Coleções de ferramentas organizadas por tipo de tarefa.
+              </p>
+            </div>
+            <Link
+              to="/pt/ferramentas"
+              className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent"
+            >
+              Ver todas <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category) => {
+              const count = allToolsByCategory(category.slug).length;
+              const blurb = CATEGORY_BLURB_PT[category.slug] ?? `Ferramentas de ${category.name.toLowerCase()}.`;
+              return (
+                <a
+                  key={category.slug}
+                  href={categoryHrefPt(category.slug)}
+                  className="card-hover group flex min-h-16 items-center justify-between rounded-xl border border-border/70 bg-card px-4 py-3 hover:border-primary/20 hover:bg-accent"
+                >
+                  <span>
+                    <span className="block font-bold group-hover:text-primary">
+                      {PT_CATEGORY_NAMES[category.slug] ?? category.name}
+                    </span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">{blurb}</span>
+                  </span>
+                  <span className="ml-3 shrink-0 rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">
+                    {count}
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+        <FavoriteToolsSection locale="pt" />
+        <RecentToolsSection locale="pt" />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <HomeFeaturedSection locale="en" />
+      <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="shortcuts-title">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Start here</p>
+            <h2 id="shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
+              Quick links
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              The most practical tools to start without browsing the full catalog.
+            </p>
+          </div>
+          <Link
+            to="/tools"
+            className="hidden min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent sm:inline-flex"
+          >
+            View catalog <ArrowRight className="size-4" />
+          </Link>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {tools.map((tool) => {
+            const isPixel = tool.slug === "pixelihub";
+            return (
+              <Link
+                key={tool.slug}
+                to={tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug"}
+                params={{ slug: englishToolSlug(tool) }}
+                className={
+                  isPixel
+                    ? "card-hover group rounded-xl border border-rose-500/35 bg-gradient-to-br from-rose-500/10 via-card to-card p-4 hover:-translate-y-0.5 hover:border-rose-500/50 hover:shadow-lift"
+                    : "card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
+                }
+              >
+                <span className={`text-xs font-bold uppercase tracking-wide ${isPixel ? "text-rose-500" : "text-primary"}`}>
+                  {isPixel ? "Pixel art" : (allCategoryBySlug(tool.category)?.name ?? tool.category)}
+                </span>
+                <h3 className={`mt-2 font-bold ${isPixel ? "group-hover:text-rose-500" : "group-hover:text-primary"}`}>
+                  {tool.name}
+                </h3>
+                <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                  {isPixel
+                    ? "Browser pixel-art studio: layers, palettes, and PNG export."
+                    : tool.summary}
+                </p>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+      <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="explore-categories">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explore by goal</p>
+            <h2 id="explore-categories" className="mt-1 text-2xl font-black">
+              All categories
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">Find a collection of tools organized by task.</p>
+          </div>
+          <Link to="/tools" className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent">
+            View all <ArrowRight className="size-4" />
+          </Link>
+        </div>
+        <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map((category) => {
+            const count = allToolsByCategory(category.slug).length;
+            const href = category.slug === "finanzas" ? "/finance" : `/category/${englishCategorySlug(category.slug)}`;
+            return (
+              <a
+                key={category.slug}
+                href={href}
+                className="card-hover group flex min-h-16 items-center justify-between rounded-xl border border-border/70 bg-card px-4 py-3 hover:border-primary/20 hover:bg-accent"
+              >
+                <span>
+                  <span className="block font-bold group-hover:text-primary">{category.name}</span>
+                  <span className="mt-0.5 block text-xs text-muted-foreground">{category.description}</span>
+                </span>
+                <span className="ml-3 shrink-0 rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">
+                  {count}
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+      <FavoriteToolsSection />
+      <RecentToolsSection />
+    </>
+  );
+}

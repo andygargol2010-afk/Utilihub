@@ -4,12 +4,22 @@ import type { SimDef, SimLocale } from "@/lib/simulators/catalog";
 const MoleculesSim = lazy(() => import("./MoleculesSim").then((m) => ({ default: m.MoleculesSim })));
 const GravitySandbox = lazy(() => import("./GravitySandbox").then((m) => ({ default: m.GravitySandbox })));
 const PendulumSim = lazy(() => import("./PendulumSim").then((m) => ({ default: m.PendulumSim })));
+const DoublePendulumSim = lazy(() => import("./DoublePendulumSim").then((m) => ({ default: m.DoublePendulumSim })));
 const ProjectileSim = lazy(() => import("./ProjectileSim").then((m) => ({ default: m.ProjectileSim })));
 const OpticsSim = lazy(() => import("./OpticsSim").then((m) => ({ default: m.OpticsSim })));
 const DcCircuitSim = lazy(() => import("./DcCircuitSim").then((m) => ({ default: m.DcCircuitSim })));
 const EcosystemSim = lazy(() => import("./EcosystemSim").then((m) => ({ default: m.EcosystemSim })));
 const SirEpidemicSim = lazy(() => import("./SirEpidemicSim").then((m) => ({ default: m.SirEpidemicSim })));
 const MarketSim = lazy(() => import("./MarketSim").then((m) => ({ default: m.MarketSim })));
+const StandingWaveSim = lazy(() => import("./StandingWaveSim").then((m) => ({ default: m.StandingWaveSim })));
+const WaveInterferenceSim = lazy(() => import("./WaveInterferenceSim").then((m) => ({ default: m.WaveInterferenceSim })));
+const GaltonBoardSim = lazy(() => import("./GaltonBoardSim").then((m) => ({ default: m.GaltonBoardSim })));
+const BoidsFlockingLab = lazy(() => import("./BoidsFlockingLab").then((m) => ({ default: m.BoidsFlockingLab })));
+const ReactionDiffusionLab = lazy(() => import("./ReactionDiffusionLab").then((m) => ({ default: m.ReactionDiffusionLab })));
+const LogisticChaosLab = lazy(() => import("./LogisticChaosLab").then((m) => ({ default: m.LogisticChaosLab })));
+const TrafficSignalLab = lazy(() => import("./TrafficSignalLab").then((m) => ({ default: m.TrafficSignalLab })));
+const BinPackingSim = lazy(() => import("./BinPackingSim").then((m) => ({ default: m.BinPackingSim })));
+const PredatorPreySim = lazy(() => import("./PredatorPreySim").then((m) => ({ default: m.PredatorPreySim })));
 
 const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "molecular-motion": MoleculesSim,
@@ -18,6 +28,8 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "sandbox-gravedad": GravitySandbox,
   pendulum: PendulumSim,
   pendulo: PendulumSim,
+  "double-pendulum": DoublePendulumSim,
+  "pendulo-doble": DoublePendulumSim,
   "projectile-motion": ProjectileSim,
   "movimiento-proyectil": ProjectileSim,
   "optics-bench": OpticsSim,
@@ -30,6 +42,24 @@ const MAP: Record<string, ComponentType<{ locale?: SimLocale }>> = {
   "epidemia-sir": SirEpidemicSim,
   "market-equilibrium": MarketSim,
   "equilibrio-mercado": MarketSim,
+  "standing-wave": StandingWaveSim,
+  "ondas-estacionarias": StandingWaveSim,
+  "wave-interference": WaveInterferenceSim,
+  "interferencia-ondas": WaveInterferenceSim,
+  "galton-board": GaltonBoardSim,
+  "tablero-galton": GaltonBoardSim,
+  "boids-flocking-lab": BoidsFlockingLab,
+  "lab-bandadas-boids": BoidsFlockingLab,
+  "reaction-diffusion-lab": ReactionDiffusionLab,
+  "lab-reaccion-difusion": ReactionDiffusionLab,
+  "logistic-chaos-lab": LogisticChaosLab,
+  "laboratorio-caos-logistico": LogisticChaosLab,
+  "traffic-signal-lab": TrafficSignalLab,
+  "laboratorio-semaforos": TrafficSignalLab,
+  "bin-packing": BinPackingSim,
+  "empaque-cajas": BinPackingSim,
+  "predator-prey-simulator": PredatorPreySim,
+  "simulador-depredador-presa": PredatorPreySim,
 };
 
 export function SimPlayer({ sim, locale = "en" }: { sim: SimDef; locale?: SimLocale }) {

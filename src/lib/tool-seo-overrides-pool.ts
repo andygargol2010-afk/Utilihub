@@ -2,12 +2,12 @@ import type { ToolSeoOverride } from "./tool-seo-overrides";
 
 export const TOOL_SEO_OVERRIDES_POOL: Record<string, ToolSeoOverride> = {
   "calculadora-piscina": {
-    metaTitle: "Pool Volume Calculator — Liters and Gallons | UtiliHub",
-    metaTitleEs: "Calculadora de piscina — litros y galones | UtiliHub",
+    metaTitle: "Pool Volume Calculator — Gallons, Liters & m³ Free | UtiliHub",
+    metaTitleEs: "Calculadora de volumen de piscina gratis — litros y galones | UtiliHub",
     metaDescription:
-      "Estimate rectangular, round, or oval pool volume in liters, cubic meters, and US or UK gallons. Optional chlorine dose and pump turnover. Free, in the browser.",
+      "Free pool volume calculator: rectangular, round, or oval. Get liters, m³, US/UK gallons, optional chlorine dose and turnover. Instant, no signup.",
     metaDescriptionEs:
-      "Estimá el volumen de una piscina rectangular, redonda u oval en litros, metros cúbicos y galones. Dosis de cloro y tiempo de recirculación opcionales. Gratis, en el navegador.",
+      "Calculá el volumen de piscina (rectangular, redonda u oval) en litros, m³ y galones. Cloro orientativo y recirculación opcionales. Gratis, sin registro.",
     about: [
       "Enter the shape and the water dimensions. Rectangular volume is length × width × average depth. A round pool uses π × radius² × depth. An oval uses π × (length ÷ 2) × (width ÷ 2) × depth.",
       "Average depth is the mean of the shallow and deep ends. If the pool has one depth, leave the deep end equal to the shallow end. Feet are converted to meters before the volume is shown in liters and gallons.",
@@ -23,16 +23,24 @@ export const TOOL_SEO_OVERRIDES_POOL: Record<string, ToolSeoOverride> = {
     steps: [
       "Choose rectangular, round, or oval, and meters or feet.",
       "Enter length or diameter, width when needed, and shallow and deep depths.",
-      "Optionally set a chlorine raise in ppm and a product, or a pump flow for one turnover.",
-      "Review liters, gallons, surface area, dose, and copy the summary.",
+      "Read liters, cubic meters, and US/UK gallons.",
+      "Optional: set ppm and product type for a rule-of-thumb chlorine dose, or pump flow for one turnover.",
     ],
     stepsEs: [
       "Elegí rectangular, redonda u oval, y metros o pies.",
-      "Ingresá largo o diámetro, ancho si hace falta, y profundidades playa y honda.",
-      "Opcional: suba de cloro en ppm y producto, o caudal de bomba para una recirculación.",
-      "Revisá litros, galones, superficie, dosis y copiá el resumen.",
+      "Ingresá largo o diámetro, ancho si aplica, y profundidades playa y honda.",
+      "Leé litros, metros cúbicos y galones US/UK.",
+      "Opcional: ppm y tipo de producto para una dosis orientativa de cloro, o caudal de bomba para una recirculación.",
     ],
     faq: [
+      {
+        q: "How do I calculate rectangular pool volume?",
+        a: "Volume ≈ length × width × average depth. Convert to liters (×1000 from m³) or US gallons (×264.172 from m³).",
+      },
+      {
+        q: "How do I calculate round pool volume?",
+        a: "Volume ≈ π × radius² × average depth (radius = diameter ÷ 2). Same unit conversions as rectangular pools.",
+      },
       {
         q: "How is average depth calculated?",
         a: "It is (shallow + deep) ÷ 2. That matches a simple slope. Benches, steps, and spas are not subtracted.",
@@ -46,11 +54,19 @@ export const TOOL_SEO_OVERRIDES_POOL: Record<string, ToolSeoOverride> = {
         a: "No. It uses common ounces-per-10,000-gallons factors and scales with your volume and ppm. Always follow the label and a water test.",
       },
       {
-        q: "Does the calculation leave the browser?",
-        a: "No. Dimensions and the dose stay on your device.",
+        q: "Is this pool volume calculator free?",
+        a: "Yes. It runs in your browser with no account required.",
       },
     ],
     faqEs: [
+      {
+        q: "¿Cómo se calcula el volumen de una piscina rectangular?",
+        a: "Volumen ≈ largo × ancho × profundidad media. En m³; litros = m³ × 1000. También se muestran galones US y UK.",
+      },
+      {
+        q: "¿Cómo se calcula el volumen de una piscina redonda?",
+        a: "Volumen ≈ π × radio² × profundidad media (radio = diámetro ÷ 2).",
+      },
       {
         q: "¿Cómo se calcula la profundidad media?",
         a: "Es (playa + hondo) ÷ 2. Sirve para una pendiente simple. No resta escalones, bancos ni hidromasaje.",
@@ -64,8 +80,8 @@ export const TOOL_SEO_OVERRIDES_POOL: Record<string, ToolSeoOverride> = {
         a: "No. Usa factores habituales de onzas por cada 10.000 galones y los escala con tu volumen y los ppm. Seguí la etiqueta y un test de agua.",
       },
       {
-        q: "¿El cálculo sale del navegador?",
-        a: "No. Las medidas y la dosis quedan en tu dispositivo.",
+        q: "¿Hay calculadora de volumen de piscina gratis?",
+        a: "Sí. Esta herramienta estima litros, m³ y galones en el navegador, sin registro.",
       },
     ],
   },

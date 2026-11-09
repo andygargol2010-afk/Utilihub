@@ -1,164 +1,28 @@
-export type SimLocale = "en" | "es";
+import { type SimDef, type SimLocale, type SimTag } from "./catalog.part1";
+import { SIMULATORS } from "./catalog.part2";
+import { PT_SIMULATORS, PT_SIM_TAGS } from "@/lib/i18n/pt-simulators";
+export type { SimLocale, SimTag, SimTheme, SimDef } from "./catalog.part1";
+export { SIMULATORS } from "./catalog.part2";
 
-export type SimTag = "physics" | "chemistry" | "math";
-
-/** Visual theme drives shell + hub card — not a generic dark box. */
-export type SimTheme = "lab" | "cosmos" | "clockwork";
-
-export type SimDef = {
-  /** Canonical EN slug used in /simulators/$slug */
-  slug: string;
-  /** ES path slug under /es/simuladores/$slug */
-  slugEs: string;
-  nameEn: string;
-  nameEs: string;
-  tag: SimTag;
-  theme: SimTheme;
-  emoji: string;
-  summaryEn: string;
-  summaryEs: string;
-  /** Short badge on hub cards */
-  badgeEn: string;
-  badgeEs: string;
+export const SIM_JOURNEYS: Record<string, string[]> = {
+  "logistic-chaos-lab": ["sir-epidemic", "galton-board", "double-pendulum", "ecosystem"],
+  "traffic-signal-lab": ["logistic-chaos-lab", "sir-epidemic", "ecosystem", "boids-flocking-lab"],
+  "double-pendulum": ["pendulum", "logistic-chaos-lab", "gravity-sandbox", "galton-board"],
+  "sir-epidemic": ["ecosystem", "logistic-chaos-lab", "galton-board", "market-equilibrium"],
+  "molecular-motion": ["reaction-diffusion-lab", "optics-bench", "dc-circuit", "standing-wave"],
+  "gravity-sandbox": ["double-pendulum", "projectile-motion", "boids-flocking-lab", "pendulum"],
+  "boids-flocking-lab": ["ecosystem", "traffic-signal-lab", "gravity-sandbox", "reaction-diffusion-lab"],
 };
 
-export const SIMULATORS: readonly SimDef[] = [
-  {
-    slug: "molecular-motion",
-    slugEs: "movimiento-molecular",
-    nameEn: "Molecular motion",
-    nameEs: "Movimiento molecular",
-    tag: "chemistry",
-    theme: "lab",
-    emoji: "⚛️",
-    badgeEn: "States of matter",
-    badgeEs: "Estados de la materia",
-    summaryEn:
-      "Watch particles vibrate, flow, or fly free as you switch solid, liquid, and gas. Interactive states of matter in your browser.",
-    summaryEs:
-      "Mirá cómo las partículas vibran, fluyen o vuelan al pasar de sólido a líquido y gas. Estados de la materia interactivos en el navegador.",
-  },
-  {
-    slug: "gravity-sandbox",
-    slugEs: "sandbox-gravedad",
-    nameEn: "Gravity sandbox",
-    nameEs: "Sandbox de gravedad",
-    tag: "physics",
-    theme: "cosmos",
-    emoji: "🌌",
-    badgeEn: "N-body gravity",
-    badgeEs: "Gravedad N-cuerpos",
-    summaryEn:
-      "N-body gravity playground. Try orbit, binary, or cluster presets, tweak G, and tap to add masses with trails.",
-    summaryEs:
-      "Patio de gravedad de N cuerpos. Probá órbita, binario o cúmulo, ajustá G y tocá para añadir masas con estelas.",
-  },
-  {
-    slug: "pendulum",
-    slugEs: "pendulo",
-    nameEn: "Pendulum",
-    nameEs: "Péndulo",
-    tag: "physics",
-    theme: "clockwork",
-    emoji: "🕰️",
-    badgeEn: "Simple harmonic",
-    badgeEs: "Movimiento armónico",
-    summaryEn:
-      "Swing a pendulum, change length and damping, drag to set the angle. See period and energy in a brass clockwork lab.",
-    summaryEs:
-      "Hacé oscilar un péndulo, cambiá longitud y amortiguación, arrastrá para fijar el ángulo. Periodo y energía en un laboratorio de relojería.",
-  },
-  {
-    slug: "projectile-motion",
-    slugEs: "movimiento-proyectil",
-    nameEn: "Projectile motion",
-    nameEs: "Movimiento de proyectil",
-    tag: "physics",
-    theme: "clockwork",
-    emoji: "🚀",
-    badgeEn: "Ballistics lab",
-    badgeEs: "Lab de balística",
-    summaryEn:
-      "Launch a projectile: set angle and speed, toggle air drag, and compare the ideal parabola with the real path. Range, height, and flight time live.",
-    summaryEs:
-      "Lanzá un proyectil: ángulo y velocidad, arrastre del aire opcional, y compará la parábola ideal con la trayectoria real. Alcance, altura y tiempo de vuelo en vivo.",
-  },
-  {
-    slug: "optics-bench",
-    slugEs: "banco-optico",
-    nameEn: "Optics bench",
-    nameEs: "Banco óptico",
-    tag: "physics",
-    theme: "lab",
-    emoji: "🔬",
-    badgeEn: "Lenses & mirrors",
-    badgeEs: "Lentes y espejos",
-    summaryEn:
-      "Ray diagram lab: converging and diverging lenses, concave and convex mirrors. Move the object, change focal length, see image distance and magnification.",
-    summaryEs:
-      "Laboratorio de rayos: lentes convergentes y divergentes, espejos cóncavos y convexos. Mové el objeto, cambiá la focal y mirá distancia e imagen.",
-  },
-  {
-    slug: "dc-circuit",
-    slugEs: "circuito-dc",
-    nameEn: "DC circuit lab",
-    nameEs: "Lab de circuitos DC",
-    tag: "physics",
-    theme: "lab",
-    emoji: "⚡",
-    badgeEn: "Series & parallel",
-    badgeEs: "Serie y paralelo",
-    summaryEn:
-      "Build series or parallel resistor circuits, tweak battery voltage, optional LED drop. Live current, voltage drops, and power with animated flow.",
-    summaryEs:
-      "Armá circuitos en serie o paralelo, ajustá la batería y un LED opcional. Corriente, caídas de tensión y potencia en vivo con flujo animado.",
-  },
-  {
-    slug: "ecosystem",
-    slugEs: "ecosistema",
-    nameEn: "Ecosystem",
-    nameEs: "Ecosistema",
-    tag: "math",
-    theme: "lab",
-    emoji: "🌿",
-    badgeEn: "Food chain",
-    badgeEs: "Cadena trófica",
-    summaryEn:
-      "Three-level food chain: plants, herbivores, predators. Tune growth, grazing, and hunting — watch populations balance or collapse.",
-    summaryEs:
-      "Cadena trófica de tres niveles: plantas, herbívoros y depredadores. Ajustá crecimiento, pastoreo y caza; mirá equilibrio o colapso.",
-  },
-  {
-    slug: "sir-epidemic",
-    slugEs: "epidemia-sir",
-    nameEn: "SIR epidemic",
-    nameEs: "Epidemia SIR",
-    tag: "math",
-    theme: "lab",
-    emoji: "🦠",
-    badgeEn: "Outbreak model",
-    badgeEs: "Modelo de brote",
-    summaryEn:
-      "Classic SIR compartments: susceptible, infected, recovered. Tune β, γ, and vaccination. Watch R₀ and the epidemic curve.",
-    summaryEs:
-      "Compartimentos SIR: susceptibles, infectados, recuperados. Ajustá β, γ y vacunación. Mirá R₀ y la curva de la epidemia.",
-  },
-  {
-    slug: "market-equilibrium",
-    slugEs: "equilibrio-mercado",
-    nameEn: "Market equilibrium",
-    nameEs: "Equilibrio de mercado",
-    tag: "math",
-    theme: "lab",
-    emoji: "📈",
-    badgeEn: "Supply & demand",
-    badgeEs: "Oferta y demanda",
-    summaryEn:
-      "Shift supply and demand curves, add a per-unit tax, and see equilibrium price, quantity, revenue, and surplus.",
-    summaryEs:
-      "Mové las curvas de oferta y demanda, agregá un impuesto unitario y mirá precio, cantidad, ingresos y excedentes de equilibrio.",
-  },
-] as const;
+export function relatedSims(current: Pick<SimDef, "slug">): SimDef[] {
+  const curated = (SIM_JOURNEYS[current.slug] ?? [])
+    .map((slug) => SIMULATORS.find((s) => s.slug === slug))
+    .filter((s): s is SimDef => Boolean(s));
+  if (curated.length >= 4) return curated.slice(0, 4);
+  const used = new Set([current.slug, ...curated.map((s) => s.slug)]);
+  const rest = SIMULATORS.filter((s) => !used.has(s.slug));
+  return [...curated, ...rest].slice(0, 4);
+}
 
 export function simBySlug(slug: string, locale: SimLocale = "en"): SimDef | undefined {
   const key = slug.toLowerCase();
@@ -172,18 +36,22 @@ export function simPath(sim: SimDef, locale: SimLocale = "en") {
 }
 
 export function simName(sim: SimDef, locale: SimLocale = "en") {
+  if (locale === "pt") return PT_SIMULATORS[sim.slug]?.name ?? sim.nameEn;
   return locale === "es" ? sim.nameEs : sim.nameEn;
 }
 
 export function simSummary(sim: SimDef, locale: SimLocale = "en") {
+  if (locale === "pt") return PT_SIMULATORS[sim.slug]?.summary ?? sim.summaryEn;
   return locale === "es" ? sim.summaryEs : sim.summaryEn;
 }
 
 export function simBadge(sim: SimDef, locale: SimLocale = "en") {
+  if (locale === "pt") return PT_SIMULATORS[sim.slug]?.badge ?? sim.badgeEn;
   return locale === "es" ? sim.badgeEs : sim.badgeEn;
 }
 
 export function simTagLabel(tag: SimTag, locale: SimLocale = "en") {
+  if (locale === "pt") return PT_SIM_TAGS[tag];
   if (locale === "es") {
     return tag === "physics" ? "Física" : tag === "chemistry" ? "Química" : "Matemática";
   }

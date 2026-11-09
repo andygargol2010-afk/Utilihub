@@ -2,20 +2,21 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2, FileText, LockKeyhole } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
-import { DOCUMENT_HUB, documentHubTools } from "@/lib/document-hub";
+import { DOCUMENT_HUB } from "@/lib/document-hub";
 import { spanishToolPath } from "@/lib/i18n/es";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
-
-const title = "Documentos y archivos: herramientas gratis | UtiliHub";
-const description = cleanDescription(
-  "Prepará, convertí y organizá documentos y archivos con herramientas online gratuitas. Procesamiento local, sin registro.",
-);
+import { absoluteUrl, breadcrumbSchema, ogImage } from "@/lib/seo";
+import { title } from "./-es.hubs.documentos-y-archivos.part1";
+import { description } from "./-es.hubs.documentos-y-archivos.part2";
 
 export const Route = createFileRoute("/es/hubs/documentos-y-archivos")({
-  loader: () => ({
-    steps: documentHubTools(DOCUMENT_HUB.steps),
-    alternatives: documentHubTools(DOCUMENT_HUB.alternatives),
-  }),
+  // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+  loader: async () => {
+    const { documentHubTools } = await import("@/lib/document-hub-tools");
+    return {
+      steps: documentHubTools(DOCUMENT_HUB.steps),
+      alternatives: documentHubTools(DOCUMENT_HUB.alternatives),
+    };
+  },
   head: () => ({
     meta: [
       { title },

@@ -1,21 +1,49 @@
-import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
 import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
-import { FavoriteButton } from "@/components/FavoriteButton";
-import { ShareAndExportActions } from "@/components/ShareAndExportActions";
-import { ToolCard } from "@/components/ToolCard";
-import { FINANCIAL_TOOLS } from "@/lib/financial-tools";
-import type { CatalogTool } from "@/lib/all-tools";
-import { financeSeo } from "@/lib/finance-seo-content";
-import { toolByEnglishSlug, englishToolPath, englishToolSlug } from "@/lib/route-slugs";
-import { journeyLabel, journeyTools } from "@/lib/discovery";
+import { DeferredFinanceJourney } from "@/components/DeferredFinanceJourney";
+import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
+import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
+import { DeferredFinanceSeo } from "@/components/DeferredFinanceSeo";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, webApplicationSchema } from "@/lib/seo";
-import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
+
+type FinanceSeoLite = {
+  metaTitle?: string;
+  metaDescription?: string;
+  intro?: string;
+  faq: Array<{ q: string; a: string }>;
+};
 
 export const Route = createFileRoute("/finance/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
+    // Catalog stays off the route shell chunk.
+    const { FINANCIAL_TOOLS } = await import("@/lib/financial-tools");
+    const { toolByEnglishSlug, englishToolPath } = await import("@/lib/route-slugs");
     const tool = toolByEnglishSlug(FINANCIAL_TOOLS, params.slug);
-    if (!tool) throw notFound();
-    return { tool };
+    if (!tool) {
+      // General catalog tools tagged "finanzas" are served under /tools; old /finance URLs 301 there.
+      const { ALL_TOOLS } = await import("@/lib/all-tools");
+      const { usesFinanceRoute } = await import("@/lib/route-slugs");
+      const general = toolByEnglishSlug(ALL_TOOLS, params.slug);
+      if (general && general.category === "finanzas" && !usesFinanceRoute(general)) {
+        throw redirect({ href: englishToolPath(general), statusCode: 301 });
+      }
+      throw notFound();
+    }
+    // Keep the SEO barrel off the route shell chunk.
+    const { financeSeo } = await import("@/lib/finance-seo-content");
+    const seo = financeSeo(tool.slug);
+    const enPath = englishToolPath(tool);
+    return {
+      tool,
+      enPath,
+      seo: {
+        metaTitle: seo?.metaTitle,
+        metaDescription: seo?.metaDescription,
+        intro: seo?.intro,
+        faq: seo?.faq ?? [],
+      } satisfies FinanceSeoLite,
+    };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -26,11 +54,10 @@ export const Route = createFileRoute("/finance/$slug")({
         ],
       };
     }
-    const { tool } = loaderData;
-    const seo = financeSeo(tool.slug);
-    const title = seo?.metaTitle ?? `${tool.name} calculator | UtiliHub`;
-    const description = cleanDescription(seo?.metaDescription ?? tool.description);
-    const url = absoluteUrl(englishToolPath(tool));
+    const { tool, seo, enPath } = loaderData;
+    const title = seo.metaTitle ?? `${tool.name} calculator | UtiliHub`;
+    const description = cleanDescription(seo.metaDescription ?? tool.description);
+    const url = absoluteUrl(enPath);
     const esUrl = absoluteUrl(`/es/finanzas/${tool.slug}`);
     return {
       meta: [
@@ -44,10 +71,6 @@ export const Route = createFileRoute("/finance/$slug")({
         { property: "og:url", content: url },
         { property: "og:site_name", content: "UtiliHub" },
         { property: "og:image", content: ogImage() },
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
-        { name: "twitter:image", content: ogImage() },
       ],
       links: [
         { rel: "canonical", href: url },
@@ -69,13 +92,13 @@ export const Route = createFileRoute("/finance/$slug")({
               ]),
               {
                 "@type": "FAQPage",
-                mainEntity: (seo?.faq ?? []).map((item) => ({
+                mainEntity: seo.faq.map((item) => ({
                   "@type": "Question",
                   name: item.q,
                   acceptedAnswer: { "@type": "Answer", text: item.a },
                 })),
               },
-            ].filter((node) => node["@type"] !== "FAQPage" || (seo?.faq?.length ?? 0) > 0),
+            ].filter((node) => node["@type"] !== "FAQPage" || seo.faq.length > 0),
           }),
         },
       ],
@@ -84,40 +107,9 @@ export const Route = createFileRoute("/finance/$slug")({
   component: FinancialPage,
 });
 
-function FinanceNextLink({ tool }: { tool: CatalogTool }) {
-  const slug = englishToolSlug(tool);
-  const className =
-    "inline-flex min-h-11 items-center rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground";
-  if (tool.category === "finanzas") {
-    return (
-      <Link to="/finance/$slug" params={{ slug }} className={className}>
-        Open next
-      </Link>
-    );
-  }
-  return (
-    <Link to="/tools/$slug" params={{ slug }} className={className}>
-      Open next
-    </Link>
-  );
-}
-
 function FinancialPage() {
-  const { tool } = Route.useLoaderData();
-  const seo = financeSeo(tool.slug);
-  const journey = journeyTools({ slug: tool.slug, category: "finanzas" });
-  const next = journey[0];
-
-  const intro = seo?.intro ?? tool.description;
-  const aboutParas = seo?.about ?? [
-    `${tool.description} This tool runs in the browser and provides a mathematical estimate from the values you enter.`,
-  ];
-  const steps = seo?.steps ?? [
-    "Enter the values for the scenario you want to analyze.",
-    "Run the calculation and review each result.",
-    "Compare scenarios and verify real conditions before deciding.",
-  ];
-  const faq = seo?.faq ?? [];
+  const { tool, seo } = Route.useLoaderData();
+  const intro = seo.intro ?? tool.description;
 
   return (
     <main className="container-page py-10 sm:py-14">
@@ -133,90 +125,19 @@ function FinancialPage() {
           <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">{tool.name}</h1>
           <p className="mt-3 text-base leading-7 text-muted-foreground">{intro}</p>
         </div>
-        <FavoriteButton slug={tool.slug} name={tool.name} />
+        <DeferredFavoriteButton slug={tool.slug} name={tool.name} />
       </div>
 
       <section data-tool-surface className="surface-card mt-8 p-5 sm:p-7" aria-label={tool.name}>
         <DeferredFinancialUi slug={tool.slug} locale="en" />
-        <ShareAndExportActions title={tool.name} />
+        <DeferredShareAndExport title={tool.name} />
       </section>
 
-      <AdsterraBanner />
+      <DeferredAdsterraBanner />
 
-      {next && (
-        <section className="mt-6 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5">
-          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p>
-          <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 className="text-base font-black">{journeyLabel({ slug: tool.slug, category: "finanzas" }, "en")}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Continue with {next.name} to compare or complete the analysis.
-              </p>
-            </div>
-            <FinanceNextLink tool={next} />
-          </div>
-        </section>
-      )}
+      <DeferredFinanceJourney tool={tool} />
 
-      <section className="mt-8" aria-labelledby="financial-journey">
-        <div className="mb-2">
-          <h2 id="financial-journey" className="text-xl font-black">
-            Continue your analysis
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">Related calculators to explore more financial scenarios.</p>
-        </div>
-        <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-          {journey.map((item) => (
-            <ToolCard key={item.slug} tool={item} />
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-10 grid gap-8 border-t border-border/70 pt-8 lg:grid-cols-2" aria-labelledby="financial-guide">
-        <div>
-          <h2 id="financial-guide" className="text-xl font-black">
-            About this calculator
-          </h2>
-          <div className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
-            {aboutParas.map((p) => (
-              <p key={p.slice(0, 48)}>{p}</p>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-xl font-black">How to use it</h2>
-          <ol className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
-            {steps.map((step, i) => (
-              <li key={step} className="flex gap-3">
-                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-accent text-xs font-bold text-primary">
-                  {i + 1}
-                </span>
-                <span>{step}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {faq.length > 0 && (
-        <section className="mt-10 border-t border-border/70 pt-8" aria-labelledby="financial-faq">
-          <h2 id="financial-faq" className="text-xl font-black">
-            Frequently asked questions
-          </h2>
-          <dl className="mt-4 space-y-4">
-            {faq.map((item) => (
-              <div key={item.q} className="rounded-xl border border-border/70 bg-card p-4">
-                <dt className="text-sm font-bold">{item.q}</dt>
-                <dd className="mt-2 text-sm leading-6 text-muted-foreground">{item.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )}
-
-      <p className="mt-8 max-w-3xl text-xs leading-5 text-muted-foreground">
-        Results are mathematical estimates. Verify the real conditions of any financial product before making decisions.
-      </p>
+      <DeferredFinanceSeo tool={tool} locale="en" />
     </main>
   );
 }

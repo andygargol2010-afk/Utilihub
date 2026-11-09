@@ -5,18 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "node scripts/write-og-png.mjs && npm run validate:catalog && vite build",
+    "build": "node scripts/write-og-png.mjs && npm run validate:catalog && npm run validate:registry && vite build",
+    "postbuild": "node scripts/check-sitemap-links.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "validate:catalog": "node scripts/validate-catalog.mjs",
+    "validate:catalog": "node scripts/validate-catalog.mjs && node scripts/validate-catalog-size.mjs && node scripts/validate-tool-routing.mjs",
+    "validate:registry": "node scripts/validate-registry.mjs",
     "test:catalog": "node scripts/validate-catalog.mjs",
     "agent:status": "node scripts/agent-system.mjs status",
     "agent:run": "node scripts/agent-system.mjs run",
     "agent:innovator": "node scripts/innovator-cycle.mjs",
     "agent:self-improve": "node scripts/self-improvement.mjs",
     "write-og": "node scripts/write-og-png.mjs",
-    "write-brand": "node scripts/write-og-png.mjs"
+    "write-brand": "node scripts/write-og-png.mjs",
+    "zernio:accounts": "node scripts/zernio-list-accounts.mjs",
+    "zernio:post": "node scripts/zernio-create-post.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -29,6 +33,7 @@
     "@tanstack/react-start": "1.168.60",
     "@tanstack/router-plugin": "1.168.42",
     "@vercel/analytics": "^1.5.0",
+    "@vercel/global-config": "^1.5.1",
     "@vercel/speed-insights": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

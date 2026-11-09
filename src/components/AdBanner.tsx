@@ -2,7 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
+import { useAdFormat } from "@/lib/ads-config";
 
+/**
+ * Home / hub Adsterra banner (same zone as AdsterraBanner).
+ * Gated by Edge Config: ads_enabled + formats.banner. Fail closed.
+ */
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
   width: 728,
@@ -19,8 +24,8 @@ const MOBILE = {
 
 type AtWindow = Window & { atOptions?: Record<string, unknown> };
 
-/** Home banner. The 728×90 box is in the first paint so the script cannot shift the page. */
 export function AdBanner() {
+  const bannerOn = useAdFormat("banner");
   const slotRef = useRef<HTMLDivElement>(null);
   const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
   const [allowed, setAllowed] = useState(false);
@@ -33,62 +38,74 @@ export function AdBanner() {
   }, []);
 
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
-    const update = () => setViewport(media.matches ? "desktop" : "mobile");
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
+    if (!bannerOn) return;
+    const mq = window.matchMedia("(min-width: 768px)");
+    const apply = () => setViewport(mq.matches ? "desktop" : "mobile");
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, [bannerOn]);
 
   useEffect(() => {
-    if (!allowed || !viewport || !slotRef.current) return;
+    if (!bannerOn) return;
+    if (!allowed || !viewport || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
     const slot = slotRef.current;
-    if (slot.dataset.loaded === "true") return;
+    let cancelled = false;
+    let script: HTMLScriptElement | null = null;
+    const previous = (window as AtWindow).atOptions;
 
-    slot.replaceChildren();
-    slot.dataset.loaded = "true";
-
-    const config = viewport === "desktop" ? DESKTOP : MOBILE;
-    const w = window as AtWindow;
-    const previous = w.atOptions;
-    w.atOptions = {
-      key: config.key,
-      format: "iframe",
-      height: config.height,
-      width: config.width,
-      params: {},
+    const inject = () => {
+      if (cancelled || slot.dataset.loaded === "true") return;
+      slot.dataset.loaded = "true";
+      const config = viewport === "desktop" ? DESKTOP : MOBILE;
+      (window as AtWindow).atOptions = {
+        key: config.key,
+        format: "iframe",
+        height: config.height,
+        width: config.width,
+        params: {},
+      };
+      script = document.createElement("script");
+      script.async = true;
+      script.src = config.src;
+      script.dataset.utilihubAd = viewport;
+      slot.appendChild(script);
     };
 
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = config.src;
-    script.dataset.utilihubAd = viewport;
-    script.onerror = () => {
-      slot.dataset.loaded = "error";
-    };
-    slot.appendChild(script);
+    const idle = window.requestIdleCallback;
+    const idleId = typeof idle === "function" ? idle(inject, { timeout: 2000 }) : 0;
+    const timer = typeof idle === "function" ? 0 : window.setTimeout(inject, 1500);
 
     return () => {
-      if (previous) w.atOptions = previous;
-      else delete w.atOptions;
-      script.remove();
-      delete slot.dataset.loaded;
+      cancelled = true;
+      if (idleId) window.cancelIdleCallback?.(idleId);
+      if (timer) window.clearTimeout(timer);
+      if (previous) (window as AtWindow).atOptions = previous;
+      script?.remove();
+      if (slot.dataset.loaded) delete slot.dataset.loaded;
       slot.replaceChildren();
     };
-  }, [allowed, viewport]);
+  }, [bannerOn, allowed, viewport]);
+
+  if (!bannerOn) return null;
 
   return (
-    <div className="mx-auto w-full max-w-full overflow-x-hidden py-2" aria-label="Advertisement">
+    <aside
+      className="ad-slot my-6 w-full max-w-full overflow-x-hidden rounded-xl border border-border/60 bg-surface/35"
+      aria-label="Advertisement"
+    >
+      <div className="flex min-h-7 items-center justify-center px-2 pt-1 text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
+        Advertisement
+      </div>
       <div
-        className="relative mx-auto w-full max-w-[728px] overflow-hidden"
-        style={{ aspectRatio: "728 / 90", containerType: "inline-size" }}
+        className="relative mx-auto w-full max-w-[728px] overflow-hidden pb-2"
+        style={{ aspectRatio: "728 / 90" }}
       >
         <div
           ref={slotRef}
           className="flex h-[90px] w-[728px] items-center justify-center [&_iframe]:max-w-none"
-          style={{ transform: "scale(min(1, 100cqw / 728))", transformOrigin: "top left" }}
         />
       </div>
-    </div>
+    </aside>
   );
 }

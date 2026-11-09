@@ -1,6 +1,22 @@
 import { CompactToolRow } from "@/components/CompactToolRow";
 import type { CatalogTool } from "@/lib/all-tools";
 
-export const ToolCard = ({ tool, isFavorite, onToggleFavorite, locale = "en" }: { tool: CatalogTool; isFavorite?: boolean; onToggleFavorite?: (slug: string) => void; locale?: "en" | "es" }) => (
-  <CompactToolRow tool={tool} isFavorite={isFavorite} onToggleFavorite={onToggleFavorite} locale={locale} />
+/** Catalog tool card: category badge, summary, intent tags, elevated hover, favorite. */
+export const ToolCard = ({
+  tool,
+  isFavorite,
+  onToggleFavorite,
+  locale = "en",
+}: {
+  tool: CatalogTool;
+  isFavorite?: boolean;
+  onToggleFavorite?: (slug: string) => void;
+  locale?: "en" | "es";
+}) => (
+  <CompactToolRow
+    tool={tool}
+    isFavorite={isFavorite}
+    onToggleFavorite={onToggleFavorite}
+    locale={locale}
+  />
 );

@@ -1,6 +1,10 @@
+import { lazy, Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { GamesCatalog } from "@/components/games/GamesCatalog";
 import { absoluteUrl, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+
+const GamesCatalog = lazy(() =>
+  import("@/components/games/GamesCatalog").then((m) => ({ default: m.GamesCatalog })),
+);
 
 const title = "Juegos online gratis | UtiliHub";
 const description = cleanDescription(
@@ -31,6 +35,30 @@ export const Route = createFileRoute("/es/juegos/")({
   component: GamesHubEs,
 });
 
+function GamesListingSlot() {
+  return (
+    <div className="container-page py-8 sm:py-12" aria-busy="true">
+      <div className="h-4 w-32 rounded bg-muted" />
+      <div className="mt-2 h-10 w-48 max-w-full rounded bg-muted" />
+      <div className="mt-3 h-5 w-96 max-w-full rounded bg-muted/70" />
+      <div className="mt-6 flex flex-wrap gap-2">
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={i} className="h-9 w-20 rounded-full bg-muted" />
+        ))}
+      </div>
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 8 }, (_, i) => (
+          <div key={i} className="h-64 rounded-3xl border border-border/70 bg-card" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function GamesHubEs() {
-  return <GamesCatalog locale="es" />;
+  return (
+    <Suspense fallback={<GamesListingSlot />}>
+      <GamesCatalog locale="es" />
+    </Suspense>
+  );
 }

@@ -2,7 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CONSENT_EVENT, hasMarketingConsent } from "@/lib/cookie-consent";
+import { useAdFormat } from "@/lib/ads-config";
 
+/**
+ * Adsterra banner (highrevenueformat.com invoke.js).
+ * Script injection is gated by Edge Config kill switch (ads_enabled + formats.banner)
+ * and marketing cookie consent. Fail closed when flags are off.
+ */
 const DESKTOP = {
   key: "2cc31e1aeb22c19ee96fba8bf47f8fc0",
   width: 728,
@@ -17,11 +23,8 @@ const MOBILE = {
   src: "https://www.highrevenueformat.com/2cc31e1aeb22c19ee96fba8bf47f8fc0/invoke.js",
 };
 
-/**
- * Tool/game/finance banner.
- * Desktop: 728×90 · Mobile: requests 320×50; if network serves 728×90, scales to fit.
- */
 export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) {
+  const bannerOn = useAdFormat("banner");
   const slotRef = useRef<HTMLDivElement>(null);
   const [viewport, setViewport] = useState<"mobile" | "desktop" | null>(null);
   const [allowed, setAllowed] = useState(false);
@@ -35,57 +38,71 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
   }, []);
 
   useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
-    const update = () => setViewport(media.matches ? "desktop" : "mobile");
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
+    if (!bannerOn) return;
+    const mq = window.matchMedia("(min-width: 768px)");
+    const apply = () => setViewport(mq.matches ? "desktop" : "mobile");
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, [bannerOn]);
 
   useEffect(() => {
-    if (viewport !== "mobile") {
+    if (!bannerOn || viewport !== "mobile") {
       setScale(1);
       return;
     }
     const updateScale = () => {
-      const usable = Math.max(280, window.innerWidth - 48);
-      setScale(Math.min(1, usable / 728));
+      const w = Math.min(window.innerWidth - 32, 728);
+      setScale(Math.min(1, w / 728));
     };
     updateScale();
     window.addEventListener("resize", updateScale);
     return () => window.removeEventListener("resize", updateScale);
-  }, [viewport]);
+  }, [bannerOn, viewport]);
 
   useEffect(() => {
+    if (!bannerOn) return;
     if (!allowed || !viewport || !slotRef.current || slotRef.current.dataset.loaded === "true") return;
     const slot = slotRef.current;
-    slot.dataset.loaded = "true";
-    const config = viewport === "desktop" ? DESKTOP : MOBILE;
+    let cancelled = false;
+    let script: HTMLScriptElement | null = null;
     const previous = (window as Window & { atOptions?: Record<string, unknown> }).atOptions;
-    (window as Window & { atOptions?: Record<string, unknown> }).atOptions = {
-      key: config.key,
-      format: "iframe",
-      height: config.height,
-      width: config.width,
-      params: {},
+
+    const inject = () => {
+      if (cancelled || slot.dataset.loaded === "true") return;
+      slot.dataset.loaded = "true";
+      const config = viewport === "desktop" ? DESKTOP : MOBILE;
+      (window as Window & { atOptions?: Record<string, unknown> }).atOptions = {
+        key: config.key,
+        format: "iframe",
+        height: config.height,
+        width: config.width,
+        params: {},
+      };
+      script = document.createElement("script");
+      script.async = true;
+      script.src = config.src;
+      script.dataset.utilihubAd = viewport;
+      slot.appendChild(script);
     };
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = config.src;
-    script.dataset.utilihubAd = viewport;
-    slot.appendChild(script);
+
+    const idle = window.requestIdleCallback;
+    const idleId = typeof idle === "function" ? idle(inject, { timeout: 2000 }) : 0;
+    const timer = typeof idle === "function" ? 0 : window.setTimeout(inject, 1500);
+
     return () => {
+      cancelled = true;
+      if (idleId) window.cancelIdleCallback?.(idleId);
+      if (timer) window.clearTimeout(timer);
       if (previous) (window as Window & { atOptions?: Record<string, unknown> }).atOptions = previous;
-      script.remove();
+      script?.remove();
       if (slot.dataset.loaded) delete slot.dataset.loaded;
       slot.replaceChildren();
     };
-  }, [allowed, viewport]);
+  }, [bannerOn, allowed, viewport]);
 
-  if (!allowed || !viewport) return null;
-
-  const isMobile = viewport === "mobile";
-  const minH = isMobile ? Math.ceil(90 * scale) : 90;
+  // Collapse completely when kill switch is off — no reserved box, no layout weight.
+  if (!bannerOn) return null;
 
   return (
     <aside
@@ -96,20 +113,14 @@ export function AdsterraBanner({ label = "Advertisement" }: { label?: string }) 
         {label}
       </div>
       <div
-        className="mx-auto flex items-center justify-center overflow-hidden pb-2"
-        style={{
-          minHeight: minH,
-          width: isMobile ? 728 * scale : undefined,
-          maxWidth: "100%",
-        }}
+        className="relative mx-auto w-full max-w-[728px] overflow-hidden pb-2"
+        style={{ aspectRatio: "728 / 90" }}
       >
         <div
           ref={slotRef}
-          className="flex items-center justify-center"
+          className="flex h-[90px] w-[728px] items-center justify-center [&_iframe]:max-w-none"
           style={{
-            width: 728,
-            minHeight: 90,
-            transform: isMobile && scale < 1 ? `scale(${scale})` : undefined,
+            transform: viewport === "mobile" && scale < 1 ? `scale(${scale})` : undefined,
             transformOrigin: "top center",
           }}
         />

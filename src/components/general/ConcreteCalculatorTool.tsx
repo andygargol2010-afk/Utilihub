@@ -1,32 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Shape = "slab" | "column";
-type MixId = "lean" | "standard" | "rich";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const chipClass = "h-11 rounded-xl border px-3 text-sm";
-
-const MIXES: Record<MixId, { cement: number; sand: number; gravel: number }> = {
-  lean: { cement: 1, sand: 3, gravel: 5 },
-  standard: { cement: 1, sand: 2, gravel: 3 },
-  rich: { cement: 1, sand: 1.5, gravel: 3 },
-};
-
-const DRY_FACTOR = 1.54;
-const CEMENT_DENSITY = 1440;
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value);
-}
+import { type Locale } from "./ConcreteCalculatorTool.part1";
+import { type Shape, type MixId, parseNum, DRY_FACTOR, MIXES, CEMENT_DENSITY, formatNum, chipClass, inputClass } from "./ConcreteCalculatorTool.part2";
 
 export function ConcreteCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

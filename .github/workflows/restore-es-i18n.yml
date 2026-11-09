@@ -1,0 +1,37 @@
+name: Restore es.ts i18n if truncated
+
+on:
+  push:
+    branches: [fix/spanish-complete]
+  workflow_dispatch:
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check and restore es.ts
+        id: restore
+        run: |
+          node scripts/restore-es-i18n.mjs
+          if git diff --quiet -- src/lib/i18n/es.ts; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit restore
+        if: steps.restore.outputs.changed == 'true'
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/lib/i18n/es.ts
+          git commit -m "fix(i18n): auto-restore full es.ts from backup (was truncated)"
+          git push

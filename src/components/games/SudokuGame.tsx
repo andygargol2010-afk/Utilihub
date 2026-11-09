@@ -2,85 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestLow, writeBestLow } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-type Diff = "easy" | "medium" | "hard";
-type Board = number[][];
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j]!, a[i]!];
-  }
-  return a;
-}
-
-function isValid(board: Board, r: number, c: number, n: number): boolean {
-  for (let i = 0; i < 9; i++) {
-    if (board[r]![i] === n || board[i]![c] === n) return false;
-  }
-  const br = Math.floor(r / 3) * 3;
-  const bc = Math.floor(c / 3) * 3;
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      if (board[br + i]![bc + j] === n) return false;
-    }
-  }
-  return true;
-}
-
-function solve(board: Board): boolean {
-  for (let r = 0; r < 9; r++) {
-    for (let c = 0; c < 9; c++) {
-      if (board[r]![c] !== 0) continue;
-      for (const n of shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9])) {
-        if (!isValid(board, r, c, n)) continue;
-        board[r]![c] = n;
-        if (solve(board)) return true;
-        board[r]![c] = 0;
-      }
-      return false;
-    }
-  }
-  return true;
-}
-
-function generate(diff: Diff): { puzzle: Board; solution: Board } {
-  const solution: Board = Array.from({ length: 9 }, () => Array(9).fill(0));
-  solve(solution);
-  const puzzle = solution.map((row) => row.slice());
-  const holes = diff === "easy" ? 36 : diff === "medium" ? 46 : 54;
-  const cells = shuffle(Array.from({ length: 81 }, (_, i) => i));
-  let removed = 0;
-  for (const idx of cells) {
-    if (removed >= holes) break;
-    const r = Math.floor(idx / 9);
-    const c = idx % 9;
-    if (puzzle[r]![c] === 0) continue;
-    puzzle[r]![c] = 0;
-    removed++;
-  }
-  return { puzzle, solution };
-}
-
-function hasConflict(board: Board, r: number, c: number): boolean {
-  const n = board[r]![c]!;
-  if (!n) return false;
-  for (let i = 0; i < 9; i++) {
-    if (i !== c && board[r]![i] === n) return true;
-    if (i !== r && board[i]![c] === n) return true;
-  }
-  const br = Math.floor(r / 3) * 3;
-  const bc = Math.floor(c / 3) * 3;
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      const rr = br + i;
-      const cc = bc + j;
-      if ((rr !== r || cc !== c) && board[rr]![cc] === n) return true;
-    }
-  }
-  return false;
-}
+import { type Diff } from "./SudokuGame.part1";
+import { generate, type Board, hasConflict } from "./SudokuGame.part2";
 
 export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
@@ -193,10 +116,17 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
         }
         .sudoku-num { display: inline-block; animation: sudoku-pop 0.18s ease-out; }
         .sudoku-frame {
-          background: linear-gradient(160deg, #064e3b, #022c22);
-          box-shadow: 0 12px 36px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(52,211,153,0.2);
-          padding: 8px;
+          background: radial-gradient(ellipse at 50% 0%, rgba(52,211,153,0.18), transparent 55%),
+            linear-gradient(165deg, #064e3b, #011a14);
+          box-shadow: 0 16px 42px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(52,211,153,0.28);
+          padding: 10px;
         }
+        @keyframes sudoku-shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-2px); }
+          75% { transform: translateX(2px); }
+        }
+        .sudoku-conflict { animation: sudoku-shake 0.28s ease; }
         .sudoku-pad-btn {
           background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
           box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -257,8 +187,8 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
                 key={`${r}-${c}`}
                 type="button"
                 onClick={() => setSelected([r, c])}
-                className={`flex h-8 w-8 items-center justify-center text-sm font-bold sm:h-9 sm:w-9 ${border} ${bg} ${
-                  conflict ? "text-rose-200" : isFixed ? "text-emerald-200" : "text-amber-200"
+                className={`flex h-9 w-9 items-center justify-center rounded-sm text-sm font-bold transition-colors sm:h-10 sm:w-10 ${border} ${bg} ${
+                  conflict ? "sudoku-conflict text-rose-200" : isFixed ? "text-emerald-100" : "text-amber-200"
                 }`}
               >
                 {v ? (
@@ -279,7 +209,7 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
             key={n}
             type="button"
             onClick={() => put(n)}
-            className={`sudoku-pad-btn flex h-10 min-w-10 items-center justify-center rounded-xl px-1 text-sm font-bold text-white ${
+            className={`sudoku-pad-btn flex h-11 min-w-11 items-center justify-center rounded-xl px-1 text-base font-bold text-white active:scale-95 ${
               selectedVal === n && n !== 0 ? "bg-emerald-500/40 ring-1 ring-emerald-300/50" : "bg-white/10"
             }`}
           >

@@ -39,7 +39,7 @@ export const webApplicationSchema = (tool: {
   description: tool.description,
   url: absoluteUrl(toolPath(tool)),
   applicationCategory: "UtilityApplication",
-  operatingSystem: "Any",
+  operatingSystem: "Web",
   isAccessibleForFree: true,
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   publisher: organizationSchema(),
@@ -61,6 +61,42 @@ export const faqSchema = (faq: Array<{ q: string; a: string }>) => ({
     acceptedAnswer: { "@type": "Answer", text: item.a },
   })),
 });
+/**
+ * Shared JSON-LD for interactive pages (games, simulators, playgrounds): app entity + BreadcrumbList,
+ * plus FAQPage only when the page renders those FAQs visibly. Returns a ready `scripts` entry.
+ */
+export const interactiveAppJsonLd = (opts: {
+  kind: "game" | "simulator" | "app";
+  name: string;
+  description: string;
+  path: string;
+  locale: "en" | "es" | "pt";
+  breadcrumbs: Array<{ name: string; path?: string }>;
+  visibleFaq?: Array<{ q: string; a: string }>;
+}) => {
+  const app = {
+    "@type": opts.kind === "game" ? ["VideoGame", "WebApplication"] : "WebApplication",
+    name: opts.name,
+    description: opts.description,
+    url: absoluteUrl(opts.path),
+    inLanguage: opts.locale,
+    applicationCategory:
+      opts.kind === "game" ? "GameApplication" : opts.kind === "simulator" ? "EducationalApplication" : "MultimediaApplication",
+    ...(opts.kind === "game" ? { genre: "Casual", playMode: "SinglePlayer", gamePlatform: "Web browser" } : {}),
+    operatingSystem: "Web",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: organizationSchema(),
+  };
+  const faq = opts.visibleFaq ?? [];
+  return {
+    type: "application/ld+json",
+    children: JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [app, ...(faq.length ? [faqSchema(faq)] : []), breadcrumbSchema(opts.breadcrumbs)],
+    }),
+  };
+};
 export const websiteSchema = () => ({
   "@context": "https://schema.org",
   "@type": "WebSite",

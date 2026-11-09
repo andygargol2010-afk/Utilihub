@@ -1,52 +1,47 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { KitCarryBoard } from "@/components/kits/KitCarryBoard";
+import { MarketStallBoard } from "@/components/kits/MarketStallBoard";
+import { TravelPackingBoard } from "@/components/kits/TravelPackingBoard";
+import { HomeRenovationBoard } from "@/components/kits/HomeRenovationBoard";
+import { KitchenPrepBoard } from "@/components/kits/KitchenPrepBoard";
 import { ToolCard } from "@/components/ToolCard";
-import { kitBySlug, kitTools, kitEnglishPath } from "@/lib/work-kits";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
+import { spanishToolName } from "@/lib/i18n/es";
+import { kitBySlug, kitEnglishPath } from "@/lib/work-kits";
+import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage } from "@/lib/seo";
+import { KIT_ES_PART1 } from "./-es.kits.$slug.part1";
+import { KIT_ES_PART2 } from "./-es.kits.$slug.part2";
+
 
 const KIT_ES: Record<string, { name: string; eyebrow: string; description: string; outcome: string }> = {
-  freelancers: {
-    name: "Kit para freelancers",
-    eyebrow: "Trabajá y entregá mejor",
-    description: "Prepará una entrega profesional: revisá texto, organizá archivos, ajustá imágenes y calculá montos.",
-    outcome: "De una idea a una entrega clara lista para compartir.",
+  ...KIT_ES_PART1,
+  ...KIT_ES_PART2,
+  "packing-viaje": {
+    name: "Kit de packing de viaje",
+    eyebrow: "Empacá inteligente",
+    description: "Maleta visual interactiva: hacé clic en ítems para agregar o quitar, barras live de peso y progreso, feedback inmediato.",
+    outcome: "Lista de packing lista con el peso bajo control, directo en el navegador.",
   },
-  "seo-y-contenido": {
-    name: "SEO y contenido",
-    eyebrow: "Investigá y publicá",
-    description: "Limpiá y prepará contenido para una página: extensión, URL, expresiones y markup más liviano.",
-    outcome: "Contenido más claro, consistente y fácil de publicar.",
+  "kit-renovacion-hogar": {
+    name: "Kit de renovación del hogar",
+    eyebrow: "Planificá un refresh de habitación",
+    description: "Tablero multi-paso interactivo para medir una habitación, estimar piso y pintura, seguir costos, checklist de progreso y temporizador de foco. Un plan de renovación vivo en el navegador.",
+    outcome: "Un plan de renovación claro con cálculos en vivo y progreso, listo para copiar o compartir.",
   },
-  "preparar-documentos": {
-    name: "Preparar documentos",
-    eyebrow: "Antes de enviar",
-    description: "Validá datos, convertí formatos y organizá PDFs e imágenes directamente en el navegador.",
-    outcome: "Documentos más limpios y compatibles, listos para entregar.",
-  },
-  "archivos-y-formatos": {
-    name: "Archivos y formatos",
-    eyebrow: "Convertí sin subir archivos",
-    description: "Resolvé las conversiones más comunes entre imágenes, PDF, datos y unidades de almacenamiento.",
-    outcome: "El formato correcto para cada destino, con procesamiento local.",
-  },
-  "desarrollo-web": {
-    name: "Desarrollo web",
-    eyebrow: "Depurá y transformá datos",
-    description: "Formateá, validá, codificá y transformá datos y snippets web sin salir del navegador.",
-    outcome: "Datos legibles y formatos listos para integrar.",
-  },
-  estudiantes: {
-    name: "Kit para estudiantes",
-    eyebrow: "Estudiá con foco",
-    description: "Resolvé cálculos, organizá fechas y prepará materiales de estudio con utilidades rápidas.",
-    outcome: "Más tiempo para entender y menos en tareas repetitivas.",
+  "preparacion-cocina": {
+    name: "Tablero de preparación de cocina",
+    eyebrow: "Estación de meal prep",
+    description: "Tablero interactivo de preparación: escalá porciones, marcá ingredientes en vivo, reordená pasos, usá el temporizador de paso con progreso y compartí un resumen PNG. Un camino de prep coherente, no una lista de herramientas.",
+    outcome: "Comida lista con porciones escaladas, ingredientes marcados y pasos seguidos en el navegador.",
   },
 };
 
 export const Route = createFileRoute("/es/kits/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const kit = kitBySlug(params.slug);
+    // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+    const { kitTools } = await import("@/lib/work-kits-tools");
     if (!kit) throw notFound();
     return { kit, tools: kitTools(kit) };
   },
@@ -83,29 +78,50 @@ export const Route = createFileRoute("/es/kits/$slug")({
 
 function SpanishKitPage() {
   const { kit, tools } = Route.useLoaderData();
-  const es = KIT_ES[kit.slug] ?? { name: kit.name, eyebrow: kit.eyebrow, description: kit.description, outcome: kit.outcome };
+  const esMeta = KIT_ES[kit.slug] ?? { name: kit.name, eyebrow: kit.eyebrow, description: kit.description, outcome: kit.outcome };
+  const isMarketStall = kit.slug === "puesto-de-feria";
+  const isTravelPacking = kit.slug === "packing-viaje";
+  const isHomeRenovation = kit.slug === "kit-renovacion-hogar";
+  const isKitchenPrep = kit.slug === "preparacion-cocina";
   return (
     <main className="container-page py-6 sm:py-8">
-      <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Kits", to: "/es/kits" }, { label: es.name }]} />
+      <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Kits", to: "/es/kits" }, { label: esMeta.name }]} />
       <header className="mt-5 max-w-3xl">
-        <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{es.eyebrow}</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-5xl">{es.name}</h1>
-        <p className="mt-4 text-base leading-7 text-muted-foreground">{es.description}</p>
+        <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{esMeta.eyebrow}</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-5xl">{esMeta.name}</h1>
+        <p className="mt-4 text-base leading-7 text-muted-foreground">{esMeta.description}</p>
         <p className="mt-3 inline-flex items-center gap-2 text-sm font-bold">
-          <CheckCircle2 className="size-4 text-primary" /> {es.outcome}
+          <CheckCircle2 className="size-4 text-primary" /> {esMeta.outcome}
         </p>
       </header>
-      <section className="mt-8" aria-labelledby="kit-steps">
-        <h2 id="kit-steps" className="text-base font-bold">Pasos del kit</h2>
-        <div className="mt-3 divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
-          {tools.map((tool) => (
-            <ToolCard key={tool.slug} tool={tool} locale="es" />
-          ))}
-        </div>
-        <Link to="/es/kits" className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
-          Ver todos los kits <ArrowRight className="size-4" />
-        </Link>
-      </section>
+      {isMarketStall ? (
+        <MarketStallBoard locale="es" />
+      ) : isTravelPacking ? (
+        <TravelPackingBoard locale="es" />
+      ) : isHomeRenovation ? (
+        <HomeRenovationBoard locale="es" />
+      ) : isKitchenPrep ? (
+        <KitchenPrepBoard locale="es" />
+      ) : (
+        <>
+          <KitCarryBoard
+            locale="es"
+            kitSlug={kit.slug}
+            steps={tools.map((tool) => ({ slug: tool.slug, label: spanishToolName(tool) }))}
+          />
+          <section className="mt-8" aria-labelledby="kit-steps">
+            <h2 id="kit-steps" className="text-base font-bold">Pasos del kit</h2>
+            <div className="mt-3 divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+              {tools.map((tool) => (
+                <ToolCard key={tool.slug} tool={tool} locale="es" />
+              ))}
+            </div>
+            <Link to="/es/kits" className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
+              Ver todos los kits <ArrowRight className="size-4" />
+            </Link>
+          </section>
+        </>
+      )}
     </main>
   );
 }

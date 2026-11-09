@@ -2,21 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-
-const navLink = "rounded-full px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent";
-const activeNav = { className: "bg-accent text-primary ring-1 ring-primary/70" };
-const mobileLink = "min-h-11 rounded-lg px-3 py-2.5 text-sm font-bold hover:bg-accent";
-const mobileMuted =
-  "min-h-11 rounded-lg px-3 py-2.5 text-sm font-semibold text-muted-foreground hover:bg-accent hover:text-foreground";
-
-/** Atajos de categoría en el desplegable Explorar */
-const BROWSE = [
-  { href: "/es/categoria/herramientas-avanzadas", label: "Herramientas avanzadas" },
-  { href: "/es/categoria/matematicas", label: "Matemáticas" },
-  { href: "/es/categoria/texto", label: "Texto" },
-  { href: "/es/categoria/desarrollo", label: "Desarrollo" },
-  { href: "/es/finanzas", label: "Finanzas" },
-] as const;
+import { navLink } from "./SpanishSiteHeader.part1";
+import { activeNav, BROWSE, mobileLink, mobileMuted } from "./SpanishSiteHeader.part2";
 
 export function SpanishSiteHeader() {
   const [open, setOpen] = useState(false);
@@ -58,14 +45,20 @@ export function SpanishSiteHeader() {
           <Link to="/es/herramientas" className={navLink} activeProps={activeNav}>
             Herramientas
           </Link>
-          <a href="/es/categoria/herramientas-avanzadas" className={navLink}>
+          <Link to="/es/categoria/herramientas-avanzadas" className={navLink} activeProps={activeNav}>
             Avanzadas
-          </a>
+          </Link>
           <Link to="/es/kits" className={navLink} activeProps={activeNav}>
             Kits
           </Link>
           <Link to="/es/simuladores" className={navLink} activeProps={activeNav}>
             Simuladores
+          </Link>
+          <Link to="/es/playgrounds" className={navLink} activeProps={activeNav}>
+            Playgrounds
+          </Link>
+          <Link to="/es/experiences" className={navLink} activeProps={activeNav}>
+            Experiencias
           </Link>
           <Link to="/es/juegos" className={navLink} activeProps={activeNav}>
             Juegos
@@ -137,14 +130,20 @@ export function SpanishSiteHeader() {
             <Link to="/es/herramientas" onClick={() => setOpen(false)} className={mobileLink}>
               Herramientas
             </Link>
-            <a href="/es/categoria/herramientas-avanzadas" onClick={() => setOpen(false)} className={mobileLink}>
+            <Link to="/es/categoria/herramientas-avanzadas" onClick={() => setOpen(false)} className={mobileLink}>
               Herramientas avanzadas
-            </a>
+            </Link>
             <Link to="/es/kits" onClick={() => setOpen(false)} className={mobileLink}>
               Kits
             </Link>
             <Link to="/es/simuladores" onClick={() => setOpen(false)} className={mobileLink}>
               Simuladores
+            </Link>
+            <Link to="/es/playgrounds" onClick={() => setOpen(false)} className={mobileLink}>
+              Playgrounds
+            </Link>
+            <Link to="/es/experiences" onClick={() => setOpen(false)} className={mobileLink}>
+              Experiencias
             </Link>
             <Link to="/es/juegos" onClick={() => setOpen(false)} className={mobileLink}>
               Juegos

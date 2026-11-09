@@ -1,37 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Shape = "rect" | "round" | "oval";
-type Unit = "m" | "ft";
-type Chlorine = "liquid125" | "liquid6" | "cal65" | "tri90";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-
-const FT = 0.3048;
-const LITER_PER_M3 = 1000;
-const US_GAL_PER_L = 1 / 3.785411784;
-const UK_GAL_PER_L = 1 / 4.54609;
-
-/** Ounces of product to raise 10,000 US gallons by 1 ppm FC. Industry rule of thumb. */
-const DOSE_PER_10K_PPM: Record<Chlorine, { oz: number; liquid: boolean }> = {
-  liquid125: { oz: 10.7, liquid: true },
-  liquid6: { oz: 22.4, liquid: true },
-  cal65: { oz: 2, liquid: false },
-  tri90: { oz: 1.5, liquid: false },
-};
-
-function parseNum(value: string) {
-  const n = Number(String(value).trim().replace(",", "."));
-  return Number.isFinite(n) ? n : NaN;
-}
-
-function fmt(n: number, locale: Locale, digits = 1) {
-  return n.toLocaleString(locale === "es" ? "es-AR" : "en-US", {
-    maximumFractionDigits: digits,
-    minimumFractionDigits: digits,
-  });
-}
+import { type Locale } from "./PoolCalculatorTool.part1";
+import { type Shape, type Unit, type Chlorine, parseNum, FT, LITER_PER_M3, US_GAL_PER_L, UK_GAL_PER_L, DOSE_PER_10K_PPM, fmt, inputClass } from "./PoolCalculatorTool.part2";
 
 export function PoolCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
@@ -279,6 +249,50 @@ export function PoolCalculatorTool({ locale = "en" }: { tool: GeneralTool; local
           {es ? "Restablecer" : "Reset"}
         </button>
       </div>
+      <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-1">
+        <p className="font-medium">{es ? "Fórmulas de volumen" : "Volume formulas"}</p>
+        <p>{es ? "Rectangular: largo × ancho × profundidad media" : "Rectangular: length × width × average depth"}</p>
+        <p>{es ? "Redonda: π × radio² × profundidad media" : "Round: π × radius² × average depth"}</p>
+        <p>{es ? "Oval: π × (largo/2) × (ancho/2) × profundidad media" : "Oval: π × (length/2) × (width/2) × average depth"}</p>
+        <p className="text-muted-foreground">{es ? "Profundidad media = (playa + hondo) ÷ 2" : "Average depth = (shallow + deep) ÷ 2"}</p>
+      </div>
+      <div className="overflow-x-auto rounded-xl border text-sm">
+        <table className="w-full text-left">
+          <caption className="border-b bg-muted/30 px-3 py-2 text-left font-medium">
+            {es ? "Ejemplos orientativos" : "Example sizes"}
+          </caption>
+          <thead>
+            <tr className="border-b bg-muted/20">
+              <th className="px-3 py-2">{es ? "Forma" : "Shape"}</th>
+              <th className="px-3 py-2">{es ? "Medidas" : "Size"}</th>
+              <th className="px-3 py-2">{es ? "≈ litros" : "≈ liters"}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b border-border/60">
+              <td className="px-3 py-2">{es ? "Rectangular" : "Rectangular"}</td>
+              <td className="px-3 py-2">8 × 4 × 1,5 m</td>
+              <td className="px-3 py-2 tabular-nums">48.000</td>
+            </tr>
+            <tr className="border-b border-border/60">
+              <td className="px-3 py-2">{es ? "Redonda" : "Round"}</td>
+              <td className="px-3 py-2">Ø 5 m × 1,2 m</td>
+              <td className="px-3 py-2 tabular-nums">≈ 23.600</td>
+            </tr>
+            <tr>
+              <td className="px-3 py-2">{es ? "Oval" : "Oval"}</td>
+              <td className="px-3 py-2">9 × 4,5 × 1,4 m</td>
+              <td className="px-3 py-2 tabular-nums">≈ 44.500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p className="text-sm text-muted-foreground">
+        {es ? "Relacionadas: " : "Related: "}
+        <a className="underline" href={es ? "/es/herramientas/calculadora-volumen-tanque" : "/tools/tank-volume-calculator"}>
+          {es ? "Volumen de tanque" : "Tank volume"}
+        </a>
+      </p>
     </div>
   );
 }

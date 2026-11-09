@@ -1,30 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Sun = "low" | "medium" | "high";
-type Insulation = "good" | "average" | "poor";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-
-const SPLITS = [
-  { btu: 9000, frig: 2250 },
-  { btu: 12000, frig: 3000 },
-  { btu: 18000, frig: 4500 },
-  { btu: 24000, frig: 6000 },
-  { btu: 36000, frig: 9000 },
-];
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 0) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits }).format(value);
-}
+import { type Locale } from "./AcSizeTool.part1";
+import { type Sun, type Insulation, parseNum, SPLITS, inputClass, formatNum } from "./AcSizeTool.part2";
 
 export function AcSizeTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

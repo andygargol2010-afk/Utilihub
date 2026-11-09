@@ -15,7 +15,7 @@ export const YEAST_CONVERTER_TOOLS = [
       "instant yeast to fresh",
       "yeast packet to grams",
       "conversor de levadura",
-      "levadura fresca a instantanea",
+      "levadura fresca a instantánea",
       "levadura seca a fresca",
       "gramos de levadura por sobre",
       "equivalencia levadura pan",

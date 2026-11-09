@@ -1,58 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "m" | "ft";
-type Shape = "stack" | "volume";
-type Species = "oak" | "birch" | "maple" | "pine" | "mixed" | "custom";
-type Moisture = "seasoned" | "green";
-type PresetId = "half" | "face" | "stere" | "loose";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-/** Seasoned solid-wood density, kg per cubic meter. */
-const DENSITY: Record<Exclude<Species, "custom">, number> = {
-  oak: 720,
-  birch: 640,
-  maple: 680,
-  pine: 450,
-  mixed: 600,
-};
-
-const CORD_M3 = 3.62455636378;
-const M_PER_FT = 0.3048;
-const GREEN_FACTOR = 1.4;
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(value);
-}
-
-type Preset = {
-  id: PresetId;
-  unit: Unit;
-  length: string;
-  height: string;
-  depth: string;
-  volume: string;
-  species: Species;
-  solid: string;
-  moisture: Moisture;
-};
-
-const PRESETS: Preset[] = [
-  { id: "half", unit: "ft", length: "8", height: "4", depth: "2", volume: "64", species: "oak", solid: "65", moisture: "seasoned" },
-  { id: "face", unit: "ft", length: "8", height: "4", depth: "1.333", volume: "42.7", species: "mixed", solid: "65", moisture: "seasoned" },
-  { id: "stere", unit: "m", length: "2", height: "1", depth: "0.5", volume: "1", species: "birch", solid: "65", moisture: "seasoned" },
-  { id: "loose", unit: "m", length: "3", height: "1.5", depth: "0.4", volume: "1.8", species: "pine", solid: "50", moisture: "green" },
-];
+import { type Locale } from "./FirewoodCalculatorTool.part1";
+import { type Unit, type Shape, type Species, type Moisture, parseNum, DENSITY, M_PER_FT, CORD_M3, GREEN_FACTOR, type Preset, PRESETS, formatNum, type PresetId, buttonClass, inputClass } from "./FirewoodCalculatorTool.part2";
 
 export function FirewoodCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
@@ -76,7 +25,7 @@ export function FirewoodCalculatorTool({ locale = "en" }: { tool: GeneralTool; l
         half: "Media cuerda",
         face: "Face cord 16 in",
         stere: "1 estéreo abedul",
-        loose: "Pino verde flojo",
+        loose: "Pino verde suelto",
         units: "Unidades",
         meters: "Metros",
         feet: "Pies",

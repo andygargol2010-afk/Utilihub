@@ -1,37 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import type { Locale } from "@/lib/i18n/locale";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const n = Number(value.replace(",", "."));
-  return Number.isFinite(n) ? n : null;
-}
-
-function formatNum(value: number, digits = 1) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(value);
-}
-
-type Scale = "c" | "f";
-
-type Preset = { id: string; scale: Scale; temp: string; humidity: string };
-
-const PRESETS: Preset[] = [
-  { id: "room", scale: "c", temp: "22", humidity: "45" },
-  { id: "humid", scale: "c", temp: "30", humidity: "70" },
-  { id: "night", scale: "c", temp: "5", humidity: "90" },
-  { id: "desert", scale: "c", temp: "35", humidity: "15" },
-];
-
-/** August–Roche–Magnus (Alduchov & Eskridge): a = 17.625, b = 243.04 °C. */
-function dewPointC(tempC: number, rh: number) {
-  const a = 17.625;
-  const b = 243.04;
-  const gamma = Math.log(rh / 100) + (a * tempC) / (b + tempC);
-  return (b * gamma) / (a - gamma);
-}
+import { inputClass } from "./DewPointTool.part1";
+import { type Scale, parseNum, dewPointC, type Preset, PRESETS, formatNum, buttonClass } from "./DewPointTool.part2";
 
 export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
@@ -42,7 +13,7 @@ export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
 
   const copy = es
     ? {
-        help: "Estimá el punto de rocío a partir de la temperatura del aire y la humedad relativa. No es la sensación térmica: esa tool mide cómo se siente el calor o el viento.",
+        help: "Estimá el punto de rocío a partir de la temperatura del aire y la humedad relativa. No es la sensación térmica: el índice de calor mide cómo se siente el calor, y la sensación del viento la mide otra herramienta.",
         presets: "Presets",
         room: "Ambiente confortable",
         humid: "Tarde húmeda",
@@ -75,7 +46,7 @@ export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
         margin: "antes de condensar",
       }
     : {
-        help: "Estimate dew point from air temperature and relative humidity. This is not feels-like temperature; the heat-index tool covers heat and wind.",
+        help: "Estimate dew point from air temperature and relative humidity. This is not the feels-like temperature; the heat index covers heat, and the wind-chill tool covers wind.",
         presets: "Presets",
         room: "Comfortable room",
         humid: "Humid afternoon",
@@ -194,7 +165,7 @@ export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
           {copy.reset}
         </button>
       </form>
-      <section className="rounded-2xl border bg-card p-4">
+      <section className="rounded-2xl border bg-card p-4" aria-live="polite">
         <h2 className="text-lg font-semibold">{copy.result}</h2>
         {"error" in result ? (
           <p className="mt-3 text-sm text-destructive">{result.error}</p>
@@ -233,6 +204,57 @@ export function DewPointTool({ locale = "en" }: { tool: GeneralTool; locale?: Lo
           </>
         )}
       </section>
+      <div className="lg:col-span-2 space-y-4">
+        <div className="overflow-x-auto rounded-xl border text-sm">
+          <table className="w-full text-left">
+            <caption className="border-b bg-muted/30 px-3 py-2 text-left font-medium">
+              {es ? "Bandas de punto de rocío (guía de confort)" : "Dew point bands (comfort guide)"}
+            </caption>
+            <thead>
+              <tr className="border-b bg-muted/20">
+                <th className="px-3 py-2">{es ? "Punto de rocío" : "Dew point"}</th>
+                <th className="px-3 py-2">{es ? "Sensación típica" : "Typical feel"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(
+                es
+                  ? [
+                      ["< 10 °C", "Seco / fresco"],
+                      ["10 – 16 °C", "Cómodo"],
+                      ["16 – 18 °C", "Ligeramente húmedo"],
+                      ["18 – 21 °C", "Bochornoso"],
+                      ["21 – 24 °C", "Muy húmedo"],
+                      ["> 24 °C", "Opresivo"],
+                    ]
+                  : [
+                      ["< 10 °C", "Dry / crisp"],
+                      ["10 – 16 °C", "Comfortable"],
+                      ["16 – 18 °C", "Slightly humid"],
+                      ["18 – 21 °C", "Muggy"],
+                      ["21 – 24 °C", "Very humid"],
+                      ["> 24 °C", "Oppressive"],
+                    ]
+              ).map(([range, feel]) => (
+                <tr key={range} className="border-b border-border/60">
+                  <td className="px-3 py-2 tabular-nums">{range}</td>
+                  <td className="px-3 py-2">{feel}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          {es ? "Herramientas relacionadas: " : "Related tools: "}
+          <a className="underline" href={es ? "/es/herramientas/calculadora-sensacion-termica" : "/tools/heat-index-and-wind-chill"}>
+            {es ? "Sensación térmica / índice de calor" : "Heat index & wind chill"}
+          </a>
+          {" · "}
+          <a className="underline" href={es ? "/es/herramientas/conversor-temperatura" : "/tools/temperature-converter"}>
+            {es ? "Conversor de temperatura" : "Temperature converter"}
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

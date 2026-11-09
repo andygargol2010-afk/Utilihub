@@ -2,134 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestLow, writeBestLow } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
-
-type Algo = "bfs" | "astar";
-type Tool = "wall" | "erase" | "start" | "goal";
-type Cell = { r: number; c: number };
-
-const ROWS = 12;
-const COLS = 16;
-
-function key(r: number, c: number) {
-  return `${r},${c}`;
-}
-
-function neighbors(r: number, c: number): Cell[] {
-  const out: Cell[] = [];
-  for (const [dr, dc] of [
-    [-1, 0],
-    [1, 0],
-    [0, -1],
-    [0, 1],
-  ] as const) {
-    const nr = r + dr;
-    const nc = c + dc;
-    if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) out.push({ r: nr, c: nc });
-  }
-  return out;
-}
-
-function heuristic(a: Cell, b: Cell) {
-  return Math.abs(a.r - b.r) + Math.abs(a.c - b.c);
-}
-
-type Frame = {
-  visited: string[];
-  frontier: string[];
-  path: string[];
-  done: boolean;
-  found: boolean;
-};
-
-function runSearch(walls: Set<string>, start: Cell, goal: Cell, algo: Algo): Frame[] {
-  const frames: Frame[] = [];
-  const wall = (r: number, c: number) => walls.has(key(r, c));
-  const visited = new Set<string>();
-  const came = new Map<string, string | null>();
-  const gScore = new Map<string, number>();
-
-  type Node = { cell: Cell; f: number };
-  const open: Node[] = [{ cell: start, f: algo === "astar" ? heuristic(start, goal) : 0 }];
-  came.set(key(start.r, start.c), null);
-  gScore.set(key(start.r, start.c), 0);
-
-  const snapshot = (frontier: Cell[], done: boolean, found: boolean, path: Cell[]) => {
-    frames.push({
-      visited: [...visited],
-      frontier: frontier.map((c) => key(c.r, c.c)),
-      path: path.map((c) => key(c.r, c.c)),
-      done,
-      found,
-    });
-  };
-
-  snapshot([start], false, false, []);
-
-  let foundPath: Cell[] | null = null;
-
-  while (open.length) {
-    if (algo === "astar") open.sort((a, b) => a.f - b.f);
-    const cur = open.shift()!.cell;
-    const ck = key(cur.r, cur.c);
-    if (visited.has(ck)) continue;
-    visited.add(ck);
-
-    if (cur.r === goal.r && cur.c === goal.c) {
-      const path: Cell[] = [];
-      let k: string | null = ck;
-      while (k) {
-        const [r, c] = k.split(",").map(Number) as [number, number];
-        path.push({ r, c });
-        k = came.get(k) ?? null;
-      }
-      path.reverse();
-      foundPath = path;
-      snapshot(
-        open.map((n) => n.cell),
-        true,
-        true,
-        path,
-      );
-      break;
-    }
-
-    for (const n of neighbors(cur.r, cur.c)) {
-      if (wall(n.r, n.c)) continue;
-      const nk = key(n.r, n.c);
-      if (visited.has(nk)) continue;
-      const tentative = (gScore.get(ck) ?? 0) + 1;
-      if (tentative < (gScore.get(nk) ?? Infinity)) {
-        came.set(nk, ck);
-        gScore.set(nk, tentative);
-        const f = algo === "astar" ? tentative + heuristic(n, goal) : tentative;
-        open.push({ cell: n, f });
-      }
-    }
-
-    snapshot(
-      open.map((n) => n.cell),
-      false,
-      false,
-      [],
-    );
-
-    if (frames.length > ROWS * COLS * 2) break;
-  }
-
-  if (!foundPath) snapshot([], true, false, []);
-  return frames;
-}
-
-function randomMaze(start: Cell, goal: Cell): Set<string> {
-  const walls = new Set<string>();
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      if ((r === start.r && c === start.c) || (r === goal.r && c === goal.c)) continue;
-      if (Math.random() < 0.28) walls.add(key(r, c));
-    }
-  }
-  return walls;
-}
+import { type Algo } from "./PathfinderGame.part1";
+import { type Cell, ROWS, COLS, type Tool, type Frame, runSearch, key, randomMaze } from "./PathfinderGame.part2";
 
 export function PathfinderGame({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
@@ -217,6 +91,21 @@ export function PathfinderGame({ locale = "en" }: { locale?: GameLocale }) {
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-3">
+      <style>{`
+        .pf-board {
+          background: linear-gradient(160deg, #0f172a, #020617);
+          box-shadow: 0 14px 36px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(148,163,184,0.12);
+        }
+        .pf-cell {
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+        }
+        .pf-wall {
+          background: repeating-linear-gradient(45deg, #0f172a, #0f172a 3px, #1e293b 3px, #1e293b 6px) !important;
+        }
+        .pf-path {
+          box-shadow: 0 0 10px rgba(251,191,36,0.55) !important;
+        }
+      `}</style>
       <div className="flex flex-wrap gap-2">
         {(
           [
@@ -266,7 +155,7 @@ export function PathfinderGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
 
       <div
-        className="select-none rounded-2xl border border-white/10 bg-black/50 p-2"
+        className="pf-board select-none rounded-2xl border border-white/10 p-2.5"
         onMouseLeave={() => {
           paintRef.current = false;
         }}
@@ -289,20 +178,21 @@ export function PathfinderGame({ locale = "en" }: { locale?: GameLocale }) {
             const isFront = frontier.has(k);
             const isVis = visited.has(k);
 
-            let bg = "bg-slate-800/80";
-            if (isWall) bg = "bg-slate-950";
-            else if (isPath) bg = "bg-amber-400";
-            else if (isFront) bg = "bg-sky-500/70";
-            else if (isVis) bg = "bg-emerald-700/60";
-            if (isStart) bg = "bg-emerald-400";
-            if (isGoal) bg = "bg-rose-400";
+            let bg = "bg-slate-700/70";
+            let extra = "";
+            if (isWall) { bg = "bg-slate-950"; extra = "pf-wall"; }
+            else if (isPath) { bg = "bg-amber-400"; extra = "pf-path"; }
+            else if (isFront) bg = "bg-sky-500/75";
+            else if (isVis) bg = "bg-emerald-700/55";
+            if (isStart) { bg = "bg-emerald-400"; extra = ""; }
+            if (isGoal) { bg = "bg-rose-400"; extra = ""; }
 
             return (
               <button
                 key={k}
                 type="button"
                 aria-label={`cell ${r},${c}`}
-                className={`aspect-square rounded-[3px] ${bg} transition-colors`}
+                className={`pf-cell aspect-square rounded-[3px] ${bg} ${extra} transition-colors duration-100`}
                 onMouseDown={() => {
                   paintRef.current = true;
                   paint(r, c);

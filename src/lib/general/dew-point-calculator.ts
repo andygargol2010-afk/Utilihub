@@ -4,7 +4,7 @@ import { makeTool } from "./types";
 export const DEW_POINT_TOOLS = [
   makeTool(
     "calculadora-punto-rocio",
-    "Dew point calculator",
+    "Dew Point Calculator",
     "ciencia",
     "formula",
     "Estimate dew point and the temperature–dew-point spread from air temperature and relative humidity, in Celsius or Fahrenheit.",
@@ -15,6 +15,8 @@ export const DEW_POINT_TOOLS = [
       "dew point fahrenheit",
       "relative humidity to dew point",
       "calculadora de punto de rocio",
+      "punto de rocío",
+      "calculadora punto de rocío",
       "punto de rocio humedad",
       "calcular punto de rocio",
       "punto de rocio celsius",
@@ -22,7 +24,7 @@ export const DEW_POINT_TOOLS = [
     ],
     {
       mode: "dew-point",
-      title: "Dew Point Calculator from Humidity | UtiliHub",
+      title: "Dew Point Calculator — From Temperature & Humidity | UtiliHub",
       description:
         "Calculate dew point from air temperature and relative humidity. Celsius or Fahrenheit, with a comfort band. Free, in the browser.",
     },

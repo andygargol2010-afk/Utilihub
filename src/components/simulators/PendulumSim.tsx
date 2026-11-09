@@ -1,27 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 420;
-const H = 340;
-const PIVOT_X = W / 2;
-const PIVOT_Y = 42;
-const TRAIL_MAX = 120;
-const PX_PER_M = 220;
-const DT = 1 / 60;
-
-function lengthMeters(ui: number) {
-  return (90 + ui * 140) / PX_PER_M;
-}
-
-function gAccel(ui: number) {
-  return 3 + ui * 11;
-}
-
-function theoryPeriod(L: number, g: number) {
-  if (g <= 0 || L <= 0) return 0;
-  return 2 * Math.PI * Math.sqrt(L / g);
-}
+import { W } from "./PendulumSim.part1";
+import { PX_PER_M, gAccel, DT, PIVOT_X, PIVOT_Y, theoryPeriod, TRAIL_MAX, H, lengthMeters } from "./PendulumSim.part2";
 
 export function PendulumSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";

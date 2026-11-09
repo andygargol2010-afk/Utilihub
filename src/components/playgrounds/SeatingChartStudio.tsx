@@ -1,0 +1,248 @@
+"use client";
+import { useEffect, useState } from "react";
+import { type Locale } from "./SeatingChartStudio.part1";
+import { labels, type Table, type Guest, deserialize, serialize, generateId } from "./SeatingChartStudio.part2";
+
+export function SeatingChartStudio({ locale }: { locale: Locale }) {
+  const t = labels[locale];
+  const [tables, setTables] = useState<Table[]>([]);
+  const [guests, setGuests] = useState<Guest[]>([]);
+  const [newGuestName, setNewGuestName] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [selectedGuestId, setSelectedGuestId] = useState<string | null>(null);
+  const [draggingTableId, setDraggingTableId] = useState<string | null>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const data = params.get("seating");
+    if (data) {
+      const loaded = deserialize(data);
+      setTables(loaded.tables);
+      setGuests(loaded.guests);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    if (tables.length || guests.length) {
+      url.searchParams.set("seating", serialize({ tables, guests }));
+    } else {
+      url.searchParams.delete("seating");
+    }
+    window.history.replaceState({}, "", url.toString());
+  }, [tables, guests]);
+
+  const addTable = () => {
+    const id = generateId();
+    setTables((prev) => [
+      ...prev,
+      {
+        id,
+        name: locale === "es" ? `Mesa ${prev.length + 1}` : `Table ${prev.length + 1}`,
+        capacity: 6,
+        x: 40 + (prev.length % 3) * 200,
+        y: 40 + Math.floor(prev.length / 3) * 160,
+      },
+    ]);
+  };
+
+  const addGuest = () => {
+    if (!newGuestName.trim()) return;
+    const id = generateId();
+    setGuests((prev) => [...prev, { id, name: newGuestName.trim(), tableId: null }]);
+    setNewGuestName("");
+  };
+
+  const assignGuest = (guestId: string, tableId: string | null) => {
+    setGuests((prev) => prev.map((g) => (g.id === guestId ? { ...g, tableId } : g)));
+    setSelectedGuestId(null);
+  };
+
+  const removeGuest = (guestId: string) => {
+    setGuests((prev) => prev.filter((g) => g.id !== guestId));
+    if (selectedGuestId === guestId) setSelectedGuestId(null);
+  };
+
+  const removeTable = (tableId: string) => {
+    setTables((prev) => prev.filter((tbl) => tbl.id !== tableId));
+    setGuests((prev) => prev.map((g) => (g.tableId === tableId ? { ...g, tableId: null } : g)));
+  };
+
+  const updateCapacity = (tableId: string, capacity: number) => {
+    const c = Math.max(1, Math.min(20, capacity));
+    setTables((prev) => prev.map((tbl) => (tbl.id === tableId ? { ...tbl, capacity: c } : tbl)));
+  };
+
+  const updateName = (tableId: string, name: string) => {
+    setTables((prev) => prev.map((tbl) => (tbl.id === tableId ? { ...tbl, name: name || tbl.name } : tbl)));
+  };
+
+  const share = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const guestsByTable = (tableId: string) => guests.filter((g) => g.tableId === tableId);
+  const unassigned = guests.filter((g) => !g.tableId);
+
+  const onTablePointerDown = (e: React.PointerEvent, table: Table) => {
+    if ((e.target as HTMLElement).closest("input, button")) return;
+    setDraggingTableId(table.id);
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setDragOffset({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const onCanvasPointerMove = (e: React.PointerEvent) => {
+    if (!draggingTableId) return;
+    const canvas = e.currentTarget as HTMLElement;
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.max(0, e.clientX - rect.left - dragOffset.x);
+    const y = Math.max(0, e.clientY - rect.top - dragOffset.y);
+    setTables((prev) => prev.map((tbl) => (tbl.id === draggingTableId ? { ...tbl, x, y } : tbl)));
+  };
+
+  const onCanvasPointerUp = () => {
+    setDraggingTableId(null);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-border/60 bg-surface/50 p-4">
+        <button type="button" onClick={addTable} className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
+          + {t.addTable}
+        </button>
+        <div className="flex items-center gap-2">
+          <input
+            value={newGuestName}
+            onChange={(e) => setNewGuestName(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && addGuest()}
+            placeholder={t.guestName}
+            className="rounded-xl border border-border px-3 py-2 text-sm"
+          />
+          <button type="button" onClick={addGuest} className="rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium">
+            + {t.addGuest}
+          </button>
+        </div>
+        <button type="button" onClick={share} className="ml-auto rounded-xl border border-border bg-background px-4 py-2 text-sm font-medium">
+          {copied ? t.copied : t.share}
+        </button>
+      </div>
+
+      <p className="text-xs text-muted-foreground">{t.selectHint}</p>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-muted-foreground">{t.tables}</h3>
+          <div
+            className="relative min-h-[480px] overflow-auto rounded-2xl border border-border bg-muted/20 p-4"
+            onPointerMove={onCanvasPointerMove}
+            onPointerUp={onCanvasPointerUp}
+            onPointerCancel={onCanvasPointerUp}
+          >
+            {tables.length === 0 && (
+              <p className="text-center text-muted-foreground">{t.emptyHint}</p>
+            )}
+            {tables.map((table) => {
+              const assigned = guestsByTable(table.id);
+              const over = assigned.length > table.capacity;
+              return (
+                <div
+                  key={table.id}
+                  className={`absolute cursor-move rounded-full border-2 bg-background p-4 shadow-md flex flex-col items-center justify-center text-center ${over ? "border-red-500 bg-red-50/50" : "border-border"} ${selectedGuestId ? "ring-2 ring-primary/40" : ""}`}
+                  style={{ left: table.x, top: table.y, width: 160, height: 160 }}
+                  onPointerDown={(e) => onTablePointerDown(e, table)}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    const guestId = e.dataTransfer.getData("guestId");
+                    if (guestId) assignGuest(guestId, table.id);
+                  }}
+                  onClick={() => {
+                    if (selectedGuestId) assignGuest(selectedGuestId, table.id);
+                  }}
+                >
+                  <input
+                    value={table.name}
+                    onChange={(e) => updateName(table.id, e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full text-center text-sm font-semibold bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-primary rounded"
+                    placeholder={t.editName}
+                  />
+                  <div className="mt-1 flex items-center gap-1 text-xs">
+                    <label className="text-muted-foreground">{t.editCapacity}</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={20}
+                      value={table.capacity}
+                      onChange={(e) => updateCapacity(table.id, Number(e.target.value) || 1)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-10 rounded border border-border px-1 py-0.5 text-xs text-center"
+                    />
+                  </div>
+                  <div className={`mt-1 text-xs ${over ? "font-bold text-red-600" : "text-muted-foreground"}`}>
+                    {assigned.length}/{table.capacity} {t.seats}
+                    {over && ` · ${t.overCapacity}`}
+                  </div>
+                  <div className="mt-2 flex flex-wrap justify-center gap-1 max-w-[120px]">
+                    {assigned.slice(0, 8).map((g) => (
+                      <span
+                        key={g.id}
+                        title={g.name}
+                        className="inline-block h-2 w-2 rounded-full bg-primary"
+                      />
+                    ))}
+                    {assigned.length > 8 && <span className="text-[10px] text-muted-foreground">+{assigned.length - 8}</span>}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); removeTable(table.id); }}
+                    className="absolute top-1 right-1 text-xs text-muted-foreground hover:text-red-600"
+                  >
+                    ×
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-muted-foreground">{t.unassigned}</h3>
+          <div
+            className="min-h-[200px] space-y-2 rounded-2xl border border-dashed border-border p-3"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              const guestId = e.dataTransfer.getData("guestId");
+              if (guestId) assignGuest(guestId, null);
+            }}
+            onClick={() => {
+              if (selectedGuestId) assignGuest(selectedGuestId, null);
+            }}
+          >
+            {unassigned.map((g) => (
+              <div
+                key={g.id}
+                draggable
+                onDragStart={(e) => e.dataTransfer.setData("guestId", g.id)}
+                onClick={(e) => { e.stopPropagation(); setSelectedGuestId(g.id); }}
+                className={`flex cursor-move items-center justify-between rounded-lg bg-muted px-3 py-2 text-sm ${selectedGuestId === g.id ? "ring-2 ring-primary" : ""}`}
+              >
+                <span>{g.name}</span>
+                <button type="button" onClick={(e) => { e.stopPropagation(); removeGuest(g.id); }} className="text-muted-foreground hover:text-red-600">×</button>
+              </div>
+            ))}
+            {unassigned.length === 0 && <p className="text-xs text-muted-foreground">—</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

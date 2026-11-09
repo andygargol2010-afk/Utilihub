@@ -1,21 +1,8 @@
 "use client";
-
 import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-
-function parse(v: string) {
-  return Number(String(v).trim().replace(",", "."));
-}
-
-function fmt(n: number) {
-  if (!Number.isFinite(n)) return "—";
-  if (Number.isInteger(n)) return String(n);
-  return n.toPrecision(10).replace(/\.?0+$/, "");
-}
-
-type Card = { label: string; value: string; hint?: string };
+import { type Locale } from "./MatrixBinarySuiteTool.part1";
+import { type Card, parse, fmt } from "./MatrixBinarySuiteTool.part2";
 
 export function MatrixBinarySuiteTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

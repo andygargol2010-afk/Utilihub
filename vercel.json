@@ -1,4 +1,117 @@
 {
+  "ignoreCommand": "bash scripts/vercel-ignore.sh",
+  "git": {
+    "deploymentEnabled": {
+      "fix/spanish-complete": false
+    }
+  },
+  "redirects": [
+    {
+      "source": "/es/",
+      "destination": "/es",
+      "permanent": true
+    },
+    {
+      "source": "/es/herramientas/imc",
+      "destination": "/es/herramientas/calculadora-imc",
+      "permanent": true
+    },
+    {
+      "source": "/tools/reading-time-estimator",
+      "destination": "/tools/reading-time-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/es/herramientas/tiempo-lectura",
+      "destination": "/es/herramientas/calculadora-tiempo-de-lectura",
+      "permanent": true
+    },
+    {
+      "source": "/es/herramientas/calculadora-tiempo-lectura",
+      "destination": "/es/herramientas/calculadora-tiempo-de-lectura",
+      "permanent": true
+    },
+    {
+      "source": "/finance/simple-interest-calculator",
+      "destination": "/tools/simple-interest-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/finance/percentage-change-calculator",
+      "destination": "/tools/percentage-change-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/finance/rule-of-72-calculator",
+      "destination": "/tools/doubling-time-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/finance/savings-goal-calculator",
+      "destination": "/tools/savings-goal-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/es/finanzas/calculadora-interes-simple",
+      "destination": "/es/herramientas/calculadora-interes-simple",
+      "permanent": true
+    },
+    {
+      "source": "/es/finanzas/calculadora-meta-ahorro",
+      "destination": "/es/herramientas/calculadora-ahorro-para-meta",
+      "permanent": true
+    },
+    {
+      "source": "/es/guias",
+      "destination": "/es",
+      "permanent": true
+    },
+    {
+      "source": "/category/design",
+      "destination": "/category/design-color",
+      "permanent": true
+    },
+    {
+      "source": "/tools/password-strength-analyzer",
+      "destination": "/tools/password-strength-checker",
+      "permanent": true
+    },
+    {
+      "source": "/tools/trip-cost-per-km",
+      "destination": "/tools/cost-per-km-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/tools/cooking-grams-to-cups",
+      "destination": "/tools/grams-to-cups",
+      "permanent": true
+    },
+    {
+      "source": "/tools/trip-fuel-cost",
+      "destination": "/tools/fuel-cost-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/tools/trip-distance-calculator",
+      "destination": "/tools/travel-distance",
+      "permanent": true
+    },
+    {
+      "source": "/tools/productivity-stopwatch",
+      "destination": "/tools/stopwatch",
+      "permanent": true
+    },
+    {
+      "source": "/tools/trip-fuel-consumption",
+      "destination": "/tools/trip-fuel-consumption-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/tools/recipe-cost-per-serving",
+      "destination": "/tools/cost-per-serving",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

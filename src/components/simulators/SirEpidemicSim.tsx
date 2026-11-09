@@ -1,13 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 560;
-const H = 300;
-const HIST = 220;
-const N = 1000;
-
-type SIR = { s: number; i: number; r: number };
+import { W } from "./SirEpidemicSim.part1";
+import { type SIR, N, HIST, H } from "./SirEpidemicSim.part2";
 
 export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";
@@ -15,28 +10,75 @@ export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
   const [running, setRunning] = useState(false);
   const [beta, setBeta] = useState(0.35);
   const [gamma, setGamma] = useState(0.12);
-  const [vax, setVax] = useState(0);
-  const [hud, setHud] = useState<SIR>({ s: 990, i: 10, r: 0 });
+  const [i0, setI0] = useState(10);
+  const [lockdown, setLockdown] = useState(false);
+  const [vaxCampaign, setVaxCampaign] = useState(false);
+  const [hud, setHud] = useState<SIR>({ s: N - 10, i: 10, r: 0 });
+  const [peakI, setPeakI] = useState(10);
+  const [peakDay, setPeakDay] = useState(0);
+  const [cumI, setCumI] = useState(10);
 
-  const state = useRef<SIR>({ s: 990, i: 10, r: 0 });
+  const state = useRef<SIR>({ s: N - 10, i: 10, r: 0 });
   const history = useRef<{ s: number; i: number; r: number }[]>([]);
   const runningRef = useRef(false);
-  const params = useRef({ beta, gamma, vax });
+  const params = useRef({ beta, gamma, lockdown, vaxCampaign });
   const tRef = useRef(0);
-  const sparks = useRef<{ x: number; y: number; vx: number; vy: number; life: number }[]>([]);
+  const peakIRef = useRef(10);
+  const peakDayRef = useRef(0);
+  const cumIRef = useRef(10);
   runningRef.current = running;
-  params.current = { beta, gamma, vax };
+  params.current = { beta, gamma, lockdown, vaxCampaign };
 
-  const R0 = gamma > 0 ? beta / gamma : 0;
+  const effectiveBeta = lockdown ? beta * 0.35 : beta;
+  const R0 = gamma > 0 ? effectiveBeta / gamma : 0;
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const qs = new URLSearchParams(window.location.search);
+    const b = Number(qs.get("b"));
+    const g = Number(qs.get("g"));
+    const ii = Number(qs.get("i0"));
+    if (b > 0) setBeta(Math.min(0.8, Math.max(0.05, b)));
+    if (g > 0) setGamma(Math.min(0.4, Math.max(0.02, g)));
+    if (ii > 0) setI0(Math.min(200, Math.max(1, ii)));
+    if (qs.get("lock") === "1") setLockdown(true);
+    if (qs.get("vax") === "1") setVaxCampaign(true);
+  }, []);
+
+  const syncUrl = useCallback(() => {
+    if (typeof window === "undefined") return;
+    const p = new URLSearchParams();
+    p.set("b", beta.toFixed(2));
+    p.set("g", gamma.toFixed(2));
+    p.set("i0", String(i0));
+    if (lockdown) p.set("lock", "1");
+    if (vaxCampaign) p.set("vax", "1");
+    const next = `${window.location.pathname}?${p.toString()}`;
+    window.history.replaceState(null, "", next);
+  }, [beta, gamma, i0, lockdown, vaxCampaign]);
+
+  useEffect(() => {
+    syncUrl();
+  }, [syncUrl]);
 
   const reset = useCallback(() => {
-    state.current = { s: 990, i: 10, r: 0 };
+    const initI = i0;
+    state.current = { s: N - initI, i: initI, r: 0 };
     history.current = [];
     tRef.current = 0;
-    sparks.current = [];
+    peakIRef.current = initI;
+    peakDayRef.current = 0;
+    cumIRef.current = initI;
     setHud({ ...state.current });
+    setPeakI(initI);
+    setPeakDay(0);
+    setCumI(initI);
     setRunning(false);
-  }, []);
+  }, [i0]);
+
+  useEffect(() => {
+    reset();
+  }, [i0, reset]);
 
   useEffect(() => {
     let raf = 0;
@@ -45,13 +87,14 @@ export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
 
     const step = (dt: number) => {
       const st = state.current;
-      const { beta: b, gamma: g, vax: v } = params.current;
-      const infection = (b * st.s * st.i) / N;
+      const { beta: b, gamma: g, lockdown: lk, vaxCampaign: vx } = params.current;
+      const effB = lk ? b * 0.35 : b;
+      const infection = (effB * st.s * st.i) / N;
       const recovery = g * st.i;
-      const vaccinated = v * st.s;
-      st.s = Math.max(0, st.s - infection * dt - vaccinated * dt);
+      const vaxRate = vx ? 0.08 * st.s : 0;
+      st.s = Math.max(0, st.s - infection * dt - vaxRate * dt);
       st.i = Math.max(0, st.i + infection * dt - recovery * dt);
-      st.r = Math.max(0, Math.min(N, st.r + recovery * dt + vaccinated * dt));
+      st.r = Math.max(0, Math.min(N, st.r + recovery * dt + vaxRate * dt));
       const sum = st.s + st.i + st.r;
       if (sum > 0) {
         const k = N / sum;
@@ -60,6 +103,11 @@ export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
         st.r *= k;
       }
       tRef.current += dt;
+      cumIRef.current += infection * dt;
+      if (st.i > peakIRef.current) {
+        peakIRef.current = st.i;
+        peakDayRef.current = tRef.current;
+      }
     };
 
     const draw = (now: number) => {
@@ -74,23 +122,10 @@ export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
         history.current.push({ s: state.current.s, i: state.current.i, r: state.current.r });
         if (history.current.length > HIST) history.current.shift();
         setHud({ ...state.current });
-        if (state.current.i > 30 && Math.random() < 0.25) {
-          sparks.current.push({
-            x: 40 + Math.random() * (W - 80),
-            y: 40 + Math.random() * (H - 100),
-            vx: (Math.random() - 0.5) * 40,
-            vy: (Math.random() - 0.5) * 40,
-            life: 1,
-          });
-        }
+        setPeakI(peakIRef.current);
+        setPeakDay(peakDayRef.current);
+        setCumI(cumIRef.current);
       }
-
-      for (const sp of sparks.current) {
-        sp.x += sp.vx * dtReal;
-        sp.y += sp.vy * dtReal;
-        sp.life -= dtReal * 1.2;
-      }
-      sparks.current = sparks.current.filter((s) => s.life > 0);
 
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
@@ -101,57 +136,25 @@ export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
 
       const bg = ctx.createLinearGradient(0, 0, 0, H);
       bg.addColorStop(0, "#0a1018");
-      bg.addColorStop(0.5, "#0c1420");
       bg.addColorStop(1, "#05080e");
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, W, H);
 
-      ctx.strokeStyle = "rgba(248,113,113,0.04)";
-      ctx.lineWidth = 18;
-      ctx.beginPath();
-      ctx.moveTo(W / 2 - 40, H / 2);
-      ctx.lineTo(W / 2 + 40, H / 2);
-      ctx.moveTo(W / 2, H / 2 - 40);
-      ctx.lineTo(W / 2, H / 2 + 40);
-      ctx.stroke();
-
-      if (R0 > 1) {
-        const pulse = 0.06 + 0.04 * Math.sin(now / 400);
-        const g = ctx.createRadialGradient(W / 2, H / 2, 20, W / 2, H / 2, 220);
-        g.addColorStop(0, `rgba(248,113,113,${pulse})`);
-        g.addColorStop(1, "transparent");
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, W, H);
-      }
-
-      const cx = 24;
-      const cy = 20;
-      const cw = W - 48;
-      const ch = H - 70;
-      ctx.fillStyle = "rgba(0,0,0,0.3)";
-      roundRect(ctx, cx, cy, cw, ch, 14);
+      const cx = 24, cy = 20, cw = W - 48, ch = H - 70;
+      ctx.fillStyle = "rgba(0,0,0,0.35)";
+      roundRect(ctx, cx, cy, cw, ch, 12);
       ctx.fill();
-      ctx.strokeStyle = "rgba(148,163,184,0.15)";
+      ctx.strokeStyle = "rgba(148,163,184,0.2)";
       ctx.stroke();
-
-      ctx.strokeStyle = "rgba(148,163,184,0.05)";
-      for (let i = 1; i < 5; i++) {
-        const y = cy + (ch * i) / 5;
-        ctx.beginPath();
-        ctx.moveTo(cx + 6, y);
-        ctx.lineTo(cx + cw - 6, y);
-        ctx.stroke();
-      }
 
       const hist = history.current;
-      const plot = (key: "s" | "i" | "r", stroke: string, fill: string, width = 2.5) => {
+      const plot = (key: "s" | "i" | "r", stroke: string, fill: string) => {
         if (hist.length < 2) return;
         ctx.beginPath();
         hist.forEach((pt, idx) => {
           const x = cx + 10 + (idx / (HIST - 1)) * (cw - 20);
           const y = cy + ch - 10 - (pt[key] / N) * (ch - 20);
-          if (idx === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+          if (idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         });
         const lx = cx + 10 + ((hist.length - 1) / (HIST - 1)) * (cw - 20);
         ctx.lineTo(lx, cy + ch - 10);
@@ -166,34 +169,43 @@ export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
         hist.forEach((pt, idx) => {
           const x = cx + 10 + (idx / (HIST - 1)) * (cw - 20);
           const y = cy + ch - 10 - (pt[key] / N) * (ch - 20);
-          if (idx === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+          if (idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         });
         ctx.strokeStyle = stroke;
-        ctx.lineWidth = width;
-        ctx.lineJoin = "round";
+        ctx.lineWidth = 2.5;
         ctx.stroke();
       };
-      plot("s", "rgba(56,189,248,0.95)", "rgba(56,189,248,0.2)");
-      plot("r", "rgba(52,211,153,0.95)", "rgba(52,211,153,0.18)");
-      plot("i", "rgba(248,113,113,1)", "rgba(248,113,113,0.32)", 3);
+      plot("s", "#38bdf8", "rgba(56,189,248,0.25)");
+      plot("i", "#fb7185", "rgba(251,113,133,0.25)");
+      plot("r", "#34d399", "rgba(52,211,153,0.25)");
 
-      for (const sp of sparks.current) {
-        ctx.fillStyle = `rgba(248,113,113,${sp.life * 0.8})`;
-        ctx.beginPath();
-        ctx.arc(sp.x, sp.y, 2 + sp.life * 3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = `rgba(251,191,36,${sp.life * 0.35})`;
-        ctx.beginPath();
-        ctx.arc(sp.x, sp.y, 6 + sp.life * 4, 0, Math.PI * 2);
-        ctx.fill();
+      // Peak marker on infected curve if visible
+      if (hist.length > 5 && peakIRef.current > 0) {
+        let bestIdx = -1;
+        let bestVal = -1;
+        hist.forEach((pt, idx) => {
+          if (pt.i > bestVal) { bestVal = pt.i; bestIdx = idx; }
+        });
+        if (bestIdx >= 0 && Math.abs(bestVal - peakIRef.current) < 5) {
+          const x = cx + 10 + (bestIdx / (HIST - 1)) * (cw - 20);
+          const y = cy + ch - 10 - (bestVal / N) * (ch - 20);
+          ctx.fillStyle = "#fbbf24";
+          ctx.beginPath();
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = "#fbbf24";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x, cy + 8);
+          ctx.stroke();
+        }
       }
 
-      const barY = H - 36;
-      ctx.fillStyle = "rgba(0,0,0,0.35)";
+      const barY = H - 42;
+      ctx.fillStyle = "rgba(0,0,0,0.5)";
       roundRect(ctx, 16, barY, W - 32, 28, 10);
       ctx.fill();
-
       const legend = [
         { c: "#38bdf8", t: es ? "Susceptibles" : "Susceptible" },
         { c: "#fb7185", t: es ? "Infectados" : "Infected" },
@@ -216,7 +228,53 @@ export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
     };
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, [es, R0]);
+  }, [es]);
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const off = document.createElement("canvas");
+    off.width = W;
+    off.height = H + 40;
+    const ctx = off.getContext("2d");
+    if (!ctx) return;
+    ctx.fillStyle = "#05080e";
+    ctx.fillRect(0, 0, off.width, off.height);
+    ctx.drawImage(canvas, 0, 0);
+    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.font = "bold 14px ui-sans-serif, system-ui";
+    ctx.fillText(es ? "Simulador SIR · UtiliHub" : "SIR Simulator · UtiliHub", 16, H + 24);
+    ctx.font = "11px ui-sans-serif, system-ui";
+    ctx.fillStyle = "rgba(255,255,255,0.5)";
+    ctx.fillText(`β=${beta.toFixed(2)} γ=${gamma.toFixed(2)} R₀=${R0.toFixed(2)} PeakI=${peakI.toFixed(0)} Tot=${cumI.toFixed(0)}`, 16, H + 38);
+    const url = off.toDataURL("image/png");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = es ? "simulador-sir-utilihub.png" : "sir-simulator-utilihub.png";
+    a.click();
+  };
+
+  const applyPreset = (preset: "baseline" | "lockdown" | "vax") => {
+    if (preset === "baseline") {
+      setBeta(0.4);
+      setGamma(0.1);
+      setI0(5);
+      setLockdown(false);
+      setVaxCampaign(false);
+    } else if (preset === "lockdown") {
+      setBeta(0.4);
+      setGamma(0.1);
+      setI0(5);
+      setLockdown(true);
+      setVaxCampaign(false);
+    } else {
+      setBeta(0.35);
+      setGamma(0.12);
+      setI0(10);
+      setLockdown(false);
+      setVaxCampaign(true);
+    }
+  };
 
   const peakRisk = R0 > 1;
 
@@ -229,27 +287,45 @@ export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
         <SimSecondaryButton theme="lab" onClick={reset}>
           {es ? "Reiniciar" : "Reset"}
         </SimSecondaryButton>
+        <SimSecondaryButton theme="lab" onClick={downloadPng}>
+          {es ? "PNG marca" : "Branded PNG"}
+        </SimSecondaryButton>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-rose-400/20 bg-black/40 shadow-[0_0_40px_-12px_rgba(248,113,113,0.3)]">
+      <div className="flex flex-wrap gap-2">
+        <SimSecondaryButton theme="lab" onClick={() => applyPreset("baseline")}>
+          {es ? "Brote base" : "Baseline outbreak"}
+        </SimSecondaryButton>
+        <SimSecondaryButton theme="lab" onClick={() => applyPreset("lockdown")}>
+          {es ? "Con cuarentena" : "With lockdown"}
+        </SimSecondaryButton>
+        <SimSecondaryButton theme="lab" onClick={() => applyPreset("vax")}>
+          {es ? "Con vacunación" : "With vaccination"}
+        </SimSecondaryButton>
+      </div>
+
+      <div className="overflow-hidden rounded-2xl border border-rose-400/35 bg-black/50">
         <canvas ref={canvasRef} width={W} height={H} className="h-auto w-full" style={{ aspectRatio: `${W}/${H}` }} />
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
         {[
           { label: "S", value: hud.s.toFixed(0), color: "text-sky-300" },
           { label: "I", value: hud.i.toFixed(0), color: "text-rose-300" },
           { label: "R", value: hud.r.toFixed(0), color: "text-emerald-300" },
           { label: "R₀", value: R0.toFixed(2), color: peakRisk ? "text-amber-300" : "text-emerald-300" },
+          { label: es ? "Pico I" : "Peak I", value: peakI.toFixed(0), color: "text-amber-200" },
+          { label: es ? "Día pico" : "Peak day", value: peakDay.toFixed(0), color: "text-amber-100" },
+          { label: es ? "Casos tot." : "Total cases", value: cumI.toFixed(0), color: "text-rose-200" },
         ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-white/10 bg-black/35 px-2 py-2 text-center">
+          <div key={s.label} className="rounded-xl border border-rose-400/20 bg-black/40 px-2 py-2 text-center">
             <p className="text-[10px] font-bold uppercase tracking-wider text-white/50">{s.label}</p>
             <p className={`mt-0.5 text-lg font-bold tabular-nums ${s.color}`}>{s.value}</p>
           </div>
         ))}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2">
         <label className="text-xs text-sky-100/70">
           β ({es ? "transmisión" : "transmission"}): {beta.toFixed(2)}
           <input type="range" min={0.05} max={0.8} step={0.01} value={beta} onChange={(e) => setBeta(Number(e.target.value))} className="mt-1 w-full accent-rose-400" />
@@ -259,24 +335,28 @@ export function SirEpidemicSim({ locale = "en" }: { locale?: SimLocale }) {
           <input type="range" min={0.02} max={0.4} step={0.01} value={gamma} onChange={(e) => setGamma(Number(e.target.value))} className="mt-1 w-full accent-emerald-400" />
         </label>
         <label className="text-xs text-sky-100/70">
-          {es ? "Vacunación" : "Vaccination"}: {vax.toFixed(3)}
-          <input type="range" min={0} max={0.15} step={0.005} value={vax} onChange={(e) => setVax(Number(e.target.value))} className="mt-1 w-full accent-sky-400" />
+          {es ? "Infectados iniciales" : "Initial infected"}: {i0}
+          <input type="range" min={1} max={100} step={1} value={i0} onChange={(e) => setI0(Number(e.target.value))} className="mt-1 w-full accent-amber-400" />
         </label>
+        <div className="flex flex-col gap-2 text-xs text-sky-100/70">
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={lockdown} onChange={(e) => setLockdown(e.target.checked)} className="accent-rose-400" />
+            {es ? "Cuarentena (↓β)" : "Lockdown (↓β)"}
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={vaxCampaign} onChange={(e) => setVaxCampaign(e.target.checked)} className="accent-sky-400" />
+            {es ? "Campaña vacunación" : "Vaccination campaign"}
+          </label>
+        </div>
       </div>
 
       <p className="text-center text-xs text-white/55">
         {peakRisk
-          ? es
-            ? "R₀ > 1 → brote posible. Subí γ o vacunación para aplanar la curva."
-            : "R₀ > 1 → outbreak possible. Raise γ or vaccination to flatten the curve."
-          : es
-            ? "R₀ ≤ 1 → la epidemia tiende a extinguirse."
-            : "R₀ ≤ 1 → the epidemic tends to die out."}
+          ? es ? `R₀ > 1 → brote posible. Pico I hasta ahora: ${peakI.toFixed(0)} (día ${peakDay.toFixed(0)}). Casos totales: ${cumI.toFixed(0)}. Activá cuarentena o vacunación para frenar el pico. Probá los presets.` : `R₀ > 1 → outbreak possible. Peak I so far: ${peakI.toFixed(0)} (day ${peakDay.toFixed(0)}). Total cases: ${cumI.toFixed(0)}. Enable lockdown or vaccination to slow the peak. Try the presets.`
+          : es ? `R₀ ≤ 1 → la epidemia tiende a extinguirse. Pico I: ${peakI.toFixed(0)}. Casos totales: ${cumI.toFixed(0)}.` : `R₀ ≤ 1 → the epidemic tends to die out. Peak I: ${peakI.toFixed(0)}. Total cases: ${cumI.toFixed(0)}. `}
       </p>
       <p className="text-center text-xs text-white/40">
-        {es
-          ? "Modelo SIR clásico · dS/dt = −βSI/N · dI/dt = βSI/N − γI · dR/dt = γI"
-          : "Classic SIR · dS/dt = −βSI/N · dI/dt = βSI/N − γI · dR/dt = γI"}
+        {es ? "Modelo SIR clásico. El pico se marca en la curva. Casos totales acumulan infecciones. Intervenciones discretas modifican tasas en vivo y pueden detener el crecimiento del pico. Presets cargan escenarios típicos." : "Classic SIR model. Peak is marked on the curve. Total cases accumulate infections. Discrete interventions modify rates live and can stop the peak from rising further. Presets load typical scenarios."}
       </p>
     </div>
   );

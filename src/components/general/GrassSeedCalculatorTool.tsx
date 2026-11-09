@@ -1,65 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Unit = "m" | "ft";
-type Shape = "rect" | "area";
-type Job = "new" | "overseed" | "patch";
-type Species = "fescue" | "rye" | "bluegrass" | "bermuda" | "custom";
-type PresetId = "metric" | "overseed" | "patch" | "bluegrass";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-/** Planning rates in pounds per 1,000 sq ft for a new lawn. */
-const NEW_LB_PER_1000: Record<Exclude<Species, "custom">, number> = {
-  fescue: 8,
-  rye: 6,
-  bluegrass: 3,
-  bermuda: 1.5,
-};
-
-const JOB_FACTOR: Record<Job, number> = {
-  new: 1,
-  overseed: 0.5,
-  patch: 1.25,
-};
-
-const LB_PER_1000_TO_G_PER_M2 = 4.8824276;
-const SQFT_PER_M2 = 10.7639104;
-const LB_PER_KG = 2.2046226218;
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(value);
-}
-
-type Preset = {
-  id: PresetId;
-  unit: Unit;
-  length: string;
-  width: string;
-  area: string;
-  hardscape: string;
-  job: Job;
-  species: Species;
-  customRate: string;
-  bag: string;
-  waste: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "metric", unit: "m", length: "10", width: "6", area: "60", hardscape: "0", job: "new", species: "fescue", customRate: "8", bag: "1", waste: "10" },
-  { id: "overseed", unit: "ft", length: "80", width: "50", area: "4000", hardscape: "200", job: "overseed", species: "fescue", customRate: "8", bag: "10", waste: "10" },
-  { id: "patch", unit: "m", length: "3", width: "2", area: "6", hardscape: "0", job: "patch", species: "bermuda", customRate: "1.5", bag: "1", waste: "15" },
-  { id: "bluegrass", unit: "ft", length: "50", width: "40", area: "2000", hardscape: "0", job: "new", species: "bluegrass", customRate: "3", bag: "5", waste: "10" },
-];
+import { type Locale } from "./GrassSeedCalculatorTool.part1";
+import { type Unit, type Shape, type Job, type Species, parseNum, NEW_LB_PER_1000, LB_PER_1000_TO_G_PER_M2, JOB_FACTOR, SQFT_PER_M2, LB_PER_KG, type Preset, PRESETS, formatNum, type PresetId, buttonClass, inputClass } from "./GrassSeedCalculatorTool.part2";
 
 export function GrassSeedCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
@@ -79,7 +21,7 @@ export function GrassSeedCalculatorTool({ locale = "en" }: { tool: GeneralTool; 
 
   const copy = es
     ? {
-        help: "Estimá kilos y sacos de semilla para césped nuevo, resiembra o un parche. Las dosis son de planificación: igualalas a la etiqueta del saco.",
+        help: "Estimá kilos y sacos de semilla para césped nuevo, resiembra o un parche. Las dosis son de planificación: igualálas a la etiqueta del saco.",
         presets: "Presets",
         metric: "Festuca 10×6 m",
         overseed: "Resiembra 4.000 ft²",

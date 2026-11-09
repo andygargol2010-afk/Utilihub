@@ -1,14 +1,21 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { KitCarryBoard } from "@/components/kits/KitCarryBoard";
+import { MarketStallBoard } from "@/components/kits/MarketStallBoard";
+import { TravelPackingBoard } from "@/components/kits/TravelPackingBoard";
+import { HomeRenovationBoard } from "@/components/kits/HomeRenovationBoard";
+import { KitchenPrepBoard } from "@/components/kits/KitchenPrepBoard";
 import { ToolCard } from "@/components/ToolCard";
-import { kitBySlug, kitTools, kitEnglishPath, kitSpanishPath } from "@/lib/work-kits";
+import { kitBySlug, kitEnglishPath, kitSpanishPath } from "@/lib/work-kits";
 import { englishToolSlug } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, ogImage, SITE_NAME } from "@/lib/seo";
 
 export const Route = createFileRoute("/kits/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const kit = kitBySlug(params.slug);
+    // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+    const { kitTools } = await import("@/lib/work-kits-tools");
     if (!kit) throw notFound();
     return { kit, tools: kitTools(kit) };
   },
@@ -67,6 +74,10 @@ export const Route = createFileRoute("/kits/$slug")({
 
 function KitPage() {
   const { kit, tools } = Route.useLoaderData();
+  const isMarketStall = kit.slug === "puesto-de-feria";
+  const isTravelPacking = kit.slug === "packing-viaje";
+  const isHomeRenovation = kit.slug === "kit-renovacion-hogar";
+  const isKitchenPrep = kit.slug === "preparacion-cocina";
   return (
     <main className="container-page py-6 sm:py-8">
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Work kits", to: "/kits" }, { label: kit.name }]} />
@@ -78,33 +89,46 @@ function KitPage() {
           <CheckCircle2 className="size-4 text-primary" /> {kit.outcome}
         </p>
       </header>
-      <section className="mt-8" aria-labelledby="kit-steps">
-        <h2 id="kit-steps" className="text-base font-bold">
-          Kit steps
-        </h2>
-        <div className="mt-3 space-y-3">
-          {tools.map((tool, index) => (
-            <div key={tool.slug} className="flex gap-3 rounded-xl border border-border/70 bg-card p-3">
-              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent text-sm font-bold text-primary">
-                {index + 1}
-              </span>
-              <div className="min-w-0 flex-1">
-                <ToolCard tool={tool} />
-                <Link
-                  to={tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug"}
-                  params={{ slug: englishToolSlug(tool) }}
-                  className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-primary"
-                >
-                  Open tool <ArrowRight className="size-4" />
-                </Link>
-              </div>
+      {isMarketStall ? (
+        <MarketStallBoard locale="en" />
+      ) : isTravelPacking ? (
+        <TravelPackingBoard locale="en" />
+      ) : isHomeRenovation ? (
+        <HomeRenovationBoard locale="en" />
+      ) : isKitchenPrep ? (
+        <KitchenPrepBoard locale="en" />
+      ) : (
+        <>
+          <KitCarryBoard kitSlug={kit.slug} steps={tools.map((tool) => ({ slug: tool.slug, label: tool.name }))} />
+          <section className="mt-8" aria-labelledby="kit-steps">
+            <h2 id="kit-steps" className="text-base font-bold">
+              Kit steps
+            </h2>
+            <div className="mt-3 space-y-3">
+              {tools.map((tool, index) => (
+                <div key={tool.slug} className="flex gap-3 rounded-xl border border-border/70 bg-card p-3">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent text-sm font-bold text-primary">
+                    {index + 1}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <ToolCard tool={tool} />
+                    <Link
+                      to={tool.category === "finanzas" ? "/finance/$slug" : "/tools/$slug"}
+                      params={{ slug: englishToolSlug(tool) }}
+                      className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-primary"
+                    >
+                      Open tool <ArrowRight className="size-4" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <Link to="/kits" className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
-          All work kits <ArrowRight className="size-4" />
-        </Link>
-      </section>
+            <Link to="/kits" className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
+              All work kits <ArrowRight className="size-4" />
+            </Link>
+          </section>
+        </>
+      )}
     </main>
   );
 }

@@ -1,7 +1,5 @@
-import type { EducationDifficulty, EducationLevel } from "../education-engine";
-
-type Q={text:string;options:string[];answer:string;levels?:EducationLevel[];difficulty?:EducationDifficulty};
-const q=(text:string,options:string[],answer:string,levels?:EducationLevel[],difficulty?:EducationDifficulty):Q=>({text,options,answer,levels,difficulty});
+import { type Q } from "./geometria.part1";
+import { q } from "./geometria.part2";
 
 export const GEOMETRIA:Q[]=[
 q("What is the perimeter of a square with side 6 cm?",["24 cm","12 cm","36 cm","18 cm"],"24 cm",["primaria"],"facil"),

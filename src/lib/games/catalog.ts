@@ -1,208 +1,77 @@
-export type GameLocale = "en" | "es";
+import { type GameDef, type GameLocale, type GameTag } from "./catalog.part1";
+import { GAMES } from "./catalog.part2";
+export type { GameLocale, GameTag, GameDef } from "./catalog.part1";
+export { GAMES } from "./catalog.part2";
+import { PT_GAMES, PT_GAME_TAGS } from "@/lib/i18n/pt-games";
 
-export type GameTag = "puzzle" | "arcade" | "board";
-
-export type GameDef = {
-  /** Canonical EN slug used in /games/$slug */
-  slug: string;
-  /** ES path slug under /es/juegos/$slug */
-  slugEs: string;
-  nameEn: string;
-  nameEs: string;
-  tag: GameTag;
-  emoji: string;
-  summaryEn: string;
-  summaryEs: string;
-  /** Whether a local high-score makes sense */
-  hasScore: boolean;
+/** Next-step games for retention (first = primary). Keys = EN slug. */
+export const GAME_JOURNEYS: Record<string, string[]> = {
+  "2048": ["sudoku", "minesweeper", "memory", "lights-out"],
+  "tic-tac-toe": ["connect-four", "connect-four-classic", "memory", "sudoku"],
+  "connect-four": ["connect-four-classic", "tic-tac-toe", "minesweeper", "memory"],
+  "connect-four-classic": ["connect-four", "tic-tac-toe", "minesweeper", "memory"],
+  "sudoku-classic": ["sudoku", "minesweeper", "2048", "memory"],
+  minesweeper: ["minesweeper-classic", "sudoku", "2048", "memory"],
+  "minesweeper-classic": ["minesweeper", "sudoku-classic", "2048", "memory"],
+  hangman: ["memory", "minesweeper", "sudoku", "formula-memory"],
+  snake: ["pacman", "tetris", "pong", "magnetic-letter-catcher"],
+  pong: ["snake", "tetris", "pacman", "refraction-challenge"],
+  memory: ["formula-memory", "sudoku", "minesweeper", "2048"],
+  sudoku: ["minesweeper", "2048", "memory", "lights-out"],
+  pacman: ["snake", "tetris", "pong", "magnetic-letter-catcher"],
+  tetris: ["snake", "pacman", "pong", "2048"],
+  "code-type-race": ["formula-memory", "pathfinder", "budget-survivor", "sudoku"],
+  "formula-memory": ["memory", "code-type-race", "pathfinder", "sudoku"],
+  "budget-survivor": ["pathfinder", "formula-memory", "code-type-race", "lights-out"],
+  pathfinder: ["lights-out", "sudoku", "refraction-challenge", "formula-memory"],
+  "refraction-challenge": ["pathfinder", "pong", "snake", "lights-out"],
+  "lights-out": ["sudoku", "minesweeper", "memory", "pathfinder"],
+  "magnetic-letter-catcher": ["snake", "pacman", "tetris", "code-type-race"],
+  "pulse-catch-arena": ["pong", "snake", "tetris", "magnetic-letter-catcher"],
+  "orbit-defender-arcade": ["pulse-catch-arena", "pong", "snake", "tetris"],
+  "orbit-pulse-catcher": ["pulse-catch-arena", "orbit-defender-arcade", "pong", "refraction-challenge"],
+  "simon-sequence-memory": ["memory", "formula-memory", "hangman", "lights-out"],
+  "memory-match-classic": ["memory", "simon-sequence-memory", "hangman", "sudoku-classic"],
+  "othello-classic": ["connect-four-classic", "tic-tac-toe", "memory-match-classic", "sudoku-classic"],
 };
 
-export const GAMES: readonly GameDef[] = [
-  {
-    slug: "2048",
-    slugEs: "2048",
-    nameEn: "2048",
-    nameEs: "2048",
-    tag: "puzzle",
-    emoji: "🔢",
-    summaryEn: "Slide tiles, merge numbers, reach 2048.",
-    summaryEs: "Deslizá fichas, combiná números y llegá a 2048.",
-    hasScore: true,
-  },
-  {
-    slug: "tic-tac-toe",
-    slugEs: "tres-en-raya",
-    nameEn: "Tic-Tac-Toe",
-    nameEs: "Tres en raya",
-    tag: "board",
-    emoji: "⭕",
-    summaryEn: "Classic 3×3. Play a friend or the CPU.",
-    summaryEs: "Clásico 3×3. Jugá contra un amigo o la CPU.",
-    hasScore: false,
-  },
-  {
-    slug: "connect-four",
-    slugEs: "conecta-4",
-    nameEn: "Connect Four",
-    nameEs: "Conecta 4",
-    tag: "board",
-    emoji: "🔴",
-    summaryEn: "Drop discs and connect four in a row.",
-    summaryEs: "Tirás fichas y conectás cuatro en línea.",
-    hasScore: false,
-  },
-  {
-    slug: "minesweeper",
-    slugEs: "buscaminas",
-    nameEn: "Minesweeper",
-    nameEs: "Buscaminas",
-    tag: "puzzle",
-    emoji: "💣",
-    summaryEn: "Clear the board without hitting a mine.",
-    summaryEs: "Limpiá el tablero sin pisar una mina.",
-    hasScore: true,
-  },
-  {
-    slug: "snake",
-    slugEs: "snake",
-    nameEn: "Snake",
-    nameEs: "Snake",
-    tag: "arcade",
-    emoji: "🐍",
-    summaryEn: "Eat, grow, don't hit the walls.",
-    summaryEs: "Comé, crecé y no choques con las paredes.",
-    hasScore: true,
-  },
-  {
-    slug: "pong",
-    slugEs: "pong",
-    nameEn: "Pong",
-    nameEs: "Pong",
-    tag: "arcade",
-    emoji: "🏓",
-    summaryEn: "Classic paddle duel against the CPU.",
-    summaryEs: "Duelo clásico de paletas contra la CPU.",
-    hasScore: true,
-  },
-  {
-    slug: "memory",
-    slugEs: "memoria",
-    nameEn: "Memory Match",
-    nameEs: "Memoria",
-    tag: "puzzle",
-    emoji: "🃏",
-    summaryEn: "Flip cards and find every pair.",
-    summaryEs: "Volteá cartas y encontrá todos los pares.",
-    hasScore: true,
-  },
-  {
-    slug: "sudoku",
-    slugEs: "sudoku",
-    nameEn: "Sudoku",
-    nameEs: "Sudoku",
-    tag: "puzzle",
-    emoji: "9️⃣",
-    summaryEn: "Fill the grid: no repeats in row, column, or box.",
-    summaryEs: "Completá la grilla sin repetir en fila, columna o bloque.",
-    hasScore: true,
-  },
-  {
-    slug: "pacman",
-    slugEs: "pacman",
-    nameEn: "Pac-Man",
-    nameEs: "Pac-Man",
-    tag: "arcade",
-    emoji: "🟡",
-    summaryEn: "Classic maze chase: eat every pellet, dodge ghosts, grab power pellets.",
-    summaryEs: "Laberinto clásico: comé todos los puntos, evitá fantasmas y agarrá power pellets.",
-    hasScore: true,
-  },
-  {
-    slug: "tetris",
-    slugEs: "tetris",
-    nameEn: "Tetris",
-    nameEs: "Tetris",
-    tag: "arcade",
-    emoji: "🧱",
-    summaryEn: "Stack tetrominoes, clear lines, chase a high score.",
-    summaryEs: "Apilá tetrominós, limpiá líneas y buscá el high score.",
-    hasScore: true,
-  },
-  {
-    slug: "code-type-race",
-    slugEs: "carrera-de-codigo",
-    nameEn: "Code Type Race",
-    nameEs: "Carrera de código",
-    tag: "arcade",
-    emoji: "⌨️",
-    summaryEn: "Type real JS and Python snippets. Race the clock for WPM and accuracy.",
-    summaryEs: "Escribí snippets reales de JS y Python. Competí por WPM y precisión.",
-    hasScore: true,
-  },
-  {
-    slug: "formula-memory",
-    slugEs: "memoria-formulas",
-    nameEn: "Formula Memory",
-    nameEs: "Memoria de fórmulas",
-    tag: "puzzle",
-    emoji: "∫",
-    summaryEn: "Match each formula name with its equation — physics, geometry, and finance.",
-    summaryEs: "Emparejá el nombre de cada fórmula con su ecuación: física, geometría y finanzas.",
-    hasScore: true,
-  },
-  {
-    slug: "budget-survivor",
-    slugEs: "supervivencia-presupuesto",
-    nameEn: "Budget Survivor",
-    nameEs: "Supervivencia de presupuesto",
-    tag: "puzzle",
-    emoji: "💸",
-    summaryEn: "Survive a month of random bills and surprises without going broke.",
-    summaryEs: "Sobreviví un mes de gastos y sorpresas sin quedar en cero.",
-    hasScore: true,
-  },
-  {
-    slug: "pathfinder",
-    slugEs: "busca-caminos",
-    nameEn: "Pathfinder",
-    nameEs: "Busca caminos",
-    tag: "puzzle",
-    emoji: "🗺️",
-    summaryEn: "Draw walls, then watch BFS or A* find a path step by step.",
-    summaryEs: "Dibujá paredes y mirá cómo BFS o A* encuentran el camino paso a paso.",
-    hasScore: true,
-  },
-  {
-    slug: "refraction-challenge",
-    slugEs: "desafio-refraccion",
-    nameEn: "Refraction Challenge",
-    nameEs: "Desafío de refracción",
-    tag: "arcade",
-    emoji: "🔦",
-    summaryEn: "Aim a laser through lenses and hit the target. Bend light, clear levels.",
-    summaryEs: "Apuntá un láser a través de lentes y pegale al blanco. Doblá la luz y pasá niveles.",
-    hasScore: true,
-  },
-] as const;
+export function relatedGames(current: Pick<GameDef, "slug" | "tag">): GameDef[] {
+  const curated = (GAME_JOURNEYS[current.slug] ?? [])
+    .map((slug) => GAMES.find((g) => g.slug === slug))
+    .filter((g): g is GameDef => Boolean(g) && g.slug !== current.slug);
+  if (curated.length >= 4) return curated.slice(0, 4);
+  const used = new Set([current.slug, ...curated.map((g) => g.slug)]);
+  const sameTag = GAMES.filter((g) => g.tag === current.tag && !used.has(g.slug));
+  const rest = GAMES.filter((g) => !used.has(g.slug) && !sameTag.includes(g));
+  return [...curated, ...sameTag, ...rest].slice(0, 4);
+}
 
 export function gameBySlug(slug: string, locale: GameLocale = "en"): GameDef | undefined {
   const key = slug.toLowerCase();
-  return GAMES.find((g) => (locale === "es" ? g.slugEs === key : g.slug === key) || g.slug === key || g.slugEs === key);
+  // Strict per-locale lookup: /games/$slug only resolves EN slugs and
+  // /es/juegos/$slug only resolves ES slugs. The old cross-locale fallback
+  // served the same game under both slugs with a canonical pointing to a
+  // different URL (duplicate content / locale leak).
+  return GAMES.find((g) => (locale === "es" ? g.slugEs === key : g.slug === key));
 }
 
 export function gamePath(game: GameDef, locale: GameLocale = "en") {
+  if (locale === "pt") return `/pt/jogos/${game.slug}`;
   return locale === "es" ? `/es/juegos/${game.slugEs}` : `/games/${game.slug}`;
 }
 
 export function gameName(game: GameDef, locale: GameLocale = "en") {
+  if (locale === "pt") return PT_GAMES[game.slug]?.name ?? game.nameEn;
   return locale === "es" ? game.nameEs : game.nameEn;
 }
 
 export function gameSummary(game: GameDef, locale: GameLocale = "en") {
+  if (locale === "pt") return PT_GAMES[game.slug]?.summary ?? game.summaryEn;
   return locale === "es" ? game.summaryEs : game.summaryEn;
 }
 
 export function tagLabel(tag: GameTag, locale: GameLocale = "en") {
+  if (locale === "pt") return PT_GAME_TAGS[tag as keyof typeof PT_GAME_TAGS] ?? tag;
   if (locale === "es") {
     return tag === "puzzle" ? "Puzzle" : tag === "arcade" ? "Arcade" : "Tablero";
   }

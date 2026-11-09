@@ -1,0 +1,35 @@
+name: Apply PixeliHub touch
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/apply-touch-pixelihub.py"
+      - ".github/workflows/apply-touch-pixelihub.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/spanish-complete
+          fetch-depth: 20
+
+      - name: Patch touch
+        run: python3 scripts/apply-touch-pixelihub.py
+
+      - name: Commit
+        run: |
+          git config user.name "andygargol2010-afk"
+          git config user.email "andygargol2010@gmail.com"
+          git add src/components/general/PixelArtStudio.tsx
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "feat(pixelihub): touch drawing — continuous strokes, no scroll steal (roadmap item 17)"
+          git push

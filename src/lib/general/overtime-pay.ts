@@ -3,7 +3,7 @@ import { makeTool } from "./types";
 /** Work-pay gap: existing tools only subtract clock times or multiply rates. */
 export const OVERTIME_PAY_TOOLS = [
   makeTool(
-    "calculadora-horas-extra",
+    "calculadora-pago-horas-extra",
     "Overtime pay calculator",
     "productividad",
     "number",

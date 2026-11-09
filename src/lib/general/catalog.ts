@@ -16,4 +16,5 @@ export const GENERAL_CATEGORIES:GeneralCategory[]=[
 {slug:"viajes",name:"Travel",title:"Travel tools | UtiliHub",description:"Calculators for trips, fuel, budgets, and travel conversions.",intro:"Plan trips and budgets with fast calculations for your travel."},
 {slug:"hogar",name:"Home",title:"Home tools | UtiliHub",description:"Practical calculators for expenses, consumption, and household organization.",intro:"Calculate consumption, costs, budgets, and quantities for home tasks."},
 {slug:"utilidades",name:"Utilities",title:"Free online utilities | UtiliHub",description:"Practical tools for everyday calculations, costs, distances, and proportions.",intro:"Solve everyday practical calculations with fast tools that run in the browser."},
+{slug:"salud",name:"Health",title:"Health calculators | UtiliHub",description:"BMI, calories, hydration, heart rate, and personal health estimators.",intro:"Simple health-related calculators that run entirely in your browser."},
 ];

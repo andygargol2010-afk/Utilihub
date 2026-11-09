@@ -1,61 +1,12 @@
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  GAMES,
-  type GameDef,
-  type GameLocale,
-  type GameTag,
-  gameName,
-  gameSummary,
-  tagLabel,
-} from "@/lib/games/catalog";
-
-type Filter = "all" | GameTag;
-
-const FILTERS: { id: Filter; en: string; es: string }[] = [
-  { id: "all", en: "All", es: "Todos" },
-  { id: "arcade", en: "Arcade", es: "Arcade" },
-  { id: "puzzle", en: "Puzzle", es: "Puzzle" },
-  { id: "board", en: "Board", es: "Tablero" },
-];
-
-const NEW_SLUGS = new Set(["tetris", "pacman"]);
-
-/** Soft background per game — large centered emoji only */
-const PREVIEW_BG: Record<string, string> = {
-  "2048": "from-amber-50 to-orange-100",
-  "tic-tac-toe": "from-slate-50 to-slate-100",
-  "connect-four": "from-blue-50 to-blue-100",
-  minesweeper: "from-zinc-100 to-slate-200",
-  snake: "from-emerald-50 to-green-100",
-  pong: "from-slate-800 to-slate-950",
-  memory: "from-violet-50 to-fuchsia-100",
-  sudoku: "from-teal-50 to-cyan-100",
-  pacman: "from-indigo-950 to-blue-950",
-  tetris: "from-slate-900 to-cyan-950",
-};
-
-function GamePreview({ game }: { game: GameDef }) {
-  const bg = PREVIEW_BG[game.slug] ?? "from-emerald-50 to-teal-100";
-  const dark = ["pong", "pacman", "tetris"].includes(game.slug);
-  return (
-    <div
-      className={`relative flex h-32 w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br ${bg}`}
-      aria-hidden
-    >
-      <span
-        className={`select-none text-6xl leading-none drop-shadow-sm transition duration-200 group-hover:scale-110 ${
-          dark ? "opacity-95" : ""
-        }`}
-      >
-        {game.emoji}
-      </span>
-    </div>
-  );
-}
+import { GAMES, type GameLocale, gameName, gameSummary, tagLabel } from "@/lib/games/catalog";
+import { type Filter } from "./GamesCatalog.part1";
+import { FILTERS, NEW_SLUGS, GamePreview } from "./GamesCatalog.part2";
 
 export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
   const es = locale === "es";
+  const pt = locale === "pt";
   const [filter, setFilter] = useState<Filter>("all");
 
   const list = useMemo(() => {
@@ -63,34 +14,43 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
     return GAMES.filter((g) => g.tag === filter);
   }, [filter]);
 
+  const title = pt ? "Jogos" : es ? "Juegos" : "Games";
+  const subtitle = pt
+    ? `${GAMES.length} jogos que rodam no seu navegador. Sem instalações nem contas: só jogar.`
+    : es
+      ? `${GAMES.length} juegos que corren en tu navegador. Sin instalaciones ni cuentas: solo jugar.`
+      : `${GAMES.length} games that run in your browser. No installs, no accounts — just play.`;
+  const filterLabel = pt ? "Filtrar por tipo" : es ? "Filtrar por tipo" : "Filter by type";
+  const playLabel = pt ? "Jogar →" : es ? "Jugar →" : "Play →";
+  const emptyLabel = pt ? "Não há jogos neste filtro." : es ? "No hay juegos en este filtro." : "No games in this filter.";
+  const eyebrow = pt ? "Arcade · Puzzle · Tabuleiro" : es ? "Arcade · Puzzle · Tablero" : "Arcade · Puzzle · Board";
+
   return (
     <div className="games-skin min-h-[70vh] bg-gradient-to-b from-emerald-50/80 via-background to-background">
       <div className="container-page py-8 sm:py-12">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
-          {es ? "Arcade · Puzzle · Tablero" : "Arcade · Puzzle · Board"}
+          {eyebrow}
         </p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-          {es ? "Juegos" : "Games"}
+          {title}
         </h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          {es
-            ? `${GAMES.length} juegos que corren en tu navegador. Sin instalaciones ni cuentas: solo jugar.`
-            : `${GAMES.length} games that run in your browser. No installs, no accounts — just play.`}
+          {subtitle}
         </p>
 
         <div
           className="mt-6 flex flex-wrap gap-2"
-          role="tablist"
-          aria-label={es ? "Filtrar por tipo" : "Filter by type"}
+          role="group"
+          aria-label={filterLabel}
         >
           {FILTERS.map((f) => {
             const active = filter === f.id;
+            const label = pt ? f.pt : es ? f.es : f.en;
             return (
               <button
                 key={f.id}
                 type="button"
-                role="tab"
-                aria-selected={active}
+                aria-pressed={active}
                 onClick={() => setFilter(f.id)}
                 className={
                   active
@@ -98,7 +58,7 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
                     : "rounded-full border border-emerald-900/15 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:border-emerald-500/40 hover:bg-emerald-50"
                 }
               >
-                {es ? f.es : f.en}
+                {label}
               </button>
             );
           })}
@@ -108,10 +68,11 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
           {list.map((game) => {
             const hrefSlug = es ? game.slugEs : game.slug;
             const isNew = NEW_SLUGS.has(game.slug);
+            const to = pt ? "/pt/jogos/$slug" : es ? "/es/juegos/$slug" : "/games/$slug";
             return (
               <Link
                 key={game.slug}
-                to={es ? "/es/juegos/$slug" : "/games/$slug"}
+                to={to}
                 params={{ slug: hrefSlug }}
                 className="card-hover group flex flex-col overflow-hidden rounded-3xl border border-emerald-900/10 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-md"
               >
@@ -119,7 +80,7 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
                   <GamePreview game={game} />
                   {isNew && (
                     <span className="absolute right-5 top-5 rounded-full bg-emerald-500 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white shadow">
-                      {es ? "Nuevo" : "New"}
+                      {pt ? "Novo" : es ? "Nuevo" : "New"}
                     </span>
                   )}
                 </div>
@@ -134,7 +95,7 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
                     {gameSummary(game, locale)}
                   </span>
                   <span className="mt-4 text-sm font-bold text-emerald-700">
-                    {es ? "Jugar →" : "Play →"}
+                    {playLabel}
                   </span>
                 </div>
               </Link>
@@ -144,7 +105,7 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
 
         {list.length === 0 && (
           <p className="mt-10 text-center text-sm text-muted-foreground">
-            {es ? "No hay juegos en este filtro." : "No games in this filter."}
+            {emptyLabel}
           </p>
         )}
       </div>

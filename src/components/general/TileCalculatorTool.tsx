@@ -1,176 +1,115 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 
 type Locale = "en" | "es";
 
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
+const fieldClass = "w-full rounded-xl border bg-background px-3 py-3 text-base";
+const buttonClass = "h-11 rounded-xl border px-4 text-sm font-medium hover:bg-muted";
 
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 2) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits }).format(value);
-}
-
-export function TileCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
+export function TileCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
-  const [lengthM, setLengthM] = useState("4");
-  const [widthM, setWidthM] = useState("3.2");
-  const [tileCmA, setTileCmA] = useState("60");
-  const [tileCmB, setTileCmB] = useState("60");
-  const [groutMm, setGroutMm] = useState("2");
-  const [wastePct, setWastePct] = useState("10");
-  const [openings, setOpenings] = useState("0");
-  const [perBox, setPerBox] = useState("4");
-
-  const copy = es
-    ? {
-        length: "Largo del ambiente (m)",
-        width: "Ancho del ambiente (m)",
-        tileA: "Lado A de la baldosa (cm)",
-        tileB: "Lado B de la baldosa (cm)",
-        grout: "Junta (mm)",
-        waste: "Desperdicio (%)",
-        openings: "Huecos a restar (m²)",
-        perBox: "Baldosas por caja",
-        result: "Resultado",
-        net: "Superficie neta",
-        tiles: "Baldosas a comprar",
-        boxes: "Cajas",
-        each: "Cobertura por baldosa (con junta)",
-        note: "Redondeado hacia arriba. La junta se suma al tamaño útil de cada pieza.",
-      }
-    : {
-        length: "Room length (m)",
-        width: "Room width (m)",
-        tileA: "Tile side A (cm)",
-        tileB: "Tile side B (cm)",
-        grout: "Grout joint (mm)",
-        waste: "Waste (%)",
-        openings: "Openings to subtract (m²)",
-        perBox: "Tiles per box",
-        result: "Result",
-        net: "Net area",
-        tiles: "Tiles to buy",
-        boxes: "Boxes",
-        each: "Coverage per tile (with grout)",
-        note: "Rounded up. Grout is added to the effective size of each tile.",
-      };
+  const [roomL, setRoomL] = useState("4");
+  const [roomW, setRoomW] = useState("3");
+  const [tileL, setTileL] = useState("0.3");
+  const [tileW, setTileW] = useState("0.3");
+  const [waste, setWaste] = useState("10");
+  const [copied, setCopied] = useState(false);
 
   const result = useMemo(() => {
-    const length = parseNum(lengthM);
-    const width = parseNum(widthM);
-    const sideA = parseNum(tileCmA);
-    const sideB = parseNum(tileCmB);
-    const grout = parseNum(groutMm);
-    const waste = parseNum(wastePct);
-    const holes = parseNum(openings);
-    const box = parseNum(perBox);
+    const rl = parseFloat(roomL);
+    const rw = parseFloat(roomW);
+    const tl = parseFloat(tileL);
+    const tw = parseFloat(tileW);
+    const w = parseFloat(waste);
+    if ([rl, rw, tl, tw, w].some(isNaN) || rl <= 0 || rw <= 0 || tl <= 0 || tw <= 0 || w < 0 || w > 100) return null;
+    const roomArea = rl * rw;
+    const tileArea = tl * tw;
+    if (tileArea === 0) return null;
+    const baseTiles = roomArea / tileArea;
+    const withWaste = baseTiles * (1 + w / 100);
+    return {
+      roomArea: Math.round(roomArea * 100) / 100,
+      tiles: Math.ceil(withWaste),
+      base: Math.round(baseTiles * 10) / 10,
+    };
+  }, [roomL, roomW, tileL, tileW, waste]);
 
-    if ([length, width, sideA, sideB, grout, waste, holes, box].some((n) => n === null || Number.isNaN(n))) {
-      return { error: es ? "Completá todos los campos con números válidos." : "Fill every field with a valid number." };
+  async function copy() {
+    if (!result) return;
+    const textOut = es
+      ? `Azulejos necesarios: ${result.tiles} (área ${result.roomArea} m²)`
+      : `Tiles needed: ${result.tiles} (area ${result.roomArea} m²)`;
+    try {
+      await navigator.clipboard.writeText(textOut);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      setCopied(false);
     }
-    if (length! <= 0 || width! <= 0 || sideA! <= 0 || sideB! <= 0) {
-      return { error: es ? "El ambiente y la baldosa tienen que medir más de cero." : "Room and tile sizes must be greater than zero." };
-    }
-    if (grout! < 0 || grout! > 30) {
-      return { error: es ? "La junta debe estar entre 0 y 30 mm." : "Grout must be between 0 and 30 mm." };
-    }
-    if (waste! < 0 || waste! > 40) {
-      return { error: es ? "El desperdicio debe estar entre 0 y 40%." : "Waste must be between 0 and 40%." };
-    }
-    if (holes! < 0) {
-      return { error: es ? "Los huecos no pueden ser negativos." : "Openings cannot be negative." };
-    }
-    if (box! <= 0 || !Number.isInteger(box)) {
-      return { error: es ? "Las baldosas por caja tienen que ser un entero mayor que 0." : "Tiles per box must be a whole number greater than 0." };
-    }
+  }
 
-    const gross = length! * width!;
-    const net = gross - holes!;
-    if (net <= 0) {
-      return { error: es ? "Los huecos no pueden cubrir toda la superficie." : "Openings cannot cover the whole area." };
-    }
-    const groutM = grout! / 1000;
-    const tileArea = (sideA! / 100 + groutM) * (sideB! / 100 + groutM);
-    if (tileArea <= 0) {
-      return { error: es ? "El tamaño de la baldosa no es válido." : "Tile size is not valid." };
-    }
-    const tiles = Math.ceil((net / tileArea) * (1 + waste! / 100));
-    const boxes = Math.ceil(tiles / box!);
-    return { net, tiles, boxes, tileArea, extra: boxes * box! - tiles };
-  }, [lengthM, widthM, tileCmA, tileCmB, groutMm, wastePct, openings, perBox, es]);
+  function reset() {
+    setRoomL("4");
+    setRoomW("3");
+    setTileL("0.3");
+    setTileW("0.3");
+    setWaste("10");
+    setCopied(false);
+  }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <form className="grid gap-3" onSubmit={(event) => event.preventDefault()}>
-        <label className="grid gap-1 text-sm">
-          {copy.length}
-          <input className={inputClass} inputMode="decimal" value={lengthM} onChange={(e) => setLengthM(e.target.value)} />
-        </label>
-        <label className="grid gap-1 text-sm">
-          {copy.width}
-          <input className={inputClass} inputMode="decimal" value={widthM} onChange={(e) => setWidthM(e.target.value)} />
-        </label>
-        <div className="grid grid-cols-2 gap-3">
-          <label className="grid gap-1 text-sm">
-            {copy.tileA}
-            <input className={inputClass} inputMode="decimal" value={tileCmA} onChange={(e) => setTileCmA(e.target.value)} />
-          </label>
-          <label className="grid gap-1 text-sm">
-            {copy.tileB}
-            <input className={inputClass} inputMode="decimal" value={tileCmB} onChange={(e) => setTileCmB(e.target.value)} />
-          </label>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <label className="grid gap-1 text-sm">
-            {copy.grout}
-            <input className={inputClass} inputMode="decimal" value={groutMm} onChange={(e) => setGroutMm(e.target.value)} />
-          </label>
-          <label className="grid gap-1 text-sm">
-            {copy.waste}
-            <input className={inputClass} inputMode="decimal" value={wastePct} onChange={(e) => setWastePct(e.target.value)} />
-          </label>
-        </div>
-        <label className="grid gap-1 text-sm">
-          {copy.openings}
-          <input className={inputClass} inputMode="decimal" value={openings} onChange={(e) => setOpenings(e.target.value)} />
-        </label>
-        <label className="grid gap-1 text-sm">
-          {copy.perBox}
-          <input className={inputClass} inputMode="numeric" value={perBox} onChange={(e) => setPerBox(e.target.value)} />
-        </label>
-      </form>
-      <section className="rounded-2xl border bg-card p-4">
-        <h2 className="text-lg font-semibold">{copy.result}</h2>
-        {"error" in result ? (
-          <p className="mt-3 text-sm text-destructive">{result.error}</p>
+    <div className="space-y-6">
+      <div className="rounded-2xl border bg-muted/30 p-6 space-y-3">
+        <p className="text-sm text-muted-foreground">{es ? "Azulejos necesarios" : "Tiles needed"}</p>
+        {result ? (
+          <p className="text-3xl font-semibold">{result.tiles}</p>
         ) : (
-          <dl className="mt-3 grid gap-2 text-sm">
-            <div className="flex justify-between gap-3">
-              <dt>{copy.net}</dt>
-              <dd className="font-medium">{formatNum(result.net)} m²</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt>{copy.tiles}</dt>
-              <dd className="font-medium">{result.tiles}</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt>{copy.boxes}</dt>
-              <dd className="font-medium">{result.boxes}</dd>
-            </div>
-            <div className="flex justify-between gap-3">
-              <dt>{copy.each}</dt>
-              <dd className="font-medium">{formatNum(result.tileArea, 4)} m²</dd>
-            </div>
-            <p className="pt-2 text-muted-foreground">{copy.note}</p>
-          </dl>
+          <p className="text-sm text-muted-foreground">{es ? "Introduce valores válidos > 0" : "Enter valid values > 0"}</p>
         )}
-      </section>
+        {result && (
+          <p className="text-sm text-muted-foreground">
+            {es ? `Área habitación: ${result.roomArea} m² · Base: ${result.base}` : `Room area: ${result.roomArea} m² · Base: ${result.base}`}
+          </p>
+        )}
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="block space-y-2 text-sm">
+          <span className="font-medium">{es ? "Largo habitación (m)" : "Room length (m)"}</span>
+          <input type="number" step="any" min="0" value={roomL} onChange={(e) => setRoomL(e.target.value)} className={fieldClass} />
+        </label>
+        <label className="block space-y-2 text-sm">
+          <span className="font-medium">{es ? "Ancho habitación (m)" : "Room width (m)"}</span>
+          <input type="number" step="any" min="0" value={roomW} onChange={(e) => setRoomW(e.target.value)} className={fieldClass} />
+        </label>
+        <label className="block space-y-2 text-sm">
+          <span className="font-medium">{es ? "Largo azulejo (m)" : "Tile length (m)"}</span>
+          <input type="number" step="any" min="0" value={tileL} onChange={(e) => setTileL(e.target.value)} className={fieldClass} />
+        </label>
+        <label className="block space-y-2 text-sm">
+          <span className="font-medium">{es ? "Ancho azulejo (m)" : "Tile width (m)"}</span>
+          <input type="number" step="any" min="0" value={tileW} onChange={(e) => setTileW(e.target.value)} className={fieldClass} />
+        </label>
+        <label className="block space-y-2 text-sm sm:col-span-2">
+          <span className="font-medium">{es ? "Desperdicio (%)" : "Waste (%)"}</span>
+          <input type="number" step="any" min="0" max="100" value={waste} onChange={(e) => setWaste(e.target.value)} className={fieldClass} />
+        </label>
+      </div>
+
+      <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
+        <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
+        <p>{es ? "Habitación 4×3 m, azulejo 0.3×0.3 m, 10% → 147 azulejos" : "Room 4×3 m, tile 0.3×0.3 m, 10% → 147 tiles"}</p>
+        <p>{es ? "Habitación 5×4 m, azulejo 0.4×0.4 m, 5% → 132 azulejos" : "Room 5×4 m, tile 0.4×0.4 m, 5% → 132 tiles"}</p>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <button type="button" className={`${buttonClass} bg-primary text-primary-foreground`} onClick={copy}>
+          {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar resultado" : "Copy result"}
+        </button>
+        <button type="button" className={buttonClass} onClick={reset}>
+          {es ? "Reiniciar" : "Reset"}
+        </button>
+      </div>
     </div>
   );
 }

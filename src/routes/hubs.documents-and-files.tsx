@@ -2,18 +2,21 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, CheckCircle2, FileText, LockKeyhole } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ToolCard } from "@/components/ToolCard";
-import { DOCUMENT_HUB, documentHubTools } from "@/lib/document-hub";
+import { DOCUMENT_HUB } from "@/lib/document-hub";
 import { englishToolPath } from "@/lib/route-slugs";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, SITE_NAME } from "@/lib/seo";
-
-const title = `${DOCUMENT_HUB.name}: free online tools | ${SITE_NAME}`;
-const description = cleanDescription("Prepare, convert, and organize documents and files with free online tools. Local processing, no signup, and a step-by-step path.");
+import { absoluteUrl, breadcrumbSchema, faqSchema, ogImage, SITE_NAME } from "@/lib/seo";
+import { title } from "./-hubs.documents-and-files.part1";
+import { description } from "./-hubs.documents-and-files.part2";
 
 export const Route = createFileRoute("/hubs/documents-and-files")({
-  loader: () => ({
-    steps: documentHubTools(DOCUMENT_HUB.steps),
-    alternatives: documentHubTools(DOCUMENT_HUB.alternatives),
-  }),
+  // Dynamic: route loaders stay in the client entry; a static import ships the whole catalog.
+  loader: async () => {
+    const { documentHubTools } = await import("@/lib/document-hub-tools");
+    return {
+      steps: documentHubTools(DOCUMENT_HUB.steps),
+      alternatives: documentHubTools(DOCUMENT_HUB.alternatives),
+    };
+  },
   head: () => ({
     meta: [
       { title }, { name: "description", content: description }, { name: "robots", content: "index, follow, max-image-preview:large" },

@@ -2,21 +2,8 @@ import { useEffect, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { getToolShowcase } from "@/lib/tool-showcase";
 import { showcaseUi } from "@/lib/showcase-ui";
-
-const iso = (d: Date) => d.toISOString().slice(0, 10);
-const parseDate = (s: string) => {
-  const d = new Date(`${s}T00:00:00`);
-  return Number.isNaN(d.getTime()) ? null : d;
-};
-const pad = (n: number) => String(n).padStart(2, "0");
-const formatMs = (ms: number) => {
-  const total = Math.floor(ms / 1000);
-  const s = total % 60;
-  const m = Math.floor(total / 60) % 60;
-  const h = Math.floor(total / 3600);
-  return `${pad(h)}:${pad(m)}:${pad(s)}`;
-};
-const TIMER_SLUGS = new Set(["cronometro", "temporizador", "temporizador-cocina", "pomodoro"]);
+import { iso } from "./TimeTool.part1";
+import { TIMER_SLUGS, parseDate, formatMs } from "./TimeTool.part2";
 
 export function TimeTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
   const es = locale === "es";

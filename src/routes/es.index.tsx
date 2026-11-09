@@ -1,53 +1,11 @@
+import { Suspense, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
-import { SpanishToolSearch } from "@/components/SpanishToolSearch";
-import { FavoriteToolsSection } from "@/components/FavoriteToolsSection";
-import { RecentToolsSection } from "@/components/RecentToolsSection";
-import { HomeReviews } from "@/components/HomeReviews";
-import { HomeFeaturedSection } from "@/components/HomeFeaturedSection";
-import { ALL_CATEGORIES, ALL_TOOLS, allToolsByCategory } from "@/lib/all-tools";
-import { absoluteUrl, ogImage, SITE_NAME } from "@/lib/seo";
-import { spanishCategoryName, spanishToolName, spanishToolPath } from "@/lib/i18n/es";
-
-const QUICK_TOOL_SLUGS = [
-  "calculadora",
-  "calculadora-de-porcentajes",
-  "regla-de-tres",
-  "calculadora-de-fechas",
-  "contador-de-palabras",
-  "generador-de-contrasenas",
-  "conversor-de-temperatura",
-  "conversor-de-unidades",
-];
-
-/** Short ES blurbs for home category cards (catalog descriptions are English-only). */
-const CATEGORY_BLURB_ES: Record<string, string> = {
-  finanzas: "Inversiones, préstamos, ahorro e inflación.",
-  matematicas: "Cálculos, porcentajes, geometría y estadística.",
-  texto: "Contar, limpiar, transformar y analizar texto.",
-  desarrollo: "JSON, Base64, hashes, IDs y utilidades para devs.",
-  conversiones: "Unidades, color, divisas y más conversiones.",
-  fechas: "Diferencias de fechas, edades y temporizadores.",
-  generadores: "Contraseñas, UUID, QR y datos aleatorios.",
-  diseno: "Colores, contraste, paletas y modelado.",
-  "herramientas-avanzadas": "Modeladores 3D y utilidades avanzadas.",
-  seguridad: "Contraseñas, hashes y validadores.",
-  ciencia: "Física, química y simulaciones.",
-  productividad: "Temporizadores, fechas y organización.",
-  educacion: "Práctica y ejercicios de estudio.",
-  cocina: "Recetas, porciones y conversiones de cocina.",
-  viajes: "Combustible, divisas y planificación.",
-  hogar: "Pintura, materiales y cálculos del hogar.",
-  utilidades: "Utilidades prácticas del día a día.",
-};
-
-const titleEs = "UtiliHub · Herramientas online, studios 3D y juegos";
-const descriptionEs =
-  "Herramientas online gratis, modelador de casas 3D y juegos en el navegador. Calculá, convertí, diseñá y jugá — sin registro.";
-
-/** Same latin subset as EN (covers áéíóúñ). Weights 700 and 800 share this file. */
-const HERO_FONT_WOFF2 =
-  "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2";
+import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
+import { HomeCatalogSlot } from "@/components/home-catalog-slot";
+import { absoluteUrl, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
+import { loadHomeCatalog } from "./-es.index.part1";
+import { titleEs, descriptionEs, goRandomExperienceEs, HomeToolCount, HomeSearch, DailyExperienceSpotlight, ExperienceDiscoveryRail, HomeValuePath, HomeCatalogRest } from "./-es.index.part2";
 
 export const Route = createFileRoute("/es/")({
   head: () => ({
@@ -77,38 +35,45 @@ export const Route = createFileRoute("/es/")({
       { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es") },
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/") },
+    ],
+    scripts: [
       {
-        rel: "preload",
-        as: "font",
-        type: "font/woff2",
-        href: HERO_FONT_WOFF2,
-        crossOrigin: "anonymous",
+        type: "application/ld+json",
+        children: JSON.stringify({ ...websiteSchema(), url: absoluteUrl("/es"), inLanguage: "es" }),
       },
     ],
   }),
   component: SpanishHome,
 });
 
-function categoryHref(slug: string) {
-  if (slug === "finanzas") return "/es/finanzas";
-  return `/es/categoria/${slug}`;
-}
-
 function SpanishHome() {
-  const categories = ALL_CATEGORIES.slice(0, 9);
-  const quickTools = QUICK_TOOL_SLUGS.map((s) => ALL_TOOLS.find((t) => t.slug === s)).filter(
-    Boolean,
-  ) as typeof ALL_TOOLS;
+  useEffect(() => {
+    const idle = window.requestIdleCallback;
+    if (typeof idle === "function") {
+      const id = idle(() => void loadHomeCatalog(), { timeout: 1500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = window.setTimeout(() => void loadHomeCatalog(), 400);
+    return () => window.clearTimeout(t);
+  }, []);
 
   return (
     <div className="pb-12">
+      <style>{
+        /* Critical CSS so home LCP (h1) paints before the full styles.css */
+        `.hero-gradient{background-image:linear-gradient(to right,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),radial-gradient(70% 80% at 8% 0%,color-mix(in oklab,var(--color-primary) 20%,transparent),transparent 70%),radial-gradient(60% 70% at 95% 10%,color-mix(in oklab,var(--color-highlight) 18%,transparent),transparent 65%),linear-gradient(180deg,oklch(.99 .008 255),var(--color-background));background-size:36px 36px,36px 36px,auto,auto,auto}` +
+        `.container-page{width:100%;margin-inline:auto;max-width:84rem;padding-inline:clamp(1rem,3vw,2rem)}` +
+        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1.03}` +
+        `.shadow-lift{box-shadow:0 20px 46px -26px rgba(41,50,110,.38)}` +
+        `.surface-card{background:color-mix(in oklab,var(--color-card) 94%,transparent);border:1px solid var(--color-border);border-radius:1.25rem;box-shadow:0 1px 2px rgba(20,28,60,.04),0 20px 48px -30px rgba(41,50,110,.3)}`
+      }</style>
       <section className="hero-gradient border-b border-border/70">
         <div className="container-page grid gap-8 py-10 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-12 lg:py-20">
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/75 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-primary">
               <Sparkles className="size-3.5" aria-hidden /> Herramientas, studios y juegos
             </div>
-            <h1 className="max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
               Herramientas online gratis para resolverlo en segundos.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
@@ -116,6 +81,14 @@ function SpanishHome() {
               registro.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={goRandomExperienceEs}
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-bold text-white shadow-lift hover:-translate-y-0.5 hover:opacity-95"
+                data-event="random-experience-click"
+              >
+                🎲 Experiencia aleatoria
+              </button>
               <Link
                 to="/es/categoria/$slug"
                 params={{ slug: "herramientas-avanzadas" }}
@@ -156,12 +129,14 @@ function SpanishHome() {
                   <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Acceso rápido</p>
                   <h2 className="mt-1 text-xl font-black">¿Qué quieres resolver?</h2>
                 </div>
-                <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">
-                  {ALL_TOOLS.length} herramientas
-                </span>
+                <Suspense fallback={<span className="inline-block h-6 w-24 rounded-full bg-accent" />}>
+                  <HomeToolCount locale="es" />
+                </Suspense>
               </div>
-              <div className="mt-4">
-                <SpanishToolSearch compactHome />
+              <div className="mt-4 min-h-24">
+                <Suspense fallback={<div className="h-11 animate-pulse rounded-xl bg-accent/70" />}>
+                  <HomeSearch locale="es" />
+                </Suspense>
               </div>
               <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
                 <Link
@@ -210,95 +185,39 @@ function SpanishHome() {
         </div>
       </section>
 
+      <Suspense fallback={<div className="container-page py-4 min-h-[120px]" aria-hidden /> }>
+        <DailyExperienceSpotlight locale="es" />
+      </Suspense>
+
+      <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden /> }>
+        <ExperienceDiscoveryRail locale="es" />
+      </Suspense>
+
+      <Suspense fallback={<div className="container-page py-4 min-h-[160px]" aria-hidden /> }>
+        <HomeValuePath locale="es" />
+      </Suspense>
+
+      <section className="container-page py-6">
+        <div className="rounded-2xl border border-border/60 bg-card/50 p-4 sm:p-5">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-cyan-600">Experiencias compartibles</p>
+          <h2 className="mt-1 text-lg font-black">Creá y compartí visuales interactivos</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Deep-links listos. Usá el botón Compartir en cada una para enviar por Web Share o copiar enlace.</p>
+          <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
+            <Link to="/es/aurora-particle-playground" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Partículas Aurora</Link>
+            <Link to="/es/neon-layer-composer" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Capas Neón</Link>
+            <Link to="/es/n-body-gravity" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Gravedad N-Cuerpos</Link>
+            <Link to="/es/color-cascade-fusion" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Cascada de Color</Link>
+            <Link to="/es/studio/compositor-estela-prisma" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Estela Prisma</Link>
+            <Link to="/es/aura-card" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Tarjeta de Aura</Link>
+          </div>
+        </div>
+      </section>
+
       <div className="container-page">
-        <HomeFeaturedSection locale="es" />
-
-        <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="es-shortcuts-title">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Empieza aquí</p>
-              <h2 id="es-shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
-                Enlaces rápidos
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Las herramientas más prácticas para empezar sin recorrer todo el catálogo.
-              </p>
-            </div>
-            <Link
-              to="/es/herramientas"
-              className="hidden min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent sm:inline-flex"
-            >
-              Ver catálogo <ArrowRight className="size-4" />
-            </Link>
-          </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {quickTools.map((tool) => (
-              <Link
-                key={tool.slug}
-                to={spanishToolPath(tool) as never}
-                className="card-hover group rounded-xl border border-border/70 bg-card p-4 hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-lift"
-              >
-                <span className="text-xs font-bold uppercase tracking-wide text-primary">
-                  {spanishCategoryName(tool.category)}
-                </span>
-                <h3 className="mt-2 font-bold group-hover:text-primary">{spanishToolName(tool)}</h3>
-                <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">
-                  {CATEGORY_BLURB_ES[tool.category] ?? "Herramienta gratuita en el navegador."}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="es-explore-categories">
-          <div className="flex items-end justify-between gap-3">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explora por objetivo</p>
-              <h2 id="es-explore-categories" className="mt-1 text-2xl font-black">
-                Todas las categorías
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Colecciones de herramientas organizadas por tipo de tarea.
-              </p>
-            </div>
-            <Link
-              to="/es/herramientas"
-              className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-bold text-primary hover:bg-accent"
-            >
-              Ver todas <ArrowRight className="size-4" />
-            </Link>
-          </div>
-          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => {
-              const count = allToolsByCategory(category.slug).length;
-              const href = categoryHref(category.slug);
-              const blurb =
-                CATEGORY_BLURB_ES[category.slug] ??
-                `Herramientas de ${spanishCategoryName(category.slug).toLowerCase()}.`;
-              return (
-                <a
-                  key={category.slug}
-                  href={href}
-                  className="card-hover group flex min-h-16 items-center justify-between rounded-xl border border-border/70 bg-card px-4 py-3 hover:border-primary/20 hover:bg-accent"
-                >
-                  <span>
-                    <span className="block font-bold group-hover:text-primary">
-                      {spanishCategoryName(category.slug)}
-                    </span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground">{blurb}</span>
-                  </span>
-                  <span className="ml-3 shrink-0 rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">
-                    {count}
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        </section>
-
-        <FavoriteToolsSection locale="es" />
-        <RecentToolsSection locale="es" />
-        <HomeReviews locale="es" />
+        <Suspense fallback={<HomeCatalogSlot />}>
+          <HomeCatalogRest locale="es" />
+        </Suspense>
+        <DeferredHomeReviews locale="es" />
       </div>
     </div>
   );

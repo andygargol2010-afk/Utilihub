@@ -1,23 +1,32 @@
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ToolCard } from "@/components/ToolCard";
-import { ToolListBrowser } from "@/components/ToolListBrowser";
-import { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } from "@/lib/all-tools";
+import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
 import { englishCategorySlug, englishToolSlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
+import type { CatalogTool } from "@/lib/all-tools";
+import { ToolListBrowser } from "./-category.$slug.part1";
+import { type CategoryPayload, type Neighbor, ToolCard } from "./-category.$slug.part2";
 
 export const Route = createFileRoute("/category/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const legacy = LEGACY_CATEGORY_REDIRECTS[params.slug];
     const internalSlug = internalCategorySlugFromEnglish(params.slug);
     const canonicalSlug = englishCategorySlug(legacy ?? internalSlug);
     if (params.slug !== canonicalSlug)
       throw redirect({ to: "/category/$slug", params: { slug: canonicalSlug }, statusCode: 301 });
+    // Catalog stays off the listing route chunk so hydration does not parse it.
+    const { ALL_CATEGORIES, allCategoryBySlug, allToolsByCategory } = await import("@/lib/all-tools");
     const category = allCategoryBySlug(internalSlug);
     if (!category) throw notFound();
-    return { category, tools: allToolsByCategory(category.slug) };
+    const neighboring = ALL_CATEGORIES.filter((item) => item.slug !== category.slug)
+      .slice(0, 4)
+      .map((item) => ({ slug: item.slug, name: item.name }));
+    return { category, tools: allToolsByCategory(category.slug), neighboring };
   },
+  pendingComponent: CategoryRoutePending,
+  pendingMs: 100,
+  pendingMinMs: 0,
   head: ({ loaderData }) => {
     if (!loaderData)
       return { meta: [{ title: "Category not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
@@ -49,7 +58,6 @@ export const Route = createFileRoute("/category/$slug")({
         { property: "og:url", content: url },
         { property: "og:site_name", content: "UtiliHub" },
         { property: "og:image", content: ogImage() },
-        { name: "twitter:card", content: "summary_large_image" },
       ],
       links: [{ rel: "canonical", href: url }, ...hreflangLinks(enPath, esPath)],
       scripts: [
@@ -80,18 +88,73 @@ export const Route = createFileRoute("/category/$slug")({
   component: CategoryPage,
 });
 
+function CategoryRoutePending() {
+  return (
+    <div className="container-page py-6 sm:py-8" aria-busy="true">
+      <div className="h-5 w-40 max-w-full animate-pulse rounded bg-muted" />
+      <div className="mt-4 h-8 w-56 max-w-full animate-pulse rounded bg-muted" />
+      <p className="mt-2 h-5 w-72 max-w-full animate-pulse rounded bg-muted" />
+      <div className="mt-5 min-h-72 rounded-xl border border-border/70 bg-card" />
+    </div>
+  );
+}
+
+function CategoryListingSlot() {
+  return (
+    <div className="space-y-3" aria-busy="true">
+      <div className="h-12 rounded-xl border border-border/70 bg-card" />
+      <div className="divide-y divide-border/70 rounded-xl border border-border/70 bg-card px-3">
+        {Array.from({ length: 20 }, (_, i) => (
+          <div key={i} className="flex min-h-14 items-center gap-3 px-1 py-2 sm:min-h-16" aria-hidden>
+            <div className="size-9 shrink-0 rounded-lg bg-accent" />
+            <div className="min-w-0 flex-1 space-y-1.5">
+              <div className="h-4 w-2/5 max-w-xs rounded bg-muted" />
+              <div className="h-3 w-3/5 max-w-md rounded bg-muted/70" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function CategoryPage() {
-  const { category, tools } = Route.useLoaderData();
-  const neighboring = ALL_CATEGORIES.filter((item) => item.slug !== category.slug).slice(0, 4);
-  const browseItems = tools.map((t) => ({
-    ...t,
-    id: t.slug,
-    searchText: `${t.summary} ${t.description ?? ""} ${(t.keywords ?? []).join(" ")}`,
-  }));
+  const { category, tools, neighboring } = Route.useLoaderData() as {
+    category: CategoryPayload;
+    tools: CatalogTool[];
+    neighboring: Neighbor[];
+  };
+  // Defer mounting the heavy list (sort + filter + cards) until after idle so the
+  // category shell hydrates with less main-thread work (INP).
+  const [listReady, setListReady] = useState(false);
+  useEffect(() => {
+    const idle = window.requestIdleCallback;
+    if (typeof idle === "function") {
+      const id = idle(() => setListReady(true), { timeout: 800 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(() => setListReady(true), 150);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  // Only build searchText once the list is about to mount. Categories with dozens
+  // of tools otherwise spend main-thread time on the map during the first hydration
+  // while the shell is still showing the skeleton.
+  const browseItems = useMemo(
+    () =>
+      listReady
+        ? tools.map((t) => ({
+            ...t,
+            id: t.slug,
+            searchText: `${t.summary} ${t.description ?? ""} ${(t.keywords ?? []).join(" ")}`,
+          }))
+        : [],
+    [listReady, tools],
+  );
 
   return (
     <div className="container-page py-6 sm:py-8">
-      <Breadcrumbs
+      <DeferredBreadcrumbs
         items={[{ label: "Home", to: "/" }, { label: "Tools", to: "/tools" }, { label: category.name }]}
       />
       <div className="mt-4 flex items-end justify-between gap-3">
@@ -103,13 +166,19 @@ function CategoryPage() {
       </div>
 
       <div className="mt-5">
-        <ToolListBrowser
-          tools={browseItems}
-          locale="en"
-          categorySlug={category.slug}
-          searchPlaceholder={`Search in ${category.name}…`}
-          renderItem={(tool) => <ToolCard tool={tool} />}
-        />
+        {listReady ? (
+          <Suspense fallback={<CategoryListingSlot />}>
+            <ToolListBrowser
+              tools={browseItems}
+              locale="en"
+              categorySlug={category.slug}
+              searchPlaceholder={`Search in ${category.name}…`}
+              renderItem={(tool) => <ToolCard tool={tool} />}
+            />
+          </Suspense>
+        ) : (
+          <CategoryListingSlot />
+        )}
       </div>
 
       <section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories">

@@ -1,49 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Direction = "oven-to-air" | "air-to-oven";
-type Unit = "C" | "F";
-type PresetId = "general" | "fries" | "veg" | "chicken" | "fish" | "bake" | "frozen" | "reheat";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatNum(value: number, digits = 0) {
-  return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(value);
-}
-
-function cToF(c: number) {
-  return (c * 9) / 5 + 32;
-}
-
-function fToC(f: number) {
-  return ((f - 32) * 5) / 9;
-}
-
-type Preset = {
-  id: PresetId;
-  deltaC: number;
-  factor: number;
-};
-
-const PRESETS: Preset[] = [
-  { id: "general", deltaC: 20, factor: 0.8 },
-  { id: "fries", deltaC: 20, factor: 0.75 },
-  { id: "veg", deltaC: 15, factor: 0.75 },
-  { id: "chicken", deltaC: 15, factor: 0.8 },
-  { id: "fish", deltaC: 20, factor: 0.7 },
-  { id: "bake", deltaC: 20, factor: 0.8 },
-  { id: "frozen", deltaC: 20, factor: 0.85 },
-  { id: "reheat", deltaC: 20, factor: 0.5 },
-];
+import { type Locale } from "./AirFryerCalculatorTool.part1";
+import { type Direction, type Unit, type PresetId, PRESETS, parseNum, cToF, fToC, formatNum, buttonClass, inputClass } from "./AirFryerCalculatorTool.part2";
 
 export function AirFryerCalculatorTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";

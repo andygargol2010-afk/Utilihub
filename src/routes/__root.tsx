@@ -1,93 +1,29 @@
-/// <reference types="vite/client" />
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Outlet, createRootRouteWithContext, HeadContent, Scripts, useRouter, useLocation } from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext, HeadContent, Scripts, useLocation } from "@tanstack/react-router";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { useEffect, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import "../styles.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { SpanishSiteHeader } from "@/components/SpanishSiteHeader";
-import { SpanishSiteFooter } from "@/components/SpanishSiteFooter";
-import { AdsterraSocialBar } from "@/components/AdsterraSocialBar";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, ogImage } from "@/lib/seo";
-import { useShareableParams } from "@/hooks/use-shareable-params";
-import { useDailyStreak } from "@/hooks/use-daily-streak";
+import { FavoritesProvider } from "@/hooks/use-favorites";
+import { AdsConfigContext, ADS_OFF, type AdsConfig } from "@/lib/ads-config";
+import { getAdsConfig } from "@/lib/ads-edge";
+import { NotFound, useIsSpanish, useIsPortuguese, useIsFrench } from "./-__root.part1";
+import { ErrorComponent } from "./-__root.part2";
 
-const FONT_HREF =
-  "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap";
-
-function useIsSpanish() {
-  const { pathname } = useLocation();
-  return pathname === "/es" || pathname.startsWith("/es/");
-}
-
-function NotFound() {
-  const isSpanish = useIsSpanish();
-  useEffect(() => {
-    document.title = isSpanish ? "Página no encontrada | UtiliHub" : "Page not found | UtiliHub";
-    let robots = document.querySelector('meta[name="robots"]');
-    if (!robots) {
-      robots = document.createElement("meta");
-      robots.setAttribute("name", "robots");
-      document.head.appendChild(robots);
-    }
-    robots.setAttribute("content", "noindex, nofollow");
-  }, [isSpanish]);
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <p className="text-sm font-semibold text-primary">UTILIHUB</p>
-        <h1 className="mt-2 text-6xl font-bold">404</h1>
-        <p className="mt-4 text-muted-foreground">
-          {isSpanish ? "No encontramos esta página." : "We could not find this page."}
-        </p>
-        <a
-          href={isSpanish ? "/es" : "/"}
-          className="mt-6 inline-flex rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-        >
-          {isSpanish ? "Ir al inicio" : "Go home"}
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  const router = useRouter();
-  const isSpanish = useIsSpanish();
-  useEffect(() => console.error(error), [error]);
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold">
-          {isSpanish ? "No pudimos cargar esta página" : "We could not load this page"}
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {isSpanish
-            ? "Ocurrió un error. Puedes intentarlo de nuevo o volver al inicio."
-            : "An error occurred. You can try again or go back home."}
-        </p>
-        <div className="mt-6 flex justify-center gap-2">
-          <button
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-          >
-            {isSpanish ? "Reintentar" : "Try again"}
-          </button>
-          <a href={isSpanish ? "/es" : "/"} className="rounded-lg border border-input px-4 py-2 text-sm font-semibold">
-            {isSpanish ? "Inicio" : "Home"}
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
+// Locale chrome is only needed on /es and /pt. Keep it out of the EN root chunk.
+const SpanishSiteHeader = lazy(() => import("@/components/SpanishSiteHeader").then((m) => ({ default: m.SpanishSiteHeader })));
+const SpanishSiteFooter = lazy(() => import("@/components/SpanishSiteFooter").then((m) => ({ default: m.SpanishSiteFooter })));
+const PortugueseSiteHeader = lazy(() => import("@/components/PortugueseSiteHeader").then((m) => ({ default: m.PortugueseSiteHeader })));
+const PortugueseSiteFooter = lazy(() => import("@/components/PortugueseSiteFooter").then((m) => ({ default: m.PortugueseSiteFooter })));
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: async (): Promise<{ ads: AdsConfig }> => {
+    const ads = await getAdsConfig();
+    return { ads };
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -95,6 +31,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: `${SITE_NAME} · Free online tools` },
       { name: "description", content: DEFAULT_DESCRIPTION },
       { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "google-adsense-account", content: "ca-pub-1030166831962980" },
       { name: "theme-color", content: "#1d4ed8" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
@@ -114,16 +51,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: ogImage() },
     ],
     links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://www.highrevenueformat.com" },
-      { rel: "preload", as: "style", href: FONT_HREF },
-      { rel: "stylesheet", href: FONT_HREF },
       { rel: "icon", href: "/google-favicon-16.png", type: "image/png", sizes: "16x16" },
       { rel: "icon", href: "/google-favicon-32.png", type: "image/png", sizes: "32x32" },
       { rel: "icon", href: "/google-favicon-48.png", type: "image/png", sizes: "48x48" },
-      { rel: "icon", href: "/google-favicon-192.png", type: "image/png", sizes: "192x192" },
-      { rel: "icon", href: "/google-favicon-512.png", type: "image/png", sizes: "512x512" },
       { rel: "apple-touch-icon", href: "/google-apple-touch-icon.png", sizes: "180x180" },
       { rel: "manifest", href: "/site.webmanifest" },
     ],
@@ -136,9 +68,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
+  const lang = pathname === "/es" || pathname.startsWith("/es/") ? "es" : pathname === "/pt" || pathname.startsWith("/pt/") ? "pt" : pathname === "/fr" || pathname.startsWith("/fr/") ? "fr" : "en";
   return (
-    <html lang={pathname === "/es" || pathname.startsWith("/es/") ? "es" : "en"}>
+    <html lang={lang}>
       <head>
+        <link
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2"
+          crossOrigin="anonymous"
+          fetchPriority="high"
+        />
+        <style>{`body{margin:0;background:#f8f9fc;color:#1a1d2e;font-family:ui-sans-serif,system-ui,sans-serif}header.site-header{height:64px;border-bottom:1px solid #e5e7eb;background:rgba(248,249,252,.95);position:sticky;top:0;z-index:50}`}</style>
         <HeadContent />
       </head>
       <body>
@@ -182,21 +124,66 @@ function DeferredInsights() {
   );
 }
 
+function FrenchMinimalHeader() {
+  return (
+    <header className="border-b border-border/70 bg-background/95">
+      <div className="container-page flex h-14 items-center">
+        <a href="/fr" className="text-lg font-black tracking-tight">
+          UtiliHub
+        </a>
+      </div>
+    </header>
+  );
+}
+
+function FrenchMinimalFooter() {
+  return (
+    <footer className="border-t border-border/70 py-6 text-center text-xs text-muted-foreground">
+      UtiliHub · Français · SEO locale
+    </footer>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const loaderData = Route.useLoaderData() as { ads?: typeof ADS_OFF } | undefined;
+  const ads = loaderData?.ads ?? ADS_OFF;
   const isSpanish = useIsSpanish();
-  useShareableParams();
-  useDailyStreak();
+  const isPortuguese = useIsPortuguese();
+  const isFrench = useIsFrench();
 
   return (
     <QueryClientProvider client={queryClient}>
-      {isSpanish ? <SpanishSiteHeader /> : <SiteHeader />}
-      <main id="main-content">
-        <Outlet />
-      </main>
-      {isSpanish ? <SpanishSiteFooter /> : <SiteFooter />}
-      <AdsterraSocialBar />
-      <DeferredInsights />
+      <AdsConfigContext.Provider value={ads}>
+      <FavoritesProvider>
+        <Suspense fallback={null}>
+          {isFrench ? (
+            <FrenchMinimalHeader />
+          ) : isPortuguese ? (
+            <PortugueseSiteHeader />
+          ) : isSpanish ? (
+            <SpanishSiteHeader />
+          ) : (
+            <SiteHeader />
+          )}
+        </Suspense>
+        <main id="main-content">
+          <Outlet />
+        </main>
+        <Suspense fallback={null}>
+          {isFrench ? (
+            <FrenchMinimalFooter />
+          ) : isPortuguese ? (
+            <PortugueseSiteFooter />
+          ) : isSpanish ? (
+            <SpanishSiteFooter />
+          ) : (
+            <SiteFooter />
+          )}
+        </Suspense>
+        <DeferredInsights />
+      </FavoritesProvider>
+      </AdsConfigContext.Provider>
     </QueryClientProvider>
   );
 }

@@ -2,39 +2,14 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPoi
 import type { GameLocale } from "@/lib/games/catalog";
 import { readBestScore, writeBestScore } from "@/lib/games/scores";
 import { GamePrimaryButton, GameSecondaryButton } from "./GameShell";
+import { H, PADDLE_H, W, BALL, PADDLE_W, WIN } from "./PongGame.part1";
+import { type Diff, DIFF, fillRoundRect, type Ctx2D } from "./PongGame.part2";
 
-const W = 360,
-  H = 220,
-  PADDLE_H = 48,
-  PADDLE_W = 8,
-  BALL = 8,
-  WIN = 7;
-type Diff = "easy" | "medium" | "hard";
-
-/** Tuned so Easy is forgiving, Medium competitive, Hard challenging — not unfair. */
-const DIFF = {
-  easy: { ball: 2.3, cpuSpeed: 1.55, error: 28, reactFrom: 0.28, maxBall: 3.4 },
-  medium: { ball: 2.85, cpuSpeed: 2.15, error: 14, reactFrom: 0.42, maxBall: 4.2 },
-  hard: { ball: 3.5, cpuSpeed: 3.1, error: 5, reactFrom: 0.52, maxBall: 5.2 },
-} as const;
-
-
-type Ctx2D = CanvasRenderingContext2D & {
-  roundRect?(x: number, y: number, w: number, h: number, radii?: number | number[]): void;
-};
-
-function fillRoundRect(ctx: Ctx2D, x: number, y: number, w: number, h: number, r: number) {
-  if (typeof ctx.roundRect === "function") {
-    ctx.beginPath();
-    ctx.roundRect(x, y, w, h, r);
-    ctx.fill();
-  } else {
-    ctx.fillRect(x, y, w, h);
-  }
-}
-
-export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
+export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" | "de" }) {
   const es = locale === "es";
+  const pt = locale === "pt";
+  const fr = locale === "fr";
+  const de = locale === "de";
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [running, setRunning] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -43,7 +18,6 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
   const [best, setBest] = useState(0);
   const [diff, setDiff] = useState<Diff>("medium");
   const [message, setMessage] = useState("");
-  /** When true, ball speed is not capped by DIFF.maxBall (helps Hard stay fair at high speeds). */
   const [noSpeedCap, setNoSpeedCap] = useState(false);
   const state = useRef({
     py: H / 2 - PADDLE_H / 2,
@@ -53,7 +27,6 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
     bvx: 2.85,
     bvy: 1.8,
     keys: { up: false, down: false },
-    /** Sticky aim offset so CPU doesn't jitter every frame */
     aimOffset: 0,
     aimUntil: 0,
   });
@@ -76,11 +49,9 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
     s.bx = W / 2;
     s.by = H / 2;
     s.bvx = (toPlayer ? -1 : 1) * d.ball;
-    // Always give a clear vertical component so it never crawls the top/bottom edge
     let vy = (Math.random() * 2 - 1) * d.ball * 0.65;
     if (Math.abs(vy) < 0.9) vy = (vy >= 0 ? 1 : -1) * 0.9;
     s.bvy = vy;
-    // New random aim bias when the point starts
     s.aimOffset = (Math.random() * 2 - 1) * d.error;
     s.aimUntil = performance.now() + 400 + Math.random() * 600;
   };
@@ -108,12 +79,10 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
       }
       if ((e.key === " " || e.key === "p" || e.key === "P") && e.type === "keydown") {
         e.preventDefault();
-        // After a match ends (message set), Space starts a new game
         if (messageRef.current) {
           hardReset();
           return;
         }
-        // Before first play, Space also starts
         if (!runningRef.current) {
           hardReset();
           return;
@@ -141,7 +110,6 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         if (s.keys.up) s.py = Math.max(0, s.py - 4.5);
         if (s.keys.down) s.py = Math.min(H - PADDLE_H, s.py + 4.5);
 
-        // CPU: only track aggressively when the ball is coming toward it and past react line
         const ballComingToCpu = s.bvx > 0;
         const pastReactLine = s.bx > W * d.reactFrom;
         if (ballComingToCpu && pastReactLine) {
@@ -153,7 +121,6 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
           if (s.cy < target - 3) s.cy = Math.min(H - PADDLE_H, s.cy + d.cpuSpeed);
           else if (s.cy > target + 3) s.cy = Math.max(0, s.cy - d.cpuSpeed);
         } else if (!ballComingToCpu) {
-          // Drift toward center when ball is going away — softer on Easy
           const mid = H / 2 - PADDLE_H / 2;
           if (s.cy < mid - 2) s.cy = Math.min(mid, s.cy + d.cpuSpeed * 0.35);
           else if (s.cy > mid + 2) s.cy = Math.max(mid, s.cy - d.cpuSpeed * 0.35);
@@ -162,7 +129,6 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         s.bx += s.bvx;
         s.by += s.bvy;
 
-        // Walls: bounce with a minimum vertical speed so the ball never slides along the edge
         const MIN_VY = 0.85;
         if (s.by <= 0) {
           s.by = 0;
@@ -207,7 +173,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         if (s.bx < 0) {
           setScoreC((c) => {
             const n = c + 1;
-            if (n >= WIN) setMessage(es ? "CPU gana" : "CPU wins");
+            if (n >= WIN) setMessage(pt ? "CPU ganha" : fr ? "CPU gagne" : de ? "CPU gewinnt" : es ? "CPU gana" : "CPU wins");
             return n;
           });
           resetBall(false);
@@ -215,7 +181,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
           setScoreP((p) => {
             const n = p + 1;
             setBest((b) => writeBestScore("pong", Math.max(b, n)));
-            if (n >= WIN) setMessage(es ? "¡Ganaste!" : "You win!");
+            if (n >= WIN) setMessage(pt ? "Você ganhou!" : fr ? "Vous avez gagné !" : de ? "Du gewinnst!" : es ? "¡Ganaste!" : "You win!");
             return n;
           });
           resetBall(true);
@@ -270,7 +236,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [running, paused, message, es]);
+  }, [running, paused, message, es, pt, fr, de]);
 
   const onPointerMove = (e: ReactPointerEvent<HTMLCanvasElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -280,12 +246,22 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
 
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-3">
+      <style>{`
+        .pong-frame {
+          box-shadow: 0 0 0 1px rgba(52,211,153,0.25), 0 16px 40px rgba(0,0,0,0.45), 0 0 28px rgba(16,185,129,0.12);
+        }
+        .pong-score {
+          min-width: 3rem;
+          font-variant-numeric: tabular-nums;
+          text-shadow: 0 0 12px rgba(52,211,153,0.45);
+        }
+      `}</style>
       <div className="flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-emerald-100/90">
-        <span className="tabular-nums text-white">
+        <span className="pong-score text-2xl font-black text-white">
           {scoreP} — {scoreC}
         </span>
         <span>
-          {es ? "Mejor" : "Best"}: {best}
+          {pt ? "Melhor" : fr ? "Meilleur" : de ? "Beste" : es ? "Mejor" : "Best"}: {best}
         </span>
         <GameSecondaryButton
           active={diff === "easy"}
@@ -294,7 +270,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
             hardReset();
           }}
         >
-          {es ? "Fácil" : "Easy"}
+          {pt ? "Fácil" : fr ? "Facile" : de ? "Einfach" : es ? "Fácil" : "Easy"}
         </GameSecondaryButton>
         <GameSecondaryButton
           active={diff === "medium"}
@@ -303,7 +279,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
             hardReset();
           }}
         >
-          {es ? "Medio" : "Med"}
+          {pt ? "Médio" : fr ? "Moyen" : de ? "Mittel" : es ? "Medio" : "Med"}
         </GameSecondaryButton>
         <GameSecondaryButton
           active={diff === "hard"}
@@ -312,27 +288,33 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
             hardReset();
           }}
         >
-          {es ? "Difícil" : "Hard"}
+          {pt ? "Difícil" : fr ? "Difficile" : de ? "Schwer" : es ? "Difícil" : "Hard"}
         </GameSecondaryButton>
         <GameSecondaryButton
           active={noSpeedCap}
           onClick={() => setNoSpeedCap((v) => !v)}
           title={
-            es
+            pt
+              ? "Sem limite de velocidade: a bola continua acelerando em cada rebatida"
+              : fr
+              ? "Sans limite de vitesse : la balle continue d'accélérer à chaque rebond"
+              : de
+              ? "Ohne Geschwindigkeitslimit: Der Ball beschleunigt bei jedem Abprall weiter"
+              : es
               ? "Sin tope de velocidad: la pelota sigue acelerando en cada rebote"
               : "No speed cap: the ball keeps accelerating on every bounce"
           }
         >
-          {es ? (noSpeedCap ? "Sin límite ✓" : "Sin límite") : noSpeedCap ? "No cap ✓" : "No cap"}
+          {pt ? (noSpeedCap ? "Sem limite ✓" : "Sem limite") : fr ? (noSpeedCap ? "Sans limite ✓" : "Sans limite") : de ? (noSpeedCap ? "Kein Limit ✓" : "Kein Limit") : es ? (noSpeedCap ? "Sin límite ✓" : "Sin límite") : noSpeedCap ? "No cap ✓" : "No cap"}
         </GameSecondaryButton>
         {!running ? (
-          <GamePrimaryButton onClick={hardReset}>{es ? "Jugar" : "Play"}</GamePrimaryButton>
+          <GamePrimaryButton onClick={hardReset}>{pt ? "Jogar" : fr ? "Jouer" : de ? "Spielen" : es ? "Jugar" : "Play"}</GamePrimaryButton>
         ) : (
           <>
             <GameSecondaryButton onClick={() => setPaused((p) => !p)} active={paused}>
-              {paused ? (es ? "Seguir" : "Resume") : es ? "Pausa" : "Pause"}
+              {paused ? (pt ? "Continuar" : fr ? "Continuer" : de ? "Fortsetzen" : es ? "Seguir" : "Resume") : pt ? "Pausa" : fr ? "Pause" : de ? "Pause" : es ? "Pausa" : "Pause"}
             </GameSecondaryButton>
-            <GamePrimaryButton onClick={hardReset}>{es ? "Reiniciar" : "Restart"}</GamePrimaryButton>
+            <GamePrimaryButton onClick={hardReset}>{pt ? "Reiniciar" : fr ? "Recommencer" : de ? "Neustart" : es ? "Reiniciar" : "Restart"}</GamePrimaryButton>
           </>
         )}
       </div>
@@ -340,13 +322,19 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         <p className="text-sm font-bold text-emerald-300">
           {message}
           <span className="ml-2 font-medium text-emerald-200/80">
-            {es ? "· Espacio = otra partida" : "· Space = play again"}
+            {pt ? "· Espaço = outra partida" : fr ? "· Espace = autre partie" : de ? "· Leertaste = nochmal spielen" : es ? "· Espacio = otra partida" : "· Space = play again"}
           </span>
         </p>
       )}
       {noSpeedCap && (
         <p className="text-center text-[11px] font-medium text-amber-300/90">
-          {es
+          {pt
+            ? "Velocidade sem limite — a bola acelera em cada rebatida"
+            : fr
+            ? "Vitesse sans limite — la balle accélère à chaque rebond"
+            : de
+            ? "Geschwindigkeit ohne Limit — der Ball beschleunigt bei jedem Schläger-Treffer"
+            : es
             ? "Velocidad sin tope — la pelota acelera en cada paleta"
             : "Uncapped speed — ball accelerates on every paddle hit"}
         </p>
@@ -356,13 +344,19 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale }) {
         width={W}
         height={H}
         onPointerMove={onPointerMove}
-        className="touch-none rounded-xl border border-white/10 bg-slate-950"
+        className="pong-frame touch-none rounded-xl border border-emerald-500/20 bg-slate-950"
         style={{ width: "100%", maxWidth: W, height: "auto" }}
       />
       <p className="text-center text-[11px] text-white/50">
-        {es
-          ? `↑↓ / WASD o arrastrá · espacio = pausa / nueva partida · a ${WIN}`
-          : `↑↓ / WASD or drag · space = pause / play again · first to ${WIN}`}
+        {pt
+          ? `\u2191\u2193 / WASD ou arraste \u00b7 espaço = pausa / nova partida \u00b7 até ${WIN}`
+          : fr
+          ? `\u2191\u2193 / WASD ou glisser \u00b7 espace = pause / nouvelle partie \u00b7 premier à ${WIN}`
+          : de
+          ? `\u2191\u2193 / WASD oder ziehen \u00b7 Leertaste = Pause / neues Spiel \u00b7 zuerst bei ${WIN}`
+          : es
+          ? `\u2191\u2193 / WASD o arrastrá \u00b7 espacio = pausa / nueva partida \u00b7 a ${WIN}`
+          : `\u2191\u2193 / WASD or drag \u00b7 space = pause / play again \u00b7 first to ${WIN}`}
       </p>
     </div>
   );

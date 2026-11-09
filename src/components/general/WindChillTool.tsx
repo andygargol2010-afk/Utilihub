@@ -1,19 +1,8 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-import {
-  computeWindChill,
-  emptyWindChill,
-  formatTemp,
-  nwsPreset,
-  validateWindChill,
-  walkPreset,
-  type WindChillInput,
-} from "@/lib/general/wind-chill";
-
-type Locale = "en" | "es";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
+import { computeWindChill, emptyWindChill, formatTemp, nwsPreset, validateWindChill, walkPreset, type WindChillInput } from "@/lib/general/wind-chill";
+import { type Locale } from "./WindChillTool.part1";
+import { buttonClass, inputClass } from "./WindChillTool.part2";
 
 export function WindChillTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
@@ -28,7 +17,7 @@ export function WindChillTool({ locale = "en" }: { tool: GeneralTool; locale?: L
 
   const summary = result
     ? es
-      ? `Wind chill ${formatTemp(result.chillC)}°C (${formatTemp(result.chillF)}°F). Aire ${formatTemp(result.airC)}°C, viento ${formatTemp(result.windKmh)} km/h. ${result.noteEs}`
+      ? `Sensación térmica del viento: ${formatTemp(result.chillC)}°C (${formatTemp(result.chillF)}°F). Aire ${formatTemp(result.airC)}°C, viento ${formatTemp(result.windKmh)} km/h. ${result.noteEs}`
       : `Wind chill ${formatTemp(result.chillF)}°F (${formatTemp(result.chillC)}°C). Air ${formatTemp(result.airF)}°F, wind ${formatTemp(result.windMph)} mph. ${result.note}`
     : "";
 
@@ -98,7 +87,7 @@ export function WindChillTool({ locale = "en" }: { tool: GeneralTool; locale?: L
         </ul>
       ) : result ? (
         <div className="space-y-2 rounded-2xl border p-3">
-          <p className="text-sm font-medium">{es ? "Wind chill NWS" : "NWS wind chill"}</p>
+          <p className="text-sm font-medium">{es ? "Sensación térmica del viento (NWS)" : "NWS wind chill"}</p>
           <p className="text-2xl font-semibold">
             {formatTemp(result.chillC)}°C · {formatTemp(result.chillF)}°F
           </p>

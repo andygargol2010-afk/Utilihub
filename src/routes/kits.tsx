@@ -1,17 +1,16 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
-import { ArrowRight, BriefcaseBusiness, CheckCircle2, GraduationCap, FileText, Search } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { WORK_KITS, kitTools } from "@/lib/work-kits";
-import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage, SITE_NAME } from "@/lib/seo";
-
-const title = "Goal-based work kits | UtiliHub";
-const description = cleanDescription(
-  "Free online tool kits for freelancers, SEO and content, documents, and students. Chain multiple utilities with no signup.",
-);
-const icons = [BriefcaseBusiness, Search, FileText, GraduationCap];
+import { KitDeskTrail } from "@/components/kits/KitDeskTrail";
+import { WORK_KITS } from "@/lib/work-kits";
+import { kitTools } from "@/lib/work-kits-tools";
+import { absoluteUrl, breadcrumbSchema, hreflangLinks, ogImage, SITE_NAME } from "@/lib/seo";
+import { title } from "./-kits.part1";
+import { description, icons } from "./-kits.part2";
 
 export const Route = createFileRoute("/kits")({
-  head: () => ({
+  // Layout route: only the hub itself emits canonical/hreflang, so /kits/<slug> keeps its own self-canonical.
+  head: ({ matches }) => ({
     meta: [
       { title },
       { name: "description", content: description },
@@ -27,7 +26,10 @@ export const Route = createFileRoute("/kits")({
       { name: "twitter:description", content: description },
       { name: "twitter:image", content: ogImage() },
     ],
-    links: [{ rel: "canonical", href: absoluteUrl("/kits") }, ...hreflangLinks("/kits", "/es/kits")],
+    links:
+      matches[matches.length - 1]?.routeId === "/kits"
+        ? [{ rel: "canonical", href: absoluteUrl("/kits") }, ...hreflangLinks("/kits", "/es/kits")]
+        : [],
     scripts: [
       {
         type: "application/ld+json",
@@ -83,6 +85,7 @@ function KitsPage() {
               <h2 className="mt-1 text-xl font-black group-hover:text-primary">{kit.name}</h2>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{kit.description}</p>
               <p className="mt-4 text-sm font-semibold">{kit.outcome}</p>
+              <KitDeskTrail kitSlug={kit.slug} stepCount={tools.length} />
               <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
                 Open kit <ArrowRight className="size-4" />
               </span>

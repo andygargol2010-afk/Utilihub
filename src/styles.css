@@ -13,6 +13,24 @@
   line-gap-override: 0%;
 }
 
+/* Latin 700/800 share one woff2. Inlined so home LCP does not wait on fonts.googleapis.com. */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/plusjakartasans/v12/LDIoaomQNQcsA88c7O9yZ4KMCoOg4Ko20yw.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @theme inline {
   --font-display: "Plus Jakarta Sans", "Plus Jakarta Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
@@ -145,4 +163,76 @@ a { transition: color .15s ease, background-color .15s ease, border-color .15s e
 @keyframes skeleton-shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+/* Tool cards + microinteractions */
+@utility btn-press {
+  transition: transform .12s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.btn-press:active {
+  transform: scale(0.97);
+}
+.tool-card-row:hover {
+  z-index: 1;
+}
+
+/* Scroll reveal for list sections */
+@utility reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .btn-press:active {
+    transform: none;
+  }
+  .tool-card-row {
+    transition: border-color .15s ease, background-color .15s ease !important;
+  }
+  .tool-card-row:hover {
+    transform: none !important;
+  }
+}
+
+/* Density Lab — UX experiment spacing */
+.density-lab .card-list {
+  gap: 1rem;
+}
+.density-lab [data-ux-density="compact"] .card-list,
+.density-lab.card-list {
+  /* fallback */
+}
+[data-ux-density="compact"] .card-list {
+  gap: 0.35rem;
+}
+[data-ux-density="compact"] .surface-card {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+}
+[data-ux-density="compact"] h2 {
+  font-size: 0.95rem;
+}
+[data-ux-density="comfortable"] .card-list {
+  gap: 1rem;
+}
+[data-ux-density="spacious"] .card-list {
+  gap: 1.75rem;
+}
+[data-ux-density="spacious"] .surface-card {
+  padding: 1.25rem 1.5rem;
+}
+
+/* Lock brand logo dimensions to prevent any CLS on header/footer */
+.brand-mark {
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
 }

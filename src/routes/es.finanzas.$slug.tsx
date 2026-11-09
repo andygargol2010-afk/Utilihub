@@ -1,20 +1,51 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
+import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
 import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
-import { FavoriteButton } from "@/components/FavoriteButton";
-import { ShareAndExportActions } from "@/components/ShareAndExportActions";
-import { financialToolBySlug } from "@/lib/financial-tools";
-import { financeSeo } from "@/lib/finance-seo-content";
-import { englishToolPath } from "@/lib/route-slugs";
+import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
+import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
+import { DeferredFinanceSeo } from "@/components/DeferredFinanceSeo";
 import { absoluteUrl, cleanDescription, ogImage } from "@/lib/seo";
 import { spanishToolName } from "@/lib/i18n/es";
-import { AdsterraBanner } from "@/components/AdsterraBanner";
+import { spanishToolSummary } from "@/lib/i18n/es-summaries";
+import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
+
+type FinanceSeoLiteEs = {
+  metaTitleEs?: string;
+  metaDescriptionEs?: string;
+  introEs?: string;
+  faqEs: Array<{ q: string; a: string }>;
+};
 
 export const Route = createFileRoute("/es/finanzas/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
+    // Catalog stays off the route shell chunk.
+    const { financialToolBySlug } = await import("@/lib/financial-tools");
     const tool = financialToolBySlug(params.slug);
-    if (!tool) throw notFound();
-    return { tool };
+    if (!tool) {
+      // General catalog tools tagged "finanzas" are served under /es/herramientas; old /es/finanzas URLs 301 there.
+      const { allToolBySlug } = await import("@/lib/all-tools");
+      const { usesFinanceRoute, spanishToolPath } = await import("@/lib/route-slugs");
+      const general = allToolBySlug(params.slug);
+      if (general && general.category === "finanzas" && !usesFinanceRoute(general)) {
+        throw redirect({ href: spanishToolPath(general), statusCode: 301 });
+      }
+      throw notFound();
+    }
+    // Keep the SEO barrel off the route shell chunk.
+    const { financeSeo } = await import("@/lib/finance-seo-content");
+    const seo = financeSeo(tool.slug);
+    const { englishToolPath } = await import("@/lib/route-slugs");
+    const englishUrl = absoluteUrl(englishToolPath({ ...tool, category: "finanzas" }));
+    return {
+      tool,
+      englishUrl,
+      seo: {
+        metaTitleEs: seo?.metaTitleEs,
+        metaDescriptionEs: seo?.metaDescriptionEs,
+        introEs: seo?.introEs,
+        faqEs: seo?.faqEs ?? [],
+      } satisfies FinanceSeoLiteEs,
+    };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -25,14 +56,12 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
         ],
       };
     }
-    const { tool } = loaderData;
-    const seo = financeSeo(tool.slug);
+    const { tool, seo, englishUrl } = loaderData;
     const name = spanishToolName({ slug: tool.slug, name: tool.name });
     const url = absoluteUrl(`/es/finanzas/${tool.slug}`);
-    const englishUrl = absoluteUrl(englishToolPath({ ...tool, category: "finanzas" }));
-    const title = seo?.metaTitleEs ?? `${name} gratis online | UtiliHub`;
+    const title = seo.metaTitleEs ?? `${name} gratis online | UtiliHub`;
     const description = cleanDescription(
-      seo?.metaDescriptionEs ??
+      seo.metaDescriptionEs ??
         (tool.description?.trim()
           ? tool.description
           : `Calculadora financiera gratuita: ${name}. Analizá escenarios en el navegador, sin registro.`),
@@ -48,9 +77,6 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
         { property: "og:locale", content: "es_ES" },
         { property: "og:url", content: url },
         { property: "og:image", content: ogImage() },
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
       ],
       links: [
         { rel: "canonical", href: url },
@@ -59,7 +85,7 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
         { rel: "alternate", hrefLang: "x-default", href: englishUrl },
       ],
       scripts:
-        seo?.faqEs && seo.faqEs.length > 0
+        seo.faqEs.length > 0
           ? [
               {
                 type: "application/ld+json",
@@ -81,40 +107,20 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
 });
 
 function SpanishFinancialToolPage() {
-  const { tool } = Route.useLoaderData();
-  const seo = financeSeo(tool.slug);
+  const { tool, seo } = Route.useLoaderData();
   const name = spanishToolName({ slug: tool.slug, name: tool.name });
 
   const intro =
-    seo?.introEs ??
+    seo.introEs ??
+    spanishToolSummary({ slug: tool.slug, name: tool.name, summary: tool.summary, category: "finanzas" }) ??
     tool.description ??
     "Calcula y analiza este escenario financiero directamente en tu navegador.";
-  const aboutParas = seo?.aboutEs ?? [
-    tool.description ||
-      "Esta herramienta realiza un cálculo matemático a partir de los valores que introduces y funciona directamente en el navegador.",
-  ];
-  const steps = seo?.stepsEs ?? [
-    "Introduce los valores del escenario que quieres analizar.",
-    "Ejecuta el cálculo y revisa los resultados.",
-    "Compara escenarios y comprueba las condiciones reales antes de tomar decisiones.",
-  ];
-  const faq = seo?.faqEs?.length
-    ? seo.faqEs
-    : [
-        {
-          q: "¿Estos resultados son asesoramiento financiero?",
-          a: "No. Son cálculos matemáticos orientativos y no reemplazan el criterio de un profesional.",
-        },
-        {
-          q: "¿Se guardan mis datos?",
-          a: "El cálculo se hace en tu navegador. No necesitás crear una cuenta para usar la herramienta.",
-        },
-      ];
 
   return (
     <main className="container-page py-10 sm:py-14">
-      <Breadcrumbs
+      <DeferredBreadcrumbs
         locale="es"
+        back={{ label: "Finanzas", to: "/es/finanzas" }}
         items={[
           { label: "Inicio", to: "/es" },
           { label: "Finanzas", to: "/es/finanzas" },
@@ -127,55 +133,14 @@ function SpanishFinancialToolPage() {
           <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">{name}</h1>
           <p className="mt-3 text-base leading-7 text-muted-foreground">{intro}</p>
         </div>
-        <FavoriteButton slug={tool.slug} name={name} locale="es" />
+        <DeferredFavoriteButton slug={tool.slug} name={name} locale="es" />
       </div>
       <section data-tool-surface className="surface-card mt-8 p-5 sm:p-7" aria-label={name}>
         <DeferredFinancialUi slug={tool.slug} locale="es" />
-        <ShareAndExportActions title={name} locale="es" />
+        <DeferredShareAndExport title={name} locale="es" />
       </section>
-      <AdsterraBanner />
-      <section className="mt-8 grid gap-8 border-t border-border/70 pt-8 lg:grid-cols-2">
-        <div>
-          <h2 className="text-xl font-black">Sobre esta calculadora</h2>
-          <div className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
-            {aboutParas.map((p) => (
-              <p key={p.slice(0, 48)}>{p}</p>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-xl font-black">Cómo usarla</h2>
-          <ol className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
-            {steps.map((step, i) => (
-              <li key={step} className="flex gap-3">
-                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-accent text-xs font-bold text-primary">
-                  {i + 1}
-                </span>
-                <span>{step}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-      {faq.length > 0 && (
-        <section className="mt-10 border-t border-border/70 pt-8" aria-labelledby="financial-faq-es">
-          <h2 id="financial-faq-es" className="text-xl font-black">
-            Preguntas frecuentes
-          </h2>
-          <dl className="mt-4 space-y-4">
-            {faq.map((item) => (
-              <div key={item.q} className="rounded-xl border border-border/70 bg-card p-4">
-                <dt className="text-sm font-bold">{item.q}</dt>
-                <dd className="mt-2 text-sm leading-6 text-muted-foreground">{item.a}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )}
-      <p className="mt-8 max-w-3xl text-xs leading-5 text-muted-foreground">
-        Los resultados son estimaciones matemáticas; verificá las condiciones reales de cualquier producto financiero
-        antes de decidir.
-      </p>
+      <DeferredAdsterraBanner />
+      <DeferredFinanceSeo tool={tool} locale="es" />
     </main>
   );
 }

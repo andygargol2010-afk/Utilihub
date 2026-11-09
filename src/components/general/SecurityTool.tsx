@@ -2,30 +2,8 @@ import { useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { getToolShowcase } from "@/lib/tool-showcase";
 import { showcaseUi } from "@/lib/showcase-ui";
-
-async function digest(algorithm: string, text: string) {
-  const data = new TextEncoder().encode(text);
-  const hash = await crypto.subtle.digest(algorithm, data);
-  return [...new Uint8Array(hash)].map((x) => x.toString(16).padStart(2, "0")).join("");
-}
-const entropy = (text: string) => {
-  let pool = 0;
-  if (/[a-z]/.test(text)) pool += 26;
-  if (/[A-Z]/.test(text)) pool += 26;
-  if (/[0-9]/.test(text)) pool += 10;
-  if (/[^A-Za-z0-9]/.test(text)) pool += 33;
-  return pool ? text.length * Math.log2(pool) : 0;
-};
-const secureRandomInt = (max: number) => {
-  if (!Number.isInteger(max) || max <= 0) throw new Error("Invalid random range.");
-  const range = max;
-  const limit = Math.floor(0x100000000 / range) * range;
-  const buf = new Uint32Array(1);
-  do {
-    crypto.getRandomValues(buf);
-  } while (buf[0] >= limit);
-  return buf[0] % range;
-};
+import { digest } from "./SecurityTool.part1";
+import { entropy, secureRandomInt } from "./SecurityTool.part2";
 
 export function SecurityTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: "en" | "es" }) {
   const [text, setText] = useState("");

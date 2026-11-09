@@ -1,0 +1,56 @@
+# UtiliHub — GSC worst pages (part 2/2)
+
+Parte de `docs/seo-worst-100-gsc.md`. Error Hunter lee **ambas** partes y une las filas.
+
+| URL | Clics | Impresiones | CTR | Posición |
+| --- | ---: | ---: | ---: | ---: |
+| https://www.utilihub.net/herramientas/test-filosofia-etica | 0 | 1 | 0% | 82.0 |
+| https://www.utilihub.net/tools/username-generator | 0 | 6 | 0% | 81.8 |
+| https://www.utilihub.net/tools/millimeters-to-centimeters | 0 | 8 | 0% | 81.5 |
+| https://www.utilihub.net/es/herramientas/calculadora-desviacion-estandar | 0 | 6 | 0% | 81.5 |
+| https://www.utilihub.net/tools/hexadecimal-to-decimal | 0 | 2 | 0% | 81.5 |
+| https://www.utilihub.net/tools/tile-grout-calculator | 0 | 2 | 0% | 81.5 |
+| https://www.utilihub.net/herramientas/calculadora-horas-trabajadas | 0 | 2 | 0% | 81.0 |
+| https://www.utilihub.net/tools/angular-velocity-from-frequency | 0 | 1 | 0% | 81.0 |
+| https://www.utilihub.net/tools/px-to-rem-calculator | 0 | 1 | 0% | 81.0 |
+| https://www.utilihub.net/tools/ideal-weight-calculator | 0 | 20 | 0% | 80.8 |
+| https://www.utilihub.net/finanzas/inflacion-y-poder-adquisitivo | 0 | 7 | 0% | 80.7 |
+| https://www.utilihub.net/guides/compound-interest | 0 | 3 | 0% | 80.7 |
+| https://www.utilihub.net/herramientas/ley-de-ohm | 0 | 2 | 0% | 80.5 |
+| https://www.utilihub.net/es/herramientas/bases-numericas | 0 | 6 | 0% | 80.3 |
+| https://www.utilihub.net/tools/meters-to-centimeters | 0 | 6 | 0% | 80.3 |
+| https://www.utilihub.net/tools/wacc-calculator | 0 | 12 | 0% | 80.1 |
+| https://www.utilihub.net/tools/beaufort-wind-scale-converter | 0 | 22 | 0% | 80.0 |
+| https://www.utilihub.net/herramientas/generador-nombres | 0 | 1 | 0% | 80.0 |
+| https://www.utilihub.net/es/herramientas/conversor-coordenadas | 0 | 7 | 0% | 79.9 |
+| https://www.utilihub.net/games/lights-out | 0 | 4 | 0% | 79.8 |
+| https://www.utilihub.net/es/herramientas/css-minifier | 0 | 3 | 0% | 79.7 |
+| https://www.utilihub.net/tools/ics-calendar-event-generator | 0 | 13 | 0% | 79.6 |
+| https://www.utilihub.net/es/herramientas/calculadora-costo-receta | 0 | 2 | 0% | 79.5 |
+| https://www.utilihub.net/tools/wall-stud-calculator | 0 | 8 | 0% | 79.3 |
+| https://www.utilihub.net/herramientas/conversor-datos | 0 | 3 | 0% | 79.3 |
+| https://www.utilihub.net/tools/air-conditioner-size-calculator | 0 | 7 | 0% | 79.1 |
+| https://www.utilihub.net/es/herramientas/tamano-muestra | 0 | 1 | 0% | 79.0 |
+| https://www.utilihub.net/tools/overtime-pay-calculator | 0 | 25 | 0% | 78.4 |
+| https://www.utilihub.net/games/pong | 0 | 17 | 0% | 78.3 |
+| https://www.utilihub.net/simulators/pendulum | 0 | 4 | 0% | 78.3 |
+| https://www.utilihub.net/category/design-color | 0 | 5 | 0% | 78.0 |
+| https://www.utilihub.net/tools/patio-paver-calculator | 0 | 1 | 0% | 78.0 |
+| https://www.utilihub.net/finance/fee-calculator | 0 | 7 | 0% | 77.7 |
+| https://www.utilihub.net/es/herramientas/consumo-viaje | 0 | 31 | 0% | 77.6 |
+| https://www.utilihub.net/tools/weighted-mean-calculator | 0 | 14 | 0% | 77.4 |
+| https://www.utilihub.net/es/herramientas/angulo-referencia | 0 | 5 | 0% | 77.4 |
+| https://www.utilihub.net/tools/geometric-mean-calculator | 0 | 3 | 0% | 77.3 |
+| https://www.utilihub.net/tools/aspect-ratio-calculator | 0 | 16 | 0% | 77.1 |
+| https://www.utilihub.net/herramientas/cafe-proporcion | 0 | 2 | 0% | 77.0 |
+| https://www.utilihub.net/es/herramientas/calculadora-canalones | 0 | 1 | 0% | 77.0 |
+| https://www.utilihub.net/es/herramientas/calculadora-punto-rocio | 0 | 104 | 0% | 76.8 |
+| https://www.utilihub.net/tools/color-mixer | 0 | 14 | 0% | 76.6 |
+| https://www.utilihub.net/tools/random-number-generator | 1 | 2 | 50% | 76.5 |
+| https://www.utilihub.net/es/herramientas/hipotenusa | 0 | 3 | 0% | 76.3 |
+| https://www.utilihub.net/tools/hexagon-area-calculator | 0 | 6 | 0% | 76.0 |
+| https://www.utilihub.net/es/educacion/ingles | 0 | 1 | 0% | 76.0 |
+| https://www.utilihub.net/es/herramientas/calculadora-area-cuadrado | 0 | 1 | 0% | 76.0 |
+| https://www.utilihub.net/finance/inflation-and-purchasing-power | 0 | 1 | 0% | 76.0 |
+| https://www.utilihub.net/tools/binary-to-decimal | 0 | 1 | 0% | 76.0 |
+| https://www.utilihub.net/tools/name-generator | 0 | 1 | 0% | 76.0 |

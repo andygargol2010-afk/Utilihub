@@ -1,12 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { SimLocale } from "@/lib/simulators/catalog";
 import { SimPrimaryButton, SimSecondaryButton } from "./SimShell";
-
-const W = 560;
-const H = 320;
-const HIST = 180;
-
-type State = { plants: number; herb: number; pred: number };
+import { W } from "./EcosystemSim.part1";
+import { type State, HIST, H } from "./EcosystemSim.part2";
 
 export function EcosystemSim({ locale = "en" }: { locale?: SimLocale }) {
   const es = locale === "es";
@@ -283,7 +279,7 @@ export function EcosystemSim({ locale = "en" }: { locale?: SimLocale }) {
         </SimSecondaryButton>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-emerald-400/20 bg-black/40 shadow-[0_0_40px_-12px_rgba(52,211,153,0.35)]">
+      <div className="eco-frame overflow-hidden rounded-2xl border border-emerald-400/35 bg-black/50 shadow-[0_16px_40px_rgba(0,0,0,0.45),0_0_32px_rgba(52,211,153,0.14)]">
         <canvas ref={canvasRef} width={W} height={H} className="h-auto w-full" style={{ aspectRatio: `${W}/${H}` }} />
       </div>
 
@@ -293,7 +289,7 @@ export function EcosystemSim({ locale = "en" }: { locale?: SimLocale }) {
           { label: es ? "Herbívoros" : "Herbivores", value: hud.herb.toFixed(0), color: "text-amber-300" },
           { label: es ? "Depredadores" : "Predators", value: hud.pred.toFixed(0), color: "text-rose-300" },
         ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-white/10 bg-black/35 px-2 py-2 text-center">
+          <div key={s.label} className="rounded-xl border border-emerald-400/20 bg-black/40 px-2 py-2 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
             <p className="text-[10px] font-bold uppercase tracking-wider text-white/50">{s.label}</p>
             <p className={`mt-0.5 text-lg font-bold tabular-nums ${s.color}`}>{s.value}</p>
           </div>

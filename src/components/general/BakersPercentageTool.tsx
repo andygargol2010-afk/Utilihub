@@ -1,54 +1,7 @@
 import { useMemo, useState } from "react";
 import type { GeneralTool } from "@/lib/general/types";
-
-type Locale = "en" | "es";
-type Mode = "flour" | "dough";
-type YeastKind = "instant" | "fresh";
-type PresetId = "sandwich" | "baguette" | "pizza" | "ciabatta" | "focaccia" | "sourdough";
-
-const inputClass = "h-11 w-full rounded-xl border bg-background px-3 text-base";
-const buttonClass = "h-11 rounded-xl border px-3 text-sm font-medium hover:bg-muted";
-
-type Preset = {
-  id: PresetId;
-  hydration: string;
-  salt: string;
-  yeast: string;
-  fat: string;
-  extras: string;
-  starter: string;
-  starterHydration: string;
-};
-
-const PRESETS: Preset[] = [
-  { id: "sandwich", hydration: "62", salt: "1.8", yeast: "1", fat: "4", extras: "0", starter: "0", starterHydration: "100" },
-  { id: "baguette", hydration: "68", salt: "2", yeast: "0.8", fat: "0", extras: "0", starter: "0", starterHydration: "100" },
-  { id: "pizza", hydration: "65", salt: "2.8", yeast: "0.2", fat: "0", extras: "0", starter: "0", starterHydration: "100" },
-  { id: "ciabatta", hydration: "80", salt: "2", yeast: "0.6", fat: "0", extras: "0", starter: "0", starterHydration: "100" },
-  { id: "focaccia", hydration: "78", salt: "2.2", yeast: "0.8", fat: "6", extras: "0", starter: "0", starterHydration: "100" },
-  { id: "sourdough", hydration: "75", salt: "2", yeast: "0", fat: "0", extras: "0", starter: "20", starterHydration: "100" },
-];
-
-function parseNum(value: string) {
-  const normalized = value.trim().replace(",", ".");
-  if (!normalized) return null;
-  const n = Number(normalized);
-  return Number.isFinite(n) ? n : Number.NaN;
-}
-
-function formatGrams(value: number, locale: Locale) {
-  return new Intl.NumberFormat(locale === "es" ? "es" : "en", {
-    maximumFractionDigits: 1,
-    minimumFractionDigits: 0,
-  }).format(value);
-}
-
-function formatPct(value: number, locale: Locale) {
-  return new Intl.NumberFormat(locale === "es" ? "es" : "en", {
-    maximumFractionDigits: 1,
-    minimumFractionDigits: 0,
-  }).format(value);
-}
+import { type Locale } from "./BakersPercentageTool.part1";
+import { type Mode, type PresetId, type YeastKind, PRESETS, parseNum, formatGrams, inputClass, buttonClass, formatPct } from "./BakersPercentageTool.part2";
 
 export function BakersPercentageTool({ locale = "en" }: { tool: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
