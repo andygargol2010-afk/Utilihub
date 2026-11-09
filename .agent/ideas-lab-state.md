@@ -71,11 +71,11 @@ path_es: /es/sobre /es/privacidad /es/cookies
 path_seo: n/a
 domain: adsense-prep
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: Usuario visita /ads.txt y ve el archivo; revisa páginas de privacidad/cookies actualizadas con secciones de publicidad; About page tiene contenido sustantivo. No cambios en Adsterra.
 share: n/a
 next_step_required: yes
-notes: Rubric scores (1-5): Cand1 (ads.txt + policy updates): value=4, share=1, search=3, distinct=5, feas=5, perf=5, total=23. Cand2 (long-form content pages): value=4, share=2, search=4, distinct=4, feas=3, perf=4, total=21. Cand3 (ad unit placeholders layout): value=3, share=1, search=2, distinct=4, feas=4, perf=3, total=17. Chosen: Cand1. Closest-3: existing privacy/cookies/about pages. Primary metaphor: compliance documentation + static files. Why not particle-canvas: not interactive sandbox. IP: n/a. Roll: FLEX (rand=0.50>0.35), weighted pick adsense-prep. adsense-prep_runs: 7
+notes: Rubric scores (1-5): Cand1 (ads.txt + policy updates): value=4, share=1, search=3, distinct=5, feas=5, perf=5, total=23. Cand2 (long-form content pages): value=4, share=2, search=4, distinct=4, feas=3, perf=4, total=21. Cand3 (ad unit placeholders layout): value=3, share=1, search=2, distinct=4, feas=4, perf=3, total=17. Chosen: Cand1. Closest-3: existing privacy/cookies/about pages. Primary metaphor: compliance documentation + static files. Why not particle-canvas: not interactive sandbox. IP: n/a. Roll: FLEX (rand=0.50>0.35), weighted pick adsense-prep. adsense-prep_runs: 7. Run 1 done: placeholder ads.txt, enhanced About with purpose section, policy dates updated.
 adsense-prep_runs: 7
 ```
 
