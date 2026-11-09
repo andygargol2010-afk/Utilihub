@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive logic circuit kit. User places logic gates (AND, OR, NOT, XOR, NAND, NOR) on a grid, connects them with wires by selecting input/output ports, sets input switches (0/1), and sees live output lights and truth table update in real time. Includes guided challenges (half-adder, simple decoder) and free mode. Branded PNG of the circuit diagram + stats, URL deep-link for state.
+ id: logic-circuit-kit
+path_en: /kits/logic-circuit
+path_es: /es/kits/logic-circuit
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Closed memory-match-classic after 4 runs. Next run: IDEATE.
+domain: kits
+runs_total: 4
+runs_remaining: 4
+acceptance: User places gates, connects wires, toggles inputs, sees live outputs and truth table, completes a challenge, shares PNG or URL.
+share: both
+next_step_required: yes
+notes: Rubric scores (value/share/search/distinct/feas/perf): Cand1 logic-circuit-kit 5/4/4/4/4/4 total 25. Closest: molecule-builder-kit (grid assembly), timeline-event-composer (discrete cards), predator-prey (param simulation). Metaphor: discrete component assembly with live logic simulation. Not particle-canvas: grid + ports + wires + truth table, no freehand trails. Cand2 audio-sequencer-kit 4/5/3/3/4/3 total 22. Closest: molecule, timeline. Metaphor: step sequencer grid. Rejected lower distinct vs particle patterns. Cand3 packing-planner-kit 4/3/3/4/4/4 total 22. Closest: molecule. Metaphor: spatial packing. Chosen logic-circuit-kit for higher value and search ("logic gates simulator"). IP: original educational boolean logic assembler with generic gates; no branded kits. Roll: FLEX CORE kits (underused relative to recent games/sims; weight 5). Domain balance post-games.
 adsense-prep_runs: 7
 ```
 
