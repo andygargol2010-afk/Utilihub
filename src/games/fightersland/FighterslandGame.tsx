@@ -5,7 +5,7 @@ const MAX_HP = 100;
 const ROUND_TO_WIN = 2;
 
 function createFighter(charIndex: number, isPlayer: boolean, x: number): Fighter {
-  const char = CHARACTERS[charIndex];
+  const char = CHARACTERS[charIndex % CHARACTERS.length];
   return {
     id: char.id,
     char,
@@ -43,9 +43,10 @@ export function FighterslandGame({ locale = 'en' }: { locale?: string }) {
   } | null>(null);
 
   const initGame = useCallback(() => {
+    const aiIndex = 1 + Math.floor(Math.random() * (CHARACTERS.length - 1));
     gameRef.current = {
       player: createFighter(0, true, 200),
-      ai: createFighter(1, false, 700),
+      ai: createFighter(aiIndex, false, 700),
       keys: {},
       lastTime: performance.now(),
       running: true,
@@ -314,15 +315,72 @@ export function FighterslandGame({ locale = 'en' }: { locale?: string }) {
     ctx.fillStyle = f.char.accent;
     ctx.fillRect(-12, -20, 10, 25);
     ctx.fillRect(2, -20, 10, 25);
-    if (f.state === 'attack') {
+    if (f.state === 'attack' && f.attackType) {
       ctx.fillStyle = f.char.accent;
-      const prog = 1 - f.attackTimer / (f.attackType === 'fast' ? 0.22 : 0.4);
-      if (f.char.attackAnim.fast === 'thrust' || f.attackType === 'fast') {
-        ctx.fillRect(16, -50, 40 + prog * 20, 8);
-      } else if (f.attackType === 'medium') {
-        ctx.fillRect(10, -60, 20, 30);
-      } else {
-        ctx.fillRect(-10, -80, 30, 12);
+      const anim = f.char.attackAnim[f.attackType];
+      const prog = Math.max(0, 1 - f.attackTimer / (f.attackType === 'fast' ? 0.22 : f.attackType === 'medium' ? 0.38 : 0.55));
+      switch (anim) {
+        case 'thrust':
+          ctx.fillRect(16, -50, 40 + prog * 30, 6);
+          break;
+        case 'slash':
+          ctx.fillRect(10, -60 - prog * 10, 25, 20);
+          break;
+        case 'overhead':
+          ctx.fillRect(-5, -90 + prog * 20, 15, 35);
+          break;
+        case 'jab':
+          ctx.fillRect(18, -55, 20 + prog * 15, 8);
+          break;
+        case 'kick':
+          ctx.fillRect(12, -40, 30, 10);
+          break;
+        case 'spin':
+          ctx.beginPath();
+          ctx.arc(0, -50, 25 + prog * 10, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+        case 'axe':
+          ctx.fillRect(14, -65, 12, 30 + prog * 10);
+          break;
+        case 'bash':
+          ctx.fillRect(8, -50, 28, 18);
+          break;
+        case 'charge':
+          ctx.fillRect(10, -55, 40 + prog * 20, 12);
+          break;
+        case 'bolt':
+          ctx.fillRect(20, -60, 8 + prog * 25, 4);
+          break;
+        case 'wave':
+          ctx.fillRect(10, -40, 30, 8 + prog * 5);
+          break;
+        case 'tempest':
+          ctx.fillRect(-10, -80, 40, 10 + prog * 15);
+          break;
+        case 'vine':
+          ctx.fillRect(16, -45, 25 + prog * 15, 5);
+          break;
+        case 'root':
+          ctx.fillRect(5, -30, 20, 15);
+          break;
+        case 'bloom':
+          ctx.beginPath();
+          ctx.arc(20, -50, 15 + prog * 12, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+        case 'claw':
+          ctx.fillRect(18, -55, 15, 10);
+          ctx.fillRect(22, -48, 12, 8);
+          break;
+        case 'flame':
+          ctx.fillRect(12, -70, 18, 25);
+          break;
+        case 'erupt':
+          ctx.fillRect(-8, -85 + prog * 15, 40, 12);
+          break;
+        default:
+          ctx.fillRect(16, -50, 30, 8);
       }
     } else if (f.state === 'block') {
       ctx.fillStyle = '#90a4ae';
@@ -366,8 +424,8 @@ export function FighterslandGame({ locale = 'en' }: { locale?: string }) {
             <h2 className="mb-3 text-2xl font-bold">{locale === 'es' ? 'Tutorial' : 'Tutorial'}</h2>
             <p className="mb-4 text-sm leading-relaxed">
               {locale === 'es'
-                ? 'A/D o flechas: mover. J rápido, K medio, L fuerte (mantené para cargar). U bloqueo. I esquive atrás. Mejor de 3 rounds.'
-                : 'A/D or arrows: move. J fast, K medium, L strong (hold to charge). U block. I dodge back. Best of 3 rounds.'}
+                ? 'A/D o flechas: mover. J rápido, K medio, L fuerte (mantené para cargar). U bloqueo. I esquive atrás. Mejor de 3 rounds. Personajes: Kenshi, Shadow Kaze, Bjorn, Aetherion, Thornroot, Emberclaw.'
+                : 'A/D or arrows: move. J fast, K medium, L strong (hold to charge). U block. I dodge back. Best of 3 rounds. Roster: Kenshi, Shadow Kaze, Bjorn, Aetherion, Thornroot, Emberclaw.'}
             </p>
             <button
               onClick={() => setShowTutorial(false)}
