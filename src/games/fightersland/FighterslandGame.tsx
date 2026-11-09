@@ -36,9 +36,12 @@ export function FighterslandGame() {
   const [showTutorial, setShowTutorial] = useState(true);
   const [message, setMessage] = useState('Round 1');
   const [force, setForce] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
   const keys = useRef<Set<string>>(new Set());
   const raf = useRef<number>(0);
   const lastChargeKey = useRef<AttackType | null>(null);
+  const hitstop = useRef(0);
+  const shake = useRef(0);
 
   const skipTutorial = useCallback(() => setShowTutorial(false), []);
 
@@ -67,18 +70,21 @@ export function FighterslandGame() {
     const dmg = Math.floor(base * chargeMult);
     defender.hp = Math.max(0, defender.hp - dmg);
     defender.state = defender.hp <= 0 ? 'ko' : 'hitstun';
-    defender.hitstunTimer = 14;
-    defender.vx = attacker.facing * 4;
+    defender.hitstunTimer = 18 + Math.floor(attacker.charge / 10);
+    defender.vx = attacker.facing * (5 + attacker.charge / 15);
     defender.charge = 0;
     defender.isCharging = false;
+    hitstop.current = 6 + Math.floor(attacker.charge / 20);
+    shake.current = 4 + attacker.charge / 25;
     return true;
   };
 
   const updateFighter = (f: Fighter, isAI: boolean, opponent: Fighter) => {
+    if (hitstop.current > 0) return;
     if (f.state === 'ko' || f.hitstunTimer > 0) {
       f.hitstunTimer = Math.max(0, f.hitstunTimer - 1);
       f.x = Math.max(40, Math.min(ARENA_WIDTH - 40, f.x + f.vx));
-      f.vx *= 0.82;
+      f.vx *= 0.78;
       if (f.hitstunTimer <= 0 && f.hp > 0) f.state = 'idle';
       return;
     }
@@ -96,13 +102,13 @@ export function FighterslandGame() {
 
       if ((keys.current.has('shift') || keys.current.has(' ')) && f.dodgeTimer <= 0 && f.state !== 'attack') {
         f.state = 'dodge';
-        f.dodgeTimer = 20;
-        f.vx = f.facing * -7;
+        f.dodgeTimer = 22;
+        f.vx = f.facing * -8;
       }
 
       if (keys.current.has('s') && f.state !== 'attack' && f.dodgeTimer <= 0) {
         f.state = 'block';
-        f.blockTimer = 10;
+        f.blockTimer = 12;
       } else if (f.blockTimer > 0) {
         f.blockTimer--;
         if (f.blockTimer <= 0 && f.state === 'block') f.state = 'idle';
@@ -111,32 +117,32 @@ export function FighterslandGame() {
       const atkKey = keys.current.has('j') ? 'fast' as AttackType : keys.current.has('k') ? 'medium' : keys.current.has('l') ? 'strong' : null;
       if (atkKey && f.state !== 'attack' && f.dodgeTimer <= 0 && f.blockTimer <= 0) {
         f.isCharging = true;
-        f.charge = Math.min(50, f.charge + 1.2);
+        f.charge = Math.min(55, f.charge + 1.4);
         lastChargeKey.current = atkKey;
       } else if (f.isCharging && !atkKey) {
-        const mult = 1 + f.charge / 35;
+        const mult = 1 + f.charge / 32;
         f.state = 'attack';
         f.attackType = lastChargeKey.current || 'fast';
-        f.attackTimer = Math.floor(14 * mult);
+        f.attackTimer = Math.floor(15 * mult);
         f.isCharging = false;
       }
     } else {
       const dist = opponent.x - f.x;
       const absDist = Math.abs(dist);
-      if (absDist > 90) {
-        f.x += Math.sign(dist) * 2.4;
+      if (absDist > 95) {
+        f.x += Math.sign(dist) * 2.6;
         f.facing = Math.sign(dist) as 1 | -1;
         f.state = 'walk';
       } else {
         f.state = 'idle';
-        if (Math.random() < 0.045 && f.attackTimer <= 0 && f.dodgeTimer <= 0) {
+        if (Math.random() < 0.05 && f.attackTimer <= 0 && f.dodgeTimer <= 0) {
           const types: AttackType[] = ['fast', 'medium', 'strong'];
           f.state = 'attack';
           f.attackType = types[Math.floor(Math.random() * 3)];
           f.attackTimer = 16;
-          f.charge = Math.random() < 0.3 ? 20 : 0;
+          f.charge = Math.random() < 0.35 ? 25 : 0;
         }
-        if (Math.random() < 0.025 && opponent.state === 'attack') f.state = 'block';
+        if (Math.random() < 0.03 && opponent.state === 'attack') f.state = 'block';
       }
     }
 
@@ -148,7 +154,7 @@ export function FighterslandGame() {
 
     if (f.state === 'attack') {
       f.attackTimer--;
-      if (f.attackTimer > 4 && f.attackTimer < 10 && Math.abs(f.x - opponent.x) < 78) {
+      if (f.attackTimer > 5 && f.attackTimer < 11 && Math.abs(f.x - opponent.x) < 80) {
         applyHit(f, opponent);
       }
       if (f.attackTimer <= 0) {
@@ -159,30 +165,48 @@ export function FighterslandGame() {
   };
 
   const loop = useCallback(() => {
-    const p = playerRef.current;
-    const a = aiRef.current;
-
-    updateFighter(p, false, a);
-    updateFighter(a, true, p);
-
-    if (p.hp <= 0 && p.state !== 'ko') {
-      p.state = 'ko';
-      setAiWins(w => w + 1);
-      setMessage('AI wins the round!');
-      setForce(f => f + 1);
+    if (gameOver) {
+      raf.current = requestAnimationFrame(loop);
+      return;
     }
-    if (a.hp <= 0 && a.state !== 'ko') {
-      a.state = 'ko';
-      setPlayerWins(w => w + 1);
-      setMessage('You win the round!');
-      setForce(f => f + 1);
+    if (hitstop.current > 0) {
+      hitstop.current--;
+    } else {
+      const p = playerRef.current;
+      const a = aiRef.current;
+
+      updateFighter(p, false, a);
+      updateFighter(a, true, p);
+
+      if (p.hp <= 0 && p.state !== 'ko') {
+        p.state = 'ko';
+        const newWins = aiWins + 1;
+        setAiWins(newWins);
+        setMessage(newWins >= 2 ? 'AI gana el match!' : 'AI gana el round!');
+        if (newWins >= 2) setGameOver(true);
+        setForce(f => f + 1);
+      }
+      if (a.hp <= 0 && a.state !== 'ko') {
+        a.state = 'ko';
+        const newWins = playerWins + 1;
+        setPlayerWins(newWins);
+        setMessage(newWins >= 2 ? '¡Tú ganas el match!' : '¡Tú ganas el round!');
+        if (newWins >= 2) setGameOver(true);
+        setForce(f => f + 1);
+      }
     }
 
     const ctx = canvasRef.current?.getContext('2d');
-    if (ctx) draw(ctx, p, a);
+    if (ctx) {
+      if (shake.current > 0) {
+        shake.current *= 0.85;
+        if (shake.current < 0.5) shake.current = 0;
+      }
+      draw(ctx, playerRef.current, aiRef.current, shake.current);
+    }
 
     raf.current = requestAnimationFrame(loop);
-  }, []);
+  }, [aiWins, playerWins, gameOver]);
 
   useEffect(() => {
     raf.current = requestAnimationFrame(loop);
@@ -190,17 +214,19 @@ export function FighterslandGame() {
   }, [loop]);
 
   useEffect(() => {
-    if (playerRef.current.hp <= 0 || aiRef.current.hp <= 0) {
+    if ((playerRef.current.hp <= 0 || aiRef.current.hp <= 0) && !gameOver) {
       const t = setTimeout(() => {
-        playerRef.current = createFighter(PLAYER_CHAR, 200, true);
-        aiRef.current = createFighter(AI_CHAR, 700, false);
-        setRound(r => r + 1);
-        setMessage(`Round ${round + 1}`);
-        setForce(f => f + 1);
-      }, 1800);
+        if (playerWins < 2 && aiWins < 2) {
+          playerRef.current = createFighter(PLAYER_CHAR, 200, true);
+          aiRef.current = createFighter(AI_CHAR, 700, false);
+          setRound(r => r + 1);
+          setMessage(`Round ${round + 1}`);
+          setForce(f => f + 1);
+        }
+      }, 2000);
       return () => clearTimeout(t);
     }
-  }, [force, round]);
+  }, [force, round, gameOver, playerWins, aiWins]);
 
   return (
     <div className="relative w-full h-[calc(100vh-56px)] bg-slate-900 flex flex-col items-center justify-center overflow-hidden">
@@ -226,6 +252,7 @@ export function FighterslandGame() {
       <div className="absolute bottom-4 left-4 flex gap-2 md:hidden">
         <button onPointerDown={() => press('a')} onPointerUp={() => release('a')} className="w-12 h-12 bg-slate-700 rounded text-white">←</button>
         <button onPointerDown={() => press('d')} onPointerUp={() => release('d')} className="w-12 h-12 bg-slate-700 rounded text-white">→</button>
+        <button onPointerDown={() => press(' ')} onPointerUp={() => release(' ')} className="w-12 h-12 bg-purple-700 rounded text-white text-xs">Dodge</button>
       </div>
       <div className="absolute bottom-4 right-4 flex gap-2 md:hidden">
         <button onPointerDown={() => press('j')} onPointerUp={() => release('j')} className="w-12 h-12 bg-red-700 rounded text-white text-xs">R</button>
@@ -237,11 +264,23 @@ export function FighterslandGame() {
   );
 }
 
-function draw(ctx: CanvasRenderingContext2D, p: Fighter, a: Fighter) {
+function draw(ctx: CanvasRenderingContext2D, p: Fighter, a: Fighter, shakeAmt: number) {
+  ctx.save();
+  if (shakeAmt > 0) {
+    ctx.translate((Math.random() - 0.5) * shakeAmt, (Math.random() - 0.5) * shakeAmt);
+  }
   ctx.fillStyle = '#1e293b';
   ctx.fillRect(0, 0, ARENA_WIDTH, ARENA_HEIGHT);
   ctx.fillStyle = '#334155';
   ctx.fillRect(0, GROUND_Y + 20, ARENA_WIDTH, 120);
+  // simple floor lines for map feel
+  ctx.strokeStyle = '#475569';
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, GROUND_Y + 30 + i * 18);
+    ctx.lineTo(ARENA_WIDTH, GROUND_Y + 30 + i * 18);
+    ctx.stroke();
+  }
   ctx.fillStyle = '#334155';
   ctx.fillRect(20, 20, 300, 18);
   ctx.fillStyle = '#ef4444';
@@ -252,6 +291,7 @@ function draw(ctx: CanvasRenderingContext2D, p: Fighter, a: Fighter) {
   ctx.fillRect(ARENA_WIDTH - 320, 20, 300 * (a.hp / 100), 18);
   drawFighter(ctx, p);
   drawFighter(ctx, a);
+  ctx.restore();
 }
 
 function drawFighter(ctx: CanvasRenderingContext2D, f: Fighter) {
@@ -265,7 +305,7 @@ function drawFighter(ctx: CanvasRenderingContext2D, f: Fighter) {
   ctx.fillRect(-8, -68, 16, 16);
   if (state === 'attack') {
     ctx.fillStyle = '#fbbf24';
-    const len = 20 + (f.charge || 0) / 2;
+    const len = 22 + (f.charge || 0) / 2;
     ctx.fillRect(8, -32, len, 8);
   }
   if (state === 'block') {
@@ -278,8 +318,9 @@ function drawFighter(ctx: CanvasRenderingContext2D, f: Fighter) {
   }
   if (f.isCharging) {
     ctx.fillStyle = '#facc15';
-    ctx.globalAlpha = 0.6;
-    ctx.fillRect(-20, -80, 40, 4);
+    ctx.globalAlpha = 0.7;
+    const w = 8 + f.charge;
+    ctx.fillRect(-w / 2, -82, w, 5);
     ctx.globalAlpha = 1;
   }
   ctx.restore();
