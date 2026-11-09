@@ -62,19 +62,23 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive classic Hangman (Ahorcado). User selects a category (animals, countries, science, tools, random), guesses letters via keyboard or on-screen buttons to reveal the hidden word. On misses a live SVG hangman figure progresses (up to 6-7 parts). Shows lives remaining, guessed letters, score. Optional hint. Win when word complete or lose when figure full. Keyboard nav, URL deep-link (?seed= or category), branded PNG of final hangman + word + stats, EN+ES routes, mobile-first 390px, a11y labels + aria-live for guesses and outcome.
+id: hangman-classic
+path_en: /games/hangman-classic
+path_es: /es/juegos/hangman-classic
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Project logic-circuit-kit closed after 4 runs. Next run: IDEATE.
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User selects category, guesses letters, sees progressive SVG hangman and revealed word, reaches win or lose state with stats, shares PNG or URL.
+share: both
+next_step_required: yes
+notes: Domain roll: FLEX (p_fixed 0.35 not hit in sim), weighted among core+growth; selected games (weight 6, variety after kits close, underused classic). 3 candidates scored 1-5:
+1. hangman-classic (chosen): value 4, share 4, search 5 ("play hangman online"/"ahorcado online"), distinct 4, feas 5, perf 5. Total 27. Closest-3: memory-match (reveal pairs), minesweeper (risk reveal), battleship (guess). Metaphor: progressive letter guessing + penalty visual. Not particle-canvas: discrete text/SVG states, win/lose loop. IP: traditional hangman mechanics (public-domain/generic words/categories; no branded).
+2. sudoku-player: value 4, share 3, search 5, distinct 4, feas 4, perf 5. Total 25. Closest: minesweeper, connect-four. Metaphor: constraint grid fill. IP: traditional sudoku rules, generic.
+3. checkers-classic: value 4, share 4, search 4, distinct 4, feas 4, perf 5. Total 25. Closest: connect-four, battleship. Metaphor: turn-based jumps board. IP: traditional draughts, generic pieces.
+Rejected particle patterns. Core by run 2: basic guess + SVG progress + win/lose.
 adsense-prep_runs: 7
 ```
 
