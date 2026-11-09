@@ -309,7 +309,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
           {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}
         </GameSecondaryButton>
       </div>
-      <p className="text-center text-[11px text-white/50">
+      <p className="text-center text-[11px] text-white/50">
         {es
           ? "Toca letras o usa el teclado · categorías · dificultad · pista · enlace con palabra · PNG de progreso"
           : "Tap letters or use keyboard · categories · difficulty · hint · link with word · progress PNG"}
