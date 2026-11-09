@@ -317,8 +317,8 @@ export const GAMES: readonly GameDef[] = [
     nameEs: "Hundir la Flota Clásico",
     tag: "board",
     emoji: "🚢",
-    summaryEn: "Classic Battleship: place ships on your 10×10 grid or random, shoot the enemy grid, sink all ships to win vs AI. EN+ES, mobile-first.",
-    summaryEs: "Hundir la flota clásico: colocá barcos en tu grilla 10×10 o al azar, dispará a la enemiga y hundí todos para ganar vs IA. EN+ES, móvil.",
+    summaryEn: "Classic Battleship: place ships on your 10×10 grid or random, shoot the enemy grid, sink all ships to win vs AI. Mobile-first.",
+    summaryEs: "Hundir la flota clásico: colocá barcos en tu grilla 10×10 o al azar, dispará a la enemiga y hundí todos los barcos para ganarle a la IA. Móvil.",
     hasScore: false,
   },
   {
