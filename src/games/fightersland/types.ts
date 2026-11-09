@@ -100,6 +100,7 @@ export interface Fighter {
   hitstunTimer: number;
   isPlayer: boolean;
   wins: number;
+  finisherTimer?: number;
 }
 
 export const GROUND_Y = 420;
