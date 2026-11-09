@@ -1,1 +1,1 @@
-$(cat /tmp/improved_fighter.tsx)
+PLACEHOLDER_TO_BE_REPLACED
