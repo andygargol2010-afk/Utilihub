@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { CHARACTERS, type Fighter, type AttackType, GROUND_Y, ARENA_WIDTH, ARENA_HEIGHT } from './types';
+import { CHARACTERS, type Fighter, type AttackType, GROUND_Y, ARENA_WIDTH, ARENA_HEIGHT, type CharacterDef } from './types';
 
-const PLAYER_CHAR = CHARACTERS[0]; // Kenshi the Blade
-const AI_CHAR = CHARACTERS[1]; // Shadow Kaze
-
-function createFighter(char: typeof PLAYER_CHAR, x: number, isPlayer: boolean): Fighter {
+function createFighter(char: CharacterDef, x: number, isPlayer: boolean): Fighter {
   return {
     id: char.id + (isPlayer ? '-p' : '-ai'),
     char,
@@ -28,15 +25,18 @@ function createFighter(char: typeof PLAYER_CHAR, x: number, isPlayer: boolean): 
 
 export function FighterslandGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const playerRef = useRef(createFighter(PLAYER_CHAR, 200, true));
-  const aiRef = useRef(createFighter(AI_CHAR, 700, false));
+  const playerRef = useRef<Fighter | null>(null);
+  const aiRef = useRef<Fighter | null>(null);
+  const [playerChar, setPlayerChar] = useState<CharacterDef | null>(null);
+  const [aiChar, setAiChar] = useState<CharacterDef | null>(null);
   const [round, setRound] = useState(1);
   const [playerWins, setPlayerWins] = useState(0);
   const [aiWins, setAiWins] = useState(0);
   const [showTutorial, setShowTutorial] = useState(true);
-  const [message, setMessage] = useState('Round 1');
+  const [message, setMessage] = useState('Elige tu fighter');
   const [force, setForce] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [inSelect, setInSelect] = useState(true);
   const keys = useRef<Set<string>>(new Set());
   const raf = useRef<number>(0);
   const lastChargeKey = useRef<AttackType | null>(null);
@@ -45,6 +45,23 @@ export function FighterslandGame() {
   const winsRef = useRef({ player: 0, ai: 0 });
 
   const skipTutorial = useCallback(() => setShowTutorial(false), []);
+
+  const startFight = useCallback((pChar: CharacterDef) => {
+    const others = CHARACTERS.filter(c => c.id !== pChar.id);
+    const aChar = others[Math.floor(Math.random() * others.length)];
+    setPlayerChar(pChar);
+    setAiChar(aChar);
+    playerRef.current = createFighter(pChar, 200, true);
+    aiRef.current = createFighter(aChar, 700, false);
+    setInSelect(false);
+    setMessage('Round 1');
+    setRound(1);
+    setPlayerWins(0);
+    setAiWins(0);
+    winsRef.current = { player: 0, ai: 0 };
+    setGameOver(false);
+    setForce(f => f + 1);
+  }, []);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -169,7 +186,7 @@ export function FighterslandGame() {
   };
 
   const loop = useCallback(() => {
-    if (gameOver) {
+    if (gameOver || inSelect || !playerRef.current || !aiRef.current) {
       raf.current = requestAnimationFrame(loop);
       return;
     }
@@ -201,7 +218,7 @@ export function FighterslandGame() {
     }
 
     const ctx = canvasRef.current?.getContext('2d');
-    if (ctx) {
+    if (ctx && playerRef.current && aiRef.current) {
       if (shake.current > 0) {
         shake.current *= 0.82;
         if (shake.current < 0.5) shake.current = 0;
@@ -210,7 +227,7 @@ export function FighterslandGame() {
     }
 
     raf.current = requestAnimationFrame(loop);
-  }, [gameOver]);
+  }, [gameOver, inSelect]);
 
   useEffect(() => {
     raf.current = requestAnimationFrame(loop);
@@ -218,11 +235,11 @@ export function FighterslandGame() {
   }, [loop]);
 
   useEffect(() => {
-    if ((playerRef.current.hp <= 0 || aiRef.current.hp <= 0) && !gameOver) {
+    if (!inSelect && (playerRef.current?.hp ?? 1) <= 0 || (aiRef.current?.hp ?? 1) <= 0 && !gameOver) {
       const t = setTimeout(() => {
-        if (winsRef.current.player < 2 && winsRef.current.ai < 2) {
-          playerRef.current = createFighter(PLAYER_CHAR, 200, true);
-          aiRef.current = createFighter(AI_CHAR, 700, false);
+        if (winsRef.current.player < 2 && winsRef.current.ai < 2 && playerChar && aiChar) {
+          playerRef.current = createFighter(playerChar, 200, true);
+          aiRef.current = createFighter(aiChar, 700, false);
           setRound(r => r + 1);
           setMessage(`Round ${round + 1}`);
           setForce(f => f + 1);
@@ -230,7 +247,40 @@ export function FighterslandGame() {
       }, 2200);
       return () => clearTimeout(t);
     }
-  }, [force, round, gameOver]);
+  }, [force, round, gameOver, inSelect, playerChar, aiChar]);
+
+  if (inSelect) {
+    return (
+      <div className="relative w-full h-[calc(100vh-56px)] bg-slate-900 flex flex-col items-center justify-center overflow-hidden text-white">
+        <h1 className="text-3xl font-bold mb-2 text-amber-400">Fightersland</h1>
+        <p className="mb-6 text-slate-300">Elige tu fighter (IA recibe uno aleatorio)</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl px-4">
+          {CHARACTERS.map(c => (
+            <button
+              key={c.id}
+              onClick={() => startFight(c)}
+              className="p-4 rounded-lg border-2 border-slate-600 hover:border-amber-500 bg-slate-800 text-left transition"
+              style={{ borderColor: c.color }}
+            >
+              <div className="font-bold" style={{ color: c.accent }}>{c.name}</div>
+              <div className="text-xs opacity-70 mt-1">{c.id}</div>
+              <div className="mt-2 h-3 w-full rounded" style={{ background: c.color }} />
+            </button>
+          ))}
+        </div>
+        {showTutorial && (
+          <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-10">
+            <div className="bg-slate-800 p-6 rounded-lg text-center max-w-md">
+              <h2 className="text-xl font-bold mb-3">Fightersland - Tutorial</h2>
+              <p className="mb-2 text-sm">A/D o flechas: mover<br />J/K/L: golpes rápido/medio/fuerte (mantén para charge)<br />S: bloquear<br />Shift/Espacio: esquivar atrás</p>
+              <p className="mb-4 text-xs opacity-80">Mejor de 3 rounds. Personajes 100% ficticios. Sin sangre.</p>
+              <button onClick={skipTutorial} className="px-4 py-2 bg-amber-600 hover:bg-amber-500 rounded font-bold">Saltar</button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-[calc(100vh-56px)] bg-slate-900 flex flex-col items-center justify-center overflow-hidden">
@@ -241,17 +291,22 @@ export function FighterslandGame() {
         className="border-2 border-slate-600 shadow-2xl max-w-full max-h-full"
         style={{ imageRendering: 'pixelated' }}
       />
-      {showTutorial && (
-        <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-10">
-          <div className="bg-slate-800 p-6 rounded-lg text-center max-w-md text-white">
-            <h2 className="text-xl font-bold mb-3">Fightersland - Tutorial</h2>
-            <p className="mb-2 text-sm">A/D o flechas: mover<br />J/K/L: golpes rápido/medio/fuerte (mantén para charge)<br />S: bloquear<br />Shift/Espacio: esquivar atrás</p>
-            <p className="mb-4 text-xs opacity-80">Mejor de 3 rounds. Sin sangre.</p>
-            <button onClick={skipTutorial} className="px-4 py-2 bg-amber-600 hover:bg-amber-500 rounded font-bold">Saltar</button>
+      <div className="absolute top-2 left-4 text-white text-sm font-mono">
+        {message} | {playerChar?.name ?? 'P'} {playerWins} - {aiWins} {aiChar?.name ?? 'AI'} | R{round}
+      </div>
+      {gameOver && (
+        <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10">
+          <div className="bg-slate-800 p-6 rounded-lg text-center text-white">
+            <h2 className="text-2xl font-bold mb-4">{winsRef.current.player >= 2 ? '¡Victoria!' : 'Derrota'}</h2>
+            <button
+              onClick={() => setInSelect(true)}
+              className="px-6 py-2 bg-amber-600 hover:bg-amber-500 rounded font-bold"
+            >
+              Volver a seleccionar
+            </button>
           </div>
         </div>
       )}
-      <div className="absolute top-2 left-4 text-white text-sm font-mono">{message} | P {playerWins} - {aiWins} AI | R{round}</div>
 
       <div className="absolute bottom-4 left-4 flex gap-2 md:hidden">
         <button onPointerDown={() => press('a')} onPointerUp={() => release('a')} className="w-12 h-12 bg-slate-700 rounded text-white">←</button>
