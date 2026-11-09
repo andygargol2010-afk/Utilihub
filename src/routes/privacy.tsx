@@ -27,7 +27,7 @@ function PrivacyPage() {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Privacy" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Privacy policy</h1>
-        <p className="text-sm text-muted-foreground">Last updated: 3 November 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: 9 November 2026</p>
         <p>
           This policy explains how <strong>{SITE_NAME}</strong> handles information that may be collected when you
           browse or use the site. {SITE_NAME} is aimed at an international audience and its operator is based in
@@ -71,7 +71,7 @@ function PrivacyPage() {
         </p>
         <h2>Advertising network readiness</h2>
         <p>
-          These disclosures are structured to meet common expectations of advertising partners (including potential Google AdSense) regarding third-party cookies, data processing, user rights and opt-outs. Adsterra advertising and related mentions remain fully intact and unmodified.
+          These disclosures are structured to meet common expectations of advertising partners (including potential Google AdSense) regarding third-party cookies, data processing, user rights and opt-outs. Adsterra advertising and related mentions remain fully intact and unmodified. An ads.txt file with placeholder entries is available at /ads.txt for preparation; no real publisher ID is used until approval.
         </p>
         <h2>Your rights</h2>
         <p>

@@ -28,7 +28,7 @@ function CookiesPage() {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Cookie Policy" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Cookie Policy</h1>
-        <p className="text-sm text-muted-foreground">Last updated: 3 November 2026</p>
+        <p className="text-sm text-muted-foreground">Last updated: 9 November 2026</p>
         <p>
           This Cookie Policy explains how <strong>{SITE_NAME}</strong> uses cookies and similar technologies (such as
           local storage) when you visit the site. It complements our <a href="/privacy">Privacy Policy</a>. The
@@ -111,7 +111,7 @@ function CookiesPage() {
 
         <h2>Advertising network readiness</h2>
         <p>
-          Cookie disclosures are prepared to support common ad network requirements for transparency on third-party cookies and opt-outs. Adsterra remains fully active and unchanged.
+          Cookie disclosures are prepared to support common ad network requirements for transparency on third-party cookies and opt-outs. Adsterra remains fully active and unchanged. See /ads.txt for placeholder authorization entries during preparation.
         </p>
 
         <h2>Updates</h2>

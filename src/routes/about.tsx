@@ -22,6 +22,7 @@ function AboutPage() {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "About" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>About {SITE_NAME}</h1>
+        <p className="text-sm text-muted-foreground">Last updated: 9 November 2026</p>
         <p>
           {SITE_NAME} is a free collection of online tools, calculators, converters, simulators, games and educational resources.
           Everything runs in your browser — no account, no installation, and no personal data stored on our servers for the tools themselves.
@@ -44,6 +45,11 @@ function AboutPage() {
           UtiliHub exists to make useful, high-quality digital tools freely available. We believe in browser-based computation that respects user privacy,
           original content that solves real problems, and a variety of experiences from educational kits to classic games. Content is created and maintained
           to be substantive, not thin, supporting both users and future monetization compliance.
+        </p>
+        <h2>Content density and originality</h2>
+        <p>
+          All pages and tools feature original, substantive content. We avoid thin or duplicated pages. Educational experiences include guided kits, step-by-step journeys,
+          classic public-domain games with clear rules, and simulators that model real cause-and-effect systems. This density supports better user value and compliance with advertising network policies.
         </p>
         <h2>Operator</h2>
         <p>
