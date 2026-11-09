@@ -62,19 +62,19 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: n/a
-id: n/a
-path_en: n/a
-path_es: n/a
+status: active
+idea: Interactive classic Memory Match (Concentration) card game. User flips two cards at a time on a grid to find matching pairs (emoji or simple geometric icons). Difficulties (4x4 easy, 6x4 medium, 6x6 hard), timer, move counter, efficiency star rating, optional simple themes, URL deep-link for seed/layout, branded PNG of completed board or score card. EN+ES routes, mobile-first 390px. CSS 3D flip + state. Acceptance met when user selects size, matches all pairs, sees win stats, shares PNG or URL. IP: traditional public-domain pair-matching rules, generic naming, no branded assets.
+id: memory-match-classic
+path_en: /games/memory-match
+path_es: /es/juegos/memory-match
 path_seo: n/a
-domain: n/a
-runs_total: 0
-runs_remaining: 0
-acceptance: n/a
-share: n/a
-next_step_required: no
-notes: Previous project predator-prey-simulator CLOSED after 4/4. State restored after truncation to PLACEHOLDER2 in commit d2d1b88 and subsequent placeholder. Code restored from 732fea9. Ready for next IDEATE.
+domain: games
+runs_total: 4
+runs_remaining: 4
+acceptance: User selects difficulty, flips cards to match pairs, sees timer/moves/stars on win, shares PNG or URL.
+share: both
+next_step_required: yes
+notes: IDEATE 2026-11-09. Domain roll: CORE weighted (games 6/34). Rubric scores (value/share/search/distinct/feas/perf): Cand1 MemoryMatch 5/4/4/4/5/5=27 (closest: minesweeper-grid-reveal, connect-four-grid, battleship-grid; metaphor: turn-based pair flip matching; not particle/canvas; IP: traditional public-domain concentration/memory match, generic emoji/icons). Cand2 SlidingPuzzle 4/3/3/4/5/5=24 (closest: similar grids; metaphor: slide tiles to order). Cand3 Checkers 5/4/4/4/4/5=26 (closest: battleship board, connect-four; metaphor: turn-based piece move capture). Chosen memory-match-classic highest. At least one classic. Variety: grid rules game, not saturated sandbox.
 adsense-prep_runs: 7
 ```
 
