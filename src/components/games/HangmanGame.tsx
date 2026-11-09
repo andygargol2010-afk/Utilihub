@@ -65,6 +65,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
   const won = word && revealed.every((c) => c !== "_");
   const lost = misses >= maxMisses;
   const over = won || lost;
+  const score = Math.max(0, (maxMisses - misses) * 40 + (won ? 120 : 0) - hintsUsed * 20);
 
   const guess = useCallback(
     (letter: string) => {
@@ -140,45 +141,63 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
   const exportPng = useCallback(() => {
     if (!word) return;
     const canvas = document.createElement("canvas");
-    canvas.width = 480;
-    canvas.height = 280;
+    canvas.width = 560;
+    canvas.height = 340;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = "#0f172a";
+    // branded background
+    const g = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    g.addColorStop(0, "#0f172a");
+    g.addColorStop(1, "#1e293b");
+    ctx.fillStyle = g;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // header
     ctx.fillStyle = "#10b981";
-    ctx.font = "bold 16px system-ui, sans-serif";
+    ctx.font = "bold 18px system-ui, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText(es ? "Ahorcado · UtiliHub" : "Hangman · UtiliHub", canvas.width / 2, 28);
+    ctx.fillText(es ? "Ahorcado Clásico · UtiliHub" : "Hangman Classic · UtiliHub", canvas.width / 2, 32);
+    // gallows
     ctx.strokeStyle = "#94a3b8";
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 5;
+    ctx.lineCap = "round";
     ctx.beginPath();
-    ctx.moveTo(60, 240); ctx.lineTo(140, 240);
-    ctx.moveTo(90, 240); ctx.lineTo(90, 60);
-    ctx.moveTo(90, 60); ctx.lineTo(160, 60);
-    ctx.moveTo(160, 60); ctx.lineTo(160, 80);
+    ctx.moveTo(70, 290); ctx.lineTo(170, 290);
+    ctx.moveTo(110, 290); ctx.lineTo(110, 70);
+    ctx.moveTo(110, 70); ctx.lineTo(200, 70);
+    ctx.moveTo(200, 70); ctx.lineTo(200, 95);
     ctx.stroke();
+    // figure (matches on-screen SVG)
     ctx.strokeStyle = "#f87171";
-    if (misses >= 1) { ctx.beginPath(); ctx.arc(160, 95, 12, 0, Math.PI * 2); ctx.stroke(); }
-    if (misses >= 2) { ctx.beginPath(); ctx.moveTo(160, 107); ctx.lineTo(160, 155); ctx.stroke(); }
-    if (misses >= 3) { ctx.beginPath(); ctx.moveTo(160, 120); ctx.lineTo(140, 140); ctx.stroke(); }
-    if (misses >= 4) { ctx.beginPath(); ctx.moveTo(160, 120); ctx.lineTo(180, 140); ctx.stroke(); }
-    if (misses >= 5) { ctx.beginPath(); ctx.moveTo(160, 155); ctx.lineTo(140, 180); ctx.stroke(); }
-    if (misses >= 6) { ctx.beginPath(); ctx.moveTo(160, 155); ctx.lineTo(180, 180); ctx.stroke(); }
-    if (misses >= 7) { ctx.beginPath(); ctx.arc(156, 92, 1.5, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(164, 92, 1.5, 0, Math.PI * 2); ctx.fill(); }
+    ctx.lineWidth = 4;
+    if (misses >= 1) { ctx.beginPath(); ctx.arc(200, 115, 14, 0, Math.PI * 2); ctx.stroke(); }
+    if (misses >= 2) { ctx.beginPath(); ctx.moveTo(200, 129); ctx.lineTo(200, 185); ctx.stroke(); }
+    if (misses >= 3) { ctx.beginPath(); ctx.moveTo(200, 145); ctx.lineTo(175, 170); ctx.stroke(); }
+    if (misses >= 4) { ctx.beginPath(); ctx.moveTo(200, 145); ctx.lineTo(225, 170); ctx.stroke(); }
+    if (misses >= 5) { ctx.beginPath(); ctx.moveTo(200, 185); ctx.lineTo(175, 215); ctx.stroke(); }
+    if (misses >= 6) { ctx.beginPath(); ctx.moveTo(200, 185); ctx.lineTo(225, 215); ctx.stroke(); }
+    if (misses >= 7) {
+      ctx.fillStyle = "#f87171";
+      ctx.beginPath(); ctx.arc(194, 110, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(206, 110, 2, 0, Math.PI * 2); ctx.fill();
+    }
+    // word + stats
     ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 22px system-ui, sans-serif";
-    const display = revealed.join(" ");
-    ctx.fillText(display, canvas.width / 2 + 40, 140);
+    ctx.font = "bold 26px system-ui, sans-serif";
+    ctx.fillText(revealed.join(" "), canvas.width / 2 + 50, 160);
     ctx.fillStyle = "#94a3b8";
-    ctx.font = "12px system-ui";
-    ctx.fillText(`${es ? "Fallos" : "Misses"}: ${misses}/${maxMisses}`, canvas.width / 2, 220);
-    ctx.fillText("www.utilihub.net", canvas.width / 2, 260);
+    ctx.font = "13px system-ui";
+    const catLabel = CATS.find((c) => c.id === cat);
+    ctx.fillText(`${es ? "Categoría" : "Category"}: ${es ? catLabel?.es : catLabel?.en}`, canvas.width / 2, 230);
+    ctx.fillText(`${es ? "Fallos" : "Misses"}: ${misses}/${maxMisses}  ·  ${es ? "Puntaje" : "Score"}: ${score}`, canvas.width / 2, 252);
+    ctx.fillText(over ? (won ? (es ? "¡Ganaste!" : "You win!") : (es ? "Perdiste" : "You lose")) : "", canvas.width / 2, 274);
+    ctx.fillStyle = "#10b981";
+    ctx.font = "11px system-ui";
+    ctx.fillText("utilihub.net  ·  free tools & games", canvas.width / 2, 320);
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = `utilihub-hangman-${word.toLowerCase()}.png`;
     a.click();
-  }, [word, revealed, misses, maxMisses, es]);
+  }, [word, revealed, misses, maxMisses, es, cat, score, won, over]);
 
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -204,24 +223,24 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
 
       <div className="flex flex-col items-center gap-2">
         <p className="text-xs font-bold uppercase tracking-wider text-emerald-300/80" aria-live="polite">
-          {es ? "Fallos" : "Misses"}: {misses} / {maxMisses}
+          {es ? "Fallos" : "Misses"}: {misses} / {maxMisses} · {es ? "Puntaje" : "Score"}: {score}
         </p>
-        <div className="relative h-20 w-20 sm:h-24 sm:w-24" aria-hidden>
-          <svg viewBox="0 0 100 120" className="h-full w-full">
-            <line x1="10" y1="110" x2="70" y2="110" stroke="#94a3b8" strokeWidth="4" />
-            <line x1="30" y1="110" x2="30" y2="10" stroke="#94a3b8" strokeWidth="4" />
-            <line x1="30" y1="10" x2="70" y2="10" stroke="#94a3b8" strokeWidth="4" />
-            <line x1="70" y1="10" x2="70" y2="25" stroke="#94a3b8" strokeWidth="4" />
-            {misses >= 1 && <circle cx="70" cy="35" r="10" fill="none" stroke="#f87171" strokeWidth="3" />}
-            {misses >= 2 && <line x1="70" y1="45" x2="70" y2="75" stroke="#f87171" strokeWidth="3" />}
-            {misses >= 3 && <line x1="70" y1="55" x2="55" y2="65" stroke="#f87171" strokeWidth="3" />}
-            {misses >= 4 && <line x1="70" y1="55" x2="85" y2="65" stroke="#f87171" strokeWidth="3" />}
-            {misses >= 5 && <line x1="70" y1="75" x2="55" y2="95" stroke="#f87171" strokeWidth="3" />}
-            {misses >= 6 && <line x1="70" y1="75" x2="85" y2="95" stroke="#f87171" strokeWidth="3" />}
+        <div className="relative h-28 w-28 sm:h-32 sm:w-32" aria-hidden>
+          <svg viewBox="0 0 120 140" className="h-full w-full">
+            <line x1="15" y1="125" x2="85" y2="125" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
+            <line x1="40" y1="125" x2="40" y2="15" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
+            <line x1="40" y1="15" x2="85" y2="15" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
+            <line x1="85" y1="15" x2="85" y2="32" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" />
+            {misses >= 1 && <circle cx="85" cy="46" r="12" fill="none" stroke="#f87171" strokeWidth="3.5" />}
+            {misses >= 2 && <line x1="85" y1="58" x2="85" y2="92" stroke="#f87171" strokeWidth="3.5" strokeLinecap="round" />}
+            {misses >= 3 && <line x1="85" y1="68" x2="68" y2="80" stroke="#f87171" strokeWidth="3.5" strokeLinecap="round" />}
+            {misses >= 4 && <line x1="85" y1="68" x2="102" y2="80" stroke="#f87171" strokeWidth="3.5" strokeLinecap="round" />}
+            {misses >= 5 && <line x1="85" y1="92" x2="68" y2="112" stroke="#f87171" strokeWidth="3.5" strokeLinecap="round" />}
+            {misses >= 6 && <line x1="85" y1="92" x2="102" y2="112" stroke="#f87171" strokeWidth="3.5" strokeLinecap="round" />}
             {misses >= 7 && (
               <>
-                <circle cx="66" cy="33" r="1.5" fill="#f87171" />
-                <circle cx="74" cy="33" r="1.5" fill="#f87171" />
+                <circle cx="80" cy="43" r="1.8" fill="#f87171" />
+                <circle cx="90" cy="43" r="1.8" fill="#f87171" />
               </>
             )}
           </svg>
@@ -290,7 +309,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
           {copied ? (es ? "¡Copiado!" : "Copied!") : es ? "Compartir" : "Share"}
         </GameSecondaryButton>
       </div>
-      <p className="text-center text-[11px] text-white/50">
+      <p className="text-center text-[11px text-white/50">
         {es
           ? "Toca letras o usa el teclado · categorías · dificultad · pista · enlace con palabra · PNG de progreso"
           : "Tap letters or use keyboard · categories · difficulty · hint · link with word · progress PNG"}

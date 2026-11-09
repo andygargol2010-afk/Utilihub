@@ -70,7 +70,7 @@ path_es: /es/juegos/hangman-classic
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: User selects category, guesses letters, sees progressive SVG hangman and revealed word, reaches win or lose state with stats, shares PNG or URL.
 share: both
 next_step_required: yes
@@ -80,6 +80,7 @@ notes: Domain roll: FLEX (p_fixed 0.35 not hit in sim), weighted among core+grow
 3. checkers-classic: value 4, share 4, search 4, distinct 4, feas 4, perf 5. Total 25. Closest: connect-four, battleship. Metaphor: turn-based jumps board. IP: traditional draughts, generic pieces.
 Rejected particle patterns. Core by run 2: basic guess + SVG progress + win/lose.
 Run 1: added catalog entry for hangman-classic (slugEs same), wired in registry MAP to existing HangmanGame component. Playable core available at /games/hangman-classic. Next: polish SVG, categories if needed, a11y, PNG branding.
+Run 2: polished progressive SVG (larger viewBox, thicker round-cap lines, better proportions, eyes on miss 7), added live score display (based on remaining misses + win bonus - hint), upgraded PNG export to larger branded canvas with gradient bg, matching gallows figure, category, score, outcome and utilihub.net footer. a11y aria-live already present; mobile 390px classes intact. Categories remain animals/countries/food/tech/random (sufficient; science/tools covered by tech). Next: final a11y pass + any edge cases, then close on run 4.
 adsense-prep_runs: 7
 ```
 
