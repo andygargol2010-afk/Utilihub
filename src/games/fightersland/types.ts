@@ -81,6 +81,31 @@ export const CHARACTERS: CharacterDef[] = [
   },
 ];
 
+export interface MapDef {
+  id: string;
+  name: string;
+  bg: string;
+  ground: string;
+  lines: string;
+}
+
+export const MAPS: MapDef[] = [
+  {
+    id: 'arena',
+    name: 'Arena Clásica',
+    bg: '#1e293b',
+    ground: '#334155',
+    lines: '#475569',
+  },
+  {
+    id: 'dojo',
+    name: 'Dojo de Sombras',
+    bg: '#1a1a2e',
+    ground: '#16213e',
+    lines: '#0f3460',
+  },
+];
+
 export interface Fighter {
   id: string;
   char: CharacterDef;
