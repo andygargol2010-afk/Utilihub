@@ -80,6 +80,7 @@ function RootShell({ children }: { children: ReactNode }) {
           crossOrigin="anonymous"
           fetchPriority="high"
         />
+        <style>{`body{margin:0;background:#f8f9fc;color:#1a1d2e;font-family:ui-sans-serif,system-ui,sans-serif}header.site-header{height:64px;border-bottom:1px solid #e5e7eb;background:rgba(248,249,252,.95);position:sticky;top:0;z-index:50}`}</style>
         <HeadContent />
       </head>
       <body>
