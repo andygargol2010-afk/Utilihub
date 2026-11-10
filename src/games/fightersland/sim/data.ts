@@ -116,7 +116,8 @@ export const G = {
   SCALING: [1, 0.85, 0.75, 0.65, 0.55, 0.45, 0.4, 0.35] as readonly number[],
   PARRY_WINDOW: 4,
   PARRY_LOCKOUT: 24,
-  PARRY_ADV: 18,
+  /** Stun on the attacker after a perfect block: one second. */
+  PARRY_ADV: 60,
   GB_ADV: 18,
   /** Fraction of a full-charge attack's damage dealt when it breaks the guard. */
   GB_DAMAGE: 0.45,
