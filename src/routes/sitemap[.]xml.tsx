@@ -176,7 +176,7 @@ export const Route = createFileRoute("/sitemap.xml")({
             alternates: [
               { lang: "pt", path: "/pt/sobre" },
               { lang: "en", path: "/about" },
-              { lang: "es", path: "/es/acerca" },
+              { lang: "es", path: "/es/sobre" },
               { lang: "x-default", path: "/about" },
             ],
           },

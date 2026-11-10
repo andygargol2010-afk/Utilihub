@@ -16,7 +16,7 @@ export const Route = createFileRoute("/pt/sobre")({
       { rel: "canonical", href: absoluteUrl("/pt/sobre") },
       { rel: "alternate", hrefLang: "pt", href: absoluteUrl("/pt/sobre") },
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/about") },
-      { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/acerca") },
+      { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/sobre") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/about") },
     ],
   }),
