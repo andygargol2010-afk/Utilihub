@@ -68,7 +68,9 @@ export function Stage({ app, onExit }: { app: GameApp; onExit: () => void }) {
   // measure the header and the stage
   useLayoutEffect(() => {
     const measure = (): void => {
-      const t = headerBottom();
+      // Short viewports (phones in landscape): the stage covers the site header too, so the
+      // whole screen is available; the exit button brings the page back.
+      const t = window.innerHeight < 480 ? 0 : headerBottom();
       setTop(t);
       setSize({ w: window.innerWidth, h: Math.max(1, window.innerHeight - t) });
     };
@@ -125,7 +127,7 @@ export function Stage({ app, onExit }: { app: GameApp; onExit: () => void }) {
   const s = app.strings;
 
   const canvasStyle: CSSProperties = { left: `${L.cx}px`, top: `${L.cy}px`, width: `${L.cw}px`, height: `${L.ch}px` };
-  const stageStyle = { ["--fl-top" as string]: `${top}px`, ["--u" as string]: `${L.ui}px` } as CSSProperties;
+  const stageStyle = { ["--fl-top" as string]: `${top}px`, ["--fl-z" as string]: top === 0 ? "60" : "40", ["--u" as string]: `${L.ui}px` } as CSSProperties;
   const showTouch = fightActive && L.controls !== "none";
   const menuVisible = !fightActive;
   // overlays sit within the canvas rectangle, below the HUD band
