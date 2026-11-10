@@ -1,1 +1,1 @@
-$(cat /tmp/sudoku_polished.tsx)
+PLACEHOLDER_SKIP

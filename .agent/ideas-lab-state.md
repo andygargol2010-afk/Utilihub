@@ -1,1 +1,1 @@
-$(cat /tmp/ideas-lab-state.md)
+PLACEHOLDER_SKIP
