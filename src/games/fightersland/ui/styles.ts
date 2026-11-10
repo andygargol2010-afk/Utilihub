@@ -16,14 +16,17 @@ export const FL_CSS = `
 .fl-poster-body{position:relative;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*6);padding:calc(var(--u)*6);text-align:center}
 
 /* stage (fixed, below the site header) */
-.fl-stage{position:fixed;left:0;right:0;bottom:0;top:var(--fl-top,0px);z-index:40;background:var(--fl-bg);overflow:hidden;user-select:none;-webkit-user-select:none;overscroll-behavior:contain;touch-action:none;outline:none}
+.fl-stage{position:fixed;left:0;right:0;bottom:0;top:var(--fl-top,0px);z-index:var(--fl-z,40);background:var(--fl-bg);overflow:hidden;user-select:none;-webkit-user-select:none;overscroll-behavior:contain;touch-action:none;outline:none}
 .fl-canvas{position:absolute;display:block;image-rendering:pixelated;image-rendering:crisp-edges;background:#000}
 .fl-dim{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(11,8,20,.62) 0%,rgba(11,8,20,.84) 70%,rgba(11,8,20,.94) 100%);pointer-events:none}
 .fl-dim-fight{background:rgba(9,6,16,.72)}
 .fl-layer{position:absolute;left:0;right:0;bottom:0;top:0}
-.fl-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u)*5);padding:calc(var(--u)*6) calc(var(--u)*4);overflow-y:auto;overflow-x:hidden;touch-action:pan-y;scrollbar-width:thin}
+.fl-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:calc(var(--u)*5);padding:calc(var(--u)*6) calc(var(--u)*4);overflow-y:auto;overflow-x:hidden;touch-action:pan-y;scrollbar-width:thin}
 .fl-screen-top{justify-content:flex-start}
+.fl-screen-top>*:first-child{margin-top:0}
 .fl-screen>*{flex:none}
+.fl-screen>*:first-child{margin-top:auto}
+.fl-screen>*:last-child{margin-bottom:auto}
 .fl-col{display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*3)}
 .fl-row{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:calc(var(--u)*3);flex-wrap:wrap}
 .fl-menu{display:flex;flex-direction:column;align-items:stretch;gap:calc(var(--u)*3);min-width:calc(var(--u)*120)}
