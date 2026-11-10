@@ -62,20 +62,20 @@ adsense-prep_runs: 8
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Preparar el sitio para cumplimiento y aprobación de Google AdSense: crear /ads.txt con entradas genéricas o placeholder (sin publisher ID real aún), actualizar páginas de privacidad y cookies con menciones a redes publicitarias (incluyendo AdSense y Adsterra existente), añadir una página de "About" o mejorar la existente con más contenido original sobre el propósito de UtiliHub, y verificar densidad de contenido y políticas básicas. Mantener Adsterra intacto. EN+ES.
+status: active
+idea: Interactive classic Sudoku player. User selects difficulty (easy/medium/hard), receives a 9x9 grid with pre-filled numbers, fills remaining cells via keyboard or on-screen number pad. Live validation highlights conflicts (row/column/box), timer runs, undo available, win condition when grid complete and valid. Share branded PNG of solved board + stats or URL deep-link (?diff=&board=). EN+ES routes, mobile-first 390px, keyboard navigation, a11y labels + aria-live for conflicts and completion.
 
-id: adsense-compliance-prep
-path_en: /about /privacy /cookies /ads.txt
-path_es: /es/sobre /es/privacidad /es/cookies
+id: sudoku-classic
+path_en: /games/sudoku
+path_es: /es/juegos/sudoku
 path_seo: n/a
-domain: adsense-prep
+domain: games
 runs_total: 4
-runs_remaining: 0
-acceptance: Usuario visita /ads.txt y ve el archivo; revisa páginas de privacidad/cookies actualizadas con secciones de publicidad; About page tiene contenido sustantivo. No cambios en Adsterra.
-share: n/a
-next_step_required: no
-notes: Rubric scores (1-5): Cand1 (ads.txt + policy updates): value=4, share=1, search=3, distinct=5, feas=5, perf=5, total=23. Cand2 (long-form content pages): value=4, share=2, search=4, distinct=4, feas=3, perf=4, total=21. Cand3 (ad unit placeholders layout): value=3, share=1, search=2, distinct=4, feas=4, perf=3, total=17. Chosen: Cand1. Closest-3: existing privacy/cookies/about pages. Primary metaphor: compliance documentation + static files. Why not particle-canvas: not interactive sandbox. IP: n/a. Roll: FLEX (rand=0.50>0.35), weighted pick adsense-prep. adsense-prep_runs: 8. Run 1 done: placeholder ads.txt, enhanced About with purpose section, policy dates updated. Run 2 done: dates to 9 Nov 2026, added content density section to About, expanded advertising readiness mentions in privacy/cookies, updated ads.txt comment. ES pages prepared via existing routes. Adsterra intact. Run 3 done: created /es/sobre with full original content matching EN About + how-we-build section; synced ES privacy/cookies dates to 9 Nov 2026 and added ads.txt mention; enhanced EN About with how-we-build for density. Adsterra intact. Run 4 done: final compliance readiness sections on About/Sobre, es.acerca redirects to /es/sobre, project closed. Acceptance met. Adsterra intact.
+runs_remaining: 4
+acceptance: Usuario selecciona dificultad, rellena el grid 9x9, ve validación live de conflictos y gana al completar correctamente, comparte PNG o URL.
+share: both
+next_step_required: yes
+notes: Rubric scores (1-5): Cand1 (sudoku-classic): value=5, share=4, search=5, distinct=4, feas=4, perf=4, total=26. Cand2 (original word-association challenge game): value=4, share=3, search=3, distinct=5, feas=4, perf=5, total=24. Cand3 (interactive bin-packing kit): value=4, share=3, search=3, distinct=5, feas=3, perf=4, total=22. Chosen: Cand1. Closest-3: minesweeper-classic (grid reveal), hangman-classic (word), memory-match (pairs). Primary metaphor: constraint-solving grid puzzle. Why not particle-canvas: discrete grid with strict rules and win condition, no freehand or particles. IP: traditional public-domain Sudoku rules (9x9 unique rows/cols/boxes); generic UI/naming; no branded puzzles. Roll: FLEX (rand=0.62>0.35), weighted pick games from core. adsense-prep_runs: 8.
 adsense-prep_runs: 8
 ```
 
