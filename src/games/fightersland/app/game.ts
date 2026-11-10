@@ -146,6 +146,8 @@ export class GameApp {
   private raf = 0;
   private lastT = 0;
   private acc = 0;
+  private dirty = true;
+  private drawSkip = 0;
   private speed = 1;
   private fpsFrames = 0;
   private fpsT = 0;
@@ -231,6 +233,7 @@ export class GameApp {
     if (!ctx) return;
     ctx.imageSmoothingEnabled = false;
     this.ctx = ctx;
+    this.dirty = true;
     if (!this.renderer) {
       this.renderer = createRenderer({
         labels: this.strings.labels,
@@ -336,7 +339,11 @@ export class GameApp {
       if (this.ui.device !== "pad") this.set({ device: "pad" });
     }
 
-    if (this.fight && this.isRunning()) {
+    // Battery: on touch devices the attract demo behind the menus is frozen after a short
+    // warm-up, and the frame is only redrawn when the simulation advanced.
+    const frozenDemo = !this.real && this.ui.touch && this.fight !== null && this.fight.tick > 150;
+    let advanced = 0;
+    if (this.fight && this.isRunning() && !frozenDemo) {
       this.acc += dt * this.speed;
       const maxTicks = Math.max(5, Math.ceil(5 * this.speed));
       let n = 0;
@@ -346,12 +353,24 @@ export class GameApp {
         n++;
       }
       if (n >= maxTicks) this.acc = 0;
+      advanced = n;
     } else {
       this.acc = 0;
     }
 
+    // Draw only when something changed. Phones (and the demo everywhere) present at 30 fps:
+    // the simulation stays at 60 Hz, so input timing is unchanged.
+    if (advanced > 0) {
+      this.drawSkip++;
+      const half = this.ui.touch || !this.real;
+      if (!half || this.drawSkip >= 2) this.dirty = true;
+    }
     const ctx = this.ctx;
-    if (ctx && this.renderer && this.fight) this.renderer.draw(ctx, this.fight);
+    if (this.dirty && ctx && this.renderer && this.fight) {
+      this.dirty = false;
+      this.drawSkip = 0;
+      this.renderer.draw(ctx, this.fight);
+    }
   };
 
   private isRunning(): boolean {
