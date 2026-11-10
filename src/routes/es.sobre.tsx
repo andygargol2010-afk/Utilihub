@@ -55,6 +55,10 @@ function SobrePage() {
         <p>
           Las herramientas se eligen y desarrollan por su valor práctico cotidiano y profundidad educativa. Priorizamos el cálculo completamente local en el navegador, la accesibilidad, el soporte bilingüe (EN+ES) y resultados claros para el usuario. Las experiencias interactivas como kits, journeys, juegos clásicos y simuladores se diseñan con objetivos definidos, feedback de progreso y resultados compartibles. Todo el contenido es original de UtiliHub; no hacemos scraping ni duplicamos material externo.
         </p>
+        <h2>Preparación de cumplimiento publicitario</h2>
+        <p>
+          Las páginas Sobre, Privacidad y Cookies contienen contenido original sustantivo y divulgaciones claras para publicidad de terceros (Adsterra activo; preparación AdSense mediante /ads.txt placeholder). Las políticas incluyen métodos de exclusión, manejo de datos y secciones de preparación de redes. Sin cambios en la integración de Adsterra.
+        </p>
         <h2>Operador</h2>
         <p>
           El sitio es operado por un pequeño equipo con base en Argentina. Para preguntas, reportes de errores o sugerencias escribe a

@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: games
-last_closed_id: hangman-classic
+last_closed_domain: adsense-prep
+last_closed_id: adsense-compliance-prep
 p_fixed: 0.35
 
 weights_core:
@@ -37,7 +37,7 @@ weights_growth:
   adsense-prep: 11
   seo-locales: 10   # retire → 0 when SEO_LOCALES_ACTIVE length ≥ 5; RESET 2026-10-28 empty actives
 
-adsense-prep_runs: 7
+adsense-prep_runs: 8
 ```
 
 ---
@@ -45,6 +45,7 @@ adsense-prep_runs: 7
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-09 | adsense-prep | adsense-compliance-prep | Preparación de cumplimiento AdSense completa tras 4 runs. /ads.txt con entradas placeholder (google.com pub-0000000000000000), páginas About/Sobre con contenido sustantivo original (propósito, densidad, how-we-build, compliance note), privacy/cookies EN+ES actualizadas con secciones de publicidad de terceros, opt-outs, readiness y menciones a Adsterra intacto. Fechas 9 Nov 2026. EN+ES. Acceptance met (visita /ads.txt, revisa políticas con secciones de ads, About sustantivo). Adsterra intacto. IP: n/a.
 - 2026-11-09 | games | hangman-classic | Interactive classic Hangman (Ahorcado) complete after 4 runs. User selects category (animals/countries/food/tech/random) and difficulty (easy 8/normal 6/hard 4 misses), guesses letters via keyboard or on-screen buttons to reveal the hidden word. On misses a live SVG hangman figure progresses (up to 7 parts + eyes). Shows lives remaining, guessed letters, score. Optional hint. Win when word complete or lose when figure full. Keyboard nav (letters + R new + H hint), URL deep-link (?cat=&word=&diff=), branded PNG of final hangman + word + stats, EN+ES routes, mobile-first 390px, a11y labels + aria-live for guesses and outcome. Final polish: progressive SVG, score, PNG branding, richer aria-live, keyboard shortcuts, focus-visible. Acceptance met (select category/difficulty, guess letters, see progressive SVG + revealed word, win/lose with stats, share PNG or URL). IP: traditional public-domain hangman letter-guess + penalty figure; generic words/categories; no branded.
 - 2026-11-09 | kits | logic-circuit-kit | Interactive logic circuit kit complete after 4 runs. User places gates (AND/OR/NOT/XOR/NAND/NOR), inputs/outputs on 5x5 grid, connects with wires (port selector out/in1/in2), toggles inputs, sees live SVG wires, output indicators (colors), truth table (up to 3 inputs), guided challenges (half-adder, decoder) with completion feedback, wires list with delete, keyboard nav (arrows+Enter/Space), URL deep-link (?g= &w=), branded PNG of grid+wires+stats, EN+ES routes, mobile-first 390px, a11y labels + aria-live. Final polish completed truncated UI + visual connections. Acceptance met (place gates, connect wires, toggle inputs, see live outputs and truth table, complete challenge, share PNG or URL). IP: original educational boolean logic assembler with generic gates; no branded kits.
 - 2026-11-09 | games | memory-match-classic | Interactive classic Memory Match (Concentration) complete after 4 runs. User selects difficulty (4x4 easy, 6x4 medium, 6x6 hard), flips two cards to find matching pairs (emoji themes: fruits/animals/numbers/symbols), sees live timer/moves/score/stars/progress bar, optional sound, mismatch shake, keyboard arrows+Enter/Space + R restart, URL deep-link (?size=&theme=&seed=), branded PNG of board + stats, EN+ES routes, mobile-first 390px, a11y labels + aria-live. Final polish: global R key restart + richer aria-live announcements. Acceptance met (select size/theme, match all pairs, see win stats/stars, share PNG or URL). IP: traditional public-domain pair-matching (concentration), generic emoji/icons; no branded assets.
@@ -54,7 +55,6 @@ adsense-prep_runs: 7
 - 2026-11-07 | games | minesweeper-classic | Interactive classic Minesweeper (Buscaminas) complete after 4 runs. User selects difficulty (Easy 9x9/10, Medium 16x16/40, Hard 16x30/99), reveals cells with cascade on empty, flags/questions, timer + mines left, win by all safe open or lose with full expose. Keyboard nav (arrows + Enter/Space/F), seeded URL deep-link, branded PNG, EN+ES, mobile-first 390px with 22px cells, legend, a11y grid roles + aria-live. Acceptance met (select, reveal/flag, win/lose feedback, share PNG/URL). IP: traditional public-domain Minesweeper rules (numbers, cascade, flags); generic UI/naming; no Microsoft or branded assets.
 - 2026-11-06 | studio-composition | timeline-event-composer | Interactive timeline event composer complete after 4 runs. User adds 5-10 event cards (title, short description, optional date/tag), reorders by buttons, sees live vertical SVG timeline with connecting lines, generates branded summary card PNG with timeline visual + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y, max limit, Reset, Enter to add, aria-live. Acceptance met (add/reorder/live timeline/share PNG+URL). IP: original educational timeline assembler with generic events; no branded frameworks.
 - 2026-11-06 | journeys | goal-progress-journey | Interactive multi-stage personal goal progress journey. User chooses a goal category (learn a skill, build a habit, save for a goal, improve fitness), sets parameters, then advances through 5-7 ordered stages with checklists, binary/multi choices that branch tips and outcomes, sees live progress bar and percentage, related tool recommendations, and on completion a branded summary card with stats and next steps. Generates canvas PNG of the journey card + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y. Acceptance met when user selects category, completes stages, sees final card, shares PNG or URL. IP: original educational goal-progress tracker with generic stages; no branded frameworks.
-- 2026-11-06 | share-hooks | utili-type-quiz | Interactive multi-question preference quiz that reveals a personalized "Utili Type" archetype complete after 4 runs. User answers 8-10 binary/multi-choice questions about favorite activities/tools, sees progressive progress bar, ends with branded result card (type name, short description, matching tool/game recommendations), generates canvas PNG + deep-link URL for sharing. EN+ES routes, mobile-first 390px, a11y keyboard nav + ARIA. Acceptance met (answers quiz, sees type card with recs, shares PNG or URL). IP: original educational personality quiz, generic types.
 ```
 
 ---
@@ -62,7 +62,7 @@ adsense-prep_runs: 7
 ## ACTIVE PROJECT
 
 ```
-status: active
+status: done
 idea: Preparar el sitio para cumplimiento y aprobación de Google AdSense: crear /ads.txt con entradas genéricas o placeholder (sin publisher ID real aún), actualizar páginas de privacidad y cookies con menciones a redes publicitarias (incluyendo AdSense y Adsterra existente), añadir una página de "About" o mejorar la existente con más contenido original sobre el propósito de UtiliHub, y verificar densidad de contenido y políticas básicas. Mantener Adsterra intacto. EN+ES.
 
 id: adsense-compliance-prep
@@ -71,12 +71,12 @@ path_es: /es/sobre /es/privacidad /es/cookies
 path_seo: n/a
 domain: adsense-prep
 runs_total: 4
-runs_remaining: 1
+runs_remaining: 0
 acceptance: Usuario visita /ads.txt y ve el archivo; revisa páginas de privacidad/cookies actualizadas con secciones de publicidad; About page tiene contenido sustantivo. No cambios en Adsterra.
 share: n/a
-next_step_required: yes
-notes: Rubric scores (1-5): Cand1 (ads.txt + policy updates): value=4, share=1, search=3, distinct=5, feas=5, perf=5, total=23. Cand2 (long-form content pages): value=4, share=2, search=4, distinct=4, feas=3, perf=4, total=21. Cand3 (ad unit placeholders layout): value=3, share=1, search=2, distinct=4, feas=4, perf=3, total=17. Chosen: Cand1. Closest-3: existing privacy/cookies/about pages. Primary metaphor: compliance documentation + static files. Why not particle-canvas: not interactive sandbox. IP: n/a. Roll: FLEX (rand=0.50>0.35), weighted pick adsense-prep. adsense-prep_runs: 7. Run 1 done: placeholder ads.txt, enhanced About with purpose section, policy dates updated. Run 2 done: dates to 9 Nov 2026, added content density section to About, expanded advertising readiness mentions in privacy/cookies, updated ads.txt comment. ES pages prepared via existing routes. Adsterra intact. Run 3 done: created /es/sobre with full original content matching EN About + how-we-build section; synced ES privacy/cookies dates to 9 Nov 2026 and added ads.txt mention; enhanced EN About with how-we-build for density. Adsterra intact.
-adsense-prep_runs: 7
+next_step_required: no
+notes: Rubric scores (1-5): Cand1 (ads.txt + policy updates): value=4, share=1, search=3, distinct=5, feas=5, perf=5, total=23. Cand2 (long-form content pages): value=4, share=2, search=4, distinct=4, feas=3, perf=4, total=21. Cand3 (ad unit placeholders layout): value=3, share=1, search=2, distinct=4, feas=4, perf=3, total=17. Chosen: Cand1. Closest-3: existing privacy/cookies/about pages. Primary metaphor: compliance documentation + static files. Why not particle-canvas: not interactive sandbox. IP: n/a. Roll: FLEX (rand=0.50>0.35), weighted pick adsense-prep. adsense-prep_runs: 8. Run 1 done: placeholder ads.txt, enhanced About with purpose section, policy dates updated. Run 2 done: dates to 9 Nov 2026, added content density section to About, expanded advertising readiness mentions in privacy/cookies, updated ads.txt comment. ES pages prepared via existing routes. Adsterra intact. Run 3 done: created /es/sobre with full original content matching EN About + how-we-build section; synced ES privacy/cookies dates to 9 Nov 2026 and added ads.txt mention; enhanced EN About with how-we-build for density. Adsterra intact. Run 4 done: final compliance readiness sections on About/Sobre, es.acerca redirects to /es/sobre, project closed. Acceptance met. Adsterra intact.
+adsense-prep_runs: 8
 ```
 
 <!-- end:ideas-lab-state.md -->
