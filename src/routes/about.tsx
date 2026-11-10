@@ -51,6 +51,14 @@ function AboutPage() {
           All pages and tools feature original, substantive content. We avoid thin or duplicated pages. Educational experiences include guided kits, step-by-step journeys,
           classic public-domain games with clear rules, and simulators that model real cause-and-effect systems. This density supports better user value and compliance with advertising network policies.
         </p>
+        <h2>How we build</h2>
+        <p>
+          Tools are chosen and developed for practical everyday value and educational depth. We prioritize fully browser-local computation, accessibility, bilingual support (EN+ES), and clear user outcomes. Interactive experiences such as kits, journeys, classic games and simulators are designed with defined goals, progress feedback and shareable results. All content is original to UtiliHub; we do not scrape or duplicate external material.
+        </p>
+        <h2>Advertising compliance readiness</h2>
+        <p>
+          Pages for About, Privacy and Cookies contain substantive original content and clear disclosures for third-party advertising (Adsterra active; AdSense preparation via placeholder /ads.txt). Policies include opt-out methods, data handling and network readiness sections. No changes to Adsterra integration.
+        </p>
         <h2>Operator</h2>
         <p>
           The site is operated by a small team based in Argentina. For questions, bug reports or suggestions write to

@@ -113,11 +113,11 @@ export function HoursToDecimalCalculatorTool({ locale = "en" }: { tool?: General
       <div className="text-sm text-muted-foreground space-y-1">
         <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
         <p>
-          <a href={es ? "/es/herramientas/calculadora-horas-entre-fechas" : "/herramientas/calculadora-horas-entre-fechas"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-horas-entre-fechas" : "/tools/calculadora-horas-entre-fechas"} className="underline">
             {es ? "Calculadora de horas entre fechas" : "Hours between dates calculator"}
           </a>
           {" · "}
-          <a href={es ? "/es/herramientas/calculadora-horas-estudio" : "/herramientas/calculadora-horas-estudio"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-horas-estudio" : "/tools/calculadora-horas-estudio"} className="underline">
             {es ? "Calculadora de horas de estudio" : "Study hours calculator"}
           </a>
         </p>

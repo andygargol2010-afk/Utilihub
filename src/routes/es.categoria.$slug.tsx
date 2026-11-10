@@ -134,6 +134,11 @@ function SpanishCategoryPage() {
 
   return (
     <div className="container-page py-6 sm:py-8">
+      <style>{
+        /* Critical CSS so category LCP (h1) paints before the full styles.css */
+        `.container-page{width:100%;margin-inline:auto;max-width:84rem;padding-inline:clamp(1rem,3vw,2rem)}` +
+        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1.03}`
+      }</style>
       <DeferredBreadcrumbs
         locale="es"
         items={[

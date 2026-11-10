@@ -431,7 +431,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
                 key={`${r}-${c}`}
                 type="button"
                 onClick={() => setSelected([r, c])}
-                className={`relative flex h-8 w-8 items-center justify-center text-sm font-bold transition sm:h-10 sm:w-10 ${boxBorder} ${
+                className={`relative flex h-8 w-8 items-center justify-center text-sm font-bold transition sm:h-10 sm:w-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${boxBorder} ${
                   conflict
                     ? "bg-rose-500/40 text-rose-100"
                     : sel
