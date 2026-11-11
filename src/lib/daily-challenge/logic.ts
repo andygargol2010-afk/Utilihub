@@ -124,3 +124,41 @@ export function computeStreaks(done: DoneMap, today: string): { current: number;
 export function lastDays(today: string, n: number): string[] {
   return Array.from({ length: n }, (_, i) => addDays(today, i - (n - 1)));
 }
+
+const LEFT_KEY = "utilihub:daily-challenge:left";
+
+/** Remember that the visitor left to play today's game (read back when they return). */
+export function markLeft(dayKey: string, slug: string): void {
+  try {
+    sessionStorage.setItem(LEFT_KEY, JSON.stringify({ dayKey, slug, ts: Date.now() }));
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+export function readLeft(): { dayKey: string; slug: string; ts: number } | null {
+  try {
+    const raw = JSON.parse(sessionStorage.getItem(LEFT_KEY) || "null");
+    if (raw && typeof raw.dayKey === "string" && typeof raw.slug === "string" && typeof raw.ts === "number") return raw;
+  } catch {
+    /* ignore */
+  }
+  return null;
+}
+
+export function clearLeft(): void {
+  try {
+    sessionStorage.removeItem(LEFT_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+/** UTC weekday (0 = Sunday) of a day key. */
+export function weekdayOf(dayKey: string): number {
+  return new Date(`${dayKey}T00:00:00Z`).getUTCDay();
+}
+
+export function countDone(done: DoneMap, days: string[]): number {
+  return days.reduce((n, d) => (done[d] ? n + 1 : n), 0);
+}

@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { gameName } from "@/lib/games/catalog";
+import { GAMES, gameName } from "@/lib/games/catalog";
 import {
+  clearLeft,
   computeStreaks,
+  countDone,
+  markLeft,
+  readLeft,
+  weekdayOf,
   dayKeyOf,
   formatCountdown,
   lastDays,
@@ -33,6 +38,11 @@ const T = {
     announceDone: "Challenge marked as done. Streak:",
     announceUndo: "Challenge marked as not done.",
     hint: "Play the game, then come back and mark it as done. Everything stays on this device.",
+    welcomeBack: "Welcome back! Did you reach today's goal?",
+    yesDone: "Yes, mark it done",
+    notYet: "Not yet",
+    summary: "completed in the last 28 days",
+    weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   },
   es: {
     today: "Reto de hoy",
@@ -51,6 +61,11 @@ const T = {
     announceDone: "Reto marcado como hecho. Racha:",
     announceUndo: "Reto marcado como no hecho.",
     hint: "Jugá el juego, volvé y marcá el reto como hecho. Todo queda guardado en este dispositivo.",
+    welcomeBack: "¡Bienvenido de vuelta! ¿Lograste el objetivo de hoy?",
+    yesDone: "Sí, marcar como hecho",
+    notYet: "Todavía no",
+    summary: "completados en los últimos 28 días",
+    weekdays: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
   },
 } as const;
 
@@ -59,12 +74,30 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
   const [now, setNow] = useState<number | null>(null);
   const [done, setDone] = useState<DoneMap>({});
   const [announce, setAnnounce] = useState("");
+  const [returned, setReturned] = useState(false);
 
   useEffect(() => {
     setDone(readDone());
     setNow(Date.now());
     const id = window.setInterval(() => setNow(Date.now()), 1000);
-    return () => window.clearInterval(id);
+    const check = () => {
+      const left = readLeft();
+      if (left && left.dayKey === dayKeyOf(Date.now())) setReturned(true);
+    };
+    check();
+    const onVisible = () => {
+      if (document.visibilityState === "visible") {
+        setDone(readDone());
+        check();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("pageshow", check);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("pageshow", check);
+    };
   }, []);
 
   const today = now === null ? null : dayKeyOf(now);
@@ -86,6 +119,15 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
     setDone(next);
     writeDone(next);
   }, [done, pick, t, today]);
+
+  const confirmReturn = useCallback(
+    (ok: boolean) => {
+      clearLeft();
+      setReturned(false);
+      if (ok && pick && today && !done[today]) toggle();
+    },
+    [done, pick, today, toggle],
+  );
 
   if (now === null || !pick || !today) {
     return <div className="min-h-[360px] rounded-2xl border border-border bg-card" aria-busy="true" />;
@@ -109,6 +151,7 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
         <div className="mt-4 flex flex-wrap gap-3">
           <a
             href={pickPath(pick, locale)}
+            onClick={() => markLeft(today, pick.game.slug)}
             className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 py-2 font-bold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             {t.play}
@@ -124,6 +167,28 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
         <p className="mt-3 text-xs text-muted-foreground">{t.hint}</p>
       </div>
 
+      {returned && !isDone ? (
+        <div className="rounded-2xl border border-cyan-500/50 bg-cyan-500/10 p-4" role="alert">
+          <p className="font-semibold">{t.welcomeBack}</p>
+          <div className="mt-3 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => confirmReturn(true)}
+              className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 py-2 font-bold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              {t.yesDone}
+            </button>
+            <button
+              type="button"
+              onClick={() => confirmReturn(false)}
+              className="inline-flex min-h-11 items-center rounded-xl border border-border px-5 py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              {t.notYet}
+            </button>
+          </div>
+        </div>
+      ) : null}
+
       <div className="grid grid-cols-3 gap-3 text-center">
         <Stat label={t.streak} value={`${streaks.current} ${t.days}`} />
         <Stat label={t.best} value={`${streaks.best} ${t.days}`} />
@@ -132,16 +197,26 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
 
       <div className="rounded-2xl border border-border bg-card p-4">
         <h3 className="text-sm font-bold">{t.calendar}</h3>
-        <ul className="mt-3 grid grid-cols-7 gap-1.5" aria-label={t.calendar}>
+        <p className="mt-1 text-xs text-muted-foreground">{countDone(done, strip)}/28 {t.summary}</p>
+        <div className="mt-3 grid grid-cols-7 gap-1.5 text-center text-[10px] font-semibold uppercase text-muted-foreground" aria-hidden="true">
+          {Array.from({ length: 7 }, (_, i) => (
+            <span key={i}>{t.weekdays[(weekdayOf(strip[0] ?? today) + i) % 7]}</span>
+          ))}
+        </div>
+        <ul className="mt-1.5 grid grid-cols-7 gap-1.5" aria-label={t.calendar}>
           {strip.map((d) => {
-            const ok = Boolean(done[d]);
+            const slug = done[d];
+            const ok = Boolean(slug);
+            const emoji = slug ? GAMES.find((g) => g.slug === slug)?.emoji : undefined;
             return (
               <li
                 key={d}
                 title={`${d} — ${ok ? t.doneDay : t.missedDay}`}
                 aria-label={`${d}: ${ok ? t.doneDay : t.missedDay}`}
-                className={`aspect-square rounded-md border ${ok ? "border-emerald-500 bg-emerald-500" : "border-border bg-muted"} ${d === today ? "ring-2 ring-cyan-500" : ""}`}
-              />
+                className={`flex aspect-square items-center justify-center rounded-md border text-sm ${ok ? "border-emerald-500 bg-emerald-500/20" : "border-border bg-muted"} ${d === today ? "ring-2 ring-cyan-500" : ""}`}
+              >
+                <span aria-hidden="true">{emoji ?? ""}</span>
+              </li>
             );
           })}
         </ul>
