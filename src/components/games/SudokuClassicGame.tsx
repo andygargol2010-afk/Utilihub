@@ -490,7 +490,13 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
                             ? "bg-slate-800/80 text-emerald-100"
                             : "bg-slate-900/60 text-amber-200"
                 }`}
-                aria-label={es ? `Celda ${r + 1},${c + 1}` : `Cell ${r + 1},${c + 1}`}
+                aria-label={
+                  (es ? `Celda fila ${r + 1}, columna ${c + 1}` : `Cell row ${r + 1}, column ${c + 1}`) +
+                  (v ? (es ? `, valor ${v}` : `, value ${v}`) : es ? ", vacía" : ", empty") +
+                  (isFixed ? (es ? ", dada" : ", given") : "") +
+                  (conflict ? (es ? ", conflicto" : ", conflict") : "")
+                }
+                aria-pressed={sel}
               >
                 {v ? (
                   v
@@ -517,7 +523,12 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
             key={n}
             type="button"
             onClick={() => put(n)}
-            className="relative flex h-11 min-w-11 flex-col items-center justify-center rounded-xl bg-white/10 text-base font-bold text-white transition hover:bg-white/20 active:scale-95"
+            aria-label={
+              n === 0
+                ? es ? "Borrar celda" : "Clear cell"
+                : es ? `Número ${n}, quedan ${remaining[n]}` : `Number ${n}, ${remaining[n]} left`
+            }
+            className={`relative flex h-11 min-w-11 flex-col items-center justify-center rounded-xl bg-white/10 text-base font-bold text-white transition hover:bg-white/20 active:scale-95 ${n > 0 && remaining[n]! <= 0 ? "opacity-40" : ""}`}
           >
             {n === 0 ? (es ? "Borrar" : "Clear") : n}
             {n > 0 && remaining[n]! > 0 ? (
