@@ -376,9 +376,13 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     ? es
       ? "¡Sudoku resuelto! 🎉"
       : "Sudoku solved! 🎉"
-    : es
-      ? "Completá la grilla sin conflictos"
-      : "Fill the grid with no conflicts";
+    : conflictMap.size > 0
+      ? es
+        ? `${conflictMap.size} ${conflictMap.size === 1 ? "celda en conflicto" : "celdas en conflicto"}`
+        : `${conflictMap.size} ${conflictMap.size === 1 ? "cell in conflict" : "cells in conflict"}`
+      : es
+        ? "Completá la grilla sin conflictos"
+        : "Fill the grid with no conflicts";
 
   const bestKey = `utilihub-sudoku-best-${diff}`;
   const [bestMs, setBestMs] = useState<number | null>(null);
@@ -403,7 +407,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     }
   }, [won]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const selNum = selected ? grid[selected[0]]![selected[1]] : 0;
+  const selNum = selected ? (grid[selected[0]]?.[selected[1]] ?? 0) : 0;
 
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-3 px-1">
@@ -444,7 +448,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
 
       <p
-        className={`text-sm font-bold ${won ? "text-amber-300 text-base animate-pulse" : "text-emerald-300/90"}`}
+        className={`text-sm font-bold ${won ? "text-amber-300 text-base motion-safe:animate-pulse" : "text-emerald-300/90"}`}
         aria-live="polite"
       >
         {status} · {formatTime(elapsed)}
