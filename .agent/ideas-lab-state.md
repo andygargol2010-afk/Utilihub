@@ -71,11 +71,11 @@ path_es: /es/juegos/sudoku-clasico
 path_seo: n/a
 domain: games
 runs_total: 4
-runs_remaining: 3
+runs_remaining: 2
 acceptance: Usuario selecciona dificultad, rellena el grid 9x9, ve validación live de conflictos y gana al completar correctamente, comparte PNG o URL.
 share: both
 next_step_required: yes
-notes: Rubric scores (1-5): Cand1 (sudoku-classic): value=5, share=4, search=5, distinct=4, feas=4, perf=4, total=26. Cand2 (original word-association challenge game): value=4, share=3, search=3, distinct=5, feas=4, perf=5, total=24. Cand3 (interactive bin-packing kit): value=4, share=3, search=3, distinct=5, feas=3, perf=4, total=22. Chosen: Cand1. Closest-3: minesweeper-classic (grid reveal), hangman-classic (word), memory-match (pairs). Primary metaphor: constraint-solving grid puzzle. Why not particle-canvas: discrete grid with strict rules and win condition, no freehand or particles. IP: traditional public-domain Sudoku rules (9x9 unique rows/cols/boxes); generic UI/naming; no branded puzzles. Roll: FLEX (rand=0.62>0.35), weighted pick games from core. adsense-prep_runs: 8. Run 1/4: verified existing full implementation matches acceptance (difficulty, grid, live conflicts, timer, undo, hints, notes, PNG, URL, EN+ES, mobile, a11y); added focus-visible ring on cells for better keyboard a11y. Core playable since before this run.
+notes: Rubric scores (1-5): Cand1 (sudoku-classic): value=5, share=4, search=5, distinct=4, feas=4, perf=4, total=26. Cand2 (original word-association challenge game): value=4, share=3, search=3, distinct=5, feas=4, perf=5, total=24. Cand3 (interactive bin-packing kit): value=4, share=3, search=3, distinct=5, feas=3, perf=4, total=22. Chosen: Cand1. Closest-3: minesweeper-classic (grid reveal), hangman-classic (word), memory-match (pairs). Primary metaphor: constraint-solving grid puzzle. Why not particle-canvas: discrete grid with strict rules and win condition, no freehand or particles. IP: traditional public-domain Sudoku rules (9x9 unique rows/cols/boxes); generic UI/naming; no branded puzzles. Roll: FLEX (rand=0.62>0.35), weighted pick games from core. adsense-prep_runs: 8. Run 1/4: verified existing full implementation matches acceptance (difficulty, grid, live conflicts, timer, undo, hints, notes, PNG, URL, EN+ES, mobile, a11y); added focus-visible ring on cells for better keyboard a11y. Core playable since before this run. Run 2/4: added keyboard shortcuts (U/Ctrl+Z undo, P/N pencil toggle, H hint) and per-difficulty best time persisted in localStorage (try/catch), shown in status line; EN+ES help text updated.
 adsense-prep_runs: 8
 ```
 
