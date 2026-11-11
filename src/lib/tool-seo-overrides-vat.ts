@@ -42,7 +42,7 @@ export const TOOL_SEO_OVERRIDES_VAT: Record<string, ToolSeoOverride> = {
     ],
     faqEs: [
       {
-        q: "¿Cómo se quita el IVA de un precio incluido?",
+        q: "¿Cómo se quita el IVA de un precio con IVA incluido?",
         a: "Neto = bruto / (1 + tasa). Al 21%, un precio de 121 queda en 100 neto y 21 de IVA.",
       },
       {

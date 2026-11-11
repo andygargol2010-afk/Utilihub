@@ -25,6 +25,7 @@ import {
   TutorialCard,
   TutorialDoneScreen,
 } from "./screens";
+import { OnlineScreen, PingBadge } from "./online";
 
 function headerBottom(): number {
   const h = document.querySelector("header.site-header");
@@ -53,6 +54,8 @@ function MenuScreen({ ui }: { ui: UiState }) {
       return <ResultScreen ui={ui} />;
     case "tutorialDone":
       return <TutorialDoneScreen />;
+    case "online":
+      return <OnlineScreen ui={ui} />;
     case "fight":
       return ui.paused ? <PauseScreen ui={ui} /> : null;
   }
@@ -114,7 +117,7 @@ export function Stage({ app, onExit }: { app: GameApp; onExit: () => void }) {
   }, [app]);
 
   // focus the default item whenever the visible screen changes
-  const screenKey = `${ui.screen}|${ui.paused ? "p" : ""}|${ui.pauseView}|${ui.slot}|${ui.mode}`;
+  const screenKey = `${ui.screen}|${ui.paused ? "p" : ""}|${ui.pauseView}|${ui.slot}|${ui.mode}|${ui.online?.view ?? ""}`;
   useEffect(() => {
     const root = screenRef.current?.querySelector<HTMLElement>(".fl-screen");
     if (root) focusDefault(root, true);
@@ -155,6 +158,8 @@ export function Stage({ app, onExit }: { app: GameApp; onExit: () => void }) {
               <TutorialCard ui={ui} top={hudBottom} maxW={Math.min(L.cw, size.w) - 8} />
             ) : null}
 
+            {fightActive && ui.online && ui.online.rtt !== null ? <PingBadge rtt={ui.online.rtt} top={hudBottom} /> : null}
+
             <div
               ref={screenRef}
               className="fl-layer"
@@ -182,7 +187,11 @@ export function Stage({ app, onExit }: { app: GameApp; onExit: () => void }) {
                 <FlButton label={s.tutorial.skip} small onClick={() => app.skipTutorial()} />
               ) : null}
               {fightActive ? (
-                <CornerButton label={s.pause} icon="pause" onClick={() => app.pause()} />
+                ui.online ? (
+                  <CornerButton label={s.online.leave} icon="leave" onClick={() => app.pause()} />
+                ) : (
+                  <CornerButton label={s.pause} icon="pause" onClick={() => app.pause()} />
+                )
               ) : (
                 <CornerButton
                   label={`${s.sound}: ${ui.settings.sound ? s.on : s.off}`}

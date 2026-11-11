@@ -107,6 +107,10 @@ export function ModeScreen({ ui }: { ui: UiState }) {
           <PixelText text={s.mode.versus} size={1.5} />
           <PixelText text={s.mode.versusDesc} color={DIM} className="fl-mode-desc" />
         </FlButton>
+        <FlButton label={`${s.online.title}. ${s.online.desc}`} onClick={() => app.openOnline()} className="fl-mode-card">
+          <PixelText text={s.online.title} size={1.5} />
+          <PixelText text={s.online.desc} color={DIM} className="fl-mode-desc" />
+        </FlButton>
         <FlButton label={`${s.mode.tutorial}. ${s.mode.tutorialDesc}`} onClick={() => app.chooseMode("tutorial")} className="fl-mode-card">
           <PixelText text={s.mode.tutorial} size={1.5} />
           <PixelText text={s.mode.tutorialDesc} color={DIM} className="fl-mode-desc" />
@@ -182,7 +186,7 @@ export function SelectScreen({ ui }: { ui: UiState }) {
   const uiScale = useUiScale();
   const { w, h } = useStageSize();
   const slot = ui.slot;
-  const initial: Pick = slot === 0 ? ui.settings.lastChar : ui.picks[0] ?? "asagiri";
+  const initial: Pick = slot === 0 || ui.online ? ui.settings.lastChar : ui.picks[0] ?? "asagiri";
   const [hover, setHover] = useState<Pick>(initial);
   const narrow = w < h * 1.15;
   const lowH = h / uiScale < 190;
@@ -191,7 +195,7 @@ export function SelectScreen({ ui }: { ui: UiState }) {
   const p0 = ui.picks[0];
   const tiles: Pick[] = [...CHAR_IDS, "random"];
   const accent = hover === "random" ? GOLD : CHAR_ACCENT[hover];
-  const title = ui.mode === "tutorial" ? s.select.title : `${s.select.title} - ${slotLabel(s, ui, slot)}`;
+  const title = ui.mode === "tutorial" || ui.online ? s.select.title : `${s.select.title} - ${slotLabel(s, ui, slot)}`;
 
   const preview = (
     <div className="fl-preview">
@@ -402,6 +406,19 @@ export function PauseScreen({ ui }: { ui: UiState }) {
       </div>
     );
   }
+  if (ui.online) {
+    // an online match cannot be paused: this is only the leave confirmation
+    return (
+      <div className="fl-screen" data-screen="pause" data-online="1">
+        <PixelText text={s.online.leaveAsk} size={1.5} color={GOLD} />
+        <div className="fl-menu fl-pause">
+          <FlButton label={s.online.keepFighting} primary autoFocus back silent onClick={() => app.resume()} />
+          <SettingsList ui={ui} />
+          <FlButton label={s.online.leave} onClick={() => app.leaveOnline()} />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="fl-screen" data-screen="pause">
       <PixelText text={s.paused.title} size={1.5} color={GOLD} />
@@ -431,20 +448,38 @@ export function ResultScreen({ ui }: { ui: UiState }) {
   const name = CHAR_NAMES[winnerChar];
   const headline = `${name} ${s.result.wins}`;
   let sub: string;
-  if (r.mode === "ai") sub = r.winner === 0 ? s.result.victory : s.result.defeat;
+  const o = ui.online;
+  const lost = o ? r.winner !== o.local : r.mode === "ai" && r.winner === 1;
+  if (o) sub = lost ? s.result.defeat : s.result.victory;
+  else if (r.mode === "ai") sub = r.winner === 0 ? s.result.victory : s.result.defeat;
   else sub = r.winner === 0 ? s.select.player1 : s.select.player2;
   return (
     <div className="fl-screen" data-screen="result">
       <div className="fl-result-card">
-        <PixelText text={sub} size={1.5} color={r.mode === "ai" && r.winner === 1 ? DIM : GOLD} />
+        <PixelText text={sub} size={1.5} color={lost ? DIM : GOLD} />
         <PixelText text={headline} size={fitTextSize(headline, w - 24, uiScale, 2)} color={CHAR_ACCENT[winnerChar]} label={headline} />
         <PixelText text={`${s.result.rounds} ${r.wins[0]} - ${r.wins[1]}`} color={DIM} />
       </div>
-      <div className="fl-menu">
-        <FlButton label={s.result.rematch} primary autoFocus onClick={() => app.rematch()} />
-        <FlButton label={s.result.change} onClick={() => app.changeFighters()} />
-        <FlButton label={s.result.menu} back onClick={() => app.toMenu()} />
-      </div>
+      {o ? (
+        <>
+          <div role="status" data-fl-rematch={`${o.rematchMe ? 1 : 0}${o.rematchRival ? 1 : 0}`} className={o.rematchMe || o.rematchRival ? "fl-blink" : undefined}>
+            <PixelText
+              text={o.starting ? s.online.getReady : o.rematchMe ? s.online.rematchWait : o.rematchRival ? s.online.rematchAsk : " "}
+              color={GOLD}
+            />
+          </div>
+          <div className="fl-menu">
+            <FlButton label={s.result.rematch} primary autoFocus disabled={o.rematchMe || o.starting} onClick={() => app.rematch()} />
+            <FlButton label={s.online.leaveRoom} back onClick={() => app.leaveOnline()} />
+          </div>
+        </>
+      ) : (
+        <div className="fl-menu">
+          <FlButton label={s.result.rematch} primary autoFocus onClick={() => app.rematch()} />
+          <FlButton label={s.result.change} onClick={() => app.changeFighters()} />
+          <FlButton label={s.result.menu} back onClick={() => app.toMenu()} />
+        </div>
+      )}
     </div>
   );
 }

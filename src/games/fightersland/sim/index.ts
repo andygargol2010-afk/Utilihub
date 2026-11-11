@@ -10,6 +10,7 @@ import type {
   CharId,
   CharRatings,
   FightConfig,
+  FightRules,
   FightEvent,
   FightPhase,
   FightState,
@@ -136,8 +137,35 @@ function internalOf(state: FightState): Internal {
 // ---------------------------------------------------------------------------------------------
 // Creation
 
-function newFighter(char: CharId, index: PlayerIndex): FighterState {
+const STANDARD_RULES: FightRules = { hpMul: [1, 1], dmgMul: [1, 1], roundSeconds: ROUND_SECONDS, finisher: true };
+
+function mulOf(v: number): number {
+  return Number.isFinite(v) ? Math.min(10, Math.max(0.1, v)) : 1;
+}
+
+/** Sanitised copy of the optional rules (undefined stays undefined: standard rules). */
+function normalRules(r: FightRules | undefined): FightRules | undefined {
+  if (!r) return undefined;
+  const secs = r.roundSeconds;
+  return {
+    hpMul: [mulOf(r.hpMul[0]), mulOf(r.hpMul[1])],
+    dmgMul: [mulOf(r.dmgMul[0]), mulOf(r.dmgMul[1])],
+    roundSeconds: secs === null || !Number.isFinite(secs) ? null : Math.min(600, Math.max(5, Math.floor(secs))),
+    finisher: r.finisher !== false,
+  };
+}
+
+function rulesOf(state: FightState): FightRules {
+  return state.config.rules ?? STANDARD_RULES;
+}
+
+function roundTimer(rules: FightRules): number {
+  return (rules.roundSeconds ?? ROUND_SECONDS) * TICK_RATE;
+}
+
+function newFighter(char: CharId, index: PlayerIndex, hpMul: number): FighterState {
   const c = CHARS[char];
+  const hp = Math.max(1, Math.round(c.hp * hpMul));
   return {
     char,
     index,
@@ -146,8 +174,8 @@ function newFighter(char: CharId, index: PlayerIndex): FighterState {
     vx: 0,
     vy: 0,
     facing: index === 0 ? 1 : -1,
-    hp: c.hp,
-    maxHp: c.hp,
+    hp,
+    maxHp: hp,
     action: "intro",
     actionFrame: 0,
     move: null,
@@ -173,6 +201,9 @@ export function createFight(config: FightConfig): FightState {
     seed: config.seed,
     roundsToWin: Math.max(1, Math.floor(config.roundsToWin)),
   };
+  const rules = normalRules(config.rules);
+  if (rules) cfg.rules = rules;
+  const active = rules ?? STANDARD_RULES;
   const state: FightState = {
     config: cfg,
     tick: 0,
@@ -180,8 +211,8 @@ export function createFight(config: FightConfig): FightState {
     phaseFrame: 0,
     round: 1,
     wins: [0, 0],
-    timer: ROUND_SECONDS * TICK_RATE,
-    fighters: [newFighter(cfg.chars[0], 0), newFighter(cfg.chars[1], 1)],
+    timer: roundTimer(active),
+    fighters: [newFighter(cfg.chars[0], 0, active.hpMul[0]), newFighter(cfg.chars[1], 1, active.hpMul[1])],
     hitstop: 0,
     slowmo: 0,
     roundWinner: null,
@@ -195,11 +226,11 @@ export function createFight(config: FightConfig): FightState {
 function resetRound(state: FightState, it: Internal): void {
   for (let i = 0; i < 2; i++) {
     const f = state.fighters[i as PlayerIndex];
-    const fresh = newFighter(f.char, f.index);
+    const fresh = newFighter(f.char, f.index, rulesOf(state).hpMul[f.index]);
     Object.assign(f, fresh);
     it.p[i as PlayerIndex] = newPriv(f.char);
   }
-  state.timer = ROUND_SECONDS * TICK_RATE;
+  state.timer = roundTimer(rulesOf(state));
   state.hitstop = 0;
   state.slowmo = 0;
   state.roundWinner = null;
@@ -894,12 +925,12 @@ const NUM: AttackNumbers = {
   pushHit: 0, pushBlock: 0, guardDmg: 0, chip: 0, hitstop: 0, blockstop: 0, heavyHurt: false,
 };
 
-function loadNumbers(a: FighterState, pa: Priv, n: AttackNumbers): void {
+function loadNumbers(a: FighterState, pa: Priv, n: AttackNumbers, dmgMul: number): void {
   const v = pa.variant;
   if (a.action === "attack" && v) {
     n.move = v.str;
     n.lvl = v.lvl;
-    n.dmg = v.dmg;
+    n.dmg = v.dmg * dmgMul;
     n.hs = v.hs;
     n.bs = v.bs;
     n.launch = v.launch;
@@ -907,7 +938,7 @@ function loadNumbers(a: FighterState, pa: Priv, n: AttackNumbers): void {
     n.pushHit = v.pushHit;
     n.pushBlock = v.pushBlock;
     n.guardDmg = v.guardDmg;
-    n.chip = v.chip;
+    n.chip = Math.round(v.chip * dmgMul);
     n.hitstop = v.hitstop;
     n.blockstop = v.blockstop;
     n.heavyHurt = v.str !== "light" || v.lvl > 0;
@@ -916,7 +947,7 @@ function loadNumbers(a: FighterState, pa: Priv, n: AttackNumbers): void {
   const air = pa.air ?? CHARS[a.char].air;
   n.move = "air";
   n.lvl = 0;
-  n.dmg = air.dmg;
+  n.dmg = air.dmg * dmgMul;
   n.hs = air.hs;
   n.bs = air.bs;
   n.launch = false;
@@ -954,7 +985,7 @@ function applyContact(state: FightState, it: Internal, ai: PlayerIndex, ix: numb
   const pd = it.p[di];
   const cd = CHARS[d.char];
   const n = NUM;
-  loadNumbers(a, pa, n);
+  loadNumbers(a, pa, n, rulesOf(state).dmgMul[ai]);
   pa.hasHit = true;
   pa.contact = 0;
   const sy = GROUND_Y - iy;
@@ -1179,19 +1210,24 @@ function checkRoundOver(state: FightState, it: Internal): void {
     state.roundWinner = w;
     state.wins[w]++;
     if (loser.action !== "ko") koFall(loser, winner);
+    let final = false;
     if (state.wins[w] >= state.config.roundsToWin) {
       state.matchWinner = w;
-      it.pendingFinisher = w;
-      state.hitstop = Math.max(state.hitstop, G.KO_HITSTOP);
-      return;
+      if (rulesOf(state).finisher) {
+        it.pendingFinisher = w;
+        state.hitstop = Math.max(state.hitstop, G.KO_HITSTOP);
+        return;
+      }
+      // finisher off: the match-winning round ends with a regular KO
+      final = true;
     }
-    emit(state, { type: "ko", winner: w, perfect: winner.hp >= winner.maxHp, final: false });
+    emit(state, { type: "ko", winner: w, perfect: winner.hp >= winner.maxHp, final });
     setPhase(state, it, "ko");
     state.slowmo = KO_SLOWMO;
     state.hitstop = Math.max(state.hitstop, G.KO_HITSTOP);
     return;
   }
-  if (state.timer <= 0) {
+  if (state.timer <= 0 && rulesOf(state).roundSeconds !== null) {
     state.timer = 0;
     const ra = a.hp / a.maxHp;
     const rb = b.hp / b.maxHp;
@@ -1405,7 +1441,7 @@ export function stepFight(state: FightState, inputs: readonly [InputFrame, Input
     }
     case "fight": {
       simulate(state, it, true);
-      if (state.config.mode !== "tutorial" && state.timer > 0) state.timer--;
+      if (state.config.mode !== "tutorial" && state.timer > 0 && rulesOf(state).roundSeconds !== null) state.timer--;
       checkRoundOver(state, it);
       break;
     }
@@ -1439,6 +1475,97 @@ export function stepFight(state: FightState, inputs: readonly [InputFrame, Input
       break;
     }
   }
+}
+
+// ---------------------------------------------------------------------------------------------
+// Snapshots (online rollback)
+
+/**
+ * Deep copy of a fight, including the private per-fighter / per-fight data, so that stepping
+ * the copy and the original with the same inputs gives identical results. The simulation has
+ * no random state of its own (the seed only lives in the config); `config` is immutable and
+ * shared, which is also how the renderer recognises copies of the same fight.
+ */
+export function cloneFight(state: FightState): FightState {
+  const it = internalOf(state);
+  const copy: FightState = {
+    config: state.config,
+    tick: state.tick,
+    phase: state.phase,
+    phaseFrame: state.phaseFrame,
+    round: state.round,
+    wins: [state.wins[0], state.wins[1]],
+    timer: state.timer,
+    fighters: [{ ...state.fighters[0] }, { ...state.fighters[1] }],
+    hitstop: state.hitstop,
+    slowmo: state.slowmo,
+    roundWinner: state.roundWinner,
+    matchWinner: state.matchWinner,
+    events: state.events.slice(),
+  };
+  // Priv is flat; `variant` / `air` point at immutable move data and stay shared.
+  INTERNAL.set(copy, {
+    p: [{ ...it.p[0] }, { ...it.p[1] }],
+    pendingFinisher: it.pendingFinisher,
+    finisherTarget: it.finisherTarget,
+    finisherSpeed: it.finisherSpeed,
+    timeUpLoser: it.timeUpLoser,
+    timeUp: it.timeUp,
+    announced: it.announced,
+  });
+  return copy;
+}
+
+const HASH_F64 = new Float64Array(1);
+const HASH_U32 = new Uint32Array(HASH_F64.buffer);
+
+function hashMix(h: number, v: number): number {
+  return Math.imul(h ^ (v >>> 0), 16777619) >>> 0;
+}
+
+function hashValue(h: number, v: unknown): number {
+  if (typeof v === "number") {
+    HASH_F64[0] = v === 0 ? 0 : v; // -0 and +0 hash alike
+    return hashMix(hashMix(h, HASH_U32[0] ?? 0), HASH_U32[1] ?? 0);
+  }
+  if (typeof v === "boolean") return hashMix(h, v ? 1 : 2);
+  if (typeof v === "string") {
+    let x = hashMix(h, v.length + 7);
+    for (let i = 0; i < v.length; i++) x = hashMix(x, v.charCodeAt(i));
+    return x;
+  }
+  if (v === null || v === undefined) return hashMix(h, 3);
+  if (Array.isArray(v)) {
+    let x = hashMix(h, v.length + 11);
+    for (let i = 0; i < v.length; i++) x = hashValue(x, v[i]);
+    return x;
+  }
+  let x = hashMix(h, 5);
+  const o = v as Record<string, unknown>;
+  for (const k of Object.keys(o)) x = hashValue(x, o[k]);
+  return x;
+}
+
+/**
+ * 32-bit digest of everything that influences future ticks (public state except `events` and
+ * `config`, plus the private data). Two peers that fed the same inputs get the same number.
+ */
+export function hashFight(state: FightState): number {
+  const it = internalOf(state);
+  let h = 2166136261;
+  h = hashValue(h, state.tick);
+  h = hashValue(h, state.phase);
+  h = hashValue(h, state.phaseFrame);
+  h = hashValue(h, state.round);
+  h = hashValue(h, state.wins);
+  h = hashValue(h, state.timer);
+  h = hashValue(h, state.fighters);
+  h = hashValue(h, state.hitstop);
+  h = hashValue(h, state.slowmo);
+  h = hashValue(h, state.roundWinner);
+  h = hashValue(h, state.matchWinner);
+  h = hashValue(h, it);
+  return h >>> 0;
 }
 
 // ---------------------------------------------------------------------------------------------

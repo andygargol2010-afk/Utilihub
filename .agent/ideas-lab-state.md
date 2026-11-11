@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: adsense-prep
-last_closed_id: adsense-compliance-prep
+last_closed_domain: games
+last_closed_id: sudoku-classic
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 8
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-11 | games | sudoku-classic | Interactive classic Sudoku (9x9) complete after 4 runs. Difficulty easy/medium/hard, live row/column/box conflict highlighting, timer, undo, pencil notes + auto notes, hints, keyboard shortcuts, per-difficulty best time (localStorage), branded board PNG, URL deep-link, EN+ES, mobile 390px, a11y labels + aria-live. Final polish: aria-live now announces conflict count, motion-safe win pulse, GameSecondaryButton gained a real `disabled` prop (Undo/Hint/Pause were silently ignoring it), fixed TS errors. Acceptance met. IP: traditional public-domain Sudoku rules; generic UI.
 - 2026-11-09 | adsense-prep | adsense-compliance-prep | Preparación de cumplimiento AdSense completa tras 4 runs. /ads.txt con entradas placeholder (google.com pub-0000000000000000), páginas About/Sobre con contenido sustantivo original (propósito, densidad, how-we-build, compliance note), privacy/cookies EN+ES actualizadas con secciones de publicidad de terceros, opt-outs, readiness y menciones a Adsterra intacto. Fechas 9 Nov 2026. EN+ES. Acceptance met (visita /ads.txt, revisa políticas con secciones de ads, About sustantivo). Adsterra intacto. IP: n/a.
 - 2026-11-09 | games | hangman-classic | Interactive classic Hangman (Ahorcado) complete after 4 runs. User selects category (animals/countries/food/tech/random) and difficulty (easy 8/normal 6/hard 4 misses), guesses letters via keyboard or on-screen buttons to reveal the hidden word. On misses a live SVG hangman figure progresses (up to 7 parts + eyes). Shows lives remaining, guessed letters, score. Optional hint. Win when word complete or lose when figure full. Keyboard nav (letters + R new + H hint), URL deep-link (?cat=&word=&diff=), branded PNG of final hangman + word + stats, EN+ES routes, mobile-first 390px, a11y labels + aria-live for guesses and outcome. Final polish: progressive SVG, score, PNG branding, richer aria-live, keyboard shortcuts, focus-visible. Acceptance met (select category/difficulty, guess letters, see progressive SVG + revealed word, win/lose with stats, share PNG or URL). IP: traditional public-domain hangman letter-guess + penalty figure; generic words/categories; no branded.
 - 2026-11-09 | kits | logic-circuit-kit | Interactive logic circuit kit complete after 4 runs. User places gates (AND/OR/NOT/XOR/NAND/NOR), inputs/outputs on 5x5 grid, connects with wires (port selector out/in1/in2), toggles inputs, sees live SVG wires, output indicators (colors), truth table (up to 3 inputs), guided challenges (half-adder, decoder) with completion feedback, wires list with delete, keyboard nav (arrows+Enter/Space), URL deep-link (?g= &w=), branded PNG of grid+wires+stats, EN+ES routes, mobile-first 390px, a11y labels + aria-live. Final polish completed truncated UI + visual connections. Acceptance met (place gates, connect wires, toggle inputs, see live outputs and truth table, complete challenge, share PNG or URL). IP: original educational boolean logic assembler with generic gates; no branded kits.
@@ -54,7 +55,6 @@ adsense-prep_runs: 8
 - 2026-11-07 | kits | molecule-builder-kit | Interactive molecule builder kit complete after 4 runs. User places atoms (C, H, O, N) on 5x5 grid, connects with single/double/triple bonds using visual SVG lines, sees live molecular formula + molar mass, completes guided challenges (water H2O, CO2, methane CH4), free mode, atom legend with masses, keyboard navigation (arrows + Enter/Space), URL deep-link (?g= &b=), branded PNG of structure + formula, EN+ES routes, mobile-first 390px. Final polish: color-coded atoms (C gray, H light, O red, N blue), tighter mobile gaps/cell sizes, improved PNG diagram with colored circles, enhanced a11y labels. Acceptance met (place atoms, connect bonds, see live formula/structure, complete challenge, share PNG or URL). IP: original educational chemistry assembler with generic atoms; no branded kits or software.
 - 2026-11-07 | games | minesweeper-classic | Interactive classic Minesweeper (Buscaminas) complete after 4 runs. User selects difficulty (Easy 9x9/10, Medium 16x16/40, Hard 16x30/99), reveals cells with cascade on empty, flags/questions, timer + mines left, win by all safe open or lose with full expose. Keyboard nav (arrows + Enter/Space/F), seeded URL deep-link, branded PNG, EN+ES, mobile-first 390px with 22px cells, legend, a11y grid roles + aria-live. Acceptance met (select, reveal/flag, win/lose feedback, share PNG/URL). IP: traditional public-domain Minesweeper rules (numbers, cascade, flags); generic UI/naming; no Microsoft or branded assets.
 - 2026-11-06 | studio-composition | timeline-event-composer | Interactive timeline event composer complete after 4 runs. User adds 5-10 event cards (title, short description, optional date/tag), reorders by buttons, sees live vertical SVG timeline with connecting lines, generates branded summary card PNG with timeline visual + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y, max limit, Reset, Enter to add, aria-live. Acceptance met (add/reorder/live timeline/share PNG+URL). IP: original educational timeline assembler with generic events; no branded frameworks.
-- 2026-11-06 | journeys | goal-progress-journey | Interactive multi-stage personal goal progress journey. User chooses a goal category (learn a skill, build a habit, save for a goal, improve fitness), sets parameters, then advances through 5-7 ordered stages with checklists, binary/multi choices that branch tips and outcomes, sees live progress bar and percentage, related tool recommendations, and on completion a branded summary card with stats and next steps. Generates canvas PNG of the journey card + deep-link URL. EN+ES routes, mobile-first 390px, keyboard a11y. Acceptance met when user selects category, completes stages, sees final card, shares PNG or URL. IP: original educational goal-progress tracker with generic stages; no branded frameworks.
 ```
 
 ---
@@ -63,19 +63,19 @@ adsense-prep_runs: 8
 
 ```
 status: active
-idea: Interactive classic Sudoku player. User selects difficulty (easy/medium/hard), receives a 9x9 grid with pre-filled numbers, fills remaining cells via keyboard or on-screen number pad. Live validation highlights conflicts (row/column/box), timer runs, undo available, win condition when grid complete and valid. Share branded PNG of solved board + stats or URL deep-link (?diff=&board=). EN+ES routes, mobile-first 390px, keyboard navigation, a11y labels + aria-live for conflicts and completion.
+idea: Daily Challenge hub (retention loop). One page where each UTC day deterministically picks ONE existing UtiliHub game (date-seeded rotation across the games catalog) plus a goal ("win Minesweeper Easy", "solve Sudoku Easy"). Games report completion to the hub through a tiny localStorage helper; the hub shows today's challenge card with a Play button (deep-link into the game), a 28-day calendar heat strip, current/best streak (reuses the daily-streak approach), and a next-challenge countdown. Share branded PNG of streak + calendar, or URL. EN+ES routes, mobile-first 390px, keyboard + a11y labels + aria-live on completion.
 
-id: sudoku-classic
-path_en: /games/sudoku-classic
-path_es: /es/juegos/sudoku-clasico
+id: daily-challenge-hub
+path_en: /daily-challenge
+path_es: /es/reto-diario
 path_seo: n/a
-domain: games
+domain: retention-loops
 runs_total: 4
-runs_remaining: 3
-acceptance: Usuario selecciona dificultad, rellena el grid 9x9, ve validación live de conflictos y gana al completar correctamente, comparte PNG o URL.
+runs_remaining: 4
+acceptance: User opens the hub, sees today's game challenge, plays it via the deep-link, returns and sees the day marked done, streak incremented and calendar updated, shares PNG or URL.
 share: both
 next_step_required: yes
-notes: Rubric scores (1-5): Cand1 (sudoku-classic): value=5, share=4, search=5, distinct=4, feas=4, perf=4, total=26. Cand2 (original word-association challenge game): value=4, share=3, search=3, distinct=5, feas=4, perf=5, total=24. Cand3 (interactive bin-packing kit): value=4, share=3, search=3, distinct=5, feas=3, perf=4, total=22. Chosen: Cand1. Closest-3: minesweeper-classic (grid reveal), hangman-classic (word), memory-match (pairs). Primary metaphor: constraint-solving grid puzzle. Why not particle-canvas: discrete grid with strict rules and win condition, no freehand or particles. IP: traditional public-domain Sudoku rules (9x9 unique rows/cols/boxes); generic UI/naming; no branded puzzles. Roll: FLEX (rand=0.62>0.35), weighted pick games from core. adsense-prep_runs: 8. Run 1/4: verified existing full implementation matches acceptance (difficulty, grid, live conflicts, timer, undo, hints, notes, PNG, URL, EN+ES, mobile, a11y); added focus-visible ring on cells for better keyboard a11y. Core playable since before this run.
+notes: Roll: rand=0.318<0.35 -> FIXED growth urn; second rand 0.573*33=18.9 -> retention-loops (cum: tb3, sm6, gs9, sh13, rl19). Rubric (value/share/search/distinct/feas/perf): Cand1 daily-challenge-hub 5/4/3/4/4/5=25. Cand2 progress-badges-wall (achievements across tools) 4/4/2/3/4/5=22. Cand3 weekly-goal-checkin journey 4/3/2/3/4/5=21. Chosen Cand1. Closest-3 by mechanic: ReturnStreakBoard (streak counter), StreakConstellation/daily-progress-constellation (daily-activity visual), ProgressPassport (cross-surface progress). Primary metaphor: daily rotating challenge + completion calendar (habit tracker). Why not particle-canvas: cards + SVG/CSS calendar grid, no freehand or attractors. Reuse src/hooks/use-daily-streak.ts pattern; do NOT edit existing games beyond a one-line completion hook if needed (NO-BREAK scope lock; prefer hub-side tracking via deep-link return + manual "mark done" fallback in run 1-2). Add to games/hubs via non-catalog route, no registry.tsx rewrite. Plan: run1 route+deterministic daily pick+EN/ES shell+streak; run2 completion tracking + calendar (working core); run3 share PNG/URL + a11y; run4 polish+close. IP: n/a (own UI; links to existing games).
 adsense-prep_runs: 8
 ```
 

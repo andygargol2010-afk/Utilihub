@@ -11,7 +11,8 @@ export type Strength = "light" | "medium" | "heavy";
 export type MoveId = Strength | "air";
 export type PlayerIndex = 0 | 1;
 export type AiLevel = "easy" | "normal" | "hard";
-export type FightMode = "ai" | "versus" | "tutorial";
+/** "online" plays like "versus": two humans, one per device (see net/). */
+export type FightMode = "ai" | "versus" | "tutorial" | "online";
 
 /** Buttons held during one simulation tick. Directions are absolute (screen left/right). */
 export interface InputFrame {
@@ -90,6 +91,18 @@ export interface FighterState {
 
 export type FightPhase = "intro" | "fight" | "ko" | "finisher" | "roundEnd" | "matchEnd";
 
+/** Optional match rules (online room settings). Omitted = the standard rules. */
+export interface FightRules {
+  /** Health multiplier per player. */
+  hpMul: [number, number];
+  /** Multiplier of the damage (and chip) dealt by each player. */
+  dmgMul: [number, number];
+  /** Round length in seconds; null = no time limit. */
+  roundSeconds: number | null;
+  /** false = the match-winning round ends with a regular KO instead of the finisher. */
+  finisher: boolean;
+}
+
 export interface FightConfig {
   chars: [CharId, CharId];
   map: MapId;
@@ -98,6 +111,7 @@ export interface FightConfig {
   seed: number;
   /** Rounds needed to win the match (2 = best of 3). */
   roundsToWin: number;
+  rules?: FightRules;
 }
 
 export interface FightState {

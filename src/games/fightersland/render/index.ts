@@ -163,7 +163,9 @@ export function createRenderer(initial: RendererOptions): Renderer {
   const fxs: [FighterFx, FighterFx] = [newFighterFx(), newFighterFx()];
   const banners: Banner[] = [];
 
-  let lastState: FightState | null = null;
+  /** Identity of the current fight: its (immutable, shared) config object. Online play updates
+   *  the renderer with the confirmed state and draws a predicted copy of the same fight. */
+  let lastFight: FightState["config"] | null = null;
   let t = 0;
   let cam = SCROLL / 2;
   let shakeAmp = 0;
@@ -213,7 +215,7 @@ export function createRenderer(initial: RendererOptions): Renderer {
     impactT = 0;
     lastVictim = -1;
     finWinner = -1;
-    lastState = null;
+    lastFight = null;
   }
 
   function camTarget(state: FightState): number {
@@ -472,9 +474,9 @@ export function createRenderer(initial: RendererOptions): Renderer {
   // ---------------------------------------------------------------------------------------- update
 
   function update(state: FightState): void {
-    if (state !== lastState) {
+    if (state.config !== lastFight) {
       reset();
-      lastState = state;
+      lastFight = state.config;
       cam = camTarget(state);
       // new fight: build the stage layers and rasterise the common fighter keys up front
       getMapArt(state.config.map);
@@ -720,7 +722,7 @@ export function createRenderer(initial: RendererOptions): Renderer {
     // tags
     const mode = state.config.mode;
     tag(O, L.p1, 3, 27, 1, ACCENT_DARK[a.char]);
-    tag(O, mode === "versus" ? L.p2 : L.cpu, 381, 27, -1, ACCENT_DARK[b.char]);
+    tag(O, mode === "versus" || mode === "online" ? L.p2 : L.cpu, 381, 27, -1, ACCENT_DARK[b.char]);
     // round pips
     const need = Math.max(1, state.config.roundsToWin);
     if (mode !== "tutorial") {
@@ -730,7 +732,7 @@ export function createRenderer(initial: RendererOptions): Renderer {
       }
     }
     // timer
-    if (mode === "tutorial") timerBox(O, "∞", false);
+    if (mode === "tutorial" || (state.config.rules !== undefined && state.config.rules.roundSeconds === null)) timerBox(O, "∞", false);
     else {
       const secs = Math.max(0, Math.ceil(state.timer / 60));
       const low = secs <= 10 && state.phase === "fight";
@@ -837,10 +839,10 @@ export function createRenderer(initial: RendererOptions): Renderer {
 
   function draw(ctx: CanvasRenderingContext2D, state: FightState): void {
     const O = ensureSurface(ctx);
-    if (state !== lastState) {
+    if (state.config !== lastFight) {
       // drawn before any update for this fight: start from a clean slate
       reset();
-      lastState = state;
+      lastFight = state.config;
       cam = camTarget(state);
     }
     const fin = state.phase === "finisher" && finWinner >= 0;

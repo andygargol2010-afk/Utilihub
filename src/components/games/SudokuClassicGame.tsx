@@ -229,6 +229,28 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     const onKey = (e: KeyboardEvent) => {
       if (won) return;
       const key = e.key;
+      if ((e.ctrlKey || e.metaKey) && (key === "z" || key === "Z")) {
+        undo();
+        e.preventDefault();
+        return;
+      }
+      if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+        if (key === "u" || key === "U") {
+          undo();
+          e.preventDefault();
+          return;
+        }
+        if (key === "p" || key === "P" || key === "n" || key === "N") {
+          setPencilMode((m) => !m);
+          e.preventDefault();
+          return;
+        }
+        if (key === "h" || key === "H") {
+          giveHint();
+          e.preventDefault();
+          return;
+        }
+      }
       if (key >= "1" && key <= "9") {
         put(parseInt(key, 10));
         e.preventDefault();
@@ -251,7 +273,7 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selected, won, pencilMode, grid, notes, fixed, solution, startMs]); // put depends on these
+  }, [selected, won, pencilMode, grid, notes, fixed, solution, startMs, history, hintsLeft]); // put/undo/hint depend on these
 
   const shareUrl = useCallback(async () => {
     updateUrl(seed, diff);
@@ -354,11 +376,38 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
     ? es
       ? "¡Sudoku resuelto! 🎉"
       : "Sudoku solved! 🎉"
-    : es
-      ? "Completá la grilla sin conflictos"
-      : "Fill the grid with no conflicts";
+    : conflictMap.size > 0
+      ? es
+        ? `${conflictMap.size} ${conflictMap.size === 1 ? "celda en conflicto" : "celdas en conflicto"}`
+        : `${conflictMap.size} ${conflictMap.size === 1 ? "cell in conflict" : "cells in conflict"}`
+      : es
+        ? "Completá la grilla sin conflictos"
+        : "Fill the grid with no conflicts";
 
-  const selNum = selected ? grid[selected[0]]![selected[1]] : 0;
+  const bestKey = `utilihub-sudoku-best-${diff}`;
+  const [bestMs, setBestMs] = useState<number | null>(null);
+  useEffect(() => {
+    try {
+      const v = parseInt(localStorage.getItem(bestKey) || "", 10);
+      setBestMs(Number.isFinite(v) && v > 0 ? v : null);
+    } catch {
+      setBestMs(null);
+    }
+  }, [bestKey]);
+  useEffect(() => {
+    if (!won || elapsed <= 0) return;
+    try {
+      const prev = parseInt(localStorage.getItem(bestKey) || "", 10);
+      if (!Number.isFinite(prev) || prev <= 0 || elapsed < prev) {
+        localStorage.setItem(bestKey, String(elapsed));
+        setBestMs(elapsed);
+      }
+    } catch {
+      /* storage unavailable */
+    }
+  }, [won]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const selNum = selected ? (grid[selected[0]]?.[selected[1]] ?? 0) : 0;
 
   return (
     <div className="mx-auto flex max-w-md flex-col items-center gap-3 px-1">
@@ -399,10 +448,11 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
 
       <p
-        className={`text-sm font-bold ${won ? "text-amber-300 text-base animate-pulse" : "text-emerald-300/90"}`}
+        className={`text-sm font-bold ${won ? "text-amber-300 text-base motion-safe:animate-pulse" : "text-emerald-300/90"}`}
         aria-live="polite"
       >
         {status} · {formatTime(elapsed)}
+        {bestMs !== null && (es ? ` · Mejor: ${formatTime(bestMs)}` : ` · Best: ${formatTime(bestMs)}`)}
       </p>
 
       <div
@@ -444,7 +494,13 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
                             ? "bg-slate-800/80 text-emerald-100"
                             : "bg-slate-900/60 text-amber-200"
                 }`}
-                aria-label={es ? `Celda ${r + 1},${c + 1}` : `Cell ${r + 1},${c + 1}`}
+                aria-label={
+                  (es ? `Celda fila ${r + 1}, columna ${c + 1}` : `Cell row ${r + 1}, column ${c + 1}`) +
+                  (v ? (es ? `, valor ${v}` : `, value ${v}`) : es ? ", vacía" : ", empty") +
+                  (isFixed ? (es ? ", dada" : ", given") : "") +
+                  (conflict ? (es ? ", conflicto" : ", conflict") : "")
+                }
+                aria-pressed={sel}
               >
                 {v ? (
                   v
@@ -471,7 +527,12 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
             key={n}
             type="button"
             onClick={() => put(n)}
-            className="relative flex h-11 min-w-11 flex-col items-center justify-center rounded-xl bg-white/10 text-base font-bold text-white transition hover:bg-white/20 active:scale-95"
+            aria-label={
+              n === 0
+                ? es ? "Borrar celda" : "Clear cell"
+                : es ? `Número ${n}, quedan ${remaining[n]}` : `Number ${n}, ${remaining[n]} left`
+            }
+            className={`relative flex h-11 min-w-11 flex-col items-center justify-center rounded-xl bg-white/10 text-base font-bold text-white transition hover:bg-white/20 active:scale-95 ${n > 0 && remaining[n]! <= 0 ? "opacity-40" : ""}`}
           >
             {n === 0 ? (es ? "Borrar" : "Clear") : n}
             {n > 0 && remaining[n]! > 0 ? (
@@ -485,8 +546,8 @@ export function SudokuClassicGame({ locale = "en" }: { locale?: GameLocale }) {
 
       <p className="text-center text-xs text-emerald-100/60">
         {es
-          ? "Elegí dificultad, rellená números (teclado o botones). Modo lápiz para marcas. Al colocar un número se limpian las marcas relacionadas. Resaltado de fila/columna/caja y números iguales. Deshacer y 3 pistas. Auto notas rellena posibles. Contadores restantes en el teclado. Pausar temporizador. Flechas para mover. Conflictos en rojo. Compartí enlace o PNG."
-          : "Pick difficulty, place numbers (keyboard or buttons). Pencil mode for marks. Placing a number clears related marks. Row/col/box and same-number highlights. Undo and 3 hints. Auto notes fills possibles. Remaining counts on the pad. Pause timer. Arrows to move. Conflicts in red. Share link or PNG."}
+          ? "Elegí dificultad, rellená números (teclado o botones). Modo lápiz para marcas. Al colocar un número se limpian las marcas relacionadas. Resaltado de fila/columna/caja y números iguales. Deshacer y 3 pistas. Auto notas rellena posibles. Contadores restantes en el teclado. Pausar temporizador. Flechas para mover. Conflictos en rojo. Atajos: U/Ctrl+Z deshacer, P lápiz, H pista. Compartí enlace o PNG."
+          : "Pick difficulty, place numbers (keyboard or buttons). Pencil mode for marks. Placing a number clears related marks. Row/col/box and same-number highlights. Undo and 3 hints. Auto notes fills possibles. Remaining counts on the pad. Pause timer. Arrows to move. Conflicts in red. Shortcuts: U/Ctrl+Z undo, P pencil, H hint. Share link or PNG."}
       </p>
     </div>
   );
