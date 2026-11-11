@@ -71,11 +71,12 @@ path_es: /es/reto-diario
 path_seo: n/a
 domain: retention-loops
 runs_total: 4
-runs_remaining: 4
+runs_remaining: 3
 acceptance: User opens the hub, sees today's game challenge, plays it via the deep-link, returns and sees the day marked done, streak incremented and calendar updated, shares PNG or URL.
 share: both
 next_step_required: yes
 notes: Roll: rand=0.318<0.35 -> FIXED growth urn; second rand 0.573*33=18.9 -> retention-loops (cum: tb3, sm6, gs9, sh13, rl19). Rubric (value/share/search/distinct/feas/perf): Cand1 daily-challenge-hub 5/4/3/4/4/5=25. Cand2 progress-badges-wall (achievements across tools) 4/4/2/3/4/5=22. Cand3 weekly-goal-checkin journey 4/3/2/3/4/5=21. Chosen Cand1. Closest-3 by mechanic: ReturnStreakBoard (streak counter), StreakConstellation/daily-progress-constellation (daily-activity visual), ProgressPassport (cross-surface progress). Primary metaphor: daily rotating challenge + completion calendar (habit tracker). Why not particle-canvas: cards + SVG/CSS calendar grid, no freehand or attractors. Reuse src/hooks/use-daily-streak.ts pattern; do NOT edit existing games beyond a one-line completion hook if needed (NO-BREAK scope lock; prefer hub-side tracking via deep-link return + manual "mark done" fallback in run 1-2). Add to games/hubs via non-catalog route, no registry.tsx rewrite. Plan: run1 route+deterministic daily pick+EN/ES shell+streak; run2 completion tracking + calendar (working core); run3 share PNG/URL + a11y; run4 polish+close. IP: n/a (own UI; links to existing games).
+RUN1 DONE 2026-11-11: /daily-challenge + /es/reto-diario shell; src/lib/daily-challenge/logic.ts (UTC date-hash pick over 12 curated games, never repeats yesterday, streak/best, countdown, localStorage utilihub:daily-challenge); src/components/daily-challenge/DailyChallengeHub.tsx (today card, Play deep-link, manual Mark done/Undo, streak/best/countdown, 28-day strip, aria-live). Smoke 390px EN+ES OK. NEXT run2: auto-detect completion on return (visibilitychange + per-game win signal read-only) and richer calendar; run3 share PNG/URL + a11y; run4 polish+close. routeTree.gen.ts NOT committed (stale in repo; build regenerates).
 adsense-prep_runs: 8
 ```
 
