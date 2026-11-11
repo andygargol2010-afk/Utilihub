@@ -11,7 +11,7 @@
  */
 import type { AiLevel, CharId, FightEvent, FightState, InputFrame, PlayerIndex, Strength } from "../core/types";
 import { CHAR_IDS, FINISHER, STAGE_MARGIN, STAGE_W, neutralInput } from "../core/constants";
-import { CHARS, G, VARIANTS, createFight, stepFight, getDebugBoxes } from "../sim";
+import { CHARS, G, VARIANTS, cloneFight, createFight, hashFight, stepFight, getDebugBoxes } from "../sim";
 import { createAi } from "../ai";
 import { createTutorial } from "../tutorial";
 
@@ -673,6 +673,158 @@ function checkDeterminism(): void {
   check(r1.ticks === r2.ticks && r1.winner === r2.winner && JSON.stringify(r1.counts) === JSON.stringify(r2.counts), "same seed, same match");
 }
 
+function checkClone(): void {
+  console.log("clone / hash (online rollback)");
+  const errs: string[] = [];
+  const s = createFight({ chars: ["yoikaze", "grimvald"], map: "quay", mode: "versus", aiLevel: "hard", seed: 11, roundsToWin: 2 });
+  const a0 = createAi("hard", 101);
+  const a1 = createAi("hard", 202);
+  const script: [InputFrame, InputFrame][] = [];
+  // record a whole AI match, cloning at several points
+  const clones: { at: number; c: FightState }[] = [];
+  const marks = new Set([150, 333, 700, 1200, 2000, 3500]);
+  let guard = 0;
+  while (s.phase !== "matchEnd" && guard++ < 60 * 400) {
+    const pair: [InputFrame, InputFrame] = [{ ...a0.next(s, 0) }, { ...a1.next(s, 1) }];
+    if (marks.has(script.length)) clones.push({ at: script.length, c: cloneFight(s) });
+    script.push(pair);
+    stepFight(s, pair);
+  }
+  check(clones.length >= 3, `cloned mid-match ${clones.length} times`);
+  check(s.phase === "matchEnd", "recorded match ended");
+  const strip = (x: FightState): string => JSON.stringify(x);
+  for (const { at, c } of clones) {
+    // replay from scratch up to the clone point, then step both with the same inputs
+    const o = createFight(s.config);
+    for (let t = 0; t < at; t++) stepFight(o, script[t] ?? [N, N]);
+    check(strip(o) === strip(c) && hashFight(o) === hashFight(c), `clone at ${at} equals a replay`);
+    let same = true;
+    let sameEvents = true;
+    for (let t = at; t < script.length; t++) {
+      const pair = script[t] ?? [N, N];
+      stepFight(o, pair);
+      const eo = JSON.stringify(o.events);
+      stepFight(c, pair);
+      if (eo !== JSON.stringify(c.events)) sameEvents = false;
+      if ((t - at) % 50 === 0 && (strip(o) !== strip(c) || hashFight(o) !== hashFight(c))) same = false;
+    }
+    check(same && sameEvents, `clone at ${at}: stepping clone and original stays identical (${script.length - at} ticks)`);
+    check(strip(c) === strip(s) && hashFight(c) === hashFight(s), `clone at ${at}: same final state as the recorded match`);
+  }
+  // stepping a clone never touches the original, and private data is part of the hash
+  const base = versus("asagiri", "bazalt");
+  const before = JSON.stringify(base);
+  const h0 = hashFight(base);
+  const fork = cloneFight(base);
+  run(fork, 120, tapAt("heavy", 0, 40), tapAt("light", 10));
+  check(JSON.stringify(base) === before && hashFight(base) === h0, "stepping a clone leaves the original untouched");
+  check(hashFight(fork) !== h0, "hash changes when the state changes");
+  const g1 = cloneFight(base);
+  const g2 = cloneFight(base);
+  stepFight(g1, [inp("light"), N]);
+  stepFight(g2, [N, N]);
+  stepFight(g1, [N, N]);
+  stepFight(g2, [N, N]);
+  check(hashFight(g1) !== hashFight(g2), "hash covers private data (buffered press)");
+  check(fork.config === base.config, "clone shares the immutable config");
+  for (const e of errs) check(false, e);
+}
+
+function rulesFight(rules: Partial<NonNullable<FightState["config"]["rules"]>>, roundsToWin = 2, a: CharId = "asagiri", b: CharId = "asagiri"): FightState {
+  const s = createFight({
+    chars: [a, b],
+    map: "quay",
+    mode: "versus",
+    aiLevel: "normal",
+    seed: 3,
+    roundsToWin,
+    rules: { hpMul: [1, 1], dmgMul: [1, 1], roundSeconds: 60, finisher: true, ...rules },
+  });
+  let guard = 0;
+  while (s.phase !== "fight" && guard++ < 400) stepFight(s, [N, N]);
+  return s;
+}
+
+function firstHit(s: FightState, btn: Btn, blockP1 = false): { dmg: number; chip: number } {
+  place(s, minGap(s.fighters[0].char, s.fighters[1].char) + 4);
+  const evs = run(s, 90, tapAt(btn, 0), () => (blockP1 ? inp("block") : N));
+  let dmg = 0;
+  let chip = 0;
+  for (const e of evs) {
+    if (e.type === "hit" && e.attacker === 0 && dmg === 0) dmg = e.damage;
+    if (e.type === "block" && chip === 0) chip = e.chip;
+  }
+  return { dmg, chip };
+}
+
+function checkRules(): void {
+  console.log("room rules (multipliers / time / finisher)");
+  // defaults: explicit standard rules behave exactly like no rules
+  const plain = versus("maelis", "bazalt");
+  const std = rulesFight({}, 2, "maelis", "bazalt");
+  const script = (t: number): InputFrame => (t % 37 < 3 ? inp("medium") : t % 53 < 20 ? inp("right") : N);
+  run(plain, 900, script, tapAt("heavy", 30, 30));
+  run(std, 900, script, tapAt("heavy", 30, 30));
+  const noCfg = (x: FightState): string => JSON.stringify({ ...x, config: null });
+  check(noCfg(plain) === noCfg(std), "standard rules = no rules");
+  // health multipliers
+  const baseHp = versus("asagiri", "grimvald").fighters.map((f) => f.maxHp);
+  const hp = rulesFight({ hpMul: [0.5, 3] }, 2, "asagiri", "grimvald");
+  check(hp.fighters[0].maxHp === Math.round((baseHp[0] ?? 0) * 0.5) && hp.fighters[0].hp === hp.fighters[0].maxHp, "hp x0.5 for player 0");
+  check(hp.fighters[1].maxHp === (baseHp[1] ?? 0) * 3 && hp.fighters[1].hp === hp.fighters[1].maxHp, "hp x3 for player 1");
+  // ... and they are re-applied at the start of every round
+  hp.fighters[1].hp = 1;
+  place(hp, minGap("asagiri", "grimvald") + 4);
+  run(hp, 700, tapAt("medium", 0));
+  check(hp.round === 2 && hp.fighters[1].hp === (baseHp[1] ?? 0) * 3 && hp.fighters[0].maxHp === Math.round((baseHp[0] ?? 0) * 0.5), "hp multipliers re-applied next round");
+  // damage multipliers (hit and chip), per attacker
+  const d1 = firstHit(rulesFight({}), "medium");
+  for (const m of [0.5, 2, 3]) {
+    const dm = firstHit(rulesFight({ dmgMul: [m, 1] }), "medium");
+    check(d1.dmg > 0 && dm.dmg === Math.max(1, Math.round(d1.dmg * m)), `damage x${m}: ${dm.dmg} vs base ${d1.dmg}`);
+  }
+  const other = firstHit(rulesFight({ dmgMul: [1, 3] }), "medium");
+  check(other.dmg === d1.dmg, "the rival's damage multiplier does not change my damage");
+  const c1 = firstHit(rulesFight({}), "heavy", true);
+  const c2 = firstHit(rulesFight({ dmgMul: [2, 1] }), "heavy", true);
+  check(c1.chip > 0 && c2.chip === Math.round(c1.chip * 2), `chip x2: ${c2.chip} vs base ${c1.chip}`);
+  // round time: 30 s and infinite
+  const short = rulesFight({ roundSeconds: 30 });
+  check(short.timer === 30 * 60, "30 s round timer");
+  const evShort = run(short, 30 * 60 + 5, () => N);
+  check(evShort.some((e) => e.type === "timeUp"), "time up after 30 s");
+  const inf = rulesFight({ roundSeconds: null });
+  const evInf = run(inf, 60 * 60 * 4, () => N);
+  check(!evInf.some((e) => e.type === "timeUp") && inf.phase === "fight" && inf.round === 1, "infinite time: no time-out after 4 minutes");
+  inf.fighters[1].hp = 1;
+  place(inf, minGap("asagiri", "asagiri") + 4);
+  run(inf, 500, tapAt("medium", 0));
+  check(inf.wins[0] === 1 && inf.round === 2 && inf.phase !== "matchEnd", "infinite time: KOs still end the round");
+  // finisher off: regular KO on the match-winning round
+  const nf = rulesFight({ finisher: false }, 1);
+  place(nf, minGap("asagiri", "asagiri") + 4);
+  nf.fighters[1].hp = 1;
+  const evNf = run(nf, 700, tapAt("medium", 0));
+  check(!evNf.some((e) => e.type === "finisherStart" || e.type === "finisherHit"), "finisher off: no finisher events");
+  check(evNf.some((e) => e.type === "ko" && e.winner === 0 && e.final), "finisher off: final KO event");
+  check(evNf.filter((e) => e.type === "matchEnd").length === 1 && nf.phase === "matchEnd" && nf.matchWinner === 0, "finisher off: match ends once, player 0 wins");
+  check(nf.fighters[0].action === "win", "finisher off: winner poses");
+  const fin = rulesFight({ finisher: true }, 1);
+  place(fin, minGap("asagiri", "asagiri") + 4);
+  fin.fighters[1].hp = 1;
+  check(run(fin, 700, tapAt("medium", 0)).some((e) => e.type === "finisherStart"), "finisher on: finisher plays");
+  // rounds to win 3
+  const r3 = rulesFight({}, 3);
+  for (let k = 0; k < 3; k++) {
+    let guard = 0;
+    while (r3.phase !== "fight" && guard++ < 1000) stepFight(r3, [N, N]);
+    place(r3, minGap("asagiri", "asagiri") + 4);
+    r3.fighters[1].hp = 1;
+    run(r3, 300, tapAt("medium", 0));
+    check(r3.wins[0] === k + 1 && (k < 2 ? r3.matchWinner === null : r3.matchWinner === 0), `rounds to win 3: after round ${k + 1}`);
+  }
+}
+
 const only = process.argv[2];
 const all: [string, () => void][] = [
   ["timing", checkFrameTiming],
@@ -687,6 +839,8 @@ const all: [string, () => void][] = [
   ["rounds", checkRoundFlow],
   ["tutorial", checkTutorial],
   ["determinism", checkDeterminism],
+  ["clone", checkClone],
+  ["rules", checkRules],
   ["ai", checkAi],
 ];
 for (const [name, fn] of all) if (!only || only === name) fn();

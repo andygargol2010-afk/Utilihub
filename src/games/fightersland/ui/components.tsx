@@ -126,10 +126,13 @@ export function Toggle({ label, value, onText, offText, onChange }: { label: str
   );
 }
 
-export function Icon({ name }: { name: "exit" | "pause" | "sound" | "mute" }) {
+export type IconName = "exit" | "pause" | "sound" | "mute" | "leave";
+
+export function Icon({ name }: { name: IconName }) {
   return (
     <svg className="fl-icon" viewBox="0 0 20 20" aria-hidden="true" shapeRendering="crispEdges">
       {name === "exit" ? <path d="M4 4L16 16M16 4L4 16" stroke="currentColor" strokeWidth="3" fill="none" /> : null}
+      {name === "leave" ? <path d="M3 3h8v3H6v8h5v3H3zM12 5l6 5-6 5v-3H8V8h4z" /> : null}
       {name === "pause" ? <path d="M4 3h4v14H4zM12 3h4v14h-4z" /> : null}
       {name === "sound" || name === "mute" ? <path d="M2 7h4l5-4h1v14h-1l-5-4H2z" /> : null}
       {name === "sound" ? <path d="M14 6h2v8h-2zM17 4h2v12h-2z" /> : null}
@@ -138,7 +141,7 @@ export function Icon({ name }: { name: "exit" | "pause" | "sound" | "mute" }) {
   );
 }
 
-export function CornerButton({ label, icon, onClick, back = false }: { label: string; icon: "exit" | "pause" | "sound" | "mute"; onClick: () => void; back?: boolean }) {
+export function CornerButton({ label, icon, onClick, back = false }: { label: string; icon: IconName; onClick: () => void; back?: boolean }) {
   const app = useApp();
   return (
     <button

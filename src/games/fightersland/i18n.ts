@@ -102,6 +102,58 @@ export interface Strings {
   touchButtons: { block: string; dodge: string };
   rotate: string;
   loading: string;
+  online: {
+    /** Mode card. */
+    title: string;
+    desc: string;
+    create: string;
+    join: string;
+    roomCode: string;
+    shareHint: string;
+    copyLink: string;
+    copied: string;
+    share: string;
+    creating: string;
+    waiting: string;
+    connecting: string;
+    enterCode: string;
+    connect: string;
+    retry: string;
+    cancel: string;
+    notFound: string;
+    failed: string;
+    timeout: string;
+    disconnected: string;
+    desync: string;
+    rivalLeft: string;
+    /** HUD tags and lobby names (bitmap HUD font: keep them short). */
+    you: string;
+    rival: string;
+    room: string;
+    choosing: string;
+    choose: string;
+    change: string;
+    getReady: string;
+    waitingPick: string;
+    hostSets: string;
+    leave: string;
+    leaveAsk: string;
+    keepFighting: string;
+    leaveRoom: string;
+    rematchWait: string;
+    rematchAsk: string;
+    ping: string;
+    settings: {
+      title: string;
+      map: string;
+      health: string;
+      damage: string;
+      time: string;
+      seconds: string;
+      rounds: string;
+      finisher: string;
+    };
+  };
 }
 
 const EN: Strings = {
@@ -239,6 +291,56 @@ const EN: Strings = {
   touchButtons: { block: "BLOCK", dodge: "DODGE" },
   rotate: "ROTATE YOUR PHONE FOR A BIGGER VIEW",
   loading: "LOADING...",
+  online: {
+    title: "ONLINE",
+    desc: "PLAY A FRIEND, EACH ON THEIR OWN DEVICE",
+    create: "CREATE ROOM",
+    join: "JOIN ROOM",
+    roomCode: "ROOM CODE",
+    shareHint: "SEND THIS CODE OR THE LINK TO YOUR RIVAL.",
+    copyLink: "COPY LINK",
+    copied: "LINK COPIED!",
+    share: "SHARE",
+    creating: "CREATING ROOM...",
+    waiting: "WAITING FOR YOUR RIVAL...",
+    connecting: "CONNECTING...",
+    enterCode: "ENTER THE ROOM CODE",
+    connect: "CONNECT",
+    retry: "RETRY",
+    cancel: "CANCEL",
+    notFound: "ROOM NOT FOUND. CHECK THE CODE.",
+    failed: "CONNECTION FAILED. SOME NETWORKS BLOCK DIRECT PLAY.",
+    timeout: "CONNECTION TIMED OUT.",
+    disconnected: "RIVAL DISCONNECTED.",
+    desync: "CONNECTION OUT OF SYNC. THE MATCH WAS ENDED.",
+    rivalLeft: "YOUR RIVAL LEFT.",
+    you: "YOU",
+    rival: "RIVAL",
+    room: "ROOM",
+    choosing: "CHOOSING...",
+    choose: "CHOOSE FIGHTER",
+    change: "CHANGE FIGHTER",
+    getReady: "GET READY!",
+    waitingPick: "THE MATCH STARTS WHEN BOTH HAVE CHOSEN.",
+    hostSets: "THE HOST SETS THE RULES.",
+    leave: "LEAVE MATCH",
+    leaveAsk: "LEAVE THE MATCH?",
+    keepFighting: "KEEP FIGHTING",
+    leaveRoom: "LEAVE",
+    rematchWait: "WAITING FOR YOUR RIVAL...",
+    rematchAsk: "YOUR RIVAL WANTS A REMATCH!",
+    ping: "MS",
+    settings: {
+      title: "ROOM RULES",
+      map: "ARENA",
+      health: "HEALTH",
+      damage: "DAMAGE",
+      time: "ROUND TIME",
+      seconds: "S",
+      rounds: "ROUNDS TO WIN",
+      finisher: "FINISHER",
+    },
+  },
 };
 
 const ES: Strings = {
@@ -376,6 +478,56 @@ const ES: Strings = {
   touchButtons: { block: "BLOQ.", dodge: "ESQUIVA" },
   rotate: "GIRA EL MÓVIL PARA VERLO MÁS GRANDE",
   loading: "CARGANDO...",
+  online: {
+    title: "EN LÍNEA",
+    desc: "JUEGA CON UN AMIGO, CADA UNO EN SU DISPOSITIVO",
+    create: "CREAR SALA",
+    join: "UNIRSE A SALA",
+    roomCode: "CÓDIGO DE SALA",
+    shareHint: "ENVÍA ESTE CÓDIGO O EL ENLACE A TU RIVAL.",
+    copyLink: "COPIAR ENLACE",
+    copied: "¡ENLACE COPIADO!",
+    share: "COMPARTIR",
+    creating: "CREANDO SALA...",
+    waiting: "ESPERANDO A TU RIVAL...",
+    connecting: "CONECTANDO...",
+    enterCode: "ESCRIBE EL CÓDIGO DE LA SALA",
+    connect: "CONECTAR",
+    retry: "REINTENTAR",
+    cancel: "CANCELAR",
+    notFound: "SALA NO ENCONTRADA. REVISA EL CÓDIGO.",
+    failed: "NO SE PUDO CONECTAR. ALGUNAS REDES BLOQUEAN EL JUEGO DIRECTO.",
+    timeout: "SE AGOTÓ EL TIEMPO DE CONEXIÓN.",
+    disconnected: "RIVAL DESCONECTADO.",
+    desync: "CONEXIÓN DESINCRONIZADA. EL COMBATE TERMINÓ.",
+    rivalLeft: "TU RIVAL SE FUE.",
+    you: "VOS",
+    rival: "RIVAL",
+    room: "SALA",
+    choosing: "ELIGIENDO...",
+    choose: "ELEGIR LUCHADOR",
+    change: "CAMBIAR LUCHADOR",
+    getReady: "¡PREPÁRATE!",
+    waitingPick: "EL COMBATE EMPIEZA CUANDO LOS DOS HAYAN ELEGIDO.",
+    hostSets: "EL ANFITRIÓN DEFINE LAS REGLAS.",
+    leave: "ABANDONAR COMBATE",
+    leaveAsk: "¿ABANDONAR EL COMBATE?",
+    keepFighting: "SEGUIR LUCHANDO",
+    leaveRoom: "SALIR",
+    rematchWait: "ESPERANDO A TU RIVAL...",
+    rematchAsk: "¡TU RIVAL QUIERE LA REVANCHA!",
+    ping: "MS",
+    settings: {
+      title: "REGLAS DE LA SALA",
+      map: "ARENA",
+      health: "VIDA",
+      damage: "DAÑO",
+      time: "TIEMPO POR ASALTO",
+      seconds: "S",
+      rounds: "ASALTOS PARA GANAR",
+      finisher: "REMATE FINAL",
+    },
+  },
 };
 
 const PT: Strings = {
@@ -513,6 +665,56 @@ const PT: Strings = {
   touchButtons: { block: "DEFESA", dodge: "ESQUIVA" },
   rotate: "GIRE O CELULAR PARA VER MAIOR",
   loading: "CARREGANDO...",
+  online: {
+    title: "ONLINE",
+    desc: "JOGUE COM UM AMIGO, CADA UM NO SEU APARELHO",
+    create: "CRIAR SALA",
+    join: "ENTRAR NA SALA",
+    roomCode: "CÓDIGO DA SALA",
+    shareHint: "ENVIE ESTE CÓDIGO OU O LINK AO SEU RIVAL.",
+    copyLink: "COPIAR LINK",
+    copied: "LINK COPIADO!",
+    share: "COMPARTILHAR",
+    creating: "CRIANDO SALA...",
+    waiting: "ESPERANDO O SEU RIVAL...",
+    connecting: "CONECTANDO...",
+    enterCode: "DIGITE O CÓDIGO DA SALA",
+    connect: "CONECTAR",
+    retry: "TENTAR DE NOVO",
+    cancel: "CANCELAR",
+    notFound: "SALA NÃO ENCONTRADA. CONFIRA O CÓDIGO.",
+    failed: "FALHA NA CONEXÃO. ALGUMAS REDES BLOQUEIAM O JOGO DIRETO.",
+    timeout: "TEMPO DE CONEXÃO ESGOTADO.",
+    disconnected: "RIVAL DESCONECTADO.",
+    desync: "CONEXÃO FORA DE SINCRONIA. A LUTA FOI ENCERRADA.",
+    rivalLeft: "O SEU RIVAL SAIU.",
+    you: "VOCÊ",
+    rival: "RIVAL",
+    room: "SALA",
+    choosing: "ESCOLHENDO...",
+    choose: "ESCOLHER LUTADOR",
+    change: "TROCAR LUTADOR",
+    getReady: "PREPARE-SE!",
+    waitingPick: "A LUTA COMEÇA QUANDO OS DOIS TIVEREM ESCOLHIDO.",
+    hostSets: "O ANFITRIÃO DEFINE AS REGRAS.",
+    leave: "SAIR DA LUTA",
+    leaveAsk: "SAIR DA LUTA?",
+    keepFighting: "CONTINUAR LUTANDO",
+    leaveRoom: "SAIR",
+    rematchWait: "ESPERANDO O SEU RIVAL...",
+    rematchAsk: "O SEU RIVAL QUER REVANCHE!",
+    ping: "MS",
+    settings: {
+      title: "REGRAS DA SALA",
+      map: "ARENA",
+      health: "VIDA",
+      damage: "DANO",
+      time: "TEMPO DO ROUND",
+      seconds: "S",
+      rounds: "ROUNDS PARA VENCER",
+      finisher: "GOLPE FINAL",
+    },
+  },
 };
 
 const TABLE: Record<Locale, Strings> = { en: EN, es: ES, pt: PT };

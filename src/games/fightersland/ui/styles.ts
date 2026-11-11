@@ -90,6 +90,18 @@ export const FL_CSS = `
 .fl-controls-table{display:grid;grid-template-columns:auto auto auto;gap:calc(var(--u)*2) calc(var(--u)*6);align-items:center}
 .fl-result-card{display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*3)}
 
+/* online */
+.fl-code{padding:calc(var(--u)*3) calc(var(--u)*6);background:#151026;box-shadow:0 0 0 var(--u) var(--fl-edge),inset 0 0 0 var(--u) var(--fl-hi)}
+.fl-code-input{appearance:none;border:0;border-radius:0;margin:0;outline:none;width:calc(var(--u)*110);max-width:90%;padding:calc(var(--u)*3) 0 calc(var(--u)*3) .35em;text-align:center;text-transform:uppercase;font:700 calc(var(--u)*20)/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.35em;color:var(--fl-gold);caret-color:var(--fl-gold);background:#151026;box-shadow:0 0 0 var(--u) var(--fl-edge),inset 0 0 0 var(--u) var(--fl-hi);user-select:text;-webkit-user-select:text;touch-action:manipulation}
+.fl-code-input:focus{box-shadow:0 0 0 var(--u) var(--fl-edge),0 0 0 calc(var(--u)*2) var(--fl-gold),inset 0 0 0 var(--u) var(--fl-hi)}
+.fl-code-input::placeholder{color:#4a3a7c}
+.fl-code-input[disabled]{opacity:.6}
+.fl-link-input{appearance:none;border:0;border-radius:0;margin:0;outline:none;width:min(92%,480px);padding:8px;font:12px/1.2 ui-monospace,Menlo,Consolas,monospace;color:var(--fl-ink);background:#151026;box-shadow:0 0 0 var(--u) var(--fl-edge);user-select:text;-webkit-user-select:text}
+.fl-room-grid{display:grid;grid-template-columns:1fr;gap:calc(var(--u)*2) calc(var(--u)*3);align-self:stretch}
+.fl-room-grid-2{grid-template-columns:1fr 1fr}
+.fl-room-row{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:calc(var(--u)*6);padding:calc(var(--u)*2) calc(var(--u)*3);background:#151026}
+.fl-ping{position:absolute;left:50%;transform:translateX(-50%);z-index:3;padding:var(--u) calc(var(--u)*2);background:rgba(15,10,28,.55);pointer-events:none}
+
 /* touch controls */
 .fl-touch{position:absolute;left:0;right:0;bottom:0;pointer-events:none;z-index:4}
 .fl-touch-below{background:linear-gradient(180deg,#120d20,#0b0814)}
