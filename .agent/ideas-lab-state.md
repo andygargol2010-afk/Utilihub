@@ -62,20 +62,20 @@ adsense-prep_runs: 8
 ## ACTIVE PROJECT
 
 ```
-status: done
-idea: Interactive classic Sudoku player. User selects difficulty (easy/medium/hard), receives a 9x9 grid with pre-filled numbers, fills remaining cells via keyboard or on-screen number pad. Live validation highlights conflicts (row/column/box), timer runs, undo available, win condition when grid complete and valid. Share branded PNG of solved board + stats or URL deep-link (?diff=&board=). EN+ES routes, mobile-first 390px, keyboard navigation, a11y labels + aria-live for conflicts and completion.
+status: active
+idea: Daily Challenge hub (retention loop). One page where each UTC day deterministically picks ONE existing UtiliHub game (date-seeded rotation across the games catalog) plus a goal ("win Minesweeper Easy", "solve Sudoku Easy"). Games report completion to the hub through a tiny localStorage helper; the hub shows today's challenge card with a Play button (deep-link into the game), a 28-day calendar heat strip, current/best streak (reuses the daily-streak approach), and a next-challenge countdown. Share branded PNG of streak + calendar, or URL. EN+ES routes, mobile-first 390px, keyboard + a11y labels + aria-live on completion.
 
-id: sudoku-classic
-path_en: /games/sudoku-classic
-path_es: /es/juegos/sudoku-clasico
+id: daily-challenge-hub
+path_en: /daily-challenge
+path_es: /es/reto-diario
 path_seo: n/a
-domain: games
+domain: retention-loops
 runs_total: 4
-runs_remaining: 0
-acceptance: Usuario selecciona dificultad, rellena el grid 9x9, ve validación live de conflictos y gana al completar correctamente, comparte PNG o URL.
+runs_remaining: 4
+acceptance: User opens the hub, sees today's game challenge, plays it via the deep-link, returns and sees the day marked done, streak incremented and calendar updated, shares PNG or URL.
 share: both
 next_step_required: yes
-notes: Rubric scores (1-5): Cand1 (sudoku-classic): value=5, share=4, search=5, distinct=4, feas=4, perf=4, total=26. Cand2 (original word-association challenge game): value=4, share=3, search=3, distinct=5, feas=4, perf=5, total=24. Cand3 (interactive bin-packing kit): value=4, share=3, search=3, distinct=5, feas=3, perf=4, total=22. Chosen: Cand1. Closest-3: minesweeper-classic (grid reveal), hangman-classic (word), memory-match (pairs). Primary metaphor: constraint-solving grid puzzle. Why not particle-canvas: discrete grid with strict rules and win condition, no freehand or particles. IP: traditional public-domain Sudoku rules (9x9 unique rows/cols/boxes); generic UI/naming; no branded puzzles. Roll: FLEX (rand=0.62>0.35), weighted pick games from core. adsense-prep_runs: 8. Run 1/4: verified existing full implementation matches acceptance (difficulty, grid, live conflicts, timer, undo, hints, notes, PNG, URL, EN+ES, mobile, a11y); added focus-visible ring on cells for better keyboard a11y. Core playable since before this run. Run 2/4: added keyboard shortcuts (U/Ctrl+Z undo, P/N pencil toggle, H hint) and per-difficulty best time persisted in localStorage (try/catch), shown in status line; EN+ES help text updated. Run 3/4: a11y polish — cell aria-labels now include row/col/value/given/conflict, aria-pressed on selection, numpad aria-labels with remaining count, completed digits dimmed. Run 4/4: final polish (aria-live conflict count, motion-safe pulse, GameSecondaryButton disabled prop, TS fixes). CLOSED 2026-11-11.
+notes: Roll: rand=0.318<0.35 -> FIXED growth urn; second rand 0.573*33=18.9 -> retention-loops (cum: tb3, sm6, gs9, sh13, rl19). Rubric (value/share/search/distinct/feas/perf): Cand1 daily-challenge-hub 5/4/3/4/4/5=25. Cand2 progress-badges-wall (achievements across tools) 4/4/2/3/4/5=22. Cand3 weekly-goal-checkin journey 4/3/2/3/4/5=21. Chosen Cand1. Closest-3 by mechanic: ReturnStreakBoard (streak counter), StreakConstellation/daily-progress-constellation (daily-activity visual), ProgressPassport (cross-surface progress). Primary metaphor: daily rotating challenge + completion calendar (habit tracker). Why not particle-canvas: cards + SVG/CSS calendar grid, no freehand or attractors. Reuse src/hooks/use-daily-streak.ts pattern; do NOT edit existing games beyond a one-line completion hook if needed (NO-BREAK scope lock; prefer hub-side tracking via deep-link return + manual "mark done" fallback in run 1-2). Add to games/hubs via non-catalog route, no registry.tsx rewrite. Plan: run1 route+deterministic daily pick+EN/ES shell+streak; run2 completion tracking + calendar (working core); run3 share PNG/URL + a11y; run4 polish+close. IP: n/a (own UI; links to existing games).
 adsense-prep_runs: 8
 ```
 
