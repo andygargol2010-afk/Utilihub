@@ -87,8 +87,8 @@ export function LoanPaymentTool({ locale = "en" }: { tool?: GeneralTool; locale?
       </div>
 
       <div className="text-sm text-muted-foreground space-y-1">
-        <p>{es ? "Ejemplo 1: $10.000, 5%, 36 meses → ~$299.71/mes" : "Example 1: $10,000, 5%, 36 months → ~$299.71/mo"}</p>
-        <p>{es ? "Ejemplo 2: $50.000, 7.5%, 60 meses → ~$1.001.89/mes" : "Example 2: $50,000, 7.5%, 60 months → ~$1,001.89/mo"}</p>
+        <p>{es ? "Ejemplo 1: $10.000, 5%, 36 meses → ~$299,71/mes" : "Example 1: $10,000, 5%, 36 months → ~$299.71/mo"}</p>
+        <p>{es ? "Ejemplo 2: $50.000, 7.5%, 60 meses → ~$1.001,89/mes" : "Example 2: $50,000, 7.5%, 60 months → ~$1,001.89/mo"}</p>
       </div>
     </div>
   );
