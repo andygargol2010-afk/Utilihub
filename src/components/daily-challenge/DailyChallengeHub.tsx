@@ -17,6 +17,7 @@ import {
   writeDone,
   type DoneMap,
 } from "@/lib/daily-challenge/logic";
+import { buildSnapshot, parseSnapshot, renderShareCard, shareUrl, type ShareSnapshot } from "@/lib/daily-challenge/share";
 
 type Locale = "en" | "es";
 
@@ -42,6 +43,14 @@ const T = {
     yesDone: "Yes, mark it done",
     notYet: "Not yet",
     summary: "completed in the last 28 days",
+    shareTitle: "Daily Challenge streak",
+    sharePng: "Download PNG",
+    shareLink: "Copy link",
+    shareCopied: "Link copied.",
+    shareReady: "Image downloaded.",
+    shareFail: "Could not create the image.",
+    sharedBy: "A friend's streak",
+    shareHeading: "Share your streak",
     weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   },
   es: {
@@ -65,6 +74,14 @@ const T = {
     yesDone: "Sí, marcar como hecho",
     notYet: "Todavía no",
     summary: "completados en los últimos 28 días",
+    shareTitle: "Racha del Reto Diario",
+    sharePng: "Descargar PNG",
+    shareLink: "Copiar enlace",
+    shareCopied: "Enlace copiado.",
+    shareReady: "Imagen descargada.",
+    shareFail: "No se pudo crear la imagen.",
+    sharedBy: "Racha de un amigo",
+    shareHeading: "Compartí tu racha",
     weekdays: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
   },
 } as const;
@@ -75,10 +92,12 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
   const [done, setDone] = useState<DoneMap>({});
   const [announce, setAnnounce] = useState("");
   const [returned, setReturned] = useState(false);
+  const [shared, setShared] = useState<ShareSnapshot | null>(null);
 
   useEffect(() => {
     setDone(readDone());
     setNow(Date.now());
+    setShared(parseSnapshot(window.location.search));
     const id = window.setInterval(() => setNow(Date.now()), 1000);
     const check = () => {
       const left = readLeft();
@@ -129,6 +148,30 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
     [done, pick, today, toggle],
   );
 
+  const sharePath = locale === "es" ? "/es/reto-diario" : "/daily-challenge";
+  const sharePng = useCallback(async () => {
+    if (!today) return;
+    const blob = await renderShareCard(buildSnapshot(done, today), {
+      title: t.shareTitle, streak: t.streak, best: t.best, days: t.days, summary: t.summary,
+    });
+    if (!blob) return setAnnounce(t.shareFail);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "utilihub-daily-challenge.png";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    setAnnounce(t.shareReady);
+  }, [done, t, today]);
+  const shareLink = useCallback(async () => {
+    if (!today) return;
+    try {
+      await navigator.clipboard.writeText(shareUrl(buildSnapshot(done, today), sharePath));
+      setAnnounce(t.shareCopied);
+    } catch {
+      setAnnounce(t.shareFail);
+    }
+  }, [done, sharePath, t, today]);
+
   if (now === null || !pick || !today) {
     return <div className="min-h-[360px] rounded-2xl border border-border bg-card" aria-busy="true" />;
   }
@@ -166,6 +209,17 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
         </div>
         <p className="mt-3 text-xs text-muted-foreground">{t.hint}</p>
       </div>
+
+      {shared ? (
+        <div className="rounded-2xl border border-emerald-500/50 bg-emerald-500/10 p-4" aria-label={t.sharedBy}>
+          <p className="font-semibold">
+            {t.sharedBy}: {shared.current} {t.days} · {t.best.toLowerCase()} {shared.best}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground" aria-hidden="true">
+            {shared.bits.split("").map((c) => (c === "1" ? "🟩" : "⬛")).join("")}
+          </p>
+        </div>
+      ) : null}
 
       {returned && !isDone ? (
         <div className="rounded-2xl border border-cyan-500/50 bg-cyan-500/10 p-4" role="alert">
@@ -220,6 +274,18 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
             );
           })}
         </ul>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-4">
+        <h3 className="text-sm font-bold">{t.shareHeading}</h3>
+        <div className="mt-3 flex flex-wrap gap-3">
+          <button type="button" onClick={sharePng} className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 py-2 font-bold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+            {t.sharePng}
+          </button>
+          <button type="button" onClick={shareLink} className="inline-flex min-h-11 items-center rounded-xl border border-border px-5 py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+            {t.shareLink}
+          </button>
+        </div>
       </div>
 
       <p className="sr-only" role="status" aria-live="polite">{announce}</p>
