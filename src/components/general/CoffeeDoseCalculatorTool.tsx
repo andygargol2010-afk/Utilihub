@@ -50,7 +50,7 @@ export function CoffeeDoseCalculatorTool({ locale = "en" }: { tool?: GeneralTool
           <div className="space-y-1">
             <p className="text-lg font-semibold">{result.total.toFixed(1)} g</p>
             <p className="text-sm text-muted-foreground">
-              {result.p} × {result.g} g/persona
+              {result.p} × {result.g} {es ? "g/persona" : "g/person"}
             </p>
           </div>
         ) : result && "error" in result ? (
