@@ -59,6 +59,60 @@ export const TOOL_SEO_OVERRIDES_PART_04: Record<string, ToolSeoOverride> = {
       },
     ],
   },
+  "generador-codigo-qr": {
+    metaTitle: "QR Code Generator — Create QR codes online free | UtiliHub",
+    metaTitleEs: "Generador de código QR gratis — crear QR de texto o URL | UtiliHub",
+    metaDescription:
+      "Free online QR code generator. Enter text or a URL to generate a QR code instantly and download it as PNG. No signup, runs in your browser.",
+    metaDescriptionEs:
+      "Generador de código QR gratis: escribí texto o una URL y descargá el QR en PNG al instante. Sin registro, todo se genera en tu navegador.",
+    about: [
+      "A QR code encodes text, a URL, a phone number, or a short message in a square pattern any phone camera can scan.",
+      "This generator builds the QR locally in your browser and lets you download it as a PNG image ready to print or share.",
+    ],
+    aboutEs: [
+      "Un código QR codifica texto, una URL, un número de teléfono o un mensaje corto en un patrón que cualquier cámara de celular puede escanear.",
+      "Este generador crea el QR localmente en tu navegador y te permite descargarlo como imagen PNG lista para imprimir o compartir.",
+    ],
+    steps: [
+      "Type or paste the text or URL you want to encode.",
+      "The QR updates instantly; scan it with a phone to test it.",
+      "Download it as PNG or share it wherever you need it.",
+    ],
+    stepsEs: [
+      "Escribí o pegá el texto o la URL que querés codificar.",
+      "El QR se actualiza al instante; escanealo con un celular para probarlo.",
+      "Descargalo como PNG o compartilo donde lo necesites.",
+    ],
+    faq: [
+      {
+        q: "What can I encode in a QR code?",
+        a: "Any text, URL, phone number, or short message. Very long text produces a denser QR that is harder to scan.",
+      },
+      {
+        q: "Do QR codes expire?",
+        a: "No. A static QR stores the content in the pattern itself, so it works forever and needs no server.",
+      },
+      {
+        q: "Is the QR generated locally?",
+        a: "Yes. The QR is created entirely in your browser and nothing is uploaded.",
+      },
+    ],
+    faqEs: [
+      {
+        q: "¿Qué puedo codificar en un código QR?",
+        a: "Cualquier texto, URL, número de teléfono o mensaje corto. Un texto muy largo genera un QR más denso y difícil de escanear.",
+      },
+      {
+        q: "¿Vencen los códigos QR?",
+        a: "No. Un QR estático guarda el contenido en el propio patrón, así que funciona siempre y no necesita servidor.",
+      },
+      {
+        q: "¿El QR se genera localmente?",
+        a: "Sí. El código se crea por completo en tu navegador y no se sube ningún dato.",
+      },
+    ],
+  },
   ...TOOL_SEO_OVERRIDES_ATTENDANCE,
   ...TOOL_SEO_OVERRIDES_HOURS,
   ...TOOL_SEO_OVERRIDES_HARMONIC_MEAN,
