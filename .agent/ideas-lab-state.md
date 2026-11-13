@@ -62,12 +62,19 @@ adsense-prep_runs: 8
 ## ACTIVE PROJECT
 
 ```
-status: done
-id: daily-challenge-hub
+status: active
+idea: Tool Matchmaker — a 3-step guided wizard (goal -> time/context -> output type) that routes a first-time visitor to the best-fit UtiliHub tool/game/simulator/kit instead of making them browse. Each step is a large tappable card choice; after step 3 it shows a ranked top-3 result with a one-line reason each ('why this fits'), a primary Open button deep-linking to the real route, and a 'Try something different' re-roll. Result is shareable as a URL (?g=&t=&o=) and a branded 1080x1080 PNG recommendation card. Lives as a standalone route linked from home hero, 404/empty-search states and tool pages ('Not what you need?'). Pure client-side scoring table (no new deps, no catalog/registry edits).
+id: tool-matchmaker
+path_en: /find-your-tool
+path_es: /es/encuentra-tu-herramienta
+path_seo: n/a
+domain: conversion-paths
 runs_total: 4
-runs_remaining: 0
-next_step_required: no
-notes: CLOSED 2026-11-13 after run 4 (polish). Next run: IDEATE (two-urn GROWTH roll; retention-loops just closed).
+runs_remaining: 4
+acceptance: user answers 3 card questions, sees a ranked top-3 with reasons, taps Open and lands on a real existing tool/game route; can re-roll and share the URL or PNG.
+share: both
+next_step_required: yes
+notes: ROLL 2026-11-13: r=0.31 < p_fixed 0.35 -> FIXED urn; weighted pick -> conversion-paths (w2). Rubric (value/share/demand/distinct/feasible/perf, 1-5): (A) tool-matchmaker 4/4/3/4/5/5 = 25 CHOSEN; (B) first-visit-checklist (onboarding checklist that unlocks badges for visiting 5 surfaces) 3/3/2/3/4/5 = 20 (overlaps progress-passport + streak-constellation); (C) compare-two-tools split view 3/2/3/2/3/4 = 17 (rejected: distinctiveness 2). Closest-3 by mechanic for A: ToolSearch/CommandPalette (keyword search, not guided), share.utili-type-quiz (personality quiz; outcome is a type, not a tool route), growth.progress-passport (progress stamps; no routing). Primary metaphor: decision-tree wizard -> ranked recommendation. Not the particle/canvas cluster: DOM-only cards + a static PNG card, no animation field. Run plan: 1) data model (goal/time/output taxonomy + scoring table over ~25 verified real routes, reason strings EN+ES) + wizard UI skeleton EN route; 2) result screen + Open deep-links + re-roll, ES route (core playable by run 2); 3) share URL + PNG card + entry-point links (home hero / empty-search / tool footer) as surgical single-line inserts; 4) polish (a11y focus management, aria-live, 390px, motion-reduce). Constraints: verify each target route exists on branch before listing it; no registry.tsx edits; no catalog slug additions; lazy route.
 adsense-prep_runs: 8
 ```
 
