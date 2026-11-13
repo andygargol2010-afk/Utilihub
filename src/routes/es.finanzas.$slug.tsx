@@ -4,7 +4,7 @@ import { DeferredFinancialUi } from "@/components/DeferredFinancialUi";
 import { DeferredFavoriteButton } from "@/components/DeferredFavoriteButton";
 import { DeferredShareAndExport } from "@/components/DeferredShareAndExport";
 import { DeferredFinanceSeo } from "@/components/DeferredFinanceSeo";
-import { absoluteUrl, cleanDescription, ogImage } from "@/lib/seo";
+import { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, webApplicationSchema } from "@/lib/seo";
 import { spanishToolName } from "@/lib/i18n/es";
 import { spanishToolSummary } from "@/lib/i18n/es-summaries";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
@@ -60,11 +60,11 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
     const name = spanishToolName({ slug: tool.slug, name: tool.name });
     const url = absoluteUrl(`/es/finanzas/${tool.slug}`);
     const title = seo.metaTitleEs ?? `${name} gratis online | UtiliHub`;
+    // Spanish page: never fall back to the English catalog description.
+    const summaryEs = spanishToolSummary({ slug: tool.slug, name: tool.name, summary: tool.summary, category: "finanzas" });
     const description = cleanDescription(
       seo.metaDescriptionEs ??
-        (tool.description?.trim()
-          ? tool.description
-          : `Calculadora financiera gratuita: ${name}. Analizá escenarios en el navegador, sin registro.`),
+        `${summaryEs.replace(/[.\s]+$/, "")}. Calculadora financiera gratis en el navegador, sin registro.`,
     );
     return {
       meta: [
@@ -84,23 +84,23 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
         { rel: "alternate", hrefLang: "en", href: englishUrl },
         { rel: "alternate", hrefLang: "x-default", href: englishUrl },
       ],
-      scripts:
-        seo.faqEs.length > 0
-          ? [
-              {
-                type: "application/ld+json",
-                children: JSON.stringify({
-                  "@context": "https://schema.org",
-                  "@type": "FAQPage",
-                  mainEntity: seo.faqEs.map((item) => ({
-                    "@type": "Question",
-                    name: item.q,
-                    acceptedAnswer: { "@type": "Answer", text: item.a },
-                  })),
-                }),
-              },
-            ]
-          : undefined,
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              { ...webApplicationSchema({ name, description, slug: tool.slug }), url, inLanguage: "es" },
+              breadcrumbSchema([
+                { name: "Inicio", path: "/es" },
+                { name: "Finanzas", path: "/es/finanzas" },
+                { name },
+              ]),
+              ...(seo.faqEs.length > 0 ? [faqSchema(seo.faqEs)] : []),
+            ],
+          }),
+        },
+      ],
     };
   },
   component: SpanishFinancialToolPage,

@@ -48,7 +48,7 @@ async function buildEnglishToolHead(
   englishCategoryPath: (internalCategorySlug: string) => string,
   spanishToolPath: (tool: Pick<CatalogTool, "slug" | "category">) => string,
 ): Promise<ToolHead> {
-  const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } =
+  const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, fitTitle, ogImage, toolKeywords, webApplicationSchema } =
     await import("@/lib/seo");
   if (!category) {
     return {
@@ -59,7 +59,9 @@ async function buildEnglishToolHead(
       ],
     };
   }
-  const title = seo.title ?? tool.title;
+  const title =
+    seo.title ??
+    fitTitle([tool.title, tool.title.replace(" free online", ""), tool.title.replace(/\s*\|\s*UtiliHub$/, "")]);
   const description = cleanDescription(seo.description ?? tool.description);
   const url = absoluteUrl(englishToolPath(tool));
   const esUrl = absoluteUrl(spanishToolPath(tool));

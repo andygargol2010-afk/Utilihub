@@ -32,7 +32,10 @@ export const Route = createFileRoute("/category/$slug")({
       return { meta: [{ title: "Category not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
     const { category } = loaderData;
     const publicSlug = englishCategorySlug(category.slug);
-    const description = cleanDescription(category.description);
+    // Category blurbs are short (~40 chars): add the size of the catalog and why to click.
+    const description = cleanDescription(
+      `${category.description.replace(/[.\s]+$/, "")}. ${loaderData.tools.length} free tools that run in your browser, no signup.`,
+    );
     const enPath = `/category/${publicSlug}`;
     const esPath =
       category.slug === "finanzas" ? "/es/finanzas" : `/es/categoria/${category.slug}`;

@@ -82,7 +82,7 @@ export const PT_GAMES: Record<string, { name: string; summary: string }> = {
   },
   fightersland: {
     name: "Fightersland",
-    summary: "Jogo de luta pixel 1x1 contra a IA. Ataques rápidos, médios e fortes com carga, bloqueio e esquiva. Melhor de 3 rodadas. Tutorial opcional.",
+    summary: "Jogo de luta pixel 1x1: 6 lutadores, jogue online com um amigo, contra a CPU ou 2 jogadores num teclado. Carga, parry e esquiva.",
   },
 };
 
