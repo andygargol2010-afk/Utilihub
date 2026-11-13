@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GAMES, gameName } from "@/lib/games/catalog";
 import {
   clearLeft,
@@ -32,6 +32,8 @@ const T = {
     streak: "Current streak",
     best: "Best streak",
     days: "days",
+    day: "day",
+    emptyState: "No challenges completed yet — finish today's to start your streak.",
     next: "Next challenge in",
     calendar: "Last 28 days",
     doneDay: "completed",
@@ -63,6 +65,8 @@ const T = {
     streak: "Racha actual",
     best: "Mejor racha",
     days: "días",
+    day: "día",
+    emptyState: "Aún no completaste ningún reto — terminá el de hoy para empezar tu racha.",
     next: "Próximo reto en",
     calendar: "Últimos 28 días",
     doneDay: "completado",
@@ -93,6 +97,7 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
   const [announce, setAnnounce] = useState("");
   const [returned, setReturned] = useState(false);
   const [shared, setShared] = useState<ShareSnapshot | null>(null);
+  const yesRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setDone(readDone());
@@ -118,6 +123,10 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
       window.removeEventListener("pageshow", check);
     };
   }, []);
+
+  useEffect(() => {
+    if (returned) yesRef.current?.focus();
+  }, [returned]);
 
   const today = now === null ? null : dayKeyOf(now);
   const pick = useMemo(() => (today ? pickForDay(today) : null), [today]);
@@ -195,14 +204,14 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
           <a
             href={pickPath(pick, locale)}
             onClick={() => markLeft(today, pick.game.slug)}
-            className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 py-2 font-bold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 py-2 font-bold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
           >
             {t.play}
           </a>
           <button
             type="button"
             onClick={toggle}
-            className="inline-flex min-h-11 items-center rounded-xl border border-border px-5 py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="inline-flex min-h-11 items-center rounded-xl border border-border px-5 py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
           >
             {isDone ? t.undo : t.markDone}
           </button>
@@ -226,16 +235,17 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
           <p className="font-semibold">{t.welcomeBack}</p>
           <div className="mt-3 flex flex-wrap gap-3">
             <button
+              ref={yesRef}
               type="button"
               onClick={() => confirmReturn(true)}
-              className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 py-2 font-bold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 py-2 font-bold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
             >
               {t.yesDone}
             </button>
             <button
               type="button"
               onClick={() => confirmReturn(false)}
-              className="inline-flex min-h-11 items-center rounded-xl border border-border px-5 py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="inline-flex min-h-11 items-center rounded-xl border border-border px-5 py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none"
             >
               {t.notYet}
             </button>
@@ -244,14 +254,15 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
       ) : null}
 
       <div className="grid grid-cols-3 gap-3 text-center">
-        <Stat label={t.streak} value={`${streaks.current} ${t.days}`} />
-        <Stat label={t.best} value={`${streaks.best} ${t.days}`} />
+        <Stat label={t.streak} value={`${streaks.current} ${streaks.current === 1 ? t.day : t.days}`} />
+        <Stat label={t.best} value={`${streaks.best} ${streaks.best === 1 ? t.day : t.days}`} />
         <Stat label={t.next} value={formatCountdown(msUntilNext(now))} />
       </div>
 
       <div className="rounded-2xl border border-border bg-card p-4">
         <h3 className="text-sm font-bold">{t.calendar}</h3>
         <p className="mt-1 text-xs text-muted-foreground">{countDone(done, strip)}/28 {t.summary}</p>
+        {countDone(done, strip) === 0 ? <p className="mt-1 text-xs font-medium">{t.emptyState}</p> : null}
         <div className="mt-3 grid grid-cols-7 gap-1.5 text-center text-[10px] font-semibold uppercase text-muted-foreground" aria-hidden="true">
           {Array.from({ length: 7 }, (_, i) => (
             <span key={i}>{t.weekdays[(weekdayOf(strip[0] ?? today) + i) % 7]}</span>
@@ -279,10 +290,10 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
       <div className="rounded-2xl border border-border bg-card p-4">
         <h3 className="text-sm font-bold">{t.shareHeading}</h3>
         <div className="mt-3 flex flex-wrap gap-3">
-          <button type="button" onClick={sharePng} className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 py-2 font-bold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+          <button type="button" onClick={sharePng} className="inline-flex min-h-11 items-center rounded-xl bg-primary px-5 py-2 font-bold text-primary-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none">
             {t.sharePng}
           </button>
-          <button type="button" onClick={shareLink} className="inline-flex min-h-11 items-center rounded-xl border border-border px-5 py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+          <button type="button" onClick={shareLink} className="inline-flex min-h-11 items-center rounded-xl border border-border px-5 py-2 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none">
             {t.shareLink}
           </button>
         </div>
