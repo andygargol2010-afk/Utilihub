@@ -30,6 +30,7 @@ export const Route = createFileRoute("/find-your-tool")({
     links: [
       { rel: "canonical", href: absoluteUrl("/find-your-tool") },
       { rel: "alternate", hrefLang: "en", href: absoluteUrl("/find-your-tool") },
+      { rel: "alternate", hrefLang: "es", href: absoluteUrl("/es/encuentra-tu-herramienta") },
       { rel: "alternate", hrefLang: "x-default", href: absoluteUrl("/find-your-tool") },
     ],
   }),

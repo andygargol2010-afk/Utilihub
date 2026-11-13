@@ -28,6 +28,7 @@ import { Route as EchoWaveRouteImport } from './routes/echo-wave'
 import { Route as EsRouteImport } from './routes/es'
 import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as FinanzasRouteImport } from './routes/finanzas'
+import { Route as FindYourToolRouteImport } from './routes/find-your-tool'
 import { Route as FireworkRouteImport } from './routes/firework'
 import { Route as FluidInkFlowPlaygroundRouteImport } from './routes/fluid-ink-flow-playground'
 import { Route as FluidTypeRouteImport } from './routes/fluid-type'
@@ -82,6 +83,7 @@ import { Route as EsContactoRouteImport } from './routes/es.contacto'
 import { Route as EsCookiesRouteImport } from './routes/es.cookies'
 import { Route as EsDailyProgressConstellationRouteImport } from './routes/es.daily-progress-constellation'
 import { Route as EsEchoWaveRouteImport } from './routes/es.echo-wave'
+import { Route as EsEncuentraTuHerramientaRouteImport } from './routes/es.encuentra-tu-herramienta'
 import { Route as EsFinanzasRouteImport } from './routes/es.finanzas'
 import { Route as EsFireworkRouteImport } from './routes/es.firework'
 import { Route as EsFirmaVisualRouteImport } from './routes/es.firma-visual'
@@ -338,6 +340,11 @@ const FinanceRoute = FinanceRouteImport.update({
 const FinanzasRoute = FinanzasRouteImport.update({
   id: '/finanzas',
   path: '/finanzas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FindYourToolRoute = FindYourToolRouteImport.update({
+  id: '/find-your-tool',
+  path: '/find-your-tool',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FireworkRoute = FireworkRouteImport.update({
@@ -614,6 +621,12 @@ const EsEchoWaveRoute = EsEchoWaveRouteImport.update({
   path: '/echo-wave',
   getParentRoute: () => EsRoute,
 } as any)
+const EsEncuentraTuHerramientaRoute =
+  EsEncuentraTuHerramientaRouteImport.update({
+    id: '/encuentra-tu-herramienta',
+    path: '/encuentra-tu-herramienta',
+    getParentRoute: () => EsRoute,
+  } as any)
 const EsFinanzasRoute = EsFinanzasRouteImport.update({
   id: '/finanzas',
   path: '/finanzas',
@@ -1485,6 +1498,7 @@ export interface FileRoutesByFullPath {
   '/es': typeof EsRouteWithChildren
   '/finance': typeof FinanceRouteWithChildren
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/find-your-tool': typeof FindYourToolRoute
   '/firework': typeof FireworkRoute
   '/fluid-ink-flow-playground': typeof FluidInkFlowPlaygroundRoute
   '/fluid-type': typeof FluidTypeRoute
@@ -1538,6 +1552,7 @@ export interface FileRoutesByFullPath {
   '/es/cookies': typeof EsCookiesRoute
   '/es/daily-progress-constellation': typeof EsDailyProgressConstellationRoute
   '/es/echo-wave': typeof EsEchoWaveRoute
+  '/es/encuentra-tu-herramienta': typeof EsEncuentraTuHerramientaRoute
   '/es/finanzas': typeof EsFinanzasRouteWithChildren
   '/es/firework': typeof EsFireworkRoute
   '/es/firma-visual': typeof EsFirmaVisualRoute
@@ -1718,6 +1733,7 @@ export interface FileRoutesByTo {
   '/daily-progress-constellation': typeof DailyProgressConstellationRoute
   '/echo-wave': typeof EchoWaveRoute
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/find-your-tool': typeof FindYourToolRoute
   '/firework': typeof FireworkRoute
   '/fluid-ink-flow-playground': typeof FluidInkFlowPlaygroundRoute
   '/fluid-type': typeof FluidTypeRoute
@@ -1769,6 +1785,7 @@ export interface FileRoutesByTo {
   '/es/cookies': typeof EsCookiesRoute
   '/es/daily-progress-constellation': typeof EsDailyProgressConstellationRoute
   '/es/echo-wave': typeof EsEchoWaveRoute
+  '/es/encuentra-tu-herramienta': typeof EsEncuentraTuHerramientaRoute
   '/es/firework': typeof EsFireworkRoute
   '/es/firma-visual': typeof EsFirmaVisualRoute
   '/es/fluid-ink-flow-playground': typeof EsFluidInkFlowPlaygroundRoute
@@ -1945,6 +1962,7 @@ export interface FileRoutesById {
   '/es': typeof EsRouteWithChildren
   '/finance': typeof FinanceRouteWithChildren
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/find-your-tool': typeof FindYourToolRoute
   '/firework': typeof FireworkRoute
   '/fluid-ink-flow-playground': typeof FluidInkFlowPlaygroundRoute
   '/fluid-type': typeof FluidTypeRoute
@@ -1998,6 +2016,7 @@ export interface FileRoutesById {
   '/es/cookies': typeof EsCookiesRoute
   '/es/daily-progress-constellation': typeof EsDailyProgressConstellationRoute
   '/es/echo-wave': typeof EsEchoWaveRoute
+  '/es/encuentra-tu-herramienta': typeof EsEncuentraTuHerramientaRoute
   '/es/finanzas': typeof EsFinanzasRouteWithChildren
   '/es/firework': typeof EsFireworkRoute
   '/es/firma-visual': typeof EsFirmaVisualRoute
@@ -2182,6 +2201,7 @@ export interface FileRouteTypes {
     | '/es'
     | '/finance'
     | '/finanzas'
+    | '/find-your-tool'
     | '/firework'
     | '/fluid-ink-flow-playground'
     | '/fluid-type'
@@ -2235,6 +2255,7 @@ export interface FileRouteTypes {
     | '/es/cookies'
     | '/es/daily-progress-constellation'
     | '/es/echo-wave'
+    | '/es/encuentra-tu-herramienta'
     | '/es/finanzas'
     | '/es/firework'
     | '/es/firma-visual'
@@ -2415,6 +2436,7 @@ export interface FileRouteTypes {
     | '/daily-progress-constellation'
     | '/echo-wave'
     | '/finanzas'
+    | '/find-your-tool'
     | '/firework'
     | '/fluid-ink-flow-playground'
     | '/fluid-type'
@@ -2466,6 +2488,7 @@ export interface FileRouteTypes {
     | '/es/cookies'
     | '/es/daily-progress-constellation'
     | '/es/echo-wave'
+    | '/es/encuentra-tu-herramienta'
     | '/es/firework'
     | '/es/firma-visual'
     | '/es/fluid-ink-flow-playground'
@@ -2641,6 +2664,7 @@ export interface FileRouteTypes {
     | '/es'
     | '/finance'
     | '/finanzas'
+    | '/find-your-tool'
     | '/firework'
     | '/fluid-ink-flow-playground'
     | '/fluid-type'
@@ -2694,6 +2718,7 @@ export interface FileRouteTypes {
     | '/es/cookies'
     | '/es/daily-progress-constellation'
     | '/es/echo-wave'
+    | '/es/encuentra-tu-herramienta'
     | '/es/finanzas'
     | '/es/firework'
     | '/es/firma-visual'
@@ -2877,6 +2902,7 @@ export interface RootRouteChildren {
   EsRoute: typeof EsRouteWithChildren
   FinanceRoute: typeof FinanceRouteWithChildren
   FinanzasRoute: typeof FinanzasRouteWithChildren
+  FindYourToolRoute: typeof FindYourToolRoute
   FireworkRoute: typeof FireworkRoute
   FluidInkFlowPlaygroundRoute: typeof FluidInkFlowPlaygroundRoute
   FluidTypeRoute: typeof FluidTypeRoute
@@ -3108,6 +3134,13 @@ declare module '@tanstack/react-router' {
       path: '/finanzas'
       fullPath: '/finanzas'
       preLoaderRoute: typeof FinanzasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/find-your-tool': {
+      id: '/find-your-tool'
+      path: '/find-your-tool'
+      fullPath: '/find-your-tool'
+      preLoaderRoute: typeof FindYourToolRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/firework': {
@@ -3486,6 +3519,13 @@ declare module '@tanstack/react-router' {
       path: '/echo-wave'
       fullPath: '/es/echo-wave'
       preLoaderRoute: typeof EsEchoWaveRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/encuentra-tu-herramienta': {
+      id: '/es/encuentra-tu-herramienta'
+      path: '/encuentra-tu-herramienta'
+      fullPath: '/es/encuentra-tu-herramienta'
+      preLoaderRoute: typeof EsEncuentraTuHerramientaRouteImport
       parentRoute: typeof EsRoute
     }
     '/es/finanzas': {
@@ -4721,6 +4761,7 @@ interface EsRouteChildren {
   EsCookiesRoute: typeof EsCookiesRoute
   EsDailyProgressConstellationRoute: typeof EsDailyProgressConstellationRoute
   EsEchoWaveRoute: typeof EsEchoWaveRoute
+  EsEncuentraTuHerramientaRoute: typeof EsEncuentraTuHerramientaRoute
   EsFinanzasRoute: typeof EsFinanzasRouteWithChildren
   EsFireworkRoute: typeof EsFireworkRoute
   EsFirmaVisualRoute: typeof EsFirmaVisualRoute
@@ -4804,6 +4845,7 @@ const EsRouteChildren: EsRouteChildren = {
   EsCookiesRoute: EsCookiesRoute,
   EsDailyProgressConstellationRoute: EsDailyProgressConstellationRoute,
   EsEchoWaveRoute: EsEchoWaveRoute,
+  EsEncuentraTuHerramientaRoute: EsEncuentraTuHerramientaRoute,
   EsFinanzasRoute: EsFinanzasRouteWithChildren,
   EsFireworkRoute: EsFireworkRoute,
   EsFirmaVisualRoute: EsFirmaVisualRoute,
@@ -5024,6 +5066,7 @@ const rootRouteChildren: RootRouteChildren = {
   EsRoute: EsRouteWithChildren,
   FinanceRoute: FinanceRouteWithChildren,
   FinanzasRoute: FinanzasRouteWithChildren,
+  FindYourToolRoute: FindYourToolRoute,
   FireworkRoute: FireworkRoute,
   FluidInkFlowPlaygroundRoute: FluidInkFlowPlaygroundRoute,
   FluidTypeRoute: FluidTypeRoute,
