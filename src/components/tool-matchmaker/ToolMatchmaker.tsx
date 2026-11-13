@@ -17,6 +17,11 @@ const T = {
     announceStep: "Question",
     announceResult: "Showing your top three matches.",
     announceReroll: "Showing three different matches.",
+    copy: "Copy link",
+    copied: "Link copied",
+    png: "Download card",
+    pngDone: "Card downloaded",
+    cardTitle: "My best UtiliHub matches",
   },
   es: {
     step: "Paso",
@@ -32,6 +37,11 @@ const T = {
     announceStep: "Pregunta",
     announceResult: "Mostrando tus tres mejores opciones.",
     announceReroll: "Mostrando tres opciones distintas.",
+    copy: "Copiar enlace",
+    copied: "Enlace copiado",
+    png: "Descargar tarjeta",
+    pngDone: "Tarjeta descargada",
+    cardTitle: "Mis mejores opciones en UtiliHub",
   },
 } as const;
 
@@ -75,6 +85,75 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
   };
 
   const cur = STEPS[step];
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}${buildQuery(answers)}`);
+      setAnnounce(t.copied);
+    } catch {
+      setAnnounce("");
+    }
+  };
+
+  const downloadCard = () => {
+    const c = document.createElement("canvas");
+    c.width = 1080;
+    c.height = 1080;
+    const x = c.getContext("2d");
+    if (!x) return;
+    x.fillStyle = "#0b1220";
+    x.fillRect(0, 0, 1080, 1080);
+    x.fillStyle = "#06b6d4";
+    x.fillRect(0, 0, 1080, 14);
+    x.textBaseline = "top";
+    x.fillStyle = "#06b6d4";
+    x.font = "700 34px system-ui, sans-serif";
+    x.fillText("UtiliHub", 70, 70);
+    x.fillStyle = "#ffffff";
+    x.font = "800 56px system-ui, sans-serif";
+    x.fillText(t.cardTitle, 70, 130, 940);
+    x.fillStyle = "#94a3b8";
+    x.font = "500 30px system-ui, sans-serif";
+    x.fillText([labelOf(GOALS, answers.g), labelOf(TIMES, answers.t), labelOf(OUTPUTS, answers.o)].join("  ·  "), 70, 215, 940);
+    const wrap = (text: string, y: number) => {
+      const words = text.split(" ");
+      let line = "";
+      let yy = y;
+      for (const w of words) {
+        const test = line ? `${line} ${w}` : w;
+        if (x.measureText(test).width > 780 && line) { x.fillText(line, 190, yy); line = w; yy += 36; } else line = test;
+      }
+      x.fillText(line, 190, yy);
+    };
+    results.forEach((m, i) => {
+      const y = 300 + i * 220;
+      x.fillStyle = "#111b30";
+      x.fillRect(70, y, 940, 190);
+      x.fillStyle = "#06b6d4";
+      x.beginPath();
+      x.arc(130, y + 95, 36, 0, Math.PI * 2);
+      x.fill();
+      x.fillStyle = "#06121a";
+      x.font = "800 40px system-ui, sans-serif";
+      x.textAlign = "center";
+      x.fillText(String(i + 1), 130, y + 74);
+      x.textAlign = "left";
+      x.fillStyle = "#ffffff";
+      x.font = "800 38px system-ui, sans-serif";
+      x.fillText(m.name, 190, y + 28, 780);
+      x.fillStyle = "#94a3b8";
+      x.font = "500 26px system-ui, sans-serif";
+      wrap(m.reason, y + 88);
+    });
+    x.fillStyle = "#64748b";
+    x.font = "600 28px system-ui, sans-serif";
+    x.fillText(locale === "es" ? "utilihub.net/es/encuentra-tu-herramienta" : "utilihub.net/find-your-tool", 70, 990);
+    const a = document.createElement("a");
+    a.download = "utilihub-matches.png";
+    a.href = c.toDataURL("image/png");
+    a.click();
+    setAnnounce(t.pngDone);
+  };
 
   const labelOf = (list: Choice<string>[], id: string | null) => {
     const c = list.find((x) => x.id === id);
@@ -160,6 +239,12 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
               className="btn-press min-h-[44px] rounded-xl border border-border px-4 font-semibold"
             >
               {t.reroll}
+            </button>
+            <button type="button" onClick={copyLink} className="btn-press min-h-[44px] rounded-xl border border-border px-4 font-semibold">
+              {t.copy}
+            </button>
+            <button type="button" onClick={downloadCard} className="btn-press min-h-[44px] rounded-xl border border-border px-4 font-semibold">
+              {t.png}
             </button>
             <button
               type="button"

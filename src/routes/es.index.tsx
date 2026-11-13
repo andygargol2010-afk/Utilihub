@@ -108,6 +108,12 @@ function SpanishHome() {
               >
                 Catálogo completo
               </Link>
+              <Link
+                to="/es/encuentra-tu-herramienta"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-cyan-500/40 bg-card px-5 py-3 text-sm font-bold hover:border-cyan-500/60 hover:bg-cyan-500/10"
+              >
+                Encuentra tu herramienta
+              </Link>
             </div>
             <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
               <span className="flex items-center gap-1.5">
