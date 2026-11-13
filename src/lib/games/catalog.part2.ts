@@ -339,8 +339,8 @@ export const GAMES: readonly GameDef[] = [
     nameEs: "Fightersland",
     tag: "arcade",
     emoji: "⚔️",
-    summaryEn: "1v1 pixel fighting game vs AI. Fast/medium/strong attacks with charge, block and dodge. Best of 3 rounds. Tutorial skippable.",
-    summaryEs: "Juego de peleas 1v1 en pixel vs IA. Golpes rápido/medio/fuerte con carga, bloqueo y esquive. Mejor de 3 rounds. Tutorial con Saltar.",
+    summaryEn: "1v1 pixel fighting game: 6 fighters, play online with a friend, vs CPU or 2 players on one keyboard. Charge attacks, parry and dodge.",
+    summaryEs: "Juego de peleas 1v1 en pixel: 6 luchadores, juega online con un amigo, contra la CPU o 2 jugadores en un teclado. Carga, parry y esquive.",
     hasScore: false,
   },
 ] as const;

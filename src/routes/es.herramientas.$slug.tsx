@@ -56,12 +56,19 @@ async function buildSpanishToolHead(
   category: string,
   seo: { metaTitleEs?: string; metaDescriptionEs?: string; faqEs: Array<{ q: string; a: string }> },
 ): Promise<ToolHead> {
-  const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, organizationSchema } = await import(
+  const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, fitTitle, ogImage, organizationSchema } = await import(
     "@/lib/seo",
   );
   const { englishToolPath } = await import("@/lib/route-slugs");
   const url = absoluteUrl(`/es/herramientas/${tool.slug}`);
-  const title = seo.metaTitleEs ?? `${name} gratis online — ${category} | UtiliHub`;
+  const title =
+    seo.metaTitleEs ??
+    fitTitle([
+      `${name} gratis online — ${category} | UtiliHub`,
+      `${name} gratis online | UtiliHub`,
+      `${name} gratis | UtiliHub`,
+      `${name} | UtiliHub`,
+    ]);
   const description = cleanDescription(
     seo.metaDescriptionEs ??
       `${name}: herramienta gratuita de ${category.toLowerCase()}. Usala en el navegador, sin cuenta ni instalación. Resultados al instante en UtiliHub.`,
