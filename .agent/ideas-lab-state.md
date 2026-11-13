@@ -67,7 +67,7 @@ id: daily-challenge-hub
 runs_total: 4
 runs_remaining: 0
 next_step_required: no
-notes: CLOSED 2026-11-13 after run 4 (polish). Next run: IDEATE (two-urn GROWTH roll; retention-loops just closed, games/kits/simulators underused vs recent).
+notes: CLOSED 2026-11-13 after run 4 (polish). Next run: IDEATE (two-urn GROWTH roll; retention-loops just closed).
 adsense-prep_runs: 8
 ```
 
