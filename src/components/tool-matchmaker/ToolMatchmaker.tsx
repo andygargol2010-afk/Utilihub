@@ -19,6 +19,8 @@ const T = {
     announceReroll: "Showing three different matches.",
     copy: "Copy link",
     copied: "Link copied",
+    copyFail: "Could not copy. Copy the address bar link instead.",
+    backAnn: "Back to question",
     png: "Download card",
     pngDone: "Card downloaded",
     cardTitle: "My best UtiliHub matches",
@@ -39,6 +41,8 @@ const T = {
     announceReroll: "Mostrando tres opciones distintas.",
     copy: "Copiar enlace",
     copied: "Enlace copiado",
+    copyFail: "No se pudo copiar. Copia el enlace de la barra de direcciones.",
+    backAnn: "Volviendo a la pregunta",
     png: "Descargar tarjeta",
     pngDone: "Tarjeta descargada",
     cardTitle: "Mis mejores opciones en UtiliHub",
@@ -59,6 +63,7 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
   const [announce, setAnnounce] = useState("");
   const headingRef = useRef<HTMLHeadingElement>(null);
   const ready = useRef(false);
+  const interacted = useRef(false);
 
   useEffect(() => {
     const a = parseAnswers(window.location.search);
@@ -70,12 +75,13 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
   useEffect(() => {
     if (!ready.current) return;
     window.history.replaceState(null, "", `${window.location.pathname}${step === 3 ? buildQuery(answers) : ""}`);
-    headingRef.current?.focus();
+    if (interacted.current) headingRef.current?.focus();
   }, [step, answers]);
 
   const results = useMemo(() => (step === 3 ? pickTop(answers, locale, round) : []), [step, answers, locale, round]);
 
   const choose = (key: "g" | "t" | "o", id: string) => {
+    interacted.current = true;
     const next = { ...answers, [key]: id } as Answers;
     setAnswers(next);
     setRound(0);
@@ -91,7 +97,7 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
       await navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}${buildQuery(answers)}`);
       setAnnounce(t.copied);
     } catch {
-      setAnnounce("");
+      setAnnounce(t.copyFail);
     }
   };
 
@@ -162,7 +168,7 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
 
   return (
     <div>
-      <div className="sr-only" aria-live="polite" role="status">{announce}</div>
+      <div className="sr-only" aria-live="polite" role="status" aria-atomic="true">{announce}</div>
 
       {cur ? (
         <section aria-labelledby="mm-q">
@@ -199,7 +205,7 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
             })}
           </ul>
           {step > 0 && (
-            <button type="button" onClick={() => setStep(step - 1)} className="mt-5 text-sm font-semibold text-muted-foreground underline underline-offset-4">
+            <button type="button" onClick={() => { interacted.current = true; setStep(step - 1); setAnnounce(`${t.backAnn} ${step}`); }} className="mt-5 text-sm font-semibold text-muted-foreground underline underline-offset-4">
               {t.back}
             </button>
           )}
@@ -226,7 +232,7 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
                     <span className="font-semibold">{t.why}:</span> {m.reason}
                   </p>
                 </div>
-                <a href={m.path} className="btn-press inline-flex min-h-[44px] items-center justify-center rounded-xl bg-cyan-500 px-5 font-bold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500">
+                <a href={m.path} className="btn-press motion-reduce:transform-none motion-reduce:transition-none inline-flex min-h-[44px] items-center justify-center rounded-xl bg-cyan-500 px-5 font-bold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500">
                   {t.open}
                 </a>
               </li>
@@ -236,19 +242,19 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
             <button
               type="button"
               onClick={() => { setRound(round + 1); setAnnounce(t.announceReroll); }}
-              className="btn-press min-h-[44px] rounded-xl border border-border px-4 font-semibold"
+              className="btn-press min-h-[44px] motion-reduce:transform-none motion-reduce:transition-none rounded-xl border border-border px-4 font-semibold"
             >
               {t.reroll}
             </button>
-            <button type="button" onClick={copyLink} className="btn-press min-h-[44px] rounded-xl border border-border px-4 font-semibold">
+            <button type="button" onClick={copyLink} className="btn-press min-h-[44px] motion-reduce:transform-none motion-reduce:transition-none rounded-xl border border-border px-4 font-semibold">
               {t.copy}
             </button>
-            <button type="button" onClick={downloadCard} className="btn-press min-h-[44px] rounded-xl border border-border px-4 font-semibold">
+            <button type="button" onClick={downloadCard} className="btn-press min-h-[44px] motion-reduce:transform-none motion-reduce:transition-none rounded-xl border border-border px-4 font-semibold">
               {t.png}
             </button>
             <button
               type="button"
-              onClick={() => { setAnswers({ g: null, t: null, o: null }); setRound(0); setStep(0); }}
+              onClick={() => { interacted.current = true; setAnswers({ g: null, t: null, o: null }); setRound(0); setStep(0); }}
               className="min-h-[44px] px-2 text-sm font-semibold text-muted-foreground underline underline-offset-4"
             >
               {t.restart}
