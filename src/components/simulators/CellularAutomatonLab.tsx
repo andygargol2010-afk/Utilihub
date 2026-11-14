@@ -1,7 +1,8 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
-import { CellularAutomatonElementary } from "./CellularAutomatonElementary";
+import { CellularAutomatonElementary, type ElemInit } from "./CellularAutomatonElementary";
+import { buildUrl, copyText, digitsToFlags, downloadCanvas, drawCard, flagsToDigits, packBits, unpackBits } from "./cellularAutomatonShare";
 
 type Locale = "en" | "es" | "pt";
 
@@ -47,6 +48,14 @@ const labels = {
     tab2d: "Life-like 2D",
     tab1d: "Elementary 1D",
     spark: "Population over generations",
+    copyLink: "Copy share link",
+    savePng: "Download PNG",
+    copied: "Link copied to clipboard.",
+    copyFail: "Could not copy the link — copy it from the address bar instead.",
+    pngDone: "PNG card downloaded.",
+    shareTitle: "Cellular Automaton Lab",
+    live: "live",
+    gen: "gen",
   },
   es: {
     note: "Reglas tipo Life: en cada generación, una celda muerta nace si su cantidad de vecinas vivas está en el conjunto de Nacimiento, y una celda viva sobrevive si su cantidad está en el conjunto de Supervivencia. La grilla se envuelve en los bordes.",
@@ -85,6 +94,14 @@ const labels = {
     tab2d: "Tipo Life 2D",
     tab1d: "Elemental 1D",
     spark: "Población por generación",
+    copyLink: "Copiar enlace",
+    savePng: "Descargar PNG",
+    copied: "Enlace copiado al portapapeles.",
+    copyFail: "No se pudo copiar el enlace — copialo desde la barra de direcciones.",
+    pngDone: "Tarjeta PNG descargada.",
+    shareTitle: "Laboratorio de Autómatas Celulares",
+    live: "vivas",
+    gen: "gen",
   },
 } as const;
 
@@ -199,11 +216,14 @@ const btn =
   "min-h-10 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold hover:bg-accent disabled:opacity-50 motion-reduce:transition-none";
 const on = "border-cyan-400 bg-cyan-950/40";
 
-function LifeLike2D({ locale = "en" }: { locale?: Locale }) {
+type LifeInit = { b: boolean[]; s: boolean[]; g: Uint8Array };
+
+function LifeLike2D({ locale = "en", init }: { locale?: Locale; init?: LifeInit | null }) {
   const t = (locale === "es" ? labels.es : labels.en) as unknown as T;
 
-  const [grid, setGrid] = useState<Uint8Array>(initialGrid);
-  const [rule, setRule] = useState<Rule>(RULES['conway'] as Rule);
+  const [grid, setGrid] = useState<Uint8Array>(() => init?.g ?? initialGrid());
+  const [rule, setRule] = useState<Rule>(() => (init ? { b: init.b, s: init.s } : (RULES['conway'] as Rule)));
+  const [shareMsg, setShareMsg] = useState("");
   const [gen, setGen] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<"slow" | "normal" | "fast">("normal");
@@ -358,6 +378,25 @@ function LifeLike2D({ locale = "en" }: { locale?: Locale }) {
     setSettled(false);
   };
 
+  const shareLink = async () => {
+    const url = buildUrl({ mode: "2d", b: flagsToDigits(rule.b), s: flagsToDigits(rule.s), g: packBits(grid) });
+    setShareMsg((await copyText(url)) ? t.copied : t.copyFail);
+  };
+
+  const savePng = () => {
+    const card = drawCard({
+      title: t.shareTitle,
+      subtitle: `${t.ruleLabel} ${code}`,
+      lines: [`${t.gen} ${gen}`, `${pop} ${t.live}`],
+      cols: N,
+      rows: N,
+      cells: grid,
+      cell: CELL,
+    });
+    downloadCanvas(card, `cellular-automaton-${code.replace("/", "-")}-gen${gen}.png`);
+    setShareMsg(t.pngDone);
+  };
+
   const toolKeys = ["cells", "glider", "blinker", "pulsar", "rpent", "gun"] as const;
 
   return (
@@ -463,6 +502,17 @@ function LifeLike2D({ locale = "en" }: { locale?: Locale }) {
         {settled && <p className="text-muted-foreground">{t.stable}</p>}
         <Sparkline data={hist} label={t.spark} />
       </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" onClick={shareLink} className={btn}>
+          {t.copyLink}
+        </button>
+        <button type="button" onClick={savePng} className={btn}>
+          {t.savePng}
+        </button>
+        <span role="status" aria-live="polite" className="text-xs text-muted-foreground">
+          {shareMsg}
+        </span>
+      </div>
       <p className="text-[11px] text-muted-foreground">{t.keys}</p>
     </div>
   );
@@ -490,9 +540,29 @@ function Sparkline({ data, label }: { data: number[]; label: string }) {
 export function CellularAutomatonLab({ locale = "en" }: { locale?: Locale }) {
   const t = (locale === "es" ? labels.es : labels.en) as unknown as T;
   const [mode, setMode] = useState<"2d" | "1d">("2d");
+  // undefined = URL not read yet; null = no shared state in the URL
+  const [boot, setBoot] = useState<{ life: LifeInit | null; elem: ElemInit | null } | undefined>(undefined);
   useEffect(() => {
     trackEvent("simulator_open", { id: "cellular-automaton-lab", locale });
   }, [locale]);
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const m = q.get("mode");
+    let life: LifeInit | null = null;
+    let elem: ElemInit | null = null;
+    if (m === "2d") {
+      const b = digitsToFlags(q.get("b"));
+      const s = digitsToFlags(q.get("s"));
+      const g = unpackBits(q.get("g"), N * N);
+      if (b && s && g) life = { b, s, g };
+    } else if (m === "1d") {
+      const rule = Number(q.get("rule"));
+      if (Number.isInteger(rule) && rule >= 0 && rule <= 255) elem = { rule, g: unpackBits(q.get("g"), 81) };
+    }
+    if (life) setMode("2d");
+    else if (elem) setMode("1d");
+    setBoot({ life, elem });
+  }, []);
   return (
     <div className="space-y-5">
       <div className="flex gap-2" role="group">
@@ -503,7 +573,11 @@ export function CellularAutomatonLab({ locale = "en" }: { locale?: Locale }) {
           {t.tab1d}
         </button>
       </div>
-      {mode === "2d" ? <LifeLike2D locale={locale} /> : <CellularAutomatonElementary locale={locale} />}
+      {boot === undefined ? null : mode === "2d" ? (
+        <LifeLike2D locale={locale} init={boot.life} />
+      ) : (
+        <CellularAutomatonElementary locale={locale} init={boot.elem} />
+      )}
     </div>
   );
 }

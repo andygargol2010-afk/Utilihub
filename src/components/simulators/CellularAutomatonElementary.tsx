@@ -1,7 +1,10 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { buildUrl, copyText, downloadCanvas, drawCard, packBits } from "./cellularAutomatonShare";
 
 type Locale = "en" | "es" | "pt";
+
+export type ElemInit = { rule: number; g: Uint8Array | null };
 
 const W = 81;
 const H = 81;
@@ -31,6 +34,14 @@ const labels = {
     stateAria: (r: number, n: number) => `Rule ${r}, ${n} rows`,
     keys: "Keys: Space play/pause · S step · R restart",
     resultOf: "Result for pattern",
+    copyLink: "Copy share link",
+    savePng: "Download PNG",
+    copied: "Link copied to clipboard.",
+    copyFail: "Could not copy the link — copy it from the address bar instead.",
+    pngDone: "PNG card downloaded.",
+    shareTitle: "Cellular Automaton Lab",
+    ruleWord: "Rule",
+    rowsWord: "rows",
   },
   es: {
     note: "Autómata elemental: una sola fila de celdas. Cada fila nueva se calcula a partir de la anterior — una celda mira a sí misma y a sus dos vecinas (8 patrones posibles) y la tabla de la regla dice en qué se convierte. El número de regla 0-255 es esa tabla leída como binario. Los bordes se envuelven.",
@@ -55,6 +66,14 @@ const labels = {
     stateAria: (r: number, n: number) => `Regla ${r}, ${n} filas`,
     keys: "Teclas: Espacio reproducir/pausar · S paso · R reiniciar",
     resultOf: "Resultado para el patrón",
+    copyLink: "Copiar enlace",
+    savePng: "Descargar PNG",
+    copied: "Enlace copiado al portapapeles.",
+    copyFail: "No se pudo copiar el enlace — copialo desde la barra de direcciones.",
+    pngDone: "Tarjeta PNG descargada.",
+    shareTitle: "Laboratorio de Autómatas Celulares",
+    ruleWord: "Regla",
+    rowsWord: "filas",
   },
 } as const;
 
@@ -88,11 +107,13 @@ const btn =
   "min-h-10 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold hover:bg-accent disabled:opacity-50 motion-reduce:transition-none";
 const on = "border-cyan-400 bg-cyan-950/40";
 
-export function CellularAutomatonElementary({ locale = "en" }: { locale?: Locale }) {
+export function CellularAutomatonElementary({ locale = "en", init }: { locale?: Locale; init?: ElemInit | null }) {
   const t = (locale === "es" ? labels.es : labels.en) as unknown as T;
-  const [rule, setRule] = useState(30);
+  const [rule, setRule] = useState(() => init?.rule ?? 30);
   const [seed, setSeed] = useState<"single" | "random">("single");
-  const [rows, setRows] = useState<Uint8Array[]>(() => [seedRow("single")]);
+  const seedRef = useRef<Uint8Array>(init?.g ?? seedRow("single"));
+  const [rows, setRows] = useState<Uint8Array[]>(() => [seedRef.current]);
+  const [shareMsg, setShareMsg] = useState("");
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<"slow" | "normal" | "fast">("normal");
   const [total, setTotal] = useState(1);
@@ -102,7 +123,8 @@ export function CellularAutomatonElementary({ locale = "en" }: { locale?: Locale
 
   const restart = useCallback((kind: "single" | "random") => {
     setSeed(kind);
-    setRows([seedRow(kind)]);
+    seedRef.current = seedRow(kind);
+    setRows([seedRef.current]);
     setTotal(1);
   }, []);
 
@@ -164,6 +186,27 @@ export function CellularAutomatonElementary({ locale = "en" }: { locale?: Locale
   const flipBit = (p: number) => {
     setRule((r) => r ^ (1 << p));
     restart(seed);
+  };
+
+  const shareLink = async () => {
+    const url = buildUrl({ mode: "1d", rule: String(rule), g: packBits(seedRef.current) });
+    setShareMsg((await copyText(url)) ? t.copied : t.copyFail);
+  };
+
+  const savePng = () => {
+    const cells = new Uint8Array(W * H);
+    rows.forEach((row, y) => cells.set(row, y * W));
+    const card = drawCard({
+      title: t.shareTitle,
+      subtitle: `${t.ruleWord} ${rule}`,
+      lines: [`${total} ${t.rowsWord}`],
+      cols: W,
+      rows: H,
+      cells,
+      cell: CELL,
+    });
+    downloadCanvas(card, `cellular-automaton-rule-${rule}.png`);
+    setShareMsg(t.pngDone);
   };
 
   return (
@@ -267,6 +310,17 @@ export function CellularAutomatonElementary({ locale = "en" }: { locale?: Locale
         <p>
           {t.rows}: {total} · {t.live}: {live}
         </p>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" onClick={shareLink} className={btn}>
+          {t.copyLink}
+        </button>
+        <button type="button" onClick={savePng} className={btn}>
+          {t.savePng}
+        </button>
+        <span role="status" aria-live="polite" className="text-xs text-muted-foreground">
+          {shareMsg}
+        </span>
       </div>
       <p className="text-[11px] text-muted-foreground">{t.keys}</p>
     </div>
