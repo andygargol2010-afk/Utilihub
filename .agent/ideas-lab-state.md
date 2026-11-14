@@ -62,11 +62,19 @@ adsense-prep_runs: 8
 ## ACTIVE PROJECT
 
 ```
-status: done
-id: tool-matchmaker
+status: active
+idea: Cellular Automaton Lab — a discrete rule-grid simulator. Tab 1 Life-like 2D (Conway B3/S23 default, editable Birth/Survive checkboxes: HighLife, Seeds, Day&Night, Maze), click/tap-to-toggle cells on a fixed wrapping grid, pattern stamps (glider, blinker, pulsar, R-pentomino, gosper-style gun), step/play/speed, generation + population readout with a live population sparkline. Tab 2 elementary 1D (Wolfram rules 0-255, rule-number input + 8-cell clickable rule table, grows row by row; presets 30/90/110/184). Shareable via URL (?mode=&rule=&b=&s=&g=) and branded 1080x1080 PNG.
+id: cellular-automaton-lab
+path_en: /simulators/cellular-automaton-lab
+path_es: /es/simuladores/laboratorio-automatas-celulares
+path_seo: n/a
+domain: simulators
 runs_total: 4
-runs_remaining: 0
-notes: CLOSED 2026-11-13 (see RECENT_CLOSED). Next run -> IDEATE.
+runs_remaining: 4
+acceptance: user picks a pattern or taps cells (or enters a Wolfram rule number / edits the B/S rule), presses Play, watches generations evolve with live population/generation readouts, and shares the result as PNG or URL.
+share: both
+next_step_required: yes
+notes: IDEATE 2026-11-14. Roll: FLEX (r=0.69 >= p_fixed 0.35), weighted pick over core+growth -> simulators. Candidates (value/share/demand/distinct/feasible/perf = total): (A) cellular-automaton-lab 4/4/5/4/5/4 = 26 CHOSEN; (B) queue-checkout-simulator M/M/c wait-time 4/3/2/5/4/5 = 23; (C) monte-carlo-retirement-fan-chart 5/3/4/3/4/5 = 24 (rejected: overlaps catalog financial calculators, distinct=3 borderline). Closest-3 by mechanic for A: ReactionDiffusionLab (grid update rule, but continuous PDE + paint), BinPackingSim (discrete grid cells, but packing/optimizer), GaltonBoardSim (stochastic stepping with histogram readout). Primary metaphor: rule-table editor -> discrete generation stepper on a toggle-cell grid (NOT freehand/particle/attractor canvas; no trails, no particles). IP: Conway's Game of Life and Wolfram elementary rules are public mathematical rules (no branded art/name; neutral label 'Life-like rules'); ship generic UI only. Plan: run1 = 2D Life core (grid, toggle, step/play/speed, B/S editor, stamps, population readout) in lazy SimShell + registry wiring EN/ES; run2 = elementary 1D tab + rule table + sparkline (working useful core by run 2); run3 = URL deep-link + branded PNG + keyboard (Space/S/R/C) + a11y aria-live + 390px tuning; run4 = polish (one polish-only run max), CWV check (fixed canvas aspect, cap grid 64x64 on mobile, requestAnimationFrame throttled). Wire via simulators/registry.tsx smallest-file rules; never touch registry.tsx wholesale; validate:catalog must pass.
 adsense-prep_runs: 8
 ```
 
