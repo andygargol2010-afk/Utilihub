@@ -113,6 +113,60 @@ export const TOOL_SEO_OVERRIDES_PART_04: Record<string, ToolSeoOverride> = {
       },
     ],
   },
+  "calculadora-porciones-pizza": {
+    metaTitle: "Pizza Portions Calculator — How Many Pizzas to Order | UtiliHub",
+    metaTitleEs: "Calculadora de porciones de pizza — cuántas pizzas pedir | UtiliHub",
+    metaDescription:
+      "Free pizza portions calculator: enter guests, slices per person and slices per pizza to get how many pizzas to order. Formula included, runs in your browser.",
+    metaDescriptionEs:
+      "Calculadora de porciones de pizza gratis: ingresá personas, porciones por persona y porciones por pizza para saber cuántas pizzas pedir. Con fórmula, en el navegador.",
+    about: [
+      "Pizzas needed = ceil(guests × slices per person ÷ slices per pizza). Example: 10 guests, 3 slices each, 8-slice pizzas → ceil(30 ÷ 8) = 4 pizzas.",
+      "Typical appetite: 2–4 slices per adult and 1–2 per child; add a slice per person if there are few side dishes.",
+    ],
+    aboutEs: [
+      "Pizzas necesarias = techo(personas × porciones por persona ÷ porciones por pizza). Ejemplo: 10 personas, 3 porciones cada una, pizzas de 8 porciones → techo(30 ÷ 8) = 4 pizzas.",
+      "Apetito típico: 2–4 porciones por adulto y 1–2 por niño; sumá una porción por persona si hay pocos acompañamientos.",
+    ],
+    steps: [
+      "Enter the number of guests.",
+      "Enter slices per person and slices per pizza.",
+      "Read how many pizzas to order, rounded up.",
+    ],
+    stepsEs: [
+      "Ingresá la cantidad de personas.",
+      "Ingresá porciones por persona y porciones por pizza.",
+      "Leé cuántas pizzas pedir, redondeado hacia arriba.",
+    ],
+    faq: [
+      {
+        q: "How many pizzas for 10 people?",
+        a: "With 3 slices per person and 8-slice pizzas: 10 × 3 ÷ 8 = 3.75, rounded up to 4 pizzas.",
+      },
+      {
+        q: "How many slices per person should I plan?",
+        a: "Adults usually eat 2–4 slices and kids 1–2. Adjust for appetite and how much other food you serve.",
+      },
+      {
+        q: "Why round up?",
+        a: "You cannot order a fraction of a pizza, so the tool always rounds up to the next whole pizza.",
+      },
+    ],
+    faqEs: [
+      {
+        q: "¿Cuántas pizzas para 10 personas?",
+        a: "Con 3 porciones por persona y pizzas de 8 porciones: 10 × 3 ÷ 8 = 3,75, redondeado a 4 pizzas.",
+      },
+      {
+        q: "¿Cuántas porciones por persona debo calcular?",
+        a: "Los adultos suelen comer 2–4 porciones y los niños 1–2. Ajustá según el apetito y la comida que acompañe.",
+      },
+      {
+        q: "¿Por qué se redondea hacia arriba?",
+        a: "No se puede pedir una fracción de pizza, así que la herramienta siempre redondea a la pizza entera siguiente.",
+      },
+    ],
+  },
   ...TOOL_SEO_OVERRIDES_ATTENDANCE,
   ...TOOL_SEO_OVERRIDES_HOURS,
   ...TOOL_SEO_OVERRIDES_HARMONIC_MEAN,
