@@ -68,4 +68,61 @@ export const TOOL_SEO_OVERRIDES_PART_01_PART2: Record<string, ToolSeoOverride> =
       },
     ],
   },
+,
+  "calculadora-costo-litro-combustible": {
+    metaTitle: "Fuel Cost Calculator — Price per Liter × Liters | UtiliHub",
+    metaTitleEs: "Calculadora de costo de combustible — precio por litro × litros | UtiliHub",
+    metaDescription:
+      "Free fuel cost calculator: total = price per liter × liters. Example: 1.65 × 40 = 66. Add a fixed discount or surcharge per liter. Runs in your browser.",
+    metaDescriptionEs:
+      "Calculadora de costo de combustible gratis: total = precio por litro × litros. Ejemplo: 1,65 × 40 = 66. Sumá descuento o recargo fijo por litro. En tu navegador.",
+    about: [
+      "The total fuel cost is price per liter × liters pumped: 40 L at 1.65 per liter costs 66.",
+      "If the station applies a fixed discount or surcharge per liter, the tool first adjusts the unit price and then multiplies, so the result stays a simple liters × effective price.",
+      "The calculation is a plain multiplication with no hidden rounding, so you can check it against the pump receipt digit by digit.",
+    ],
+    aboutEs: [
+      "El costo total de combustible es precio por litro × litros cargados: 40 L a 1,65 por litro cuestan 66.",
+      "Si la estación aplica un descuento o recargo fijo por litro, la herramienta ajusta primero el precio unitario y después multiplica: el resultado sigue siendo litros × precio efectivo.",
+      "El cálculo es una multiplicación simple sin redondeos ocultos, así que podés verificarlo contra el ticket de la bomba dígito por dígito.",
+    ],
+    steps: [
+      "Enter the price per liter (with decimals if needed).",
+      "Enter the liters dispensed.",
+      "Read the total cost; if there is a per-liter discount or surcharge, adjust the price and recalculate.",
+    ],
+    stepsEs: [
+      "Ingresá el precio por litro (con decimales si hace falta).",
+      "Ingresá los litros cargados.",
+      "Leé el costo total; si hay descuento o recargo por litro, ajustá el precio y recalculá.",
+    ],
+    faq: [
+      {
+        q: "How do I calculate fuel cost per liter?",
+        a: "Multiply the price per liter by the liters pumped. Example: 1.65 × 40 L = 66 total.",
+      },
+      {
+        q: "What if the price has a discount per liter?",
+        a: "Subtract the discount from the price per liter first. Example: 1.65 with a 0.05 discount is an effective 1.60 per liter, so 40 L cost 64.",
+      },
+      {
+        q: "What units does it use?",
+        a: "Liters and currency per liter. It does not convert gallons; use the MPG ↔ L/100 km converter for fuel-economy units.",
+      },
+    ],
+    faqEs: [
+      {
+        q: "¿Cómo se calcula el costo del combustible por litro?",
+        a: "Multiplicá el precio por litro por los litros cargados. Ejemplo: 1,65 × 40 L = 66 en total.",
+      },
+      {
+        q: "¿Y si el precio tiene descuento por litro?",
+        a: "Restá el descuento al precio por litro primero. Ejemplo: 1,65 con 0,05 de descuento da un precio efectivo de 1,60, así que 40 L cuestan 64.",
+      },
+      {
+        q: "¿Qué unidades usa?",
+        a: "Litros y moneda por litro. No convierte galones; para unidades de consumo usá el conversor MPG ↔ L/100 km.",
+      },
+    ],
+  },
 };
