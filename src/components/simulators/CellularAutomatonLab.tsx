@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { CellularAutomatonElementary } from "./CellularAutomatonElementary";
 
 type Locale = "en" | "es" | "pt";
 
@@ -43,6 +44,9 @@ const labels = {
     stateAria: (g: number, p: number) => `Generation ${g}, ${p} live cells`,
     stable: "Nothing changes any more — the pattern is stable or empty.",
     keys: "Keys: Space play/pause · S step · R random · C clear",
+    tab2d: "Life-like 2D",
+    tab1d: "Elementary 1D",
+    spark: "Population over generations",
   },
   es: {
     note: "Reglas tipo Life: en cada generación, una celda muerta nace si su cantidad de vecinas vivas está en el conjunto de Nacimiento, y una celda viva sobrevive si su cantidad está en el conjunto de Supervivencia. La grilla se envuelve en los bordes.",
@@ -78,6 +82,9 @@ const labels = {
     stateAria: (g: number, p: number) => `Generación ${g}, ${p} celdas vivas`,
     stable: "Ya nada cambia: el patrón es estable o está vacío.",
     keys: "Teclas: Espacio reproducir/pausar · S paso · R aleatorio · C limpiar",
+    tab2d: "Tipo Life 2D",
+    tab1d: "Elemental 1D",
+    spark: "Población por generación",
   },
 } as const;
 
@@ -192,11 +199,8 @@ const btn =
   "min-h-10 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold hover:bg-accent disabled:opacity-50 motion-reduce:transition-none";
 const on = "border-cyan-400 bg-cyan-950/40";
 
-export function CellularAutomatonLab({ locale = "en" }: { locale?: Locale }) {
+function LifeLike2D({ locale = "en" }: { locale?: Locale }) {
   const t = (locale === "es" ? labels.es : labels.en) as unknown as T;
-  useEffect(() => {
-    trackEvent("simulator_open", { id: "cellular-automaton-lab", locale });
-  }, [locale]);
 
   const [grid, setGrid] = useState<Uint8Array>(initialGrid);
   const [rule, setRule] = useState<Rule>(RULES['conway'] as Rule);
@@ -211,6 +215,17 @@ export function CellularAutomatonLab({ locale = "en" }: { locale?: Locale }) {
   ruleRef.current = rule;
 
   const pop = useMemo(() => countLive(grid), [grid]);
+  const [hist, setHist] = useState<number[]>([]);
+  const lastGenRef = useRef(-1);
+  useEffect(() => {
+    if (gen === 0) {
+      lastGenRef.current = 0;
+      setHist([pop]);
+    } else if (gen !== lastGenRef.current) {
+      lastGenRef.current = gen;
+      setHist((h) => [...h, pop].slice(-120));
+    }
+  }, [gen, pop]);
   const code = useMemo(() => ruleCode(rule), [rule]);
 
   useEffect(() => {
@@ -446,8 +461,49 @@ export function CellularAutomatonLab({ locale = "en" }: { locale?: Locale }) {
           {t.generation}: {gen} · {t.population}: {pop}
         </p>
         {settled && <p className="text-muted-foreground">{t.stable}</p>}
+        <Sparkline data={hist} label={t.spark} />
       </div>
       <p className="text-[11px] text-muted-foreground">{t.keys}</p>
+    </div>
+  );
+}
+
+function Sparkline({ data, label }: { data: number[]; label: string }) {
+  const w = 240;
+  const h = 40;
+  const max = Math.max(1, ...data);
+  const pts = data
+    .map((v, i) => `${data.length > 1 ? (i / (data.length - 1)) * w : 0},${h - 2 - (v / max) * (h - 4)}`)
+    .join(" ");
+  return (
+    <div className="mt-2">
+      <p className="text-[11px] text-muted-foreground">
+        {label} (max {max})
+      </p>
+      <svg viewBox={`0 0 ${w} ${h}`} role="img" aria-label={`${label}: ${data[data.length - 1] ?? 0}`} className="mt-1 h-10 w-full">
+        <polyline points={pts} fill="none" stroke="#22d3ee" strokeWidth="1.5" strokeLinejoin="round" />
+      </svg>
+    </div>
+  );
+}
+
+export function CellularAutomatonLab({ locale = "en" }: { locale?: Locale }) {
+  const t = (locale === "es" ? labels.es : labels.en) as unknown as T;
+  const [mode, setMode] = useState<"2d" | "1d">("2d");
+  useEffect(() => {
+    trackEvent("simulator_open", { id: "cellular-automaton-lab", locale });
+  }, [locale]);
+  return (
+    <div className="space-y-5">
+      <div className="flex gap-2" role="group">
+        <button type="button" aria-pressed={mode === "2d"} onClick={() => setMode("2d")} className={`${btn} ${mode === "2d" ? on : ""}`}>
+          {t.tab2d}
+        </button>
+        <button type="button" aria-pressed={mode === "1d"} onClick={() => setMode("1d")} className={`${btn} ${mode === "1d" ? on : ""}`}>
+          {t.tab1d}
+        </button>
+      </div>
+      {mode === "2d" ? <LifeLike2D locale={locale} /> : <CellularAutomatonElementary locale={locale} />}
     </div>
   );
 }
