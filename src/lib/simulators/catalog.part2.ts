@@ -271,4 +271,17 @@ export const SIMULATORS: readonly SimDef[] = [
     summaryEn: "Interactive Lotka-Volterra: set prey/predator initials and rates (growth, predation, conversion, death). Watch discrete generations on a dual-line SVG chart. See oscillating, stable or extinct phases, peaks, and current counts. Presets, animate, share PNG or URL.",
     summaryEs: "Lotka-Volterra interactivo: fijá iniciales de presas/depredadores y tasas (crecimiento, depredación, conversión, muerte). Mirá generaciones discretas en gráfico SVG de dos líneas. Fases oscilante/estable/extinto, picos y conteos actuales. Preajustes, animar, compartir PNG o URL.",
   },
+  {
+    slug: "cellular-automaton-lab",
+    slugEs: "laboratorio-automatas-celulares",
+    nameEn: "Cellular Automaton Lab",
+    nameEs: "Laboratorio de Autómatas Celulares",
+    tag: "math",
+    theme: "lab",
+    emoji: "🧫",
+    badgeEn: "Life-like rules",
+    badgeEs: "Reglas tipo Life",
+    summaryEn: "Tap cells or drop patterns (glider, pulsar, glider gun) on a wrapping grid, edit the Birth/Survive rule, and watch generations and live-cell counts evolve.",
+    summaryEs: "Tocá celdas o colocá patrones (planeador, púlsar, cañón de planeadores) en una grilla envolvente, editá la regla de Nacimiento/Supervivencia y mirá evolucionar las generaciones y la cantidad de celdas vivas.",
+  },
 ] as const;
