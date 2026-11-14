@@ -65,4 +65,58 @@ export const TOOL_SEO_OVERRIDES_PART_01_PART1: Record<string, ToolSeoOverride> =
       },
     ],
   },
+  "calculadora-cuota-prestamo": {
+    metaTitle: "Loan Payment Calculator — Monthly EMI & Interest | UtiliHub",
+    metaTitleEs: "Calculadora de cuota de préstamo — cuota mensual e interés | UtiliHub",
+    metaDescription:
+      "Free loan payment calculator. Enter principal, annual interest rate, and term in months to get the monthly payment (EMI), total interest, and total amount. Runs in your browser.",
+    metaDescriptionEs:
+      "Calculadora de cuota de préstamo gratis: ingresá capital, tasa de interés anual y plazo en meses para obtener la cuota mensual, el interés total y el monto total. En tu navegador, sin registro.",
+    about: [
+      "The monthly payment of a fixed-rate loan is calculated with the amortisation formula EMI = P × r × (1+r)^n / ((1+r)^n − 1), where P is the principal, r the monthly rate (annual rate divided by 12 and by 100), and n the number of months.",
+      "Besides the monthly payment, the tool reports the total interest paid over the life of the loan and the total amount repaid, so you can compare offers beyond the advertised rate.",
+    ],
+    aboutEs: [
+      "La cuota mensual de un préstamo a tasa fija se calcula con la fórmula de amortización EMI = P × r × (1+r)^n / ((1+r)^n − 1), donde P es el capital, r la tasa mensual (la anual dividida por 12 y por 100) y n la cantidad de meses.",
+      "Además de la cuota, la herramienta muestra el interés total pagado durante la vida del préstamo y el monto total a devolver, para comparar ofertas más allá de la tasa publicada.",
+    ],
+    steps: [
+      "Enter the loan principal (the amount you borrow).",
+      "Enter the annual interest rate and the term in months.",
+      "Read the monthly payment, total interest, and total amount; the calculation runs in your browser.",
+    ],
+    stepsEs: [
+      "Ingresá el capital del préstamo (el monto que pedís).",
+      "Ingresá la tasa de interés anual y el plazo en meses.",
+      "Leé la cuota mensual, el interés total y el monto total; el cálculo se hace en tu navegador.",
+    ],
+    faq: [
+      {
+        q: "How is the monthly payment calculated?",
+        a: "With the amortisation formula EMI = P × r × (1+r)^n / ((1+r)^n − 1). Example: $10,000 at 12% annual for 12 months gives a monthly payment of about $888.49.",
+      },
+      {
+        q: "What happens if the rate is 0%?",
+        a: "With a 0% rate the formula divides by zero, so the payment is simply the principal divided by the number of months, with no interest.",
+      },
+      {
+        q: "Does it include fees or insurance?",
+        a: "No. It models principal and interest only. Origination fees, insurance, or taxes are not included in the calculated payment.",
+      },
+    ],
+    faqEs: [
+      {
+        q: "¿Cómo se calcula la cuota mensual?",
+        a: "Con la fórmula de amortización EMI = P × r × (1+r)^n / ((1+r)^n − 1). Ejemplo: $10.000 al 12% anual a 12 meses da una cuota de unos $888,49.",
+      },
+      {
+        q: "¿Qué pasa si la tasa es 0%?",
+        a: "Con tasa 0% la fórmula divide por cero, así que la cuota es simplemente el capital dividido por la cantidad de meses, sin interés.",
+      },
+      {
+        q: "¿Incluye seguros o comisiones?",
+        a: "No. Solo calcula capital e interés. Gastos de origen, seguros o impuestos no están incluidos en la cuota calculada.",
+      },
+    ],
+  },
 };
