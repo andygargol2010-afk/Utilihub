@@ -53,6 +53,7 @@ export function EmbedStudio({ locale }: { locale: EmbedLocale }) {
   const [ch, setCh] = useState(640);
   const [mode, setMode] = useState<SnippetMode>("fixed");
   const [badgeStyle, setBadgeStyle] = useState<BadgeStyle>("text");
+  const [clampNote, setClampNote] = useState("");
   const [origin, setOrigin] = useState(SITE);
   const { done, failed, copy } = useCopy();
 
@@ -96,7 +97,20 @@ export function EmbedStudio({ locale }: { locale: EmbedLocale }) {
 
   const game = games.find((g) => g.slug === slug) ?? games[0]!;
   const preset = SIZES.find((s) => s.id === sizeId) ?? SIZES[1]!;
-  const size = sizeId === "c" ? { ...preset, w: cw, h: ch } : preset;
+  const size = sizeId === "c" ? { ...preset, w: clampDim(cw, 480), h: clampDim(ch, 640) } : preset;
+  const commitDim = (axis: "w" | "h") => {
+    const raw = axis === "w" ? cw : ch;
+    const fallback = axis === "w" ? 480 : 640;
+    const next = clampDim(raw, fallback);
+    (axis === "w" ? setCw : setCh)(next);
+    setClampNote(
+      next !== raw
+        ? es
+          ? `${axis === "w" ? "Ancho" : "Alto"} ajustado a ${next} píxeles (permitido: ${MIN_DIM} a ${MAX_DIM}).`
+          : `${axis === "w" ? "Width" : "Height"} adjusted to ${next} pixels (allowed: ${MIN_DIM} to ${MAX_DIM}).`
+        : "",
+    );
+  };
   const embedUrl = buildEmbedUrl(origin, slug, lang, theme);
   const publicUrl = buildEmbedUrl(SITE, slug, lang, theme);
   const gameUrl = `${SITE}${embedSourcePath(game, lang)}`;
@@ -117,11 +131,11 @@ export function EmbedStudio({ locale }: { locale: EmbedLocale }) {
   const field =
     "w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500";
   const pill = (active: boolean) =>
-    `min-h-[44px] rounded-xl border px-3 py-2 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+    `min-h-[44px] rounded-xl border px-3 py-2 text-sm font-semibold motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
       active ? "border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "border-border bg-background hover:bg-muted"
     }`;
   const btn =
-    "min-h-[44px] rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2";
+    "min-h-[44px] rounded-xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white hover:bg-emerald-700 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2";
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
@@ -163,7 +177,7 @@ export function EmbedStudio({ locale }: { locale: EmbedLocale }) {
                   max={MAX_DIM}
                   value={cw}
                   onChange={(e) => setCw(Number(e.target.value))}
-                  onBlur={() => setCw((v) => clampDim(v, 480))}
+                  onBlur={() => commitDim("w")}
                   className={field}
                 />
               </div>
@@ -179,12 +193,15 @@ export function EmbedStudio({ locale }: { locale: EmbedLocale }) {
                   max={MAX_DIM}
                   value={ch}
                   onChange={(e) => setCh(Number(e.target.value))}
-                  onBlur={() => setCh((v) => clampDim(v, 640))}
+                  onBlur={() => commitDim("h")}
                   className={field}
                 />
               </div>
               <p className="col-span-2 text-xs text-muted-foreground">
                 {es ? `Entre ${MIN_DIM} y ${MAX_DIM} píxeles.` : `Between ${MIN_DIM} and ${MAX_DIM} pixels.`}
+              </p>
+              <p role="status" aria-live="polite" className="col-span-2 min-h-[1rem] text-xs font-semibold text-amber-700 dark:text-amber-400">
+                {clampNote}
               </p>
             </div>
           ) : null}
