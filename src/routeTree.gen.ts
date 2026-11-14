@@ -66,6 +66,7 @@ import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as EducacionSubjectRouteImport } from './routes/educacion.$subject'
 import { Route as EducationSubjectRouteImport } from './routes/education.$subject'
+import { Route as EmbedSlugRouteImport } from './routes/embed.$slug'
 import { Route as EsIndexRouteImport } from './routes/es.index'
 import { Route as EsAcercaRouteImport } from './routes/es.acerca'
 import { Route as EsAhorcadoRouteImport } from './routes/es.ahorcado'
@@ -532,6 +533,11 @@ const EducacionSubjectRoute = EducacionSubjectRouteImport.update({
 const EducationSubjectRoute = EducationSubjectRouteImport.update({
   id: '/education/$subject',
   path: '/education/$subject',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmbedSlugRoute = EmbedSlugRouteImport.update({
+  id: '/embed/$slug',
+  path: '/embed/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EsIndexRoute = EsIndexRouteImport.update({
@@ -1536,6 +1542,7 @@ export interface FileRoutesByFullPath {
   '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/education/$subject': typeof EducationSubjectRoute
+  '/embed/$slug': typeof EmbedSlugRoute
   '/es/acerca': typeof EsAcercaRoute
   '/es/ahorcado': typeof EsAhorcadoRoute
   '/es/aura-card': typeof EsAuraCardRoute
@@ -1769,6 +1776,7 @@ export interface FileRoutesByTo {
   '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/education/$subject': typeof EducationSubjectRoute
+  '/embed/$slug': typeof EmbedSlugRoute
   '/es/acerca': typeof EsAcercaRoute
   '/es/ahorcado': typeof EsAhorcadoRoute
   '/es/aura-card': typeof EsAuraCardRoute
@@ -2000,6 +2008,7 @@ export interface FileRoutesById {
   '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/education/$subject': typeof EducationSubjectRoute
+  '/embed/$slug': typeof EmbedSlugRoute
   '/es/acerca': typeof EsAcercaRoute
   '/es/ahorcado': typeof EsAhorcadoRoute
   '/es/aura-card': typeof EsAuraCardRoute
@@ -2239,6 +2248,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/educacion/$subject'
     | '/education/$subject'
+    | '/embed/$slug'
     | '/es/acerca'
     | '/es/ahorcado'
     | '/es/aura-card'
@@ -2472,6 +2482,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/educacion/$subject'
     | '/education/$subject'
+    | '/embed/$slug'
     | '/es/acerca'
     | '/es/ahorcado'
     | '/es/aura-card'
@@ -2702,6 +2713,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/educacion/$subject'
     | '/education/$subject'
+    | '/embed/$slug'
     | '/es/acerca'
     | '/es/ahorcado'
     | '/es/aura-card'
@@ -2940,6 +2952,7 @@ export interface RootRouteChildren {
   CategorySlugRoute: typeof CategorySlugRoute
   EducacionSubjectRoute: typeof EducacionSubjectRoute
   EducationSubjectRoute: typeof EducationSubjectRoute
+  EmbedSlugRoute: typeof EmbedSlugRoute
   GrowthAchievementCertificateMakerRoute: typeof GrowthAchievementCertificateMakerRoute
   GrowthAdsenseComplianceKitRoute: typeof GrowthAdsenseComplianceKitRoute
   GrowthProgressPassportRoute: typeof GrowthProgressPassportRoute
@@ -3400,6 +3413,13 @@ declare module '@tanstack/react-router' {
       path: '/education/$subject'
       fullPath: '/education/$subject'
       preLoaderRoute: typeof EducationSubjectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/embed/$slug': {
+      id: '/embed/$slug'
+      path: '/embed/$slug'
+      fullPath: '/embed/$slug'
+      preLoaderRoute: typeof EmbedSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/es/': {
@@ -5104,6 +5124,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategorySlugRoute: CategorySlugRoute,
   EducacionSubjectRoute: EducacionSubjectRoute,
   EducationSubjectRoute: EducationSubjectRoute,
+  EmbedSlugRoute: EmbedSlugRoute,
   GrowthAchievementCertificateMakerRoute:
     GrowthAchievementCertificateMakerRoute,
   GrowthAdsenseComplianceKitRoute: GrowthAdsenseComplianceKitRoute,

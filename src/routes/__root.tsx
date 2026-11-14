@@ -151,6 +151,20 @@ function RootComponent() {
   const isSpanish = useIsSpanish();
   const isPortuguese = useIsPortuguese();
   const isFrench = useIsFrench();
+  const { pathname } = useLocation();
+
+  // Embed Studio: /embed/* renders chrome-less (no header, footer, favorites, ads or analytics).
+  if (pathname.startsWith("/embed/")) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <AdsConfigContext.Provider value={ADS_OFF}>
+          <main id="main-content">
+            <Outlet />
+          </main>
+        </AdsConfigContext.Provider>
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
