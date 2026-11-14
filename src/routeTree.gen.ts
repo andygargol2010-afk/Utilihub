@@ -122,6 +122,7 @@ import { Route as GamesIndexRouteImport } from './routes/games.index'
 import { Route as GamesSlugRouteImport } from './routes/games.$slug'
 import { Route as GrowthAchievementCertificateMakerRouteImport } from './routes/growth.achievement-certificate-maker'
 import { Route as GrowthAdsenseComplianceKitRouteImport } from './routes/growth.adsense-compliance-kit'
+import { Route as GrowthEmbedStudioRouteImport } from './routes/growth.embed-studio'
 import { Route as GrowthProgressPassportRouteImport } from './routes/growth.progress-passport'
 import { Route as GrowthQuoteCardMakerRouteImport } from './routes/growth.quote-card-maker'
 import { Route as GrowthSocialHookComposerRouteImport } from './routes/growth.social-hook-composer'
@@ -193,6 +194,7 @@ import { Route as EsCompartirUtiliTypeQuizRouteImport } from './routes/es.compar
 import { Route as EsCrecimientoCompositorGanchosSocialesRouteImport } from './routes/es.crecimiento.compositor-ganchos-sociales'
 import { Route as EsCrecimientoCreadorCertificadoLogroRouteImport } from './routes/es.crecimiento.creador-certificado-logro'
 import { Route as EsCrecimientoCreadorTarjetasCitasRouteImport } from './routes/es.crecimiento.creador-tarjetas-citas'
+import { Route as EsCrecimientoEmbedStudioRouteImport } from './routes/es.crecimiento.embed-studio'
 import { Route as EsCrecimientoKitCumplimientoAdsenseRouteImport } from './routes/es.crecimiento.kit-cumplimiento-adsense'
 import { Route as EsCrecimientoPasaporteProgresoRouteImport } from './routes/es.crecimiento.pasaporte-progreso'
 import { Route as EsEducacionSubjectRouteImport } from './routes/es.educacion.$subject'
@@ -825,6 +827,11 @@ const GrowthAdsenseComplianceKitRoute =
     path: '/growth/adsense-compliance-kit',
     getParentRoute: () => rootRouteImport,
   } as any)
+const GrowthEmbedStudioRoute = GrowthEmbedStudioRouteImport.update({
+  id: '/growth/embed-studio',
+  path: '/growth/embed-studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GrowthProgressPassportRoute = GrowthProgressPassportRouteImport.update({
   id: '/growth/progress-passport',
   path: '/growth/progress-passport',
@@ -1199,6 +1206,12 @@ const EsCrecimientoCreadorTarjetasCitasRoute =
   EsCrecimientoCreadorTarjetasCitasRouteImport.update({
     id: '/crecimiento/creador-tarjetas-citas',
     path: '/crecimiento/creador-tarjetas-citas',
+    getParentRoute: () => EsRoute,
+  } as any)
+const EsCrecimientoEmbedStudioRoute =
+  EsCrecimientoEmbedStudioRouteImport.update({
+    id: '/crecimiento/embed-studio',
+    path: '/crecimiento/embed-studio',
     getParentRoute: () => EsRoute,
   } as any)
 const EsCrecimientoKitCumplimientoAdsenseRoute =
@@ -1594,6 +1607,7 @@ export interface FileRoutesByFullPath {
   '/games/$slug': typeof GamesSlugRoute
   '/growth/achievement-certificate-maker': typeof GrowthAchievementCertificateMakerRoute
   '/growth/adsense-compliance-kit': typeof GrowthAdsenseComplianceKitRoute
+  '/growth/embed-studio': typeof GrowthEmbedStudioRoute
   '/growth/progress-passport': typeof GrowthProgressPassportRoute
   '/growth/quote-card-maker': typeof GrowthQuoteCardMakerRoute
   '/growth/social-hook-composer': typeof GrowthSocialHookComposerRoute
@@ -1669,6 +1683,7 @@ export interface FileRoutesByFullPath {
   '/es/crecimiento/compositor-ganchos-sociales': typeof EsCrecimientoCompositorGanchosSocialesRoute
   '/es/crecimiento/creador-certificado-logro': typeof EsCrecimientoCreadorCertificadoLogroRoute
   '/es/crecimiento/creador-tarjetas-citas': typeof EsCrecimientoCreadorTarjetasCitasRoute
+  '/es/crecimiento/embed-studio': typeof EsCrecimientoEmbedStudioRoute
   '/es/crecimiento/kit-cumplimiento-adsense': typeof EsCrecimientoKitCumplimientoAdsenseRoute
   '/es/crecimiento/pasaporte-progreso': typeof EsCrecimientoPasaporteProgresoRoute
   '/es/educacion/$subject': typeof EsEducacionSubjectRoute
@@ -1824,6 +1839,7 @@ export interface FileRoutesByTo {
   '/games/$slug': typeof GamesSlugRoute
   '/growth/achievement-certificate-maker': typeof GrowthAchievementCertificateMakerRoute
   '/growth/adsense-compliance-kit': typeof GrowthAdsenseComplianceKitRoute
+  '/growth/embed-studio': typeof GrowthEmbedStudioRoute
   '/growth/progress-passport': typeof GrowthProgressPassportRoute
   '/growth/quote-card-maker': typeof GrowthQuoteCardMakerRoute
   '/growth/social-hook-composer': typeof GrowthSocialHookComposerRoute
@@ -1896,6 +1912,7 @@ export interface FileRoutesByTo {
   '/es/crecimiento/compositor-ganchos-sociales': typeof EsCrecimientoCompositorGanchosSocialesRoute
   '/es/crecimiento/creador-certificado-logro': typeof EsCrecimientoCreadorCertificadoLogroRoute
   '/es/crecimiento/creador-tarjetas-citas': typeof EsCrecimientoCreadorTarjetasCitasRoute
+  '/es/crecimiento/embed-studio': typeof EsCrecimientoEmbedStudioRoute
   '/es/crecimiento/kit-cumplimiento-adsense': typeof EsCrecimientoKitCumplimientoAdsenseRoute
   '/es/crecimiento/pasaporte-progreso': typeof EsCrecimientoPasaporteProgresoRoute
   '/es/educacion/$subject': typeof EsEducacionSubjectRoute
@@ -2060,6 +2077,7 @@ export interface FileRoutesById {
   '/games/$slug': typeof GamesSlugRoute
   '/growth/achievement-certificate-maker': typeof GrowthAchievementCertificateMakerRoute
   '/growth/adsense-compliance-kit': typeof GrowthAdsenseComplianceKitRoute
+  '/growth/embed-studio': typeof GrowthEmbedStudioRoute
   '/growth/progress-passport': typeof GrowthProgressPassportRoute
   '/growth/quote-card-maker': typeof GrowthQuoteCardMakerRoute
   '/growth/social-hook-composer': typeof GrowthSocialHookComposerRoute
@@ -2135,6 +2153,7 @@ export interface FileRoutesById {
   '/es/crecimiento/compositor-ganchos-sociales': typeof EsCrecimientoCompositorGanchosSocialesRoute
   '/es/crecimiento/creador-certificado-logro': typeof EsCrecimientoCreadorCertificadoLogroRoute
   '/es/crecimiento/creador-tarjetas-citas': typeof EsCrecimientoCreadorTarjetasCitasRoute
+  '/es/crecimiento/embed-studio': typeof EsCrecimientoEmbedStudioRoute
   '/es/crecimiento/kit-cumplimiento-adsense': typeof EsCrecimientoKitCumplimientoAdsenseRoute
   '/es/crecimiento/pasaporte-progreso': typeof EsCrecimientoPasaporteProgresoRoute
   '/es/educacion/$subject': typeof EsEducacionSubjectRoute
@@ -2300,6 +2319,7 @@ export interface FileRouteTypes {
     | '/games/$slug'
     | '/growth/achievement-certificate-maker'
     | '/growth/adsense-compliance-kit'
+    | '/growth/embed-studio'
     | '/growth/progress-passport'
     | '/growth/quote-card-maker'
     | '/growth/social-hook-composer'
@@ -2375,6 +2395,7 @@ export interface FileRouteTypes {
     | '/es/crecimiento/compositor-ganchos-sociales'
     | '/es/crecimiento/creador-certificado-logro'
     | '/es/crecimiento/creador-tarjetas-citas'
+    | '/es/crecimiento/embed-studio'
     | '/es/crecimiento/kit-cumplimiento-adsense'
     | '/es/crecimiento/pasaporte-progreso'
     | '/es/educacion/$subject'
@@ -2530,6 +2551,7 @@ export interface FileRouteTypes {
     | '/games/$slug'
     | '/growth/achievement-certificate-maker'
     | '/growth/adsense-compliance-kit'
+    | '/growth/embed-studio'
     | '/growth/progress-passport'
     | '/growth/quote-card-maker'
     | '/growth/social-hook-composer'
@@ -2602,6 +2624,7 @@ export interface FileRouteTypes {
     | '/es/crecimiento/compositor-ganchos-sociales'
     | '/es/crecimiento/creador-certificado-logro'
     | '/es/crecimiento/creador-tarjetas-citas'
+    | '/es/crecimiento/embed-studio'
     | '/es/crecimiento/kit-cumplimiento-adsense'
     | '/es/crecimiento/pasaporte-progreso'
     | '/es/educacion/$subject'
@@ -2765,6 +2788,7 @@ export interface FileRouteTypes {
     | '/games/$slug'
     | '/growth/achievement-certificate-maker'
     | '/growth/adsense-compliance-kit'
+    | '/growth/embed-studio'
     | '/growth/progress-passport'
     | '/growth/quote-card-maker'
     | '/growth/social-hook-composer'
@@ -2840,6 +2864,7 @@ export interface FileRouteTypes {
     | '/es/crecimiento/compositor-ganchos-sociales'
     | '/es/crecimiento/creador-certificado-logro'
     | '/es/crecimiento/creador-tarjetas-citas'
+    | '/es/crecimiento/embed-studio'
     | '/es/crecimiento/kit-cumplimiento-adsense'
     | '/es/crecimiento/pasaporte-progreso'
     | '/es/educacion/$subject'
@@ -2955,6 +2980,7 @@ export interface RootRouteChildren {
   EmbedSlugRoute: typeof EmbedSlugRoute
   GrowthAchievementCertificateMakerRoute: typeof GrowthAchievementCertificateMakerRoute
   GrowthAdsenseComplianceKitRoute: typeof GrowthAdsenseComplianceKitRoute
+  GrowthEmbedStudioRoute: typeof GrowthEmbedStudioRoute
   GrowthProgressPassportRoute: typeof GrowthProgressPassportRoute
   GrowthQuoteCardMakerRoute: typeof GrowthQuoteCardMakerRoute
   GrowthSocialHookComposerRoute: typeof GrowthSocialHookComposerRoute
@@ -3807,6 +3833,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GrowthAdsenseComplianceKitRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/growth/embed-studio': {
+      id: '/growth/embed-studio'
+      path: '/growth/embed-studio'
+      fullPath: '/growth/embed-studio'
+      preLoaderRoute: typeof GrowthEmbedStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/growth/progress-passport': {
       id: '/growth/progress-passport'
       path: '/growth/progress-passport'
@@ -4302,6 +4335,13 @@ declare module '@tanstack/react-router' {
       path: '/crecimiento/creador-tarjetas-citas'
       fullPath: '/es/crecimiento/creador-tarjetas-citas'
       preLoaderRoute: typeof EsCrecimientoCreadorTarjetasCitasRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/crecimiento/embed-studio': {
+      id: '/es/crecimiento/embed-studio'
+      path: '/crecimiento/embed-studio'
+      fullPath: '/es/crecimiento/embed-studio'
+      preLoaderRoute: typeof EsCrecimientoEmbedStudioRouteImport
       parentRoute: typeof EsRoute
     }
     '/es/crecimiento/kit-cumplimiento-adsense': {
@@ -4817,6 +4857,7 @@ interface EsRouteChildren {
   EsCrecimientoCompositorGanchosSocialesRoute: typeof EsCrecimientoCompositorGanchosSocialesRoute
   EsCrecimientoCreadorCertificadoLogroRoute: typeof EsCrecimientoCreadorCertificadoLogroRoute
   EsCrecimientoCreadorTarjetasCitasRoute: typeof EsCrecimientoCreadorTarjetasCitasRoute
+  EsCrecimientoEmbedStudioRoute: typeof EsCrecimientoEmbedStudioRoute
   EsCrecimientoKitCumplimientoAdsenseRoute: typeof EsCrecimientoKitCumplimientoAdsenseRoute
   EsCrecimientoPasaporteProgresoRoute: typeof EsCrecimientoPasaporteProgresoRoute
   EsEducacionSubjectRoute: typeof EsEducacionSubjectRoute
@@ -4904,6 +4945,7 @@ const EsRouteChildren: EsRouteChildren = {
     EsCrecimientoCreadorCertificadoLogroRoute,
   EsCrecimientoCreadorTarjetasCitasRoute:
     EsCrecimientoCreadorTarjetasCitasRoute,
+  EsCrecimientoEmbedStudioRoute: EsCrecimientoEmbedStudioRoute,
   EsCrecimientoKitCumplimientoAdsenseRoute:
     EsCrecimientoKitCumplimientoAdsenseRoute,
   EsCrecimientoPasaporteProgresoRoute: EsCrecimientoPasaporteProgresoRoute,
@@ -5128,6 +5170,7 @@ const rootRouteChildren: RootRouteChildren = {
   GrowthAchievementCertificateMakerRoute:
     GrowthAchievementCertificateMakerRoute,
   GrowthAdsenseComplianceKitRoute: GrowthAdsenseComplianceKitRoute,
+  GrowthEmbedStudioRoute: GrowthEmbedStudioRoute,
   GrowthProgressPassportRoute: GrowthProgressPassportRoute,
   GrowthQuoteCardMakerRoute: GrowthQuoteCardMakerRoute,
   GrowthSocialHookComposerRoute: GrowthSocialHookComposerRoute,
