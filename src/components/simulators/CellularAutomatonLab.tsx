@@ -53,6 +53,9 @@ const labels = {
     copied: "Link copied to clipboard.",
     copyFail: "Could not copy the link — copy it from the address bar instead.",
     pngDone: "PNG card downloaded.",
+    playingMsg: "Playing.",
+    pausedMsg: "Paused.",
+    hiddenMsg: "Paused because the tab is hidden.",
     shareTitle: "Cellular Automaton Lab",
     live: "live",
     gen: "gen",
@@ -99,6 +102,9 @@ const labels = {
     copied: "Enlace copiado al portapapeles.",
     copyFail: "No se pudo copiar el enlace — copialo desde la barra de direcciones.",
     pngDone: "Tarjeta PNG descargada.",
+    playingMsg: "Reproduciendo.",
+    pausedMsg: "En pausa.",
+    hiddenMsg: "En pausa porque la pestaña está oculta.",
     shareTitle: "Laboratorio de Autómatas Celulares",
     live: "vivas",
     gen: "gen",
@@ -229,6 +235,8 @@ function LifeLike2D({ locale = "en", init }: { locale?: Locale; init?: LifeInit 
   const [speed, setSpeed] = useState<"slow" | "normal" | "fast">("normal");
   const [tool, setTool] = useState<string>("cells");
   const [settled, setSettled] = useState(false);
+  const [playMsg, setPlayMsg] = useState("");
+  const firstPlay = useRef(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const paintRef = useRef<{ active: boolean; value: number }>({ active: false, value: 1 });
   const ruleRef = useRef(rule);
@@ -288,10 +296,30 @@ function LifeLike2D({ locale = "en", init }: { locale?: Locale; init?: LifeInit 
 
   useEffect(() => {
     if (!playing) return;
+    const onHide = () => {
+      if (document.hidden) {
+        setPlaying(false);
+        setPlayMsg(t.hiddenMsg);
+      }
+    };
+    document.addEventListener("visibilitychange", onHide);
+    return () => document.removeEventListener("visibilitychange", onHide);
+  }, [playing, t]);
+
+  useEffect(() => {
+    if (!playing) return;
     const delay = speed === "slow" ? 320 : speed === "fast" ? 45 : 130;
     const id = setInterval(doStep, delay);
     return () => clearInterval(id);
   }, [playing, speed, doStep]);
+
+  useEffect(() => {
+    if (firstPlay.current) {
+      firstPlay.current = false;
+      return;
+    }
+    setPlayMsg((m) => (!playing && m === t.hiddenMsg ? m : playing ? t.playingMsg : t.pausedMsg));
+  }, [playing, t]);
 
   const clear = useCallback(() => {
     setGrid(new Uint8Array(N * N));
@@ -500,6 +528,7 @@ function LifeLike2D({ locale = "en", init }: { locale?: Locale; init?: LifeInit 
           {t.generation}: {gen} · {t.population}: {pop}
         </p>
         {settled && <p className="text-muted-foreground">{t.stable}</p>}
+        <span className="sr-only" role="status" aria-live="polite">{playMsg}</span>
         <Sparkline data={hist} label={t.spark} />
       </div>
       <div className="flex flex-wrap items-center gap-2">

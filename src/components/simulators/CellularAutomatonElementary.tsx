@@ -39,6 +39,9 @@ const labels = {
     copied: "Link copied to clipboard.",
     copyFail: "Could not copy the link — copy it from the address bar instead.",
     pngDone: "PNG card downloaded.",
+    playingMsg: "Playing.",
+    pausedMsg: "Paused.",
+    hiddenMsg: "Paused because the tab is hidden.",
     shareTitle: "Cellular Automaton Lab",
     ruleWord: "Rule",
     rowsWord: "rows",
@@ -71,6 +74,9 @@ const labels = {
     copied: "Enlace copiado al portapapeles.",
     copyFail: "No se pudo copiar el enlace — copialo desde la barra de direcciones.",
     pngDone: "Tarjeta PNG descargada.",
+    playingMsg: "Reproduciendo.",
+    pausedMsg: "En pausa.",
+    hiddenMsg: "En pausa porque la pestaña está oculta.",
     shareTitle: "Laboratorio de Autómatas Celulares",
     ruleWord: "Regla",
     rowsWord: "filas",
@@ -110,10 +116,12 @@ const on = "border-cyan-400 bg-cyan-950/40";
 export function CellularAutomatonElementary({ locale = "en", init }: { locale?: Locale; init?: ElemInit | null }) {
   const t = (locale === "es" ? labels.es : labels.en) as unknown as T;
   const [rule, setRule] = useState(() => init?.rule ?? 30);
-  const [seed, setSeed] = useState<"single" | "random">("single");
+  const [seed, setSeed] = useState<"single" | "random" | null>(init?.g ? null : "single");
   const seedRef = useRef<Uint8Array>(init?.g ?? seedRow("single"));
   const [rows, setRows] = useState<Uint8Array[]>(() => [seedRef.current]);
   const [shareMsg, setShareMsg] = useState("");
+  const [playMsg, setPlayMsg] = useState("");
+  const firstPlay = useRef(true);
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState<"slow" | "normal" | "fast">("normal");
   const [total, setTotal] = useState(1);
@@ -136,6 +144,26 @@ export function CellularAutomatonElementary({ locale = "en", init }: { locale?: 
     });
     setTotal((n) => n + 1);
   }, []);
+
+  useEffect(() => {
+    if (!playing) return;
+    const onHide = () => {
+      if (document.hidden) {
+        setPlaying(false);
+        setPlayMsg(t.hiddenMsg);
+      }
+    };
+    document.addEventListener("visibilitychange", onHide);
+    return () => document.removeEventListener("visibilitychange", onHide);
+  }, [playing, t]);
+
+  useEffect(() => {
+    if (firstPlay.current) {
+      firstPlay.current = false;
+      return;
+    }
+    setPlayMsg((m) => (!playing && m === t.hiddenMsg ? m : playing ? t.playingMsg : t.pausedMsg));
+  }, [playing, t]);
 
   useEffect(() => {
     if (!playing) return;
@@ -164,7 +192,7 @@ export function CellularAutomatonElementary({ locale = "en", init }: { locale?: 
         e.preventDefault();
         setPlaying((p) => !p);
       } else if (e.key === "s" || e.key === "S") doStep();
-      else if (e.key === "r" || e.key === "R") restart(seed);
+      else if (e.key === "r" || e.key === "R") restart(seed ?? "single");
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -180,12 +208,12 @@ export function CellularAutomatonElementary({ locale = "en", init }: { locale?: 
   const setRuleNum = (v: number) => {
     const n = Math.min(255, Math.max(0, Math.round(v) || 0));
     setRule(n);
-    restart(seed);
+    restart(seed ?? "single");
   };
 
   const flipBit = (p: number) => {
     setRule((r) => r ^ (1 << p));
-    restart(seed);
+    restart(seed ?? "single");
   };
 
   const shareLink = async () => {
@@ -292,7 +320,7 @@ export function CellularAutomatonElementary({ locale = "en", init }: { locale?: 
         <button type="button" onClick={doStep} className={btn}>
           {t.step}
         </button>
-        <button type="button" onClick={() => restart(seed)} className={btn}>
+        <button type="button" onClick={() => restart(seed ?? "single")} className={btn}>
           {t.reset}
         </button>
         <span className="ml-1 self-center text-xs font-semibold text-muted-foreground">{t.speed}:</span>
@@ -310,6 +338,7 @@ export function CellularAutomatonElementary({ locale = "en", init }: { locale?: 
         <p>
           {t.rows}: {total} · {t.live}: {live}
         </p>
+        <span className="sr-only" role="status" aria-live="polite">{playMsg}</span>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <button type="button" onClick={shareLink} className={btn}>

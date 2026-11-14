@@ -13,8 +13,8 @@ Edit + commit on every IDEATE / EXECUTE / close. Identity: `andygargol2010-afk` 
 ## DOMAIN WEIGHTS + last_closed
 
 ```
-last_closed_domain: conversion-paths
-last_closed_id: tool-matchmaker
+last_closed_domain: simulators
+last_closed_id: cellular-automaton-lab
 p_fixed: 0.35
 
 weights_core:
@@ -45,6 +45,7 @@ adsense-prep_runs: 8
 ## RECENT_CLOSED (max 10, newest first)
 
 ```
+- 2026-11-14 | simulators | cellular-automaton-lab | Cellular Automaton Lab complete after 4 runs. /simulators/cellular-automaton-lab + /es/simuladores/laboratorio-automatas-celulares: tab 2D Life-like (48x48 wrapping grid, editable Birth/Survive, 5 rule presets, tap/drag toggle, 5 stamps, play/step/speed, generation + population readout + sparkline) and tab 1D Wolfram (rules 0-255, number input, 8-cell clickable rule table, presets 30/90/110/184, single/random seed), shareable URL (?mode=&rule=&b=&s=&g=) + branded 1080x1080 PNG, EN+ES, 390px, keys Space/S/R/C. Final polish: auto-pause when tab hidden, aria-live play/pause announcements, seed button state correct when restored from URL. Acceptance met. IP: public mathematical rules (Life-like / Wolfram), generic UI.
 - 2026-11-13 | conversion-paths | tool-matchmaker | Tool Matchmaker complete after 4 runs. /find-your-tool + /es/encuentra-tu-herramienta: 3 tappable card steps (goal, time, output) -> ranked top-3 of 26 verified real routes with a 'why this fits' line each, Open deep-links, re-roll, restart, shareable ?g=&t=&o= URL, branded 1080x1080 PNG card, EN+ES, 390px, entry links from home hero EN+ES and EN command-palette empty state. Final polish: focus moves only on user action (no focus steal on load), copy-failure announced via aria-live, Back announced, motion-reduce on buttons. Palette is EN-only so no ES link added. Acceptance met. IP: n/a (own UI linking existing tools).
 - 2026-11-13 | retention-loops | daily-challenge-hub | Daily Challenge hub complete after 4 runs. /daily-challenge + /es/reto-diario: UTC date-seeded pick of one of 12 existing games (never repeats yesterday) with a goal, Play deep-link, return-from-game prompt + manual Mark done/Undo, current/best streak, next-challenge countdown, 28-day calendar with per-day game emoji, branded 1080x1080 PNG + shareable URL snapshot, EN+ES, mobile-first 390px, aria-live. Final polish: singular/plural day, focus moves to the return prompt, empty-state copy, motion-reduce. No edits to existing games. Acceptance met. IP: n/a (own UI linking existing games).
 - 2026-11-11 | games | sudoku-classic | Interactive classic Sudoku (9x9) complete after 4 runs. Difficulty easy/medium/hard, live row/column/box conflict highlighting, timer, undo, pencil notes + auto notes, hints, keyboard shortcuts, per-difficulty best time (localStorage), branded board PNG, URL deep-link, EN+ES, mobile 390px, a11y labels + aria-live. Final polish: aria-live now announces conflict count, motion-safe win pulse, GameSecondaryButton gained a real `disabled` prop (Undo/Hint/Pause were silently ignoring it), fixed TS errors. Acceptance met. IP: traditional public-domain Sudoku rules; generic UI.
@@ -54,7 +55,6 @@ adsense-prep_runs: 8
 - 2026-11-09 | games | memory-match-classic | Interactive classic Memory Match (Concentration) complete after 4 runs. User selects difficulty (4x4 easy, 6x4 medium, 6x6 hard), flips two cards to find matching pairs (emoji themes: fruits/animals/numbers/symbols), sees live timer/moves/score/stars/progress bar, optional sound, mismatch shake, keyboard arrows+Enter/Space + R restart, URL deep-link (?size=&theme=&seed=), branded PNG of board + stats, EN+ES routes, mobile-first 390px, a11y labels + aria-live. Final polish: global R key restart + richer aria-live announcements. Acceptance met (select size/theme, match all pairs, see win stats/stars, share PNG or URL). IP: traditional public-domain pair-matching (concentration), generic emoji/icons; no branded assets.
 - 2026-11-09 | simulators | predator-prey-simulator | Interactive predator-prey (Lotka-Volterra) population simulator complete after 4 runs. User sets initial prey/predator counts, growth rate of prey, predation rate, predator death rate, conversion efficiency. Discrete generations show live SVG dual-line or phase-space chart of both populations oscillating or stabilizing, phase label (oscillating/stable/extinct), peak values, current gen, averages, approx period. Presets (balanced, prey boom, predator crash), Animate/Stop with speed, Reset, URL deep-link (?params=), branded PNG of chart + stats, CSV export. EN+ES (+PT labels), mobile-first 390px, keyboard controls (Space/R), a11y labels + aria-live. Final polish restored after truncation incident. Acceptance met (set params/preset, animate, see live chart + phase/peaks/stats, share PNG or URL). IP: original educational Lotka-Volterra implementation with generic rates; no branded datasets or software.
 - 2026-11-08 | games | connect-four-classic | Interactive classic Connect Four (Cuatro en línea) complete after 4 runs. User selects color, takes turns dropping pieces into a 7x6 grid (gravity), first to get 4 in a row (horiz/vert/diag) wins. Optional simple AI opponent (easy/med/hard with heuristic). Keyboard nav (arrows + Enter, 1-7 keys), win detection + highlight + animated line, undo, timer, URL deep-link for board state (?moves=), branded PNG of final board with winning line, EN+ES routes, mobile-first 390px with large touch cells (h-10/w-10 sm:h-12), a11y labels + aria-live for moves and win. Final polish: timer display, hard AI, drop animation, win pulse, dim non-win pieces. Acceptance met (select side, drop pieces, see gravity + win/lose detection with highlight, share PNG or URL). IP: traditional public-domain Connect Four gravity drops and 4-in-a-row; generic UI/naming; no Hasbro or branded assets.
-- 2026-11-07 | kits | molecule-builder-kit | Interactive molecule builder kit complete after 4 runs. User places atoms (C, H, O, N) on 5x5 grid, connects with single/double/triple bonds using visual SVG lines, sees live molecular formula + molar mass, completes guided challenges (water H2O, CO2, methane CH4), free mode, atom legend with masses, keyboard navigation (arrows + Enter/Space), URL deep-link (?g= &b=), branded PNG of structure + formula, EN+ES routes, mobile-first 390px. Final polish: color-coded atoms (C gray, H light, O red, N blue), tighter mobile gaps/cell sizes, improved PNG diagram with colored circles, enhanced a11y labels. Acceptance met (place atoms, connect bonds, see live formula/structure, complete challenge, share PNG or URL). IP: original educational chemistry assembler with generic atoms; no branded kits or software.
 ```
 
 ---
@@ -62,19 +62,19 @@ adsense-prep_runs: 8
 ## ACTIVE PROJECT
 
 ```
-status: active
-idea: Cellular Automaton Lab — a discrete rule-grid simulator. Tab 1 Life-like 2D (Conway B3/S23 default, editable Birth/Survive checkboxes: HighLife, Seeds, Day&Night, Maze), click/tap-to-toggle cells on a fixed wrapping grid, pattern stamps (glider, blinker, pulsar, R-pentomino, gosper-style gun), step/play/speed, generation + population readout with a live population sparkline. Tab 2 elementary 1D (Wolfram rules 0-255, rule-number input + 8-cell clickable rule table, grows row by row; presets 30/90/110/184). Shareable via URL (?mode=&rule=&b=&s=&g=) and branded 1080x1080 PNG.
-id: cellular-automaton-lab
-path_en: /simulators/cellular-automaton-lab
-path_es: /es/simuladores/laboratorio-automatas-celulares
+status: done
+idea: n/a (cellular-automaton-lab closed 2026-11-14; next run = IDEATE)
+id: n/a
+path_en: n/a
+path_es: n/a
 path_seo: n/a
-domain: simulators
-runs_total: 4
-runs_remaining: 1
-acceptance: user picks a pattern or taps cells (or enters a Wolfram rule number / edits the B/S rule), presses Play, watches generations evolve with live population/generation readouts, and shares the result as PNG or URL.
-share: both
-next_step_required: yes
-notes: RUN1 DONE 2026-11-14 (2D Life core: CellularAutomatonLab.tsx 48x48 wrapping canvas, B/S checkbox editor + 5 rule presets, tap/drag toggle + 5 stamps, play/pause/step/speed/random/clear, gen+population readout, keys Space/S/R/C, lazy in simulators/registry.tsx, catalog.part2 entry EN+ES; validate:catalog+registry OK; smoke EN/ES 390px OK). RUN2 DONE 2026-11-14 (new CellularAutomatonElementary.tsx: 81x81 scrolling 1D canvas, rule number input 0-255, 8-cell clickable rule table, presets 30/90/110/184, single/random seed, play/step/speed/restart, keys Space/S/R; 2D Life gained tab switcher + population sparkline SVG; EN+ES; validate:catalog+routing OK; smoke EN/ES 390px OK, no console errors). RUN3 DONE 2026-11-14 (new cellularAutomatonShare.ts: bit-pack URL codec + 1080x1080 branded card + download/copy helpers; 2D share ?mode=2d&b=&s=&g=, 1D share ?mode=1d&rule=&g=(seed row); parent reads URL on mount and restores tab+state; Copy link + Download PNG buttons with aria-live status, EN+ES; tsc clean, validate:catalog OK, smoke EN/ES 390px: copy link, PNG download, reload from link restores 2D and 1D, no console errors, no h-scroll). RUN4 next (polish-only, last): CWV check (cap/throttle rAF on mobile, pause when tab hidden), aria-live announcements for play/stop-settled, seed-button state when 1D restored from URL, optional native share, entry polish. IDEATE 2026-11-14. Roll: FLEX (r=0.69 >= p_fixed 0.35), weighted pick over core+growth -> simulators. Candidates (value/share/demand/distinct/feasible/perf = total): (A) cellular-automaton-lab 4/4/5/4/5/4 = 26 CHOSEN; (B) queue-checkout-simulator M/M/c wait-time 4/3/2/5/4/5 = 23; (C) monte-carlo-retirement-fan-chart 5/3/4/3/4/5 = 24 (rejected: overlaps catalog financial calculators, distinct=3 borderline). Closest-3 by mechanic for A: ReactionDiffusionLab (grid update rule, but continuous PDE + paint), BinPackingSim (discrete grid cells, but packing/optimizer), GaltonBoardSim (stochastic stepping with histogram readout). Primary metaphor: rule-table editor -> discrete generation stepper on a toggle-cell grid (NOT freehand/particle/attractor canvas; no trails, no particles). IP: Conway's Game of Life and Wolfram elementary rules are public mathematical rules (no branded art/name; neutral label 'Life-like rules'); ship generic UI only. Plan: run1 = 2D Life core (grid, toggle, step/play/speed, B/S editor, stamps, population readout) in lazy SimShell + registry wiring EN/ES; run2 = elementary 1D tab + rule table + sparkline (working useful core by run 2); run3 = URL deep-link + branded PNG + keyboard (Space/S/R/C) + a11y aria-live + 390px tuning; run4 = polish (one polish-only run max), CWV check (fixed canvas aspect, cap grid 64x64 on mobile, requestAnimationFrame throttled). Wire via simulators/registry.tsx smallest-file rules; never touch registry.tsx wholesale; validate:catalog must pass.
+domain: n/a
+runs_total: 0
+runs_remaining: 0
+acceptance: n/a
+share: n/a
+next_step_required: no
+notes: cellular-automaton-lab closed after run 4 (polish: auto-pause hidden tab, aria-live play/pause, seed state from URL).
 adsense-prep_runs: 8
 ```
 
