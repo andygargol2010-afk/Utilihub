@@ -123,15 +123,15 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const k = e.key.toUpperCase();
-      if (k.length === 1 && /^[A-Z]$/.test(k)) {
-        e.preventDefault();
-        guess(k);
-      } else if (k === "R") {
+      if (k === "R") {
         e.preventDefault();
         startNew();
       } else if (k === "H") {
         e.preventDefault();
         giveHint();
+      } else if (k.length === 1 && /^[A-Z]$/.test(k)) {
+        e.preventDefault();
+        guess(k);
       }
     };
     window.addEventListener("keydown", onKey);
