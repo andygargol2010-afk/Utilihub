@@ -167,6 +167,62 @@ export const TOOL_SEO_OVERRIDES_PART_04: Record<string, ToolSeoOverride> = {
       },
     ],
   },
+  "calculadora-tmb": {
+    metaTitle: "BMR Calculator — Mifflin-St Jeor, kcal/day | UtiliHub",
+    metaTitleEs: "Calculadora TMB — tasa metabólica basal (Mifflin-St Jeor) | UtiliHub",
+    metaDescription:
+      "Free BMR calculator using the Mifflin-St Jeor equation: enter age, weight, height and sex to get your basal metabolic rate in kcal/day. No signup.",
+    metaDescriptionEs:
+      "Calculadora de TMB gratis con la ecuación de Mifflin-St Jeor: ingresá edad, peso, altura y sexo y obtené tu tasa metabólica basal en kcal/día. Sin registro.",
+    about: [
+      "BMR (basal metabolic rate) is the energy your body burns at rest. This tool uses the Mifflin-St Jeor equation, in kcal/day.",
+      "Formula: men: BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5; women: BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age − 161.",
+      "Example: 30-year-old man, 75 kg, 178 cm → 10 × 75 + 6.25 × 178 − 5 × 30 + 5 = 1,717.5 kcal/day. Multiply BMR by an activity factor (about 1.2–1.9) to estimate total daily needs (TDEE).",
+    ],
+    aboutEs: [
+      "La TMB (tasa metabólica basal) es la energía que tu cuerpo quema en reposo. Esta herramienta usa la ecuación de Mifflin-St Jeor, en kcal/día.",
+      "Fórmula: varones: TMB = 10 × peso(kg) + 6,25 × altura(cm) − 5 × edad + 5; mujeres: TMB = 10 × peso(kg) + 6,25 × altura(cm) − 5 × edad − 161.",
+      "Ejemplo: varón de 30 años, 75 kg y 178 cm → 10 × 75 + 6,25 × 178 − 5 × 30 + 5 = 1.717,5 kcal/día. Multiplicá la TMB por un factor de actividad (aprox. 1,2–1,9) para estimar el gasto total diario (TDEE).",
+    ],
+    steps: [
+      "Enter your age in years, weight in kilograms and height in centimeters.",
+      "Select your sex (1 = male, 0 = female).",
+      "Read your BMR in kcal/day; multiply by your activity level for total daily calories.",
+    ],
+    stepsEs: [
+      "Ingresá tu edad en años, peso en kilogramos y altura en centímetros.",
+      "Elegí tu sexo (1 = varón, 0 = mujer).",
+      "Leé tu TMB en kcal/día; multiplicala por tu nivel de actividad para el total de calorías diarias.",
+    ],
+    faq: [
+      {
+        q: "What is the Mifflin-St Jeor equation?",
+        a: "BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5 for men, and − 161 instead of + 5 for women. It is the standard estimate for basal metabolic rate.",
+      },
+      {
+        q: "What is the difference between BMR and TDEE?",
+        a: "BMR is the energy burned at rest. TDEE multiplies BMR by an activity factor (about 1.2 sedentary to 1.9 very active) and represents total daily calorie needs.",
+      },
+      {
+        q: "Is BMR the same for men and women?",
+        a: "The formula differs by a constant (+5 for men, −161 for women) because average body composition differs. It is an estimate, not a medical measurement.",
+      },
+    ],
+    faqEs: [
+      {
+        q: "¿Qué es la ecuación de Mifflin-St Jeor?",
+        a: "TMB = 10 × peso(kg) + 6,25 × altura(cm) − 5 × edad + 5 en varones, y − 161 en lugar de + 5 en mujeres. Es la estimación estándar de la tasa metabólica basal.",
+      },
+      {
+        q: "¿Cuál es la diferencia entre TMB y TDEE?",
+        a: "La TMB es la energía en reposo. El TDEE multiplica la TMB por un factor de actividad (aprox. 1,2 sedentario a 1,9 muy activo) y representa las calorías totales del día.",
+      },
+      {
+        q: "¿La TMB es igual para hombres y mujeres?",
+        a: "La fórmula cambia por una constante (+5 varones, −161 mujeres) por diferencias medias de composición corporal. Es una estimación, no una medición médica.",
+      },
+    ],
+  },
   ...TOOL_SEO_OVERRIDES_ATTENDANCE,
   ...TOOL_SEO_OVERRIDES_HOURS,
   ...TOOL_SEO_OVERRIDES_HARMONIC_MEAN,
