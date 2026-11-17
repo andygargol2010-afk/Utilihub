@@ -34,9 +34,11 @@ export const Route = createFileRoute("/finance/$slug")({
     const { financeSeo } = await import("@/lib/finance-seo-content");
     const seo = financeSeo(tool.slug);
     const enPath = englishToolPath(tool);
+    const { isIndexableFinance } = await import("@/lib/content-quality");
     return {
       tool,
       enPath,
+      index: { en: isIndexableFinance(seo, "en"), es: isIndexableFinance(seo, "es") },
       seo: {
         metaTitle: seo?.metaTitle,
         metaDescription: seo?.metaDescription,
@@ -54,7 +56,7 @@ export const Route = createFileRoute("/finance/$slug")({
         ],
       };
     }
-    const { tool, seo, enPath } = loaderData;
+    const { tool, seo, enPath, index } = loaderData;
     const title = seo.metaTitle ?? `${tool.name} calculator | UtiliHub`;
     const description = cleanDescription(seo.metaDescription ?? tool.description);
     const url = absoluteUrl(enPath);
@@ -64,7 +66,8 @@ export const Route = createFileRoute("/finance/$slug")({
         { title },
         { name: "description", content: description },
         { name: "keywords", content: tool.keywords.join(", ") },
-        { name: "robots", content: "index, follow, max-image-preview:large" },
+        // Template-only pages stay usable but out of the index (see src/lib/content-quality.ts).
+        { name: "robots", content: index.en ? "index, follow, max-image-preview:large" : "noindex, follow" },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
@@ -75,7 +78,7 @@ export const Route = createFileRoute("/finance/$slug")({
       links: [
         { rel: "canonical", href: url },
         { rel: "alternate", hrefLang: "en", href: url },
-        { rel: "alternate", hrefLang: "es", href: esUrl },
+        ...(index.es ? [{ rel: "alternate", hrefLang: "es", href: esUrl }] : []),
         { rel: "alternate", hrefLang: "x-default", href: url },
       ],
       scripts: [

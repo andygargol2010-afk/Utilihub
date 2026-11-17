@@ -12,6 +12,11 @@
       "permanent": true
     },
     {
+      "source": "/es/herramientas/generador-codigo-qr",
+      "destination": "/es/herramientas/generador-qr",
+      "permanent": true
+    },
+    {
       "source": "/es/herramientas/imc",
       "destination": "/es/herramientas/calculadora-imc",
       "permanent": true
