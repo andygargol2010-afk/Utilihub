@@ -42,6 +42,7 @@ import { TOOL_SEO_OVERRIDES_BAKERS } from "../tool-seo-overrides-bakers";
 import { TOOL_SEO_OVERRIDES_DECK } from "../tool-seo-overrides-deck";
 import { TOOL_SEO_OVERRIDES_ROOF } from "../tool-seo-overrides-roof";
 import { TOOL_SEO_OVERRIDES_ACCELERATION } from "../tool-seo-overrides-acceleration";
+import { TOOL_SEO_OVERRIDES_DENSIDAD } from "../tool-seo-overrides-densidad";
 import { TOOL_SEO_OVERRIDES_PART_01_PART1 } from "./part-01.part1";
 import { TOOL_SEO_OVERRIDES_PART_01_PART2 } from "./part-01.part2";
 
@@ -71,4 +72,5 @@ export const TOOL_SEO_OVERRIDES_PART_01: Record<string, ToolSeoOverride> = {
   ...TOOL_SEO_OVERRIDES_DECK,
   ...TOOL_SEO_OVERRIDES_ROOF,
   ...TOOL_SEO_OVERRIDES_ACCELERATION,
+  ...TOOL_SEO_OVERRIDES_DENSIDAD,
 };
