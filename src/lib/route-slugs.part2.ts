@@ -104,6 +104,11 @@ export function buildEnglishToolIndex(tools: readonly CatalogTool[]) {
   for (const tool of tools) {
     const slug = englishToolSlug(tool);
     const previous = englishEntries.get(slug);
+    // A duplicate consolidated in CANONICAL_TOOL_REDIRECTS never owns the shared English URL.
+    if (previous && CANONICAL_TOOL_REDIRECTS[previous.slug] && !CANONICAL_TOOL_REDIRECTS[tool.slug]) {
+      englishEntries.set(slug, tool);
+      continue;
+    }
     if (previous) {
       const names = englishCollisions.get(slug) ?? [previous.name];
       names.push(tool.name);

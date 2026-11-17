@@ -28,6 +28,7 @@ import { Route as EchoWaveRouteImport } from './routes/echo-wave'
 import { Route as EsRouteImport } from './routes/es'
 import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as FinanzasRouteImport } from './routes/finanzas'
+import { Route as FindYourToolRouteImport } from './routes/find-your-tool'
 import { Route as FireworkRouteImport } from './routes/firework'
 import { Route as FluidInkFlowPlaygroundRouteImport } from './routes/fluid-ink-flow-playground'
 import { Route as FluidTypeRouteImport } from './routes/fluid-type'
@@ -65,6 +66,7 @@ import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as EducacionSubjectRouteImport } from './routes/educacion.$subject'
 import { Route as EducationSubjectRouteImport } from './routes/education.$subject'
+import { Route as EmbedSlugRouteImport } from './routes/embed.$slug'
 import { Route as EsIndexRouteImport } from './routes/es.index'
 import { Route as EsAcercaRouteImport } from './routes/es.acerca'
 import { Route as EsAhorcadoRouteImport } from './routes/es.ahorcado'
@@ -82,6 +84,7 @@ import { Route as EsContactoRouteImport } from './routes/es.contacto'
 import { Route as EsCookiesRouteImport } from './routes/es.cookies'
 import { Route as EsDailyProgressConstellationRouteImport } from './routes/es.daily-progress-constellation'
 import { Route as EsEchoWaveRouteImport } from './routes/es.echo-wave'
+import { Route as EsEncuentraTuHerramientaRouteImport } from './routes/es.encuentra-tu-herramienta'
 import { Route as EsFinanzasRouteImport } from './routes/es.finanzas'
 import { Route as EsFireworkRouteImport } from './routes/es.firework'
 import { Route as EsFirmaVisualRouteImport } from './routes/es.firma-visual'
@@ -119,6 +122,7 @@ import { Route as GamesIndexRouteImport } from './routes/games.index'
 import { Route as GamesSlugRouteImport } from './routes/games.$slug'
 import { Route as GrowthAchievementCertificateMakerRouteImport } from './routes/growth.achievement-certificate-maker'
 import { Route as GrowthAdsenseComplianceKitRouteImport } from './routes/growth.adsense-compliance-kit'
+import { Route as GrowthEmbedStudioRouteImport } from './routes/growth.embed-studio'
 import { Route as GrowthProgressPassportRouteImport } from './routes/growth.progress-passport'
 import { Route as GrowthQuoteCardMakerRouteImport } from './routes/growth.quote-card-maker'
 import { Route as GrowthSocialHookComposerRouteImport } from './routes/growth.social-hook-composer'
@@ -190,6 +194,7 @@ import { Route as EsCompartirUtiliTypeQuizRouteImport } from './routes/es.compar
 import { Route as EsCrecimientoCompositorGanchosSocialesRouteImport } from './routes/es.crecimiento.compositor-ganchos-sociales'
 import { Route as EsCrecimientoCreadorCertificadoLogroRouteImport } from './routes/es.crecimiento.creador-certificado-logro'
 import { Route as EsCrecimientoCreadorTarjetasCitasRouteImport } from './routes/es.crecimiento.creador-tarjetas-citas'
+import { Route as EsCrecimientoEmbedStudioRouteImport } from './routes/es.crecimiento.embed-studio'
 import { Route as EsCrecimientoKitCumplimientoAdsenseRouteImport } from './routes/es.crecimiento.kit-cumplimiento-adsense'
 import { Route as EsCrecimientoPasaporteProgresoRouteImport } from './routes/es.crecimiento.pasaporte-progreso'
 import { Route as EsEducacionSubjectRouteImport } from './routes/es.educacion.$subject'
@@ -338,6 +343,11 @@ const FinanceRoute = FinanceRouteImport.update({
 const FinanzasRoute = FinanzasRouteImport.update({
   id: '/finanzas',
   path: '/finanzas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FindYourToolRoute = FindYourToolRouteImport.update({
+  id: '/find-your-tool',
+  path: '/find-your-tool',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FireworkRoute = FireworkRouteImport.update({
@@ -527,6 +537,11 @@ const EducationSubjectRoute = EducationSubjectRouteImport.update({
   path: '/education/$subject',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmbedSlugRoute = EmbedSlugRouteImport.update({
+  id: '/embed/$slug',
+  path: '/embed/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EsIndexRoute = EsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -614,6 +629,12 @@ const EsEchoWaveRoute = EsEchoWaveRouteImport.update({
   path: '/echo-wave',
   getParentRoute: () => EsRoute,
 } as any)
+const EsEncuentraTuHerramientaRoute =
+  EsEncuentraTuHerramientaRouteImport.update({
+    id: '/encuentra-tu-herramienta',
+    path: '/encuentra-tu-herramienta',
+    getParentRoute: () => EsRoute,
+  } as any)
 const EsFinanzasRoute = EsFinanzasRouteImport.update({
   id: '/finanzas',
   path: '/finanzas',
@@ -806,6 +827,11 @@ const GrowthAdsenseComplianceKitRoute =
     path: '/growth/adsense-compliance-kit',
     getParentRoute: () => rootRouteImport,
   } as any)
+const GrowthEmbedStudioRoute = GrowthEmbedStudioRouteImport.update({
+  id: '/growth/embed-studio',
+  path: '/growth/embed-studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GrowthProgressPassportRoute = GrowthProgressPassportRouteImport.update({
   id: '/growth/progress-passport',
   path: '/growth/progress-passport',
@@ -1182,6 +1208,12 @@ const EsCrecimientoCreadorTarjetasCitasRoute =
     path: '/crecimiento/creador-tarjetas-citas',
     getParentRoute: () => EsRoute,
   } as any)
+const EsCrecimientoEmbedStudioRoute =
+  EsCrecimientoEmbedStudioRouteImport.update({
+    id: '/crecimiento/embed-studio',
+    path: '/crecimiento/embed-studio',
+    getParentRoute: () => EsRoute,
+  } as any)
 const EsCrecimientoKitCumplimientoAdsenseRoute =
   EsCrecimientoKitCumplimientoAdsenseRouteImport.update({
     id: '/crecimiento/kit-cumplimiento-adsense',
@@ -1485,6 +1517,7 @@ export interface FileRoutesByFullPath {
   '/es': typeof EsRouteWithChildren
   '/finance': typeof FinanceRouteWithChildren
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/find-your-tool': typeof FindYourToolRoute
   '/firework': typeof FireworkRoute
   '/fluid-ink-flow-playground': typeof FluidInkFlowPlaygroundRoute
   '/fluid-type': typeof FluidTypeRoute
@@ -1522,6 +1555,7 @@ export interface FileRoutesByFullPath {
   '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/education/$subject': typeof EducationSubjectRoute
+  '/embed/$slug': typeof EmbedSlugRoute
   '/es/acerca': typeof EsAcercaRoute
   '/es/ahorcado': typeof EsAhorcadoRoute
   '/es/aura-card': typeof EsAuraCardRoute
@@ -1538,6 +1572,7 @@ export interface FileRoutesByFullPath {
   '/es/cookies': typeof EsCookiesRoute
   '/es/daily-progress-constellation': typeof EsDailyProgressConstellationRoute
   '/es/echo-wave': typeof EsEchoWaveRoute
+  '/es/encuentra-tu-herramienta': typeof EsEncuentraTuHerramientaRoute
   '/es/finanzas': typeof EsFinanzasRouteWithChildren
   '/es/firework': typeof EsFireworkRoute
   '/es/firma-visual': typeof EsFirmaVisualRoute
@@ -1572,6 +1607,7 @@ export interface FileRoutesByFullPath {
   '/games/$slug': typeof GamesSlugRoute
   '/growth/achievement-certificate-maker': typeof GrowthAchievementCertificateMakerRoute
   '/growth/adsense-compliance-kit': typeof GrowthAdsenseComplianceKitRoute
+  '/growth/embed-studio': typeof GrowthEmbedStudioRoute
   '/growth/progress-passport': typeof GrowthProgressPassportRoute
   '/growth/quote-card-maker': typeof GrowthQuoteCardMakerRoute
   '/growth/social-hook-composer': typeof GrowthSocialHookComposerRoute
@@ -1647,6 +1683,7 @@ export interface FileRoutesByFullPath {
   '/es/crecimiento/compositor-ganchos-sociales': typeof EsCrecimientoCompositorGanchosSocialesRoute
   '/es/crecimiento/creador-certificado-logro': typeof EsCrecimientoCreadorCertificadoLogroRoute
   '/es/crecimiento/creador-tarjetas-citas': typeof EsCrecimientoCreadorTarjetasCitasRoute
+  '/es/crecimiento/embed-studio': typeof EsCrecimientoEmbedStudioRoute
   '/es/crecimiento/kit-cumplimiento-adsense': typeof EsCrecimientoKitCumplimientoAdsenseRoute
   '/es/crecimiento/pasaporte-progreso': typeof EsCrecimientoPasaporteProgresoRoute
   '/es/educacion/$subject': typeof EsEducacionSubjectRoute
@@ -1718,6 +1755,7 @@ export interface FileRoutesByTo {
   '/daily-progress-constellation': typeof DailyProgressConstellationRoute
   '/echo-wave': typeof EchoWaveRoute
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/find-your-tool': typeof FindYourToolRoute
   '/firework': typeof FireworkRoute
   '/fluid-ink-flow-playground': typeof FluidInkFlowPlaygroundRoute
   '/fluid-type': typeof FluidTypeRoute
@@ -1753,6 +1791,7 @@ export interface FileRoutesByTo {
   '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/education/$subject': typeof EducationSubjectRoute
+  '/embed/$slug': typeof EmbedSlugRoute
   '/es/acerca': typeof EsAcercaRoute
   '/es/ahorcado': typeof EsAhorcadoRoute
   '/es/aura-card': typeof EsAuraCardRoute
@@ -1769,6 +1808,7 @@ export interface FileRoutesByTo {
   '/es/cookies': typeof EsCookiesRoute
   '/es/daily-progress-constellation': typeof EsDailyProgressConstellationRoute
   '/es/echo-wave': typeof EsEchoWaveRoute
+  '/es/encuentra-tu-herramienta': typeof EsEncuentraTuHerramientaRoute
   '/es/firework': typeof EsFireworkRoute
   '/es/firma-visual': typeof EsFirmaVisualRoute
   '/es/fluid-ink-flow-playground': typeof EsFluidInkFlowPlaygroundRoute
@@ -1799,6 +1839,7 @@ export interface FileRoutesByTo {
   '/games/$slug': typeof GamesSlugRoute
   '/growth/achievement-certificate-maker': typeof GrowthAchievementCertificateMakerRoute
   '/growth/adsense-compliance-kit': typeof GrowthAdsenseComplianceKitRoute
+  '/growth/embed-studio': typeof GrowthEmbedStudioRoute
   '/growth/progress-passport': typeof GrowthProgressPassportRoute
   '/growth/quote-card-maker': typeof GrowthQuoteCardMakerRoute
   '/growth/social-hook-composer': typeof GrowthSocialHookComposerRoute
@@ -1871,6 +1912,7 @@ export interface FileRoutesByTo {
   '/es/crecimiento/compositor-ganchos-sociales': typeof EsCrecimientoCompositorGanchosSocialesRoute
   '/es/crecimiento/creador-certificado-logro': typeof EsCrecimientoCreadorCertificadoLogroRoute
   '/es/crecimiento/creador-tarjetas-citas': typeof EsCrecimientoCreadorTarjetasCitasRoute
+  '/es/crecimiento/embed-studio': typeof EsCrecimientoEmbedStudioRoute
   '/es/crecimiento/kit-cumplimiento-adsense': typeof EsCrecimientoKitCumplimientoAdsenseRoute
   '/es/crecimiento/pasaporte-progreso': typeof EsCrecimientoPasaporteProgresoRoute
   '/es/educacion/$subject': typeof EsEducacionSubjectRoute
@@ -1945,6 +1987,7 @@ export interface FileRoutesById {
   '/es': typeof EsRouteWithChildren
   '/finance': typeof FinanceRouteWithChildren
   '/finanzas': typeof FinanzasRouteWithChildren
+  '/find-your-tool': typeof FindYourToolRoute
   '/firework': typeof FireworkRoute
   '/fluid-ink-flow-playground': typeof FluidInkFlowPlaygroundRoute
   '/fluid-type': typeof FluidTypeRoute
@@ -1982,6 +2025,7 @@ export interface FileRoutesById {
   '/category/$slug': typeof CategorySlugRoute
   '/educacion/$subject': typeof EducacionSubjectRoute
   '/education/$subject': typeof EducationSubjectRoute
+  '/embed/$slug': typeof EmbedSlugRoute
   '/es/acerca': typeof EsAcercaRoute
   '/es/ahorcado': typeof EsAhorcadoRoute
   '/es/aura-card': typeof EsAuraCardRoute
@@ -1998,6 +2042,7 @@ export interface FileRoutesById {
   '/es/cookies': typeof EsCookiesRoute
   '/es/daily-progress-constellation': typeof EsDailyProgressConstellationRoute
   '/es/echo-wave': typeof EsEchoWaveRoute
+  '/es/encuentra-tu-herramienta': typeof EsEncuentraTuHerramientaRoute
   '/es/finanzas': typeof EsFinanzasRouteWithChildren
   '/es/firework': typeof EsFireworkRoute
   '/es/firma-visual': typeof EsFirmaVisualRoute
@@ -2032,6 +2077,7 @@ export interface FileRoutesById {
   '/games/$slug': typeof GamesSlugRoute
   '/growth/achievement-certificate-maker': typeof GrowthAchievementCertificateMakerRoute
   '/growth/adsense-compliance-kit': typeof GrowthAdsenseComplianceKitRoute
+  '/growth/embed-studio': typeof GrowthEmbedStudioRoute
   '/growth/progress-passport': typeof GrowthProgressPassportRoute
   '/growth/quote-card-maker': typeof GrowthQuoteCardMakerRoute
   '/growth/social-hook-composer': typeof GrowthSocialHookComposerRoute
@@ -2107,6 +2153,7 @@ export interface FileRoutesById {
   '/es/crecimiento/compositor-ganchos-sociales': typeof EsCrecimientoCompositorGanchosSocialesRoute
   '/es/crecimiento/creador-certificado-logro': typeof EsCrecimientoCreadorCertificadoLogroRoute
   '/es/crecimiento/creador-tarjetas-citas': typeof EsCrecimientoCreadorTarjetasCitasRoute
+  '/es/crecimiento/embed-studio': typeof EsCrecimientoEmbedStudioRoute
   '/es/crecimiento/kit-cumplimiento-adsense': typeof EsCrecimientoKitCumplimientoAdsenseRoute
   '/es/crecimiento/pasaporte-progreso': typeof EsCrecimientoPasaporteProgresoRoute
   '/es/educacion/$subject': typeof EsEducacionSubjectRoute
@@ -2182,6 +2229,7 @@ export interface FileRouteTypes {
     | '/es'
     | '/finance'
     | '/finanzas'
+    | '/find-your-tool'
     | '/firework'
     | '/fluid-ink-flow-playground'
     | '/fluid-type'
@@ -2219,6 +2267,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/educacion/$subject'
     | '/education/$subject'
+    | '/embed/$slug'
     | '/es/acerca'
     | '/es/ahorcado'
     | '/es/aura-card'
@@ -2235,6 +2284,7 @@ export interface FileRouteTypes {
     | '/es/cookies'
     | '/es/daily-progress-constellation'
     | '/es/echo-wave'
+    | '/es/encuentra-tu-herramienta'
     | '/es/finanzas'
     | '/es/firework'
     | '/es/firma-visual'
@@ -2269,6 +2319,7 @@ export interface FileRouteTypes {
     | '/games/$slug'
     | '/growth/achievement-certificate-maker'
     | '/growth/adsense-compliance-kit'
+    | '/growth/embed-studio'
     | '/growth/progress-passport'
     | '/growth/quote-card-maker'
     | '/growth/social-hook-composer'
@@ -2344,6 +2395,7 @@ export interface FileRouteTypes {
     | '/es/crecimiento/compositor-ganchos-sociales'
     | '/es/crecimiento/creador-certificado-logro'
     | '/es/crecimiento/creador-tarjetas-citas'
+    | '/es/crecimiento/embed-studio'
     | '/es/crecimiento/kit-cumplimiento-adsense'
     | '/es/crecimiento/pasaporte-progreso'
     | '/es/educacion/$subject'
@@ -2415,6 +2467,7 @@ export interface FileRouteTypes {
     | '/daily-progress-constellation'
     | '/echo-wave'
     | '/finanzas'
+    | '/find-your-tool'
     | '/firework'
     | '/fluid-ink-flow-playground'
     | '/fluid-type'
@@ -2450,6 +2503,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/educacion/$subject'
     | '/education/$subject'
+    | '/embed/$slug'
     | '/es/acerca'
     | '/es/ahorcado'
     | '/es/aura-card'
@@ -2466,6 +2520,7 @@ export interface FileRouteTypes {
     | '/es/cookies'
     | '/es/daily-progress-constellation'
     | '/es/echo-wave'
+    | '/es/encuentra-tu-herramienta'
     | '/es/firework'
     | '/es/firma-visual'
     | '/es/fluid-ink-flow-playground'
@@ -2496,6 +2551,7 @@ export interface FileRouteTypes {
     | '/games/$slug'
     | '/growth/achievement-certificate-maker'
     | '/growth/adsense-compliance-kit'
+    | '/growth/embed-studio'
     | '/growth/progress-passport'
     | '/growth/quote-card-maker'
     | '/growth/social-hook-composer'
@@ -2568,6 +2624,7 @@ export interface FileRouteTypes {
     | '/es/crecimiento/compositor-ganchos-sociales'
     | '/es/crecimiento/creador-certificado-logro'
     | '/es/crecimiento/creador-tarjetas-citas'
+    | '/es/crecimiento/embed-studio'
     | '/es/crecimiento/kit-cumplimiento-adsense'
     | '/es/crecimiento/pasaporte-progreso'
     | '/es/educacion/$subject'
@@ -2641,6 +2698,7 @@ export interface FileRouteTypes {
     | '/es'
     | '/finance'
     | '/finanzas'
+    | '/find-your-tool'
     | '/firework'
     | '/fluid-ink-flow-playground'
     | '/fluid-type'
@@ -2678,6 +2736,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/educacion/$subject'
     | '/education/$subject'
+    | '/embed/$slug'
     | '/es/acerca'
     | '/es/ahorcado'
     | '/es/aura-card'
@@ -2694,6 +2753,7 @@ export interface FileRouteTypes {
     | '/es/cookies'
     | '/es/daily-progress-constellation'
     | '/es/echo-wave'
+    | '/es/encuentra-tu-herramienta'
     | '/es/finanzas'
     | '/es/firework'
     | '/es/firma-visual'
@@ -2728,6 +2788,7 @@ export interface FileRouteTypes {
     | '/games/$slug'
     | '/growth/achievement-certificate-maker'
     | '/growth/adsense-compliance-kit'
+    | '/growth/embed-studio'
     | '/growth/progress-passport'
     | '/growth/quote-card-maker'
     | '/growth/social-hook-composer'
@@ -2803,6 +2864,7 @@ export interface FileRouteTypes {
     | '/es/crecimiento/compositor-ganchos-sociales'
     | '/es/crecimiento/creador-certificado-logro'
     | '/es/crecimiento/creador-tarjetas-citas'
+    | '/es/crecimiento/embed-studio'
     | '/es/crecimiento/kit-cumplimiento-adsense'
     | '/es/crecimiento/pasaporte-progreso'
     | '/es/educacion/$subject'
@@ -2877,6 +2939,7 @@ export interface RootRouteChildren {
   EsRoute: typeof EsRouteWithChildren
   FinanceRoute: typeof FinanceRouteWithChildren
   FinanzasRoute: typeof FinanzasRouteWithChildren
+  FindYourToolRoute: typeof FindYourToolRoute
   FireworkRoute: typeof FireworkRoute
   FluidInkFlowPlaygroundRoute: typeof FluidInkFlowPlaygroundRoute
   FluidTypeRoute: typeof FluidTypeRoute
@@ -2914,8 +2977,10 @@ export interface RootRouteChildren {
   CategorySlugRoute: typeof CategorySlugRoute
   EducacionSubjectRoute: typeof EducacionSubjectRoute
   EducationSubjectRoute: typeof EducationSubjectRoute
+  EmbedSlugRoute: typeof EmbedSlugRoute
   GrowthAchievementCertificateMakerRoute: typeof GrowthAchievementCertificateMakerRoute
   GrowthAdsenseComplianceKitRoute: typeof GrowthAdsenseComplianceKitRoute
+  GrowthEmbedStudioRoute: typeof GrowthEmbedStudioRoute
   GrowthProgressPassportRoute: typeof GrowthProgressPassportRoute
   GrowthQuoteCardMakerRoute: typeof GrowthQuoteCardMakerRoute
   GrowthSocialHookComposerRoute: typeof GrowthSocialHookComposerRoute
@@ -3108,6 +3173,13 @@ declare module '@tanstack/react-router' {
       path: '/finanzas'
       fullPath: '/finanzas'
       preLoaderRoute: typeof FinanzasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/find-your-tool': {
+      id: '/find-your-tool'
+      path: '/find-your-tool'
+      fullPath: '/find-your-tool'
+      preLoaderRoute: typeof FindYourToolRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/firework': {
@@ -3369,6 +3441,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EducationSubjectRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/embed/$slug': {
+      id: '/embed/$slug'
+      path: '/embed/$slug'
+      fullPath: '/embed/$slug'
+      preLoaderRoute: typeof EmbedSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/es/': {
       id: '/es/'
       path: '/'
@@ -3486,6 +3565,13 @@ declare module '@tanstack/react-router' {
       path: '/echo-wave'
       fullPath: '/es/echo-wave'
       preLoaderRoute: typeof EsEchoWaveRouteImport
+      parentRoute: typeof EsRoute
+    }
+    '/es/encuentra-tu-herramienta': {
+      id: '/es/encuentra-tu-herramienta'
+      path: '/encuentra-tu-herramienta'
+      fullPath: '/es/encuentra-tu-herramienta'
+      preLoaderRoute: typeof EsEncuentraTuHerramientaRouteImport
       parentRoute: typeof EsRoute
     }
     '/es/finanzas': {
@@ -3745,6 +3831,13 @@ declare module '@tanstack/react-router' {
       path: '/growth/adsense-compliance-kit'
       fullPath: '/growth/adsense-compliance-kit'
       preLoaderRoute: typeof GrowthAdsenseComplianceKitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/growth/embed-studio': {
+      id: '/growth/embed-studio'
+      path: '/growth/embed-studio'
+      fullPath: '/growth/embed-studio'
+      preLoaderRoute: typeof GrowthEmbedStudioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/growth/progress-passport': {
@@ -4244,6 +4337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EsCrecimientoCreadorTarjetasCitasRouteImport
       parentRoute: typeof EsRoute
     }
+    '/es/crecimiento/embed-studio': {
+      id: '/es/crecimiento/embed-studio'
+      path: '/crecimiento/embed-studio'
+      fullPath: '/es/crecimiento/embed-studio'
+      preLoaderRoute: typeof EsCrecimientoEmbedStudioRouteImport
+      parentRoute: typeof EsRoute
+    }
     '/es/crecimiento/kit-cumplimiento-adsense': {
       id: '/es/crecimiento/kit-cumplimiento-adsense'
       path: '/crecimiento/kit-cumplimiento-adsense'
@@ -4721,6 +4821,7 @@ interface EsRouteChildren {
   EsCookiesRoute: typeof EsCookiesRoute
   EsDailyProgressConstellationRoute: typeof EsDailyProgressConstellationRoute
   EsEchoWaveRoute: typeof EsEchoWaveRoute
+  EsEncuentraTuHerramientaRoute: typeof EsEncuentraTuHerramientaRoute
   EsFinanzasRoute: typeof EsFinanzasRouteWithChildren
   EsFireworkRoute: typeof EsFireworkRoute
   EsFirmaVisualRoute: typeof EsFirmaVisualRoute
@@ -4756,6 +4857,7 @@ interface EsRouteChildren {
   EsCrecimientoCompositorGanchosSocialesRoute: typeof EsCrecimientoCompositorGanchosSocialesRoute
   EsCrecimientoCreadorCertificadoLogroRoute: typeof EsCrecimientoCreadorCertificadoLogroRoute
   EsCrecimientoCreadorTarjetasCitasRoute: typeof EsCrecimientoCreadorTarjetasCitasRoute
+  EsCrecimientoEmbedStudioRoute: typeof EsCrecimientoEmbedStudioRoute
   EsCrecimientoKitCumplimientoAdsenseRoute: typeof EsCrecimientoKitCumplimientoAdsenseRoute
   EsCrecimientoPasaporteProgresoRoute: typeof EsCrecimientoPasaporteProgresoRoute
   EsEducacionSubjectRoute: typeof EsEducacionSubjectRoute
@@ -4804,6 +4906,7 @@ const EsRouteChildren: EsRouteChildren = {
   EsCookiesRoute: EsCookiesRoute,
   EsDailyProgressConstellationRoute: EsDailyProgressConstellationRoute,
   EsEchoWaveRoute: EsEchoWaveRoute,
+  EsEncuentraTuHerramientaRoute: EsEncuentraTuHerramientaRoute,
   EsFinanzasRoute: EsFinanzasRouteWithChildren,
   EsFireworkRoute: EsFireworkRoute,
   EsFirmaVisualRoute: EsFirmaVisualRoute,
@@ -4842,6 +4945,7 @@ const EsRouteChildren: EsRouteChildren = {
     EsCrecimientoCreadorCertificadoLogroRoute,
   EsCrecimientoCreadorTarjetasCitasRoute:
     EsCrecimientoCreadorTarjetasCitasRoute,
+  EsCrecimientoEmbedStudioRoute: EsCrecimientoEmbedStudioRoute,
   EsCrecimientoKitCumplimientoAdsenseRoute:
     EsCrecimientoKitCumplimientoAdsenseRoute,
   EsCrecimientoPasaporteProgresoRoute: EsCrecimientoPasaporteProgresoRoute,
@@ -5024,6 +5128,7 @@ const rootRouteChildren: RootRouteChildren = {
   EsRoute: EsRouteWithChildren,
   FinanceRoute: FinanceRouteWithChildren,
   FinanzasRoute: FinanzasRouteWithChildren,
+  FindYourToolRoute: FindYourToolRoute,
   FireworkRoute: FireworkRoute,
   FluidInkFlowPlaygroundRoute: FluidInkFlowPlaygroundRoute,
   FluidTypeRoute: FluidTypeRoute,
@@ -5061,9 +5166,11 @@ const rootRouteChildren: RootRouteChildren = {
   CategorySlugRoute: CategorySlugRoute,
   EducacionSubjectRoute: EducacionSubjectRoute,
   EducationSubjectRoute: EducationSubjectRoute,
+  EmbedSlugRoute: EmbedSlugRoute,
   GrowthAchievementCertificateMakerRoute:
     GrowthAchievementCertificateMakerRoute,
   GrowthAdsenseComplianceKitRoute: GrowthAdsenseComplianceKitRoute,
+  GrowthEmbedStudioRoute: GrowthEmbedStudioRoute,
   GrowthProgressPassportRoute: GrowthProgressPassportRoute,
   GrowthQuoteCardMakerRoute: GrowthQuoteCardMakerRoute,
   GrowthSocialHookComposerRoute: GrowthSocialHookComposerRoute,

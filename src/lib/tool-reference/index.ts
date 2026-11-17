@@ -69,6 +69,7 @@ const INBOUND_LINKS: Record<string, ReferenceLink[]> = {
   "calculadora-enfriamiento-viento": [DEW],
   "calculadora-presion-atmosferica": [DEW],
   "conversor-peso": [OZ_G, KG_LB],
+  "conversor-de-peso": [OZ_G, KG_LB],
   "conversor-gramos-libras": [OZ_G, KG_LB],
   "conversor-kg-libras": [OZ_G, BMI],
   "conversor-tazas-ml": [OZ_G, TBSP_ML],

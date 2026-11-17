@@ -24,8 +24,8 @@ export function TipCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
   async function copy() {
     if (!result) return;
     const text = es
-      ? `Propina: ${result.tip} | Total: ${result.total}`
-      : `Tip: ${result.tip} | Total: ${result.total}`;
+      ? `Propina: ${result.tip.toFixed(2)} | Total: ${result.total.toFixed(2)}`
+      : `Tip: ${result.tip.toFixed(2)} | Total: ${result.total.toFixed(2)}`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -47,8 +47,8 @@ export function TipCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
         <p className="text-sm text-muted-foreground">{es ? "Propina y total" : "Tip and total"}</p>
         {result ? (
           <div>
-            <p className="text-3xl font-semibold">{es ? `Propina: ${result.tip}` : `Tip: ${result.tip}`}</p>
-            <p className="text-sm text-muted-foreground">{es ? `Total: ${result.total}` : `Total: ${result.total}`}</p>
+            <p className="text-3xl font-semibold">{es ? `Propina: ${result.tip.toFixed(2)}` : `Tip: ${result.tip.toFixed(2)}`}</p>
+            <p className="text-sm text-muted-foreground">{es ? `Total: ${result.total.toFixed(2)}` : `Total: ${result.total.toFixed(2)}`}</p>
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">

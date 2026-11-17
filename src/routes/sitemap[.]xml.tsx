@@ -8,7 +8,7 @@ import { SITE_URL } from "@/lib/seo";
 import { SIMULATORS } from "@/lib/simulators/catalog";
 import { WORK_KITS } from "@/lib/work-kits";
 import { escapeXml } from "./-sitemap[.]xml.part1";
-import { type SitemapEntry, pair, BUILD_DAY, toolPriority, hreflangXml } from "./-sitemap[.]xml.part2";
+import { type SitemapEntry, pair, indexablePair, BUILD_DAY, toolPriority, hreflangXml } from "./-sitemap[.]xml.part2";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -16,7 +16,10 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: async () => {
         // Dynamic: keeps the catalog and SEO barrel out of the client entry chunk.
         const { ALL_CATEGORIES, ALL_TOOLS, toolHref } = await import("@/lib/all-tools");
-        const { toolSeoOverride } = await import("@/lib/tool-seo-overrides");
+        const { toolSeoOverride, toolSeoGuideData } = await import("@/lib/tool-seo-overrides");
+        const { financeSeo } = await import("@/lib/finance-seo-content");
+        const { usesFinanceRoute, toolByEnglishSlug } = await import("@/lib/route-slugs");
+        const { isIndexableTool, isIndexableFinance } = await import("@/lib/content-quality");
         const hubPairs: SitemapEntry[] = [
           ...pair("/", "/es", "1.0", { lastmod: BUILD_DAY }),
           ...pair("/tools", "/es/herramientas", "0.9", { lastmod: BUILD_DAY }),
@@ -87,7 +90,18 @@ export const Route = createFileRoute("/sitemap.xml")({
           if (isRedirectedToolSlug(tool.slug)) return [];
           const enPath = toolHref(tool);
           const esPath = spanishToolPath(tool);
-          return pair(enPath, esPath, toolPriority(tool, toolSeoOverride));
+          // Template-only pages (no own guide text) are noindex: keep them out of the sitemap.
+          const finance = usesFinanceRoute(tool);
+          const guide = finance ? null : toolSeoGuideData(tool);
+          // Several catalog tools can share one English URL: only the tool that URL renders may list it.
+          const ownsEnglishUrl = finance || toolByEnglishSlug(ALL_TOOLS, enPath.split("/").pop() ?? "")?.slug === tool.slug;
+          const index = {
+            en:
+              ownsEnglishUrl &&
+              (guide ? isIndexableTool(tool, guide, "en", ALL_TOOLS) : isIndexableFinance(financeSeo(tool.slug), "en")),
+            es: guide ? isIndexableTool(tool, guide, "es", ALL_TOOLS) : isIndexableFinance(financeSeo(tool.slug), "es"),
+          };
+          return indexablePair(enPath, esPath, toolPriority(tool, toolSeoOverride), index);
         });
 
         // SEO locales: PT product-parity pages (not yet marked active until full bar).

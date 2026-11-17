@@ -113,6 +113,116 @@ export const TOOL_SEO_OVERRIDES_PART_04: Record<string, ToolSeoOverride> = {
       },
     ],
   },
+  "calculadora-porciones-pizza": {
+    metaTitle: "Pizza Portions Calculator — How Many Pizzas to Order | UtiliHub",
+    metaTitleEs: "Calculadora de porciones de pizza — cuántas pizzas pedir | UtiliHub",
+    metaDescription:
+      "Free pizza portions calculator: enter guests, slices per person and slices per pizza to get how many pizzas to order. Formula included, runs in your browser.",
+    metaDescriptionEs:
+      "Calculadora de porciones de pizza gratis: ingresá personas, porciones por persona y porciones por pizza para saber cuántas pizzas pedir. Con fórmula, en el navegador.",
+    about: [
+      "Pizzas needed = ceil(guests × slices per person ÷ slices per pizza). Example: 10 guests, 3 slices each, 8-slice pizzas → ceil(30 ÷ 8) = 4 pizzas.",
+      "Typical appetite: 2–4 slices per adult and 1–2 per child; add a slice per person if there are few side dishes.",
+    ],
+    aboutEs: [
+      "Pizzas necesarias = techo(personas × porciones por persona ÷ porciones por pizza). Ejemplo: 10 personas, 3 porciones cada una, pizzas de 8 porciones → techo(30 ÷ 8) = 4 pizzas.",
+      "Apetito típico: 2–4 porciones por adulto y 1–2 por niño; sumá una porción por persona si hay pocos acompañamientos.",
+    ],
+    steps: [
+      "Enter the number of guests.",
+      "Enter slices per person and slices per pizza.",
+      "Read how many pizzas to order, rounded up.",
+    ],
+    stepsEs: [
+      "Ingresá la cantidad de personas.",
+      "Ingresá porciones por persona y porciones por pizza.",
+      "Leé cuántas pizzas pedir, redondeado hacia arriba.",
+    ],
+    faq: [
+      {
+        q: "How many pizzas for 10 people?",
+        a: "With 3 slices per person and 8-slice pizzas: 10 × 3 ÷ 8 = 3.75, rounded up to 4 pizzas.",
+      },
+      {
+        q: "How many slices per person should I plan?",
+        a: "Adults usually eat 2–4 slices and kids 1–2. Adjust for appetite and how much other food you serve.",
+      },
+      {
+        q: "Why round up?",
+        a: "You cannot order a fraction of a pizza, so the tool always rounds up to the next whole pizza.",
+      },
+    ],
+    faqEs: [
+      {
+        q: "¿Cuántas pizzas para 10 personas?",
+        a: "Con 3 porciones por persona y pizzas de 8 porciones: 10 × 3 ÷ 8 = 3,75, redondeado a 4 pizzas.",
+      },
+      {
+        q: "¿Cuántas porciones por persona debo calcular?",
+        a: "Los adultos suelen comer 2–4 porciones y los niños 1–2. Ajustá según el apetito y la comida que acompañe.",
+      },
+      {
+        q: "¿Por qué se redondea hacia arriba?",
+        a: "No se puede pedir una fracción de pizza, así que la herramienta siempre redondea a la pizza entera siguiente.",
+      },
+    ],
+  },
+  "calculadora-tmb": {
+    metaTitle: "BMR Calculator — Mifflin-St Jeor, kcal/day | UtiliHub",
+    metaTitleEs: "Calculadora TMB — tasa metabólica basal (Mifflin-St Jeor) | UtiliHub",
+    metaDescription:
+      "Free BMR calculator using the Mifflin-St Jeor equation: enter age, weight, height and sex to get your basal metabolic rate in kcal/day. No signup.",
+    metaDescriptionEs:
+      "Calculadora de TMB gratis con la ecuación de Mifflin-St Jeor: ingresá edad, peso, altura y sexo y obtené tu tasa metabólica basal en kcal/día. Sin registro.",
+    about: [
+      "BMR (basal metabolic rate) is the energy your body burns at rest. This tool uses the Mifflin-St Jeor equation, in kcal/day.",
+      "Formula: men: BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5; women: BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age − 161.",
+      "Example: 30-year-old man, 75 kg, 178 cm → 10 × 75 + 6.25 × 178 − 5 × 30 + 5 = 1,717.5 kcal/day. Multiply BMR by an activity factor (about 1.2–1.9) to estimate total daily needs (TDEE).",
+    ],
+    aboutEs: [
+      "La TMB (tasa metabólica basal) es la energía que tu cuerpo quema en reposo. Esta herramienta usa la ecuación de Mifflin-St Jeor, en kcal/día.",
+      "Fórmula: varones: TMB = 10 × peso(kg) + 6,25 × altura(cm) − 5 × edad + 5; mujeres: TMB = 10 × peso(kg) + 6,25 × altura(cm) − 5 × edad − 161.",
+      "Ejemplo: varón de 30 años, 75 kg y 178 cm → 10 × 75 + 6,25 × 178 − 5 × 30 + 5 = 1.717,5 kcal/día. Multiplicá la TMB por un factor de actividad (aprox. 1,2–1,9) para estimar el gasto total diario (TDEE).",
+    ],
+    steps: [
+      "Enter your age in years, weight in kilograms and height in centimeters.",
+      "Select your sex (1 = male, 0 = female).",
+      "Read your BMR in kcal/day; multiply by your activity level for total daily calories.",
+    ],
+    stepsEs: [
+      "Ingresá tu edad en años, peso en kilogramos y altura en centímetros.",
+      "Elegí tu sexo (1 = varón, 0 = mujer).",
+      "Leé tu TMB en kcal/día; multiplicala por tu nivel de actividad para el total de calorías diarias.",
+    ],
+    faq: [
+      {
+        q: "What is the Mifflin-St Jeor equation?",
+        a: "BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5 for men, and − 161 instead of + 5 for women. It is the standard estimate for basal metabolic rate.",
+      },
+      {
+        q: "What is the difference between BMR and TDEE?",
+        a: "BMR is the energy burned at rest. TDEE multiplies BMR by an activity factor (about 1.2 sedentary to 1.9 very active) and represents total daily calorie needs.",
+      },
+      {
+        q: "Is BMR the same for men and women?",
+        a: "The formula differs by a constant (+5 for men, −161 for women) because average body composition differs. It is an estimate, not a medical measurement.",
+      },
+    ],
+    faqEs: [
+      {
+        q: "¿Qué es la ecuación de Mifflin-St Jeor?",
+        a: "TMB = 10 × peso(kg) + 6,25 × altura(cm) − 5 × edad + 5 en varones, y − 161 en lugar de + 5 en mujeres. Es la estimación estándar de la tasa metabólica basal.",
+      },
+      {
+        q: "¿Cuál es la diferencia entre TMB y TDEE?",
+        a: "La TMB es la energía en reposo. El TDEE multiplica la TMB por un factor de actividad (aprox. 1,2 sedentario a 1,9 muy activo) y representa las calorías totales del día.",
+      },
+      {
+        q: "¿La TMB es igual para hombres y mujeres?",
+        a: "La fórmula cambia por una constante (+5 varones, −161 mujeres) por diferencias medias de composición corporal. Es una estimación, no una medición médica.",
+      },
+    ],
+  },
   ...TOOL_SEO_OVERRIDES_ATTENDANCE,
   ...TOOL_SEO_OVERRIDES_HOURS,
   ...TOOL_SEO_OVERRIDES_HARMONIC_MEAN,

@@ -437,7 +437,7 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
                   onClick={() => placeAt(r, c)}
                   onMouseEnter={() => updatePreview(r, c)}
                   onMouseLeave={() => setPreview(null)}
-                  className={`aspect-square rounded-sm ${cellClass(cell, true, isPreviewCell(r, c))}`}
+                  className={`aspect-square rounded-sm ${cellClass(cell, true, isPreviewCell(r, c))} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400`}
                   aria-label={ariaFor(cell, r, c, true)}
                   disabled={phase !== "placement"}
                   tabIndex={-1}
@@ -465,7 +465,7 @@ export function BattleshipClassicGame({ locale = "en" }: { locale?: GameLocale }
                   data-r={r}
                   data-c={c}
                   onClick={() => shoot(r, c)}
-                  className={`aspect-square rounded-sm ${cellClass(cell, false, false)}`}
+                  className={`aspect-square rounded-sm ${cellClass(cell, false, false)} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400`}
                   aria-label={ariaFor(cell, r, c, false)}
                   disabled={phase !== "playing"}
                   tabIndex={-1}

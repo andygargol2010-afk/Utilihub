@@ -1,6 +1,7 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
 import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
+import { CategoryGuide } from "@/components/CategoryGuide";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
 import { englishCategorySlug, englishToolSlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
@@ -188,6 +189,8 @@ function CategoryPage() {
           <CategoryListingSlot />
         )}
       </div>
+
+      <CategoryGuide categorySlug={category.slug} categoryName={category.name} tools={tools} locale="en" />
 
       <section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories">
         <h2 id="other-categories" className="text-base font-bold">

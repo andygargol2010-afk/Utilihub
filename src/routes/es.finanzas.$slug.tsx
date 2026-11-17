@@ -34,11 +34,14 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
     // Keep the SEO barrel off the route shell chunk.
     const { financeSeo } = await import("@/lib/finance-seo-content");
     const seo = financeSeo(tool.slug);
+    const { isIndexableFinance } = await import("@/lib/content-quality");
+    const index = { en: isIndexableFinance(seo, "en"), es: isIndexableFinance(seo, "es") };
     const { englishToolPath } = await import("@/lib/route-slugs");
     const englishUrl = absoluteUrl(englishToolPath({ ...tool, category: "finanzas" }));
     return {
       tool,
       englishUrl,
+      index,
       seo: {
         metaTitleEs: seo?.metaTitleEs,
         metaDescriptionEs: seo?.metaDescriptionEs,
@@ -56,7 +59,7 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
         ],
       };
     }
-    const { tool, seo, englishUrl } = loaderData;
+    const { tool, seo, englishUrl, index } = loaderData;
     const name = spanishToolName({ slug: tool.slug, name: tool.name });
     const url = absoluteUrl(`/es/finanzas/${tool.slug}`);
     const title = seo.metaTitleEs ?? `${name} gratis online | UtiliHub`;
@@ -70,7 +73,8 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
       meta: [
         { title },
         { name: "description", content: description },
-        { name: "robots", content: "index, follow, max-image-preview:large" },
+        // Template-only pages stay usable but out of the index (see src/lib/content-quality.ts).
+        { name: "robots", content: index.es ? "index, follow, max-image-preview:large" : "noindex, follow" },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
@@ -81,8 +85,12 @@ export const Route = createFileRoute("/es/finanzas/$slug")({
       links: [
         { rel: "canonical", href: url },
         { rel: "alternate", hrefLang: "es", href: url },
-        { rel: "alternate", hrefLang: "en", href: englishUrl },
-        { rel: "alternate", hrefLang: "x-default", href: englishUrl },
+        ...(index.en
+          ? [
+              { rel: "alternate", hrefLang: "en", href: englishUrl },
+              { rel: "alternate", hrefLang: "x-default", href: englishUrl },
+            ]
+          : []),
       ],
       scripts: [
         {

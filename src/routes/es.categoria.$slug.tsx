@@ -1,6 +1,7 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
+import { CategoryGuide } from "@/components/CategoryGuide";
 import { spanishCategoryName } from "@/lib/i18n/es";
 import { englishCategoryPath } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
@@ -174,6 +175,8 @@ function SpanishCategoryPage() {
           <SpanishCategoryListingSlot />
         )}
       </div>
+
+      <CategoryGuide categorySlug={category.slug} categoryName={name} tools={tools} locale="es" />
 
       <section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories">
         <h2 id="other-categories" className="text-base font-bold">
