@@ -68,7 +68,6 @@ export const TOOL_SEO_OVERRIDES_PART_01_PART2: Record<string, ToolSeoOverride> =
       },
     ],
   },
-,
   "calculadora-costo-litro-combustible": {
     metaTitle: "Fuel Cost Calculator — Price per Liter × Liters | UtiliHub",
     metaTitleEs: "Calculadora de costo de combustible — precio por litro × litros | UtiliHub",

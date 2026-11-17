@@ -1,4 +1,3 @@
-successfully downloaded text file (SHA: 3301c0def5716ef8798af1f73ea9591109d90acd)
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 
