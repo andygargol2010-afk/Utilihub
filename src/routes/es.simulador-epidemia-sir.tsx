@@ -37,8 +37,8 @@ function SirEpidemicPageEs() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-rose-600">Simulador · Compartible</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Simulador de Epidemia SIR</h1>
+        <p className="text-[13px] font-semibold text-rose-600">Simulador · Compartible</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Simulador de Epidemia SIR</h1>
         <p className="mt-3 text-sm text-white/70 sm:text-base">
           Ajustá la tasa de transmisión <strong>β</strong> y la de recuperación <strong>γ</strong>. Activá <strong>cuarentena</strong> (baja β) o <strong>campaña de vacunación</strong> (pasa susceptibles a recuperados). Mirá cómo responden las curvas S/I/R en vivo. Compartí cualquier escenario con la URL.
         </p>

@@ -40,8 +40,8 @@ function EmbedStudioPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-500">Crecimiento · Embed</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Embed Studio</h1>
+        <p className="text-[13px] font-semibold text-emerald-500">Crecimiento · Embed</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Embed Studio</h1>
         <p className="mt-3 text-muted-foreground">
           Pon un juego de UtiliHub en tu blog, página de clase o sitio. Elige juego, tamaño, tema e idioma, mira la vista previa y copia el código iframe.
         </p>

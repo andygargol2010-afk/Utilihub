@@ -138,7 +138,7 @@ export function ToolSearch({
 
   return (
     <div className="space-y-5">
-      <div className="sticky top-16 z-20 rounded-xl border border-border/70 bg-background/95 p-2.5 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/85 sm:p-3">
+      <div className={compactHome ? "relative" : "sticky top-16 z-20 rounded-lg border border-border bg-background/95 p-2.5 backdrop-blur supports-[backdrop-filter]:bg-background/85 sm:p-3"}>
         <form className="relative" onSubmit={compactHome ? submitCompactSearch : undefined}>
           <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -149,7 +149,7 @@ export function ToolSearch({
             onInput={(e) => setQuery(e.currentTarget.value)}
             placeholder={L.placeholder}
             aria-label={L.searchAria}
-            className="h-12 rounded-lg border-transparent bg-card pl-11 text-base shadow-none focus-visible:border-primary/40"
+            className={compactHome ? "h-14 rounded-lg border-input bg-card pl-11 text-base shadow-sm focus-visible:border-primary" : "h-12 rounded-md border-transparent bg-card pl-11 text-base shadow-none focus-visible:border-primary/40"}
           />
           {compactHome && compactResults.length > 0 && (
             <div
@@ -315,7 +315,7 @@ function StaticListing({ tools }: { tools: CatalogTool[] }) {
         >
           <span
             aria-hidden="true"
-            className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-black text-primary"
+            className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-bold text-primary"
           >
             {(tool.category ? tool.category.slice(0, 1).toUpperCase() : "U")}
           </span>

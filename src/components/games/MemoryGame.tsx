@@ -124,7 +124,7 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
 
       {done && (
-        <p className="mem-win text-base font-black text-amber-300 drop-shadow">
+        <p className="mem-win text-base font-bold text-amber-300 drop-shadow">
           {es ? `¡Completado en ${moves} movimientos!` : `Cleared in ${moves} moves!`}
         </p>
       )}
@@ -158,7 +158,7 @@ export function MemoryGame({ locale = "en" }: { locale?: GameLocale }) {
                     boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 10px rgba(0,0,0,0.35)",
                   }}
                 >
-                  <span className="text-lg font-black tracking-widest text-white/85">UH</span>
+                  <span className="text-lg font-bold tracking-widest text-white/85">UH</span>
                 </div>
                 <div
                   className="mem-face mem-back text-3xl border border-white/20"

@@ -43,8 +43,8 @@ function SpanishFinanceIndex() {
 
   return (
     <main className="container-page py-6 sm:py-8">
-      <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Finanzas</p>
-      <h1 className="mt-2 text-2xl font-black sm:text-3xl">Calculadoras financieras</h1>
+      <p className="text-[13px] font-semibold text-primary">Finanzas</p>
+      <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Calculadoras financieras</h1>
       <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
         Analizá inversiones, ahorro, préstamos, inflación y otros escenarios con cálculos en el navegador.
       </p>
@@ -62,7 +62,7 @@ function SpanishFinanceIndex() {
             >
               <span
                 aria-hidden="true"
-                className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-black text-primary"
+                className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-bold text-primary"
               >
                 F
               </span>

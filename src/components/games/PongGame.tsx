@@ -257,7 +257,7 @@ export function PongGame({ locale = "en" }: { locale?: GameLocale | "fr" | "de" 
         }
       `}</style>
       <div className="flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-emerald-100/90">
-        <span className="pong-score text-2xl font-black text-white">
+        <span className="pong-score text-2xl font-bold text-white">
           {scoreP} — {scoreC}
         </span>
         <span>

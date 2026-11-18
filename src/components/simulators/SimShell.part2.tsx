@@ -29,7 +29,7 @@ export function SimShell({ sim, locale = "en", children }: Props) {
 
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className={`text-xs font-bold uppercase tracking-[0.16em] ${t.accent}`}>
+            <p className={`text-[13px] font-semibold ${t.accent}`}>
               {simTagLabel(sim.tag, locale)} · {simBadge(sim, locale)}
             </p>
             <h1 className="mt-1 flex items-center gap-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
@@ -59,12 +59,12 @@ export function SimShell({ sim, locale = "en", children }: Props) {
 
         {next && (
           <section className="mt-6 rounded-2xl border border-primary/20 bg-accent/40 p-4 sm:p-5">
-            <p className={`text-xs font-bold uppercase tracking-[.14em] ${t.accent}`}>
+            <p className={`text-[13px] font-semibold ${t.accent}`}>
               {es ? "Siguiente simulador recomendado" : "Recommended next simulator"}
             </p>
             <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="text-base font-black text-slate-900">
+                <h2 className="text-base font-bold text-slate-900">
                   {es
                     ? `Después de ${title}, probá ${next.nameEs}`
                     : `After ${title}, try ${next.nameEn}`}

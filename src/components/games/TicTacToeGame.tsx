@@ -164,7 +164,7 @@ export function TicTacToeGame({ locale = "en" }: { locale?: GameLocale }) {
                   aria-label={cell ? (es ? `Casilla ${i + 1}: ${cell}` : `Cell ${i + 1}: ${cell}`) : es ? `Casilla ${i + 1}` : `Cell ${i + 1}`}
                   disabled={Boolean(result || cell || (mode === "cpu" && !xIsNext))}
                   onClick={() => playAt(i)}
-                  className={`ttt-cell flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 text-4xl font-black text-white transition duration-200 active:scale-95 disabled:cursor-default sm:h-24 sm:w-24 ${
+                  className={`ttt-cell flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 text-4xl font-bold text-white transition duration-200 active:scale-95 disabled:cursor-default sm:h-24 sm:w-24 ${
                     isWin ? "ttt-win-cell" : ""
                   }`}
                 >

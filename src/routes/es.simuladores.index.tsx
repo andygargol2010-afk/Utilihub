@@ -58,7 +58,7 @@ function SimulatorsHubEs() {
   return (
     <div className="sim-skin min-h-[70vh] bg-gradient-to-b from-slate-50 via-background to-background">
       <div className="container-page py-8 sm:py-12">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Lab · Cosmos · Clockwork</p>
+        <p className="text-[13px] font-semibold text-slate-500">Lab · Cosmos · Clockwork</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Simuladores</h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
           Cada simulación tiene su propio lenguaje visual — no un canvas oscuro genérico. Explorá sistemas, cambiá

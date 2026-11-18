@@ -38,8 +38,8 @@ function DailyProgressPagePt() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Retenção · Progresso visual</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Constelação de Progresso Diário</h1>
+        <p className="text-[13px] font-semibold text-cyan-500">Retenção · Progresso visual</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Constelação de Progresso Diário</h1>
         <p className="mt-3 text-muted-foreground">
           Canvas de visitas diárias onde cada visita acende uma nova <strong className="font-semibold text-foreground">estrela</strong>. Construa sua constelação pessoal ao longo do tempo e compartilhe o instantâneo.
         </p>

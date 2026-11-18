@@ -161,7 +161,7 @@ function CategoryPage() {
       <style>{
         /* Critical CSS so category LCP (h1) paints before the full styles.css */
         `.container-page{width:100%;margin-inline:auto;max-width:84rem;padding-inline:clamp(1rem,3vw,2rem)}` +
-        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1.03}`
+        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:700;letter-spacing:-0.025em;line-height:1.12}`
       }</style>
       <DeferredBreadcrumbs
         items={[{ label: "Home", to: "/" }, { label: "Tools", to: "/tools" }, { label: category.name }]}

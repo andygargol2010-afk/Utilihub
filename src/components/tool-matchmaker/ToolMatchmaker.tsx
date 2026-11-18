@@ -172,7 +172,7 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
 
       {cur ? (
         <section aria-labelledby="mm-q">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
+          <p className="text-[13px] font-semibold text-cyan-500">
             {t.step} {step + 1} {t.of} 3
           </p>
           <div className="mt-2 flex gap-1.5" aria-hidden="true">
@@ -180,7 +180,7 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
               <span key={i} className={`h-1.5 flex-1 rounded-full ${i <= step ? "bg-cyan-500" : "bg-muted"}`} />
             ))}
           </div>
-          <h2 id="mm-q" ref={headingRef} tabIndex={-1} className="mt-4 text-2xl font-black tracking-tight outline-none">
+          <h2 id="mm-q" ref={headingRef} tabIndex={-1} className="mt-4 text-2xl font-bold tracking-tight outline-none">
             {STEP_TITLES[locale][step] ?? ""}
           </h2>
           <ul className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -212,7 +212,7 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
         </section>
       ) : (
         <section aria-labelledby="mm-r">
-          <h2 id="mm-r" ref={headingRef} tabIndex={-1} className="text-2xl font-black tracking-tight outline-none">
+          <h2 id="mm-r" ref={headingRef} tabIndex={-1} className="text-2xl font-bold tracking-tight outline-none">
             {t.resultTitle}
           </h2>
           <p className="mt-1 text-muted-foreground">{t.resultLead}</p>
@@ -223,7 +223,7 @@ export function ToolMatchmaker({ locale }: { locale: Locale }) {
           <ol className="mt-4 space-y-3">
             {results.map((m, i) => (
               <li key={m.target.id} className="surface-card flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-cyan-500/15 text-sm font-black text-cyan-500" aria-hidden="true">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-cyan-500/15 text-sm font-bold text-cyan-500" aria-hidden="true">
                   {i + 1}
                 </span>
                 <div className="min-w-0 flex-1">

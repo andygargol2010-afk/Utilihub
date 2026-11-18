@@ -31,7 +31,7 @@ function AdsterraBannerSlot({ label }: { label: string }) {
       className="ad-slot my-6 w-full max-w-full overflow-x-hidden rounded-xl border border-border/60 bg-surface/35"
       aria-label={label}
     >
-      <div className="flex min-h-7 items-center justify-center px-2 pt-1 text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">
+      <div className="flex min-h-7 items-center justify-center px-2 pt-1 text-[13px] font-semibold text-muted-foreground">
         {label}
       </div>
       <div

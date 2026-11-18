@@ -336,7 +336,7 @@ export function AchievementCertificateMaker({ locale }: { locale: Locale }) {
         )}
         <p className="text-xs font-bold uppercase tracking-wider opacity-70">{es ? "Certificado de logro" : "Certificate of Achievement"}</p>
         <p className="mt-3 text-sm italic opacity-80">{es ? "Se otorga a" : "Awarded to"}</p>
-        <p className="mt-1 text-2xl font-black leading-tight break-words">{displayName}</p>
+        <p className="mt-1 text-2xl font-bold leading-tight break-words">{displayName}</p>
         <p className="mt-4 text-sm opacity-80">{es ? "por" : "for"}</p>
         <p className="mt-1 text-xl font-bold leading-tight break-words">{displayTitle}</p>
         {displayMessage && <p className="mt-3 text-sm italic opacity-70 break-words">{displayMessage}</p>}

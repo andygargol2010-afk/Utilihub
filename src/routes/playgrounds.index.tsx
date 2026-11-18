@@ -29,7 +29,7 @@ export const Route = createFileRoute("/playgrounds/")({
 function PlaygroundsHubEn() {
   return (
     <div className="container-page py-8 sm:py-12">
-      <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Live · Visual · Interactive</p>
+      <p className="text-[13px] font-semibold text-slate-500">Live · Visual · Interactive</p>
       <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Playgrounds</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">
         Small visual experiments. Change parameters and see the result immediately.

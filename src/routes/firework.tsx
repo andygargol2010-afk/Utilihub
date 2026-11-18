@@ -38,8 +38,8 @@ function FireworkPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-amber-600">Experience · Shareable</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Firework Signature</h1>
+        <p className="text-[13px] font-semibold text-amber-600">Experience · Shareable</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Firework Signature</h1>
         <p className="mt-3 text-muted-foreground">
           Type a short name or phrase. Particles <strong className="font-semibold text-foreground">launch as fireworks that form the letters</strong> then explode into a unique colored constellation.
           Adjust burst size, spark density and mood colors — then share the link or download a PNG.

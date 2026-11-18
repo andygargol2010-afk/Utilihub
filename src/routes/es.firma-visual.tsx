@@ -39,10 +39,10 @@ function FirmaVisualPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">
+        <p className="text-[13px] font-semibold text-violet-600">
           Experiencia · Compartible
         </p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Firma Visual</h1>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Firma Visual</h1>
         <p className="mt-3 text-muted-foreground">
           Escribí tu nombre: las partículas se mueven y <strong className="font-semibold text-foreground">forman las letras</strong>.
           Compartí el enlace o descargá un PNG — y si te engancha, hay más abajo.

@@ -50,8 +50,8 @@ function ReviewsSlot({ locale }: { locale: "en" | "es" | "pt" }) {
   return (
     <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="reviews-title" aria-busy="true">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{community}</p>
-        <h2 id="reviews-title" className="mt-1 text-2xl font-black sm:text-3xl">
+        <p className="text-[13px] font-semibold text-primary">{community}</p>
+        <h2 id="reviews-title" className="mt-1 text-2xl font-bold sm:text-3xl">
           {title}
         </h2>
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">

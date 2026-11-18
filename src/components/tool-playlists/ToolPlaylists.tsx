@@ -50,7 +50,7 @@ export function ToolPlaylists({ locale }: { locale: Locale }) {
         <button type="button" onClick={() => select(null)} className={`${btn} border border-border bg-card`}>
           ← {t.back}
         </button>
-        <h2 id="pl-title" className="mt-5 text-2xl font-black tracking-tight">
+        <h2 id="pl-title" className="mt-5 text-2xl font-bold tracking-tight">
           <span aria-hidden="true">{active.emoji} </span>
           {active.title}
         </h2>
@@ -58,7 +58,7 @@ export function ToolPlaylists({ locale }: { locale: Locale }) {
         <ol className="mt-5 space-y-3">
           {active.steps.map((s, i) => (
             <li key={`${s.target}-${i}`} className="rounded-2xl border border-border bg-card p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
+              <p className="text-[13px] font-semibold text-cyan-500">
                 {t.step} {i + 1}
               </p>
               <p className="mt-1 text-lg font-bold">{s.name}</p>
@@ -89,7 +89,7 @@ export function ToolPlaylists({ locale }: { locale: Locale }) {
               <span className="text-2xl" aria-hidden="true">{p.emoji}</span>
               <span className="mt-1 block text-lg font-bold">{p.title}</span>
               <span className="mt-1 block text-sm text-muted-foreground">{p.goal}</span>
-              <span className="mt-2 block text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
+              <span className="mt-2 block text-[13px] font-semibold text-cyan-500">
                 {p.steps.length} {t.steps}
               </span>
             </button>

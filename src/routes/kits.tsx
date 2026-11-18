@@ -53,8 +53,8 @@ function KitsPage() {
     <div className="container-page py-6 sm:py-8">
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Work kits" }]} />
       <header className="hero-gradient mt-4 rounded-2xl border border-border/70 p-6 sm:p-9">
-        <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">Solve by goal</p>
-        <h1 className="mt-2 max-w-3xl text-3xl font-black tracking-tight sm:text-5xl">
+        <p className="text-[13px] font-semibold text-primary">Solve by goal</p>
+        <h1 className="mt-2 max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl">
           Kits to chain tools without wasting time.
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
@@ -81,8 +81,8 @@ function KitsPage() {
                   {tools.length} steps
                 </span>
               </div>
-              <p className="mt-5 text-xs font-bold uppercase tracking-[.14em] text-primary">{kit.eyebrow}</p>
-              <h2 className="mt-1 text-xl font-black group-hover:text-primary">{kit.name}</h2>
+              <p className="mt-5 text-[13px] font-semibold text-primary">{kit.eyebrow}</p>
+              <h2 className="mt-1 text-xl font-bold group-hover:text-primary">{kit.name}</h2>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{kit.description}</p>
               <p className="mt-4 text-sm font-semibold">{kit.outcome}</p>
               <KitDeskTrail kitSlug={kit.slug} stepCount={tools.length} />

@@ -40,8 +40,8 @@ function UtiliTypeQuizPageEs() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Compartir · Quiz de Personalidad</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Quiz Tipo Utili</h1>
+        <p className="text-[13px] font-semibold text-cyan-500">Compartir · Quiz de Personalidad</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Quiz Tipo Utili</h1>
         <p className="mt-3 text-muted-foreground">
           Responde 8 preguntas cortas sobre cómo te gusta explorar UtiliHub. Descubre tu arquetipo y obtén recomendaciones a medida.
         </p>

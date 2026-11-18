@@ -42,8 +42,8 @@ function NBodyPage() {
       <header className="mb-6 max-w-2xl">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Simulator · Interactive</p>
-            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">N-Body Gravity Simulator</h1>
+            <p className="text-[13px] font-semibold text-cyan-600">Simulator · Interactive</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">N-Body Gravity Simulator</h1>
           </div>
           <ExperienceShareButton
             title="N-Body Gravity Simulator"

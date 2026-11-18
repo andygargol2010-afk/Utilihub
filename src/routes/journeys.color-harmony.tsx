@@ -30,7 +30,7 @@ function ColorHarmonyPage() {
     <main className="container-page py-8">
       <header className="mb-8">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Journey</p>
-        <h1 className="mt-1 text-3xl font-black tracking-tight">Color Harmony</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight">Color Harmony</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Build a palette in two steps. The preview updates live as you change the base color or harmony type.
         </p>

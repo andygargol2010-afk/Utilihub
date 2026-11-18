@@ -38,10 +38,10 @@ function VisualSignaturePage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">
+        <p className="text-[13px] font-semibold text-violet-600">
           Experience · Shareable
         </p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Visual Signature</h1>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Visual Signature</h1>
         <p className="mt-3 text-muted-foreground">
           Type your name: particles move and <strong className="font-semibold text-foreground">form the letters</strong>.
           Share the link or download a PNG — more experiences wait below.

@@ -1,11 +1,11 @@
 import { Suspense, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeCatalogSlot } from "@/components/home-catalog-slot";
 import { absoluteUrl, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
 import { loadHomeCatalog } from "./-es.index.part1";
-import { titleEs, descriptionEs, goRandomExperienceEs, HomeToolCount, HomeSearch, DailyExperienceSpotlight, ExperienceDiscoveryRail, HomeValuePath, HomeCatalogRest } from "./-es.index.part2";
+import { titleEs, descriptionEs, goRandomExperienceEs, HomeToolCount, HomeSearch, DailyExperienceSpotlight, ExperienceDiscoveryRail, HomeCatalogRest } from "./-es.index.part2";
 
 export const Route = createFileRoute("/es/")({
   head: () => ({
@@ -61,174 +61,90 @@ function SpanishHome() {
     <div className="pb-12">
       <style>{
         /* Critical CSS so home LCP (h1) paints before the full styles.css */
-        `.hero-gradient{background-image:linear-gradient(to right,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),radial-gradient(70% 80% at 8% 0%,color-mix(in oklab,var(--color-primary) 20%,transparent),transparent 70%),radial-gradient(60% 70% at 95% 10%,color-mix(in oklab,var(--color-highlight) 18%,transparent),transparent 65%),linear-gradient(180deg,oklch(.99 .008 255),var(--color-background));background-size:36px 36px,36px 36px,auto,auto,auto}` +
+        `.hero-gradient{background:linear-gradient(180deg,var(--color-card) 0%,var(--color-background) 100%)}` +
         `.container-page{width:100%;margin-inline:auto;max-width:84rem;padding-inline:clamp(1rem,3vw,2rem)}` +
-        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1.03}` +
-        `.shadow-lift{box-shadow:0 20px 46px -26px rgba(41,50,110,.38)}` +
-        `.surface-card{background:color-mix(in oklab,var(--color-card) 94%,transparent);border:1px solid var(--color-border);border-radius:1.25rem;box-shadow:0 1px 2px rgba(20,28,60,.04),0 20px 48px -30px rgba(41,50,110,.3)}`
+        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:700;letter-spacing:-0.025em;line-height:1.12}` +
+        `.shadow-lift{box-shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px -12px rgba(15,23,42,.12)}` +
+        `.surface-card{background:var(--color-card);border:1px solid var(--color-border);border-radius:.75rem;box-shadow:0 1px 2px rgba(15,23,42,.04)}`
       }</style>
-      <section className="hero-gradient border-b border-border/70">
-        <div className="container-page grid gap-8 py-10 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-12 lg:py-20">
-          <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/75 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-primary">
-              <Sparkles className="size-3.5" aria-hidden /> Herramientas, studios y juegos
-            </div>
-            <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+      <section className="hero-gradient border-b border-border">
+        <div className="container-page py-12 sm:py-16 lg:py-20">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-medium text-primary">
+              <Suspense fallback={<span>Herramientas gratis</span>}>
+                <HomeToolCount locale="es" />
+              </Suspense>{" "}
+              · gratis · sin registro
+            </p>
+            <h1 className="mt-3 text-4xl tracking-tight sm:text-5xl lg:text-[3.5rem]">
               Herramientas online gratis para resolverlo en segundos.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-              Calculá y convertí tareas del día a día — más studios 3D avanzados y juegos gratis en el navegador. Sin
-              registro.
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
+              Calculá y convertí tareas del día a día — más studios 3D avanzados y juegos gratis. Todo funciona en tu navegador.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <button
-                type="button"
-                onClick={goRandomExperienceEs}
-                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-bold text-white shadow-lift hover:-translate-y-0.5 hover:opacity-95"
-                data-event="random-experience-click"
-              >
-                🎲 Experiencia aleatoria
-              </button>
+            <div className="mx-auto mt-8 min-h-14 max-w-2xl text-left">
+              <Suspense fallback={<div className="h-14 animate-pulse rounded-lg border border-border bg-card" />}>
+                <HomeSearch locale="es" />
+              </Suspense>
+            </div>
+            <nav aria-label="Categorías populares" className="mt-4 flex flex-wrap justify-center gap-2 text-sm">
+              {[
+                ["/es/categoria/matematicas", "Matemáticas"],
+                ["/es/finanzas", "Finanzas"],
+                ["/es/categoria/conversiones", "Conversores"],
+                ["/es/categoria/texto", "Texto"],
+                ["/es/categoria/desarrollo", "Desarrollo"],
+                ["/es/categoria/herramientas-avanzadas", "Herramientas avanzadas"],
+              ].map(([href, label]) => (
+                <a
+                  key={href}
+                  href={href}
+                  className="inline-flex min-h-9 items-center rounded-md border border-border bg-card px-3 font-medium text-foreground hover:border-primary/40 hover:text-primary"
+                >
+                  {label}
+                </a>
+              ))}
+            </nav>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
-                to="/es/categoria/$slug"
-                params={{ slug: "herramientas-avanzadas" }}
-                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:opacity-95"
+                to="/es/herramientas"
+                className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
               >
-                Explorar avanzadas <ArrowRight className="size-4" />
+                Ver todas las herramientas <ArrowRight className="size-4" aria-hidden />
               </Link>
               <Link
                 to="/es/juegos"
-                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-violet-500/40 bg-card px-5 py-3 text-sm font-bold text-violet-800 hover:border-violet-500/60 hover:bg-violet-500/10 dark:text-violet-200"
+                className="inline-flex min-h-11 items-center rounded-md border border-border bg-card px-5 text-sm font-semibold text-foreground hover:bg-secondary"
               >
                 Jugar
               </Link>
-              <Link
-                to="/es/herramientas"
-                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold hover:border-primary/40 hover:bg-accent"
-              >
-                Catálogo completo
-              </Link>
-              <Link
-                to="/es/encuentra-tu-herramienta"
-                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-cyan-500/40 bg-card px-5 py-3 text-sm font-bold hover:border-cyan-500/60 hover:bg-cyan-500/10"
-              >
-                Encuentra tu herramienta
-              </Link>
-              <Link
-                to="/es/crecimiento/embed-studio"
-                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-emerald-500/40 bg-card px-5 py-3 text-sm font-bold hover:border-emerald-500/60 hover:bg-emerald-500/10"
-              >
-                Incrusta juegos
-              </Link>
             </div>
-            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <Check className="size-3.5 text-primary" /> Sin registro
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="size-3.5 text-primary" /> Gratis
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="size-3.5 text-primary" /> Privacidad local
-              </span>
-            </div>
-          </div>
-
-          <div className="surface-card bg-card/80 p-3 shadow-lift sm:p-4">
-            <div className="rounded-xl border border-border/70 bg-background p-4 sm:p-5">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Acceso rápido</p>
-                  <h2 className="mt-1 text-xl font-black">¿Qué quieres resolver?</h2>
-                </div>
-                <Suspense fallback={<span className="inline-block h-6 w-24 rounded-full bg-accent" />}>
-                  <HomeToolCount locale="es" />
-                </Suspense>
-              </div>
-              <div className="mt-4 min-h-24">
-                <Suspense fallback={<div className="h-11 animate-pulse rounded-xl bg-accent/70" />}>
-                  <HomeSearch locale="es" />
-                </Suspense>
-              </div>
-              <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
-                <Link
-                  to="/es/categoria/$slug"
-                  params={{ slug: "herramientas-avanzadas" }}
-                  className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-2.5 hover:border-primary/50 hover:bg-primary/10"
-                >
-                  Avanzadas
-                </Link>
-                <Link
-                  to="/es/juegos"
-                  className="rounded-lg border border-violet-500/30 bg-violet-500/5 px-3 py-2.5 hover:border-violet-500/50 hover:bg-violet-500/10"
-                >
-                  Juegos
-                </Link>
-                <Link
-                  to="/es/categoria/$slug"
-                  params={{ slug: "matematicas" }}
-                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
-                >
-                  Matemáticas
-                </Link>
-                <Link
-                  to="/es/finanzas"
-                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
-                >
-                  Finanzas
-                </Link>
-                <Link
-                  to="/es/categoria/$slug"
-                  params={{ slug: "texto" }}
-                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
-                >
-                  Texto
-                </Link>
-                <Link
-                  to="/es/categoria/$slug"
-                  params={{ slug: "conversiones" }}
-                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent"
-                >
-                  Conversores
-                </Link>
-              </div>
-            </div>
+            <p className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+              <button type="button" onClick={goRandomExperienceEs} className="min-h-9 underline-offset-4 hover:text-foreground hover:underline" data-event="random-experience-click">
+                Experiencia al azar
+              </button>
+              <Link to="/es/encuentra-tu-herramienta" className="min-h-9 leading-9 underline-offset-4 hover:text-foreground hover:underline">
+                Encontrá tu herramienta
+              </Link>
+              <Link to="/es/crecimiento/embed-studio" className="min-h-9 leading-9 underline-offset-4 hover:text-foreground hover:underline">
+                Juegos para tu sitio
+              </Link>
+            </p>
           </div>
         </div>
       </section>
-
-      <Suspense fallback={<div className="container-page py-4 min-h-[120px]" aria-hidden /> }>
-        <DailyExperienceSpotlight locale="es" />
-      </Suspense>
-
-      <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden /> }>
-        <ExperienceDiscoveryRail locale="es" />
-      </Suspense>
-
-      <Suspense fallback={<div className="container-page py-4 min-h-[160px]" aria-hidden /> }>
-        <HomeValuePath locale="es" />
-      </Suspense>
-
-      <section className="container-page py-6">
-        <div className="rounded-2xl border border-border/60 bg-card/50 p-4 sm:p-5">
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-cyan-600">Experiencias compartibles</p>
-          <h2 className="mt-1 text-lg font-black">Creá y compartí visuales interactivos</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Deep-links listos. Usá el botón Compartir en cada una para enviar por Web Share o copiar enlace.</p>
-          <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
-            <Link to="/es/aurora-particle-playground" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Partículas Aurora</Link>
-            <Link to="/es/neon-layer-composer" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Capas Neón</Link>
-            <Link to="/es/n-body-gravity" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Gravedad N-Cuerpos</Link>
-            <Link to="/es/color-cascade-fusion" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Cascada de Color</Link>
-            <Link to="/es/studio/compositor-estela-prisma" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Estela Prisma</Link>
-            <Link to="/es/aura-card" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Tarjeta de Aura</Link>
-          </div>
-        </div>
-      </section>
-
       <div className="container-page">
         <Suspense fallback={<HomeCatalogSlot />}>
           <HomeCatalogRest locale="es" />
         </Suspense>
+      </div>
+      <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden />}>
+        <ExperienceDiscoveryRail locale="es" />
+      </Suspense>
+      <Suspense fallback={<div className="container-page py-4 min-h-[120px]" aria-hidden />}>
+        <DailyExperienceSpotlight locale="es" />
+      </Suspense>
+      <div className="container-page">
         <DeferredHomeReviews locale="es" />
       </div>
     </div>

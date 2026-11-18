@@ -87,8 +87,8 @@ function SpanishKitPage() {
     <main className="container-page py-6 sm:py-8">
       <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Kits", to: "/es/kits" }, { label: esMeta.name }]} />
       <header className="mt-5 max-w-3xl">
-        <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{esMeta.eyebrow}</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-5xl">{esMeta.name}</h1>
+        <p className="text-[13px] font-semibold text-primary">{esMeta.eyebrow}</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-5xl">{esMeta.name}</h1>
         <p className="mt-4 text-base leading-7 text-muted-foreground">{esMeta.description}</p>
         <p className="mt-3 inline-flex items-center gap-2 text-sm font-bold">
           <CheckCircle2 className="size-4 text-primary" /> {esMeta.outcome}

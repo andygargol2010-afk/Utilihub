@@ -40,8 +40,8 @@ function AdsenseCompliancePage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-500">Growth · AdSense prep</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">AdSense Compliance Kit</h1>
+        <p className="text-[13px] font-semibold text-emerald-500">Growth · AdSense prep</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">AdSense Compliance Kit</h1>
         <p className="mt-3 text-muted-foreground">
           Walk through discrete readiness checks. Toggle items, watch your score update live with tips, then download a branded scorecard PNG.
         </p>

@@ -28,7 +28,7 @@ export function LanguageSwitcher({ locale, onClick }: { locale: "en" | "es"; onC
   const label = locale === "en" ? "Español" : "English";
   const aria = locale === "en" ? "Ver UtiliHub en español" : "View UtiliHub in English";
   const className =
-    "ml-1 rounded-full border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-bold text-primary hover:bg-primary/15";
+    "ml-1 inline-flex min-h-10 items-center rounded-md border border-border bg-card px-3 text-sm font-medium text-foreground hover:bg-secondary";
 
   if (hard || staticTarget == null) {
     return (

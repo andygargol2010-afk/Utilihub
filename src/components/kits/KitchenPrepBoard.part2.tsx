@@ -160,10 +160,10 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
     <section className="mt-8 rounded-2xl border border-border/70 bg-surface/55 p-4 sm:p-5" aria-labelledby="kitchen-prep-board">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">
+          <p className="text-[13px] font-semibold text-primary">
             {es ? "Tablero de preparaci\u00f3n interactivo" : "Interactive prep board"}
           </p>
-          <h2 id="kitchen-prep-board" className="mt-1 text-lg font-black flex items-center gap-2">
+          <h2 id="kitchen-prep-board" className="mt-1 text-lg font-bold flex items-center gap-2">
             <ChefHat className="size-5 text-primary" />
             {es ? "Preparaci\u00f3n de comida" : "Meal prep station"}
           </h2>
@@ -232,7 +232,7 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
               <span className="text-sm font-bold">{es ? "Porciones" : "Servings"}</span>
               <div className="flex items-center gap-2">
                 <button type="button" onClick={() => setServings(Math.max(1, servings - 1))} className="size-9 rounded-full border text-lg leading-none">-</button>
-                <span className="w-8 text-center font-black">{servings}</span>
+                <span className="w-8 text-center font-bold">{servings}</span>
                 <button type="button" onClick={() => setServings(servings + 1)} className="size-9 rounded-full border text-lg leading-none">+</button>
               </div>
             </div>
@@ -304,7 +304,7 @@ export function KitchenPrepBoard({ locale = "en" }: Props) {
                     />
                   </svg>
                   <div className="absolute inset-0 grid place-items-center">
-                    <span className="text-xl font-black tabular-nums">
+                    <span className="text-xl font-bold tabular-nums">
                       {Math.floor(timerSeconds / 60)}:{(timerSeconds % 60).toString().padStart(2, "0")}
                     </span>
                   </div>

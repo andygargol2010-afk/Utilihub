@@ -281,7 +281,7 @@ export function ReactionDiffusionLab({ locale = "en" }: { locale?: SimLocale }) 
   return (
     <div className="mx-auto flex max-w-xl flex-col items-center gap-4">
       <div className="w-full rounded-2xl border border-teal-400/25 bg-teal-950/40 p-3 backdrop-blur-sm">
-        <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-teal-300/85">
+        <p className="mb-2 text-center text-[13px] font-semibold text-teal-300/85">
           {es ? "Lab reacción-difusión — Gray-Scott" : "Reaction-diffusion lab — Gray-Scott"}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-2">

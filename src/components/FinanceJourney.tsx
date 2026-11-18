@@ -33,10 +33,10 @@ export function FinanceJourney({ tool }: { tool: CatalogTool }) {
     <>
       {next && (
         <section className="mt-6 rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5">
-          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Recommended next step</p>
+          <p className="text-[13px] font-semibold text-primary">Recommended next step</p>
           <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-base font-black">{journeyLabel({ slug: tool.slug, category: "finanzas" }, "en")}</h2>
+              <h2 className="text-base font-bold">{journeyLabel({ slug: tool.slug, category: "finanzas" }, "en")}</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Continue with {next.name} to compare or complete the analysis.
               </p>
@@ -48,7 +48,7 @@ export function FinanceJourney({ tool }: { tool: CatalogTool }) {
       {journey.length > 0 && (
         <section className="mt-8" aria-labelledby="financial-journey">
           <div className="mb-2">
-            <h2 id="financial-journey" className="text-xl font-black">
+            <h2 id="financial-journey" className="text-xl font-bold">
               Continue your analysis
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">Related calculators to explore more financial scenarios.</p>

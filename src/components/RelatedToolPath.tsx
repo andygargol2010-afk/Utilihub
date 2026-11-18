@@ -56,12 +56,12 @@ export function RelatedToolPath({ tool, locale }: { tool: CatalogTool; locale: "
           className="mt-5 min-h-[8.75rem] rounded-2xl border border-primary/20 bg-accent/50 p-4 sm:p-5"
           aria-labelledby={es ? "next-step-es" : "next-step"}
         >
-          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">
+          <p className="text-[13px] font-semibold text-primary">
             {es ? "Siguiente paso recomendado" : "Recommended next step"}
           </p>
           <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 id={es ? "next-step-es" : "next-step"} className="text-base font-black">
+              <h2 id={es ? "next-step-es" : "next-step"} className="text-base font-bold">
                 {journeyLabel(tool, locale)}
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">

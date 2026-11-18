@@ -322,7 +322,7 @@ export function MoleculeBuilderKit({ locale }: { locale: Locale }) {
 
       <div className="rounded-2xl border border-border bg-card/50 p-4">
         <h3 className="font-bold text-sm">{isEs ? "Fórmula en vivo" : "Live formula"}</h3>
-        <p className="mt-2 text-2xl font-black tracking-tight" aria-live="polite">{formulaData.formula}</p>
+        <p className="mt-2 text-2xl font-bold tracking-tight" aria-live="polite">{formulaData.formula}</p>
         <p className="text-sm text-muted-foreground">{isEs ? "Masa molar" : "Molar mass"}: {formulaData.mass} g/mol</p>
       </div>
 

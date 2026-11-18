@@ -38,7 +38,7 @@ function Page() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-black tracking-tight">Partículas con gravedad</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight">Partículas con gravedad</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Las partículas caen y se agrupan bajo gravedad. Ajustá parámetros en vivo.
         </p>

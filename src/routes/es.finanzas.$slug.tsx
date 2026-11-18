@@ -137,8 +137,8 @@ function SpanishFinancialToolPage() {
       />
       <div className="mt-5 flex flex-wrap items-start justify-between gap-4">
         <div className="max-w-3xl">
-          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Calculadora financiera</p>
-          <h1 className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">{name}</h1>
+          <p className="text-[13px] font-semibold text-primary">Calculadora financiera</p>
+          <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{name}</h1>
           <p className="mt-3 text-base leading-7 text-muted-foreground">{intro}</p>
         </div>
         <DeferredFavoriteButton slug={tool.slug} name={name} locale="es" />

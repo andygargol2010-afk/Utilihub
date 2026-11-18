@@ -37,7 +37,7 @@ function OrbitasAtrayentesPageEs() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-black tracking-tight">Órbitas atrayentes</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight">Órbitas atrayentes</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Esferas que atraen partículas. Un texto puede sembrar el patrón; el clic suma atrayentes. No forma letras —
           para eso está{" "}
