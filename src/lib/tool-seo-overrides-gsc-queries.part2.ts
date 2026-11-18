@@ -46,10 +46,12 @@ export const TOOL_SEO_OVERRIDES_GSC_QUERIES_PART2: Record<string, ToolSeoOverrid
     about: [
       "Miles to km is one of the most common distance conversions: multiply miles by 1.609344 to get kilometers (exact international mile).",
       "Use it for road trips, running routes, aviation charts or any map that mixes US customary and metric units.",
+      "Race distances are the classic case: a 5K is 3.11 mi, a half marathon 13.1 mi (21.1 km) and a marathon 26.2 mi (42.195 km). US speed limits convert the same way, so 55 mph is 88.5 km/h.",
     ],
     aboutEs: [
       "Millas a km es una de las conversiones de distancia más buscadas: multiplicá millas por 1,609344 para obtener kilómetros (milla internacional exacta).",
       "Útil para viajes en ruta, running, cartas aeronáuticas o mapas que mezclan unidades US y métricas.",
+      "Las distancias de carrera son el caso típico: un 5K son 3,11 mi, una media maratón 13,1 mi (21,1 km) y una maratón 26,2 mi (42,195 km). Los límites de velocidad de EE. UU. se convierten igual: 55 mph son 88,5 km/h.",
     ],
     faq: [
       {
@@ -60,6 +62,10 @@ export const TOOL_SEO_OVERRIDES_GSC_QUERIES_PART2: Record<string, ToolSeoOverrid
         q: "How do I convert miles to km?",
         a: "Multiply the number of miles by 1.609344. Example: 10 miles × 1.609344 = 16.09344 km.",
       },
+      {
+        q: "Is a nautical mile the same as a mile?",
+        a: "No. A nautical mile is 1.852 km, used at sea and in aviation. This converter uses the statute (international) mile of 1.609344 km.",
+      },
     ],
     faqEs: [
       {
@@ -69,6 +75,10 @@ export const TOOL_SEO_OVERRIDES_GSC_QUERIES_PART2: Record<string, ToolSeoOverrid
       {
         q: "¿Cómo convertir millas a km?",
         a: "Multiplicá las millas por 1,609344. Ejemplo: 10 millas × 1,609344 = 16,09344 km.",
+      },
+      {
+        q: "¿La milla náutica es lo mismo que la milla?",
+        a: "No. La milla náutica mide 1,852 km y se usa en navegación y aviación. Este conversor usa la milla terrestre (internacional) de 1,609344 km.",
       },
     ],
   },

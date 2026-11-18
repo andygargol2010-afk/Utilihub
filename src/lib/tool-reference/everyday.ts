@@ -1,0 +1,22 @@
+// Quick-reference blocks for everyday converters and calculators (task 26). Split in three parts.
+export {
+  MILES_KM_REFERENCE,
+  INCHES_CM_REFERENCE,
+  CELSIUS_FAHRENHEIT_REFERENCE,
+  LITERS_GALLONS_REFERENCE,
+  METERS_FEET_REFERENCE,
+} from "./everyday.part1";
+export {
+  GRAMS_POUNDS_REFERENCE,
+  ACRES_HECTARES_REFERENCE,
+  KCAL_KJ_REFERENCE,
+  PSI_BAR_REFERENCE,
+  YARDS_METERS_REFERENCE,
+} from "./everyday.part2";
+export {
+  KMH_MS_REFERENCE,
+  DEGREES_RADIANS_REFERENCE,
+  OVEN_F_TO_C_REFERENCE,
+  HOURS_DECIMAL_REFERENCE,
+  MAX_HEART_RATE_REFERENCE,
+} from "./everyday.part3";
