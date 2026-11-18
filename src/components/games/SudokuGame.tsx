@@ -182,11 +182,19 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
             if (sameNum) bg = "bg-sky-500/25";
             if (sel) bg = "bg-emerald-500/45";
             if (conflict) bg = "bg-rose-500/35";
+            const cellAria =
+              (es ? `Fila ${r + 1}, columna ${c + 1}, ` : `Row ${r + 1}, column ${c + 1}, `) +
+              (v
+                ? es
+                  ? `valor ${v}${isFixed ? ", fijo" : ", editable"}${conflict ? ", conflicto" : ""}`
+                  : `value ${v}${isFixed ? ", given" : ", editable"}${conflict ? ", conflict" : ""}`
+                : es ? "vacía" : "empty");
             return (
               <button
                 key={`${r}-${c}`}
                 type="button"
                 onClick={() => setSelected([r, c])}
+                aria-label={cellAria}
                 className={`flex h-9 w-9 items-center justify-center rounded-sm text-sm font-bold transition-colors sm:h-10 sm:w-10 ${border} ${bg} ${
                   conflict ? "sudoku-conflict text-rose-200" : isFixed ? "text-emerald-100" : "text-amber-200"
                 }`}
@@ -209,6 +217,7 @@ export function SudokuGame({ locale = "en" }: { locale?: GameLocale }) {
             key={n}
             type="button"
             onClick={() => put(n)}
+            aria-label={n === 0 ? (es ? "Borrar celda seleccionada" : "Clear selected cell") : es ? `Escribir ${n}` : `Enter ${n}`}
             className={`sudoku-pad-btn flex h-11 min-w-11 items-center justify-center rounded-xl px-1 text-base font-bold text-white active:scale-95 ${
               selectedVal === n && n !== 0 ? "bg-emerald-500/40 ring-1 ring-emerald-300/50" : "bg-white/10"
             }`}
