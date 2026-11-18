@@ -132,10 +132,10 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
     <section className="mt-8 rounded-2xl border border-border/70 bg-surface/55 p-4 sm:p-5" aria-labelledby="renovation-board">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">
+          <p className="text-[13px] font-semibold text-primary">
             {es ? "Tablero de renovación" : "Renovation board"}
           </p>
-          <h2 id="renovation-board" className="mt-1 text-lg font-black">
+          <h2 id="renovation-board" className="mt-1 text-lg font-bold">
             {es ? "Plan de habitación interactivo" : "Interactive room plan"}
           </h2>
         </div>
@@ -204,7 +204,7 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
               <div className="flex justify-between"><span>{es ? "Piso c/ desperdicio" : "Floor w/ waste"}</span><span className="font-semibold tabular-nums">{floorWithWaste.toFixed(1)} m²</span></div>
               <div className="flex justify-between"><span>{es ? "Área paredes" : "Wall area"}</span><span className="font-semibold tabular-nums">{wallArea.toFixed(1)} m²</span></div>
               <div className="flex justify-between"><span>{es ? "Pintura (est. c/ desp.)" : "Paint (est. w/ waste)"}</span><span className="font-semibold tabular-nums">{paintLiters.toFixed(1)} L</span></div>
-              <div className="flex justify-between border-t border-border/50 pt-2"><span>{es ? "Costo total est." : "Est. total cost"}</span><span className="font-black tabular-nums">${totalCost.toFixed(0)}</span></div>
+              <div className="flex justify-between border-t border-border/50 pt-2"><span>{es ? "Costo total est." : "Est. total cost"}</span><span className="font-bold tabular-nums">${totalCost.toFixed(0)}</span></div>
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
               <label>
@@ -323,7 +323,7 @@ export function HomeRenovationBoard({ locale = "en" }: Props) {
               <Timer className="size-4 text-primary" />
               {es ? "Temporizador de foco" : "Focus timer"}
             </div>
-            <div className="mt-2 text-2xl font-black tabular-nums">
+            <div className="mt-2 text-2xl font-bold tabular-nums">
               {mins.toString().padStart(2, "0")}:{secs.toString().padStart(2, "0")}
             </div>
             <div className="mt-3 flex gap-2">

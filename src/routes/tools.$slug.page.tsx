@@ -8,7 +8,6 @@ import { DeferredKitReturnRibbon } from "@/components/kits/DeferredKitReturnRibb
 import { ToolSeoContent } from "@/components/ToolSeoContent";
 import type { CatalogTool } from "@/lib/all-tools";
 import { DeferredAdsterraBanner } from "@/components/DeferredAdsterraBanner";
-import { DeferredShowcaseHero } from "@/components/DeferredShowcaseHero";
 import type { ToolSeoGuideData } from "@/lib/tool-seo-overrides";
 import { Route } from "./tools.$slug";
 
@@ -56,8 +55,6 @@ export function ToolPage() {
 
       <DeferredKitReturnRibbon toolSlug={tool.slug} locale="en" />
 
-      {showcase ? <DeferredShowcaseHero name={tool.name} slug={tool.slug} locale="en" /> : null}
-
       <div className="mt-3 flex items-center justify-between gap-3">
         <div className="min-w-0">
           <h1 className="text-2xl font-bold sm:text-3xl">{tool.name}</h1>
@@ -69,9 +66,7 @@ export function ToolPage() {
       <section
         data-tool-surface
         aria-label={`Tool: ${tool.name}`}
-        className={`surface-card mt-4 p-4 sm:p-6 ${
-          showcase ? "border-0 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] ring-1 ring-black/5" : ""
-        }`}
+        className="surface-card mt-4 p-4 sm:p-6"
       >
         <DeferredToolUi slug={tool.slug} locale="en" />
         <div className="mt-4">

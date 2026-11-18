@@ -177,7 +177,7 @@ export function GaltonBoardSim({ locale = "en" }: { locale?: SimLocale }) {
   return (
     <div className="mx-auto flex max-w-xl flex-col items-center gap-4" data-sim="galton-board">
       <div className="w-full rounded-2xl border border-sky-400/30 bg-sky-950/50 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-        <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-sky-200/85">
+        <p className="mb-2 text-center text-[13px] font-semibold text-sky-200/85">
           {es ? "Máquina de Galton · campana de Gauss" : "Galton board · Gaussian bell"}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-2">

@@ -16,8 +16,8 @@ export function RecentToolsSection({ locale = "en" }: { locale?: "en" | "es" }) 
     <section className="container-page pb-14" aria-labelledby="recent">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-[.16em] text-primary"><Clock3 className="size-3.5" /> {isSpanish ? "Tu actividad" : "Your activity"}</p>
-          <h2 id="recent" className="mt-2 text-2xl font-extrabold sm:text-3xl">{isSpanish ? "Usadas recientemente" : "Recently used"}</h2>
+          <p className="flex items-center gap-1.5 text-[13px] font-semibold text-primary"><Clock3 className="size-3.5" /> {isSpanish ? "Tu actividad" : "Your activity"}</p>
+          <h2 id="recent" className="mt-2 text-2xl font-bold sm:text-3xl">{isSpanish ? "Usadas recientemente" : "Recently used"}</h2>
           <p className="mt-2 text-sm text-muted-foreground">{isSpanish ? "Vuelve rápidamente a las herramientas que acabas de usar." : "Quickly return to the tools you just used."}</p>
         </div>
       </div>

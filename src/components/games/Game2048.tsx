@@ -248,13 +248,13 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
             <div className="text-[10px] font-bold uppercase tracking-wide text-white/80">
               {es ? "Puntos" : "Score"}
             </div>
-            <div className="text-lg font-black tabular-nums text-white">{score}</div>
+            <div className="text-lg font-bold tabular-nums text-white">{score}</div>
           </div>
           <div className="rounded-lg px-3 py-1.5 text-center" style={{ background: "#bbada0" }}>
             <div className="text-[10px] font-bold uppercase tracking-wide text-white/80">
               {es ? "Mejor" : "Best"}
             </div>
-            <div className="text-lg font-black tabular-nums text-white">{best}</div>
+            <div className="text-lg font-bold tabular-nums text-white">{best}</div>
           </div>
         </div>
         <GamePrimaryButton onClick={reset}>{es ? "Nuevo" : "New"}</GamePrimaryButton>
@@ -265,7 +265,7 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
           className="uh2048-banner w-full rounded-xl px-4 py-3 text-center shadow-lg"
           style={{ background: "linear-gradient(135deg, #edc22e, #f2b179)" }}
         >
-          <p className="text-base font-black text-[#776e65] sm:text-lg">
+          <p className="text-base font-bold text-[#776e65] sm:text-lg">
             {es ? "¡Llegaste a 2048!" : "You reached 2048!"}
           </p>
           <p className="mt-0.5 text-xs font-semibold text-[#776e65]/80">
@@ -336,7 +336,7 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
               }}
             >
               <div
-                className={`flex h-full w-full items-center justify-center rounded-md font-black ${
+                className={`flex h-full w-full items-center justify-center rounded-md font-bold ${
                   t.born ? "uh2048-born" : t.merged ? "uh2048-merged" : ""
                 }`}
                 style={{
@@ -358,7 +358,7 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
             style={{ background: "rgba(238, 228, 218, 0.92)" }}
           >
             <p
-              className="text-center text-2xl font-black tracking-tight sm:text-3xl"
+              className="text-center text-2xl font-bold tracking-tight sm:text-3xl"
               style={{ color: "#776e65" }}
             >
               {es ? "¡Sin movimientos!" : "No moves left!"}
@@ -370,7 +370,7 @@ export function Game2048({ locale = "en" }: { locale?: GameLocale }) {
             <button
               type="button"
               onClick={reset}
-              className="mt-5 rounded-full px-6 py-3 text-sm font-black text-white shadow-md transition hover:brightness-110 active:scale-95"
+              className="mt-5 rounded-full px-6 py-3 text-sm font-bold text-white shadow-md transition hover:brightness-110 active:scale-95"
               style={{ background: "linear-gradient(180deg, #f2b179, #f59563)" }}
             >
               {es ? "Jugar de nuevo" : "Play again"}

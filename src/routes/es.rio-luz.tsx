@@ -38,8 +38,8 @@ function RiverLightPageEs() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Viaje · Compartible</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Río de Luz · Viaje</h1>
+        <p className="text-[13px] font-semibold text-cyan-500">Viaje · Compartible</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Río de Luz · Viaje</h1>
         <p className="mt-3 text-muted-foreground">
           Hacé clic para colocar puntos de paso. Un <strong className="font-semibold text-foreground">río continuo de partículas brillantes</strong> fluye entre ellos, dejando resplandores persistentes y floraciones suaves. Ajustá la velocidad del flujo, colores núcleo/resplandor, densidad y modo bucle. Impacto visual inmediato. Compartí la URL o una captura PNG.
         </p>

@@ -37,7 +37,7 @@ function Page() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-black tracking-tight">Particle Magnet Lab</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight">Particle Magnet Lab</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Place magnets that attract or repel. Free particles stream and leave organic fading trails that reveal the field. Drag, tune, share.
         </p>

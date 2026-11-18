@@ -236,10 +236,10 @@ export function StreakConstellation({ locale = "en" }: { locale?: PlaygroundLoca
   return (
     <div className="space-y-5">
       <div className={`rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-6 ${pulse ? "ring-2 ring-cyan-400/60 transition-all duration-300" : ""}`}>
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
+        <p className="text-[13px] font-semibold text-cyan-500">
           {es ? "Constelaci\u00f3n de racha" : "Streak constellation"}
         </p>
-        <h2 className={`mt-1 text-2xl font-black ${pulse ? "scale-105 transition-transform" : ""}`}>{data.streak} {es ? "d\u00edas de racha" : "day streak"}{milestoneLabel}</h2>
+        <h2 className={`mt-1 text-2xl font-bold ${pulse ? "scale-105 transition-transform" : ""}`}>{data.streak} {es ? "d\u00edas de racha" : "day streak"}{milestoneLabel}</h2>
         <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
           <div className={`h-full transition-all duration-500 ${barColor}`} style={{ width: `${nm.progress}%` }} />
         </div>

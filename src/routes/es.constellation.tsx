@@ -37,8 +37,8 @@ function ConstellationPageEs() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-600">Experiencia · Compartible</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Mapa de Nombre en Constelación</h1>
+        <p className="text-[13px] font-semibold text-indigo-600">Experiencia · Compartible</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Mapa de Nombre en Constelación</h1>
         <p className="mt-3 text-muted-foreground">
           Escribí un nombre o frase corta. Las estrellas <strong className="font-semibold text-foreground">forman las letras como una constelación viva</strong>. El mouse o toque crea pozos de gravedad que deforman las trayectorias y dibujan líneas temporales.
           Ajustá la densidad de estrellas, fuerza de gravedad y ánimos del cielo — luego compartí el enlace o descargá un PNG.

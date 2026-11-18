@@ -38,7 +38,7 @@ function Page() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-black tracking-tight">Laboratorio de Imanes de Partículas</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight">Laboratorio de Imanes de Partículas</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Colocá imanes que atraen o repelen. Las partículas fluyen libremente y dejan estelas orgánicas que revelan el campo. Arrastrá, ajustá y compartí.
         </p>

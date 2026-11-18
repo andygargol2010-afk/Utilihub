@@ -40,8 +40,8 @@ function CompositorLineaPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Estudio · Composición</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Línea de Tiempo</h1>
+        <p className="text-[13px] font-semibold text-cyan-500">Estudio · Composición</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Compositor de Línea de Tiempo</h1>
         <p className="mt-3 text-muted-foreground">
           Añade y reordena tarjetas de eventos. Observa cómo se actualiza la línea de tiempo SVG vertical en vivo. URL deep-link para compartir.
         </p>

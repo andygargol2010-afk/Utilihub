@@ -38,7 +38,7 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
 
         <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-600/90">
+            <p className="text-[13px] font-semibold text-primary">
               {tagLabel(game.tag, locale)} · <span aria-hidden="true">{game.emoji}</span>
             </p>
             <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{title}</h1>
@@ -46,14 +46,14 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
           </div>
           <Link
             to={hub}
-            className="inline-flex min-h-10 items-center justify-center rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+            className="inline-flex min-h-10 items-center justify-center rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             {es ? "Todos los juegos" : "All games"}
           </Link>
         </header>
 
         {(toolbar || status) && (
-          <div className="mb-4 flex flex-col gap-3 rounded-2xl border border-emerald-900/10 bg-white/80 p-3 shadow-sm backdrop-blur sm:flex-row sm:items-center sm:justify-between">
+          <div className="mb-4 flex flex-col gap-3 rounded-2xl border border-border bg-card p-3 shadow-sm backdrop-blur sm:flex-row sm:items-center sm:justify-between">
             {status && <div className="text-sm font-semibold tabular-nums text-slate-800">{status}</div>}
             {toolbar && <div className="flex flex-wrap items-center gap-2">{toolbar}</div>}
           </div>
@@ -62,20 +62,8 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
         <div
           role="region"
           aria-label={es ? `Superficie de juego: ${title}` : `Game board: ${title}`}
-          className="relative overflow-hidden rounded-3xl border border-emerald-400/10 bg-gradient-to-b from-slate-900 via-slate-950 to-black p-3 shadow-[0_24px_60px_-20px_rgba(6,78,59,0.65),0_0_0_1px_rgba(52,211,153,0.08)] sm:p-5"
+          className="relative overflow-hidden rounded-xl border border-slate-800 bg-slate-950 p-3 sm:p-5"
         >
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(52,211,153,0.14),_transparent_50%)]"
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -left-20 top-0 h-40 w-40 rounded-full bg-emerald-500/10 blur-3xl"
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-16 bottom-0 h-36 w-36 rounded-full bg-cyan-500/10 blur-3xl"
-          />
           <div className="relative">{children}</div>
         </div>
 
@@ -87,22 +75,22 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
 
         {next && (
           <section
-            className="mt-6 rounded-2xl border border-emerald-500/25 bg-emerald-500/5 p-4 sm:p-5"
+            className="mt-6 rounded-2xl border border-border bg-card p-4 sm:p-5"
             aria-labelledby={`game-next-${game.slug}`}
           >
-            <p className="text-xs font-bold uppercase tracking-[.14em] text-emerald-700">
+            <p className="text-[13px] font-semibold text-primary">
               {es ? "Siguiente juego recomendado" : "Recommended next game"}
             </p>
             <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
               <div className="min-w-0 flex-1">
-                <h2 id={`game-next-${game.slug}`} className="text-base font-black text-slate-900">
+                <h2 id={`game-next-${game.slug}`} className="text-base font-bold text-slate-900">
                   {es ? (
                     <>
-                      Seguí con <span className="text-emerald-700">{gameName(next, locale)}</span>
+                      Seguí con <span className="text-primary">{gameName(next, locale)}</span>
                     </>
                   ) : (
                     <>
-                      Continue with <span className="text-emerald-700">{gameName(next, locale)}</span>
+                      Continue with <span className="text-primary">{gameName(next, locale)}</span>
                     </>
                   )}
                 </h2>
@@ -110,7 +98,7 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
               </div>
               <Link
                 to={gamePath(next, locale)}
-                className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+                className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 {es ? "Jugar siguiente" : "Play next"}
                 <ArrowRight className="size-4" aria-hidden />
@@ -121,7 +109,7 @@ export function GameShell({ game, locale = "en", children, toolbar, status }: Pr
                 <li key={g.slug}>
                   <Link
                     to={gamePath(g, locale)}
-                    className="flex min-h-11 items-center gap-2 rounded-xl border border-slate-200/80 bg-white/90 px-3 py-2 text-sm font-semibold text-slate-800 hover:border-emerald-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+                    className="flex min-h-11 items-center gap-2 rounded-xl border border-slate-200/80 bg-white/90 px-3 py-2 text-sm font-semibold text-slate-800 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   >
                     <span aria-hidden>{g.emoji}</span>
                     <span className="truncate">{gameName(g, locale)}</span>

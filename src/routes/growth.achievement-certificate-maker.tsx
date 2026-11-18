@@ -40,8 +40,8 @@ function CertificatePage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-amber-600">Growth · Share surfaces</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Achievement Certificate Maker</h1>
+        <p className="text-[13px] font-semibold text-amber-600">Growth · Share surfaces</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Achievement Certificate Maker</h1>
         <p className="mt-3 text-muted-foreground">
           Design a personal certificate. Choose a template and colors, fill the details, preview live, then download or share the link.
         </p>

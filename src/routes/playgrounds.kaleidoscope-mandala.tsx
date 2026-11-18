@@ -37,7 +37,7 @@ function KaleidoscopePageEn() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-black tracking-tight">Kaleidoscope Mandala Studio</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight">Kaleidoscope Mandala Studio</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Draw freely. Every stroke is mirrored in real time across 4, 6 or 8-fold rotational symmetry — instant blooming mandalas. Switch brushes and colors live. Export a high-res PNG or share.
         </p>

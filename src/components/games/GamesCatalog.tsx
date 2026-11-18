@@ -26,9 +26,9 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
   const eyebrow = pt ? "Arcade · Puzzle · Tabuleiro" : es ? "Arcade · Puzzle · Tablero" : "Arcade · Puzzle · Board";
 
   return (
-    <div className="games-skin min-h-[70vh] bg-gradient-to-b from-emerald-50/80 via-background to-background">
+    <div className="games-skin min-h-[70vh]">
       <div className="container-page py-8 sm:py-12">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
+        <p className="text-[13px] font-semibold text-primary">
           {eyebrow}
         </p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -54,8 +54,8 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
                 onClick={() => setFilter(f.id)}
                 className={
                   active
-                    ? "rounded-full bg-emerald-600 px-4 py-2 text-sm font-bold text-white shadow-sm"
-                    : "rounded-full border border-emerald-900/15 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:border-emerald-500/40 hover:bg-emerald-50"
+                    ? "min-h-10 rounded-md bg-foreground px-4 text-sm font-semibold text-background"
+                    : "min-h-10 rounded-md border border-border bg-card px-4 text-sm font-medium text-foreground hover:bg-secondary"
                 }
               >
                 {label}
@@ -74,27 +74,27 @@ export function GamesCatalog({ locale = "en" }: { locale?: GameLocale }) {
                 key={game.slug}
                 to={to}
                 params={{ slug: hrefSlug }}
-                className="card-hover group flex flex-col overflow-hidden rounded-3xl border border-emerald-900/10 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-md"
+                className="card-hover group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition"
               >
                 <div className="relative p-3 pb-0">
                   <GamePreview game={game} />
                   {isNew && (
-                    <span className="absolute right-5 top-5 rounded-full bg-emerald-500 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white shadow">
+                    <span className="absolute right-5 top-5 rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold text-primary-foreground">
                       {pt ? "Novo" : es ? "Nuevo" : "New"}
                     </span>
                   )}
                 </div>
                 <div className="flex flex-1 flex-col p-5 pt-3">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-700/80">
+                  <span className="text-xs font-medium text-muted-foreground">
                     {tagLabel(game.tag, locale)}
                   </span>
-                  <span className="mt-1 text-lg font-bold text-slate-900 group-hover:text-emerald-800">
+                  <span className="mt-1 text-lg font-bold text-slate-900 group-hover:text-primary">
                     {gameName(game, locale)}
                   </span>
                   <span className="mt-2 flex-1 text-sm text-slate-600">
                     {gameSummary(game, locale)}
                   </span>
-                  <span className="mt-4 text-sm font-bold text-emerald-700">
+                  <span className="mt-4 text-sm font-bold text-primary">
                     {playLabel}
                   </span>
                 </div>

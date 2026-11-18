@@ -42,8 +42,8 @@ function CompositorCapasNeonPage() {
       <header className="mb-6 max-w-2xl">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-500">Studio · Composición</p>
-            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Capas Neón</h1>
+            <p className="text-[13px] font-semibold text-fuchsia-500">Studio · Composición</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Compositor de Capas Neón</h1>
           </div>
           <ExperienceShareButton
             title="Compositor de Capas Neón"

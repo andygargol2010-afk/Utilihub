@@ -321,7 +321,7 @@ export function TetrisGame({ locale = "en" }: { locale?: GameLocale }) {
         />
         {(paused || gameOver || !running) && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950/75 px-4 text-center backdrop-blur-[2px]">
-            <p className="text-lg font-black text-white">
+            <p className="text-lg font-bold text-white">
               {gameOver ? "Game over" : paused ? (es ? "Pausa" : "Paused") : "Tetris"}
             </p>
             {gameOver && (

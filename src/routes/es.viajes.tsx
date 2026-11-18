@@ -31,7 +31,7 @@ export const Route = createFileRoute("/es/viajes")({
 function ViajesIndex() {
   return (
     <main className="container-page py-8">
-      <h1 className="text-3xl font-black tracking-tight">Viajes</h1>
+      <h1 className="text-3xl font-bold tracking-tight">Viajes</h1>
       <p className="mt-2 max-w-2xl text-muted-foreground">Experiencias guiadas multi-paso. Empezá con la armonía de color o planificá una celebración.</p>
       <section className="mt-8 grid gap-4 sm:grid-cols-2">
         <Link
@@ -39,7 +39,7 @@ function ViajesIndex() {
           className="surface-card group block p-6 hover:-translate-y-0.5 hover:border-primary/40"
         >
           <p className="text-xs font-bold uppercase tracking-wider text-primary">Color</p>
-          <h2 className="mt-1 text-xl font-black group-hover:text-primary">Viaje de armonía de color</h2>
+          <h2 className="mt-1 text-xl font-bold group-hover:text-primary">Viaje de armonía de color</h2>
           <p className="mt-2 text-sm text-muted-foreground">Elegí un color base y un tipo de armonía. Mirá la paleta en vivo con HEX y HSL.</p>
           <span className="mt-4 inline-block text-sm font-bold text-primary">Empezar viaje →</span>
         </Link>
@@ -48,7 +48,7 @@ function ViajesIndex() {
           className="surface-card group block p-6 hover:-translate-y-0.5 hover:border-primary/40"
         >
           <p className="text-xs font-bold uppercase tracking-wider text-primary">Celebración</p>
-          <h2 className="mt-1 text-xl font-black group-hover:text-primary">Viaje de celebración</h2>
+          <h2 className="mt-1 text-xl font-bold group-hover:text-primary">Viaje de celebración</h2>
           <p className="mt-2 text-sm text-muted-foreground">Planificá ocasión, invitados, presupuesto, lista de tareas y tarjeta de invitación en vivo. Estado compartible.</p>
           <span className="mt-4 inline-block text-sm font-bold text-primary">Empezar viaje →</span>
         </Link>
@@ -57,7 +57,7 @@ function ViajesIndex() {
           className="surface-card group block p-6 hover:-translate-y-0.5 hover:border-primary/40"
         >
           <p className="text-xs font-bold uppercase tracking-wider text-primary">Progresión</p>
-          <h2 className="mt-1 text-xl font-black group-hover:text-primary">Compositor Río de Waypoints</h2>
+          <h2 className="mt-1 text-xl font-bold group-hover:text-primary">Compositor Río de Waypoints</h2>
           <p className="mt-2 text-sm text-muted-foreground">Colocá waypoints secuenciales. Las partículas fluyen un río de luz con degradados de color por etapa.</p>
           <span className="mt-4 inline-block text-sm font-bold text-primary">Empezar viaje →</span>
         </Link>

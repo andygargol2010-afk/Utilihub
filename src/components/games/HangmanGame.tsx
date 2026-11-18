@@ -280,7 +280,7 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
 
       {over && (
         <div className="text-center" role="status" aria-live="assertive">
-          <p className={`text-xl font-black sm:text-2xl ${won ? "text-emerald-300" : "text-rose-300"}`}>
+          <p className={`text-xl font-bold sm:text-2xl ${won ? "text-emerald-300" : "text-rose-300"}`}>
             {won ? (es ? "¡Ganaste! 🎉" : "You win! 🎉") : es ? `Perdiste. Era: ${word}` : `You lose. It was: ${word}`}
           </p>
           <p className="mt-1 text-sm text-white/70">

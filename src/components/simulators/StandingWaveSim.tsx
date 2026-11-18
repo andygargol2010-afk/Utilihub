@@ -134,7 +134,7 @@ export function StandingWaveSim({ locale = "en" }: { locale?: SimLocale }) {
       data-sim-running={running ? "1" : "0"}
     >
       <div className="w-full rounded-2xl border border-teal-500/25 bg-teal-950/40 p-3">
-        <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-teal-200/85">
+        <p className="mb-2 text-center text-[13px] font-semibold text-teal-200/85">
           {es ? "Cuerda fija en ambos extremos" : "String fixed at both ends"}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-2">

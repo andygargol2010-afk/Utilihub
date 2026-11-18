@@ -28,7 +28,7 @@ export function SiteFooter() {
     <footer className="mt-16 border-t border-border/70 bg-surface/55">
       <div className="container-page grid gap-10 py-10 sm:grid-cols-[1.4fr_1fr_1fr] sm:py-12">
         <div>
-          <a href="/" className="flex min-h-11 items-center gap-2 font-extrabold tracking-tight">
+          <a href="/" className="flex min-h-11 items-center gap-2 font-bold tracking-tight">
             <img
               src="/page-logo-96.webp"
               alt=""
@@ -44,12 +44,12 @@ export function SiteFooter() {
           <p className="mt-3 max-w-sm text-sm leading-6 text-muted-foreground">
             Free online tools to calculate, convert, and get things done without the hassle.
           </p>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-[.16em] text-primary">
+          <p className="mt-4 text-[13px] font-semibold text-primary">
             No signup · Local privacy
           </p>
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-[.16em] text-muted-foreground">Explore</p>
+          <p className="text-[13px] font-semibold text-muted-foreground">Explore</p>
           <nav aria-label="Featured categories" className="mt-3 grid gap-2">
             {FEATURED.map((category) => (
               <a key={category.href} href={category.href} className="w-fit text-sm font-semibold hover:text-primary">
@@ -59,7 +59,7 @@ export function SiteFooter() {
           </nav>
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-[.16em] text-muted-foreground">UtiliHub</p>
+          <p className="text-[13px] font-semibold text-muted-foreground">UtiliHub</p>
           <nav aria-label="Information" className="mt-3 grid gap-2">
             {INFO.map((item) => (
               <a key={item.href} href={item.href} className="w-fit text-sm font-semibold hover:text-primary">

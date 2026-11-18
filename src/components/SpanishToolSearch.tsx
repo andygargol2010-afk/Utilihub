@@ -104,10 +104,10 @@ export function SpanishToolSearch({ initialCategory, compactHome = false }: { in
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar una herramienta…"
-          className="h-12 rounded-xl border-border/80 bg-background pl-10 pr-24 text-sm"
+          className="h-14 rounded-lg border-input bg-card pl-10 pr-24 text-base shadow-sm focus-visible:border-primary"
           aria-label="Buscar herramientas"
         />
-        <Button type="submit" size="sm" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg">
+        <Button type="submit" size="sm" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md">
           Buscar
         </Button>
       </form>
@@ -214,7 +214,7 @@ function StaticListing({ tools }: { tools: CatalogTool[] }) {
         >
           <span
             aria-hidden="true"
-            className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-black text-primary"
+            className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent text-xs font-bold text-primary"
           >
             {spanishCategoryName(tool.category).slice(0, 1)}
           </span>

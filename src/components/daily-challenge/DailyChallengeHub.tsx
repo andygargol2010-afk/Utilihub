@@ -191,11 +191,11 @@ export function DailyChallengeHub({ locale }: { locale: Locale }) {
   return (
     <section className="space-y-5" aria-label={t.today}>
       <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">{t.today} · {today}</p>
+        <p className="text-[13px] font-semibold text-cyan-500">{t.today} · {today}</p>
         <div className="mt-3 flex items-center gap-4">
           <span className="text-5xl" aria-hidden="true">{pick.game.emoji}</span>
           <div className="min-w-0">
-            <h2 className="text-2xl font-black tracking-tight">{label}</h2>
+            <h2 className="text-2xl font-bold tracking-tight">{label}</h2>
             <p className="mt-1 text-muted-foreground">{goal}</p>
           </div>
         </div>
@@ -308,7 +308,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-border bg-card px-2 py-3">
       <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
-      <p className="mt-1 text-base font-black tabular-nums sm:text-lg">{value}</p>
+      <p className="mt-1 text-base font-bold tabular-nums sm:text-lg">{value}</p>
     </div>
   );
 }

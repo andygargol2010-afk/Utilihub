@@ -40,8 +40,8 @@ function KitCumplimientoPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-500">Crecimiento · Preparación AdSense</p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Kit de Cumplimiento AdSense</h1>
+        <p className="text-[13px] font-semibold text-emerald-500">Crecimiento · Preparación AdSense</p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Kit de Cumplimiento AdSense</h1>
         <p className="mt-3 text-muted-foreground">
           Recorre verificaciones discretas de preparación. Activa ítems, observa cómo se actualiza tu puntaje en vivo con consejos, luego descarga una tarjeta PNG con marca.
         </p>

@@ -58,8 +58,7 @@ export function PortugueseSiteHeader() {
         <a href="/pt" className="brand-lockup flex min-h-11 min-w-0 items-center gap-2.5" aria-label={T.homeAria}>
           <img src="/page-logo-96.webp" alt="" width={36} height={36} decoding="async" fetchPriority="low" className="brand-mark size-9 shrink-0" />
           <span className="min-w-0">
-            <span className="block truncate text-base font-extrabold tracking-tight">UtiliHub</span>
-            <span className="hidden text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground sm:block">{T.tagline}</span>
+            <span className="block truncate text-[17px] font-bold tracking-tight">UtiliHub</span>
           </span>
         </a>
 
@@ -69,7 +68,7 @@ export function PortugueseSiteHeader() {
               key={item.href}
               href={item.href}
               aria-current={active(item.href) ? "page" : undefined}
-              className={`${linkClass} ${active(item.href) ? "bg-accent text-primary ring-1 ring-primary/70" : ""}`}
+              className={`${linkClass} ${active(item.href) ? "bg-secondary text-foreground" : ""}`}
             >
               {item.label}
             </a>
@@ -102,7 +101,7 @@ export function PortugueseSiteHeader() {
                 {item.label}
               </a>
             ))}
-            <p className="mt-2 px-3 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">{T.categories}</p>
+            <p className="mt-2 px-3 text-[13px] font-semibold text-muted-foreground">{T.categories}</p>
             {PT_CATEGORIES.map((item) => (
               <a key={item.href} href={item.href} onClick={() => setOpen(false)} className={mobileMuted}>
                 {item.label}

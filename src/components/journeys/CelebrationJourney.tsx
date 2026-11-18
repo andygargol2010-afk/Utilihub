@@ -265,7 +265,7 @@ export function CelebrationJourney({ locale }: { locale: Locale }) {
           <div className={`rounded-2xl border-2 border-primary/30 bg-gradient-to-br ${meta.gradient} p-6 text-center text-white shadow-lg`}>
             <p className="text-4xl">{meta.icon}</p>
             <p className="mt-2 text-xs uppercase tracking-wider opacity-90">{t[occasion]}</p>
-            <h3 className="mt-1 text-2xl font-black">{host}</h3>
+            <h3 className="mt-1 text-2xl font-bold">{host}</h3>
             <p className="mt-1 text-sm opacity-90">{date}</p>
             <p className="mt-3 text-base">{message}</p>
             <p className="mt-2 text-xs opacity-80">{guests} {t.guests.toLowerCase()} · ${total} · {doneCount}/{tasks.length} {t.done}</p>

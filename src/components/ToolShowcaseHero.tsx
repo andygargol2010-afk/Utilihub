@@ -44,11 +44,11 @@ export function ToolShowcaseHero({
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span
-              className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-[0.16em] shadow-sm ${theme.badge}`}
+              className={`inline-flex items-center rounded-full px-3 py-1 text-[13px] font-semibold shadow-sm ${theme.badge}`}
             >
               {badge}
             </span>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/65">
+            <span className="text-[13px] font-semibold text-white/65">
               {es ? "En tu navegador" : "In your browser"}
             </span>
           </div>
@@ -56,7 +56,7 @@ export function ToolShowcaseHero({
           <div className="mt-4 flex items-start justify-between gap-3">
             <h1
               id="showcase-title"
-              className="text-[2.05rem] font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-[2.85rem]"
+              className="text-[2.05rem] font-bold leading-[1.05] tracking-tight sm:text-4xl lg:text-[2.85rem]"
             >
               {lead}
               {accent ? <span className={theme.title}>{accent}</span> : null}
@@ -73,7 +73,7 @@ export function ToolShowcaseHero({
           <div className="flex items-center justify-center gap-3 sm:gap-5" aria-hidden>
             {from ? useFileArt ? <FileArt label={from} kind={kindFor(from)} /> : <ChipArt label={from} /> : null}
             <div
-              className={`relative grid size-12 place-items-center rounded-full bg-gradient-to-br text-xl font-black text-slate-950 ring-4 ring-white/20 ${theme.arrow}`}
+              className={`relative grid size-12 place-items-center rounded-full bg-gradient-to-br text-xl font-bold text-slate-950 ring-4 ring-white/20 ${theme.arrow}`}
             >
               →
             </div>

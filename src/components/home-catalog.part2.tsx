@@ -67,7 +67,7 @@ export function quickTools() {
 /** Count badge in the hero card. Catalog stays out of the home route chunk. */
 export function HomeToolCount({ locale }: { locale: "en" | "es" | "pt" }) {
   const label = locale === "es" ? `${ALL_TOOLS.length} herramientas` : locale === "pt" ? `${ALL_TOOLS.length} ferramentas` : `${ALL_TOOLS.length} tools`;
-  return <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground">{label}</span>;
+  return <span>{label}</span>;
 }
 
 export function HomeSearch({ locale }: { locale: "en" | "es" | "pt" }) {

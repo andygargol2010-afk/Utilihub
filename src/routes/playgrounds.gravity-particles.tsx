@@ -37,7 +37,7 @@ function GravityParticlesPageEn() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-black tracking-tight">Gravity Particles Playground</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight">Gravity Particles Playground</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Click or tap to place attractors. Particles orbit and respond instantly. Tune gravity and count — everything is live and shareable.
         </p>

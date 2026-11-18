@@ -264,7 +264,7 @@ export function GoalProgressJourney({ locale }: { locale: Locale }) {
 
       {allDone && (
         <div className="rounded-2xl border border-primary/40 bg-accent/40 p-4 text-center sm:p-5" role="region" aria-label={locale === "es" ? "Completado" : "Completed"}>
-          <h2 className="text-xl font-black">
+          <h2 className="text-xl font-bold">
             {locale === "es" ? "¡Recorrido completado!" : "Journey complete!"}
           </h2>
           <p className="mt-2 text-muted-foreground">

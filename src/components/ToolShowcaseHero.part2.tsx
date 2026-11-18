@@ -32,12 +32,12 @@ export function FileArt({
             </svg>
           )}
           {kind === "generic" && (
-            <div className="grid size-7 place-items-center rounded-md bg-primary/15 text-[10px] font-black text-primary sm:size-8">
+            <div className="grid size-7 place-items-center rounded-md bg-primary/15 text-[10px] font-bold text-primary sm:size-8">
               {label.slice(0, 3)}
             </div>
           )}
         </div>
-        <div className="border-t border-slate-100 px-1.5 py-1.5 text-center text-[10px] font-black tracking-wide text-slate-700 sm:text-[11px]">
+        <div className="border-t border-slate-100 px-1.5 py-1.5 text-center text-[10px] font-bold tracking-wide text-slate-700 sm:text-[11px]">
           {label}
         </div>
       </div>
@@ -49,7 +49,7 @@ export function FileArt({
 export function ChipArt({ label }: { label: string }) {
   return (
     <div className="relative min-w-[4.5rem] max-w-[7rem] rounded-2xl border border-white/40 bg-white/15 px-3 py-3 text-center shadow-lg backdrop-blur-sm">
-      <span className="block truncate text-sm font-black tracking-tight text-white">{label}</span>
+      <span className="block truncate text-sm font-bold tracking-tight text-white">{label}</span>
     </div>
   );
 }

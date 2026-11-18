@@ -16,6 +16,7 @@ const tool = makeTool(
   {
     title: "Tip + Tax Calculator — Calculate tip, tax and total | UtiliHub",
     description: "Free tip and tax calculator. Enter subtotal, tax percentage and tip percentage to see tax amount, tip and grand total. Runs locally.",
+    summaryEs: "Calculá la propina, el impuesto y el total a pagar a partir del subtotal, el % de impuesto y el % de propina.",
   },
 );
 tool.faq.push(faq("How is tax calculated?", "Tax = subtotal × (tax% / 100). Tip is usually on the subtotal or on subtotal+tax — this tool applies tip on subtotal+tax by default."));

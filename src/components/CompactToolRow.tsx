@@ -50,7 +50,7 @@ export const CompactToolRow = memo(function CompactToolRow({
     >
       <span
         aria-hidden="true"
-        className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-xs font-black text-primary shadow-sm ring-1 ring-primary/10 transition group-hover:ring-primary/25"
+        className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-xs font-bold text-primary shadow-sm ring-1 ring-primary/10 transition group-hover:ring-primary/25"
       >
         {categoryLabel.slice(0, 1)}
       </span>

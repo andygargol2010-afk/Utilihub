@@ -309,7 +309,7 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
             >
               <div className="flex flex-wrap items-center gap-2">
                 <span
-                  className={`flex size-8 items-center justify-center rounded-full text-xs font-black ${done ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
+                  className={`flex size-8 items-center justify-center rounded-full text-xs font-bold ${done ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
                 >
                   {si + 1}
                 </span>
@@ -440,7 +440,7 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-2xl border border-border bg-card p-4">
-          <h3 className="text-sm font-black uppercase tracking-wide text-primary">
+          <h3 className="text-sm font-bold uppercase tracking-wide text-primary">
             {es ? "Vista previa" : "Live preview"}
           </h3>
           <div className="mt-2 space-y-2 text-sm">
@@ -461,7 +461,7 @@ export function RecipeAssemblyKit({ locale }: { locale: Locale }) {
           </div>
         </div>
         <div className="rounded-2xl border border-border bg-card p-4">
-          <h3 className="text-sm font-black uppercase tracking-wide text-primary">
+          <h3 className="text-sm font-bold uppercase tracking-wide text-primary">
             {es ? "Lista de compras" : "Shopping list"}
           </h3>
           <ul className="mt-2 space-y-1 text-sm">

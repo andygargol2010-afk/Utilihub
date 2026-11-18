@@ -262,7 +262,7 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
+        <p className="text-[13px] font-semibold text-cyan-500">
           {es ? "Constelaci\u00f3n de progreso" : "Progress constellation"}
         </p>
         <div className="mt-1 flex flex-wrap items-center gap-2">
@@ -276,11 +276,11 @@ export function DailyProgressConstellation({ locale = "en" }: { locale?: Playgro
                 if (e.key === "Enter") updateName(nameInput);
                 if (e.key === "Escape") setEditingName(false);
               }}
-              className="rounded border border-cyan-500/40 bg-background px-2 py-0.5 text-2xl font-black outline-none focus:ring-1 focus:ring-cyan-500"
+              className="rounded border border-cyan-500/40 bg-background px-2 py-0.5 text-2xl font-bold outline-none focus:ring-1 focus:ring-cyan-500"
               maxLength={40}
             />
           ) : (
-            <h2 className="text-2xl font-black">{displayName}</h2>
+            <h2 className="text-2xl font-bold">{displayName}</h2>
           )}
           <button
             type="button"

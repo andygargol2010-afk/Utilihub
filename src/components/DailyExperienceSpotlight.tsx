@@ -41,16 +41,16 @@ export function DailyExperienceSpotlight({ locale }: Props) {
     trackEvent("spotlight-share", { id: exp.id, locale, day: dayOfYear });
   };
 
-  const borderClass = `border-${accent}-500/50`;
-  const bgFrom = `from-${accent}-500/15`;
-  const bgTo = `to-${accent === "amber" ? "violet" : accent}-500/8`;
-  const textAccent = `text-${accent}-600`;
-  const badgeBg = `bg-${accent}-500/20`;
-  const badgeText = `text-${accent}-800 dark:text-${accent}-300`;
-  const btnBg = `bg-${accent}-600`;
-  const btnHover = `hover:bg-${accent}-700`;
-  const btnOutline = `focus-visible:outline-${accent}-500`;
-  const shareBorder = `border-${accent}-500/50`;
+  const borderClass = "border-border";
+  const bgFrom = "";
+  const bgTo = "";
+  const textAccent = "text-primary";
+  const badgeBg = "bg-secondary";
+  const badgeText = "text-secondary-foreground";
+  const btnBg = "bg-primary";
+  const btnHover = "hover:bg-primary/90";
+  const btnOutline = "focus-visible:outline-ring";
+  const shareBorder = "border-border";
 
   const dailyLabel = isPt ? "Destaque do dia" : isEs ? "Destacado del día" : "Daily Spotlight";
   const todayLabel = isPt ? "HOJE" : isEs ? "HOY" : "TODAY";
@@ -62,18 +62,18 @@ export function DailyExperienceSpotlight({ locale }: Props) {
 
   return (
     <section className="container-page py-4" aria-labelledby="spotlight-title">
-      <div className={`rounded-2xl border-2 ${borderClass} bg-gradient-to-br ${bgFrom} ${bgTo} p-4 sm:p-5 shadow-md`}>
+      <div className={`rounded-xl border ${borderClass} bg-card p-4 sm:p-5 ${bgFrom}${bgTo}`}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <p className={`text-xs font-bold uppercase tracking-[0.14em] ${textAccent}`}>
+              <p className={`text-[13px] font-semibold ${textAccent}`}>
                 {dailyLabel}
               </p>
-              <span className={`inline-flex items-center rounded-full ${badgeBg} px-2.5 py-0.5 text-[10px] font-black ${badgeText}`}>
+              <span className={`inline-flex items-center rounded-full ${badgeBg} px-2.5 py-0.5 text-[10px] font-bold ${badgeText}`}>
                 {todayLabel} · D{dayOfYear}
               </span>
             </div>
-            <h2 id="spotlight-title" className="mt-1 text-lg font-black tracking-tight">
+            <h2 id="spotlight-title" className="mt-1 text-lg font-bold tracking-tight">
               {title}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">{teaser}</p>

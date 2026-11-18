@@ -124,8 +124,8 @@ function AdminReviewsPage() {
 
   return (
     <main className="container-page max-w-3xl py-10">
-      <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Private</p>
-      <h1 className="mt-1 text-3xl font-black">Review admin</h1>
+      <p className="text-[13px] font-semibold text-primary">Private</p>
+      <h1 className="mt-1 text-3xl font-bold">Review admin</h1>
       <p className="mt-2 text-sm text-muted-foreground">
         This page is not linked from the site. Only people who know the URL can open it. Replies require{" "}
         <code className="rounded bg-muted px-1 text-xs">REVIEWS_ADMIN_TOKEN</code> on Vercel.

@@ -128,7 +128,7 @@ function FrenchMinimalHeader() {
   return (
     <header className="border-b border-border/70 bg-background/95">
       <div className="container-page flex h-14 items-center">
-        <a href="/fr" className="text-lg font-black tracking-tight">
+        <a href="/fr" className="text-lg font-bold tracking-tight">
           UtiliHub
         </a>
       </div>

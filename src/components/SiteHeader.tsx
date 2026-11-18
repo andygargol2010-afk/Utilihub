@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { linkClass } from "./SiteHeader.part1";
-import { activeClass, BROWSE, mobileLink, mobileMuted } from "./SiteHeader.part2";
+import { activeClass, BROWSE, MORE, mobileLink, mobileMuted } from "./SiteHeader.part2";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -34,10 +34,7 @@ export function SiteHeader() {
         <Link to="/" className="brand-lockup flex min-h-11 min-w-0 items-center gap-2.5" aria-label="UtiliHub home">
           <img src="/page-logo-96.webp" alt="" width={36} height={36} decoding="async" fetchPriority="low" className="brand-mark size-9 shrink-0" />
           <span className="min-w-0">
-            <span className="block truncate text-base font-extrabold tracking-tight">UtiliHub</span>
-            <span className="hidden text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground sm:block">
-              Solve it in seconds
-            </span>
+            <span className="block truncate text-[17px] font-bold tracking-tight">UtiliHub</span>
           </span>
         </Link>
 
@@ -48,54 +45,58 @@ export function SiteHeader() {
           <Link to="/category/advanced-tools" className={linkClass} activeProps={activeClass}>
             Advanced
           </Link>
-          <Link to="/kits" className={linkClass} activeProps={activeClass}>
-            Kits
+          <Link to="/games" className={linkClass} activeProps={activeClass}>
+            Games
           </Link>
           <Link to="/simulators" className={linkClass} activeProps={activeClass}>
             Simulators
-          </Link>
-          <Link to="/playgrounds" className={linkClass} activeProps={activeClass}>
-            Playgrounds
-          </Link>
-          <Link to="/experiences" className={linkClass} activeProps={activeClass}>
-            Experiences
-          </Link>
-          <Link to="/games" className={linkClass} activeProps={activeClass}>
-            Games
           </Link>
 
           <div className="relative" ref={browseRef}>
             <button
               type="button"
-              className={`inline-flex items-center gap-1 ${linkClass} ${browseOpen ? "bg-accent text-primary ring-1 ring-primary/70" : ""}`}
+              className={`gap-1 ${linkClass} ${browseOpen ? "bg-secondary text-foreground" : ""}`}
               aria-expanded={browseOpen}
               aria-haspopup="menu"
               onClick={() => setBrowseOpen((v) => !v)}
             >
-              Browse
+              More
               <ChevronDown className={`size-3.5 transition ${browseOpen ? "rotate-180" : ""}`} aria-hidden />
             </button>
             {browseOpen && (
               <div
                 role="menu"
-                className="absolute left-0 top-full z-50 mt-1.5 min-w-[12rem] overflow-hidden rounded-xl border border-border bg-card py-1 shadow-lg"
+                className="absolute right-0 top-full z-50 mt-1.5 min-w-[13rem] overflow-hidden rounded-lg border border-border bg-card py-1.5 shadow-lg"
               >
-                {BROWSE.map((item) => (
+                {MORE.map((item) => (
                   <a
                     key={item.href}
                     href={item.href}
                     role="menuitem"
-                    className="block px-3.5 py-2.5 text-sm font-semibold text-foreground hover:bg-accent"
+                    className="block px-3.5 py-2 text-sm font-medium text-foreground hover:bg-secondary"
                     onClick={() => setBrowseOpen(false)}
                   >
                     {item.label}
                   </a>
                 ))}
-                <div className="my-1 border-t border-border/70" />
+                <div className="my-1.5 border-t border-border" />
+                <p className="px-3.5 pb-1 pt-0.5 text-xs font-medium text-muted-foreground">Categories</p>
+                {BROWSE.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    role="menuitem"
+                    className="block px-3.5 py-2 text-sm font-medium text-foreground hover:bg-secondary"
+                    onClick={() => setBrowseOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <div className="my-1.5 border-t border-border" />
                 <Link
                   to="/tools"
                   role="menuitem"
-                  className="block px-3.5 py-2.5 text-sm font-semibold text-primary hover:bg-accent"
+                  className="block px-3.5 py-2 text-sm font-medium text-primary hover:bg-secondary"
                   onClick={() => setBrowseOpen(false)}
                 >
                   All tools →
@@ -111,7 +112,7 @@ export function SiteHeader() {
           <LanguageSwitcher locale="en" />
           <button
             type="button"
-            className="grid size-11 place-items-center rounded-xl border border-border bg-card shadow-sm"
+            className="grid size-11 place-items-center rounded-md border border-border bg-card"
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
@@ -148,7 +149,7 @@ export function SiteHeader() {
             <Link to="/games" onClick={() => setOpen(false)} className={mobileLink}>
               Games
             </Link>
-            <p className="mt-2 px-3 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+            <p className="mt-2 px-3 text-[13px] font-semibold text-muted-foreground">
               Categories
             </p>
             {BROWSE.map((item) => (
