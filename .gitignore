@@ -10,6 +10,3 @@ dist/
 .agent/state/*
 .agent/proposals/*
 !.agent/**/.gitkeep
-
-# Day Trader skills: local trading state, config and logs
-trader/
