@@ -123,10 +123,10 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const k = e.key.toUpperCase();
-      if (k === "R") {
+      if (k === "R" && e.shiftKey) {
         e.preventDefault();
         startNew();
-      } else if (k === "H") {
+      } else if (k === "H" && e.shiftKey) {
         e.preventDefault();
         giveHint();
       } else if (k.length === 1 && /^[A-Z]$/.test(k)) {
@@ -326,8 +326,8 @@ export function HangmanGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
       <p className="text-center text-[11px] text-white/50">
         {es
-          ? "Toca letras o usa el teclado · R nueva · H pista · categorías · dificultad · enlace con palabra · PNG de progreso"
-          : "Tap letters or use keyboard · R new · H hint · categories · difficulty · link with word · progress PNG"}
+          ? "Toca letras o usa el teclado · Shift+R nueva · Shift+H pista · categorías · dificultad · enlace con palabra · PNG de progreso"
+          : "Tap letters or use keyboard · Shift+R new · Shift+H hint · categories · difficulty · link with word · progress PNG"}
       </p>
     </div>
   );
