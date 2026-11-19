@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vitrina · Webs para comercios y emprendimientos</title>
+<meta name="description" content="Diseño y programo webs para barberías, restaurantes, comercios y profesionales. Precios claros, entrega rápida y vos sos dueño de tu web.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf8f4;--ink:#1c1b19;--mut:#6b6760;--line:#e7e2d9;--card:#fff;--acc:#1f5f4a;--acc2:#e9f2ee}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem}
+header{position:sticky;top:0;z-index:5;background:rgba(250,248,244,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:Fraunces;font-size:1.5rem;text-decoration:none}
+.logo span{color:var(--acc)}
+nav ul{display:flex;gap:1.5rem;list-style:none;font-size:.92rem}
+nav ul a{text-decoration:none;color:var(--mut)}nav ul a:hover{color:var(--ink)}
+.btn{display:inline-block;background:var(--acc);color:#fff;font-weight:600;text-decoration:none;padding:.8rem 1.4rem;border-radius:8px;border:0;cursor:pointer;font:inherit}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.hero{padding:5.5rem 0 4.5rem}
+.eyebrow{font-size:.82rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.12em}
+h1{font-family:Fraunces;font-size:clamp(2.4rem,6vw,4rem);line-height:1.08;margin:.8rem 0 1.2rem;max-width:760px}
+.lead{font-size:1.15rem;color:var(--mut);max-width:600px;margin-bottom:2rem}
+.cta{display:flex;gap:.8rem;flex-wrap:wrap}
+section{padding:4.5rem 0;border-top:1px solid var(--line)}
+h2{font-family:Fraunces;font-size:2rem;margin-bottom:.5rem}
+.sub{color:var(--mut);margin-bottom:2.2rem;max-width:620px}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.5rem}
+.step b{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--acc2);color:var(--acc);margin-bottom:.8rem}
+.plan h3{font-family:Fraunces;font-size:1.3rem}
+.plan .price{font-family:Fraunces;font-size:2.2rem;color:var(--acc);margin:.4rem 0}
+.plan .price small{font-family:Inter;font-size:.85rem;color:var(--mut)}
+.plan ul{list-style:none;margin:1rem 0 1.4rem}
+.plan li{padding:.3rem 0;border-bottom:1px dashed var(--line);font-size:.93rem}
+.plan li::before{content:"✓ ";color:var(--acc);font-weight:600}
+.plan.pop{border:2px solid var(--acc)}
+.tagpop{font-size:.75rem;font-weight:600;color:#fff;background:var(--acc);border-radius:99px;padding:.15rem .6rem}
+.note{font-size:.88rem;color:var(--mut);margin-top:1.2rem}
+.work .shot{aspect-ratio:16/10;border-radius:10px;margin-bottom:1rem;display:grid;place-items:center;color:#fff;font-family:Fraunces;font-size:1.4rem}
+.work small{color:var(--mut)}
+.chip{display:inline-block;font-size:.72rem;background:var(--acc2);color:var(--acc);border-radius:99px;padding:.1rem .55rem;margin-bottom:.4rem}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;margin-bottom:.6rem}
+summary{font-weight:600;cursor:pointer}
+details p{color:var(--mut);margin-top:.6rem}
+form{display:grid;gap:.9rem;max-width:640px}
+label{font-size:.9rem;font-weight:500}
+input,select,textarea{width:100%;font:inherit;padding:.7rem .8rem;border:1px solid var(--line);border-radius:8px;background:#fff;margin-top:.3rem}
+textarea{min-height:110px}
+.row{display:grid;gap:.9rem;grid-template-columns:1fr 1fr}
+.ok{display:none;background:var(--acc2);color:var(--acc);padding:1rem;border-radius:10px}
+footer{padding:2.5rem 0;border-top:1px solid var(--line);color:var(--mut);font-size:.88rem}
+@media(max-width:720px){nav ul{display:none}.row{grid-template-columns:1fr}.hero{padding:3.5rem 0}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+<a class="logo" href="#">Vitrina<span>.</span></a>
+<ul><li><a href="#como">Cómo trabajo</a></li><li><a href="#precios">Precios</a></li><li><a href="#faq">Preguntas</a></li></ul>
+<a class="btn" href="#pedido">Pedir mi web</a>
+</nav></div></header>
+
+<main>
+<div class="hero"><div class="wrap">
+<span class="eyebrow">Diseño y desarrollo web · Andrés García</span>
+<h1>Tu negocio, con una web que muestra lo que vale.</h1>
+<p class="lead">Webs claras y rápidas para barberías, restaurantes, comercios y profesionales: servicios, precios, fotos, ubicación y botón de WhatsApp o reservas. Precio cerrado y la web es tuya.</p>
+<div class="cta"><a class="btn" href="#pedido">Pedir presupuesto</a><a class="btn ghost" href="#precios">Ver precios</a></div>
+</div></div>
+
+<section id="como"><div class="wrap">
+<h2>Cómo trabajo</h2><p class="sub">Sin vueltas y con todo por escrito antes de empezar.</p>
+<div class="grid">
+<div class="card step"><b>1</b><h3>Me contás tu negocio</h3><p>Completás el formulario o me escribís. Reviso tu Google, Instagram y lo que ya tenés.</p></div>
+<div class="card step"><b>2</b><h3>Te muestro un ejemplo</h3><p>Armo una demo con tu información para que veas cómo quedaría, sin compromiso.</p></div>
+<div class="card step"><b>3</b><h3>Acordamos y arranco</h3><p>Precio y alcance cerrados. Con el adelanto del 50% empiezo y compro tu dominio a tu nombre.</p></div>
+<div class="card step"><b>4</b><h3>Revisás y publicamos</h3><p>Pedís los cambios, la aprobás y sale online. El resto se paga al entregar.</p></div>
+</div></div></section>
+
+<section id="precios"><div class="wrap">
+<h2>Precios</h2><p class="sub">Precios de referencia en dólares; para Argentina se cobran en pesos al cambio del día por Mercado Pago.</p>
+<div class="grid">
+<div class="card plan"><h3>Starter</h3><div class="price">US$149 <small>pago único</small></div><p>Para empezar a aparecer bien.</p>
+<ul><li>Web de una página</li><li>Servicios, horarios y ubicación</li><li>Botón de WhatsApp</li><li>Adaptada a celular</li><li>SEO básico para Google</li></ul><a class="btn ghost" href="#pedido">La quiero</a></div>
+<div class="card plan pop"><span class="tagpop">La más pedida</span><h3>Professional</h3><div class="price">US$249 <small>pago único</small></div><p>Para mostrar todo lo que hacés.</p>
+<ul><li>Hasta 5 secciones</li><li>Diseño a medida de tu marca</li><li>Galería o catálogo</li><li>Formulario de contacto</li><li>Botón de reservas o WhatsApp</li></ul><a class="btn" href="#pedido">La quiero</a></div>
+<div class="card plan"><h3>Business</h3><div class="price">US$399 <small>pago único</small></div><p>Para negocios con más movimiento.</p>
+<ul><li>Hasta 10 secciones</li><li>Menú, catálogo o funciones a medida</li><li>Integraciones (reservas, mapas, redes)</li><li>Formularios avanzados</li><li>Estadísticas de visitas</li></ul><a class="btn ghost" href="#pedido">La quiero</a></div>
+</div>
+<p class="note">Extras opcionales: menú digital US$15 · QR personalizado US$5 · tarjetas de fidelización US$10 · pack de diseños para redes US$30. Mantenimiento mensual desde US$15. Dominio y hosting se presupuestan aparte, a tu nombre.</p>
+</div></section>
+
+<section id="faq"><div class="wrap">
+<h2>Preguntas frecuentes</h2>
+<details><summary>¿De quién es la web?</summary><p>Tuya. El dominio queda a tu nombre y te paso los accesos. No hay contratos de permanencia.</p></details>
+<details><summary>¿Cuánto tarda?</summary><p>Desde que tengo tu información: Starter, hasta 2 días hábiles; Professional, hasta 4; Business, hasta 7. Los cambios que pidas, hasta 48 horas.</p></details>
+<details><summary>¿Cómo se paga?</summary><p>50% de adelanto para empezar y 50% al entregar. En Argentina por Mercado Pago; desde otros países por PayPal.</p></details>
+<details><summary>¿Qué incluye el mantenimiento?</summary><p>Cambios de precios, horarios y fotos, copias de seguridad y que la web siga funcionando. Es opcional y se cancela cuando quieras.</p></details>
+<details><summary>¿Necesito tener dominio?</summary><p>No. Si no tenés, lo registro a tu nombre con el adelanto (un .com.ar sale poco al año).</p></details>
+</div></section>
+
+<section id="pedido"><div class="wrap">
+<h2>Pedí tu web</h2><p class="sub">Contame un poco y te respondo con una idea y un presupuesto. Sin compromiso.</p>
+<form id="f">
+<div class="row"><label>Nombre<input name="nombre" required></label><label>Negocio<input name="negocio" required></label></div>
+<div class="row"><label>Rubro<select name="rubro"><option>Barbería / peluquería</option><option>Restaurante / café</option><option>Comercio</option><option>Profesional / estudio</option><option>Otro</option></select></label>
+<label>Instagram o web actual<input name="redes" placeholder="@tunegocio"></label></div>
+<div class="row"><label>¿Qué necesitás?<select name="plan"><option>No sé, aconsejame</option><option>Starter</option><option>Professional</option><option>Business</option></select></label>
+<label>WhatsApp o email<input name="contacto" required></label></div>
+<label>Contame más<textarea name="detalle" placeholder="Qué querés mostrar, si tomás turnos, si tenés dominio..."></textarea></label>
+<button class="btn" type="submit">Enviar pedido</button>
+<div class="ok" id="ok">¡Gracias! Recibí tu pedido y te escribo en menos de 24 horas.</div>
+</form>
+</div></section>
+</main>
+
+<footer><div class="wrap">Vitrina · Diseño y desarrollo web por Andrés García · Buenos Aires, Argentina</div></footer>
+<script>
+document.getElementById('f').addEventListener('submit',function(e){
+  e.preventDefault(); // TODO: conectar a un endpoint (formulario → mail/CRM) al publicar
+  this.querySelector('button').style.display='none';
+  document.getElementById('ok').style.display='block';
+});
+</script>
+</body>
+</html>
