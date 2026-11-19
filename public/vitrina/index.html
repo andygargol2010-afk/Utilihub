@@ -111,6 +111,7 @@ footer{padding:2.5rem 0;border-top:1px solid var(--line);color:var(--mut);font-s
 <div class="row"><label>¿Qué necesitás?<select name="plan"><option>No sé, aconsejame</option><option>Starter</option><option>Professional</option><option>Business</option></select></label>
 <label>WhatsApp o email<input name="contacto" required></label></div>
 <label>Contame más<textarea name="detalle" placeholder="Qué querés mostrar, si tomás turnos, si tenés dominio..."></textarea></label>
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
 <button class="btn" type="submit">Enviar pedido</button>
 <div class="ok" id="ok">¡Gracias! Recibí tu pedido y te escribo en menos de 24 horas.</div>
 </form>
@@ -128,6 +129,9 @@ document.getElementById('f').addEventListener('submit',function(e){
   var data=Object.fromEntries(new FormData(form).entries());
   data._subject='Nuevo pedido Vitrina';
   data._template='table';
+  data._url=location.href;
+  if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((data.contacto||'').trim()))data._replyto=data.contacto.trim();
+  if(data._honey){btn.style.display='none';document.getElementById('ok').style.display='block';return;}
   btn.disabled=true; btn.textContent='Enviando...';
   fetch('https://formsubmit.co/ajax/andygargol2010@gmail.com',{
     method:'POST',
