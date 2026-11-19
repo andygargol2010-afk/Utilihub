@@ -63,7 +63,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           const enPath = englishCategoryPath(category.slug);
           const esPath = `/es/categoria/${category.slug}`;
           let priority = "0.8";
-          if (category.slug === "herramientas-avancadas") priority = "0.95";
+          if (category.slug === "herramientas-avanzadas") priority = "0.95";
           else if (category.slug === "educacion") priority = "0.9";
           return pair(enPath, esPath, priority);
         });
