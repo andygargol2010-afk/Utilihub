@@ -120,9 +120,22 @@ footer{padding:2.5rem 0;border-top:1px solid var(--line);color:var(--mut);font-s
 <footer><div class="wrap">Vitrina · Diseño y desarrollo web por Andrés García · Buenos Aires, Argentina</div></footer>
 <script>
 document.getElementById('f').addEventListener('submit',function(e){
-  e.preventDefault(); // TODO: conectar a un endpoint (formulario → mail/CRM) al publicar
-  this.querySelector('button').style.display='none';
-  document.getElementById('ok').style.display='block';
+  e.preventDefault();
+  var form=this, btn=form.querySelector('button'), label=btn.textContent;
+  var err=document.getElementById('err');
+  if(!err){err=document.createElement('p');err.id='err';err.setAttribute('role','alert');err.style.color='#b42318';btn.insertAdjacentElement('afterend',err);}
+  err.textContent='';
+  var data=Object.fromEntries(new FormData(form).entries());
+  data._subject='Nuevo pedido Vitrina';
+  data._template='table';
+  btn.disabled=true; btn.textContent='Enviando...';
+  fetch('https://formsubmit.co/ajax/andygargol2010@gmail.com',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify(data)
+  }).then(function(r){return r.json().then(function(j){if(!r.ok||String(j.success)!=='true')throw new Error('fail');});})
+  .then(function(){btn.style.display='none';document.getElementById('ok').style.display='block';})
+  .catch(function(){btn.disabled=false;btn.textContent=label;err.textContent='No se pudo enviar, escribime por Instagram a @utilihub_oficial';});
 });
 </script>
 </body>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sr. Durval Barbería · Demo</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="Sr. Durval, barbería brasileña en Lavalle 2066, Buenos Aires. Cortes, barba y cejas. Reservá tu turno online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0d0d;--card:#171717;--line:#2a2a2a;--txt:#f2f2f2;--mut:#a3a3a3;--acc:#f5c518;--acc2:#1f9d55}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
+a{color:inherit}
+.demo{background:var(--acc);color:#111;text-align:center;font-size:.8rem;font-weight:600;padding:.4rem}
+header{position:sticky;top:0;z-index:5;background:rgba(13,13,13,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 1.25rem}
+nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:Oswald;font-size:1.35rem;letter-spacing:.08em;text-decoration:none}
+.logo span{color:var(--acc)}
+nav ul{display:flex;gap:1.4rem;list-style:none;font-size:.9rem}
+nav ul a{text-decoration:none;color:var(--mut)}nav ul a:hover{color:var(--txt)}
+.btn{display:inline-block;background:var(--acc);color:#111;font-weight:600;text-decoration:none;padding:.75rem 1.4rem;border-radius:999px}
+.btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+.hero{padding:6rem 0 5rem;background:radial-gradient(ellipse at 80% 0%,rgba(31,157,85,.25),transparent 55%),radial-gradient(ellipse at 0% 100%,rgba(245,197,24,.15),transparent 50%)}
+.tag{display:inline-block;font-size:.8rem;color:var(--acc);border:1px solid rgba(245,197,24,.4);border-radius:999px;padding:.25rem .8rem;margin-bottom:1.2rem}
+h1{font-family:Oswald;font-size:clamp(2.6rem,7vw,4.6rem);line-height:1.05;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--acc)}
+.hero p{color:var(--mut);max-width:520px;margin:1.2rem 0 2rem;font-size:1.1rem}
+.cta{display:flex;gap:.8rem;flex-wrap:wrap}
+.stats{display:flex;gap:2.5rem;margin-top:3rem;flex-wrap:wrap}
+.stats b{display:block;font-family:Oswald;font-size:1.8rem;color:var(--txt)}
+.stats small{color:var(--mut)}
+section{padding:4.5rem 0;border-top:1px solid var(--line)}
+h2{font-family:Oswald;font-size:2rem;text-transform:uppercase;margin-bottom:.4rem}
+.sub{color:var(--mut);margin-bottom:2.2rem}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.4rem}
+.svc{display:flex;flex-direction:column;gap:.4rem}
+.svc .price{font-family:Oswald;font-size:1.6rem;color:var(--acc)}
+.svc small{color:var(--mut)}
+.team .ph{aspect-ratio:1;border-radius:10px;background:repeating-linear-gradient(45deg,#1c1c1c,#1c1c1c 10px,#222 10px,#222 20px);display:grid;place-items:center;color:#555;font-size:.8rem;margin-bottom:.8rem}
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.6rem}
+.gal div{aspect-ratio:4/5;border-radius:10px;background:linear-gradient(135deg,#1a1a1a,#262626);display:grid;place-items:center;color:#555;font-size:.8rem;text-align:center;padding:.5rem}
+.rev p{font-size:.95rem}.rev small{color:var(--mut)}
+.stars{color:var(--acc);letter-spacing:.1em}
+.info{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.map{border-radius:14px;min-height:240px;background:linear-gradient(160deg,#141414,#1f1f1f);border:1px solid var(--line);display:grid;place-items:center;color:var(--mut);text-align:center;padding:1rem}
+table{width:100%;border-collapse:collapse}td{padding:.45rem 0;border-bottom:1px solid var(--line)}td:last-child{text-align:right;color:var(--mut)}
+footer{padding:2.5rem 0;border-top:1px solid var(--line);color:var(--mut);font-size:.85rem;text-align:center}
+.wa{position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:50%;background:#25d366;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+@media(max-width:720px){nav ul{display:none}.hero{padding:4rem 0 3.5rem}}
+</style>
+</head>
+<body>
+<div class="demo">Ejemplo de propuesta para Sr. Durval · contenido de muestra, no es el sitio oficial</div>
+<header><div class="wrap"><nav>
+<a class="logo" href="#inicio">SR. <span>DURVAL</span></a>
+<ul><li><a href="#servicios">Servicios</a></li><li><a href="#equipo">Equipo</a></li><li><a href="#opiniones">Opiniones</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
+<a class="btn" href="https://agendapro.com/site/7/barberiasrdurval/73431">Reservar</a>
+</nav></div></header>
+
+<main id="inicio">
+<div class="hero"><div class="wrap">
+<span class="tag">🇧🇷 1ª barbería brasileña en Buenos Aires</span>
+<h1>Cortes y barba<br>con <em>estilo brasileño</em></h1>
+<p>Cortes, barba y cejas en un local cómodo y climatizado sobre Lavalle. Reservá en un minuto y llegá directo a tu turno.</p>
+<div class="cta"><a class="btn" href="https://agendapro.com/site/7/barberiasrdurval/73431">Reservar turno</a><a class="btn ghost" href="#servicios">Ver servicios y precios</a></div>
+<div class="stats"><div><b>4,7 ★</b><small>en Google</small></div><div><b>+260</b><small>reseñas</small></div><div><b>Lun a Sáb</b><small>10 a 20 h</small></div></div>
+</div></div>
+
+<section id="servicios"><div class="wrap">
+<h2>Servicios</h2><p class="sub">Precios de referencia. Consultá promociones al reservar.</p>
+<div class="grid">
+<div class="card svc"><strong>Corte</strong><span class="price">$22.000</span><small>30 min · incluye asesoramiento</small></div>
+<div class="card svc"><strong>Arreglo de barba</strong><span class="price">$15.000</span><small>30 min · perfilado y terminación</small></div>
+<div class="card svc"><strong>Corte + barba + cejas</strong><span class="price">$32.000</span><small>60 min · el combo completo</small></div>
+</div></div></section>
+
+<section id="equipo"><div class="wrap">
+<h2>El equipo</h2><p class="sub">Elegí con quién atenderte.</p>
+<div class="grid team">
+<div class="card"><div class="ph">foto</div><strong>Julián</strong></div>
+<div class="card"><div class="ph">foto</div><strong>Bruno</strong></div>
+<div class="card"><div class="ph">foto</div><strong>Matías</strong></div>
+<div class="card"><div class="ph">foto</div><strong>Thiago</strong></div>
+<div class="card"><div class="ph">foto</div><strong>Eduardo</strong></div>
+</div></div></section>
+
+<section><div class="wrap">
+<h2>Trabajos</h2><p class="sub">Acá irían fotos reales del local y de cortes (con su permiso).</p>
+<div class="gal"><div>Fade</div><div>Barba</div><div>Local</div><div>Diseño</div></div>
+</div></section>
+
+<section id="opiniones"><div class="wrap">
+<h2>Lo que dicen los clientes</h2><p class="sub">Temas que más se repiten en sus reseñas de Google.</p>
+<div class="grid rev">
+<div class="card"><div class="stars">★★★★★</div><p>Trato amable y atento de todo el equipo.</p></div>
+<div class="card"><div class="stars">★★★★★</div><p>Detallistas, se toman su tiempo con cada cliente.</p></div>
+<div class="card"><div class="stars">★★★★★</div><p>Local limpio, buena música y aire acondicionado siempre.</p></div>
+</div></div></section>
+
+<section id="ubicacion"><div class="wrap">
+<h2>Dónde estamos</h2><p class="sub">Lavalle 2066, Balvanera, CABA.</p>
+<div class="info">
+<div class="map">📍 Lavalle 2066<br>(acá va el mapa de Google)</div>
+<div class="card"><strong>Horarios</strong>
+<table><tr><td>Lunes a sábado</td><td>10:00 – 20:00</td></tr><tr><td>Domingo</td><td>Cerrado</td></tr></table>
+<p style="margin-top:1rem"><a class="btn" href="https://agendapro.com/site/7/barberiasrdurval/73431">Reservar turno</a></p>
+<p style="margin-top:.8rem;color:var(--mut);font-size:.9rem">Instagram: <a href="https://instagram.com/barberiasr.durval">@barberiasr.durval</a></p>
+</div></div></div></section>
+</main>
+
+<footer>Sr. Durval Barbería · Lavalle 2066, CABA · Demo hecha por Andrés García</footer>
+<a class="wa" href="#ubicacion" aria-label="WhatsApp (número a confirmar)" title="WhatsApp (número a confirmar)"><svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1 .3-3.4-.7a11.6 11.6 0 0 1-4.6-4.1c-.3-.5-1-1.5-1-2.8s.7-2 1-2.3a1 1 0 0 1 .7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .6l-.3.5-.4.4c-.1.1-.3.3-.1.6a8 8 0 0 0 1.5 1.8 7 7 0 0 0 2.1 1.3c.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.8.9c.3.1.4.2.5.3.1.2.1.8-.1 1.4z"/></svg></a>
+</body>
+</html>
