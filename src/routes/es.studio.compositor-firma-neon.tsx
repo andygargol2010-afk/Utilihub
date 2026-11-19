@@ -38,8 +38,8 @@ function CompositorFirmaNeonPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-fuchsia-600">Estudio · Composición</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Compositor de Firma Neón</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-600">Estudio · Composición</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Firma Neón</h1>
         <p className="mt-3 text-muted-foreground">
           Dibujá trazos a mano alzada en multicapa que se convierten en trayectorias de neón persistentes con brillo fluido, intensidad ajustable y chispas opcionales. Componé firmas de luz temporales con alto impacto visual.
         </p>

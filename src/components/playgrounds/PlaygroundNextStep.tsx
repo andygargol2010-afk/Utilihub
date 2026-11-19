@@ -36,12 +36,12 @@ export function PlaygroundNextStep({ currentId, locale = "en" }: Props) {
       className="mt-8 rounded-2xl border border-primary/20 bg-accent/40 p-4 sm:p-5"
       aria-labelledby={`pg-next-${currentId}`}
     >
-      <p className="text-[13px] font-semibold text-primary">
+      <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">
         {es ? "Siguiente experiencia recomendada" : "Recommended next experience"}
       </p>
       <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <h2 id={`pg-next-${currentId}`} className="text-base font-bold text-foreground">
+          <h2 id={`pg-next-${currentId}`} className="text-base font-black text-foreground">
             {es ? (
               <>
                 Seguí con <span className="text-primary">{playgroundName(next, locale)}</span>

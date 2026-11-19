@@ -104,7 +104,7 @@ export function WaveInterferenceSim({ locale = "en" }: { locale?: SimLocale }) {
       data-sim-running={running ? "1" : "0"}
     >
       <div className="w-full rounded-2xl border border-sky-500/25 bg-sky-950/40 p-3">
-        <p className="mb-2 text-center text-[13px] font-semibold text-sky-200/85">
+        <p className="mb-2 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-sky-200/85">
           {es ? "Dos fuentes coherentes" : "Two coherent sources"}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-2">

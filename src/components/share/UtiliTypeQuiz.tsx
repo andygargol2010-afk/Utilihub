@@ -320,7 +320,7 @@ export function UtiliTypeQuiz({ locale = "en" }: { locale?: Locale }) {
           <p className="text-xs font-bold uppercase tracking-wider" style={{ color: result.color }}>
             {result.emoji} {t("Your Utili Type", "Tu Tipo Utili")}
           </p>
-          <h2 className="mt-2 text-3xl font-bold">{result.name[locale]}</h2>
+          <h2 className="mt-2 text-3xl font-black">{result.name[locale]}</h2>
           <p className="mt-3 text-muted-foreground">{result.desc[locale]}</p>
           <div className="mt-6 space-y-2 text-left">
             <p className="text-sm font-semibold">{t("Recommended for you", "Recomendado para ti")}</p>

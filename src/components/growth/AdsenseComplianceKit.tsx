@@ -154,7 +154,7 @@ export function AdsenseComplianceKit({ locale }: { locale: Locale }) {
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               {es ? "Puntaje en vivo" : "Live score"}
             </p>
-            <p className="text-5xl font-bold tabular-nums">{score}</p>
+            <p className="text-5xl font-black tabular-nums">{score}</p>
             <p className="mt-1 text-sm font-semibold" style={{ color: level.color }}>
               {level.label}
             </p>

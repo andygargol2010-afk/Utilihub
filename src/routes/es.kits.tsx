@@ -41,8 +41,8 @@ function SpanishKitsPage() {
     <main className="container-page py-6 sm:py-8">
       <Breadcrumbs locale="es" items={[{ label: "Inicio", to: "/es" }, { label: "Kits por objetivo" }]} />
       <header className="hero-gradient mt-4 rounded-2xl border border-border/70 p-6 sm:p-9">
-        <p className="text-[13px] font-semibold text-primary">Resolvé por objetivo</p>
-        <h1 className="mt-2 max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl">Kits para encadenar herramientas sin perder tiempo.</h1>
+        <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">Resolvé por objetivo</p>
+        <h1 className="mt-2 max-w-3xl text-3xl font-black tracking-tight sm:text-5xl">Kits para encadenar herramientas sin perder tiempo.</h1>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
           Partí de tu situación y seguí un camino de herramientas relacionadas. Todo corre en el navegador, sin registro.
         </p>
@@ -58,8 +58,8 @@ function SpanishKitsPage() {
                 <span className="grid size-11 place-items-center rounded-xl bg-accent text-primary"><Icon className="size-5" /></span>
                 <span className="rounded-full bg-surface px-2.5 py-1 text-xs font-bold text-muted-foreground">{tools.length} pasos</span>
               </div>
-              <p className="mt-5 text-[13px] font-semibold text-primary">{es.eyebrow}</p>
-              <h2 className="mt-1 text-xl font-bold group-hover:text-primary">{es.name}</h2>
+              <p className="mt-5 text-xs font-bold uppercase tracking-[.14em] text-primary">{es.eyebrow}</p>
+              <h2 className="mt-1 text-xl font-black group-hover:text-primary">{es.name}</h2>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{es.description}</p>
               <p className="mt-4 text-sm font-semibold">{es.outcome}</p>
               <KitDeskTrail kitSlug={kit.slug} stepCount={tools.length} locale="es" />
@@ -72,7 +72,7 @@ function SpanishKitsPage() {
         <div className="flex items-start gap-3">
           <CheckCircle2 className="mt-0.5 size-5 text-primary" />
           <div>
-            <h2 className="font-bold">Sin cuenta, con privacidad local</h2>
+            <h2 className="font-black">Sin cuenta, con privacidad local</h2>
             <p className="mt-1 text-sm leading-6 text-muted-foreground">Las operaciones compatibles se ejecutan en tu navegador. Podés guardar favoritos de forma local.</p>
           </div>
         </div>

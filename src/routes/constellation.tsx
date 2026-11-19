@@ -38,8 +38,8 @@ function ConstellationPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-indigo-600">Experience · Shareable</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Constellation Name Map</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-600">Experience · Shareable</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Constellation Name Map</h1>
         <p className="mt-3 text-muted-foreground">
           Type a short name or phrase. Stars <strong className="font-semibold text-foreground">form the letters as a living constellation</strong>. Mouse or touch creates gravity wells that warp paths and draw temporary lines.
           Tune star density, gravity strength and sky moods — then share the link or download a PNG.

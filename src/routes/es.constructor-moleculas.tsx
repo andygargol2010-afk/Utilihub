@@ -40,8 +40,8 @@ function ConstructorPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-cyan-500">Kit · Química</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Constructor de Moléculas</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Kit · Química</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Constructor de Moléculas</h1>
         <p className="mt-3 text-muted-foreground">
           Coloca átomos comunes en la cuadrícula, conéctalos con enlaces y observa la fórmula molecular y la masa molar estimada en vivo.
         </p>

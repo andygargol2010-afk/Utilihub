@@ -37,7 +37,7 @@ function SeatingChartPageEs() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Estudio</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">Estudio de Plano de Asientos</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight">Estudio de Plano de Asientos</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Arrastrá invitados a mesas visuales. Feedback en vivo de capacidad y avisos. Compartí el arreglo completo por URL.
         </p>

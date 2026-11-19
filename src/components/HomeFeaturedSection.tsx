@@ -22,10 +22,10 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
     <section className="pt-10 pb-4 sm:pt-12" aria-labelledby={es ? "es-featured-title" : "featured-title"}>
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="text-[13px] font-semibold text-primary">
+          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">
             {pt ? PT.eyebrow : es ? "Destacados" : "Featured"}
           </p>
-          <h2 id={es ? "es-featured-title" : "featured-title"} className="mt-1 text-2xl font-bold sm:text-3xl">
+          <h2 id={es ? "es-featured-title" : "featured-title"} className="mt-1 text-2xl font-black sm:text-3xl">
             {pt ? PT.title : es ? "Studios avanzados y juegos" : "Advanced studios and games"}
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
@@ -45,10 +45,10 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
       </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
-        <div className="rounded-xl border border-border bg-card p-4 sm:p-5">
+        <div className="rounded-2xl border border-border/70 bg-card/80 p-4 shadow-sm sm:p-5">
           <div className="mb-3 flex items-center gap-2">
             <Sparkles className="size-4 text-primary" aria-hidden />
-            <h3 className="text-sm font-semibold text-foreground">
+            <h3 className="text-sm font-black uppercase tracking-wide text-primary">
               {pt ? PT.tools : es ? "Herramientas avanzadas" : "Advanced tools"}
             </h3>
           </div>
@@ -91,17 +91,17 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
           </ul>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-4 sm:p-5">
+        <div className="rounded-2xl border border-violet-500/25 bg-violet-500/5 p-4 shadow-sm sm:p-5">
           <div className="mb-3 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <Gamepad2 className="size-4 text-primary" aria-hidden />
-              <h3 className="text-sm font-semibold text-foreground">
+              <Gamepad2 className="size-4 text-violet-700 dark:text-violet-300" aria-hidden />
+              <h3 className="text-sm font-black uppercase tracking-wide text-violet-800 dark:text-violet-200">
                 {pt ? PT.games : es ? "Juegos" : "Games"}
               </h3>
             </div>
             <a
               href={pt ? "/pt/jogos" : es ? "/es/juegos" : "/games"}
-              className="text-sm font-medium text-primary hover:underline"
+              className="text-xs font-bold text-violet-700 hover:underline dark:text-violet-300"
             >
               {pt ? PT.seeAll : es ? "Ver todos" : "See all"}
             </a>
@@ -111,13 +111,13 @@ export function HomeFeaturedSection({ locale = "en" }: { locale?: Locale }) {
               <li key={game.slug}>
                 <a
                   href={gamePath(game, gameLocale)}
-                  className="card-hover group flex items-start gap-3 rounded-xl border border-border bg-card p-3"
+                  className="card-hover group flex items-start gap-3 rounded-xl border border-violet-500/20 bg-card/90 p-3 hover:-translate-y-0.5 hover:border-violet-500/40"
                 >
-                  <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-secondary text-sm font-semibold text-secondary-foreground">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-violet-500/15 text-sm font-black text-violet-800 dark:text-violet-200">
                     {gameName(game, gameLocale).slice(0, 1)}
                   </span>
                   <span className="min-w-0">
-                    <span className="block font-bold group-hover:text-primary">
+                    <span className="block font-bold group-hover:text-violet-700 dark:group-hover:text-violet-200">
                       {gameName(game, gameLocale)}
                     </span>
                     <span className="mt-0.5 block line-clamp-2 text-xs text-muted-foreground">

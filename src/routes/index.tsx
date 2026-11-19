@@ -1,12 +1,12 @@
 import { Suspense, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check, Sparkles } from "lucide-react";
 import { DeferredHomeReviews } from "@/components/DeferredHomeReviews";
 import { HomeCatalogSlot } from "@/components/home-catalog-slot";
 import { AdBanner } from "@/components/AdBanner";
 import { absoluteUrl, ogImage, SITE_NAME, websiteSchema } from "@/lib/seo";
 import { loadHomeCatalog } from "./-index.part1";
-import { title, description, goRandomExperience, HomeToolCount, HomeSearch, DailyExperienceSpotlight, ExperienceDiscoveryRail, HomeCatalogRest } from "./-index.part2";
+import { title, description, goRandomExperience, HomeToolCount, HomeSearch, DailyExperienceSpotlight, ExperienceDiscoveryRail, HomeValuePath, HomeCatalogRest } from "./-index.part2";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -56,75 +56,143 @@ function HomePage() {
     <div className="pb-12">
       <style>{
         /* Critical CSS so home LCP (h1) paints before the full styles.css */
-        `.hero-gradient{background:linear-gradient(180deg,var(--color-card) 0%,var(--color-background) 100%)}` +
+        `.hero-gradient{background-image:linear-gradient(to right,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),linear-gradient(to bottom,color-mix(in oklab,var(--color-border) 48%,transparent) 1px,transparent 1px),radial-gradient(70% 80% at 8% 0%,color-mix(in oklab,var(--color-primary) 20%,transparent),transparent 70%),radial-gradient(60% 70% at 95% 10%,color-mix(in oklab,var(--color-highlight) 18%,transparent),transparent 65%),linear-gradient(180deg,oklch(.99 .008 255),var(--color-background));background-size:36px 36px,36px 36px,auto,auto,auto}` +
         `.container-page{width:100%;margin-inline:auto;max-width:84rem;padding-inline:clamp(1rem,3vw,2rem)}` +
-        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:700;letter-spacing:-0.025em;line-height:1.12}` +
-        `.shadow-lift{box-shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px -12px rgba(15,23,42,.12)}` +
-        `.surface-card{background:var(--color-card);border:1px solid var(--color-border);border-radius:.75rem;box-shadow:0 1px 2px rgba(15,23,42,.04)}`
+        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1.03}` +
+        `.shadow-lift{box-shadow:0 20px 46px -26px rgba(41,50,110,.38)}` +
+        `.surface-card{background:color-mix(in oklab,var(--color-card) 94%,transparent);border:1px solid var(--color-border);border-radius:1.25rem;box-shadow:0 1px 2px rgba(20,28,60,.04),0 20px 48px -30px rgba(41,50,110,.3)}`
       }</style>
-      <section className="hero-gradient border-b border-border">
-        <div className="container-page py-12 sm:py-16 lg:py-20">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-medium text-primary">
-              <Suspense fallback={<span>Free tools</span>}>
-                <HomeToolCount locale="en" />
-              </Suspense>{" "}
-              · free · no signup
-            </p>
-            <h1 className="mt-3 text-4xl tracking-tight sm:text-5xl lg:text-[3.5rem]">
+      <section className="hero-gradient border-b border-border/70">
+        <div className="container-page grid gap-8 py-10 sm:py-16 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-12 lg:py-20">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/75 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-primary">
+              <Sparkles className="size-3.5" aria-hidden /> Tools, studios & games
+            </div>
+            <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
               Free online tools to solve what you need in seconds.
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
-              Calculate and convert everyday tasks — plus advanced 3D studios and free browser games. Everything runs in your browser.
+            <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+              Calculate and convert everyday tasks — plus advanced 3D studios and free browser games. No signup.
             </p>
-            <div className="mx-auto mt-8 min-h-14 max-w-2xl text-left">
-              <Suspense fallback={<div className="h-14 animate-pulse rounded-lg border border-border bg-card" />}>
-                <HomeSearch locale="en" />
-              </Suspense>
-            </div>
-            <nav aria-label="Popular categories" className="mt-4 flex flex-wrap justify-center gap-2 text-sm">
-              {[
-                ["/category/math", "Math"],
-                ["/finance", "Finance"],
-                ["/category/converters", "Converters"],
-                ["/category/text", "Text"],
-                ["/category/developer", "Developer"],
-                ["/category/advanced-tools", "Advanced tools"],
-              ].map(([href, label]) => (
-                <a
-                  key={href}
-                  href={href}
-                  className="inline-flex min-h-9 items-center rounded-md border border-border bg-card px-3 font-medium text-foreground hover:border-primary/40 hover:text-primary"
-                >
-                  {label}
-                </a>
-              ))}
-            </nav>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Link
-                to="/tools"
-                className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+            <div className="mt-7 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={goRandomExperience}
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-bold text-white shadow-lift hover:-translate-y-0.5 hover:opacity-95"
+                data-event="random-experience-click"
               >
-                Browse all tools <ArrowRight className="size-4" aria-hidden />
-              </Link>
+                🎲 Random Experience
+              </button>
+              <a
+                href="/category/advanced-tools"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-lift hover:-translate-y-0.5 hover:opacity-95"
+              >
+                Explore advanced tools <ArrowRight className="size-4" />
+              </a>
               <a
                 href="/games"
-                className="inline-flex min-h-11 items-center rounded-md border border-border bg-card px-5 text-sm font-semibold text-foreground hover:bg-secondary"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-violet-500/40 bg-card px-5 py-3 text-sm font-bold text-violet-800 hover:border-violet-500/60 hover:bg-violet-500/10 dark:text-violet-200"
               >
                 Play games
               </a>
-            </div>
-            <p className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <button type="button" onClick={goRandomExperience} className="min-h-9 underline-offset-4 hover:text-foreground hover:underline" data-event="random-experience-click">
-                Random experience
-              </button>
-              <Link to="/find-your-tool" className="min-h-9 leading-9 underline-offset-4 hover:text-foreground hover:underline">
+              <Link
+                to="/tools"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold hover:border-primary/40 hover:bg-accent"
+              >
+                Full catalog
+              </Link>
+              <Link
+                to="/find-your-tool"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-cyan-500/40 bg-card px-5 py-3 text-sm font-bold hover:border-cyan-500/60 hover:bg-cyan-500/10"
+              >
                 Find your tool
               </Link>
-              <Link to="/growth/embed-studio" className="min-h-9 leading-9 underline-offset-4 hover:text-foreground hover:underline">
-                Embed games on your site
+              <Link
+                to="/growth/embed-studio"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-emerald-500/40 bg-card px-5 py-3 text-sm font-bold hover:border-emerald-500/60 hover:bg-emerald-500/10"
+              >
+                Embed games
               </Link>
-            </p>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <Check className="size-3.5 text-primary" /> No signup
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="size-3.5 text-primary" /> Free
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="size-3.5 text-primary" /> Local privacy
+              </span>
+            </div>
+          </div>
+          <div className="surface-card bg-card/80 p-3 shadow-lift sm:p-4">
+            <div className="rounded-xl border border-border/70 bg-background p-4 sm:p-5">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Quick access</p>
+                  <h2 className="mt-1 text-xl font-black">What do you want to solve?</h2>
+                </div>
+                <Suspense fallback={<span className="inline-block h-6 w-16 rounded-full bg-accent" />}>
+                  <HomeToolCount locale="en" />
+                </Suspense>
+              </div>
+              <div className="mt-4 min-h-24">
+                <Suspense fallback={<div className="h-11 animate-pulse rounded-xl bg-accent/70" />}>
+                  <HomeSearch locale="en" />
+                </Suspense>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-xs font-semibold sm:grid-cols-3">
+                <a
+                  href="/category/advanced-tools"
+                  className="rounded-lg border border-primary/30 bg-primary/5 px-3 py-2.5 hover:border-primary/50 hover:bg-primary/10"
+                >
+                  Advanced
+                </a>
+                <a
+                  href="/games"
+                  className="rounded-lg border border-violet-500/30 bg-violet-500/5 px-3 py-2.5 hover:border-primary/50 hover:bg-violet-500/10"
+                >
+                  Games
+                </a>
+                <a href="/category/math" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                  Math
+                </a>
+                <a href="/finance" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                  Finance
+                </a>
+                <a href="/category/text" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                  Text
+                </a>
+                <a href="/category/converters" className="rounded-lg border border-border/70 bg-card px-3 py-2.5 hover:border-primary/40 hover:bg-accent">
+                  Converters
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Suspense fallback={<div className="container-page py-4 min-h-[120px]" aria-hidden /> }>
+        <DailyExperienceSpotlight locale="en" />
+      </Suspense>
+      <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden /> }>
+        <ExperienceDiscoveryRail locale="en" />
+      </Suspense>
+      <Suspense fallback={<div className="container-page py-4 min-h-[160px]" aria-hidden /> }>
+        <HomeValuePath locale="en" />
+      </Suspense>
+      <section className="container-page py-6">
+        <div className="rounded-2xl border border-border/60 bg-card/50 p-4 sm:p-5">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-cyan-600">Shareable Experiences</p>
+          <h2 className="mt-1 text-lg font-black">Create & share interactive visuals</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Deep-link ready. Use the Share button on each to send via Web Share or copy link.</p>
+          <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
+            <Link to="/aurora-particle-playground" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Aurora Particles</Link>
+            <Link to="/neon-layer-composer" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Neon Layers</Link>
+            <Link to="/n-body-gravity" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">N-Body Gravity</Link>
+            <Link to="/color-cascade-fusion" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Color Cascade</Link>
+            <Link to="/studio/prism-trail-composer" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Prism Trail</Link>
+            <Link to="/aura-card" className="rounded-lg border border-border bg-background px-3 py-1.5 hover:bg-accent">Aura Card</Link>
           </div>
         </div>
       </section>
@@ -133,14 +201,6 @@ function HomePage() {
         <Suspense fallback={<HomeCatalogSlot />}>
           <HomeCatalogRest locale="en" />
         </Suspense>
-      </div>
-      <Suspense fallback={<div className="container-page py-6 min-h-[280px]" aria-hidden />}>
-        <ExperienceDiscoveryRail locale="en" />
-      </Suspense>
-      <Suspense fallback={<div className="container-page py-4 min-h-[120px]" aria-hidden />}>
-        <DailyExperienceSpotlight locale="en" />
-      </Suspense>
-      <div className="container-page">
         <DeferredHomeReviews locale="en" />
       </div>
     </div>

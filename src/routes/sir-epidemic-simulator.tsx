@@ -37,8 +37,8 @@ function SirEpidemicPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-rose-600">Simulator · Shareable</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">SIR Epidemic Simulator</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-rose-600">Simulator · Shareable</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">SIR Epidemic Simulator</h1>
         <p className="mt-3 text-sm text-white/70 sm:text-base">
           Set transmission rate <strong>β</strong> and recovery rate <strong>γ</strong>. Toggle a <strong>lockdown</strong> (lowers β) or <strong>vaccination campaign</strong> (moves susceptibles to recovered). Watch the S/I/R curves respond live. Share any scenario with the URL.
         </p>

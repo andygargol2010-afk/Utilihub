@@ -38,8 +38,8 @@ function PostcardPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-violet-600">Experience · Shareable</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Particle Postcard</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-violet-600">Experience · Shareable</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Particle Postcard</h1>
         <p className="mt-3 text-muted-foreground">
           Type a short message. Particles <strong className="font-semibold text-foreground">swarm to form the text</strong> with glowing trails.
           Adjust density, swarm strength and mood colors — then share the link or download a PNG.

@@ -38,8 +38,8 @@ function AuroraPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-cyan-600">Experience · Shareable</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Aurora Name Flow</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Experience · Shareable</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Aurora Name Flow</h1>
         <p className="mt-3 text-muted-foreground">
           Type a short name or phrase. Particles and light ribbons <strong className="font-semibold text-foreground">form the letters in a flowing aurora</strong>. Mouse or touch stirs the flow, bends ribbons and creates temporary light trails.
           Tune density, flow speed and aurora moods — then share the link or download a PNG.

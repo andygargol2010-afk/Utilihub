@@ -20,8 +20,8 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
         <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="es-shortcuts-title">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-[13px] font-semibold text-primary">Empieza aquí</p>
-              <h2 id="es-shortcuts-title" className="mt-1 text-2xl font-bold sm:text-3xl">
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Empieza aquí</p>
+              <h2 id="es-shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
                 Enlaces rápidos
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -67,8 +67,8 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
         <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="es-explore-categories">
           <div className="flex items-end justify-between gap-3">
             <div>
-              <p className="text-[13px] font-semibold text-primary">Explora por objetivo</p>
-              <h2 id="es-explore-categories" className="mt-1 text-2xl font-bold">
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explora por objetivo</p>
+              <h2 id="es-explore-categories" className="mt-1 text-2xl font-black">
                 Todas las categorías
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -121,8 +121,8 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
         <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="pt-shortcuts-title">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-[13px] font-semibold text-primary">Comece aqui</p>
-              <h2 id="pt-shortcuts-title" className="mt-1 text-2xl font-bold sm:text-3xl">
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Comece aqui</p>
+              <h2 id="pt-shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
                 Links rápidos
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -169,8 +169,8 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
         <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="pt-explore-categories">
           <div className="flex items-end justify-between gap-3">
             <div>
-              <p className="text-[13px] font-semibold text-primary">Explore por objetivo</p>
-              <h2 id="pt-explore-categories" className="mt-1 text-2xl font-bold">
+              <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explore por objetivo</p>
+              <h2 id="pt-explore-categories" className="mt-1 text-2xl font-black">
                 Todas as categorias
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -220,8 +220,8 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
       <section className="pt-10 pb-10 sm:pt-12 sm:pb-12" aria-labelledby="shortcuts-title">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-[13px] font-semibold text-primary">Start here</p>
-            <h2 id="shortcuts-title" className="mt-1 text-2xl font-bold sm:text-3xl">
+            <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Start here</p>
+            <h2 id="shortcuts-title" className="mt-1 text-2xl font-black sm:text-3xl">
               Quick links
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -268,8 +268,8 @@ export function HomeCatalogRest({ locale }: { locale: "en" | "es" | "pt" }) {
       <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="explore-categories">
         <div className="flex items-end justify-between gap-3">
           <div>
-            <p className="text-[13px] font-semibold text-primary">Explore by goal</p>
-            <h2 id="explore-categories" className="mt-1 text-2xl font-bold">
+            <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Explore by goal</p>
+            <h2 id="explore-categories" className="mt-1 text-2xl font-black">
               All categories
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">Find a collection of tools organized by task.</p>

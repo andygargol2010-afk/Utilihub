@@ -40,8 +40,8 @@ function CertificadoPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-amber-600">Crecimiento · Superficies para compartir</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Creador de Certificado de Logro</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-amber-600">Crecimiento · Superficies para compartir</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Creador de Certificado de Logro</h1>
         <p className="mt-3 text-muted-foreground">
           Diseña un certificado personal. Elige plantilla y colores, completa los datos, previsualiza en vivo, luego descarga o comparte el enlace.
         </p>

@@ -38,8 +38,8 @@ function SolarSystemPageEs() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-cyan-600">Explorador · Educativo</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Explorador de Escala del Sistema Solar</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Explorador · Educativo</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Explorador de Escala del Sistema Solar</h1>
         <p className="mt-3 text-muted-foreground">
           Experiencia de Canvas abierto para sentir los <strong className="font-semibold text-foreground">tamaños y distancias relativos reales</strong> del sistema solar. Alterná entre solo tamaño, solo distancia o ambos. Arrastrá planetas, hacé zoom y pan. Las etiquetas y estelas orbitales ayudan a comparar la Tierra con Júpiter (~11× de diámetro) y a apreciar que Neptuno está a ~30 UA.
         </p>

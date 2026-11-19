@@ -68,7 +68,7 @@ export function ProgressPassport({ locale }: { locale: Locale }) {
   return (
     <div className="max-w-md mx-auto">
       <div ref={passportRef} className="rounded-2xl border-2 border-emerald-500 bg-white p-6 shadow-lg">
-        <h2 className="text-center text-xl font-bold text-emerald-700">
+        <h2 className="text-center text-xl font-black text-emerald-700">
           {locale === "es" ? "Pasaporte de Progreso UtiliHub" : "UtiliHub Progress Passport"}
         </h2>
         <p className="mt-1 text-center text-sm text-muted-foreground">
@@ -99,7 +99,7 @@ export function ProgressPassport({ locale }: { locale: Locale }) {
                 className={`relative rounded-xl border-2 p-3 text-left text-xs transition ${has ? "border-emerald-500 bg-emerald-50" : "border-muted bg-muted/30"}`}
               >
                 {has && (
-                  <div className="absolute -right-1 -top-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-emerald-600 bg-emerald-500 text-[10px] font-bold text-white shadow-md rotate-12">
+                  <div className="absolute -right-1 -top-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-emerald-600 bg-emerald-500 text-[10px] font-black text-white shadow-md rotate-12">
                     ✓
                   </div>
                 )}

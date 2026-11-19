@@ -38,7 +38,7 @@ function KaleidoscopePageEs() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">Estudio de Mandalas Caleidoscópico</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight">Estudio de Mandalas Caleidoscópico</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Dibujá libremente. Cada trazo se refleja en tiempo real con simetría rotacional de 4, 6 u 8 pliegues — mandalas que florecen al instante. Cambiá pinceles y colores en vivo. Exportá PNG de alta resolución o compartí.
         </p>

@@ -31,7 +31,7 @@ function CelebracionPage() {
     <main className="container-page py-8">
       <header className="mb-8">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Viaje</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">Viaje de celebración</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight">Viaje de celebración</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Planificá tu evento en pasos guiados. Ocasión e invitados visuales, presupuesto interactivo, lista de tareas y tarjeta de invitación en vivo. Compartí el estado completo por URL.
         </p>

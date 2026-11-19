@@ -35,8 +35,8 @@ function CompositorRioPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-primary">Viaje · Progresión</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Compositor Río de Waypoints</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Viaje · Progresión</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor Río de Waypoints</h1>
         <p className="mt-3 text-muted-foreground">
           Colocá waypoints secuenciales para componer un río de luz progresivo. Las partículas recorren el camino con degradados de color por etapa para una fuerte sensación de avance y recompensa visual.
         </p>

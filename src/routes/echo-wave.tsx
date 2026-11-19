@@ -38,8 +38,8 @@ function EchoWavePage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-cyan-600">Experience · Shareable</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Echo Wave Signature</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Experience · Shareable</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Echo Wave Signature</h1>
         <p className="mt-3 text-muted-foreground">
           Type a name or phrase. A unique <strong className="font-semibold text-foreground">multi-layer sine waveform</strong> emerges from character code frequencies and hash.
           Click or drag on the canvas to pluck ripples that interfere with the waves. Download a PNG to share.

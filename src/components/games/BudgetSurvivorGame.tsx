@@ -172,7 +172,7 @@ export function BudgetSurvivorGame({ locale = "en" }: { locale?: GameLocale }) {
               <h2 className="mt-1 text-lg font-bold text-white">{es ? current.titleEs : current.titleEn}</h2>
               <p className="mt-1 text-sm text-white/65">{es ? current.descEs : current.descEn}</p>
               <p
-                className={`mt-3 text-2xl font-bold tabular-nums ${
+                className={`mt-3 text-2xl font-black tabular-nums ${
                   current.amount >= 0 ? "text-emerald-300" : "text-rose-300"
                 }`}
               >
@@ -197,7 +197,7 @@ export function BudgetSurvivorGame({ locale = "en" }: { locale?: GameLocale }) {
 
           {phase === "won" && (
             <div className="rounded-2xl border border-emerald-400/40 bg-emerald-500/15 p-4 text-center shadow-[0_0_24px_rgba(16,185,129,0.12)]">
-              <p className="text-lg font-bold text-emerald-300">
+              <p className="text-lg font-black text-emerald-300">
                 {es ? "¡Sobreviviste el mes!" : "You survived the month!"}
               </p>
               <p className="mt-1 text-sm text-white/70">
@@ -213,7 +213,7 @@ export function BudgetSurvivorGame({ locale = "en" }: { locale?: GameLocale }) {
 
           {phase === "lost" && (
             <div className="rounded-2xl border border-rose-400/40 bg-rose-500/15 p-4 text-center shadow-[0_0_24px_rgba(244,63,94,0.12)]">
-              <p className="text-lg font-bold text-rose-300">
+              <p className="text-lg font-black text-rose-300">
                 {es ? "Te quedaste sin plata" : "You ran out of money"}
               </p>
               <p className="mt-1 text-sm text-white/70">

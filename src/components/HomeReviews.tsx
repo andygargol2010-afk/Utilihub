@@ -85,8 +85,8 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
     <section className="mt-10 border-t border-border/70 py-10" aria-labelledby="reviews-title">
       <div className="flex items-end justify-between gap-3">
         <div>
-          <p className="text-[13px] font-semibold text-primary">{es ? "Comunidad" : "Community"}</p>
-          <h2 id="reviews-title" className="mt-1 text-2xl font-bold sm:text-3xl">
+          <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{es ? "Comunidad" : "Community"}</p>
+          <h2 id="reviews-title" className="mt-1 text-2xl font-black sm:text-3xl">
             {es ? "Qué dicen de UtiliHub" : "What people say about UtiliHub"}
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
@@ -97,9 +97,8 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
         </div>
       </div>
 
-      <div className={loaded && visible.length === 0 ? "mt-6 max-w-xl" : "mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]"}>
-        {/* With no reviews yet only the form is shown (no empty placeholder box). */}
-        <div className={loaded && visible.length === 0 ? "hidden" : "grid min-h-36 gap-3 sm:grid-cols-2"}>
+      <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid min-h-36 gap-3 sm:grid-cols-2">
           {!loaded ? (
             <>
               <div className="h-36 rounded-xl border border-border/70 bg-muted/30" aria-hidden />
@@ -128,11 +127,16 @@ export function HomeReviews({ locale = "en" }: { locale?: "en" | "es" }) {
           )}
         </div>
 
-        <form onSubmit={onSubmit} className="rounded-xl border border-border bg-card p-5 sm:p-6" noValidate>
-          <h3 className="text-lg font-bold">{es ? "Escribí tu reseña" : "Write a review"}</h3>
+        <form onSubmit={onSubmit} className="rounded-2xl border border-primary/20 bg-accent/40 p-5 sm:p-6" noValidate>
+          <h3 className="text-lg font-black">{es ? "Escribí tu reseña" : "Write a review"}</h3>
           <p className="mt-1 text-xs text-muted-foreground">
             {es ? "Sin registro. Máximo unas pocas por día." : "No signup. A few per day max."}
           </p>
+          {loaded && !durable && (
+            <p className="mt-3 rounded-xl border border-amber-300/60 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-500/40 dark:bg-amber-950/30 dark:text-amber-100">
+              {storageNotice}
+            </p>
+          )}
 
           <label className="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
             Website

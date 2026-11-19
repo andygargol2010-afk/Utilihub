@@ -37,7 +37,7 @@ function SeatingChartPageEn() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Studio</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">Event Seating Chart Studio</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight">Event Seating Chart Studio</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Drag guests onto visual tables. Live capacity feedback and warnings. Share the full seating arrangement via URL.
         </p>

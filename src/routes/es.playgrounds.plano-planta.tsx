@@ -37,7 +37,7 @@ function PlanoPlantaPageEs() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Estudio</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">Estudio de plano de planta</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight">Estudio de plano de planta</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Componé habitaciones y muebles en un canvas en vivo. Arrastrá para mover, rotá, cambiá colores de paredes y mirá el área total actualizarse al instante. Compartí tu plano por URL.
         </p>

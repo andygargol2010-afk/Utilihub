@@ -38,8 +38,8 @@ function NeonSignPageEs() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-fuchsia-600">Experiencia · Compartible</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Estudio de Firma Neón</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-600">Experiencia · Compartible</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Estudio de Firma Neón</h1>
         <p className="mt-3 text-muted-foreground">
           Escribí cualquier texto. Se convierte en un <strong className="font-semibold text-foreground">cartel de neón animado con tubo brillante</strong>, parpadeo y color derivado de un hash o del deslizador de matiz.
           Impacto visual inmediato. Descargá un PNG o compartí el estado de la URL.

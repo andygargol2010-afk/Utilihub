@@ -49,8 +49,8 @@ function SolarSystemPagePt() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-cyan-600">Explorador · Educacional</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Explorador de Escala do Sistema Solar</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-600">Explorador · Educacional</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Explorador de Escala do Sistema Solar</h1>
         <p className="mt-3 text-muted-foreground">
           Experiência de canvas aberta para sentir os <strong className="font-semibold text-foreground">tamanhos e distâncias relativos reais</strong> do sistema solar. Alterne entre modos apenas tamanho, apenas distância ou ambos. Arraste planetas, zoom e pan. Rótulos e trilhas orbitais ajudam a comparar a Terra com Júpiter (~11× diâmetro) e apreciar que Netuno fica a ~30 UA.
         </p>

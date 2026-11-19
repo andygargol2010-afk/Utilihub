@@ -62,10 +62,10 @@ export function MarketStallBoard({ locale = "en" }: Props) {
     >
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-[13px] font-semibold text-primary">
+          <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">
             {es ? "Tablero del d\u00eda de feria" : "Fair day board"}
           </p>
-          <h2 id="market-stall-board" className="mt-1 text-lg font-bold">
+          <h2 id="market-stall-board" className="mt-1 text-lg font-black">
             {es ? "Prepar\u00e1 el puesto" : "Set up the stall"}
           </h2>
         </div>

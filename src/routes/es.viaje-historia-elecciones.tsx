@@ -41,8 +41,8 @@ function ViajeHistoriaPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-cyan-500">Viaje · Elecciones narrativas</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Viaje de Historia con Elecciones</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Viaje · Elecciones narrativas</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Viaje de Historia con Elecciones</h1>
         <p className="mt-3 text-muted-foreground">
           Selecciona entre tarjetas de decisión ramificadas en cada etapa. Observa cómo se llenan los waypoints de progreso hasta llegar a uno de varios finales.
         </p>

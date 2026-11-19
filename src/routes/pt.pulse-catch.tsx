@@ -48,8 +48,8 @@ function PulseCatchPagePt() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-cyan-500">Jogo · Reação</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Pulse Catch</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Jogo · Reação</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Pulse Catch</h1>
         <p className="mt-3 text-muted-foreground">
           Toque nas <strong className="font-semibold text-foreground">faíscas</strong> brilhantes antes que se apaguem. Construa combos para mais pontos. Explosões de partículas em cada captura. Impacto visual imediato.
         </p>

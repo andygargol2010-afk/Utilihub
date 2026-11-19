@@ -99,11 +99,11 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-border/60 bg-surface/40 p-4 sm:p-6">
-        <p className="text-[13px] font-semibold text-cyan-500">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">
           {es ? "Racha de retorno" : "Return streak"}
         </p>
         <div className="mt-1 flex items-center gap-3">
-          <h2 className="text-2xl font-bold">
+          <h2 className="text-2xl font-black">
             {data.streak} {es ? "días seguidos" : "day streak"}
           </h2>
           <span
@@ -236,7 +236,7 @@ export function ReturnStreakBoard({ locale = "en" }: { locale?: PlaygroundLocale
           />
           <span className="relative text-3xl">{suggested.emoji}</span>
           <div className="relative min-w-0 flex-1">
-            <p className="text-[13px] font-semibold text-amber-600 dark:text-amber-400">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-600 dark:text-amber-400">
               {es ? "Sugerido para volver" : "Suggested next"}
             </p>
             <h3 className="truncate text-base font-bold sm:text-lg">{playgroundName(suggested, locale)}</h3>

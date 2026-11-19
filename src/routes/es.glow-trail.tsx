@@ -38,8 +38,8 @@ function GlowTrailPageEs() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-fuchsia-600">Estudio · Compartible</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Compositor de Estelas Brillantes</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-fuchsia-600">Estudio · Compartible</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Compositor de Estelas Brillantes</h1>
         <p className="mt-3 text-muted-foreground">
           Dibujá con el mouse o el dedo. Las estelas de luz brillante dejan <strong className="font-semibold text-foreground">resplandores de partículas y floraciones persistentes</strong> que siguen animándose. Ajustá el grosor y los colores del gradiente. Impacto visual inmediato. Compartí la URL o una captura PNG.
         </p>

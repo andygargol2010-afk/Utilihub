@@ -153,10 +153,10 @@ export function KitCarryBoard({ kitSlug, steps, locale = "en" }: KitCarryBoardPr
     >
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-[13px] font-semibold text-primary">
+          <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">
             {es ? "Pizarra del kit" : "Kit board"}
           </p>
-          <h2 id="kit-carry-board" className="mt-1 text-lg font-bold">
+          <h2 id="kit-carry-board" className="mt-1 text-lg font-black">
             {es ? "Llevá el trabajo entre pasos" : "Carry work between steps"}
           </h2>
         </div>

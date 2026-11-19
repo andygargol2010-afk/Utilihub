@@ -14,7 +14,7 @@ export function FinancialToolCard({ tool, locale = "en" }: { tool: FinancialTool
     <article className="tool-card-row group relative flex min-h-[4.25rem] items-center gap-3 rounded-xl border border-transparent px-2 py-2.5 transition-[border-color,box-shadow,transform,background-color] duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:bg-card hover:shadow-[0_12px_28px_-16px_rgba(67,56,202,0.35)] sm:min-h-[4.5rem]">
       <span
         aria-hidden="true"
-        className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-xs font-bold text-primary shadow-sm ring-1 ring-primary/10 transition group-hover:ring-primary/25"
+        className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-xs font-black text-primary shadow-sm ring-1 ring-primary/10 transition group-hover:ring-primary/25"
       >
         F
       </span>

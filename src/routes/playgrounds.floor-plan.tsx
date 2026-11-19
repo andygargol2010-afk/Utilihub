@@ -37,7 +37,7 @@ function FloorPlanPageEn() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Studio</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">Floor Plan Studio</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight">Floor Plan Studio</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Compose rooms and furniture on a live canvas. Drag to move, rotate, change wall colors and see total area update instantly. Share your plan via URL.
         </p>

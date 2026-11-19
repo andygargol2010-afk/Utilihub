@@ -26,7 +26,7 @@ export function AdvancedCalculator({ definition, locale = "en" }: { definition: 
     </div>
     <button type="button" onClick={run} className="rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90">{locale === "es" ? "Calcular" : "Calculate"}</button>
     {error && <p role="alert" className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">{error}</p>}
-    {results.length > 0 && <div data-export-result className="grid gap-3 sm:grid-cols-2">{results.map((r) => <div key={r.label} className="rounded-xl border border-border bg-muted/30 p-4"><p className="text-xs font-semibold text-muted-foreground">{text(r.label)}</p><p className="mt-1 text-xl font-bold">{r.value}</p></div>)}</div>}
+    {results.length > 0 && <div data-export-result className="grid gap-3 sm:grid-cols-2">{results.map((r) => <div key={r.label} className="rounded-xl border border-border bg-muted/30 p-4"><p className="text-xs font-semibold text-muted-foreground">{text(r.label)}</p><p className="mt-1 text-xl font-black">{r.value}</p></div>)}</div>}
     {definition.note && <p className="text-xs leading-5 text-muted-foreground">{text(definition.note)}</p>}
   </div>;
 }

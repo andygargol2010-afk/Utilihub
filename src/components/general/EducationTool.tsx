@@ -313,7 +313,7 @@ export function EducationTool({ tool, locale = "en" }: { tool: GeneralTool; loca
 
           {completed && (
             <div className="rounded-xl bg-muted/40 p-5 text-center">
-              <p className="text-2xl font-bold">
+              <p className="text-2xl font-black">
                 {score}/{generated.length}
               </p>
               <p className="font-semibold">{es ? "Cuestionario terminado" : "Quiz finished"}</p>

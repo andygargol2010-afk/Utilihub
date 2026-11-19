@@ -494,7 +494,7 @@ export function MemoryMatchClassicGame({ locale = "en" }: { locale?: GameLocale 
 
       {done && (
         <div className="mmc-win flex flex-col items-center gap-2">
-          <p className="text-base font-bold text-amber-300 drop-shadow">
+          <p className="text-base font-black text-amber-300 drop-shadow">
             {es
               ? `¡Completado! Puntuación ${score} (${moves} mov. / ${formatTime(elapsed)}) ${starStr}`
               : `Cleared! Score ${score} (${moves} moves / ${formatTime(elapsed)}) ${starStr}`}

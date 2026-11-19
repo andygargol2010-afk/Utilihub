@@ -124,7 +124,7 @@ function SeatingMini() {
 function ExperiencesHubEn() {
   return (
     <div className="container-page py-8 sm:py-12">
-      <p className="text-[13px] font-semibold text-slate-500">Discover · Play · Share</p>
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Discover · Play · Share</p>
       <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Experiences Hub</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">
         Interactive playgrounds, simulators, games and studios. Try mini-previews, then dive in. Shareable links, works on mobile.

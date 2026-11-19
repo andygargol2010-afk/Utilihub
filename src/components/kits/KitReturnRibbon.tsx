@@ -66,10 +66,7 @@ export function KitReturnRibbon({ toolSlug, locale = "en" }: KitReturnRibbonProp
   if (state.status === "idle") {
     return (
       <p className="mt-3 text-xs text-muted-foreground" data-kit-return="idle">
-        {es ? "Esta herramienta forma parte de un kit paso a paso. " : "This tool is part of a step-by-step kit. "}
-        <a href={href} className="font-medium text-primary underline-offset-2 hover:underline">
-          {es ? "Ver el kit" : "Open the kit"}
-        </a>
+        {es ? "Este paso está en un kit. La pizarra sigue vacía en este navegador." : "This step is in a kit. The board is still empty in this browser."}
       </p>
     );
   }

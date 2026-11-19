@@ -53,10 +53,10 @@ export function TravelPackingBoard({ locale = "en" }: Props) {
     <section className="mt-8 rounded-2xl border border-border/70 bg-surface/55 p-4 sm:p-5" aria-labelledby="travel-packing-board">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-[13px] font-semibold text-primary">
+          <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">
             {es ? "Maleta visual interactiva" : "Interactive visual suitcase"}
           </p>
-          <h2 id="travel-packing-board" className="mt-1 text-lg font-bold">
+          <h2 id="travel-packing-board" className="mt-1 text-lg font-black">
             {es ? "Armá tu packing" : "Build your packing"}
           </h2>
         </div>
@@ -102,7 +102,7 @@ export function TravelPackingBoard({ locale = "en" }: Props) {
               <Luggage className="size-4 text-primary" />
               {es ? "Peso de la maleta" : "Suitcase weight"}
             </div>
-            <div className="mt-2 text-2xl font-bold tabular-nums">
+            <div className="mt-2 text-2xl font-black tabular-nums">
               {totalWeight.toFixed(1)} <span className="text-base font-semibold text-muted-foreground">/ {LIMIT_KG} kg</span>
             </div>
             <div className="mt-3 h-3 overflow-hidden rounded-full bg-muted">
@@ -124,7 +124,7 @@ export function TravelPackingBoard({ locale = "en" }: Props) {
 
           <div className="rounded-xl border border-border/70 bg-card p-4">
             <div className="text-sm font-bold">{es ? "Progreso de items" : "Items progress"}</div>
-            <div className="mt-2 text-2xl font-bold tabular-nums">
+            <div className="mt-2 text-2xl font-black tabular-nums">
               {itemCount} <span className="text-base font-semibold text-muted-foreground">/ {ITEMS.length}</span>
             </div>
             <div className="mt-3 h-3 overflow-hidden rounded-full bg-muted">

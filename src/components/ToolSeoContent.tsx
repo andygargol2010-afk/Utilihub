@@ -259,8 +259,8 @@ export function ToolSeoContent({
   return (
     <article className="mt-10 border-t border-border/70 pt-8" aria-labelledby="tool-guide-title">
       <div className="max-w-3xl">
-        <p className="text-[13px] font-semibold text-primary">{guideLabel}</p>
-        <h2 id="tool-guide-title" className="mt-1 text-2xl font-bold">
+        <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{guideLabel}</p>
+        <h2 id="tool-guide-title" className="mt-1 text-2xl font-black">
           {howTitle}
         </h2>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">{howLead}</p>

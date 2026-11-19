@@ -147,7 +147,7 @@ export function ChoiceStoryJourney({ locale }: { locale: Locale }) {
           style={{ borderColor: ending.accent + "55" }}
         >
           <div className="mx-auto mb-3 h-1 w-16 rounded-full" style={{ background: ending.accent }} />
-          <h2 className="text-2xl font-bold">{ending.title[locale]}</h2>
+          <h2 className="text-2xl font-black">{ending.title[locale]}</h2>
           <p className="mt-2 text-muted-foreground">{ending.summary[locale]}</p>
           <p className="mt-3 text-xs text-muted-foreground">
             {locale === "es" ? "Camino" : "Path"}: {path.slice(0, -1).join(" → ")}

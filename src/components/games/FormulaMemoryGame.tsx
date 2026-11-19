@@ -149,7 +149,7 @@ export function FormulaMemoryGame({ locale = "en" }: { locale?: GameLocale }) {
       </div>
 
       {done && (
-        <p className="fm-win text-base font-bold text-amber-300">
+        <p className="fm-win text-base font-black text-amber-300">
           {es ? `¡Completado en ${moves} movimientos!` : `Cleared in ${moves} moves!`}
         </p>
       )}
@@ -177,7 +177,7 @@ export function FormulaMemoryGame({ locale = "en" }: { locale?: GameLocale }) {
                     boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 8px rgba(0,0,0,0.3)",
                   }}
                 >
-                  <span className="text-xl font-bold text-white/90">∫</span>
+                  <span className="text-xl font-black text-white/90">∫</span>
                 </div>
                 <div
                   className="fm-face fm-back"

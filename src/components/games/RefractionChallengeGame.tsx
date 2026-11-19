@@ -376,7 +376,7 @@ export function RefractionChallengeGame({ locale = "en" }: { locale?: GameLocale
       )}
       {cleared && (
         <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-3 text-center">
-          <p className="font-bold text-emerald-300">
+          <p className="font-black text-emerald-300">
             {es ? "¡Todos los niveles!" : "All levels cleared!"}
           </p>
           <p className="mt-1 text-xs text-white/60">

@@ -52,7 +52,7 @@ export function FinanceSeoContent({
     <>
       <section className="mt-10 grid gap-8 border-t border-border/70 pt-8 lg:grid-cols-2" aria-labelledby={es ? undefined : "financial-guide"}>
         <div>
-          <h2 id={es ? undefined : "financial-guide"} className="text-xl font-bold">
+          <h2 id={es ? undefined : "financial-guide"} className="text-xl font-black">
             {es ? "Sobre esta calculadora" : "About this calculator"}
           </h2>
           <div className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
@@ -62,7 +62,7 @@ export function FinanceSeoContent({
           </div>
         </div>
         <div>
-          <h2 className="text-xl font-bold">{es ? "Cómo usarla" : "How to use it"}</h2>
+          <h2 className="text-xl font-black">{es ? "Cómo usarla" : "How to use it"}</h2>
           <ol className="mt-3 space-y-3 text-sm leading-6 text-muted-foreground">
             {steps.map((step, i) => (
               <li key={step} className="flex gap-3">
@@ -78,7 +78,7 @@ export function FinanceSeoContent({
 
       {faq.length > 0 && (
         <section className="mt-10 border-t border-border/70 pt-8" aria-labelledby={es ? "financial-faq-es" : "financial-faq"}>
-          <h2 id={es ? "financial-faq-es" : "financial-faq"} className="text-xl font-bold">
+          <h2 id={es ? "financial-faq-es" : "financial-faq"} className="text-xl font-black">
             {es ? "Preguntas frecuentes" : "Frequently asked questions"}
           </h2>
           <dl className="mt-4 space-y-4">

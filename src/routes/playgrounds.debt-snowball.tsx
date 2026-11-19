@@ -36,7 +36,7 @@ function DebtSnowballPageEn() {
     <div className="container-page py-8">
       <header className="mb-6">
         <p className="text-xs font-bold uppercase tracking-wider text-primary">Playground</p>
-        <h1 className="mt-1 text-3xl font-bold tracking-tight">Snowball vs Avalanche</h1>
+        <h1 className="mt-1 text-3xl font-black tracking-tight">Snowball vs Avalanche</h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Add your debts and watch both methods compete in real time. Progress bars and payoff months update instantly.
         </p>

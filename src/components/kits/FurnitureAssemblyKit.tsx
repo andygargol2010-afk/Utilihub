@@ -305,7 +305,7 @@ export function FurnitureAssemblyKit({ locale }: { locale: Locale }) {
             className={`rounded-2xl border p-4 ${step.completed ? "border-primary/40 bg-card" : "border-border bg-card"} ${si === nextIndex ? "ring-2 ring-amber-400" : ""}`}
           >
             <div className="flex flex-wrap items-center gap-2">
-              <span className={`flex size-8 items-center justify-center rounded-full text-xs font-bold ${step.completed ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+              <span className={`flex size-8 items-center justify-center rounded-full text-xs font-black ${step.completed ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
                 {si + 1}
               </span>
               <span className="flex-1 font-medium">{locTitle(step.title, es)}</span>

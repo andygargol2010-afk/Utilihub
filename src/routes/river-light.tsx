@@ -38,8 +38,8 @@ function RiverLightPage() {
   return (
     <div className="container-page py-8 sm:py-10">
       <header className="mb-6 max-w-2xl">
-        <p className="text-[13px] font-semibold text-cyan-500">Journey · Shareable</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">River of Light Journey</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-500">Journey · Shareable</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">River of Light Journey</h1>
         <p className="mt-3 text-muted-foreground">
           Click to place waypoints. A continuous <strong className="font-semibold text-foreground">glowing river of particles</strong> flows between them, leaving persistent afterglows and soft blooms. Tune flow speed, core/glow colors, density and loop mode. Immediate visual payoff. Share the URL or snapshot PNG.
         </p>

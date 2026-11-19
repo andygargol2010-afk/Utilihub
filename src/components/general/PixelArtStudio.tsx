@@ -655,7 +655,7 @@ export function PixelArtStudio({ locale = "en" }: { tool: GeneralTool; locale?: 
   return (
     <div className="/* sticky-mobile-v1 touch-draw-v2 */ relative -m-1 overflow-x-hidden overscroll-none rounded-xl border border-zinc-700/80 bg-[#1a1a1f] text-zinc-100 shadow-inner sm:-m-2" style={{ overscrollBehavior: "none" }}>
       <div className="sticky top-0 z-30 flex flex-wrap items-center gap-1 border-b border-zinc-700/80 bg-[#121216]/95 px-2 py-1.5 backdrop-blur-sm supports-[backdrop-filter]:bg-[#121216]/80">
-        <span className="mr-1 text-[11px] font-bold tracking-[0.18em] text-rose-400">PIXELIHUB</span>
+        <span className="mr-1 text-[11px] font-black tracking-[0.18em] text-rose-400">PIXELIHUB</span>
         <button
           type="button"
           title={t.help}

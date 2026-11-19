@@ -82,8 +82,8 @@ function KitPage() {
     <main className="container-page py-6 sm:py-8">
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Work kits", to: "/kits" }, { label: kit.name }]} />
       <header className="mt-5 max-w-3xl">
-        <p className="text-[13px] font-semibold text-primary">{kit.eyebrow}</p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-5xl">{kit.name}</h1>
+        <p className="text-xs font-bold uppercase tracking-[.16em] text-primary">{kit.eyebrow}</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-5xl">{kit.name}</h1>
         <p className="mt-4 text-base leading-7 text-muted-foreground">{kit.description}</p>
         <p className="mt-3 inline-flex items-center gap-2 text-sm font-bold">
           <CheckCircle2 className="size-4 text-primary" /> {kit.outcome}
