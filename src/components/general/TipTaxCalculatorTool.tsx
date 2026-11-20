@@ -22,10 +22,11 @@ export function TipTaxCalculatorTool({ locale = "en" }: { tool?: GeneralTool; lo
     const afterTax = s + taxAmount;
     const tipAmount = afterTax * (tip / 100);
     const total = afterTax + tipAmount;
+    const fmt = (n: number) => n.toFixed(2);
     return {
-      taxAmount: Math.round(taxAmount * 100) / 100,
-      tipAmount: Math.round(tipAmount * 100) / 100,
-      total: Math.round(total * 100) / 100,
+      taxAmount: fmt(taxAmount),
+      tipAmount: fmt(tipAmount),
+      total: fmt(total),
     };
   }, [subtotal, taxPct, tipPct]);
 
