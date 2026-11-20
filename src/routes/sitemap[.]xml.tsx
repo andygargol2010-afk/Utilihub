@@ -254,6 +254,8 @@ export const Route = createFileRoute("/sitemap.xml")({
         const pathsRaw = [
           ...hubPairs,
           ...guidePairs,
+          // Vitrina: static page in public/vitrina (separate brand, Spanish only).
+          { path: "/vitrina/", priority: "0.6", lastmod: BUILD_DAY },
           ...categoryPairs,
           ...educationPairs,
           ...kitPairs,
