@@ -45,6 +45,7 @@
       "address": { "@type": "PostalAddress", "addressLocality": "Buenos Aires", "addressCountry": "AR" },
       "areaServed": [{ "@type": "Country", "name": "Argentina" }, { "@type": "Place", "name": "Latinoamérica" }],
       "founder": { "@type": "Person", "name": "Andrés García", "jobTitle": "Diseñador y desarrollador web" },
+      "email": "andygargol2010@gmail.com",
       "knowsLanguage": "es",
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
@@ -276,9 +277,6 @@ footer a{text-decoration:none;display:inline-flex;align-items:center;min-height:
 footer a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 
 /* floating actions */
-.wa-float{position:fixed;right:18px;bottom:18px;z-index:40;width:58px;height:58px;border-radius:50%;background:#1d7a52;color:#fff;display:grid;place-items:center;box-shadow:0 12px 28px -10px rgba(0,0,0,.45);transition:transform .2s var(--ease)}
-.wa-float:hover{transform:scale(1.06)}
-.wa-float svg{width:28px;height:28px}
 .mbar{display:none}
 
 /* reveal */
@@ -312,7 +310,6 @@ footer a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:
   .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:35;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(247,244,238,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s var(--ease)}
   .mbar.show{transform:none}
   .mbar .btn{flex:1;min-height:48px}
-  .wa-float{bottom:84px}
   .top .btn{padding:0 .95rem}
 }
 @media (max-width:380px){
@@ -340,7 +337,6 @@ footer a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:
   <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
   <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v4h4M10 12h5M10 16h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
-  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1 .3-3.4-.7a11.6 11.6 0 0 1-4.6-4.1c-.3-.5-1-1.5-1-2.8s.7-2 1-2.3a1 1 0 0 1 .7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .6l-.3.5-.4.4c-.1.1-.3.3-.1.6a8 8 0 0 0 1.5 1.8 7 7 0 0 0 2.1 1.3c.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.8.9c.3.1.4.2.5.3.1.2.1.8-.1 1.4z"/></symbol>
 </svg>
 
 <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -397,7 +393,7 @@ footer a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:
           <div class="p" style="height:7px;border-radius:4px;background:#d9d1c2;width:70%"></div>
           <div style="height:70px;border-radius:10px;background:var(--paper);border:1px solid var(--line)"></div>
           <div style="height:52px;border-radius:10px;background:var(--paper);border:1px solid var(--line)"></div>
-          <div class="wa"><svg width="14" height="14"><use href="#i-wa"/></svg>Reservar</div>
+          <div class="wa">Reservar turno</div>
         </div></div>
         <div class="chip c1"><svg><use href="#i-phone"/></svg>Pensada para el celular</div>
         <div class="chip c2"><svg><use href="#i-search"/></svg>Lista para Google</div>
@@ -635,20 +631,17 @@ footer a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:
 <footer>
   <div class="wrap">
     <div><strong style="font-family:var(--serif);font-size:1.15rem;color:var(--ink)">Vitrina.</strong> Diseño y desarrollo web por Andrés García · Buenos Aires, Argentina</div>
+    <a href="mailto:andygargol2010@gmail.com">andygargol2010@gmail.com</a>
     <nav aria-label="Pie de página">
       <a href="#incluye">Qué incluye</a><a href="#precios">Precios</a><a href="#preguntas">Preguntas</a><a href="#pedido">Pedir mi web</a>
     </nav>
   </div>
 </footer>
 
-<a class="wa-float hide" id="wa" href="#" target="_blank" rel="noopener" aria-label="Escribime por WhatsApp"><svg aria-hidden="true"><use href="#i-wa"/></svg></a>
 <div class="mbar" id="mbar"><a class="btn btn-primary" href="#pedido">Pedir mi web</a><a class="btn btn-ghost" href="#precios" style="background:var(--card)">Precios</a></div>
 
 <script>
 /* ===== Configuración ===== */
-/* Número de WhatsApp con código de país, sin + ni espacios. Ej.: "5491123456789". Vacío = botón oculto. */
-var WHATSAPP_NUMBER = "";
-var WHATSAPP_TEXT = "Hola Andrés, vi Vitrina y quiero consultar por una web para mi negocio.";
 var FORM_ENDPOINT = "https://formsubmit.co/ajax/andygargol2010@gmail.com";
 var CONTACT_EMAIL = "andygargol2010@gmail.com";
 /* ========================== */
@@ -656,10 +649,6 @@ var CONTACT_EMAIL = "andygargol2010@gmail.com";
   var d=document, root=d.documentElement;
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   root.classList.add('js');
-
-  /* WhatsApp */
-  var waUrl=WHATSAPP_NUMBER?'https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(WHATSAPP_TEXT):'';
-  if(waUrl){var wa=d.getElementById('wa');wa.href=waUrl;wa.classList.remove('hide');}
 
   /* Header + barra móvil */
   var top=d.getElementById('top'), mbar=d.getElementById('mbar'), pedido=d.getElementById('pedido');
@@ -738,8 +727,7 @@ var CONTACT_EMAIL = "andygargol2010@gmail.com";
         status.className='status bad';status.textContent='';
         status.append('No se pudo enviar. Probá de nuevo en un rato o escribime ');
         var a=d.createElement('a');
-        if(waUrl){a.href=waUrl;a.target='_blank';a.rel='noopener';a.textContent='por WhatsApp';}
-        else{a.href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Pedido de web');a.textContent='a '+CONTACT_EMAIL;}
+        a.href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Pedido de web');a.textContent='a '+CONTACT_EMAIL;
         status.append(a,'.');
       });
   });
