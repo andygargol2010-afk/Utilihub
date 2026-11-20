@@ -17,8 +17,9 @@ export function FlightTimeCalculatorTool({ locale = "en" }: { tool?: GeneralTool
     const s = parseFloat(speed);
     if (isNaN(d) || isNaN(s) || d <= 0 || s <= 0 || d > 20000 || s > 2000) return null;
     const hours = d / s;
-    const h = Math.floor(hours);
-    const m = Math.round((hours - h) * 60);
+    let h = Math.floor(hours);
+    let m = Math.round((hours - h) * 60);
+    if (m === 60) { h += 1; m = 0; }
     return { hours: hours.toFixed(2), display: `${h}h ${m}m` };
   }, [distance, speed]);
 
