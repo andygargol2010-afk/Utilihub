@@ -45,7 +45,8 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
   }, []);
 
   const playTone = useCallback(
-    (id: number, ms = 280) => {
+    (id: number, 
+ms = 280) => {
       if (!soundOn) return;
       try {
         ensureAudio();
@@ -103,7 +104,8 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
       ensureAudio();
       let nextSeed = forceNew ? null : seed;
       if (nextSeed == null) {
-        nextSeed = Math.floor(Math.random() * 1e9) + 1;
+        nextS
+eed = Math.floor(Math.random() * 1e9) + 1;
         setSeed(nextSeed);
       }
       updateUrl(nextSeed);
@@ -166,7 +168,8 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
         const extended = [...sequence, extra];
         setSequence(extended);
         setAnnounce(es ? `Correcto. Nivel ${extended.length}.` : `Correct. Level ${extended.length}.`);
-        setTimeout(() => void playSequence(extended), 550);
+        setTimeout(() => void playS
+equence(extended), 550);
       } else {
         setUserStep(next);
       }
@@ -224,11 +227,12 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
     ctx.font = "bold 20px system-ui, sans-serif";
     ctx.fillStyle = "#facc15";
     ctx.fillText(`${es ? "Mejor" : "Best"}: ${best}`, canvas.width / 2, 195);
-    ctx.fillStyle = "#94a3b8";
+    ctx.fillStyle = "#94
+a3b8";
     ctx.font = "14px system-ui, sans-serif";
     const level = sequence.length || 3;
     ctx.fillText(`${es ? "Nivel" : "Level"} ${level} · ${difficulty}`, canvas.width / 2, 225);
-    ctx.fillText("utilihub.app", canvas.width / 2, 270);
+    ctx.fillText("utilihub.net", canvas.width / 2, 270);
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = `utilihub-simon-${score}.png`;
@@ -267,7 +271,8 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
           {es ? "Nivel" : "Level"}: <span className="tabular-nums text-white">{level || "–"}</span>
         </span>
         <GameSecondaryButton onClick={() => setSoundOn((s) => !s)} active={soundOn}>
-          {soundOn ? (es ? "Sonido on" : "Sound on") : es ? "Sonido off" : "Sound off"}
+  
+        {soundOn ? (es ? "Sonido activado" : "Sound on") : es ? "Sonido desactivado" : "Sound off"}
         </GameSecondaryButton>
       </div>
 
@@ -307,7 +312,8 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
                 background: isLit ? pad.active : pad.bg,
                 transform: isLit ? "scale(1.06)" : "scale(1)",
                 boxShadow: isLit
-                  ? `0 0 24px ${pad.active}, inset 0 2px 0 rgba(255,255,255,0.35)`
+                  ? `0 0 24px ${pad.active}, inset 0 2px 0 rgba(255,25
+5,255,0.35)`
                   : "inset 0 2px 0 rgba(255,255,255,0.18), 0 6px 16px rgba(0,0,0,0.4)",
                 opacity: status === "playing" && !isLit ? 0.75 : 1,
               }}
