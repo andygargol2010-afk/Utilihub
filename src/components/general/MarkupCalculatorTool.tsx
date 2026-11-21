@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+successfully downloaded text file (SHA: 198d7bb5954e2eb21e362b146dc1515529f65e15)import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 
 type Locale = "en" | "es";
@@ -95,11 +95,11 @@ export function MarkupCalculatorTool({ locale = "en" }: { tool?: GeneralTool; lo
       <div className="text-sm text-muted-foreground space-y-1">
         <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
         <p>
-          <a href={es ? "/es/calculadora-interes-simple" : "/calculadora-interes-simple"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-interes-simple" : "/tools/calculadora-interes-simple"} className="underline">
             {es ? "Calculadora de interés simple" : "Simple interest calculator"}
           </a>
           {" · "}
-          <a href={es ? "/es/calculadora-descuento-sucesivo" : "/calculadora-descuento-sucesivo"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-descuento-sucesivo" : "/tools/calculadora-descuento-sucesivo"} className="underline">
             {es ? "Calculadora de descuento sucesivo" : "Successive discount calculator"}
           </a>
         </p>
