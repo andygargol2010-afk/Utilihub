@@ -116,7 +116,7 @@ export function TargetWeightByBmiCalculatorTool({ locale = "en" }: { tool?: Gene
             {es ? "Calculadora de IMC" : "BMI calculator"}
           </a>
           {" · "}
-          <a href={es ? "/es/herramientas/peso-ideal" : "/tools/peso-ideal"} className="underline text-primary">
+          <a href={es ? "/es/herramientas/calculadora-peso-ideal" : "/tools/calculadora-peso-ideal"} className="underline text-primary">
             {es ? "Peso ideal" : "Ideal weight"}
           </a>
         </p>
