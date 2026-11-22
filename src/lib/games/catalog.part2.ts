@@ -318,7 +318,7 @@ export const GAMES: readonly GameDef[] = [
     tag: "board",
     emoji: "⚪",
     summaryEn: "Classic Checkers / Draughts: diagonal moves, jump captures, promote to kings. Play Red or Black vs AI or a friend. Shareable board and PNG.",
-    summaryEs: "Damas / Draughts clásico: movimientos en diagonal, capturas por salto, promoción a reyes. Jugá Rojo o Negro vs IA o amigo. Tablero y PNG compartibles.",
+    summaryEs: "Damas clásico: movimientos en diagonal, capturas por salto, promoción a reyes. Jugá Rojo o Negro vs IA o con un amigo. Tablero y PNG compartibles.",
     hasScore: false,
   },
   {
