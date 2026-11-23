@@ -1,4 +1,4 @@
-successfully downloaded text file (SHA: 198d7bb5954e2eb21e362b146dc1515529f65e15)import { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 
 type Locale = "en" | "es";
