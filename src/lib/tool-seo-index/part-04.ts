@@ -1,3 +1,4 @@
+successfully downloaded text file (SHA: 015e9670348e57ed8a2ae97f46269a36054791ff)
 // TOOL_SEO_OVERRIDES part 04 — split out of ../tool-seo-overrides.ts on 2026-10-28.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import type { ToolSeoOverride } from "../tool-seo-overrides";
@@ -220,6 +221,62 @@ export const TOOL_SEO_OVERRIDES_PART_04: Record<string, ToolSeoOverride> = {
       {
         q: "¿La TMB es igual para hombres y mujeres?",
         a: "La fórmula cambia por una constante (+5 varones, −161 mujeres) por diferencias medias de composición corporal. Es una estimación, no una medición médica.",
+      },
+    ],
+  },
+  "calculadora-precio-original-descuento": {
+    metaTitle: "Original Price from Discount Calculator — Price before the Sale | UtiliHub",
+    metaTitleEs: "Calculadora del precio original antes de un descuento | UtiliHub",
+    metaDescription:
+      "Find the original price before a percentage discount: original = final / (1 - d/100). Example: 80 after 20% off was 100. Free, in your browser.",
+    metaDescriptionEs:
+      "Obtené el precio original antes de un descuento porcentual: original = final / (1 − d/100). Ejemplo: 80 con 20% de descuento era 100. Gratis, en el navegador.",
+    about: [
+      "The original price is the discounted price divided by (1 - discount/100): divide by the fraction of the price that was actually paid.",
+      "Example: a product that costs 80 after a 20% discount cost 80 / 0.8 = 100 before the discount.",
+      "A 100% or higher discount has no original price (division by zero), so the tool rejects those values.",
+    ],
+    aboutEs: [
+      "El precio original es el precio con descuento dividido por (1 − descuento/100): se divide por la fracción del precio efectivamente pagada.",
+      "Ejemplo: un producto que cuesta 80 tras un descuento del 20% costaba 80 / 0,8 = 100 antes del descuento.",
+      "Un descuento del 100% o más no tiene precio original (división por cero), así que la herramienta rechaza esos valores.",
+    ],
+    steps: [
+      "Enter the final price you paid (or saw advertised).",
+      "Enter the discount percentage applied.",
+      "Read the original price; copy it if you need it elsewhere.",
+    ],
+    stepsEs: [
+      "Ingresá el precio final que pagaste (o viste anunciado).",
+      "Ingresá el porcentaje de descuento aplicado.",
+      "Leé el precio original; copialo si lo necesitás en otro lado.",
+    ],
+    faq: [
+      {
+        q: "What is the formula for the original price?",
+        a: "Original = final price / (1 - discount%/100). Example: 80 with 20% off → 80 / 0.8 = 100.",
+      },
+      {
+        q: "What if the discount is 100%?",
+        a: "The final price would be 0 and the original price is undefined (division by zero). The tool rejects discounts of 100% or higher.",
+      },
+      {
+        q: "Is this the same as applying a discount?",
+        a: "No. Applying a discount multiplies by (1 - d/100); this tool undoes it with the inverse division, and the two operations cancel each other.",
+      },
+    ],
+    faqEs: [
+      {
+        q: "¿Cuál es la fórmula del precio original?",
+        a: "Original = precio final / (1 − descuento%/100). Ejemplo: 80 con 20% de descuento → 80 / 0,8 = 100.",
+      },
+      {
+        q: "¿Qué pasa si el descuento es del 100%?",
+        a: "El precio final sería 0 y el precio original queda indefinido (división por cero). La herramienta rechaza descuentos del 100% o más.",
+      },
+      {
+        q: "¿Es lo mismo que aplicar un descuento?",
+        a: "No. Aplicar un descuento multiplica por (1 − d/100); esta herramienta lo deshace con la división inversa, y ambas operaciones se cancelan entre sí.",
       },
     ],
   },
