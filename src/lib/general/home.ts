@@ -10,7 +10,13 @@ export const HOGAR_TOOLS=[
   ]},
  h("consumo-electrico-diario","Daily electricity use","number","Calculate daily consumption from power and hours of use.",{operation:"power-hours",fields:["Power (W)","Hours per day"]}),
  h("consumo-electrico-mensual","Monthly electricity use","number","Estimate monthly appliance consumption from daily use.",{operation:"monthly-electricity",fields:["Power (W)","Hours per day"]}),
- h("coste-agua","Water cost","number","Calculate water cost from volume and unit price.",{operation:"multiply",fields:["Volume","Price per unit"]}),
+ {...h("coste-agua","Water cost","number","Calculate water cost from volume and unit price.",{operation:"multiply",fields:["Volume","Price per unit"]}),
+  title:"Water Cost Calculator (Volume × Price per Unit) | UtiliHub",
+  keywords:["water cost calculator","water bill estimator","water consumption cost"],
+  faq:[
+   {q:"How is water cost calculated?",a:"Multiply the water volume consumed by the price per unit: cost = volume × price per unit."},
+   {q:"Which units should I use?",a:"Use one consistent unit for volume (m³, gallons, or liters) and its matching price per unit, so the result is in the right currency total."}
+  ]},
  h("presupuesto-hogar","Household budget","number","Calculate remaining spend from a household budget.",{operation:"subtract",fields:["Budget","Expenses"]}),
  h("division-alquiler","Rent split","number","Split rent among several people.",{operation:"divide",fields:["Rent","People"]}),
  h("ahorro-mensual","Monthly savings","number","Calculate monthly savings needed to reach a goal.",{operation:"divide",fields:["Savings goal","Months"]}),
