@@ -1,3 +1,4 @@
+successfully downloaded text file (SHA: a6780ca606d381802e51551e53f8fcff5d3751aa)
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 
@@ -41,7 +42,10 @@ function countBusinessDays(start: string, end: string, holidays: Set<string>): n
 
 export function BusinessDaysTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
-  const today = new Date().toISOString().slice(0, 10);
+  // Local date string. toISOString() is UTC and can return yesterday's date
+  // shortly after local midnight in UTC+ zones (e.g. Europe/Madrid),
+  // making the default start/end dates off by one day.
+  const today = localDateStr(new Date());
   const [start, setStart] = useState(today);
   const [end, setEnd] = useState(today);
   const [holidaysRaw, setHolidaysRaw] = useState("");
