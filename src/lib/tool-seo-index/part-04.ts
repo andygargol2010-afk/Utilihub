@@ -1,4 +1,3 @@
-successfully downloaded text file (SHA: 015e9670348e57ed8a2ae97f46269a36054791ff)
 // TOOL_SEO_OVERRIDES part 04 — split out of ../tool-seo-overrides.ts on 2026-10-28.
 // Add new entries in the smallest file of this folder; never rewrite files wholesale.
 import type { ToolSeoOverride } from "../tool-seo-overrides";
