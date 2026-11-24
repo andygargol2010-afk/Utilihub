@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Franco Trends · Peluquería en Villa Crespo · Demo</title>
+<meta name="description" content="Franco Trends, peluquería en Villa Crespo (CABA). Cortes, color, mechas y balayage, alisados y tratamientos. Pedí tu turno al 4509-4046.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0d0b;--bg2:#171512;--card:#1d1a16;--ink:#f3ede2;--muted:#a89f90;--gold:#c9a45c;--gold2:#e6c98a;--line:#2e2a23}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.6 Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+.demo-bar{background:var(--gold);color:#1a1408;font-size:13px;font-weight:600;text-align:center;padding:8px 16px}
+nav{position:sticky;top:0;z-index:5;background:rgba(14,13,11,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{font:600 26px "Cormorant Garamond",serif;letter-spacing:.04em}.logo span{color:var(--gold)}
+nav ul{display:flex;gap:26px;list-style:none;padding:0;font-size:14px}nav ul a{text-decoration:none;color:var(--muted)}nav ul a:hover{color:var(--gold2)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#1a1408;text-decoration:none;padding:13px 22px;border-radius:999px;font-weight:600;font-size:15px;border:0;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(201,164,92,.25)}
+.btn.ghost{background:transparent;color:var(--gold2);border:1.5px solid var(--gold)}
+.hero{padding:96px 0 80px;background:radial-gradient(900px 420px at 85% 10%,rgba(201,164,92,.16),transparent 60%),radial-gradient(600px 300px at 0% 100%,rgba(201,164,92,.08),transparent 60%)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
+h1{font:500 clamp(44px,6vw,72px)/1.02 "Cormorant Garamond",serif;margin:14px 0 18px}h1 em{color:var(--gold2)}
+.lead{color:var(--muted);font-size:18px;max-width:30em}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.stat{margin-top:26px;font-size:14px;color:var(--muted)}.stat b{color:var(--ink)}
+.card-hero{aspect-ratio:4/5;border-radius:200px 200px 24px 24px;background:linear-gradient(160deg,#2a241b 0%,#4a3b22 50%,var(--gold) 120%);position:relative;overflow:hidden;border:1px solid rgba(201,164,92,.35);box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.card-hero::after{content:"Franco Trends";position:absolute;inset:auto 0 34px;text-align:center;font:italic 500 40px "Cormorant Garamond",serif;color:var(--gold2)}
+.card-hero .chips{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);display:grid;gap:10px;width:72%}
+.card-hero .chips span{background:rgba(14,13,11,.72);border:1px solid rgba(201,164,92,.4);border-radius:999px;padding:9px 14px;text-align:center;font-size:14px;font-weight:600;color:var(--gold2)}
+section{padding:80px 0}
+h2{font:500 clamp(34px,4vw,46px)/1.1 "Cormorant Garamond",serif;margin-bottom:10px}
+.sub{color:var(--muted);margin-bottom:36px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.svc{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.svc .ic{width:44px;height:44px;border-radius:14px;background:rgba(201,164,92,.14);display:grid;place-items:center;font-size:22px}
+.svc h3{font:600 26px/1.15 "Cormorant Garamond",serif}
+.svc ul{padding-left:18px;color:var(--muted);font-size:14px;flex:1}
+.svc .price{font-size:13px;color:var(--gold);font-weight:600}
+.svc a{font-size:14px;font-weight:600;color:var(--gold2);text-decoration:none}
+.note{font-size:12px;color:var(--muted);margin-top:14px}
+.alt{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.ph{aspect-ratio:1;border-radius:16px;border:1px dashed rgba(201,164,92,.4);background:linear-gradient(145deg,#1f1b15,#2b241a);display:grid;place-items:center;text-align:center;padding:12px;color:var(--muted);font-size:13px}
+.ph b{display:block;font:500 20px "Cormorant Garamond",serif;color:var(--gold2)}
+.ph.tall{grid-row:span 2;aspect-ratio:auto}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.steps div{border-top:1px solid var(--line);padding-top:18px}.steps b{font:500 40px "Cormorant Garamond",serif;color:var(--gold)}
+.steps p{color:var(--muted);font-size:15px}
+.book{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+form{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;display:grid;gap:14px}
+label{display:grid;gap:6px;font-size:14px;color:var(--muted)}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;width:100%;color-scheme:dark}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ok{display:none;background:rgba(201,164,92,.1);border:1px solid var(--gold);border-radius:14px;padding:16px;font-size:14px}
+.ok.show{display:block}.ok b{color:var(--gold2)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px}
+dl{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;font-size:15px;margin-top:6px}dt{color:var(--muted)}
+footer{padding:34px 0;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.fab{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:var(--gold);display:grid;place-items:center;box-shadow:0 10px 24px rgba(0,0,0,.4);z-index:9}
+.fab svg{width:26px;height:26px;fill:#1a1408}
+@media(max-width:860px){.hero .wrap,.book{grid-template-columns:1fr}.grid,.gallery{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr}nav ul{display:none}.card-hero{max-width:340px;margin:0 auto}}
+@media(max-width:520px){.grid,.row{grid-template-columns:1fr}.hero{padding-top:56px}nav .btn{padding:10px 16px;font-size:14px}}
+</style>
+</head>
+<body>
+<div class="demo-bar">Demo de propuesta · el contenido, las fotos y los precios son de ejemplo</div>
+<nav><div class="wrap"><div class="logo">Franco <span>Trends</span></div>
+<ul><li><a href="#servicios">Servicios</a></li><li><a href="#trabajos">Trabajos</a></li><li><a href="#turnos">Turnos</a></li><li><a href="#contacto">Contacto</a></li></ul>
+<a class="btn" href="#reserva">Pedir turno</a></div></nav>
+
+<header class="hero"><div class="wrap">
+<div>
+<div class="kicker">Peluquería · Villa Crespo, CABA</div>
+<h1>Tu pelo, <em>en tendencia</em></h1>
+<p class="lead">Cortes, color, mechas y balayage, alisados y tratamientos en Villa Crespo. Elegí tu servicio y pedí tu turno en un minuto.</p>
+<div class="cta"><a class="btn" href="#reserva">Reservar turno</a><a class="btn ghost" href="tel:+541145094046">Llamar 4509-4046</a></div>
+<p class="stat"><b>14,2 mil</b> seguidores en Instagram · <a href="https://www.instagram.com/franco_trendsinhair/" target="_blank" rel="noopener">@franco_trendsinhair</a></p>
+</div>
+<div class="card-hero" aria-hidden="true"><div class="chips"><span>✂️ Cortes</span><span>🎨 Color</span><span>✨ Mechas y balayage</span><span>💧 Alisados</span></div></div>
+</div></header>
+
+<section id="servicios"><div class="wrap">
+<h2>Servicios</h2><p class="sub">Todo para tu pelo, con productos profesionales y asesoramiento personalizado.</p>
+<div class="grid">
+<article class="svc"><div class="ic">✂️</div><h3>Cortes</h3><ul><li>Corte mujer</li><li>Corte hombre</li><li>Flequillo y retoques</li><li>Peinados</li></ul><div class="price">Precio a confirmar</div><a href="#reserva" data-svc="Cortes">Reservar →</a></article>
+<article class="svc"><div class="ic">🎨</div><h3>Color</h3><ul><li>Color global</li><li>Retoque de raíz</li><li>Matizado</li><li>Fantasía</li></ul><div class="price">Precio a confirmar</div><a href="#reserva" data-svc="Color">Reservar →</a></article>
+<article class="svc"><div class="ic">✨</div><h3>Mechas y balayage</h3><ul><li>Balayage</li><li>Mechas</li><li>Babylights</li><li>Iluminación</li></ul><div class="price">Precio a confirmar</div><a href="#reserva" data-svc="Mechas y balayage">Reservar →</a></article>
+<article class="svc"><div class="ic">💧</div><h3>Alisados y tratamientos</h3><ul><li>Alisado</li><li>Nutrición</li><li>Botox capilar</li><li>Hidratación</li></ul><div class="price">Precio a confirmar</div><a href="#reserva" data-svc="Alisados y tratamientos">Reservar →</a></article>
+</div>
+<p class="note">En la web final cargamos sus precios reales y las promos del mes.</p>
+</div></section>
+
+<section class="alt" id="trabajos"><div class="wrap">
+<h2>Trabajos</h2><p class="sub">Una muestra de lo que hacemos en el salón.</p>
+<div class="gallery">
+<div class="ph tall"><div><b>Balayage</b>Foto de trabajo real</div></div>
+<div class="ph"><div><b>Corte</b>Foto de trabajo real</div></div>
+<div class="ph"><div><b>Color</b>Foto de trabajo real</div></div>
+<div class="ph"><div><b>Mechas</b>Foto de trabajo real</div></div>
+<div class="ph"><div><b>Alisado</b>Foto de trabajo real</div></div>
+<div class="ph"><div><b>Antes / después</b>Foto de trabajo real</div></div>
+<div class="ph"><div><b>Peinado</b>Foto de trabajo real</div></div>
+</div>
+<p class="note">En la versión final se muestran fotos reales de su Instagram.</p>
+</div></section>
+
+<section id="turnos"><div class="wrap">
+<h2>Cómo pedir turno</h2><p class="sub">Sin vueltas: quien los encuentra en Google reserva directo.</p>
+<div class="steps">
+<div><b>01</b><p>Elegís el servicio que querés.</p></div>
+<div><b>02</b><p>Completás el formulario con tu nombre, día y horario preferidos.</p></div>
+<div><b>03</b><p>El salón te confirma el turno, y listo.</p></div>
+</div></div></section>
+
+<section class="alt" id="reserva"><div class="wrap book">
+<div>
+<h2>Pedí tu turno</h2><p class="sub">Completá tus datos y te contactamos para confirmar día y horario.</p>
+<p class="note">Demo: en la versión final la solicitud llega directo al salón (WhatsApp o email). Mientras tanto, podés llamar al <a href="tel:+541145094046">4509-4046</a> o escribir por <a href="https://ig.me/m/franco_trendsinhair" target="_blank" rel="noopener">Instagram</a>.</p>
+</div>
+<form id="f" novalidate>
+<label>Nombre<input name="nombre" required autocomplete="name"></label>
+<label>Teléfono<input name="tel" type="tel" required autocomplete="tel"></label>
+<label>Servicio<select name="servicio" id="svc"><option>Cortes</option><option>Color</option><option>Mechas y balayage</option><option>Alisados y tratamientos</option></select></label>
+<div class="row"><label>Día preferido<input name="dia" type="date"></label><label>Horario<select name="hora"><option>Mañana</option><option>Mediodía</option><option>Tarde</option></select></label></div>
+<label>Comentario (opcional)<textarea name="msg" rows="3"></textarea></label>
+<button class="btn" type="submit">Enviar solicitud</button>
+<div class="ok" id="ok" role="status"></div>
+</form>
+</div></section>
+
+<section id="contacto"><div class="wrap">
+<div class="box">
+<h2>Contacto</h2>
+<dl><dt>Zona</dt><dd>Villa Crespo, CABA</dd><dt>Teléfono</dt><dd><a href="tel:+541145094046">4509-4046</a></dd><dt>Instagram</dt><dd><a href="https://www.instagram.com/franco_trendsinhair/" target="_blank" rel="noopener">@franco_trendsinhair</a></dd></dl>
+<div class="cta"><a class="btn" href="tel:+541145094046">Llamar</a><a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Franco+Trends+peluquer%C3%ADa+Villa+Crespo+Buenos+Aires" target="_blank" rel="noopener">Cómo llegar</a></div>
+</div>
+</div></section>
+
+<footer><div class="wrap"><span>© Franco Trends · Peluquería · Villa Crespo</span><span>Demo de propuesta · diseño y desarrollo: Andrés García · <a href="https://utilihub.net/vitrina/">Vitrina</a></span></div></footer>
+<a class="fab" href="tel:+541145094046" aria-label="Llamar al 4509-4046"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg></a>
+<script>
+document.querySelectorAll('[data-svc]').forEach(function(a){a.addEventListener('click',function(){document.getElementById('svc').value=a.dataset.svc;});});
+document.getElementById('f').addEventListener('submit',function(e){
+  e.preventDefault();var f=e.target,ok=document.getElementById('ok');
+  if(!f.nombre.value.trim()||!f.tel.value.trim()){ok.innerHTML='Completá tu <b>nombre</b> y <b>teléfono</b> para enviar la solicitud.';ok.classList.add('show');return;}
+  ok.innerHTML='¡Gracias, <b></b>! Recibimos tu pedido de turno para <b></b>. <br>Esto es una demo: en la versión final el salón recibe tu solicitud y te confirma.';
+  var bs=ok.querySelectorAll('b');bs[0].textContent=f.nombre.value.trim();bs[1].textContent=f.servicio.value;
+  ok.classList.add('show');f.reset();
+});
+</script>
+</body>
+</html>
