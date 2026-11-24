@@ -17,8 +17,9 @@ export function TripTimeTool({ locale = "en" }: { tool?: GeneralTool; locale?: L
     const s = parseFloat(speed);
     if (isNaN(d) || isNaN(s) || d <= 0 || s <= 0) return null;
     const hours = d / s;
-    const h = Math.floor(hours);
-    const m = Math.round((hours - h) * 60);
+    let h = Math.floor(hours);
+    let m = Math.round((hours - h) * 60);
+    if (m === 60) { h += 1; m = 0; }
     return { hours: Math.round(hours * 100) / 100, h, m };
   }, [distance, speed]);
 
