@@ -48,8 +48,8 @@ export function DiscountCalculatorTool({ locale = "en" }: { tool?: GeneralTool; 
         <p className="text-sm text-muted-foreground">{es ? "Resultados" : "Results"}</p>
         {result ? (
           <>
-            <p className="text-lg font-medium">{es ? "Ahorro" : "Savings"}: $${result.savings.toFixed(2)}</p>
-            <p className="text-lg font-medium">{es ? "Precio final" : "Final price"}: $${result.finalPrice.toFixed(2)}</p>
+            <p className="text-lg font-medium">{es ? "Ahorro" : "Savings"}: {result.savings.toFixed(2)}$</p>
+            <p className="text-lg font-medium">{es ? "Precio final" : "Final price"}: {result.finalPrice.toFixed(2)}$</p>
           </>
         ) : (
           <p className="text-sm text-destructive">
