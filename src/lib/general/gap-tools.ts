@@ -1,4 +1,4 @@
-import { makeTool } from "./types";
+import { faq, makeTool } from "./types";
 
 /** Gap tools not present in the main catalog — text, dev, and seo-growth. */
 const text = (slug: string, name: string, summary: string, keywords: string[] = []) =>
@@ -16,6 +16,35 @@ const growth = (
   keywords: string[] = [],
   extra: Record<string, unknown> = {},
 ) => makeTool(slug, name, category, kind, summary, keywords, { mode: "seo-growth", ...extra });
+
+const wifiQr = growth(
+  "qr-wifi",
+  "WiFi QR code generator",
+  "generadores",
+  "generator",
+  "Generate a WiFi QR code with SSID, security type, and password.",
+  ["wifi qr", "qr wifi", "wifi qr code", "código qr wifi"],
+  {
+    title: "WiFi QR Code Generator — SSID + Password to QR | UtiliHub",
+    description:
+      "Free WiFi QR code generator. Turn your network SSID, security type, and password into a scannable WIFI: QR payload. Local, private, no signup.",
+    summaryEs: "Genera un código QR de WiFi con SSID, tipo de seguridad y contraseña.",
+  },
+);
+wifiQr.faq.push(
+  faq(
+    "What is a WiFi QR code?",
+    "A QR that encodes the standard WIFI: payload (SSID, security type, password). Scanning it with a phone connects to the network without typing the password.",
+  ),
+  faq(
+    "Which security types are supported?",
+    "WPA, WEP, or nopass (open network). The payload follows the WIFI:T:<type>;S:<SSID>;P:<password>; format, and special characters like ; , \" and backslash are escaped.",
+  ),
+  faq(
+    "Is the password stored anywhere?",
+    "No. The payload is built in your browser and nothing is uploaded to a server.",
+  ),
+);
 
 export const GAP_TOOLS = [
   text(
@@ -66,14 +95,7 @@ export const GAP_TOOLS = [
     "Convert CSV tables to JSON arrays of objects in the browser.",
     ["csv to json", "csv json converter", "csv a json", "convertir csv"],
   ),
-  growth(
-    "qr-wifi",
-    "WiFi QR code generator",
-    "generadores",
-    "generator",
-    "Generate a WiFi QR code with SSID, security type, and password.",
-    ["wifi qr", "qr wifi", "wifi qr code", "código qr wifi"],
-  ),
+  wifiQr,
   // validador-iban lives in iban-tool.ts (dedicated UI + MOD-97). Do not re-register here.
   growth(
     "validador-cuit",
