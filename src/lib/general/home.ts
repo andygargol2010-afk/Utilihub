@@ -8,7 +8,13 @@ export const HOGAR_TOOLS=[
    {q:"How is electricity cost calculated?",a:"Multiply the consumption in kWh by the price per kWh: cost = kWh × price per kWh."},
    {q:"How do I estimate the kWh of an appliance?",a:"Multiply the appliance power in watts by the hours of use and divide by 1000: kWh = (W × hours) / 1000."}
   ]},
- h("consumo-electrico-diario","Daily electricity use","number","Calculate daily consumption from power and hours of use.",{operation:"power-hours",fields:["Power (W)","Hours per day"]}),
+ {...h("consumo-electrico-diario","Daily electricity use","number","Calculate daily consumption from power and hours of use.",{operation:"power-hours",fields:["Power (W)","Hours per day"]}),
+  title:"Daily Electricity Use Calculator (Watts × Hours) | UtiliHub",
+  keywords:["daily electricity usage calculator","kwh per day calculator","appliance energy consumption"],
+  faq:[
+   {q:"How do I calculate daily kWh consumption?",a:"Multiply the power in watts by the hours of use per day and divide by 1000: kWh/day = (W × hours) / 1000."},
+   {q:"Example: how much does a 60 W lamp use?",a:"60 W × 5 h / 1000 = 0.3 kWh per day. Multiply that by your price per kWh for the daily cost."}
+  ]},
  h("consumo-electrico-mensual","Monthly electricity use","number","Estimate monthly appliance consumption from daily use.",{operation:"monthly-electricity",fields:["Power (W)","Hours per day"]}),
  {...h("coste-agua","Water cost","number","Calculate water cost from volume and unit price.",{operation:"multiply",fields:["Volume","Price per unit"]}),
   title:"Water Cost Calculator (Volume × Price per Unit) | UtiliHub",
