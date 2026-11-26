@@ -6,18 +6,22 @@ export const sentences = (text: string) => text.match(/[^.!?]+[.!?]+/g)?.length 
 export const paragraphs = (text: string) => text.split(/\r?\n\s*\r?\n/).map((x) => x.trim()).filter(Boolean).length;
 export const wordsToCase = (text: string) => text.trim().split(/[^\p{L}\p{N}]+/u).filter(Boolean);
 
-export function process(slug: string, text: string, second: string, replacement: string) {
+export function process(slug: string, text: string, second: string, replacement: string, es = false) {
   switch (slug) {
     case "contador-de-caracteres":
-      return `With spaces: ${text.length}\nWithout spaces: ${text.replace(/\s/g, "").length}`;
+      return es
+        ? `Con espacios: ${text.length}\nSin espacios: ${text.replace(/\s/g, "").length}`
+        : `With spaces: ${text.length}\nWithout spaces: ${text.replace(/\s/g, "").length}`;
     case "contador-de-palabras":
-      return `Words: ${words(text)}\nCharacters (with spaces): ${text.length}\nCharacters (without spaces): ${text.replace(/\s/g, "").length}\nLines: ${lines(text)}`;
+      return es
+        ? `Palabras: ${words(text)}\nCaracteres (con espacios): ${text.length}\nCaracteres (sin espacios): ${text.replace(/\s/g, "").length}\nLíneas: ${lines(text)}`
+        : `Words: ${words(text)}\nCharacters (with spaces): ${text.length}\nCharacters (without spaces): ${text.replace(/\s/g, "").length}\nLines: ${lines(text)}`;
     case "contador-de-lineas":
-      return `Lines: ${lines(text)}`;
+      return `${es ? "Líneas" : "Lines"}: ${lines(text)}`;
     case "contador-de-frases":
-      return `Sentences: ${sentences(text)}`;
+      return `${es ? "Frases" : "Sentences"}: ${sentences(text)}`;
     case "contador-de-parrafos":
-      return `Paragraphs: ${paragraphs(text)}`;
+      return `${es ? "Párrafos" : "Paragraphs"}: ${paragraphs(text)}`;
     case "mayusculas":
       return text.toUpperCase();
     case "minusculas":
@@ -46,11 +50,11 @@ export function process(slug: string, text: string, second: string, replacement:
       if (!second) throw new Error("Enter the text you want to find.");
       return text.split(second).join(replacement);
     case "extraer-numeros":
-      return text.match(/[-+]?\d+(?:[.,]\d+)?/g)?.join("\n") ?? "No numbers found.";
+      return text.match(/[-+]?\d+(?:[.,]\d+)?/g)?.join("\n") ?? (es ? "No se encontraron números." : "No numbers found.");
     case "extraer-emails":
-      return [...new Set(text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) ?? [])].join("\n") || "No emails found.";
+      return [...new Set(text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) ?? [])].join("\n") || (es ? "No se encontraron correos electrónicos." : "No emails found.");
     case "extraer-urls":
-      return [...new Set(text.match(/https?:\/\/[^\s<]+/gi) ?? [])].join("\n") || "No URLs found.";
+      return [...new Set(text.match(/https?:\/\/[^\s<]+/gi) ?? [])].join("\n") || (es ? "No se encontraron URL." : "No URLs found.");
     case "limpiar-texto":
       return text.replace(/[“”]/g, '"').replace(/[‘’]/g, "'").replace(/\s+/g, " ").trim();
     case "texto-a-lista":
@@ -58,8 +62,10 @@ export function process(slug: string, text: string, second: string, replacement:
     case "lista-a-texto":
       return text.split(",").map((x) => x.trim()).filter(Boolean).join("\n");
     case "diferencia-textos": {
-      if (text === second) return "The texts are identical line by line.";
-      return `Text A (${text.length} characters)\nText B (${second.length} characters)\nLength difference: ${Math.abs(text.length - second.length)} characters.`;
+      if (text === second) return es ? "Los textos son idénticos línea por línea." : "The texts are identical line by line.";
+      return es
+        ? `Texto A (${text.length} caracteres)\nTexto B (${second.length} caracteres)\nDiferencia de longitud: ${Math.abs(text.length - second.length)} caracteres.`
+        : `Text A (${text.length} characters)\nText B (${second.length} characters)\nLength difference: ${Math.abs(text.length - second.length)} characters.`;
     }
     case "csv-a-markdown": {
       const rows = text.trim().split(/\r?\n/).map((line) => line.split(",").map((c) => c.trim()));

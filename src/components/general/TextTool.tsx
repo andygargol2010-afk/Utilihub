@@ -23,7 +23,7 @@ export function TextTool({ tool, locale = "en" }: { tool: GeneralTool; locale?: 
       if (GAP_TEXT_SLUGS.has(tool.slug)) {
         setOut(processGapText(tool.slug, text, second, locale));
       } else {
-        setOut(process(tool.slug, text, second, replacement));
+        setOut(process(tool.slug, text, second, replacement, es));
       }
     } catch (e) {
       setOut("");
