@@ -75,7 +75,7 @@ export function SleepCycleCalculatorTool({ locale = "en" }: { tool?: GeneralTool
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? "Despertar 07:00, 5 ciclos → acostarse 22:45" : "Wake 07:00, 5 cycles → bed 22:45"}</p>
+        <p>{es ? "Despertar 07:00, 5 ciclos → acostarse 23:15" : "Wake 07:00, 5 cycles → bed 23:15"}</p>
         <p>{es ? "Acostarse 23:00, 6 ciclos → despertar 08:15" : "Bed 23:00, 6 cycles → wake 08:15"}</p>
       </div>
 
