@@ -33,6 +33,8 @@ export function BillSplitTool({ locale = "en" }: { tool?: GeneralTool; locale?: 
   if (step > 0.01) {
     share = Math.round(rawShare / step) * step;
   }
+  const roundingDiff = share * peopleNum - grandTotal;
+  const showRoundingDiff = step > 0.01 && Math.abs(roundingDiff) >= 0.005;
 
   const summary = es
     ? `Total con propina: ${formatMoney(grandTotal, "es")} · ${peopleNum} personas · ${formatMoney(share, "es")} c/u`
@@ -65,6 +67,13 @@ export function BillSplitTool({ locale = "en" }: { tool?: GeneralTool; locale?: 
           {es ? "Total con propina" : "Total with tip"}: {formatMoney(grandTotal, locale)} · {es ? "Propina" : "Tip"}:{" "}
           {formatMoney(tipAmount, locale)}
         </p>
+        {showRoundingDiff && (
+          <p className="text-sm text-muted-foreground">
+            {es ? "Diferencia por redondeo (total pagado vs cuenta)" : "Rounding difference (total paid vs bill)"}:{" "}
+            {roundingDiff > 0 ? "+" : "-"}
+            {formatMoney(Math.abs(roundingDiff), locale)}
+          </p>
+        )}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
