@@ -15,6 +15,15 @@ function parseHolidays(raw: string): Set<string> {
   return set;
 }
 
+// Local-time YYYY-MM-DD string. Using toISOString() on a local-midnight Date
+// shifts the date one day back in UTC+ timezones (e.g. Europe/Madrid), so
+// holidays entered by the user would never match.
+function localDateStr(date: Date) {
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${mm}-${dd}`;
+}
+
 function countBusinessDays(start: string, end: string, holidays: Set<string>): number {
   const s = new Date(start + "T00:00:00");
   const e = new Date(end + "T00:00:00");
@@ -23,7 +32,7 @@ function countBusinessDays(start: string, end: string, holidays: Set<string>): n
   const cur = new Date(s);
   while (cur <= e) {
     const day = cur.getDay();
-    const iso = cur.toISOString().slice(0, 10);
+    const iso = localDateStr(cur);
     if (day !== 0 && day !== 6 && !holidays.has(iso)) count++;
     cur.setDate(cur.getDate() + 1);
   }
@@ -32,7 +41,10 @@ function countBusinessDays(start: string, end: string, holidays: Set<string>): n
 
 export function BusinessDaysTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
-  const today = new Date().toISOString().slice(0, 10);
+  // Local date string. toISOString() is UTC and can return yesterday's date
+  // shortly after local midnight in UTC+ zones (e.g. Europe/Madrid),
+  // making the default start/end dates off by one day.
+  const today = localDateStr(new Date());
   const [start, setStart] = useState(today);
   const [end, setEnd] = useState(today);
   const [holidaysRaw, setHolidaysRaw] = useState("");
@@ -87,7 +99,7 @@ export function BusinessDaysTool({ locale = "en" }: { tool?: GeneralTool; locale
 
       <label className="block space-y-2 text-sm">
         <span className="font-medium">{es ? "Feriados (uno por línea, YYYY-MM-DD)" : "Holidays (one per line, YYYY-MM-DD)"}</span>
-        <textarea value={holidaysRaw} onChange={(e) => setHolidaysRaw(e.target.value)} className={fieldClass} rows={4} placeholder="2026-01-01\n2026-12-25" />
+        <textarea value={holidaysRaw} onChange={(e) => setHolidaysRaw(e.target.value)} className={fieldClass} rows={4} placeholder={"2026-01-01\n2026-12-25"} />
       </label>
 
       <div className="flex flex-wrap gap-2">

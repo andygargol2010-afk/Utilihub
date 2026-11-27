@@ -228,7 +228,7 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
     ctx.font = "14px system-ui, sans-serif";
     const level = sequence.length || 3;
     ctx.fillText(`${es ? "Nivel" : "Level"} ${level} · ${difficulty}`, canvas.width / 2, 225);
-    ctx.fillText("utilihub.app", canvas.width / 2, 270);
+    ctx.fillText("utilihub.net", canvas.width / 2, 270);
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/png");
     a.download = `utilihub-simon-${score}.png`;
@@ -267,7 +267,7 @@ export function SimonSequenceMemoryGame({ locale = "en" }: { locale?: GameLocale
           {es ? "Nivel" : "Level"}: <span className="tabular-nums text-white">{level || "–"}</span>
         </span>
         <GameSecondaryButton onClick={() => setSoundOn((s) => !s)} active={soundOn}>
-          {soundOn ? (es ? "Sonido on" : "Sound on") : es ? "Sonido off" : "Sound off"}
+          {soundOn ? (es ? "Sonido activado" : "Sound on") : es ? "Sonido desactivado" : "Sound off"}
         </GameSecondaryButton>
       </div>
 

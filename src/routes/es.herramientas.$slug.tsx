@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import type { CatalogTool } from "@/lib/all-tools";
 import { SpanishToolPage } from "./es.herramientas.$slug.page";
 
@@ -14,6 +14,9 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
     const tool = allToolBySlug(params.slug);
     const { usesFinanceRoute } = await import("@/lib/route-slugs");
     if (!tool || usesFinanceRoute(tool)) throw notFound();
+    const { CANONICAL_TOOL_REDIRECTS } = await import("@/lib/canonical-tool-redirects");
+    const consolidated = CANONICAL_TOOL_REDIRECTS[tool.slug];
+    if (consolidated) throw redirect({ href: consolidated.es, statusCode: 301 });
     const { toolSeoOverride, toolSeoGuideData } = await import("@/lib/tool-seo-overrides");
     const override = toolSeoOverride(tool.slug);
     const { spanishCategoryName, spanishToolName } = await import("@/lib/i18n/es");
@@ -25,13 +28,17 @@ export const Route = createFileRoute("/es/herramientas/$slug")({
       metaDescriptionEs: override?.metaDescriptionEs,
       faqEs: override?.faqEs ?? [],
     };
-    const head = await buildSpanishToolHead(tool, name, categoryName, seo);
+    const guide = toolSeoGuideData(tool);
+    const { ALL_TOOLS } = await import("@/lib/all-tools");
+    const { isIndexableTool } = await import("@/lib/content-quality");
+    const index = { en: isIndexableTool(tool, guide, "en", ALL_TOOLS), es: isIndexableTool(tool, guide, "es", ALL_TOOLS) };
+    const head = await buildSpanishToolHead(tool, name, categoryName, seo, index);
     return {
       tool,
       name,
       categoryName,
       showcase: hasToolShowcase(tool.slug),
-      guide: toolSeoGuideData(tool),
+      guide,
       seo,
       head,
     };
@@ -55,13 +62,21 @@ async function buildSpanishToolHead(
   name: string,
   category: string,
   seo: { metaTitleEs?: string; metaDescriptionEs?: string; faqEs: Array<{ q: string; a: string }> },
+  index: { en: boolean; es: boolean },
 ): Promise<ToolHead> {
-  const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, organizationSchema } = await import(
+  const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, fitTitle, ogImage, organizationSchema } = await import(
     "@/lib/seo",
   );
   const { englishToolPath } = await import("@/lib/route-slugs");
   const url = absoluteUrl(`/es/herramientas/${tool.slug}`);
-  const title = seo.metaTitleEs ?? `${name} gratis online — ${category} | UtiliHub`;
+  const title =
+    seo.metaTitleEs ??
+    fitTitle([
+      `${name} gratis online — ${category} | UtiliHub`,
+      `${name} gratis online | UtiliHub`,
+      `${name} gratis | UtiliHub`,
+      `${name} | UtiliHub`,
+    ]);
   const description = cleanDescription(
     seo.metaDescriptionEs ??
       `${name}: herramienta gratuita de ${category.toLowerCase()}. Usala en el navegador, sin cuenta ni instalación. Resultados al instante en UtiliHub.`,
@@ -73,7 +88,8 @@ async function buildSpanishToolHead(
     meta: [
       { title },
       { name: "description", content: description },
-      { name: "robots", content: "index, follow, max-image-preview:large" },
+      // Template-only pages stay usable but out of the index (see src/lib/content-quality.ts).
+      { name: "robots", content: index.es ? "index, follow, max-image-preview:large" : "noindex, follow" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
@@ -88,8 +104,12 @@ async function buildSpanishToolHead(
     links: [
       { rel: "canonical", href: url },
       { rel: "alternate", hrefLang: "es", href: url },
-      { rel: "alternate", hrefLang: "en", href: englishUrl },
-      { rel: "alternate", hrefLang: "x-default", href: englishUrl },
+      ...(index.en
+        ? [
+            { rel: "alternate", hrefLang: "en", href: englishUrl },
+            { rel: "alternate", hrefLang: "x-default", href: englishUrl },
+          ]
+        : []),
     ],
     scripts: [
       {

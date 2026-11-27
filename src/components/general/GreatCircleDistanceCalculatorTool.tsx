@@ -102,11 +102,11 @@ export function GreatCircleDistanceCalculatorTool({ locale = "en" }: { tool?: Ge
       <div className="text-sm space-y-1">
         <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
         <p>
-          <a href={es ? "/es/herramientas/tiempo-viaje" : "/tools/tiempo-viaje"} className="underline text-primary">
-            {es ? "Tiempo de viaje" : "Travel time"}
+          <a href={es ? "/es/herramientas/calculadora-tiempo-vuelo" : "/tools/flight-time-calculator"} className="underline text-primary">
+            {es ? "Tiempo de vuelo" : "Flight time"}
           </a>
           {" · "}
-          <a href={es ? "/es/herramientas/velocidad-media" : "/tools/velocidad-media"} className="underline text-primary">
+          <a href={es ? "/es/herramientas/calculadora-velocidad-media" : "/tools/average-speed-calculator"} className="underline text-primary">
             {es ? "Velocidad media" : "Average speed"}
           </a>
         </p>

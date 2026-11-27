@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legado Barber Shop · Demo</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0b;--card:#151515;--line:#2a2a2a;--txt:#f4f1ea;--mut:#a8a29e;--acc:#c9a96e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
+a{color:inherit}
+.demo{background:var(--acc);color:#111;text-align:center;font-size:.8rem;font-weight:600;padding:.4rem}
+header{position:sticky;top:0;z-index:5;background:rgba(11,11,11,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 1.25rem}
+nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-family:'Playfair Display';font-size:1.5rem;letter-spacing:.12em;text-decoration:none}
+nav ul{display:flex;gap:1.4rem;list-style:none;font-size:.9rem}
+nav ul a{text-decoration:none;color:var(--mut)}nav ul a:hover{color:var(--txt)}
+.btn{display:inline-block;background:var(--acc);color:#111;font-weight:600;text-decoration:none;padding:.75rem 1.4rem;border-radius:4px}
+.btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+.hero{padding:6rem 0 5rem;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(201,169,110,.18),transparent 60%)}
+.tag{display:inline-block;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:1.2rem}
+h1{font-family:'Playfair Display';font-size:clamp(2.6rem,7vw,4.4rem);line-height:1.1}
+h1 em{font-style:italic;color:var(--acc)}
+.hero p{color:var(--mut);max-width:540px;margin:1.2rem auto 2rem;font-size:1.1rem}
+.cta{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center}
+.stats{display:flex;gap:2.5rem;margin-top:3rem;flex-wrap:wrap;justify-content:center}
+.stats b{display:block;font-family:'Playfair Display';font-size:1.8rem}
+.stats small{color:var(--mut)}
+section{padding:4.5rem 0;border-top:1px solid var(--line)}
+h2{font-family:'Playfair Display';font-size:2rem;margin-bottom:.4rem}
+.sub{color:var(--mut);margin-bottom:2.2rem}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1.4rem}
+.svc{display:flex;flex-direction:column;gap:.3rem}
+.price{font-family:'Playfair Display';font-size:1.6rem;color:var(--acc)}
+.svc small,.mut{color:var(--mut)}
+.promo{border-color:rgba(201,169,110,.5)}
+.badge{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--acc)}
+.ph{aspect-ratio:1;border-radius:8px;background:repeating-linear-gradient(45deg,#1a1a1a,#1a1a1a 10px,#202020 10px,#202020 20px);display:grid;place-items:center;color:#555;font-size:.8rem;margin-bottom:.8rem}
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.6rem}
+.gal div{aspect-ratio:4/5;border-radius:8px;background:linear-gradient(135deg,#181818,#252525);display:grid;place-items:center;color:#555;font-size:.8rem}
+.info{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.map{border-radius:10px;min-height:240px;background:linear-gradient(160deg,#141414,#1f1f1f);border:1px solid var(--line);display:grid;place-items:center;color:var(--mut);text-align:center;padding:1rem}
+table{width:100%;border-collapse:collapse}td{padding:.45rem 0;border-bottom:1px solid var(--line)}td:last-child{text-align:right;color:var(--mut)}
+footer{padding:2.5rem 0;border-top:1px solid var(--line);color:var(--mut);font-size:.85rem;text-align:center}
+@media(max-width:720px){nav ul{display:none}.hero{padding:4rem 0 3.5rem}}
+</style>
+</head>
+<body>
+<div class="demo">Ejemplo de propuesta para Legado Barber Shop · contenido de muestra, no es el sitio oficial</div>
+<header><div class="wrap"><nav>
+<a class="logo" href="#inicio">LEGADO</a>
+<ul><li><a href="#servicios">Servicios</a></li><li><a href="#equipo">Equipo</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
+<a class="btn" href="https://agenda.nexbarber.com/legado-barber-shop/agenda">Reservar</a>
+</nav></div></header>
+<main id="inicio">
+<div class="hero"><div class="wrap">
+<span class="tag">Barber shop · Villa Urquiza</span>
+<h1>Tu estilo,<br><em>nuestro legado</em></h1>
+<p>Cortes y barba con atención al detalle, a buen precio, en Núñez 6199. Elegí tu barbero y reservá en un minuto.</p>
+<div class="cta"><a class="btn" href="https://agenda.nexbarber.com/legado-barber-shop/agenda">Reservar turno</a><a class="btn ghost" href="#servicios">Ver precios</a></div>
+<div class="stats"><div><b>5,0 ★</b><small>en Google</small></div><div><b>Lun a Sáb</b><small>9 a 20 h</small></div></div>
+</div></div>
+<section id="servicios"><div class="wrap">
+<h2>Servicios</h2><p class="sub">Precios de referencia según la agenda online.</p>
+<div class="grid">
+<div class="card svc"><strong>Corte</strong><span class="price">$18.000</span><small>30 min</small></div>
+<div class="card svc"><strong>Barba</strong><span class="price">$12.000</span><small>15 min</small></div>
+<div class="card svc"><strong>Corte + barba</strong><span class="price">$22.000</span><small>45 min</small></div>
+<div class="card svc promo"><span class="badge">Lunes a miércoles</span><strong>Promo corte</strong><span class="price">$17.000</span></div>
+<div class="card svc promo"><span class="badge">Lunes a miércoles</span><strong>Promo corte + barba</strong><span class="price">$19.000</span></div>
+<div class="card svc"><strong>Color, global y cejas</strong><span class="price" style="font-size:1.1rem">Consultar</span><small>Precio según el trabajo</small></div>
+</div></div></section>
+<section id="equipo"><div class="wrap">
+<h2>El equipo</h2><p class="sub">Elegí con quién atenderte al reservar.</p>
+<div class="grid">
+<div class="card"><div class="ph">foto</div><strong>Matías</strong></div>
+<div class="card"><div class="ph">foto</div><strong>Franco</strong></div>
+</div></div></section>
+<section><div class="wrap">
+<h2>Trabajos</h2><p class="sub">Acá irían fotos reales del local y de cortes (con su permiso).</p>
+<div class="gal"><div>Fade</div><div>Barba</div><div>Local</div><div>Clásico</div></div>
+</div></section>
+<section id="ubicacion"><div class="wrap">
+<h2>Dónde estamos</h2><p class="sub">Núñez 6199, Villa Urquiza, CABA.</p>
+<div class="info">
+<div class="map">📍 Núñez 6199<br>(acá va el mapa de Google)</div>
+<div class="card"><strong>Horarios</strong>
+<table><tr><td>Lunes a sábado</td><td>9:00 – 13:00 · 14:00 – 20:00</td></tr><tr><td>Domingo</td><td>Cerrado</td></tr></table>
+<p style="margin-top:1rem"><a class="btn" href="https://agenda.nexbarber.com/legado-barber-shop/agenda">Reservar turno</a></p>
+<p class="mut" style="margin-top:.8rem;font-size:.9rem">Instagram: <a href="https://instagram.com/barber.legado">@barber.legado</a></p>
+</div></div></div></section>
+</main>
+<footer>Legado Barber Shop · Núñez 6199, CABA · Demo hecha por Andrés García</footer>
+</body>
+</html>

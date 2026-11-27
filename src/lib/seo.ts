@@ -14,6 +14,15 @@ export const cleanDescription = (value: string, max = 160) => {
   const text = value.replace(/\s+/g, " ").trim();
   return text.length <= max ? text : `${text.slice(0, max - 1).trimEnd()}…`;
 };
+/**
+ * Pick the most complete title that still fits in search results (~60 characters before
+ * Google truncates). Candidates go from most to least descriptive; the last one is returned
+ * when none fits.
+ */
+export const fitTitle = (candidates: string[], max = 60) => {
+  const list = candidates.map((c) => c.replace(/\s+/g, " ").trim()).filter(Boolean);
+  return list.find((c) => c.length <= max) ?? list[list.length - 1] ?? "";
+};
 export const toolKeywords = (tool: { name: string; keywords?: string[]; category?: string }) =>
   Array.from(new Set([tool.name, ...(tool.keywords ?? []), tool.category ?? "online tools", "UtiliHub"]));
 export const toolPath = (tool: { slug: string; name?: string; category?: string }) =>

@@ -16,7 +16,7 @@ export const Route = createFileRoute("/games/$slug")({
     if (!loaderData) return { meta: [{ title: "Game not found | UtiliHub" }, { name: "robots", content: "noindex" }] };
     const { game } = loaderData;
     const title = `${gameName(game, "en")} — free online game | UtiliHub`;
-    const description = cleanDescription(gameSummary(game, "en"));
+    const description = cleanDescription(`${gameSummary(game, "en").replace(/[.\s]+$/, "")}. Play free in your browser: no download, no signup.`);
     const url = absoluteUrl(`/games/${game.slug}`);
     return {
       meta: [
@@ -30,6 +30,9 @@ export const Route = createFileRoute("/games/$slug")({
         { property: "og:url", content: url },
         { property: "og:site_name", content: SITE_NAME },
         { property: "og:image", content: ogImage() },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
       ],
       links: [
         { rel: "canonical", href: url },

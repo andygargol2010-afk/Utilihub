@@ -12,7 +12,7 @@ const INFO = [
   { href: "/es/simuladores", label: "Simuladores" },
   { href: "/es/kits", label: "Kits por objetivo" },
   { href: "/es/hubs/documentos-y-archivos", label: "Documentos y archivos" },
-  { href: "/es/acerca", label: "Acerca de" },
+  { href: "/es/sobre", label: "Acerca de" },
   { href: "/es/aviso-legal", label: "Aviso legal" },
   { href: "/es/privacidad", label: "Privacidad" },
   { href: "/es/cookies", label: "Política de Cookies" },

@@ -102,34 +102,24 @@ export async function setReviewReply(reviewId: string, reply: ReviewReply): Prom
 /** Returns true if the client is still under the daily limit. */
 export async function checkAndBumpRate(clientKey: string, limit = 3): Promise<boolean> {
   const today = dayKey();
-  const key = `${RATE_PREFIX}${clientKey}`;
+  // The day is part of the key so it resets at midnight UTC without a stored timestamp, and the
+  // bump is a single atomic INCR so concurrent requests cannot race past the limit.
+  const key = `${RATE_PREFIX}${today}:${clientKey}`;
 
   if (upstashConfigured()) {
     try {
-      const raw = (await upstash(["GET", key])) as string | null;
-      let count = 0;
-      if (raw) {
-        try {
-          const parsed = JSON.parse(raw) as { count: number; day: string };
-          count = parsed.day === today ? parsed.count : 0;
-        } catch {
-          count = 0;
-        }
-      }
-      if (count >= limit) return false;
-      await upstash(["SET", key, JSON.stringify({ count: count + 1, day: today })]);
-      await upstash(["EXPIRE", key, 60 * 60 * 36]);
-      return true;
+      const count = Number((await upstash(["INCR", key])) ?? 0);
+      if (count === 1) await upstash(["EXPIRE", key, 60 * 60 * 36]);
+      return count <= limit;
     } catch {
-      // fall through
+      // fall through to the in-memory limiter
     }
   }
 
-  const current = memoryRates.get(clientKey);
-  if (current && current.day === today && current.count >= limit) return false;
+  const current = memoryRates.get(key);
   const nextCount = current && current.day === today ? current.count + 1 : 1;
-  memoryRates.set(clientKey, { count: nextCount, day: today });
-  return true;
+  memoryRates.set(key, { count: nextCount, day: today });
+  return nextCount <= limit;
 }
 
 export function hashClient(ip: string, ua: string) {

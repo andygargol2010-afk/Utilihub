@@ -105,11 +105,11 @@ export function SuccessiveDiscountCalculatorTool({ locale = "en" }: { tool?: Gen
       <div className="text-sm text-muted-foreground space-y-1">
         <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
         <p>
-          <a href={es ? "/es/calculadora-descuento" : "/calculadora-descuento"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-descuento" : "/tools/calculadora-descuento"} className="underline">
             {es ? "Calculadora de descuento" : "Discount calculator"}
           </a>
           {" · "}
-          <a href={es ? "/es/calculadora-porcentaje-de-numero" : "/calculadora-porcentaje-de-numero"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-porcentaje-de-numero" : "/tools/calculadora-porcentaje-de-numero"} className="underline">
             {es ? "Calculadora de porcentaje de un número" : "Percentage of number calculator"}
           </a>
         </p>

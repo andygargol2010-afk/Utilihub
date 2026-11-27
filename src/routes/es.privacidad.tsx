@@ -28,7 +28,7 @@ function PrivacidadPage() {
       <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Privacidad" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Política de privacidad</h1>
-        <p className="text-sm text-muted-foreground">Última actualización: 3 de noviembre de 2026</p>
+        <p className="text-sm text-muted-foreground">Última actualización: 9 de noviembre de 2026</p>
         <p>
           Esta política explica cómo <strong>{SITE_NAME}</strong> trata la información que puede recopilarse al
           navegar o usar el sitio. {SITE_NAME} está dirigido a un público internacional y su operador está basado
@@ -75,7 +75,7 @@ function PrivacidadPage() {
         </p>
         <h2>Preparación para redes publicitarias</h2>
         <p>
-          Estas divulgaciones están estructuradas para cumplir expectativas comunes de socios publicitarios (incluyendo posible Google AdSense) sobre cookies de terceros, tratamiento de datos, derechos de usuario y exclusiones. La publicidad de Adsterra y sus menciones permanecen completamente intactas y sin modificar.
+          Estas divulgaciones están estructuradas para cumplir expectativas comunes de socios publicitarios (incluyendo posible Google AdSense) sobre cookies de terceros, tratamiento de datos, derechos de usuario y exclusiones. La publicidad de Adsterra y sus menciones permanecen completamente intactas y sin modificar. Un archivo ads.txt con entradas placeholder está disponible en /ads.txt para preparación; no se usa un ID de publisher real hasta la aprobación.
         </p>
         <h2>Tus derechos</h2>
         <p>

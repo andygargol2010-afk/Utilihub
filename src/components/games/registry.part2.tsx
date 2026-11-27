@@ -49,6 +49,7 @@ export const MAP: Record<string, ComponentType<{ locale?: GameLocale }>> = {
   "buscaminas-clasico": MinesweeperClassicGame,
   hangman: HangmanGame,
   ahorcado: HangmanGame,
+  "hangman-classic": HangmanGame,
   pong: PongGame,
   sudoku: SudokuGame,
   "sudoku-classic": SudokuClassicGame,

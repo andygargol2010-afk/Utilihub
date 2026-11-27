@@ -88,11 +88,11 @@ export function UnitPriceCalculatorTool({ locale = "en" }: { tool?: GeneralTool;
       <div className="text-sm text-muted-foreground space-y-1">
         <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
         <p>
-          <a href={es ? "/es/calculadora-markup" : "/calculadora-markup"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-markup" : "/tools/markup-calculator"} className="underline">
             {es ? "Calculadora de markup" : "Markup calculator"}
           </a>
           {" · "}
-          <a href={es ? "/es/calculadora-descuento-sucesivo" : "/calculadora-descuento-sucesivo"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-descuento-sucesivo" : "/tools/successive-discount-calculator"} className="underline">
             {es ? "Calculadora de descuento sucesivo" : "Successive discount calculator"}
           </a>
         </p>

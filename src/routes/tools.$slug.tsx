@@ -22,13 +22,16 @@ export const Route = createFileRoute("/tools/$slug")({
     const seo = resolvedToolSeo(tool);
     const { hasToolShowcase } = await import("@/lib/showcase-slugs");
     const categoryView = category ? { slug: category.slug, name: category.name } : null;
-    const head = await buildEnglishToolHead(tool, categoryView, seo, englishToolPath, englishCategoryPath, spanishToolPath);
+    const guide = toolSeoGuideData(tool);
+    const { isIndexableTool } = await import("@/lib/content-quality");
+    const index = { en: isIndexableTool(tool, guide, "en", ALL_TOOLS), es: isIndexableTool(tool, guide, "es", ALL_TOOLS) };
+    const head = await buildEnglishToolHead(tool, categoryView, seo, englishToolPath, englishCategoryPath, spanishToolPath, index);
     return {
       tool,
       category: categoryView,
       categoryPublicSlug: category ? englishCategorySlug(category.slug) : null,
       showcase: hasToolShowcase(tool.slug),
-      guide: toolSeoGuideData(tool),
+      guide,
       seo: { title: seo.title, description: seo.description, faq: seo.faq },
       head,
     };
@@ -47,8 +50,9 @@ async function buildEnglishToolHead(
   englishToolPath: (tool: Pick<CatalogTool, "name" | "category">) => string,
   englishCategoryPath: (internalCategorySlug: string) => string,
   spanishToolPath: (tool: Pick<CatalogTool, "slug" | "category">) => string,
+  index: { en: boolean; es: boolean },
 ): Promise<ToolHead> {
-  const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, ogImage, toolKeywords, webApplicationSchema } =
+  const { absoluteUrl, breadcrumbSchema, cleanDescription, faqSchema, fitTitle, ogImage, toolKeywords, webApplicationSchema } =
     await import("@/lib/seo");
   if (!category) {
     return {
@@ -59,7 +63,9 @@ async function buildEnglishToolHead(
       ],
     };
   }
-  const title = seo.title ?? tool.title;
+  const title =
+    seo.title ??
+    fitTitle([tool.title, tool.title.replace(" free online", ""), tool.title.replace(/\s*\|\s*UtiliHub$/, "")]);
   const description = cleanDescription(seo.description ?? tool.description);
   const url = absoluteUrl(englishToolPath(tool));
   const esUrl = absoluteUrl(spanishToolPath(tool));
@@ -70,7 +76,8 @@ async function buildEnglishToolHead(
       { title },
       { name: "description", content: description },
       { name: "keywords", content: toolKeywords(tool).join(", ") },
-      { name: "robots", content: "index, follow, max-image-preview:large" },
+      // Template-only pages stay usable but out of the index (see src/lib/content-quality.ts).
+      { name: "robots", content: index.en ? "index, follow, max-image-preview:large" : "noindex, follow" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
@@ -85,7 +92,7 @@ async function buildEnglishToolHead(
     links: [
       { rel: "canonical", href: url },
       { rel: "alternate", hrefLang: "en", href: url },
-      { rel: "alternate", hrefLang: "es", href: esUrl },
+      ...(index.es ? [{ rel: "alternate", hrefLang: "es", href: esUrl }] : []),
       { rel: "alternate", hrefLang: "x-default", href: url },
     ],
     scripts: [

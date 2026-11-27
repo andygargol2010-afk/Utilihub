@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 import { type Locale } from "./TimezoneConverterTool.part1";
-import { formatInZone, fieldClass, COMMON_ZONES, buttonClass } from "./TimezoneConverterTool.part2";
+import { formatInZone, wallClockInZone, fieldClass, COMMON_ZONES, buttonClass } from "./TimezoneConverterTool.part2";
 
 export function TimezoneConverterTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
@@ -15,8 +15,8 @@ export function TimezoneConverterTool({ locale = "en" }: { tool?: GeneralTool; l
 
   const result = useMemo(() => {
     if (!datetime) return null;
-    const d = new Date(datetime);
-    if (isNaN(d.getTime())) return null;
+    const d = wallClockInZone(datetime, fromZone);
+    if (!d) return null;
     const fromStr = formatInZone(d, fromZone, es ? "es" : "en");
     const toStr = formatInZone(d, toZone, es ? "es" : "en");
     if (!fromStr || !toStr) return null;
@@ -88,8 +88,8 @@ export function TimezoneConverterTool({ locale = "en" }: { tool?: GeneralTool; l
 
       <p className="text-sm text-muted-foreground">
         {es
-          ? "Convierte una fecha y hora de una zona horaria a otra usando zonas IANA estándar."
-          : "Convert a date and time from one time zone to another using standard IANA zones."}
+          ? "Convierte una fecha y hora desde la zona de origen a otra usando zonas IANA estándar (con horario de verano)."
+          : "Convert a date and time from the origin zone to another using standard IANA zones (daylight saving aware)."}
       </p>
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
@@ -113,7 +113,7 @@ export function TimezoneConverterTool({ locale = "en" }: { tool?: GeneralTool; l
 
       <div className="flex flex-wrap gap-2">
         <button type="button" className={`${buttonClass} bg-primary text-primary-foreground`} onClick={copy}>
-          {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar resultado" : "Copy result"}
+          {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar" : "Copy"}
         </button>
         <button type="button" className={buttonClass} onClick={reset}>
           {es ? "Reiniciar" : "Reset"}

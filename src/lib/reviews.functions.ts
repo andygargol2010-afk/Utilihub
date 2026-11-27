@@ -28,9 +28,10 @@ async function clientFingerprint(): Promise<string> {
         req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
         req.headers.get("x-real-ip") ||
         "unknown";
-      const ua = req.headers.get("user-agent") || "";
+      // Rate-limit key is the IP only. The User-Agent is attacker-controlled, so including it
+      // would let a single client bypass the daily cap just by rotating the header.
       const { hashClient } = await getStore();
-      return hashClient(ip, ua);
+      return hashClient(ip, "");
     }
   } catch {
     // ignore

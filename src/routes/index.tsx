@@ -101,6 +101,18 @@ function HomePage() {
               >
                 Full catalog
               </Link>
+              <Link
+                to="/find-your-tool"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-cyan-500/40 bg-card px-5 py-3 text-sm font-bold hover:border-cyan-500/60 hover:bg-cyan-500/10"
+              >
+                Find your tool
+              </Link>
+              <Link
+                to="/growth/embed-studio"
+                className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-emerald-500/40 bg-card px-5 py-3 text-sm font-bold hover:border-emerald-500/60 hover:bg-emerald-500/10"
+              >
+                Embed games
+              </Link>
             </div>
             <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-muted-foreground">
               <span className="flex items-center gap-1.5">

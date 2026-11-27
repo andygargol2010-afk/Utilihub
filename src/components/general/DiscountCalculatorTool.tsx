@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { GeneralTool } from "@/lib/general/types";
 
 type Locale = "en" | "es";
@@ -12,16 +12,21 @@ export function DiscountCalculatorTool({ locale = "en" }: { tool?: GeneralTool; 
   const [discount, setDiscount] = useState("20");
   const [copied, setCopied] = useState(false);
 
-  const priceNum = parseFloat(price) || 0;
-  const discountNum = Math.min(100, Math.max(0, parseFloat(discount) || 0));
-
-  const savings = priceNum * (discountNum / 100);
-  const finalPrice = priceNum - savings;
+  const result = useMemo(() => {
+    const p = parseFloat(price);
+    const d = parseFloat(discount);
+    if (!Number.isFinite(p) || p < 0 || p > 1000000) return null;
+    const dNum = Math.min(100, Math.max(0, Number.isFinite(d) ? d : 0));
+    const savings = Math.round(p * (dNum / 100) * 100) / 100;
+    const finalPrice = Math.round((p - savings) * 100) / 100;
+    return { savings, finalPrice };
+  }, [price, discount]);
 
   async function copy() {
+    if (!result) return;
     const text = es
-      ? `Ahorro: $${savings.toFixed(2)}\nPrecio final: $${finalPrice.toFixed(2)}`
-      : `Savings: $${savings.toFixed(2)}\nFinal price: $${finalPrice.toFixed(2)}`;
+      ? `Ahorro: $${result.savings.toFixed(2)}\nPrecio final: $${result.finalPrice.toFixed(2)}`
+      : `Savings: $${result.savings.toFixed(2)}\nFinal price: $${result.finalPrice.toFixed(2)}`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -41,8 +46,16 @@ export function DiscountCalculatorTool({ locale = "en" }: { tool?: GeneralTool; 
     <div className="space-y-6">
       <div className="rounded-2xl border bg-muted/30 p-6 space-y-2">
         <p className="text-sm text-muted-foreground">{es ? "Resultados" : "Results"}</p>
-        <p className="text-lg font-medium">{es ? "Ahorro" : "Savings"}: ${savings.toFixed(2)}</p>
-        <p className="text-lg font-medium">{es ? "Precio final" : "Final price"}: ${finalPrice.toFixed(2)}</p>
+        {result ? (
+          <>
+            <p className="text-lg font-medium">{es ? "Ahorro" : "Savings"}: {result.savings.toFixed(2)}$</p>
+            <p className="text-lg font-medium">{es ? "Precio final" : "Final price"}: {result.finalPrice.toFixed(2)}$</p>
+          </>
+        ) : (
+          <p className="text-sm text-destructive">
+            {es ? "Introduce un precio ≥ 0 y un descuento entre 0 y 100" : "Enter a price ≥ 0 and a discount between 0 and 100"}
+          </p>
+        )}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -57,7 +70,7 @@ export function DiscountCalculatorTool({ locale = "en" }: { tool?: GeneralTool; 
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button type="button" className={`${buttonClass} bg-primary text-primary-foreground`} onClick={copy}>
+        <button type="button" className={`${buttonClass} bg-primary text-primary-foreground`} onClick={copy} disabled={!result}>
           {copied ? (es ? "Copiado" : "Copied") : es ? "Copiar resultados" : "Copy results"}
         </button>
         <button type="button" className={buttonClass} onClick={reset}>

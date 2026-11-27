@@ -100,11 +100,11 @@ export function RuleOfThreeCalculatorTool({ locale = "en" }: { tool?: GeneralToo
       <div className="text-sm text-muted-foreground space-y-1">
         <p className="font-medium">{es ? "Herramientas relacionadas" : "Related tools"}</p>
         <p>
-          <a href={es ? "/es/calculadora-cambio-porcentual" : "/calculadora-cambio-porcentual"} className="underline">
+          <a href={es ? "/es/herramientas/cambio-porcentual" : "/tools/cambio-porcentual"} className="underline">
             {es ? "Calculadora de cambio porcentual" : "Percentage change calculator"}
           </a>
           {" · "}
-          <a href={es ? "/es/calculadora-porcentaje-del-total" : "/calculadora-porcentaje-del-total"} className="underline">
+          <a href={es ? "/es/herramientas/calculadora-porcentaje-del-total" : "/tools/calculadora-porcentaje-del-total"} className="underline">
             {es ? "Calculadora de porcentaje del total" : "Percentage of total calculator"}
           </a>
         </p>

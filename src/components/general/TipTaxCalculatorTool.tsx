@@ -22,10 +22,11 @@ export function TipTaxCalculatorTool({ locale = "en" }: { tool?: GeneralTool; lo
     const afterTax = s + taxAmount;
     const tipAmount = afterTax * (tip / 100);
     const total = afterTax + tipAmount;
+    const fmt = (n: number) => n.toFixed(2);
     return {
-      taxAmount: Math.round(taxAmount * 100) / 100,
-      tipAmount: Math.round(tipAmount * 100) / 100,
-      total: Math.round(total * 100) / 100,
+      taxAmount: fmt(taxAmount),
+      tipAmount: fmt(tipAmount),
+      total: fmt(total),
     };
   }, [subtotal, taxPct, tipPct]);
 
@@ -81,7 +82,7 @@ export function TipTaxCalculatorTool({ locale = "en" }: { tool?: GeneralTool; lo
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? "50 + 8% impuesto + 15% propina → total 62.10" : "50 + 8% tax + 15% tip → total 62.10"}</p>
+        <p>{es ? "50 + 8% impuesto + 15% propina → total 62,10" : "50 + 8% tax + 15% tip → total 62.10"}</p>
         <p>{es ? "100 + 10% impuesto + 18% propina → total 129.80" : "100 + 10% tax + 18% tip → total 129.80"}</p>
       </div>
 

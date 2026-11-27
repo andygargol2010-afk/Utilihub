@@ -155,7 +155,7 @@ function downloadBrandedPng(board: Board, result: string | null, es: boolean, mo
       if (isKing(cellVal)) { ctx.fillStyle = "#fbbf24"; ctx.font = "bold 20px system-ui"; ctx.textAlign = "center"; ctx.fillText("♔", x + cell / 2, y + cell / 2 + 7); }
     }
   }
-  ctx.fillStyle = "#fbbf24"; ctx.font = "12px system-ui, sans-serif"; ctx.fillText("utilihub-ten.vercel.app", w / 2, h - 16);
+  ctx.fillStyle = "#fbbf24"; ctx.font = "12px system-ui, sans-serif"; ctx.fillText("www.utilihub.net", w / 2, h - 16);
   canvas.toBlob((blob) => { if (!blob) return; const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "utilihub-checkers.png"; a.click(); URL.revokeObjectURL(a.href); }, "image/png");
 }
 

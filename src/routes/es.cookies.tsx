@@ -28,7 +28,7 @@ function CookiesPageEs() {
       <Breadcrumbs items={[{ label: "Inicio", to: "/es" }, { label: "Política de Cookies" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>Política de Cookies</h1>
-        <p className="text-sm text-muted-foreground">Última actualización: 3 de noviembre de 2026</p>
+        <p className="text-sm text-muted-foreground">Última actualización: 9 de noviembre de 2026</p>
         <p>
           Esta Política de Cookies explica cómo <strong>{SITE_NAME}</strong> utiliza cookies y tecnologías similares (como
           el almacenamiento local) cuando visitas el sitio. Complementa nuestra <a href="/es/privacidad">Política de Privacidad</a>. El
@@ -113,7 +113,7 @@ function CookiesPageEs() {
 
         <h2>Preparación para redes publicitarias</h2>
         <p>
-          Las divulgaciones de cookies están preparadas para apoyar requisitos comunes de redes publicitarias sobre transparencia en cookies de terceros y exclusiones. Adsterra permanece completamente activo y sin cambios.
+          Las divulgaciones de cookies están preparadas para apoyar requisitos comunes de redes publicitarias sobre transparencia en cookies de terceros y exclusiones. Adsterra permanece completamente activo y sin cambios. Consulta /ads.txt para entradas de autorización placeholder durante la preparación.
         </p>
 
         <h2>Actualizaciones</h2>

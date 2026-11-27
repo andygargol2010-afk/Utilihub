@@ -81,7 +81,7 @@ export function CompoundInterestCalculatorTool({ locale = "en" }: { tool?: Gener
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
         <p>{es ? "1000 a 5% por 2 años, anual → 1102.50" : "1000 at 5% for 2 years, annual → 1102.50"}</p>
-        <p>{es ? "1000 a 5% por 2 años, mensual → 1104.89" : "1000 at 5% for 2 years, monthly → 1104.89"}</p>
+        <p>{es ? "1000 a 5% por 2 años, mensual → 1104.94" : "1000 at 5% for 2 years, monthly → 1104.94"}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">

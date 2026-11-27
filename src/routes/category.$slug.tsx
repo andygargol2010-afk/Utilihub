@@ -1,6 +1,7 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { createFileRoute, notFound, redirect, Link } from "@tanstack/react-router";
 import { DeferredBreadcrumbs } from "@/components/DeferredBreadcrumbs";
+import { CategoryGuide } from "@/components/CategoryGuide";
 import { LEGACY_CATEGORY_REDIRECTS } from "@/lib/category-catalog";
 import { englishCategorySlug, englishToolSlug, internalCategorySlugFromEnglish } from "@/lib/route-slugs";
 import { absoluteUrl, breadcrumbSchema, cleanDescription, hreflangLinks, ogImage } from "@/lib/seo";
@@ -32,7 +33,10 @@ export const Route = createFileRoute("/category/$slug")({
       return { meta: [{ title: "Category not found | UtiliHub" }, { name: "robots", content: "noindex, nofollow" }] };
     const { category } = loaderData;
     const publicSlug = englishCategorySlug(category.slug);
-    const description = cleanDescription(category.description);
+    // Category blurbs are short (~40 chars): add the size of the catalog and why to click.
+    const description = cleanDescription(
+      `${category.description.replace(/[.\s]+$/, "")}. ${loaderData.tools.length} free tools that run in your browser, no signup.`,
+    );
     const enPath = `/category/${publicSlug}`;
     const esPath =
       category.slug === "finanzas" ? "/es/finanzas" : `/es/categoria/${category.slug}`;
@@ -154,6 +158,11 @@ function CategoryPage() {
 
   return (
     <div className="container-page py-6 sm:py-8">
+      <style>{
+        /* Critical CSS so category LCP (h1) paints before the full styles.css */
+        `.container-page{width:100%;margin-inline:auto;max-width:84rem;padding-inline:clamp(1rem,3vw,2rem)}` +
+        `h1{font-family:"Plus Jakarta Sans","Plus Jakarta Fallback",ui-sans-serif,system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1.03}`
+      }</style>
       <DeferredBreadcrumbs
         items={[{ label: "Home", to: "/" }, { label: "Tools", to: "/tools" }, { label: category.name }]}
       />
@@ -180,6 +189,8 @@ function CategoryPage() {
           <CategoryListingSlot />
         )}
       </div>
+
+      <CategoryGuide categorySlug={category.slug} categoryName={category.name} tools={tools} locale="en" />
 
       <section className="mt-8 border-t border-border/70 pt-6" aria-labelledby="other-categories">
         <h2 id="other-categories" className="text-base font-bold">

@@ -321,7 +321,7 @@ export function MagneticLetterCatcherGame({ locale = "en" }: Props) {
 
   const shareScore = async () => {
     const text = es
-      ? `Atrapé las letras de "${name}" en Atrapa Letras Magnéticas. Puntaje: ${score} (mejor ${best}). ¡Probálo en UtiliHub!`
+      ? `Atrapé las letras de "${name}" en Atrapa Letras Magnéticas. Puntaje: ${score} (mejor ${best}). ¡Probalo en UtiliHub!`
       : `Caught the letters of "${name}" in Magnetic Letter Catcher. Score: ${score} (best ${best}). Try it on UtiliHub!`;
     const url = window.location.href;
     try {

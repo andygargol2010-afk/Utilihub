@@ -6,9 +6,9 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: `About | ${SITE_NAME}` },
-      { name: "description", content: `About ${SITE_NAME}: free online tools, calculators, converters and educational resources. No account required. Operated from Argentina.` },
+      { name: "description", content: `About ${SITE_NAME}: free online tools, calculators, converters, simulators, games and educational resources. No account required. Operated from Argentina. Original content focused on practical utilities.` },
       { property: "og:title", content: `About | ${SITE_NAME}` },
-      { property: "og:description", content: `Free online tools and educational resources. No signup. Browser-based.` },
+      { property: "og:description", content: `Free online tools and educational resources. No signup. Browser-based. Original purpose: solve everyday problems with transparent, local computation.` },
       { property: "og:url", content: `${SITE_URL}/about` },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/about` }],
@@ -22,19 +22,42 @@ function AboutPage() {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "About" }]} />
       <article className="prose prose-slate mt-6 max-w-3xl dark:prose-invert">
         <h1>About {SITE_NAME}</h1>
+        <p className="text-sm text-muted-foreground">Last updated: 9 November 2026</p>
         <p>
-          {SITE_NAME} is a free collection of online tools, calculators, converters, simulators and educational resources.
+          {SITE_NAME} is a free collection of online tools, calculators, converters, simulators, games and educational resources.
           Everything runs in your browser — no account, no installation, and no personal data stored on our servers for the tools themselves.
+          Our goal is to provide practical, transparent utilities that help with everyday tasks without friction.
         </p>
         <h2>What we offer</h2>
         <p>
           Practical utilities for everyday tasks: finance, text, design, security, education, games and interactive experiences.
           Results are computed locally or with transparent formulas. They are informational and educational; they do not replace professional advice.
+          We focus on original interactive experiences that go beyond simple calculators, including kits, journeys, classic games and simulators.
         </p>
         <h2>How it works</h2>
         <p>
-          Open any tool, enter your inputs, and get an instant result. Many tools support English and Spanish. Interactive playgrounds
-          (mandalas, particles, signatures, etc.) give immediate visual feedback and can be exported or shared.
+          Open any tool, enter your inputs, and get an instant result. Many tools support English and Spanish. Interactive playgrounds,
+          kits and games give immediate visual feedback and can be exported or shared via PNG or URL deep-links.
+          The site is designed to be mobile-first and accessible.
+        </p>
+        <h2>Our purpose</h2>
+        <p>
+          UtiliHub exists to make useful, high-quality digital tools freely available. We believe in browser-based computation that respects user privacy,
+          original content that solves real problems, and a variety of experiences from educational kits to classic games. Content is created and maintained
+          to be substantive, not thin, supporting both users and future monetization compliance.
+        </p>
+        <h2>Content density and originality</h2>
+        <p>
+          All pages and tools feature original, substantive content. We avoid thin or duplicated pages. Educational experiences include guided kits, step-by-step journeys,
+          classic public-domain games with clear rules, and simulators that model real cause-and-effect systems. This density supports better user value and compliance with advertising network policies.
+        </p>
+        <h2>How we build</h2>
+        <p>
+          Tools are chosen and developed for practical everyday value and educational depth. We prioritize fully browser-local computation, accessibility, bilingual support (EN+ES), and clear user outcomes. Interactive experiences such as kits, journeys, classic games and simulators are designed with defined goals, progress feedback and shareable results. All content is original to UtiliHub; we do not scrape or duplicate external material.
+        </p>
+        <h2>Advertising compliance readiness</h2>
+        <p>
+          Pages for About, Privacy and Cookies contain substantive original content and clear disclosures for third-party advertising (Adsterra active; AdSense preparation via placeholder /ads.txt). Policies include opt-out methods, data handling and network readiness sections. No changes to Adsterra integration.
         </p>
         <h2>Operator</h2>
         <p>
@@ -43,8 +66,9 @@ function AboutPage() {
         </p>
         <h2>Privacy and ads</h2>
         <p>
-          Tools do not require login. We may show third-party advertisements (including Adsterra) to support the free service.
-          See our Privacy page for details on cookies and opt-out options. We do not sell personal data.
+          Tools do not require login. We may show third-party advertisements (including Adsterra and preparing for Google AdSense) to support the free service.
+          See our Privacy and Cookie Policy pages for details on cookies, advertising networks, opt-out options and data handling. We do not sell personal data.
+          Adsterra remains fully active and unchanged.
         </p>
         <p>
           Built to solve problems, not create them.

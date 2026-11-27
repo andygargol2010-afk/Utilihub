@@ -31,6 +31,19 @@ export const pair = (
   ];
 };
 
+/** Tool URL pair where either language can be thin (noindex): list only the indexable ones. */
+export const indexablePair = (
+  enPath: string,
+  esPath: string,
+  priority: string,
+  index: { en: boolean; es: boolean },
+): SitemapEntry[] => {
+  if (index.en && index.es) return pair(enPath, esPath, priority);
+  if (index.en) return [{ path: enPath, priority, alternates: [{ lang: "en", path: enPath }, { lang: "x-default", path: enPath }] }];
+  if (index.es) return [{ path: esPath, priority, alternates: [{ lang: "es", path: esPath }] }];
+  return [];
+};
+
 export const hreflangXml = (entry: SitemapEntry) => {
   if (!entry.alternates?.length) return "";
   return entry.alternates

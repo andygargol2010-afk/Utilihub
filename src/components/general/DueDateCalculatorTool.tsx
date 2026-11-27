@@ -12,11 +12,19 @@ function addDays(date: Date, days: number) {
   return result;
 }
 
+// Local-time YYYY-MM-DD string. Using toISOString() on a local-midnight Date
+// shifts the date one day back in UTC+ timezones (e.g. Europe/Madrid).
+function localDateStr(date: Date) {
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${mm}-${dd}`;
+}
+
 export function DueDateCalculatorTool({ locale = "en" }: { tool?: GeneralTool; locale?: Locale }) {
   const es = locale === "es";
   const today = new Date();
   const defaultLmp = new Date(today.getFullYear(), today.getMonth() - 2, 1);
-  const defaultStr = defaultLmp.toISOString().slice(0, 10);
+  const defaultStr = localDateStr(defaultLmp);
 
   const [lmpStr, setLmpStr] = useState(defaultStr);
   const [copied, setCopied] = useState(false);
@@ -70,7 +78,7 @@ export function DueDateCalculatorTool({ locale = "en" }: { tool?: GeneralTool; l
       <div className="grid gap-4">
         <label className="block space-y-2 text-sm">
           <span className="font-medium">{es ? "Primer día de la última menstruación (FUM)" : "First day of last menstrual period (LMP)"}</span>
-          <input type="date" value={lmpStr} onChange={(e) => setLmpStr(e.target.value)} className={fieldClass} max={today.toISOString().slice(0, 10)} />
+          <input type="date" value={lmpStr} onChange={(e) => setLmpStr(e.target.value)} className={fieldClass} max={localDateStr(today)} />
         </label>
       </div>
 

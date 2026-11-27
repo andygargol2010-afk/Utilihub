@@ -91,6 +91,17 @@ export const GAMES: readonly GameDef[] = [
     hasScore: false,
   },
   {
+    slug: "hangman-classic",
+    slugEs: "hangman-classic",
+    nameEn: "Hangman Classic",
+    nameEs: "Ahorcado Clásico",
+    tag: "puzzle",
+    emoji: "🔤",
+    summaryEn: "Interactive classic Hangman. Select category, guess letters, progressive SVG hangman, win/lose with stats, share PNG or URL.",
+    summaryEs: "Ahorcado clásico interactivo. Seleccioná categoría, adiviná letras, figura SVG progresiva, ganar/perder con stats, compartir PNG o URL.",
+    hasScore: false,
+  },
+  {
     slug: "snake",
     slugEs: "snake",
     nameEn: "Snake",
@@ -307,7 +318,7 @@ export const GAMES: readonly GameDef[] = [
     tag: "board",
     emoji: "⚪",
     summaryEn: "Classic Checkers / Draughts: diagonal moves, jump captures, promote to kings. Play Red or Black vs AI or a friend. Shareable board and PNG.",
-    summaryEs: "Damas / Draughts clásico: movimientos en diagonal, capturas por salto, promoción a reyes. Jugá Rojo o Negro vs IA o amigo. Tablero y PNG compartibles.",
+    summaryEs: "Damas clásico: movimientos en diagonal, capturas por salto, promoción a reyes. Jugá Rojo o Negro vs IA o con un amigo. Tablero y PNG compartibles.",
     hasScore: false,
   },
   {
@@ -328,8 +339,8 @@ export const GAMES: readonly GameDef[] = [
     nameEs: "Fightersland",
     tag: "arcade",
     emoji: "⚔️",
-    summaryEn: "1v1 pixel fighting game vs AI. Fast/medium/strong attacks with charge, block and dodge. Best of 3 rounds. Tutorial skippable.",
-    summaryEs: "Juego de peleas 1v1 en pixel vs IA. Golpes rápido/medio/fuerte con carga, bloqueo y esquive. Mejor de 3 rounds. Tutorial con Saltar.",
+    summaryEn: "1v1 pixel fighting game: 6 fighters, play online with a friend, vs CPU or 2 players on one keyboard. Charge attacks, parry and dodge.",
+    summaryEs: "Juego de peleas 1v1 en pixel: 6 luchadores, jugá online con un amigo, contra la CPU o 2 jugadores en un teclado. Cargá, parry y esquivá.",
     hasScore: false,
   },
 ] as const;

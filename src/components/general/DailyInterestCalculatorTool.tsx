@@ -26,7 +26,7 @@ export function DailyInterestCalculatorTool({ locale = "en" }: { tool?: GeneralT
   async function copy() {
     if (result === null) return;
     try {
-      await navigator.clipboard.writeText(`${result}`);
+      await navigator.clipboard.writeText(`${result.toFixed(2)}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {

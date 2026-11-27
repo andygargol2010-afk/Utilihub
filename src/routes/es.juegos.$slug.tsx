@@ -16,7 +16,7 @@ export const Route = createFileRoute("/es/juegos/$slug")({
     if (!loaderData) return { meta: [{ title: "Juego no encontrado | UtiliHub" }, { name: "robots", content: "noindex" }] };
     const { game } = loaderData;
     const title = `${gameName(game, "es")} — juego online gratis | UtiliHub`;
-    const description = cleanDescription(gameSummary(game, "es"));
+    const description = cleanDescription(`${gameSummary(game, "es").replace(/[.\s]+$/, "")}. Juega gratis en el navegador: sin descargas ni registro.`);
     const url = absoluteUrl(`/es/juegos/${game.slugEs}`);
     return {
       meta: [
