@@ -85,8 +85,8 @@ export function AgeCalculatorTool({ locale = "en" }: { tool?: GeneralTool; local
 
       <div className="rounded-xl border bg-muted/20 p-4 text-sm space-y-2">
         <p className="font-medium">{es ? "Ejemplos" : "Examples"}</p>
-        <p>{es ? "Nacido el 15/05/2000 → ~25 años (depende de hoy)" : "Born 2000-05-15 → ~25 years (depends on today)"}</p>
-        <p>{es ? "Nacido el 01/01/1995 → ~31 años" : "Born 1995-01-01 → ~31 years"}</p>
+        <p>{es ? "Nacido el 15/05/2000 → ~26 años (depende de hoy)" : "Born 2000-05-15 → ~26 years (depends on today)"}</p>
+        <p>{es ? "Nacido el 01/01/1995 → ~31 años (depende de hoy)" : "Born 1995-01-01 → ~31 years (depends on today)"}</p>
       </div>
 
       <div className="flex flex-wrap gap-2">
